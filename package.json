@@ -2,7 +2,13 @@
   "name": "orchestrator-ui",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve example-orchestrator-ui",
+    "build:orchestrator-ui-components": "nx build orchestrator-ui-components",
+    "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch",
+    "build:best-custom-react-button": "nx build best-custom-react-button",
+    "build-watch:best-custom-react-button": "nx build best-custom-react-button --watch"
+  },
   "private": true,
   "dependencies": {
     "@nrwl/next": "15.4.5",
