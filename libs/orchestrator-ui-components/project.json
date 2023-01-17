@@ -22,6 +22,7 @@
         "project": "libs/orchestrator-ui-components/package.json",
         "entryFile": "libs/orchestrator-ui-components/src/index.ts",
         "external": ["react/jsx-runtime"],
+        "updateBuildableProjectDepsInPackageJson": true,
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "compiler": "babel",
         "assets": [

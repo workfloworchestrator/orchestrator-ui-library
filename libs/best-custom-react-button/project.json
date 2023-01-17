@@ -22,6 +22,7 @@
         "project": "libs/best-custom-react-button/package.json",
         "entryFile": "libs/best-custom-react-button/src/index.ts",
         "external": ["react/jsx-runtime"],
+        "updateBuildableProjectDepsInPackageJson": true,
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "compiler": "babel",
         "assets": [

@@ -13,7 +13,6 @@
   "dependencies": {
     "@nrwl/next": "15.4.5",
     "core-js": "^3.6.5",
-    "is-even": "file:is-even-1.0.0.tgz",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
