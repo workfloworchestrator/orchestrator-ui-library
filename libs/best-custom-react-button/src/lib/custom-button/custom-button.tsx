@@ -1,14 +1,15 @@
 import styles from './custom-button.module.scss';
-import React from 'react';
+import {FC} from 'react';
+import { EuiButton } from '@elastic/eui';
 
 /* eslint-disable-next-line */
 export interface CustomButtonProps {
   buttonText: string
 }
 
-export function CustomButton(props: CustomButtonProps) {
+export const CustomButton:FC<CustomButtonProps> = (props: CustomButtonProps) => {
   return (
-    <button>{props.buttonText}</button>
+    <EuiButton fill>Lokale aanpassing</EuiButton>
   );
 }
 
