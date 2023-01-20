@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "jsxImportSource": "@emotion/react",
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
