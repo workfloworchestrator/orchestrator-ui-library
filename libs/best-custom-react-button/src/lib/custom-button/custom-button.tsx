@@ -12,7 +12,6 @@ const buttonStyles = css`
     background-color: red;
 `;
 
-/* eslint-disable-next-line */
 export interface CustomButtonProps {
     buttonText: string;
 }
