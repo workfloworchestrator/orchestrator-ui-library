@@ -6,5 +6,7 @@ cd ../../../node_modules/react || exit
 yarn link
 cd ../react-dom || exit
 yarn link
+cd ../@emotion/react || exit
+yarn link
 cd ../../
 yarn run build-watch:best-custom-react-button
