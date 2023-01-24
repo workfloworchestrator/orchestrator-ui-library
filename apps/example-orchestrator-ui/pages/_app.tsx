@@ -1,27 +1,30 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './styles.css';
-import { Theme, ThemeProvider } from '@emotion/react';
-import { defaultTheme } from 'best-custom-react-button';
+import {
+    defaultTheme,
+    MyTheme,
+    OrchestratorThemeProvider,
+} from 'best-custom-react-button';
+import React from 'react';
 
 function CustomApp({ Component, pageProps }: AppProps) {
-    const myTheme: Theme = {
-        ...defaultTheme,
+    const myTheme: MyTheme = {
         colors: {
-            primary: 'green',
-            secondary: 'yellow',
+            ...defaultTheme.colors,
+            secondary: 'grey',
         },
     };
 
     return (
-        <ThemeProvider theme={myTheme}>
+        <OrchestratorThemeProvider theme={myTheme}>
             <Head>
                 <title>Welcome to example-orchestrator-ui!</title>
             </Head>
             <main className="app">
                 <Component {...pageProps} />
             </main>
-        </ThemeProvider>
+        </OrchestratorThemeProvider>
     );
 }
 

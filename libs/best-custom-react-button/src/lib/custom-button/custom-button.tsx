@@ -1,29 +1,14 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { EuiButton } from '@elastic/eui';
-import { DataType } from 'csstype';
-import { css, SerializedStyles, Theme, useTheme } from '@emotion/react';
-
-export interface MyTheme {
-    colors: {
-        primary: DataType.Color;
-        secondary: DataType.Color;
-    };
-}
-
-export const defaultTheme: MyTheme = {
-    colors: {
-        primary: 'red',
-        secondary: 'blue',
-    },
-};
+import { css, SerializedStyles } from '@emotion/react';
+import { OrchestratorThemeContext } from '../theming/OrchestratorThemeContext';
 
 export interface CustomButtonProps {
     buttonText: string;
 }
 
 export const CustomButton: FC<CustomButtonProps> = ({ buttonText }) => {
-    // Todo fix this typecast
-    const currentTheme = useTheme() as MyTheme;
+    const currentTheme = useContext(OrchestratorThemeContext);
 
     const contentStyles: SerializedStyles = css({
         height: '300px',
