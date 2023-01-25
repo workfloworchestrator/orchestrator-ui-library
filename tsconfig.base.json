@@ -18,8 +18,7 @@
     "paths": {
       "@orchestrator-ui/orchestrator-ui-components": [
         "libs/orchestrator-ui-components/src/index.ts"
-      ],
-      "best-custom-react-button": ["libs/best-custom-react-button/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

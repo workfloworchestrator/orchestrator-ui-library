@@ -1,5 +1,5 @@
 #!/bin/bash
-cd dist/libs/best-custom-react-button || exit
+cd dist/libs/orchestrator-ui-components || exit
 yarn unlink
 cd ../../../node_modules/react || exit
 yarn unlink

@@ -4,10 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve example-orchestrator-ui",
+    "build:example-orchestrator-ui": "nx build example-orchestrator-ui",
     "build:orchestrator-ui-components": "nx build orchestrator-ui-components",
-    "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch",
-    "build:best-custom-react-button": "nx build best-custom-react-button",
-    "build-watch:best-custom-react-button": "nx build best-custom-react-button --watch"
+    "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch"
   },
   "private": true,
   "dependencies": {

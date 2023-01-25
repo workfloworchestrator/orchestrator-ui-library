@@ -1,14 +1,24 @@
-import styles from './custom-button.module.scss';
+import { FC } from 'react';
+import { css, SerializedStyles } from '@emotion/react';
 
-/* eslint-disable-next-line */
 export interface CustomButtonProps {
-  buttonText: string
+    buttonText: string;
 }
 
-export function CustomButton(props: CustomButtonProps) {
-  return (
-    <button>{props.buttonText}</button>
-  );
-}
+export const CustomButton: FC<CustomButtonProps> = ({ buttonText }) => {
+    const contentStyles: SerializedStyles = css({
+        height: '300px',
+        width: '300px',
+        backgroundColor: 'lightgrey',
+    });
 
-export default CustomButton;
+    const buttonStyles = css({
+        backgroundColor: 'grey',
+    });
+
+    return (
+        <div css={contentStyles}>
+            <button css={buttonStyles}>{buttonText}</button>
+        </div>
+    );
+};
