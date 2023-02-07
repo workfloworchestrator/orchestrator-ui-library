@@ -1,8 +1,9 @@
 # Orchestrator UI
 
-## Yarn
+## Pre-requisites:
 
-This project requires to use Yarn
+This project requires `yarn` to be installed globally. It will also install `nx` to manage the mono repo tooling.
+Supported Node versions: "^14.18.0 || >=16.0.0"
 
 ## Development server
 
