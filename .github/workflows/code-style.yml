@@ -1,7 +1,7 @@
-name: Linting check
-on: [push, pull_request]
+name: Linting and Prettier check
+on: [push]
 jobs:
-    lint:
+    linting-and-prettier:
         runs-on: ubuntu-latest
 
         steps:
@@ -15,3 +15,4 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - run: yarn install --frozen-lockfile
             - run: yarn run lint:example-orchestrator-ui
+            - run: yarn run prettier
