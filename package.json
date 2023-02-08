@@ -8,6 +8,8 @@
     "build:orchestrator-ui-components": "nx build orchestrator-ui-components",
     "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch",
     "lint:example-orchestrator-ui": "nx run example-orchestrator-ui:lint",
+    "lint:orchestrator-ui-components": "nx run orchestrator-ui-components:lint",
+    "lint:example-orchestrator-ui-e2e": "nx run example-orchestrator-ui-e2e:lint",
     "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json},libs/**/*{ts,tsx,json}}\"",
     "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json},libs/**/*{ts,tsx,json}}\""
   },
