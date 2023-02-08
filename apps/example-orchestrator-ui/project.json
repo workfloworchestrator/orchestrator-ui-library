@@ -55,6 +55,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
+        "maxWarnings": 0,
         "lintFilePatterns": [
           "apps/example-orchestrator-ui/**/*.{ts,tsx,js,jsx}"
         ]
