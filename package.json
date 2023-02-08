@@ -6,7 +6,8 @@
     "start": "nx serve example-orchestrator-ui",
     "build:example-orchestrator-ui": "nx build example-orchestrator-ui",
     "build:orchestrator-ui-components": "nx build orchestrator-ui-components",
-    "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch"
+    "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch",
+    "lint:example-orchestrator-ui": "nx run example-orchestrator-ui:lint"
   },
   "private": true,
   "dependencies": {
