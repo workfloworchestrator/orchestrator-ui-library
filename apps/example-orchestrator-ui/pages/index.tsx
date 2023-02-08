@@ -1,4 +1,3 @@
-import styles from './index.module.scss';
 import { CustomButton } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
