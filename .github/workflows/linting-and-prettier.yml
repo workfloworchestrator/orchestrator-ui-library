@@ -1,0 +1,20 @@
+name: Linting and Prettier check
+on: [push]
+jobs:
+    linting-and-prettier:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                node-version: '16.x'
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: yarn install --frozen-lockfile
+            - run: yarn run lint:example-orchestrator-ui
+            - run: yarn run lint:orchestrator-ui-components
+            - run: yarn run lint:example-orchestrator-ui-e2e
+            - run: yarn run prettier
