@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn run lint:example-orchestrator-ui && yarn run lint:orchestrator-ui-components && yarn run lint:example-orchestrator-ui-e2e && yarn run prettier
+yarn run lint:example-orchestrator-ui
+yarn run lint:orchestrator-ui-components
+yarn run lint:example-orchestrator-ui-e2e
+yarn run prettier
