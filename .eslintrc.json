@@ -1,7 +1,10 @@
 {
     "root": true,
+    "extends": [
+        "plugin:prettier/recommended"
+    ],
     "ignorePatterns": ["**/*"],
-    "plugins": ["@nrwl/nx"],
+    "plugins": ["@nrwl/nx", "prettier"],
     "overrides": [
         {
             "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
