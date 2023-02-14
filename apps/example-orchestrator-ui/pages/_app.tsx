@@ -1,6 +1,5 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
 import React from 'react';
 import { EuiProvider } from '@elastic/eui';
 import { defaultOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
