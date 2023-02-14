@@ -1,20 +1,19 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import '@elastic/eui/dist/eui_theme_dark.css';
 import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { EuiProvider } from '@elastic/eui';
 
-const client = new ApolloClient({
-    uri: 'https://api.dev.automation.surf.net/pythia',
-    cache: new InMemoryCache(),
-});
+const queryClient = new QueryClient()
+
+
 
 function CustomApp({ Component, pageProps }: AppProps) {
     return (
-        <ApolloProvider client={client}>
+        <QueryClientProvider client={queryClient}>
             <EuiProvider colorMode="dark">
                 <Head>
                     <title>Welcome to example-orchestrator-ui!</title>
@@ -23,7 +22,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </main>
             </EuiProvider>
-        </ApolloProvider>
+        </QueryClientProvider>
     );
 }
 

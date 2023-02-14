@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
@@ -9,8 +9,10 @@ import {
     EuiPageTemplate,
     EuiText,
 } from '@elastic/eui';
-import { useQuery, gql } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { SubscriptionListQuery } from '../__generated__/graphql';
+import {useQuery} from "react-query";
+import request from "graphql-request";
 
 const GET_SUBSCRIPTIONS = gql`
     query SubscriptionList {
@@ -133,10 +135,16 @@ export function Subscriptions() {
     const [isPanelled, setIsPanelled] = useState(false);
     const [isFluid, setIsFluid] = useState(true);
 
-    const { loading, error, data } = useQuery(GET_SUBSCRIPTIONS);
+    const { isLoading, error, data } = useQuery("subscription", () => request("https://api.dev.automation.surf.net/pythia", GET_SUBSCRIPTIONS));
 
     let tableData = [];
-    if (!loading && data) {
+
+    if(error) {
+        console.log("Error", error)
+    }
+
+    if (!isLoading && data) {
+        console.log(data)
         tableData = data.subscriptions.edges;
     }
 
@@ -203,14 +211,14 @@ export function Subscriptions() {
                 <EuiText grow={false}>
                     <h2>Subscriptions</h2>
                 </EuiText>
-                {loading && (
+                {isLoading && (
                     <EuiPageTemplate.EmptyPrompt
                         title={<span>Loading data</span>}
                     >
                         No data yet
                     </EuiPageTemplate.EmptyPrompt>
                 )}
-                {!loading && data && (
+                {!isLoading && data && (
                     <EuiInMemoryTable
                         tableCaption="Demo of EuiInMemoryTable with search"
                         items={tableData}
