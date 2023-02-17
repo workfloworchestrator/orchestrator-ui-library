@@ -2,7 +2,10 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 import { EuiProvider } from '@elastic/eui';
-import { defaultOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    defaultOrchestratorTheme,
+    OrchestratorPageTemplate,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 function CustomApp({ Component, pageProps }: AppProps) {
     return (
@@ -11,7 +14,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 <title>Welcome to example-orchestrator-ui!</title>
             </Head>
             <main className="app">
-                <Component {...pageProps} />
+                <OrchestratorPageTemplate>
+                    <Component {...pageProps} />
+                </OrchestratorPageTemplate>
             </main>
         </EuiProvider>
     );
