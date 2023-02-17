@@ -1,13 +1,12 @@
 import React, { FC, ReactNode, useState } from 'react';
 import {
-    EuiButton,
     EuiButtonIcon,
     EuiPageTemplate,
     EuiText,
     EuiFlexItem,
+    EuiFlexGroup,
     useEuiTheme,
 } from '@elastic/eui';
-import { EuiFlexGroup } from '@elastic/eui';
 
 export interface OrchestratorPageTemplateProps {
     children: ReactNode;
@@ -18,34 +17,35 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
 }) => {
     const { euiTheme } = useEuiTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
-    const navigationHeight = 50;
+
+    const multiplyBaseValue = (multiplier: number) =>
+        euiTheme.base * multiplier;
+
+    const navigationHeight = multiplyBaseValue(3);
 
     return (
         <>
+            {/* Top navigation */}
             <EuiFlexGroup
                 direction="row"
                 justifyContent="spaceBetween"
                 alignItems="center"
-                style={{
+                css={{
                     backgroundColor: euiTheme.colors.primary,
                     height: navigationHeight,
+                    paddingLeft: euiTheme.size.l,
+                    paddingRight: euiTheme.size.l,
                 }}
             >
                 <EuiFlexItem>
-                    <EuiText color={euiTheme.colors.emptyShade}>
-                        Orchestrator
-                    </EuiText>
+                    <EuiFlexGroup alignItems="center">
+                        <EuiText color={euiTheme.colors.emptyShade}>
+                            Orchestrator
+                        </EuiText>
+                    </EuiFlexGroup>
                 </EuiFlexItem>
                 <EuiFlexItem>
                     <EuiFlexGroup direction="row" justifyContent="flexEnd">
-                        <EuiButton
-                            size="s"
-                            onClick={() =>
-                                setIsSideMenuVisible(!isSideMenuVisible)
-                            }
-                        >
-                            Toggle SideMenu
-                        </EuiButton>
                         <EuiButtonIcon
                             display="empty"
                             iconType="arrowRight"
@@ -57,20 +57,22 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                     </EuiFlexGroup>
                 </EuiFlexItem>
             </EuiFlexGroup>
+
+            {/* Sidebar and content area */}
             <EuiPageTemplate
                 grow={false}
                 contentBorder={false}
-                minHeight={`calc(100vh - ${navigationHeight}px)`}
+                minHeight={`calc(100vh - ${navigationHeight})`}
             >
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
-                        style={{ backgroundColor: euiTheme.colors.body }}
+                        css={{ backgroundColor: euiTheme.colors.body }}
                     >
                         <div>Sidebar</div>
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
-                    style={{ backgroundColor: euiTheme.colors.emptyShade }}
+                    css={{ backgroundColor: euiTheme.colors.emptyShade }}
                 >
                     {children}
                 </EuiPageTemplate.Section>
