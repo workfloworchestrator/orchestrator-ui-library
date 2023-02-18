@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React from 'react';
+import React, { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
 import {
     defaultOrchestratorTheme,
@@ -11,17 +11,21 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // TODO: Ricardo -> I had to add this, or the tables would be unstyled?
 import '@elastic/eui/dist/eui_theme_light.min.css';
 
-const queryClient = new QueryClient({
+const config = {
     defaultOptions: {
         queries: {
-            refetchOnWindowFocus: true,
-            staleTime: 3600,
-            refetchOnMount: false,
+            staleTime: 1 * 60 * 60 * 1000,
+            cacheTime: 5 * 60 * 60 * 1000,
+            refetchOnWindowFocus: false,
         },
     },
-});
+};
 
 function CustomApp({ Component, pageProps }: AppProps) {
+    // This ensures that data is not shared
+    // between different users and requests
+    const [queryClient] = useState(() => new QueryClient(config));
+
     return (
         <QueryClientProvider client={queryClient}>
             <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>

@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
 import {
-    EuiButton,
     EuiButtonIcon,
     EuiPageTemplate,
     EuiText,
@@ -9,6 +8,7 @@ import {
     EuiSideNav,
     useEuiTheme,
 } from '@elastic/eui';
+import { useRouter } from 'next/router';
 
 export interface OrchestratorPageTemplateProps {
     children: ReactNode;
@@ -17,6 +17,8 @@ export interface OrchestratorPageTemplateProps {
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
 }) => {
+    const router = useRouter();
+
     const { euiTheme } = useEuiTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
 
@@ -83,13 +85,18 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                                             name: 'Home',
                                             id: 2,
                                             href: '/',
+                                            // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
                                             // onClick: () => selectItem(),
                                         },
                                         {
                                             name: 'Subscriptions',
                                             id: 3,
+                                            // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
+                                            onClick: (e) => {
+                                                e.preventDefault();
+                                                router.push('/subscriptions');
+                                            },
                                             href: '/subscriptions',
-                                            // onClick: () => selectItem(),
                                         },
                                         // {
                                         //     name: 'Anchor item',

@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
     EuiBasicTableColumn,
-    EuiButton,
     EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
     EuiInMemoryTable,
-    EuiPageTemplate,
     EuiText,
 } from '@elastic/eui';
+
+import { getStatusBadgeColor } from '@orchestrator-ui/orchestrator-ui-components';
+
 import { useQuery } from 'react-query';
-import request, { gql } from 'graphql-request';
+import { GraphQLClient, gql } from 'graphql-request';
+import { GRAPHQL_ENDPOINT } from '../constants';
 
 const GET_SUBSCRIPTIONS = gql`
     query SubscriptionList {
@@ -43,22 +45,12 @@ const GET_SUBSCRIPTIONS = gql`
     }
 `;
 
-// Todo: find out how to load from utils in core
-export const getStatusBadgeColor = (status: string) => {
-    const statusColors = {
-        terminated: 'danger',
-        active: 'success',
-        provisioning: 'primary',
-        migrating: 'primary',
-        initial: 'danger',
-    };
-    // eslint-disable-next-line no-prototype-builtins
-    return statusColors.hasOwnProperty(status)
-        ? statusColors[status]
-        : 'primary';
+const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
+const fetchSubscriptions = async () => {
+    return await graphQLClient.request(GET_SUBSCRIPTIONS);
 };
 
-const columns: Array<EuiBasicTableColumn<any>> = [
+const columns: Array<EuiBasicTableColumn<never>> = [
     {
         field: 'node.subscriptionId',
         name: 'ID',
@@ -131,11 +123,9 @@ const columns: Array<EuiBasicTableColumn<any>> = [
 ];
 
 export function Subscriptions() {
-    const { isLoading, error, data } = useQuery('subscriptions', () =>
-        request(
-            'https://api.dev.automation.surf.net/pythia',
-            GET_SUBSCRIPTIONS,
-        ),
+    const { isLoading, error, data } = useQuery(
+        'subscriptions',
+        fetchSubscriptions,
     );
 
     let tableData = [];
@@ -145,7 +135,6 @@ export function Subscriptions() {
     }
 
     if (!isLoading && data) {
-        console.log(data);
         tableData = data.subscriptions.edges;
     }
 
