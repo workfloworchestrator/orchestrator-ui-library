@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
@@ -13,6 +13,7 @@ import {
     EuiText,
     EuiBadge,
 } from '@elastic/eui';
+import { gql } from '../../__generated__';
 
 const GET_SUBSCRIPTION_DETAIL_OUTLINE = gql(/* GraphQL */ `
     query GetSubscriptionDetailOutline($id: ID!) {
