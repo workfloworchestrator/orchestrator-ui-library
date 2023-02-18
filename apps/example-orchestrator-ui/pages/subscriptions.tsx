@@ -5,14 +5,15 @@ import {
     EuiBasicTableColumn,
     EuiButton,
     EuiButtonIcon,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiLoadingSpinner,
     EuiInMemoryTable,
     EuiPageTemplate,
     EuiText,
 } from '@elastic/eui';
-import { gql } from '@apollo/client';
-import { SubscriptionListQuery } from '../__generated__/graphql';
-import {useQuery} from "react-query";
-import request from "graphql-request";
+import { useQuery } from 'react-query';
+import request, { gql } from 'graphql-request';
 
 const GET_SUBSCRIPTIONS = gql`
     query SubscriptionList {
@@ -57,7 +58,7 @@ export const getStatusBadgeColor = (status: string) => {
         : 'primary';
 };
 
-const columns: Array<EuiBasicTableColumn<SubscriptionListQuery>> = [
+const columns: Array<EuiBasicTableColumn<any>> = [
     {
         field: 'node.subscriptionId',
         name: 'ID',
@@ -130,21 +131,21 @@ const columns: Array<EuiBasicTableColumn<SubscriptionListQuery>> = [
 ];
 
 export function Subscriptions() {
-    // GUI hooks
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [isPanelled, setIsPanelled] = useState(false);
-    const [isFluid, setIsFluid] = useState(true);
-
-    const { isLoading, error, data } = useQuery("subscription", () => request("https://api.dev.automation.surf.net/pythia", GET_SUBSCRIPTIONS));
+    const { isLoading, error, data } = useQuery('subscriptions', () =>
+        request(
+            'https://api.dev.automation.surf.net/pythia',
+            GET_SUBSCRIPTIONS,
+        ),
+    );
 
     let tableData = [];
 
-    if(error) {
-        console.log("Error", error)
+    if (error) {
+        console.log('Error', error);
     }
 
     if (!isLoading && data) {
-        console.log(data)
+        console.log(data);
         tableData = data.subscriptions.edges;
     }
 
@@ -166,70 +167,34 @@ export function Subscriptions() {
     //         ],
     // };
 
-    const button = () => <EuiButtonIcon iconType={'refresh'}></EuiButtonIcon>;
     return (
-        <EuiPageTemplate
-            panelled={isPanelled}
-            restrictWidth={!isFluid}
-            bottomBorder={true}
-            offset={0}
-            grow={false}
-        >
-            <EuiPageTemplate.Section
-                grow={false}
-                color="subdued"
-                bottomBorder="extended"
-            >
-                SUPER SURF NAVIGATION
-            </EuiPageTemplate.Section>
-            <EuiPageTemplate.Header rightSideItems={[button()]}>
-                <EuiButton
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    iconType={isSidebarOpen ? 'arrowLeft' : 'arrowRight'}
-                >
-                    {isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
-                </EuiButton>
-                <EuiButton
-                    onClick={() => setIsFluid(!isFluid)}
-                    style={{ marginLeft: '5px' }}
-                    iconType={isFluid ? 'minimize' : 'expand'}
-                >
-                    {isFluid ? 'Fixed' : 'Fluid'}
-                </EuiButton>
-                <EuiButton
-                    onClick={() => setIsPanelled(!isPanelled)}
-                    iconType={isPanelled ? 'inputOutput' : 'container'}
-                    style={{ marginLeft: '5px' }}
-                >
-                    {isPanelled ? 'Un panel' : 'Panel'}
-                </EuiButton>
-            </EuiPageTemplate.Header>
-            {isSidebarOpen && (
-                <EuiPageTemplate.Sidebar>Cool</EuiPageTemplate.Sidebar>
+        <>
+            <EuiFlexGroup>
+                <EuiFlexItem grow={false}>
+                    <EuiText>
+                        <h2>Subscriptions</h2>
+                    </EuiText>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <EuiButtonIcon
+                        style={{ marginTop: 3 }}
+                        iconSize={'l'}
+                        iconType={'refresh'}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            {isLoading && <EuiLoadingSpinner />}
+            {!isLoading && data && (
+                <EuiInMemoryTable
+                    tableCaption="Demo of EuiInMemoryTable with search"
+                    items={tableData}
+                    columns={columns}
+                    // search={search}
+                    pagination={false}
+                    sorting={true}
+                />
             )}
-            <EuiPageTemplate.Section>
-                <EuiText grow={false}>
-                    <h2>Subscriptions</h2>
-                </EuiText>
-                {isLoading && (
-                    <EuiPageTemplate.EmptyPrompt
-                        title={<span>Loading data</span>}
-                    >
-                        No data yet
-                    </EuiPageTemplate.EmptyPrompt>
-                )}
-                {!isLoading && data && (
-                    <EuiInMemoryTable
-                        tableCaption="Demo of EuiInMemoryTable with search"
-                        items={tableData}
-                        columns={columns}
-                        // search={search}
-                        pagination={false}
-                        sorting={true}
-                    />
-                )}
-            </EuiPageTemplate.Section>
-        </EuiPageTemplate>
+        </>
     );
 }
 

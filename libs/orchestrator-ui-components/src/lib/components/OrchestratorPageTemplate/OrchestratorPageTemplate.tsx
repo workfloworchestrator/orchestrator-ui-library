@@ -1,10 +1,12 @@
 import React, { FC, ReactNode, useState } from 'react';
 import {
+    EuiButton,
     EuiButtonIcon,
     EuiPageTemplate,
     EuiText,
     EuiFlexItem,
     EuiFlexGroup,
+    EuiSideNav,
     useEuiTheme,
 } from '@elastic/eui';
 
@@ -47,6 +49,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                 <EuiFlexItem>
                     <EuiFlexGroup direction="row" justifyContent="flexEnd">
                         <EuiButtonIcon
+                            aria-label={'Toggle side bar'}
                             display="empty"
                             iconType="arrowRight"
                             color="ghost"
@@ -68,7 +71,35 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                     <EuiPageTemplate.Sidebar
                         css={{ backgroundColor: euiTheme.colors.body }}
                     >
-                        <div>Sidebar</div>
+                        <EuiSideNav
+                            mobileTitle="Nav Items"
+                            isOpenOnMobile={false}
+                            items={[
+                                {
+                                    name: 'Menu',
+                                    id: 1,
+                                    items: [
+                                        {
+                                            name: 'Home',
+                                            id: 2,
+                                            href: '/',
+                                            // onClick: () => selectItem(),
+                                        },
+                                        {
+                                            name: 'Subscriptions',
+                                            id: 3,
+                                            href: '/subscriptions',
+                                            // onClick: () => selectItem(),
+                                        },
+                                        // {
+                                        //     name: 'Anchor item',
+                                        //     id: 4,
+                                        //     href: '#',
+                                        // },
+                                    ],
+                                },
+                            ]}
+                        />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
