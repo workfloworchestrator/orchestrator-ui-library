@@ -26,13 +26,11 @@
         "@nrwl/next": "15.4.5",
         "core-js": "^3.6.5",
         "graphql": "^16.6.0",
-        "graphql-request": "^5.1.0",
         "moment": "^2.29.4",
         "next": "13.1.1",
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-query": "^3.39.3",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0"
     },
