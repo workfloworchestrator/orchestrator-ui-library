@@ -2,14 +2,11 @@ import React, { FC, ReactNode, useState } from 'react';
 import {
     EuiButtonIcon,
     EuiPageTemplate,
-    EuiText,
-    EuiSideNav,
-    EuiHeader,
-    EuiHeaderLogo,
     EuiHeaderSectionItem,
-    useEuiTheme,
 } from '@elastic/eui';
-import { useRouter } from 'next/router';
+import { OrchestratorPageHeader } from './OrchestratorPageHeader';
+import { OrchestratorSidebar } from './OrchestratorSidebar';
+import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 
 export interface OrchestratorPageTemplateProps {
     children: ReactNode;
@@ -18,43 +15,29 @@ export interface OrchestratorPageTemplateProps {
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
 }) => {
-    const router = useRouter();
-
-    const { euiTheme } = useEuiTheme();
+    const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
 
-    const multiplyBaseValue = (multiplier: number) =>
-        euiTheme.base * multiplier;
-
-    const navigationHeight = multiplyBaseValue(3);
+    const navigationHeight = multiplyByBaseUnit(3);
 
     return (
         <>
-            {/* Top navigation */}
-            <EuiHeader
-                css={{
-                    backgroundColor: euiTheme.colors.primary,
-                    height: navigationHeight,
-                }}
-            >
-                <EuiHeaderSectionItem border="right">
-                    <EuiHeaderLogo>
-                        <EuiText color={euiTheme.colors.emptyShade}>
-                            Orchestrator
-                        </EuiText>
-                    </EuiHeaderLogo>
-                </EuiHeaderSectionItem>
+            <OrchestratorPageHeader
+                navigationHeight={navigationHeight}
+                handleLogoutClick={() =>
+                    setIsSideMenuVisible(!isSideMenuVisible)
+                }
+            />
 
-                <EuiHeaderSectionItem>
-                    <EuiButtonIcon
-                        aria-label={'Toggle side bar'}
-                        display="empty"
-                        iconType="arrowRight"
-                        color="ghost"
-                        onClick={() => setIsSideMenuVisible(!isSideMenuVisible)}
-                    />
-                </EuiHeaderSectionItem>
-            </EuiHeader>
+            <EuiHeaderSectionItem>
+                <EuiButtonIcon
+                    aria-label={'Toggle side bar'}
+                    display="empty"
+                    iconType="arrowRight"
+                    color="ghost"
+                    onClick={() => setIsSideMenuVisible(!isSideMenuVisible)}
+                />
+            </EuiHeaderSectionItem>
 
             {/* Sidebar and content area */}
             <EuiPageTemplate
@@ -66,50 +49,15 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
                         css={{
-                            backgroundColor: euiTheme.colors.body,
+                            backgroundColor: theme.colors.body,
                         }}
                     >
-                        <EuiSideNav
-                            mobileTitle="Nav Items"
-                            isOpenOnMobile={false}
-                            items={[
-                                {
-                                    name: 'Menu',
-                                    id: 1,
-                                    items: [
-                                        {
-                                            name: 'Home',
-                                            id: 2,
-                                            onClick: (e) => {
-                                                e.preventDefault();
-                                                router.push('/');
-                                            },
-                                            href: '/',
-                                        },
-                                        {
-                                            name: 'Subscriptions',
-                                            id: 3,
-                                            // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
-                                            onClick: (e) => {
-                                                e.preventDefault();
-                                                router.push('/subscriptions');
-                                            },
-                                            href: '/subscriptions',
-                                        },
-                                        // {
-                                        //     name: 'Anchor item',
-                                        //     id: 4,
-                                        //     href: '#',
-                                        // },
-                                    ],
-                                },
-                            ]}
-                        />
+                        <OrchestratorSidebar text="Sidebar" />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
                     css={{
-                        backgroundColor: euiTheme.colors.emptyShade,
+                        backgroundColor: theme.colors.emptyShade,
                     }}
                 >
                     {children}
