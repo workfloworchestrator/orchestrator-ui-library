@@ -3,9 +3,10 @@ import {
     EuiButtonIcon,
     EuiPageTemplate,
     EuiText,
-    EuiFlexItem,
-    EuiFlexGroup,
     EuiSideNav,
+    EuiHeader,
+    EuiHeaderLogo,
+    EuiHeaderSectionItem,
     useEuiTheme,
 } from '@elastic/eui';
 import { useRouter } from 'next/router';
@@ -30,48 +31,43 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     return (
         <>
             {/* Top navigation */}
-            <EuiFlexGroup
-                direction="row"
-                justifyContent="spaceBetween"
-                alignItems="center"
+            <EuiHeader
                 css={{
                     backgroundColor: euiTheme.colors.primary,
                     height: navigationHeight,
-                    paddingLeft: euiTheme.size.l,
-                    paddingRight: euiTheme.size.l,
                 }}
             >
-                <EuiFlexItem>
-                    <EuiFlexGroup alignItems="center">
+                <EuiHeaderSectionItem border="right">
+                    <EuiHeaderLogo>
                         <EuiText color={euiTheme.colors.emptyShade}>
                             Orchestrator
                         </EuiText>
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                    <EuiFlexGroup direction="row" justifyContent="flexEnd">
-                        <EuiButtonIcon
-                            aria-label={'Toggle side bar'}
-                            display="empty"
-                            iconType="arrowRight"
-                            color="ghost"
-                            onClick={() =>
-                                setIsSideMenuVisible(!isSideMenuVisible)
-                            }
-                        />
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-            </EuiFlexGroup>
+                    </EuiHeaderLogo>
+                </EuiHeaderSectionItem>
+
+                <EuiHeaderSectionItem>
+                    <EuiButtonIcon
+                        aria-label={'Toggle side bar'}
+                        display="empty"
+                        iconType="arrowRight"
+                        color="ghost"
+                        onClick={() => setIsSideMenuVisible(!isSideMenuVisible)}
+                    />
+                </EuiHeaderSectionItem>
+            </EuiHeader>
 
             {/* Sidebar and content area */}
             <EuiPageTemplate
+                panelled={false}
                 grow={false}
                 contentBorder={false}
-                minHeight={`calc(100vh - ${navigationHeight})`}
+                minHeight={`calc(100vh - ${navigationHeight}px)`}
             >
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
-                        css={{ backgroundColor: euiTheme.colors.body }}
+                        css={{
+                            backgroundColor: euiTheme.colors.body,
+                        }}
                     >
                         <EuiSideNav
                             mobileTitle="Nav Items"
@@ -112,7 +108,9 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
-                    css={{ backgroundColor: euiTheme.colors.emptyShade }}
+                    css={{
+                        backgroundColor: euiTheme.colors.emptyShade,
+                    }}
                 >
                     {children}
                 </EuiPageTemplate.Section>
