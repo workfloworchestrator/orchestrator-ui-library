@@ -84,9 +84,11 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                                         {
                                             name: 'Home',
                                             id: 2,
+                                            onClick: (e) => {
+                                                e.preventDefault();
+                                                router.push('/');
+                                            },
                                             href: '/',
-                                            // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
-                                            // onClick: () => selectItem(),
                                         },
                                         {
                                             name: 'Subscriptions',

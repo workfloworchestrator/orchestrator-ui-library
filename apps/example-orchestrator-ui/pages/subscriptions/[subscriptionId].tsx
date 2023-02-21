@@ -14,7 +14,7 @@ import {
 } from '@elastic/eui';
 import { gql, GraphQLClient } from 'graphql-request';
 import { GRAPHQL_ENDPOINT } from '../../constants';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 const GET_SUBSCRIPTION_DETAIL_OUTLINE = gql`
     query GetSubscriptionDetailOutline($id: ID!) {
@@ -200,10 +200,18 @@ function getColor(num: number) {
 }
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
-
 const Subscription = () => {
     const router = useRouter();
     const { subscriptionId } = router.query;
+    const queryClient = useQueryClient();
+    const prefetchedData = {
+        subscription: queryClient
+            .getQueryData('subscriptions')
+            ?.subscriptions.edges.find(
+                (d) => d.node.subscriptionId == subscriptionId,
+            ).node,
+    };
+
     // Fetch data
     const fetchSubscriptionOutline = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
@@ -218,6 +226,7 @@ const Subscription = () => {
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
         fetchSubscriptionOutline,
+        { placeholderData: () => prefetchedData },
     );
     const { isLoading: isLoadingComplete, data: dataComplete } = useQuery(
         ['subscription-complete', subscriptionId],
@@ -267,8 +276,8 @@ const Subscription = () => {
                     <EuiFlexItem>
                         {Block('Fixed inputs', data.subscription.fixedInputs)}
                     </EuiFlexItem>
-                    {data.subscription.locations.map((l, i) => (
-                        <EuiFlexItem key={i}>
+                    {data.subscription.locations?.map((l, i) => (
+                        <EuiFlexItem key={`loc-${i}`}>
                             {Block(`Location ${i + 1}`, l)}
                         </EuiFlexItem>
                     ))}
@@ -284,7 +293,9 @@ const Subscription = () => {
                                             )}
                                         </EuiFlexItem>
                                         {l.ims.allEndpoints.map((d, idx) => (
-                                            <EuiFlexItem key={idx}>
+                                            <EuiFlexItem
+                                                key={`endpoint-${idx}`}
+                                            >
                                                 {Block(
                                                     `Endpoint ${idx + 1}`,
                                                     d,
@@ -295,12 +306,12 @@ const Subscription = () => {
                                 ),
                             )}
                             {dataComplete.subscription.inUseBy.map((l, i) => (
-                                <EuiFlexItem key={i}>
+                                <EuiFlexItem key={`in-use-by-${i}`}>
                                     {Block(`In use by ${i + 1}`, l)}
                                 </EuiFlexItem>
                             ))}
                             {dataComplete.subscription.dependsOn.map((l, i) => (
-                                <EuiFlexItem key={i}>
+                                <EuiFlexItem key={`depends-on-${i}`}>
                                     {Block(`Depends on ${i + 1}`, l)}
                                 </EuiFlexItem>
                             ))}
