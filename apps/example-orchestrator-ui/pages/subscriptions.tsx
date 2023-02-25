@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {
     EuiBadge,
     EuiBasicTableColumn,
-    EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
@@ -164,15 +163,8 @@ export function Subscriptions() {
                         <h2>Subscriptions</h2>
                     </EuiText>
                 </EuiFlexItem>
-                <EuiFlexItem>
-                    <EuiButtonIcon
-                        style={{ marginTop: 3 }}
-                        iconSize={'l'}
-                        iconType={'refresh'}
-                    ></EuiButtonIcon>
-                </EuiFlexItem>
+                <EuiFlexItem>{isLoading && <EuiLoadingSpinner />}</EuiFlexItem>
             </EuiFlexGroup>
-            {isLoading && <EuiLoadingSpinner />}
             {!isLoading && data && (
                 <EuiInMemoryTable
                     tableCaption="Demo of EuiInMemoryTable with search"

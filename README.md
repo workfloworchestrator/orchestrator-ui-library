@@ -32,7 +32,7 @@ yarn link react
 yarn link react-dom
 ```
 
-To stop using the link, first run the folowing commands in the custom version of the orchestrator-ui app:
+To stop using the link, first run the following commands in the custom version of the orchestrator-ui app:
 
 ```shell
 yarn unlink @orchestrator-ui/orchestrator-ui-components
