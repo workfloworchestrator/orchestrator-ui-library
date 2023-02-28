@@ -13,10 +13,12 @@ import {
 import { getStatusBadgeColor } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { useQuery } from 'react-query';
-import { GraphQLClient, gql } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
+import { graphql } from '../__generated__';
+
 import { GRAPHQL_ENDPOINT } from '../constants';
 
-const GET_SUBSCRIPTIONS = gql`
+const GET_SUBSCRIPTIONS = graphql(`
     query SubscriptionList {
         subscriptions(first: 500) {
             edges {
@@ -42,7 +44,7 @@ const GET_SUBSCRIPTIONS = gql`
             }
         }
     }
-`;
+`);
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 const fetchSubscriptions = async () => {
@@ -168,6 +170,7 @@ export function Subscriptions() {
             {!isLoading && data && (
                 <EuiInMemoryTable
                     tableCaption="Demo of EuiInMemoryTable with search"
+                    // @ts-ignore
                     items={tableData}
                     columns={columns}
                     // search={search}

@@ -12,11 +12,13 @@ import {
     EuiBadge,
     EuiLoadingSpinner,
 } from '@elastic/eui';
-import { gql, GraphQLClient } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 import { GRAPHQL_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
+import { graphql } from '../../__generated__';
+import { SubscriptionListQuery } from '../../__generated__/graphql';
 
-const GET_SUBSCRIPTION_DETAIL_OUTLINE = gql`
+const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
         subscription(id: $id) {
             customerId
@@ -52,9 +54,9 @@ const GET_SUBSCRIPTION_DETAIL_OUTLINE = gql`
             }
         }
     }
-`;
+`);
 
-const GET_SUBSCRIPTION_DETAIL_COMPLETE = gql`
+const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     query GetSubscriptionDetailComplete($id: ID!) {
         subscription(id: $id) {
             note
@@ -124,9 +126,9 @@ const GET_SUBSCRIPTION_DETAIL_COMPLETE = gql`
             }
         }
     }
-`;
+`);
 
-const GET_SUBSCRIPTION_DETAIL_ENRICHED = gql`
+const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
     query GetSubscriptionDetailEnriched($id: ID!) {
         subscription(id: $id) {
             note
@@ -237,7 +239,7 @@ const GET_SUBSCRIPTION_DETAIL_ENRICHED = gql`
             }
         }
     }
-`;
+`);
 
 const Block = (title, data: object) => {
     // Todo: investigate -> for some reason I can't just use `keys()`
@@ -286,7 +288,7 @@ const Subscription = () => {
     const queryClient = useQueryClient();
     const prefetchedData = {
         subscription: queryClient
-            .getQueryData('subscriptions')
+            .getQueryData<SubscriptionListQuery>('subscriptions')
             ?.subscriptions.edges.find(
                 (d) => d.node.subscriptionId == subscriptionId,
             ).node,
@@ -312,6 +314,7 @@ const Subscription = () => {
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
         fetchSubscriptionOutline,
+        // @ts-ignore
         { placeholderData: () => prefetchedData },
     );
     const { isLoading: isLoadingComplete, data: dataComplete } = useQuery(
