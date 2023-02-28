@@ -21,6 +21,7 @@
         "@elastic/eui": "^75.1.1",
         "@emotion/css": "^11.10.5",
         "@emotion/react": "^11.10.5",
+        "@faker-js/faker": "^7.6.0",
         "@nrwl/next": "15.4.5",
         "core-js": "^3.6.5",
         "graphql": "^16.6.0",
