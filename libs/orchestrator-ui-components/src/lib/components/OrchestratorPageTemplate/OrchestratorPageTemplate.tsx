@@ -7,13 +7,16 @@ import {
 import { OrchestratorPageHeader } from './OrchestratorPageHeader';
 import { OrchestratorSidebar } from './OrchestratorSidebar';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { IconType } from '@elastic/eui/src/components/icon';
 
 export interface OrchestratorPageTemplateProps {
+    appLogo: IconType;
     children: ReactNode;
 }
 
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
+    appLogo,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
@@ -23,6 +26,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     return (
         <>
             <OrchestratorPageHeader
+                logo={appLogo}
                 navigationHeight={navigationHeight}
                 handleLogoutClick={() =>
                     setIsSideMenuVisible(!isSideMenuVisible)

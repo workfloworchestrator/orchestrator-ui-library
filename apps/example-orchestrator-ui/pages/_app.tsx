@@ -8,6 +8,8 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '@elastic/eui/dist/eui_theme_light.min.css';
+import { IconType } from '@elastic/eui/src/components/icon/icon';
+import Image from 'next/image';
 
 const config = {
     defaultOptions: {
@@ -20,9 +22,15 @@ const config = {
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
-    // This ensures that data is not shared
-    // between different users and requests
     const [queryClient] = useState(() => new QueryClient(config));
+    const appLogo: IconType = () => (
+        <Image
+            src="/logo-orchestrator.svg"
+            alt="Orchestrator Logo"
+            width={134}
+            height={32}
+        />
+    );
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -31,7 +39,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     <title>Welcome to example-orchestrator-ui!</title>
                 </Head>
                 <main className="app">
-                    <OrchestratorPageTemplate>
+                    <OrchestratorPageTemplate appLogo={appLogo}>
                         <Component {...pageProps} />
                     </OrchestratorPageTemplate>
                 </main>
