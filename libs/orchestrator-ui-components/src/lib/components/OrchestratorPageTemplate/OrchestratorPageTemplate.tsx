@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactElement, ReactNode, useState } from 'react';
 import {
     EuiButtonIcon,
     EuiPageTemplate,
@@ -7,16 +7,15 @@ import {
 import { OrchestratorPageHeader } from './OrchestratorPageHeader';
 import { OrchestratorSidebar } from './OrchestratorSidebar';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { IconType } from '@elastic/eui/src/components/icon';
 
 export interface OrchestratorPageTemplateProps {
-    appLogo: IconType;
+    getAppLogo: (navigationHeight: number) => ReactElement;
     children: ReactNode;
 }
 
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
-    appLogo,
+    getAppLogo,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
@@ -26,7 +25,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     return (
         <>
             <OrchestratorPageHeader
-                logo={appLogo}
+                getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
                 handleLogoutClick={() =>
                     setIsSideMenuVisible(!isSideMenuVisible)

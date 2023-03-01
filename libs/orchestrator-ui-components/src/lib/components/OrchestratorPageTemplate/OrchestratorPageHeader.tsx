@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import {
     EuiButtonIcon,
     EuiHeader,
@@ -6,18 +6,17 @@ import {
     EuiHeaderSectionItem,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { IconType } from '@elastic/eui/src/components/icon';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
-    logo: IconType;
+    getAppLogo: (navigationHeight: number) => ReactElement;
     handleLogoutClick: () => void;
 }
 
 export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     navigationHeight,
-    logo,
+    getAppLogo,
     handleLogoutClick,
 }) => {
     const { theme } = useOrchestratorTheme();
@@ -30,7 +29,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
             }}
         >
             <EuiHeaderSectionItem border="right">
-                <EuiHeaderLogo iconType={logo} />
+                <EuiHeaderLogo iconType={() => getAppLogo(navigationHeight)} />
             </EuiHeaderSectionItem>
 
             <EuiHeaderSectionItem>
