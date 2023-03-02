@@ -8,11 +8,11 @@ import {
     EuiBadgeGroup,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { HeaderBadge } from './HeaderBadge';
+import { HeaderBadge, HeaderBadgeWithLogo } from './HeaderBadge';
 import StatusDotIcon from '../../icons/statusdot.svg';
+import XCircleFill from '../../icons/x-circle-fill.svg';
 import LogoutIcon from '../../icons/logout.svg';
 import Image from 'next/image';
-import { XCircleIcon } from '@heroicons/react/20/solid';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -26,7 +26,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     getAppLogo,
     handleLogoutClick,
 }) => {
-    const { theme } = useOrchestratorTheme();
+    const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
 
     return (
         <EuiHeader
@@ -48,33 +48,21 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
 
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
-                    <EuiBadgeGroup>
-                        <HeaderBadge
-                            iconType={() => (
-                                <Image
-                                    color={theme.colors.success}
-                                    src={StatusDotIcon}
-                                    alt="Engine running logo"
-                                    width={24}
-                                    height={24}
-                                />
-                            )}
+                    <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
+                        <HeaderBadgeWithLogo
+                            logoSrc={StatusDotIcon}
+                            logoAlt="Engine running logo"
                             color="emptyShade"
                         >
                             Engine running
-                        </HeaderBadge>
-                        <HeaderBadge
-                            iconType={() => (
-                                <XCircleIcon
-                                    color={theme.colors.danger}
-                                    height={20}
-                                    width={20}
-                                />
-                            )}
+                        </HeaderBadgeWithLogo>
+                        <HeaderBadgeWithLogo
+                            logoSrc={XCircleFill}
+                            logoAlt="Error logo"
                             color="emptyShade"
                         >
                             221
-                        </HeaderBadge>
+                        </HeaderBadgeWithLogo>
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
@@ -87,6 +75,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                                 height={24}
                             />
                         )}
+                        css={{ width: 48, height: 48 }}
                         color="ghost"
                         onClick={() => handleLogoutClick()}
                     />
