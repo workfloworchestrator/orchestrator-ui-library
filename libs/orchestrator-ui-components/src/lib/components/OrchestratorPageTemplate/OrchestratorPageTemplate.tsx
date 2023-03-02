@@ -5,8 +5,10 @@ import {
     EuiText,
     EuiFlexItem,
     EuiFlexGroup,
+    EuiSideNav,
     useEuiTheme,
 } from '@elastic/eui';
+import { useRouter } from 'next/router';
 
 export interface OrchestratorPageTemplateProps {
     children: ReactNode;
@@ -15,6 +17,8 @@ export interface OrchestratorPageTemplateProps {
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
 }) => {
+    const router = useRouter();
+
     const { euiTheme } = useEuiTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
 
@@ -47,6 +51,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                 <EuiFlexItem>
                     <EuiFlexGroup direction="row" justifyContent="flexEnd">
                         <EuiButtonIcon
+                            aria-label={'Toggle side bar'}
                             display="empty"
                             iconType="arrowRight"
                             color="ghost"
@@ -68,7 +73,42 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                     <EuiPageTemplate.Sidebar
                         css={{ backgroundColor: euiTheme.colors.body }}
                     >
-                        <div>Sidebar</div>
+                        <EuiSideNav
+                            mobileTitle="Nav Items"
+                            isOpenOnMobile={false}
+                            items={[
+                                {
+                                    name: 'Menu',
+                                    id: 1,
+                                    items: [
+                                        {
+                                            name: 'Home',
+                                            id: 2,
+                                            onClick: (e) => {
+                                                e.preventDefault();
+                                                router.push('/');
+                                            },
+                                            href: '/',
+                                        },
+                                        {
+                                            name: 'Subscriptions',
+                                            id: 3,
+                                            // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
+                                            onClick: (e) => {
+                                                e.preventDefault();
+                                                router.push('/subscriptions');
+                                            },
+                                            href: '/subscriptions',
+                                        },
+                                        // {
+                                        //     name: 'Anchor item',
+                                        //     id: 4,
+                                        //     href: '#',
+                                        // },
+                                    ],
+                                },
+                            ]}
+                        />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section

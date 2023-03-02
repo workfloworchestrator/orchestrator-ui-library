@@ -12,7 +12,8 @@
         "lint:example-orchestrator-ui-e2e": "nx run example-orchestrator-ui-e2e:lint",
         "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
         "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "codegen": "graphql-codegen --config codegen.ts"
     },
     "private": true,
     "dependencies": {
@@ -22,16 +23,23 @@
         "@emotion/react": "^11.10.5",
         "@nrwl/next": "15.4.5",
         "core-js": "^3.6.5",
+        "graphql": "^16.6.0",
+        "graphql-request": "^5.1.0",
         "moment": "^2.29.4",
         "next": "13.1.1",
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-query": "^3.39.3",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.14.5",
+        "@graphql-codegen/cli": "3.2.1",
+        "@graphql-codegen/client-preset": "2.1.0",
+        "@graphql-codegen/introspection": "3.0.1",
+        "@graphql-codegen/typescript-react-query": "^4.1.0",
         "@nrwl/cypress": "15.4.5",
         "@nrwl/eslint-plugin-nx": "15.4.5",
         "@nrwl/jest": "15.4.5",
@@ -58,6 +66,7 @@
         "eslint-plugin-jsx-a11y": "6.6.1",
         "eslint-plugin-react": "7.31.11",
         "eslint-plugin-react-hooks": "4.6.0",
+        "husky": "^8.0.0",
         "jest": "28.1.1",
         "jest-environment-jsdom": "28.1.1",
         "nx": "15.4.5",
@@ -66,7 +75,6 @@
         "sass": "1.55.0",
         "ts-jest": "28.0.5",
         "ts-node": "10.9.1",
-        "typescript": "~4.8.2",
-        "husky": "^8.0.0"
+        "typescript": "~4.8.2"
     }
 }
