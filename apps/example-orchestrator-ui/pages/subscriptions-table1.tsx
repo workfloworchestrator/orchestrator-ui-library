@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime';
+
 import React, {
     Fragment,
     useCallback,
@@ -11,10 +13,8 @@ import React, {
 import {
     EuiButton,
     EuiButtonEmpty,
-    EuiButtonIcon,
     EuiCode,
     EuiContextMenuItem,
-    EuiContextMenuPanel,
     EuiDataGrid,
     EuiFlyout,
     EuiFlyoutBody,
@@ -31,7 +31,6 @@ import {
     EuiTitle,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
-import Subscriptions from "./subscriptions";
 
 const gridRef = createRef();
 const DataContext = createContext();
@@ -342,23 +341,6 @@ const trailingControlColumns = [
 
             return (
                 <>
-                    {/*<EuiPopover*/}
-                    {/*    isOpen={isPopoverVisible}*/}
-                    {/*    panelPaddingSize="none"*/}
-                    {/*    anchorPosition="upCenter"*/}
-                    {/*    button={*/}
-                    {/*        <EuiButtonIcon*/}
-                    {/*            aria-label="Show actions"*/}
-                    {/*            iconType="boxesHorizontal"*/}
-                    {/*            color="text"*/}
-                    {/*            onClick={() => setIsPopoverVisible(!isPopoverVisible)}*/}
-                    {/*        />*/}
-                    {/*    }*/}
-                    {/*    closePopover={closePopover}*/}
-                    {/*>*/}
-                    {/*    <EuiContextMenuPanel items={actions} size="s" title="Actions" />*/}
-                    {/*</EuiPopover>*/}
-
                     {modal}
 
                     {flyout}
@@ -368,7 +350,7 @@ const trailingControlColumns = [
     },
 ];
 
-export function SubscriptionsTable() {
+export function SubscriptionsTable1() {
     // Pagination
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const onChangeItemsPerPage = useCallback(
@@ -422,10 +404,10 @@ export function SubscriptionsTable() {
                     onChangePage: onChangePage,
                 }}
                 onColumnResize={onColumnResize.current}
-                ref={gridRef}
+                // ref={gridRef}
             />
         </DataContext.Provider>
     );
-};
+}
 
-export default SubscriptionsTable;
+export default SubscriptionsTable1;

@@ -1,0 +1,148 @@
+import React, { useState, useCallback } from 'react';
+import { EuiDataGrid, EuiAvatar } from '@elastic/eui';
+import { faker } from '@faker-js/faker';
+//
+// const columns = [
+//     {
+//         id: 'avatar',
+//         initialWidth: 40,
+//         isResizable: false,
+//         actions: false,
+//     },
+//     {
+//         id: 'name',
+//         initialWidth: 100,
+//         isSortable: true,
+//         actions: {
+//             showHide: false,
+//         },
+//     },
+//     {
+//         id: 'email',
+//         isSortable: true,
+//         cellActions: [
+//             ({ rowIndex, columnId, Component, closePopover }) => {
+//                 const row = ++rowIndex;
+//                 return (
+//                     <Component
+//                         onClick={() => {
+//                             alert(`Love sent from row ${row}, column "${columnId}"`);
+//                             closePopover();
+//                         }}
+//                         iconType="heart"
+//                         aria-label={`Send love to ${row}, column "${columnId}" `}
+//                     >
+//                         Send love
+//                     </Component>
+//                 );
+//             },
+//         ],
+//     },
+//     {
+//         id: 'city',
+//         isSortable: true,
+//         cellActions: [
+//             ({ rowIndex, columnId, Component, isExpanded }) => {
+//                 const row = ++rowIndex;
+//                 const message = isExpanded
+//                     ? `Cheers sent in Popover to row "${row}" column "${columnId}"`
+//                     : `Cheers sent from row ${row}, column "${columnId}"`;
+//
+//                 return (
+//                     <Component
+//                         onClick={() => alert(message)}
+//                         iconType="cheer"
+//                         aria-label={message}
+//                     >
+//                         Cheer
+//                     </Component>
+//                 );
+//             },
+//         ],
+//     },
+//     {
+//         id: 'country',
+//         cellActions: [
+//             ({ rowIndex, columnId, Component }) => {
+//                 const row = ++rowIndex;
+//                 const label = `Love sent from row ${row}, column "${columnId}"`;
+//                 return (
+//                     <Component
+//                         onClick={() =>
+//                             alert(`Love sent from row ${row}, column "${columnId}"`)
+//                         }
+//                         iconType="heart"
+//                         aria-label={label}
+//                     >
+//                         Love this city
+//                     </Component>
+//                 );
+//             },
+//             ({ rowIndex, columnId, Component }) => {
+//                 const row = ++rowIndex;
+//                 const label = `Paint country at row ${row}, column "${columnId}"`;
+//                 return (
+//                     <Component
+//                         onClick={() =>
+//                             alert(`Paint sent from row ${row}, column "${columnId}"`)
+//                         }
+//                         iconType="brush"
+//                         aria-label={label}
+//                     >
+//                         Paint this city
+//                     </Component>
+//                 );
+//             },
+//         ],
+//     },
+//     {
+//         id: 'account',
+//     },
+// ];
+
+const data = [];
+
+for (let i = 1; i < 5; i++) {
+    data.push({
+        avatar: (
+            <EuiAvatar
+                size="s"
+                name={`${faker.name.lastName()}, ${faker.name.firstName()}`}
+            />
+        ),
+        name: `${faker.name.lastName()}, ${faker.name.firstName()} ${faker.name.suffix()}`,
+        email: faker.internet.email(),
+        city: faker.address.city(),
+        country: faker.address.country(),
+        account: faker.finance.account(),
+    });
+}
+
+export default () => {
+    // const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+    //
+    // const [visibleColumns, setVisibleColumns] = useState(
+    //     columns.map(({ id }) => id)
+    // );
+    //
+    // const setPageIndex = useCallback(
+    //     (pageIndex) => setPagination({ ...pagination, pageIndex }),
+    //     [pagination, setPagination]
+    // );
+    // const setPageSize = useCallback(
+    //     (pageSize) => setPagination({ ...pagination, pageSize, pageIndex: 0 }),
+    //     [pagination, setPagination]
+    // );
+
+    const columns = [{ id: 'A' }, { id: 'B' }];
+    const [visibleColumns, setVisibleColumns] = useState(['A', 'B']);
+
+    return (
+        <EuiDataGrid
+            columns={columns}
+            columnVisibility={{ visibleColumns, setVisibleColumns }}
+            rowCount={10}
+            renderCellValue={({ rowIndex, colIndex }) => `${rowIndex},${colIndex}`}
+        />
+    );
+};
