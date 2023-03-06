@@ -1,9 +1,5 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
-import {
-    EuiButtonIcon,
-    EuiPageTemplate,
-    EuiHeaderSectionItem,
-} from '@elastic/eui';
+import { EuiPageTemplate } from '@elastic/eui';
 import { OrchestratorPageHeader } from './OrchestratorPageHeader';
 import { OrchestratorSidebar } from './OrchestratorSidebar';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
@@ -31,16 +27,6 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                     setIsSideMenuVisible(!isSideMenuVisible)
                 }
             />
-
-            <EuiHeaderSectionItem>
-                <EuiButtonIcon
-                    aria-label={'Toggle side bar'}
-                    display="empty"
-                    iconType="arrowRight"
-                    color="ghost"
-                    onClick={() => setIsSideMenuVisible(!isSideMenuVisible)}
-                />
-            </EuiHeaderSectionItem>
 
             {/* Sidebar and content area */}
             <EuiPageTemplate
