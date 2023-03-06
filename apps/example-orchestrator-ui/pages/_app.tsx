@@ -8,6 +8,7 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '@elastic/eui/dist/eui_theme_light.min.css';
+import { getAppLogo } from '../components/AppLogo/AppLogo';
 
 const config = {
     defaultOptions: {
@@ -20,8 +21,6 @@ const config = {
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
-    // This ensures that data is not shared
-    // between different users and requests
     const [queryClient] = useState(() => new QueryClient(config));
 
     return (
@@ -31,7 +30,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     <title>Welcome to example-orchestrator-ui!</title>
                 </Head>
                 <main className="app">
-                    <OrchestratorPageTemplate>
+                    <OrchestratorPageTemplate getAppLogo={getAppLogo}>
                         <Component {...pageProps} />
                     </OrchestratorPageTemplate>
                 </main>
