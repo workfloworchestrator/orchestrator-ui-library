@@ -68,6 +68,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
+                        aria-label="Logout"
                         display="empty"
                         iconType={() => (
                             <LogoutIcon color={theme.colors.emptyShade} />

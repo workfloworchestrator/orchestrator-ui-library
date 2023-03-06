@@ -17,9 +17,9 @@ export const XCircleFill: FC<IconProps> = ({
         <g
             id="Symbols"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
         >
             <g id="icon/x-circle-fill" fill={color}>
                 <path

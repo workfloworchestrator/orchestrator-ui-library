@@ -17,11 +17,11 @@ export const StatusDotIcon: FC<IconProps> = ({
         <g
             id="Symbols"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
         >
-            <g id="icon/statusdot" fill={color} fill-rule="nonzero">
+            <g id="icon/statusdot" fill={color} fillRule="nonzero">
                 <circle id="Oval" opacity="0.25" cx="12" cy="12" r="8"></circle>
                 <circle id="Oval" cx="12" cy="12" r="4"></circle>
             </g>
