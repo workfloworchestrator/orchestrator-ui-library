@@ -8,11 +8,10 @@ import {
     EuiBadgeGroup,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { HeaderBadge, HeaderBadgeWithLogo } from './HeaderBadge';
-import StatusDotIcon from '../../icons/statusdot.svg';
-import XCircleFill from '../../icons/x-circle-fill.svg';
-import LogoutIcon from '../../icons/logout.svg';
-import Image from 'next/image';
+import { HeaderBadge } from './HeaderBadge';
+import { StatusDotIcon } from '../../icons/StatusDotIcon';
+import { XCircleFill } from '../../icons/XCircleFill';
+import { LogoutIcon } from '../../icons/LogoutIcon';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -49,31 +48,29 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <HeaderBadgeWithLogo
-                            logoSrc={StatusDotIcon}
-                            logoAlt="Engine running logo"
+                        <HeaderBadge
                             color="emptyShade"
+                            iconType={() => (
+                                <StatusDotIcon color={theme.colors.success} />
+                            )}
                         >
                             Engine running
-                        </HeaderBadgeWithLogo>
-                        <HeaderBadgeWithLogo
-                            logoSrc={XCircleFill}
-                            logoAlt="Error logo"
+                        </HeaderBadge>
+
+                        <HeaderBadge
                             color="emptyShade"
+                            iconType={() => (
+                                <XCircleFill color={theme.colors.danger} />
+                            )}
                         >
                             221
-                        </HeaderBadgeWithLogo>
+                        </HeaderBadge>
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
                         display="empty"
                         iconType={() => (
-                            <Image
-                                src={LogoutIcon}
-                                alt="Orchestrator Logo"
-                                width={24}
-                                height={24}
-                            />
+                            <LogoutIcon color={theme.colors.emptyShade} />
                         )}
                         css={{ width: 48, height: 48 }}
                         color="ghost"
