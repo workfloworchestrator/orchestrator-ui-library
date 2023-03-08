@@ -142,7 +142,9 @@ export default () => {
             columns={columns}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
             rowCount={10}
-            renderCellValue={({ rowIndex, colIndex }) => `${rowIndex},${colIndex}`}
+            renderCellValue={({ rowIndex, colIndex }) =>
+                `${rowIndex},${colIndex}`
+            }
         />
     );
 };

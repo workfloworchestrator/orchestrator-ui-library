@@ -52,7 +52,9 @@ for (let i = 1; i < 100; i++) {
         location: (
             <Fragment>
                 {`${faker.address.city()}, `}
-                <EuiLink href="https://google.com">{faker.address.country()}</EuiLink>
+                <EuiLink href="https://google.com">
+                    {faker.address.country()}
+                </EuiLink>
             </Fragment>
         ),
         date: `${faker.date.past()}`,
@@ -70,7 +72,7 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
             if (data.hasOwnProperty(rowIndex)) {
                 const numeric = parseFloat(
                     data[rowIndex][columnId].match(/\d+\.\d+/)[0],
-                    10
+                    10,
                 );
                 setCellProps({
                     style: {
@@ -102,7 +104,9 @@ const columns = [
                 const data = useContext(DataContext);
                 return (
                     <Component
-                        onClick={() => alert(`Hi ${data[rowIndex][columnId].raw}`)}
+                        onClick={() =>
+                            alert(`Hi ${data[rowIndex][columnId].raw}`)
+                        }
                         iconType="heart"
                         aria-label={`Say hi to ${data[rowIndex][columnId].raw}!`}
                     >
@@ -114,7 +118,9 @@ const columns = [
                 const data = useContext(DataContext);
                 return (
                     <Component
-                        onClick={() => alert(`Bye ${data[rowIndex][columnId].raw}`)}
+                        onClick={() =>
+                            alert(`Bye ${data[rowIndex][columnId].raw}`)
+                        }
                         iconType="moon"
                         aria-label={`Say bye to ${data[rowIndex][columnId].raw}!`}
                     >
@@ -169,11 +175,13 @@ const columns = [
                 const data = useContext(DataContext);
                 const onClick = isExpanded
                     ? () =>
-                        alert(`Sent money to ${data[rowIndex][columnId]} when expanded`)
+                          alert(
+                              `Sent money to ${data[rowIndex][columnId]} when expanded`,
+                          )
                     : () =>
-                        alert(
-                            `Sent money to ${data[rowIndex][columnId]} when not expanded`
-                        );
+                          alert(
+                              `Sent money to ${data[rowIndex][columnId]} when not expanded`,
+                          );
                 return (
                     <Component
                         onClick={onClick}
@@ -239,7 +247,9 @@ const trailingControlColumns = [
                 modal = (
                     <EuiModal onClose={closeModal} style={{ width: 500 }}>
                         <EuiModalHeader>
-                            <EuiModalHeaderTitle>A typical modal</EuiModalHeaderTitle>
+                            <EuiModalHeaderTitle>
+                                A typical modal
+                            </EuiModalHeaderTitle>
                         </EuiModalHeader>
 
                         <EuiModalBody>
@@ -248,10 +258,12 @@ const trailingControlColumns = [
                                     {/*<Link to="/layout/modal">*/}
                                     {/*    <strong>EuiModal</strong>*/}
                                     {/*</Link>{' '}*/}
-                                    components have a higher <EuiCode>z-index</EuiCode> than{' '}
-                                    <strong>EuiDataGrid</strong> components, even in fullscreen
-                                    mode. This ensures that modals will never appear behind the
-                                    data grid.
+                                    components have a higher{' '}
+                                    <EuiCode>z-index</EuiCode> than{' '}
+                                    <strong>EuiDataGrid</strong> components,
+                                    even in fullscreen mode. This ensures that
+                                    modals will never appear behind the data
+                                    grid.
                                 </p>
                             </EuiText>
                         </EuiModalBody>
@@ -297,18 +309,21 @@ const trailingControlColumns = [
                                     {/*<Link to="/layout/flyout">*/}
                                     {/*    <strong>EuiFlyout</strong>*/}
                                     {/*</Link>{' '}*/}
-                                    components have a higher <EuiCode>z-index</EuiCode> than{' '}
-                                    <strong>EuiDataGrid</strong> components, even in fullscreen
-                                    mode. This ensures that flyouts will never appear behind the
-                                    data grid.
+                                    components have a higher{' '}
+                                    <EuiCode>z-index</EuiCode> than{' '}
+                                    <strong>EuiDataGrid</strong> components,
+                                    even in fullscreen mode. This ensures that
+                                    flyouts will never appear behind the data
+                                    grid.
                                 </p>
 
                                 <p>
-                                    Flyouts are also styled with a vertical offset that accounts
-                                    for the presence of fixed headers. However, when the data grid
-                                    is in fullscreen mode, these offset styles are ignored to
-                                    allow the flyout to correctly appear at the top of the
-                                    viewport.
+                                    Flyouts are also styled with a vertical
+                                    offset that accounts for the presence of
+                                    fixed headers. However, when the data grid
+                                    is in fullscreen mode, these offset styles
+                                    are ignored to allow the flyout to correctly
+                                    appear at the top of the viewport.
                                 </p>
                             </EuiText>
                         </EuiFlyoutBody>
@@ -327,7 +342,11 @@ const trailingControlColumns = [
             }
 
             const actions = [
-                <EuiContextMenuItem icon="apmTrace" key="modal" onClick={showModal}>
+                <EuiContextMenuItem
+                    icon="apmTrace"
+                    key="modal"
+                    onClick={showModal}
+                >
                     Modal example
                 </EuiContextMenuItem>,
                 <EuiContextMenuItem
@@ -352,7 +371,10 @@ const trailingControlColumns = [
 
 export function SubscriptionsTable1() {
     // Pagination
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
     const onChangeItemsPerPage = useCallback(
         (pageSize) =>
             setPagination((pagination) => ({
@@ -360,12 +382,12 @@ export function SubscriptionsTable1() {
                 pageSize,
                 pageIndex: 0,
             })),
-        [setPagination]
+        [setPagination],
     );
     const onChangePage = useCallback(
         (pageIndex) =>
             setPagination((pagination) => ({ ...pagination, pageIndex })),
-        [setPagination]
+        [setPagination],
     );
 
     // Sorting
@@ -374,12 +396,12 @@ export function SubscriptionsTable1() {
         (sortingColumns) => {
             setSortingColumns(sortingColumns);
         },
-        [setSortingColumns]
+        [setSortingColumns],
     );
 
     // Column visibility
     const [visibleColumns, setVisibleColumns] = useState(
-        columns.map(({ id }) => id) // initialize to the full set of columns
+        columns.map(({ id }) => id), // initialize to the full set of columns
     );
 
     const onColumnResize = useRef((eventData) => {

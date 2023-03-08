@@ -26,7 +26,9 @@ const columns = [
                 return (
                     <Component
                         onClick={() => {
-                            alert(`Love sent from row ${row}, column "${columnId}"`);
+                            alert(
+                                `Love sent from row ${row}, column "${columnId}"`,
+                            );
                             closePopover();
                         }}
                         iconType="heart"
@@ -69,7 +71,9 @@ const columns = [
                 return (
                     <Component
                         onClick={() =>
-                            alert(`Love sent from row ${row}, column "${columnId}"`)
+                            alert(
+                                `Love sent from row ${row}, column "${columnId}"`,
+                            )
                         }
                         iconType="heart"
                         aria-label={label}
@@ -84,7 +88,9 @@ const columns = [
                 return (
                     <Component
                         onClick={() =>
-                            alert(`Paint sent from row ${row}, column "${columnId}"`)
+                            alert(
+                                `Paint sent from row ${row}, column "${columnId}"`,
+                            )
                         }
                         iconType="brush"
                         aria-label={label}
@@ -119,19 +125,22 @@ for (let i = 1; i < 5; i++) {
 }
 
 export function SubscriptionsTable2() {
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
 
     const [visibleColumns, setVisibleColumns] = useState(
-        columns.map(({ id }) => id)
+        columns.map(({ id }) => id),
     );
 
     const setPageIndex = useCallback(
         (pageIndex) => setPagination({ ...pagination, pageIndex }),
-        [pagination, setPagination]
+        [pagination, setPagination],
     );
     const setPageSize = useCallback(
         (pageSize) => setPagination({ ...pagination, pageSize, pageIndex: 0 }),
-        [pagination, setPagination]
+        [pagination, setPagination],
     );
 
     return (
@@ -143,7 +152,9 @@ export function SubscriptionsTable2() {
                 setVisibleColumns: setVisibleColumns,
             }}
             rowCount={data.length}
-            renderCellValue={({ rowIndex, columnId }) => data[rowIndex][columnId]}
+            renderCellValue={({ rowIndex, columnId }) =>
+                data[rowIndex][columnId]
+            }
             pagination={{
                 ...pagination,
                 pageSizeOptions: [5, 10, 25],

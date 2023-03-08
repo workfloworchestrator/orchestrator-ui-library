@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
@@ -10,7 +10,8 @@ import {
     EuiLoadingSpinner,
     EuiInMemoryTable,
     EuiPanel,
-    EuiText, EuiDataGrid,
+    EuiText,
+    EuiDataGrid,
 } from '@elastic/eui';
 
 import { getStatusBadgeColor } from '@orchestrator-ui/orchestrator-ui-components';
@@ -98,9 +99,6 @@ const columns: Array<EuiDataGridColumn<never>> = [
         // defaultSortDirection: 'asc',
     },
 
-
-
-
     {
         id: 'node.status',
         displayAsText: 'Status',
@@ -165,7 +163,14 @@ const columns: Array<EuiDataGridColumn<never>> = [
     // },
 ];
 
-const defaultVisibleColumns=['node.subscriptionId', 'node.description', 'node.product.name']
+const defaultVisibleColumns = [
+    'node.subscriptionId',
+    'node.description',
+    'node.product.name',
+    'node.status',
+    'node.insync',
+    'node.startDate',
+];
 
 const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     const data = useContext(DataContext);
@@ -187,18 +192,41 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 
     function getFormatted() {
         // debugger
-        console.log("Col: ", columnId.replace("node.", ""))
-        // console.log("Data: ", data[rowIndex].node)
-        return columnId === "node.product.name" ? data[rowIndex].node["product"]["name"] : data[rowIndex].node[columnId.replace("node.", "")]
-        // return data[rowIndex][columnId].formatted
-        //     ? data[rowIndex][columnId].formatted
-        //     : data[rowIndex][columnId];
+        console.log('Col: ', columnId.replace('node.', ''));
+        const value = data[rowIndex].node[columnId.replace('node.', '')];
+        switch (columnId) {
+            case 'node.product.name':
+                return data[rowIndex].node['product']['name'];
+            case 'node.startDate':
+                return value
+                    ? new Date(value * 1000).toLocaleString('nl-NL')
+                    : '';
+            case 'node.status':
+                return (
+                    <EuiBadge
+                        color={getStatusBadgeColor(value)}
+                        isDisabled={false}
+                    >
+                        {value}
+                    </EuiBadge>
+                );
+            case 'node.insync':
+                return (
+                    <EuiBadge
+                        color={value ? 'success' : 'danger'}
+                        isDisabled={false}
+                    >
+                        {value.toString()}
+                    </EuiBadge>
+                );
+            default:
+                return value;
+        }
     }
 
     // return getFormatted(rowIndex, columnId);
     return getFormatted();
 };
-
 
 export function SubscriptionsTable5() {
     const { isLoading, error, data } = useQuery(
@@ -214,7 +242,7 @@ export function SubscriptionsTable5() {
 
     if (!isLoading && data) {
         tableData = data.subscriptions.edges;
-        console.log(tableData)
+        console.log(tableData);
     }
 
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
@@ -231,18 +259,18 @@ export function SubscriptionsTable5() {
             {!isLoading && data && (
                 <EuiPanel>
                     <DataContext.Provider value={tableData}>
-
-                    <EuiDataGrid
-                        columns={columns}
-                        columnVisibility={{ visibleColumns, setVisibleColumns }}
-                        rowCount={100}
-                        // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
-                        renderCellValue={RenderCellValue}
-
-                    />
+                        <EuiDataGrid
+                            columns={columns}
+                            columnVisibility={{
+                                visibleColumns,
+                                setVisibleColumns,
+                            }}
+                            rowCount={100}
+                            // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
+                            renderCellValue={RenderCellValue}
+                        />
                     </DataContext.Provider>
                 </EuiPanel>
-
             )}
         </>
     );
