@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useContext } from 'react';
+import React, { FC, ReactElement } from 'react';
 import {
     EuiButtonIcon,
     EuiHeader,
@@ -12,7 +12,7 @@ import { HeaderBadge } from './HeaderBadge';
 import { StatusDotIcon } from '../../icons/StatusDotIcon';
 import { XCircleFill } from '../../icons/XCircleFill';
 import { LogoutIcon } from '../../icons/LogoutIcon';
-import { DataContext } from '../../contexts/DataContext';
+import { useEngineStatus } from '../../hooks/useEngineStatus';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -27,8 +27,8 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
-    const { useEngineStatus } = useContext(DataContext);
-    const { isLoading, error, data } = useEngineStatus; // todo: type of data is "unknown"
+
+    const { isLoading, error, data } = useEngineStatus();
     console.log({ isLoading, error, data: data });
 
     return (
