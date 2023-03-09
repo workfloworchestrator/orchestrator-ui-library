@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import {
     EuiButtonIcon,
     EuiHeader,
@@ -12,6 +12,7 @@ import { HeaderBadge } from './HeaderBadge';
 import { StatusDotIcon } from '../../icons/StatusDotIcon';
 import { XCircleFill } from '../../icons/XCircleFill';
 import { LogoutIcon } from '../../icons/LogoutIcon';
+import { DataContext } from '../../contexts/DataContext';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -26,6 +27,9 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+    const { useEngineStatus } = useContext(DataContext);
+    const { isLoading, error, data } = useEngineStatus; // todo: type of data is "unknown"
+    console.log({ isLoading, error, data: data });
 
     return (
         <EuiHeader
@@ -54,7 +58,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                                 <StatusDotIcon color={theme.colors.success} />
                             )}
                         >
-                            Engine running
+                            Engine {data?.global_status}
                         </HeaderBadge>
 
                         <HeaderBadge

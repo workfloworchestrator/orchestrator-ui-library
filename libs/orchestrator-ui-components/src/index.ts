@@ -3,3 +3,5 @@ export * from './lib/components/OrchestratorPageTemplate/OrchestratorPageTemplat
 
 export * from './lib/theme/defaultOrchestratorTheme';
 export * from './lib/utils';
+
+export * from './lib/contexts/DataContext';
