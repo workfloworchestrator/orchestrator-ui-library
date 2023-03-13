@@ -9,7 +9,7 @@ export interface EngineStatus {
     global_status: GlobalStatus;
 }
 
-export const useEngineStatus = () => {
+export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
 
     const fetchEngineStatus = async () => {
@@ -18,5 +18,6 @@ export const useEngineStatus = () => {
         });
         return (await response.json()) as EngineStatus;
     };
+
     return useQuery('engineStatus', fetchEngineStatus);
 };

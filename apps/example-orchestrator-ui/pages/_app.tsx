@@ -11,7 +11,10 @@ import {
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { STATUS_ENDPOINT } from '../constants';
+import {
+    ENGINE_STATUS_ENDPOINT,
+    PROCESS_STATUS_COUNTS_ENDPOINT,
+} from '../constants';
 
 const queryClientConfig = {
     defaultOptions: {
@@ -24,7 +27,8 @@ const queryClientConfig = {
 };
 
 const initialOrchestratorConfig: OrchestratorConfig = {
-    engineStatusEndpoint: STATUS_ENDPOINT,
+    engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
+    processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
