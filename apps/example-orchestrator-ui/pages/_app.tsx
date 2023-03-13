@@ -4,13 +4,19 @@ import React, { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
 import {
     defaultOrchestratorTheme,
+    OrchestratorConfigProvider,
     OrchestratorPageTemplate,
+    OrchestratorConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import {
+    ENGINE_STATUS_ENDPOINT,
+    PROCESS_STATUS_COUNTS_ENDPOINT,
+} from '../constants';
 
-const config = {
+const queryClientConfig = {
     defaultOptions: {
         queries: {
             staleTime: 1 * 60 * 60 * 1000,
@@ -20,22 +26,31 @@ const config = {
     },
 };
 
+const initialOrchestratorConfig: OrchestratorConfig = {
+    engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
+    processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
+};
+
 function CustomApp({ Component, pageProps }: AppProps) {
-    const [queryClient] = useState(() => new QueryClient(config));
+    const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
-                <Head>
-                    <title>Welcome to example-orchestrator-ui!</title>
-                </Head>
-                <main className="app">
-                    <OrchestratorPageTemplate getAppLogo={getAppLogo}>
-                        <Component {...pageProps} />
-                    </OrchestratorPageTemplate>
-                </main>
-            </EuiProvider>
-        </QueryClientProvider>
+        <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
+            <Head>
+                <title>Welcome to example-orchestrator-ui!</title>
+            </Head>
+            <main className="app">
+                <OrchestratorConfigProvider
+                    initialOrchestratorConfig={initialOrchestratorConfig}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <OrchestratorPageTemplate getAppLogo={getAppLogo}>
+                            <Component {...pageProps} />
+                        </OrchestratorPageTemplate>
+                    </QueryClientProvider>
+                </OrchestratorConfigProvider>
+            </main>
+        </EuiProvider>
     );
 }
 

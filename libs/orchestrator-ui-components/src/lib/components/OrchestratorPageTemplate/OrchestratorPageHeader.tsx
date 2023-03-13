@@ -12,6 +12,11 @@ import { HeaderBadge } from './HeaderBadge';
 import { StatusDotIcon } from '../../icons/StatusDotIcon';
 import { XCircleFill } from '../../icons/XCircleFill';
 import { LogoutIcon } from '../../icons/LogoutIcon';
+import { useEngineStatusQuery } from '../../hooks/useEngineStatusQuery';
+import {
+    ProcessStatusCounts,
+    useProcessStatusCountsQuery,
+} from '../../hooks/useProcessStatusCountsQuery';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -20,12 +25,40 @@ export interface OrchestratorPageHeaderProps {
     handleLogoutClick: () => void;
 }
 
+type TaskCountsSummary = {
+    failed: number;
+    inconsistentData: number;
+    apiUnavailable: number;
+    total: number;
+};
+
+const getTaskCountsSummary = (
+    processStatusCounts?: ProcessStatusCounts,
+): TaskCountsSummary => {
+    const failed = processStatusCounts?.task_counts.failed ?? 0;
+    const inconsistentData =
+        processStatusCounts?.task_counts.inconsistent_data ?? 0;
+    const apiUnavailable =
+        processStatusCounts?.task_counts.api_unavailable ?? 0;
+    return {
+        failed,
+        inconsistentData,
+        apiUnavailable,
+        total: failed + inconsistentData + apiUnavailable,
+    };
+};
+
 export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+    const { data: engineStatus } = useEngineStatusQuery();
+    const { data: processStatusCounts } = useProcessStatusCountsQuery();
+
+    const { total: totalFailedTasks } =
+        getTaskCountsSummary(processStatusCounts);
 
     return (
         <EuiHeader
@@ -54,7 +87,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                                 <StatusDotIcon color={theme.colors.success} />
                             )}
                         >
-                            Engine running
+                            Engine {engineStatus?.global_status}
                         </HeaderBadge>
 
                         <HeaderBadge
@@ -63,7 +96,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                                 <XCircleFill color={theme.colors.danger} />
                             )}
                         >
-                            221
+                            {totalFailedTasks}
                         </HeaderBadge>
                     </EuiBadgeGroup>
 

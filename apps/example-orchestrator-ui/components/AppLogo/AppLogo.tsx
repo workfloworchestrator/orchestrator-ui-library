@@ -5,7 +5,7 @@ import Logo from './logo-orchestrator.svg';
 
 export function getAppLogo(navigationLogo: number): ReactElement {
     return (
-        <EuiFlexGroup alignItems="flexEnd" css={{ height: navigationLogo }}>
+        <EuiFlexGroup alignItems="center" css={{ height: navigationLogo }}>
             <EuiFlexItem>
                 <Image
                     src={Logo}
