@@ -6,6 +6,7 @@ import {
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     engineStatusEndpoint: '',
+    processStatusCountsEndpoint: '',
 });
 
 export type OrchestratorConfigProviderProps = {
