@@ -14,6 +14,8 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
             - run: yarn install --frozen-lockfile
+            - run: yarn run tsc:example-orchestrator-ui
+            - run: yarn run tsc:orchestrator-ui-components
             - run: yarn run lint:example-orchestrator-ui
             - run: yarn run lint:orchestrator-ui-components
             - run: yarn run lint:example-orchestrator-ui-e2e
