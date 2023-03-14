@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {
     EuiBadge,
     EuiBasicTableColumn,
+    EuiButtonIcon,
     EuiFlexGroup,
     EuiDataGridColumn,
     EuiFlexItem,
@@ -23,9 +24,9 @@ import { graphql } from '../__generated__';
 import { GRAPHQL_ENDPOINT } from '../constants';
 const DataContext = createContext();
 
-const GET_SUBSCRIPTIONS = graphql(`
-    query SubscriptionList {
-        subscriptions(first: 500) {
+const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
+    query SubscriptionGrid($first: Int!, $after: Int!) {
+        subscriptions(first: $first, after: $after) {
             edges {
                 node {
                     note
@@ -33,8 +34,6 @@ const GET_SUBSCRIPTIONS = graphql(`
                     startDate
                     endDate
                     tag
-                    productId
-                    portSubscriptionInstanceId
                     vlanRange
                     description
                     product {
@@ -52,9 +51,7 @@ const GET_SUBSCRIPTIONS = graphql(`
 `);
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
-const fetchSubscriptions = async () => {
-    return await graphQLClient.request(GET_SUBSCRIPTIONS);
-};
+
 
 const columns: Array<EuiDataGridColumn<never>> = [
     {
@@ -192,6 +189,10 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 
     function getFormatted() {
         // debugger
+        if(rowIndex>=data.length) {
+            return null
+        }
+
         console.log('Col: ', columnId.replace('node.', ''));
         const value = data[rowIndex].node[columnId.replace('node.', '')];
         switch (columnId) {
@@ -228,9 +229,14 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     return getFormatted();
 };
 
-export function SubscriptionsTable5() {
+export function SubscriptionsGrid() {
+    const [first, setFirst] = useState(3);
+    const [after, setAfter] = useState(0);
+    const fetchSubscriptions = async () => {
+        return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {first: first, after: after});
+    };
     const { isLoading, error, data } = useQuery(
-        'subscriptions',
+        ['subscriptions', first, after],
         fetchSubscriptions,
     );
 
@@ -252,9 +258,12 @@ export function SubscriptionsTable5() {
                 <EuiFlexItem grow={false}>
                     <EuiText>
                         <h2>Subscriptions</h2>
+
                     </EuiText>
                 </EuiFlexItem>
-                <EuiFlexItem>{isLoading && <EuiLoadingSpinner />}</EuiFlexItem>
+                {isLoading && <EuiFlexItem><EuiLoadingSpinner /></EuiFlexItem>}
+                {after>=3 && <EuiFlexItem grow={false}><EuiButtonIcon iconType="arrowLeft" onClick={() => setAfter(after-3)}></EuiButtonIcon></EuiFlexItem>}
+                <EuiFlexItem grow={false}><EuiButtonIcon iconType="arrowRight" onClick={() => setAfter(after+3)}></EuiButtonIcon></EuiFlexItem>
             </EuiFlexGroup>
             {!isLoading && data && (
                 <EuiPanel>
@@ -265,7 +274,7 @@ export function SubscriptionsTable5() {
                                 visibleColumns,
                                 setVisibleColumns,
                             }}
-                            rowCount={100}
+                            rowCount={3}
                             // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
                             renderCellValue={RenderCellValue}
                         />
@@ -276,4 +285,4 @@ export function SubscriptionsTable5() {
     );
 }
 
-export default SubscriptionsTable5;
+export default SubscriptionsGrid;

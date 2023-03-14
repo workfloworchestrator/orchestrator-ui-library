@@ -26,14 +26,24 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                         href: '/',
                     },
                     {
-                        name: 'Subscriptions',
+                        name: 'Subscriptions table',
                         id: 3,
                         // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
                         onClick: (e) => {
                             e.preventDefault();
-                            routeTo('/subscriptions');
+                            routeTo('/subscriptions-table');
                         },
-                        href: '/subscriptions',
+                        href: '/subscriptions-table',
+                    },
+                    {
+                        name: 'Subscriptions grid',
+                        id: 4,
+                        // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
+                        onClick: (e) => {
+                            e.preventDefault();
+                            routeTo('/subscriptions-grid');
+                        },
+                        href: '/subscriptions-grid',
                     },
                 ],
             },

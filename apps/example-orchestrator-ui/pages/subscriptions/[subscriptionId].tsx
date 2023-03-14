@@ -64,7 +64,6 @@ const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
             startDate
             endDate
             tag
-            productId
             vlanRange
             customerId
             customerDescriptions {
@@ -136,7 +135,6 @@ const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
             startDate
             endDate
             tag
-            productId
             vlanRange
             customerId
             customerDescriptions {

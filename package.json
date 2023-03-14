@@ -18,7 +18,7 @@
         "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
         "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
         "prepare": "husky install",
-        "codegen": "graphql-codegen --config codegen.ts"
+        "generate-graphql-types": "graphql-codegen --config codegen.ts"
     },
     "private": true,
     "dependencies": {

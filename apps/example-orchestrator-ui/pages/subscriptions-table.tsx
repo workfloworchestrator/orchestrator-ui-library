@@ -28,8 +28,6 @@ const GET_SUBSCRIPTIONS = graphql(`
                     startDate
                     endDate
                     tag
-                    productId
-                    portSubscriptionInstanceId
                     vlanRange
                     description
                     product {
@@ -123,7 +121,7 @@ const columns: Array<EuiBasicTableColumn<never>> = [
     },
 ];
 
-export function Subscriptions() {
+export function SubscriptionsTable() {
     const { isLoading, error, data } = useQuery(
         'subscriptions',
         fetchSubscriptions,
@@ -182,4 +180,4 @@ export function Subscriptions() {
     );
 }
 
-export default Subscriptions;
+export default SubscriptionsTable;
