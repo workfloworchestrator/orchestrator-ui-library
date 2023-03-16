@@ -6,11 +6,13 @@ import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 
 export interface OrchestratorPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
+    routeTo: (route: string) => void;
     children: ReactNode;
 }
 
 export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
     children,
+    routeTo,
     getAppLogo,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
@@ -41,7 +43,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                             backgroundColor: theme.colors.body,
                         }}
                     >
-                        <OrchestratorSidebar text="Sidebar" />
+                        <OrchestratorSidebar routeTo={routeTo} />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section

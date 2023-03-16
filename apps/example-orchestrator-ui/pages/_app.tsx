@@ -15,6 +15,7 @@ import {
     ENGINE_STATUS_ENDPOINT,
     PROCESS_STATUS_COUNTS_ENDPOINT,
 } from '../constants';
+import { useRouter } from 'next/router';
 
 const queryClientConfig = {
     defaultOptions: {
@@ -33,6 +34,7 @@ const initialOrchestratorConfig: OrchestratorConfig = {
 
 function CustomApp({ Component, pageProps }: AppProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
+    const router = useRouter();
 
     return (
         <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
@@ -44,7 +46,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     initialOrchestratorConfig={initialOrchestratorConfig}
                 >
                     <QueryClientProvider client={queryClient}>
-                        <OrchestratorPageTemplate getAppLogo={getAppLogo}>
+                        <OrchestratorPageTemplate
+                            getAppLogo={getAppLogo}
+                            routeTo={router.push}
+                        >
                             <Component {...pageProps} />
                         </OrchestratorPageTemplate>
                     </QueryClientProvider>

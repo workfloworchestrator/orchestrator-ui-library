@@ -87,7 +87,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                                 <StatusDotIcon color={theme.colors.success} />
                             )}
                         >
-                            Engine {engineStatus?.global_status}
+                            Engine is {engineStatus?.global_status}
                         </HeaderBadge>
 
                         <HeaderBadge
