@@ -35,11 +35,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                         },
                         href: '/subscriptions',
                     },
-                    // {
-                    //     name: 'Anchor item',
-                    //     id: 4,
-                    //     href: '#',
-                    // },
                 ],
             },
         ]}
