@@ -52,7 +52,6 @@ const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
-
 const columns: Array<EuiDataGridColumn<never>> = [
     {
         id: 'node.subscriptionId',
@@ -189,8 +188,8 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 
     function getFormatted() {
         // debugger
-        if(rowIndex>=data.length) {
-            return null
+        if (rowIndex >= data.length) {
+            return null;
         }
 
         console.log('Col: ', columnId.replace('node.', ''));
@@ -230,10 +229,13 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 };
 
 export function SubscriptionsGrid() {
-    const [first, setFirst] = useState(3);
+    const [first, setFirst] = useState(10);
     const [after, setAfter] = useState(0);
     const fetchSubscriptions = async () => {
-        return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {first: first, after: after});
+        return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
+            first: first,
+            after: after,
+        });
     };
     const { isLoading, error, data } = useQuery(
         ['subscriptions', first, after],
@@ -258,12 +260,27 @@ export function SubscriptionsGrid() {
                 <EuiFlexItem grow={false}>
                     <EuiText>
                         <h2>Subscriptions</h2>
-
                     </EuiText>
                 </EuiFlexItem>
-                {isLoading && <EuiFlexItem><EuiLoadingSpinner /></EuiFlexItem>}
-                {after>=3 && <EuiFlexItem grow={false}><EuiButtonIcon iconType="arrowLeft" onClick={() => setAfter(after-3)}></EuiButtonIcon></EuiFlexItem>}
-                <EuiFlexItem grow={false}><EuiButtonIcon iconType="arrowRight" onClick={() => setAfter(after+3)}></EuiButtonIcon></EuiFlexItem>
+                {isLoading && (
+                    <EuiFlexItem>
+                        <EuiLoadingSpinner />
+                    </EuiFlexItem>
+                )}
+                {after >= 3 && (
+                    <EuiFlexItem grow={false}>
+                        <EuiButtonIcon
+                            iconType="arrowLeft"
+                            onClick={() => setAfter(after - 10)}
+                        ></EuiButtonIcon>
+                    </EuiFlexItem>
+                )}
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        iconType="arrowRight"
+                        onClick={() => setAfter(after + 10)}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
             </EuiFlexGroup>
             {!isLoading && data && (
                 <EuiPanel>
@@ -274,7 +291,7 @@ export function SubscriptionsGrid() {
                                 visibleColumns,
                                 setVisibleColumns,
                             }}
-                            rowCount={3}
+                            rowCount={10}
                             // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
                             renderCellValue={RenderCellValue}
                         />
