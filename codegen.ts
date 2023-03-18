@@ -1,8 +1,9 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
+import { GRAPHQL_ENDPOINT } from './apps/example-orchestrator-ui/constants';
 
 const config: CodegenConfig = {
     overwrite: true,
-    schema: 'https://api.dev.automation.surf.net/pythia',
+    schema: GRAPHQL_ENDPOINT,
     documents: './**/*.tsx',
     // generates: {
     //     './src/gql/': {

@@ -1,18 +1,16 @@
 import 'regenerator-runtime/runtime';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
-    EuiBasicTableColumn,
     EuiButtonIcon,
-    EuiFlexGroup,
+    EuiDataGrid,
     EuiDataGridColumn,
+    EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
-    EuiInMemoryTable,
     EuiPanel,
     EuiText,
-    EuiDataGrid,
 } from '@elastic/eui';
 
 import { getStatusBadgeColor } from '@orchestrator-ui/orchestrator-ui-components';
@@ -22,11 +20,17 @@ import { GraphQLClient } from 'graphql-request';
 import { graphql } from '../__generated__';
 
 import { GRAPHQL_ENDPOINT } from '../constants';
+import { PythiaSortOrder, SubscriptionsSort } from '../__generated__/graphql';
+
 const DataContext = createContext();
 
 const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
-    query SubscriptionGrid($first: Int!, $after: Int!) {
-        subscriptions(first: $first, after: $after) {
+    query SubscriptionGrid(
+        $first: Int!
+        $after: Int!
+        $sortBy: [SubscriptionsSort!]
+    ) {
+        subscriptions(first: $first, after: $after, sortBy: $sortBy) {
             edges {
                 node {
                     note
@@ -56,10 +60,10 @@ const columns: Array<EuiDataGridColumn<never>> = [
     {
         id: 'node.subscriptionId',
         displayAsText: 'ID',
-        defaultSortDirection: 'asc',
+        // defaultSortDirection: 'asc',
         cellActions: [
             ({ rowIndex, columnId, Component }) => {
-                const data = useContext(DataContext);
+                // const data = useContext(DataContext);
                 return (
                     <Component
                         onClick={() => alert(`Hi ${columnId}`)}
@@ -187,14 +191,19 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     // }, [rowIndex, columnId, setCellProps, data]);
 
     function getFormatted() {
-        // debugger
+        // Ensure that empty extra rows are not rendered
         if (rowIndex >= data.length) {
             return null;
         }
 
-        console.log('Col: ', columnId.replace('node.', ''));
         const value = data[rowIndex].node[columnId.replace('node.', '')];
         switch (columnId) {
+            case 'node.subscriptionId':
+                return (
+                    <Link href={`/subscriptions/${value}`}>
+                        {value.slice(0, 8)}
+                    </Link>
+                );
             case 'node.product.name':
                 return data[rowIndex].node['product']['name'];
             case 'node.startDate':
@@ -229,16 +238,22 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 };
 
 export function SubscriptionsGrid() {
-    const [first, setFirst] = useState(10);
-    const [after, setAfter] = useState(0);
+    // const defaultSortOrder = [{field: "description", order: PythiaSortOrder.Asc}, {field: "startDate", order: PythiaSortOrder.Desc}]
+    const defaultSortOrder: SubscriptionsSort[] = [
+        { field: 'startDate', order: PythiaSortOrder.Desc },
+    ];
+    const [pageSize, setPageSize] = useState(50);
+    const [pageNumber, setPageNumber] = useState(0);
+    const [sortOrder, setSortOrder] = useState(defaultSortOrder);
     const fetchSubscriptions = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
-            first: first,
-            after: after,
+            first: pageSize,
+            after: pageNumber,
+            sortBy: sortOrder,
         });
     };
     const { isLoading, error, data } = useQuery(
-        ['subscriptions', first, after],
+        ['subscriptions', pageSize, pageNumber, sortOrder],
         fetchSubscriptions,
     );
 
@@ -252,6 +267,14 @@ export function SubscriptionsGrid() {
         tableData = data.subscriptions.edges;
         console.log(tableData);
     }
+
+    const toggleSortOrder = () => {
+        if (sortOrder[0].order === PythiaSortOrder.Desc) {
+            setSortOrder([{ field: 'startDate', order: PythiaSortOrder.Asc }]);
+        } else {
+            setSortOrder(defaultSortOrder);
+        }
+    };
 
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
     return (
@@ -267,23 +290,41 @@ export function SubscriptionsGrid() {
                         <EuiLoadingSpinner />
                     </EuiFlexItem>
                 )}
-                {after >= 3 && (
+                {pageNumber >= 1 && (
                     <EuiFlexItem grow={false}>
                         <EuiButtonIcon
                             iconType="arrowLeft"
-                            onClick={() => setAfter(after - 10)}
+                            onClick={() => setPageNumber(pageNumber - pageSize)}
                         ></EuiButtonIcon>
                     </EuiFlexItem>
                 )}
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
                         iconType="arrowRight"
-                        onClick={() => setAfter(after + 10)}
+                        onClick={() => setPageNumber(pageNumber + pageSize)}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        iconType="minusInCircle"
+                        onClick={() => setPageSize(pageSize - 10)}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        iconType="plusInCircle"
+                        onClick={() => setPageSize(pageSize + 10)}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <EuiButtonIcon
+                        iconType={'sortable'}
+                        onClick={toggleSortOrder}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
             </EuiFlexGroup>
             {!isLoading && data && (
-                <EuiPanel>
+                <EuiPanel grow={true}>
                     <DataContext.Provider value={tableData}>
                         <EuiDataGrid
                             columns={columns}
@@ -291,7 +332,7 @@ export function SubscriptionsGrid() {
                                 visibleColumns,
                                 setVisibleColumns,
                             }}
-                            rowCount={10}
+                            rowCount={pageSize}
                             // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
                             renderCellValue={RenderCellValue}
                         />

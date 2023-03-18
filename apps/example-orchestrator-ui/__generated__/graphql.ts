@@ -2304,6 +2304,12 @@ export type PythiaNotFound = {
     message: Scalars['String'];
 };
 
+/** Sort order (ASC or DESC) */
+export enum PythiaSortOrder {
+    Asc = 'ASC',
+    Desc = 'DESC',
+}
+
 export type Query = {
     __typename?: 'Query';
     _entities: Array<Maybe<_Entity>>;
@@ -2384,7 +2390,9 @@ export type QuerySubscriptionArgs = {
 
 export type QuerySubscriptionsArgs = {
     after?: Scalars['Int'];
+    filterBy?: InputMaybe<Array<Array<Scalars['String']>>>;
     first?: Scalars['Int'];
+    sortBy?: InputMaybe<Array<SubscriptionsSort>>;
 };
 
 export type QueryUserArgs = {
@@ -2982,6 +2990,14 @@ export type SubscriptionFilter = {
     statusIncludedFilter?: InputMaybe<Array<Scalars['String']>>;
 };
 
+/** Sort subscriptions by attribute */
+export type SubscriptionsSort = {
+    /** Field to sort on */
+    field: Scalars['String'];
+    /** Sort order (ASC or DESC */
+    order?: PythiaSortOrder;
+};
+
 /** Wireless subscription */
 export type SurfWirelessSubscription = MyBaseSubscription & {
     __typename?: 'SurfWirelessSubscription';
@@ -3203,6 +3219,7 @@ export type _Service = {
 export type SubscriptionGridQueryVariables = Exact<{
     first: Scalars['Int'];
     after: Scalars['Int'];
+    sortBy?: InputMaybe<Array<SubscriptionsSort> | SubscriptionsSort>;
 }>;
 
 export type SubscriptionGridQuery = {
@@ -24040,6 +24057,26 @@ export const SubscriptionGridDocument = {
                         },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'sortBy' },
+                    },
+                    type: {
+                        kind: 'ListType',
+                        type: {
+                            kind: 'NonNullType',
+                            type: {
+                                kind: 'NamedType',
+                                name: {
+                                    kind: 'Name',
+                                    value: 'SubscriptionsSort',
+                                },
+                            },
+                        },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -24062,6 +24099,14 @@ export const SubscriptionGridDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'after' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'sortBy' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'sortBy' },
                                 },
                             },
                         ],
