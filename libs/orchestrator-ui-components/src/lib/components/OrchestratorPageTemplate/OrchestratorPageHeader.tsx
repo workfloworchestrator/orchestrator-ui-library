@@ -6,6 +6,7 @@ import {
     EuiHeaderSectionItem,
     EuiHeaderSection,
     EuiBadgeGroup,
+    EuiToolTip,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from './HeaderBadge';
@@ -57,8 +58,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     const { data: engineStatus } = useEngineStatusQuery();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
 
-    const { total: totalFailedTasks } =
-        getTaskCountsSummary(processStatusCounts);
+    const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
     return (
         <EuiHeader
@@ -89,15 +89,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                         >
                             Engine is {engineStatus?.global_status}
                         </HeaderBadge>
-
-                        <HeaderBadge
-                            color="emptyShade"
-                            iconType={() => (
-                                <XCircleFill color={theme.colors.danger} />
-                            )}
-                        >
-                            {totalFailedTasks}
-                        </HeaderBadge>
+                        <FailedTasksBadge {...taskCountsSummary} />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
@@ -113,5 +105,33 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
         </EuiHeader>
+    );
+};
+
+const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
+    const { theme } = useOrchestratorTheme();
+
+    return (
+        <EuiToolTip
+            position="bottom"
+            content={
+                <>
+                    <div>Failed: {taskCountsSummary.failed}</div>
+                    <div>
+                        Inconsistent data: {taskCountsSummary.inconsistentData}
+                    </div>
+                    <div>
+                        API unavailable: {taskCountsSummary.apiUnavailable}
+                    </div>
+                </>
+            }
+        >
+            <HeaderBadge
+                color="emptyShade"
+                iconType={() => <XCircleFill color={theme.colors.danger} />}
+            >
+                {taskCountsSummary.total}
+            </HeaderBadge>
+        </EuiToolTip>
     );
 };
