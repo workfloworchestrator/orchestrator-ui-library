@@ -1,11 +1,11 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import {
+    EuiBadgeGroup,
     EuiButtonIcon,
     EuiHeader,
     EuiHeaderLogo,
-    EuiHeaderSectionItem,
     EuiHeaderSection,
-    EuiBadgeGroup,
+    EuiHeaderSectionItem,
     EuiToolTip,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
@@ -18,6 +18,8 @@ import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '../../hooks/useProcessStatusCountsQuery';
+import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
+import { Environment } from '../../hooks/useOrchestratorConfig';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -55,6 +57,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+
     const { data: engineStatus } = useEngineStatusQuery();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
 
@@ -74,7 +77,7 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                     />
                 </EuiHeaderSectionItem>
                 <EuiHeaderSectionItem>
-                    <HeaderBadge color="warning">Development</HeaderBadge>
+                    <EnvironmentBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
@@ -106,6 +109,15 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
             </EuiHeaderSection>
         </EuiHeader>
     );
+};
+
+const EnvironmentBadge = () => {
+    const { environmentName } = useContext(OrchestratorConfigContext);
+
+    const color =
+        environmentName === Environment.PRODUCTION ? 'danger' : 'warning';
+
+    return <HeaderBadge color={color}>{environmentName}</HeaderBadge>;
 };
 
 const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
