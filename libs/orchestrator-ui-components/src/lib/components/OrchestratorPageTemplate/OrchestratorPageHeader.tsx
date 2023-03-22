@@ -7,13 +7,17 @@ import {
     EuiHeaderSection,
     EuiHeaderSectionItem,
     EuiToolTip,
+    EuiText,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from './HeaderBadge';
 import { StatusDotIcon } from '../../icons/StatusDotIcon';
 import { XCircleFill } from '../../icons/XCircleFill';
 import { LogoutIcon } from '../../icons/LogoutIcon';
-import { useEngineStatusQuery } from '../../hooks/useEngineStatusQuery';
+import {
+    EngineStatus,
+    useEngineStatusQuery,
+} from '../../hooks/useEngineStatusQuery';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
@@ -84,15 +88,10 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <HeaderBadge
-                            color="emptyShade"
-                            iconType={() => (
-                                <StatusDotIcon color={theme.colors.success} />
-                            )}
-                        >
-                            Engine is {engineStatus?.global_status}
-                        </HeaderBadge>
-                        <FailedTasksBadge {...taskCountsSummary} />
+                        <EngineStatusBadge engineStatus={engineStatus} />
+                        <FailedTasksBadge
+                            taskCountsSummary={taskCountsSummary}
+                        />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
@@ -116,17 +115,51 @@ export const EnvironmentBadge = () => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     if (environmentName !== Environment.PRODUCTION) {
-        return <HeaderBadge color="warning">{environmentName}</HeaderBadge>;
+        return (
+            <HeaderBadge color="warning">
+                <EuiText>
+                    <b>{environmentName}</b>
+                </EuiText>
+            </HeaderBadge>
+        );
     }
 
     return (
         <HeaderBadge customColor color={toSecondaryColor(theme.colors.primary)}>
-            {environmentName}
+            <EuiText color={theme.colors.primary} size="xs">
+                <b>{environmentName}</b>
+            </EuiText>
         </HeaderBadge>
     );
 };
 
-export const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
+export type EngineStatusBadgeProps = {
+    engineStatus?: EngineStatus;
+};
+export const EngineStatusBadge = ({ engineStatus }: EngineStatusBadgeProps) => {
+    const { theme } = useOrchestratorTheme();
+    const engineStatusText: string = engineStatus?.global_status
+        ? `Engine is ${engineStatus.global_status}`
+        : 'Engine status is unavailable';
+
+    return (
+        <HeaderBadge
+            color="emptyShade"
+            iconType={() => <StatusDotIcon color={theme.colors.success} />}
+        >
+            <EuiText size="xs">
+                <b>{engineStatusText}</b>
+            </EuiText>
+        </HeaderBadge>
+    );
+};
+
+export type FailedTasksBadgeProps = {
+    taskCountsSummary: TaskCountsSummary;
+};
+export const FailedTasksBadge = ({
+    taskCountsSummary,
+}: FailedTasksBadgeProps) => {
     const { theme } = useOrchestratorTheme();
 
     return (
@@ -148,7 +181,9 @@ export const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
                 color="emptyShade"
                 iconType={() => <XCircleFill color={theme.colors.danger} />}
             >
-                {taskCountsSummary.total}
+                <EuiText size="xs">
+                    <b>{taskCountsSummary.total}</b>
+                </EuiText>
             </HeaderBadge>
         </EuiToolTip>
     );
