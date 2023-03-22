@@ -1,4 +1,4 @@
-import { useEuiTheme } from '@elastic/eui';
+import { tint, useEuiTheme } from '@elastic/eui';
 
 export const useOrchestratorTheme = () => {
     const { euiTheme } = useEuiTheme();
@@ -6,8 +6,11 @@ export const useOrchestratorTheme = () => {
 
     const multiplyByBaseUnit = (multiplier: number) => baseUnit * multiplier;
 
+    const toSecondaryColor = (color: string) => tint(color, 0.8);
+
     return {
         theme: euiTheme,
         multiplyByBaseUnit,
+        toSecondaryColor,
     };
 };

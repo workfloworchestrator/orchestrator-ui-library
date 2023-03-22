@@ -111,16 +111,22 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     );
 };
 
-const EnvironmentBadge = () => {
+export const EnvironmentBadge = () => {
     const { environmentName } = useContext(OrchestratorConfigContext);
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const color =
-        environmentName === Environment.PRODUCTION ? 'danger' : 'warning';
+    if (environmentName !== Environment.PRODUCTION) {
+        return <HeaderBadge color="warning">{environmentName}</HeaderBadge>;
+    }
 
-    return <HeaderBadge color={color}>{environmentName}</HeaderBadge>;
+    return (
+        <HeaderBadge customColor color={toSecondaryColor(theme.colors.primary)}>
+            {environmentName}
+        </HeaderBadge>
+    );
 };
 
-const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
+export const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
     const { theme } = useOrchestratorTheme();
 
     return (

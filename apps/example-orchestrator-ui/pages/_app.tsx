@@ -33,7 +33,7 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
     environmentName:
-        process.env.NEXT_PUBLIC_ENVIRONMENT ?? Environment.DEVELOPMENT,
+        process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
