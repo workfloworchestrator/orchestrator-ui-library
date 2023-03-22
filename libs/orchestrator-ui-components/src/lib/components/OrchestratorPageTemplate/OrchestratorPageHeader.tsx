@@ -117,7 +117,7 @@ export const EnvironmentBadge = () => {
     if (environmentName !== Environment.PRODUCTION) {
         return (
             <HeaderBadge color="warning">
-                <EuiText>
+                <EuiText size="xs">
                     <b>{environmentName}</b>
                 </EuiText>
             </HeaderBadge>
