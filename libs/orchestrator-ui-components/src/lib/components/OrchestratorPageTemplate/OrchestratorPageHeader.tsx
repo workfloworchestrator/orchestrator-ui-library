@@ -14,10 +14,7 @@ import { HeaderBadge } from './HeaderBadge';
 import { StatusDotIcon } from '../../icons/StatusDotIcon';
 import { XCircleFill } from '../../icons/XCircleFill';
 import { LogoutIcon } from '../../icons/LogoutIcon';
-import {
-    EngineStatus,
-    useEngineStatusQuery,
-} from '../../hooks/useEngineStatusQuery';
+import { useEngineStatusQuery } from '../../hooks/useEngineStatusQuery';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
@@ -62,11 +59,6 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
 
-    const { data: engineStatus } = useEngineStatusQuery();
-    const { data: processStatusCounts } = useProcessStatusCountsQuery();
-
-    const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
-
     return (
         <EuiHeader
             css={{
@@ -88,10 +80,8 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <EngineStatusBadge engineStatus={engineStatus} />
-                        <FailedTasksBadge
-                            taskCountsSummary={taskCountsSummary}
-                        />
+                        <EngineStatusBadge />
+                        <FailedTasksBadge />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
@@ -133,11 +123,10 @@ export const EnvironmentBadge = () => {
     );
 };
 
-export type EngineStatusBadgeProps = {
-    engineStatus?: EngineStatus;
-};
-export const EngineStatusBadge = ({ engineStatus }: EngineStatusBadgeProps) => {
+export const EngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
+    const { data: engineStatus } = useEngineStatusQuery();
+
     const engineStatusText: string = engineStatus?.global_status
         ? `Engine is ${engineStatus.global_status}`
         : 'Engine status is unavailable';
@@ -154,13 +143,10 @@ export const EngineStatusBadge = ({ engineStatus }: EngineStatusBadgeProps) => {
     );
 };
 
-export type FailedTasksBadgeProps = {
-    taskCountsSummary: TaskCountsSummary;
-};
-export const FailedTasksBadge = ({
-    taskCountsSummary,
-}: FailedTasksBadgeProps) => {
+export const FailedTasksBadge = () => {
     const { theme } = useOrchestratorTheme();
+    const { data: processStatusCounts } = useProcessStatusCountsQuery();
+    const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
     return (
         <EuiToolTip
