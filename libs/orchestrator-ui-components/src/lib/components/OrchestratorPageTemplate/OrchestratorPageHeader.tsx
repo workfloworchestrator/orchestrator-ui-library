@@ -1,12 +1,13 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import {
+    EuiBadgeGroup,
     EuiButtonIcon,
     EuiHeader,
     EuiHeaderLogo,
-    EuiHeaderSectionItem,
     EuiHeaderSection,
-    EuiBadgeGroup,
+    EuiHeaderSectionItem,
     EuiToolTip,
+    EuiText,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from './HeaderBadge';
@@ -18,6 +19,8 @@ import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '../../hooks/useProcessStatusCountsQuery';
+import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
+import { Environment } from '../../hooks/useOrchestratorConfig';
 
 export interface OrchestratorPageHeaderProps {
     // todo: should be part of theme!
@@ -55,10 +58,6 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
-    const { data: engineStatus } = useEngineStatusQuery();
-    const { data: processStatusCounts } = useProcessStatusCountsQuery();
-
-    const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
     return (
         <EuiHeader
@@ -74,22 +73,15 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                     />
                 </EuiHeaderSectionItem>
                 <EuiHeaderSectionItem>
-                    <HeaderBadge color="warning">Development</HeaderBadge>
+                    <EnvironmentBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <HeaderBadge
-                            color="emptyShade"
-                            iconType={() => (
-                                <StatusDotIcon color={theme.colors.success} />
-                            )}
-                        >
-                            Engine is {engineStatus?.global_status}
-                        </HeaderBadge>
-                        <FailedTasksBadge {...taskCountsSummary} />
+                        <EngineStatusBadge />
+                        <FailedTasksBadge />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
@@ -108,8 +100,53 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
     );
 };
 
-const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
+export const EnvironmentBadge = () => {
+    const { environmentName } = useContext(OrchestratorConfigContext);
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
+
+    if (environmentName !== Environment.PRODUCTION) {
+        return (
+            <HeaderBadge color="warning">
+                <EuiText size="xs">
+                    <b>{environmentName}</b>
+                </EuiText>
+            </HeaderBadge>
+        );
+    }
+
+    return (
+        <HeaderBadge customColor color={toSecondaryColor(theme.colors.primary)}>
+            <EuiText color={theme.colors.primary} size="xs">
+                <b>{environmentName}</b>
+            </EuiText>
+        </HeaderBadge>
+    );
+};
+
+export const EngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
+    const { data: engineStatus } = useEngineStatusQuery();
+
+    const engineStatusText: string = engineStatus?.global_status
+        ? `Engine is ${engineStatus.global_status}`
+        : 'Engine status is unavailable';
+
+    return (
+        <HeaderBadge
+            color="emptyShade"
+            iconType={() => <StatusDotIcon color={theme.colors.success} />}
+        >
+            <EuiText size="xs">
+                <b>{engineStatusText}</b>
+            </EuiText>
+        </HeaderBadge>
+    );
+};
+
+export const FailedTasksBadge = () => {
+    const { theme } = useOrchestratorTheme();
+    const { data: processStatusCounts } = useProcessStatusCountsQuery();
+    const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
     return (
         <EuiToolTip
@@ -130,7 +167,9 @@ const FailedTasksBadge = (taskCountsSummary: TaskCountsSummary) => {
                 color="emptyShade"
                 iconType={() => <XCircleFill color={theme.colors.danger} />}
             >
-                {taskCountsSummary.total}
+                <EuiText size="xs">
+                    <b>{taskCountsSummary.total}</b>
+                </EuiText>
             </HeaderBadge>
         </EuiToolTip>
     );

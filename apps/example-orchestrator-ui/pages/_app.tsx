@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
 import {
     defaultOrchestratorTheme,
+    Environment,
+    OrchestratorConfig,
     OrchestratorConfigProvider,
     OrchestratorPageTemplate,
-    OrchestratorConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
@@ -16,6 +17,7 @@ import {
     PROCESS_STATUS_COUNTS_ENDPOINT,
 } from '../constants';
 import { useRouter } from 'next/router';
+import * as process from 'process';
 
 const queryClientConfig = {
     defaultOptions: {
@@ -30,6 +32,8 @@ const queryClientConfig = {
 const initialOrchestratorConfig: OrchestratorConfig = {
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
+    environmentName:
+        process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
