@@ -21,6 +21,12 @@ import { graphql } from '../__generated__';
 
 import { GRAPHQL_ENDPOINT } from '../constants';
 import { PythiaSortOrder, SubscriptionsSort } from '../__generated__/graphql';
+import {
+    NumberParam,
+    useQueryParam,
+    withDefault,
+    StringParam,
+} from 'use-query-params';
 
 const DataContext = createContext();
 
@@ -45,6 +51,10 @@ const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
                         type
                         tag
                     }
+                    organisation {
+                        abbreviation
+                        name
+                    }
                     insync
                     status
                     subscriptionId
@@ -60,6 +70,7 @@ const columns: Array<EuiDataGridColumn<never>> = [
     {
         id: 'node.subscriptionId',
         displayAsText: 'ID',
+        initialWidth: 100,
         // defaultSortDirection: 'asc',
         cellActions: [
             ({ rowIndex, columnId, Component }) => {
@@ -91,14 +102,26 @@ const columns: Array<EuiDataGridColumn<never>> = [
     {
         id: 'node.description',
         displayAsText: 'Description',
+        initialWidth: 400,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.product.name',
         displayAsText: 'Product',
+        initialWidth: 250,
         // defaultSortDirection: 'asc',
     },
-
+    {
+        id: 'node.organisation.name',
+        displayAsText: 'Customer Name',
+        // defaultSortDirection: 'asc',
+    },
+    {
+        id: 'node.organisation.abbreviation',
+        displayAsText: 'Customer',
+        initialWidth: 200,
+        // defaultSortDirection: 'asc',
+    },
     {
         id: 'node.status',
         displayAsText: 'Status',
@@ -114,12 +137,6 @@ const columns: Array<EuiDataGridColumn<never>> = [
         displayAsText: 'Start date',
         // defaultSortDirection: 'asc',
     },
-    {
-        id: 'hidden4',
-        displayAsText: 'Hidden 4',
-        // defaultSortDirection: 'asc',
-    },
-
     // {
     //     field: 'node.status',
     //     name: 'Status',
@@ -167,6 +184,7 @@ const defaultVisibleColumns = [
     'node.subscriptionId',
     'node.description',
     'node.product.name',
+    'node.organisation.abbreviation',
     'node.status',
     'node.insync',
     'node.startDate',
@@ -192,6 +210,7 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
 
     function getFormatted() {
         // Ensure that empty extra rows are not rendered
+        // @ts-ignore
         if (rowIndex >= data.length) {
             return null;
         }
@@ -204,6 +223,10 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
                         {value.slice(0, 8)}
                     </Link>
                 );
+            case 'node.organisation.name':
+                return data[rowIndex].node['organisation']['name'];
+            case 'node.organisation.abbreviation':
+                return data[rowIndex].node['organisation']['abbreviation'];
             case 'node.product.name':
                 return data[rowIndex].node['product']['name'];
             case 'node.startDate':
@@ -237,23 +260,65 @@ const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     return getFormatted();
 };
 
+const DEFAULT_PAGE_SIZE = 20;
+
+const GRID_STYLE_1 = {
+    border: 'horizontal',
+    stripes: true,
+    rowHover: 'highlight',
+    header: 'underline',
+    // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
+    cellPadding: 'l',
+    fontSize: 'l',
+    footer: 'overline',
+};
+const GRID_STYLE_2 = {
+    border: 'none',
+    stripes: true,
+    rowHover: 'warning',
+    header: 'underline',
+    // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
+    cellPadding: 'm',
+    fontSize: 'm',
+    footer: 'overline',
+};
+const GRID_STYLE_3 = {
+    // DEFAULT
+};
+
+const GRID_STYLES = [GRID_STYLE_1, GRID_STYLE_2, GRID_STYLE_3];
+
+function getOrderString(sortOrder: SubscriptionsSort[]) {
+    return `${sortOrder[0].field}:${sortOrder[0].order}`;
+}
+
 export function SubscriptionsGrid() {
-    // const defaultSortOrder = [{field: "description", order: PythiaSortOrder.Asc}, {field: "startDate", order: PythiaSortOrder.Desc}]
     const defaultSortOrder: SubscriptionsSort[] = [
         { field: 'startDate', order: PythiaSortOrder.Desc },
     ];
-    const [pageSize, setPageSize] = useState(50);
-    const [pageNumber, setPageNumber] = useState(0);
+    const [gridStyle, setGridStyle] = useState(0);
+    const [pageSize, setPageSize] = useQueryParam(
+        'size',
+        withDefault(NumberParam, DEFAULT_PAGE_SIZE),
+    );
+    const [pageIndex, setPageIndex] = useQueryParam(
+        'index',
+        withDefault(NumberParam, DEFAULT_PAGE_SIZE),
+    );
     const [sortOrder, setSortOrder] = useState(defaultSortOrder);
+    const [setOrderUrl, setSortOrderUrl] = useQueryParam(
+        'sort',
+        withDefault(StringParam, getOrderString(defaultSortOrder)),
+    );
     const fetchSubscriptions = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
             first: pageSize,
-            after: pageNumber,
+            after: pageIndex,
             sortBy: sortOrder,
         });
     };
     const { isLoading, error, data } = useQuery(
-        ['subscriptions', pageSize, pageNumber, sortOrder],
+        ['subscriptions', pageSize, pageIndex, sortOrder],
         fetchSubscriptions,
     );
 
@@ -270,16 +335,23 @@ export function SubscriptionsGrid() {
 
     const toggleSortOrder = () => {
         if (sortOrder[0].order === PythiaSortOrder.Desc) {
-            setSortOrder([{ field: 'startDate', order: PythiaSortOrder.Asc }]);
+            const temp = [{ field: 'startDate', order: PythiaSortOrder.Asc }];
+            setSortOrder(temp);
+            setSortOrderUrl(getOrderString(temp));
         } else {
             setSortOrder(defaultSortOrder);
+            setSortOrderUrl(getOrderString(defaultSortOrder));
         }
+    };
+
+    const toggleGrid = () => {
+        setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
     };
 
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
     return (
         <>
-            <EuiFlexGroup>
+            <EuiFlexGroup alignItems={'center'}>
                 <EuiFlexItem grow={false}>
                     <EuiText>
                         <h2>Subscriptions</h2>
@@ -290,18 +362,18 @@ export function SubscriptionsGrid() {
                         <EuiLoadingSpinner />
                     </EuiFlexItem>
                 )}
-                {pageNumber >= 1 && (
+                {pageIndex >= 1 && (
                     <EuiFlexItem grow={false}>
                         <EuiButtonIcon
                             iconType="arrowLeft"
-                            onClick={() => setPageNumber(pageNumber - pageSize)}
+                            onClick={() => setPageIndex(pageIndex - pageSize)}
                         ></EuiButtonIcon>
                     </EuiFlexItem>
                 )}
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
                         iconType="arrowRight"
-                        onClick={() => setPageNumber(pageNumber + pageSize)}
+                        onClick={() => setPageIndex(pageIndex + pageSize)}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
@@ -316,28 +388,34 @@ export function SubscriptionsGrid() {
                         onClick={() => setPageSize(pageSize + 10)}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
-                <EuiFlexItem>
+                <EuiFlexItem grow={false}>
                     <EuiButtonIcon
                         iconType={'sortable'}
                         onClick={toggleSortOrder}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        iconType={'color'}
+                        onClick={toggleGrid}
+                    ></EuiButtonIcon>
+                </EuiFlexItem>
             </EuiFlexGroup>
             {!isLoading && data && (
-                <EuiPanel grow={true}>
-                    <DataContext.Provider value={tableData}>
-                        <EuiDataGrid
-                            columns={columns}
-                            columnVisibility={{
-                                visibleColumns,
-                                setVisibleColumns,
-                            }}
-                            rowCount={pageSize}
-                            // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
-                            renderCellValue={RenderCellValue}
-                        />
-                    </DataContext.Provider>
-                </EuiPanel>
+                <DataContext.Provider value={tableData}>
+                    <EuiDataGrid
+                        gridStyle={GRID_STYLES[gridStyle]}
+                        toolbarVisibility={gridStyle !== 1}
+                        columns={columns}
+                        columnVisibility={{
+                            visibleColumns,
+                            setVisibleColumns,
+                        }}
+                        rowCount={pageSize}
+                        // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
+                        renderCellValue={RenderCellValue}
+                    />
+                </DataContext.Provider>
             )}
         </>
     );

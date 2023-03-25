@@ -33,10 +33,12 @@
         "graphql-request": "^5.1.0",
         "moment": "^2.29.4",
         "next": "13.1.1",
+        "next-query-params": "^4.1.0",
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-query": "^3.39.3",
+        "use-query-params": "^2.2.1",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0"
     },
