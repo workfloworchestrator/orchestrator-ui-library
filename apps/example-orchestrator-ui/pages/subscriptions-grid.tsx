@@ -9,7 +9,6 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
-    EuiPanel,
     EuiText,
 } from '@elastic/eui';
 
@@ -28,7 +27,7 @@ import {
     StringParam,
 } from 'use-query-params';
 
-const DataContext = createContext();
+const DataContext = createContext(null);
 
 const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
     query SubscriptionGrid(
@@ -66,7 +65,7 @@ const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
-const columns: Array<EuiDataGridColumn<never>> = [
+const columns: Array<EuiDataGridColumn> = [
     {
         id: 'node.subscriptionId',
         displayAsText: 'ID',
@@ -306,7 +305,7 @@ export function SubscriptionsGrid() {
         withDefault(NumberParam, DEFAULT_PAGE_SIZE),
     );
     const [sortOrder, setSortOrder] = useState(defaultSortOrder);
-    const [setOrderUrl, setSortOrderUrl] = useQueryParam(
+    const [sortOrderUrl, setSortOrderUrl] = useQueryParam(
         'sort',
         withDefault(StringParam, getOrderString(defaultSortOrder)),
     );
@@ -336,6 +335,7 @@ export function SubscriptionsGrid() {
     const toggleSortOrder = () => {
         if (sortOrder[0].order === PythiaSortOrder.Desc) {
             const temp = [{ field: 'startDate', order: PythiaSortOrder.Asc }];
+            console.log('sortOrderUrl', sortOrderUrl);
             setSortOrder(temp);
             setSortOrderUrl(getOrderString(temp));
         } else {
@@ -404,6 +404,7 @@ export function SubscriptionsGrid() {
             {!isLoading && data && (
                 <DataContext.Provider value={tableData}>
                     <EuiDataGrid
+                        aria-labelledby={'Subscription grid'}
                         gridStyle={GRID_STYLES[gridStyle]}
                         toolbarVisibility={gridStyle !== 1}
                         columns={columns}

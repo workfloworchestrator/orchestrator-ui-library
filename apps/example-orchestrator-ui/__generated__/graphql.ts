@@ -434,6 +434,7 @@ export type FwBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwBlockOtherSubscriptionIdsArgs = {
@@ -457,6 +458,7 @@ export type FwIpGwEndpointBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwIpGwEndpointBlockOtherSubscriptionIdsArgs = {
@@ -487,6 +489,7 @@ export type FwL2EndpointBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwL2EndpointBlockOtherSubscriptionIdsArgs = {
@@ -510,6 +513,7 @@ export type FwL3EndpointBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     saps: Array<Sn8ServiceAttachPointBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwL3EndpointBlockOtherSubscriptionIdsArgs = {
@@ -803,6 +807,7 @@ export type IpPeerBlock = ProductBlockModel & {
     peerName: Scalars['String'];
     peers: Array<PeerBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type IpPeerBlockOtherSubscriptionIdsArgs = {
@@ -830,6 +835,7 @@ export type IpPeerGroupBlock = ProductBlockModel & {
     peerType: Scalars['String'];
     routeServers: Array<Scalars['String']>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type IpPeerGroupBlockOtherSubscriptionIdsArgs = {
@@ -923,6 +929,7 @@ export type IpPeerPortBlock = ImsProvider &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type IpPeerPortBlockOtherSubscriptionIdsArgs = {
@@ -1068,6 +1075,7 @@ export type IpPrefixBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     planned: Scalars['Boolean'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     toInternet: Scalars['Boolean'];
 };
 
@@ -1816,6 +1824,7 @@ export type NodeProductBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     srNodeSegmentId: Scalars['Int'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type NodeProductBlockOtherSubscriptionIdsArgs = {
@@ -1962,6 +1971,7 @@ export type NsiStpBlock = ProductBlockModel & {
     stpDescription: Scalars['String'];
     stpId: Scalars['String'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     topology: Scalars['String'];
 };
 
@@ -2080,6 +2090,7 @@ export type PeerBlock = PeerPortProvider &
         port: IpPeerPortSubscription;
         portSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type PeerBlockOtherSubscriptionIdsArgs = {
@@ -2231,6 +2242,7 @@ export type ProductBlockModel = {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type ProductBlockModelOtherSubscriptionIdsArgs = {
@@ -2423,6 +2435,7 @@ export type Sn8AggregatedServicePortBlock = ImsProvider &
         portMode: Scalars['String'];
         portSubscriptionId: Array<Scalars['UUID']>;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8AggregatedServicePortBlockOtherSubscriptionIdsArgs = {
@@ -2447,6 +2460,7 @@ export type Sn8CorelinkAggregateBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8CorelinkAggregateBlockOtherSubscriptionIdsArgs = {
@@ -2474,6 +2488,7 @@ export type Sn8CorelinkBlock = ImsProvider &
         ownerSubscriptionId: Scalars['UUID'];
         portPairs: Array<Sn8CorelinkPortPairBlock>;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8CorelinkBlockOtherSubscriptionIdsArgs = {
@@ -2497,6 +2512,7 @@ export type Sn8CorelinkPortPairBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8CorelinkPortPairBlockOtherSubscriptionIdsArgs = {
@@ -2534,6 +2550,7 @@ export type Sn8IpBgpServiceAttachPointSettingsBlock = ProductBlockModel &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpBgpServiceAttachPointSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2559,6 +2576,7 @@ export type Sn8IpBgpServiceSettingsBlock = ProductBlockModel & {
     subscriptionInstanceId: Scalars['UUID'];
     surfcertFilter: Scalars['String'];
     surfcertFilterEnabled: Scalars['Boolean'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8IpBgpServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2586,6 +2604,7 @@ export type Sn8IpBgpVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         settings: Sn8IpBgpServiceSettingsBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpBgpVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2615,6 +2634,7 @@ export type Sn8IpStaticServiceAttachPointSettingsBlock = ProductBlockModel &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpStaticServiceAttachPointSettingsBlockOtherSubscriptionIdsArgs =
@@ -2640,6 +2660,7 @@ export type Sn8IpStaticServiceSettingsBlock = ProductBlockModel & {
     subscriptionInstanceId: Scalars['UUID'];
     surfcertFilter: Scalars['String'];
     surfcertFilterEnabled: Scalars['Boolean'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8IpStaticServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2667,6 +2688,7 @@ export type Sn8IpStaticVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         settings: Sn8IpStaticServiceSettingsBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpStaticVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2692,6 +2714,7 @@ export type Sn8IrbServicePortBlock = ImsProvider &
         otherSubscriptions: Array<MyBaseSubscription>;
         ownerSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IrbServicePortBlockOtherSubscriptionIdsArgs = {
@@ -2714,6 +2737,7 @@ export type Sn8L2VpnEsiBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     saps: Array<Sn8ServiceAttachPointBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8L2VpnEsiBlockOtherSubscriptionIdsArgs = {
@@ -2742,6 +2766,7 @@ export type Sn8L2VpnVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
         vlanRetagging: Scalars['Boolean'];
     };
 
@@ -2785,6 +2810,7 @@ export type Sn8L3VpnServiceAttachPointSettingsBlock = ProductBlockModel & {
     ptpIpv6IpamId?: Maybe<Scalars['Int']>;
     sap: Sn8ServiceAttachPointBlock;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     urpf: Scalars['String'];
 };
 
@@ -2807,6 +2833,7 @@ export type Sn8L3VpnServiceSettingsBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8L3VpnServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2836,6 +2863,7 @@ export type Sn8L3VpnVirtualCircuitBlock = ImsProvider &
         specificTemplate?: Maybe<Scalars['String']>;
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8L3VpnVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2857,6 +2885,7 @@ export type Sn8LightPathRedundantServiceSettingsBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     vcs: Array<Sn8LightPathVirtualCircuitBlock>;
 };
 
@@ -2887,6 +2916,7 @@ export type Sn8LightPathVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8LightPathVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2915,6 +2945,7 @@ export type Sn8MscBlock = ImsProvider &
         portSubscriptionId: Scalars['UUID'];
         serviceTag: Scalars['Int'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8MscBlockOtherSubscriptionIdsArgs = {
@@ -2938,6 +2969,7 @@ export type Sn8ServiceAttachPointBlock = PortProvider &
         port: MyBaseSubscription;
         portSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
         vlanrange: Scalars['String'];
     };
 
@@ -2967,6 +2999,7 @@ export type Sn8ServicePortBlock = ImsProvider &
         ownerSubscriptionId: Scalars['UUID'];
         portMode: Scalars['String'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8ServicePortBlockOtherSubscriptionIdsArgs = {
@@ -3163,6 +3196,7 @@ export type WifiLocation = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 /** Information about WiFi location */
