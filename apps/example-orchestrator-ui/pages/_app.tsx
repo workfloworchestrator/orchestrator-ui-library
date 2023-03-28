@@ -16,6 +16,8 @@ import {
     ENGINE_STATUS_ENDPOINT,
     PROCESS_STATUS_COUNTS_ENDPOINT,
 } from '../constants';
+import { NextAdapter } from 'next-query-params';
+import { QueryParamProvider } from 'use-query-params';
 import { useRouter } from 'next/router';
 import * as process from 'process';
 
@@ -24,7 +26,7 @@ const queryClientConfig = {
         queries: {
             staleTime: 1 * 60 * 60 * 1000,
             cacheTime: 5 * 60 * 60 * 1000,
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: true,
         },
     },
 };
@@ -54,7 +56,12 @@ function CustomApp({ Component, pageProps }: AppProps) {
                             getAppLogo={getAppLogo}
                             routeTo={router.push}
                         >
-                            <Component {...pageProps} />
+                            <QueryParamProvider
+                                adapter={NextAdapter}
+                                options={{ removeDefaultsFromUrl: false }}
+                            >
+                                <Component {...pageProps} />
+                            </QueryParamProvider>
                         </OrchestratorPageTemplate>
                     </QueryClientProvider>
                 </OrchestratorConfigProvider>

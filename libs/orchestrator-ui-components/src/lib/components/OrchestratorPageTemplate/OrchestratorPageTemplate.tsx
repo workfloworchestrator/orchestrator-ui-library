@@ -36,6 +36,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                 grow={false}
                 contentBorder={false}
                 minHeight={`calc(100vh - ${navigationHeight}px)`}
+                restrictWidth={false}
             >
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar

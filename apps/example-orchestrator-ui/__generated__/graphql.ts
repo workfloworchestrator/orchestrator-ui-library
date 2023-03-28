@@ -102,7 +102,6 @@ export type AggregatedServicePortSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -114,6 +113,11 @@ export type AggregatedServicePortSubscription = MyBaseSubscription & {
 export type AggregatedServicePortSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Aggregated service port subscription */
+export type AggregatedServicePortSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Aggregated service port subscription */
@@ -174,7 +178,6 @@ export type CorelinkSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -186,6 +189,11 @@ export type CorelinkSubscription = MyBaseSubscription & {
 export type CorelinkSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Corelink subscription */
+export type CorelinkSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Corelink subscription */
@@ -377,7 +385,6 @@ export type FirewallSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     protectionType: Scalars['String'];
     size: Scalars['Int'];
     startDate?: Maybe<Scalars['String']>;
@@ -391,6 +398,11 @@ export type FirewallSubscription = MyBaseSubscription & {
 export type FirewallSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Firewall subscription */
+export type FirewallSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Firewall subscription */
@@ -422,6 +434,7 @@ export type FwBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwBlockOtherSubscriptionIdsArgs = {
@@ -445,6 +458,7 @@ export type FwIpGwEndpointBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwIpGwEndpointBlockOtherSubscriptionIdsArgs = {
@@ -475,6 +489,7 @@ export type FwL2EndpointBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwL2EndpointBlockOtherSubscriptionIdsArgs = {
@@ -498,6 +513,7 @@ export type FwL3EndpointBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     saps: Array<Sn8ServiceAttachPointBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type FwL3EndpointBlockOtherSubscriptionIdsArgs = {
@@ -506,6 +522,13 @@ export type FwL3EndpointBlockOtherSubscriptionIdsArgs = {
 
 export type FwL3EndpointBlockOtherSubscriptionsArgs = {
     statusFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Health */
+export type Health = {
+    __typename?: 'Health';
+    /** Health of workflow engine */
+    orchestrator: ServiceHealth;
 };
 
 export type Ims = {
@@ -733,7 +756,6 @@ export type IpBgpSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -746,6 +768,11 @@ export type IpBgpSubscription = MyBaseSubscription & {
 export type IpBgpSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP BGP subscription type. */
+export type IpBgpSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP BGP subscription type. */
@@ -780,6 +807,7 @@ export type IpPeerBlock = ProductBlockModel & {
     peerName: Scalars['String'];
     peers: Array<PeerBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type IpPeerBlockOtherSubscriptionIdsArgs = {
@@ -807,6 +835,7 @@ export type IpPeerGroupBlock = ProductBlockModel & {
     peerType: Scalars['String'];
     routeServers: Array<Scalars['String']>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type IpPeerGroupBlockOtherSubscriptionIdsArgs = {
@@ -848,7 +877,6 @@ export type IpPeerGroupSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -860,6 +888,11 @@ export type IpPeerGroupSubscription = MyBaseSubscription & {
 export type IpPeerGroupSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP Peer group subscription type. */
+export type IpPeerGroupSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP Peer group subscription type. */
@@ -896,6 +929,7 @@ export type IpPeerPortBlock = ImsProvider &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type IpPeerPortBlockOtherSubscriptionIdsArgs = {
@@ -937,7 +971,6 @@ export type IpPeerPortSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -949,6 +982,11 @@ export type IpPeerPortSubscription = MyBaseSubscription & {
 export type IpPeerPortSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP Peer port subscription type. */
+export type IpPeerPortSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP Peer port subscription type. */
@@ -993,7 +1031,6 @@ export type IpPeerSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1005,6 +1042,11 @@ export type IpPeerSubscription = MyBaseSubscription & {
 export type IpPeerSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP Peer subscription type. */
+export type IpPeerSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP Peer subscription type. */
@@ -1033,6 +1075,7 @@ export type IpPrefixBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     planned: Scalars['Boolean'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     toInternet: Scalars['Boolean'];
 };
 
@@ -1092,7 +1135,6 @@ export type IpPrefixSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1104,6 +1146,11 @@ export type IpPrefixSubscription = MyBaseSubscription & {
 export type IpPrefixSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP Prefix subscription type. */
+export type IpPrefixSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP Prefix subscription type. */
@@ -1148,7 +1195,6 @@ export type IpStaticSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1161,6 +1207,11 @@ export type IpStaticSubscription = MyBaseSubscription & {
 export type IpStaticSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IP static subscription type. */
+export type IpStaticSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IP static subscription type. */
@@ -1251,7 +1302,6 @@ export type IrbServicePortSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1263,6 +1313,11 @@ export type IrbServicePortSubscription = MyBaseSubscription & {
 export type IrbServicePortSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The IRB port subscription type. */
+export type IrbServicePortSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The IRB port subscription type. */
@@ -1328,7 +1383,6 @@ export type L2VpnSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1341,6 +1395,11 @@ export type L2VpnSubscription = MyBaseSubscription & {
 export type L2VpnSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** L2VPN subscription */
+export type L2VpnSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** L2VPN subscription */
@@ -1384,7 +1443,6 @@ export type L3VpnSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1397,6 +1455,11 @@ export type L3VpnSubscription = MyBaseSubscription & {
 export type L3VpnSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** L3VPN subscription */
+export type L3VpnSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** L3VPN subscription */
@@ -1441,7 +1504,6 @@ export type LightPathRedundantSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     protectionType: Scalars['String'];
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
@@ -1454,6 +1516,11 @@ export type LightPathRedundantSubscription = MyBaseSubscription & {
 export type LightPathRedundantSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The LightPath Redundant subscription type. */
+export type LightPathRedundantSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The LightPath Redundant subscription type. */
@@ -1497,7 +1564,6 @@ export type LightPathSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     protectionType: Scalars['String'];
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
@@ -1511,6 +1577,11 @@ export type LightPathSubscription = MyBaseSubscription & {
 export type LightPathSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The LightPath subscription type. */
+export type LightPathSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The LightPath subscription type. */
@@ -1579,7 +1650,6 @@ export type MscSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1591,6 +1661,11 @@ export type MscSubscription = MyBaseSubscription & {
 export type MscSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The MSC port subscription type. */
+export type MscSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The MSC port subscription type. */
@@ -1688,7 +1763,6 @@ export type MyBaseSubscription = {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1700,6 +1774,11 @@ export type MyBaseSubscription = {
 export type MyBaseSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Virtual base class for detailed subscriptions */
+export type MyBaseSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Virtual base class for detailed subscriptions */
@@ -1745,6 +1824,7 @@ export type NodeProductBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     srNodeSegmentId: Scalars['Int'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type NodeProductBlockOtherSubscriptionIdsArgs = {
@@ -1785,7 +1865,6 @@ export type NodeSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1797,6 +1876,11 @@ export type NodeSubscription = MyBaseSubscription & {
 export type NodeSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The Node port subscription type. */
+export type NodeSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The Node port subscription type. */
@@ -1840,7 +1924,6 @@ export type NsiLightPathSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -1853,6 +1936,11 @@ export type NsiLightPathSubscription = MyBaseSubscription & {
 export type NsiLightPathSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The NSI LightPath subscription type. */
+export type NsiLightPathSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The NSI LightPath subscription type. */
@@ -1883,6 +1971,7 @@ export type NsiStpBlock = ProductBlockModel & {
     stpDescription: Scalars['String'];
     stpId: Scalars['String'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     topology: Scalars['String'];
 };
 
@@ -1924,7 +2013,6 @@ export type NsiStpSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     settings: NsiStpBlock;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
@@ -1937,6 +2025,11 @@ export type NsiStpSubscription = MyBaseSubscription & {
 export type NsiStpSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The NSI STP subscription type. */
+export type NsiStpSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The NSI STP subscription type. */
@@ -1997,6 +2090,7 @@ export type PeerBlock = PeerPortProvider &
         port: IpPeerPortSubscription;
         portSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type PeerBlockOtherSubscriptionIdsArgs = {
@@ -2050,7 +2144,6 @@ export type PortSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -2062,6 +2155,11 @@ export type PortSubscription = MyBaseSubscription & {
 export type PortSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** The Service port subscription type. */
+export type PortSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** The Service port subscription type. */
@@ -2116,8 +2214,13 @@ export type Product = {
     createdAt?: Maybe<Scalars['String']>;
     description: Scalars['String'];
     endDate?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
     /** Unique product identifier */
+    id: Scalars['UUID'];
+    name: Scalars['String'];
+    /**
+     * Unique product identifier
+     * @deprecated Use id instead
+     */
     productId: Scalars['String'];
     status: Scalars['String'];
     tag?: Maybe<Scalars['String']>;
@@ -2139,6 +2242,7 @@ export type ProductBlockModel = {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type ProductBlockModelOtherSubscriptionIdsArgs = {
@@ -2212,6 +2316,12 @@ export type PythiaNotFound = {
     message: Scalars['String'];
 };
 
+/** Sort order (ASC or DESC) */
+export enum PythiaSortOrder {
+    Asc = 'ASC',
+    Desc = 'DESC',
+}
+
 export type Query = {
     __typename?: 'Query';
     _entities: Array<Maybe<_Entity>>;
@@ -2228,6 +2338,8 @@ export type Query = {
     engineStatus: EngineStatus;
     /** Returns a list of free prefixes */
     freePrefixes: Array<Scalars['String']>;
+    /** Returns health status of apis that Pythia relies upon */
+    health: Health;
     /** Returns locations from CRM */
     locations: Array<CrmLocation>;
     /** Returns detailed information for a prefix */
@@ -2290,11 +2402,19 @@ export type QuerySubscriptionArgs = {
 
 export type QuerySubscriptionsArgs = {
     after?: Scalars['Int'];
+    filterBy?: InputMaybe<Array<Array<Scalars['String']>>>;
     first?: Scalars['Int'];
+    sortBy?: InputMaybe<Array<SubscriptionsSort>>;
 };
 
 export type QueryUserArgs = {
     username: Scalars['String'];
+};
+
+/** Health status */
+export type ServiceHealth = {
+    __typename?: 'ServiceHealth';
+    status: Scalars['String'];
 };
 
 export type Sn8AggregatedServicePortBlock = ImsProvider &
@@ -2315,6 +2435,7 @@ export type Sn8AggregatedServicePortBlock = ImsProvider &
         portMode: Scalars['String'];
         portSubscriptionId: Array<Scalars['UUID']>;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8AggregatedServicePortBlockOtherSubscriptionIdsArgs = {
@@ -2339,6 +2460,7 @@ export type Sn8CorelinkAggregateBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8CorelinkAggregateBlockOtherSubscriptionIdsArgs = {
@@ -2366,6 +2488,7 @@ export type Sn8CorelinkBlock = ImsProvider &
         ownerSubscriptionId: Scalars['UUID'];
         portPairs: Array<Sn8CorelinkPortPairBlock>;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8CorelinkBlockOtherSubscriptionIdsArgs = {
@@ -2389,6 +2512,7 @@ export type Sn8CorelinkPortPairBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8CorelinkPortPairBlockOtherSubscriptionIdsArgs = {
@@ -2426,6 +2550,7 @@ export type Sn8IpBgpServiceAttachPointSettingsBlock = ProductBlockModel &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpBgpServiceAttachPointSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2451,6 +2576,7 @@ export type Sn8IpBgpServiceSettingsBlock = ProductBlockModel & {
     subscriptionInstanceId: Scalars['UUID'];
     surfcertFilter: Scalars['String'];
     surfcertFilterEnabled: Scalars['Boolean'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8IpBgpServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2478,6 +2604,7 @@ export type Sn8IpBgpVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         settings: Sn8IpBgpServiceSettingsBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpBgpVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2507,6 +2634,7 @@ export type Sn8IpStaticServiceAttachPointSettingsBlock = ProductBlockModel &
         ptpIpv6IpamId?: Maybe<Scalars['Int']>;
         sap: Sn8ServiceAttachPointBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpStaticServiceAttachPointSettingsBlockOtherSubscriptionIdsArgs =
@@ -2532,6 +2660,7 @@ export type Sn8IpStaticServiceSettingsBlock = ProductBlockModel & {
     subscriptionInstanceId: Scalars['UUID'];
     surfcertFilter: Scalars['String'];
     surfcertFilterEnabled: Scalars['Boolean'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8IpStaticServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2559,6 +2688,7 @@ export type Sn8IpStaticVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         settings: Sn8IpStaticServiceSettingsBlock;
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IpStaticVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2584,6 +2714,7 @@ export type Sn8IrbServicePortBlock = ImsProvider &
         otherSubscriptions: Array<MyBaseSubscription>;
         ownerSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8IrbServicePortBlockOtherSubscriptionIdsArgs = {
@@ -2606,6 +2737,7 @@ export type Sn8L2VpnEsiBlock = ProductBlockModel & {
     ownerSubscriptionId: Scalars['UUID'];
     saps: Array<Sn8ServiceAttachPointBlock>;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8L2VpnEsiBlockOtherSubscriptionIdsArgs = {
@@ -2634,6 +2766,7 @@ export type Sn8L2VpnVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
         vlanRetagging: Scalars['Boolean'];
     };
 
@@ -2677,6 +2810,7 @@ export type Sn8L3VpnServiceAttachPointSettingsBlock = ProductBlockModel & {
     ptpIpv6IpamId?: Maybe<Scalars['Int']>;
     sap: Sn8ServiceAttachPointBlock;
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     urpf: Scalars['String'];
 };
 
@@ -2699,6 +2833,7 @@ export type Sn8L3VpnServiceSettingsBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 export type Sn8L3VpnServiceSettingsBlockOtherSubscriptionIdsArgs = {
@@ -2728,6 +2863,7 @@ export type Sn8L3VpnVirtualCircuitBlock = ImsProvider &
         specificTemplate?: Maybe<Scalars['String']>;
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8L3VpnVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2749,6 +2885,7 @@ export type Sn8LightPathRedundantServiceSettingsBlock = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
     vcs: Array<Sn8LightPathVirtualCircuitBlock>;
 };
 
@@ -2779,6 +2916,7 @@ export type Sn8LightPathVirtualCircuitBlock = ImsProvider &
         serviceSpeed: Scalars['Int'];
         speedPolicer: Scalars['Boolean'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8LightPathVirtualCircuitBlockOtherSubscriptionIdsArgs = {
@@ -2807,6 +2945,7 @@ export type Sn8MscBlock = ImsProvider &
         portSubscriptionId: Scalars['UUID'];
         serviceTag: Scalars['Int'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8MscBlockOtherSubscriptionIdsArgs = {
@@ -2830,6 +2969,7 @@ export type Sn8ServiceAttachPointBlock = PortProvider &
         port: MyBaseSubscription;
         portSubscriptionId: Scalars['UUID'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
         vlanrange: Scalars['String'];
     };
 
@@ -2859,6 +2999,7 @@ export type Sn8ServicePortBlock = ImsProvider &
         ownerSubscriptionId: Scalars['UUID'];
         portMode: Scalars['String'];
         subscriptionInstanceId: Scalars['UUID'];
+        title?: Maybe<Scalars['String']>;
     };
 
 export type Sn8ServicePortBlockOtherSubscriptionIdsArgs = {
@@ -2869,12 +3010,25 @@ export type Sn8ServicePortBlockOtherSubscriptionsArgs = {
     statusFilter?: InputMaybe<Array<Scalars['String']>>;
 };
 
+export enum SubscriptionBoundary {
+    All = 'ALL',
+    Owner = 'OWNER',
+}
+
 /** Filter subscriptions by attribute */
 export type SubscriptionFilter = {
     /** Excluded subscription statuses */
     statusExcludedFilter?: InputMaybe<Array<Scalars['String']>>;
     /** Included subscription statuses */
     statusIncludedFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Sort subscriptions by attribute */
+export type SubscriptionsSort = {
+    /** Field to sort on */
+    field: Scalars['String'];
+    /** Sort order (ASC or DESC */
+    order?: PythiaSortOrder;
 };
 
 /** Wireless subscription */
@@ -2907,7 +3061,6 @@ export type SurfWirelessSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -2920,6 +3073,11 @@ export type SurfWirelessSubscription = MyBaseSubscription & {
 export type SurfWirelessSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Wireless subscription */
+export type SurfWirelessSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Wireless subscription */
@@ -2969,7 +3127,6 @@ export type UnknownSubscription = MyBaseSubscription & {
     product: Product;
     /** Return all products blocks that are part of a subscription */
     productBlocks: Array<ProductBlock>;
-    productId?: Maybe<Scalars['String']>;
     startDate?: Maybe<Scalars['String']>;
     status: Scalars['String'];
     subscriptionId: Scalars['UUID'];
@@ -2981,6 +3138,11 @@ export type UnknownSubscription = MyBaseSubscription & {
 export type UnknownSubscriptionDependsOnArgs = {
     dependsOnStatusFilter?: InputMaybe<Array<Scalars['String']>>;
     productTypeFilter?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** Used for (new) subscription types that are not implemented in Pythia yet */
+export type UnknownSubscriptionImsCircuitsArgs = {
+    boundary?: SubscriptionBoundary;
 };
 
 /** Used for (new) subscription types that are not implemented in Pythia yet */
@@ -3034,6 +3196,7 @@ export type WifiLocation = ProductBlockModel & {
     otherSubscriptions: Array<MyBaseSubscription>;
     ownerSubscriptionId: Scalars['UUID'];
     subscriptionInstanceId: Scalars['UUID'];
+    title?: Maybe<Scalars['String']>;
 };
 
 /** Information about WiFi location */
@@ -3087,6 +3250,527 @@ export type _Service = {
     sdl: Scalars['String'];
 };
 
+export type SubscriptionGridQueryVariables = Exact<{
+    first: Scalars['Int'];
+    after: Scalars['Int'];
+    sortBy?: InputMaybe<Array<SubscriptionsSort> | SubscriptionsSort>;
+}>;
+
+export type SubscriptionGridQuery = {
+    __typename?: 'Query';
+    subscriptions: {
+        __typename?: 'MyBaseSubscriptionConnection';
+        edges: Array<{
+            __typename?: 'MyBaseSubscriptionEdge';
+            node:
+                | {
+                      __typename?: 'AggregatedServicePortSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'CorelinkSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'FirewallSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpBgpSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpPeerGroupSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpPeerPortSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpPeerSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpPrefixSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IpStaticSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'IrbServicePortSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'L2VpnSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'L3VpnSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'LightPathRedundantSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'LightPathSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'MscSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'NodeSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'NsiLightPathSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'NsiStpSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'PortSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'SurfWirelessSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  }
+                | {
+                      __typename?: 'UnknownSubscription';
+                      note?: string | null;
+                      name?: string | null;
+                      startDate?: string | null;
+                      endDate?: string | null;
+                      tag?: string | null;
+                      vlanRange?: string | null;
+                      description: string;
+                      insync: boolean;
+                      status: string;
+                      subscriptionId: any;
+                      product: {
+                          __typename?: 'Product';
+                          name: string;
+                          type: string;
+                          tag?: string | null;
+                      };
+                      organisation?: {
+                          __typename?: 'CrmOrganisation';
+                          abbreviation?: string | null;
+                          name?: string | null;
+                      } | null;
+                  };
+        }>;
+    };
+};
+
 export type SubscriptionListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type SubscriptionListQuery = {
@@ -3103,8 +3787,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3124,8 +3806,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3145,8 +3825,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3166,8 +3844,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3187,8 +3863,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3208,8 +3882,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3229,8 +3901,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3250,8 +3920,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3271,8 +3939,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3292,8 +3958,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3313,8 +3977,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3334,8 +3996,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3355,8 +4015,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3376,8 +4034,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3397,8 +4053,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3418,8 +4072,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3439,8 +4091,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3460,8 +4110,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3481,8 +4129,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3502,8 +4148,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -3523,8 +4167,6 @@ export type SubscriptionListQuery = {
                       startDate?: string | null;
                       endDate?: string | null;
                       tag?: string | null;
-                      productId?: string | null;
-                      portSubscriptionInstanceId?: any | null;
                       vlanRange?: string | null;
                       description: string;
                       insync: boolean;
@@ -4362,7 +5004,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -4797,7 +5438,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -5232,7 +5872,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -5667,7 +6306,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -6102,7 +6740,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -6537,7 +7174,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -6972,7 +7608,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -7407,7 +8042,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -7842,7 +8476,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -8277,7 +8910,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -8712,7 +9344,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -9147,7 +9778,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -9582,7 +10212,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -10017,7 +10646,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -10452,7 +11080,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -10887,7 +11514,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -11322,7 +11948,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -11757,7 +12382,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -12192,7 +12816,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -12627,7 +13250,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -13062,7 +13684,6 @@ export type GetSubscriptionDetailCompleteQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -13506,7 +14127,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -13985,7 +14605,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -14464,7 +15083,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -14943,7 +15561,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -15422,7 +16039,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -15901,7 +16517,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -16380,7 +16995,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -16859,7 +17473,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -17338,7 +17951,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -17817,7 +18429,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -18296,7 +18907,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -18775,7 +19385,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -19254,7 +19863,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -19733,7 +20341,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -20212,7 +20819,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -20691,7 +21297,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -21170,7 +21775,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -21649,7 +22253,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -22128,7 +22731,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -22607,7 +23209,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -23086,7 +23687,6 @@ export type GetSubscriptionDetailEnrichedQuery = {
               startDate?: string | null;
               endDate?: string | null;
               tag?: string | null;
-              productId?: string | null;
               vlanRange?: string | null;
               customerId: any;
               description: string;
@@ -23560,6 +24160,259 @@ export type GetSubscriptionDetailEnrichedQuery = {
           };
 };
 
+export const SubscriptionGridDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'SubscriptionGrid' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'first' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'after' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'sortBy' },
+                    },
+                    type: {
+                        kind: 'ListType',
+                        type: {
+                            kind: 'NonNullType',
+                            type: {
+                                kind: 'NamedType',
+                                name: {
+                                    kind: 'Name',
+                                    value: 'SubscriptionsSort',
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'subscriptions' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'first' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'first' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'after' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'after' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'sortBy' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'sortBy' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'edges' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'node',
+                                                },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'note',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'name',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'startDate',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'endDate',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'tag',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'vlanRange',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'description',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'product',
+                                                            },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'name',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'type',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'tag',
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'organisation',
+                                                            },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'abbreviation',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'name',
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'insync',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'status',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'subscriptionId',
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    SubscriptionGridQuery,
+    SubscriptionGridQueryVariables
+>;
 export const SubscriptionListDocument = {
     kind: 'Document',
     definitions: [
@@ -23631,20 +24484,6 @@ export const SubscriptionListDocument = {
                                                             name: {
                                                                 kind: 'Name',
                                                                 value: 'tag',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'productId',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'portSubscriptionInstanceId',
                                                             },
                                                         },
                                                         {
@@ -24031,10 +24870,6 @@ export const GetSubscriptionDetailCompleteDocument = {
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'tag' },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'productId' },
                                 },
                                 {
                                     kind: 'Field',
@@ -24482,10 +25317,6 @@ export const GetSubscriptionDetailEnrichedDocument = {
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'tag' },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'productId' },
                                 },
                                 {
                                     kind: 'Field',
