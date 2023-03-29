@@ -3,12 +3,14 @@ import React, { createContext, useContext, useState } from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
+    EuiButton,
     EuiButtonIcon,
     EuiDataGrid,
     EuiDataGridColumn,
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
+    EuiSpacer,
     EuiText,
 } from '@elastic/eui';
 
@@ -189,6 +191,14 @@ const defaultVisibleColumns = [
     'node.startDate',
 ];
 
+const productTags = [
+    { name: 'L3VPN', color: 'danger' },
+    { name: 'L2VPN', color: 'success' },
+    { name: 'LP', color: 'success' },
+    { name: 'SP', color: 'warning' },
+    { name: 'MSC', color: 'success' },
+];
+
 const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     const data = useContext(DataContext);
     // useEffect(() => {
@@ -309,6 +319,55 @@ export function SubscriptionsGrid() {
         'sort',
         withDefault(StringParam, getOrderString(defaultSortOrder)),
     );
+    const initialQuery = 'status:active';
+
+    const [query, setQuery] = useState(initialQuery);
+    const [filterError, setFilterError] = useState(null);
+    const [incremental, setIncremental] = useState(false);
+
+    const onChange = ({ query, error }) => {
+        if (error) {
+            setFilterError(error);
+        } else {
+            setFilterError(null);
+            setQuery(query);
+        }
+    };
+
+    const toggleIncremental = () => {
+        setIncremental(!incremental);
+    };
+
+    const renderBookmarks = () => {
+        return (
+            <>
+                <p>Enter a query, or select one from a bookmark</p>
+                <EuiSpacer size="s" />
+                <EuiFlexGroup>
+                    <EuiFlexItem grow={false}>
+                        <EuiButton
+                            size="s"
+                            onClick={() => setQuery('status:open owner:dewey')}
+                        >
+                            mine, open
+                        </EuiButton>
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        <EuiButton
+                            size="s"
+                            onClick={() =>
+                                setQuery('status:closed owner:dewey')
+                            }
+                        >
+                            mine, closed
+                        </EuiButton>
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+                <EuiSpacer size="m" />
+            </>
+        );
+    };
+
     const fetchSubscriptions = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
             first: pageSize,
