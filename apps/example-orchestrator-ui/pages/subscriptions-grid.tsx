@@ -103,13 +103,13 @@ const columns: Array<EuiDataGridColumn> = [
     {
         id: 'node.description',
         displayAsText: 'Description',
-        initialWidth: 400,
+        initialWidth: 350,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.product.name',
         displayAsText: 'Product',
-        initialWidth: 250,
+        initialWidth: 120,
         // defaultSortDirection: 'asc',
     },
     {
@@ -120,17 +120,19 @@ const columns: Array<EuiDataGridColumn> = [
     {
         id: 'node.organisation.abbreviation',
         displayAsText: 'Customer',
-        initialWidth: 200,
+        initialWidth: 150,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.status',
         displayAsText: 'Status',
+        initialWidth: 80,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.insync',
         displayAsText: 'In sync?',
+        initialWidth: 75,
         // defaultSortDirection: 'asc',
     },
     {
@@ -138,47 +140,6 @@ const columns: Array<EuiDataGridColumn> = [
         displayAsText: 'Start date',
         // defaultSortDirection: 'asc',
     },
-    // {
-    //     field: 'node.status',
-    //     name: 'Status',
-    //     truncateText: true,
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     width: '10%',
-    //     render: (status: string) => (
-    //         <EuiBadge color={getStatusBadgeColor(status)} isDisabled={false}>
-    //             {status}
-    //         </EuiBadge>
-    //     ),
-    //     sortable: true,
-    // },
-    // {
-    //     field: 'node.insync',
-    //     name: 'Sync',
-    //     truncateText: true,
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     width: '10%',
-    //     render: (status: boolean) => (
-    //         <EuiBadge color={status ? 'success' : 'danger'} isDisabled={false}>
-    //             {status.toString()}
-    //         </EuiBadge>
-    //     ),
-    //     sortable: true,
-    // },
-    // {
-    //     field: 'node.startDate',
-    //     name: 'Start date',
-    //     truncateText: true,
-    //     render: (startDate: number | null) =>
-    //         startDate ? new Date(startDate * 1000).toLocaleString('nl-NL') : '',
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     sortable: true,
-    // },
 ];
 
 const defaultVisibleColumns = [
@@ -277,9 +238,10 @@ const GRID_STYLE_1 = {
     rowHover: 'highlight',
     header: 'underline',
     // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
-    cellPadding: 'l',
-    fontSize: 'l',
+    cellPadding: 's',
+    fontSize: 's',
     footer: 'overline',
+    density: 'compact',
 };
 const GRID_STYLE_2 = {
     border: 'none',
@@ -324,6 +286,11 @@ export function SubscriptionsGrid() {
     const [query, setQuery] = useState(initialQuery);
     const [filterError, setFilterError] = useState(null);
     const [incremental, setIncremental] = useState(false);
+
+    // Todo: Don't ask me why, we should recalculate on density change.
+    //  Or adapt density automatically to screenwidth:
+    const gridHeight = ((pageSize+1) * 24) + 35;
+    // console.log("gridHeight: ", gridHeight)
 
     const onChange = ({ query, error }) => {
         if (error) {
@@ -407,6 +374,8 @@ export function SubscriptionsGrid() {
         setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
     };
 
+
+
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
     return (
         <>
@@ -462,19 +431,23 @@ export function SubscriptionsGrid() {
             </EuiFlexGroup>
             {!isLoading && data && (
                 <DataContext.Provider value={tableData}>
-                    <EuiDataGrid
-                        aria-labelledby={'Subscription grid'}
-                        gridStyle={GRID_STYLES[gridStyle]}
-                        toolbarVisibility={gridStyle !== 1}
-                        columns={columns}
-                        columnVisibility={{
-                            visibleColumns,
-                            setVisibleColumns,
-                        }}
-                        rowCount={pageSize}
-                        // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
-                        renderCellValue={RenderCellValue}
-                    />
+                    <div css={{ height: gridHeight }}>
+                        <EuiDataGrid
+                            aria-labelledby={'Subscription grid'}
+                            gridStyle={GRID_STYLES[gridStyle]}
+                            toolbarVisibility={gridStyle !== 1}
+                            // density={}
+                            columns={columns}
+                            columnVisibility={{
+                                visibleColumns,
+                                setVisibleColumns,
+                            }}
+                            // rowHeightsOptions={{defaultHeight: 120}}
+                            rowCount={pageSize}
+                            // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
+                            renderCellValue={RenderCellValue}
+                        />
+                    </div>
                 </DataContext.Provider>
             )}
         </>
