@@ -1,16 +1,15 @@
 import 'regenerator-runtime/runtime';
+
 import React, { createContext, useContext, useState } from 'react';
 import Link from 'next/link';
 import {
     EuiBadge,
-    EuiButton,
     EuiButtonIcon,
     EuiDataGrid,
     EuiDataGridColumn,
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingSpinner,
-    EuiSpacer,
     EuiText,
 } from '@elastic/eui';
 
@@ -28,6 +27,8 @@ import {
     withDefault,
     StringParam,
 } from 'use-query-params';
+import { SearchBar } from '../components/searchBar';
+import NoSSR from 'react-no-ssr';
 
 const DataContext = createContext(null);
 
@@ -152,14 +153,6 @@ const defaultVisibleColumns = [
     'node.startDate',
 ];
 
-const productTags = [
-    { name: 'L3VPN', color: 'danger' },
-    { name: 'L2VPN', color: 'success' },
-    { name: 'LP', color: 'success' },
-    { name: 'SP', color: 'warning' },
-    { name: 'MSC', color: 'success' },
-];
-
 const RenderCellValue = ({ rowIndex, columnId, setCellProps }) => {
     const data = useContext(DataContext);
     // useEffect(() => {
@@ -267,7 +260,7 @@ export function SubscriptionsGrid() {
     const defaultSortOrder: SubscriptionsSort[] = [
         { field: 'startDate', order: PythiaSortOrder.Desc },
     ];
-    const [gridStyle, setGridStyle] = useState(0);
+    // const [gridStyle, setGridStyle] = useState(0);
     const [pageSize, setPageSize] = useQueryParam(
         'size',
         withDefault(NumberParam, DEFAULT_PAGE_SIZE),
@@ -281,59 +274,11 @@ export function SubscriptionsGrid() {
         'sort',
         withDefault(StringParam, getOrderString(defaultSortOrder)),
     );
-    const initialQuery = 'status:active';
-
-    const [query, setQuery] = useState(initialQuery);
-    const [filterError, setFilterError] = useState(null);
-    const [incremental, setIncremental] = useState(false);
 
     // Todo: Don't ask me why, we should recalculate on density change.
     //  Or adapt density automatically to screenwidth:
-    const gridHeight = ((pageSize+1) * 24) + 35;
+    const gridHeight = (pageSize + 1) * 24 + 37;
     // console.log("gridHeight: ", gridHeight)
-
-    const onChange = ({ query, error }) => {
-        if (error) {
-            setFilterError(error);
-        } else {
-            setFilterError(null);
-            setQuery(query);
-        }
-    };
-
-    const toggleIncremental = () => {
-        setIncremental(!incremental);
-    };
-
-    const renderBookmarks = () => {
-        return (
-            <>
-                <p>Enter a query, or select one from a bookmark</p>
-                <EuiSpacer size="s" />
-                <EuiFlexGroup>
-                    <EuiFlexItem grow={false}>
-                        <EuiButton
-                            size="s"
-                            onClick={() => setQuery('status:open owner:dewey')}
-                        >
-                            mine, open
-                        </EuiButton>
-                    </EuiFlexItem>
-                    <EuiFlexItem grow={false}>
-                        <EuiButton
-                            size="s"
-                            onClick={() =>
-                                setQuery('status:closed owner:dewey')
-                            }
-                        >
-                            mine, closed
-                        </EuiButton>
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer size="m" />
-            </>
-        );
-    };
 
     const fetchSubscriptions = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
@@ -370,15 +315,13 @@ export function SubscriptionsGrid() {
         }
     };
 
-    const toggleGrid = () => {
-        setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
-    };
-
-
+    // const toggleGrid = () => {
+    //     setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
+    // };
 
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
     return (
-        <>
+        <NoSSR>
             <EuiFlexGroup alignItems={'center'}>
                 <EuiFlexItem grow={false}>
                     <EuiText>
@@ -422,21 +365,23 @@ export function SubscriptionsGrid() {
                         onClick={toggleSortOrder}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiButtonIcon
-                        iconType={'color'}
-                        onClick={toggleGrid}
-                    ></EuiButtonIcon>
+                <EuiFlexItem>
+                    <SearchBar></SearchBar>
                 </EuiFlexItem>
+                {/*<EuiFlexItem grow={false}>*/}
+                {/*    <EuiButtonIcon*/}
+                {/*        iconType={'color'}*/}
+                {/*        onClick={toggleGrid}*/}
+                {/*    ></EuiButtonIcon>*/}
+                {/*</EuiFlexItem>*/}
             </EuiFlexGroup>
             {!isLoading && data && (
                 <DataContext.Provider value={tableData}>
                     <div css={{ height: gridHeight }}>
                         <EuiDataGrid
                             aria-labelledby={'Subscription grid'}
-                            gridStyle={GRID_STYLES[gridStyle]}
-                            toolbarVisibility={gridStyle !== 1}
-                            // density={}
+                            gridStyle={GRID_STYLES[0]}
+                            toolbarVisibility={false}
                             columns={columns}
                             columnVisibility={{
                                 visibleColumns,
@@ -450,7 +395,7 @@ export function SubscriptionsGrid() {
                     </div>
                 </DataContext.Provider>
             )}
-        </>
+        </NoSSR>
     );
 }
 
