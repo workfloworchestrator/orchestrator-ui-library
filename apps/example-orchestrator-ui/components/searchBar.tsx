@@ -11,20 +11,25 @@ const tags = [
 
 const loadTags = () => {
     return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(
-                tags.map((tag) => ({
-                    value: tag.name,
-                    view: <EuiHealth color={tag.color}>{tag.name}</EuiHealth>,
-                })),
-            );
-        }, 2000);
+        resolve(
+            tags.map((tag) => ({
+                value: tag.name,
+                view: <EuiHealth color={tag.color}>{tag.name}</EuiHealth>,
+            })),
+        );
     });
 };
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
-export const SearchBar = () => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const SearchBar = ({
+    searchPhrase,
+    handleSearch,
+}: {
+    searchPhrase: string;
+    handleSearch: (value: any) => void;
+}) => {
     const [query, setQuery] = useState(initialQuery);
     const [error, setError] = useState(null);
     console.log('query', query);
@@ -36,6 +41,7 @@ export const SearchBar = () => {
         } else {
             setError(null);
             setQuery(query);
+            handleSearch(query);
         }
     };
 
@@ -69,28 +75,13 @@ export const SearchBar = () => {
         const schema = {
             strict: true,
             fields: {
-                type: {
+                description: {
                     type: 'string',
                 },
-                active: {
+                insync: {
                     type: 'boolean',
                 },
                 status: {
-                    type: 'string',
-                },
-                followers: {
-                    type: 'number',
-                },
-                comments: {
-                    type: 'number',
-                },
-                stars: {
-                    type: 'number',
-                },
-                created: {
-                    type: 'date',
-                },
-                owner: {
                     type: 'string',
                 },
                 tag: {
@@ -115,7 +106,8 @@ export const SearchBar = () => {
             <EuiSearchBar
                 defaultQuery={initialQuery}
                 box={{
-                    placeholder: 'insync:true -is:active',
+                    // placeholder: 'insync:true',
+                    placeholder: searchPhrase,
                     schema,
                 }}
                 // @ts-ignore

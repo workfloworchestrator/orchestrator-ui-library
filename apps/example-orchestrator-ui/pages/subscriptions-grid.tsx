@@ -37,8 +37,14 @@ const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
         $first: Int!
         $after: Int!
         $sortBy: [SubscriptionsSort!]
+        $filterBy: [[String!]!]
     ) {
-        subscriptions(first: $first, after: $after, sortBy: $sortBy) {
+        subscriptions(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
+        ) {
             edges {
                 node {
                     note
@@ -260,7 +266,6 @@ export function SubscriptionsGrid() {
     const defaultSortOrder: SubscriptionsSort[] = [
         { field: 'startDate', order: PythiaSortOrder.Desc },
     ];
-    // const [gridStyle, setGridStyle] = useState(0);
     const [pageSize, setPageSize] = useQueryParam(
         'size',
         withDefault(NumberParam, DEFAULT_PAGE_SIZE),
@@ -274,21 +279,53 @@ export function SubscriptionsGrid() {
         'sort',
         withDefault(StringParam, getOrderString(defaultSortOrder)),
     );
+    const [searchPhrase, setSearchPhrase] = useQueryParam(
+        'search',
+        withDefault(StringParam, ''),
+    );
 
-    // Todo: Don't ask me why, we should recalculate on density change.
+    const cleanUp = (value: string) => {
+        console.log('originalValue:', value);
+        for (const v of value.split(' ')) {
+            if (!v.includes(':')) {
+                console.log('cleanedUp:', v);
+                return v;
+            }
+        }
+        return '';
+    };
+
+    const [filterBy, setFilterBy] = useState([
+        'description',
+        cleanUp(searchPhrase),
+    ]);
+
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const handleSearch = (value: any) => {
+        console.log(value);
+        // eslint-disable-next-line no-prototype-builtins
+        if (value.hasOwnProperty('text')) {
+            setSearchPhrase(value.text);
+            setFilterBy(['description', cleanUp(value.text)]);
+        }
+    };
+
+    // Todo: Don't ask me why for the numbers here + we should recalculate on density change.
     //  Or adapt density automatically to screenwidth:
-    const gridHeight = (pageSize + 1) * 24 + 37;
+    const gridHeight = pageSize * 24 + 37;
     // console.log("gridHeight: ", gridHeight)
 
     const fetchSubscriptions = async () => {
+        // @ts-ignore
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
             first: pageSize,
             after: pageIndex,
             sortBy: sortOrder,
+            filterBy: filterBy,
         });
     };
     const { isLoading, error, data } = useQuery(
-        ['subscriptions', pageSize, pageIndex, sortOrder],
+        ['subscriptions', pageSize, pageIndex, sortOrder, filterBy],
         fetchSubscriptions,
     );
 
@@ -299,6 +336,7 @@ export function SubscriptionsGrid() {
     }
 
     if (!isLoading && data) {
+        // @ts-ignore
         tableData = data.subscriptions.edges;
         console.log(tableData);
     }
@@ -366,7 +404,10 @@ export function SubscriptionsGrid() {
                     ></EuiButtonIcon>
                 </EuiFlexItem>
                 <EuiFlexItem>
-                    <SearchBar></SearchBar>
+                    <SearchBar
+                        searchPhrase={searchPhrase}
+                        handleSearch={handleSearch}
+                    ></SearchBar>
                 </EuiFlexItem>
                 {/*<EuiFlexItem grow={false}>*/}
                 {/*    <EuiButtonIcon*/}
@@ -377,7 +418,7 @@ export function SubscriptionsGrid() {
             </EuiFlexGroup>
             {!isLoading && data && (
                 <DataContext.Provider value={tableData}>
-                    <div css={{ height: gridHeight }}>
+                    <div css={{ height: gridHeight, marginTop: 12 }}>
                         <EuiDataGrid
                             aria-labelledby={'Subscription grid'}
                             gridStyle={GRID_STYLES[0]}
