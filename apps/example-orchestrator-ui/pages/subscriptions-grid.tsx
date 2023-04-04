@@ -316,7 +316,6 @@ export function SubscriptionsGrid() {
     // console.log("gridHeight: ", gridHeight)
 
     const fetchSubscriptions = async () => {
-        // @ts-ignore
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
             first: pageSize,
             after: pageIndex,
@@ -336,7 +335,6 @@ export function SubscriptionsGrid() {
     }
 
     if (!isLoading && data) {
-        // @ts-ignore
         tableData = data.subscriptions.edges;
         console.log(tableData);
     }
