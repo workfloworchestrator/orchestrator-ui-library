@@ -19,14 +19,24 @@ const GRID_STYLE: EuiDataGridStyle = {
     footer: 'overline',
 };
 
+export type TableColumns<T> = Record<keyof T, Omit<EuiDataGridColumn, 'id'>>;
+
 export type TableProps<T> = {
-    tableColumns: EuiDataGridColumn[];
-    tableData: T[];
+    columns: TableColumns<T>;
+    data: T[];
 };
 
-export const Table = <T,>({ tableColumns, tableData }: TableProps<T>) => {
+export const Table = <T,>({ columns, data }: TableProps<T>) => {
+    const euiCols: EuiDataGridColumn[] = Object.keys(columns).map((colKey) => {
+        const column = columns[colKey as keyof T];
+        return {
+            id: colKey,
+            ...column,
+        };
+    });
+
     const [visibleColumns, setVisibleColumns] = useState(
-        tableColumns.map(({ id }) => id),
+        euiCols.map(({ id }) => id),
     );
 
     const renderCellValue = ({
@@ -34,9 +44,9 @@ export const Table = <T,>({ tableColumns, tableData }: TableProps<T>) => {
         columnId,
         schema,
     }: EuiDataGridCellValueElementProps) => {
-        const dataRow = tableData[0];
-        const cell = dataRow[columnId as keyof T];
-        return `${rowIndex} / ${columnId}: ${cell}`;
+        const dataRow = data[0];
+        const cellValue = dataRow[columnId as keyof T];
+        return `${rowIndex} / ${columnId}: "${cellValue}"`;
     };
 
     return (
@@ -44,11 +54,11 @@ export const Table = <T,>({ tableColumns, tableData }: TableProps<T>) => {
             <h1>Hello subscriptions</h1>
             <EuiDataGrid
                 aria-label="Data Grid"
-                columns={tableColumns}
+                columns={euiCols}
                 height={'calc(100vh - 115px)'}
                 gridStyle={GRID_STYLE}
                 columnVisibility={{ visibleColumns, setVisibleColumns }}
-                rowCount={tableData.length}
+                rowCount={data.length}
                 renderCellValue={renderCellValue}
             />
         </>

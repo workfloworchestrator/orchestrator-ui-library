@@ -1,5 +1,4 @@
-import { Table } from './Table';
-import { EuiDataGridColumn } from '@elastic/eui';
+import { Table, TableColumns } from './Table';
 
 export type TestData = {
     defaultKey: string;
@@ -11,33 +10,22 @@ export type TestData = {
 };
 
 export const Subscriptions = () => {
-    // id is any key of TestData
-    const columns: EuiDataGridColumn[] = [
-        {
-            id: 'defaultKey',
-            displayAsText: 'Default Key',
+    const testDataColumns: TableColumns<TestData> = {
+        defaultKey: {
+            displayAsText: 'Default key',
         },
-        {
-            id: 'booleanKey',
-        },
-        {
-            id: 'numericKey',
-        },
-        {
-            id: 'currencyKey',
-        },
-        {
-            id: 'datetimeKey',
-            schema: 'datetime',
-        },
-        {
-            id: 'customKey',
+        booleanKey: {},
+        numericKey: {},
+        currencyKey: {},
+        datetimeKey: {},
+        customKey: {
             schema: 'favoriteFranchise',
         },
-    ];
+    };
+
     const testData: TestData[] = generateTestData();
 
-    return <Table tableData={testData} tableColumns={columns}></Table>;
+    return <Table data={testData} columns={testDataColumns}></Table>;
 };
 
 // ------------------------------- TestData ----------------------------------- //
