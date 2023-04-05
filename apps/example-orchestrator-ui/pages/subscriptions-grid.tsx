@@ -329,6 +329,7 @@ export function SubscriptionsGrid() {
     );
 
     let tableData = [];
+    // let tableData: typeof data.subscriptions.edges= [];
 
     if (error) {
         console.log('Error', error);
