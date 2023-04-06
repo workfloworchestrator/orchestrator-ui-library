@@ -149,6 +149,7 @@ const columns: Array<EuiDataGridColumn> = [
     },
 ];
 
+// The order in this array represents the order of the columns
 const defaultVisibleColumns = [
     'node.subscriptionId',
     'node.description',

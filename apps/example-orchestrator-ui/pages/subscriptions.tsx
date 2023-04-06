@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    getStatusBadgeColor,
     Subscriptions,
     TableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -14,6 +15,8 @@ import {
     SubscriptionsSort,
 } from '../__generated__/graphql';
 import { useQuery } from 'react-query';
+import { EuiBadge } from '@elastic/eui';
+import Link from 'next/link';
 
 export default function SubscriptionsPage() {
     const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
@@ -91,7 +94,16 @@ export default function SubscriptionsPage() {
         fixedInputs: {},
         imsCircuits: {},
         inUseBy: {},
-        insync: {},
+        insync: {
+            renderCell: (cellValue) => (
+                <EuiBadge
+                    color={cellValue ? 'success' : 'danger'}
+                    isDisabled={false}
+                >
+                    {cellValue.toString()}
+                </EuiBadge>
+            ),
+        },
         locations: {},
         minimalImpactNotifications: {},
         name: {},
@@ -102,9 +114,31 @@ export default function SubscriptionsPage() {
         portSubscriptionInstanceId: {},
         product: {},
         productBlocks: {},
-        startDate: {},
-        status: {},
-        subscriptionId: {},
+        startDate: {
+            renderCell: (cellValue) =>
+                cellValue
+                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
+                          'nl-NL',
+                      )
+                    : '',
+        },
+        status: {
+            renderCell: (cellValue) => (
+                <EuiBadge
+                    color={getStatusBadgeColor(cellValue)}
+                    isDisabled={false}
+                >
+                    {cellValue}
+                </EuiBadge>
+            ),
+        },
+        subscriptionId: {
+            renderCell: (cellValue) => (
+                <Link href={`/subscriptions/${cellValue}`}>
+                    {cellValue.slice(0, 8)}
+                </Link>
+            ),
+        },
         tag: {},
         vlanRange: {},
     };
