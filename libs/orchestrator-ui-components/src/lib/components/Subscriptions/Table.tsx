@@ -12,7 +12,7 @@ import { useState } from 'react';
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
     stripes: false,
-    rowHover: 'highlight',
+    rowHover: 'none',
     header: 'underline',
     cellPadding: 'm',
     fontSize: 'm',
@@ -44,9 +44,9 @@ export const Table = <T,>({ columns, data }: TableProps<T>) => {
         columnId,
         schema,
     }: EuiDataGridCellValueElementProps) => {
-        const dataRow = data[0];
+        const dataRow = data[rowIndex];
         const cellValue = dataRow[columnId as keyof T];
-        return `${rowIndex} / ${columnId}: "${cellValue}"`;
+        return `${cellValue}`;
     };
 
     return (
