@@ -84,6 +84,7 @@ export default function SubscriptionsPage() {
         description: {
             displayAsText: 'Description',
             initialWidth: 400,
+            renderCell: (cellValue) => <h1>{cellValue}</h1>,
         },
         endDate: {},
         firewallEnabled: {},
@@ -95,7 +96,9 @@ export default function SubscriptionsPage() {
         minimalImpactNotifications: {},
         name: {},
         note: {},
-        organisation: {},
+        organisation: {
+            renderCell: ({ name }) => <h1>{name}</h1>,
+        },
         portSubscriptionInstanceId: {},
         product: {},
         productBlocks: {},

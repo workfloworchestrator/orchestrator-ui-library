@@ -7,7 +7,7 @@ import {
     EuiDataGridColumn,
     EuiDataGridStyle,
 } from '@elastic/eui';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -19,7 +19,18 @@ const GRID_STYLE: EuiDataGridStyle = {
     footer: 'overline',
 };
 
-export type TableColumns<T> = Record<keyof T, Omit<EuiDataGridColumn, 'id'>>;
+export type TableColumns<T> = {
+    [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
+        renderCell?: (cellValue: T[Property]) => ReactNode;
+    };
+};
+
+// When optional the table does not render the undefined columns -- might be nice to leverage that
+// export type TableColumns<T> = {
+//     [Property in keyof T]?: Omit<EuiDataGridColumn, 'id'> & {
+//         renderCell?: (cellValue: T[Property]) => ReactNode;
+//     };
+// };
 
 export type TableProps<T> = {
     columns: TableColumns<T>;
@@ -45,8 +56,20 @@ export const Table = <T,>({ columns, data }: TableProps<T>) => {
         schema,
     }: EuiDataGridCellValueElementProps) => {
         const dataRow = data[rowIndex];
+        const column = columns[columnId as keyof T];
+
         const cellValue = dataRow[columnId as keyof T];
-        return `${cellValue}`;
+
+        // Used together with the optional column prop
+        if (!column) {
+            return;
+        }
+
+        if (!column.renderCell) {
+            return `${cellValue}`;
+        }
+
+        return column.renderCell(cellValue);
     };
 
     return (
