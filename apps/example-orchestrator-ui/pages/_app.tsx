@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import {
     ENGINE_STATUS_ENDPOINT,
     PROCESS_STATUS_COUNTS_ENDPOINT,
+    GRAPHQL_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
@@ -34,6 +35,7 @@ const queryClientConfig = {
 const initialOrchestratorConfig: OrchestratorConfig = {
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
+    graphqlEndpoint: GRAPHQL_ENDPOINT,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
 };

@@ -6,94 +6,83 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
 import { graphql } from '../__generated__';
-import { GraphQLClient } from 'graphql-request';
-import { GRAPHQL_ENDPOINT } from '../constants';
 import {
-    MyBaseSubscription,
     MyBaseSubscriptionEdge,
     PythiaSortOrder,
+    SubscriptionGridQuery,
+    SubscriptionGridQueryVariables,
     SubscriptionsSort,
 } from '../__generated__/graphql';
-import { useQuery } from 'react-query';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { EuiBadge } from '@elastic/eui';
 import Link from 'next/link';
 
-export default function SubscriptionsPage() {
-    const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
-        query SubscriptionGrid(
-            $first: Int!
-            $after: Int!
-            $sortBy: [SubscriptionsSort!]
-        ) {
-            subscriptions(first: $first, after: $after, sortBy: $sortBy) {
-                edges {
-                    node {
-                        note
+// Graphql query, can be moved to separate file / constants
+const GET_SUBSCRIPTIONS_PAGINATED: TypedDocumentNode<
+    SubscriptionGridQuery,
+    SubscriptionGridQueryVariables
+> = graphql(`
+    query SubscriptionGrid(
+        $first: Int!
+        $after: Int!
+        $sortBy: [SubscriptionsSort!]
+    ) {
+        subscriptions(first: $first, after: $after, sortBy: $sortBy) {
+            edges {
+                node {
+                    note
+                    name
+                    startDate
+                    endDate
+                    tag
+                    vlanRange
+                    description
+                    product {
                         name
-                        startDate
-                        endDate
+                        type
                         tag
-                        vlanRange
-                        description
-                        product {
-                            name
-                            type
-                            tag
-                        }
-                        organisation {
-                            abbreviation
-                            name
-                        }
-                        insync
-                        status
-                        subscriptionId
                     }
+                    organisation {
+                        abbreviation
+                        name
+                    }
+                    insync
+                    status
+                    subscriptionId
                 }
             }
         }
-    `);
-
-    const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
-
-    const defaultSortOrder: SubscriptionsSort[] = [
-        { field: 'startDate', order: PythiaSortOrder.Desc },
-    ];
-    const fetchSubscriptions = async () => {
-        // @ts-ignore
-        return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
-            first: 20,
-            after: 20,
-            sortBy: defaultSortOrder,
-        });
-    };
-
-    const { isLoading, data } = useQuery(
-        ['subscriptions', 20, 20, defaultSortOrder],
-        fetchSubscriptions,
-    );
-
-    if (isLoading || !data) {
-        return <h1>LOADING!</h1>;
     }
+`);
+const defaultSortOrder: SubscriptionsSort[] = [
+    { field: 'startDate', order: PythiaSortOrder.Desc },
+];
+const variables: SubscriptionGridQueryVariables = {
+    first: 20,
+    after: 20,
+    sortBy: defaultSortOrder,
+};
+////////////////// Till here /////////////////////////////
 
-    const dataForTable: MyBaseSubscription[] = data.subscriptions.edges.map(
-        (aa: MyBaseSubscriptionEdge) => aa.node,
-    );
+// The fields that will end up in the table (columns)
+type Subscription = {
+    subscriptionId: string;
+    description: string;
+    status: string;
+    insync: boolean;
+    startDate: string;
+    productName: string;
+    organisationAbbreviation: string;
+};
 
-    const tableColumns: TableColumns<MyBaseSubscription> = {
-        customerDescriptions: {},
-        customerId: {},
-        dependsOn: {},
+export default function SubscriptionsPage() {
+    // Config per column
+    const tableColumnConfig: TableColumns<Subscription> = {
         description: {
             displayAsText: 'Description',
             initialWidth: 400,
             renderCell: (cellValue) => <h1>{cellValue}</h1>,
         },
-        endDate: {},
-        firewallEnabled: {},
-        fixedInputs: {},
-        imsCircuits: {},
-        inUseBy: {},
         insync: {
             renderCell: (cellValue) => (
                 <EuiBadge
@@ -104,16 +93,14 @@ export default function SubscriptionsPage() {
                 </EuiBadge>
             ),
         },
-        locations: {},
-        minimalImpactNotifications: {},
-        name: {},
-        note: {},
-        organisation: {
-            renderCell: ({ name }) => <h1>{name}</h1>,
+        organisationAbbreviation: {
+            displayAsText: 'Customer',
+            initialWidth: 200,
         },
-        portSubscriptionInstanceId: {},
-        product: {},
-        productBlocks: {},
+        productName: {
+            displayAsText: 'Product',
+            initialWidth: 250,
+        },
         startDate: {
             renderCell: (cellValue) =>
                 cellValue
@@ -123,6 +110,7 @@ export default function SubscriptionsPage() {
                     : '',
         },
         status: {
+            displayAsText: 'Status',
             renderCell: (cellValue) => (
                 <EuiBadge
                     color={getStatusBadgeColor(cellValue)}
@@ -133,21 +121,52 @@ export default function SubscriptionsPage() {
             ),
         },
         subscriptionId: {
+            displayAsText: 'ID',
             renderCell: (cellValue) => (
                 <Link href={`/subscriptions/${cellValue}`}>
                     {cellValue.slice(0, 8)}
                 </Link>
             ),
         },
-        tag: {},
-        vlanRange: {},
     };
+
+    // You might not want to convert, flatten or ignore data from the api
+    // This mapper converts from the api response (SubscriptionGridQuery)
+    // to the self defined type above (Subscription)
+    const mapApiResponseToTableData = (
+        graphqlResponse: SubscriptionGridQuery,
+    ): Subscription[] =>
+        graphqlResponse.subscriptions.edges.map(
+            (baseSubscription: MyBaseSubscriptionEdge): Subscription => {
+                const {
+                    description,
+                    insync,
+                    organisation,
+                    product,
+                    startDate,
+                    status,
+                    subscriptionId,
+                } = baseSubscription.node;
+
+                return {
+                    description,
+                    insync,
+                    organisationAbbreviation: organisation.abbreviation,
+                    productName: product.name,
+                    startDate,
+                    status,
+                    subscriptionId,
+                };
+            },
+        );
 
     return (
         <NoSSR>
             <Subscriptions
-                tableData={dataForTable}
-                tableColumns={tableColumns}
+                tableColumns={tableColumnConfig}
+                query={GET_SUBSCRIPTIONS_PAGINATED}
+                queryVars={variables}
+                mapApiResponseToTableData={mapApiResponseToTableData}
             ></Subscriptions>
         </NoSSR>
     );
