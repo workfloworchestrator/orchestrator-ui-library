@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import {
     EuiCard,
     EuiDescriptionList,
@@ -8,7 +8,14 @@ import {
     EuiFlexGrid,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiIcon,
+    EuiNotificationBadge,
+    EuiSpacer,
+    EuiTab,
+    EuiTabs,
     EuiText,
+    EuiToken,
+    EuiTreeView,
     EuiBadge,
     EuiLoadingSpinner,
 } from '@elastic/eui';
@@ -279,10 +286,54 @@ function getColor(num: number) {
     return 'error';
 }
 
+const tabs = [
+    {
+        id: 'general--id',
+        name: 'General',
+        prepend: <EuiIcon type="devToolsApp" />,
+    },
+    {
+        id: 'service-configuration--id',
+        name: 'Service configuration',
+        prepend: <EuiIcon type="submodule" />,
+    },
+    {
+        id: 'processes--id',
+        disabled: true,
+        name: 'Processes',
+        prepend: <EuiIcon type="indexRuntime" />,
+    },
+    {
+        id: 'related-subscriptions--id',
+        disabled: true,
+        name: 'Related subscriptions',
+        prepend: <EuiIcon type="heatmap" />,
+    },
+    {
+        id: 'notifications--id',
+        name: 'Notifications',
+        append: (
+            <EuiNotificationBadge className="eui-alignCenter" size="m">
+                10
+            </EuiNotificationBadge>
+        ),
+    },
+];
+
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 const Subscription = () => {
     const router = useRouter();
     const { subscriptionId } = router.query;
+    const [selectedTabId, setSelectedTabId] = useState(
+        'service-configuration--id',
+    );
+    const selectedTabContent = useMemo(() => {
+        return tabs.find((obj) => obj.id === selectedTabId)?.content;
+    }, [selectedTabId]);
+
+    const onSelectedTabChanged = (id: string) => {
+        setSelectedTabId(id);
+    };
     const queryClient = useQueryClient();
     const prefetchedData = {
         subscription: queryClient
@@ -331,6 +382,80 @@ const Subscription = () => {
     if (dataEnriched) loadingStatus = 3;
 
     console.log(subscriptionId);
+    const renderTabs = () => {
+        return tabs.map((tab, index) => (
+            <EuiTab
+                key={index}
+                // href={tab.href}
+                onClick={() => onSelectedTabChanged(tab.id)}
+                isSelected={tab.id === selectedTabId}
+                disabled={tab.disabled}
+                prepend={tab.prepend}
+                append={tab.append}
+            >
+                {tab.name}
+            </EuiTab>
+        ));
+    };
+
+    const items = [
+        {
+            label: 'Item One',
+            id: 'item_one',
+            icon: <EuiIcon type="folderClosed" />,
+            iconWhenExpanded: <EuiIcon type="folderOpen" />,
+            isExpanded: true,
+            children: [
+                {
+                    label: 'Item A',
+                    id: 'item_a',
+                    icon: <EuiIcon type="document" />,
+                },
+                {
+                    label: 'Item B',
+                    id: 'item_b',
+                    icon: <EuiIcon type="arrowRight" />,
+                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                    children: [
+                        {
+                            label: 'A Cloud',
+                            id: 'item_cloud',
+                            icon: <EuiToken iconType="tokenConstant" />,
+                        },
+                        {
+                            label: "I'm a Bug",
+                            id: 'item_bug',
+                            icon: <EuiToken iconType="tokenEnum" />,
+                            callback: () => {},
+                        },
+                    ],
+                },
+                {
+                    label: 'Item C',
+                    id: 'item_c',
+                    icon: <EuiIcon type="arrowRight" />,
+                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                    children: [
+                        {
+                            label: 'Another Cloud',
+                            id: 'item_cloud2',
+                            icon: <EuiToken iconType="tokenConstant" />,
+                        },
+                        {
+                            label: 'This one is a really long string that we will check truncates correctly',
+                            id: 'item_bug2',
+                            icon: <EuiToken iconType="tokenEnum" />,
+                            callback: () => {},
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            label: 'Item Two',
+            id: 'item_two',
+        },
+    ];
 
     return (
         <>
@@ -338,7 +463,6 @@ const Subscription = () => {
                 <EuiFlexItem grow={false}>
                     <EuiText>
                         <h2>
-                            Name:{' '}
                             {isLoading ? '' : data?.subscription?.description}
                         </h2>
                     </EuiText>
@@ -354,7 +478,31 @@ const Subscription = () => {
             </EuiFlexGroup>
             {isLoading && <EuiLoadingSpinner />}
 
-            {!isLoading && data && (
+            <>
+                <EuiTabs>{renderTabs()}</EuiTabs>
+                {selectedTabContent}
+            </>
+
+            {selectedTabId === 'service-configuration--id' &&
+                !isLoading &&
+                data && (
+                    <EuiFlexGrid columns={2} style={{ marginTop: 15 }}>
+                        <EuiFlexItem>
+                            <>
+                                <EuiText>
+                                    <h3>Product blocks</h3>
+                                </EuiText>
+                                <EuiTreeView
+                                    items={items}
+                                    aria-label="Product blocks"
+                                />
+                            </>
+                        </EuiFlexItem>
+                        <EuiFlexItem>Info</EuiFlexItem>
+                    </EuiFlexGrid>
+                )}
+
+            {selectedTabId === 'general--id' && !isLoading && data && (
                 <EuiFlexGrid columns={4}>
                     <EuiFlexItem>
                         {Block('General info', data.subscription)}
