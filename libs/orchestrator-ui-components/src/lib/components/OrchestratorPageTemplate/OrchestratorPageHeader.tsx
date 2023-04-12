@@ -115,7 +115,7 @@ export const EnvironmentBadge = () => {
     }
 
     return (
-        <HeaderBadge customColor color={toSecondaryColor(theme.colors.primary)}>
+        <HeaderBadge color={toSecondaryColor(theme.colors.primary)}>
             <EuiText color={theme.colors.primary} size="xs">
                 <b>{environmentName}</b>
             </EuiText>
@@ -133,7 +133,7 @@ export const EngineStatusBadge = () => {
 
     return (
         <HeaderBadge
-            color="emptyShade"
+            color={theme.colors.emptyShade}
             iconType={() => <StatusDotIcon color={theme.colors.success} />}
         >
             <EuiText size="xs">
@@ -164,7 +164,7 @@ export const FailedTasksBadge = () => {
             }
         >
             <HeaderBadge
-                color="emptyShade"
+                color={theme.colors.emptyShade}
                 iconType={() => <XCircleFill color={theme.colors.danger} />}
             >
                 <EuiText size="xs">
