@@ -9,3 +9,4 @@ export * from './lib/utils';
 export * from './lib/contexts/OrchestratorConfigContext';
 
 export * from './lib/hooks/useOrchestratorConfig';
+export * from './lib/hooks/useQueryWithGraphql';

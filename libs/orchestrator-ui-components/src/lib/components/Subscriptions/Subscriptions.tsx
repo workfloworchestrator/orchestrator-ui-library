@@ -4,6 +4,8 @@ import React from 'react';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 
+// Todo: remove before opening a PR
+
 export type SubscriptionsProps<T, U, V> = {
     tableColumns: TableColumns<T>;
     query: TypedDocumentNode<U, V>;
