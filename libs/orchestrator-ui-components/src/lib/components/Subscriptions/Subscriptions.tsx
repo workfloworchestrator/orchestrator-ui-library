@@ -8,6 +8,7 @@ import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 
 export type SubscriptionsProps<T, U, V> = {
     tableColumns: TableColumns<T>;
+    columnVisibility: Array<keyof TableColumns<T>>;
     query: TypedDocumentNode<U, V>;
     queryVars: V;
     mapApiResponseToTableData: (graphqlResponse: U) => T[];
@@ -17,6 +18,7 @@ export const Subscriptions = <T, U, V extends Variables>({
     query,
     queryVars,
     tableColumns,
+    columnVisibility,
     mapApiResponseToTableData,
 }: SubscriptionsProps<T, U, V>) => {
     const { isLoading, data } = useQueryWithGraphql(query, queryVars);
@@ -27,5 +29,11 @@ export const Subscriptions = <T, U, V extends Variables>({
 
     const convertedData: T[] = mapApiResponseToTableData(data);
 
-    return <Table data={convertedData} columns={tableColumns}></Table>;
+    return (
+        <Table
+            data={convertedData}
+            columns={tableColumns}
+            columnVisibility={columnVisibility}
+        ></Table>
+    );
 };

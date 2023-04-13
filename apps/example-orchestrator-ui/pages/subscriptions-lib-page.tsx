@@ -81,6 +81,16 @@ export default function SubscriptionsPage() {
         },
     };
 
+    const columnVisibility: Array<keyof Subscription> = [
+        'subscriptionId',
+        'description',
+        'productName',
+        'organisationAbbreviation',
+        'status',
+        'insync',
+        'startDate',
+    ];
+
     // You might not want to convert, flatten or ignore data from the api
     // This mapper converts from the api response (SubscriptionGridQuery)
     // to the self defined type above (Subscription)
@@ -115,6 +125,7 @@ export default function SubscriptionsPage() {
         <NoSSR>
             <Subscriptions
                 tableColumns={tableColumnConfig}
+                columnVisibility={columnVisibility}
                 query={GET_SUBSCRIPTIONS_PAGINATED}
                 queryVars={GET_SUBSCRIPTIONS_PAGINATED_VARIABLES}
                 mapApiResponseToTableData={mapApiResponseToTableData}

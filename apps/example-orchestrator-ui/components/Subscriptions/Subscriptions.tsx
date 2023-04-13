@@ -23,6 +23,7 @@ type Subscription = {
     insync: boolean;
     startDate: string;
     productName: string;
+    organisationName: string;
     organisationAbbreviation: string;
 };
 
@@ -51,6 +52,9 @@ export const Subscriptions = () => {
                     {cellValue.toString()}
                 </EuiBadge>
             ),
+        },
+        organisationName: {
+            displayAsText: 'Customer Name',
         },
         organisationAbbreviation: {
             displayAsText: 'Customer',
@@ -89,10 +93,21 @@ export const Subscriptions = () => {
         },
     };
 
+    const columnVisibility: Array<keyof Subscription> = [
+        'subscriptionId',
+        'description',
+        'productName',
+        'organisationAbbreviation',
+        'status',
+        'insync',
+        'startDate',
+    ];
+
     return (
         <Table
             data={mapApiResponseToSubscriptionTableData(data)}
             columns={tableColumnConfig}
+            columnVisibility={columnVisibility}
         ></Table>
     );
 };
@@ -115,6 +130,7 @@ const mapApiResponseToSubscriptionTableData = (
             return {
                 description,
                 insync,
+                organisationName: organisation.name,
                 organisationAbbreviation: organisation.abbreviation,
                 productName: product.name,
                 startDate,

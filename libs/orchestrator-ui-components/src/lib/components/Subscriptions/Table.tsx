@@ -33,11 +33,16 @@ export type TableColumns<T> = {
 // };
 
 export type TableProps<T> = {
-    columns: TableColumns<T>;
     data: T[];
+    columns: TableColumns<T>;
+    columnVisibility: Array<keyof TableColumns<T>>;
 };
 
-export const Table = <T,>({ columns, data }: TableProps<T>) => {
+export const Table = <T,>({
+    data,
+    columns,
+    columnVisibility,
+}: TableProps<T>) => {
     const euiCols: EuiDataGridColumn[] = Object.keys(columns).map((colKey) => {
         const column = columns[colKey as keyof T];
         return {
@@ -47,7 +52,7 @@ export const Table = <T,>({ columns, data }: TableProps<T>) => {
     });
 
     const [visibleColumns, setVisibleColumns] = useState(
-        euiCols.map(({ id }) => id),
+        columnVisibility.map((columnId) => columnId.toString()),
     );
 
     const renderCellValue = ({
