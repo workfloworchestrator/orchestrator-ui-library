@@ -13,6 +13,8 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     const graphQLClient = new GraphQLClient(graphqlEndpoint);
 
     const fetchFromGraphql = async () => {
+        // TS-Ignore because queryVars does not seem to be accepted by the client
+        // The props in this useQueryWithGraphql-hook ensures queryVars is indeed related to the query
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return await graphQLClient.request(query, queryVars);
