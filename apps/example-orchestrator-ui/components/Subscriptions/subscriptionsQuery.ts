@@ -15,8 +15,14 @@ export const GET_SUBSCRIPTIONS_PAGINATED: TypedDocumentNode<
         $first: Int!
         $after: Int!
         $sortBy: [SubscriptionsSort!]
+        $filterBy: [[String!]!]
     ) {
-        subscriptions(first: $first, after: $after, sortBy: $sortBy) {
+        subscriptions(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
+        ) {
             edges {
                 node {
                     note
