@@ -3254,6 +3254,11 @@ export type SubscriptionGridQueryVariables = Exact<{
     first: Scalars['Int'];
     after: Scalars['Int'];
     sortBy?: InputMaybe<Array<SubscriptionsSort> | SubscriptionsSort>;
+    filterBy?: InputMaybe<
+        | Array<Array<Scalars['String']> | Scalars['String']>
+        | Array<Scalars['String']>
+        | Scalars['String']
+    >;
 }>;
 
 export type SubscriptionGridQuery = {
@@ -24216,6 +24221,29 @@ export const SubscriptionGridDocument = {
                         },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'filterBy' },
+                    },
+                    type: {
+                        kind: 'ListType',
+                        type: {
+                            kind: 'NonNullType',
+                            type: {
+                                kind: 'ListType',
+                                type: {
+                                    kind: 'NonNullType',
+                                    type: {
+                                        kind: 'NamedType',
+                                        name: { kind: 'Name', value: 'String' },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -24246,6 +24274,14 @@ export const SubscriptionGridDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'sortBy' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'filterBy' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'filterBy' },
                                 },
                             },
                         ],

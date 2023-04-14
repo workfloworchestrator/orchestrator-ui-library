@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime';
+
 import React, { createContext, useContext, useState } from 'react';
 import Link from 'next/link';
 import {
@@ -26,6 +27,8 @@ import {
     withDefault,
     StringParam,
 } from 'use-query-params';
+import { SearchBar } from '../components/searchBar';
+import NoSSR from 'react-no-ssr';
 
 const DataContext = createContext(null);
 
@@ -34,8 +37,14 @@ const GET_SUBSCRIPTIONS_PAGINATED = graphql(`
         $first: Int!
         $after: Int!
         $sortBy: [SubscriptionsSort!]
+        $filterBy: [[String!]!]
     ) {
-        subscriptions(first: $first, after: $after, sortBy: $sortBy) {
+        subscriptions(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
+        ) {
             edges {
                 node {
                     note
@@ -101,13 +110,13 @@ const columns: Array<EuiDataGridColumn> = [
     {
         id: 'node.description',
         displayAsText: 'Description',
-        initialWidth: 400,
+        initialWidth: 350,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.product.name',
         displayAsText: 'Product',
-        initialWidth: 250,
+        initialWidth: 120,
         // defaultSortDirection: 'asc',
     },
     {
@@ -118,17 +127,19 @@ const columns: Array<EuiDataGridColumn> = [
     {
         id: 'node.organisation.abbreviation',
         displayAsText: 'Customer',
-        initialWidth: 200,
+        initialWidth: 150,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.status',
         displayAsText: 'Status',
+        initialWidth: 80,
         // defaultSortDirection: 'asc',
     },
     {
         id: 'node.insync',
         displayAsText: 'In sync?',
+        initialWidth: 75,
         // defaultSortDirection: 'asc',
     },
     {
@@ -136,47 +147,6 @@ const columns: Array<EuiDataGridColumn> = [
         displayAsText: 'Start date',
         // defaultSortDirection: 'asc',
     },
-    // {
-    //     field: 'node.status',
-    //     name: 'Status',
-    //     truncateText: true,
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     width: '10%',
-    //     render: (status: string) => (
-    //         <EuiBadge color={getStatusBadgeColor(status)} isDisabled={false}>
-    //             {status}
-    //         </EuiBadge>
-    //     ),
-    //     sortable: true,
-    // },
-    // {
-    //     field: 'node.insync',
-    //     name: 'Sync',
-    //     truncateText: true,
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     width: '10%',
-    //     render: (status: boolean) => (
-    //         <EuiBadge color={status ? 'success' : 'danger'} isDisabled={false}>
-    //             {status.toString()}
-    //         </EuiBadge>
-    //     ),
-    //     sortable: true,
-    // },
-    // {
-    //     field: 'node.startDate',
-    //     name: 'Start date',
-    //     truncateText: true,
-    //     render: (startDate: number | null) =>
-    //         startDate ? new Date(startDate * 1000).toLocaleString('nl-NL') : '',
-    //     mobileOptions: {
-    //         show: false,
-    //     },
-    //     sortable: true,
-    // },
 ];
 
 const defaultVisibleColumns = [
@@ -267,9 +237,10 @@ const GRID_STYLE_1 = {
     rowHover: 'highlight',
     header: 'underline',
     // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
-    cellPadding: 'l',
-    fontSize: 'l',
+    cellPadding: 's',
+    fontSize: 's',
     footer: 'overline',
+    density: 'compact',
 };
 const GRID_STYLE_2 = {
     border: 'none',
@@ -295,7 +266,6 @@ export function SubscriptionsGrid() {
     const defaultSortOrder: SubscriptionsSort[] = [
         { field: 'startDate', order: PythiaSortOrder.Desc },
     ];
-    const [gridStyle, setGridStyle] = useState(0);
     const [pageSize, setPageSize] = useQueryParam(
         'size',
         withDefault(NumberParam, DEFAULT_PAGE_SIZE),
@@ -309,15 +279,52 @@ export function SubscriptionsGrid() {
         'sort',
         withDefault(StringParam, getOrderString(defaultSortOrder)),
     );
+    const [searchPhrase, setSearchPhrase] = useQueryParam(
+        'search',
+        withDefault(StringParam, ''),
+    );
+
+    const cleanUp = (value: string) => {
+        console.log('originalValue:', value);
+        for (const v of value.split(' ')) {
+            if (!v.includes(':')) {
+                console.log('cleanedUp:', v);
+                return v;
+            }
+        }
+        return '';
+    };
+
+    const [filterBy, setFilterBy] = useState([
+        'description',
+        cleanUp(searchPhrase),
+    ]);
+
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const handleSearch = (value: any) => {
+        console.log(value);
+        // eslint-disable-next-line no-prototype-builtins
+        if (value.hasOwnProperty('text')) {
+            setSearchPhrase(value.text);
+            setFilterBy(['description', cleanUp(value.text)]);
+        }
+    };
+
+    // Todo: Don't ask me why for the numbers here + we should recalculate on density change.
+    //  Or adapt density automatically to screenwidth:
+    const gridHeight = pageSize * 24 + 37;
+    // console.log("gridHeight: ", gridHeight)
+
     const fetchSubscriptions = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTIONS_PAGINATED, {
             first: pageSize,
             after: pageIndex,
             sortBy: sortOrder,
+            filterBy: filterBy,
         });
     };
     const { isLoading, error, data } = useQuery(
-        ['subscriptions', pageSize, pageIndex, sortOrder],
+        ['subscriptions', pageSize, pageIndex, sortOrder, filterBy],
         fetchSubscriptions,
     );
 
@@ -344,13 +351,13 @@ export function SubscriptionsGrid() {
         }
     };
 
-    const toggleGrid = () => {
-        setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
-    };
+    // const toggleGrid = () => {
+    //     setGridStyle(gridStyle >= 2 ? 0 : gridStyle + 1);
+    // };
 
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
     return (
-        <>
+        <NoSSR>
             <EuiFlexGroup alignItems={'center'}>
                 <EuiFlexItem grow={false}>
                     <EuiText>
@@ -394,31 +401,40 @@ export function SubscriptionsGrid() {
                         onClick={toggleSortOrder}
                     ></EuiButtonIcon>
                 </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiButtonIcon
-                        iconType={'color'}
-                        onClick={toggleGrid}
-                    ></EuiButtonIcon>
+                <EuiFlexItem>
+                    <SearchBar
+                        searchPhrase={searchPhrase}
+                        handleSearch={handleSearch}
+                    ></SearchBar>
                 </EuiFlexItem>
+                {/*<EuiFlexItem grow={false}>*/}
+                {/*    <EuiButtonIcon*/}
+                {/*        iconType={'color'}*/}
+                {/*        onClick={toggleGrid}*/}
+                {/*    ></EuiButtonIcon>*/}
+                {/*</EuiFlexItem>*/}
             </EuiFlexGroup>
             {!isLoading && data && (
                 <DataContext.Provider value={tableData}>
-                    <EuiDataGrid
-                        aria-labelledby={'Subscription grid'}
-                        gridStyle={GRID_STYLES[gridStyle]}
-                        toolbarVisibility={gridStyle !== 1}
-                        columns={columns}
-                        columnVisibility={{
-                            visibleColumns,
-                            setVisibleColumns,
-                        }}
-                        rowCount={pageSize}
-                        // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
-                        renderCellValue={RenderCellValue}
-                    />
+                    <div css={{ height: gridHeight, marginTop: 12 }}>
+                        <EuiDataGrid
+                            aria-labelledby={'Subscription grid'}
+                            gridStyle={GRID_STYLES[0]}
+                            toolbarVisibility={false}
+                            columns={columns}
+                            columnVisibility={{
+                                visibleColumns,
+                                setVisibleColumns,
+                            }}
+                            // rowHeightsOptions={{defaultHeight: 120}}
+                            rowCount={pageSize}
+                            // renderCellValue={({ rowIndex, colIndex }) => `${tableData[rowIndex].node[colIndex===0 ? "subscriptionId" : "description"]}`}
+                            renderCellValue={RenderCellValue}
+                        />
+                    </div>
                 </DataContext.Provider>
             )}
-        </>
+        </NoSSR>
     );
 }
 
