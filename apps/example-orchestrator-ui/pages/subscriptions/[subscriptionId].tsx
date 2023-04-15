@@ -19,6 +19,7 @@ import {
     EuiLink,
     EuiIcon,
     EuiNotificationBadge,
+    EuiPanel,
     EuiPopover,
     EuiSpacer,
     EuiSwitch,
@@ -37,7 +38,10 @@ import { GRAPHQL_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
 import { graphql } from '../../__generated__';
 import { SubscriptionListQuery } from '../../__generated__/graphql';
-import { SubscriptionActions } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    SubscriptionActions,
+    ProcessesTimeline,
+} from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
 
 const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
@@ -314,7 +318,6 @@ const tabs = [
     },
     {
         id: 'processes--id',
-        disabled: true,
         name: 'Processes',
         prepend: <EuiIcon type="indexRuntime" />,
     },
@@ -627,6 +630,10 @@ const Subscription = () => {
                 {selectedTabContent}
             </>
 
+            {selectedTabId === 'processes--id' && !isLoading && data && (
+                <ProcessesTimeline />
+            )}
+
             {selectedTabId === 'service-configuration--id' &&
                 !isLoading &&
                 data && (
@@ -645,42 +652,8 @@ const Subscription = () => {
                         <EuiFlexItem grow={6}>
                             <div>
                                 <EuiSearchBar />
-                                <EuiEmptyPrompt
-                                    style={{
-                                        marginTop: 15,
-                                        minHeight: 400,
-                                        width: '100%',
-                                    }}
-                                    iconType="logoSecurity"
-                                    color={'primary'}
-                                    title={<h2>No product block selected</h2>}
-                                    body={
-                                        <p>
-                                            Select one or more product blocks to
-                                            view their details.
-                                        </p>
-                                    }
-                                    actions={
-                                        <EuiButton color="primary" fill>
-                                            Add a case
-                                        </EuiButton>
-                                    }
-                                    footer={
-                                        <>
-                                            <EuiTitle size="xxs">
-                                                <h3>Want to learn more?</h3>
-                                            </EuiTitle>
-                                            <EuiLink
-                                                href="https://orchestrator.dev.automation.surf.net/docs"
-                                                target="_blank"
-                                            >
-                                                Read the docs
-                                            </EuiLink>
-                                        </>
-                                    }
-                                />
                                 <EuiCallOut
-                                    style={{ marginTop: 15, minHeight: 400 }}
+                                    style={{ marginTop: 15, minHeight: 600 }}
                                     size="m"
                                     title="No product block selected"
                                     iconType="inspect"
