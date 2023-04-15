@@ -1,29 +1,42 @@
 import { useRouter } from 'next/router';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
+    EuiBadge,
+    EuiButton,
     EuiCard,
+    EuiCallOut,
+    EuiContextMenu,
     EuiDescriptionList,
     EuiDescriptionListTitle,
     EuiDescriptionListDescription,
+    EuiEmptyPrompt,
     EuiFlexGrid,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiFormRow,
+    EuiLink,
     EuiIcon,
     EuiNotificationBadge,
+    EuiPopover,
     EuiSpacer,
+    EuiSwitch,
     EuiTab,
     EuiTabs,
     EuiText,
+    EuiTitle,
     EuiToken,
     EuiTreeView,
-    EuiBadge,
     EuiLoadingSpinner,
+    useGeneratedHtmlId,
+    EuiSearchBar,
 } from '@elastic/eui';
 import { GraphQLClient } from 'graphql-request';
 import { GRAPHQL_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
 import { graphql } from '../../__generated__';
 import { SubscriptionListQuery } from '../../__generated__/graphql';
+import { SubscriptionActions } from '@orchestrator-ui/orchestrator-ui-components';
+import NoSSR from 'react-no-ssr';
 
 const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
@@ -334,6 +347,8 @@ const Subscription = () => {
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
+
+    // Gui state done, deal with data:
     const queryClient = useQueryClient();
     const prefetchedData = {
         subscription: queryClient
@@ -400,80 +415,207 @@ const Subscription = () => {
 
     const items = [
         {
-            label: 'Item One',
-            id: 'item_one',
+            label: 'FW',
+            id: `block-1`,
             icon: <EuiIcon type="folderClosed" />,
             iconWhenExpanded: <EuiIcon type="folderOpen" />,
             isExpanded: true,
             children: [
                 {
-                    label: 'Item A',
-                    id: 'item_a',
-                    icon: <EuiIcon type="document" />,
-                },
-                {
-                    label: 'Item B',
-                    id: 'item_b',
+                    label: 'FW L2 Endpoint',
+                    id: `block-2`,
                     icon: <EuiIcon type="arrowRight" />,
                     iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                    isExpanded: true,
                     children: [
                         {
-                            label: 'A Cloud',
-                            id: 'item_cloud',
-                            icon: <EuiToken iconType="tokenConstant" />,
+                            label: 'SN8 L2VPN ESI',
+                            id: `block-3`,
+                            icon: <EuiIcon type="arrowRight" />,
+                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                            isExpanded: true,
+                            children: [
+                                {
+                                    label: 'SN8 Service Attach Point 1',
+                                    id: `block-4`,
+                                    icon: <EuiIcon type="arrowRight" />,
+                                    iconWhenExpanded: (
+                                        <EuiIcon type="arrowDown" />
+                                    ),
+                                    isExpanded: true,
+                                    children: [
+                                        {
+                                            label: 'Service port',
+                                            id: `block-5`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                        {
+                                            label: 'Service port',
+                                            id: `block-6`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                    ],
+                                },
+                                {
+                                    label: 'SN8 Service Attach Point 2',
+                                    id: `block-7`,
+                                    icon: <EuiIcon type="arrowRight" />,
+                                    iconWhenExpanded: (
+                                        <EuiIcon type="arrowDown" />
+                                    ),
+                                    isExpanded: true,
+                                    children: [
+                                        {
+                                            label: 'Service port',
+                                            id: `block-8`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
                         },
+                    ],
+                },
+
+                {
+                    label: 'FW IP Gateway',
+                    id: `block-9`,
+                    icon: <EuiIcon type="arrowRight" />,
+                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                    isExpanded: true,
+                    children: [
                         {
-                            label: "I'm a Bug",
-                            id: 'item_bug',
-                            icon: <EuiToken iconType="tokenEnum" />,
-                            callback: () => {},
+                            label: 'SN8 Static',
+                            id: `block-10`,
+                            icon: <EuiIcon type="arrowRight" />,
+                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                            isExpanded: true,
+                            children: [
+                                {
+                                    label: 'SN8 Service Attach Point 1',
+                                    id: `block-11`,
+                                    icon: <EuiIcon type="arrowRight" />,
+                                    iconWhenExpanded: (
+                                        <EuiIcon type="arrowDown" />
+                                    ),
+                                    isExpanded: true,
+                                    children: [
+                                        {
+                                            label: 'Internet',
+                                            id: `block-12`,
+                                            icon: (
+                                                <EuiToken iconType="tokenIP" />
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                     ],
                 },
                 {
-                    label: 'Item C',
-                    id: 'item_c',
+                    label: 'FW L3 Endpoint',
+                    id: `block-2`,
                     icon: <EuiIcon type="arrowRight" />,
                     iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                    isExpanded: true,
                     children: [
                         {
-                            label: 'Another Cloud',
-                            id: 'item_cloud2',
-                            icon: <EuiToken iconType="tokenConstant" />,
-                        },
-                        {
-                            label: 'This one is a really long string that we will check truncates correctly',
-                            id: 'item_bug2',
-                            icon: <EuiToken iconType="tokenEnum" />,
-                            callback: () => {},
+                            label: 'SN8 L3VPN ESI',
+                            id: `block-3`,
+                            icon: <EuiIcon type="arrowRight" />,
+                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
+                            isExpanded: true,
+                            children: [
+                                {
+                                    label: 'SN8 Service Attach Point 1',
+                                    id: `block-4`,
+                                    icon: <EuiIcon type="arrowRight" />,
+                                    iconWhenExpanded: (
+                                        <EuiIcon type="arrowDown" />
+                                    ),
+                                    isExpanded: true,
+                                    children: [
+                                        {
+                                            label: 'Service port',
+                                            id: `block-5`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                        {
+                                            label: 'Service port',
+                                            id: `block-6`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                    ],
+                                },
+                                {
+                                    label: 'SN8 Service Attach Point 2',
+                                    id: `block-7`,
+                                    icon: <EuiIcon type="arrowRight" />,
+                                    iconWhenExpanded: (
+                                        <EuiIcon type="arrowDown" />
+                                    ),
+                                    isExpanded: true,
+                                    children: [
+                                        {
+                                            label: 'Service port',
+                                            id: `block-8`,
+                                            icon: (
+                                                <EuiToken iconType="tokenProperty" />
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                     ],
                 },
             ],
         },
-        {
-            label: 'Item Two',
-            id: 'item_two',
-        },
     ];
 
     return (
-        <>
-            <EuiFlexGroup style={{ marginBottom: 10 }}>
-                <EuiFlexItem grow={false}>
+        <NoSSR>
+            <EuiFlexGroup
+                style={{ marginBottom: 10 }}
+                justifyContent="spaceBetween"
+            >
+                <EuiFlexItem grow={true}>
                     <EuiText>
                         <h2>
                             {isLoading ? '' : data?.subscription?.description}
                         </h2>
                     </EuiText>
                 </EuiFlexItem>
-                <EuiFlexItem>
-                    <div style={{ marginTop: 5 }}>
-                        Loading status:
-                        <EuiBadge color={getColor(loadingStatus)}>
-                            {loadingStatus}
-                        </EuiBadge>
-                    </div>
+                <EuiFlexItem grow={false}>
+                    <EuiFlexGroup justifyContent="spaceBetween">
+                        <EuiFlexItem style={{ width: 140 }}>
+                            <span style={{ marginTop: 5 }}>
+                                Loading status
+                                <EuiBadge
+                                    style={{ marginLeft: 4 }}
+                                    color={getColor(loadingStatus)}
+                                >
+                                    {loadingStatus}
+                                </EuiBadge>
+                            </span>
+                        </EuiFlexItem>
+                        <EuiFlexItem>
+                            <SubscriptionActions
+                                subscriptionId={subscriptionId}
+                            />
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
                 </EuiFlexItem>
             </EuiFlexGroup>
             {isLoading && <EuiLoadingSpinner />}
@@ -486,8 +628,8 @@ const Subscription = () => {
             {selectedTabId === 'service-configuration--id' &&
                 !isLoading &&
                 data && (
-                    <EuiFlexGrid columns={2} style={{ marginTop: 15 }}>
-                        <EuiFlexItem>
+                    <EuiFlexGroup style={{ marginTop: 15 }}>
+                        <EuiFlexItem grow={2}>
                             <>
                                 <EuiText>
                                     <h3>Product blocks</h3>
@@ -498,8 +640,57 @@ const Subscription = () => {
                                 />
                             </>
                         </EuiFlexItem>
-                        <EuiFlexItem>Info</EuiFlexItem>
-                    </EuiFlexGrid>
+                        <EuiFlexItem grow={6}>
+                            <div>
+                                <EuiSearchBar />
+                                <EuiEmptyPrompt
+                                    style={{
+                                        marginTop: 15,
+                                        minHeight: 400,
+                                        width: '100%',
+                                    }}
+                                    iconType="logoSecurity"
+                                    color={'primary'}
+                                    title={<h2>No product block selected</h2>}
+                                    body={
+                                        <p>
+                                            Select one or more product blocks to
+                                            view their details.
+                                        </p>
+                                    }
+                                    actions={
+                                        <EuiButton color="primary" fill>
+                                            Add a case
+                                        </EuiButton>
+                                    }
+                                    footer={
+                                        <>
+                                            <EuiTitle size="xxs">
+                                                <h3>Want to learn more?</h3>
+                                            </EuiTitle>
+                                            <EuiLink
+                                                href="https://orchestrator.dev.automation.surf.net/docs"
+                                                target="_blank"
+                                            >
+                                                Read the docs
+                                            </EuiLink>
+                                        </>
+                                    }
+                                />
+                                <EuiCallOut
+                                    style={{ marginTop: 15, minHeight: 400 }}
+                                    size="m"
+                                    title="No product block selected"
+                                    iconType="inspect"
+                                >
+                                    <p>
+                                        Select one or more product blocks to
+                                        view their details
+                                    </p>
+                                </EuiCallOut>
+                            </div>
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
                 )}
 
             {selectedTabId === 'general--id' && !isLoading && data && (
@@ -566,7 +757,7 @@ const Subscription = () => {
                         ))}
                 </EuiFlexGrid>
             )}
-        </>
+        </NoSSR>
     );
 };
 
