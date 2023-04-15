@@ -1,4 +1,5 @@
 export * from './lib/components/SubscriptionActions';
+export * from './lib/components/ProcessesTimeline';
 export * from './lib/components/custom-button/custom-button';
 export * from './lib/components/OrchestratorPageTemplate/OrchestratorPageTemplate';
 export * from './lib/components/Table/Table';
