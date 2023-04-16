@@ -7,7 +7,7 @@ import {
 } from '@elastic/eui';
 import StatCards from '../components/StartPage/StatCards';
 import NewProcessPanel from '../components/StartPage/NewProcessPanel';
-import ListsStartPage from '../components/StartPage/ListsStartPage';
+import ListsRowStartPage from '../components/StartPage/ListsRowStartPage';
 
 export function Index() {
     // Move this to app.tsx  ?
@@ -38,7 +38,7 @@ export function Index() {
             <EuiSpacer />
             <StatCards />
             <EuiSpacer />
-            <ListsStartPage />
+            <ListsRowStartPage />
         </>
     );
 }
