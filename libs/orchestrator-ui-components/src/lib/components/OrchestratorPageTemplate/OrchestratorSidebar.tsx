@@ -17,7 +17,7 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                 id: 1,
                 items: [
                     {
-                        name: 'Home',
+                        name: 'Start',
                         id: 2,
                         onClick: (e) => {
                             e.preventDefault();
