@@ -50,13 +50,29 @@ export const GET_SUBSCRIPTIONS_PAGINATED: TypedDocumentNode<
     }
 `);
 
-export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort[] = [
-    { field: 'startDate', order: PythiaSortOrder.Desc },
-];
+export const DEFAULT_SORT_FIELD = 'startDate';
+export const DEFAULT_SORT_ORDER = PythiaSortOrder.Desc;
 
-export const GET_SUBSCRIPTIONS_PAGINATED_VARIABLES: SubscriptionGridQueryVariables =
+export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort = {
+    field: DEFAULT_SORT_FIELD,
+    order: DEFAULT_SORT_ORDER,
+};
+
+export const GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES: SubscriptionGridQueryVariables =
     {
         first: 20,
-        after: 20,
+        after: 0,
         sortBy: DEFAULT_SUBSCRIPTIONS_SORT_ORDER,
     };
+
+// Todo move to utils file (keep in app, not lib)
+export const getSortOrderValue = (isDescending: boolean) =>
+    isDescending ? PythiaSortOrder.Desc : PythiaSortOrder.Asc;
+
+export const sortOrderIsDescending = (sortOrder: PythiaSortOrder) =>
+    sortOrder === PythiaSortOrder.Desc;
+
+export const getFlippedSortOrderValue = (sortOrder: PythiaSortOrder) =>
+    sortOrder === PythiaSortOrder.Desc
+        ? PythiaSortOrder.Asc
+        : PythiaSortOrder.Desc;

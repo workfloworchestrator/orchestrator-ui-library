@@ -13,7 +13,7 @@ import { EuiBadge } from '@elastic/eui';
 import Link from 'next/link';
 import {
     GET_SUBSCRIPTIONS_PAGINATED,
-    GET_SUBSCRIPTIONS_PAGINATED_VARIABLES,
+    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from '../components/Subscriptions/subscriptionsQuery';
 
 type Subscription = {
@@ -127,7 +127,7 @@ export default function SubscriptionsPage() {
                 tableColumns={tableColumnConfig}
                 columnVisibility={columnVisibility}
                 query={GET_SUBSCRIPTIONS_PAGINATED}
-                queryVars={GET_SUBSCRIPTIONS_PAGINATED_VARIABLES}
+                queryVars={GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES}
                 mapApiResponseToTableData={mapApiResponseToTableData}
             ></Subscriptions>
         </NoSSR>

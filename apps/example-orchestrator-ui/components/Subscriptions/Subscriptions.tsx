@@ -4,16 +4,18 @@ import {
     TableColumns,
     useQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React from 'react';
+import React, { FC } from 'react';
 import { EuiBadge } from '@elastic/eui';
 import Link from 'next/link';
 import {
     MyBaseSubscriptionEdge,
     SubscriptionGridQuery,
+    SubscriptionsSort,
 } from '../../__generated__/graphql';
 import {
     GET_SUBSCRIPTIONS_PAGINATED,
-    GET_SUBSCRIPTIONS_PAGINATED_VARIABLES,
+    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+    getFlippedSortOrderValue,
 } from './subscriptionsQuery';
 
 type Subscription = {
@@ -27,10 +29,24 @@ type Subscription = {
     organisationAbbreviation: string;
 };
 
-export const Subscriptions = () => {
+type SubscriptionsProps = {
+    pageSize: number;
+    setPageSize: (updatedPageSize: number) => void;
+    pageIndex: number;
+    setPageIndex: (updatedPageIndex: number) => void;
+    sortOrder: SubscriptionsSort;
+    setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
+};
+
+export const Subscriptions: FC<SubscriptionsProps> = (props) => {
     const { isLoading, data } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED,
-        GET_SUBSCRIPTIONS_PAGINATED_VARIABLES,
+        {
+            ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+            first: props.pageSize,
+            after: props.pageIndex,
+            sortBy: props.sortOrder,
+        },
     );
 
     if (isLoading || !data) {
@@ -104,11 +120,31 @@ export const Subscriptions = () => {
     ];
 
     return (
-        <Table
-            data={mapApiResponseToSubscriptionTableData(data)}
-            columns={tableColumnConfig}
-            columnVisibility={columnVisibility}
-        ></Table>
+        <>
+            {/*Todo remove temporary controls*/}
+            <button onClick={() => props.setPageSize(props.pageSize + 1)}>
+                [+1]
+            </button>
+            <button onClick={() => props.setPageSize(props.pageSize - 1)}>
+                [-1]
+            </button>
+            <button
+                onClick={() =>
+                    props.setSortOrder({
+                        ...props.sortOrder,
+                        order: getFlippedSortOrderValue(props.sortOrder.order),
+                    })
+                }
+            >
+                [Flip sort order]
+            </button>
+
+            <Table
+                data={mapApiResponseToSubscriptionTableData(data)}
+                columns={tableColumnConfig}
+                columnVisibility={columnVisibility}
+            ></Table>
+        </>
     );
 };
 
