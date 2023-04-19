@@ -6,7 +6,6 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { EuiBadge } from '@elastic/eui';
-import Link from 'next/link';
 import {
     MyBaseSubscriptionEdge,
     SubscriptionGridQuery,
@@ -17,6 +16,7 @@ import {
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     getFlippedSortOrderValue,
 } from './subscriptionsQuery';
+import { useRouter } from 'next/router';
 
 type Subscription = {
     subscriptionId: string;
@@ -39,6 +39,7 @@ type SubscriptionsProps = {
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = (props) => {
+    const router = useRouter();
     const { isLoading, data } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED,
         {
@@ -101,11 +102,7 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
         },
         subscriptionId: {
             displayAsText: 'ID',
-            renderCell: (cellValue) => (
-                <Link href={`/subscriptions/${cellValue}`}>
-                    {cellValue.slice(0, 8)}
-                </Link>
-            ),
+            renderCell: (cellValue) => cellValue.slice(0, 8),
         },
     };
 
@@ -143,6 +140,9 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnConfig}
                 columnVisibility={columnVisibility}
+                handleRowClick={({ subscriptionId }) =>
+                    router.push(`/subscriptions/${subscriptionId}`)
+                }
             ></Table>
         </>
     );
