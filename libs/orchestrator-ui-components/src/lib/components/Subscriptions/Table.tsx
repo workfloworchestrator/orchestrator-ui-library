@@ -54,10 +54,17 @@ export const Table = <T,>({
         };
     });
 
-    // Todo dragging columns around in the dropdown makes the view snap back to its previous state
     const [visibleColumns, setVisibleColumns] = useState(
         columnVisibility.map((columnId) => columnId.toString()),
     );
+
+    const sortedCols: EuiDataGridColumn[] = euiCols
+        .slice()
+        .sort(
+            (left, right) =>
+                visibleColumns.indexOf(left.id) -
+                visibleColumns.indexOf(right.id),
+        );
 
     const renderCellValue = ({
         rowIndex,
@@ -93,7 +100,7 @@ export const Table = <T,>({
     return (
         <EuiDataGrid
             aria-label="Data Grid"
-            columns={euiCols}
+            columns={sortedCols}
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
