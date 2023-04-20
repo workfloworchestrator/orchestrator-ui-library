@@ -72,6 +72,7 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
         },
         organisationName: {
             displayAsText: 'Customer Name',
+            isHiddenByDefault: true,
         },
         organisationAbbreviation: {
             displayAsText: 'Customer',
@@ -105,16 +106,6 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
             renderCell: (cellValue) => cellValue.slice(0, 8),
         },
     };
-
-    const columnVisibility: Array<keyof Subscription> = [
-        'subscriptionId',
-        'description',
-        'productName',
-        'organisationAbbreviation',
-        'status',
-        'insync',
-        'startDate',
-    ];
 
     const columnOrder: Array<keyof Subscription> = [
         'subscriptionId',
@@ -150,7 +141,6 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnConfig}
-                columnVisibility={columnVisibility}
                 columnOrder={columnOrder}
                 handleRowClick={({ subscriptionId }) =>
                     router.push(`/subscriptions/${subscriptionId}`)

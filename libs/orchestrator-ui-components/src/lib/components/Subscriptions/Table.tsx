@@ -22,6 +22,7 @@ const GRID_STYLE: EuiDataGridStyle = {
 export type TableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
         renderCell?: (cellValue: T[Property]) => ReactNode;
+        isHiddenByDefault?: boolean;
     };
 };
 
@@ -35,7 +36,6 @@ export type TableColumns<T> = {
 export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
-    columnVisibility: Array<keyof TableColumns<T>>;
     columnOrder: Array<keyof TableColumns<T>>;
     handleRowClick?: (row: T) => void;
 };
@@ -43,7 +43,6 @@ export type TableProps<T> = {
 export const Table = <T,>({
     data,
     columns,
-    columnVisibility,
     columnOrder,
     handleRowClick,
 }: TableProps<T>) => {
@@ -69,7 +68,17 @@ export const Table = <T,>({
             ),
     );
 
-    const defaultVisibleColumns = columnVisibility.map((columnId) =>
+    // columns contains the isHiddenByDefault prop
+    // use the columnOrder and filter according to isHiddenByDefault prop
+    const columnVisibility: Array<keyof TableColumns<T>> = columnOrder.filter(
+        (columnId) => {
+            const theCol = columns[columnId];
+            const { isHiddenByDefault } = theCol;
+
+            return !isHiddenByDefault;
+        },
+    );
+    const defaultVisibleColumns: string[] = columnVisibility.map((columnId) =>
         columnId.toString(),
     );
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
