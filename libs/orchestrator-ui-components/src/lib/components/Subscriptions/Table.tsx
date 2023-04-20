@@ -7,7 +7,7 @@ import {
     EuiDataGridColumn,
     EuiDataGridStyle,
 } from '@elastic/eui';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -59,7 +59,7 @@ export const Table = <T,>({
     );
 
     const columnOrderIds = columnOrder.map((columnId) => columnId.toString());
-    const [sortedColumns] = useState(
+    const sortedColumnsRef = useRef(
         euiDataGridColumns
             .slice()
             .sort(
@@ -108,7 +108,7 @@ export const Table = <T,>({
     return (
         <EuiDataGrid
             aria-label="Data Grid"
-            columns={sortedColumns}
+            columns={sortedColumnsRef.current}
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
