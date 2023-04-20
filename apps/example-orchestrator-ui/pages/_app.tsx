@@ -21,13 +21,15 @@ import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
 import { useRouter } from 'next/router';
 import * as process from 'process';
+import { QueryClientConfig } from 'react-query/types/core/types';
 
-const queryClientConfig = {
+const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
         queries: {
             staleTime: 1 * 60 * 60 * 1000,
             cacheTime: 5 * 60 * 60 * 1000,
             refetchOnWindowFocus: true,
+            keepPreviousData: true,
         },
     },
 };

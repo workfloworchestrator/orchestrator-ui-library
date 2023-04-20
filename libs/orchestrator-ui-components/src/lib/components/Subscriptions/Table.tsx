@@ -36,16 +36,17 @@ export type TableColumns<T> = {
 export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
-    columnOrder: Array<keyof TableColumns<T>>;
+    initialColumnOrder: Array<keyof TableColumns<T>>;
     handleRowClick?: (row: T) => void;
 };
 
 export const Table = <T,>({
     data,
     columns,
-    columnOrder,
+    initialColumnOrder,
     handleRowClick,
 }: TableProps<T>) => {
+    // getInitialColumnOrder
     const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
         (colKey) => {
             const column = columns[colKey as keyof T];
@@ -56,9 +57,10 @@ export const Table = <T,>({
             };
         },
     );
-
-    const columnOrderIds = columnOrder.map((columnId) => columnId.toString());
-    const sortedColumnsRef = useRef(
+    const columnOrderIds = initialColumnOrder.map((columnId) =>
+        columnId.toString(),
+    );
+    const initialColumnOrderRef = useRef(
         euiDataGridColumns
             .slice()
             .sort(
@@ -68,19 +70,10 @@ export const Table = <T,>({
             ),
     );
 
-    // columns contains the isHiddenByDefault prop
-    // use the columnOrder and filter according to isHiddenByDefault prop
-    const columnVisibility: Array<keyof TableColumns<T>> = columnOrder.filter(
-        (columnId) => {
-            const theCol = columns[columnId];
-            const { isHiddenByDefault } = theCol;
-
-            return !isHiddenByDefault;
-        },
-    );
-    const defaultVisibleColumns: string[] = columnVisibility.map((columnId) =>
-        columnId.toString(),
-    );
+    // getDefaultVisibleColumns
+    const defaultVisibleColumns: string[] = initialColumnOrder
+        .filter((columnId) => !columns[columnId].isHiddenByDefault)
+        .map((columnId) => columnId.toString());
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
 
     const renderCellValue = ({
@@ -117,7 +110,7 @@ export const Table = <T,>({
     return (
         <EuiDataGrid
             aria-label="Data Grid"
-            columns={sortedColumnsRef.current}
+            columns={initialColumnOrderRef.current}
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}

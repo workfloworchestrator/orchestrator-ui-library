@@ -107,7 +107,7 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
         },
     };
 
-    const columnOrder: Array<keyof Subscription> = [
+    const initialColumnOrder: Array<keyof Subscription> = [
         'subscriptionId',
         'description',
         'productName',
@@ -141,7 +141,7 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnConfig}
-                columnOrder={columnOrder}
+                initialColumnOrder={initialColumnOrder}
                 handleRowClick={({ subscriptionId }) =>
                     router.push(`/subscriptions/${subscriptionId}`)
                 }

@@ -23,6 +23,5 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     return useQuery(
         ['subscriptions', ...Object.values(queryVars)],
         fetchFromGraphql,
-        { keepPreviousData: true },
     );
 };
