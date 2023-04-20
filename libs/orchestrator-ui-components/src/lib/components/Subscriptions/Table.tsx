@@ -36,6 +36,7 @@ export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
     columnVisibility: Array<keyof TableColumns<T>>;
+    columnOrder: Array<keyof TableColumns<T>>;
     handleRowClick?: (row: T) => void;
 };
 
@@ -43,28 +44,35 @@ export const Table = <T,>({
     data,
     columns,
     columnVisibility,
+    columnOrder,
     handleRowClick,
 }: TableProps<T>) => {
-    const euiCols: EuiDataGridColumn[] = Object.keys(columns).map((colKey) => {
-        const column = columns[colKey as keyof T];
-        return {
-            id: colKey,
-            isExpandable: false,
-            ...column,
-        };
-    });
-
-    const [visibleColumns, setVisibleColumns] = useState(
-        columnVisibility.map((columnId) => columnId.toString()),
+    const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
+        (colKey) => {
+            const column = columns[colKey as keyof T];
+            return {
+                id: colKey,
+                isExpandable: false,
+                ...column,
+            };
+        },
     );
 
-    const sortedCols: EuiDataGridColumn[] = euiCols
-        .slice()
-        .sort(
-            (left, right) =>
-                visibleColumns.indexOf(left.id) -
-                visibleColumns.indexOf(right.id),
-        );
+    const columnOrderIds = columnOrder.map((columnId) => columnId.toString());
+    const [sortedColumns] = useState(
+        euiDataGridColumns
+            .slice()
+            .sort(
+                (left, right) =>
+                    columnOrderIds.indexOf(left.id) -
+                    columnOrderIds.indexOf(right.id),
+            ),
+    );
+
+    const defaultVisibleColumns = columnVisibility.map((columnId) =>
+        columnId.toString(),
+    );
+    const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
 
     const renderCellValue = ({
         rowIndex,
@@ -100,7 +108,7 @@ export const Table = <T,>({
     return (
         <EuiDataGrid
             aria-label="Data Grid"
-            columns={sortedCols}
+            columns={sortedColumns}
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}

@@ -116,6 +116,17 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
         'startDate',
     ];
 
+    const columnOrder: Array<keyof Subscription> = [
+        'subscriptionId',
+        'description',
+        'productName',
+        'organisationName',
+        'organisationAbbreviation',
+        'status',
+        'insync',
+        'startDate',
+    ];
+
     return (
         <>
             {/*Todo remove temporary controls*/}
@@ -140,6 +151,7 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnConfig}
                 columnVisibility={columnVisibility}
+                columnOrder={columnOrder}
                 handleRowClick={({ subscriptionId }) =>
                     router.push(`/subscriptions/${subscriptionId}`)
                 }

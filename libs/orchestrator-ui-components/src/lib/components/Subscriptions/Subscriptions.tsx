@@ -34,6 +34,7 @@ export const Subscriptions = <T, U, V extends Variables>({
             data={convertedData}
             columns={tableColumns}
             columnVisibility={columnVisibility}
+            columnOrder={[]}
         ></Table>
     );
 };
