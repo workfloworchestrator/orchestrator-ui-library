@@ -2235,7 +2235,9 @@ export type Product = {
 
 export type ProductBlock = {
     __typename?: 'ProductBlock';
+    id: Scalars['Int'];
     ownerSubscriptionId: Scalars['UUID'];
+    parent?: Maybe<Scalars['Int']>;
     resourceTypes: Scalars['JSON'];
 };
 
@@ -4247,6 +4249,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'CorelinkSubscription';
@@ -4284,6 +4293,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4323,6 +4339,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'IpBgpSubscription';
@@ -4360,6 +4383,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4399,6 +4429,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'IpPeerPortSubscription';
@@ -4436,6 +4473,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4475,6 +4519,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'IpPrefixSubscription';
@@ -4512,6 +4563,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4551,6 +4609,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'IrbServicePortSubscription';
@@ -4588,6 +4653,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4627,6 +4699,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'L3VpnSubscription';
@@ -4664,6 +4743,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4703,6 +4789,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'LightPathSubscription';
@@ -4740,6 +4833,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4779,6 +4879,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'NodeSubscription';
@@ -4816,6 +4923,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4855,6 +4969,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'NsiStpSubscription';
@@ -4892,6 +5013,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -4931,6 +5059,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'SurfWirelessSubscription';
@@ -4969,6 +5104,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   abbreviation?: string | null;
                   name?: string | null;
               }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
+              }>;
           }
         | {
               __typename?: 'UnknownSubscription';
@@ -5006,6 +5148,13 @@ export type GetSubscriptionDetailOutlineQuery = {
                   __typename?: 'CrmOrganisation';
                   abbreviation?: string | null;
                   name?: string | null;
+              }>;
+              productBlocks: Array<{
+                  __typename?: 'ProductBlock';
+                  id: number;
+                  ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           };
 };
@@ -5447,8 +5596,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -5881,8 +6032,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -6315,8 +6468,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -6749,8 +6904,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -7183,8 +7340,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -7617,8 +7776,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -8051,8 +8212,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -8485,8 +8648,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -8919,8 +9084,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -9353,8 +9520,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -9787,8 +9956,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -10221,8 +10392,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -10655,8 +10828,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -11089,8 +11264,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -11523,8 +11700,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -11957,8 +12136,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -12391,8 +12572,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -12825,8 +13008,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -13259,8 +13444,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -13693,8 +13880,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -14127,8 +14316,10 @@ export type GetSubscriptionDetailCompleteQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           };
 };
@@ -14614,8 +14805,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -15092,8 +15285,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -15570,8 +15765,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -16048,8 +16245,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -16526,8 +16725,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -17004,8 +17205,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -17482,8 +17685,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -17960,8 +18165,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -18438,8 +18645,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -18916,8 +19125,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -19394,8 +19605,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -19872,8 +20085,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -20350,8 +20565,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -20828,8 +21045,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -21306,8 +21525,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -21784,8 +22005,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -22262,8 +22485,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -22740,8 +22965,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -23218,8 +23445,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -23696,8 +23925,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           }
         | {
@@ -24174,8 +24405,10 @@ export type GetSubscriptionDetailEnrichedQuery = {
               } | null;
               productBlocks: Array<{
                   __typename?: 'ProductBlock';
-                  resourceTypes: any;
+                  id: number;
                   ownerSubscriptionId: any;
+                  parent?: number | null;
+                  resourceTypes: any;
               }>;
           };
 };
@@ -24849,6 +25082,46 @@ export const GetSubscriptionDetailOutlineDocument = {
                                         ],
                                     },
                                 },
+                                {
+                                    kind: 'Field',
+                                    name: {
+                                        kind: 'Name',
+                                        value: 'productBlocks',
+                                    },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'id',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'ownerSubscriptionId',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'parent',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'resourceTypes',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
                             ],
                         },
                     },
@@ -25283,7 +25556,7 @@ export const GetSubscriptionDetailCompleteDocument = {
                                                 kind: 'Field',
                                                 name: {
                                                     kind: 'Name',
-                                                    value: 'resourceTypes',
+                                                    value: 'id',
                                                 },
                                             },
                                             {
@@ -25291,6 +25564,20 @@ export const GetSubscriptionDetailCompleteDocument = {
                                                 name: {
                                                     kind: 'Name',
                                                     value: 'ownerSubscriptionId',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'parent',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'resourceTypes',
                                                 },
                                             },
                                         ],
@@ -26023,7 +26310,7 @@ export const GetSubscriptionDetailEnrichedDocument = {
                                                 kind: 'Field',
                                                 name: {
                                                     kind: 'Name',
-                                                    value: 'resourceTypes',
+                                                    value: 'id',
                                                 },
                                             },
                                             {
@@ -26031,6 +26318,20 @@ export const GetSubscriptionDetailEnrichedDocument = {
                                                 name: {
                                                     kind: 'Name',
                                                     value: 'ownerSubscriptionId',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'parent',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'resourceTypes',
                                                 },
                                             },
                                         ],
