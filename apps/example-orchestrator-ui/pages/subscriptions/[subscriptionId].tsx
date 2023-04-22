@@ -4,33 +4,21 @@ import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import {
     EuiBadge,
-    EuiButton,
-    EuiCard,
     EuiCallOut,
-    EuiContextMenu,
-    EuiDescriptionList,
-    EuiDescriptionListTitle,
-    EuiDescriptionListDescription,
-    EuiEmptyPrompt,
     EuiFlexGrid,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiFormRow,
-    EuiLink,
     EuiIcon,
     EuiNotificationBadge,
     EuiPanel,
-    EuiPopover,
     EuiSpacer,
-    EuiSwitch,
     EuiTab,
     EuiTabs,
     EuiText,
-    EuiTitle,
     EuiToken,
     EuiTreeView,
     EuiLoadingSpinner,
-    useGeneratedHtmlId,
+    EuiLoadingContent,
     EuiSearchBar,
 } from '@elastic/eui';
 import { GraphQLClient } from 'graphql-request';
@@ -77,6 +65,12 @@ const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
             locations {
                 abbreviation
                 name
+            }
+            productBlocks {
+                id
+                ownerSubscriptionId
+                parent
+                resourceTypes
             }
         }
     }
@@ -146,8 +140,10 @@ const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
                 customerId
             }
             productBlocks {
-                resourceTypes
+                id
                 ownerSubscriptionId
+                parent
+                resourceTypes
             }
         }
     }
@@ -258,8 +254,10 @@ const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
                 customerId
             }
             productBlocks {
-                resourceTypes
+                id
                 ownerSubscriptionId
+                parent
+                resourceTypes
             }
         }
     }
@@ -279,22 +277,58 @@ const Block = (title, data: object) => {
     if (keys.length === 0) return;
 
     return (
-        <EuiCard title={title}>
-            <EuiDescriptionList>
-                {keys.map((k) => (
-                    <>
-                        <EuiDescriptionListTitle>
-                            {k.includes('.') ? k.split('.')[0] : k}
-                        </EuiDescriptionListTitle>
-                        <EuiDescriptionListDescription>
-                            {k.includes('.')
-                                ? data[k.split('.')[0]][k.split('.')[1]]
-                                : data[k]}
-                        </EuiDescriptionListDescription>
-                    </>
-                ))}
-            </EuiDescriptionList>
-        </EuiCard>
+        <>
+            <EuiSpacer size={'m'}></EuiSpacer>
+            <EuiPanel>
+                <div style={{ marginTop: 5 }}>
+                    <EuiText>
+                        <h3>{title}</h3>
+                    </EuiText>
+                    <EuiSpacer size={'xs'}></EuiSpacer>
+                    <table width="100%" bgcolor={'#F1F5F9'}>
+                        {keys.map((k, i) => (
+                            <tr key={i}>
+                                <td
+                                    valign={'top'}
+                                    style={{
+                                        width: 250,
+                                        padding: 10,
+                                        borderBottom: 'solid 1px #ddd',
+                                    }}
+                                >
+                                    {k.includes('.') ? k.split('.')[0] : k}
+                                </td>
+                                <td
+                                    style={{
+                                        padding: 10,
+                                        borderBottom: 'solid 1px #ddd',
+                                    }}
+                                >
+                                    {k.includes('.')
+                                        ? data[k.split('.')[0]][k.split('.')[1]]
+                                        : data[k]}
+                                </td>
+                            </tr>
+                        ))}
+                        <tr>
+                            {/*<td*/}
+                            {/*    valign={'top'}*/}
+                            {/*    style={{*/}
+                            {/*        width: 250,*/}
+                            {/*        padding: 10,*/}
+                            {/*        borderBottom: 'solid 1px #ddd',*/}
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    <b>ID</b>*/}
+                            {/*</td>*/}
+                            {/*<td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>*/}
+                            {/*    <a href="#">792225b3-f40a-4724-9f3e-15bc5668d3cd</a>*/}
+                            {/*</td>*/}
+                        </tr>
+                    </table>
+                </div>
+            </EuiPanel>
+        </>
     );
 };
 
@@ -338,6 +372,18 @@ const tabs = [
     },
 ];
 
+function getTokenName(name: string) {
+    const icons = {
+        Node: 'tokenNamespace',
+        'IP BGP Service Settings': 'tokenEnumMember',
+        IP_PREFIX: 'tokenIP',
+    };
+    if (name in icons) {
+        return icons[name];
+    }
+    return 'tokenConstant';
+}
+
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 const Subscription = () => {
     const router = useRouter();
@@ -346,12 +392,15 @@ const Subscription = () => {
         'service-configuration--id',
     );
     const selectedTabContent = useMemo(() => {
+        // @ts-ignore: todo -> improve tabs, refactor them to separate component
         return tabs.find((obj) => obj.id === selectedTabId)?.content;
     }, [selectedTabId]);
 
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
+
+    const [selectedTreeNode, setSelectedTreeNode] = useState(-1);
 
     // Gui state done, deal with data:
     const queryClient = useQueryClient();
@@ -401,6 +450,64 @@ const Subscription = () => {
     if (dataComplete) loadingStatus = 2;
     if (dataEnriched) loadingStatus = 3;
 
+    let tree = null; // Initially set our loop to null
+    if (loadingStatus > 0) {
+        const idToNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
+
+        // loop over data
+        data.subscription?.productBlocks.forEach(function (datum) {
+            // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+            const shallowCopy: any = { ...datum };
+
+            // Each node will have children, so let's give it a "children" property
+            shallowCopy.children = [];
+
+            // Add an entry for this node to the map so that any future children can lookup the parent
+            idToNodeMap[shallowCopy.id] = shallowCopy;
+
+            // Does this node have a parent?
+            if (shallowCopy.parent === null) {
+                // Doesn't look like it, so this node is the root of the tree
+                // Add EUI Fields
+                shallowCopy.label = shallowCopy.resourceTypes.name;
+                shallowCopy.isExpanded = true;
+                shallowCopy.icon = <EuiIcon type="folderClosed" />;
+                shallowCopy.iconWhenExpanded = <EuiIcon type="folderOpen" />;
+                shallowCopy.callback = () =>
+                    setSelectedTreeNode(shallowCopy.id);
+                tree = shallowCopy;
+            } else {
+                // This node has a parent, so let's look it up using the id
+                const parentNode = idToNodeMap[shallowCopy.parent];
+
+                // Add EUI Fields
+                shallowCopy.label = shallowCopy.resourceTypes.name;
+                shallowCopy.isExpanded = true;
+                shallowCopy.icon = <EuiIcon type="arrowRight" />;
+                shallowCopy.callback = () =>
+                    setSelectedTreeNode(shallowCopy.id);
+
+                // We don't need this property, so let's delete it.
+                delete shallowCopy.parent;
+
+                // Let's add the current node as a child of the parent node.
+                if (
+                    !data.subscription.productBlocks.find(
+                        (i) => i.parent === shallowCopy.id,
+                    )
+                ) {
+                    const tokenName = getTokenName(shallowCopy.label);
+                    shallowCopy.icon = <EuiToken iconType={tokenName} />;
+                } else {
+                    shallowCopy.iconWhenExpanded = <EuiIcon type="arrowDown" />;
+                }
+
+                parentNode.children.push(shallowCopy);
+            }
+        });
+        console.log('Tree', tree);
+    }
+
     console.log(subscriptionId);
     const renderTabs = () => {
         return tabs.map((tab, index) => (
@@ -417,177 +524,6 @@ const Subscription = () => {
             </EuiTab>
         ));
     };
-
-    const items = [
-        {
-            label: 'FW',
-            id: `block-1`,
-            icon: <EuiIcon type="folderClosed" />,
-            iconWhenExpanded: <EuiIcon type="folderOpen" />,
-            isExpanded: true,
-            children: [
-                {
-                    label: 'FW L2 Endpoint',
-                    id: `block-2`,
-                    icon: <EuiIcon type="arrowRight" />,
-                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                    isExpanded: true,
-                    children: [
-                        {
-                            label: 'SN8 L2VPN ESI',
-                            id: `block-3`,
-                            icon: <EuiIcon type="arrowRight" />,
-                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                            isExpanded: true,
-                            children: [
-                                {
-                                    label: 'SN8 Service Attach Point 1',
-                                    id: `block-4`,
-                                    icon: <EuiIcon type="arrowRight" />,
-                                    iconWhenExpanded: (
-                                        <EuiIcon type="arrowDown" />
-                                    ),
-                                    isExpanded: true,
-                                    children: [
-                                        {
-                                            label: 'Service port',
-                                            id: `block-5`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                        {
-                                            label: 'Service port',
-                                            id: `block-6`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                    ],
-                                },
-                                {
-                                    label: 'SN8 Service Attach Point 2',
-                                    id: `block-7`,
-                                    icon: <EuiIcon type="arrowRight" />,
-                                    iconWhenExpanded: (
-                                        <EuiIcon type="arrowDown" />
-                                    ),
-                                    isExpanded: true,
-                                    children: [
-                                        {
-                                            label: 'Service port',
-                                            id: `block-8`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-
-                {
-                    label: 'FW IP Gateway',
-                    id: `block-9`,
-                    icon: <EuiIcon type="arrowRight" />,
-                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                    isExpanded: true,
-                    children: [
-                        {
-                            label: 'SN8 Static',
-                            id: `block-10`,
-                            icon: <EuiIcon type="arrowRight" />,
-                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                            isExpanded: true,
-                            children: [
-                                {
-                                    label: 'SN8 Service Attach Point 1',
-                                    id: `block-11`,
-                                    icon: <EuiIcon type="arrowRight" />,
-                                    iconWhenExpanded: (
-                                        <EuiIcon type="arrowDown" />
-                                    ),
-                                    isExpanded: true,
-                                    children: [
-                                        {
-                                            label: 'Internet',
-                                            id: `block-12`,
-                                            icon: (
-                                                <EuiToken iconType="tokenIP" />
-                                            ),
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    label: 'FW L3 Endpoint',
-                    id: `block-2`,
-                    icon: <EuiIcon type="arrowRight" />,
-                    iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                    isExpanded: true,
-                    children: [
-                        {
-                            label: 'SN8 L3VPN ESI',
-                            id: `block-3`,
-                            icon: <EuiIcon type="arrowRight" />,
-                            iconWhenExpanded: <EuiIcon type="arrowDown" />,
-                            isExpanded: true,
-                            children: [
-                                {
-                                    label: 'SN8 Service Attach Point 1',
-                                    id: `block-4`,
-                                    icon: <EuiIcon type="arrowRight" />,
-                                    iconWhenExpanded: (
-                                        <EuiIcon type="arrowDown" />
-                                    ),
-                                    isExpanded: true,
-                                    children: [
-                                        {
-                                            label: 'Service port',
-                                            id: `block-5`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                        {
-                                            label: 'Service port',
-                                            id: `block-6`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                    ],
-                                },
-                                {
-                                    label: 'SN8 Service Attach Point 2',
-                                    id: `block-7`,
-                                    icon: <EuiIcon type="arrowRight" />,
-                                    iconWhenExpanded: (
-                                        <EuiIcon type="arrowDown" />
-                                    ),
-                                    isExpanded: true,
-                                    children: [
-                                        {
-                                            label: 'Service port',
-                                            id: `block-8`,
-                                            icon: (
-                                                <EuiToken iconType="tokenProperty" />
-                                            ),
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
 
     return (
         <NoSSR>
@@ -643,33 +579,50 @@ const Subscription = () => {
                                 <EuiText>
                                     <h3>Product blocks</h3>
                                 </EuiText>
-                                <EuiTreeView
-                                    items={items}
-                                    aria-label="Product blocks"
-                                />
+                                {tree === null && <EuiLoadingContent/>}
+                                {tree !== null && (
+                                    <EuiTreeView
+                                        items={[tree]}
+                                        aria-label="Product blocks"
+                                    />
+                                )}
                             </>
                         </EuiFlexItem>
                         <EuiFlexItem grow={6}>
                             <div>
                                 <EuiSearchBar />
-                                <EuiCallOut
-                                    style={{ marginTop: 15, minHeight: 600 }}
-                                    size="m"
-                                    title="No product block selected"
-                                    iconType="inspect"
-                                >
-                                    <p>
-                                        Select one or more product blocks to
-                                        view their details
-                                    </p>
-                                </EuiCallOut>
+                                {selectedTreeNode === -1 && (
+                                    <EuiCallOut
+                                        style={{
+                                            marginTop: 15,
+                                            minHeight: 600,
+                                        }}
+                                        size="m"
+                                        title="No product block selected"
+                                        iconType="inspect"
+                                    >
+                                        <p>
+                                            Select one or more product blocks to
+                                            view their details
+                                        </p>
+                                    </EuiCallOut>
+                                )}
+                                {selectedTreeNode !== -1 &&
+                                    Block(
+                                        data.subscription.productBlocks[
+                                            selectedTreeNode
+                                        ].resourceTypes.title,
+                                        data.subscription.productBlocks[
+                                            selectedTreeNode
+                                        ].resourceTypes,
+                                    )}
                             </div>
                         </EuiFlexItem>
                     </EuiFlexGroup>
                 )}
 
             {selectedTabId === 'general--id' && !isLoading && data && (
-                <EuiFlexGrid columns={4}>
+                <EuiFlexGrid columns={3}>
                     <EuiFlexItem>
                         {Block('General info', data.subscription)}
                     </EuiFlexItem>

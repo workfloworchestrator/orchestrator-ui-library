@@ -172,7 +172,9 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
             panelPaddingSize="none"
             anchorPosition="downLeft"
         >
-            <EuiContextMenu initialPanelId={0} panels={panels} />
+            <EuiContextMenu initialPanelId={0}
+                            /* @ts-ignore */
+                            panels={panels} />
         </EuiPopover>
     );
 };
