@@ -1,18 +1,16 @@
-import React, { ReactElement, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
-    EuiButton,
     EuiFieldSearch,
-    EuiFlexGroup,
-    EuiFlexItem,
     EuiPanel,
     EuiSpacer,
     EuiText,
     EuiTextColor,
 } from '@elastic/eui';
+import { FrequentlyUsed } from './FrequentlyUsed';
 
-export default function NewProcessPanel(): ReactElement {
+export const NewProcessPanel: FC = () => {
     const [value, setValue] = useState('');
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     };
     const frequentlyUsedValues = [
@@ -22,20 +20,6 @@ export default function NewProcessPanel(): ReactElement {
         'NL8 Service Port 100G',
         'SN8 AGGSP',
     ];
-    const renderFrequentlyUsed = (values) => {
-        return (
-            <EuiFlexGroup gutterSize="m">
-                {values.map((value, index) => (
-                    <EuiFlexItem key={index} grow={false}>
-                        {/*@ts-ignore*/}
-                        <EuiButton size="xs" style={{ minWidth: 0 }}>
-                            {value}
-                        </EuiButton>
-                    </EuiFlexItem>
-                ))}
-            </EuiFlexGroup>
-        );
-    };
 
     return (
         <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
@@ -53,7 +37,7 @@ export default function NewProcessPanel(): ReactElement {
             <EuiSpacer size="m" />
             <EuiTextColor color="subdued">Frequently used:</EuiTextColor>
             <EuiSpacer size="s" />
-            {renderFrequentlyUsed(frequentlyUsedValues)}
+            <FrequentlyUsed values={frequentlyUsedValues} />
         </EuiPanel>
     );
-}
+};

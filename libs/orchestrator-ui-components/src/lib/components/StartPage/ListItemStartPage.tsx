@@ -1,12 +1,22 @@
-import React, { ReactElement, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
+import { Process, Subscription } from '../../types';
 
-export default function ListItemStartPage({ item, type }): ReactElement {
+export interface ListItemStartPageProps {
+    item: Subscription | Process;
+    type: string;
+}
+
+export const ListItemStartPage: FC<ListItemStartPageProps> = ({
+    item,
+    type,
+}) => {
     const [hoverState, setHoverState] = useState(false);
 
-    const renderItem = (item, type) => {
+    const renderItem = (item: Subscription | Process, type: string) => {
         if (type === 'subscription') {
+            item = item as Subscription;
             return (
                 <EuiFlexItem>
                     <EuiTextColor
@@ -21,6 +31,7 @@ export default function ListItemStartPage({ item, type }): ReactElement {
                 </EuiFlexItem>
             );
         } else if (type === 'process') {
+            item = item as Process;
             const date = new Date(item.last_modified_at * 1000);
             const formattedDate = moment(date).format('DD-MM-YYYY, HH:mm');
             return (
@@ -55,4 +66,4 @@ export default function ListItemStartPage({ item, type }): ReactElement {
             </EuiFlexItem>
         </EuiFlexGroup>
     );
-}
+};

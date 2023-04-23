@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState, FC } from 'react';
 import {
     EuiAvatar,
     EuiFlexGroup,
@@ -6,40 +6,36 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
+import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { TotalStat } from '../../types';
 
-export interface TotalStat {
-    icon: string;
-    name: string;
-    value: number;
-    color: string;
-}
-
-const totalStats = [
+const totalStats: TotalStat[] = [
     {
         icon: 'kubernetesPod',
         name: 'subscriptions',
         value: 24864,
-        color: '#0d70c5',
+        color: 'primary',
     },
     {
         icon: 'error',
         name: 'processes failed',
         value: 462252,
-        color: '#b91414',
+        color: 'danger',
     },
     {
         icon: 'checkInCircleFilled',
         name: 'processes completed',
         value: 1353632,
-        color: '#1f8631',
+        color: 'success',
     },
 ];
 
-export default function StatCards(): ReactElement {
-    const [stats] = useState(totalStats);
+export const StatCards: FC = () => {
+    const [stats] = useState<TotalStat[]>(totalStats);
+    const { theme } = useOrchestratorTheme();
 
     return (
-        <EuiFlexGroup>
+        <EuiFlexGroup wrap>
             {stats.map((stat, index) => (
                 <EuiFlexItem key={index}>
                     <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
@@ -52,7 +48,8 @@ export default function StatCards(): ReactElement {
                                     name={stat.name}
                                     style={{ maxHeight: 55, maxWidth: 55 }}
                                     iconType={stat.icon}
-                                    color={stat.color}
+                                    iconColor={theme.colors.ghost}
+                                    color={theme.colors[stat.color]}
                                 />
                             </EuiFlexItem>
                             <EuiFlexItem>
@@ -73,4 +70,4 @@ export default function StatCards(): ReactElement {
             ))}
         </EuiFlexGroup>
     );
-}
+};
