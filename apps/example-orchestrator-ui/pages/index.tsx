@@ -5,9 +5,12 @@ import {
     EuiPageHeader,
     EuiSpacer,
 } from '@elastic/eui';
-import StatCards from '../components/StartPage/StatCards';
-import NewProcessPanel from '../components/StartPage/NewProcessPanel';
-import ListsRowStartPage from '../components/StartPage/ListsRowStartPage';
+// "Circular dependency between "example-orchestrator-ui" and "orchestrator-ui-components" detected: example-orchestrator-ui" How can it be solved ?
+import {
+    StatCards,
+    NewProcessPanel,
+    MultiListSection,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
     // Move this to app.tsx  ?
@@ -38,7 +41,7 @@ export function Index() {
             <EuiSpacer />
             <StatCards />
             <EuiSpacer />
-            <ListsRowStartPage />
+            <MultiListSection />
         </>
     );
 }

@@ -7,6 +7,7 @@ export enum Environment {
 
 export type OrchestratorConfig = {
     environmentName: Environment | string;
+    orchestratorApiBaseUrl: string;
     engineStatusEndpoint: string;
     processStatusCountsEndpoint: string;
 };

@@ -39,11 +39,9 @@ type TaskCountsSummary = {
 const getTaskCountsSummary = (
     processStatusCounts?: ProcessStatusCounts,
 ): TaskCountsSummary => {
-    const failed = processStatusCounts?.task_counts.failed ?? 0;
-    const inconsistentData =
-        processStatusCounts?.task_counts.inconsistent_data ?? 0;
-    const apiUnavailable =
-        processStatusCounts?.task_counts.api_unavailable ?? 0;
+    const failed = 0;
+    const inconsistentData = 0;
+    const apiUnavailable = 0;
     return {
         failed,
         inconsistentData,
