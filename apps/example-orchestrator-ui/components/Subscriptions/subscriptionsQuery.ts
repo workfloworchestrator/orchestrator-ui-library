@@ -65,14 +65,19 @@ export const GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES: SubscriptionGridQuer
         sortBy: DEFAULT_SUBSCRIPTIONS_SORT_ORDER,
     };
 
-// Todo move to utils file (keep in app, not lib)
-export const getSortOrderValue = (isDescending: boolean) =>
-    isDescending ? PythiaSortOrder.Desc : PythiaSortOrder.Asc;
+export const getPythiaSortOrderFromString = (
+    sortOrder: string,
+): PythiaSortOrder | undefined => {
+    if (!sortOrder) {
+        return undefined;
+    }
 
-export const sortOrderIsDescending = (sortOrder: PythiaSortOrder) =>
-    sortOrder === PythiaSortOrder.Desc;
-
-export const getFlippedSortOrderValue = (sortOrder: PythiaSortOrder) =>
-    sortOrder === PythiaSortOrder.Desc
-        ? PythiaSortOrder.Asc
-        : PythiaSortOrder.Desc;
+    switch (sortOrder.toUpperCase()) {
+        case PythiaSortOrder.Asc.toString():
+            return PythiaSortOrder.Asc;
+        case PythiaSortOrder.Desc.toString():
+            return PythiaSortOrder.Desc;
+        default:
+            return undefined;
+    }
+};

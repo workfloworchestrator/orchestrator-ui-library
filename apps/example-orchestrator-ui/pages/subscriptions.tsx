@@ -2,21 +2,22 @@ import React from 'react';
 import NoSSR from 'react-no-ssr';
 import { Subscriptions } from '../components/Subscriptions/Subscriptions';
 import {
-    BooleanParam,
     NumberParam,
-    StringParam,
+    ObjectParam,
     useQueryParam,
     withDefault,
 } from 'use-query-params';
 import {
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     DEFAULT_SORT_ORDER,
-    getSortOrderValue,
-    sortOrderIsDescending,
     DEFAULT_SORT_FIELD,
+    getPythiaSortOrderFromString,
 } from '../components/Subscriptions/subscriptionsQuery';
+import { useRouter } from 'next/router';
 
 export default function SubscriptionsPage() {
+    const router = useRouter();
+
     const [pageSize, setPageSize] = useQueryParam(
         'pageSize',
         withDefault(
@@ -31,14 +32,18 @@ export default function SubscriptionsPage() {
             GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.after,
         ),
     );
-    const [sortField, setSortField] = useQueryParam(
-        'sortField',
-        withDefault(StringParam, DEFAULT_SORT_FIELD),
+    const [sorting, setSorting] = useQueryParam(
+        'sorting',
+        withDefault(ObjectParam, {
+            field: DEFAULT_SORT_FIELD,
+            direction: DEFAULT_SORT_ORDER.toString(),
+        }),
     );
-    const [sortOrder, setSortOrder] = useQueryParam(
-        'sortOrderDescending',
-        withDefault(BooleanParam, sortOrderIsDescending(DEFAULT_SORT_ORDER)),
-    );
+
+    const sortOrder = getPythiaSortOrderFromString(sorting.direction);
+    if (!sortOrder) {
+        router.replace('/subscriptions');
+    }
 
     return (
         <NoSSR>
@@ -48,12 +53,14 @@ export default function SubscriptionsPage() {
                 pageIndex={pageIndex}
                 setPageIndex={setPageIndex}
                 sortOrder={{
-                    field: sortField,
-                    order: getSortOrderValue(sortOrder),
+                    field: sorting.field,
+                    order: sortOrder,
                 }}
                 setSortOrder={(updatedSortOrder) => {
-                    setSortField(updatedSortOrder.field);
-                    setSortOrder(sortOrderIsDescending(updatedSortOrder.order));
+                    setSorting({
+                        field: updatedSortOrder.field,
+                        direction: updatedSortOrder.order,
+                    });
                 }}
             />
         </NoSSR>

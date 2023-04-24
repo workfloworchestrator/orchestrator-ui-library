@@ -8,6 +8,7 @@ import {
     EuiDataGridStyle,
 } from '@elastic/eui';
 import { ReactNode, useRef, useState } from 'react';
+import { EuiDataGridSorting } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -26,18 +27,32 @@ export type TableColumns<T> = {
     };
 };
 
+export enum SortDirection {
+    Asc = 'ASC',
+    Desc = 'DESC',
+}
+
+export type DataSorting<T> = {
+    columnId: keyof TableColumns<T>;
+    sortDirection: SortDirection;
+};
+
 export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
     initialColumnOrder: Array<keyof TableColumns<T>>;
+    dataSorting?: DataSorting<T>;
     handleRowClick?: (row: T) => void;
+    updateDataSorting?: (updatedDataSorting: DataSorting<T>) => void;
 };
 
 export const Table = <T,>({
     data,
     columns,
     initialColumnOrder,
+    dataSorting,
     handleRowClick,
+    updateDataSorting,
 }: TableProps<T>) => {
     const initialColumnOrderRef = useRef(
         getInitialColumnOrder(columns, initialColumnOrder),
@@ -69,7 +84,6 @@ export const Table = <T,>({
     };
 
     // Todo implement
-    // - sort props
     // - pagination
     return (
         <EuiDataGrid
@@ -78,10 +92,10 @@ export const Table = <T,>({
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
-            sorting={{
-                columns: [],
-                onSort: (sortData) => console.log('Sorting', { sortData }),
-            }}
+            sorting={columnSortToEuiDataGridSorting(
+                dataSorting,
+                updateDataSorting,
+            )}
             rowCount={data.length}
             renderCellValue={renderCellValue}
         />
@@ -112,4 +126,35 @@ function getInitialColumnOrder<T>(
                 columnOrderIds.indexOf(left.id) -
                 columnOrderIds.indexOf(right.id),
         );
+}
+
+function columnSortToEuiDataGridSorting<T>(
+    columnSort?: DataSorting<T>,
+    updateColumnSort?: (columnSort: DataSorting<T>) => void,
+): EuiDataGridSorting {
+    return {
+        columns: columnSort
+            ? [
+                  {
+                      id: columnSort.columnId.toString(),
+                      direction:
+                          columnSort.sortDirection === SortDirection.Asc
+                              ? 'asc'
+                              : 'desc',
+                  },
+              ]
+            : [],
+        onSort: (columns) => {
+            const lastSortData = columns.slice(-1)[0];
+            if (updateColumnSort && lastSortData) {
+                updateColumnSort({
+                    columnId: lastSortData.id as keyof T,
+                    sortDirection:
+                        lastSortData.direction === 'asc'
+                            ? SortDirection.Asc
+                            : SortDirection.Desc,
+                });
+            }
+        },
+    };
 }

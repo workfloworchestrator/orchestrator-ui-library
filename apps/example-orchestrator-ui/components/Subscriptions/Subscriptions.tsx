@@ -1,5 +1,6 @@
 import {
     getStatusBadgeColor,
+    SortDirection,
     Table,
     TableColumns,
     useQueryWithGraphql,
@@ -8,13 +9,13 @@ import React, { FC } from 'react';
 import { EuiBadge } from '@elastic/eui';
 import {
     MyBaseSubscriptionEdge,
+    PythiaSortOrder,
     SubscriptionGridQuery,
     SubscriptionsSort,
 } from '../../__generated__/graphql';
 import {
     GET_SUBSCRIPTIONS_PAGINATED,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-    getFlippedSortOrderValue,
 } from './subscriptionsQuery';
 import { useRouter } from 'next/router';
 
@@ -38,21 +39,15 @@ type SubscriptionsProps = {
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
 };
 
-export const Subscriptions: FC<SubscriptionsProps> = (props) => {
+export const Subscriptions: FC<SubscriptionsProps> = ({
+    pageSize,
+    pageIndex,
+    sortOrder,
+    setPageSize,
+    setPageIndex,
+    setSortOrder,
+}) => {
     const router = useRouter();
-    const { isLoading, data } = useQueryWithGraphql(
-        GET_SUBSCRIPTIONS_PAGINATED,
-        {
-            ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-            first: props.pageSize,
-            after: props.pageIndex,
-            sortBy: props.sortOrder,
-        },
-    );
-
-    if (isLoading || !data) {
-        return <h1>Loading...</h1>;
-    }
 
     const tableColumnConfig: TableColumns<Subscription> = {
         description: {
@@ -107,6 +102,33 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
         },
     };
 
+    const sortedColumnId = getTypedFieldFromObject(
+        sortOrder.field,
+        tableColumnConfig,
+    );
+
+    const { isLoading, data } = useQueryWithGraphql(
+        GET_SUBSCRIPTIONS_PAGINATED,
+        {
+            ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+            first: pageSize,
+            after: pageIndex,
+            sortBy: {
+                field: sortedColumnId?.toString(),
+                order: sortOrder.order,
+            },
+        },
+    );
+
+    if (!sortedColumnId) {
+        router.replace('/subscriptions');
+        return;
+    }
+
+    if (isLoading || !data) {
+        return <h1>Loading...</h1>;
+    }
+
     const initialColumnOrder: Array<keyof Subscription> = [
         'subscriptionId',
         'description',
@@ -121,39 +143,52 @@ export const Subscriptions: FC<SubscriptionsProps> = (props) => {
     return (
         <>
             {/*Todo remove temporary controls*/}
-            <button onClick={() => props.setPageSize(props.pageSize + 1)}>
-                [+1]
-            </button>
-            <button onClick={() => props.setPageSize(props.pageSize - 1)}>
-                [-1]
-            </button>
-            <button
-                onClick={() =>
-                    props.setSortOrder({
-                        ...props.sortOrder,
-                        order: getFlippedSortOrderValue(props.sortOrder.order),
-                    })
-                }
-            >
-                [Flip sort order]
-            </button>
+            <button onClick={() => setPageSize(pageSize + 1)}>[+1]</button>
+            <button onClick={() => setPageSize(pageSize - 1)}>[-1]</button>
 
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnConfig}
                 initialColumnOrder={initialColumnOrder}
+                dataSorting={{
+                    columnId: sortedColumnId,
+                    sortDirection: mapPythiaSortOrderToSortDirection(
+                        sortOrder.order,
+                    ),
+                }}
                 handleRowClick={({ subscriptionId }) =>
                     router.push(`/subscriptions/${subscriptionId}`)
+                }
+                updateDataSorting={(dataSorting) =>
+                    setSortOrder({
+                        field: dataSorting.columnId,
+                        order:
+                            dataSorting.sortDirection === SortDirection.Asc
+                                ? PythiaSortOrder.Asc
+                                : PythiaSortOrder.Desc,
+                    })
                 }
             ></Table>
         </>
     );
 };
 
-const mapApiResponseToSubscriptionTableData = (
+// todo is there a built in solution in TS for this?
+// todo move to lib
+function getTypedFieldFromObject<T>(
+    field: string,
+    object: T,
+): undefined | keyof T {
+    if (!Object.keys(object).includes(field)) {
+        return undefined;
+    }
+    return field as keyof T;
+}
+
+function mapApiResponseToSubscriptionTableData(
     graphqlResponse: SubscriptionGridQuery,
-): Subscription[] =>
-    graphqlResponse.subscriptions.edges.map(
+): Subscription[] {
+    return graphqlResponse.subscriptions.edges.map(
         (baseSubscription: MyBaseSubscriptionEdge): Subscription => {
             const {
                 description,
@@ -177,3 +212,12 @@ const mapApiResponseToSubscriptionTableData = (
             };
         },
     );
+}
+
+function mapPythiaSortOrderToSortDirection(
+    sortOrder: PythiaSortOrder,
+): SortDirection {
+    return sortOrder === PythiaSortOrder.Asc
+        ? SortDirection.Asc
+        : SortDirection.Desc;
+}
