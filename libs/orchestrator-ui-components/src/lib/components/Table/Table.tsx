@@ -26,13 +26,6 @@ export type TableColumns<T> = {
     };
 };
 
-// When optional, the table does not render the undefined columns -- still would be nice to prevent users defining {} for every column
-// export type TableColumns<T> = {
-//     [Property in keyof T]?: Omit<EuiDataGridColumn, 'id'> & {
-//         renderCell?: (cellValue: T[Property]) => ReactNode;
-//     };
-// };
-
 export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
@@ -46,31 +39,10 @@ export const Table = <T,>({
     initialColumnOrder,
     handleRowClick,
 }: TableProps<T>) => {
-    // getInitialColumnOrder
-    const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
-        (colKey) => {
-            const column = columns[colKey as keyof T];
-            return {
-                id: colKey,
-                isExpandable: false,
-                ...column,
-            };
-        },
-    );
-    const columnOrderIds = initialColumnOrder.map((columnId) =>
-        columnId.toString(),
-    );
     const initialColumnOrderRef = useRef(
-        euiDataGridColumns
-            .slice()
-            .sort(
-                (left, right) =>
-                    columnOrderIds.indexOf(left.id) -
-                    columnOrderIds.indexOf(right.id),
-            ),
+        getInitialColumnOrder(columns, initialColumnOrder),
     );
 
-    // getDefaultVisibleColumns
     const defaultVisibleColumns: string[] = initialColumnOrder
         .filter((columnId) => !columns[columnId].isHiddenByDefault)
         .map((columnId) => columnId.toString());
@@ -79,7 +51,6 @@ export const Table = <T,>({
     const renderCellValue = ({
         rowIndex,
         columnId,
-        schema,
         setCellProps,
     }: EuiDataGridCellValueElementProps) => {
         const dataRow = data[rowIndex];
@@ -92,16 +63,9 @@ export const Table = <T,>({
             onClick: () => handleRowClick && handleRowClick(dataRow),
         });
 
-        // Used together with the optional column prop, see commented code above
-        if (!column) {
-            return;
-        }
-
-        if (!column.renderCell) {
-            return `${cellValue}`;
-        }
-
-        return column.renderCell(cellValue);
+        return column.renderCell
+            ? column.renderCell(cellValue)
+            : `${cellValue}`;
     };
 
     // Todo implement
@@ -123,3 +87,29 @@ export const Table = <T,>({
         />
     );
 };
+
+function getInitialColumnOrder<T>(
+    columns: TableColumns<T>,
+    initialColumnOrder: Array<keyof TableColumns<T>>,
+) {
+    const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
+        (colKey) => {
+            const column = columns[colKey as keyof T];
+            return {
+                id: colKey,
+                isExpandable: false,
+                ...column,
+            };
+        },
+    );
+    const columnOrderIds = initialColumnOrder.map((columnId) =>
+        columnId.toString(),
+    );
+    return euiDataGridColumns
+        .slice()
+        .sort(
+            (left, right) =>
+                columnOrderIds.indexOf(left.id) -
+                columnOrderIds.indexOf(right.id),
+        );
+}

@@ -1,6 +1,6 @@
 export * from './lib/components/custom-button/custom-button';
 export * from './lib/components/OrchestratorPageTemplate/OrchestratorPageTemplate';
-export * from './lib/components/Subscriptions/Table';
+export * from './lib/components/Table/Table';
 
 export * from './lib/theme/defaultOrchestratorTheme';
 export * from './lib/utils';
