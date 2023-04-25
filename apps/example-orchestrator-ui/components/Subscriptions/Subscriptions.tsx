@@ -1,9 +1,10 @@
 import {
-    getStatusBadgeColor,
     SortDirection,
     Table,
     TableColumns,
     useQueryWithGraphql,
+    getTypedFieldFromObject,
+    getStatusBadgeColor,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { EuiBadge } from '@elastic/eui';
@@ -172,18 +173,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         </>
     );
 };
-
-// todo is there a built in solution in TS for this?
-// todo move to lib
-function getTypedFieldFromObject<T>(
-    field: string,
-    object: T,
-): undefined | keyof T {
-    if (!Object.keys(object).includes(field)) {
-        return undefined;
-    }
-    return field as keyof T;
-}
 
 function mapApiResponseToSubscriptionTableData(
     graphqlResponse: SubscriptionGridQuery,

@@ -4,11 +4,15 @@ import 'regenerator-runtime/runtime';
 import {
     EuiDataGrid,
     EuiDataGridCellValueElementProps,
-    EuiDataGridColumn,
     EuiDataGridStyle,
 } from '@elastic/eui';
-import { ReactNode, useRef, useState } from 'react';
-import { EuiDataGridSorting } from '@elastic/eui/src/components/datagrid/data_grid_types';
+import { useRef, useState } from 'react';
+import {
+    columnSortToEuiDataGridSorting,
+    DataSorting,
+    getInitialColumnOrder,
+    TableColumns,
+} from './columns';
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -20,27 +24,10 @@ const GRID_STYLE: EuiDataGridStyle = {
     footer: 'overline',
 };
 
-export type TableColumns<T> = {
-    [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
-        renderCell?: (cellValue: T[Property]) => ReactNode;
-        isHiddenByDefault?: boolean;
-    };
-};
-
-export enum SortDirection {
-    Asc = 'ASC',
-    Desc = 'DESC',
-}
-
-export type DataSorting<T> = {
-    columnId: keyof TableColumns<T>;
-    sortDirection: SortDirection;
-};
-
 export type TableProps<T> = {
     data: T[];
     columns: TableColumns<T>;
-    initialColumnOrder: Array<keyof TableColumns<T>>;
+    initialColumnOrder: Array<keyof T>;
     dataSorting?: DataSorting<T>;
     handleRowClick?: (row: T) => void;
     updateDataSorting?: (updatedDataSorting: DataSorting<T>) => void;
@@ -101,60 +88,3 @@ export const Table = <T,>({
         />
     );
 };
-
-function getInitialColumnOrder<T>(
-    columns: TableColumns<T>,
-    initialColumnOrder: Array<keyof TableColumns<T>>,
-) {
-    const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
-        (colKey) => {
-            const column = columns[colKey as keyof T];
-            return {
-                id: colKey,
-                isExpandable: false,
-                ...column,
-            };
-        },
-    );
-    const columnOrderIds = initialColumnOrder.map((columnId) =>
-        columnId.toString(),
-    );
-    return euiDataGridColumns
-        .slice()
-        .sort(
-            (left, right) =>
-                columnOrderIds.indexOf(left.id) -
-                columnOrderIds.indexOf(right.id),
-        );
-}
-
-function columnSortToEuiDataGridSorting<T>(
-    columnSort?: DataSorting<T>,
-    updateColumnSort?: (columnSort: DataSorting<T>) => void,
-): EuiDataGridSorting {
-    return {
-        columns: columnSort
-            ? [
-                  {
-                      id: columnSort.columnId.toString(),
-                      direction:
-                          columnSort.sortDirection === SortDirection.Asc
-                              ? 'asc'
-                              : 'desc',
-                  },
-              ]
-            : [],
-        onSort: (columns) => {
-            const lastSortData = columns.slice(-1)[0];
-            if (updateColumnSort && lastSortData) {
-                updateColumnSort({
-                    columnId: lastSortData.id as keyof T,
-                    sortDirection:
-                        lastSortData.direction === 'asc'
-                            ? SortDirection.Asc
-                            : SortDirection.Desc,
-                });
-            }
-        },
-    };
-}
