@@ -26,9 +26,12 @@ type Subscription = {
     status: string;
     insync: boolean;
     startDate: string;
+    endDate: string;
     productName: string;
+    tag: string;
     organisationName: string;
     organisationAbbreviation: string;
+    notes: string;
 };
 
 type SubscriptionsProps = {
@@ -57,6 +60,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             renderCell: (cellValue) => <h1>{cellValue}</h1>,
         },
         insync: {
+            displayAsText: 'In Sync',
+            initialWidth: 110,
             renderCell: (cellValue) => (
                 <EuiBadge
                     color={cellValue ? 'success' : 'danger'}
@@ -77,8 +82,25 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         productName: {
             displayAsText: 'Product',
             initialWidth: 250,
+            isHiddenByDefault: true,
+        },
+        tag: {
+            initialWidth: 100,
+            displayAsText: 'Tag',
         },
         startDate: {
+            displayAsText: 'Start Date',
+            initialWidth: 150,
+            renderCell: (cellValue) =>
+                cellValue
+                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
+                          'nl-NL',
+                      )
+                    : '',
+        },
+        endDate: {
+            displayAsText: 'End Date',
+            initialWidth: 150,
             renderCell: (cellValue) =>
                 cellValue
                     ? new Date(parseInt(cellValue) * 1000).toLocaleString(
@@ -88,6 +110,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         status: {
             displayAsText: 'Status',
+            initialWidth: 100,
             renderCell: (cellValue) => (
                 <EuiBadge
                     color={getStatusBadgeColor(cellValue)}
@@ -99,7 +122,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         subscriptionId: {
             displayAsText: 'ID',
+            initialWidth: 100,
             renderCell: (cellValue) => cellValue.slice(0, 8),
+        },
+        notes: {
+            displayAsText: 'Notes',
+            renderCell: (cellValue) => (cellValue ? cellValue : ''),
         },
     };
 
@@ -133,12 +161,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const initialColumnOrder: Array<keyof Subscription> = [
         'subscriptionId',
         'description',
-        'productName',
-        'organisationName',
-        'organisationAbbreviation',
         'status',
         'insync',
+        'organisationName',
+        'organisationAbbreviation',
+        'productName',
+        'tag',
         'startDate',
+        'endDate',
+        'notes',
     ];
 
     return (
@@ -195,8 +226,10 @@ function mapApiResponseToSubscriptionTableData(
                 organisation,
                 product,
                 startDate,
+                endDate,
                 status,
                 subscriptionId,
+                note,
             } = baseSubscription.node;
 
             return {
@@ -205,9 +238,12 @@ function mapApiResponseToSubscriptionTableData(
                 organisationName: organisation.name,
                 organisationAbbreviation: organisation.abbreviation,
                 productName: product.name,
+                tag: product.tag,
                 startDate,
+                endDate,
                 status,
                 subscriptionId,
+                notes: note,
             };
         },
     );
