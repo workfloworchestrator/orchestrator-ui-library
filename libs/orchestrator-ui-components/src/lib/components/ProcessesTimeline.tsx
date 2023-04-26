@@ -11,7 +11,6 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-
 const Card = () => {
     return (
         <div style={{ marginTop: 5 }}>
@@ -110,7 +109,7 @@ const comments: EuiCommentProps[] = [
     {
         username: 'Create',
         timelineAvatarAriaLabel: 'Create Firewall',
-        timelineAvatar: <EuiAvatar name="Create" />,
+        timelineAvatar: <EuiAvatar name="C" />,
         children: (
             <>
                 <EuiText>
