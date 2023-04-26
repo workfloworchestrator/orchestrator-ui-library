@@ -13,6 +13,7 @@ import {
     getInitialColumnOrder,
     TableColumns,
 } from './columns';
+import { EuiDataGridPaginationProps } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -24,8 +25,13 @@ const GRID_STYLE: EuiDataGridStyle = {
     footer: 'overline',
 };
 
+export type Pagination = EuiDataGridPaginationProps & {
+    totalRecords: number;
+};
+
 export type TableProps<T> = {
     data: T[];
+    pagination: Pagination;
     columns: TableColumns<T>;
     initialColumnOrder: Array<keyof T>;
     dataSorting?: DataSorting<T>;
@@ -35,6 +41,7 @@ export type TableProps<T> = {
 
 export const Table = <T,>({
     data,
+    pagination,
     columns,
     initialColumnOrder,
     dataSorting,
@@ -55,9 +62,15 @@ export const Table = <T,>({
         columnId,
         setCellProps,
     }: EuiDataGridCellValueElementProps) => {
-        const dataRow = data[rowIndex];
-        const column = columns[columnId as keyof T];
+        const { pageSize, pageIndex } = pagination;
+        const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
+        const dataRow = data[rowIndexOnPage];
+        if (!dataRow) {
+            return;
+        }
+
+        const column = columns[columnId as keyof T];
         const cellValue = dataRow[columnId as keyof T];
 
         setCellProps({
@@ -70,8 +83,6 @@ export const Table = <T,>({
             : `${cellValue}`;
     };
 
-    // Todo implement
-    // - pagination
     return (
         <EuiDataGrid
             aria-label="Data Grid"
@@ -79,11 +90,12 @@ export const Table = <T,>({
             height={'calc(100vh - 115px)'}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
+            pagination={pagination}
             sorting={columnSortToEuiDataGridSorting(
                 dataSorting,
                 updateDataSorting,
             )}
-            rowCount={data.length}
+            rowCount={pagination.totalRecords}
             renderCellValue={renderCellValue}
         />
     );

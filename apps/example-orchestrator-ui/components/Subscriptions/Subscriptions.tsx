@@ -149,6 +149,16 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
+                pagination={{
+                    pageSize: pageSize,
+                    pageIndex: Math.floor(pageIndex / pageSize),
+                    pageSizeOptions: [5, 10, 15, 20, 25, 100], // todo move to constants file
+                    totalRecords: 300, // todo get from graphql result
+                    onChangePage: (updatedPageNumber) =>
+                        setPageIndex(updatedPageNumber * pageSize),
+                    onChangeItemsPerPage: (itemsPerPage) =>
+                        setPageSize(itemsPerPage),
+                }}
                 columns={tableColumnConfig}
                 initialColumnOrder={initialColumnOrder}
                 dataSorting={{
