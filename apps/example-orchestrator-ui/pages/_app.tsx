@@ -17,6 +17,7 @@ import {
     ORCHESTRATOR_API_BASE_URL,
     PROCESS_STATUS_COUNTS_ENDPOINT,
     GRAPHQL_ENDPOINT,
+    SUBSCRIPTION_ACTIONS_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
@@ -42,6 +43,7 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     graphqlEndpoint: GRAPHQL_ENDPOINT,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
+    subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {

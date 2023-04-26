@@ -479,7 +479,7 @@ const Subscription = () => {
                 const parentNode = idToNodeMap[shallowCopy.parent];
 
                 // Add EUI Fields
-                shallowCopy.label = shallowCopy.resourceTypes.name;
+                shallowCopy.label = shallowCopy.resourceTypes.title;
                 shallowCopy.isExpanded = true;
                 shallowCopy.icon = <EuiIcon type="arrowRight" />;
                 shallowCopy.callback = () =>
@@ -577,7 +577,7 @@ const Subscription = () => {
                                 <EuiText>
                                     <h3>Product blocks</h3>
                                 </EuiText>
-                                {tree === null && <EuiLoadingContent/>}
+                                {tree === null && <EuiLoadingContent />}
                                 {tree !== null && (
                                     <EuiTreeView
                                         items={[tree]}

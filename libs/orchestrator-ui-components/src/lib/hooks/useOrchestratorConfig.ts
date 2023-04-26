@@ -9,8 +9,9 @@ export type OrchestratorConfig = {
     environmentName: Environment | string;
     orchestratorApiBaseUrl: string;
     engineStatusEndpoint: string;
-    processStatusCountsEndpoint: string;
     graphqlEndpoint: string;
+    processStatusCountsEndpoint: string;
+    subscriptionActionsEndpoint: string;
 };
 
 export const useOrchestratorConfig = (

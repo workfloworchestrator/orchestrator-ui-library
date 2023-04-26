@@ -3,13 +3,20 @@ import {
     EuiBadge,
     EuiButton,
     EuiContextMenu,
+    EuiContextMenuItem,
+    EuiContextMenuPanel,
+    EuiPanel,
+    EuiAvatar,
+    EuiTitle,
     EuiFormRow,
     EuiIcon,
     EuiPopover,
     EuiSpacer,
+    EuiSelectable,
     EuiSwitch,
     useGeneratedHtmlId,
 } from '@elastic/eui';
+import { useSubscriptionActions } from '../hooks/useSubscriptionActions';
 
 export type SubscriptionActionsProps = {
     subscriptionId: string | string[];
@@ -19,18 +26,9 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
     const [isPopoverOpen, setPopover] = useState(false);
-
-    const embeddedCodeSwitchId__1 = useGeneratedHtmlId({
-        prefix: 'embeddedCodeSwitch',
-        suffix: 'first',
-    });
-    const embeddedCodeSwitchId__2 = useGeneratedHtmlId({
-        prefix: 'embeddedCodeSwitch',
-        suffix: 'second',
-    });
-    const contextMenuPopoverId = useGeneratedHtmlId({
-        prefix: 'contextMenuPopover',
-    });
+    const { data: subscriptionActions } = useSubscriptionActions(
+        '8e22de88-1140-49eb-8c09-498f69654b4b',
+    );
 
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
@@ -40,119 +38,58 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
         setPopover(false);
     };
 
-    const panels = [
-        {
-            id: 0,
-            title: 'This is a context menu',
-            items: [
-                {
-                    name: 'Handle an onClick',
-                    icon: 'search',
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-                {
-                    name: 'Go to a link',
-                    icon: 'user',
-                    href: 'http://elastic.co',
-                    target: '_blank',
-                },
-                {
-                    name: 'Nest panels',
-                    icon: 'wrench',
-                    panel: 1,
-                },
-                {
-                    name: 'Add a tooltip',
-                    icon: 'document',
-                    toolTipTitle: 'Optional tooltip',
-                    toolTipContent: 'Optional content for a tooltip',
-                    toolTipPosition: 'right',
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-                {
-                    name: 'Use an app icon',
-                    icon: 'visualizeApp',
-                },
-                {
-                    name: 'Pass an icon as a component to customize it',
-                    icon: <EuiIcon type="trash" size="m" color="danger" />,
-                },
-                {
-                    name: 'Disabled option',
-                    icon: 'user',
-                    toolTipContent: 'For reasons, this item is disabled',
-                    toolTipPosition: 'right',
-                    disabled: true,
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-            ],
-        },
-        {
-            id: 1,
-            initialFocusedItemIndex: 1,
-            title: 'Nest panels',
-            items: [
-                {
-                    name: 'PDF reports',
-                    icon: 'user',
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-                {
-                    name: 'Embed code',
-                    icon: 'user',
-                    panel: 2,
-                },
-                {
-                    name: 'Permalinks',
-                    icon: 'user',
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: 'Embed code',
-            content: (
-                <div style={{ padding: 16 }}>
-                    <EuiFormRow
-                        label="Generate a public snapshot?"
-                        hasChildLabel={false}
-                    >
-                        <EuiSwitch
-                            name="switch"
-                            label="Snapshot data"
-                            checked={true}
-                            onChange={() => {}}
-                        />
-                    </EuiFormRow>
-                    <EuiFormRow
-                        label="Include the following in the embed"
-                        hasChildLabel={false}
-                    >
-                        <EuiSwitch
-                            name="switch"
-                            label="Current time range"
-                            checked={true}
-                            onChange={() => {}}
-                        />
-                    </EuiFormRow>
-                    <EuiSpacer />
-                    <EuiButton fill>Copy iFrame code</EuiButton>
-                </div>
-            ),
-        },
-    ];
+    const createWorkflows = []
+    const modifyWorkflows = []
+    const terminateWorkflows = []
+    const systemWorkflows = []
 
+    if (subscriptionActions) {
+        subscriptionActions.create.map((item) =>
+            createWorkflows.push(
+                <EuiContextMenuItem icon={<EuiAvatar name="Create" size="s"/>}>{item.description}</EuiContextMenuItem>
+
+            ),
+        );
+        subscriptionActions.modify.map((item) =>
+            modifyWorkflows.push(
+                <EuiContextMenuItem icon={<EuiAvatar name="M" size="s"/>}>{item.description}</EuiContextMenuItem>
+
+            ),
+        );
+
+        subscriptionActions.terminate.map((item) =>
+            terminateWorkflows.push(
+                <EuiContextMenuItem icon={<EuiAvatar name="Te" size="s"/>}>{item.description}</EuiContextMenuItem>
+
+            ),
+        );
+        subscriptionActions.system.map((item) =>
+            systemWorkflows.push(
+                <EuiContextMenuItem icon={<EuiAvatar name="Sys" size="s"/>}>{item.description}</EuiContextMenuItem>
+
+            ),
+        );
+
+
+        // subscriptionActions.modify.map((item) =>
+        //     panels[1].items.push({
+        //         name: item.description,
+        //         icon: <EuiAvatar name="M" size="s" />,
+        //         onClick: () => {
+        //             closePopover();
+        //         },
+        //     }),
+        // );
+        // subscriptionActions.terminate.map((item) =>
+        //     panels[2].items.push({
+        //         name: item.description,
+        //         icon: <EuiAvatar name="M" size="s" />,
+        //         onClick: () => {
+        //             closePopover();
+        //         },
+        //     }),
+        // );
+    }
     const button = (
         <EuiButton
             iconType="arrowDown"
@@ -165,16 +102,33 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
 
     return (
         <EuiPopover
-            id={contextMenuPopoverId}
+            id="subscriptionActionPopover"
             button={button}
             isOpen={isPopoverOpen}
             closePopover={closePopover}
             panelPaddingSize="none"
             anchorPosition="downLeft"
         >
-            <EuiContextMenu initialPanelId={0}
-                            /* @ts-ignore */
-                            panels={panels} />
+            <EuiContextMenuPanel>
+                <EuiPanel color="transparent" paddingSize="s">
+                <EuiTitle size="xxxs">
+                    <h3>Create workflows</h3>
+                </EuiTitle>
+                {createWorkflows}
+                    <EuiTitle size="xxxs">
+                        <h3>Modify workflows</h3>
+                    </EuiTitle>
+                    {modifyWorkflows}
+                    <EuiTitle size="xxxs">
+                        <h3>Terminate workflows</h3>
+                    </EuiTitle>
+                    {terminateWorkflows}
+                    <EuiTitle size="xxxs">
+                        <h3>System workflows</h3>
+                    </EuiTitle>
+                    {systemWorkflows}
+                </EuiPanel>
+            </EuiContextMenuPanel>
         </EuiPopover>
     );
 };
