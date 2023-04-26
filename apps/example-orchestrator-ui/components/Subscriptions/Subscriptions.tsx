@@ -5,6 +5,9 @@ import {
     useQueryWithGraphql,
     getTypedFieldFromObject,
     getStatusBadgeColor,
+    CheckmarkCircleFill,
+    MinusCircleOutline,
+    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { EuiBadge } from '@elastic/eui';
@@ -52,6 +55,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setSortOrder,
 }) => {
     const router = useRouter();
+    const { theme } = useOrchestratorTheme();
 
     const tableColumnConfig: TableColumns<Subscription> = {
         description: {
@@ -62,14 +66,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         insync: {
             displayAsText: 'In Sync',
             initialWidth: 110,
-            renderCell: (cellValue) => (
-                <EuiBadge
-                    color={cellValue ? 'success' : 'danger'}
-                    isDisabled={false}
-                >
-                    {cellValue.toString()}
-                </EuiBadge>
-            ),
+            renderCell: (cellValue) =>
+                cellValue ? (
+                    <CheckmarkCircleFill color={theme.colors.primary} />
+                ) : (
+                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                ),
         },
         organisationName: {
             displayAsText: 'Customer Name',
