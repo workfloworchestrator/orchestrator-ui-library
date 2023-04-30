@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
 import { Process, Subscription } from '../../types';
+import Link from 'next/link';
 
 export interface ListItemStartPageProps {
     item: Subscription | Process;
@@ -20,7 +21,7 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
             return (
                 <EuiFlexItem>
                     <EuiTextColor
-                        color={hoverState ? '#5b90c4' : 'black'}
+                        color={hoverState ? '#397dc2' : 'black'}
                         style={{ fontWeight: 500, transition: '0.2s' }}
                     >
                         {item.product.name}
@@ -52,18 +53,24 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     };
 
     return (
-        <EuiFlexGroup
-            style={{ cursor: 'pointer', paddingBlock: 10 }}
-            onMouseOver={() => setHoverState(true)}
-            onMouseLeave={() => setHoverState(false)}
+        <Link
+            href={`/subscriptions/${
+                'subscription_id' in item ? item.subscription_id : ''
+            }`}
         >
-            {renderItem(item, type)}
-            <EuiFlexItem
-                grow={false}
-                style={{ display: hoverState ? 'block' : 'none' }}
+            <EuiFlexGroup
+                style={{ cursor: 'pointer', paddingBlock: 10 }}
+                onMouseOver={() => setHoverState(true)}
+                onMouseLeave={() => setHoverState(false)}
             >
-                <EuiIcon type="sortRight" color="primary" />
-            </EuiFlexItem>
-        </EuiFlexGroup>
+                {renderItem(item, type)}
+                <EuiFlexItem
+                    grow={false}
+                    style={{ display: hoverState ? 'block' : 'none' }}
+                >
+                    <EuiIcon type="sortRight" color="primary" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </Link>
     );
 };

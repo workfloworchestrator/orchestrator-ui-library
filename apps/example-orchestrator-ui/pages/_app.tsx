@@ -14,6 +14,7 @@ import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
     ENGINE_STATUS_ENDPOINT,
+    ORCHESTRATOR_API_BASE_URL,
     PROCESS_STATUS_COUNTS_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
@@ -32,6 +33,7 @@ const queryClientConfig = {
 };
 
 const initialOrchestratorConfig: OrchestratorConfig = {
+    orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
     environmentName:

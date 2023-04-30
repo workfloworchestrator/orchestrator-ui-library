@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { ItemsList } from '../types';
 
@@ -19,81 +19,60 @@ async function getRecentProcesses(apiUrl: string) {
 
 export const useFavouriteSubscriptions = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const [data, setData] = useState<ItemsList>({
-        buttonName: '',
-        items: [],
-        title: '',
-        type: '',
-    });
-
-    useQuery(
-        ['favouriteSubscriptions'],
-        () => getFavouriteSubscriptions(orchestratorApiBaseUrl),
-        {
-            onSuccess: (data) => {
-                setData({
-                    type: 'subscription',
-                    title: 'Favourite Subscriptions',
-                    items: data,
-                    buttonName: 'Show all favourites',
-                });
-            },
-        },
+    const { data, isLoading } = useQuery(['favouriteSubscriptions'], () =>
+        getFavouriteSubscriptions(orchestratorApiBaseUrl),
     );
+    const initialData: ItemsList = {
+        buttonName: 'Show all favourites',
+        items: [],
+        title: 'Favourite Subscriptions',
+        type: 'subscription',
+    };
 
-    return data;
+    return isLoading
+        ? initialData
+        : {
+              ...initialData,
+              items: data,
+          };
 };
 
 export const useProcessesAttention = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const [data, setData] = useState<ItemsList>({
-        buttonName: '',
-        items: [],
-        title: '',
-        type: '',
-    });
-
-    useQuery(
-        ['processesAttention'],
-        () => getProcessesNeedingAttention(orchestratorApiBaseUrl),
-        {
-            onSuccess: (data) => {
-                setData({
-                    type: 'process',
-                    title: 'Processes that need attention',
-                    items: data,
-                    buttonName: 'Show all active processes',
-                });
-            },
-        },
+    const { data, isLoading } = useQuery(['processesAttention'], () =>
+        getProcessesNeedingAttention(orchestratorApiBaseUrl),
     );
+    const initialData: ItemsList = {
+        type: 'process',
+        title: 'Processes that need attention',
+        items: [],
+        buttonName: 'Show all active processes',
+    };
 
-    return data;
+    return isLoading
+        ? initialData
+        : {
+              ...initialData,
+              items: data,
+          };
 };
 
 export const useRecentProcesses = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const [data, setData] = useState<ItemsList>({
-        buttonName: '',
-        items: [],
-        title: '',
-        type: '',
-    });
-
-    useQuery(
-        ['recentProcesses'],
-        () => getRecentProcesses(orchestratorApiBaseUrl),
-        {
-            onSuccess: (data) => {
-                setData({
-                    type: 'process',
-                    title: 'Recently completed processes',
-                    items: data,
-                    buttonName: 'Show all completed processes',
-                });
-            },
-        },
+    const { data, isLoading } = useQuery(['recentProcesses'], () =>
+        getRecentProcesses(orchestratorApiBaseUrl),
     );
+    const initialData: ItemsList = {
+        type: 'process',
+        title: 'Recently completed processes',
+        items: [],
+        buttonName: 'Show all completed processes',
+    };
 
-    return data;
+    return isLoading
+        ? initialData
+        : {
+              ...initialData,
+              items: data,
+          };
 };

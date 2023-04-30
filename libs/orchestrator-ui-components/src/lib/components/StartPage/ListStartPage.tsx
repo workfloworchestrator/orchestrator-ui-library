@@ -22,7 +22,6 @@ export default function ListStartPage({ list }: ListStartPage): ReactElement {
                     <EuiSpacer size="m" />
                     {list.items.map((item, index) => (
                         <>
-                            {console.log('item', item)}
                             <ListItemStartPage item={item} type={list.type} />
                             {index === list.items.length - 1 ? null : (
                                 <EuiHorizontalRule margin="none" />
