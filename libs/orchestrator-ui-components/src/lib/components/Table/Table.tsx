@@ -15,10 +15,13 @@ import {
 } from './columns';
 import { EuiDataGridPaginationProps } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
+// Total height of grid button bar, table header and pagination bar
+const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
+
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
     stripes: false,
-    rowHover: 'highlight', // todo try to fix color
+    rowHover: 'highlight',
     header: 'shade',
     cellPadding: 'l',
     fontSize: 'm',
@@ -83,11 +86,15 @@ export const Table = <T,>({
             : `${cellValue}`;
     };
 
+    const gridHeight = `${
+        pagination.pageSize * 40 + EUI_DATA_GRID_HEIGHT_OFFSET
+    }px`;
+
     return (
         <EuiDataGrid
             aria-label="Data Grid"
             columns={initialColumnOrderRef.current}
-            height={'calc(100vh - 115px)'}
+            height={gridHeight}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
             pagination={pagination}
