@@ -21,6 +21,7 @@ import {
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from './subscriptionsQuery';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 type Subscription = {
     subscriptionId: string;
@@ -60,7 +61,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         description: {
             displayAsText: 'Description',
             initialWidth: 400,
-            renderCell: (cellValue) => <h1>{cellValue}</h1>,
+            renderCell: (cellValue, row) => (
+                <Link href={`/subscriptions/${row.subscriptionId}`}>
+                    {cellValue}
+                </Link>
+            ),
         },
         insync: {
             displayAsText: 'In Sync',
@@ -169,45 +174,36 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     ];
 
     return (
-        <>
-            {/*Todo remove temporary controls*/}
-            <button onClick={() => setPageSize(pageSize + 1)}>[+1]</button>
-            <button onClick={() => setPageSize(pageSize - 1)}>[-1]</button>
-
-            <Table
-                data={mapApiResponseToSubscriptionTableData(data)}
-                pagination={{
-                    pageSize: pageSize,
-                    pageIndex: Math.floor(pageIndex / pageSize),
-                    pageSizeOptions: [5, 10, 15, 20, 25, 100], // todo move to constants file
-                    totalRecords: 300, // todo get from graphql result
-                    onChangePage: (updatedPageNumber) =>
-                        setPageIndex(updatedPageNumber * pageSize),
-                    onChangeItemsPerPage: (itemsPerPage) =>
-                        setPageSize(itemsPerPage),
-                }}
-                columns={tableColumnConfig}
-                initialColumnOrder={initialColumnOrder}
-                dataSorting={{
-                    columnId: sortedColumnId,
-                    sortDirection: mapPythiaSortOrderToSortDirection(
-                        sortOrder.order,
-                    ),
-                }}
-                handleRowClick={({ subscriptionId }) =>
-                    router.push(`/subscriptions/${subscriptionId}`)
-                }
-                updateDataSorting={(dataSorting) =>
-                    setSortOrder({
-                        field: dataSorting.columnId,
-                        order:
-                            dataSorting.sortDirection === SortDirection.Asc
-                                ? PythiaSortOrder.Asc
-                                : PythiaSortOrder.Desc,
-                    })
-                }
-            ></Table>
-        </>
+        <Table
+            data={mapApiResponseToSubscriptionTableData(data)}
+            pagination={{
+                pageSize: pageSize,
+                pageIndex: Math.floor(pageIndex / pageSize),
+                pageSizeOptions: [5, 10, 15, 20, 25, 100], // todo move to constants file
+                totalRecords: 300, // todo get from graphql result
+                onChangePage: (updatedPageNumber) =>
+                    setPageIndex(updatedPageNumber * pageSize),
+                onChangeItemsPerPage: (itemsPerPage) =>
+                    setPageSize(itemsPerPage),
+            }}
+            columns={tableColumnConfig}
+            initialColumnOrder={initialColumnOrder}
+            dataSorting={{
+                columnId: sortedColumnId,
+                sortDirection: mapPythiaSortOrderToSortDirection(
+                    sortOrder.order,
+                ),
+            }}
+            updateDataSorting={(dataSorting) =>
+                setSortOrder({
+                    field: dataSorting.columnId,
+                    order:
+                        dataSorting.sortDirection === SortDirection.Asc
+                            ? PythiaSortOrder.Asc
+                            : PythiaSortOrder.Desc,
+                })
+            }
+        ></Table>
     );
 };
 

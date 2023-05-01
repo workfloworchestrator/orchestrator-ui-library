@@ -76,13 +76,14 @@ export const Table = <T,>({
         const column = columns[columnId as keyof T];
         const cellValue = dataRow[columnId as keyof T];
 
-        setCellProps({
-            css: { cursor: 'pointer' },
-            onClick: () => handleRowClick && handleRowClick(dataRow),
-        });
+        handleRowClick &&
+            setCellProps({
+                css: { cursor: 'pointer' },
+                onClick: () => handleRowClick(dataRow),
+            });
 
         return column.renderCell
-            ? column.renderCell(cellValue)
+            ? column.renderCell(cellValue, dataRow)
             : `${cellValue}`;
     };
 

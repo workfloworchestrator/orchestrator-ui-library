@@ -4,7 +4,7 @@ import { EuiDataGridSorting } from '@elastic/eui/src/components/datagrid/data_gr
 
 export type TableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
-        renderCell?: (cellValue: T[Property]) => ReactNode;
+        renderCell?: (cellValue: T[Property], row: T) => ReactNode;
         isHiddenByDefault?: boolean;
     };
 };
