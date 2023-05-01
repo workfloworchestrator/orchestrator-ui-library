@@ -1,6 +1,6 @@
 import React from 'react';
 import NoSSR from 'react-no-ssr';
-import { Subscriptions } from '../components/Subscriptions/Subscriptions';
+import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import {
     NumberParam,
     ObjectParam,
@@ -12,7 +12,7 @@ import {
     DEFAULT_SORT_ORDER,
     DEFAULT_SORT_FIELD,
     getPythiaSortOrderFromString,
-} from '../components/Subscriptions/subscriptionsQuery';
+} from '../../components/Subscriptions/subscriptionsQuery';
 import { useRouter } from 'next/router';
 
 export default function SubscriptionsPage() {
