@@ -8,6 +8,8 @@ import {
     MinusCircleOutline,
     useOrchestratorTheme,
     SubscriptionStatusBadge,
+    ControlColumn,
+    PlusCircleFill,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import {
@@ -22,6 +24,7 @@ import {
 } from './subscriptionsQuery';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { EuiFlexItem } from '@elastic/eui';
 
 type Subscription = {
     subscriptionId: string;
@@ -173,6 +176,18 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         'notes',
     ];
 
+    const leadingControlColumns: ControlColumn<Subscription>[] = [
+        {
+            id: 'inlineSubscriptionDetails',
+            width: 40,
+            rowCellRender: () => (
+                <EuiFlexItem>
+                    <PlusCircleFill color={theme.colors.mediumShade} />
+                </EuiFlexItem>
+            ),
+        },
+    ];
+
     return (
         <Table
             data={mapApiResponseToSubscriptionTableData(data)}
@@ -187,6 +202,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                     setPageSize(itemsPerPage),
             }}
             columns={tableColumnConfig}
+            leadingControlColumns={leadingControlColumns}
             initialColumnOrder={initialColumnOrder}
             dataSorting={{
                 columnId: sortedColumnId,

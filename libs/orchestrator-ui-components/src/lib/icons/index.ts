@@ -4,3 +4,4 @@ export * from './LogoutIcon';
 export * from './CheckmarkCircleFill';
 export * from './IconProps';
 export * from './MinusCircleOutline';
+export * from './PlusCircleFill';

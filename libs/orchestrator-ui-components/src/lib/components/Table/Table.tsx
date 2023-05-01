@@ -9,11 +9,15 @@ import {
 import { useRef, useState } from 'react';
 import {
     columnSortToEuiDataGridSorting,
+    ControlColumn,
     DataSorting,
     getInitialColumnOrder,
     TableColumns,
 } from './columns';
-import { EuiDataGridPaginationProps } from '@elastic/eui/src/components/datagrid/data_grid_types';
+import {
+    EuiDataGridControlColumn,
+    EuiDataGridPaginationProps,
+} from '@elastic/eui/src/components/datagrid/data_grid_types';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
@@ -36,6 +40,8 @@ export type TableProps<T> = {
     data: T[];
     pagination: Pagination;
     columns: TableColumns<T>;
+    leadingControlColumns?: ControlColumn<T>[];
+    trailingControlColumns?: ControlColumn<T>[];
     initialColumnOrder: Array<keyof T>;
     dataSorting?: DataSorting<T>;
     handleRowClick?: (row: T) => void;
@@ -46,6 +52,8 @@ export const Table = <T,>({
     data,
     pagination,
     columns,
+    leadingControlColumns,
+    trailingControlColumns,
     initialColumnOrder,
     dataSorting,
     handleRowClick,
@@ -87,15 +95,40 @@ export const Table = <T,>({
             : `${cellValue}`;
     };
 
-    const gridHeight = `${
-        pagination.pageSize * 40 + EUI_DATA_GRID_HEIGHT_OFFSET
-    }px`;
+    const controlColumnToEuiDataGridControlColumnMapper: (
+        controlColumn: ControlColumn<T>,
+    ) => EuiDataGridControlColumn = ({ id, width, rowCellRender }) => ({
+        id,
+        width,
+        headerCellRender: (props) => null,
+        rowCellRender: ({ rowIndex }) => {
+            const { pageSize, pageIndex } = pagination;
+            const rowIndexOnPage = rowIndex - pageIndex * pageSize;
+
+            const dataRow = data[rowIndexOnPage];
+
+            return rowCellRender(dataRow);
+        },
+    });
+
+    const euiDataGridLeadingControlColumns = leadingControlColumns?.map(
+        controlColumnToEuiDataGridControlColumnMapper,
+    );
+
+    const euiDataGridTrailingControlColumns = trailingControlColumns?.map(
+        controlColumnToEuiDataGridControlColumnMapper,
+    );
+
+    const gridHeightValue =
+        pagination.pageSize * 40 + EUI_DATA_GRID_HEIGHT_OFFSET;
 
     return (
         <EuiDataGrid
             aria-label="Data Grid"
             columns={initialColumnOrderRef.current}
-            height={gridHeight}
+            leadingControlColumns={euiDataGridLeadingControlColumns}
+            trailingControlColumns={euiDataGridTrailingControlColumns}
+            height={`${gridHeightValue}px`}
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
             pagination={pagination}
