@@ -4,13 +4,12 @@ import {
     TableColumns,
     useQueryWithGraphql,
     getTypedFieldFromObject,
-    getStatusBadgeColor,
     CheckmarkCircleFill,
     MinusCircleOutline,
     useOrchestratorTheme,
+    SubscriptionStatusBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
-import { EuiBadge } from '@elastic/eui';
 import {
     MyBaseSubscriptionEdge,
     PythiaSortOrder,
@@ -112,14 +111,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         status: {
             displayAsText: 'Status',
-            initialWidth: 100,
+            initialWidth: 110,
             renderCell: (cellValue) => (
-                <EuiBadge
-                    color={getStatusBadgeColor(cellValue)}
-                    isDisabled={false}
-                >
-                    {cellValue}
-                </EuiBadge>
+                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
             ),
         },
         subscriptionId: {
