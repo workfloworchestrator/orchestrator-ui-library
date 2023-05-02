@@ -101,6 +101,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             displayAsText: 'Start Date',
             initialWidth: 150,
             renderCell: (cellValue) =>
+                // Todo: determine if this renders the date correctly with respect to timezones
                 cellValue
                     ? new Date(parseInt(cellValue) * 1000).toLocaleString(
                           'nl-NL',
@@ -111,6 +112,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             displayAsText: 'End Date',
             initialWidth: 150,
             renderCell: (cellValue) =>
+                // Todo: determine if this renders the date correctly with respect to timezones
                 cellValue
                     ? new Date(parseInt(cellValue) * 1000).toLocaleString(
                           'nl-NL',
@@ -206,9 +208,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialColumnOrder={initialColumnOrder}
             dataSorting={{
                 columnId: sortedColumnId,
-                sortDirection: mapPythiaSortOrderToSortDirection(
-                    sortOrder.order,
-                ),
+                sortDirection: mapToSortDirection(sortOrder.order),
             }}
             updateDataSorting={(dataSorting) =>
                 setSortOrder({
@@ -257,9 +257,7 @@ function mapApiResponseToSubscriptionTableData(
     );
 }
 
-function mapPythiaSortOrderToSortDirection(
-    sortOrder: PythiaSortOrder,
-): SortDirection {
+function mapToSortDirection(sortOrder: PythiaSortOrder): SortDirection {
     return sortOrder === PythiaSortOrder.Asc
         ? SortDirection.Asc
         : SortDirection.Desc;
