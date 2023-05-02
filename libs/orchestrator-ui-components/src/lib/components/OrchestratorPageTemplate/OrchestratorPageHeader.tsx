@@ -7,7 +7,6 @@ import {
     EuiHeaderSection,
     EuiHeaderSectionItem,
     EuiToolTip,
-    EuiText,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from './HeaderBadge';
@@ -106,19 +105,18 @@ export const EnvironmentBadge = () => {
 
     if (environmentName !== Environment.PRODUCTION) {
         return (
-            <HeaderBadge color="warning">
-                <EuiText size="xs">
-                    <b>{environmentName}</b>
-                </EuiText>
+            <HeaderBadge color="warning" textColor={theme.colors.shadow}>
+                {environmentName}
             </HeaderBadge>
         );
     }
 
     return (
-        <HeaderBadge color={toSecondaryColor(theme.colors.primary)}>
-            <EuiText color={theme.colors.primary} size="xs">
-                <b>{environmentName}</b>
-            </EuiText>
+        <HeaderBadge
+            color={toSecondaryColor(theme.colors.primary)}
+            textColor={theme.colors.primary}
+        >
+            {environmentName}
         </HeaderBadge>
     );
 };
@@ -134,11 +132,10 @@ export const EngineStatusBadge = () => {
     return (
         <HeaderBadge
             color={theme.colors.emptyShade}
+            textColor={theme.colors.shadow}
             iconType={() => <StatusDotIcon color={theme.colors.success} />}
         >
-            <EuiText size="xs">
-                <b>{engineStatusText}</b>
-            </EuiText>
+            {engineStatusText}
         </HeaderBadge>
     );
 };
@@ -165,11 +162,10 @@ export const FailedTasksBadge = () => {
         >
             <HeaderBadge
                 color={theme.colors.emptyShade}
+                textColor={theme.colors.shadow}
                 iconType={() => <XCircleFill color={theme.colors.danger} />}
             >
-                <EuiText size="xs">
-                    <b>{taskCountsSummary.total}</b>
-                </EuiText>
+                {taskCountsSummary.total}
             </HeaderBadge>
         </EuiToolTip>
     );

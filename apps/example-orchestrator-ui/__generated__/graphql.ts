@@ -71,6 +71,12 @@ export type AccessPointStats = {
     inactive: Scalars['Int'];
 };
 
+export type AffectedSubscription = {
+    __typename?: 'AffectedSubscription';
+    subscription?: Maybe<MyBaseSubscription>;
+    subscriptionId: Scalars['UUID'];
+};
+
 /** Aggregated service port subscription */
 export type AggregatedServicePortSubscription = MyBaseSubscription & {
     __typename?: 'AggregatedServicePortSubscription';
@@ -3231,9 +3237,14 @@ export type WirelessLocationDetailAccessPointsArgs = {
 };
 
 export type _Entity =
+    | AffectedSubscription
     | AggregatedServicePortSubscription
+    | CorelinkSubscription
     | FirewallSubscription
     | IpBgpSubscription
+    | IpPeerGroupSubscription
+    | IpPeerPortSubscription
+    | IpPeerSubscription
     | IpPrefixSubscription
     | IpStaticSubscription
     | IrbServicePortSubscription
@@ -3242,8 +3253,12 @@ export type _Entity =
     | LightPathRedundantSubscription
     | LightPathSubscription
     | MscSubscription
+    | NodeSubscription
+    | NsiLightPathSubscription
+    | NsiStpSubscription
     | PortSubscription
-    | SurfWirelessSubscription;
+    | SurfWirelessSubscription
+    | UnknownSubscription;
 
 export type _Service = {
     __typename?: '_Service';
