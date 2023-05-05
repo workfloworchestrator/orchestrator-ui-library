@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { TreeNode } from './TreeNode';
 import { EuiListGroup } from '@elastic/eui';
 
-export const TreeBranch = ({ item, level }) => {
-    const [selected, setSelected] = useState(item.parent === null);
+export const TreeBranch = ({ item, level, expandedIds, onExpandChange }) => {
+    const [selected, setSelected] = useState(expandedIds.includes(item.id));
 
     const hasChildren = item.children && item.children.length !== 0;
 
@@ -14,7 +14,13 @@ export const TreeBranch = ({ item, level }) => {
 
             return item.children.map((child) => {
                 return (
-                    <TreeBranch key={child.id} item={child} level={newLevel} />
+                    <TreeBranch
+                        key={child.id}
+                        item={child}
+                        level={newLevel}
+                        expandedIds={expandedIds}
+                        onExpandChange={onExpandChange}
+                    />
                 );
             });
         }
@@ -34,6 +40,8 @@ export const TreeBranch = ({ item, level }) => {
                     hasChildren={hasChildren}
                     level={level}
                     onToggle={toggleSelected}
+                    expandedIds={expandedIds}
+                    onExpandChange={onExpandChange}
                 />
             </EuiListGroup>
 
