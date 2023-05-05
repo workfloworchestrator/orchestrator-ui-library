@@ -27,6 +27,7 @@ import { SubscriptionListQuery } from '../../__generated__/graphql';
 import {
     SubscriptionActions,
     ProcessesTimeline,
+    Tree,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
 
@@ -337,6 +338,47 @@ function getColor(num: number) {
     return 'error';
 }
 
+const DATA = [
+    {
+        id: '1',
+        label: 'Food',
+        children: [
+            {
+                id: '2',
+                label: 'Meat',
+            },
+            {
+                id: '3',
+                label: 'Salad',
+                children: [
+                    {
+                        id: '4',
+                        label: 'Tomatoes',
+                    },
+                    {
+                        id: '5',
+                        label: 'Cabbage',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: '6',
+        label: 'Drinks',
+        children: [
+            {
+                id: '7',
+                label: 'Beer',
+            },
+            {
+                id: '8',
+                label: 'Soft drink',
+            },
+        ],
+    },
+];
+
 const tabs = [
     {
         id: 'general--id',
@@ -468,25 +510,31 @@ const Subscription = () => {
                 // Doesn't look like it, so this node is the root of the tree
                 // Add EUI Fields
                 shallowCopy.label = shallowCopy.resourceTypes.name;
-                shallowCopy.isExpanded = true;
-                shallowCopy.icon = <EuiIcon type="folderClosed" />;
-                shallowCopy.iconWhenExpanded = <EuiIcon type="folderOpen" />;
+                // shallowCopy.isExpanded = true;
+                // shallowCopy.icon = <EuiIcon type="folderClosed" />;
+                // shallowCopy.iconWhenExpanded = <EuiIcon type="folderOpen" />;
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
                 tree = shallowCopy;
             } else {
                 // This node has a parent, so let's look it up using the id
                 const parentNode = idToNodeMap[shallowCopy.parent];
-
+                const label =
+                    shallowCopy.resourceTypes.title.length > 45
+                        ? `${shallowCopy.resourceTypes.title.substring(
+                              0,
+                              45,
+                          )}...`
+                        : shallowCopy.resourceTypes.title;
                 // Add EUI Fields
-                shallowCopy.label = shallowCopy.resourceTypes.title;
-                shallowCopy.isExpanded = true;
-                shallowCopy.icon = <EuiIcon type="arrowRight" />;
+                shallowCopy.label = label;
+                // shallowCopy.isExpanded = true;
+                // shallowCopy.icon = <EuiIcon type="arrowRight" />;
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
 
                 // We don't need this property, so let's delete it.
-                delete shallowCopy.parent;
+                // delete shallowCopy.parent;
 
                 // Let's add the current node as a child of the parent node.
                 if (
@@ -495,9 +543,7 @@ const Subscription = () => {
                     )
                 ) {
                     const tokenName = getTokenName(shallowCopy.label);
-                    shallowCopy.icon = <EuiToken iconType={tokenName} />;
-                } else {
-                    shallowCopy.iconWhenExpanded = <EuiIcon type="arrowDown" />;
+                    shallowCopy.icon = tokenName;
                 }
 
                 parentNode.children.push(shallowCopy);
@@ -572,21 +618,24 @@ const Subscription = () => {
                 !isLoading &&
                 data && (
                     <EuiFlexGroup style={{ marginTop: 15 }}>
-                        <EuiFlexItem grow={2}>
+                        <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
                             <>
                                 <EuiText>
                                     <h3>Product blocks</h3>
                                 </EuiText>
                                 {tree === null && <EuiLoadingContent />}
                                 {tree !== null && (
-                                    <EuiTreeView
-                                        items={[tree]}
-                                        aria-label="Product blocks"
-                                    />
+                                    <>
+                                        <Tree data={[tree]} />
+                                        {/*<EuiTreeView*/}
+                                        {/*    items={[tree]}*/}
+                                        {/*    aria-label="Product blocks"*/}
+                                        {/*/>*/}
+                                    </>
                                 )}
                             </>
                         </EuiFlexItem>
-                        <EuiFlexItem grow={6}>
+                        <EuiFlexItem grow={true}>
                             <div>
                                 <EuiSearchBar />
                                 {selectedTreeNode === -1 && (

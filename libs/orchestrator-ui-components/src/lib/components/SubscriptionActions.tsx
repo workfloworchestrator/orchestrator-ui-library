@@ -38,38 +38,41 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
         setPopover(false);
     };
 
-    const createWorkflows = []
-    const modifyWorkflows = []
-    const terminateWorkflows = []
-    const systemWorkflows = []
+    const createWorkflows = [];
+    const modifyWorkflows = [];
+    const terminateWorkflows = [];
+    const systemWorkflows = [];
 
     if (subscriptionActions) {
         subscriptionActions.create.map((item) =>
             createWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Create" size="s"/>}>{item.description}</EuiContextMenuItem>
-
+                <EuiContextMenuItem icon={<EuiAvatar name="Create" size="s" />}>
+                    {item.description}
+                </EuiContextMenuItem>,
             ),
         );
         subscriptionActions.modify.map((item) =>
             modifyWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="M" size="s"/>}>{item.description}</EuiContextMenuItem>
-
+                <EuiContextMenuItem icon={<EuiAvatar name="M" size="s" />}>
+                    {item.description}
+                </EuiContextMenuItem>,
             ),
         );
 
         subscriptionActions.terminate.map((item) =>
             terminateWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Te" size="s"/>}>{item.description}</EuiContextMenuItem>
-
+                <EuiContextMenuItem icon={<EuiAvatar name="Te" size="s" />}>
+                    {item.description}
+                </EuiContextMenuItem>,
             ),
         );
         subscriptionActions.system.map((item) =>
             systemWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Sys" size="s"/>}>{item.description}</EuiContextMenuItem>
-
+                <EuiContextMenuItem icon={<EuiAvatar name="Sys" size="s" />}>
+                    {item.description}
+                </EuiContextMenuItem>,
             ),
         );
-
 
         // subscriptionActions.modify.map((item) =>
         //     panels[1].items.push({
@@ -111,10 +114,10 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
         >
             <EuiContextMenuPanel>
                 <EuiPanel color="transparent" paddingSize="s">
-                <EuiTitle size="xxxs">
-                    <h3>Create workflows</h3>
-                </EuiTitle>
-                {createWorkflows}
+                    <EuiTitle size="xxxs">
+                        <h3>Create workflows</h3>
+                    </EuiTitle>
+                    {createWorkflows}
                     <EuiTitle size="xxxs">
                         <h3>Modify workflows</h3>
                     </EuiTitle>
