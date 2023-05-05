@@ -5,6 +5,7 @@ import {
 } from '../hooks/useOrchestratorConfig';
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
+    orchestratorApiBaseUrl: '',
     engineStatusEndpoint: '',
     processStatusCountsEndpoint: '',
     environmentName: '',

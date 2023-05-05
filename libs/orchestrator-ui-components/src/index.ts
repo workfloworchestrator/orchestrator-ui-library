@@ -14,4 +14,11 @@ export * from './lib/utils/getStatusBadgeColor';
 
 export * from './lib/contexts/OrchestratorConfigContext';
 
+export * from './lib/components/StartPage/ListItemStartPage';
+export * from './lib/components/StartPage/ListStartPage';
+export * from './lib/components/StartPage/MultiListSection';
+export * from './lib/components/StartPage/NewProcessPanel';
+export * from './lib/components/StartPage/StatCards';
+
+export * from './lib/types';
 export * from './lib/hooks';

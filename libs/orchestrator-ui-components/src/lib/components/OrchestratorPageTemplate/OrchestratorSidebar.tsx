@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EuiSideNav } from '@elastic/eui';
+import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
 
 export interface OrchestratorSidebarProps {
     routeTo: (route: string) => void;
@@ -13,11 +13,31 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
         isOpenOnMobile={false}
         items={[
             {
+                renderItem: () => (
+                    <>
+                        <EuiButton
+                            onClick={(
+                                e: React.MouseEvent<
+                                    HTMLButtonElement | HTMLElement,
+                                    MouseEvent
+                                >,
+                            ) => {
+                                e.preventDefault();
+                                routeTo('/new-process');
+                            }}
+                            iconType="plus"
+                            fullWidth
+                        >
+                            New Process
+                        </EuiButton>
+                        <EuiSpacer size="m" />
+                    </>
+                ),
                 name: 'Menu',
                 id: 1,
                 items: [
                     {
-                        name: 'Home',
+                        name: 'Start',
                         id: 2,
                         onClick: (e) => {
                             e.preventDefault();
