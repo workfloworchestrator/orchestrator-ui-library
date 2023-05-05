@@ -8,6 +8,7 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     OrchestratorPageTemplate,
+    TreeProvider,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
@@ -71,7 +72,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     enableBatching: true,
                                 }}
                             >
-                                <Component {...pageProps} />
+                                {/* Todo: This should be part of future subscription component*/}
+                                <TreeProvider>
+                                    <Component {...pageProps} />
+                                </TreeProvider>
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
                     </QueryClientProvider>

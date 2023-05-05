@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import {
     EuiBadge,
+    EuiButtonIcon,
     EuiCallOut,
     EuiFlexGrid,
     EuiFlexGroup,
@@ -433,6 +434,8 @@ const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 const Subscription = () => {
     const router = useRouter();
     const { subscriptionId } = router.query;
+    const [expandAllActive, setExpandAllActive] = useState(false);
+
     const [selectedTabId, setSelectedTabId] = useState(
         'service-configuration--id',
     );
@@ -513,11 +516,7 @@ const Subscription = () => {
             // Does this node have a parent?
             if (shallowCopy.parent === null) {
                 // Doesn't look like it, so this node is the root of the tree
-                // Add EUI Fields
                 shallowCopy.label = shallowCopy.resourceTypes.name;
-                // shallowCopy.isExpanded = true;
-                // shallowCopy.icon = <EuiIcon type="folderClosed" />;
-                // shallowCopy.iconWhenExpanded = <EuiIcon type="folderOpen" />;
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
                 tree = shallowCopy;
@@ -531,15 +530,9 @@ const Subscription = () => {
                               45,
                           )}...`
                         : shallowCopy.resourceTypes.title;
-                // Add EUI Fields
                 shallowCopy.label = label;
-                // shallowCopy.isExpanded = true;
-                // shallowCopy.icon = <EuiIcon type="arrowRight" />;
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
-
-                // We don't need this property, so let's delete it.
-                // delete shallowCopy.parent;
 
                 // Let's add the current node as a child of the parent node.
                 if (
@@ -556,8 +549,6 @@ const Subscription = () => {
         });
         console.log('Tree', tree);
     }
-
-    console.log(subscriptionId);
     const renderTabs = () => {
         return tabs.map((tab, index) => (
             <EuiTab
@@ -573,7 +564,18 @@ const Subscription = () => {
             </EuiTab>
         ));
     };
-    // const { selectedIds } = React.useContext(TreeContext) as TreeContextType;
+    const { expandAll, collapseAll } = React.useContext(
+        TreeContext,
+    ) as TreeContextType;
+
+    const toggleExpandAll = () => {
+        if (expandAllActive) {
+            collapseAll();
+        } else {
+            expandAll(100);
+        }
+        setExpandAllActive(!expandAllActive);
+    };
 
     return (
         <NoSSR>
@@ -623,13 +625,30 @@ const Subscription = () => {
             {selectedTabId === 'service-configuration--id' &&
                 !isLoading &&
                 data && (
-                    <TreeProvider>
-                        <EuiFlexGroup style={{ marginTop: 15 }}>
-                            <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
-                                <>
-                                    <EuiText>
-                                        <h3>Product blocks</h3>
-                                    </EuiText>
+                    <EuiFlexGroup style={{ marginTop: 15 }}>
+                        <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
+                            <EuiFlexGroup direction={'column'}>
+                                <EuiFlexItem grow={false}>
+                                    <EuiFlexGroup>
+                                        <EuiFlexItem>
+                                            <EuiText>
+                                                <h3>Product blocks</h3>
+                                            </EuiText>
+                                        </EuiFlexItem>
+                                        <EuiFlexItem grow={false}>
+                                            <EuiButtonIcon
+                                                iconType={
+                                                    expandAllActive
+                                                        ? 'arrowUp'
+                                                        : 'arrowDown'
+                                                }
+                                                onClick={toggleExpandAll}
+                                            />
+                                        </EuiFlexItem>
+                                        <EuiFlexItem grow={true}></EuiFlexItem>
+                                    </EuiFlexGroup>
+                                </EuiFlexItem>
+                                <EuiFlexItem grow={true}>
                                     {tree === null && <EuiLoadingContent />}
                                     {tree !== null && (
                                         <>
@@ -640,40 +659,40 @@ const Subscription = () => {
                                             {/*/>*/}
                                         </>
                                     )}
-                                </>
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={true}>
-                                <div>
-                                    <EuiSearchBar />
-                                    {selectedTreeNode === -1 && (
-                                        <EuiCallOut
-                                            style={{
-                                                marginTop: 15,
-                                                minHeight: 600,
-                                            }}
-                                            size="m"
-                                            title="No product block selected"
-                                            iconType="inspect"
-                                        >
-                                            <p>
-                                                Select one or more product
-                                                blocks to view their details
-                                            </p>
-                                        </EuiCallOut>
+                                </EuiFlexItem>
+                            </EuiFlexGroup>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={true}>
+                            <div>
+                                <EuiSearchBar />
+                                {selectedTreeNode === -1 && (
+                                    <EuiCallOut
+                                        style={{
+                                            marginTop: 15,
+                                            minHeight: 600,
+                                        }}
+                                        size="m"
+                                        title="No product block selected"
+                                        iconType="inspect"
+                                    >
+                                        <p>
+                                            Select one or more product blocks to
+                                            view their details
+                                        </p>
+                                    </EuiCallOut>
+                                )}
+                                {selectedTreeNode !== -1 &&
+                                    Block(
+                                        data.subscription.productBlocks[
+                                            selectedTreeNode
+                                        ].resourceTypes.title,
+                                        data.subscription.productBlocks[
+                                            selectedTreeNode
+                                        ].resourceTypes,
                                     )}
-                                    {selectedTreeNode !== -1 &&
-                                        Block(
-                                            data.subscription.productBlocks[
-                                                selectedTreeNode
-                                            ].resourceTypes.title,
-                                            data.subscription.productBlocks[
-                                                selectedTreeNode
-                                            ].resourceTypes,
-                                        )}
-                                </div>
-                            </EuiFlexItem>
-                        </EuiFlexGroup>
-                    </TreeProvider>
+                            </div>
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
                 )}
 
             {selectedTabId === 'general--id' && !isLoading && data && (

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 
 import { TreeNode } from './TreeNode';
 import { EuiListGroup } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import {
+    TreeContext,
+    TreeContextType,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 export const TreeBranch = ({ item, level }) => {
     const { expandedIds } = React.useContext(TreeContext) as TreeContextType;
@@ -36,7 +39,7 @@ export const TreeBranch = ({ item, level }) => {
 
     return (
         <>
-            <EuiListGroup flush={true} color={'primary'} maxWidth={455}>
+            <EuiListGroup flush={true} color="primary" maxWidth={455}>
                 <TreeNode
                     item={item}
                     hasChildren={hasChildren}
