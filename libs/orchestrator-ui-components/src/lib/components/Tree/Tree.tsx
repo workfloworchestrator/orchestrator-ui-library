@@ -41,8 +41,8 @@ export const Tree = ({ data }) => {
                     key={item.id}
                     item={item}
                     level={0}
-                    expandedIds={expandedIds}
-                    onExpandChange={onExpandChange}
+                    // expandedIds={expandedIds}
+                    // onExpandChange={onExpandChange}
                 />
             ))}
         </div>

@@ -30,6 +30,9 @@ import {
     SubscriptionActions,
     ProcessesTimeline,
     Tree,
+    TreeContextType,
+    TreeContext,
+    TreeProvider,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
 
@@ -570,6 +573,7 @@ const Subscription = () => {
             </EuiTab>
         ));
     };
+    // const { selectedIds } = React.useContext(TreeContext) as TreeContextType;
 
     return (
         <NoSSR>
@@ -619,55 +623,57 @@ const Subscription = () => {
             {selectedTabId === 'service-configuration--id' &&
                 !isLoading &&
                 data && (
-                    <EuiFlexGroup style={{ marginTop: 15 }}>
-                        <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
-                            <>
-                                <EuiText>
-                                    <h3>Product blocks</h3>
-                                </EuiText>
-                                {tree === null && <EuiLoadingContent />}
-                                {tree !== null && (
-                                    <>
-                                        <Tree data={[tree]} />
-                                        {/*<EuiTreeView*/}
-                                        {/*    items={[tree]}*/}
-                                        {/*    aria-label="Product blocks"*/}
-                                        {/*/>*/}
-                                    </>
-                                )}
-                            </>
-                        </EuiFlexItem>
-                        <EuiFlexItem grow={true}>
-                            <div>
-                                <EuiSearchBar />
-                                {selectedTreeNode === -1 && (
-                                    <EuiCallOut
-                                        style={{
-                                            marginTop: 15,
-                                            minHeight: 600,
-                                        }}
-                                        size="m"
-                                        title="No product block selected"
-                                        iconType="inspect"
-                                    >
-                                        <p>
-                                            Select one or more product blocks to
-                                            view their details
-                                        </p>
-                                    </EuiCallOut>
-                                )}
-                                {selectedTreeNode !== -1 &&
-                                    Block(
-                                        data.subscription.productBlocks[
-                                            selectedTreeNode
-                                        ].resourceTypes.title,
-                                        data.subscription.productBlocks[
-                                            selectedTreeNode
-                                        ].resourceTypes,
+                    <TreeProvider>
+                        <EuiFlexGroup style={{ marginTop: 15 }}>
+                            <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
+                                <>
+                                    <EuiText>
+                                        <h3>Product blocks</h3>
+                                    </EuiText>
+                                    {tree === null && <EuiLoadingContent />}
+                                    {tree !== null && (
+                                        <>
+                                            <Tree data={[tree]} />
+                                            {/*<EuiTreeView*/}
+                                            {/*    items={[tree]}*/}
+                                            {/*    aria-label="Product blocks"*/}
+                                            {/*/>*/}
+                                        </>
                                     )}
-                            </div>
-                        </EuiFlexItem>
-                    </EuiFlexGroup>
+                                </>
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={true}>
+                                <div>
+                                    <EuiSearchBar />
+                                    {selectedTreeNode === -1 && (
+                                        <EuiCallOut
+                                            style={{
+                                                marginTop: 15,
+                                                minHeight: 600,
+                                            }}
+                                            size="m"
+                                            title="No product block selected"
+                                            iconType="inspect"
+                                        >
+                                            <p>
+                                                Select one or more product
+                                                blocks to view their details
+                                            </p>
+                                        </EuiCallOut>
+                                    )}
+                                    {selectedTreeNode !== -1 &&
+                                        Block(
+                                            data.subscription.productBlocks[
+                                                selectedTreeNode
+                                            ].resourceTypes.title,
+                                            data.subscription.productBlocks[
+                                                selectedTreeNode
+                                            ].resourceTypes,
+                                        )}
+                                </div>
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+                    </TreeProvider>
                 )}
 
             {selectedTabId === 'general--id' && !isLoading && data && (

@@ -8,26 +8,35 @@ import {
     EuiListGroupItem,
     EuiText,
 } from '@elastic/eui';
+import {
+    TreeContextType,
+    TreeContext,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 export const TreeNode = ({
     item,
     hasChildren,
     level,
     onToggle,
-    expandedIds,
-    onExpandChange,
+    // expandedIds,
+    // onExpandChange,
 }) => {
-    const [expanded, setExpanded] = useState(
-        expandedIds.find((i) => i === item.id),
-    );
+    const { expandedIds, toggleExpandId } = React.useContext(
+        TreeContext,
+    ) as TreeContextType;
+    const expanded = expandedIds.includes(item.id);
+    // const [expanded, setExpanded] = useState(
+    //     expandedIds.find((i) => i === item.id),
+    // );
 
     // Todo: load this also via props. So the selected state survives expand actions
     const [selected, setSelected] = useState(false);
 
     const toggleExpand = () => {
-        onExpandChange(item.id);
-        setExpanded(!expanded);
-        onToggle();
+        toggleExpandId(item.id);
+        // onExpandChange(item.id);
+        // setExpanded(!expanded);
+        // onToggle();
     };
 
     let expandIcon = expanded ? 'arrowDown' : 'arrowRight';
