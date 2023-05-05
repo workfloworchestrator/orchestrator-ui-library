@@ -9,11 +9,23 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-export const TreeNode = ({ item, hasChildren, level, onToggle }) => {
-    const [expanded, setExpanded] = useState(item.parent === null);
+export const TreeNode = ({
+    item,
+    hasChildren,
+    level,
+    onToggle,
+    expandedIds,
+    onExpandChange,
+}) => {
+    const [expanded, setExpanded] = useState(
+        expandedIds.find((i) => i === item.id),
+    );
+
+    // Todo: load this also via props. So the selected state survives expand actions
     const [selected, setSelected] = useState(false);
 
     const toggleExpand = () => {
+        onExpandChange(item.id);
         setExpanded(!expanded);
         onToggle();
     };
@@ -41,7 +53,6 @@ export const TreeNode = ({ item, hasChildren, level, onToggle }) => {
                             onClick={() => setSelected(false)}
                             label={item.label}
                             isActive={selected}
-                            href={'#'}
                             extraAction={{
                                 color: 'primary',
                                 onClick: () => setSelected(false),
@@ -56,7 +67,6 @@ export const TreeNode = ({ item, hasChildren, level, onToggle }) => {
                             onClick={() => setSelected(true)}
                             label={item.label}
                             isActive={selected}
-                            href={'#'}
                         />
                     )}
                 </EuiFlexItem>
