@@ -9,6 +9,7 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     engineStatusEndpoint: '',
     processStatusCountsEndpoint: '',
     environmentName: '',
+    graphqlEndpoint: '',
 });
 
 export type OrchestratorConfigProviderProps = {

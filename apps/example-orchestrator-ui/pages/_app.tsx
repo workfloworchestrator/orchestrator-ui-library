@@ -16,18 +16,21 @@ import {
     ENGINE_STATUS_ENDPOINT,
     ORCHESTRATOR_API_BASE_URL,
     PROCESS_STATUS_COUNTS_ENDPOINT,
+    GRAPHQL_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
 import { useRouter } from 'next/router';
 import * as process from 'process';
+import { QueryClientConfig } from 'react-query/types/core/types';
 
-const queryClientConfig = {
+const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
         queries: {
             staleTime: 1 * 60 * 60 * 1000,
             cacheTime: 5 * 60 * 60 * 1000,
             refetchOnWindowFocus: true,
+            keepPreviousData: true,
         },
     },
 };
@@ -36,6 +39,7 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
+    graphqlEndpoint: GRAPHQL_ENDPOINT,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
 };

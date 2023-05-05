@@ -259,6 +259,45 @@
             },
             {
                 "kind": "OBJECT",
+                "name": "AffectedSubscription",
+                "description": null,
+                "fields": [
+                    {
+                        "name": "subscription",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "INTERFACE",
+                            "name": "MyBaseSubscription",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "UUID",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
                 "name": "AggregatedServicePortSubscription",
                 "description": "Aggregated service port subscription",
                 "fields": [
@@ -29506,7 +29545,17 @@
                 "possibleTypes": [
                     {
                         "kind": "OBJECT",
+                        "name": "AffectedSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
                         "name": "AggregatedServicePortSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "CorelinkSubscription",
                         "ofType": null
                     },
                     {
@@ -29517,6 +29566,21 @@
                     {
                         "kind": "OBJECT",
                         "name": "IpBgpSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "IpPeerGroupSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "IpPeerPortSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "IpPeerSubscription",
                         "ofType": null
                     },
                     {
@@ -29561,12 +29625,32 @@
                     },
                     {
                         "kind": "OBJECT",
+                        "name": "NodeSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "NsiLightPathSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "NsiStpSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
                         "name": "PortSubscription",
                         "ofType": null
                     },
                     {
                         "kind": "OBJECT",
                         "name": "SurfWirelessSubscription",
+                        "ofType": null
+                    },
+                    {
+                        "kind": "OBJECT",
+                        "name": "UnknownSubscription",
                         "ofType": null
                     }
                 ]
