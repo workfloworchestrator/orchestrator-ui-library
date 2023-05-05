@@ -1,43 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    EuiAvatar,
     EuiFlexGroup,
     EuiFlexItem,
     EuiToken,
     EuiIcon,
     EuiListGroupItem,
-    EuiText,
 } from '@elastic/eui';
 import {
     TreeContextType,
     TreeContext,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-export const TreeNode = ({
-    item,
-    hasChildren,
-    level,
-    onToggle,
-    // expandedIds,
-    // onExpandChange,
-}) => {
-    const { expandedIds, toggleExpandId } = React.useContext(
-        TreeContext,
-    ) as TreeContextType;
+export const TreeNode = ({ item, hasChildren, level }) => {
+    const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
+        React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
-    // const [expanded, setExpanded] = useState(
-    //     expandedIds.find((i) => i === item.id),
-    // );
-
-    // Todo: load this also via props. So the selected state survives expand actions
-    const [selected, setSelected] = useState(false);
-
-    const toggleExpand = () => {
-        toggleExpandId(item.id);
-        // onExpandChange(item.id);
-        // setExpanded(!expanded);
-        // onToggle();
-    };
+    const selected = selectedIds.includes(item.id);
 
     let expandIcon = expanded ? 'arrowDown' : 'arrowRight';
     if (item.id === 0) {
@@ -52,19 +30,23 @@ export const TreeNode = ({
                     style={{ width: 0, marginTop: 8, marginRight: -8 }}
                 >
                     {hasChildren && (
-                        <EuiIcon type={expandIcon} onClick={toggleExpand} />
+                        <EuiIcon
+                            type={expandIcon}
+                            onClick={() => toggleExpandedId(item.id)}
+                        />
                     )}
                     {!hasChildren && <EuiToken iconType={item.icon} />}
                 </EuiFlexItem>
                 <EuiFlexItem grow={true}>
                     {selected ? (
                         <EuiListGroupItem
-                            onClick={() => setSelected(false)}
+                            onClick={() => toggleSelectedId(item.id)}
                             label={item.label}
                             isActive={selected}
+                            color={'primary'}
                             extraAction={{
                                 color: 'primary',
-                                onClick: () => setSelected(false),
+                                onClick: () => toggleSelectedId(item.id),
                                 iconType: 'cross',
                                 iconSize: 's',
                                 'aria-label': 'Deselect',
@@ -73,7 +55,7 @@ export const TreeNode = ({
                         />
                     ) : (
                         <EuiListGroupItem
-                            onClick={() => setSelected(true)}
+                            onClick={() => toggleSelectedId(item.id)}
                             label={item.label}
                             isActive={selected}
                         />
