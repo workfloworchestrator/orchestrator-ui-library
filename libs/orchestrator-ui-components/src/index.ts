@@ -22,6 +22,7 @@ export * from './lib/utils/getTypedFieldFromObject';
 export * from './lib/utils/getStatusBadgeColor';
 
 export * from './lib/contexts/OrchestratorConfigContext';
+export * from './lib/contexts/TreeContext';
 
 export * from './lib/components/StartPage/ListItemStartPage';
 export * from './lib/components/StartPage/ListStartPage';
