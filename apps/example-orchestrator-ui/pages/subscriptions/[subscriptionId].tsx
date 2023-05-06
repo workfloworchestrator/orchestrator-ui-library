@@ -263,7 +263,11 @@ const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
     }
 `);
 
-const Block = (title, data: object) => {
+const Block = (title, data: object, id) => {
+    const { toggleSelectedId } = React.useContext(
+        TreeContext,
+    ) as TreeContextType;
+
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
     for (const key in data) {
@@ -281,11 +285,29 @@ const Block = (title, data: object) => {
             <EuiSpacer size={'m'}></EuiSpacer>
             <EuiPanel>
                 <div style={{ marginTop: 5 }}>
-                    <EuiText>
-                        <h3>{title}</h3>
-                    </EuiText>
+                    <EuiFlexGroup justifyContent="spaceBetween">
+                        <EuiFlexItem>
+                            <EuiText grow={false}>
+                                <h3>{title}</h3>
+                            </EuiText>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                            {id && (
+                                <EuiButtonIcon
+                                    size={'m'}
+                                    iconType={'cross'}
+                                    onClick={() => toggleSelectedId(id)}
+                                />
+                            )}
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
+
                     <EuiSpacer size={'xs'}></EuiSpacer>
-                    <table width="100%" bgcolor={'#F1F5F9'}>
+                    <table
+                        width="100%"
+                        bgcolor={'#F1F5F9'}
+                        style={{ borderCollapse: 'separate', borderRadius: 8 }}
+                    >
                         {keys.map((k, i) => (
                             <tr key={i}>
                                 <td
@@ -293,15 +315,21 @@ const Block = (title, data: object) => {
                                     style={{
                                         width: 250,
                                         padding: 10,
-                                        borderBottom: 'solid 1px #ddd',
+                                        borderBottom: `solid ${
+                                            i === keys.length - 1 ? 0 : 1
+                                        }px #ddd`,
                                     }}
                                 >
-                                    {k.includes('.') ? k.split('.')[0] : k}
+                                    <b>
+                                        {k.includes('.') ? k.split('.')[0] : k}
+                                    </b>
                                 </td>
                                 <td
                                     style={{
                                         padding: 10,
-                                        borderBottom: 'solid 1px #ddd',
+                                        borderBottom: `solid ${
+                                            i === keys.length - 1 ? 0 : 1
+                                        }px #ddd`,
                                     }}
                                 >
                                     {k.includes('.')
@@ -633,8 +661,8 @@ const Subscription = () => {
                                             <EuiButtonIcon
                                                 iconType={
                                                     expandAllActive
-                                                        ? 'arrowUp'
-                                                        : 'arrowDown'
+                                                        ? 'minimize'
+                                                        : 'expand'
                                                 }
                                                 onClick={toggleExpandAll}
                                             />
@@ -658,7 +686,7 @@ const Subscription = () => {
                         <EuiFlexItem grow={true}>
                             <div>
                                 <EuiSearchBar />
-                                {selectedTreeNode === -1 && (
+                                {selectedIds.length === 0 && (
                                     <EuiCallOut
                                         style={{
                                             marginTop: 15,
@@ -674,15 +702,20 @@ const Subscription = () => {
                                         </p>
                                     </EuiCallOut>
                                 )}
-                                {selectedTreeNode !== -1 &&
-                                    Block(
-                                        data.subscription.productBlocks[
-                                            selectedTreeNode
-                                        ].resourceTypes.title,
-                                        data.subscription.productBlocks[
-                                            selectedTreeNode
-                                        ].resourceTypes,
-                                    )}
+                                {selectedIds.length !== 0 &&
+                                    selectedIds
+                                        .reverse()
+                                        .map((id, index) =>
+                                            Block(
+                                                data.subscription.productBlocks[
+                                                    selectedIds[index]
+                                                ].resourceTypes.title,
+                                                data.subscription.productBlocks[
+                                                    selectedIds[index]
+                                                ].resourceTypes,
+                                                id,
+                                            ),
+                                        )}
                             </div>
                         </EuiFlexItem>
                     </EuiFlexGroup>
