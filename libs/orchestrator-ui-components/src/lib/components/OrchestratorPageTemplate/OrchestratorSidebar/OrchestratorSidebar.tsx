@@ -37,7 +37,7 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                 id: 1,
                 items: [
                     {
-                        name: 'Start',
+                        name: 'Dashboard',
                         id: 2,
                         onClick: (e) => {
                             e.preventDefault();
@@ -48,7 +48,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                     {
                         name: 'Subscriptions',
                         id: 3,
-                        // TODO: NEXT router / EUI seem to cause unneeded re-renders. At least in dev mode,
                         onClick: (e) => {
                             e.preventDefault();
                             routeTo('/subscriptions');
