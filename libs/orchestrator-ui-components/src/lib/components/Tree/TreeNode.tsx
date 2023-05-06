@@ -47,7 +47,7 @@ export const TreeNode = ({ item, hasChildren, level }) => {
                             extraAction={{
                                 color: 'primary',
                                 onClick: () => toggleSelectedId(item.id),
-                                iconType: 'cross',
+                                iconType: 'error',
                                 iconSize: 's',
                                 'aria-label': 'Deselect',
                                 alwaysShow: true,

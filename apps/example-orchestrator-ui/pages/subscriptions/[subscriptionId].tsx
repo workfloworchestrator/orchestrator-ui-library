@@ -16,8 +16,6 @@ import {
     EuiTab,
     EuiTabs,
     EuiText,
-    EuiToken,
-    EuiTreeView,
     EuiLoadingSpinner,
     EuiLoadingContent,
     EuiSearchBar,
@@ -33,7 +31,6 @@ import {
     Tree,
     TreeContextType,
     TreeContext,
-    TreeProvider,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
 
@@ -564,9 +561,8 @@ const Subscription = () => {
             </EuiTab>
         ));
     };
-    const { expandAll, collapseAll } = React.useContext(
-        TreeContext,
-    ) as TreeContextType;
+    const { expandAll, collapseAll, resetSelection, selectedIds } =
+        React.useContext(TreeContext) as TreeContextType;
 
     const toggleExpandAll = () => {
         if (expandAllActive) {
@@ -630,7 +626,7 @@ const Subscription = () => {
                             <EuiFlexGroup direction={'column'}>
                                 <EuiFlexItem grow={false}>
                                     <EuiFlexGroup>
-                                        <EuiFlexItem>
+                                        <EuiFlexItem grow={false}>
                                             <EuiText>
                                                 <h3>Product blocks</h3>
                                             </EuiText>
@@ -645,20 +641,19 @@ const Subscription = () => {
                                                 onClick={toggleExpandAll}
                                             />
                                         </EuiFlexItem>
-                                        <EuiFlexItem grow={true}></EuiFlexItem>
+                                        <EuiFlexItem grow={true}>
+                                            {selectedIds.length > 0 && (
+                                                <EuiButtonIcon
+                                                    iconType="error"
+                                                    onClick={resetSelection}
+                                                />
+                                            )}
+                                        </EuiFlexItem>
                                     </EuiFlexGroup>
                                 </EuiFlexItem>
                                 <EuiFlexItem grow={true}>
                                     {tree === null && <EuiLoadingContent />}
-                                    {tree !== null && (
-                                        <>
-                                            <Tree data={[tree]} />
-                                            {/*<EuiTreeView*/}
-                                            {/*    items={[tree]}*/}
-                                            {/*    aria-label="Product blocks"*/}
-                                            {/*/>*/}
-                                        </>
-                                    )}
+                                    {tree !== null && <Tree data={[tree]} />}
                                 </EuiFlexItem>
                             </EuiFlexGroup>
                         </EuiFlexItem>

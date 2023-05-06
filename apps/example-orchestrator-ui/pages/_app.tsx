@@ -73,6 +73,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                 }}
                             >
                                 {/* Todo: This should be part of future subscription component*/}
+                                {/*// @ts-ignore */}
                                 <TreeProvider>
                                     <Component {...pageProps} />
                                 </TreeProvider>
