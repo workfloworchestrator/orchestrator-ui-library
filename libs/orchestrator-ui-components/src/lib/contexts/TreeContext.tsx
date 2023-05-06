@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { OrchestratorConfig } from '../hooks';
+import { ReactNode } from 'react';
 
 export type TreeContextType = {
     selectedIds: number[];
@@ -12,7 +14,11 @@ export type TreeContextType = {
 
 export const TreeContext = React.createContext<TreeContextType | null>(null);
 
-export const TreeProvider: React.FC<React.ReactNode> = ({ children }) => {
+export type TreeProviderProps = {
+    children: ReactNode;
+};
+
+export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
     const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
     const [expandedIds, setExpandedIds] = React.useState<number[]>([0]);
     const toggleSelectedId = (id: number) => {

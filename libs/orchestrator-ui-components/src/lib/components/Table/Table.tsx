@@ -20,7 +20,7 @@ import {
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
 // Total height of grid button bar, table header and pagination bar
-const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
+const EUI_DATA_GRID_HEIGHT_OFFSET = 104;
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
