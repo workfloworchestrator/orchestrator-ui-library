@@ -1,5 +1,7 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
 
+export type Nullable<T> = T | null;
+
 export interface ItemsList {
     type: string;
     title: string;
@@ -14,26 +16,12 @@ export interface TotalStat {
     color: keyof _EuiThemeColorsMode;
 }
 
-export interface Subscription {
-    name: string;
-    subscription_id: string;
-    description: string;
-    product: Product;
-    product_id: string;
-    status: string;
-    insync: boolean;
-    customer_id: string;
-    start_date: number;
-    end_date: number;
-    note: string;
-}
-
 export interface Process {
     pid: string;
     workflow: string;
     assignee: string;
     last_status: string;
-    failed_reason: string;
+    failed_reason: Nullable<string>;
     traceback: string;
     step: string;
     created_by: string;

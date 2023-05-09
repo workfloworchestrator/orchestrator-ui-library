@@ -11,6 +11,7 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     orchestratorApiBaseUrl: '',
     processStatusCountsEndpoint: '',
     subscriptionActionsEndpoint: '',
+    subscriptionProcessesEndpoint: '',
 });
 
 export type OrchestratorConfigProviderProps = {

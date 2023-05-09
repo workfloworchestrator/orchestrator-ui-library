@@ -12,6 +12,7 @@ export type OrchestratorConfig = {
     graphqlEndpoint: string;
     processStatusCountsEndpoint: string;
     subscriptionActionsEndpoint: string;
+    subscriptionProcessesEndpoint: string;
 };
 
 export const useOrchestratorConfig = (

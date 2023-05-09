@@ -19,6 +19,7 @@ import {
     PROCESS_STATUS_COUNTS_ENDPOINT,
     GRAPHQL_ENDPOINT,
     SUBSCRIPTION_ACTIONS_ENDPOINT,
+    SUBSCRIPTION_PROCESSES_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
@@ -45,6 +46,7 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
     subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
+    subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
