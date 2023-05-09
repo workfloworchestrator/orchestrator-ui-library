@@ -1,17 +1,21 @@
 import React from 'react';
 import {
     EuiAvatar,
-    EuiButtonIcon,
+    EuiComment,
     EuiCommentList,
     EuiCommentProps,
     EuiText,
     EuiBadge,
-    EuiFlexGroup,
-    EuiFlexItem,
     EuiSpacer,
+    EuiLoadingContent,
 } from '@elastic/eui';
+import {
+    SubscriptionProcess,
+    useSubscriptionProcesses,
+} from '@orchestrator-ui/orchestrator-ui-components';
+import { ProcessStatusBadge } from './Badge/ProcessStatusBadge';
 
-const Card = () => {
+const Card = (processInfo: SubscriptionProcess) => {
     return (
         <div style={{ marginTop: 5 }}>
             <table width="100%" bgcolor={'#F1F5F9'}>
@@ -27,7 +31,11 @@ const Card = () => {
                         <b>ID</b>
                     </td>
                     <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
-                        <a href="#">792225b3-f40a-4724-9f3e-15bc5668d3cd</a>
+                        <a
+                            href={`https://orchetsrator.dev.automation.surf.net/processes/${processInfo.process.pid}`}
+                        >
+                            {processInfo.pid}
+                        </a>
                     </td>
                 </tr>
                 <tr>
@@ -38,7 +46,9 @@ const Card = () => {
                         <b>Status</b>
                     </td>
                     <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
-                        <EuiBadge color={'success'}>Completed</EuiBadge>
+                        <ProcessStatusBadge
+                            processStatus={processInfo.process.last_status}
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -62,69 +72,94 @@ const Card = () => {
         </div>
     );
 };
+//
+// const comments: EuiCommentProps[] = [
+//     {
+//         username: 'Modify',
+//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
+//         timelineAvatar: <EuiAvatar name="M" />,
+//         children: (
+//             <>
+//                 <EuiText>
+//                     <h4>Modify</h4>
+//                 </EuiText>
+//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
+//                 {Card()}
+//             </>
+//         ),
+//     },
+//     {
+//         username: 'Modify',
+//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
+//         timelineAvatar: <EuiAvatar name="M" />,
+//         children: (
+//             <>
+//                 <EuiText>
+//                     <h4>Modify</h4>
+//                 </EuiText>
+//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
+//                 {Card()}
+//             </>
+//         ),
+//     },
+//     {
+//         username: 'Modify',
+//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
+//         timelineAvatar: <EuiAvatar name="M" />,
+//         children: (
+//             <>
+//                 <EuiText>
+//                     <h4>Modify</h4>
+//                 </EuiText>
+//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
+//                 {Card()}
+//             </>
+//         ),
+//     },
+//     {
+//         username: 'Create',
+//         timelineAvatarAriaLabel: 'Create Firewall',
+//         timelineAvatar: <EuiAvatar name="C" />,
+//         children: (
+//             <>
+//                 <EuiText>
+//                     <h4>Modify</h4>
+//                 </EuiText>
+//                 <EuiText size={'s'}>create_fw</EuiText>
+//                 {Card()}
+//             </>
+//         ),
+//     },
+// ];
 
-const comments: EuiCommentProps[] = [
-    {
-        username: 'Modify',
-        timelineAvatarAriaLabel: 'Modify FW2 Speed',
-        timelineAvatar: <EuiAvatar name="M" />,
-        children: (
-            <>
-                <EuiText>
-                    <h4>Modify</h4>
-                </EuiText>
-                <EuiText size={'s'}>modify_fw_speed</EuiText>
-                {Card()}
-            </>
-        ),
-    },
-    {
-        username: 'Modify',
-        timelineAvatarAriaLabel: 'Modify FW2 Speed',
-        timelineAvatar: <EuiAvatar name="M" />,
-        children: (
-            <>
-                <EuiText>
-                    <h4>Modify</h4>
-                </EuiText>
-                <EuiText size={'s'}>modify_fw_speed</EuiText>
-                {Card()}
-            </>
-        ),
-    },
-    {
-        username: 'Modify',
-        timelineAvatarAriaLabel: 'Modify FW2 Speed',
-        timelineAvatar: <EuiAvatar name="M" />,
-        children: (
-            <>
-                <EuiText>
-                    <h4>Modify</h4>
-                </EuiText>
-                <EuiText size={'s'}>modify_fw_speed</EuiText>
-                {Card()}
-            </>
-        ),
-    },
-    {
-        username: 'Create',
-        timelineAvatarAriaLabel: 'Create Firewall',
-        timelineAvatar: <EuiAvatar name="C" />,
-        children: (
-            <>
-                <EuiText>
-                    <h4>Modify</h4>
-                </EuiText>
-                <EuiText size={'s'}>create_fw</EuiText>
-                {Card()}
-            </>
-        ),
-    },
-];
+const RenderProcess = (processInfo: SubscriptionProcess) => {
+    return (
+        <EuiComment
+            username={processInfo.workflow_target}
+            timelineAvatarAriaLabel={processInfo.process.workflow}
+            timelineAvatar={<EuiAvatar name="C" />}
+        >
+            {Card(processInfo)}
+        </EuiComment>
+    );
+};
 
-export const ProcessesTimeline = () => (
-    <>
-        <EuiSpacer size={'m'} />
-        <EuiCommentList comments={comments} aria-label="Comment list example" />
-    </>
-);
+export const ProcessesTimeline = ({ subscriptionId }) => {
+    const { data: subscriptionProcesses } =
+        useSubscriptionProcesses(subscriptionId);
+    console.log('SUB', subscriptionProcesses);
+
+    return (
+        <>
+            <EuiSpacer size={'m'} />
+            {!subscriptionProcesses && <EuiLoadingContent />}
+            <EuiCommentList aria-label="Processes">
+                {subscriptionProcesses && (
+                    <EuiCommentList aria-label="Processes">
+                        {subscriptionProcesses.map((i) => RenderProcess(i))}
+                    </EuiCommentList>
+                )}
+            </EuiCommentList>
+        </>
+    );
+};

@@ -643,7 +643,7 @@ const Subscription = () => {
             </>
 
             {selectedTabId === 'processes--id' && !isLoading && data && (
-                <ProcessesTimeline />
+                <ProcessesTimeline subscriptionId={subscriptionId} />
             )}
 
             {selectedTabId === 'service-configuration--id' &&
