@@ -62,5 +62,6 @@ Finally run `./link-stop.sh` to stop exposing the orchestrator-ui-components lib
     separate types package); so the lib will contain the reference graphql types for a specific version of
     orchestrator-core: upon build we can check this and let the build fail when the type mappers can not be used without
     warning, because backwards incompatible changes were done in the backend
--   There are fields in the core like: `Process.Assignee` and `Subscription.CustomerAbbrevation` (probably 4 a 5 SURF
-    specific velden, this is the first actual use case for customization.)
+-   There are fields in the core like: `Process.Assignee` and `Subscription.CustomerAbbrevation` they should be
+    removed/changed for enum values like `KLANTSUPPORT`. Probably around 4 a 5 SURF specific fields, Note: when the remove
+    is done, this is the first actual use case for type customisation that we can test.
