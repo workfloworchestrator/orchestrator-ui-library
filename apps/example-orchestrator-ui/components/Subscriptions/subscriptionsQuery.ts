@@ -66,7 +66,7 @@ export const GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES: SubscriptionGridQuer
     };
 
 export const getPythiaSortOrderFromString = (
-    sortOrder: string,
+    sortOrder?: string,
 ): PythiaSortOrder | undefined => {
     if (!sortOrder) {
         return undefined;

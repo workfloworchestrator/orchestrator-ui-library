@@ -53,7 +53,7 @@ export default function SubscriptionsPage() {
                 pageIndex={pageIndex}
                 setPageIndex={setPageIndex}
                 sortOrder={{
-                    field: sorting.field,
+                    field: sorting.field ?? DEFAULT_SORT_FIELD,
                     order: sortOrder,
                 }}
                 setSortOrder={(updatedSortOrder) => {
