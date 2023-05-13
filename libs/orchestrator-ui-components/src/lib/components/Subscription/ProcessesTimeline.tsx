@@ -13,7 +13,7 @@ import {
     SubscriptionProcess,
     useSubscriptionProcesses,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { ProcessStatusBadge } from './Badge/ProcessStatusBadge';
+import { ProcessStatusBadge } from '../Badge/ProcessStatusBadge';
 
 const Card = (processInfo: SubscriptionProcess) => {
     return (

@@ -71,11 +71,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                 adapter={NextAdapter}
                                 options={{ removeDefaultsFromUrl: false }}
                             >
-                                {/* Todo: This should be part of future subscription component*/}
-                                {/*// @ts-ignore */}
-                                <TreeProvider>
-                                    <Component {...pageProps} />
-                                </TreeProvider>
+                                <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
                     </QueryClientProvider>
