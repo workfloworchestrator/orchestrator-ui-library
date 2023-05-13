@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
-export interface SubscriptionAction {
+interface SubscriptionAction {
     name: string;
     description: string;
     reason?: string;
@@ -14,7 +14,7 @@ export interface SubscriptionAction {
     action?: string;
 }
 
-export interface SubscriptionActions {
+interface SubscriptionActions {
     reason?: string;
     locked_relations?: string[];
     create: SubscriptionAction[];

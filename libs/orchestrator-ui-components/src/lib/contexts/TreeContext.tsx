@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { OrchestratorConfig } from '../hooks';
 import { ReactNode } from 'react';
 
 export type TreeContextType = {

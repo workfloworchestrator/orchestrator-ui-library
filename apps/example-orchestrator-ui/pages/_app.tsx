@@ -74,11 +74,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     enableBatching: true,
                                 }}
                             >
-                                {/* Todo: This should be part of future subscription component*/}
-                                {/*// @ts-ignore */}
-                                <TreeProvider>
-                                    <Component {...pageProps} />
-                                </TreeProvider>
+                                <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
                     </QueryClientProvider>

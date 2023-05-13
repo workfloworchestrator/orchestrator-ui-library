@@ -1,22 +1,14 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
-    EuiBadge,
     EuiButton,
-    EuiContextMenu,
     EuiContextMenuItem,
     EuiContextMenuPanel,
     EuiPanel,
     EuiAvatar,
     EuiTitle,
-    EuiFormRow,
-    EuiIcon,
     EuiPopover,
-    EuiSpacer,
-    EuiSelectable,
-    EuiSwitch,
-    useGeneratedHtmlId,
 } from '@elastic/eui';
-import { useSubscriptionActions } from '../hooks/useSubscriptionActions';
+import { useSubscriptionActions } from '../../hooks/useSubscriptionActions';
 
 export type SubscriptionActionsProps = {
     subscriptionId: string | string[];
