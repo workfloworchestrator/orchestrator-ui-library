@@ -13,7 +13,6 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import {
-    MyBaseSubscriptionEdge,
     PythiaSortOrder,
     SubscriptionGridQuery,
     SubscriptionsSort,
@@ -28,16 +27,16 @@ import { EuiFlexItem } from '@elastic/eui';
 
 type Subscription = {
     subscriptionId: string;
-    description: string;
-    status: string;
-    insync: boolean;
-    startDate: string;
-    endDate: string;
-    productName: string;
-    tag: string;
-    organisationName: string;
-    organisationAbbreviation: string;
-    notes: string;
+    description: string | null;
+    status: string | null;
+    insync: boolean | null;
+    startDate: string | null;
+    endDate: string | null;
+    productName: string | null;
+    tag: string | null;
+    organisationName: string | null;
+    organisationAbbreviation: string | null;
+    notes: string | null;
 };
 
 type SubscriptionsProps = {
@@ -122,9 +121,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         status: {
             displayAsText: 'Status',
             initialWidth: 110,
-            renderCell: (cellValue) => (
-                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
-            ),
+            renderCell: (cellValue) =>
+                cellValue && (
+                    <SubscriptionStatusBadge subscriptionStatus={cellValue} />
+                ),
         },
         subscriptionId: {
             displayAsText: 'ID',
@@ -148,8 +148,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
             first: pageSize,
             after: pageIndex,
-            sortBy: {
-                field: sortedColumnId?.toString(),
+            sortBy: sortedColumnId && {
+                field: sortedColumnId.toString(),
                 order: sortOrder.order,
             },
         },
@@ -157,7 +157,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
-        return;
+        return null;
     }
 
     if (isLoading || !data) {
@@ -227,7 +227,7 @@ function mapApiResponseToSubscriptionTableData(
     graphqlResponse: SubscriptionGridQuery,
 ): Subscription[] {
     return graphqlResponse.subscriptions.edges.map(
-        (baseSubscription: MyBaseSubscriptionEdge): Subscription => {
+        (baseSubscription): Subscription => {
             const {
                 description,
                 insync,
@@ -243,21 +243,21 @@ function mapApiResponseToSubscriptionTableData(
             return {
                 description,
                 insync,
-                organisationName: organisation.name,
-                organisationAbbreviation: organisation.abbreviation,
+                organisationName: organisation?.name ?? null,
+                organisationAbbreviation: organisation?.abbreviation ?? null,
                 productName: product.name,
-                tag: product.tag,
-                startDate,
-                endDate,
+                tag: product.tag ?? null,
+                startDate: startDate ?? null,
+                endDate: endDate ?? null,
                 status,
                 subscriptionId,
-                notes: note,
+                notes: note ?? null,
             };
         },
     );
 }
 
-function mapToSortDirection(sortOrder: PythiaSortOrder): SortDirection {
+function mapToSortDirection(sortOrder?: PythiaSortOrder): SortDirection {
     return sortOrder === PythiaSortOrder.Asc
         ? SortDirection.Asc
         : SortDirection.Desc;

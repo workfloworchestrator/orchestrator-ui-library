@@ -1,3 +1,5 @@
+// The final implementation of this component happens in a different story
+// @ts-nocheck
 import React, { useState, Fragment } from 'react';
 import { EuiHealth, EuiSearchBar } from '@elastic/eui';
 
