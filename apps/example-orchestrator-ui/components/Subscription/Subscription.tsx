@@ -1,11 +1,8 @@
 import React, { FC, useMemo, useState } from 'react';
 import {
     ProcessesTimeline,
-    ProductBlock,
     SubscriptionActions,
     SubscriptionDetailTree,
-    TreeContext,
-    TreeContextType,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import {
@@ -32,9 +29,8 @@ import {
     SubscriptionContext,
     SubscriptionContextType,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { getColor, getTokenName, tabs } from './utils';
+import { getColor, tabs } from './utils';
 import { SubscriptionGeneral } from './General';
-import subscriptionId from '../../pages/subscriptions/[subscriptionId]';
 
 type SubscriptionProps = {
     subscriptionId: string | string[];
