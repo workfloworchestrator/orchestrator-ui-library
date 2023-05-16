@@ -1,4 +1,13 @@
 import { graphql } from '../../__generated__';
+import {
+    GetSubscriptionDetailCompleteQuery,
+    GetSubscriptionDetailEnrichedQuery,
+    GetSubscriptionDetailOutlineQuery,
+    MyBaseSubscriptionEdge,
+    SubscriptionGridQuery,
+    SubscriptionsSort,
+} from '../../__generated__/graphql';
+import subscriptionId from '../../pages/subscriptions/[subscriptionId]';
 
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
@@ -230,3 +239,44 @@ export const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
         }
     }
 `);
+
+type SubscriptionDetailBase = {
+    subscriptionId: any;
+    description: string;
+    fixedInputs: any;
+    status: string; // Todo: it would be nice if we could be stricter here (for EuiBadge components)
+    insync: boolean;
+    startDate: string;
+    endDate?: string;
+    product: any;
+    organisation?: any;
+    customerDescriptions: any[];
+    note?: string;
+    locations: any[];
+    productBlocks: any[];
+};
+
+function mapApiResponseToSubscriptionDetail(
+    graphqlResponse:
+        | GetSubscriptionDetailOutlineQuery
+        | GetSubscriptionDetailCompleteQuery
+        | GetSubscriptionDetailEnrichedQuery,
+): SubscriptionDetailBase {
+    const subscription = graphqlResponse.subscription;
+
+    return {
+        subscriptionId: subscription.subscriptionId,
+        description: subscription.description,
+        fixedInputs: subscription.fixedInputs,
+        status: subscription.status,
+        insync: subscription?.insync,
+        startDate: subscription.startDate,
+        endDate: subscription.endDate,
+        product: subscription.product,
+        organisation: subscription.organisation,
+        customerDescriptions: subscription.customerDescriptions,
+        note: subscription.note,
+        locations: subscription.locations,
+        productBlocks: subscription.productBlocks,
+    };
+}
