@@ -38,7 +38,6 @@
         "react-dom": "^18.2.0",
         "react-no-ssr": "^1.1.0",
         "react-query": "^3.39.3",
-        "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0",
         "use-query-params": "^2.2.1"
     },

@@ -1,6 +1,3 @@
-// Todo: issue on Eui's Github: https://github.com/elastic/eui/issues/6616
-import 'regenerator-runtime/runtime';
-
 import {
     EuiDataGrid,
     EuiDataGridCellValueElementProps,
