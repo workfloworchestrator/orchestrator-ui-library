@@ -6,10 +6,9 @@
     },
     "tasksRunnerOptions": {
         "default": {
-            "runner": "nx-cloud",
+            "runner": "nx/tasks-runners/default",
             "options": {
-                "cacheableOperations": ["build", "lint", "test", "e2e"],
-                "accessToken": "MmU0YjZhZDQtZDQyMy00OWU4LWI3NGEtYTVhYTU3YWRkYzRifHJlYWQtd3JpdGU="
+                "cacheableOperations": ["build", "lint", "test", "e2e"]
             }
         }
     },
@@ -44,7 +43,7 @@
         "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
     },
     "generators": {
-        "@nx/react": {
+        "@nrwl/react": {
             "application": {
                 "babel": true
             },
@@ -52,7 +51,7 @@
                 "unitTestRunner": "jest"
             }
         },
-        "@nx/next": {
+        "@nrwl/next": {
             "application": {
                 "style": "scss",
                 "linter": "eslint"
