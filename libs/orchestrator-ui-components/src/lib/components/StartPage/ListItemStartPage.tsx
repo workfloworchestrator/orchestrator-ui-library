@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
 import { Process, Subscription } from '../../types';
-import Link from 'next/link';
 
 export interface ListItemStartPageProps {
     item: Subscription | Process;
@@ -53,24 +52,24 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     };
 
     return (
-        <Link
-            href={`/subscriptions/${
-                'subscription_id' in item ? item.subscription_id : ''
-            }`}
+        // <Link
+        //     href={`/subscriptions/${
+        //         'subscription_id' in item ? item.subscription_id : ''
+        //     }`}
+        // >
+        <EuiFlexGroup
+            style={{ cursor: 'pointer', paddingBlock: 10 }}
+            onMouseOver={() => setHoverState(true)}
+            onMouseLeave={() => setHoverState(false)}
         >
-            <EuiFlexGroup
-                style={{ cursor: 'pointer', paddingBlock: 10 }}
-                onMouseOver={() => setHoverState(true)}
-                onMouseLeave={() => setHoverState(false)}
+            {renderItem(item, type)}
+            <EuiFlexItem
+                grow={false}
+                style={{ display: hoverState ? 'block' : 'none' }}
             >
-                {renderItem(item, type)}
-                <EuiFlexItem
-                    grow={false}
-                    style={{ display: hoverState ? 'block' : 'none' }}
-                >
-                    <EuiIcon type="sortRight" color="primary" />
-                </EuiFlexItem>
-            </EuiFlexGroup>
-        </Link>
+                <EuiIcon type="sortRight" color="primary" />
+            </EuiFlexItem>
+        </EuiFlexGroup>
+        // </Link>
     );
 };
