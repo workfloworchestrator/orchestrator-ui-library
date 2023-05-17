@@ -1,6 +1,6 @@
-import { Badge } from './Badge';
+import { Badge } from '../Badge';
 import { FC } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
+import { useOrchestratorTheme } from '../../../hooks';
 
 export type SubscriptionStatusBadgeProps = {
     subscriptionStatus: string;
