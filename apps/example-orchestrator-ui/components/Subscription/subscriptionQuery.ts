@@ -3,11 +3,7 @@ import {
     GetSubscriptionDetailCompleteQuery,
     GetSubscriptionDetailEnrichedQuery,
     GetSubscriptionDetailOutlineQuery,
-    MyBaseSubscriptionEdge,
-    SubscriptionGridQuery,
-    SubscriptionsSort,
 } from '../../__generated__/graphql';
-import subscriptionId from '../../pages/subscriptions/[subscriptionId]';
 
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
@@ -254,6 +250,7 @@ type SubscriptionDetailBase = {
     note?: string;
     locations: any[];
     productBlocks: any[];
+
 };
 
 function mapApiResponseToSubscriptionDetail(
@@ -264,12 +261,12 @@ function mapApiResponseToSubscriptionDetail(
 ): SubscriptionDetailBase {
     const subscription = graphqlResponse.subscription;
 
-    return {
+    let subscriptionDetail = {
         subscriptionId: subscription.subscriptionId,
         description: subscription.description,
         fixedInputs: subscription.fixedInputs,
         status: subscription.status,
-        insync: subscription?.insync,
+        insync: subscription.insync,
         startDate: subscription.startDate,
         endDate: subscription.endDate,
         product: subscription.product,
@@ -279,4 +276,9 @@ function mapApiResponseToSubscriptionDetail(
         locations: subscription.locations,
         productBlocks: subscription.productBlocks,
     };
+    if (graphqlResponse instanceof GetSubscriptionDetailCompleteQuery) {
+
+    }
+
+    return subscriptionDetail;
 }
