@@ -24,6 +24,7 @@ import {
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
+import { getQuery2Result } from './subscriptionQuery2';
 
 type Subscription = {
     subscriptionId: string;
@@ -142,6 +143,24 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumnConfig,
     );
 
+    // POC: Instead of using generatred Types, defining the types you expect from the query.
+    // See the code in getData() in subscriptionQuery2.ts.
+    getQuery2Result().then((data) => {
+        // Proof that accessing the data is passing the type checks
+        console.log('--- START examples for query2result ---');
+        console.log('gql response', data);
+        console.log('pageInfo object', data.subscriptions.pageInfo);
+        console.log(
+            'Listing all subscriptions',
+            data.subscriptions.edges.map((e) => e.node),
+        );
+        console.log(
+            'First subscription is inSync?',
+            data.subscriptions.edges[0].node.insync,
+        );
+        console.log('--- END examples for query2result ---');
+    });
+
     const { isLoading, data } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED,
         {
@@ -163,6 +182,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     if (isLoading || !data) {
         return <h1>Loading...</h1>;
     }
+
+    // data.subscriptions.edges.forEach((edge) => {
+    // node: { subscriptionId, inSync etc }
+    // })
 
     const initialColumnOrder: Array<keyof Subscription> = [
         'subscriptionId',
