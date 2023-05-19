@@ -12,6 +12,7 @@
         "-- LIB: orchestrator-ui-components --": "---",
         "tsc:orchestrator-ui-components": "tsc --noEmit --project libs/orchestrator-ui-components/tsconfig.lib.json",
         "lint:orchestrator-ui-components": "nx run orchestrator-ui-components:lint",
+        "storybook:orchestrator-ui-components": "nx run orchestrator-ui-components:storybook",
         "build:orchestrator-ui-components": "nx build orchestrator-ui-components",
         "build-watch:orchestrator-ui-components": "nx build orchestrator-ui-components --watch",
         "--------": "--------",
