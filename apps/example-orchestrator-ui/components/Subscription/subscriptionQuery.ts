@@ -244,14 +244,21 @@ type SubscriptionDetailBase = {
     insync: boolean;
     startDate: string;
     endDate?: string;
-    product: any;
-    organisation?: any;
-    customerDescriptions: any[];
+    product: any; // Shape is known a mapping could be made product.name, product.tag, product.endDate,
+    organisation?: any; // Shape is known a mapping could be made
+    customerDescriptions: any[]; // SURF Specific
     note?: string;
-    locations: any[];
-    productBlocks: any[];
-
+    locations: any[]; // Shape is known a mapping could be made: SURF Specific?
+    productBlocks: any[]; // Shape is known a mapping could be made
 };
+
+type GenericField = { [key: string]: number | string | boolean };
+
+type SubscriptionBlock = {
+    subscriptionId: string;
+    insync: boolean;
+    note?: string;
+} & GenericField;
 
 function mapApiResponseToSubscriptionDetail(
     graphqlResponse:
@@ -260,6 +267,13 @@ function mapApiResponseToSubscriptionDetail(
         | GetSubscriptionDetailEnrichedQuery,
 ): SubscriptionDetailBase {
     const subscription = graphqlResponse.subscription;
+
+    const blaat: SubscriptionBlock = {
+        subscriptionId: '123',
+        insync: true,
+        test: 'floemp',
+    };
+    console.log(blaat);
 
     let subscriptionDetail = {
         subscriptionId: subscription.subscriptionId,
@@ -277,7 +291,6 @@ function mapApiResponseToSubscriptionDetail(
         productBlocks: subscription.productBlocks,
     };
     if (graphqlResponse instanceof GetSubscriptionDetailCompleteQuery) {
-
     }
 
     return subscriptionDetail;

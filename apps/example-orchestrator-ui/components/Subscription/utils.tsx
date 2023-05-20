@@ -22,33 +22,33 @@ export function getTokenName(name: string) {
 
 export const tabs = [
     {
-        id: 'general--id',
+        id: 'general-id',
         name: 'General',
         prepend: <EuiIcon type="devToolsApp" />,
     },
     {
-        id: 'service-configuration--id',
+        id: 'service-configuration-id',
         name: 'Service configuration',
         prepend: <EuiIcon type="submodule" />,
     },
     {
-        id: 'processes--id',
+        id: 'processes-id',
         name: 'Processes',
         prepend: <EuiIcon type="indexRuntime" />,
     },
     {
-        id: 'related-subscriptions--id',
+        id: 'related-subscriptions-id',
         disabled: true,
         name: 'Related subscriptions',
         prepend: <EuiIcon type="heatmap" />,
     },
-    {
-        id: 'notifications--id',
-        name: 'Notifications',
-        append: (
-            <EuiNotificationBadge className="eui-alignCenter" size="m">
-                10
-            </EuiNotificationBadge>
-        ),
-    },
+    // {
+    //     id: 'notifications-id',
+    //     name: 'Notifications',
+    //     append: (
+    //         <EuiNotificationBadge className="eui-alignCenter" size="m">
+    //             10
+    //         </EuiNotificationBadge>
+    //     ),
+    // },
 ];
