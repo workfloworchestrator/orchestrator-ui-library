@@ -3,17 +3,12 @@ import {
     EuiAvatar,
     EuiComment,
     EuiCommentList,
-    EuiCommentProps,
-    EuiText,
-    EuiBadge,
     EuiSpacer,
     EuiLoadingContent,
 } from '@elastic/eui';
-import {
-    SubscriptionProcess,
-    useSubscriptionProcesses,
-} from '@orchestrator-ui/orchestrator-ui-components';
+
 import { ProcessStatusBadge } from '../Badge/ProcessStatusBadge';
+import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
 const Card = (processInfo: SubscriptionProcess) => {
     return (
@@ -72,65 +67,6 @@ const Card = (processInfo: SubscriptionProcess) => {
         </div>
     );
 };
-//
-// const comments: EuiCommentProps[] = [
-//     {
-//         username: 'Modify',
-//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
-//         timelineAvatar: <EuiAvatar name="M" />,
-//         children: (
-//             <>
-//                 <EuiText>
-//                     <h4>Modify</h4>
-//                 </EuiText>
-//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
-//                 {Card()}
-//             </>
-//         ),
-//     },
-//     {
-//         username: 'Modify',
-//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
-//         timelineAvatar: <EuiAvatar name="M" />,
-//         children: (
-//             <>
-//                 <EuiText>
-//                     <h4>Modify</h4>
-//                 </EuiText>
-//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
-//                 {Card()}
-//             </>
-//         ),
-//     },
-//     {
-//         username: 'Modify',
-//         timelineAvatarAriaLabel: 'Modify FW2 Speed',
-//         timelineAvatar: <EuiAvatar name="M" />,
-//         children: (
-//             <>
-//                 <EuiText>
-//                     <h4>Modify</h4>
-//                 </EuiText>
-//                 <EuiText size={'s'}>modify_fw_speed</EuiText>
-//                 {Card()}
-//             </>
-//         ),
-//     },
-//     {
-//         username: 'Create',
-//         timelineAvatarAriaLabel: 'Create Firewall',
-//         timelineAvatar: <EuiAvatar name="C" />,
-//         children: (
-//             <>
-//                 <EuiText>
-//                     <h4>Modify</h4>
-//                 </EuiText>
-//                 <EuiText size={'s'}>create_fw</EuiText>
-//                 {Card()}
-//             </>
-//         ),
-//     },
-// ];
 
 const RenderProcess = (processInfo: SubscriptionProcess) => {
     return (

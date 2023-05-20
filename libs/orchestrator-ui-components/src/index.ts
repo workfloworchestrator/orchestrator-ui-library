@@ -31,6 +31,8 @@ export * from './lib/components/StartPage/StatCards';
 export * from './lib/components/Subscription/SubscriptionActions';
 export * from './lib/components/Subscription/ProcessesTimeline';
 export * from './lib/components/Subscription/ProductBlock';
+export * from './lib/components/Subscription/SubscriptionBlock';
+export * from './lib/components/Subscription/FixedInputBlock';
 export * from './lib/components/Subscription/SubscriptionDetailTree';
 
 export * from './lib/types';

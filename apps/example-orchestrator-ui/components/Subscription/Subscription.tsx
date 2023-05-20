@@ -3,11 +3,9 @@ import {
     ProcessesTimeline,
     SubscriptionActions,
     SubscriptionDetailTree,
-    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import {
     EuiBadge,
-    EuiFlexGrid,
     EuiFlexGroup,
     EuiFlexItem,
     EuiLoadingContent,
@@ -25,10 +23,7 @@ import {
     GET_SUBSCRIPTION_DETAIL_ENRICHED,
     GET_SUBSCRIPTION_DETAIL_OUTLINE,
 } from './subscriptionQuery';
-import {
-    SubscriptionContext,
-    SubscriptionContextType,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components';
 import { getColor, tabs } from './utils';
 import { SubscriptionGeneral } from './General';
 
@@ -39,18 +34,15 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
-    const { theme } = useOrchestratorTheme();
-    const { subscriptionData, setSubscriptionData, loadingStatus } =
-        React.useContext(SubscriptionContext) as SubscriptionContextType;
+    const { setSubscriptionData, loadingStatus } =
+        React.useContext(SubscriptionContext);
 
-    const [selectedTabId, setSelectedTabId] = useState(
-        'service-configuration--id',
-    );
+    // Tab state
+    const [selectedTabId, setSelectedTabId] = useState('general-id');
     const selectedTabContent = useMemo(() => {
         // @ts-ignore: todo -> improve tabs, refactor them to separate component
         return tabs.find((obj) => obj.id === selectedTabId)?.content;
     }, [selectedTabId]);
-
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
@@ -76,12 +68,12 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
             id: subscriptionId,
         });
     };
-
     const fetchSubscriptionEnriched = async () => {
         return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_ENRICHED, {
             id: subscriptionId,
         });
     };
+
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
         fetchSubscriptionOutline,
@@ -106,7 +98,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         return tabs.map((tab, index) => (
             <EuiTab
                 key={index}
-                // href={tab.href}
                 onClick={() => onSelectedTabChanged(tab.id)}
                 isSelected={tab.id === selectedTabId}
                 disabled={tab.disabled}
@@ -159,17 +150,15 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 {selectedTabContent}
             </>
 
-            {selectedTabId === 'processes--id' && !isLoading && data && (
+            {selectedTabId === 'processes-id' && data && (
                 <ProcessesTimeline subscriptionId={subscriptionId} />
             )}
 
-            {selectedTabId === 'service-configuration--id' && (
+            {selectedTabId === 'service-configuration-id' && (
                 <SubscriptionDetailTree />
             )}
 
-            {selectedTabId === 'general--id' && loadingStatus > 0 && (
-                <SubscriptionGeneral />
-            )}
+            {selectedTabId === 'general-id' && <SubscriptionGeneral />}
         </>
     );
 };

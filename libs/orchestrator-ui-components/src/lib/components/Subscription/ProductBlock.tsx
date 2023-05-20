@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    TreeContext,
-    TreeContextType,
-} from '@orchestrator-ui/orchestrator-ui-components';
+
 import {
     EuiButtonIcon,
     EuiFlexGroup,
@@ -11,6 +8,7 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
+import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 
 // Todo: add data type?
 export const ProductBlock = (title: string, data: object, id?: number) => {
@@ -88,21 +86,6 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                 </td>
                             </tr>
                         ))}
-                        <tr>
-                            {/*<td*/}
-                            {/*    valign={'top'}*/}
-                            {/*    style={{*/}
-                            {/*        width: 250,*/}
-                            {/*        padding: 10,*/}
-                            {/*        borderBottom: 'solid 1px #ddd',*/}
-                            {/*    }}*/}
-                            {/*>*/}
-                            {/*    <b>ID</b>*/}
-                            {/*</td>*/}
-                            {/*<td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>*/}
-                            {/*    <a href="#">792225b3-f40a-4724-9f3e-15bc5668d3cd</a>*/}
-                            {/*</td>*/}
-                        </tr>
                     </table>
                 </div>
             </EuiPanel>
