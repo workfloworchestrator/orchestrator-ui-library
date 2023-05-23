@@ -11,12 +11,12 @@ export type SubscriptionsResult = {
 };
 
 export type Subscription = {
-    note: null | string;
-    name: null | string;
-    startDate: null | string;
-    endDate: null | string;
-    tag: null | string;
-    description: null | string;
+    note: string | null;
+    name: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    tag: string | null;
+    description: string;
     product: Product;
     organisation: Organisation;
     insync: boolean;
@@ -32,7 +32,7 @@ export type Organisation = {
 export type Product = {
     name: string;
     type: string;
-    tag: string;
+    tag: string | null;
 };
 
 export type PageInfo = {
@@ -46,7 +46,7 @@ export type PageInfo = {
 export type SubscriptionsQueryVariables = {
     first: number;
     after: number;
-    sortBy?: SubscriptionsSort;
+    sortBy: SubscriptionsSort | null;
 };
 
 export type SubscriptionsSort = {

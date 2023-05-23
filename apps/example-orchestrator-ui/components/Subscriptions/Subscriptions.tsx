@@ -25,16 +25,16 @@ import {
 
 type Subscription = {
     subscriptionId: string;
-    description: string | null;
-    status: string | null;
-    insync: boolean | null;
+    description: string;
+    status: string;
+    insync: boolean;
     startDate: Date | null;
     endDate: Date | null;
-    productName: string | null;
+    productName: string;
     tag: string | null;
     organisationName: string | null;
     organisationAbbreviation: string | null;
-    notes: string | null;
+    note: string | null;
 };
 
 export type SubscriptionsProps = {
@@ -111,18 +111,17 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         status: {
             displayAsText: 'Status',
             initialWidth: 110,
-            renderCell: (cellValue) =>
-                cellValue && (
-                    <SubscriptionStatusBadge subscriptionStatus={cellValue} />
-                ),
+            renderCell: (cellValue) => (
+                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
+            ),
         },
         subscriptionId: {
             displayAsText: 'ID',
             initialWidth: 100,
             renderCell: (cellValue) => cellValue.slice(0, 8),
         },
-        notes: {
-            displayAsText: 'Notes',
+        note: {
+            displayAsText: 'Note',
             renderCell: (cellValue) => (cellValue ? cellValue : ''),
         },
     };
@@ -165,7 +164,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         'tag',
         'startDate',
         'endDate',
-        'notes',
+        'note',
     ];
 
     const leadingControlColumns: ControlColumn<Subscription>[] = [
@@ -238,7 +237,7 @@ function mapApiResponseToSubscriptionTableData(
                 endDate: parseDate(endDate),
                 status,
                 subscriptionId,
-                notes: note ?? null,
+                note,
             };
         },
     );
