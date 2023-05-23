@@ -12,7 +12,7 @@ import {
     DEFAULT_SORT_FIELD,
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-} from '../../components/Subscriptions/subscriptionQuery2';
+} from '../../components/Subscriptions/subscriptionQuery';
 import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 
 export default function SubscriptionsPage() {

@@ -20,7 +20,7 @@ import {
     SubscriptionsQueryVariables,
     SubscriptionsResult,
     SubscriptionsSort,
-} from './subscriptionQuery2';
+} from './subscriptionQuery';
 
 type Subscription = {
     subscriptionId: string;
