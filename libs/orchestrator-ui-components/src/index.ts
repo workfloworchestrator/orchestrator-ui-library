@@ -29,6 +29,7 @@ export * from './lib/components/StartPage/NewProcessPanel';
 export * from './lib/components/StartPage/StatCards';
 
 export * from './lib/components/Subscription/SubscriptionActions';
+export * from './lib/components/Subscription/SubscriptionGeneral';
 export * from './lib/components/Subscription/ProcessesTimeline';
 export * from './lib/components/Subscription/ProductBlock';
 export * from './lib/components/Subscription/SubscriptionBlock';

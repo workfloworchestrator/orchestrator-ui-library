@@ -10,7 +10,7 @@ import {
 } from '@elastic/eui';
 
 // Todo: add data type?
-export const FixedInputBlock = (title: string, data: object, id?: number) => {
+export const FixedInputBlock = (title: string, data: object) => {
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
     for (const key in data) {

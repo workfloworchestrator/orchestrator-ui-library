@@ -1,8 +1,10 @@
 import React, { FC, useMemo, useState } from 'react';
 import {
+    General,
     ProcessesTimeline,
     SubscriptionActions,
     SubscriptionDetailTree,
+    SubscriptionGeneral,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import {
     EuiBadge,
@@ -22,10 +24,10 @@ import {
     GET_SUBSCRIPTION_DETAIL_COMPLETE,
     GET_SUBSCRIPTION_DETAIL_ENRICHED,
     GET_SUBSCRIPTION_DETAIL_OUTLINE,
+    mapApiResponseToSubscriptionBlock,
 } from './subscriptionQuery';
 import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components';
 import { getColor, tabs } from './utils';
-import { SubscriptionGeneral } from './General';
 
 type SubscriptionProps = {
     subscriptionId: string | string[];
@@ -34,7 +36,7 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
-    const { setSubscriptionData, loadingStatus } =
+    const { setSubscriptionData, subscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
     // Tab state
@@ -93,6 +95,10 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         fetchSubscriptionEnriched,
         { onSuccess: (s) => setSubscriptionData(s, 3) },
     );
+
+    const subscriptionBlock = loadingStatus
+        ? mapApiResponseToSubscriptionBlock(subscriptionData)
+        : null;
 
     const renderTabs = () => {
         return tabs.map((tab, index) => (
@@ -158,7 +164,9 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 <SubscriptionDetailTree />
             )}
 
-            {selectedTabId === 'general-id' && <SubscriptionGeneral />}
+            {selectedTabId === 'general-id' && (
+                <SubscriptionGeneral subscriptionBlock={subscriptionBlock} />
+            )}
         </>
     );
 };
