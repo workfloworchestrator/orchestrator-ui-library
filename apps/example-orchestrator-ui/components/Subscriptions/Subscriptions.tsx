@@ -1,8 +1,6 @@
 import {
-    SortDirection,
     Table,
     TableColumns,
-    useQueryWithGraphql,
     getTypedFieldFromObject,
     CheckmarkCircleFill,
     MinusCircleOutline,
@@ -10,36 +8,36 @@ import {
     SubscriptionStatusBadge,
     ControlColumn,
     PlusCircleFill,
+    useStringQueryWithGraphql,
+    parseDate,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
-import {
-    PythiaSortOrder,
-    SubscriptionGridQuery,
-    SubscriptionsSort,
-} from '../../__generated__/graphql';
-import {
-    GET_SUBSCRIPTIONS_PAGINATED,
-    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-} from './subscriptionsQuery';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
+import {
+    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+    GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+    SubscriptionsQueryVariables,
+    SubscriptionsResult,
+    SubscriptionsSort,
+} from './subscriptionQuery';
 
 type Subscription = {
     subscriptionId: string;
-    description: string | null;
-    status: string | null;
-    insync: boolean | null;
-    startDate: string | null;
-    endDate: string | null;
-    productName: string | null;
+    description: string;
+    status: string;
+    insync: boolean;
+    startDate: Date | null;
+    endDate: Date | null;
+    productName: string;
     tag: string | null;
     organisationName: string | null;
     organisationAbbreviation: string | null;
-    notes: string | null;
+    note: string | null;
 };
 
-type SubscriptionsProps = {
+export type SubscriptionsProps = {
     pageSize: number;
     setPageSize: (updatedPageSize: number) => void;
     pageIndex: number;
@@ -101,38 +99,29 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialWidth: 150,
             renderCell: (cellValue) =>
                 // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue
-                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
-                          'nl-NL',
-                      )
-                    : '',
+                cellValue ? cellValue.toLocaleString('nl-NL') : '',
         },
         endDate: {
             displayAsText: 'End Date',
             initialWidth: 150,
             renderCell: (cellValue) =>
                 // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue
-                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
-                          'nl-NL',
-                      )
-                    : '',
+                cellValue ? cellValue.toLocaleString('nl-NL') : '',
         },
         status: {
             displayAsText: 'Status',
             initialWidth: 110,
-            renderCell: (cellValue) =>
-                cellValue && (
-                    <SubscriptionStatusBadge subscriptionStatus={cellValue} />
-                ),
+            renderCell: (cellValue) => (
+                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
+            ),
         },
         subscriptionId: {
             displayAsText: 'ID',
             initialWidth: 100,
             renderCell: (cellValue) => cellValue.slice(0, 8),
         },
-        notes: {
-            displayAsText: 'Notes',
+        note: {
+            displayAsText: 'Note',
             renderCell: (cellValue) => (cellValue ? cellValue : ''),
         },
     };
@@ -142,18 +131,18 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumnConfig,
     );
 
-    const { isLoading, data } = useQueryWithGraphql(
-        GET_SUBSCRIPTIONS_PAGINATED,
-        {
-            ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-            first: pageSize,
-            after: pageIndex,
-            sortBy: sortedColumnId && {
-                field: sortedColumnId.toString(),
-                order: sortOrder.order,
-            },
+    const { isLoading, data } = useStringQueryWithGraphql<
+        SubscriptionsResult,
+        SubscriptionsQueryVariables
+    >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
+        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+        first: pageSize,
+        after: pageIndex,
+        sortBy: sortedColumnId && {
+            field: sortedColumnId.toString(),
+            order: sortOrder.order,
         },
-    );
+    });
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
@@ -175,7 +164,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         'tag',
         'startDate',
         'endDate',
-        'notes',
+        'note',
     ];
 
     const leadingControlColumns: ControlColumn<Subscription>[] = [
@@ -196,8 +185,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={{
                 pageSize: pageSize,
                 pageIndex: Math.floor(pageIndex / pageSize),
-                pageSizeOptions: [5, 10, 15, 20, 25, 100], // todo move to constants file
-                totalRecords: 300, // todo get from graphql result
+                pageSizeOptions: [5, 10, 15, 20, 25, 100],
+                totalRecords: parseInt(data.subscriptions.pageInfo.totalItems),
                 onChangePage: (updatedPageNumber) =>
                     setPageIndex(updatedPageNumber * pageSize),
                 onChangeItemsPerPage: (itemsPerPage) =>
@@ -208,15 +197,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialColumnOrder={initialColumnOrder}
             dataSorting={{
                 columnId: sortedColumnId,
-                sortDirection: mapToSortDirection(sortOrder.order),
+                sortDirection: sortOrder.order,
             }}
             updateDataSorting={(dataSorting) =>
                 setSortOrder({
                     field: dataSorting.columnId,
-                    order:
-                        dataSorting.sortDirection === SortDirection.Asc
-                            ? PythiaSortOrder.Asc
-                            : PythiaSortOrder.Desc,
+                    order: dataSorting.sortDirection,
                 })
             }
         ></Table>
@@ -224,7 +210,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 };
 
 function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionGridQuery,
+    graphqlResponse: SubscriptionsResult,
 ): Subscription[] {
     return graphqlResponse.subscriptions.edges.map(
         (baseSubscription): Subscription => {
@@ -243,22 +229,16 @@ function mapApiResponseToSubscriptionTableData(
             return {
                 description,
                 insync,
-                organisationName: organisation?.name ?? null,
-                organisationAbbreviation: organisation?.abbreviation ?? null,
+                organisationName: organisation.name ?? null,
+                organisationAbbreviation: organisation.abbreviation ?? null,
                 productName: product.name,
                 tag: product.tag ?? null,
-                startDate: startDate ?? null,
-                endDate: endDate ?? null,
+                startDate: parseDate(startDate),
+                endDate: parseDate(endDate),
                 status,
                 subscriptionId,
-                notes: note ?? null,
+                note,
             };
         },
     );
-}
-
-function mapToSortDirection(sortOrder?: PythiaSortOrder): SortDirection {
-    return sortOrder === PythiaSortOrder.Asc
-        ? SortDirection.Asc
-        : SortDirection.Desc;
 }

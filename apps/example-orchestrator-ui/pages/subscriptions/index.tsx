@@ -7,13 +7,13 @@ import {
     useQueryParam,
     withDefault,
 } from 'use-query-params';
-import {
-    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-    DEFAULT_SORT_ORDER,
-    DEFAULT_SORT_FIELD,
-    getPythiaSortOrderFromString,
-} from '../../components/Subscriptions/subscriptionsQuery';
 import { useRouter } from 'next/router';
+import {
+    DEFAULT_SORT_FIELD,
+    DEFAULT_SORT_ORDER,
+    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+} from '../../components/Subscriptions/subscriptionQuery';
+import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 
 export default function SubscriptionsPage() {
     const router = useRouter();
@@ -40,9 +40,10 @@ export default function SubscriptionsPage() {
         }),
     );
 
-    const sortOrder = getPythiaSortOrderFromString(sorting.direction);
+    const sortOrder = getSortDirectionFromString(sorting.direction);
     if (!sortOrder) {
         router.replace('/subscriptions');
+        return null;
     }
 
     return (
