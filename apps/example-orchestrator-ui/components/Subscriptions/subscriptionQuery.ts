@@ -1,15 +1,13 @@
 import { gql } from 'graphql-request';
 import { SortDirection } from '@orchestrator-ui/orchestrator-ui-components';
 
-export type Organisation = {
-    abbreviation: string;
-    name: string;
-};
-
-export type Product = {
-    name: string;
-    type: string;
-    tag: string;
+export type SubscriptionsResult = {
+    subscriptions: {
+        edges: {
+            node: Subscription;
+        }[];
+        pageInfo: PageInfo;
+    };
 };
 
 export type Subscription = {
@@ -26,6 +24,17 @@ export type Subscription = {
     subscriptionId: string;
 };
 
+export type Organisation = {
+    abbreviation: string;
+    name: string;
+};
+
+export type Product = {
+    name: string;
+    type: string;
+    tag: string;
+};
+
 export type PageInfo = {
     totalItems: string;
     startCursor: string;
@@ -34,24 +43,15 @@ export type PageInfo = {
     endCursor: string;
 };
 
-export type SubscriptionsResult = {
-    subscriptions: {
-        edges: {
-            node: Subscription;
-        }[];
-        pageInfo: PageInfo;
-    };
+export type SubscriptionsQueryVariables = {
+    first: number;
+    after: number;
+    sortBy?: SubscriptionsSort;
 };
 
 export type SubscriptionsSort = {
     field: string;
     order: SortDirection;
-};
-
-export type SubscriptionsQueryVariables = {
-    first: number;
-    after: number;
-    sortBy?: SubscriptionsSort;
 };
 
 export const DEFAULT_SORT_FIELD: keyof Subscription = 'startDate';
@@ -87,7 +87,6 @@ export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT: string = gql`
                     startDate
                     endDate
                     tag
-                    vlanRange
                     description
                     product {
                         name

@@ -9,8 +9,7 @@ export * from './lib/icons';
 
 export * from './lib/theme/defaultOrchestratorTheme';
 
-export * from './lib/utils/getTypedFieldFromObject';
-export * from './lib/utils/getStatusBadgeColor';
+export * from './lib/utils';
 
 export * from './lib/contexts/OrchestratorConfigContext';
 

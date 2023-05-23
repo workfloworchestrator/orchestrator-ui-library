@@ -9,6 +9,7 @@ import {
     ControlColumn,
     PlusCircleFill,
     useStringQueryWithGraphql,
+    parseDate,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
@@ -27,8 +28,8 @@ type Subscription = {
     description: string | null;
     status: string | null;
     insync: boolean | null;
-    startDate: string | null;
-    endDate: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
     productName: string | null;
     tag: string | null;
     organisationName: string | null;
@@ -36,7 +37,7 @@ type Subscription = {
     notes: string | null;
 };
 
-type SubscriptionsProps = {
+export type SubscriptionsProps = {
     pageSize: number;
     setPageSize: (updatedPageSize: number) => void;
     pageIndex: number;
@@ -98,22 +99,14 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialWidth: 150,
             renderCell: (cellValue) =>
                 // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue
-                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
-                          'nl-NL',
-                      )
-                    : '',
+                cellValue ? cellValue.toLocaleString('nl-NL') : '',
         },
         endDate: {
             displayAsText: 'End Date',
             initialWidth: 150,
             renderCell: (cellValue) =>
                 // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue
-                    ? new Date(parseInt(cellValue) * 1000).toLocaleString(
-                          'nl-NL',
-                      )
-                    : '',
+                cellValue ? cellValue.toLocaleString('nl-NL') : '',
         },
         status: {
             displayAsText: 'Status',
@@ -193,8 +186,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={{
                 pageSize: pageSize,
                 pageIndex: Math.floor(pageIndex / pageSize),
-                pageSizeOptions: [5, 10, 15, 20, 25, 100], // todo move to constants file
-                totalRecords: 300, // todo get from graphql result
+                pageSizeOptions: [5, 10, 15, 20, 25, 100],
+                totalRecords: parseInt(data.subscriptions.pageInfo.totalItems),
                 onChangePage: (updatedPageNumber) =>
                     setPageIndex(updatedPageNumber * pageSize),
                 onChangeItemsPerPage: (itemsPerPage) =>
@@ -241,8 +234,8 @@ function mapApiResponseToSubscriptionTableData(
                 organisationAbbreviation: organisation.abbreviation ?? null,
                 productName: product.name,
                 tag: product.tag ?? null,
-                startDate: startDate ?? null,
-                endDate: endDate ?? null,
+                startDate: parseDate(startDate),
+                endDate: parseDate(endDate),
                 status,
                 subscriptionId,
                 notes: note ?? null,
