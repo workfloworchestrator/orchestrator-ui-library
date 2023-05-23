@@ -1,24 +1,32 @@
-import { gql, request } from 'graphql-request';
-import { GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES } from './subscriptionsQuery';
+import { gql } from 'graphql-request';
+import { SortDirection } from '@orchestrator-ui/orchestrator-ui-components';
 
-// Note: the types of the props need to be verified, some props might be removed and replaced with a generic key value pair type:
-// [key: string]: number | string | boolean | undefined
-type Subscription = {
+export type Organisation = {
+    abbreviation: string;
+    name: string;
+};
+
+export type Product = {
+    name: string;
+    type: string;
+    tag: string;
+};
+
+export type Subscription = {
     note: null | string;
     name: null | string;
     startDate: null | string;
     endDate: null | string;
     tag: null | string;
-    vlanRange: unknown; // TODO: type this
     description: null | string;
-    product: object; // TODO: type this
-    organisation: object; // TODO: type this
+    product: Product;
+    organisation: Organisation;
     insync: boolean;
-    status: string; // This might be an enum
+    status: string;
     subscriptionId: string;
 };
 
-type PageInfo = {
+export type PageInfo = {
     totalItems: string;
     startCursor: string;
     hasPreviousPage: boolean;
@@ -26,8 +34,7 @@ type PageInfo = {
     endCursor: string;
 };
 
-// Placing the expected return type right next to the query shows what we (Frontend) expect
-type SubscriptionsResult = {
+export type SubscriptionsResult = {
     subscriptions: {
         edges: {
             node: Subscription;
@@ -36,57 +43,73 @@ type SubscriptionsResult = {
     };
 };
 
-export const getQuery2Result = async () => {
-    const document = gql`
-        query SubscriptionGrid(
-            $first: Int!
-            $after: Int!
-            $sortBy: [SubscriptionsSort!]
-            $filterBy: [[String!]!]
+export type SubscriptionsSort = {
+    field: string;
+    order: SortDirection;
+};
+
+export type SubscriptionsQueryVariables = {
+    first: number;
+    after: number;
+    sortBy?: SubscriptionsSort;
+};
+
+export const DEFAULT_SORT_FIELD: keyof Subscription = 'startDate';
+export const DEFAULT_SORT_ORDER: SortDirection = SortDirection.Desc;
+export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort = {
+    field: DEFAULT_SORT_FIELD,
+    order: DEFAULT_SORT_ORDER,
+};
+export const GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES: SubscriptionsQueryVariables =
+    {
+        first: 20,
+        after: 0,
+        sortBy: DEFAULT_SUBSCRIPTIONS_SORT_ORDER,
+    };
+
+export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT: string = gql`
+    query SubscriptionGrid(
+        $first: Int!
+        $after: Int!
+        $sortBy: [SubscriptionsSort!]
+        $filterBy: [[String!]!]
+    ) {
+        subscriptions(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
         ) {
-            subscriptions(
-                first: $first
-                after: $after
-                sortBy: $sortBy
-                filterBy: $filterBy
-            ) {
-                edges {
-                    node {
-                        note
+            edges {
+                node {
+                    note
+                    name
+                    startDate
+                    endDate
+                    tag
+                    vlanRange
+                    description
+                    product {
                         name
-                        startDate
-                        endDate
+                        type
                         tag
-                        vlanRange
-                        description
-                        product {
-                            name
-                            type
-                            tag
-                        }
-                        organisation {
-                            abbreviation
-                            name
-                        }
-                        insync
-                        status
-                        subscriptionId
                     }
-                }
-                pageInfo {
-                    totalItems
-                    startCursor
-                    hasPreviousPage
-                    hasNextPage
-                    endCursor
+                    organisation {
+                        abbreviation
+                        name
+                    }
+                    insync
+                    status
+                    subscriptionId
                 }
             }
+            pageInfo {
+                totalItems
+                startCursor
+                hasPreviousPage
+                hasNextPage
+                endCursor
+            }
         }
-    `;
-
-    return await request<SubscriptionsResult>(
-        'https://api.dev.automation.surf.net/pythia',
-        document,
-        GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-    );
-};
+    }
+`;

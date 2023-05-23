@@ -1,8 +1,6 @@
 import {
-    SortDirection,
     Table,
     TableColumns,
-    useQueryWithGraphql,
     getTypedFieldFromObject,
     CheckmarkCircleFill,
     MinusCircleOutline,
@@ -10,21 +8,19 @@ import {
     SubscriptionStatusBadge,
     ControlColumn,
     PlusCircleFill,
+    useStringQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
-import {
-    PythiaSortOrder,
-    SubscriptionGridQuery,
-    SubscriptionsSort,
-} from '../../__generated__/graphql';
-import {
-    GET_SUBSCRIPTIONS_PAGINATED,
-    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-} from './subscriptionsQuery';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
-import { getQuery2Result } from './subscriptionQuery2';
+import {
+    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+    GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+    SubscriptionsQueryVariables,
+    SubscriptionsResult,
+    SubscriptionsSort,
+} from './subscriptionQuery2';
 
 type Subscription = {
     subscriptionId: string;
@@ -143,36 +139,18 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumnConfig,
     );
 
-    // POC: Instead of using generatred Types, defining the types you expect from the query.
-    // See the code in getData() in subscriptionQuery2.ts.
-    getQuery2Result().then((data) => {
-        // Proof that accessing the data is passing the type checks
-        console.log('--- START examples for query2result ---');
-        console.log('gql response', data);
-        console.log('pageInfo object', data.subscriptions.pageInfo);
-        console.log(
-            'Listing all subscriptions',
-            data.subscriptions.edges.map((e) => e.node),
-        );
-        console.log(
-            'First subscription is inSync?',
-            data.subscriptions.edges[0].node.insync,
-        );
-        console.log('--- END examples for query2result ---');
-    });
-
-    const { isLoading, data } = useQueryWithGraphql(
-        GET_SUBSCRIPTIONS_PAGINATED,
-        {
-            ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-            first: pageSize,
-            after: pageIndex,
-            sortBy: sortedColumnId && {
-                field: sortedColumnId.toString(),
-                order: sortOrder.order,
-            },
+    const { isLoading, data } = useStringQueryWithGraphql<
+        SubscriptionsResult,
+        SubscriptionsQueryVariables
+    >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
+        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+        first: pageSize,
+        after: pageIndex,
+        sortBy: sortedColumnId && {
+            field: sortedColumnId.toString(),
+            order: sortOrder.order,
         },
-    );
+    });
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
@@ -182,10 +160,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     if (isLoading || !data) {
         return <h1>Loading...</h1>;
     }
-
-    // data.subscriptions.edges.forEach((edge) => {
-    // node: { subscriptionId, inSync etc }
-    // })
 
     const initialColumnOrder: Array<keyof Subscription> = [
         'subscriptionId',
@@ -231,15 +205,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialColumnOrder={initialColumnOrder}
             dataSorting={{
                 columnId: sortedColumnId,
-                sortDirection: mapToSortDirection(sortOrder.order),
+                sortDirection: sortOrder.order,
             }}
             updateDataSorting={(dataSorting) =>
                 setSortOrder({
                     field: dataSorting.columnId,
-                    order:
-                        dataSorting.sortDirection === SortDirection.Asc
-                            ? PythiaSortOrder.Asc
-                            : PythiaSortOrder.Desc,
+                    order: dataSorting.sortDirection,
                 })
             }
         ></Table>
@@ -247,7 +218,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 };
 
 function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionGridQuery,
+    graphqlResponse: SubscriptionsResult,
 ): Subscription[] {
     return graphqlResponse.subscriptions.edges.map(
         (baseSubscription): Subscription => {
@@ -266,8 +237,8 @@ function mapApiResponseToSubscriptionTableData(
             return {
                 description,
                 insync,
-                organisationName: organisation?.name ?? null,
-                organisationAbbreviation: organisation?.abbreviation ?? null,
+                organisationName: organisation.name ?? null,
+                organisationAbbreviation: organisation.abbreviation ?? null,
                 productName: product.name,
                 tag: product.tag ?? null,
                 startDate: startDate ?? null,
@@ -278,10 +249,4 @@ function mapApiResponseToSubscriptionTableData(
             };
         },
     );
-}
-
-function mapToSortDirection(sortOrder?: PythiaSortOrder): SortDirection {
-    return sortOrder === PythiaSortOrder.Asc
-        ? SortDirection.Asc
-        : SortDirection.Desc;
 }
