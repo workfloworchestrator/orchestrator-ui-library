@@ -2,6 +2,20 @@ import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/c
 
 export type Nullable<T> = T | null;
 
+type GenericField = { [key: string]: number | string | boolean };
+
+export type SubscriptionBlockBase = {
+    subscriptionId: string;
+    insync: boolean;
+    note?: string;
+    customerId: string;
+    description: string;
+    status: string;
+    startDate: number;
+} & GenericField;
+
+export type FixedInputsBase = {} & GenericField;
+
 export interface ItemsList {
     type: string;
     title: string;

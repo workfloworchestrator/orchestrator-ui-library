@@ -4,6 +4,7 @@ import {
     GetSubscriptionDetailEnrichedQuery,
     GetSubscriptionDetailOutlineQuery,
 } from '../../__generated__/graphql';
+import { SubscriptionBlockBase } from '@orchestrator-ui/orchestrator-ui-components';
 
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
@@ -236,62 +237,21 @@ export const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
     }
 `);
 
-type SubscriptionDetailBase = {
-    subscriptionId: any;
-    description: string;
-    fixedInputs: any;
-    status: string; // Todo: it would be nice if we could be stricter here (for EuiBadge components)
-    insync: boolean;
-    startDate: string;
-    endDate?: string;
-    product: any; // Shape is known a mapping could be made product.name, product.tag, product.endDate,
-    organisation?: any; // Shape is known a mapping could be made
-    customerDescriptions: any[]; // SURF Specific
-    note?: string;
-    locations: any[]; // Shape is known a mapping could be made: SURF Specific?
-    productBlocks: any[]; // Shape is known a mapping could be made
-};
-
-type GenericField = { [key: string]: number | string | boolean };
-
-type SubscriptionBlock = {
-    subscriptionId: string;
-    insync: boolean;
-    note?: string;
-} & GenericField;
-
-function mapApiResponseToSubscriptionDetail(
+export function mapApiResponseToSubscriptionBlock(
     graphqlResponse:
         | GetSubscriptionDetailOutlineQuery
         | GetSubscriptionDetailCompleteQuery
         | GetSubscriptionDetailEnrichedQuery,
-): SubscriptionDetailBase {
+): SubscriptionBlockBase {
     const subscription = graphqlResponse.subscription;
 
-    const blaat: SubscriptionBlock = {
-        subscriptionId: '123',
-        insync: true,
-        test: 'floemp',
-    };
-    console.log(blaat);
-
-    let subscriptionDetail = {
-        subscriptionId: subscription.subscriptionId,
+    const block: SubscriptionBlockBase = {
+        subscriptionId: subscription.subscriptionId as string,
         description: subscription.description,
-        fixedInputs: subscription.fixedInputs,
+        insync: subscription.insync as boolean,
         status: subscription.status,
-        insync: subscription.insync,
-        startDate: subscription.startDate,
-        endDate: subscription.endDate,
-        product: subscription.product,
-        organisation: subscription.organisation,
-        customerDescriptions: subscription.customerDescriptions,
-        note: subscription.note,
-        locations: subscription.locations,
-        productBlocks: subscription.productBlocks,
+        customerId: subscription.customerId,
+        note: subscription?.note,
     };
-    if (graphqlResponse instanceof GetSubscriptionDetailCompleteQuery) {
-    }
-
-    return subscriptionDetail;
+    return block;
 }
