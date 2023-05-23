@@ -9,6 +9,10 @@ Supported Node versions: "^14.18.0 || >=16.0.0"
 
 Run `nx serve example-orchestrator-ui` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
+## Storybook server
+
+Run `nx storybook orchestrator-ui-components` for a storybook server. Navigate to http://localhost:4400/. The app will automatically reload if you change any of the story files.
+
 ## Understand this workspace
 
 Run `nx graph` to see a diagram of the dependencies of the projects.

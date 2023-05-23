@@ -1,8 +1,8 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 import { EuiPageTemplate } from '@elastic/eui';
-import { OrchestratorPageHeader } from './OrchestratorPageHeader';
-import { OrchestratorSidebar } from './OrchestratorSidebar';
-import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { OrchestratorPageHeader } from '../OrchestratorPageHeader';
+import { OrchestratorSidebar } from '../OrchestratorSidebar';
+import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 
 export interface OrchestratorPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;

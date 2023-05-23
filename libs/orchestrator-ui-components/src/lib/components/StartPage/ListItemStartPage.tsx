@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
 import { Process, Subscription } from '../../types';
+import Link from 'next/link';
 
 export interface ListItemStartPageProps {
     item: Subscription | Process;
@@ -13,7 +14,8 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     type,
 }) => {
     const [hoverState, setHoverState] = useState(false);
-
+    console.log(item);
+    console.log(type);
     const renderItem = (item: Subscription | Process, type: string) => {
         if (type === 'subscription') {
             item = item as Subscription;
@@ -52,24 +54,25 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     };
 
     return (
-        // <Link
-        //     href={`/subscriptions/${
-        //         'subscription_id' in item ? item.subscription_id : ''
-        //     }`}
-        // >
-        <EuiFlexGroup
-            style={{ cursor: 'pointer', paddingBlock: 10 }}
-            onMouseOver={() => setHoverState(true)}
-            onMouseLeave={() => setHoverState(false)}
+        <Link
+            href={`/subscriptions/${
+                'subscription_id' in item ? item.subscription_id : ''
+            }`}
         >
-            {renderItem(item, type)}
-            <EuiFlexItem
-                grow={false}
-                style={{ display: hoverState ? 'block' : 'none' }}
+            <EuiFlexGroup
+                style={{ cursor: 'pointer', paddingBlock: 10 }}
+                onMouseOver={() => setHoverState(true)}
+                onMouseLeave={() => setHoverState(false)}
             >
-                <EuiIcon type="sortRight" color="primary" />
-            </EuiFlexItem>
-        </EuiFlexGroup>
-        // </Link>
+                {renderItem(item, type)}
+                <EuiFlexItem
+                    grow={false}
+                    style={{ display: hoverState ? 'block' : 'none' }}
+                >
+                    <EuiIcon type="sortRight" color="primary" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </Link>
     );
 };
+export default ListItemStartPage;
