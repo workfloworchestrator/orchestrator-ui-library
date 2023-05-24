@@ -10,3 +10,6 @@ export * from './lib/contexts';
 
 export * from './lib/types';
 export * from './lib/hooks';
+
+export * from './lib/components/Table/TableTable';
+export * from './lib/components/Table/TableHeaderCell';

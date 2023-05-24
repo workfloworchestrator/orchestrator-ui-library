@@ -14,8 +14,6 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     type,
 }) => {
     const [hoverState, setHoverState] = useState(false);
-    console.log(item);
-    console.log(type);
     const renderItem = (item: Subscription | Process, type: string) => {
         if (type === 'subscription') {
             item = item as Subscription;
