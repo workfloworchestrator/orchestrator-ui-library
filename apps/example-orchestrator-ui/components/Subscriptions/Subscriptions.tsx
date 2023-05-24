@@ -11,12 +11,12 @@ import {
     useStringQueryWithGraphql,
     parseDate,
     TableTable,
-    TableHeaderCell,
+    TableTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiBasicTableColumn } from '@elastic/eui';
+import { EuiFlexItem } from '@elastic/eui';
 import {
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
@@ -181,10 +181,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     ];
 
-    // Todo hidden cols are commented out for now
-    const tableTableConfig: EuiBasicTableColumn<Subscription>[] = [
-        // control column:
-        {
+    const tableTableConfigNew: TableTableColumns<Subscription> = {
+        inlineSubscriptionDetails: {
             field: 'inlineSubscriptionDetails',
             width: '40',
             render: () => (
@@ -193,98 +191,84 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 </EuiFlexItem>
             ),
         },
-        // data columns:
-        {
+        subscriptionId: {
             field: 'subscriptionId',
-            name: <TableHeaderCell>ID</TableHeaderCell>,
-            sortable: true,
-            render: (value: string) => value.slice(0, 8),
+            name: 'ID',
             width: '100',
-            truncateText: true,
+            render: (value: string) => value.slice(0, 8),
         },
-        {
+        description: {
             field: 'description',
-            name: <TableHeaderCell>Description</TableHeaderCell>,
+            name: 'Description',
+            width: '400',
             render: (value: string, record) => (
                 <Link href={`/subscriptions/${record.subscriptionId}`}>
                     {value}
                 </Link>
             ),
-            width: '400',
-            truncateText: true,
         },
-        {
+        status: {
             field: 'status',
-            name: <TableHeaderCell>Status</TableHeaderCell>,
+            name: 'Status',
+            width: '110',
             render: (value: string) => (
                 <SubscriptionStatusBadge subscriptionStatus={value} />
             ),
-            width: '110',
-            truncateText: true,
         },
-        {
+        insync: {
             field: 'insync',
-            name: <TableHeaderCell>In Sync</TableHeaderCell>,
-            render: (value: boolean) =>
-                value ? (
-                    <CheckmarkCircleFill color={theme.colors.primary} />
-                ) : (
-                    <MinusCircleOutline color={theme.colors.mediumShade} />
-                ),
+            name: 'In Sync',
             width: '110',
-            truncateText: true,
+            render: (value: boolean) => (
+                <CheckmarkCircleFill color={theme.colors.primary} />
+            ),
         },
-        // {
-        //     field: 'organisationName',
-        //     name: 'Customer Name',
-        //     truncateText: true,
-        // },
-        {
+        // todo hide this:
+        organisationName: {
+            field: 'organisationName',
+            name: 'Customer',
+        },
+        organisationAbbreviation: {
             field: 'organisationAbbreviation',
-            name: <TableHeaderCell>Customer</TableHeaderCell>,
+            name: 'Customer',
             width: '200',
-            truncateText: true,
         },
-        // {
-        //     field: 'productName',
-        //     name: 'Product',
-        //     truncateText: true,
-        // },
-        {
+        // todo hide this:
+        productName: {
+            field: 'productName',
+            name: 'Product',
+        },
+        tag: {
             field: 'tag',
-            name: <TableHeaderCell>Tag</TableHeaderCell>,
+            name: 'Tag',
             width: '100',
-            truncateText: true,
         },
-        {
+        startDate: {
             field: 'startDate',
-            name: <TableHeaderCell>Start Date</TableHeaderCell>,
+            name: 'Start Date',
+            width: '150',
             render: (value: Date | null) =>
                 value ? value.toLocaleString('nl-NL') : '',
-            width: '150',
-            truncateText: true,
         },
-        {
+        endDate: {
             field: 'endDate',
-            name: <TableHeaderCell>End Date</TableHeaderCell>,
+            name: 'End Date',
+            width: '150',
             render: (value: Date | null) =>
                 value ? value.toLocaleString('nl-NL') : '',
-            width: '150',
-            truncateText: true,
         },
-        {
+        note: {
             field: 'note',
-            name: <TableHeaderCell>Note</TableHeaderCell>,
-            truncateText: true,
+            name: 'Note',
         },
-    ];
+    };
 
     return (
         <>
             <h1>Table:</h1>
             <TableTable
                 data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableTableConfig}
+                columns={tableTableConfigNew}
                 pagination={{
                     pageSize: pageSize,
                     pageIndex: Math.floor(pageIndex / pageSize),
