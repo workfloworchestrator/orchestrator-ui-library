@@ -4,10 +4,9 @@ import { TableHeaderCell } from './TableHeaderCell';
 import React from 'react';
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-// Todo2: add isHidden prop
 export type TableTableColumns<T> = {
     [Property in keyof T]: EuiBasicTableColumn<T> & {
-        field: keyof T;
+        field: Property;
         name: string;
     };
 } & {
@@ -20,6 +19,7 @@ export type TableTableColumns<T> = {
 export type TableTableProps<T> = {
     data: T[];
     columns: TableTableColumns<T>;
+    hiddenColumns?: Array<keyof T>;
     pagination: Pagination;
     onCriteriaChange: (criteria: Criteria<T>) => void;
 };
@@ -27,6 +27,7 @@ export type TableTableProps<T> = {
 export const TableTable = <T,>({
     data,
     columns,
+    hiddenColumns,
     pagination,
     onCriteriaChange,
 }: TableTableProps<T>) => {
@@ -35,7 +36,7 @@ export const TableTable = <T,>({
             tableCaption="Demo of EuiBasicTable"
             items={data}
             rowHeader="firstName"
-            columns={mapTableColumnsToEuiColumns(columns)}
+            columns={mapTableColumnsToEuiColumns(columns, hiddenColumns)}
             pagination={pagination}
             onChange={onCriteriaChange}
         />
@@ -44,14 +45,18 @@ export const TableTable = <T,>({
 
 function mapTableColumnsToEuiColumns<T>(
     columns: TableTableColumns<T>,
+    hiddenColumns?: Array<keyof T>,
 ): EuiBasicTableColumn<T>[] {
-    return Object.keys(columns).map((colKey): EuiBasicTableColumn<T> => {
-        const { name } = columns[colKey as keyof T];
-        return {
-            ...columns[colKey as keyof T],
-            field: colKey,
-            name: name && <TableHeaderCell>{name}</TableHeaderCell>,
-            truncateText: true,
-        };
-    });
+    return Object.keys(columns)
+        .filter((colKey) => !hiddenColumns?.includes(colKey as keyof T))
+        .map((colKey): EuiBasicTableColumn<T> => {
+            const { name } = columns[colKey as keyof T];
+
+            return {
+                ...columns[colKey as keyof T],
+                field: colKey,
+                name: name && <TableHeaderCell>{name}</TableHeaderCell>,
+                truncateText: true,
+            };
+        });
 }

@@ -13,7 +13,7 @@ import {
     TableTable,
     TableTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
@@ -58,6 +58,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
+    const [hiddenColumns /*, setHiddenColumns*/] = useState<
+        Array<keyof Subscription>
+    >(['organisationName', 'productName']);
 
     const tableColumnConfig: TableColumns<Subscription> = {
         description: {
@@ -181,7 +184,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     ];
 
-    const tableTableConfigNew: TableTableColumns<Subscription> = {
+    const tableTableColumns: TableTableColumns<Subscription> = {
         inlineSubscriptionDetails: {
             field: 'inlineSubscriptionDetails',
             width: '40',
@@ -223,17 +226,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 <CheckmarkCircleFill color={theme.colors.primary} />
             ),
         },
-        // todo hide this:
         organisationName: {
             field: 'organisationName',
-            name: 'Customer',
+            name: 'Customer Name',
         },
         organisationAbbreviation: {
             field: 'organisationAbbreviation',
             name: 'Customer',
             width: '200',
         },
-        // todo hide this:
         productName: {
             field: 'productName',
             name: 'Product',
@@ -268,7 +269,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             <h1>Table:</h1>
             <TableTable
                 data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableTableConfigNew}
+                columns={tableTableColumns}
+                hiddenColumns={hiddenColumns}
                 pagination={{
                     pageSize: pageSize,
                     pageIndex: Math.floor(pageIndex / pageSize),
