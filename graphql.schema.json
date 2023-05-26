@@ -685,6 +685,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "portSpeed",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "portSubscriptionInstanceId",
                         "description": null,
                         "args": [],
@@ -15174,6 +15190,22 @@
                             "ofType": {
                                 "kind": "OBJECT",
                                 "name": "Sn8MscBlock",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "portSpeed",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
                                 "ofType": null
                             }
                         },

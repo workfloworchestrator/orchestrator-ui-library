@@ -1,10 +1,9 @@
-import { EuiIcon, EuiNotificationBadge } from '@elastic/eui';
+import { EuiIcon } from '@elastic/eui';
 import React from 'react';
 
 export function getColor(num: number) {
     if (num === 1) return 'warning';
     if (num === 2) return 'primary';
-    if (num === 3) return 'success';
     return 'error';
 }
 

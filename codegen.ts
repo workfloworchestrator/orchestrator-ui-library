@@ -4,7 +4,7 @@ import { GRAPHQL_ENDPOINT } from './apps/example-orchestrator-ui/constants';
 const config: CodegenConfig = {
     overwrite: true,
     schema: GRAPHQL_ENDPOINT,
-    documents: './**/*.tsx',
+    documents: ['./**/*.tsx', './**/*.ts'],
     // generates: {
     //     './src/gql/': {
     //         preset: 'client',
