@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import {
     EuiButtonEmpty,
@@ -8,22 +8,15 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { SubscriptionStatusBadge } from '../Badge/SubscriptionStatusBadge';
-import { SubscriptionBlockBase } from '../../types';
 
 // Todo: add render cell functions
-export type SubscriptionBlockProps = {
-    title: string;
-    subscriptionBlock: SubscriptionBlockBase;
-};
+
 // Todo: add data type?
-export const SubscriptionBlock: FC<SubscriptionBlockProps> = ({
-    title,
-    subscriptionBlock,
-}) => {
+export const SubscriptionBlock = (title: string, data: object, id?: number) => {
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
-    for (const key in subscriptionBlock) {
-        if (typeof subscriptionBlock[key] !== 'object') {
+    for (const key in data) {
+        if (typeof data[key] !== 'object') {
             keys.push(key);
         }
         // if (key == 'product') {
@@ -32,7 +25,6 @@ export const SubscriptionBlock: FC<SubscriptionBlockProps> = ({
     }
     if (keys.length === 0) return;
 
-    console.log('stuffß');
     const renderField = (field: string, data: any) => {
         console.log(field);
         if (field === 'startDate')
@@ -70,26 +62,26 @@ export const SubscriptionBlock: FC<SubscriptionBlockProps> = ({
                                 backgroundColor: '#F1F5F9',
                             }}
                         >
-                            {/*<td*/}
-                            {/*    valign={'top'}*/}
-                            {/*    style={{*/}
-                            {/*        width: 350,*/}
-                            {/*        padding: 10,*/}
-                            {/*        borderTopLeftRadius: 8,*/}
-                            {/*        borderBottomLeftRadius: 8,*/}
-                            {/*    }}*/}
-                            {/*>*/}
-                            {/*    <b>Product</b>*/}
-                            {/*</td>*/}
-                            {/*<td*/}
-                            {/*    style={{*/}
-                            {/*        padding: 10,*/}
-                            {/*        borderTopRightRadius: 8,*/}
-                            {/*        borderBottomRightRadius: 8,*/}
-                            {/*    }}*/}
-                            {/*>*/}
-                            {/*    {data.product.name}*/}
-                            {/*</td>*/}
+                            <td
+                                valign={'top'}
+                                style={{
+                                    width: 350,
+                                    padding: 10,
+                                    borderTopLeftRadius: 8,
+                                    borderBottomLeftRadius: 8,
+                                }}
+                            >
+                                <b>Product</b>
+                            </td>
+                            <td
+                                style={{
+                                    padding: 10,
+                                    borderTopRightRadius: 8,
+                                    borderBottomRightRadius: 8,
+                                }}
+                            >
+                                {data.product.name}
+                            </td>
                         </tr>
                         {keys
                             .filter((k) => k !== 'firewallEnabled')
@@ -119,7 +111,7 @@ export const SubscriptionBlock: FC<SubscriptionBlockProps> = ({
                                             borderBottomRightRadius: 8,
                                         }}
                                     >
-                                        {renderField(k, subscriptionBlock)}
+                                        {renderField(k, data)}
                                     </td>
                                 </tr>
                             ))}
