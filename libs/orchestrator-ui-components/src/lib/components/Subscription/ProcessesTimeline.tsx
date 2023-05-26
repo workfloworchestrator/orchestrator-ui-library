@@ -27,7 +27,7 @@ const Card = (processInfo: SubscriptionProcess) => {
                     </td>
                     <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
                         <a
-                            href={`https://orchetsrator.dev.automation.surf.net/processes/${processInfo.process.pid}`}
+                            href={`https://orchestrator.dev.automation.surf.net/processes/${processInfo.process.pid}`}
                         >
                             {processInfo.pid}
                         </a>

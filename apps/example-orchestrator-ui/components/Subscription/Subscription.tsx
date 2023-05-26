@@ -22,7 +22,6 @@ import { GRAPHQL_ENDPOINT } from '../../constants';
 import { GraphQLClient } from 'graphql-request';
 import {
     GET_SUBSCRIPTION_DETAIL_COMPLETE,
-    GET_SUBSCRIPTION_DETAIL_ENRICHED,
     GET_SUBSCRIPTION_DETAIL_OUTLINE,
     mapApiResponseToSubscriptionBlock,
 } from './subscriptionQuery';
@@ -70,11 +69,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
             id: subscriptionId,
         });
     };
-    const fetchSubscriptionEnriched = async () => {
-        return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_ENRICHED, {
-            id: subscriptionId,
-        });
-    };
 
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
@@ -89,11 +83,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         ['subscription-complete', subscriptionId],
         fetchSubscriptionComplete,
         { onSuccess: (s) => setSubscriptionData(s, 2) },
-    );
-    const { isLoading: isLoadingEnriched, data: dataEnriched } = useQuery(
-        ['subscription-enriched', subscriptionId],
-        fetchSubscriptionEnriched,
-        { onSuccess: (s) => setSubscriptionData(s, 3) },
     );
 
     const subscriptionBlock = loadingStatus
@@ -164,9 +153,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 <SubscriptionDetailTree />
             )}
 
-            {selectedTabId === 'general-id' && (
-                <SubscriptionGeneral subscriptionBlock={subscriptionBlock} />
-            )}
+            {selectedTabId === 'general-id' && <SubscriptionGeneral />}
         </>
     );
 };

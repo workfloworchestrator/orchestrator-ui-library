@@ -1,7 +1,6 @@
 import { graphql } from '../../__generated__';
 import {
     GetSubscriptionDetailCompleteQuery,
-    GetSubscriptionDetailEnrichedQuery,
     GetSubscriptionDetailOutlineQuery,
 } from '../../__generated__/graphql';
 import { SubscriptionBlockBase } from '@orchestrator-ui/orchestrator-ui-components';
@@ -9,14 +8,14 @@ import { SubscriptionBlockBase } from '@orchestrator-ui/orchestrator-ui-componen
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query GetSubscriptionDetailOutline($id: ID!) {
         subscription(id: $id) {
+            subscriptionId
             customerId
             description
-            endDate
-            firewallEnabled
             fixedInputs
             insync
             note
             product {
+                createdAt
                 name
                 status
                 endDate
@@ -24,21 +23,14 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
                 tag
                 type
             }
+            endDate
             startDate
             status
-            subscriptionId
-            customerDescriptions {
-                description
-            }
             organisation {
                 abbreviation
                 name
                 website
                 tel
-            }
-            locations {
-                abbreviation
-                name
             }
             productBlocks {
                 id
@@ -53,65 +45,29 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
 export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     query GetSubscriptionDetailComplete($id: ID!) {
         subscription(id: $id) {
-            note
-            name
-            startDate
-            endDate
-            tag
-            vlanRange
+            subscriptionId
             customerId
-            customerDescriptions {
-                description
-                customerId
-            }
             description
-            firewallEnabled
             fixedInputs
+            insync
+            note
             product {
+                createdAt
                 name
                 status
                 endDate
+                description
                 tag
                 type
-                description
-                createdAt
             }
+            endDate
+            startDate
             status
-            locations {
-                name
-                email
-                website
-                abbreviation
-            }
-            inUseBy {
-                description
-                name
-                product {
-                    name
-                }
-                startDate
-                status
-                subscriptionId
-            }
-            dependsOn {
-                description
-                name
-                product {
-                    name
-                }
-                startDate
-                status
-                subscriptionId
-            }
             organisation {
                 abbreviation
-                email
-                fax
                 name
-                status
-                tel
                 website
-                customerId
+                tel
             }
             productBlocks {
                 id
@@ -119,66 +75,29 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
                 parent
                 resourceTypes
             }
-        }
-    }
-`);
-
-export const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
-    query GetSubscriptionDetailEnriched($id: ID!) {
-        subscription(id: $id) {
-            note
-            name
-            startDate
-            endDate
-            tag
-            vlanRange
-            customerId
-            customerDescriptions {
-                description
-                customerId
-            }
-            description
-            firewallEnabled
-            fixedInputs
-            product {
-                name
-                status
-                endDate
-                tag
-                type
-                description
-                createdAt
-            }
-            status
-            locations {
-                name
-                email
-                website
-                abbreviation
-            }
             imsCircuits {
                 ims {
+                    product
+                    speed
                     id
-                    name
                     extraInfo
-                    aliases
-                    allEndpoints {
-                        vlanranges
+                    endpoints(type: PORT) {
+                        id
+                        location
+                        type
                         ... on ImsPort {
                             id
-                            connectorType
+                            lineName
                             fiberType
                             ifaceType
-                            lineName
-                            node
                             patchposition
                             port
                             status
+                            node
                             type
                             vlanranges
+                            connectorType
                         }
-                        id
-                        type
                         ... on ImsInternalPort {
                             id
                             lineName
@@ -189,49 +108,14 @@ export const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
                         }
                         ... on ImsService {
                             id
-                            location
                             type
                             vlanranges
                         }
-                        location
+                        vlanranges
                     }
-                }
-            }
-            inUseBy {
-                description
-                name
-                product {
+                    location
                     name
                 }
-                startDate
-                status
-                subscriptionId
-            }
-            dependsOn {
-                description
-                name
-                product {
-                    name
-                }
-                startDate
-                status
-                subscriptionId
-            }
-            organisation {
-                abbreviation
-                email
-                fax
-                name
-                status
-                tel
-                website
-                customerId
-            }
-            productBlocks {
-                id
-                ownerSubscriptionId
-                parent
-                resourceTypes
             }
         }
     }
@@ -240,8 +124,7 @@ export const GET_SUBSCRIPTION_DETAIL_ENRICHED = graphql(`
 export function mapApiResponseToSubscriptionBlock(
     graphqlResponse:
         | GetSubscriptionDetailOutlineQuery
-        | GetSubscriptionDetailCompleteQuery
-        | GetSubscriptionDetailEnrichedQuery,
+        | GetSubscriptionDetailCompleteQuery,
 ): SubscriptionBlockBase {
     const subscription = graphqlResponse.subscription;
 
