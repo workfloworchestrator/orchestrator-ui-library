@@ -15,7 +15,9 @@ const SubscriptionDetailPage = () => {
         <NoSSR>
             <SubscriptionProvider>
                 <TreeProvider>
-                    <Subscription subscriptionId={subscriptionId} />
+                    {subscriptionId && (
+                        <Subscription subscriptionId={subscriptionId} />
+                    )}
                 </TreeProvider>
             </SubscriptionProvider>
         </NoSSR>

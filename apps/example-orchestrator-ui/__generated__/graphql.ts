@@ -4076,52 +4076,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'CorelinkSubscription';
@@ -4157,52 +4111,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -4240,52 +4148,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'IpBgpSubscription';
@@ -4321,52 +4183,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -4404,52 +4220,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'IpPeerPortSubscription';
@@ -4485,52 +4255,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -4568,52 +4292,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'IpPrefixSubscription';
@@ -4649,52 +4327,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -4732,52 +4364,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'IrbServicePortSubscription';
@@ -4813,52 +4399,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -4896,52 +4436,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'L3VpnSubscription';
@@ -4977,52 +4471,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -5060,52 +4508,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'LightPathSubscription';
@@ -5141,52 +4543,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -5224,52 +4580,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'NodeSubscription';
@@ -5305,52 +4615,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -5388,52 +4652,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'NsiStpSubscription';
@@ -5469,52 +4687,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           }
         | {
@@ -5552,52 +4724,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'SurfWirelessSubscription';
@@ -5634,52 +4760,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   parent?: number | null;
                   resourceTypes: any;
               }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
-              }>;
           }
         | {
               __typename?: 'UnknownSubscription';
@@ -5715,52 +4795,6 @@ export type GetSubscriptionDetailCompleteQuery = {
                   ownerSubscriptionId: any;
                   parent?: number | null;
                   resourceTypes: any;
-              }>;
-              imsCircuits: Array<{
-                  __typename?: 'ImsCircuit';
-                  ims?: {
-                      __typename?: 'Ims';
-                      product: string;
-                      speed: string;
-                      id: number;
-                      extraInfo: string;
-                      location?: string | null;
-                      name: string;
-                      endpoints: Array<
-                          | {
-                                __typename?: 'ImsInternalPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                node: string;
-                                port: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsPort';
-                                id?: number | null;
-                                lineName?: string | null;
-                                fiberType?: string | null;
-                                ifaceType?: string | null;
-                                patchposition?: string | null;
-                                port: string;
-                                status: string;
-                                node: string;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                connectorType?: string | null;
-                                location: string;
-                            }
-                          | {
-                                __typename?: 'ImsService';
-                                id?: number | null;
-                                type: ImsEndpointType;
-                                vlanranges?: Array<string> | null;
-                                location?: string | null;
-                            }
-                      >;
-                  } | null;
               }>;
           };
 };
@@ -6747,319 +5781,6 @@ export const GetSubscriptionDetailCompleteDocument = {
                                                 name: {
                                                     kind: 'Name',
                                                     value: 'resourceTypes',
-                                                },
-                                            },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: {
-                                        kind: 'Name',
-                                        value: 'imsCircuits',
-                                    },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            {
-                                                kind: 'Field',
-                                                name: {
-                                                    kind: 'Name',
-                                                    value: 'ims',
-                                                },
-                                                selectionSet: {
-                                                    kind: 'SelectionSet',
-                                                    selections: [
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'product',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'speed',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'id',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'extraInfo',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'endpoints',
-                                                            },
-                                                            arguments: [
-                                                                {
-                                                                    kind: 'Argument',
-                                                                    name: {
-                                                                        kind: 'Name',
-                                                                        value: 'type',
-                                                                    },
-                                                                    value: {
-                                                                        kind: 'EnumValue',
-                                                                        value: 'PORT',
-                                                                    },
-                                                                },
-                                                            ],
-                                                            selectionSet: {
-                                                                kind: 'SelectionSet',
-                                                                selections: [
-                                                                    {
-                                                                        kind: 'Field',
-                                                                        name: {
-                                                                            kind: 'Name',
-                                                                            value: 'id',
-                                                                        },
-                                                                    },
-                                                                    {
-                                                                        kind: 'Field',
-                                                                        name: {
-                                                                            kind: 'Name',
-                                                                            value: 'location',
-                                                                        },
-                                                                    },
-                                                                    {
-                                                                        kind: 'Field',
-                                                                        name: {
-                                                                            kind: 'Name',
-                                                                            value: 'type',
-                                                                        },
-                                                                    },
-                                                                    {
-                                                                        kind: 'InlineFragment',
-                                                                        typeCondition:
-                                                                            {
-                                                                                kind: 'NamedType',
-                                                                                name: {
-                                                                                    kind: 'Name',
-                                                                                    value: 'ImsPort',
-                                                                                },
-                                                                            },
-                                                                        selectionSet:
-                                                                            {
-                                                                                kind: 'SelectionSet',
-                                                                                selections:
-                                                                                    [
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'id',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'lineName',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'fiberType',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'ifaceType',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'patchposition',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'port',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'status',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'node',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'type',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'vlanranges',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'connectorType',
-                                                                                            },
-                                                                                        },
-                                                                                    ],
-                                                                            },
-                                                                    },
-                                                                    {
-                                                                        kind: 'InlineFragment',
-                                                                        typeCondition:
-                                                                            {
-                                                                                kind: 'NamedType',
-                                                                                name: {
-                                                                                    kind: 'Name',
-                                                                                    value: 'ImsInternalPort',
-                                                                                },
-                                                                            },
-                                                                        selectionSet:
-                                                                            {
-                                                                                kind: 'SelectionSet',
-                                                                                selections:
-                                                                                    [
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'id',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'lineName',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'node',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'port',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'type',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'vlanranges',
-                                                                                            },
-                                                                                        },
-                                                                                    ],
-                                                                            },
-                                                                    },
-                                                                    {
-                                                                        kind: 'InlineFragment',
-                                                                        typeCondition:
-                                                                            {
-                                                                                kind: 'NamedType',
-                                                                                name: {
-                                                                                    kind: 'Name',
-                                                                                    value: 'ImsService',
-                                                                                },
-                                                                            },
-                                                                        selectionSet:
-                                                                            {
-                                                                                kind: 'SelectionSet',
-                                                                                selections:
-                                                                                    [
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'id',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'type',
-                                                                                            },
-                                                                                        },
-                                                                                        {
-                                                                                            kind: 'Field',
-                                                                                            name: {
-                                                                                                kind: 'Name',
-                                                                                                value: 'vlanranges',
-                                                                                            },
-                                                                                        },
-                                                                                    ],
-                                                                            },
-                                                                    },
-                                                                    {
-                                                                        kind: 'Field',
-                                                                        name: {
-                                                                            kind: 'Name',
-                                                                            value: 'vlanranges',
-                                                                        },
-                                                                    },
-                                                                ],
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'location',
-                                                            },
-                                                        },
-                                                        {
-                                                            kind: 'Field',
-                                                            name: {
-                                                                kind: 'Name',
-                                                                value: 'name',
-                                                            },
-                                                        },
-                                                    ],
                                                 },
                                             },
                                         ],

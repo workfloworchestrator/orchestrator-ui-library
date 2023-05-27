@@ -31,14 +31,17 @@ export const SubscriptionGeneral = () => {
                 <EuiFlexItem>
                     {SubscriptionBlock(
                         'Subscription details',
-                        subscriptionData.subscription,
+                        subscriptionData,
                     )}
                 </EuiFlexItem>
                 <EuiFlexItem>
                     {FixedInputBlock(
                         'Fixed inputs',
-                        subscriptionData.subscription.fixedInputs,
+                        subscriptionData.fixedInputs,
                     )}
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    {FixedInputBlock('Product info', subscriptionData.product)}
                 </EuiFlexItem>
             </>
         </EuiFlexGrid>
