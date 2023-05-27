@@ -24,6 +24,7 @@ export const tabs = [
         id: 'general-id',
         name: 'General',
         prepend: <EuiIcon type="devToolsApp" />,
+        append: <></>,
     },
     {
         id: 'service-configuration-id',

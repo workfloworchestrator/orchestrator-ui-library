@@ -1,13 +1,7 @@
 import React from 'react';
 
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiSpacer,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import { renderField } from './SubscriptionBlock';
 
 // Todo: add data type?
 export const FixedInputBlock = (title: string, data: object) => {
@@ -56,12 +50,12 @@ export const FixedInputBlock = (title: string, data: object) => {
                                     </td>
                                     <td
                                         style={{
-                                            padding: 10,
+                                            padding: 0,
                                             borderTopRightRadius: 8,
                                             borderBottomRightRadius: 8,
                                         }}
                                     >
-                                        {data[k]}
+                                        {renderField(k, data)}
                                     </td>
                                 </tr>
                             ))}
