@@ -49,43 +49,6 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     }
 `);
 
-// export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
-//     query GetSubscriptionDetailComplete($id: ID!) {
-//         subscription(id: $id) {
-//             subscriptionId
-//             customerId
-//             description
-//             fixedInputs
-//             insync
-//             note
-//             product {
-//                 createdAt
-//                 name
-//                 status
-//                 endDate
-//                 description
-//                 tag
-//                 type
-//             }
-//             endDate
-//             startDate
-//             status
-//             organisation {
-//                 abbreviation
-//                 name
-//                 website
-//                 tel
-//             }
-//             productBlocks {
-//                 id
-//                 ownerSubscriptionId
-//                 parent
-//                 resourceTypes
-//             }
-//         }
-//     }
-// `);
-
 export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     query GetSubscriptionDetailComplete($id: ID!) {
         subscription(id: $id) {
