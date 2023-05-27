@@ -35,7 +35,9 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         React.useContext(SubscriptionContext);
 
     // Tab state
-    const [selectedTabId, setSelectedTabId] = useState('general-id');
+    const [selectedTabId, setSelectedTabId] = useState(
+        'service-configuration-id',
+    );
     const selectedTabContent = useMemo(() => {
         // @ts-ignore: todo -> improve tabs, refactor them to separate component
         return tabs.find((obj) => obj.id === selectedTabId)?.content;
