@@ -1,7 +1,21 @@
 import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
-import { Process, Subscription } from '../../types';
+import { Process, ProductBase } from '../../types';
+
+interface Subscription {
+    name: string;
+    subscription_id: string;
+    description: string;
+    product: ProductBase;
+    product_id: string;
+    status: string;
+    insync: boolean;
+    customer_id: string;
+    start_date: number;
+    end_date: number;
+    note: string;
+}
 
 export interface ListItemStartPageProps {
     item: Subscription | Process;

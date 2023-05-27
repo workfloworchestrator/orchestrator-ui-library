@@ -15,7 +15,7 @@ export const SubscriptionGeneral = () => {
     const { subscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
-    console.log(loadingStatus);
+    console.log('Loading status: ', loadingStatus);
     if (!loadingStatus) {
         return (
             <>

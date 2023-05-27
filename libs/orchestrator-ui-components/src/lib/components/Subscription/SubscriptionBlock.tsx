@@ -13,6 +13,27 @@ import { useOrchestratorTheme } from '../../hooks';
 
 // Todo: add render cell functions
 
+export const renderField = (field: string, data: any) => {
+    const { theme } = useOrchestratorTheme();
+    if (['startDate', 'endDate'].includes(field)) {
+        // @ts-ignore
+        return Date(parseInt(data[field]) * 1000).toLocaleString('nl-NL');
+    } else if (field === 'status')
+        return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
+    else if (field === 'insync')
+        return (
+            <div style={{ position: 'relative', top: 5 }}>
+                {data[field] ? (
+                    <CheckmarkCircleFill color={theme.colors.primary} />
+                ) : (
+                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                )}
+            </div>
+        );
+    else if (field === 'product.name') return <div>{data.product.name}</div>;
+    return <div>{data[field]}</div>;
+};
+
 // Todo: add data type?
 export const SubscriptionBlock = (title: string, data: object, id?: number) => {
     const { theme } = useOrchestratorTheme();
@@ -28,27 +49,6 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
         // }
     }
     if (keys.length === 0) return;
-
-    const renderField = (field: string, data: any) => {
-        console.log(field);
-        if (['startDate', 'endDate'].includes(field))
-            return Date(parseInt(data[field]) * 1000).toLocaleString('nl-NL');
-        else if (field === 'status')
-            return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
-        else if (field === 'insync')
-            return (
-                <div style={{ position: 'relative', top: 5 }}>
-                    {data[field] ? (
-                        <CheckmarkCircleFill color={theme.colors.primary} />
-                    ) : (
-                        <MinusCircleOutline color={theme.colors.mediumShade} />
-                    )}
-                </div>
-            );
-        else if (field === 'product.name')
-            return <div>{data.product.name}</div>;
-        return <div>{data[field]}</div>;
-    };
 
     return (
         <>
@@ -95,6 +95,7 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
                                         borderBottomRightRadius: 8,
                                     }}
                                 >
+                                    {/* @ts-ignore */}
                                     {data.product.name}
                                 </td>
                             </tr>

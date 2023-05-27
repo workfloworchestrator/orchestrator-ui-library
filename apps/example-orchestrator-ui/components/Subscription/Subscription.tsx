@@ -1,6 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
 import {
-    General,
     ProcessesTimeline,
     SubscriptionActions,
     SubscriptionDetailTree,
@@ -10,14 +9,11 @@ import {
     EuiBadge,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiLoadingContent,
-    EuiLoadingSpinner,
     EuiTab,
     EuiTabs,
     EuiText,
 } from '@elastic/eui';
-import { useQuery, useQueryClient } from 'react-query';
-import { SubscriptionListQuery } from '../../__generated__/graphql';
+import { useQuery } from 'react-query';
 import { GRAPHQL_ENDPOINT } from '../../constants';
 import { GraphQLClient } from 'graphql-request';
 import {
@@ -35,9 +31,7 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
-    // if(!subscriptionId) return // Todo investigate why first call doesn't have subscriptionID
-
-    const { setSubscriptionData, subscriptionData, loadingStatus } =
+    const { setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
     // Tab state
@@ -50,7 +44,9 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         setSelectedTabId(id);
     };
 
-    // Gui state done, deal with data:
+    // GUI state done, deal with data:
+
+    // Todo: Find out if pre fetch can be used again. The shape of table cache seems to have changed
     // const queryClient = useQueryClient();
     // const prefetchedData = {
     //     subscription: queryClient
@@ -62,14 +58,13 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
 
     // Fetch data
     const fetchSubscriptionOutline = async () => {
-        console.log('Fetch outline for ID: ', subscriptionId);
+        console.log('Fetch outline query results for ID: ', subscriptionId);
         return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
             id: subscriptionId,
         });
     };
     const fetchSubscriptionComplete = async () => {
-        // @ts-ignore Todo: investigate why this generated query is not type safe. Pythia problem with imsCircuits?
-        console.log('Fetch complete for ID: ', subscriptionId);
+        console.log('Fetch complete query results for ID: ', subscriptionId);
         return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_COMPLETE, {
             id: subscriptionId,
         });
