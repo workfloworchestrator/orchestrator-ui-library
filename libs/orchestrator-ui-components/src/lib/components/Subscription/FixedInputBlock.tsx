@@ -33,36 +33,39 @@ export const FixedInputBlock = (title: string, data: object) => {
 
                     <EuiSpacer size={'s'}></EuiSpacer>
                     <table width="100%">
-                        {keys.map((k, i) => (
-                            <tr
-                                key={i}
-                                style={{
-                                    backgroundColor: i % 2 ? '#FFF' : '#F1F5F9',
-                                }}
-                            >
-                                <td
-                                    valign={'top'}
+                        <tbody>
+                            {keys.map((k, i) => (
+                                <tr
+                                    key={i}
                                     style={{
-                                        // Todo: share styles with SubscriptionBlock.tsx
-                                        width: 350,
-                                        padding: 10,
-                                        borderTopLeftRadius: 8,
-                                        borderBottomLeftRadius: 8,
+                                        backgroundColor:
+                                            i % 2 ? '#FFF' : '#F1F5F9',
                                     }}
                                 >
-                                    <b>{k}</b>
-                                </td>
-                                <td
-                                    style={{
-                                        padding: 10,
-                                        borderTopRightRadius: 8,
-                                        borderBottomRightRadius: 8,
-                                    }}
-                                >
-                                    {data[k]}
-                                </td>
-                            </tr>
-                        ))}
+                                    <td
+                                        valign={'top'}
+                                        style={{
+                                            // Todo: share styles with SubscriptionBlock.tsx
+                                            width: 350,
+                                            padding: 10,
+                                            borderTopLeftRadius: 8,
+                                            borderBottomLeftRadius: 8,
+                                        }}
+                                    >
+                                        <b>{k}</b>
+                                    </td>
+                                    <td
+                                        style={{
+                                            padding: 10,
+                                            borderTopRightRadius: 8,
+                                            borderBottomRightRadius: 8,
+                                        }}
+                                    >
+                                        {data[k]}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
             </div>

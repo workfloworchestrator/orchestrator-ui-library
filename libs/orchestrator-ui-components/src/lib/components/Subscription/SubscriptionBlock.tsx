@@ -8,11 +8,15 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { SubscriptionStatusBadge } from '../Badge/SubscriptionStatusBadge';
+import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
+import { useOrchestratorTheme } from '../../hooks';
 
 // Todo: add render cell functions
 
 // Todo: add data type?
 export const SubscriptionBlock = (title: string, data: object, id?: number) => {
+    const { theme } = useOrchestratorTheme();
+
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
     for (const key in data) {
@@ -27,10 +31,20 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
 
     const renderField = (field: string, data: any) => {
         console.log(field);
-        if (field === 'startDate')
+        if (['startDate', 'endDate'].includes(field))
             return Date(parseInt(data[field]) * 1000).toLocaleString('nl-NL');
         else if (field === 'status')
             return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
+        else if (field === 'insync')
+            return (
+                <div style={{ position: 'relative', top: 5 }}>
+                    {data[field] ? (
+                        <CheckmarkCircleFill color={theme.colors.primary} />
+                    ) : (
+                        <MinusCircleOutline color={theme.colors.mediumShade} />
+                    )}
+                </div>
+            );
         else if (field === 'product.name')
             return <div>{data.product.name}</div>;
         return <div>{data[field]}</div>;
@@ -56,36 +70,35 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
 
                     <EuiSpacer size={'s'}></EuiSpacer>
                     <table width="100%">
-                        <tr
-                            key={0}
-                            style={{
-                                backgroundColor: '#F1F5F9',
-                            }}
-                        >
-                            <td
-                                valign={'top'}
+                        <tbody>
+                            <tr
+                                key={0}
                                 style={{
-                                    width: 350,
-                                    padding: 10,
-                                    borderTopLeftRadius: 8,
-                                    borderBottomLeftRadius: 8,
+                                    backgroundColor: '#F1F5F9',
                                 }}
                             >
-                                <b>Product</b>
-                            </td>
-                            <td
-                                style={{
-                                    padding: 10,
-                                    borderTopRightRadius: 8,
-                                    borderBottomRightRadius: 8,
-                                }}
-                            >
-                                {data.product.name}
-                            </td>
-                        </tr>
-                        {keys
-                            .filter((k) => k !== 'firewallEnabled')
-                            .map((k, i) => (
+                                <td
+                                    valign={'top'}
+                                    style={{
+                                        width: 350,
+                                        padding: 10,
+                                        borderTopLeftRadius: 8,
+                                        borderBottomLeftRadius: 8,
+                                    }}
+                                >
+                                    <b>Product</b>
+                                </td>
+                                <td
+                                    style={{
+                                        padding: 0,
+                                        borderTopRightRadius: 8,
+                                        borderBottomRightRadius: 8,
+                                    }}
+                                >
+                                    {data.product.name}
+                                </td>
+                            </tr>
+                            {keys.map((k, i) => (
                                 <tr
                                     key={i}
                                     style={{
@@ -106,7 +119,7 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
                                     </td>
                                     <td
                                         style={{
-                                            padding: 10,
+                                            padding: 0,
                                             borderTopRightRadius: 8,
                                             borderBottomRightRadius: 8,
                                         }}
@@ -115,6 +128,7 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
                                     </td>
                                 </tr>
                             ))}
+                        </tbody>
                     </table>
                 </div>
             </div>

@@ -36,54 +36,47 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     const systemWorkflows = [];
 
     if (subscriptionActions) {
-        subscriptionActions.create.map((item) =>
+        subscriptionActions.create.map((item, index) =>
             createWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Create" size="s" />}>
+                <EuiContextMenuItem
+                    key={`c_${index}`}
+                    icon={<EuiAvatar name="Create" size="s" />}
+                >
                     {item.description}
                 </EuiContextMenuItem>,
             ),
         );
-        subscriptionActions.modify.map((item) =>
+        subscriptionActions.modify.map((item, index) =>
             modifyWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="M" size="s" />}>
+                <EuiContextMenuItem
+                    key={`m_${index}`}
+                    icon={<EuiAvatar name="M" size="s" />}
+                >
                     {item.description}
                 </EuiContextMenuItem>,
             ),
         );
 
-        subscriptionActions.terminate.map((item) =>
+        subscriptionActions.terminate.map((item, index) =>
             terminateWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Te" size="s" />}>
+                <EuiContextMenuItem
+                    key={`t_${index}`}
+                    icon={<EuiAvatar name="Te" size="s" />}
+                >
                     {item.description}
                 </EuiContextMenuItem>,
             ),
         );
-        subscriptionActions.system.map((item) =>
+        subscriptionActions.system.map((item, index) =>
             systemWorkflows.push(
-                <EuiContextMenuItem icon={<EuiAvatar name="Sys" size="s" />}>
+                <EuiContextMenuItem
+                    key={`s_${index}`}
+                    icon={<EuiAvatar name="Sys" size="s" />}
+                >
                     {item.description}
                 </EuiContextMenuItem>,
             ),
         );
-
-        // subscriptionActions.modify.map((item) =>
-        //     panels[1].items.push({
-        //         name: item.description,
-        //         icon: <EuiAvatar name="M" size="s" />,
-        //         onClick: () => {
-        //             closePopover();
-        //         },
-        //     }),
-        // );
-        // subscriptionActions.terminate.map((item) =>
-        //     panels[2].items.push({
-        //         name: item.description,
-        //         icon: <EuiAvatar name="M" size="s" />,
-        //         onClick: () => {
-        //             closePopover();
-        //         },
-        //     }),
-        // );
     }
     const button = (
         <EuiButton

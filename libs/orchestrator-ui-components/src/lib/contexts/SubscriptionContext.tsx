@@ -1,15 +1,45 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
+import { SubscriptionDetailBase } from '../types';
 
-export type SubscriptionContextType<T> = {
-    subscriptionData: T; // Todo: use a valid SubscriptionDetailBase here with enough flexibility to extend?
+export type SubscriptionContextType = {
+    subscriptionData: SubscriptionDetailBase;
     loadingStatus: number;
-    setSubscriptionData: (data: T, loadingStatus: number) => void; // Todo: here too
+    setSubscriptionData: (
+        data: SubscriptionDetailBase,
+        loadingStatus: number,
+    ) => void;
 };
 
-// Todo: revisit when we have a generic representation of a subscription
-export const SubscriptionContext =
-    React.createContext<SubscriptionContextType<any> | null>(null);
+const subscriptionDetailInit = {
+    subscriptionId: '',
+    description: '',
+    customerId: '',
+    insync: true,
+    status: '',
+    product: {
+        name: '',
+        description: '',
+        status: '',
+        tag: '',
+        type: '',
+        createdAt: '',
+    },
+    fixedInputs: {},
+    organisation: {},
+    productBlocks: [],
+};
+
+// Todo: this feels akward
+const InitialSubscriptionContext: SubscriptionContextType = {
+    subscriptionData: subscriptionDetailInit,
+    loadingStatus: 0,
+    setSubscriptionData: () => {},
+};
+
+export const SubscriptionContext = React.createContext<SubscriptionContextType>(
+    InitialSubscriptionContext,
+);
 
 export type SubscriptionProviderProps = {
     children: ReactNode;
@@ -18,10 +48,14 @@ export type SubscriptionProviderProps = {
 export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     children,
 }) => {
-    const [subscriptionData, setInteralSubscriptionData] = React.useState({});
+    const [subscriptionData, setInteralSubscriptionData] =
+        React.useState<SubscriptionDetailBase>(subscriptionDetailInit);
     const [loadingStatus, setLoadingStatus] = React.useState(0);
 
-    const setSubscriptionData = (data, loadingStatus: number) => {
+    const setSubscriptionData = (
+        data: SubscriptionDetailBase,
+        loadingStatus: number,
+    ) => {
         setInteralSubscriptionData(data);
         setLoadingStatus(loadingStatus);
     };

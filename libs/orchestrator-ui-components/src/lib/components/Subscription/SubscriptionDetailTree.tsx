@@ -43,7 +43,7 @@ export const SubscriptionDetailTree = () => {
         const idToNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
         // loop over data
-        subscriptionData.subscription?.productBlocks.forEach(function (datum) {
+        subscriptionData.productBlocks.forEach(function (datum) {
             // eslint-disable-next-line  @typescript-eslint/no-explicit-any
             const shallowCopy: any = { ...datum };
 
@@ -75,7 +75,7 @@ export const SubscriptionDetailTree = () => {
 
                 // Let's add the current node as a child of the parent node.
                 if (
-                    !subscriptionData.subscription.productBlocks.find(
+                    !subscriptionData.productBlocks.find(
                         (i) => i.parent === shallowCopy.id,
                     )
                 ) {
@@ -148,10 +148,10 @@ export const SubscriptionDetailTree = () => {
                             .reverse()
                             .map((id, index) =>
                                 ProductBlock(
-                                    subscriptionData.subscription.productBlocks[
+                                    subscriptionData.productBlocks[
                                         selectedIds[index]
                                     ].resourceTypes.title,
-                                    subscriptionData.subscription.productBlocks[
+                                    subscriptionData.productBlocks[
                                         selectedIds[index]
                                     ].resourceTypes,
                                     id,

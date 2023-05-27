@@ -6,7 +6,7 @@ type GenericField = { [key: string]: number | string | boolean };
 
 export type OrganisationBase = {
     abbreviation?: string; // Todo: Is this SURF specific?
-    name: string;
+    name?: string; // Todo: whis it this optional?
     // Todo check if website and tel are visible via GenericField
 } & GenericField;
 
@@ -16,8 +16,8 @@ export type ProductBase = {
     status: string;
     tag: string;
     type: string;
-    createdAt: number; // Todo: check seems to be string
-    endDate?: number; // Todo: check seems to be string
+    createdAt: string; // Todo: why is it a string?
+    endDate?: string; // Todo: why is it a string?
 } & GenericField;
 
 export type ResourceTypeBase = {
@@ -46,23 +46,23 @@ export type ExternalServiceBase = {
 export type SubscriptionDetailBase = {
     // Top level subscription fields
     subscriptionId: string;
-    insync: boolean;
-    note?: string;
-    customerId: string;
     description: string;
+    customerId: string; // Todo: shape of new customer name in core is unknown, add customer now?
+    insync: boolean;
     status: string;
-    startDate: number; // Todo: check seems to be string
-    endDate: number; // Todo: check seems to be string
+    startDate?: string; // Todo: why is it a string?
+    endDate?: string; // Todo: why is it a string?
+    note?: string;
 
     // Nested attributes
-    imsCircuits: any;
+    product: ProductBase;
     fixedInputs: FixedInputsBase;
-    organisation: OrganisationBase;
-    productBlocks: ProductBlockBase;
+    organisation: OrganisationBase; // Todo: settle on Organisation or Customer?
+    productBlocks: ProductBlockBase[];
 
     // Todo: it might be better to store these into a separate state key in the Subscription Context
     externalServices?: ExternalServiceBase[];
-} & GenericField; // Todo: check if the normal Generic fields are enough here; do customers want to add nested attributes?
+}; // Todo: are customers allowed to add nested attributes?
 
 export interface ItemsList {
     type: string;
