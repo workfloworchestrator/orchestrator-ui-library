@@ -9,12 +9,21 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 
 // Todo: add data type?
 export const ProductBlock = (title: string, data: object, id?: number) => {
     const { toggleSelectedId } = React.useContext(
         TreeContext,
     ) as TreeContextType;
+
+    // Todo: extend this to use the subscription context to show external data.
+    //  Bonus / Kudo's for a small rewrite so this component doesn't need the data prop.
+    const { subscriptionData, loadingStatus } =
+        React.useContext(SubscriptionContext);
+    if (loadingStatus === 2) {
+        console.log('Yeah external services are loaded');
+    }
 
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
