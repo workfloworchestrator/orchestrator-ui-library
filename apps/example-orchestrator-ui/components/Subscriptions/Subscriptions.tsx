@@ -154,7 +154,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableTableColumns,
     );
 
-    const { isLoading, data } = useStringQueryWithGraphql<
+    const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
     >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
@@ -172,7 +172,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         return null;
     }
 
-    if (isLoading || !data) {
+    if (!data) {
         return <h1>Loading...</h1>;
     }
 
@@ -204,7 +204,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                         data.subscriptions.pageInfo.totalItems,
                     ),
                 }}
-                isLoading={false} // todo: make true when fetching data
+                isLoading={isFetching}
                 onCriteriaChange={(criteria) => {
                     const { page } = criteria;
                     if (page) {
