@@ -1,16 +1,14 @@
 import {
     CheckmarkCircleFill,
-    ControlColumn,
     getTypedFieldFromObject,
     MinusCircleOutline,
     parseDate,
     PlusCircleFill,
     SortDirection,
     SubscriptionStatusBadge,
-    Table,
-    TableColumns,
     TableTable,
     TableTableColumns,
+    TableTableColumnsWithExtraNonDataFields,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -63,138 +61,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         Array<keyof Subscription>
     >(['organisationName', 'productName']);
 
-    const tableColumnConfig: TableColumns<Subscription> = {
-        description: {
-            displayAsText: 'Description',
-            initialWidth: 400,
-            renderCell: (cellValue, row) => (
-                <Link href={`/subscriptions/${row.subscriptionId}`}>
-                    {cellValue}
-                </Link>
-            ),
-        },
-        insync: {
-            displayAsText: 'In Sync',
-            initialWidth: 110,
-            renderCell: (cellValue) =>
-                cellValue ? (
-                    <CheckmarkCircleFill color={theme.colors.primary} />
-                ) : (
-                    <MinusCircleOutline color={theme.colors.mediumShade} />
-                ),
-        },
-        organisationName: {
-            displayAsText: 'Customer Name',
-            isHiddenByDefault: true,
-        },
-        organisationAbbreviation: {
-            displayAsText: 'Customer',
-            initialWidth: 200,
-        },
-        productName: {
-            displayAsText: 'Product',
-            initialWidth: 250,
-            isHiddenByDefault: true,
-        },
-        tag: {
-            initialWidth: 100,
-            displayAsText: 'Tag',
-        },
-        startDate: {
-            displayAsText: 'Start Date',
-            initialWidth: 150,
-            renderCell: (cellValue) =>
-                // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue ? cellValue.toLocaleString('nl-NL') : '',
-        },
-        endDate: {
-            displayAsText: 'End Date',
-            initialWidth: 150,
-            renderCell: (cellValue) =>
-                // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue ? cellValue.toLocaleString('nl-NL') : '',
-        },
-        status: {
-            displayAsText: 'Status',
-            initialWidth: 110,
-            renderCell: (cellValue) => (
-                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
-            ),
-        },
-        subscriptionId: {
-            displayAsText: 'ID',
-            initialWidth: 100,
-            renderCell: (cellValue) => cellValue.slice(0, 8),
-        },
-        note: {
-            displayAsText: 'Note',
-            renderCell: (cellValue) => (cellValue ? cellValue : ''),
-        },
-    };
-
-    const sortedColumnId = getTypedFieldFromObject(
-        sortOrder.field,
-        tableColumnConfig,
-    );
-
-    const { isLoading, data } = useStringQueryWithGraphql<
-        SubscriptionsResult,
-        SubscriptionsQueryVariables
-    >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
-        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-        first: pageSize,
-        after: pageIndex,
-        sortBy: sortedColumnId && {
-            field: sortedColumnId.toString(),
-            order: sortOrder.order,
-        },
-    });
-
-    if (!sortedColumnId) {
-        router.replace('/subscriptions');
-        return null;
-    }
-
-    if (isLoading || !data) {
-        return <h1>Loading...</h1>;
-    }
-
-    const initialColumnOrder: Array<keyof Subscription> = [
-        'subscriptionId',
-        'description',
-        'status',
-        'insync',
-        'organisationName',
-        'organisationAbbreviation',
-        'productName',
-        'tag',
-        'startDate',
-        'endDate',
-        'note',
-    ];
-
-    const leadingControlColumns: ControlColumn<Subscription>[] = [
-        {
-            id: 'inlineSubscriptionDetails',
-            width: 40,
-            rowCellRender: () => (
-                <EuiFlexItem>
-                    <PlusCircleFill color={theme.colors.mediumShade} />
-                </EuiFlexItem>
-            ),
-        },
-    ];
-
     const tableTableColumns: TableTableColumns<Subscription> = {
-        inlineSubscriptionDetails: {
-            field: 'inlineSubscriptionDetails',
-            width: '40',
-            render: () => (
-                <EuiFlexItem>
-                    <PlusCircleFill color={theme.colors.mediumShade} />
-                </EuiFlexItem>
-            ),
-        },
         subscriptionId: {
             field: 'subscriptionId',
             name: 'ID',
@@ -268,12 +135,52 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
+    const tableTableColumnsWithExtraNonDataFields: TableTableColumnsWithExtraNonDataFields<Subscription> =
+        {
+            inlineSubscriptionDetails: {
+                field: 'inlineSubscriptionDetails',
+                width: '40',
+                render: () => (
+                    <EuiFlexItem>
+                        <PlusCircleFill color={theme.colors.mediumShade} />
+                    </EuiFlexItem>
+                ),
+            },
+            ...tableTableColumns,
+        };
+
+    const sortedColumnId = getTypedFieldFromObject(
+        sortOrder.field,
+        tableTableColumns,
+    );
+
+    const { isLoading, data } = useStringQueryWithGraphql<
+        SubscriptionsResult,
+        SubscriptionsQueryVariables
+    >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
+        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
+        first: pageSize,
+        after: pageIndex,
+        sortBy: sortedColumnId && {
+            field: sortedColumnId.toString(),
+            order: sortOrder.order,
+        },
+    });
+
+    if (!sortedColumnId) {
+        router.replace('/subscriptions');
+        return null;
+    }
+
+    if (isLoading || !data) {
+        return <h1>Loading...</h1>;
+    }
+
     return (
         <>
-            <h1>Table:</h1>
             <TableTable
                 data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableTableColumns}
+                columns={tableTableColumnsWithExtraNonDataFields}
                 hiddenColumns={hiddenColumns}
                 dataSorting={{
                     columnId: sortedColumnId,
@@ -297,39 +204,16 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                         data.subscriptions.pageInfo.totalItems,
                     ),
                 }}
-                onCriteriaChange={(criteria) =>
-                    console.log('Criteria changed', { criteria })
-                }
+                isLoading={false} // todo: make true when fetching data
+                onCriteriaChange={(criteria) => {
+                    const { page } = criteria;
+                    if (page) {
+                        const { index, size } = page;
+                        setPageSize(size);
+                        setPageIndex(index * size);
+                    }
+                }}
             />
-            <h1>GRID:</h1>
-            <Table
-                data={mapApiResponseToSubscriptionTableData(data)}
-                pagination={{
-                    pageSize: pageSize,
-                    pageIndex: Math.floor(pageIndex / pageSize),
-                    pageSizeOptions: [5, 10, 15, 20, 25, 100],
-                    totalRecords: parseInt(
-                        data.subscriptions.pageInfo.totalItems,
-                    ),
-                    onChangePage: (updatedPageNumber) =>
-                        setPageIndex(updatedPageNumber * pageSize),
-                    onChangeItemsPerPage: (itemsPerPage) =>
-                        setPageSize(itemsPerPage),
-                }}
-                columns={tableColumnConfig}
-                leadingControlColumns={leadingControlColumns}
-                initialColumnOrder={initialColumnOrder}
-                dataSorting={{
-                    columnId: sortedColumnId,
-                    sortDirection: sortOrder.order,
-                }}
-                updateDataSorting={(dataSorting) =>
-                    setSortOrder({
-                        field: dataSorting.columnId,
-                        order: dataSorting.sortDirection,
-                    })
-                }
-            ></Table>
         </>
     );
 };

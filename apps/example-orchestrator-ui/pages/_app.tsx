@@ -64,7 +64,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
                         >
                             <QueryParamProvider
                                 adapter={NextAdapter}
-                                options={{ removeDefaultsFromUrl: false }}
+                                options={{
+                                    removeDefaultsFromUrl: false,
+                                    enableBatching: true,
+                                }}
                             >
                                 <Component {...pageProps} />
                             </QueryParamProvider>

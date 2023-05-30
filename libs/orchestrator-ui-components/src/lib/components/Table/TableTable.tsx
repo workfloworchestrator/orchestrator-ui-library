@@ -10,19 +10,23 @@ export type TableTableColumns<T> = {
         field: Property;
         name: string;
     };
-} & {
-    [key: string]: EuiBasicTableColumn<T> & {
-        field: string;
-        name?: string;
-    };
 };
+
+export type TableTableColumnsWithExtraNonDataFields<T> =
+    TableTableColumns<T> & {
+        [key: string]: EuiBasicTableColumn<T> & {
+            field: string;
+            name?: string;
+        };
+    };
 
 export type TableTableProps<T> = {
     data: T[];
-    columns: TableTableColumns<T>;
+    columns: TableTableColumnsWithExtraNonDataFields<T>;
     hiddenColumns?: Array<keyof T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
+    isLoading?: boolean;
     onCriteriaChange: (criteria: Criteria<T>) => void;
     onDataSort?: (columnId: keyof T) => void;
 };
@@ -33,6 +37,7 @@ export const TableTable = <T,>({
     hiddenColumns,
     dataSorting,
     pagination,
+    isLoading,
     onCriteriaChange,
     onDataSort,
 }: TableTableProps<T>) => (
@@ -48,7 +53,7 @@ export const TableTable = <T,>({
         )}
         pagination={pagination}
         onChange={onCriteriaChange}
-        // loading={true}
+        loading={isLoading}
     />
 );
 
