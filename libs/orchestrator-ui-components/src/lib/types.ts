@@ -109,3 +109,8 @@ export interface Product {
     modify_subscription_workflow_key: string;
     terminate_subscription_workflow_key: string;
 }
+
+export interface externalServiceField {
+    externalServiceKey: string;
+    dataKey: string;
+}
