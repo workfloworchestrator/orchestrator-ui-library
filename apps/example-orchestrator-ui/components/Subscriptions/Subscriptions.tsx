@@ -1,17 +1,18 @@
 import {
+    CheckmarkCircleFill,
+    ControlColumn,
+    getTypedFieldFromObject,
+    MinusCircleOutline,
+    parseDate,
+    PlusCircleFill,
+    SortDirection,
+    SubscriptionStatusBadge,
     Table,
     TableColumns,
-    getTypedFieldFromObject,
-    CheckmarkCircleFill,
-    MinusCircleOutline,
-    useOrchestratorTheme,
-    SubscriptionStatusBadge,
-    ControlColumn,
-    PlusCircleFill,
-    useStringQueryWithGraphql,
-    parseDate,
     TableTable,
     TableTableColumns,
+    useOrchestratorTheme,
+    useStringQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -271,6 +272,20 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableTableColumns}
                 hiddenColumns={hiddenColumns}
+                dataSorting={{
+                    columnId: sortedColumnId,
+                    sortDirection: sortOrder.order,
+                }}
+                onDataSort={(newSortColumnId) =>
+                    setSortOrder({
+                        field: newSortColumnId,
+                        order: determineNewSortOrder(
+                            sortedColumnId,
+                            sortOrder.order,
+                            newSortColumnId,
+                        ),
+                    })
+                }
                 pagination={{
                     pageSize: pageSize,
                     pageIndex: Math.floor(pageIndex / pageSize),
@@ -348,4 +363,18 @@ function mapApiResponseToSubscriptionTableData(
             };
         },
     );
+}
+
+function determineNewSortOrder<T>(
+    currentSortColumnId: keyof T,
+    currentSortDirection: SortDirection,
+    newSortColumnId: keyof T,
+) {
+    if (currentSortColumnId === newSortColumnId) {
+        return currentSortDirection === SortDirection.Asc
+            ? SortDirection.Desc
+            : SortDirection.Asc;
+    }
+
+    return SortDirection.Asc;
 }
