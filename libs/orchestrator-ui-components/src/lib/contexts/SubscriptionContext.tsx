@@ -26,7 +26,7 @@ const subscriptionDetailInit = {
         createdAt: '',
     },
     fixedInputs: {},
-    organisation: {},
+    customer: {},
     productBlocks: [],
 };
 
@@ -34,6 +34,7 @@ const subscriptionDetailInit = {
 const InitialSubscriptionContext: SubscriptionContextType = {
     subscriptionData: subscriptionDetailInit,
     loadingStatus: 0,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setSubscriptionData: () => {},
 };
 

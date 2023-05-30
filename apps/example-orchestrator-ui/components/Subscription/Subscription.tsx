@@ -25,7 +25,7 @@ import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components
 import { getColor, tabs } from './utils';
 
 type SubscriptionProps = {
-    subscriptionId: string | string[];
+    subscriptionId: string;
 };
 
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);

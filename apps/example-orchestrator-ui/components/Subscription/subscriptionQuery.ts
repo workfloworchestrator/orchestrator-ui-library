@@ -6,7 +6,6 @@ import {
 import {
     CustomerBase,
     ExternalServiceBase,
-    OrganisationBase,
     ProductBase,
     ProductBlockBase,
     ResourceTypeBase,
