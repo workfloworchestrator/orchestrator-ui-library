@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import { Nullable, ResourceTypeBase } from '../../types';
+import { ProductBlock } from './ProductBlock';
 import {
-    ProductBlock,
     SubscriptionContext,
     SubscriptionContextType,
-    Tree,
-    TreeContext,
-    TreeContextType,
-} from '@orchestrator-ui/orchestrator-ui-components';
-import { getTokenName } from '../../../../../../apps/example-orchestrator-ui/components/Subscription/utils';
+} from '../../contexts/SubscriptionContext';
+import { Tree } from '../Tree/Tree';
+import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+
 import {
     EuiButtonIcon,
     EuiCallOut,
@@ -17,6 +17,18 @@ import {
     EuiSearchBar,
     EuiText,
 } from '@elastic/eui';
+
+import { getTokenName } from '../../utils/getTokenName';
+
+type TreeBlocks = {
+    id: number;
+    parent: Nullable<number>;
+    callback: () => void;
+    label: string;
+    ownerSubscriptionId: string;
+    resourceType: ResourceTypeBase;
+    children: TreeBlocks;
+};
 
 export const SubscriptionDetailTree = () => {
     const [expandAllActive, setExpandAllActive] = useState(false);
@@ -38,7 +50,7 @@ export const SubscriptionDetailTree = () => {
         setExpandAllActive(!expandAllActive);
     };
 
-    let tree = null; // Initially set our loop to null
+    let tree: TreeBlocks[] = []; // Initially set our loop to null
     if (loadingStatus > 0) {
         const idToNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
@@ -119,8 +131,8 @@ export const SubscriptionDetailTree = () => {
                         </EuiFlexGroup>
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
-                        {tree === null && <EuiLoadingContent />}
-                        {tree !== null && <Tree data={[tree]} />}
+                        {!tree && <EuiLoadingContent />}
+                        {tree && <Tree data={[tree]} />}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>

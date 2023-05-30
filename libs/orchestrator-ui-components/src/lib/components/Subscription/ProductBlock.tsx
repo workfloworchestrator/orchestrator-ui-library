@@ -28,13 +28,8 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
         TreeContext,
     ) as TreeContextType;
 
-    // Todo: extend this to use the subscription context to show external data.
-    //  Bonus / Kudo's for a small rewrite so this component doesn't need the data prop.
-    const { subscriptionData, loadingStatus } =
-        React.useContext(SubscriptionContext);
-    if (loadingStatus === 2) {
-        console.log('Yeah external services are loaded');
-    }
+    // Todo: rewrite this to use the subscription context, tiwthout relying on "data" prop
+    const { subscriptionData } = React.useContext(SubscriptionContext);
 
     // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
@@ -42,24 +37,19 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
         if (typeof data[key] !== 'object') {
             keys.push(key);
         }
-        if (key == 'product') {
-            keys.push('product.name');
-        }
-        console.log('key', key);
     }
     if (keys.length === 0) return;
 
     const getExternalData = (
-        externalServiceId: string | number,
-        externalServiceKey: string | null,
+        externalServiceId: string,
+        externalServiceKey: string,
     ) => {
         if (subscriptionData.externalServices) {
             const foundObject = subscriptionData.externalServices.find(
                 (item) =>
                     item.externalServiceId === externalServiceId &&
                     item.externalServiceKey === externalServiceKey,
-            );
-            console.log('FOund object', foundObject);
+            ).externalServiceData;
             return JSON.stringify(foundObject, null, 2);
         } else return '';
     };
@@ -85,7 +75,7 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
-                            {id && (
+                            {id !== undefined && (
                                 <EuiButtonIcon
                                     size={'m'}
                                     iconType={'cross'}
@@ -170,27 +160,9 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                                 width: 222,
                                                             }}
                                                         >
-                                                            <b>
-                                                                {k.includes('.')
-                                                                    ? k.split(
-                                                                          '.',
-                                                                      )[0]
-                                                                    : k}
-                                                            </b>
+                                                            <b>{k}</b>
                                                         </td>
-                                                        <td>
-                                                            {k.includes('.')
-                                                                ? data[
-                                                                      k.split(
-                                                                          '.',
-                                                                      )[0]
-                                                                  ][
-                                                                      k.split(
-                                                                          '.',
-                                                                      )[1]
-                                                                  ]
-                                                                : data[k]}
-                                                        </td>
+                                                        <td>{data[k]}</td>
                                                     </div>
                                                 }
                                             >
@@ -200,27 +172,11 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                         fontSize="m"
                                                         lineNumbers
                                                         isCopyable
-                                                        isVirtualized
-                                                        overflowHeight={300}
                                                     >
                                                         {getExternalData(
-                                                            k.includes('.')
-                                                                ? data[
-                                                                      k.split(
-                                                                          '.',
-                                                                      )[0]
-                                                                  ][
-                                                                      k.split(
-                                                                          '.',
-                                                                      )[1]
-                                                                  ]
-                                                                : data[k],
+                                                            data[k],
                                                             getExternalServiceKey(
-                                                                k.includes('.')
-                                                                    ? k.split(
-                                                                          '.',
-                                                                      )[0]
-                                                                    : k,
+                                                                k,
                                                                 externalServicesFields,
                                                             ),
                                                         )}

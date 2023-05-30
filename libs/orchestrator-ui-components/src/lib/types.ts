@@ -4,10 +4,9 @@ export type Nullable<T> = T | null;
 
 type GenericField = { [key: string]: number | string | boolean };
 
-export type OrganisationBase = {
-    abbreviation?: string; // Todo: Is this SURF specific?
-    name?: string; // Todo: whis it this optional?
-    // Todo check if website and tel are visible via GenericField
+export type CustomerBase = {
+    abbreviation?: string;
+    name?: string; // Todo: why it this optional?
 } & GenericField;
 
 export type ProductBase = {
@@ -35,7 +34,7 @@ export type ProductBlockBase = {
     resourceTypes: ResourceTypeBase;
 };
 
-export type FixedInputsBase = {} & GenericField;
+export type FixedInputsBase = GenericField;
 
 export type ExternalServiceBase = {
     externalServiceKey: string;
@@ -57,7 +56,7 @@ export type SubscriptionDetailBase = {
     // Nested attributes
     product: ProductBase;
     fixedInputs: FixedInputsBase;
-    organisation: OrganisationBase; // Todo: settle on Organisation or Customer?
+    customer: CustomerBase;
     productBlocks: ProductBlockBase[];
 
     // Todo: it might be better to store these into a separate state key in the Subscription Context

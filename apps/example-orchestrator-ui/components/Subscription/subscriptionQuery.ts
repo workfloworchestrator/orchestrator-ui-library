@@ -4,6 +4,7 @@ import {
     GetSubscriptionDetailOutlineQuery,
 } from '../../__generated__/graphql';
 import {
+    CustomerBase,
     ExternalServiceBase,
     OrganisationBase,
     ProductBase,
@@ -153,12 +154,11 @@ export function mapApiResponseToSubscriptionDetail(
                     title: productBlock.resourceTypes.title,
                     label: productBlock.resourceTypes?.label,
                     subscriptionInstanceId:
-                        productBlock.resourceTypes.subscription_instance_id, // Todo: pythia naming
+                        productBlock.resourceTypes.subscription_instance_id,
                     ownerSubscriptionId:
-                        productBlock.resourceTypes.owner_subscription_id, // Todo: pythia naming
+                        productBlock.resourceTypes.owner_subscription_id,
                     ...productBlock.resourceTypes,
                 };
-                // Todo: add remaining stuff
                 const retValue: ProductBlockBase = {
                     id: productBlock.id,
                     ownerSubscriptionId: productBlock.ownerSubscriptionId,
@@ -170,7 +170,7 @@ export function mapApiResponseToSubscriptionDetail(
         },
     );
 
-    const organisation: OrganisationBase = {
+    const customer: CustomerBase = {
         name: subscription.organisation.name,
         abbreviation: subscription.organisation.abbreviation,
     };
@@ -201,7 +201,7 @@ export function mapApiResponseToSubscriptionDetail(
         note: subscription?.note,
         product: product,
         fixedInputs: subscription.fixedInputs,
-        organisation: organisation,
+        customer: customer,
         productBlocks: productBlocks,
         externalServices: externalServices,
     };

@@ -11,16 +11,15 @@ import {
 import { useSubscriptionActions } from '../../hooks/useSubscriptionActions';
 
 export type SubscriptionActionsProps = {
-    subscriptionId: string | string[];
+    subscriptionId: string;
 };
 
 export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
     const [isPopoverOpen, setPopover] = useState(false);
-    const { data: subscriptionActions } = useSubscriptionActions(
-        '8e22de88-1140-49eb-8c09-498f69654b4b',
-    );
+    const { data: subscriptionActions } =
+        useSubscriptionActions(subscriptionId);
 
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
