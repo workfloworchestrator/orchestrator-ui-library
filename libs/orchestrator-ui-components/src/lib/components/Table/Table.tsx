@@ -5,24 +5,23 @@ import React from 'react';
 import { DataSorting } from './columns';
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-export type TableTableColumns<T> = {
+export type TableColumns<T> = {
     [Property in keyof T]: EuiBasicTableColumn<T> & {
         field: Property;
         name: string;
     };
 };
 
-export type TableTableColumnsWithExtraNonDataFields<T> =
-    TableTableColumns<T> & {
-        [key: string]: EuiBasicTableColumn<T> & {
-            field: string;
-            name?: string;
-        };
+export type TableColumnsWithExtraNonDataFields<T> = TableColumns<T> & {
+    [key: string]: EuiBasicTableColumn<T> & {
+        field: string;
+        name?: string;
     };
+};
 
-export type TableTableProps<T> = {
+export type TableProps<T> = {
     data: T[];
-    columns: TableTableColumnsWithExtraNonDataFields<T>;
+    columns: TableColumnsWithExtraNonDataFields<T>;
     hiddenColumns?: Array<keyof T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
@@ -31,7 +30,7 @@ export type TableTableProps<T> = {
     onDataSort?: (columnId: keyof T) => void;
 };
 
-export const TableTable = <T,>({
+export const Table = <T,>({
     data,
     columns,
     hiddenColumns,
@@ -40,7 +39,7 @@ export const TableTable = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: TableTableProps<T>) => (
+}: TableProps<T>) => (
     <EuiBasicTable
         tableCaption="Demo of EuiBasicTable"
         items={data}
@@ -58,7 +57,7 @@ export const TableTable = <T,>({
 );
 
 function mapTableColumnsToEuiColumns<T>(
-    columns: TableTableColumns<T>,
+    columns: TableColumns<T>,
     hiddenColumns?: Array<keyof T>,
     dataSorting?: DataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,

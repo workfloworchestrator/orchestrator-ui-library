@@ -6,9 +6,9 @@ import {
     PlusCircleFill,
     SortDirection,
     SubscriptionStatusBadge,
-    TableTable,
-    TableTableColumns,
-    TableTableColumnsWithExtraNonDataFields,
+    Table,
+    TableColumns,
+    TableColumnsWithExtraNonDataFields,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -61,7 +61,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         Array<keyof Subscription>
     >(['organisationName', 'productName']);
 
-    const tableTableColumns: TableTableColumns<Subscription> = {
+    const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
             field: 'subscriptionId',
             name: 'ID',
@@ -135,7 +135,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const tableTableColumnsWithExtraNonDataFields: TableTableColumnsWithExtraNonDataFields<Subscription> =
+    const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
         {
             inlineSubscriptionDetails: {
                 field: 'inlineSubscriptionDetails',
@@ -146,12 +146,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                     </EuiFlexItem>
                 ),
             },
-            ...tableTableColumns,
+            ...tableColumns,
         };
 
     const sortedColumnId = getTypedFieldFromObject(
         sortOrder.field,
-        tableTableColumns,
+        tableColumns,
     );
 
     const { data, isFetching } = useStringQueryWithGraphql<
@@ -178,9 +178,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     return (
         <>
-            <TableTable
+            <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableTableColumnsWithExtraNonDataFields}
+                columns={tableColumnsWithExtraNonDataFields}
                 hiddenColumns={hiddenColumns}
                 dataSorting={{
                     columnId: sortedColumnId,

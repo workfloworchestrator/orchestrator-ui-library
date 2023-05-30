@@ -65,7 +65,7 @@ const TableWithEvents = (args) => {
 
 const Story: Meta<typeof DataGridTable> = {
     component: TableWithEvents,
-    title: 'Tables/Table',
+    title: 'Tables/DataGridTable',
     parameters: { actions: { argTypesRegex: '^on*' } },
 };
 export default Story;
