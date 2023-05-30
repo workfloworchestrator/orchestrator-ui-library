@@ -5,7 +5,36 @@ import {
     EuiDataGridSorting,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
-export type TableColumns<T> = {
+export enum SortDirection {
+    Asc = 'ASC',
+    Desc = 'DESC',
+}
+
+export type DataSorting<T> = {
+    columnId: keyof T;
+    sortDirection: SortDirection;
+};
+
+export const getSortDirectionFromString = (
+    sortOrder?: string,
+): SortDirection | undefined => {
+    if (!sortOrder) {
+        return undefined;
+    }
+
+    switch (sortOrder.toUpperCase()) {
+        case SortDirection.Asc.toString():
+            return SortDirection.Asc;
+        case SortDirection.Desc.toString():
+            return SortDirection.Desc;
+        default:
+            return undefined;
+    }
+};
+
+// Todo: code below is part of the DataGridTable, code above is used in Table
+
+export type DataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
         renderCell?: (cellValue: T[Property], row: T) => ReactNode;
         isHiddenByDefault?: boolean;
@@ -23,18 +52,8 @@ export type ControlColumn<T> = Omit<
     rowCellRender: (row: T) => ReactNode;
 };
 
-export type DataSorting<T> = {
-    columnId: keyof T;
-    sortDirection: SortDirection;
-};
-
-export enum SortDirection {
-    Asc = 'ASC',
-    Desc = 'DESC',
-}
-
 export function getInitialColumnOrder<T>(
-    columns: TableColumns<T>,
+    columns: DataGridTableColumns<T>,
     initialColumnOrder: Array<keyof T>,
 ) {
     const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
@@ -89,20 +108,3 @@ export function columnSortToEuiDataGridSorting<T>(
         },
     };
 }
-
-export const getSortDirectionFromString = (
-    sortOrder?: string,
-): SortDirection | undefined => {
-    if (!sortOrder) {
-        return undefined;
-    }
-
-    switch (sortOrder.toUpperCase()) {
-        case SortDirection.Asc.toString():
-            return SortDirection.Asc;
-        case SortDirection.Desc.toString():
-            return SortDirection.Desc;
-        default:
-            return undefined;
-    }
-};

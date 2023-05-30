@@ -1,7 +1,7 @@
 import {
     getInitialColumnOrder,
     columnSortToEuiDataGridSorting,
-    TableColumns,
+    DataGridTableColumns,
     SortDirection,
     DataSorting,
 } from './columns';
@@ -12,7 +12,7 @@ interface TestColumn {
     date: string;
 }
 
-const columns: TableColumns<TestColumn> = {
+const columns: DataGridTableColumns<TestColumn> = {
     id: {
         displayAsText: 'id',
         initialWidth: 100,

@@ -9,7 +9,7 @@ import {
     ControlColumn,
     DataSorting,
     getInitialColumnOrder,
-    TableColumns,
+    DataGridTableColumns,
 } from './columns';
 import {
     EuiDataGridControlColumn,
@@ -33,10 +33,10 @@ export type Pagination = EuiDataGridPaginationProps & {
     totalRecords: number;
 };
 
-export type TableProps<T> = {
+export type DataGridTableProps<T> = {
     data: T[];
     pagination: Pagination;
-    columns: TableColumns<T>;
+    columns: DataGridTableColumns<T>;
     leadingControlColumns?: ControlColumn<T>[];
     trailingControlColumns?: ControlColumn<T>[];
     initialColumnOrder: Array<keyof T>;
@@ -45,7 +45,7 @@ export type TableProps<T> = {
     updateDataSorting?: (updatedDataSorting: DataSorting<T>) => void;
 };
 
-export const Table = <T,>({
+export const DataGridTable = <T,>({
     data,
     pagination,
     columns,
@@ -55,7 +55,7 @@ export const Table = <T,>({
     dataSorting,
     handleRowClick,
     updateDataSorting,
-}: TableProps<T>) => {
+}: DataGridTableProps<T>) => {
     const initialColumnOrderRef = useRef(
         getInitialColumnOrder(columns, initialColumnOrder),
     );
