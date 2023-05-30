@@ -7,14 +7,14 @@ import { useRef, useState } from 'react';
 import {
     columnSortToEuiDataGridSorting,
     ControlColumn,
-    DataSorting,
     getInitialColumnOrder,
     DataGridTableColumns,
-} from './columns';
+} from './dataGridColumns';
 import {
     EuiDataGridControlColumn,
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
+import { DataSorting } from './columns';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;

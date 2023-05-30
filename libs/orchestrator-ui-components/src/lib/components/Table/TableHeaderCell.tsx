@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
-import { SortDirection } from './columns';
 import { ArrowNarrowDown, ArrowNarrowUp } from '../../icons';
+import { SortDirection } from './columns';
 
 export type TableHeaderCellProps = {
     sortDirection?: SortDirection;

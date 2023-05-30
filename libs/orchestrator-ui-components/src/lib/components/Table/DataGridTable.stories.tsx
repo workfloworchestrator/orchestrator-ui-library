@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { DataSorting, SortDirection } from './columns';
+import { DataSorting, SortDirection } from './dataGridColumns';
 import { DataGridTable } from './DataGridTable';
 
 const extractedArr = (arr, start, howMany) =>
