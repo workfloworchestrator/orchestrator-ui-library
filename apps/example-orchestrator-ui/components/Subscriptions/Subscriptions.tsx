@@ -223,9 +223,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: 'insync',
             name: 'In Sync',
             width: '110',
-            render: (value: boolean) => (
-                <CheckmarkCircleFill color={theme.colors.primary} />
-            ),
+            render: (value: boolean) =>
+                value ? (
+                    <CheckmarkCircleFill color={theme.colors.primary} />
+                ) : (
+                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                ),
         },
         organisationName: {
             field: 'organisationName',
