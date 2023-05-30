@@ -2,14 +2,14 @@ import { FC } from 'react';
 import { IconProps } from './IconProps';
 
 export const ArrowNarrowUp: FC<IconProps> = ({
-    width = 24,
-    height = 24,
+    width = 16,
+    height = 20,
     color = '#000000',
 }) => (
     <svg
         width={width}
         height={height}
-        viewBox="0 0 24 24"
+        viewBox="0 0 16 20"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
