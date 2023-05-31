@@ -16,7 +16,13 @@ const SubscriptionDetailPage = () => {
             <SubscriptionProvider>
                 <TreeProvider>
                     {subscriptionId && (
-                        <Subscription subscriptionId={Array.isArray(subscriptionId) ? subscriptionId[0] : subscriptionId} />
+                        <Subscription
+                            subscriptionId={
+                                Array.isArray(subscriptionId)
+                                    ? subscriptionId[0]
+                                    : subscriptionId
+                            }
+                        />
                     )}
                 </TreeProvider>
             </SubscriptionProvider>
