@@ -2,22 +2,11 @@ import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { TableHeaderCell } from './TableHeaderCell';
 import React from 'react';
-import { DataSorting } from './columns';
-
-// Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-export type TableColumns<T> = {
-    [Property in keyof T]: EuiBasicTableColumn<T> & {
-        field: Property;
-        name: string;
-    };
-};
-
-export type TableColumnsWithExtraNonDataFields<T> = TableColumns<T> & {
-    [key: string]: EuiBasicTableColumn<T> & {
-        field: string;
-        name?: string;
-    };
-};
+import {
+    DataSorting,
+    TableColumns,
+    TableColumnsWithExtraNonDataFields,
+} from './columns';
 
 export type TableProps<T> = {
     data: T[];
@@ -62,28 +51,34 @@ function mapTableColumnsToEuiColumns<T>(
     dataSorting?: DataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,
 ): EuiBasicTableColumn<T>[] {
-    return Object.keys(columns)
-        .filter((colKey) => !hiddenColumns?.includes(colKey as keyof T))
-        .map((colKey): EuiBasicTableColumn<T> => {
-            const { name } = columns[colKey as keyof T];
+    function isVisibleColumn(columnKey: string) {
+        return !hiddenColumns?.includes(columnKey as keyof T);
+    }
 
-            const sortDirection =
-                dataSorting?.columnId === colKey
-                    ? dataSorting.sortDirection
-                    : undefined;
+    function mapToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
+        const typedColumnKey = colKey as keyof T;
+        const column = columns[typedColumnKey];
+        const { name } = column;
 
-            return {
-                ...columns[colKey as keyof T],
-                field: colKey,
-                name: name && (
-                    <TableHeaderCell
-                        sortDirection={sortDirection}
-                        onClick={() => onDataSort?.(colKey as keyof T)}
-                    >
-                        {name}
-                    </TableHeaderCell>
-                ),
-                truncateText: true,
-            };
-        });
+        const sortDirection =
+            dataSorting?.columnId === colKey
+                ? dataSorting.sortDirection
+                : undefined;
+
+        return {
+            ...column,
+            field: typedColumnKey,
+            name: name && (
+                <TableHeaderCell
+                    sortDirection={sortDirection}
+                    onClick={() => onDataSort?.(typedColumnKey)}
+                >
+                    {name}
+                </TableHeaderCell>
+            ),
+            truncateText: true,
+        };
+    }
+
+    return Object.keys(columns).filter(isVisibleColumn).map(mapToEuiColumn);
 }

@@ -1,3 +1,20 @@
+import { EuiBasicTableColumn } from '@elastic/eui';
+
+export type TableColumns<T> = {
+    [Property in keyof T]: EuiBasicTableColumn<T> & {
+        field: Property;
+        name: string;
+    };
+};
+
+// Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
+export type TableColumnsWithExtraNonDataFields<T> = TableColumns<T> & {
+    [key: string]: EuiBasicTableColumn<T> & {
+        field: string;
+        name?: string;
+    };
+};
+
 export enum SortDirection {
     Asc = 'ASC',
     Desc = 'DESC',
