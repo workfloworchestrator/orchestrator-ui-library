@@ -8,6 +8,7 @@ import {
     MinusCircleOutline,
     parseDate,
     PlusCircleFill,
+    sliceUuid,
     SubscriptionStatusBadge,
     Table,
     TableColumns,
@@ -71,7 +72,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: 'subscriptionId',
             name: 'ID',
             width: '100',
-            render: (value: string) => value.slice(0, 8),
+            render: (value: string) => sliceUuid(value),
         },
         description: {
             field: 'description',
