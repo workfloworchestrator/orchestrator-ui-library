@@ -1,6 +1,10 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { DataSorting, SortDirection, DataGridTable } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    DataSorting,
+    SortDirection,
+    DataGridTable,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const extractedArr = (arr: Array<any>, start: number, howMany: number) =>
     arr.filter((_: any, index: number) => {
