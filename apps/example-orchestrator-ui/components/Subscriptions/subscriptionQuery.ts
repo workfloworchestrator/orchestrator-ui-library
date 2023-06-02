@@ -18,15 +18,9 @@ export type Subscription = {
     tag: string | null;
     description: string;
     product: Product;
-    organisation: Organisation;
     insync: boolean;
     status: string;
     subscriptionId: string;
-};
-
-export type Organisation = {
-    abbreviation: string;
-    name: string;
 };
 
 export type Product = {
@@ -92,10 +86,6 @@ export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT: string = gql`
                         name
                         type
                         tag
-                    }
-                    organisation {
-                        abbreviation
-                        name
                     }
                     insync
                     status

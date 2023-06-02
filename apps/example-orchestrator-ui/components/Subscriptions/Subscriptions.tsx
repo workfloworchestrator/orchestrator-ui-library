@@ -38,8 +38,6 @@ type Subscription = {
     endDate: Date | null;
     productName: string;
     tag: string | null;
-    organisationName: string | null;
-    organisationAbbreviation: string | null;
     note: string | null;
 };
 
@@ -62,10 +60,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const hiddenColumns: Array<keyof Subscription> = [
-        'organisationName',
-        'productName',
-    ];
+    const hiddenColumns: Array<keyof Subscription> = ['productName'];
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
@@ -102,15 +97,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 ) : (
                     <MinusCircleOutline color={theme.colors.mediumShade} />
                 ),
-        },
-        organisationName: {
-            field: 'organisationName',
-            name: 'Customer Name',
-        },
-        organisationAbbreviation: {
-            field: 'organisationAbbreviation',
-            name: 'Customer',
-            width: '200',
         },
         productName: {
             field: 'productName',
@@ -235,7 +221,6 @@ function mapApiResponseToSubscriptionTableData(
             const {
                 description,
                 insync,
-                organisation,
                 product,
                 startDate,
                 endDate,
@@ -247,8 +232,6 @@ function mapApiResponseToSubscriptionTableData(
             return {
                 description,
                 insync,
-                organisationName: organisation.name ?? null,
-                organisationAbbreviation: organisation.abbreviation ?? null,
                 productName: product.name,
                 tag: product.tag ?? null,
                 startDate: parseDate(startDate),
