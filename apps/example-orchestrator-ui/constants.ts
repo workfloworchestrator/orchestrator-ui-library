@@ -1,4 +1,10 @@
-export const GRAPHQL_ENDPOINT = 'https://api.dev.automation.surf.net/pythia';
+export const GRAPHQL_ENDPOINT =
+    'https://api.dev.automation.surf.net/pythia/graphql';
+// Final URL:
+// export const GRAPHQL_ENDPOINT = 'https://api.dev.automation.surf.net/graphql';
+
+// OLD URLS:
+// export const GRAPHQL_ENDPOINT = 'https://api.dev.automation.surf.net/pythia';
 // export const GRAPHQL_ENDPOINT = 'http://localhost:8080/pythia/graphql';
 
 export const ORCHESTRATOR_API_BASE_URL =

@@ -24,10 +24,10 @@ export type ControlColumn<T> = Omit<
     rowCellRender: (row: T) => ReactNode;
 };
 
-export function getInitialColumnOrder<T>(
+export const getInitialColumnOrder = <T>(
     columns: DataGridTableColumns<T>,
     initialColumnOrder: Array<keyof T>,
-) {
+) => {
     const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
         (colKey) => {
             const column = columns[colKey as keyof T];
@@ -48,35 +48,33 @@ export function getInitialColumnOrder<T>(
                 columnOrderIds.indexOf(left.id) -
                 columnOrderIds.indexOf(right.id),
         );
-}
+};
 
-export function columnSortToEuiDataGridSorting<T>(
+export const mapColumnSortToEuiDataGridSorting = <T>(
     columnSort?: DataSorting<T>,
     updateColumnSort?: (columnSort: DataSorting<T>) => void,
-): EuiDataGridSorting {
-    return {
-        columns: columnSort
-            ? [
-                  {
-                      id: columnSort.columnId.toString(),
-                      direction:
-                          columnSort.sortDirection === SortDirection.Asc
-                              ? 'asc'
-                              : 'desc',
-                  },
-              ]
-            : [],
-        onSort: (columns) => {
-            const lastSortData = columns.slice(-1)[0];
-            if (updateColumnSort && lastSortData) {
-                updateColumnSort({
-                    columnId: lastSortData.id as keyof T,
-                    sortDirection:
-                        lastSortData.direction === 'asc'
-                            ? SortDirection.Asc
-                            : SortDirection.Desc,
-                });
-            }
-        },
-    };
-}
+): EuiDataGridSorting => ({
+    columns: columnSort
+        ? [
+              {
+                  id: columnSort.columnId.toString(),
+                  direction:
+                      columnSort.sortDirection === SortDirection.Asc
+                          ? 'asc'
+                          : 'desc',
+              },
+          ]
+        : [],
+    onSort: (columns) => {
+        const lastSortData = columns.slice(-1)[0];
+        if (updateColumnSort && lastSortData) {
+            updateColumnSort({
+                columnId: lastSortData.id as keyof T,
+                sortDirection:
+                    lastSortData.direction === 'asc'
+                        ? SortDirection.Asc
+                        : SortDirection.Desc,
+            });
+        }
+    },
+});

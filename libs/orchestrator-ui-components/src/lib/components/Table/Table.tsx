@@ -30,9 +30,7 @@ export const Table = <T,>({
     onDataSort,
 }: TableProps<T>) => (
     <EuiBasicTable
-        tableCaption="Demo of EuiBasicTable"
         items={data}
-        rowHeader="firstName"
         columns={mapTableColumnsToEuiColumns(
             columns,
             hiddenColumns,

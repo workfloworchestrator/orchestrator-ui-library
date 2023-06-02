@@ -5,7 +5,7 @@ import {
 } from '@elastic/eui';
 import { useRef, useState } from 'react';
 import {
-    columnSortToEuiDataGridSorting,
+    mapColumnSortToEuiDataGridSorting,
     ControlColumn,
     getInitialColumnOrder,
     DataGridTableColumns,
@@ -18,6 +18,7 @@ import { DataSorting } from './columns';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
+const EUI_DATA_GRID_ROW_HEIGHT = 40;
 
 const GRID_STYLE: EuiDataGridStyle = {
     border: 'horizontal',
@@ -92,7 +93,7 @@ export const DataGridTable = <T,>({
             : `${cellValue}`;
     };
 
-    const controlColumnToEuiDataGridControlColumnMapper: (
+    const mapControlColumnToEuiDataGridControlColumn: (
         controlColumn: ControlColumn<T>,
     ) => EuiDataGridControlColumn = ({ id, width, rowCellRender }) => ({
         id,
@@ -109,15 +110,16 @@ export const DataGridTable = <T,>({
     });
 
     const euiDataGridLeadingControlColumns = leadingControlColumns?.map(
-        controlColumnToEuiDataGridControlColumnMapper,
+        mapControlColumnToEuiDataGridControlColumn,
     );
 
     const euiDataGridTrailingControlColumns = trailingControlColumns?.map(
-        controlColumnToEuiDataGridControlColumnMapper,
+        mapControlColumnToEuiDataGridControlColumn,
     );
 
     const gridHeightValue =
-        pagination.pageSize * 40 + EUI_DATA_GRID_HEIGHT_OFFSET;
+        pagination.pageSize * EUI_DATA_GRID_ROW_HEIGHT +
+        EUI_DATA_GRID_HEIGHT_OFFSET;
 
     return (
         <EuiDataGrid
@@ -129,7 +131,7 @@ export const DataGridTable = <T,>({
             gridStyle={GRID_STYLE}
             columnVisibility={{ visibleColumns, setVisibleColumns }}
             pagination={pagination}
-            sorting={columnSortToEuiDataGridSorting(
+            sorting={mapColumnSortToEuiDataGridSorting(
                 dataSorting,
                 updateDataSorting,
             )}

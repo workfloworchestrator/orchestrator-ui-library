@@ -1,6 +1,6 @@
 import {
     getInitialColumnOrder,
-    columnSortToEuiDataGridSorting,
+    mapColumnSortToEuiDataGridSorting,
     DataGridTableColumns,
 } from './dataGridColumns';
 import { DataSorting, SortDirection } from './columns';
@@ -28,14 +28,16 @@ const columns: DataGridTableColumns<TestColumn> = {
 
 describe('dataGridColumns', () => {
     describe('getInitialColumnOrder', () => {
-        it('should return columns sorted by initialColumnOrder (id, title, date)', () => {
+        it('returns columns sorted by initialColumnOrder (id, title, date)', () => {
             const initialColumnOrder: Array<keyof TestColumn> = [
                 'id',
                 'title',
                 'date',
             ];
-            const initials = getInitialColumnOrder(columns, initialColumnOrder);
-            expect(initials).toEqual([
+
+            const result = getInitialColumnOrder(columns, initialColumnOrder);
+
+            expect(result).toEqual([
                 {
                     displayAsText: 'id',
                     id: 'id',
@@ -63,8 +65,10 @@ describe('dataGridColumns', () => {
                 'id',
                 'title',
             ];
-            const initials = getInitialColumnOrder(columns, initialColumnOrder);
-            expect(initials).toEqual([
+
+            const result = getInitialColumnOrder(columns, initialColumnOrder);
+
+            expect(result).toEqual([
                 {
                     displayAsText: 'date',
                     id: 'date',
@@ -98,8 +102,9 @@ describe('dataGridColumns', () => {
                 sortBy.sortDirection = dataSorting.sortDirection;
             };
 
-            const sorting = columnSortToEuiDataGridSorting(sortBy, onSort);
+            const sorting = mapColumnSortToEuiDataGridSorting(sortBy, onSort);
             expect(sorting.columns).toEqual([{ id: 'id', direction: 'asc' }]);
+
             sorting.onSort([{ id: 'id', direction: 'desc' }]);
             expect(sortBy).toEqual({ columnId: 'id', sortDirection: 'DESC' });
         });

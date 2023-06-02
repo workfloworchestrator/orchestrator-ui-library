@@ -1,10 +1,13 @@
 import {
     CheckmarkCircleFill,
+    DataSorting,
+    DEFAULT_PAGE_SIZES,
+    determineNewSortOrder,
+    determinePageIndex,
     getTypedFieldFromObject,
     MinusCircleOutline,
     parseDate,
     PlusCircleFill,
-    SortDirection,
     SubscriptionStatusBadge,
     Table,
     TableColumns,
@@ -12,7 +15,7 @@ import {
     useOrchestratorTheme,
     useStringQueryWithGraphql,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
@@ -23,6 +26,7 @@ import {
     SubscriptionsResult,
     SubscriptionsSort,
 } from './subscriptionQuery';
+import { Criteria, Pagination } from '@elastic/eui';
 
 type Subscription = {
     subscriptionId: string;
@@ -57,9 +61,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const [hiddenColumns /*, setHiddenColumns*/] = useState<
-        Array<keyof Subscription>
-    >(['organisationName', 'productName']);
+    const hiddenColumns: Array<keyof Subscription> = [
+        'organisationName',
+        'productName',
+    ];
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
@@ -120,14 +125,14 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             name: 'Start Date',
             width: '150',
             render: (value: Date | null) =>
-                value ? value.toLocaleString('nl-NL') : '',
+                value?.toLocaleString('nl-NL') ?? '',
         },
         endDate: {
             field: 'endDate',
             name: 'End Date',
             width: '150',
             render: (value: Date | null) =>
-                value ? value.toLocaleString('nl-NL') : '',
+                value?.toLocaleString('nl-NL') ?? '',
         },
         note: {
             field: 'note',
@@ -176,45 +181,48 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         return <h1>Loading...</h1>;
     }
 
+    const handleDataSort = (newSortColumnId: keyof Subscription) =>
+        setSortOrder({
+            field: newSortColumnId,
+            order: determineNewSortOrder(
+                sortedColumnId,
+                sortOrder.order,
+                newSortColumnId,
+            ),
+        });
+
+    const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
+        const { page } = criteria;
+        if (page) {
+            const { index, size } = page;
+            setPageSize(size);
+            setPageIndex(index * size);
+        }
+    };
+
+    const totalItemCount = parseInt(data.subscriptions.pageInfo.totalItems);
+    const dataSorting: DataSorting<Subscription> = {
+        columnId: sortedColumnId,
+        sortDirection: sortOrder.order,
+    };
+    const pagination: Pagination = {
+        pageSize: pageSize,
+        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: totalItemCount,
+    };
+
     return (
-        <>
-            <Table
-                data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableColumnsWithExtraNonDataFields}
-                hiddenColumns={hiddenColumns}
-                dataSorting={{
-                    columnId: sortedColumnId,
-                    sortDirection: sortOrder.order,
-                }}
-                onDataSort={(newSortColumnId) =>
-                    setSortOrder({
-                        field: newSortColumnId,
-                        order: determineNewSortOrder(
-                            sortedColumnId,
-                            sortOrder.order,
-                            newSortColumnId,
-                        ),
-                    })
-                }
-                pagination={{
-                    pageSize: pageSize,
-                    pageIndex: Math.floor(pageIndex / pageSize),
-                    pageSizeOptions: [5, 10, 15, 20, 25, 100],
-                    totalItemCount: parseInt(
-                        data.subscriptions.pageInfo.totalItems,
-                    ),
-                }}
-                isLoading={isFetching}
-                onCriteriaChange={(criteria) => {
-                    const { page } = criteria;
-                    if (page) {
-                        const { index, size } = page;
-                        setPageSize(size);
-                        setPageIndex(index * size);
-                    }
-                }}
-            />
-        </>
+        <Table
+            data={mapApiResponseToSubscriptionTableData(data)}
+            columns={tableColumnsWithExtraNonDataFields}
+            hiddenColumns={hiddenColumns}
+            dataSorting={dataSorting}
+            onDataSort={handleDataSort}
+            pagination={pagination}
+            isLoading={isFetching}
+            onCriteriaChange={handleCriteriaChange}
+        />
     );
 };
 
@@ -250,18 +258,4 @@ function mapApiResponseToSubscriptionTableData(
             };
         },
     );
-}
-
-function determineNewSortOrder<T>(
-    currentSortColumnId: keyof T,
-    currentSortDirection: SortDirection,
-    newSortColumnId: keyof T,
-) {
-    if (currentSortColumnId === newSortColumnId) {
-        return currentSortDirection === SortDirection.Asc
-            ? SortDirection.Desc
-            : SortDirection.Asc;
-    }
-
-    return SortDirection.Asc;
 }

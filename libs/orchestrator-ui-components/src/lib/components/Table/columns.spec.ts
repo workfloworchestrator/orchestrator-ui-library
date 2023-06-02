@@ -2,21 +2,21 @@ import { getSortDirectionFromString, SortDirection } from './columns';
 
 describe('columns', () => {
     describe('getSortDirectionFromString', () => {
-        it('should return undefined if sortOrder is undefined', () => {
-            expect(getSortDirectionFromString(undefined)).toBeUndefined();
+        it('returns undefined if sortOrder is undefined', () => {
+            const result = getSortDirectionFromString(undefined);
+            expect(result).toBeUndefined();
         });
-        it('should return SortDirection.Asc if sortOrder is "asc"', () => {
-            expect(getSortDirectionFromString('asc')).toEqual(
-                SortDirection.Asc,
-            );
+        it('returns SortDirection.Asc if sortOrder is "asc"', () => {
+            const result = getSortDirectionFromString('asc');
+            expect(result).toEqual(SortDirection.Asc);
         });
-        it('should return SortDirection.Desc if sortOrder is "desc"', () => {
-            expect(getSortDirectionFromString('desc')).toEqual(
-                SortDirection.Desc,
-            );
+        it('returns SortDirection.Desc if sortOrder is "desc"', () => {
+            const result = getSortDirectionFromString('desc');
+            expect(result).toEqual(SortDirection.Desc);
         });
-        it('should return undefined if sortOrder is anything other than "asc" or "desc', () => {
-            expect(getSortDirectionFromString('somethingElse')).toBeUndefined();
+        it('returns undefined if sortOrder is anything other than "asc" or "desc', () => {
+            const result = getSortDirectionFromString('somethingElse');
+            expect(result).toBeUndefined();
         });
     });
 });
