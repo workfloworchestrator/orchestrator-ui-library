@@ -66,7 +66,7 @@ function mapTableColumnsToEuiColumns<T>(
         return {
             ...column,
             field: typedColumnKey,
-            name: name && (
+            name: (
                 <TableHeaderCell
                     sortDirection={sortDirection}
                     onClick={() => onDataSort?.(typedColumnKey)}
