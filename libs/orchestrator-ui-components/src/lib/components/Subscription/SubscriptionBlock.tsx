@@ -12,10 +12,11 @@ import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 
 // Todo: add render cell functions
-
-export const renderField = (field: string, data: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const RenderField = (field: string, data: any) => {
     const { theme } = useOrchestratorTheme();
     if (['startDate', 'endDate'].includes(field)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return Date(parseInt(data[field]) * 1000).toLocaleString('nl-NL');
     } else if (field === 'status')
@@ -36,17 +37,13 @@ export const renderField = (field: string, data: any) => {
 
 // Todo: add data type?
 export const SubscriptionBlock = (title: string, data: object, id?: number) => {
-    const { theme } = useOrchestratorTheme();
-
-    // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
     for (const key in data) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (typeof data[key] !== 'object') {
             keys.push(key);
         }
-        // if (key == 'product') {
-        //     keys.push('product.name');
-        // }
     }
     if (keys.length === 0) return;
 
@@ -95,7 +92,9 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
                                         borderBottomRightRadius: 8,
                                     }}
                                 >
-                                    {/* @ts-ignore */}
+                                    {/*
+                                    @typescript-eslint/ban-ts-comment
+                                    @ts-ignore */}
                                     {data.product.name}
                                 </td>
                             </tr>
@@ -125,7 +124,7 @@ export const SubscriptionBlock = (title: string, data: object, id?: number) => {
                                             borderBottomRightRadius: 8,
                                         }}
                                     >
-                                        {renderField(k, data)}
+                                        {RenderField(k, data)}
                                     </td>
                                 </tr>
                             ))}

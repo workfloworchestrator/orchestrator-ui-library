@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     EuiFlexGroup,
     EuiFlexItem,
@@ -6,12 +6,21 @@ import {
     EuiIcon,
     EuiListGroupItem,
 } from '@elastic/eui';
-import {
-    TreeContextType,
-    TreeContext,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 
-export const TreeNode = ({ item, hasChildren, level }) => {
+type Item = {
+    id: number;
+    icon: string;
+    label: string;
+};
+
+type TreeNodeProps = {
+    item: Item;
+    hasChildren: boolean;
+    level: number;
+};
+
+export const TreeNode: FC<TreeNodeProps> = ({ item, hasChildren, level }) => {
     const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
         React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);

@@ -39,6 +39,7 @@ export type FixedInputsBase = GenericField;
 export type ExternalServiceBase = {
     externalServiceKey: string;
     externalServiceId: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     externalServiceData: any;
 } & GenericField;
 
@@ -62,6 +63,13 @@ export type SubscriptionDetailBase = {
     // Todo: it might be better to store these into a separate state key in the Subscription Context
     externalServices?: ExternalServiceBase[];
 }; // Todo: are customers allowed to add nested attributes?
+
+export interface TreeBlock extends ProductBlockBase {
+    icon: string;
+    label: string;
+    callback: () => void;
+    children: TreeBlock[];
+}
 
 export interface ItemsList {
     type: string;
@@ -107,9 +115,4 @@ export interface Product {
     create_subscription_workflow_key: string;
     modify_subscription_workflow_key: string;
     terminate_subscription_workflow_key: string;
-}
-
-export interface externalServiceField {
-    externalServiceKey: string;
-    dataKey: string;
 }

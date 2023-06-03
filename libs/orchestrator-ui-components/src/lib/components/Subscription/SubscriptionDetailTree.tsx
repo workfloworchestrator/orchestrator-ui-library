@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Nullable, ResourceTypeBase } from '../../types';
+import { ProductBlockBase, TreeBlock } from '../../types';
 import { ProductBlock } from './ProductBlock';
 import {
     SubscriptionContext,
@@ -20,18 +20,21 @@ import {
 
 import { getTokenName } from '../../utils/getTokenName';
 
-type TreeBlocks = {
-    id: number;
-    parent: Nullable<number>;
-    callback: () => void;
-    label: string;
-    ownerSubscriptionId: string;
-    resourceType: ResourceTypeBase;
-    children: TreeBlocks;
-};
+interface TreeBlockOptional extends ProductBlockBase {
+    icon?: string;
+    label?: string;
+    callback?: () => void;
+    children?: TreeBlock;
+}
+
+type NodeMap = { [key: number]: TreeBlock | TreeBlockOptional };
+
+const MAX_LABEL_LENGTH = 45;
+const MAX_EXPAND_ALL = 100;
 
 export const SubscriptionDetailTree = () => {
     const [expandAllActive, setExpandAllActive] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedTreeNode, setSelectedTreeNode] = useState(-1);
 
     const { subscriptionData, loadingStatus } = React.useContext(
@@ -45,21 +48,22 @@ export const SubscriptionDetailTree = () => {
         if (expandAllActive) {
             collapseAll();
         } else {
-            expandAll(100);
+            expandAll(MAX_EXPAND_ALL);
         }
         setExpandAllActive(!expandAllActive);
     };
 
-    let tree: TreeBlocks[] = []; // Initially set our loop to null
+    let tree: TreeBlock | null = null;
     if (loadingStatus > 0) {
-        const idToNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
+        const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
         // loop over data
-        subscriptionData.productBlocks.forEach(function (datum) {
-            // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-            const shallowCopy: any = { ...datum };
+        subscriptionData.productBlocks.forEach((productBlock) => {
+            const shallowCopy: TreeBlockOptional = { ...productBlock };
 
             // Each node will have children, so let's give it a "children" property
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             shallowCopy.children = [];
 
             // Add an entry for this node to the map so that any future children can lookup the parent
@@ -71,15 +75,18 @@ export const SubscriptionDetailTree = () => {
                 shallowCopy.label = shallowCopy.resourceTypes.name;
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
-                tree = shallowCopy;
+
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                tree = shallowCopy as TreeBlock;
             } else {
                 // This node has a parent, so let's look it up using the id
                 const parentNode = idToNodeMap[shallowCopy.parent];
                 shallowCopy.label =
-                    shallowCopy.resourceTypes.title.length > 45
+                    shallowCopy.resourceTypes.title.length > MAX_LABEL_LENGTH
                         ? `${shallowCopy.resourceTypes.title.substring(
                               0,
-                              45,
+                              MAX_LABEL_LENGTH,
                           )}...`
                         : shallowCopy.resourceTypes.title;
                 shallowCopy.callback = () =>
@@ -94,7 +101,9 @@ export const SubscriptionDetailTree = () => {
                     shallowCopy.icon = getTokenName(shallowCopy.label);
                 }
 
-                parentNode.children.push(shallowCopy);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                parentNode.children?.push(shallowCopy);
             }
         });
         console.log('Tree', tree);
@@ -160,9 +169,6 @@ export const SubscriptionDetailTree = () => {
                             .reverse()
                             .map((id, index) =>
                                 ProductBlock(
-                                    subscriptionData.productBlocks[
-                                        selectedIds[index]
-                                    ].resourceTypes.title,
                                     subscriptionData.productBlocks[
                                         selectedIds[index]
                                     ].resourceTypes,

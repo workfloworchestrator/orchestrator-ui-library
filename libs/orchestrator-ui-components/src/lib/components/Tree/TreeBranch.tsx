@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { TreeNode } from './TreeNode';
 import { EuiListGroup } from '@elastic/eui';
-import {
-    TreeContext,
-    TreeContextType,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { TreeBlock } from '../../types';
+import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 
-export const TreeBranch = ({ item, level }) => {
+type TreeBranchProps = {
+    item: TreeBlock;
+    level: number;
+};
+
+export const TreeBranch: FC<TreeBranchProps> = ({ item, level }) => {
     const { expandedIds } = React.useContext(TreeContext) as TreeContextType;
     const selected = expandedIds.includes(item.id);
 

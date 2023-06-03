@@ -1,15 +1,14 @@
 import React from 'react';
-import {
-    FixedInputBlock,
-    SubscriptionBlock,
-    SubscriptionContext,
-} from '@orchestrator-ui/orchestrator-ui-components';
+
 import {
     EuiFlexGrid,
     EuiFlexItem,
     EuiLoadingContent,
     EuiSpacer,
 } from '@elastic/eui';
+import { SubscriptionContext } from '../../contexts/SubscriptionContext';
+import { SubscriptionBlock } from './SubscriptionBlock';
+import { FixedInputBlock } from './FixedInputBlock';
 
 export const SubscriptionGeneral = () => {
     const { subscriptionData, loadingStatus } =

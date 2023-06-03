@@ -12,14 +12,8 @@ export const ProcessStatusBadge: FC<ProcessStatusBadgeProps> = ({
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const getBadgeColorFromProcessStatus = (status: string) => {
-        const {
-            primary,
-            darkestShade,
-            lightShade,
-            primaryText,
-            success,
-            successText,
-        } = theme.colors;
+        const { primary, lightShade, primaryText, success, successText } =
+            theme.colors;
 
         switch (status) {
             case 'completed':

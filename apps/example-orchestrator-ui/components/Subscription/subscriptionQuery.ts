@@ -179,7 +179,7 @@ export function mapApiResponseToSubscriptionDetail(
         externalServices = subscription?.imsCircuits.map((service) => {
             {
                 const externalService: ExternalServiceBase = {
-                    externalServiceId: service.ims.id,
+                    externalServiceId: service.ims.id.toString(),
                     externalServiceData: { ...service.ims },
                     externalServiceKey: 'ims',
                 };

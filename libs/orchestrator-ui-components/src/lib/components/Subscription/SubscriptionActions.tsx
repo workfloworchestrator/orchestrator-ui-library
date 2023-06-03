@@ -10,6 +10,32 @@ import {
 } from '@elastic/eui';
 import { useSubscriptionActions } from '../../hooks/useSubscriptionActions';
 
+type MenuItemProps = {
+    icon: string;
+    description: string;
+    index: number;
+};
+
+const MenuItem: FC<MenuItemProps> = ({ icon, description, index }) => {
+    return (
+        <EuiContextMenuItem
+            key={`${icon.toLowerCase()}_${index}`}
+            icon={<EuiAvatar name={icon} size="s" />}
+        >
+            {description}
+        </EuiContextMenuItem>
+    );
+};
+
+type MenuBlockProps = {
+    title: string;
+};
+const MenuBlock: FC<MenuBlockProps> = ({ title }) => (
+    <EuiTitle size="xxxs">
+        <h3>{title}</h3>
+    </EuiTitle>
+);
+
 export type SubscriptionActionsProps = {
     subscriptionId: string;
 };
@@ -29,54 +55,6 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
         setPopover(false);
     };
 
-    const createWorkflows = [];
-    const modifyWorkflows = [];
-    const terminateWorkflows = [];
-    const systemWorkflows = [];
-
-    if (subscriptionActions) {
-        subscriptionActions.create.map((item, index) =>
-            createWorkflows.push(
-                <EuiContextMenuItem
-                    key={`c_${index}`}
-                    icon={<EuiAvatar name="Create" size="s" />}
-                >
-                    {item.description}
-                </EuiContextMenuItem>,
-            ),
-        );
-        subscriptionActions.modify.map((item, index) =>
-            modifyWorkflows.push(
-                <EuiContextMenuItem
-                    key={`m_${index}`}
-                    icon={<EuiAvatar name="M" size="s" />}
-                >
-                    {item.description}
-                </EuiContextMenuItem>,
-            ),
-        );
-
-        subscriptionActions.terminate.map((item, index) =>
-            terminateWorkflows.push(
-                <EuiContextMenuItem
-                    key={`t_${index}`}
-                    icon={<EuiAvatar name="Te" size="s" />}
-                >
-                    {item.description}
-                </EuiContextMenuItem>,
-            ),
-        );
-        subscriptionActions.system.map((item, index) =>
-            systemWorkflows.push(
-                <EuiContextMenuItem
-                    key={`s_${index}`}
-                    icon={<EuiAvatar name="Sys" size="s" />}
-                >
-                    {item.description}
-                </EuiContextMenuItem>,
-            ),
-        );
-    }
     const button = (
         <EuiButton
             iconType="arrowDown"
@@ -98,22 +76,59 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
         >
             <EuiContextMenuPanel>
                 <EuiPanel color="transparent" paddingSize="s">
-                    <EuiTitle size="xxxs">
-                        <h3>Create workflows</h3>
-                    </EuiTitle>
-                    {createWorkflows}
-                    <EuiTitle size="xxxs">
-                        <h3>Modify workflows</h3>
-                    </EuiTitle>
-                    {modifyWorkflows}
-                    <EuiTitle size="xxxs">
-                        <h3>Terminate workflows</h3>
-                    </EuiTitle>
-                    {terminateWorkflows}
-                    <EuiTitle size="xxxs">
-                        <h3>System workflows</h3>
-                    </EuiTitle>
-                    {systemWorkflows}
+                    {subscriptionActions && subscriptionActions.create && (
+                        <>
+                            <MenuBlock title={'Create workflow'}></MenuBlock>
+                            {subscriptionActions.create.map((item, index) => (
+                                <MenuItem
+                                    icon={'CreateLong'}
+                                    description={item.description}
+                                    index={index}
+                                />
+                            ))}
+                        </>
+                    )}
+
+                    {subscriptionActions && subscriptionActions.modify && (
+                        <>
+                            <MenuBlock title={'Modify workflow'}></MenuBlock>
+                            {subscriptionActions.modify.map((item, index) => (
+                                <MenuItem
+                                    icon={'M'}
+                                    description={item.description}
+                                    index={index}
+                                />
+                            ))}
+                        </>
+                    )}
+
+                    {subscriptionActions && subscriptionActions.system && (
+                        <>
+                            <MenuBlock title={'System workflow'}></MenuBlock>
+                            {subscriptionActions.system.map((item, index) => (
+                                <MenuItem
+                                    icon={'Syste'}
+                                    description={item.description}
+                                    index={index}
+                                />
+                            ))}
+                        </>
+                    )}
+
+                    {subscriptionActions && subscriptionActions.terminate && (
+                        <>
+                            <MenuBlock title={'Terminate workflow'}></MenuBlock>
+                            {subscriptionActions.terminate.map(
+                                (item, index) => (
+                                    <MenuItem
+                                        icon={'Terminate'}
+                                        description={item.description}
+                                        index={index}
+                                    />
+                                ),
+                            )}
+                        </>
+                    )}
                 </EuiPanel>
             </EuiContextMenuPanel>
         </EuiPopover>

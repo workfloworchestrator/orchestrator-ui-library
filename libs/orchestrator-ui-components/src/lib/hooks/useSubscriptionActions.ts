@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
-interface SubscriptionAction {
+export interface SubscriptionAction {
     name: string;
     description: string;
     reason?: string;

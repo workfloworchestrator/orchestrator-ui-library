@@ -11,56 +11,50 @@ import {
 } from '@elastic/eui';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 import { SubscriptionContext } from '../../contexts/SubscriptionContext';
-import { externalServiceField } from '../../types';
-
-// this is for testing purposes here
-//  tried to make it generic by mapping the externalService key to the one in table
-const externalServicesFields: externalServiceField[] = [
-    {
-        externalServiceKey: 'ims',
-        dataKey: 'ims_circuit_id',
-    },
-];
+import { ResourceTypeBase } from '../../types';
 
 // Todo: add data type?
-export const ProductBlock = (title: string, data: object, id?: number) => {
+export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
     const { toggleSelectedId } = React.useContext(
         TreeContext,
     ) as TreeContextType;
-
-    // Todo: rewrite this to use the subscription context, tiwthout relying on "data" prop
     const { subscriptionData } = React.useContext(SubscriptionContext);
 
-    // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
-    for (const key in data) {
-        if (typeof data[key] !== 'object') {
+    for (const key in resourceTypes) {
+        if (typeof resourceTypes[key] !== 'object') {
             keys.push(key);
         }
     }
     if (keys.length === 0) return;
 
     const getExternalData = (
-        externalServiceId: string,
+        externalServiceId: string | number,
         externalServiceKey: string,
     ) => {
-        if (subscriptionData.externalServices) {
+        if (subscriptionData.externalServices !== undefined) {
+            console.log(
+                'externalId: ',
+                externalServiceId,
+                'externalKey: ',
+                externalServiceKey,
+            );
             const foundObject = subscriptionData.externalServices.find(
                 (item) =>
-                    item.externalServiceId === externalServiceId &&
+                    item.externalServiceId === externalServiceId.toString() &&
                     item.externalServiceKey === externalServiceKey,
-            ).externalServiceData;
-            return JSON.stringify(foundObject, null, 2);
+            );
+            if (foundObject) {
+                console.log('Yeah');
+                return JSON.stringify(
+                    foundObject?.externalServiceData,
+                    null,
+                    2,
+                );
+            } else {
+                return '';
+            }
         } else return '';
-    };
-    const getExternalServiceKey = (
-        dataKey: string,
-        externalServicesFields: externalServiceField[],
-    ) => {
-        const foundObject = externalServicesFields.find(
-            (obj) => obj.dataKey === dataKey,
-        );
-        return foundObject ? foundObject.externalServiceKey : null;
     };
 
     return (
@@ -71,17 +65,15 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                     <EuiFlexGroup justifyContent="spaceBetween">
                         <EuiFlexItem>
                             <EuiText grow={false}>
-                                <h3>{title}</h3>
+                                <h3>{resourceTypes.title}</h3>
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
-                            {id !== undefined && (
-                                <EuiButtonIcon
-                                    size={'m'}
-                                    iconType={'cross'}
-                                    onClick={() => toggleSelectedId(id)}
-                                />
-                            )}
+                            <EuiButtonIcon
+                                size={'m'}
+                                iconType={'cross'}
+                                onClick={() => toggleSelectedId(id)}
+                            />
                         </EuiFlexItem>
                     </EuiFlexGroup>
 
@@ -96,10 +88,7 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                             }}
                         >
                             {keys.map((k, i) =>
-                                !getExternalServiceKey(
-                                    k.includes('.') ? k.split('.')[0] : k,
-                                    externalServicesFields,
-                                ) ? (
+                                !k.startsWith('ims_ci') ? (
                                     <tr key={i}>
                                         <td
                                             valign={'top'}
@@ -113,11 +102,7 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                 }px #ddd`,
                                             }}
                                         >
-                                            <b>
-                                                {k.includes('.')
-                                                    ? k.split('.')[0]
-                                                    : k}
-                                            </b>
+                                            <b>{k}</b>
                                         </td>
                                         <td
                                             style={{
@@ -129,11 +114,7 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                 }px #ddd`,
                                             }}
                                         >
-                                            {k.includes('.')
-                                                ? data[k.split('.')[0]][
-                                                      k.split('.')[1]
-                                                  ]
-                                                : data[k]}
+                                            {resourceTypes[k]}
                                         </td>
                                     </tr>
                                 ) : (
@@ -162,7 +143,9 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                         >
                                                             <b>{k}</b>
                                                         </td>
-                                                        <td>{data[k]}</td>
+                                                        <td>
+                                                            {resourceTypes[k]}
+                                                        </td>
                                                     </div>
                                                 }
                                             >
@@ -174,11 +157,10 @@ export const ProductBlock = (title: string, data: object, id?: number) => {
                                                         isCopyable
                                                     >
                                                         {getExternalData(
-                                                            data[k],
-                                                            getExternalServiceKey(
-                                                                k,
-                                                                externalServicesFields,
-                                                            ),
+                                                            resourceTypes[
+                                                                k
+                                                            ] as string,
+                                                            'ims',
                                                         )}
                                                     </EuiCodeBlock>
                                                 </EuiPanel>

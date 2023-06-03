@@ -60,7 +60,7 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
     };
 
     const expandAll = (treeLength: number) => {
-        let newExpandedIds = Array.from(Array(treeLength).keys());
+        const newExpandedIds = Array.from(Array(treeLength).keys());
         console.log(`Add all to expanded id's => `, newExpandedIds);
         setExpandedIds(newExpandedIds);
     };

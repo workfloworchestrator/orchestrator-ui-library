@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { TreeBranch } from './TreeBranch';
+import { TreeBlock } from '../../types';
 
-export const Tree = ({ data }) => {
+type TreeProps = {
+    data: TreeBlock[];
+};
+
+export const Tree: FC<TreeProps> = ({ data }) => {
     return (
         <div style={{ width: '500px' }}>
             {data.map((item) => (
