@@ -49,7 +49,7 @@
         "@graphql-codegen/introspection": "3.0.1",
         "@graphql-codegen/typescript-react-query": "^4.1.0",
         "@nrwl/cypress": "15.4.5",
-        "@nrwl/eslint-plugin-nx": "15.4.5",
+        "@nrwl/eslint-plugin-nx": "16.3.2",
         "@nrwl/jest": "15.4.5",
         "@nrwl/linter": "15.4.5",
         "@nrwl/react": "15.4.5",
