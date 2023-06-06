@@ -139,10 +139,10 @@ export function mapApiResponseToSubscriptionDetail(
         name: subscription.product.name,
         description: subscription.product.description,
         status: subscription.product.status,
-        tag: subscription.product.tag!,
+        tag: subscription.product.tag ?? '',
         type: subscription.product.type,
-        createdAt: subscription.product.createdAt!,
-        endDate: subscription.product?.endDate!,
+        createdAt: subscription.product.createdAt ?? '',
+        endDate: subscription.product?.endDate ?? '',
     };
 
     const productBlocks: ProductBlockBase[] = subscription.productBlocks.map(
@@ -161,7 +161,7 @@ export function mapApiResponseToSubscriptionDetail(
                 const retValue: ProductBlockBase = {
                     id: productBlock.id,
                     ownerSubscriptionId: productBlock.ownerSubscriptionId,
-                    parent: productBlock.parent!,
+                    parent: productBlock.parent ?? null,
                     resourceTypes: resourceType,
                 };
                 return retValue;
@@ -170,8 +170,8 @@ export function mapApiResponseToSubscriptionDetail(
     );
 
     const customer: CustomerBase = {
-        name: subscription?.organisation?.name!,
-        abbreviation: subscription?.organisation?.abbreviation!,
+        name: subscription.organisation?.name ?? '',
+        abbreviation: subscription.organisation?.abbreviation ?? '',
     };
     let externalServices: ExternalServiceBase[] = [];
     if (externalServicesLoaded) {
@@ -195,9 +195,9 @@ export function mapApiResponseToSubscriptionDetail(
         customerId: subscription.customerId,
         insync: subscription.insync,
         status: subscription.status,
-        startDate: subscription?.startDate!,
-        endDate: subscription?.endDate!,
-        note: subscription?.note!,
+        startDate: subscription?.startDate ?? '',
+        endDate: subscription?.endDate ?? '',
+        note: subscription?.note ?? '',
         product: product,
         fixedInputs: subscription.fixedInputs,
         customer: customer,
