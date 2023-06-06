@@ -82,11 +82,12 @@ export const DataGridTable = <T,>({
         const column = columns[columnId as keyof T];
         const cellValue = dataRow[columnId as keyof T];
 
-        handleRowClick &&
+        if (handleRowClick) {
             setCellProps({
                 css: { cursor: 'pointer' },
                 onClick: () => handleRowClick(dataRow),
             });
+        }
 
         return column.renderCell
             ? column.renderCell(cellValue, dataRow)

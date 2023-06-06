@@ -22,6 +22,8 @@ export const TableHeaderCell: FC<TableHeaderCellProps> = ({
         onClick={onClick}
     >
         <div>{children}</div>
-        {sortDirection && <SortDirectionIcon sortDirection={sortDirection} />}
+        {sortDirection ? (
+            <SortDirectionIcon sortDirection={sortDirection} />
+        ) : null}
     </div>
 );

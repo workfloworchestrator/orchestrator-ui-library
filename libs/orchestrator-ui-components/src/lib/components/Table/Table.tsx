@@ -63,13 +63,15 @@ function mapTableColumnsToEuiColumns<T>(
                 ? dataSorting.sortDirection
                 : undefined;
 
+        const handleClick = () => onDataSort?.(typedColumnKey);
+
         return {
             ...column,
             field: typedColumnKey,
             name: name && (
                 <TableHeaderCell
                     sortDirection={sortDirection}
-                    onClick={() => onDataSort?.(typedColumnKey)}
+                    onClick={handleClick}
                 >
                     {name}
                 </TableHeaderCell>

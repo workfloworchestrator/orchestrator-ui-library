@@ -8,26 +8,49 @@ import {
     MinusCircleOutline,
     parseDate,
     PlusCircleFill,
-    sliceUuid,
+    getFirstUuidPart,
     SubscriptionStatusBadge,
     Table,
     TableColumns,
     TableColumnsWithExtraNonDataFields,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
+    parseDateToLocaleString,
+    Loading,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
 import {
+    DESCRIPTION,
+    END_DATE,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+    INSYNC,
+    NOTE,
+    PRODUCT_NAME,
+    START_DATE,
+    STATUS,
+    SUBSCRIPTION_ID,
     SubscriptionsQueryVariables,
     SubscriptionsResult,
     SubscriptionsSort,
+    TAG,
 } from './subscriptionQuery';
 import { Criteria, Pagination } from '@elastic/eui';
+
+const COLUMN_LABEL_ID = 'ID';
+const COLUMN_LABEL_DESCRIPTION = 'Description';
+const COLUMN_LABEL_STATUS = 'Status';
+const COLUMN_LABEL_INSYNC = 'In Sync';
+const COLUMN_LABEL_PRODUCT = 'Product';
+const COLUMN_LABEL_TAG = 'Tag';
+const COLUMN_LABEL_START_DATE = 'Start Date';
+const COLUMN_LABEL_END_DATE = 'End Date';
+const COLUMN_LABEL_NOTE = 'Note';
+
+const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 type Subscription = {
     subscriptionId: string;
@@ -60,18 +83,18 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const hiddenColumns: Array<keyof Subscription> = ['productName'];
+    const hiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
-            field: 'subscriptionId',
-            name: 'ID',
+            field: SUBSCRIPTION_ID,
+            name: COLUMN_LABEL_ID,
             width: '100',
-            render: (value: string) => sliceUuid(value),
+            render: (value: string) => getFirstUuidPart(value),
         },
         description: {
-            field: 'description',
-            name: 'Description',
+            field: DESCRIPTION,
+            name: COLUMN_LABEL_DESCRIPTION,
             width: '400',
             render: (value: string, record) => (
                 <Link href={`/subscriptions/${record.subscriptionId}`}>
@@ -80,16 +103,16 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         },
         status: {
-            field: 'status',
-            name: 'Status',
+            field: STATUS,
+            name: COLUMN_LABEL_STATUS,
             width: '110',
             render: (value: string) => (
                 <SubscriptionStatusBadge subscriptionStatus={value} />
             ),
         },
         insync: {
-            field: 'insync',
-            name: 'In Sync',
+            field: INSYNC,
+            name: COLUMN_LABEL_INSYNC,
             width: '110',
             render: (value: boolean) =>
                 value ? (
@@ -99,38 +122,36 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 ),
         },
         productName: {
-            field: 'productName',
-            name: 'Product',
+            field: PRODUCT_NAME,
+            name: COLUMN_LABEL_PRODUCT,
         },
         tag: {
-            field: 'tag',
-            name: 'Tag',
+            field: TAG,
+            name: COLUMN_LABEL_TAG,
             width: '100',
         },
         startDate: {
-            field: 'startDate',
-            name: 'Start Date',
+            field: START_DATE,
+            name: COLUMN_LABEL_START_DATE,
             width: '150',
-            render: (value: Date | null) =>
-                value?.toLocaleString('nl-NL') ?? '',
+            render: parseDateToLocaleString,
         },
         endDate: {
-            field: 'endDate',
-            name: 'End Date',
+            field: END_DATE,
+            name: COLUMN_LABEL_END_DATE,
             width: '150',
-            render: (value: Date | null) =>
-                value?.toLocaleString('nl-NL') ?? '',
+            render: parseDateToLocaleString,
         },
         note: {
-            field: 'note',
-            name: 'Note',
+            field: NOTE,
+            name: COLUMN_LABEL_NOTE,
         },
     };
 
     const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
         {
             inlineSubscriptionDetails: {
-                field: 'inlineSubscriptionDetails',
+                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
                 width: '40',
                 render: () => (
                     <EuiFlexItem>
@@ -165,7 +186,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }
 
     if (!data) {
-        return <h1>Loading...</h1>;
+        return <Loading />;
     }
 
     const handleDataSort = (newSortColumnId: keyof Subscription) =>
@@ -179,9 +200,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         });
 
     const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
-        const { page } = criteria;
-        if (page) {
-            const { index, size } = page;
+        if (criteria.page) {
+            const {
+                page: { index, size },
+            } = criteria;
             setPageSize(size);
             setPageIndex(index * size);
         }
