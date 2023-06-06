@@ -1,140 +1,84 @@
+import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
+import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
+import { TableHeaderCell } from './TableHeaderCell';
+import React from 'react';
 import {
-    EuiDataGrid,
-    EuiDataGridCellValueElementProps,
-    EuiDataGridStyle,
-} from '@elastic/eui';
-import { useRef, useState } from 'react';
-import {
-    columnSortToEuiDataGridSorting,
-    ControlColumn,
     DataSorting,
-    getInitialColumnOrder,
     TableColumns,
+    TableColumnsWithExtraNonDataFields,
 } from './columns';
-import {
-    EuiDataGridControlColumn,
-    EuiDataGridPaginationProps,
-} from '@elastic/eui/src/components/datagrid/data_grid_types';
-
-// Total height of grid button bar, table header and pagination bar
-const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
-
-const GRID_STYLE: EuiDataGridStyle = {
-    border: 'horizontal',
-    stripes: false,
-    rowHover: 'highlight',
-    header: 'shade',
-    cellPadding: 'l',
-    fontSize: 'm',
-    footer: 'overline',
-};
-
-export type Pagination = EuiDataGridPaginationProps & {
-    totalRecords: number;
-};
 
 export type TableProps<T> = {
     data: T[];
-    pagination: Pagination;
-    columns: TableColumns<T>;
-    leadingControlColumns?: ControlColumn<T>[];
-    trailingControlColumns?: ControlColumn<T>[];
-    initialColumnOrder: Array<keyof T>;
+    columns: TableColumnsWithExtraNonDataFields<T>;
+    hiddenColumns?: Array<keyof T>;
     dataSorting?: DataSorting<T>;
-    handleRowClick?: (row: T) => void;
-    updateDataSorting?: (updatedDataSorting: DataSorting<T>) => void;
+    pagination: Pagination;
+    isLoading?: boolean;
+    onCriteriaChange: (criteria: Criteria<T>) => void;
+    onDataSort?: (columnId: keyof T) => void;
 };
 
 export const Table = <T,>({
     data,
-    pagination,
     columns,
-    leadingControlColumns,
-    trailingControlColumns,
-    initialColumnOrder,
+    hiddenColumns,
     dataSorting,
-    handleRowClick,
-    updateDataSorting,
-}: TableProps<T>) => {
-    const initialColumnOrderRef = useRef(
-        getInitialColumnOrder(columns, initialColumnOrder),
-    );
+    pagination,
+    isLoading,
+    onCriteriaChange,
+    onDataSort,
+}: TableProps<T>) => (
+    <EuiBasicTable
+        items={data}
+        columns={mapTableColumnsToEuiColumns(
+            columns,
+            hiddenColumns,
+            dataSorting,
+            onDataSort,
+        )}
+        pagination={pagination}
+        onChange={onCriteriaChange}
+        loading={isLoading}
+    />
+);
 
-    const defaultVisibleColumns: string[] = initialColumnOrder
-        .filter((columnId) => !columns[columnId].isHiddenByDefault)
-        .map((columnId) => columnId.toString());
-    const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
+function mapTableColumnsToEuiColumns<T>(
+    columns: TableColumns<T>,
+    hiddenColumns?: Array<keyof T>,
+    dataSorting?: DataSorting<T>,
+    onDataSort?: (columnId: keyof T) => void,
+): EuiBasicTableColumn<T>[] {
+    function isVisibleColumn(columnKey: string) {
+        return !hiddenColumns?.includes(columnKey as keyof T);
+    }
 
-    const renderCellValue = ({
-        rowIndex,
-        columnId,
-        setCellProps,
-    }: EuiDataGridCellValueElementProps) => {
-        const { pageSize, pageIndex } = pagination;
-        const rowIndexOnPage = rowIndex - pageIndex * pageSize;
+    function mapToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
+        const typedColumnKey = colKey as keyof T;
+        const column = columns[typedColumnKey];
+        const { name } = column;
 
-        const dataRow = data[rowIndexOnPage];
-        if (!dataRow) {
-            return;
-        }
+        const sortDirection =
+            dataSorting?.columnId === colKey
+                ? dataSorting.sortDirection
+                : undefined;
 
-        const column = columns[columnId as keyof T];
-        const cellValue = dataRow[columnId as keyof T];
+        const handleClick = () => onDataSort?.(typedColumnKey);
 
-        handleRowClick &&
-            setCellProps({
-                css: { cursor: 'pointer' },
-                onClick: () => handleRowClick(dataRow),
-            });
+        return {
+            ...column,
+            field: typedColumnKey,
+            name: name && (
+                <TableHeaderCell
+                    sortDirection={sortDirection}
+                    onClick={handleClick}
+                >
+                    {name}
+                </TableHeaderCell>
+            ),
+            truncateText: true,
+        };
+    }
 
-        return column.renderCell
-            ? column.renderCell(cellValue, dataRow)
-            : `${cellValue}`;
-    };
-
-    const controlColumnToEuiDataGridControlColumnMapper: (
-        controlColumn: ControlColumn<T>,
-    ) => EuiDataGridControlColumn = ({ id, width, rowCellRender }) => ({
-        id,
-        width,
-        headerCellRender: (props) => null,
-        rowCellRender: ({ rowIndex }) => {
-            const { pageSize, pageIndex } = pagination;
-            const rowIndexOnPage = rowIndex - pageIndex * pageSize;
-
-            const dataRow = data[rowIndexOnPage];
-
-            return rowCellRender(dataRow);
-        },
-    });
-
-    const euiDataGridLeadingControlColumns = leadingControlColumns?.map(
-        controlColumnToEuiDataGridControlColumnMapper,
-    );
-
-    const euiDataGridTrailingControlColumns = trailingControlColumns?.map(
-        controlColumnToEuiDataGridControlColumnMapper,
-    );
-
-    const gridHeightValue =
-        pagination.pageSize * 40 + EUI_DATA_GRID_HEIGHT_OFFSET;
-
-    return (
-        <EuiDataGrid
-            aria-label="Data Grid"
-            columns={initialColumnOrderRef.current}
-            leadingControlColumns={euiDataGridLeadingControlColumns}
-            trailingControlColumns={euiDataGridTrailingControlColumns}
-            height={`${gridHeightValue}px`}
-            gridStyle={GRID_STYLE}
-            columnVisibility={{ visibleColumns, setVisibleColumns }}
-            pagination={pagination}
-            sorting={columnSortToEuiDataGridSorting(
-                dataSorting,
-                updateDataSorting,
-            )}
-            rowCount={pagination.totalRecords}
-            renderCellValue={renderCellValue}
-        />
-    );
-};
+    return Object.keys(columns).filter(isVisibleColumn).map(mapToEuiColumn);
+}

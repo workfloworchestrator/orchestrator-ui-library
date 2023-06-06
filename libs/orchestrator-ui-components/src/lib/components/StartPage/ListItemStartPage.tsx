@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
 import { Process, Subscription } from '../../types';
-import Link from 'next/link';
 
 export interface ListItemStartPageProps {
     item: Subscription | Process;
@@ -14,8 +13,6 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     type,
 }) => {
     const [hoverState, setHoverState] = useState(false);
-    console.log(item);
-    console.log(type);
     const renderItem = (item: Subscription | Process, type: string) => {
         if (type === 'subscription') {
             item = item as Subscription;
@@ -54,7 +51,7 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
     };
 
     return (
-        <Link
+        <a
             href={`/subscriptions/${
                 'subscription_id' in item ? item.subscription_id : ''
             }`}
@@ -72,7 +69,7 @@ export const ListItemStartPage: FC<ListItemStartPageProps> = ({
                     <EuiIcon type="sortRight" color="primary" />
                 </EuiFlexItem>
             </EuiFlexGroup>
-        </Link>
+        </a>
     );
 };
 export default ListItemStartPage;

@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { DataSorting, SortDirection } from './columns';
-import { Table } from './Table';
+import { DataSorting, SortDirection } from './dataGridColumns';
+import { DataGridTable } from './DataGridTable';
 
 const extractedArr = (arr, start, howMany) =>
     arr.filter((_, index) => {
@@ -47,7 +47,7 @@ const TableWithEvents = (args) => {
         setData(extractedArr(sortData, pageIndex, pageIndex + pageSize));
     };
     return (
-        <Table
+        <DataGridTable
             {...args}
             data={data}
             pagination={{
@@ -63,9 +63,9 @@ const TableWithEvents = (args) => {
     );
 };
 
-const Story: Meta<typeof Table> = {
+const Story: Meta<typeof DataGridTable> = {
     component: TableWithEvents,
-    title: 'Tables/Table',
+    title: 'Tables/DataGridTable',
     parameters: { actions: { argTypesRegex: '^on*' } },
 };
 export default Story;

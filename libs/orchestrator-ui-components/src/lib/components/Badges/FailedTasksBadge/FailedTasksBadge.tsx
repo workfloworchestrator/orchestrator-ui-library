@@ -34,7 +34,6 @@ export const FailedTasksBadge = () => {
     const { theme } = useOrchestratorTheme();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
-    console.log(processStatusCounts);
 
     return (
         <EuiToolTip

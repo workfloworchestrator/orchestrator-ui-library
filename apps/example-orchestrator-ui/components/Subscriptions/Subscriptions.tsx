@@ -1,27 +1,56 @@
 import {
+    CheckmarkCircleFill,
+    DataSorting,
+    DEFAULT_PAGE_SIZES,
+    determineNewSortOrder,
+    determinePageIndex,
+    getTypedFieldFromObject,
+    MinusCircleOutline,
+    parseDate,
+    PlusCircleFill,
+    getFirstUuidPart,
+    SubscriptionStatusBadge,
     Table,
     TableColumns,
-    getTypedFieldFromObject,
-    CheckmarkCircleFill,
-    MinusCircleOutline,
+    TableColumnsWithExtraNonDataFields,
     useOrchestratorTheme,
-    SubscriptionStatusBadge,
-    ControlColumn,
-    PlusCircleFill,
     useStringQueryWithGraphql,
-    parseDate,
+    parseDateToLocaleString,
+    Loading,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem } from '@elastic/eui';
 import {
+    DESCRIPTION,
+    END_DATE,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+    INSYNC,
+    NOTE,
+    PRODUCT_NAME,
+    START_DATE,
+    STATUS,
+    SUBSCRIPTION_ID,
     SubscriptionsQueryVariables,
     SubscriptionsResult,
     SubscriptionsSort,
+    TAG,
 } from './subscriptionQuery';
+import { Criteria, Pagination } from '@elastic/eui';
+
+const COLUMN_LABEL_ID = 'ID';
+const COLUMN_LABEL_DESCRIPTION = 'Description';
+const COLUMN_LABEL_STATUS = 'Status';
+const COLUMN_LABEL_INSYNC = 'In Sync';
+const COLUMN_LABEL_PRODUCT = 'Product';
+const COLUMN_LABEL_TAG = 'Tag';
+const COLUMN_LABEL_START_DATE = 'Start Date';
+const COLUMN_LABEL_END_DATE = 'End Date';
+const COLUMN_LABEL_NOTE = 'Note';
+
+const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 type Subscription = {
     subscriptionId: string;
@@ -32,8 +61,6 @@ type Subscription = {
     endDate: Date | null;
     productName: string;
     tag: string | null;
-    organisationName: string | null;
-    organisationAbbreviation: string | null;
     note: string | null;
 };
 
@@ -56,82 +83,91 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
+    const hiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
 
-    const tableColumnConfig: TableColumns<Subscription> = {
+    const tableColumns: TableColumns<Subscription> = {
+        subscriptionId: {
+            field: SUBSCRIPTION_ID,
+            name: COLUMN_LABEL_ID,
+            width: '100',
+            render: (value: string) => getFirstUuidPart(value),
+        },
         description: {
-            displayAsText: 'Description',
-            initialWidth: 400,
-            renderCell: (cellValue, row) => (
-                <Link href={`/subscriptions/${row.subscriptionId}`}>
-                    {cellValue}
+            field: DESCRIPTION,
+            name: COLUMN_LABEL_DESCRIPTION,
+            width: '400',
+            render: (value: string, record) => (
+                <Link href={`/subscriptions/${record.subscriptionId}`}>
+                    {value}
                 </Link>
             ),
         },
+        status: {
+            field: STATUS,
+            name: COLUMN_LABEL_STATUS,
+            width: '110',
+            render: (value: string) => (
+                <SubscriptionStatusBadge subscriptionStatus={value} />
+            ),
+        },
         insync: {
-            displayAsText: 'In Sync',
-            initialWidth: 110,
-            renderCell: (cellValue) =>
-                cellValue ? (
+            field: INSYNC,
+            name: COLUMN_LABEL_INSYNC,
+            width: '110',
+            render: (value: boolean) =>
+                value ? (
                     <CheckmarkCircleFill color={theme.colors.primary} />
                 ) : (
                     <MinusCircleOutline color={theme.colors.mediumShade} />
                 ),
         },
-        organisationName: {
-            displayAsText: 'Customer Name',
-            isHiddenByDefault: true,
-        },
-        organisationAbbreviation: {
-            displayAsText: 'Customer',
-            initialWidth: 200,
-        },
         productName: {
-            displayAsText: 'Product',
-            initialWidth: 250,
-            isHiddenByDefault: true,
+            field: PRODUCT_NAME,
+            name: COLUMN_LABEL_PRODUCT,
         },
         tag: {
-            initialWidth: 100,
-            displayAsText: 'Tag',
+            field: TAG,
+            name: COLUMN_LABEL_TAG,
+            width: '100',
         },
         startDate: {
-            displayAsText: 'Start Date',
-            initialWidth: 150,
-            renderCell: (cellValue) =>
-                // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue ? cellValue.toLocaleString('nl-NL') : '',
+            field: START_DATE,
+            name: COLUMN_LABEL_START_DATE,
+            width: '150',
+            render: parseDateToLocaleString,
         },
         endDate: {
-            displayAsText: 'End Date',
-            initialWidth: 150,
-            renderCell: (cellValue) =>
-                // Todo: determine if this renders the date correctly with respect to timezones
-                cellValue ? cellValue.toLocaleString('nl-NL') : '',
-        },
-        status: {
-            displayAsText: 'Status',
-            initialWidth: 110,
-            renderCell: (cellValue) => (
-                <SubscriptionStatusBadge subscriptionStatus={cellValue} />
-            ),
-        },
-        subscriptionId: {
-            displayAsText: 'ID',
-            initialWidth: 100,
-            renderCell: (cellValue) => cellValue.slice(0, 8),
+            field: END_DATE,
+            name: COLUMN_LABEL_END_DATE,
+            width: '150',
+            render: parseDateToLocaleString,
         },
         note: {
-            displayAsText: 'Note',
-            renderCell: (cellValue) => (cellValue ? cellValue : ''),
+            field: NOTE,
+            name: COLUMN_LABEL_NOTE,
         },
     };
 
+    const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
+        {
+            inlineSubscriptionDetails: {
+                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
+                width: '40',
+                render: () => (
+                    <EuiFlexItem>
+                        <PlusCircleFill color={theme.colors.mediumShade} />
+                    </EuiFlexItem>
+                ),
+            },
+            ...tableColumns,
+        };
+
     const sortedColumnId = getTypedFieldFromObject(
         sortOrder.field,
-        tableColumnConfig,
+        tableColumns,
     );
 
-    const { isLoading, data } = useStringQueryWithGraphql<
+    const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
     >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
@@ -149,63 +185,53 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         return null;
     }
 
-    if (isLoading || !data) {
-        return <h1>Loading...</h1>;
+    if (!data) {
+        return <Loading />;
     }
 
-    const initialColumnOrder: Array<keyof Subscription> = [
-        'subscriptionId',
-        'description',
-        'status',
-        'insync',
-        'organisationName',
-        'organisationAbbreviation',
-        'productName',
-        'tag',
-        'startDate',
-        'endDate',
-        'note',
-    ];
-
-    const leadingControlColumns: ControlColumn<Subscription>[] = [
-        {
-            id: 'inlineSubscriptionDetails',
-            width: 40,
-            rowCellRender: () => (
-                <EuiFlexItem>
-                    <PlusCircleFill color={theme.colors.mediumShade} />
-                </EuiFlexItem>
+    const handleDataSort = (newSortColumnId: keyof Subscription) =>
+        setSortOrder({
+            field: newSortColumnId,
+            order: determineNewSortOrder(
+                sortedColumnId,
+                sortOrder.order,
+                newSortColumnId,
             ),
-        },
-    ];
+        });
+
+    const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
+        if (criteria.page) {
+            const {
+                page: { index, size },
+            } = criteria;
+            setPageSize(size);
+            setPageIndex(index * size);
+        }
+    };
+
+    const totalItemCount = parseInt(data.subscriptions.pageInfo.totalItems);
+    const dataSorting: DataSorting<Subscription> = {
+        columnId: sortedColumnId,
+        sortDirection: sortOrder.order,
+    };
+    const pagination: Pagination = {
+        pageSize: pageSize,
+        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: totalItemCount,
+    };
 
     return (
         <Table
             data={mapApiResponseToSubscriptionTableData(data)}
-            pagination={{
-                pageSize: pageSize,
-                pageIndex: Math.floor(pageIndex / pageSize),
-                pageSizeOptions: [5, 10, 15, 20, 25, 100],
-                totalRecords: parseInt(data.subscriptions.pageInfo.totalItems),
-                onChangePage: (updatedPageNumber) =>
-                    setPageIndex(updatedPageNumber * pageSize),
-                onChangeItemsPerPage: (itemsPerPage) =>
-                    setPageSize(itemsPerPage),
-            }}
-            columns={tableColumnConfig}
-            leadingControlColumns={leadingControlColumns}
-            initialColumnOrder={initialColumnOrder}
-            dataSorting={{
-                columnId: sortedColumnId,
-                sortDirection: sortOrder.order,
-            }}
-            updateDataSorting={(dataSorting) =>
-                setSortOrder({
-                    field: dataSorting.columnId,
-                    order: dataSorting.sortDirection,
-                })
-            }
-        ></Table>
+            columns={tableColumnsWithExtraNonDataFields}
+            hiddenColumns={hiddenColumns}
+            dataSorting={dataSorting}
+            onDataSort={handleDataSort}
+            pagination={pagination}
+            isLoading={isFetching}
+            onCriteriaChange={handleCriteriaChange}
+        />
     );
 };
 
@@ -217,7 +243,6 @@ function mapApiResponseToSubscriptionTableData(
             const {
                 description,
                 insync,
-                organisation,
                 product,
                 startDate,
                 endDate,
@@ -229,8 +254,6 @@ function mapApiResponseToSubscriptionTableData(
             return {
                 description,
                 insync,
-                organisationName: organisation.name ?? null,
-                organisationAbbreviation: organisation.abbreviation ?? null,
                 productName: product.name,
                 tag: product.tag ?? null,
                 startDate: parseDate(startDate),
