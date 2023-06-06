@@ -7,7 +7,7 @@ import {
     EuiLoadingContent,
 } from '@elastic/eui';
 
-import { ProcessStatusBadge } from '../Badge/ProcessStatusBadge';
+import { ProcessStatusBadge } from '../Badges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
 const Card = (processInfo: SubscriptionProcess) => {

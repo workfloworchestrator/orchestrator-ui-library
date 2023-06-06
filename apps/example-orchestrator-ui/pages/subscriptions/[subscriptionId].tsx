@@ -1,5 +1,3 @@
-// The final implementation of this component happens in a different story
-// @ts-nocheck
 import { useRouter } from 'next/router';
 import React from 'react';
 

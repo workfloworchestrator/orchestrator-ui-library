@@ -1,6 +1,6 @@
-import { Badge } from './Badge';
 import { FC } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
+import { useOrchestratorTheme } from '../../../hooks';
+import { Badge } from '../Badge';
 
 export type ProcessStatusBadgeProps = {
     processStatus: string;

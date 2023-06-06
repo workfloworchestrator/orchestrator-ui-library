@@ -7,9 +7,9 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { SubscriptionStatusBadge } from '../Badge/SubscriptionStatusBadge';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
+import { SubscriptionStatusBadge } from '../Badges';
 
 // Todo: add render cell functions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
