@@ -4,6 +4,7 @@ import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import {
     NumberParam,
     ObjectParam,
+    StringParam,
     useQueryParam,
     withDefault,
 } from 'use-query-params';
@@ -41,6 +42,11 @@ export default function SubscriptionsPage() {
         }),
     );
 
+    const [filterQuery, setFilterQuery] = useQueryParam(
+        'filter',
+        withDefault(StringParam, ''),
+    );
+
     const sortOrder = getSortDirectionFromString(sorting.direction);
     if (!sortOrder) {
         router.replace('/subscriptions');
@@ -66,6 +72,8 @@ export default function SubscriptionsPage() {
                         direction: updatedSortOrder.order,
                     });
                 }}
+                filterQuery={filterQuery}
+                setFilterQuery={setFilterQuery}
             />
         </NoSSR>
     );

@@ -21,7 +21,7 @@ import {
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -71,6 +71,8 @@ export type SubscriptionsProps = {
     setPageIndex: (updatedPageIndex: number) => void;
     sortOrder: SubscriptionsSort;
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
+    filterQuery: string;
+    setFilterQuery: (updatedFilterQuery: string) => void;
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -80,6 +82,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setPageSize,
     setPageIndex,
     setSortOrder,
+    filterQuery,
+    setFilterQuery,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -167,6 +171,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumns,
     );
 
+    const esQueryDsl = EuiSearchBar.Query.toESQuery(filterQuery);
+    // Need to find a way to map the query text to [key, value][] format meant for graphql
+    // customerName:'Open universiteit' productTag:LP
+    // ['customerName', 'Open universiteit'], [productTag, 'LP']
+    console.log('esQueryDsl', esQueryDsl);
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
@@ -222,16 +231,24 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     };
 
     return (
-        <Table
-            data={mapApiResponseToSubscriptionTableData(data)}
-            columns={tableColumnsWithExtraNonDataFields}
-            hiddenColumns={hiddenColumns}
-            dataSorting={dataSorting}
-            onDataSort={handleDataSort}
-            pagination={pagination}
-            isLoading={isFetching}
-            onCriteriaChange={handleCriteriaChange}
-        />
+        <>
+            <EuiSearchBar
+                query={filterQuery}
+                onChange={({ queryText }) => {
+                    setFilterQuery(queryText);
+                }}
+            />
+            <Table
+                data={mapApiResponseToSubscriptionTableData(data)}
+                columns={tableColumnsWithExtraNonDataFields}
+                hiddenColumns={hiddenColumns}
+                dataSorting={dataSorting}
+                onDataSort={handleDataSort}
+                pagination={pagination}
+                isLoading={isFetching}
+                onCriteriaChange={handleCriteriaChange}
+            />
+        </>
     );
 };
 
