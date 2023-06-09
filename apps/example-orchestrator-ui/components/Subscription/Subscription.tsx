@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import {
     ProcessesTimeline,
     SubscriptionActions,
@@ -31,7 +31,7 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
-    const { setSubscriptionData, loadingStatus } =
+    const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
     const [selectedTabId, setSelectedTabId] = useState('general-id');
@@ -69,25 +69,40 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
         fetchSubscriptionOutline,
+        {
+            onSuccess: (data) =>
+                setSubscriptionData(
+                    mapApiResponseToSubscriptionDetail(data, false),
+                    1,
+                ),
+        },
     );
     const { data: dataComplete } = useQuery(
         ['subscription-complete', subscriptionId],
         fetchSubscriptionComplete,
+        {
+            onSuccess: (data) =>
+                setSubscriptionData(
+                    mapApiResponseToSubscriptionDetail(data, true),
+                    2,
+                ),
+        },
     );
 
-    useEffect(() => {
-        if (data && !dataComplete)
-            setSubscriptionData(
-                mapApiResponseToSubscriptionDetail(data, false),
-                1,
-            );
-        if (data && dataComplete)
-            setSubscriptionData(
-                mapApiResponseToSubscriptionDetail(dataComplete, true),
-                2,
-            );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, dataComplete]);
+    if (dataComplete && subscriptionData.subscriptionId === '') {
+        console.log('No data in context populating dataComplete from cache');
+        setSubscriptionData(
+            mapApiResponseToSubscriptionDetail(dataComplete, true),
+            2,
+        );
+    } else if (
+        !dataComplete &&
+        data &&
+        subscriptionData.subscriptionId === ''
+    ) {
+        console.log('No data in context populating dataOutline from cache');
+        setSubscriptionData(mapApiResponseToSubscriptionDetail(data, false), 1);
+    }
 
     const renderTabs = () => {
         return tabs.map((tab, index) => (
