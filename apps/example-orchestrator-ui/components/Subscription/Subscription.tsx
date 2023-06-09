@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
     ProcessesTimeline,
     SubscriptionActions,
@@ -34,19 +34,16 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
-    // Tab state
     const [selectedTabId, setSelectedTabId] = useState('general-id');
     const selectedTabContent = useMemo(() => {
-        // @ts-ignore: todo -> improve tabs, refactor them to separate component
+        // @ts-ignore
         return tabs.find((obj) => obj.id === selectedTabId)?.content;
     }, [selectedTabId]);
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
 
-    // GUI state done, deal with data:
-
-    // Todo: Find out if pre fetch can be used again. The shape of table cache seems to have changed
+    // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
     // const queryClient = useQueryClient();
     // const prefetchedData = {
     //     subscription: queryClient
@@ -56,16 +53,15 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     //         ).node,
     // };
 
-    // Fetch data
     const fetchSubscriptionOutline = async () => {
         console.log('Fetch outline query results for ID: ', subscriptionId);
-        return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
+        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
             id: subscriptionId,
         });
     };
     const fetchSubscriptionComplete = async () => {
         console.log('Fetch complete query results for ID: ', subscriptionId);
-        return await graphQLClient.request(GET_SUBSCRIPTION_DETAIL_COMPLETE, {
+        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_COMPLETE, {
             id: subscriptionId,
         });
     };
@@ -73,26 +69,25 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { isLoading, data } = useQuery(
         ['subscription-outline', subscriptionId],
         fetchSubscriptionOutline,
-        {
-            // placeholderData: () => prefetchedData,
-            onSuccess: (s) =>
-                setSubscriptionData(
-                    mapApiResponseToSubscriptionDetail(s, false),
-                    1,
-                ),
-        },
     );
-    useQuery(
+    const { data: dataComplete } = useQuery(
         ['subscription-complete', subscriptionId],
         fetchSubscriptionComplete,
-        {
-            onSuccess: (s) =>
-                setSubscriptionData(
-                    mapApiResponseToSubscriptionDetail(s, true),
-                    2,
-                ),
-        },
     );
+
+    useEffect(() => {
+        if (data && !dataComplete)
+            setSubscriptionData(
+                mapApiResponseToSubscriptionDetail(data, false),
+                1,
+            );
+        if (data && dataComplete)
+            setSubscriptionData(
+                mapApiResponseToSubscriptionDetail(dataComplete, true),
+                2,
+            );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, dataComplete]);
 
     const renderTabs = () => {
         return tabs.map((tab, index) => (
@@ -143,8 +138,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                     </EuiFlexGroup>
                 </EuiFlexItem>
             </EuiFlexGroup>
-            {/*{isLoading && <EuiLoadingSpinner />}*/}
-
             <>
                 <EuiTabs>{renderTabs()}</EuiTabs>
                 {selectedTabContent}

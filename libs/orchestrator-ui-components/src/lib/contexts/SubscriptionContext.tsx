@@ -54,6 +54,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
         data: SubscriptionDetailBase,
         loadingStatus: number,
     ) => {
+        console.log('fleoeoeoeoeoe');
         setInteralSubscriptionData(data);
         setLoadingStatus(loadingStatus);
     };
