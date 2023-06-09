@@ -13,7 +13,6 @@ import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 import { ResourceTypeBase } from '../../types';
 
-// Todo: add data type?
 export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
     const { toggleSelectedId } = React.useContext(
         TreeContext,
@@ -45,7 +44,6 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
                     item.externalServiceKey === externalServiceKey,
             );
             if (foundObject) {
-                console.log('Yeah');
                 return JSON.stringify(
                     foundObject?.externalServiceData,
                     null,
@@ -65,7 +63,9 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
                     <EuiFlexGroup justifyContent="spaceBetween">
                         <EuiFlexItem>
                             <EuiText grow={false}>
-                                <h3>{resourceTypes.title}</h3>
+                                <h3>
+                                    {resourceTypes.title ?? resourceTypes.name}
+                                </h3>
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>

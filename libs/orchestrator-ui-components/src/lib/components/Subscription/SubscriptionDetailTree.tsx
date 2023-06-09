@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ProductBlockBase, TreeBlock } from '../../types';
+import { ProductBlockBase, ResourceTypeBase, TreeBlock } from '../../types';
 import { ProductBlock } from './ProductBlock';
 import {
     SubscriptionContext,
@@ -31,6 +31,13 @@ type NodeMap = { [key: number]: TreeBlock | TreeBlockOptional };
 
 const MAX_LABEL_LENGTH = 45;
 const MAX_EXPAND_ALL = 100;
+
+function getProductBlockTitle(resourceType: ResourceTypeBase): string {
+    if (!resourceType.title) return resourceType.name;
+    return resourceType.title?.length > MAX_LABEL_LENGTH
+        ? `${resourceType.title.substring(0, MAX_LABEL_LENGTH)}...`
+        : resourceType.title;
+}
 
 export const SubscriptionDetailTree = () => {
     const [expandAllActive, setExpandAllActive] = useState(false);
@@ -82,13 +89,9 @@ export const SubscriptionDetailTree = () => {
             } else {
                 // This node has a parent, so let's look it up using the id
                 const parentNode = idToNodeMap[shallowCopy.parent];
-                shallowCopy.label =
-                    shallowCopy.resourceTypes.title.length > MAX_LABEL_LENGTH
-                        ? `${shallowCopy.resourceTypes.title.substring(
-                              0,
-                              MAX_LABEL_LENGTH,
-                          )}...`
-                        : shallowCopy.resourceTypes.title;
+                shallowCopy.label = getProductBlockTitle(
+                    shallowCopy.resourceTypes,
+                );
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
 

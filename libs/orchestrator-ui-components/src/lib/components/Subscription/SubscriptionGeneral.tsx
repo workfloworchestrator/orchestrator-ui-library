@@ -13,8 +13,6 @@ import { FixedInputBlock } from './FixedInputBlock';
 export const SubscriptionGeneral = () => {
     const { subscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
-
-    console.log('Loading status: ', loadingStatus);
     if (!loadingStatus) {
         return (
             <>

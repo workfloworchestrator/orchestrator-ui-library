@@ -8,21 +8,20 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
-import { useOrchestratorTheme } from '../../hooks';
 import { SubscriptionStatusBadge } from '../Badges';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const RenderField = (field: string, data: any) => {
-    const { theme } = useOrchestratorTheme();
+    // const { theme } = useOrchestratorTheme();
     if (field === 'status')
         return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
     else if (field === 'insync')
         return (
             <div style={{ position: 'relative', top: 5 }}>
                 {data[field] ? (
-                    <CheckmarkCircleFill color={theme.colors.primary} />
+                    <CheckmarkCircleFill color="#007832" />
                 ) : (
-                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                    <MinusCircleOutline color="#BD271F" />
                 )}
             </div>
         );

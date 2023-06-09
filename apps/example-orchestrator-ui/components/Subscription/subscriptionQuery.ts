@@ -194,12 +194,12 @@ export function mapApiResponseToSubscriptionDetail(
         });
         console.log('External services loaded and mapped:', externalServices);
     }
-    // Todo #95: Convert to date
 
     return {
         subscriptionId: subscription.subscriptionId,
         description: subscription.description,
-        customerId: subscription.customerId,
+        // If you have a customerId field in your subscriptions add it her:
+        // customerId: subscription.customerId,
         insync: subscription.insync,
         status: subscription.status,
         startDate: parseDateToLocaleString(

@@ -60,9 +60,8 @@ export type SubscriptionDetailBase = {
     customer?: CustomerBase;
     productBlocks: ProductBlockBase[];
 
-    // Todo: it might be better to store these into a separate state key in the Subscription Context
     externalServices?: ExternalServiceBase[];
-}; // Todo: are customers allowed to add nested attributes?
+};
 
 export interface TreeBlock extends ProductBlockBase {
     icon: string;
@@ -74,7 +73,6 @@ export interface TreeBlock extends ProductBlockBase {
 export interface ItemsList {
     type: string;
     title: string;
-    // items: Subscription[] | Process[]; // Todo: avoid circular dependency
     items: Process[];
     buttonName: string;
 }

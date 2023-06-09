@@ -11,17 +11,15 @@ import {
 import { useSubscriptionActions } from '../../hooks/useSubscriptionActions';
 
 type MenuItemProps = {
+    key: string;
     icon: string;
     description: string;
     index: number;
 };
 
-const MenuItem: FC<MenuItemProps> = ({ icon, description, index }) => {
+const MenuItem: FC<MenuItemProps> = ({ icon, description, key }) => {
     return (
-        <EuiContextMenuItem
-            key={`${icon.toLowerCase()}_${index}`}
-            icon={<EuiAvatar name={icon} size="s" />}
-        >
+        <EuiContextMenuItem key={key} icon={<EuiAvatar name={icon} size="s" />}>
             {description}
         </EuiContextMenuItem>
     );
@@ -81,6 +79,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
                             <MenuBlock title={'Create workflow'}></MenuBlock>
                             {subscriptionActions.create.map((item, index) => (
                                 <MenuItem
+                                    key={`c_${index}`}
                                     icon={'CreateLong'}
                                     description={item.description}
                                     index={index}
@@ -94,6 +93,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
                             <MenuBlock title={'Modify workflow'}></MenuBlock>
                             {subscriptionActions.modify.map((item, index) => (
                                 <MenuItem
+                                    key={`m_${index}`}
                                     icon={'M'}
                                     description={item.description}
                                     index={index}
@@ -107,6 +107,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
                             <MenuBlock title={'System workflow'}></MenuBlock>
                             {subscriptionActions.system.map((item, index) => (
                                 <MenuItem
+                                    key={`s_${index}`}
                                     icon={'Syste'}
                                     description={item.description}
                                     index={index}
@@ -121,6 +122,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
                             {subscriptionActions.terminate.map(
                                 (item, index) => (
                                     <MenuItem
+                                        key={`t_${index}`}
                                         icon={'Terminate'}
                                         description={item.description}
                                         index={index}
