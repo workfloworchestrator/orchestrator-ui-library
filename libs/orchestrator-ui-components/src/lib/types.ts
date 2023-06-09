@@ -5,8 +5,8 @@ export type Nullable<T> = T | null;
 type GenericField = { [key: string]: number | string | boolean };
 
 export type CustomerBase = {
+    name: string;
     abbreviation?: string;
-    name?: string; // Todo: why it this optional?
 } & GenericField;
 
 export type ProductBase = {
@@ -15,15 +15,15 @@ export type ProductBase = {
     status: string;
     tag: string;
     type: string;
-    createdAt: string; // Todo: why is it a string?
-    endDate?: string; // Todo: why is it a string?
+    createdAt: string;
+    endDate?: string | null;
 } & GenericField;
 
 export type ResourceTypeBase = {
     name: string;
     title: string;
-    subscriptionInstanceId: string; // Todo: fix messy naming behaviour in pythia
-    ownerSubscriptionId: string; // Todo: fix messy naming behaviour in pythia
+    subscriptionInstanceId: string;
+    ownerSubscriptionId: string;
     label?: string;
 } & GenericField;
 
@@ -47,17 +47,17 @@ export type SubscriptionDetailBase = {
     // Top level subscription fields
     subscriptionId: string;
     description: string;
-    customerId: string; // Todo: shape of new customer name in core is unknown, add customer now?
+    customerId?: string | null;
     insync: boolean;
     status: string;
-    startDate?: string; // Todo: why is it a string?
-    endDate?: string; // Todo: why is it a string?
+    startDate?: string | null;
+    endDate?: string | null;
     note?: string;
 
     // Nested attributes
     product: ProductBase;
     fixedInputs: FixedInputsBase;
-    customer: CustomerBase;
+    customer?: CustomerBase;
     productBlocks: ProductBlockBase[];
 
     // Todo: it might be better to store these into a separate state key in the Subscription Context

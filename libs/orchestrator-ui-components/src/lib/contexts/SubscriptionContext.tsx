@@ -26,16 +26,13 @@ const subscriptionDetailInit = {
         createdAt: '',
     },
     fixedInputs: {},
-    customer: {},
     productBlocks: [],
 };
 
-// Todo: this feels akward
 const InitialSubscriptionContext: SubscriptionContextType = {
     subscriptionData: subscriptionDetailInit,
     loadingStatus: 0,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    setSubscriptionData: () => {},
+    setSubscriptionData: () => null,
 };
 
 export const SubscriptionContext = React.createContext<SubscriptionContextType>(

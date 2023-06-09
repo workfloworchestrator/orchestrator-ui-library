@@ -11,15 +11,10 @@ import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 import { SubscriptionStatusBadge } from '../Badges';
 
-// Todo: add render cell functions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const RenderField = (field: string, data: any) => {
     const { theme } = useOrchestratorTheme();
-    if (['startDate', 'endDate'].includes(field)) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return Date(parseInt(data[field]) * 1000).toLocaleString('nl-NL');
-    } else if (field === 'status')
+    if (field === 'status')
         return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
     else if (field === 'insync')
         return (
@@ -35,8 +30,7 @@ export const RenderField = (field: string, data: any) => {
     return <div>{data[field]}</div>;
 };
 
-// Todo: add data type?
-export const SubscriptionBlock = (title: string, data: object, id?: number) => {
+export const SubscriptionBlock = (title: string, data: object) => {
     const keys = [];
     for (const key in data) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

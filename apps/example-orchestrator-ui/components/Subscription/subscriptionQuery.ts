@@ -6,6 +6,8 @@ import {
 import {
     CustomerBase,
     ExternalServiceBase,
+    parseDate,
+    parseDateToLocaleString,
     ProductBase,
     ProductBlockBase,
     ResourceTypeBase,
@@ -141,8 +143,12 @@ export function mapApiResponseToSubscriptionDetail(
         status: subscription.product.status,
         tag: subscription.product.tag ?? '',
         type: subscription.product.type,
-        createdAt: subscription.product.createdAt ?? '',
-        endDate: subscription.product?.endDate ?? '',
+        createdAt: parseDateToLocaleString(
+            parseDate(subscription.product.createdAt) as Date,
+        ),
+        endDate: parseDateToLocaleString(
+            parseDate(subscription.product.endDate ?? null),
+        ),
     };
 
     const productBlocks: ProductBlockBase[] = subscription.productBlocks.map(
@@ -188,6 +194,7 @@ export function mapApiResponseToSubscriptionDetail(
         });
         console.log('External services loaded and mapped:', externalServices);
     }
+    // Todo #95: Convert to date
 
     return {
         subscriptionId: subscription.subscriptionId,
@@ -195,8 +202,12 @@ export function mapApiResponseToSubscriptionDetail(
         customerId: subscription.customerId,
         insync: subscription.insync,
         status: subscription.status,
-        startDate: subscription?.startDate ?? '',
-        endDate: subscription?.endDate ?? '',
+        startDate: parseDateToLocaleString(
+            parseDate(subscription.startDate ?? null),
+        ),
+        endDate: parseDateToLocaleString(
+            parseDate(subscription.endDate ?? null),
+        ),
         note: subscription?.note ?? '',
         product: product,
         fixedInputs: subscription.fixedInputs,
