@@ -7,36 +7,32 @@ export function getColor(num: number) {
     return 'error';
 }
 
+export const GENERAL_TAB = 'general-id';
+export const SERVICE_CONFIGURATION_TAB = 'service-configuration-id';
+export const PROCESSES_TAB = 'processes-id';
+export const RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id';
+
 export const tabs = [
     {
-        id: 'general-id',
+        id: GENERAL_TAB,
         name: 'General',
         prepend: <EuiIcon type="devToolsApp" />,
         append: <></>,
     },
     {
-        id: 'service-configuration-id',
+        id: SERVICE_CONFIGURATION_TAB,
         name: 'Service configuration',
         prepend: <EuiIcon type="submodule" />,
     },
     {
-        id: 'processes-id',
+        id: PROCESSES_TAB,
         name: 'Processes',
         prepend: <EuiIcon type="indexRuntime" />,
     },
     {
-        id: 'related-subscriptions-id',
+        id: RELATED_SUBSCRIPTIONS_TAB,
         disabled: true,
         name: 'Related subscriptions',
         prepend: <EuiIcon type="heatmap" />,
     },
-    // {
-    //     id: 'notifications-id',
-    //     name: 'Notifications',
-    //     append: (
-    //         <EuiNotificationBadge className="eui-alignCenter" size="m">
-    //             10
-    //         </EuiNotificationBadge>
-    //     ),
-    // },
 ];

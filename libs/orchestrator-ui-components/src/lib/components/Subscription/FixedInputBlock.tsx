@@ -3,9 +3,7 @@ import React from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 import { RenderField } from './SubscriptionBlock';
 
-// Todo: add data type?
 export const FixedInputBlock = (title: string, data: object) => {
-    // Todo: investigate -> for some reason I can't just use `keys()`
     const keys = [];
     for (const key in data) {
         keys.push(key);
@@ -39,7 +37,6 @@ export const FixedInputBlock = (title: string, data: object) => {
                                     <td
                                         valign={'top'}
                                         style={{
-                                            // Todo: share styles with SubscriptionBlock.tsx
                                             width: 350,
                                             padding: 10,
                                             borderTopLeftRadius: 8,

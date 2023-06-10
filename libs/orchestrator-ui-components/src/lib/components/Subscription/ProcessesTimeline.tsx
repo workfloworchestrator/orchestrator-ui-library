@@ -71,9 +71,7 @@ const Card = (processInfo: SubscriptionProcess) => {
 const RenderProcess = (processInfo: SubscriptionProcess) => {
     return (
         <EuiComment
-            username={
-                processInfo.workflow_target ? processInfo.workflow_target : ''
-            }
+            username={processInfo.workflow_target ?? ''}
             timelineAvatarAriaLabel={processInfo.process.workflow}
             timelineAvatar={<EuiAvatar name="C" />}
         >

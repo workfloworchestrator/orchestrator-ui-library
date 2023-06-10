@@ -38,13 +38,14 @@ export const TreeNode: FC<TreeNodeProps> = ({ item, hasChildren, level }) => {
                     grow={false}
                     style={{ width: 0, marginTop: 8, marginRight: -8 }}
                 >
-                    {hasChildren && (
+                    {hasChildren ? (
                         <EuiIcon
                             type={expandIcon}
                             onClick={() => toggleExpandedId(item.id)}
                         />
+                    ) : (
+                        <EuiToken iconType={item.icon} />
                     )}
-                    {!hasChildren && <EuiToken iconType={item.icon} />}
                 </EuiFlexItem>
                 <EuiFlexItem grow={true}>
                     {selected ? (

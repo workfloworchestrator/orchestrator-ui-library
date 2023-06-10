@@ -22,7 +22,13 @@ import {
     mapApiResponseToSubscriptionDetail,
 } from './subscriptionQuery';
 import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components';
-import { getColor, tabs } from './utils';
+import {
+    GENERAL_TAB,
+    getColor,
+    PROCESSES_TAB,
+    SERVICE_CONFIGURATION_TAB,
+    tabs,
+} from './utils';
 
 type SubscriptionProps = {
     subscriptionId: string;
@@ -34,7 +40,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
-    const [selectedTabId, setSelectedTabId] = useState('general-id');
+    const [selectedTabId, setSelectedTabId] = useState(GENERAL_TAB);
     const selectedTabContent = useMemo(() => {
         // @ts-ignore
         return tabs.find((obj) => obj.id === selectedTabId)?.content;
@@ -158,15 +164,13 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 {selectedTabContent}
             </>
 
-            {selectedTabId === 'processes-id' && data && (
-                <ProcessesTimeline subscriptionId={subscriptionId} />
-            )}
-
-            {selectedTabId === 'service-configuration-id' && (
+            {selectedTabId === GENERAL_TAB && <SubscriptionGeneral />}
+            {selectedTabId === SERVICE_CONFIGURATION_TAB && (
                 <SubscriptionDetailTree />
             )}
-
-            {selectedTabId === 'general-id' && <SubscriptionGeneral />}
+            {selectedTabId === PROCESSES_TAB && data && (
+                <ProcessesTimeline subscriptionId={subscriptionId} />
+            )}
         </>
     );
 };

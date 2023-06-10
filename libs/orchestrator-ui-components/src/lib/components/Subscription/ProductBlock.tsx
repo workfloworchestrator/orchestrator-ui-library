@@ -9,8 +9,11 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
-import { SubscriptionContext } from '../../contexts/SubscriptionContext';
+import {
+    TreeContext,
+    TreeContextType,
+    SubscriptionContext,
+} from '../../contexts';
 import { ResourceTypeBase } from '../../types';
 
 export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
