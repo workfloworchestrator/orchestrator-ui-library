@@ -8,6 +8,7 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     OrchestratorPageTemplate,
+    BreadcrumbNavigation,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
@@ -73,6 +74,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     enableBatching: true,
                                 }}
                             >
+                                <BreadcrumbNavigation router={router} />
                                 <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
