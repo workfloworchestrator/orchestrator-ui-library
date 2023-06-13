@@ -10,7 +10,6 @@ import {
 export function Index() {
     return (
         <>
-            <EuiSpacer />
             <EuiPageHeader pageTitle="Goodmorning Hans" />
             <EuiSpacer />
             <NewProcessPanel />

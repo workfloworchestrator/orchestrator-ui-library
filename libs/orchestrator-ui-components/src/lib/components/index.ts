@@ -1,5 +1,5 @@
 export * from './Badges';
-export * from './breadcrumb-navigation';
+export * from './Breadcrumbs';
 export * from './OrchestratorPageTemplate';
 export * from './StartPage';
 export * from './Subscription';
