@@ -95,7 +95,6 @@ export const SubscriptionDetailTree = () => {
                 shallowCopy.callback = () =>
                     setSelectedTreeNode(shallowCopy.id);
 
-                // Let's add the current node as a child of the parent node.
                 if (
                     !subscriptionData.productBlocks.find(
                         (i) => i.parent === shallowCopy.id,
@@ -104,6 +103,7 @@ export const SubscriptionDetailTree = () => {
                     shallowCopy.icon = getTokenName(shallowCopy.label);
                 }
 
+                // Let's add the current node as a child of the parent node.
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 parentNode.children?.push(shallowCopy);

@@ -9,10 +9,14 @@ import {
 } from '@elastic/eui';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
 import { SubscriptionStatusBadge } from '../Badges';
+import {
+    subscriptionDefinitionCellStyle,
+    subscriptionTableRowStyle,
+    subscriptionValueCellStyle,
+} from './styles';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const RenderField = (field: string, data: any) => {
-    // const { theme } = useOrchestratorTheme();
     if (field === 'status')
         return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
     else if (field === 'insync')
@@ -61,30 +65,14 @@ export const SubscriptionBlock = (title: string, data: object) => {
                     <EuiSpacer size={'s'}></EuiSpacer>
                     <table width="100%">
                         <tbody>
-                            <tr
-                                key={0}
-                                style={{
-                                    backgroundColor: '#F1F5F9',
-                                }}
-                            >
+                            <tr key={0} css={subscriptionTableRowStyle}>
                                 <td
                                     valign={'top'}
-                                    style={{
-                                        width: 350,
-                                        padding: 10,
-                                        borderTopLeftRadius: 8,
-                                        borderBottomLeftRadius: 8,
-                                    }}
+                                    css={subscriptionDefinitionCellStyle}
                                 >
                                     <b>Product</b>
                                 </td>
-                                <td
-                                    style={{
-                                        padding: 0,
-                                        borderTopRightRadius: 8,
-                                        borderBottomRightRadius: 8,
-                                    }}
-                                >
+                                <td css={subscriptionValueCellStyle}>
                                     {/*
                                     @typescript-eslint/ban-ts-comment
                                     @ts-ignore */}
@@ -101,22 +89,11 @@ export const SubscriptionBlock = (title: string, data: object) => {
                                 >
                                     <td
                                         valign={'top'}
-                                        style={{
-                                            width: 350,
-                                            padding: 10,
-                                            borderTopLeftRadius: 8,
-                                            borderBottomLeftRadius: 8,
-                                        }}
+                                        css={subscriptionDefinitionCellStyle}
                                     >
                                         <b>{k}</b>
                                     </td>
-                                    <td
-                                        style={{
-                                            padding: 0,
-                                            borderTopRightRadius: 8,
-                                            borderBottomRightRadius: 8,
-                                        }}
-                                    >
+                                    <td css={subscriptionValueCellStyle}>
                                         {RenderField(k, data)}
                                     </td>
                                 </tr>

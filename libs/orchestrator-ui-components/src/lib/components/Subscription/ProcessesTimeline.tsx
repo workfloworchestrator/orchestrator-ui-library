@@ -61,7 +61,9 @@ const Card = (processInfo: SubscriptionProcess) => {
                     <td valign={'top'} style={{ padding: 10 }}>
                         <b>Started by</b>
                     </td>
-                    <td style={{ padding: 10 }}>Hans Trompert</td>
+                    <td style={{ padding: 10 }}>
+                        {processInfo.process.created_by}
+                    </td>
                 </tr>
             </table>
         </div>

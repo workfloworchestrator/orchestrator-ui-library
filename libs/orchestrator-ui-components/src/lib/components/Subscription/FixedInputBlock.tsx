@@ -2,6 +2,10 @@ import React from 'react';
 
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 import { RenderField } from './SubscriptionBlock';
+import {
+    subscriptionDefinitionCellStyle,
+    subscriptionValueCellStyle,
+} from './styles';
 
 export const FixedInputBlock = (title: string, data: object) => {
     const keys = [];
@@ -36,22 +40,11 @@ export const FixedInputBlock = (title: string, data: object) => {
                                 >
                                     <td
                                         valign={'top'}
-                                        style={{
-                                            width: 350,
-                                            padding: 10,
-                                            borderTopLeftRadius: 8,
-                                            borderBottomLeftRadius: 8,
-                                        }}
+                                        css={subscriptionDefinitionCellStyle}
                                     >
                                         <b>{k}</b>
                                     </td>
-                                    <td
-                                        style={{
-                                            padding: 0,
-                                            borderTopRightRadius: 8,
-                                            borderBottomRightRadius: 8,
-                                        }}
-                                    >
+                                    <td css={subscriptionValueCellStyle}>
                                         {RenderField(k, data)}
                                     </td>
                                 </tr>

@@ -34,6 +34,7 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
         externalServiceId: string | number,
         externalServiceKey: string,
     ) => {
+        // Todo #102: Remove or refactor when Federative GraphQL is ready
         if (subscriptionData.externalServices !== undefined) {
             console.log(
                 'externalId: ',
@@ -163,7 +164,7 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
                                                             resourceTypes[
                                                                 k
                                                             ] as string,
-                                                            'ims',
+                                                            'ims', // Todo #102: Federative GraphQL
                                                         )}
                                                     </EuiCodeBlock>
                                                 </EuiPanel>

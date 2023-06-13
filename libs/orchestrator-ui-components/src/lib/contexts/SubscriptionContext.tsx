@@ -46,7 +46,7 @@ export type SubscriptionProviderProps = {
 export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     children,
 }) => {
-    const [subscriptionData, setInteralSubscriptionData] =
+    const [subscriptionData, setInternalSubscriptionData] =
         React.useState<SubscriptionDetailBase>(subscriptionDetailInit);
     const [loadingStatus, setLoadingStatus] = React.useState(0);
 
@@ -54,7 +54,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
         data: SubscriptionDetailBase,
         loadingStatus: number,
     ) => {
-        setInteralSubscriptionData(data);
+        setInternalSubscriptionData(data);
         setLoadingStatus(loadingStatus);
     };
 
