@@ -13,6 +13,7 @@ import {
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from '../../components/Subscriptions/subscriptionQuery';
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 
 export default function SubscriptionsPage() {
@@ -48,6 +49,8 @@ export default function SubscriptionsPage() {
 
     return (
         <NoSSR>
+            <EuiSpacer />
+            <EuiPageHeader pageTitle="Subscriptions" />
             <Subscriptions
                 pageSize={pageSize}
                 setPageSize={(updatedPageSize) => setPageSize(updatedPageSize)}
