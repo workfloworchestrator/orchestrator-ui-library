@@ -1,9 +1,79 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
 
+export type Nullable<T> = T | null;
+
+type GenericField = { [key: string]: number | string | boolean };
+
+export type CustomerBase = {
+    name: string;
+    abbreviation?: string;
+} & GenericField;
+
+export type ProductBase = {
+    name: string;
+    description: string;
+    status: string;
+    tag: string;
+    type: string;
+    createdAt: string;
+    endDate?: string | null;
+} & GenericField;
+
+export type ResourceTypeBase = {
+    name: string;
+    title: string;
+    subscriptionInstanceId: string;
+    ownerSubscriptionId: string;
+    label?: string;
+} & GenericField;
+
+export type ProductBlockBase = {
+    id: number;
+    ownerSubscriptionId: string;
+    parent: Nullable<number>;
+    resourceTypes: ResourceTypeBase;
+};
+
+export type FixedInputsBase = GenericField;
+
+export type ExternalServiceBase = {
+    externalServiceKey: string;
+    externalServiceId: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    externalServiceData: any;
+} & GenericField;
+
+export type SubscriptionDetailBase = {
+    // Top level subscription fields
+    subscriptionId: string;
+    description: string;
+    customerId?: string | null;
+    insync: boolean;
+    status: string;
+    startDate?: string | null;
+    endDate?: string | null;
+    note?: string;
+
+    // Nested attributes
+    product: ProductBase;
+    fixedInputs: FixedInputsBase;
+    customer?: CustomerBase;
+    productBlocks: ProductBlockBase[];
+
+    externalServices?: ExternalServiceBase[];
+};
+
+export interface TreeBlock extends ProductBlockBase {
+    icon: string;
+    label: string;
+    callback: () => void;
+    children: TreeBlock[];
+}
+
 export interface ItemsList {
     type: string;
     title: string;
-    items: Subscription[] | Process[];
+    items: Process[];
     buttonName: string;
 }
 
@@ -14,26 +84,12 @@ export interface TotalStat {
     color: keyof _EuiThemeColorsMode;
 }
 
-export interface Subscription {
-    name: string;
-    subscription_id: string;
-    description: string;
-    product: Product;
-    product_id: string;
-    status: string;
-    insync: boolean;
-    customer_id: string;
-    start_date: number;
-    end_date: number;
-    note: string;
-}
-
 export interface Process {
     pid: string;
     workflow: string;
     assignee: string;
     last_status: string;
-    failed_reason: string;
+    failed_reason: Nullable<string>;
     traceback: string;
     step: string;
     created_by: string;

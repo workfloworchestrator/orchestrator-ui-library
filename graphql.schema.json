@@ -685,6 +685,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "portSpeed",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "portSubscriptionInstanceId",
                         "description": null,
                         "args": [],
@@ -15181,6 +15197,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "portSpeed",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "portSubscriptionInstanceId",
                         "description": null,
                         "args": [],
@@ -20362,6 +20394,22 @@
                 "description": null,
                 "fields": [
                     {
+                        "name": "id",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "ownerSubscriptionId",
                         "description": null,
                         "args": [],
@@ -20373,6 +20421,18 @@
                                 "name": "UUID",
                                 "ofType": null
                             }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "parent",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null

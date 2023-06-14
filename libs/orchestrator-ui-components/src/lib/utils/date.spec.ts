@@ -6,6 +6,10 @@ describe('date', () => {
             const result = parseDate(null);
             expect(result).toBeNull();
         });
+        it('returns null if the date is undefined', () => {
+            const result = parseDate(undefined);
+            expect(result).toBeNull();
+        });
 
         it('returns null if the date is an empty string', () => {
             const result = parseDate('');

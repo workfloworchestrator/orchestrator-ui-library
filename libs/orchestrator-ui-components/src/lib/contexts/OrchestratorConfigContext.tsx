@@ -5,11 +5,13 @@ import {
 } from '../hooks/useOrchestratorConfig';
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
-    orchestratorApiBaseUrl: '',
     engineStatusEndpoint: '',
-    processStatusCountsEndpoint: '',
     environmentName: '',
     graphqlEndpoint: '',
+    orchestratorApiBaseUrl: '',
+    processStatusCountsEndpoint: '',
+    subscriptionActionsEndpoint: '',
+    subscriptionProcessesEndpoint: '',
 });
 
 export type OrchestratorConfigProviderProps = {

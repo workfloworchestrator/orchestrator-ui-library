@@ -8,6 +8,7 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     OrchestratorPageTemplate,
+    BreadcrumbListPages,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
@@ -17,6 +18,8 @@ import {
     ORCHESTRATOR_API_BASE_URL,
     PROCESS_STATUS_COUNTS_ENDPOINT,
     GRAPHQL_ENDPOINT,
+    SUBSCRIPTION_ACTIONS_ENDPOINT,
+    SUBSCRIPTION_PROCESSES_ENDPOINT,
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
@@ -42,6 +45,8 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     graphqlEndpoint: GRAPHQL_ENDPOINT,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
+    subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
+    subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
@@ -69,6 +74,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     enableBatching: true,
                                 }}
                             >
+                                <BreadcrumbListPages
+                                    route={router.asPath}
+                                    routeTo={router.push}
+                                />
                                 <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
