@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiBreadcrumb, EuiBreadcrumbs } from '@elastic/eui';
+import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 
 interface IProps {
     route: string;
@@ -39,10 +39,13 @@ export const BreadcrumbListPages = ({ route, routeTo }: IProps) => {
     });
 
     return (
-        <EuiBreadcrumbs
-            breadcrumbs={breadcrumbs}
-            truncate={false}
-            aria-label="Current page"
-        />
+        <>
+            <EuiBreadcrumbs
+                breadcrumbs={breadcrumbs}
+                truncate={false}
+                aria-label="Current page"
+            />
+            <EuiSpacer size="m" />
+        </>
     );
 };

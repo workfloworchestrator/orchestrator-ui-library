@@ -5,7 +5,7 @@ describe('getTokenName()', () => {
         const result = getTokenName('Node');
         expect(result).toEqual('tokenNamespace');
     });
-    it('returns "tokenEnumMember" when name is "IP BGP Service Settings"', () => {
+    it('returns "tokenEnumMember" when name is "IP BGP Service SettingsPage"', () => {
         const result = getTokenName('IP BGP Service Settings');
         expect(result).toEqual('tokenEnumMember');
     });
