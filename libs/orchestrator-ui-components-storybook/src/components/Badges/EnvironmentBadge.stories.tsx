@@ -1,8 +1,11 @@
 import type { Meta } from '@storybook/react';
-import { EnvironmentBadge } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    EnvironmentBadge,
+    BadgeProps,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const Story: Meta<typeof EnvironmentBadge> = {
-    component: (args) => (
+    component: (args: BadgeProps) => (
         <div style={{ display: 'flex' }}>
             <EnvironmentBadge {...args} />
         </div>

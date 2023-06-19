@@ -1,8 +1,11 @@
 import type { Meta } from '@storybook/react';
-import { EngineStatusBadge } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    EngineStatusBadge,
+    BadgeProps,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const Story: Meta<typeof EngineStatusBadge> = {
-    component: (args) => (
+    component: (args: BadgeProps) => (
         <div style={{ display: 'flex' }}>
             <EngineStatusBadge {...args} />
         </div>

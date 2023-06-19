@@ -1,8 +1,11 @@
 import type { Meta } from '@storybook/react';
-import { OrchestratorSidebar } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    OrchestratorSidebar,
+    OrchestratorSidebarProps,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const Story: Meta<typeof OrchestratorSidebar> = {
-    component: (args) => (
+    component: (args: OrchestratorSidebarProps) => (
         <div style={{ width: '250px', backgroundColor: '#F1F5F9' }}>
             <OrchestratorSidebar {...args} />
         </div>

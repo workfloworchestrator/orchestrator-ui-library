@@ -4,6 +4,7 @@ import {
     DataSorting,
     SortDirection,
     DataGridTable,
+    DataGridTableProps,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 const extractedArr = (arr: Array<any>, start: number, howMany: number) =>
@@ -11,7 +12,7 @@ const extractedArr = (arr: Array<any>, start: number, howMany: number) =>
         return index >= start && index < howMany + start;
     });
 
-const TableWithEvents = (args: any) => {
+const TableWithEvents = <T,>(args: DataGridTableProps<T>) => {
     const [data, setData] = useState(
         extractedArr(
             args.data,
@@ -21,7 +22,7 @@ const TableWithEvents = (args: any) => {
     );
     const [pageSize, setPageSize] = useState(args.pagination.pageSize);
     const [pageIndex, setPageIndex] = useState(args.pagination.pageIndex);
-    const [sorting, setSorting] = useState(args.sorting);
+    const [sorting, setSorting] = useState(args.dataSorting);
 
     const onChangePage = (updatedPageIndex: number) => {
         const pageI = updatedPageIndex * pageSize;
@@ -36,10 +37,10 @@ const TableWithEvents = (args: any) => {
         setPageSize(updatedPageSize);
     };
 
-    const updateDataSorting = (dataSorting: DataSorting<unknown>) => {
+    const updateDataSorting = (dataSorting: DataSorting<T>) => {
         setSorting(dataSorting);
 
-        const sortData = args.data.sort((a: object, b: object) => {
+        const sortData = args.data.sort((a: T, b: T) => {
             const aColumn = a[dataSorting.columnId];
             const bColumn = b[dataSorting.columnId];
             if (dataSorting.sortDirection === SortDirection.Asc) {
