@@ -21,7 +21,7 @@ import {
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { EuiFlexItem, EuiFormRow, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -236,14 +236,24 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     return (
         <>
-            <EuiSearchBar
-                query={filterQuery}
-                onChange={({ queryText }) => {
-                    setFilterQuery(queryText);
-                }}
-            />
-            {/* Todo: more specific error */}
-            {queryContainsInvalidParts && <h3>Incorrect query</h3>}
+            <EuiFormRow
+                fullWidth
+                isInvalid={queryContainsInvalidParts}
+                error={[
+                    'Incorrect query',
+                ]} /* Todo more descriptive error message*/
+            >
+                <EuiSearchBar
+                    query={filterQuery}
+                    onChange={({ queryText }) => {
+                        setFilterQuery(queryText);
+                    }}
+                    box={{
+                        isInvalid: queryContainsInvalidParts, // Todo possible bug in EUI component
+                    }}
+                />
+            </EuiFormRow>
+
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnsWithExtraNonDataFields}
