@@ -39,6 +39,7 @@ import {
     TAG,
 } from './subscriptionQuery';
 import { Criteria, Pagination } from '@elastic/eui';
+import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast_to_es_query_dsl';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -171,11 +172,14 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumns,
     );
 
-    const esQueryDsl = EuiSearchBar.Query.toESQuery(filterQuery);
-    // Need to find a way to map the query text to [key, value][] format meant for graphql
-    // customerName:'Open universiteit' productTag:LP
-    // ['customerName', 'Open universiteit'], [productTag, 'LP']
-    console.log('esQueryDsl', esQueryDsl);
+    const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
+    const filterQueryTupleArray = esQueryContainer.bool?.must?.map(
+        mapEsQueryContainerToKeyValueTuple,
+    );
+    const queryContainsInvalidParts =
+        filterQueryTupleArray?.includes(undefined);
+    const filterBy = filterQueryTupleArray?.filter(isValidQueryPart);
+
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
@@ -187,6 +191,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: sortedColumnId.toString(),
             order: sortOrder.order,
         },
+        filterBy,
     });
 
     if (!sortedColumnId) {
@@ -209,10 +214,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         });
 
     const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
-        if (criteria.page) {
-            const {
-                page: { index, size },
-            } = criteria;
+        const { page } = criteria;
+        if (page) {
+            const { index, size } = page;
             setPageSize(size);
             setPageIndex(index * size);
         }
@@ -238,6 +242,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                     setFilterQuery(queryText);
                 }}
             />
+            {/* Todo: more specific error */}
+            {queryContainsInvalidParts && <h3>Incorrect query</h3>}
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnsWithExtraNonDataFields}
@@ -281,4 +287,39 @@ function mapApiResponseToSubscriptionTableData(
             };
         },
     );
+}
+
+// Todo: fix ts-ignores
+function mapEsQueryContainerToKeyValueTuple(queryContainer: QueryContainer) {
+    if (queryContainer.match !== undefined) {
+        const firstKey: string = Object.keys(queryContainer.match)[0];
+
+        // @ts-ignore
+        const firstValue: string = queryContainer.match[firstKey].query;
+        console.log({ firstKey, firstValue });
+        return [firstKey, firstValue];
+    }
+
+    if (queryContainer.match_phrase !== undefined) {
+        const firstKey: string = Object.keys(queryContainer.match_phrase)[0];
+
+        // @ts-ignore
+        const firstValue: string = queryContainer.match_phrase[firstKey];
+        console.log({ firstKey, firstValue });
+        return [firstKey, firstValue];
+    }
+
+    if (queryContainer.simple_query_string !== undefined) {
+        // @ts-ignore
+        return ['tsv', queryContainer.simple_query_string.query];
+    }
+
+    // returning undefined for unsupported query-matchers
+    return undefined;
+}
+
+function isValidQueryPart(
+    filter: string[] | undefined,
+): filter is [string, string] {
+    return filter !== undefined && filter?.length === 2;
 }
