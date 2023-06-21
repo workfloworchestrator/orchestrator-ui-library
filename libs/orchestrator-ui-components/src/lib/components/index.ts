@@ -1,6 +1,7 @@
 export * from './Badges';
 export * from './Breadcrumbs';
 export * from './OrchestratorPageTemplate';
+export * from './SearchBar';
 export * from './StartPage';
 export * from './Subscription';
 export * from './Table';

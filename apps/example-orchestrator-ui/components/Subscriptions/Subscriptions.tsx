@@ -17,11 +17,14 @@ import {
     useStringQueryWithGraphql,
     parseDateToLocaleString,
     Loading,
+    mapEsQueryContainerToKeyValueTuple,
+    isValidQueryPart,
+    SearchField,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiFormRow, EuiSearchBar } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -39,7 +42,6 @@ import {
     TAG,
 } from './subscriptionQuery';
 import { Criteria, Pagination } from '@elastic/eui';
-import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast_to_es_query_dsl';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -236,24 +238,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     return (
         <>
-            <EuiFormRow
-                fullWidth
+            <SearchField
+                initialFilterQuery={filterQuery}
+                onSearch={setFilterQuery}
                 isInvalid={queryContainsInvalidParts}
-                error={[
-                    'Incorrect query',
-                ]} /* Todo more descriptive error message*/
-            >
-                <EuiSearchBar
-                    query={filterQuery}
-                    onChange={({ queryText }) => {
-                        setFilterQuery(queryText);
-                    }}
-                    box={{
-                        isInvalid: queryContainsInvalidParts, // Todo possible bug in EUI component
-                    }}
-                />
-            </EuiFormRow>
-
+            />
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnsWithExtraNonDataFields}
@@ -297,39 +286,4 @@ function mapApiResponseToSubscriptionTableData(
             };
         },
     );
-}
-
-// Todo: fix ts-ignores
-function mapEsQueryContainerToKeyValueTuple(queryContainer: QueryContainer) {
-    if (queryContainer.match !== undefined) {
-        const firstKey: string = Object.keys(queryContainer.match)[0];
-
-        // @ts-ignore
-        const firstValue: string = queryContainer.match[firstKey].query;
-        console.log({ firstKey, firstValue });
-        return [firstKey, firstValue];
-    }
-
-    if (queryContainer.match_phrase !== undefined) {
-        const firstKey: string = Object.keys(queryContainer.match_phrase)[0];
-
-        // @ts-ignore
-        const firstValue: string = queryContainer.match_phrase[firstKey];
-        console.log({ firstKey, firstValue });
-        return [firstKey, firstValue];
-    }
-
-    if (queryContainer.simple_query_string !== undefined) {
-        // @ts-ignore
-        return ['tsv', queryContainer.simple_query_string.query];
-    }
-
-    // returning undefined for unsupported query-matchers
-    return undefined;
-}
-
-function isValidQueryPart(
-    filter: string[] | undefined,
-): filter is [string, string] {
-    return filter !== undefined && filter?.length === 2;
 }
