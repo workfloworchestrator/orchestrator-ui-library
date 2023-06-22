@@ -1,5 +1,5 @@
+import { Value } from '@elastic/eui/src/components/search_bar/query/ast';
 import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast_to_es_query_dsl';
-import { Value } from 'sass';
 
 // Using ts-ignore here, because the properties in QueryContainer are typed as object
 
