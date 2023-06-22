@@ -51,6 +51,7 @@ export type SubscriptionsQueryVariables = {
     first: number;
     after: number;
     sortBy: SubscriptionsSort | null;
+    filterBy?: [string, string][];
 };
 
 export type SubscriptionsSort = {
