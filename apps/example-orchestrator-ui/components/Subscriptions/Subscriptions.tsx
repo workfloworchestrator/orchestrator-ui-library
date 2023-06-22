@@ -215,8 +215,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         });
 
-    const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
-        const { page } = criteria;
+    const handleCriteriaChange = ({ page }: Criteria<Subscription>) => {
         if (page) {
             const { index, size } = page;
             setPageSize(size);

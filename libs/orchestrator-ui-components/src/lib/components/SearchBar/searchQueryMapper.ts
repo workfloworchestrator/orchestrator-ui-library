@@ -5,9 +5,9 @@ import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast
 type MatchObject = { query: Value };
 type SimpleQueryStringObject = { query: string };
 
-export function mapEsQueryContainerToKeyValueTuple(
+export const mapEsQueryContainerToKeyValueTuple = (
     queryContainer: QueryContainer,
-): [string, string] | undefined {
+): [string, string] | undefined => {
     if (queryContainer.match !== undefined) {
         const firstKey: string = Object.keys(queryContainer.match)[0];
 
@@ -39,10 +39,8 @@ export function mapEsQueryContainerToKeyValueTuple(
 
     // returning undefined for unsupported query-matchers
     return undefined;
-}
+};
 
-export function isValidQueryPart(
+export const isValidQueryPart = (
     filter: string[] | undefined,
-): filter is [string, string] {
-    return filter !== undefined && filter?.length === 2;
-}
+): filter is [string, string] => filter?.length === 2;
