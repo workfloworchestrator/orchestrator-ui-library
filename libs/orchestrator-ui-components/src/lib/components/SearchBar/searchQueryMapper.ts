@@ -1,9 +1,7 @@
-import { Value } from '@elastic/eui/src/components/search_bar/query/ast';
 import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast_to_es_query_dsl';
+import { Value } from 'sass';
 
-// Types to cast to since the QueryContainer defines the types of "match" and "simple_query_string" as "object"
-type MatchObject = { query: Value };
-type SimpleQueryStringObject = { query: string };
+// Using ts-ignore here, because the properties in QueryContainer are typed as object
 
 export const mapEsQueryContainerToKeyValueTuple = (
     queryContainer: QueryContainer,
@@ -11,30 +9,25 @@ export const mapEsQueryContainerToKeyValueTuple = (
     if (queryContainer.match !== undefined) {
         const firstKey: string = Object.keys(queryContainer.match)[0];
 
-        const firstValue = (
-            queryContainer.match[
-                firstKey as keyof typeof queryContainer.match
-            ] as MatchObject
-        ).query;
-
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const firstValue: Value = queryContainer.match[firstKey].query;
         return [firstKey, firstValue.toString()];
     }
 
     if (queryContainer.match_phrase !== undefined) {
         const firstKey: string = Object.keys(queryContainer.match_phrase)[0];
 
-        const firstValue: string =
-            queryContainer.match_phrase[
-                firstKey as keyof typeof queryContainer.match_phrase
-            ];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const firstValue: string = queryContainer.match_phrase[firstKey];
         return [firstKey, firstValue];
     }
 
     if (queryContainer.simple_query_string !== undefined) {
-        const value = (
-            queryContainer.simple_query_string as SimpleQueryStringObject
-        ).query;
-        return ['tsv', value];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return ['tsv', queryContainer.simple_query_string.query];
     }
 
     // returning undefined for unsupported query-matchers

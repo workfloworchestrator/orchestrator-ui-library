@@ -6,7 +6,7 @@ import { QueryContainer } from '@elastic/eui/src/components/search_bar/query/ast
 
 describe('searchQueryMapper', () => {
     describe('mapEsQueryContainerToKeyValueTuple', () => {
-        it('maps a match part to key-value tuple', () => {
+        it('maps a match part with a string value to key-value tuple', () => {
             const queryContainer: QueryContainer = {
                 match: {
                     testKey: {
@@ -18,6 +18,20 @@ describe('searchQueryMapper', () => {
             const result = mapEsQueryContainerToKeyValueTuple(queryContainer);
 
             expect(result).toEqual(['testKey', 'testValue']);
+        });
+
+        it('maps a match part with a boolean value to key-value tuple', () => {
+            const queryContainer: QueryContainer = {
+                match: {
+                    testKey: {
+                        query: true,
+                    },
+                },
+            };
+
+            const result = mapEsQueryContainerToKeyValueTuple(queryContainer);
+
+            expect(result).toEqual(['testKey', 'true']);
         });
 
         it('maps a match-phrase part to key-value tuple', () => {
