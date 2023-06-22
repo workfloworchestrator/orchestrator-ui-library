@@ -76,6 +76,7 @@ export type SubscriptionsProps = {
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
     filterQuery: string;
     setFilterQuery: (updatedFilterQuery: string) => void;
+    alwaysOnFilter?: [string, string];
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -87,6 +88,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setSortOrder,
     filterQuery,
     setFilterQuery,
+    alwaysOnFilter,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -180,7 +182,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
     const queryContainsInvalidParts =
         filterQueryTupleArray?.includes(undefined);
-    const filterBy = filterQueryTupleArray?.filter(isValidQueryPart);
+    const filterBy =
+        filterQueryTupleArray
+            ?.concat([alwaysOnFilter])
+            .filter(isValidQueryPart) ||
+        (alwaysOnFilter ? [alwaysOnFilter] : undefined);
 
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,

@@ -17,7 +17,7 @@ import {
 import { EuiButton, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 
-export default function SubscriptionsPage() {
+export default function ActiveSubscriptionsPage() {
     const router = useRouter();
 
     const [pageSize, setPageSize] = useQueryParam(
@@ -80,6 +80,7 @@ export default function SubscriptionsPage() {
                 }}
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
+                alwaysOnFilter={['status', 'initial-provisioning-terminated']}
             />
         </NoSSR>
     );
