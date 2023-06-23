@@ -18,12 +18,22 @@ import {
 } from './Subscriptions/subscriptionQuery';
 
 export type SubscriptionsOverviewPageProps = {
-    alwaysOnFilter?: [string, string];
-    activeTab?: string;
+    activeTab?: SubscriptionsTabType;
+};
+
+export enum SubscriptionsTabType {
+    ACTIVE = 'active',
+    NON_ACTIVE = 'non-active',
+}
+
+export type SubscriptionsTab = {
+    id: SubscriptionsTabType;
+    name: string;
+    alwaysOnFilter: [string, string];
+    route: string;
 };
 
 export const SubscriptionsOverviewPage: FC<SubscriptionsOverviewPageProps> = ({
-    alwaysOnFilter,
     activeTab = 'active',
 }) => {
     const router = useRouter();
@@ -61,15 +71,17 @@ export const SubscriptionsOverviewPage: FC<SubscriptionsOverviewPageProps> = ({
         return null;
     }
 
-    const tabs = [
+    const tabs: SubscriptionsTab[] = [
         {
-            id: 'active',
+            id: SubscriptionsTabType.ACTIVE,
             name: 'Active',
+            alwaysOnFilter: ['status', 'active'],
             route: '/subscriptions/active',
         },
         {
-            id: 'non-active',
+            id: SubscriptionsTabType.NON_ACTIVE,
             name: 'Initial, provisioning and terminated',
+            alwaysOnFilter: ['status', 'initial-provisioning-terminated'],
             route: '/subscriptions/non-active',
         },
     ];
@@ -111,7 +123,9 @@ export const SubscriptionsOverviewPage: FC<SubscriptionsOverviewPageProps> = ({
                 }}
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
-                alwaysOnFilter={alwaysOnFilter}
+                alwaysOnFilter={
+                    tabs.find((t) => t.id === activeTab)?.alwaysOnFilter
+                }
             />
         </NoSSR>
     );

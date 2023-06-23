@@ -1,10 +1,10 @@
-import { SubscriptionsOverviewPage } from '../../components/SubscriptionsPage/SubscriptionsPage';
+import {
+    SubscriptionsOverviewPage,
+    SubscriptionsTabType,
+} from '../../components/SubscriptionsPage/SubscriptionsPage';
 
 export default function ActiveSubscriptionsPage() {
     return (
-        <SubscriptionsOverviewPage
-            alwaysOnFilter={['status', 'active']}
-            activeTab="active"
-        />
+        <SubscriptionsOverviewPage activeTab={SubscriptionsTabType.ACTIVE} />
     );
 }
