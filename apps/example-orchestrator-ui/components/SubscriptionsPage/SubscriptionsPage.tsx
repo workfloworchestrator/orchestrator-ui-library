@@ -9,7 +9,7 @@ import {
 } from 'use-query-params';
 import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 import NoSSR from 'react-no-ssr';
-import { EuiButton, EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiPageHeader, EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
 import { Subscriptions } from './Subscriptions/Subscriptions';
 import {
     DEFAULT_SORT_FIELD,
@@ -19,10 +19,12 @@ import {
 
 export type SubscriptionsOverviewPageProps = {
     alwaysOnFilter?: [string, string];
+    activeTab?: string;
 };
 
 export const SubscriptionsOverviewPage: FC<SubscriptionsOverviewPageProps> = ({
     alwaysOnFilter,
+    activeTab = 'active',
 }) => {
     const router = useRouter();
 
@@ -59,16 +61,39 @@ export const SubscriptionsOverviewPage: FC<SubscriptionsOverviewPageProps> = ({
         return null;
     }
 
+    const tabs = [
+        {
+            id: 'active',
+            name: 'Active',
+            route: '/subscriptions/active',
+        },
+        {
+            id: 'non-active',
+            name: 'Initial, provisioning and terminated',
+            route: '/subscriptions/non-active',
+        },
+    ];
+
     return (
         <NoSSR>
             <EuiSpacer />
+
             <EuiPageHeader pageTitle="Subscriptions" />
-            <EuiButton onClick={() => router.push('/subscriptions/active')}>
-                Active
-            </EuiButton>
-            <EuiButton onClick={() => router.push('/subscriptions/non-active')}>
-                Initial, provisioning and terminated
-            </EuiButton>
+            <EuiSpacer size="m" />
+
+            <EuiTabs>
+                {tabs.map(({ id, name, route }) => (
+                    <EuiTab
+                        key={id}
+                        isSelected={id === activeTab}
+                        onClick={() => id !== activeTab && router.push(route)}
+                    >
+                        {name}
+                    </EuiTab>
+                ))}
+            </EuiTabs>
+            <EuiSpacer size={'xxl'} />
+
             <Subscriptions
                 pageSize={pageSize}
                 setPageSize={(updatedPageSize) => setPageSize(updatedPageSize)}

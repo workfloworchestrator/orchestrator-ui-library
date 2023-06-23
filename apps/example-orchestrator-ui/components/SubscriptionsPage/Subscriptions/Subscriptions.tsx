@@ -24,7 +24,7 @@ import {
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar, EuiSpacer } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -248,6 +248,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 onSearch={setFilterQuery}
                 isInvalid={queryContainsInvalidParts}
             />
+            <EuiSpacer size="m" />
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnsWithExtraNonDataFields}
