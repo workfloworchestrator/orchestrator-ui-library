@@ -1,6 +1,10 @@
-import React from 'react';
-import { SubscriptionsOverviewPage } from '../../components/SubscriptionsPage/SubscriptionsPage';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function SubscriptionsPage() {
-    return <SubscriptionsOverviewPage />;
+    const router = useRouter();
+
+    useEffect(() => {
+        router.replace('/subscriptions/active');
+    });
 }
