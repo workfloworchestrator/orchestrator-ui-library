@@ -17,11 +17,14 @@ import {
     useStringQueryWithGraphql,
     parseDateToLocaleString,
     Loading,
+    mapEsQueryContainerToKeyValueTuple,
+    isValidQueryPart,
+    SearchField,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -71,6 +74,8 @@ export type SubscriptionsProps = {
     setPageIndex: (updatedPageIndex: number) => void;
     sortOrder: SubscriptionsSort;
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
+    filterQuery: string;
+    setFilterQuery: (updatedFilterQuery: string) => void;
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -80,6 +85,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setPageSize,
     setPageIndex,
     setSortOrder,
+    filterQuery,
+    setFilterQuery,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -167,6 +174,14 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumns,
     );
 
+    const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
+    const filterQueryTupleArray = esQueryContainer.bool?.must?.map(
+        mapEsQueryContainerToKeyValueTuple,
+    );
+    const queryContainsInvalidParts =
+        filterQueryTupleArray?.includes(undefined);
+    const filterBy = filterQueryTupleArray?.filter(isValidQueryPart);
+
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
@@ -178,6 +193,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: sortedColumnId.toString(),
             order: sortOrder.order,
         },
+        filterBy,
     });
 
     if (!sortedColumnId) {
@@ -199,11 +215,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         });
 
-    const handleCriteriaChange = (criteria: Criteria<Subscription>) => {
-        if (criteria.page) {
-            const {
-                page: { index, size },
-            } = criteria;
+    const handleCriteriaChange = ({ page }: Criteria<Subscription>) => {
+        if (page) {
+            const { index, size } = page;
             setPageSize(size);
             setPageIndex(index * size);
         }
@@ -222,16 +236,23 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     };
 
     return (
-        <Table
-            data={mapApiResponseToSubscriptionTableData(data)}
-            columns={tableColumnsWithExtraNonDataFields}
-            hiddenColumns={hiddenColumns}
-            dataSorting={dataSorting}
-            onDataSort={handleDataSort}
-            pagination={pagination}
-            isLoading={isFetching}
-            onCriteriaChange={handleCriteriaChange}
-        />
+        <>
+            <SearchField
+                initialFilterQuery={filterQuery}
+                onSearch={setFilterQuery}
+                isInvalid={queryContainsInvalidParts}
+            />
+            <Table
+                data={mapApiResponseToSubscriptionTableData(data)}
+                columns={tableColumnsWithExtraNonDataFields}
+                hiddenColumns={hiddenColumns}
+                dataSorting={dataSorting}
+                onDataSort={handleDataSort}
+                pagination={pagination}
+                isLoading={isFetching}
+                onCriteriaChange={handleCriteriaChange}
+            />
+        </>
     );
 };
 
