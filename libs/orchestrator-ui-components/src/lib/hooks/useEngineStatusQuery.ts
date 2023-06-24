@@ -9,6 +9,10 @@ export interface EngineStatus {
     global_status: GlobalStatus;
 }
 
+interface EngineStatusPayload {
+    global_lock: boolean;
+}
+
 export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
 
@@ -25,9 +29,13 @@ export const useEngineStatusQuery = () => {
 export const useEngineStatusMutation = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
 
-    const setEngineStatus = async () => {
+    const setEngineStatus = async (data: EngineStatusPayload) => {
         const response = await fetch(engineStatusEndpoint, {
             method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
         return (await response.json()) as EngineStatus;
     };
