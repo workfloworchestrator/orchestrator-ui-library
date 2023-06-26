@@ -13,37 +13,15 @@ import {
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from '../../components/Subscriptions/subscriptionQuery';
 import {
+    defaultSubscriptionsTabs,
     getSortDirectionFromString,
     getSubscriptionsTabTypeFromString,
-    SubscriptionsTab,
     SubscriptionsTabs,
     SubscriptionsTabType,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
-
-const subscriptionsTabs: SubscriptionsTab[] = [
-    {
-        id: SubscriptionsTabType.ACTIVE,
-        name: 'Active',
-        alwaysOnFilter: ['status', 'active'],
-    },
-    {
-        id: SubscriptionsTabType.TERMINATED,
-        name: 'Terminated',
-        alwaysOnFilter: ['status', 'terminated'],
-    },
-    {
-        id: SubscriptionsTabType.TRANSIENT,
-        name: 'Transient',
-        alwaysOnFilter: ['status', 'initial-provisioning-migrating'],
-    },
-    {
-        id: SubscriptionsTabType.ALL,
-        name: 'All',
-    },
-];
 
 export default function SubscriptionsPage() {
     const router = useRouter();
@@ -81,7 +59,6 @@ export default function SubscriptionsPage() {
     const sortOrder = getSortDirectionFromString(sorting.direction);
     const selectedSubscriptionsTab =
         getSubscriptionsTabTypeFromString(activeTab);
-
     if (!sortOrder || !selectedSubscriptionsTab) {
         router.replace('/subscriptions');
         return null;
@@ -95,7 +72,7 @@ export default function SubscriptionsPage() {
             <EuiSpacer size="m" />
 
             <SubscriptionsTabs
-                tabs={subscriptionsTabs}
+                tabs={defaultSubscriptionsTabs}
                 selectedSubscriptionsTab={selectedSubscriptionsTab}
                 onChangeSubscriptionsTab={(updatedSubscriptionsTab) => {
                     setActiveTab(updatedSubscriptionsTab);
@@ -122,8 +99,8 @@ export default function SubscriptionsPage() {
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
                 alwaysOnFilter={
-                    subscriptionsTabs.find(
-                        (t) => t.id === selectedSubscriptionsTab,
+                    defaultSubscriptionsTabs.find(
+                        ({ id }) => id === selectedSubscriptionsTab,
                     )?.alwaysOnFilter
                 }
             />

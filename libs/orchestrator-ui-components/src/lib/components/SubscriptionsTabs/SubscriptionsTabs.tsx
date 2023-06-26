@@ -14,6 +14,28 @@ export type SubscriptionsTab = {
     alwaysOnFilter?: [string, string];
 };
 
+export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
+    {
+        id: SubscriptionsTabType.ACTIVE,
+        name: 'Active',
+        alwaysOnFilter: ['status', 'active'],
+    },
+    {
+        id: SubscriptionsTabType.TERMINATED,
+        name: 'Terminated',
+        alwaysOnFilter: ['status', 'terminated'],
+    },
+    {
+        id: SubscriptionsTabType.TRANSIENT,
+        name: 'Transient',
+        alwaysOnFilter: ['status', 'initial-provisioning-migrating'],
+    },
+    {
+        id: SubscriptionsTabType.ALL,
+        name: 'All',
+    },
+];
+
 export type SubscriptionsTabsProps = {
     tabs: SubscriptionsTab[];
     selectedSubscriptionsTab: SubscriptionsTabType;
