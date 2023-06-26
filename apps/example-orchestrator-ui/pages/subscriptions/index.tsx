@@ -11,10 +11,10 @@ import {
     DEFAULT_SORT_FIELD,
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-} from '../../components/SubscriptionsPage/Subscriptions/subscriptionQuery';
+} from '../../components/Subscriptions/subscriptionQuery';
 import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
-import { Subscriptions } from '../../components/SubscriptionsPage/Subscriptions/Subscriptions';
+import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
 
 export enum SubscriptionsTabType {
