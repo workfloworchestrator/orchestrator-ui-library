@@ -12,25 +12,18 @@ import {
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from '../../components/Subscriptions/subscriptionQuery';
-import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
-import { EuiPageHeader, EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
+import {
+    getSortDirectionFromString,
+    getSubscriptionsTabTypeFromString,
+    SubscriptionsTab,
+    SubscriptionsTabs,
+    SubscriptionsTabType,
+} from '@orchestrator-ui/orchestrator-ui-components';
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
 
-export enum SubscriptionsTabType {
-    ACTIVE = 'ACTIVE',
-    TERMINATED = 'TERMINATED',
-    TRANSIENT = 'TRANSIENT',
-    ALL = 'ALL',
-}
-
-export type SubscriptionsTab = {
-    id: SubscriptionsTabType;
-    name: string;
-    alwaysOnFilter?: [string, string];
-};
-
-const tabs: SubscriptionsTab[] = [
+const subscriptionsTabs: SubscriptionsTab[] = [
     {
         id: SubscriptionsTabType.ACTIVE,
         name: 'Active',
@@ -101,22 +94,14 @@ export default function SubscriptionsPage() {
             <EuiPageHeader pageTitle="Subscriptions" />
             <EuiSpacer size="m" />
 
-            <EuiTabs>
-                {tabs.map(({ id, name }) => (
-                    <EuiTab
-                        key={id}
-                        isSelected={id === selectedSubscriptionsTab}
-                        onClick={() => {
-                            if (id !== selectedSubscriptionsTab) {
-                                setActiveTab(id);
-                                setPageIndex(0);
-                            }
-                        }}
-                    >
-                        {name}
-                    </EuiTab>
-                ))}
-            </EuiTabs>
+            <SubscriptionsTabs
+                tabs={subscriptionsTabs}
+                selectedSubscriptionsTab={selectedSubscriptionsTab}
+                onChangeSubscriptionsTab={(updatedSubscriptionsTab) => {
+                    setActiveTab(updatedSubscriptionsTab);
+                    setPageIndex(0);
+                }}
+            />
             <EuiSpacer size={'xxl'} />
 
             <Subscriptions
@@ -137,32 +122,11 @@ export default function SubscriptionsPage() {
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
                 alwaysOnFilter={
-                    tabs.find((t) => t.id === selectedSubscriptionsTab)
-                        ?.alwaysOnFilter
+                    subscriptionsTabs.find(
+                        (t) => t.id === selectedSubscriptionsTab,
+                    )?.alwaysOnFilter
                 }
             />
         </NoSSR>
     );
 }
-
-export const getSubscriptionsTabTypeFromString = (
-    tabId?: string,
-): SubscriptionsTabType | undefined => {
-    if (!tabId) {
-        return undefined;
-    }
-
-    switch (tabId.toUpperCase()) {
-        case SubscriptionsTabType.ACTIVE.toString():
-            return SubscriptionsTabType.ACTIVE;
-        case SubscriptionsTabType.TERMINATED.toString():
-            return SubscriptionsTabType.TERMINATED;
-        case SubscriptionsTabType.TRANSIENT.toString():
-            return SubscriptionsTabType.TRANSIENT;
-        case SubscriptionsTabType.ALL.toString():
-            return SubscriptionsTabType.ALL;
-
-        default:
-            return undefined;
-    }
-};
