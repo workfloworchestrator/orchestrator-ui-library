@@ -2,31 +2,23 @@ import { getSubscriptionsTabTypeFromString } from './getSubscriptionsTabTypeFrom
 import { SubscriptionsTabType } from './SubscriptionsTabs';
 
 describe('getSubscriptionsTabTypeFromString', () => {
-    it('returns ACTIVE', () => {
-        const result = getSubscriptionsTabTypeFromString(
-            SubscriptionsTabType.ACTIVE,
-        );
+    it('returns SubscriptionsTabType.ACTIVE', () => {
+        const result = getSubscriptionsTabTypeFromString('ACTIVE');
         expect(result).toEqual(SubscriptionsTabType.ACTIVE);
     });
 
-    it('returns TERMINATED', () => {
-        const result = getSubscriptionsTabTypeFromString(
-            SubscriptionsTabType.TERMINATED,
-        );
+    it('returns SubscriptionsTabType.TERMINATED', () => {
+        const result = getSubscriptionsTabTypeFromString('TERMINATED');
         expect(result).toEqual(SubscriptionsTabType.TERMINATED);
     });
 
-    it('returns TRANSIENT', () => {
-        const result = getSubscriptionsTabTypeFromString(
-            SubscriptionsTabType.TRANSIENT,
-        );
+    it('returns SubscriptionsTabType.TRANSIENT', () => {
+        const result = getSubscriptionsTabTypeFromString('TRANSIENT');
         expect(result).toEqual(SubscriptionsTabType.TRANSIENT);
     });
 
-    it('returns ALL', () => {
-        const result = getSubscriptionsTabTypeFromString(
-            SubscriptionsTabType.ALL,
-        );
+    it('returns SubscriptionsTabType.ALL', () => {
+        const result = getSubscriptionsTabTypeFromString('ALL');
         expect(result).toEqual(SubscriptionsTabType.ALL);
     });
 

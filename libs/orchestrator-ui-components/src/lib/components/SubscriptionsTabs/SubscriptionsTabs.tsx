@@ -55,11 +55,10 @@ export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
                 <EuiTab
                     key={id}
                     isSelected={id === selectedSubscriptionsTab}
-                    onClick={() => {
-                        if (id !== selectedSubscriptionsTab) {
-                            onChangeSubscriptionsTab(id);
-                        }
-                    }}
+                    onClick={() =>
+                        id !== selectedSubscriptionsTab &&
+                        onChangeSubscriptionsTab(id)
+                    }
                 >
                     {name}
                 </EuiTab>

@@ -64,6 +64,17 @@ export default function SubscriptionsPage() {
         return null;
     }
 
+    const handleChangeSubscriptionsTab = (
+        updatedSubscriptionsTab: SubscriptionsTabType,
+    ) => {
+        setActiveTab(updatedSubscriptionsTab);
+        setPageIndex(0);
+    };
+
+    const alwaysOnFilter = defaultSubscriptionsTabs.find(
+        ({ id }) => id === selectedSubscriptionsTab,
+    )?.alwaysOnFilter;
+
     return (
         <NoSSR>
             <EuiSpacer />
@@ -74,12 +85,9 @@ export default function SubscriptionsPage() {
             <SubscriptionsTabs
                 tabs={defaultSubscriptionsTabs}
                 selectedSubscriptionsTab={selectedSubscriptionsTab}
-                onChangeSubscriptionsTab={(updatedSubscriptionsTab) => {
-                    setActiveTab(updatedSubscriptionsTab);
-                    setPageIndex(0);
-                }}
+                onChangeSubscriptionsTab={handleChangeSubscriptionsTab}
             />
-            <EuiSpacer size={'xxl'} />
+            <EuiSpacer size="xxl" />
 
             <Subscriptions
                 pageSize={pageSize}
@@ -98,11 +106,7 @@ export default function SubscriptionsPage() {
                 }}
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
-                alwaysOnFilter={
-                    defaultSubscriptionsTabs.find(
-                        ({ id }) => id === selectedSubscriptionsTab,
-                    )?.alwaysOnFilter
-                }
+                alwaysOnFilter={alwaysOnFilter}
             />
         </NoSSR>
     );
