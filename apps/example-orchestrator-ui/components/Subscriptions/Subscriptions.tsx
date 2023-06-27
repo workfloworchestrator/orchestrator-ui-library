@@ -24,7 +24,7 @@ import {
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar, EuiSpacer } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -76,6 +76,7 @@ export type SubscriptionsProps = {
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
     filterQuery: string;
     setFilterQuery: (updatedFilterQuery: string) => void;
+    alwaysOnFilters?: [string, string][];
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -87,6 +88,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setSortOrder,
     filterQuery,
     setFilterQuery,
+    alwaysOnFilters,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -175,12 +177,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 
     const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
-    const filterQueryTupleArray = esQueryContainer.bool?.must?.map(
-        mapEsQueryContainerToKeyValueTuple,
-    );
+    const filterQueryTupleArray =
+        esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
+        [];
     const queryContainsInvalidParts =
         filterQueryTupleArray?.includes(undefined);
-    const filterBy = filterQueryTupleArray?.filter(isValidQueryPart);
+
+    const filterBy = filterQueryTupleArray
+        .concat(alwaysOnFilters)
+        .filter(isValidQueryPart);
 
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
@@ -242,6 +247,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 onSearch={setFilterQuery}
                 isInvalid={queryContainsInvalidParts}
             />
+            <EuiSpacer size="m" />
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
                 columns={tableColumnsWithExtraNonDataFields}

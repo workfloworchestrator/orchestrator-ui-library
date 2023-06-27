@@ -1,6 +1,5 @@
 import React from 'react';
-import NoSSR from 'react-no-ssr';
-import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
+import { useRouter } from 'next/router';
 import {
     NumberParam,
     ObjectParam,
@@ -8,18 +7,29 @@ import {
     useQueryParam,
     withDefault,
 } from 'use-query-params';
-import { useRouter } from 'next/router';
 import {
     DEFAULT_SORT_FIELD,
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
 } from '../../components/Subscriptions/subscriptionQuery';
+import {
+    defaultSubscriptionsTabs,
+    getSortDirectionFromString,
+    getSubscriptionsTabTypeFromString,
+    SubscriptionsTabs,
+    SubscriptionsTabType,
+} from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import { getSortDirectionFromString } from '@orchestrator-ui/orchestrator-ui-components';
+import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
+import NoSSR from 'react-no-ssr';
 
 export default function SubscriptionsPage() {
     const router = useRouter();
 
+    const [activeTab, setActiveTab] = useQueryParam(
+        'activeTab',
+        withDefault(StringParam, SubscriptionsTabType.ACTIVE),
+    );
     const [pageSize, setPageSize] = useQueryParam(
         'pageSize',
         withDefault(
@@ -41,22 +51,44 @@ export default function SubscriptionsPage() {
             direction: DEFAULT_SORT_ORDER.toString(),
         }),
     );
-
     const [filterQuery, setFilterQuery] = useQueryParam(
         'filter',
         withDefault(StringParam, ''),
     );
 
     const sortOrder = getSortDirectionFromString(sorting.direction);
-    if (!sortOrder) {
+    const selectedSubscriptionsTab =
+        getSubscriptionsTabTypeFromString(activeTab);
+    if (!sortOrder || !selectedSubscriptionsTab) {
         router.replace('/subscriptions');
         return null;
     }
 
+    const handleChangeSubscriptionsTab = (
+        updatedSubscriptionsTab: SubscriptionsTabType,
+    ) => {
+        setActiveTab(updatedSubscriptionsTab);
+        setPageIndex(0);
+    };
+
+    const alwaysOnFilters = defaultSubscriptionsTabs.find(
+        ({ id }) => id === selectedSubscriptionsTab,
+    )?.alwaysOnFilters;
+
     return (
         <NoSSR>
             <EuiSpacer />
+
             <EuiPageHeader pageTitle="Subscriptions" />
+            <EuiSpacer size="m" />
+
+            <SubscriptionsTabs
+                tabs={defaultSubscriptionsTabs}
+                selectedSubscriptionsTab={selectedSubscriptionsTab}
+                onChangeSubscriptionsTab={handleChangeSubscriptionsTab}
+            />
+            <EuiSpacer size="xxl" />
+
             <Subscriptions
                 pageSize={pageSize}
                 setPageSize={(updatedPageSize) => setPageSize(updatedPageSize)}
@@ -74,6 +106,7 @@ export default function SubscriptionsPage() {
                 }}
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
+                alwaysOnFilters={alwaysOnFilters}
             />
         </NoSSR>
     );
