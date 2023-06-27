@@ -71,9 +71,9 @@ export default function SubscriptionsPage() {
         setPageIndex(0);
     };
 
-    const alwaysOnFilter = defaultSubscriptionsTabs.find(
+    const alwaysOnFilters = defaultSubscriptionsTabs.find(
         ({ id }) => id === selectedSubscriptionsTab,
-    )?.alwaysOnFilter;
+    )?.alwaysOnFilters;
 
     return (
         <NoSSR>
@@ -106,7 +106,7 @@ export default function SubscriptionsPage() {
                 }}
                 filterQuery={filterQuery}
                 setFilterQuery={setFilterQuery}
-                alwaysOnFilter={alwaysOnFilter}
+                alwaysOnFilters={alwaysOnFilters}
             />
         </NoSSR>
     );

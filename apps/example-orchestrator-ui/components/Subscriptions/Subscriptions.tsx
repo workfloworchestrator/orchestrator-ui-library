@@ -76,7 +76,7 @@ export type SubscriptionsProps = {
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
     filterQuery: string;
     setFilterQuery: (updatedFilterQuery: string) => void;
-    alwaysOnFilter?: [string, string];
+    alwaysOnFilters?: [string, string][];
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -88,7 +88,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setSortOrder,
     filterQuery,
     setFilterQuery,
-    alwaysOnFilter,
+    alwaysOnFilters,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -177,16 +177,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 
     const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
-    const filterQueryTupleArray = esQueryContainer.bool?.must?.map(
-        mapEsQueryContainerToKeyValueTuple,
-    );
+    const filterQueryTupleArray =
+        esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
+        [];
     const queryContainsInvalidParts =
         filterQueryTupleArray?.includes(undefined);
-    const filterBy =
-        filterQueryTupleArray
-            ?.concat([alwaysOnFilter])
-            .filter(isValidQueryPart) ||
-        (alwaysOnFilter ? [alwaysOnFilter] : undefined);
+
+    const filterBy = filterQueryTupleArray
+        .concat(alwaysOnFilters)
+        .filter(isValidQueryPart);
 
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,

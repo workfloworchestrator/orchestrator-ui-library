@@ -11,24 +11,24 @@ export enum SubscriptionsTabType {
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;
     name: string;
-    alwaysOnFilter?: [string, string];
+    alwaysOnFilters?: [string, string][];
 };
 
 export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     {
         id: SubscriptionsTabType.ACTIVE,
         name: 'Active',
-        alwaysOnFilter: ['status', 'active'],
+        alwaysOnFilters: [['status', 'active']],
     },
     {
         id: SubscriptionsTabType.TERMINATED,
         name: 'Terminated',
-        alwaysOnFilter: ['status', 'terminated'],
+        alwaysOnFilters: [['status', 'terminated']],
     },
     {
         id: SubscriptionsTabType.TRANSIENT,
         name: 'Transient',
-        alwaysOnFilter: ['status', 'initial-provisioning-migrating'],
+        alwaysOnFilters: [['status', 'initial-provisioning-migrating']],
     },
     {
         id: SubscriptionsTabType.ALL,
