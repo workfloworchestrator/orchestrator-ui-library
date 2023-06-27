@@ -18,29 +18,24 @@ export const EngineStatusButton = ({
                 Loading...
             </EuiButton>
         );
-    } else {
-        if (isRunning) {
-            return (
-                <EuiButton
-                    onClick={changeEngineStatus}
-                    color="warning"
-                    fill
-                    iconType="pause"
-                >
-                    Pause the engine
-                </EuiButton>
-            );
-        } else {
-            return (
-                <EuiButton
-                    onClick={changeEngineStatus}
-                    color="primary"
-                    fill
-                    iconType="play"
-                >
-                    Start the engine
-                </EuiButton>
-            );
-        }
     }
+    return isRunning ? (
+        <EuiButton
+            onClick={changeEngineStatus}
+            color="warning"
+            fill
+            iconType="pause"
+        >
+            Pause the engine
+        </EuiButton>
+    ) : (
+        <EuiButton
+            onClick={changeEngineStatus}
+            color="primary"
+            fill
+            iconType="play"
+        >
+            Start the engine
+        </EuiButton>
+    );
 };
