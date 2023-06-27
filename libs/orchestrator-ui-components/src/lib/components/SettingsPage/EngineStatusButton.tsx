@@ -1,25 +1,24 @@
 import { EuiButton } from '@elastic/eui';
-import React from 'react';
+import React, { FC } from 'react';
+import { EngineStatusValue } from '../../types';
 
 interface EngineStatusButtonProps {
-    isLoading: boolean;
-    isRunning: boolean;
+    engineStatus?: EngineStatusValue;
     changeEngineStatus: () => void;
 }
 
-export const EngineStatusButton = ({
-    isLoading,
-    isRunning,
+export const EngineStatusButton: FC<EngineStatusButtonProps> = ({
+    engineStatus,
     changeEngineStatus,
-}: EngineStatusButtonProps) => {
-    if (isLoading) {
+}) => {
+    if (!engineStatus) {
         return (
             <EuiButton isLoading fill>
                 Loading...
             </EuiButton>
         );
     }
-    return isRunning ? (
+    return engineStatus === 'RUNNING' ? (
         <EuiButton
             onClick={changeEngineStatus}
             color="warning"

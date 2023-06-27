@@ -5,17 +5,18 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { StatusDotIcon } from '../../icons';
-import { useEngineStatusQuery, useOrchestratorTheme } from '../../hooks';
+import { useOrchestratorTheme } from '../../hooks';
+import { EngineStatusValue } from '../../types';
 
-export const Status: FunctionComponent = () => {
+export type StatusProps = {
+    engineStatus?: EngineStatusValue;
+};
+
+export const Status: FC<StatusProps> = ({ engineStatus }) => {
     const { theme } = useOrchestratorTheme();
-    const { data: engineStatus } = useEngineStatusQuery();
-    const engineStatusText: string = engineStatus?.global_status
-        ? `${engineStatus.global_status}`
-        : 'unavailable';
-    const isRunning = engineStatus?.global_status === 'RUNNING';
+    const isRunning = engineStatus === 'RUNNING';
 
     return (
         <EuiPanel
@@ -25,22 +26,22 @@ export const Status: FunctionComponent = () => {
             style={{ width: '50%' }}
         >
             <EuiFlexGroup>
-                <EuiFlexItem grow={false}>
-                    <EuiText size="s" style={{ fontWeight: 600 }}>
-                        <p>Running processes</p>
+                <EuiFlexItem grow={false} style={{ minWidth: 140 }}>
+                    <EuiText size="s">
+                        <h4>Running processes</h4>
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <EuiText size="s" style={{ fontWeight: 300 }}>
+                    <EuiText size="s">
                         <p>0</p>
                     </EuiText>
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
             <EuiFlexGroup>
-                <EuiFlexItem grow={false}>
-                    <EuiText size="s" style={{ fontWeight: 600, padding: 0 }}>
-                        <p>Engine status</p>
+                <EuiFlexItem grow={false} style={{ minWidth: 132 }}>
+                    <EuiText size="s">
+                        <h4>Engine status</h4>
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
@@ -55,11 +56,8 @@ export const Status: FunctionComponent = () => {
                             />
                         </EuiFlexItem>
                         <EuiFlexItem>
-                            <EuiText
-                                size="s"
-                                style={{ fontWeight: 300, padding: 0 }}
-                            >
-                                <p>{engineStatusText}</p>
+                            <EuiText size="xs" style={{ marginTop: 4 }}>
+                                <p>{engineStatus}</p>
                             </EuiText>
                         </EuiFlexItem>
                     </EuiFlexGroup>

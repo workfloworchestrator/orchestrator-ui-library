@@ -28,8 +28,8 @@ export const FlushSettings: FunctionComponent = () => {
             paddingSize="l"
             style={{ width: '50%' }}
         >
-            <EuiText size="s" style={{ fontWeight: 600 }}>
-                <p>Flush Settings</p>
+            <EuiText size="s">
+                <h4>Flush Settings</h4>
             </EuiText>
             <EuiSpacer size="m" />
             <EuiComboBox
