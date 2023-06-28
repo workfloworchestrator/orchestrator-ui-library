@@ -54,6 +54,15 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                         },
                         href: '/subscriptions',
                     },
+                    {
+                        name: 'Settings',
+                        id: 4,
+                        onClick: (e) => {
+                            e.preventDefault();
+                            routeTo('/settings');
+                        },
+                        href: '/settings',
+                    },
                 ],
             },
         ]}

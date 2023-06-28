@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiBreadcrumb, EuiBreadcrumbs } from '@elastic/eui';
+import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 
 interface IProps {
     route: string;
@@ -23,10 +23,16 @@ export const BreadcrumbListPages = ({ route, routeTo }: IProps) => {
     const parts = route.split('/');
     parts.forEach((p, index) => {
         if (index > 0) {
-            const link = parts.slice(0, index + 1).join('/');
-            const text = p.includes('-')
+            let link = parts.slice(0, index + 1).join('/');
+            if (link.includes('?')) {
+                link = link.split('?').slice(0, -1).join();
+            }
+            let text = p.includes('-')
                 ? p
                 : p.charAt(0).toUpperCase() + p.slice(1);
+            if (text.includes('?')) {
+                text = text.split('?').slice(0, -1).join();
+            }
             breadcrumbs.push({
                 text: text,
                 href: link,
@@ -39,10 +45,13 @@ export const BreadcrumbListPages = ({ route, routeTo }: IProps) => {
     });
 
     return (
-        <EuiBreadcrumbs
-            breadcrumbs={breadcrumbs}
-            truncate={false}
-            aria-label="Current page"
-        />
+        <>
+            <EuiBreadcrumbs
+                breadcrumbs={breadcrumbs}
+                truncate={false}
+                aria-label="Current page"
+            />
+            <EuiSpacer size="m" />
+        </>
     );
 };

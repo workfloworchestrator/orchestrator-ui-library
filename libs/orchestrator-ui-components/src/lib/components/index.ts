@@ -7,3 +7,4 @@ export * from './Subscription';
 export * from './SubscriptionsTabs';
 export * from './Table';
 export * from './Loading/Loading';
+export * from './SettingsPage';

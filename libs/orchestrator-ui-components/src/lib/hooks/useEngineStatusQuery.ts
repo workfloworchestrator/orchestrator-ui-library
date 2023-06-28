@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
@@ -7,6 +7,10 @@ export interface EngineStatus {
     global_lock: boolean;
     running_processes: number;
     global_status: GlobalStatus;
+}
+
+interface EngineStatusPayload {
+    global_lock: boolean;
 }
 
 export const useEngineStatusQuery = () => {
@@ -20,4 +24,21 @@ export const useEngineStatusQuery = () => {
     };
 
     return useQuery('engineStatus', fetchEngineStatus);
+};
+
+export const useEngineStatusMutation = () => {
+    const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
+
+    const setEngineStatus = async (data: EngineStatusPayload) => {
+        const response = await fetch(engineStatusEndpoint, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return (await response.json()) as EngineStatus;
+    };
+
+    return useMutation('engineStatus', setEngineStatus);
 };

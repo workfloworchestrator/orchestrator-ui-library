@@ -4,6 +4,8 @@ export type Nullable<T> = T | null;
 
 type GenericField = { [key: string]: number | string | boolean };
 
+export type EngineStatusValue = 'RUNNING' | 'PAUSING' | 'PAUSED';
+
 export type CustomerBase = {
     name: string;
     abbreviation?: string;
