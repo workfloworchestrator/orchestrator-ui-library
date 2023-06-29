@@ -41,3 +41,10 @@ Thumbs.db
 
 # Next.js
 .next
+
+# VsCode
+.vscode
+
+# Yalc
+/.yalc
+yalc.lock
