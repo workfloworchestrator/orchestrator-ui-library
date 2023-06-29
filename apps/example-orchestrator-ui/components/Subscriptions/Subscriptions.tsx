@@ -20,11 +20,19 @@ import {
     mapEsQueryContainerToKeyValueTuple,
     isValidQueryPart,
     SearchField,
+    TableSettingsModal,
+    ColumnConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar, EuiSpacer } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiSearchBar,
+    EuiSpacer,
+} from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -54,6 +62,8 @@ const COLUMN_LABEL_END_DATE = 'End Date';
 const COLUMN_LABEL_NOTE = 'Note';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
+
+const defaultHiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
 
 type Subscription = {
     subscriptionId: string;
@@ -92,7 +102,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const hiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
+
+    const [showModal, setShowModal] = useState(false);
+    const [hiddenColumns, setHiddenColumns] =
+        useState<Array<keyof Subscription>>(defaultHiddenColumns);
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
@@ -240,13 +253,28 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         totalItemCount: totalItemCount,
     };
 
+    const tableSettingsColumns: ColumnConfig[] = Object.entries(
+        tableColumns,
+    ).map(([_, { field, name }]) => ({
+        field,
+        name,
+        isVisible: hiddenColumns.indexOf(field) === -1,
+    }));
+
     return (
         <>
-            <SearchField
-                initialFilterQuery={filterQuery}
-                onSearch={setFilterQuery}
-                isInvalid={queryContainsInvalidParts}
-            />
+            <EuiFlexGroup>
+                <EuiFlexItem>
+                    <SearchField
+                        initialFilterQuery={filterQuery}
+                        onSearch={setFilterQuery}
+                        isInvalid={queryContainsInvalidParts}
+                    />
+                </EuiFlexItem>
+                <EuiButton onClick={() => setShowModal(true)}>
+                    Edit columns
+                </EuiButton>
+            </EuiFlexGroup>
             <EuiSpacer size="m" />
             <Table
                 data={mapApiResponseToSubscriptionTableData(data)}
@@ -258,6 +286,30 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 isLoading={isFetching}
                 onCriteriaChange={handleCriteriaChange}
             />
+
+            {showModal && (
+                <TableSettingsModal
+                    tableConfig={{
+                        columns: tableSettingsColumns,
+                        numberOfRows: pageSize,
+                    }}
+                    onClose={() => setShowModal(false)}
+                    onUpdateTableConfig={(updatedTableConfig) => {
+                        const updatedHiddenColumns = updatedTableConfig.columns
+                            .filter((c) => !c.isVisible)
+                            .map((c) => c.field);
+                        // Todo: handle typecast
+                        setHiddenColumns(
+                            updatedHiddenColumns as Array<keyof Subscription>,
+                        );
+                        setShowModal(false);
+                    }}
+                    onResetToDefaults={() => {
+                        setHiddenColumns(defaultHiddenColumns);
+                        setShowModal(false);
+                    }}
+                />
+            )}
         </>
     );
 };
