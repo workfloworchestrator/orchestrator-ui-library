@@ -7,3 +7,5 @@ export * from './dataGridColumns';
 
 export * from './constants';
 export * from './tableUtils';
+
+export * from './TableSettingsModal';

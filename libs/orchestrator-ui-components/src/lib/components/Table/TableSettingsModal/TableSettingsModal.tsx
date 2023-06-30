@@ -7,7 +7,7 @@ import {
     EuiSpacer,
     EuiSwitch,
 } from '@elastic/eui';
-import { SettingsModal } from '../SettingsModal';
+import { SettingsModal } from '../../SettingsModal';
 
 export type ColumnConfig = {
     field: string;

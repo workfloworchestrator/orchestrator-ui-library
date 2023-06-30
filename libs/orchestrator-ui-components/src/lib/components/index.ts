@@ -8,5 +8,4 @@ export * from './StartPage';
 export * from './Subscription';
 export * from './SubscriptionsTabs';
 export * from './Table';
-export * from './TableSettingsModal';
-export * from './Loading/Loading';
+export * from './Loading';
