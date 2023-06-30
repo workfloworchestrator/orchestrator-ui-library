@@ -64,6 +64,7 @@ const COLUMN_LABEL_NOTE = 'Note';
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
+const defaultPageSize = GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first;
 
 type Subscription = {
     subscriptionId: string;
@@ -204,7 +205,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         SubscriptionsResult,
         SubscriptionsQueryVariables
     >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
-        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
         first: pageSize,
         after: pageIndex,
         sortBy: sortedColumnId && {
@@ -291,8 +291,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
-                        numberOfRows: pageSize,
+                        selectedPageSize: pageSize,
                     }}
+                    pageSizeOptions={DEFAULT_PAGE_SIZES}
                     onClose={() => setShowModal(false)}
                     onUpdateTableConfig={(updatedTableConfig) => {
                         const updatedHiddenColumns = updatedTableConfig.columns
@@ -302,10 +303,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                         setHiddenColumns(
                             updatedHiddenColumns as Array<keyof Subscription>,
                         );
+                        setPageSize(updatedTableConfig.selectedPageSize);
                         setShowModal(false);
                     }}
                     onResetToDefaults={() => {
                         setHiddenColumns(defaultHiddenColumns);
+                        setPageSize(defaultPageSize);
                         setShowModal(false);
                     }}
                 />
