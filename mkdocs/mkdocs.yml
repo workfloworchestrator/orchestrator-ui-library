@@ -1,0 +1,43 @@
+site_name: Portal backend docs
+site_description: The portal backend
+repo_url: 'https://gitlab.k8s.int.dc1.arp.ncsc.nl/portal/portal-backend'
+repo_name: 'portal-backend'
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: cyan
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: cyan
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.tracking
+    - content.code.annotate
+plugins:
+  - termynal
+  - search
+  - awesome-pages
+copyright: Copyright NCSC; 2023
+
+markdown_extensions:
+  - smarty
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
