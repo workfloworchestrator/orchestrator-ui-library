@@ -39,7 +39,16 @@ export const Breadcrumbs = () => {
                 href: link,
                 onClick: (e) => {
                     e.preventDefault();
-                    router.push(link);
+                    if (
+                        text === 'Subscriptions' &&
+                        router.asPath.includes('-')
+                    ) {
+                        // Todo: make URLS more consistent or design a better way to handle breadcrumbs
+                        // When possible try to use the browser back; so the user has active tab + correct page
+                        router.back();
+                    } else {
+                        router.push(link);
+                    }
                 },
             });
 
