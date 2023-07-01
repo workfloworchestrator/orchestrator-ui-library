@@ -253,7 +253,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         totalItemCount: totalItemCount,
     };
 
-    const tableSettingsColumns: ColumnConfig[] = Object.entries(
+    const tableSettingsColumns: ColumnConfig<Subscription>[] = Object.entries(
         tableColumns,
     ).map(([_, { field, name }]) => ({
         field,
@@ -297,12 +297,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                     onClose={() => setShowModal(false)}
                     onUpdateTableConfig={(updatedTableConfig) => {
                         const updatedHiddenColumns = updatedTableConfig.columns
-                            .filter((c) => !c.isVisible)
-                            .map((c) => c.field);
-                        // Todo: handle typecast
-                        setHiddenColumns(
-                            updatedHiddenColumns as Array<keyof Subscription>,
-                        );
+                            .filter((column) => !column.isVisible)
+                            .map((hiddenColumn) => hiddenColumn.field);
+                        setHiddenColumns(updatedHiddenColumns);
                         setPageSize(updatedTableConfig.selectedPageSize);
                         setShowModal(false);
                     }}

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import {
     EuiForm,
     EuiFormRow,
@@ -9,32 +9,32 @@ import {
 } from '@elastic/eui';
 import { SettingsModal } from '../../SettingsModal';
 
-export type ColumnConfig = {
-    field: string;
+export type ColumnConfig<T> = {
+    field: keyof T;
     name: string;
     isVisible: boolean;
 };
 
-export type TableConfig = {
-    columns: ColumnConfig[];
+export type TableConfig<T> = {
+    columns: ColumnConfig<T>[];
     selectedPageSize: number;
 };
 
-export type TableSettingsModalProps = {
-    tableConfig: TableConfig;
+export type TableSettingsModalProps<T> = {
+    tableConfig: TableConfig<T>;
     pageSizeOptions: number[];
     onClose: () => void;
-    onUpdateTableConfig: (updatedTableConfig: TableConfig) => void;
+    onUpdateTableConfig: (updatedTableConfig: TableConfig<T>) => void;
     onResetToDefaults: () => void;
 };
 
-export const TableSettingsModal: FC<TableSettingsModalProps> = ({
+export const TableSettingsModal = <T,>({
     tableConfig,
     pageSizeOptions,
     onUpdateTableConfig,
     onResetToDefaults,
     onClose,
-}) => {
+}: TableSettingsModalProps<T>) => {
     const [columns, setColumns] = useState(tableConfig.columns);
     const [selectedPageSize, setSelectedPageSize] = useState(
         tableConfig.selectedPageSize,
@@ -45,8 +45,8 @@ export const TableSettingsModal: FC<TableSettingsModalProps> = ({
         text: pageSizeOption.toString(),
     }));
 
-    const handleUpdateColumnVisibility = (field: string) => {
-        const newColumns: ColumnConfig[] = columns.map((column) =>
+    const handleUpdateColumnVisibility = (field: keyof T) => {
+        const updatedColumns: ColumnConfig<T>[] = columns.map((column) =>
             column.field === field
                 ? {
                       ...column,
@@ -54,7 +54,7 @@ export const TableSettingsModal: FC<TableSettingsModalProps> = ({
                   }
                 : column,
         );
-        setColumns(newColumns);
+        setColumns(updatedColumns);
     };
 
     return (
@@ -71,7 +71,7 @@ export const TableSettingsModal: FC<TableSettingsModalProps> = ({
         >
             <EuiForm>
                 {columns.map(({ field, name, isVisible }) => (
-                    <div key={field}>
+                    <div key={field.toString()}>
                         <EuiFormRow
                             display="columnCompressedSwitch"
                             label={name}
