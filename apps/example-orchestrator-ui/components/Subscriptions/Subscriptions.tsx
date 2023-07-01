@@ -104,6 +104,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
 
+    // Keep the state here, it should be a fully controlled component
     const [showModal, setShowModal] = useState(false);
     const [hiddenColumns, setHiddenColumns] =
         useState<Array<keyof Subscription>>(defaultHiddenColumns);
@@ -171,6 +172,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
+    // Todo rename to leadingControlColumns
     const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
         {
             inlineSubscriptionDetails: {
@@ -190,6 +192,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumns,
     );
 
+    // Convert the plain text to the accepted format for GraphQL backend
     const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
     const filterQueryTupleArray =
         esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
@@ -213,6 +216,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         filterBy,
     });
+    // ... backend data is loaded and available as "data: SubscriptionsResult | undefined"
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
@@ -262,55 +266,27 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }));
 
     return (
-        <>
-            <EuiFlexGroup>
-                <EuiFlexItem>
-                    <SearchField
-                        initialFilterQuery={filterQuery}
-                        onSearch={setFilterQuery}
-                        isInvalid={queryContainsInvalidParts}
-                    />
-                </EuiFlexItem>
-                <EuiButton onClick={() => setShowModal(true)}>
-                    Edit columns
-                </EuiButton>
-            </EuiFlexGroup>
-            <EuiSpacer size="m" />
-            <Table
-                data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableColumnsWithExtraNonDataFields}
-                hiddenColumns={hiddenColumns}
-                dataSorting={dataSorting}
-                onDataSort={handleDataSort}
-                pagination={pagination}
-                isLoading={isFetching}
-                onCriteriaChange={handleCriteriaChange}
-            />
-
-            {showModal && (
-                <TableSettingsModal
-                    tableConfig={{
-                        columns: tableSettingsColumns,
-                        selectedPageSize: pageSize,
-                    }}
-                    pageSizeOptions={DEFAULT_PAGE_SIZES}
-                    onClose={() => setShowModal(false)}
-                    onUpdateTableConfig={(updatedTableConfig) => {
-                        const updatedHiddenColumns = updatedTableConfig.columns
-                            .filter((column) => !column.isVisible)
-                            .map((hiddenColumn) => hiddenColumn.field);
-                        setHiddenColumns(updatedHiddenColumns);
-                        setPageSize(updatedTableConfig.selectedPageSize);
-                        setShowModal(false);
-                    }}
-                    onResetToDefaults={() => {
-                        setHiddenColumns(defaultHiddenColumns);
-                        setPageSize(defaultPageSize);
-                        setShowModal(false);
-                    }}
-                />
-            )}
-        </>
+        <TableWithFilter
+            filterQuery={filterQuery}
+            setFilterQuery={setFilterQuery}
+            queryContainsInvalidParts={queryContainsInvalidParts}
+            setShowModal={setShowModal}
+            data={mapApiResponseToSubscriptionTableData(data)}
+            tableColumnsWithExtraNonDataFields={
+                tableColumnsWithExtraNonDataFields
+            }
+            hiddenColumns={hiddenColumns}
+            dataSorting={dataSorting}
+            handleDataSort={handleDataSort}
+            pagination={pagination}
+            isFetching={isFetching}
+            handleCriteriaChange={handleCriteriaChange}
+            showModal={showModal}
+            tableSettingsColumns={tableSettingsColumns}
+            setHiddenColumns={setHiddenColumns}
+            setPageSize={setPageSize}
+            defaultHiddenColumns={defaultHiddenColumns}
+        />
     );
 };
 
@@ -344,3 +320,98 @@ function mapApiResponseToSubscriptionTableData(
         },
     );
 }
+
+export type TableWithFilterProps<T> = {
+    filterQuery: string; // rename to initialFilterQuery
+    setFilterQuery: (updatedFilterQuery: string) => void;
+    queryContainsInvalidParts: boolean; // rename to isInvalidQuery
+    setShowModal: (showModal: boolean) => void;
+    data: T[]; // using this prop: mapApiResponseToSubscriptionTableData() -- the result is data: T[] here
+    tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>;
+    hiddenColumns: Array<keyof T>;
+    dataSorting: DataSorting<T>;
+    handleDataSort: (newSortColumnId: keyof T) => void;
+    pagination: Pagination;
+    isFetching: boolean;
+    handleCriteriaChange: ({ page }: Criteria<T>) => void;
+    showModal: boolean;
+    tableSettingsColumns: ColumnConfig<T>[];
+    setHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
+    setPageSize: (updatedPageSize: number) => void;
+    defaultHiddenColumns: Array<keyof T>;
+};
+
+export const TableWithFilter = <T,>({
+    filterQuery,
+    setFilterQuery,
+    queryContainsInvalidParts,
+    setShowModal,
+    data,
+    tableColumnsWithExtraNonDataFields,
+    hiddenColumns,
+    dataSorting,
+    handleDataSort,
+    pagination,
+    isFetching,
+    handleCriteriaChange,
+    showModal,
+    tableSettingsColumns,
+    setHiddenColumns,
+    setPageSize,
+    defaultHiddenColumns,
+}: TableWithFilterProps<T>) => {
+    // todo Subscription --> T
+
+    return (
+        <>
+            <EuiFlexGroup>
+                <EuiFlexItem>
+                    <SearchField
+                        initialFilterQuery={filterQuery}
+                        onSearch={setFilterQuery}
+                        isInvalid={queryContainsInvalidParts}
+                    />
+                </EuiFlexItem>
+                <EuiButton onClick={() => setShowModal(true)}>
+                    Edit columns
+                </EuiButton>
+            </EuiFlexGroup>
+            <EuiSpacer size="m" />
+            <Table
+                data={data}
+                columns={tableColumnsWithExtraNonDataFields}
+                hiddenColumns={hiddenColumns}
+                dataSorting={dataSorting}
+                onDataSort={handleDataSort}
+                pagination={pagination}
+                isLoading={isFetching}
+                onCriteriaChange={handleCriteriaChange}
+            />
+
+            {showModal && (
+                <TableSettingsModal
+                    tableConfig={{
+                        columns: tableSettingsColumns,
+                        selectedPageSize: pagination.pageSize, // not sure if a pageSize is needed here, was "pageSize"
+                    }}
+                    pageSizeOptions={DEFAULT_PAGE_SIZES} // todo add a prop for this
+                    onClose={() => setShowModal(false)}
+                    onUpdateTableConfig={(updatedTableConfig) => {
+                        // todo might want to just pass updatedTableConfig to the user instead of doing it here
+                        const updatedHiddenColumns = updatedTableConfig.columns
+                            .filter((column) => !column.isVisible)
+                            .map((hiddenColumn) => hiddenColumn.field);
+                        setHiddenColumns(updatedHiddenColumns);
+                        setPageSize(updatedTableConfig.selectedPageSize);
+                        setShowModal(false);
+                    }}
+                    onResetToDefaults={() => {
+                        setHiddenColumns(defaultHiddenColumns);
+                        setPageSize(defaultPageSize);
+                        setShowModal(false);
+                    }}
+                />
+            )}
+        </>
+    );
+};
