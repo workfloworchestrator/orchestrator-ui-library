@@ -1,6 +1,7 @@
 import React from 'react';
 import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
+import { containsUuid4, isUuid4, upperCaseFirstChar } from '../../utils';
 
 export const Breadcrumbs = () => {
     const router = useRouter();
@@ -24,14 +25,10 @@ export const Breadcrumbs = () => {
             if (link.includes('?')) {
                 link = link.split('?').slice(0, -1).join();
             }
-            // ugly way to handle UUID's: so you can have breadcrumb: `Start / Subscriptions / 12312aa-cbc ...`
-            let text = p.includes('-')
-                ? p
-                : p.charAt(0).toUpperCase() + p.slice(1);
+            // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / 12312aa-cbc ...`
+            let text = isUuid4(p) ? p : upperCaseFirstChar(p);
             if (text.includes('?')) {
-                text = text.split('?').slice(0, -1).join();
-                text =
-                    text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                text = upperCaseFirstChar(text.split('?').slice(0, -1).join());
             }
 
             breadcrumbs.push({
@@ -41,7 +38,7 @@ export const Breadcrumbs = () => {
                     e.preventDefault();
                     if (
                         text === 'Subscriptions' &&
-                        router.asPath.includes('-')
+                        containsUuid4(router.asPath)
                     ) {
                         // Todo: make URLS more consistent or design a better way to handle breadcrumbs
                         // When possible try to use the browser back; so the user has active tab + correct page
@@ -52,13 +49,12 @@ export const Breadcrumbs = () => {
                 },
             });
 
+            // Handle tabs if any
             const tabs = parts.slice(0, index + 1).join('/');
             if (tabs.includes('?activeTab=')) {
-                let tabName = tabs.split('?activeTab=')[1].split('&')[0];
-                tabName =
-                    tabName.charAt(0).toUpperCase() +
-                    tabName.slice(1).toLowerCase();
-
+                const tabName = upperCaseFirstChar(
+                    tabs.split('?activeTab=')[1].split('&')[0],
+                );
                 breadcrumbs.push({
                     text: tabName,
                     href: `/subscriptions?activeTab=${tabName}`,
