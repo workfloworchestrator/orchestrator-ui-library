@@ -8,7 +8,7 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     OrchestratorPageTemplate,
-    BreadcrumbListPages,
+    Breadcrumbs,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
@@ -79,10 +79,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     enableBatching: true,
                                 }}
                             >
-                                <BreadcrumbListPages
-                                    route={router.asPath}
-                                    routeTo={router.push}
-                                />
+                                <Breadcrumbs />
                                 <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>

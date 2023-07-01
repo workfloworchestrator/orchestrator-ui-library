@@ -1,1 +1,1 @@
-export * from './BreadcrumbListPages';
+export * from './Breadcrumbs';
