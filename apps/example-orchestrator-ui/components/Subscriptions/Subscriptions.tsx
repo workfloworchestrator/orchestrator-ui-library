@@ -105,8 +105,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
 
-    // Keep the state here, it should be a fully controlled component
-    const [showModal, setShowModal] = useState(false);
     const [hiddenColumns, setHiddenColumns] =
         useState<Array<keyof Subscription>>(defaultHiddenColumns);
 
@@ -269,13 +267,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             initialFilterQuery={filterQuery}
             isInvalidQuery={queryContainsInvalidParts}
             isLoading={isFetching}
-            showModal={showModal}
             setFilterQuery={setFilterQuery}
             onCriteriaChange={handleCriteriaChange}
             onUpdateHiddenColumns={setHiddenColumns}
             onUpdatePageSize={setPageSize}
             onUpdateDataSort={handleDataSort}
-            setShowModal={setShowModal}
         />
     );
 };
@@ -322,13 +318,11 @@ export type TableWithFilterProps<T> = {
     initialFilterQuery: string;
     isInvalidQuery: boolean;
     isLoading: boolean;
-    showModal: boolean; // make local state
     setFilterQuery: (updatedFilterQuery: string) => void;
     onCriteriaChange: ({ page }: Criteria<T>) => void;
     onUpdateHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
     onUpdatePageSize: (updatedPageSize: number) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
-    setShowModal: (showModal: boolean) => void;
 };
 
 export const TableWithFilter = <T,>({
@@ -342,14 +336,14 @@ export const TableWithFilter = <T,>({
     initialFilterQuery,
     isInvalidQuery,
     isLoading,
-    showModal,
     setFilterQuery,
     onCriteriaChange,
     onUpdateHiddenColumns,
     onUpdatePageSize,
     onUpdateDataSort,
-    setShowModal,
 }: TableWithFilterProps<T>) => {
+    const [showModal, setShowModal] = useState(false);
+
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
         TableColumnConfig<T, keyof T>
     >(tableColumns).map((keyValuePair) => {
