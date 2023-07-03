@@ -1,10 +1,4 @@
 #!/bin/bash
-yarn run build:orchestrator-ui-components
-cd dist/libs/orchestrator-ui-components || exit
-yarn link
-cd ../../../node_modules/react || exit
-yarn link
-cd ../react-dom || exit
-yarn link
-cd ../../
-yarn run build-watch:orchestrator-ui-components
+npx nx build orchestrator-ui-components && npx yalc publish --push dist/libs/orchestrator-ui-components
+npx nx watch --projects=orchestrator-ui-components -- 'npx nx build orchestrator-ui-components && npx yalc publish --push dist/libs/orchestrator-ui-components'
+## After stopping yalc you can optionally remove the yalc store at this location "npx yalc dir"
