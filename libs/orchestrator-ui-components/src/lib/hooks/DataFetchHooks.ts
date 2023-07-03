@@ -1,7 +1,8 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { ItemsList } from '../types';
+import { EngineStatus } from './useEngineStatusQuery';
 
 async function getFavouriteSubscriptions(apiUrl: string) {
     const response = await fetch(apiUrl + '/subscriptions/?range=10%2C15');
@@ -13,6 +14,10 @@ async function getProcessesNeedingAttention(apiUrl: string) {
 }
 async function getRecentProcesses(apiUrl: string) {
     const response = await fetch(apiUrl + '/processes/?range=106%2C111');
+    return await response.json();
+}
+async function getCacheNames(apiUrl: string) {
+    const response = await fetch(apiUrl + '/settings/cache-names');
     return await response.json();
 }
 
@@ -74,4 +79,10 @@ export const useRecentProcesses = () => {
               ...initialData,
               items: data,
           };
+};
+export const useCacheNames = () => {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    return useQuery(['cacheNames'], () =>
+        getCacheNames(orchestratorApiBaseUrl),
+    );
 };

@@ -147,3 +147,8 @@ export type GraphqlQueryVariables<Type> = {
     sortBy?: GraphQLSort<Type>;
     filterBy?: GraphqlFilter<Type>[];
 };
+
+export interface CacheOption {
+    value: string;
+    label: string;
+}

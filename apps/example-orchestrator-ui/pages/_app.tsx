@@ -27,6 +27,7 @@ import { QueryParamProvider } from 'use-query-params';
 import { useRouter } from 'next/router';
 import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -83,6 +84,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                 <Component {...pageProps} />
                             </QueryParamProvider>
                         </OrchestratorPageTemplate>
+                        <ReactQueryDevtools initialIsOpen={false} />
                     </QueryClientProvider>
                 </OrchestratorConfigProvider>
             </main>
