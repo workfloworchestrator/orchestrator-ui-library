@@ -105,9 +105,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
 
-    const [hiddenColumns, setHiddenColumns] =
-        useState<Array<keyof Subscription>>(defaultHiddenColumns);
-
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
             field: SUBSCRIPTION_ID,
@@ -261,15 +258,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 tableColumnsWithExtraNonDataFields
             }
             defaultHiddenColumns={defaultHiddenColumns}
-            hiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
-            initialFilterQuery={filterQuery}
-            isInvalidQuery={queryContainsInvalidParts}
+            filterQuery={filterQuery}
+            isInvalidFilterQuery={queryContainsInvalidParts}
             isLoading={isFetching}
-            setFilterQuery={setFilterQuery}
+            onUpdateFilterQuery={setFilterQuery}
             onCriteriaChange={handleCriteriaChange}
-            onUpdateHiddenColumns={setHiddenColumns}
             onUpdatePageSize={setPageSize}
             onUpdateDataSort={handleDataSort}
         />
@@ -311,16 +306,14 @@ export type TableWithFilterProps<T> = {
     data: T[];
     tableColumns: TableColumns<T>;
     tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>; // rename to leadControlColumns, also add the cols after
-    defaultHiddenColumns: Array<keyof T>; // consider to keep the state of hidden columns here OR move the logic out
-    hiddenColumns: Array<keyof T>;
+    defaultHiddenColumns: Array<keyof T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
-    initialFilterQuery: string;
-    isInvalidQuery: boolean;
+    filterQuery: string;
+    isInvalidFilterQuery: boolean;
     isLoading: boolean;
-    setFilterQuery: (updatedFilterQuery: string) => void;
+    onUpdateFilterQuery: (updatedFilterQuery: string) => void;
     onCriteriaChange: ({ page }: Criteria<T>) => void;
-    onUpdateHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
     onUpdatePageSize: (updatedPageSize: number) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
 };
@@ -330,18 +323,18 @@ export const TableWithFilter = <T,>({
     tableColumns,
     tableColumnsWithExtraNonDataFields,
     defaultHiddenColumns,
-    hiddenColumns,
     dataSorting,
     pagination,
-    initialFilterQuery,
-    isInvalidQuery,
+    filterQuery,
+    isInvalidFilterQuery,
     isLoading,
-    setFilterQuery,
+    onUpdateFilterQuery,
     onCriteriaChange,
-    onUpdateHiddenColumns,
     onUpdatePageSize,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
+    const [hiddenColumns, setHiddenColumns] =
+        useState<Array<keyof T>>(defaultHiddenColumns);
     const [showModal, setShowModal] = useState(false);
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
@@ -360,9 +353,9 @@ export const TableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <SearchField
-                        initialFilterQuery={initialFilterQuery}
-                        onSearch={setFilterQuery}
-                        isInvalid={isInvalidQuery}
+                        filterQuery={filterQuery}
+                        onUpdateFilterQuery={onUpdateFilterQuery}
+                        isInvalid={isInvalidFilterQuery}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowModal(true)}>
@@ -392,16 +385,15 @@ export const TableWithFilter = <T,>({
                     }
                     onClose={() => setShowModal(false)}
                     onUpdateTableConfig={(updatedTableConfig) => {
-                        // todo might want to just pass updatedTableConfig to the user instead of doing it here
                         const updatedHiddenColumns = updatedTableConfig.columns
                             .filter((column) => !column.isVisible)
                             .map((hiddenColumn) => hiddenColumn.field);
-                        onUpdateHiddenColumns(updatedHiddenColumns);
+                        setHiddenColumns(updatedHiddenColumns);
                         onUpdatePageSize(updatedTableConfig.selectedPageSize);
                         setShowModal(false);
                     }}
                     onResetToDefaults={() => {
-                        onUpdateHiddenColumns(defaultHiddenColumns);
+                        setHiddenColumns(defaultHiddenColumns);
                         onUpdatePageSize(defaultPageSize);
                         setShowModal(false);
                     }}
