@@ -1,10 +1,12 @@
 import { EuiBasicTableColumn } from '@elastic/eui';
 
+export type TableColumnConfig<T, Property> = EuiBasicTableColumn<T> & {
+    field: Property;
+    name: string;
+};
+
 export type TableColumns<T> = {
-    [Property in keyof T]: EuiBasicTableColumn<T> & {
-        field: Property;
-        name: string;
-    };
+    [Property in keyof T]: TableColumnConfig<T, Property>;
 };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)

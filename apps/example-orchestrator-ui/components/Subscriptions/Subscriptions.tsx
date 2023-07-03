@@ -22,6 +22,7 @@ import {
     SearchField,
     TableSettingsModal,
     ColumnConfig,
+    TableColumnConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -257,14 +258,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         totalItemCount: totalItemCount,
     };
 
-    const tableSettingsColumns: ColumnConfig<Subscription>[] = Object.entries(
-        tableColumns,
-    ).map(([_, { field, name }]) => ({
-        field,
-        name,
-        isVisible: hiddenColumns.indexOf(field) === -1,
-    }));
-
     return (
         <TableWithFilter
             filterQuery={filterQuery}
@@ -272,6 +265,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             queryContainsInvalidParts={queryContainsInvalidParts}
             setShowModal={setShowModal}
             data={mapApiResponseToSubscriptionTableData(data)}
+            tableColumns={tableColumns}
             tableColumnsWithExtraNonDataFields={
                 tableColumnsWithExtraNonDataFields
             }
@@ -282,7 +276,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             isFetching={isFetching}
             handleCriteriaChange={handleCriteriaChange}
             showModal={showModal}
-            tableSettingsColumns={tableSettingsColumns}
             setHiddenColumns={setHiddenColumns}
             setPageSize={setPageSize}
             defaultHiddenColumns={defaultHiddenColumns}
@@ -326,7 +319,8 @@ export type TableWithFilterProps<T> = {
     setFilterQuery: (updatedFilterQuery: string) => void;
     queryContainsInvalidParts: boolean; // rename to isInvalidQuery
     setShowModal: (showModal: boolean) => void;
-    data: T[]; // using this prop: mapApiResponseToSubscriptionTableData() -- the result is data: T[] here
+    data: T[];
+    tableColumns: TableColumns<T>;
     tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>;
     hiddenColumns: Array<keyof T>;
     dataSorting: DataSorting<T>;
@@ -335,7 +329,6 @@ export type TableWithFilterProps<T> = {
     isFetching: boolean;
     handleCriteriaChange: ({ page }: Criteria<T>) => void;
     showModal: boolean;
-    tableSettingsColumns: ColumnConfig<T>[];
     setHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
     setPageSize: (updatedPageSize: number) => void;
     defaultHiddenColumns: Array<keyof T>;
@@ -347,6 +340,7 @@ export const TableWithFilter = <T,>({
     queryContainsInvalidParts,
     setShowModal,
     data,
+    tableColumns,
     tableColumnsWithExtraNonDataFields,
     hiddenColumns,
     dataSorting,
@@ -355,12 +349,20 @@ export const TableWithFilter = <T,>({
     isFetching,
     handleCriteriaChange,
     showModal,
-    tableSettingsColumns,
     setHiddenColumns,
     setPageSize,
     defaultHiddenColumns,
 }: TableWithFilterProps<T>) => {
-    // todo Subscription --> T
+    const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
+        TableColumnConfig<T, keyof T>
+    >(tableColumns).map((keyValuePair) => {
+        const { field, name } = keyValuePair[1];
+        return {
+            field,
+            name,
+            isVisible: hiddenColumns.indexOf(field) === -1,
+        };
+    });
 
     return (
         <>
@@ -394,7 +396,9 @@ export const TableWithFilter = <T,>({
                         columns: tableSettingsColumns,
                         selectedPageSize: pagination.pageSize, // not sure if a pageSize is needed here, was "pageSize"
                     }}
-                    pageSizeOptions={DEFAULT_PAGE_SIZES} // todo add a prop for this
+                    pageSizeOptions={
+                        pagination.pageSizeOptions || DEFAULT_PAGE_SIZES
+                    }
                     onClose={() => setShowModal(false)}
                     onUpdateTableConfig={(updatedTableConfig) => {
                         // todo might want to just pass updatedTableConfig to the user instead of doing it here
