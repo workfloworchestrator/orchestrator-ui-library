@@ -1,21 +1,24 @@
 import { EuiBasicTableColumn } from '@elastic/eui';
 
-export type TableColumnConfig<T, Property> = EuiBasicTableColumn<T> & {
+// Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
+export type TableDataColumnConfig<T, Property> = EuiBasicTableColumn<T> & {
     field: Property;
     name: string;
 };
 
 export type TableColumns<T> = {
-    [Property in keyof T]: TableColumnConfig<T, Property>;
+    [Property in keyof T]: TableDataColumnConfig<T, Property>;
 };
 
-// Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-export type TableColumnsWithExtraNonDataFields<T> = TableColumns<T> & {
+export type TableControlColumnConfig<T> = {
     [key: string]: EuiBasicTableColumn<T> & {
         field: string;
         name?: string;
     };
 };
+
+export type TableColumnsWithControlColumns<T> = TableColumns<T> &
+    TableControlColumnConfig<T>;
 
 export enum SortDirection {
     Asc = 'ASC',

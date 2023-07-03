@@ -12,7 +12,7 @@ import {
     SubscriptionStatusBadge,
     Table,
     TableColumns,
-    TableColumnsWithExtraNonDataFields,
+    TableColumnsWithControlColumns,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
     parseDateToLocaleString,
@@ -22,7 +22,8 @@ import {
     SearchField,
     TableSettingsModal,
     ColumnConfig,
-    TableColumnConfig,
+    TableDataColumnConfig,
+    TableControlColumnConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -168,20 +169,17 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    // Todo rename to leadingControlColumns
-    const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
-        {
-            inlineSubscriptionDetails: {
-                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
-                width: '40',
-                render: () => (
-                    <EuiFlexItem>
-                        <PlusCircleFill color={theme.colors.mediumShade} />
-                    </EuiFlexItem>
-                ),
-            },
-            ...tableColumns,
-        };
+    const leadingControlColumns: TableControlColumnConfig<Subscription> = {
+        inlineSubscriptionDetails: {
+            field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
+            width: '40',
+            render: () => (
+                <EuiFlexItem>
+                    <PlusCircleFill color={theme.colors.mediumShade} />
+                </EuiFlexItem>
+            ),
+        },
+    };
 
     const sortedColumnId = getTypedFieldFromObject(
         sortOrder.field,
@@ -254,9 +252,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         <TableWithFilter
             data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
-            tableColumnsWithExtraNonDataFields={
-                tableColumnsWithExtraNonDataFields
-            }
+            leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
@@ -305,7 +301,8 @@ function mapApiResponseToSubscriptionTableData(
 export type TableWithFilterProps<T> = {
     data: T[];
     tableColumns: TableColumns<T>;
-    tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>; // rename to leadControlColumns, also add the cols after
+    leadingControlColumns?: TableControlColumnConfig<T>;
+    trailingControlColumns?: TableControlColumnConfig<T>;
     defaultHiddenColumns: Array<keyof T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
@@ -321,7 +318,8 @@ export type TableWithFilterProps<T> = {
 export const TableWithFilter = <T,>({
     data,
     tableColumns,
-    tableColumnsWithExtraNonDataFields,
+    leadingControlColumns,
+    trailingControlColumns,
     defaultHiddenColumns,
     dataSorting,
     pagination,
@@ -338,7 +336,7 @@ export const TableWithFilter = <T,>({
     const [showModal, setShowModal] = useState(false);
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
-        TableColumnConfig<T, keyof T>
+        TableDataColumnConfig<T, keyof T>
     >(tableColumns).map((keyValuePair) => {
         const { field, name } = keyValuePair[1];
         return {
@@ -347,6 +345,12 @@ export const TableWithFilter = <T,>({
             isVisible: hiddenColumns.indexOf(field) === -1,
         };
     });
+
+    const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
+        ...leadingControlColumns,
+        ...tableColumns,
+        ...trailingControlColumns,
+    };
 
     return (
         <>
@@ -365,7 +369,7 @@ export const TableWithFilter = <T,>({
             <EuiSpacer size="m" />
             <Table
                 data={data}
-                columns={tableColumnsWithExtraNonDataFields}
+                columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
                 onDataSort={onUpdateDataSort}

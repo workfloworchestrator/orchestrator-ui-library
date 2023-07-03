@@ -5,12 +5,12 @@ import React from 'react';
 import {
     DataSorting,
     TableColumns,
-    TableColumnsWithExtraNonDataFields,
+    TableColumnsWithControlColumns,
 } from './columns';
 
 export type TableProps<T> = {
     data: T[];
-    columns: TableColumnsWithExtraNonDataFields<T>;
+    columns: TableColumnsWithControlColumns<T>;
     hiddenColumns?: Array<keyof T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
