@@ -193,7 +193,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         tableColumns,
     );
 
-    // Convert the plain text to the accepted format for GraphQL backend
     const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
     const filterQueryTupleArray =
         esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
@@ -217,7 +216,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         filterBy,
     });
-    // ... backend data is loaded and available as "data: SubscriptionsResult | undefined"
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
@@ -227,6 +225,17 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     if (!data) {
         return <Loading />;
     }
+
+    const dataSorting: DataSorting<Subscription> = {
+        columnId: sortedColumnId,
+        sortDirection: sortOrder.order,
+    };
+    const pagination: Pagination = {
+        pageSize: pageSize,
+        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
+    };
 
     const handleDataSort = (newSortColumnId: keyof Subscription) =>
         setSortOrder({
@@ -246,39 +255,27 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         }
     };
 
-    const totalItemCount = parseInt(data.subscriptions.pageInfo.totalItems);
-    const dataSorting: DataSorting<Subscription> = {
-        columnId: sortedColumnId,
-        sortDirection: sortOrder.order,
-    };
-    const pagination: Pagination = {
-        pageSize: pageSize,
-        pageIndex: determinePageIndex(pageIndex, pageSize),
-        pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItemCount,
-    };
-
     return (
         <TableWithFilter
-            filterQuery={filterQuery}
-            setFilterQuery={setFilterQuery}
-            queryContainsInvalidParts={queryContainsInvalidParts}
-            setShowModal={setShowModal}
             data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
             tableColumnsWithExtraNonDataFields={
                 tableColumnsWithExtraNonDataFields
             }
+            defaultHiddenColumns={defaultHiddenColumns}
             hiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
-            handleDataSort={handleDataSort}
             pagination={pagination}
-            isFetching={isFetching}
-            handleCriteriaChange={handleCriteriaChange}
+            initialFilterQuery={filterQuery}
+            isInvalidQuery={queryContainsInvalidParts}
+            isLoading={isFetching}
             showModal={showModal}
-            setHiddenColumns={setHiddenColumns}
-            setPageSize={setPageSize}
-            defaultHiddenColumns={defaultHiddenColumns}
+            setFilterQuery={setFilterQuery}
+            onCriteriaChange={handleCriteriaChange}
+            onUpdateHiddenColumns={setHiddenColumns}
+            onUpdatePageSize={setPageSize}
+            onUpdateDataSort={handleDataSort}
+            setShowModal={setShowModal}
         />
     );
 };
@@ -315,43 +312,43 @@ function mapApiResponseToSubscriptionTableData(
 }
 
 export type TableWithFilterProps<T> = {
-    filterQuery: string; // rename to initialFilterQuery
-    setFilterQuery: (updatedFilterQuery: string) => void;
-    queryContainsInvalidParts: boolean; // rename to isInvalidQuery
-    setShowModal: (showModal: boolean) => void;
     data: T[];
     tableColumns: TableColumns<T>;
-    tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>;
+    tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<T>; // rename to leadControlColumns, also add the cols after
+    defaultHiddenColumns: Array<keyof T>; // consider to keep the state of hidden columns here OR move the logic out
     hiddenColumns: Array<keyof T>;
     dataSorting: DataSorting<T>;
-    handleDataSort: (newSortColumnId: keyof T) => void;
     pagination: Pagination;
-    isFetching: boolean;
-    handleCriteriaChange: ({ page }: Criteria<T>) => void;
-    showModal: boolean;
-    setHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
-    setPageSize: (updatedPageSize: number) => void;
-    defaultHiddenColumns: Array<keyof T>;
+    initialFilterQuery: string;
+    isInvalidQuery: boolean;
+    isLoading: boolean;
+    showModal: boolean; // make local state
+    setFilterQuery: (updatedFilterQuery: string) => void;
+    onCriteriaChange: ({ page }: Criteria<T>) => void;
+    onUpdateHiddenColumns: (updatedHiddenColumns: Array<keyof T>) => void; // rename to onUpdateHiddenColumns
+    onUpdatePageSize: (updatedPageSize: number) => void;
+    onUpdateDataSort: (newSortColumnId: keyof T) => void;
+    setShowModal: (showModal: boolean) => void;
 };
 
 export const TableWithFilter = <T,>({
-    filterQuery,
-    setFilterQuery,
-    queryContainsInvalidParts,
-    setShowModal,
     data,
     tableColumns,
     tableColumnsWithExtraNonDataFields,
+    defaultHiddenColumns,
     hiddenColumns,
     dataSorting,
-    handleDataSort,
     pagination,
-    isFetching,
-    handleCriteriaChange,
+    initialFilterQuery,
+    isInvalidQuery,
+    isLoading,
     showModal,
-    setHiddenColumns,
-    setPageSize,
-    defaultHiddenColumns,
+    setFilterQuery,
+    onCriteriaChange,
+    onUpdateHiddenColumns,
+    onUpdatePageSize,
+    onUpdateDataSort,
+    setShowModal,
 }: TableWithFilterProps<T>) => {
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
         TableColumnConfig<T, keyof T>
@@ -369,9 +366,9 @@ export const TableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <SearchField
-                        initialFilterQuery={filterQuery}
+                        initialFilterQuery={initialFilterQuery}
                         onSearch={setFilterQuery}
-                        isInvalid={queryContainsInvalidParts}
+                        isInvalid={isInvalidQuery}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowModal(true)}>
@@ -384,10 +381,10 @@ export const TableWithFilter = <T,>({
                 columns={tableColumnsWithExtraNonDataFields}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
-                onDataSort={handleDataSort}
+                onDataSort={onUpdateDataSort}
                 pagination={pagination}
-                isLoading={isFetching}
-                onCriteriaChange={handleCriteriaChange}
+                isLoading={isLoading}
+                onCriteriaChange={onCriteriaChange}
             />
 
             {showModal && (
@@ -405,13 +402,13 @@ export const TableWithFilter = <T,>({
                         const updatedHiddenColumns = updatedTableConfig.columns
                             .filter((column) => !column.isVisible)
                             .map((hiddenColumn) => hiddenColumn.field);
-                        setHiddenColumns(updatedHiddenColumns);
-                        setPageSize(updatedTableConfig.selectedPageSize);
+                        onUpdateHiddenColumns(updatedHiddenColumns);
+                        onUpdatePageSize(updatedTableConfig.selectedPageSize);
                         setShowModal(false);
                     }}
                     onResetToDefaults={() => {
-                        setHiddenColumns(defaultHiddenColumns);
-                        setPageSize(defaultPageSize);
+                        onUpdateHiddenColumns(defaultHiddenColumns);
+                        onUpdatePageSize(defaultPageSize);
                         setShowModal(false);
                     }}
                 />
