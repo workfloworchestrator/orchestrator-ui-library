@@ -4,6 +4,7 @@ import { TableHeaderCell } from './TableHeaderCell';
 import React from 'react';
 import {
     DataSorting,
+    TableColumnKeys,
     TableColumns,
     TableColumnsWithControlColumns,
 } from './columns';
@@ -11,7 +12,7 @@ import {
 export type TableProps<T> = {
     data: T[];
     columns: TableColumnsWithControlColumns<T>;
-    hiddenColumns?: Array<keyof T>;
+    hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
     isLoading?: boolean;
@@ -45,7 +46,7 @@ export const Table = <T,>({
 
 function mapTableColumnsToEuiColumns<T>(
     columns: TableColumns<T>,
-    hiddenColumns?: Array<keyof T>,
+    hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: DataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,
 ): EuiBasicTableColumn<T>[] {

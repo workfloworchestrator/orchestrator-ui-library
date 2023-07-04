@@ -20,6 +20,8 @@ export type TableControlColumnConfig<T> = {
 export type TableColumnsWithControlColumns<T> = TableColumns<T> &
     TableControlColumnConfig<T>;
 
+export type TableColumnKeys<T> = Array<keyof T>;
+
 export enum SortDirection {
     Asc = 'ASC',
     Desc = 'DESC',

@@ -9,6 +9,7 @@ import {
 } from '@elastic/eui';
 import {
     DataSorting,
+    TableColumnKeys,
     TableColumns,
     TableColumnsWithControlColumns,
     TableControlColumnConfig,
@@ -28,7 +29,7 @@ export type TableWithFilterProps<T> = {
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
     trailingControlColumns?: TableControlColumnConfig<T>;
-    defaultHiddenColumns: Array<keyof T>;
+    defaultHiddenColumns: TableColumnKeys<T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
     filterQuery: string;
@@ -59,7 +60,7 @@ export const TableWithFilter = <T,>({
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
     const [hiddenColumns, setHiddenColumns] =
-        useState<Array<keyof T>>(defaultHiddenColumns);
+        useState<TableColumnKeys<T>>(defaultHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
     const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
