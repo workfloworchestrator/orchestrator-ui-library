@@ -10,21 +10,21 @@ import {
     PlusCircleFill,
     getFirstUuidPart,
     SubscriptionStatusBadge,
-    Table,
     TableColumns,
-    TableColumnsWithExtraNonDataFields,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
     parseDateToLocaleString,
     Loading,
     mapEsQueryContainerToKeyValueTuple,
     isValidQueryPart,
-    SearchField,
+    TableControlColumnConfig,
+    TableWithFilter,
+    TableColumnKeys,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar, EuiSpacer } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -54,6 +54,9 @@ const COLUMN_LABEL_END_DATE = 'End Date';
 const COLUMN_LABEL_NOTE = 'Note';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
+
+const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
+const defaultPageSize = GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first;
 
 type Subscription = {
     subscriptionId: string;
@@ -92,7 +95,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const hiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
@@ -157,19 +159,17 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const tableColumnsWithExtraNonDataFields: TableColumnsWithExtraNonDataFields<Subscription> =
-        {
-            inlineSubscriptionDetails: {
-                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
-                width: '40',
-                render: () => (
-                    <EuiFlexItem>
-                        <PlusCircleFill color={theme.colors.mediumShade} />
-                    </EuiFlexItem>
-                ),
-            },
-            ...tableColumns,
-        };
+    const leadingControlColumns: TableControlColumnConfig<Subscription> = {
+        inlineSubscriptionDetails: {
+            field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
+            width: '40',
+            render: () => (
+                <EuiFlexItem>
+                    <PlusCircleFill color={theme.colors.mediumShade} />
+                </EuiFlexItem>
+            ),
+        },
+    };
 
     const sortedColumnId = getTypedFieldFromObject(
         sortOrder.field,
@@ -191,7 +191,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         SubscriptionsResult,
         SubscriptionsQueryVariables
     >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
-        ...GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
         first: pageSize,
         after: pageIndex,
         sortBy: sortedColumnId && {
@@ -209,6 +208,17 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     if (!data) {
         return <Loading />;
     }
+
+    const dataSorting: DataSorting<Subscription> = {
+        columnId: sortedColumnId,
+        sortDirection: sortOrder.order,
+    };
+    const pagination: Pagination = {
+        pageSize: pageSize,
+        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
+    };
 
     const handleDataSort = (newSortColumnId: keyof Subscription) =>
         setSortOrder({
@@ -228,37 +238,23 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         }
     };
 
-    const totalItemCount = parseInt(data.subscriptions.pageInfo.totalItems);
-    const dataSorting: DataSorting<Subscription> = {
-        columnId: sortedColumnId,
-        sortDirection: sortOrder.order,
-    };
-    const pagination: Pagination = {
-        pageSize: pageSize,
-        pageIndex: determinePageIndex(pageIndex, pageSize),
-        pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItemCount,
-    };
-
     return (
-        <>
-            <SearchField
-                initialFilterQuery={filterQuery}
-                onSearch={setFilterQuery}
-                isInvalid={queryContainsInvalidParts}
-            />
-            <EuiSpacer size="m" />
-            <Table
-                data={mapApiResponseToSubscriptionTableData(data)}
-                columns={tableColumnsWithExtraNonDataFields}
-                hiddenColumns={hiddenColumns}
-                dataSorting={dataSorting}
-                onDataSort={handleDataSort}
-                pagination={pagination}
-                isLoading={isFetching}
-                onCriteriaChange={handleCriteriaChange}
-            />
-        </>
+        <TableWithFilter
+            data={mapApiResponseToSubscriptionTableData(data)}
+            tableColumns={tableColumns}
+            leadingControlColumns={leadingControlColumns}
+            defaultHiddenColumns={defaultHiddenColumns}
+            dataSorting={dataSorting}
+            pagination={pagination}
+            filterQuery={filterQuery}
+            isInvalidFilterQuery={queryContainsInvalidParts}
+            isLoading={isFetching}
+            onUpdateFilterQuery={setFilterQuery}
+            onCriteriaChange={handleCriteriaChange}
+            onUpdatePageSize={setPageSize}
+            onResetPageSize={() => setPageSize(defaultPageSize)}
+            onUpdateDataSort={handleDataSort}
+        />
     );
 };
 

@@ -4,7 +4,7 @@ import {
     EuiDataGridControlColumn,
     EuiDataGridSorting,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { DataSorting, SortDirection } from './columns';
+import { DataSorting, SortDirection, TableColumnKeys } from './columns';
 
 export type DataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
@@ -26,7 +26,7 @@ export type ControlColumn<T> = Omit<
 
 export const getInitialColumnOrder = <T>(
     columns: DataGridTableColumns<T>,
-    initialColumnOrder: Array<keyof T>,
+    initialColumnOrder: TableColumnKeys<T>,
 ) => {
     const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
         (colKey) => {

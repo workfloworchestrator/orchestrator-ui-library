@@ -2,33 +2,30 @@ import React, { FC } from 'react';
 import { EuiFormRow, EuiSearchBar } from '@elastic/eui';
 
 export type SearchFieldProps = {
-    initialFilterQuery: string;
+    filterQuery: string;
     isInvalid?: boolean;
-    onSearch: (query: string) => void;
+    onUpdateFilterQuery: (query: string) => void;
 };
 
 export const SearchField: FC<SearchFieldProps> = ({
-    initialFilterQuery,
-    onSearch,
+    filterQuery,
+    onUpdateFilterQuery,
     isInvalid,
-}) => {
-    return (
-        <EuiFormRow
-            fullWidth
-            isInvalid={isInvalid}
-            error={['The query contains invalid parts']}
-        >
-            <EuiSearchBar
-                query={initialFilterQuery}
-                onChange={({ queryText }) => {
-                    onSearch(queryText);
-                }}
-                box={{
-                    // Todo: possible bug in EUI component EuiSearchBar
-                    // setting the property 'isInvalid' to true has no effect
-                    isInvalid: isInvalid,
-                }}
-            />
-        </EuiFormRow>
-    );
-};
+}) => (
+    <EuiFormRow
+        fullWidth
+        isInvalid={isInvalid}
+        error={['The query contains invalid parts']}
+    >
+        <EuiSearchBar
+            query={filterQuery}
+            onChange={({ queryText }) => onUpdateFilterQuery(queryText)}
+            box={{
+                // Todo: possible bug in EUI component EuiSearchBar
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/129
+                // setting the property 'isInvalid' to true has no effect
+                isInvalid: isInvalid,
+            }}
+        />
+    </EuiFormRow>
+);

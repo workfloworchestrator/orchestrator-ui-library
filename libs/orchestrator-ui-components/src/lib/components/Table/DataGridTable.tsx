@@ -14,7 +14,7 @@ import {
     EuiDataGridControlColumn,
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { DataSorting } from './columns';
+import { DataSorting, TableColumnKeys } from './columns';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
@@ -40,7 +40,7 @@ export type DataGridTableProps<T> = {
     columns: DataGridTableColumns<T>;
     leadingControlColumns?: ControlColumn<T>[];
     trailingControlColumns?: ControlColumn<T>[];
-    initialColumnOrder: Array<keyof T>;
+    initialColumnOrder: TableColumnKeys<T>;
     dataSorting?: DataSorting<T>;
     handleRowClick?: (row: T) => void;
     updateDataSorting?: (updatedDataSorting: DataSorting<T>) => void;
