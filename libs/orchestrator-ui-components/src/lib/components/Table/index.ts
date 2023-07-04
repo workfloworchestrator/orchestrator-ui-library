@@ -9,3 +9,4 @@ export * from './constants';
 export * from './tableUtils';
 
 export * from './TableSettingsModal';
+export * from './TableWithFilter';

@@ -10,31 +10,20 @@ import {
     PlusCircleFill,
     getFirstUuidPart,
     SubscriptionStatusBadge,
-    Table,
     TableColumns,
-    TableColumnsWithControlColumns,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
     parseDateToLocaleString,
     Loading,
     mapEsQueryContainerToKeyValueTuple,
     isValidQueryPart,
-    SearchField,
-    TableSettingsModal,
-    ColumnConfig,
-    TableDataColumnConfig,
     TableControlColumnConfig,
+    TableWithFilter,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiSearchBar,
-    EuiSpacer,
-} from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -262,6 +251,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             onUpdateFilterQuery={setFilterQuery}
             onCriteriaChange={handleCriteriaChange}
             onUpdatePageSize={setPageSize}
+            onResetPageSize={() => setPageSize(defaultPageSize)}
             onUpdateDataSort={handleDataSort}
         />
     );
@@ -297,112 +287,3 @@ function mapApiResponseToSubscriptionTableData(
         },
     );
 }
-
-export type TableWithFilterProps<T> = {
-    data: T[];
-    tableColumns: TableColumns<T>;
-    leadingControlColumns?: TableControlColumnConfig<T>;
-    trailingControlColumns?: TableControlColumnConfig<T>;
-    defaultHiddenColumns: Array<keyof T>;
-    dataSorting: DataSorting<T>;
-    pagination: Pagination;
-    filterQuery: string;
-    isInvalidFilterQuery: boolean;
-    isLoading: boolean;
-    onUpdateFilterQuery: (updatedFilterQuery: string) => void;
-    onCriteriaChange: ({ page }: Criteria<T>) => void;
-    onUpdatePageSize: (updatedPageSize: number) => void;
-    onUpdateDataSort: (newSortColumnId: keyof T) => void;
-};
-
-export const TableWithFilter = <T,>({
-    data,
-    tableColumns,
-    leadingControlColumns,
-    trailingControlColumns,
-    defaultHiddenColumns,
-    dataSorting,
-    pagination,
-    filterQuery,
-    isInvalidFilterQuery,
-    isLoading,
-    onUpdateFilterQuery,
-    onCriteriaChange,
-    onUpdatePageSize,
-    onUpdateDataSort,
-}: TableWithFilterProps<T>) => {
-    const [hiddenColumns, setHiddenColumns] =
-        useState<Array<keyof T>>(defaultHiddenColumns);
-    const [showModal, setShowModal] = useState(false);
-
-    const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
-        TableDataColumnConfig<T, keyof T>
-    >(tableColumns).map((keyValuePair) => {
-        const { field, name } = keyValuePair[1];
-        return {
-            field,
-            name,
-            isVisible: hiddenColumns.indexOf(field) === -1,
-        };
-    });
-
-    const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
-        ...leadingControlColumns,
-        ...tableColumns,
-        ...trailingControlColumns,
-    };
-
-    return (
-        <>
-            <EuiFlexGroup>
-                <EuiFlexItem>
-                    <SearchField
-                        filterQuery={filterQuery}
-                        onUpdateFilterQuery={onUpdateFilterQuery}
-                        isInvalid={isInvalidFilterQuery}
-                    />
-                </EuiFlexItem>
-                <EuiButton onClick={() => setShowModal(true)}>
-                    Edit columns
-                </EuiButton>
-            </EuiFlexGroup>
-            <EuiSpacer size="m" />
-            <Table
-                data={data}
-                columns={tableColumnsWithControlColumns}
-                hiddenColumns={hiddenColumns}
-                dataSorting={dataSorting}
-                onDataSort={onUpdateDataSort}
-                pagination={pagination}
-                isLoading={isLoading}
-                onCriteriaChange={onCriteriaChange}
-            />
-
-            {showModal && (
-                <TableSettingsModal
-                    tableConfig={{
-                        columns: tableSettingsColumns,
-                        selectedPageSize: pagination.pageSize, // not sure if a pageSize is needed here, was "pageSize"
-                    }}
-                    pageSizeOptions={
-                        pagination.pageSizeOptions || DEFAULT_PAGE_SIZES
-                    }
-                    onClose={() => setShowModal(false)}
-                    onUpdateTableConfig={(updatedTableConfig) => {
-                        const updatedHiddenColumns = updatedTableConfig.columns
-                            .filter((column) => !column.isVisible)
-                            .map((hiddenColumn) => hiddenColumn.field);
-                        setHiddenColumns(updatedHiddenColumns);
-                        onUpdatePageSize(updatedTableConfig.selectedPageSize);
-                        setShowModal(false);
-                    }}
-                    onResetToDefaults={() => {
-                        setHiddenColumns(defaultHiddenColumns);
-                        onUpdatePageSize(defaultPageSize);
-                        setShowModal(false);
-                    }}
-                />
-            )}
-        </>
-    );
-};
