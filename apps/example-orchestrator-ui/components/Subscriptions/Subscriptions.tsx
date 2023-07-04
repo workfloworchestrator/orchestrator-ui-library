@@ -42,6 +42,7 @@ import {
     TAG,
 } from './subscriptionQuery';
 import { Criteria, Pagination } from '@elastic/eui';
+import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -249,6 +250,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             filterQuery={filterQuery}
             isInvalidFilterQuery={queryContainsInvalidParts}
             isLoading={isFetching}
+            localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
             onUpdateFilterQuery={setFilterQuery}
             onCriteriaChange={handleCriteriaChange}
             onUpdatePageSize={setPageSize}

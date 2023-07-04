@@ -24,6 +24,48 @@ import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
 import { DEFAULT_PAGE_SIZES } from '../constants';
 
+// Todo move to utils
+export type LocalStorageTableConfig<T> = {
+    hiddenColumns: TableColumnKeys<T>;
+    selectedPageSize: number;
+};
+
+export const isValidLocalStorageTableConfig = <T,>(
+    object: LocalStorageTableConfig<T>,
+): object is LocalStorageTableConfig<T> => {
+    return (
+        'hiddenColumns' in object &&
+        object.hiddenColumns !== undefined &&
+        'selectedPageSize' in object &&
+        object.selectedPageSize !== undefined
+    );
+};
+
+export const getTableConfigFromLocalStorage = <T,>(
+    key: string,
+): LocalStorageTableConfig<T> | undefined => {
+    try {
+        const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
+        return isValidLocalStorageTableConfig(parsedJson)
+            ? parsedJson
+            : undefined;
+    } catch (e) {
+        return undefined;
+    }
+};
+
+export const setTableConfigToLocalStorage = <T,>(
+    key: string,
+    updatedTableConfig: LocalStorageTableConfig<T>,
+) => {
+    localStorage.setItem(key, JSON.stringify(updatedTableConfig));
+};
+
+export const clearTableConfigFromLocalStorage = (key: string) => {
+    localStorage.removeItem(key);
+};
+// ...till here
+
 export type TableWithFilterProps<T> = {
     data: T[];
     tableColumns: TableColumns<T>;
@@ -35,6 +77,7 @@ export type TableWithFilterProps<T> = {
     filterQuery: string;
     isInvalidFilterQuery: boolean;
     isLoading: boolean;
+    localStorageKey: string;
     onUpdateFilterQuery: (updatedFilterQuery: string) => void;
     onCriteriaChange: ({ page }: Criteria<T>) => void;
     onUpdatePageSize: (updatedPageSize: number) => void;
@@ -53,14 +96,20 @@ export const TableWithFilter = <T,>({
     filterQuery,
     isInvalidFilterQuery,
     isLoading,
+    localStorageKey,
     onUpdateFilterQuery,
     onCriteriaChange,
     onUpdatePageSize,
     onResetPageSize,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
+    const tableConfigFromLocalStorage =
+        getTableConfigFromLocalStorage<T>(localStorageKey);
+    const initialHiddenColumns =
+        tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
+
     const [hiddenColumns, setHiddenColumns] =
-        useState<TableColumnKeys<T>>(defaultHiddenColumns);
+        useState<TableColumnKeys<T>>(initialHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
     const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
@@ -86,12 +135,17 @@ export const TableWithFilter = <T,>({
             .map((hiddenColumn) => hiddenColumn.field);
         setHiddenColumns(updatedHiddenColumns);
         setShowSettingsModal(false);
+        setTableConfigToLocalStorage(localStorageKey, {
+            hiddenColumns: updatedHiddenColumns,
+            selectedPageSize: updatedTableConfig.selectedPageSize,
+        });
         onUpdatePageSize(updatedTableConfig.selectedPageSize);
     };
 
     const handleResetToDefaults = () => {
         setHiddenColumns(defaultHiddenColumns);
         setShowSettingsModal(false);
+        clearTableConfigFromLocalStorage(localStorageKey);
         onResetPageSize();
     };
 
@@ -125,10 +179,12 @@ export const TableWithFilter = <T,>({
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
-                        selectedPageSize: pagination.pageSize,
+                        selectedPageSize:
+                            tableConfigFromLocalStorage?.selectedPageSize ??
+                            pagination.pageSize,
                     }}
                     pageSizeOptions={
-                        pagination.pageSizeOptions || DEFAULT_PAGE_SIZES
+                        pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES
                     }
                     onClose={() => setShowSettingsModal(false)}
                     onUpdateTableConfig={handleUpdateTableConfig}
