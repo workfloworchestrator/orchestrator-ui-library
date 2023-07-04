@@ -22,6 +22,7 @@ export const SearchField: FC<SearchFieldProps> = ({
             onChange={({ queryText }) => onUpdateFilterQuery(queryText)}
             box={{
                 // Todo: possible bug in EUI component EuiSearchBar
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/129
                 // setting the property 'isInvalid' to true has no effect
                 isInvalid: isInvalid,
             }}

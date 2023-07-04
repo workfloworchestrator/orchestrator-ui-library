@@ -1,6 +1,7 @@
 import { EuiBasicTableColumn } from '@elastic/eui';
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/130
 export type TableDataColumnConfig<T, Property> = EuiBasicTableColumn<T> & {
     field: Property;
     name: string;
