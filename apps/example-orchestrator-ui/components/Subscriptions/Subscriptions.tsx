@@ -19,6 +19,7 @@ import {
     isValidQueryPart,
     TableControlColumnConfig,
     TableWithFilter,
+    TableColumnKeys,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
@@ -54,7 +55,7 @@ const COLUMN_LABEL_NOTE = 'Note';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
-const defaultHiddenColumns: Array<keyof Subscription> = [PRODUCT_NAME];
+const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
 const defaultPageSize = GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first;
 
 type Subscription = {
