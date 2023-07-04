@@ -14,7 +14,11 @@ import {
     TableControlColumnConfig,
     TableDataColumnConfig,
 } from '../columns';
-import { ColumnConfig, TableSettingsModal } from '../TableSettingsModal';
+import {
+    ColumnConfig,
+    TableConfig,
+    TableSettingsModal,
+} from '../TableSettingsModal';
 import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
 import { DEFAULT_PAGE_SIZES } from '../constants';
@@ -56,7 +60,13 @@ export const TableWithFilter = <T,>({
 }: TableWithFilterProps<T>) => {
     const [hiddenColumns, setHiddenColumns] =
         useState<Array<keyof T>>(defaultHiddenColumns);
-    const [showModal, setShowModal] = useState(false);
+    const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+    const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
+        ...leadingControlColumns,
+        ...tableColumns,
+        ...trailingControlColumns,
+    };
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
         TableDataColumnConfig<T, keyof T>
@@ -69,10 +79,19 @@ export const TableWithFilter = <T,>({
         };
     });
 
-    const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
-        ...leadingControlColumns,
-        ...tableColumns,
-        ...trailingControlColumns,
+    const handleUpdateTableConfig = (updatedTableConfig: TableConfig<T>) => {
+        const updatedHiddenColumns = updatedTableConfig.columns
+            .filter((column) => !column.isVisible)
+            .map((hiddenColumn) => hiddenColumn.field);
+        setHiddenColumns(updatedHiddenColumns);
+        setShowSettingsModal(false);
+        onUpdatePageSize(updatedTableConfig.selectedPageSize);
+    };
+
+    const handleResetToDefaults = () => {
+        setHiddenColumns(defaultHiddenColumns);
+        setShowSettingsModal(false);
+        onResetPageSize();
     };
 
     return (
@@ -85,7 +104,7 @@ export const TableWithFilter = <T,>({
                         isInvalid={isInvalidFilterQuery}
                     />
                 </EuiFlexItem>
-                <EuiButton onClick={() => setShowModal(true)}>
+                <EuiButton onClick={() => setShowSettingsModal(true)}>
                     Edit columns
                 </EuiButton>
             </EuiFlexGroup>
@@ -101,7 +120,7 @@ export const TableWithFilter = <T,>({
                 onCriteriaChange={onCriteriaChange}
             />
 
-            {showModal && (
+            {showSettingsModal && (
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
@@ -110,20 +129,9 @@ export const TableWithFilter = <T,>({
                     pageSizeOptions={
                         pagination.pageSizeOptions || DEFAULT_PAGE_SIZES
                     }
-                    onClose={() => setShowModal(false)}
-                    onUpdateTableConfig={(updatedTableConfig) => {
-                        const updatedHiddenColumns = updatedTableConfig.columns
-                            .filter((column) => !column.isVisible)
-                            .map((hiddenColumn) => hiddenColumn.field);
-                        setHiddenColumns(updatedHiddenColumns);
-                        onUpdatePageSize(updatedTableConfig.selectedPageSize);
-                        setShowModal(false);
-                    }}
-                    onResetToDefaults={() => {
-                        setHiddenColumns(defaultHiddenColumns);
-                        onResetPageSize();
-                        setShowModal(false);
-                    }}
+                    onClose={() => setShowSettingsModal(false)}
+                    onUpdateTableConfig={handleUpdateTableConfig}
+                    onResetToDefaults={handleResetToDefaults}
                 />
             )}
         </>
