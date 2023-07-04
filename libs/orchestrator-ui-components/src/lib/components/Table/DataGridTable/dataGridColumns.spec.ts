@@ -3,7 +3,7 @@ import {
     mapColumnSortToEuiDataGridSorting,
     DataGridTableColumns,
 } from './dataGridColumns';
-import { DataSorting, SortDirection } from './columns';
+import { DataSorting, SortDirection } from '../utils/columns';
 
 interface TestColumn {
     id: string;

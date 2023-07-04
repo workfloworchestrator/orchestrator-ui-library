@@ -14,7 +14,7 @@ import {
     EuiDataGridControlColumn,
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { DataSorting, TableColumnKeys } from './columns';
+import { DataSorting, TableColumnKeys } from '../utils/columns';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;

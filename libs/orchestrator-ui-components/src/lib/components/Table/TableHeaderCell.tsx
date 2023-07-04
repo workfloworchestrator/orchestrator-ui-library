@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { SortDirection } from './columns';
+import { SortDirection } from './utils/columns';
 import { SortDirectionIcon } from './SortDirectionIcon';
 
 export type TableHeaderCellProps = {

@@ -14,7 +14,7 @@ import {
     TableColumnsWithControlColumns,
     TableControlColumnConfig,
     TableDataColumnConfig,
-} from '../columns';
+} from '../utils/columns';
 import {
     ColumnConfig,
     TableConfig,
@@ -22,12 +22,12 @@ import {
 } from '../TableSettingsModal';
 import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
-import { DEFAULT_PAGE_SIZES } from '../constants';
+import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     getTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
-} from '../tableConfigPersistence';
+} from '../utils/tableConfigPersistence';
 
 export type TableWithFilterProps<T> = {
     data: T[];
