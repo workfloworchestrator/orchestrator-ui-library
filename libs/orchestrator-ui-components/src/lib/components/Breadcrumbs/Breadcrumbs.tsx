@@ -1,7 +1,7 @@
 import React from 'react';
 import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
-import { containsUuid4, isUuid4, upperCaseFirstChar } from '../../utils';
+import { isUuid4, removeSuffix, upperCaseFirstChar } from '../../utils';
 
 export const Breadcrumbs = () => {
     const router = useRouter();
@@ -12,7 +12,7 @@ export const Breadcrumbs = () => {
             href: '/',
             onClick: (e) => {
                 e.preventDefault();
-                router.push('/');
+                router.push('/').then();
             },
         },
     ];
@@ -21,49 +21,18 @@ export const Breadcrumbs = () => {
     const parts = router.asPath.split('/');
     parts.forEach((p, index) => {
         if (index > 0) {
-            let link = parts.slice(0, index + 1).join('/');
-            if (link.includes('?')) {
-                link = link.split('?').slice(0, -1).join();
-            }
+            const link = removeSuffix(parts.slice(0, index + 1).join('/'));
             // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / 12312aa-cbc ...`
-            let text = isUuid4(p) ? p : upperCaseFirstChar(p);
-            if (text.includes('?')) {
-                text = upperCaseFirstChar(text.split('?').slice(0, -1).join());
-            }
+            const text = isUuid4(p) ? p : removeSuffix(upperCaseFirstChar(p));
 
             breadcrumbs.push({
                 text: text,
                 href: link,
                 onClick: (e) => {
                     e.preventDefault();
-                    if (
-                        text === 'Subscriptions' &&
-                        containsUuid4(router.asPath)
-                    ) {
-                        // Todo: make URLS more consistent or design a better way to handle breadcrumbs
-                        // When possible try to use the browser back; so the user has active tab + correct page
-                        router.back();
-                    } else {
-                        router.push(link);
-                    }
+                    router.push(link).then();
                 },
             });
-
-            // Handle tabs if any
-            const tabs = parts.slice(0, index + 1).join('/');
-            if (tabs.includes('?activeTab=')) {
-                const tabName = upperCaseFirstChar(
-                    tabs.split('?activeTab=')[1].split('&')[0],
-                );
-                breadcrumbs.push({
-                    text: tabName,
-                    href: `/subscriptions?activeTab=${tabName}`,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(`/subscriptions?activeTab=${tabName}`);
-                    },
-                });
-            }
         }
     });
 
