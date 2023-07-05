@@ -78,6 +78,7 @@ function mapTableColumnsToEuiColumns<T>(
                 </TableHeaderCell>
             ),
             truncateText: true,
+            textOnly: true,
         };
     }
 

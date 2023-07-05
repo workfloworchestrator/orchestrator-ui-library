@@ -102,13 +102,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: SUBSCRIPTION_ID,
             name: COLUMN_LABEL_ID,
             width: '100',
-            render: (value: string) => getFirstUuidPart(value),
+            render: (value) => getFirstUuidPart(value),
         },
         description: {
             field: DESCRIPTION,
             name: COLUMN_LABEL_DESCRIPTION,
             width: '400',
-            render: (value: string, record) => (
+            render: (value, record) => (
                 <Link href={`/subscriptions/${record.subscriptionId}`}>
                     {value}
                 </Link>
@@ -118,7 +118,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: STATUS,
             name: COLUMN_LABEL_STATUS,
             width: '110',
-            render: (value: string) => (
+            render: (value) => (
                 <SubscriptionStatusBadge subscriptionStatus={value} />
             ),
         },
@@ -126,7 +126,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: INSYNC,
             name: COLUMN_LABEL_INSYNC,
             width: '110',
-            render: (value: boolean) =>
+            render: (value) =>
                 value ? (
                     <CheckmarkCircleFill color={theme.colors.primary} />
                 ) : (
