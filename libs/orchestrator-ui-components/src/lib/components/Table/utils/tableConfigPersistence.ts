@@ -33,7 +33,15 @@ export const setTableConfigToLocalStorage = <T>(
     key: string,
     updatedTableConfig: LocalStorageTableConfig<T>,
 ) => {
-    localStorage.setItem(key, JSON.stringify(updatedTableConfig));
+    try {
+        localStorage.setItem(key, JSON.stringify(updatedTableConfig));
+    } catch {
+        // Todo: implement error handling
+        // https://github.com/workfloworchestrator/orchestrator-ui/issues/134
+        console.error(
+            `An error occurred while updating the default table config for "${key}" in local storage`,
+        );
+    }
 };
 
 export const clearTableConfigFromLocalStorage = (key: string) => {
