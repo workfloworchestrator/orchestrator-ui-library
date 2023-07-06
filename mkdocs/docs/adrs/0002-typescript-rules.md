@@ -18,7 +18,7 @@ common business scenario's.
 ## Action items
 
 - We will have some basic type definitions in the lib: Subscriptions, Subscription, Processes, Process
-- We will not use the generated grap[hqltypes direct in the components; instead we map it to and from generated types
+- We will not use the generated GraphQLtypes direct in the components; instead we map it to and from generated types
 - We assume that most users will only want to add columns/fields in Subscriptions, Subscription, Processes, Process
 - We assume that certain fields are not changeable, for example fields that are used by workflow engine related objects;
   like workflow status, subscription status.
