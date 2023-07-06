@@ -17,7 +17,8 @@ import {
     ENGINE_STATUS_ENDPOINT,
     ORCHESTRATOR_API_BASE_URL,
     PROCESS_STATUS_COUNTS_ENDPOINT,
-    GRAPHQL_ENDPOINT,
+    GRAPHQL_ENDPOINT_PYTHIA,
+    GRAPHQL_ENDPOINT_CORE,
     SUBSCRIPTION_ACTIONS_ENDPOINT,
     SUBSCRIPTION_PROCESSES_ENDPOINT,
 } from '../constants';
@@ -42,7 +43,8 @@ const initialOrchestratorConfig: OrchestratorConfig = {
     orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
-    graphqlEndpoint: GRAPHQL_ENDPOINT,
+    graphqlEndpointPythia: GRAPHQL_ENDPOINT_PYTHIA,
+    graphqlEndpointCore: GRAPHQL_ENDPOINT_CORE,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
     subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,

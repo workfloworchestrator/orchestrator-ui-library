@@ -7,7 +7,8 @@ import {
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     engineStatusEndpoint: '',
     environmentName: '',
-    graphqlEndpoint: '',
+    graphqlEndpointPythia: '',
+    graphqlEndpointCore: '',
     orchestratorApiBaseUrl: '',
     processStatusCountsEndpoint: '',
     subscriptionActionsEndpoint: '',

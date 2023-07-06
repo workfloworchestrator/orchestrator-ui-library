@@ -21,12 +21,12 @@ export default function ListStartPage({ list }: ListStartPage): ReactElement {
                     <p style={{ fontWeight: 600 }}>{list.title}</p>
                     <EuiSpacer size="m" />
                     {list.items.map((item, index) => (
-                        <>
+                        <div key={index}>
                             <ListItemStartPage item={item} type={list.type} />
                             {index === list.items.length - 1 ? null : (
                                 <EuiHorizontalRule margin="none" />
                             )}
-                        </>
+                        </div>
                     ))}
                     <EuiSpacer size="m" />
                     <EuiButton fullWidth={true}>{list.buttonName}</EuiButton>
