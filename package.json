@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "start": "nx serve example-orchestrator-ui",
-        "test:affected": "nx affected --target=test",
+        "test:all": "nx run-many --all --target=test --parallel",
         "-- APP: example-orchestrator-ui --": "---",
         "test:example-orchestrator-ui": "nx run example-orchestrator-ui:test",
         "tsc:example-orchestrator-ui": "tsc --noEmit --project apps/example-orchestrator-ui/tsconfig.json",

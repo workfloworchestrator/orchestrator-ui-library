@@ -55,4 +55,4 @@ jobs:
                 key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
             - name: Installing dependencies
               run: yarn install --frozen-lockfile
-            - run: yarn run test:affected
+            - run: yarn run test:all
