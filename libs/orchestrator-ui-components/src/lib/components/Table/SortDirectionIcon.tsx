@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { ArrowNarrowDown } from '../../icons/ArrowNarrowDown';
 import { ArrowNarrowUp } from '../../icons/ArrowNarrowUp';
-import { SortDirection } from './columns';
+import { SortDirection } from './utils/columns';
 
 export type SortDirectionIconProps = {
     sortDirection: SortDirection;

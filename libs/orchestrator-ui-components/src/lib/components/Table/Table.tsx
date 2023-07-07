@@ -7,7 +7,7 @@ import {
     TableColumnKeys,
     TableColumns,
     TableColumnsWithControlColumns,
-} from './columns';
+} from './utils/columns';
 
 export type TableProps<T> = {
     data: T[];
@@ -78,6 +78,7 @@ function mapTableColumnsToEuiColumns<T>(
                 </TableHeaderCell>
             ),
             truncateText: true,
+            textOnly: true,
         };
     }
 

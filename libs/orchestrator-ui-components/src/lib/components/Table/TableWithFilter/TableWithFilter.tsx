@@ -14,7 +14,7 @@ import {
     TableColumnsWithControlColumns,
     TableControlColumnConfig,
     TableDataColumnConfig,
-} from '../columns';
+} from '../utils/columns';
 import {
     ColumnConfig,
     TableConfig,
@@ -22,7 +22,12 @@ import {
 } from '../TableSettingsModal';
 import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
-import { DEFAULT_PAGE_SIZES } from '../constants';
+import { DEFAULT_PAGE_SIZES } from '../utils/constants';
+import {
+    clearTableConfigFromLocalStorage,
+    getTableConfigFromLocalStorage,
+    setTableConfigToLocalStorage,
+} from '../utils/tableConfigPersistence';
 
 export type TableWithFilterProps<T> = {
     data: T[];
@@ -35,6 +40,7 @@ export type TableWithFilterProps<T> = {
     filterQuery: string;
     isInvalidFilterQuery: boolean;
     isLoading: boolean;
+    localStorageKey: string;
     onUpdateFilterQuery: (updatedFilterQuery: string) => void;
     onCriteriaChange: ({ page }: Criteria<T>) => void;
     onUpdatePageSize: (updatedPageSize: number) => void;
@@ -53,14 +59,20 @@ export const TableWithFilter = <T,>({
     filterQuery,
     isInvalidFilterQuery,
     isLoading,
+    localStorageKey,
     onUpdateFilterQuery,
     onCriteriaChange,
     onUpdatePageSize,
     onResetPageSize,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
+    const tableConfigFromLocalStorage =
+        getTableConfigFromLocalStorage<T>(localStorageKey);
+    const initialHiddenColumns =
+        tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
+
     const [hiddenColumns, setHiddenColumns] =
-        useState<TableColumnKeys<T>>(defaultHiddenColumns);
+        useState<TableColumnKeys<T>>(initialHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
     const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
@@ -86,12 +98,17 @@ export const TableWithFilter = <T,>({
             .map((hiddenColumn) => hiddenColumn.field);
         setHiddenColumns(updatedHiddenColumns);
         setShowSettingsModal(false);
+        setTableConfigToLocalStorage(localStorageKey, {
+            hiddenColumns: updatedHiddenColumns,
+            selectedPageSize: updatedTableConfig.selectedPageSize,
+        });
         onUpdatePageSize(updatedTableConfig.selectedPageSize);
     };
 
     const handleResetToDefaults = () => {
         setHiddenColumns(defaultHiddenColumns);
         setShowSettingsModal(false);
+        clearTableConfigFromLocalStorage(localStorageKey);
         onResetPageSize();
     };
 
@@ -125,10 +142,12 @@ export const TableWithFilter = <T,>({
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
-                        selectedPageSize: pagination.pageSize,
+                        selectedPageSize:
+                            tableConfigFromLocalStorage?.selectedPageSize ??
+                            pagination.pageSize,
                     }}
                     pageSizeOptions={
-                        pagination.pageSizeOptions || DEFAULT_PAGE_SIZES
+                        pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES
                     }
                     onClose={() => setShowSettingsModal(false)}
                     onUpdateTableConfig={handleUpdateTableConfig}

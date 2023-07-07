@@ -16,12 +16,14 @@ import {
     defaultSubscriptionsTabs,
     getSortDirectionFromString,
     getSubscriptionsTabTypeFromString,
+    getTableConfigFromLocalStorage,
     SubscriptionsTabs,
     SubscriptionsTabType,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
+import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 
 export default function SubscriptionsPage() {
     const router = useRouter();
@@ -34,7 +36,10 @@ export default function SubscriptionsPage() {
         'pageSize',
         withDefault(
             NumberParam,
-            GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first,
+            getTableConfigFromLocalStorage(
+                SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+            )?.selectedPageSize ??
+                GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first,
         ),
     );
     const [pageIndex, setPageIndex] = useQueryParam(
