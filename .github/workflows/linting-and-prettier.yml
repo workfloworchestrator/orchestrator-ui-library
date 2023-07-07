@@ -23,8 +23,6 @@ jobs:
               with:
                 node-version: ${{ matrix.node-version }}
                 cache: 'yarn'
-            - name: Installing dependencies
-              run: yarn install --frozen-lockfile
             - run: yarn run tsc:example-orchestrator-ui
             - run: yarn run tsc:orchestrator-ui-components
             - run: yarn run lint:example-orchestrator-ui
@@ -41,6 +39,4 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'yarn'
-            - name: Installing dependencies
-              run: yarn install --frozen-lockfile
             - run: yarn run test:affected
