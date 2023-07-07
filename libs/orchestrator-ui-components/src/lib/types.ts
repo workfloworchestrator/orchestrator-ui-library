@@ -143,7 +143,7 @@ interface ProductBlock {
 
 export type Field<Type> = keyof Type;
 
-enum SortOrder {
+export enum SortOrder {
     Asc = 'asc',
     Desc = 'desc',
 }

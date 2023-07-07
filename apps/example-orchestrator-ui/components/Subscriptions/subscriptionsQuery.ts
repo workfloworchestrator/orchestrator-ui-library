@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { SortDirection } from '@orchestrator-ui/orchestrator-ui-components';
+import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
 
 export const SUBSCRIPTION_ID = 'subscriptionId';
 export const DESCRIPTION = 'description';
@@ -56,11 +56,11 @@ export type SubscriptionsQueryVariables = {
 
 export type SubscriptionsSort = {
     field: string;
-    order: SortDirection;
+    order: SortOrder;
 };
 
 export const DEFAULT_SORT_FIELD: keyof Subscription = 'startDate';
-export const DEFAULT_SORT_ORDER: SortDirection = SortDirection.Desc;
+export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.Desc;
 export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort = {
     field: DEFAULT_SORT_FIELD,
     order: DEFAULT_SORT_ORDER,

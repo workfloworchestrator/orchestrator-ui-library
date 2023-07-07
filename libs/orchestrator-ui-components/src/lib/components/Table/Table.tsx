@@ -29,20 +29,23 @@ export const Table = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: TableProps<T>) => (
-    <EuiBasicTable
-        items={data}
-        columns={mapTableColumnsToEuiColumns(
-            columns,
-            hiddenColumns,
-            dataSorting,
-            onDataSort,
-        )}
-        pagination={pagination}
-        onChange={onCriteriaChange}
-        loading={isLoading}
-    />
-);
+}: TableProps<T>) => {
+    console.log(pagination);
+    return (
+        <EuiBasicTable
+            items={data}
+            columns={mapTableColumnsToEuiColumns(
+                columns,
+                hiddenColumns,
+                dataSorting,
+                onDataSort,
+            )}
+            pagination={pagination}
+            onChange={onCriteriaChange}
+            loading={isLoading}
+        />
+    );
+};
 
 function mapTableColumnsToEuiColumns<T>(
     columns: TableColumns<T>,

@@ -1,5 +1,5 @@
 import { determinePageIndex, determineNewSortOrder } from './tableUtils';
-import { SortDirection } from './columns';
+import { SortOrder } from '../../types';
 
 describe('tableUtils', () => {
     describe('determinePageIndex()', () => {
@@ -27,7 +27,7 @@ describe('tableUtils', () => {
 
         it('returns SortDirection.Asc when sorting on a new column', () => {
             const currentSortColumnId = 'column1';
-            const currentSortDirection = SortDirection.Asc;
+            const currentSortDirection = SortOrder.Asc;
             const newSortColumnId = 'column2';
 
             const result = determineNewSortOrder<typeof testData>(
@@ -36,12 +36,12 @@ describe('tableUtils', () => {
                 newSortColumnId,
             );
 
-            expect(result).toEqual(SortDirection.Asc);
+            expect(result).toEqual(SortOrder.Asc);
         });
 
         it('returns SortDirection.Asc when sorting on the same column with SortDirection.Desc', () => {
             const currentSortColumnId = 'column1';
-            const currentSortDirection = SortDirection.Desc;
+            const currentSortDirection = SortOrder.Desc;
             const newSortColumnId = 'column1';
 
             const result = determineNewSortOrder<typeof testData>(
@@ -50,12 +50,12 @@ describe('tableUtils', () => {
                 newSortColumnId,
             );
 
-            expect(result).toEqual(SortDirection.Asc);
+            expect(result).toEqual(SortOrder.Asc);
         });
 
         it('returns SortDirection.Desc when sorting on the same column with SortDirection.Asc', () => {
             const currentSortColumnId = 'column1';
-            const currentSortDirection = SortDirection.Desc;
+            const currentSortDirection = SortOrder.Desc;
             const newSortColumnId = 'column1';
 
             const result = determineNewSortOrder<typeof testData>(
@@ -64,7 +64,7 @@ describe('tableUtils', () => {
                 newSortColumnId,
             );
 
-            expect(result).toEqual(SortDirection.Asc);
+            expect(result).toEqual(SortOrder.Asc);
         });
     });
 });

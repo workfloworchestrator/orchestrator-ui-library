@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { SortDirection } from '@orchestrator-ui/orchestrator-ui-components';
+import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
 import type {
     GraphQlResultPageInfo,
     Product,
@@ -13,7 +13,7 @@ export type ProductsResult = {
 };
 
 export const DEFAULT_SORT_FIELD: keyof Product = 'name';
-export const DEFAULT_SORT_ORDER: SortDirection = SortDirection.Desc;
+export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.Desc;
 
 export const GET_PRODUCTS_GRAPHQL_QUERY: string = gql`
     query MetadataProducts($first: Int!, $after: Int!) {

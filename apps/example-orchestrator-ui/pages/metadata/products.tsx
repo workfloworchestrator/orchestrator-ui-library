@@ -4,23 +4,22 @@ import { useDataDisplayParams } from '@orchestrator-ui/orchestrator-ui-component
 
 import type { Product } from '@orchestrator-ui/orchestrator-ui-components';
 
-const DEFAULT_PRODUCT_PAGE_SIZE = 10;
+import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
 
 const ProductsPageContent = () => {
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<Product>({
-            pageSize: DEFAULT_PRODUCT_PAGE_SIZE,
-            pageIndex: 1,
+            sortBy: {
+                field: 'name',
+                order: SortOrder.Asc,
+            },
         });
 
     return (
-        <>
-            <div>METADATA PRODUCTS</div>
-            <Products
-                dataDisplayParams={dataDisplayParams}
-                setDataDisplayParam={setDataDisplayParam}
-            />
-        </>
+        <Products
+            dataDisplayParams={dataDisplayParams}
+            setDataDisplayParam={setDataDisplayParam}
+        />
     );
 };
 

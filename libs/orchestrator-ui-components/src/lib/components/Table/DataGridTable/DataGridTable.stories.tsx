@@ -1,6 +1,7 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { DataSorting, SortDirection } from './dataGridColumns';
+import { DataSorting } from './columns';
+import { SortOrder } from '../../types';
 import { DataGridTable } from './DataGridTable';
 
 const extractedArr = (arr, start, howMany) =>
@@ -39,7 +40,7 @@ const TableWithEvents = (args) => {
         const sortData = args.data.sort((a, b) => {
             const aColumn = a[dataSorting.columnId];
             const bColumn = b[dataSorting.columnId];
-            if (dataSorting.sortDirection === SortDirection.Asc) {
+            if (dataSorting.sortDirection === SortOrder.Asc) {
                 return aColumn > bColumn ? 1 : bColumn > aColumn ? -1 : 0;
             }
             return bColumn > aColumn ? 1 : aColumn > bColumn ? -1 : 0;

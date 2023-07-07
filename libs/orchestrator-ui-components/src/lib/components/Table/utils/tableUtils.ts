@@ -1,18 +1,18 @@
-import { SortDirection } from './columns';
+import { SortOrder } from '../../types';
 
 export const determinePageIndex = (pageIndex: number, pageSize: number) =>
     Math.floor(pageIndex / pageSize);
 
 export const determineNewSortOrder = <T>(
     currentSortColumnId: keyof T,
-    currentSortDirection: SortDirection,
+    currentSortOrder: SortOrder,
     newSortColumnId: keyof T,
-): SortDirection => {
+): SortOrder => {
     if (currentSortColumnId === newSortColumnId) {
-        return currentSortDirection === SortDirection.Asc
-            ? SortDirection.Desc
-            : SortDirection.Asc;
+        return currentSortOrder === SortOrder.Asc
+            ? SortOrder.Desc
+            : SortOrder.Asc;
     }
 
-    return SortDirection.Asc;
+    return SortOrder.Asc;
 };
