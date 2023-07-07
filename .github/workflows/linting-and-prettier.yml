@@ -29,7 +29,6 @@ jobs:
             - run: yarn run tsc:orchestrator-ui-components
             - run: yarn run lint:example-orchestrator-ui
             - run: yarn run lint:orchestrator-ui-components
-            - run: yarn run lint:example-orchestrator-ui-e2e
             - run: yarn run prettier
 
     unit-tests:
