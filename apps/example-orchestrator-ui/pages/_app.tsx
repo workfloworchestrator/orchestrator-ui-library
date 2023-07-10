@@ -64,7 +64,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 <OrchestratorConfigProvider
                     initialOrchestratorConfig={initialOrchestratorConfig}
                 >
-                    <QueryClientProvider client={queryClient}>
+                    <QueryClientProvider
+                        client={queryClient}
+                        contextSharing={true}
+                    >
                         <OrchestratorPageTemplate
                             getAppLogo={getAppLogo}
                             routeTo={router.push}

@@ -14,6 +14,6 @@ describe('getTypedFieldFromObject', () => {
 
     it('should return undefined when field does not exist in object', () => {
         const field_value = getTypedFieldFromObject('test', test_object);
-        expect(field_value).toBeUndefined();
+        expect(field_value).toBeNull();
     });
 });

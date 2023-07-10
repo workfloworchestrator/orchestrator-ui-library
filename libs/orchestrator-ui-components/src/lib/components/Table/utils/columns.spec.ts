@@ -1,5 +1,5 @@
 import { getSortDirectionFromString } from './columns';
-import { SortOrder } from '../../types';
+import { SortOrder } from '../../../types';
 
 describe('columns', () => {
     describe('getSortOrderFromString', () => {
@@ -9,11 +9,11 @@ describe('columns', () => {
         });
         it('returns SortDirection.Asc if sortOrder is "asc"', () => {
             const result = getSortDirectionFromString('asc');
-            expect(result).toEqual(SortOrder.Asc);
+            expect(result).toEqual(SortOrder.ASC);
         });
         it('returns SortDirection.Desc if sortOrder is "desc"', () => {
             const result = getSortDirectionFromString('desc');
-            expect(result).toEqual(SortOrder.Desc);
+            expect(result).toEqual(SortOrder.DESC);
         });
         it('returns undefined if sortOrder is anything other than "asc" or "desc', () => {
             const result = getSortDirectionFromString('somethingElse');

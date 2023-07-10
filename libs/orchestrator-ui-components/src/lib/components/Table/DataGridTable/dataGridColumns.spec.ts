@@ -107,7 +107,7 @@ describe('dataGridColumns', () => {
             expect(sorting.columns).toEqual([{ id: 'id', direction: 'asc' }]);
 
             sorting.onSort([{ id: 'id', direction: 'desc' }]);
-            expect(sortBy).toEqual({ columnId: 'id', sortDirection: 'desc' });
+            expect(sortBy).toEqual({ field: 'id', sortOrder: 'DESC' });
         });
     });
 });
