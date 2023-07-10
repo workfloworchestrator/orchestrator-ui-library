@@ -194,7 +194,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     >(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
-                first: pageSize,
+            first: pageSize,
             after: pageIndex,
             sortBy: sortedColumnId && {
                 field: sortedColumnId.toString(),

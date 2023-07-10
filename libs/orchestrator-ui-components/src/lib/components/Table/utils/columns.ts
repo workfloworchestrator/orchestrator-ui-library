@@ -1,6 +1,6 @@
 import { EuiBasicTableColumn } from '@elastic/eui';
 import { ReactNode } from 'react';
-
+import { SortOrder } from '../../../types';
 // Todo need to Pick a few more props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 // https://github.com/workfloworchestrator/orchestrator-ui/issues/130
 export type BasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
@@ -29,28 +29,23 @@ export type TableColumnsWithControlColumns<T> = TableColumns<T> &
 
 export type TableColumnKeys<T> = Array<keyof T>;
 
-export enum SortDirection {
-    Asc = 'ASC',
-    Desc = 'DESC',
-}
-
 export type DataSorting<T> = {
     columnId: keyof T;
-    sortDirection: SortDirection;
+    sortDirection: SortOrder;
 };
 
 export const getSortDirectionFromString = (
     sortOrder?: string,
-): SortDirection | undefined => {
+): SortOrder | undefined => {
     if (!sortOrder) {
         return undefined;
     }
 
     switch (sortOrder.toUpperCase()) {
-        case SortDirection.Asc.toString():
-            return SortDirection.Asc;
-        case SortDirection.Desc.toString():
-            return SortDirection.Desc;
+        case SortOrder.ASC.toString():
+            return SortOrder.ASC;
+        case SortOrder.DESC.toString():
+            return SortOrder.DESC;
         default:
             return undefined;
     }

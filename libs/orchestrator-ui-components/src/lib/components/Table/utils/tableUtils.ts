@@ -1,10 +1,10 @@
 import type { Criteria } from '@elastic/eui';
+import { SortOrder } from '../../../types';
 
-import { SortOrder } from '../../types';
-
-import type { DataDisplayParams } from '../../hooks';
-
-import type { DataDisplayReturnValues } from '../../hooks';
+import type {
+    DataDisplayReturnValues,
+    DataDisplayParams,
+} from '../../../hooks';
 
 export const determinePageIndex = (pageIndex: number, pageSize: number) =>
     Math.floor(pageIndex / pageSize);

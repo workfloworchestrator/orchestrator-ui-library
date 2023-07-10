@@ -1,4 +1,5 @@
 import {
+    SortOrder,
     Table,
     getDataSortHandler,
     getPageSizeHandler,
@@ -109,8 +110,8 @@ export const Products: FC<ProductsProps> = ({
         : 0;
 
     const dataSorting: DataSorting<Product> = {
-        columnId: dataDisplayParams.sortBy?.field,
-        sortDirection: dataDisplayParams.sortBy?.order,
+        columnId: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
+        sortDirection: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     const pagination: Pagination = {

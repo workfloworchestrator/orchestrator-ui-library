@@ -6,7 +6,7 @@ import {
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
 import { DataSorting, TableColumnKeys } from '../utils/columns';
-import { SortOrder } from '../../types';
+import { SortOrder } from '../../../types';
 
 export type DataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {

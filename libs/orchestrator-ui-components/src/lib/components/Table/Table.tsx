@@ -11,7 +11,7 @@ import type {
 
 export type TableProps<T> = {
     data: T[];
-    columns: TableColumnsWithControlColumns<T>;
+    columns: TableColumnsWithControlColumns<T> | TableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
