@@ -13,7 +13,7 @@ export const SortDirectionIcon: FC<SortDirectionIconProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
 
-    return sortDirection === SortOrder.Asc ? (
+    return sortDirection === SortOrder.ASC ? (
         <ArrowNarrowUp
             color={theme.colors.subduedText}
             height={24}

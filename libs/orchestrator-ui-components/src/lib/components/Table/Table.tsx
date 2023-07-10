@@ -1,8 +1,8 @@
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { TableHeaderCell } from './TableHeaderCell';
-import React from 'react';
-import {
+
+import type {
     DataSorting,
     TableColumnKeys,
     TableColumns,
@@ -30,7 +30,6 @@ export const Table = <T,>({
     onCriteriaChange,
     onDataSort,
 }: TableProps<T>) => {
-    console.log(pagination);
     return (
         <EuiBasicTable
             items={data}

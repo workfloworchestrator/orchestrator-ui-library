@@ -11,7 +11,7 @@ const ProductsPageContent = () => {
         useDataDisplayParams<Product>({
             sortBy: {
                 field: 'name',
-                order: SortOrder.Asc,
+                order: SortOrder.ASC,
             },
         });
 

@@ -61,7 +61,7 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
               {
                   id: columnSort.columnId?.toString() ?? '',
                   direction:
-                      columnSort.sortDirection === SortOrder.Asc
+                      columnSort.sortDirection === SortOrder.ASC
                           ? 'asc'
                           : 'desc',
               },
@@ -74,8 +74,8 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
                 columnId: lastSortData.id as keyof T,
                 sortDirection:
                     lastSortData.direction === 'asc'
-                        ? SortOrder.Asc
-                        : SortOrder.Desc,
+                        ? SortOrder.ASC
+                        : SortOrder.DESC,
             });
         }
     },

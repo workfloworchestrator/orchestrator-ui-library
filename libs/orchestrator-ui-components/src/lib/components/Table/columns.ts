@@ -28,10 +28,10 @@ export const getSortDirectionFromString = (
     }
 
     switch (sortOrder.toUpperCase()) {
-        case SortOrder.Asc.toString():
-            return SortOrder.Asc;
-        case SortOrder.Desc.toString():
-            return SortOrder.Desc;
+        case SortOrder.ASC.toString():
+            return SortOrder.ASC;
+        case SortOrder.DESC.toString():
+            return SortOrder.DESC;
         default:
             return undefined;
     }

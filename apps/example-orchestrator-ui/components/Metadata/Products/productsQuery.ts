@@ -13,11 +13,15 @@ export type ProductsResult = {
 };
 
 export const DEFAULT_SORT_FIELD: keyof Product = 'name';
-export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.Desc;
+export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.DESC;
 
 export const GET_PRODUCTS_GRAPHQL_QUERY: string = gql`
-    query MetadataProducts($first: Int!, $after: Int!) {
-        products(first: $first, after: $after) {
+    query MetadataProducts(
+        $first: Int!
+        $after: Int!
+        $sortBy: [GraphqlSort!]
+    ) {
+        products(first: $first, after: $after, sortBy: $sortBy) {
             page {
                 name
                 description

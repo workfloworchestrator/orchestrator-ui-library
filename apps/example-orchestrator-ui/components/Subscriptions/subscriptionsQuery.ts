@@ -60,7 +60,7 @@ export type SubscriptionsSort = {
 };
 
 export const DEFAULT_SORT_FIELD: keyof Subscription = 'startDate';
-export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.Desc;
+export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.DESC;
 export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort = {
     field: DEFAULT_SORT_FIELD,
     order: DEFAULT_SORT_ORDER,

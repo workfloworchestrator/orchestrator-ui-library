@@ -144,8 +144,8 @@ interface ProductBlock {
 export type Field<Type> = keyof Type;
 
 export enum SortOrder {
-    Asc = 'asc',
-    Desc = 'desc',
+    ASC = 'ASC',
+    DESC = 'DESC',
 }
 
 export type GraphQLSort<Type> = {

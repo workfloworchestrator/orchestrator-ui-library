@@ -1,22 +1,8 @@
 import {
-    Loading,
-    SortOrder,
     Table,
+    getDataSortHandler,
+    getPageSizeHandler,
 } from '@orchestrator-ui/orchestrator-ui-components';
-
-import {
-    TableColumns,
-    DataSorting,
-    DEFAULT_PAGE_SIZES,
-} from '@orchestrator-ui/orchestrator-ui-components';
-import {
-    useStringQueryWithGraphql,
-    determinePageIndex,
-} from '@orchestrator-ui/orchestrator-ui-components';
-
-import { FC } from 'react';
-import { EuiSpacer } from '@elastic/eui';
-import { Criteria, Pagination } from '@elastic/eui';
 
 import type {
     DataDisplayParams,
@@ -24,9 +10,22 @@ import type {
     GraphqlQueryVariables,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { ProductsResult, GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
+import {
+    TableColumns,
+    DataSorting,
+    DEFAULT_PAGE_SIZES,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
-import { determineNewSortOrder } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    useStringQueryWithGraphql,
+    determinePageIndex,
+} from '@orchestrator-ui/orchestrator-ui-components';
+
+import { FC } from 'react';
+import { EuiSpacer } from '@elastic/eui';
+import { Pagination } from '@elastic/eui';
+
+import { ProductsResult, GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
 
 export const PRODUCT_FIELD_NAME: keyof Product = 'name';
 export const PRODUCT_FIELD_DESCRIPTION: keyof Product = 'description';
@@ -108,41 +107,6 @@ export const Products: FC<ProductsProps> = ({
         true,
     );
 
-    if (isFetching) {
-        return <Loading />;
-    }
-
-    const handleDataSort = (newSortColumnId: keyof Product) => {
-        const newOrder = (() => {
-            if (
-                dataDisplayParams.sortBy &&
-                dataDisplayParams.sortBy.order &&
-                dataDisplayParams.sortBy.field
-            ) {
-                return determineNewSortOrder<Product>(
-                    dataDisplayParams.sortBy?.field,
-                    dataDisplayParams.sortBy?.order,
-                    newSortColumnId,
-                );
-            } else {
-                return SortOrder.Asc;
-            }
-        })();
-
-        setDataDisplayParam('sortBy', {
-            field: newSortColumnId,
-            order: newOrder,
-        });
-    };
-
-    const handlePageSizeChange = ({ page }: Criteria<Product>) => {
-        if (page) {
-            const { index, size } = page;
-            setDataDisplayParam('pageSize', size);
-            setDataDisplayParam('pageIndex', index);
-        }
-    };
-
     const totalItemCount = data
         ? parseInt(data.products.pageInfo.totalItems)
         : 0;
@@ -170,10 +134,15 @@ export const Products: FC<ProductsProps> = ({
                 columns={tableColumns}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
-                onDataSort={handleDataSort}
+                onDataSort={getDataSortHandler<Product>(
+                    dataDisplayParams,
+                    setDataDisplayParam,
+                )}
                 pagination={pagination}
                 isLoading={isFetching}
-                onCriteriaChange={handlePageSizeChange}
+                onCriteriaChange={getPageSizeHandler<Product>(
+                    setDataDisplayParam,
+                )}
             />
         </>
     );

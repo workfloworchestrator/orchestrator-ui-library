@@ -15,9 +15,17 @@ export type DataDisplayParams<Type> = {
     filterBy?: GraphqlFilter<Type>[];
 };
 
+export interface DataDisplayReturnValues<Type> {
+    dataDisplayParams: DataDisplayParams<Type>;
+    setDataDisplayParam: <PropKey extends keyof DataDisplayParams<Type>>(
+        prop: PropKey,
+        value: DataDisplayParams<Type>[PropKey],
+    ) => void;
+}
+
 export const useDataDisplayParams = <Type>(
     initialParams: Partial<DataDisplayParams<Type>>,
-) => {
+): DataDisplayReturnValues<Type> => {
     const defaultParams = {
         pageSize: DEFAULT_PAGE_SIZE,
         pageIndex: 0,
@@ -37,12 +45,9 @@ export const useDataDisplayParams = <Type>(
         ),
     });
 
-    // https://simondosda.github.io/posts/2021-06-17-interface-property-type.html
-    const setDataDisplayParam = <
-        DisplayParamKey extends keyof DataDisplayParams<Type>,
-    >(
-        prop: DisplayParamKey,
-        value: DataDisplayParams<Type>[DisplayParamKey],
+    const setDataDisplayParam = <PropKey extends keyof DataDisplayParams<Type>>(
+        prop: PropKey,
+        value: DataDisplayParams<Type>[PropKey],
     ) => {
         setDataDisplayParams((lastParams) => {
             return {
