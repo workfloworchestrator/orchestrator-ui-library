@@ -125,7 +125,7 @@ export const Products: FC<ProductsProps> = ({
         <>
             <EuiSpacer size="m" />
             <Table
-                data={data ? mapApiResponseToSubscriptionTableData(data) : []}
+                data={data ? mapApiResponseToProductTableData(data) : []}
                 columns={tableColumns}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
@@ -143,28 +143,12 @@ export const Products: FC<ProductsProps> = ({
     );
 };
 
-function mapApiResponseToSubscriptionTableData(
+function mapApiResponseToProductTableData(
     graphqlResponse: ProductsResult,
 ): Product[] {
     return graphqlResponse.products.page.map((product): Product => {
-        const {
-            description,
-            name,
-            tag,
-            productType,
-            status,
-            productBlocks,
-            createdAt,
-        } = product;
-
         return {
-            description,
-            name,
-            tag,
-            productType,
-            status,
-            productBlocks,
-            createdAt,
+            ...product,
         };
     });
 }
