@@ -4,7 +4,9 @@ import {
     EuiDataGridControlColumn,
     EuiDataGridSorting,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { DataSorting, SortDirection, TableColumnKeys } from '../utils/columns';
+
+import { DataSorting, TableColumnKeys } from '../utils/columns';
+import { SortOrder } from '../../../types';
 
 export type DataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
@@ -57,11 +59,9 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
     columns: columnSort
         ? [
               {
-                  id: columnSort.columnId.toString(),
+                  id: columnSort.field?.toString() ?? '',
                   direction:
-                      columnSort.sortDirection === SortDirection.Asc
-                          ? 'asc'
-                          : 'desc',
+                      columnSort.sortOrder === SortOrder.ASC ? 'asc' : 'desc',
               },
           ]
         : [],
@@ -69,11 +69,11 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
         const lastSortData = columns.slice(-1)[0];
         if (updateColumnSort && lastSortData) {
             updateColumnSort({
-                columnId: lastSortData.id as keyof T,
-                sortDirection:
+                field: lastSortData.id as keyof T,
+                sortOrder:
                     lastSortData.direction === 'asc'
-                        ? SortDirection.Asc
-                        : SortDirection.Desc,
+                        ? SortOrder.ASC
+                        : SortOrder.DESC,
             });
         }
     },

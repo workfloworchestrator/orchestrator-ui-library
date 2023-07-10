@@ -1,15 +1,18 @@
 import { useContext } from 'react';
-import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { GraphQLClient, request } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { Variables } from 'graphql-request/build/cjs/types';
 
+import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+
 export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
 ) => {
-    const { graphqlEndpoint } = useContext(OrchestratorConfigContext);
+    const { graphqlEndpointPythia: graphqlEndpoint } = useContext(
+        OrchestratorConfigContext,
+    );
     const graphQLClient = new GraphQLClient(graphqlEndpoint);
 
     const fetchFromGraphql = async () => {
@@ -29,15 +32,20 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 export const useStringQueryWithGraphql = <T, U extends Variables>(
     query: string,
     queryVars: U,
+    queryKey: string,
+    useCoreConnection = false,
 ) => {
-    const { graphqlEndpoint } = useContext(OrchestratorConfigContext);
+    const { graphqlEndpointPythia, graphqlEndpointCore } = useContext(
+        OrchestratorConfigContext,
+    );
+
+    const graphqlEndpoint = useCoreConnection
+        ? graphqlEndpointCore
+        : graphqlEndpointPythia;
 
     const fetchFromGraphql = async () => {
         return await request<T>(graphqlEndpoint, query, queryVars);
     };
 
-    return useQuery(
-        ['subscriptions', ...Object.values(queryVars)],
-        fetchFromGraphql,
-    );
+    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql);
 };

@@ -1,8 +1,8 @@
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { TableHeaderCell } from './TableHeaderCell';
-import React from 'react';
-import {
+
+import type {
     DataSorting,
     TableColumnKeys,
     TableColumns,
@@ -11,7 +11,7 @@ import {
 
 export type TableProps<T> = {
     data: T[];
-    columns: TableColumnsWithControlColumns<T>;
+    columns: TableColumnsWithControlColumns<T> | TableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: DataSorting<T>;
     pagination: Pagination;
@@ -29,20 +29,22 @@ export const Table = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: TableProps<T>) => (
-    <EuiBasicTable
-        items={data}
-        columns={mapTableColumnsToEuiColumns(
-            columns,
-            hiddenColumns,
-            dataSorting,
-            onDataSort,
-        )}
-        pagination={pagination}
-        onChange={onCriteriaChange}
-        loading={isLoading}
-    />
-);
+}: TableProps<T>) => {
+    return (
+        <EuiBasicTable
+            items={data}
+            columns={mapTableColumnsToEuiColumns(
+                columns,
+                hiddenColumns,
+                dataSorting,
+                onDataSort,
+            )}
+            pagination={pagination}
+            onChange={onCriteriaChange}
+            loading={isLoading}
+        />
+    );
+};
 
 function mapTableColumnsToEuiColumns<T>(
     columns: TableColumns<T>,
@@ -60,9 +62,7 @@ function mapTableColumnsToEuiColumns<T>(
         const { name } = column;
 
         const sortDirection =
-            dataSorting?.columnId === colKey
-                ? dataSorting.sortDirection
-                : undefined;
+            dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
 
         const handleClick = () => onDataSort?.(typedColumnKey);
 

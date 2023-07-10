@@ -4,7 +4,6 @@ import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext
 import { ItemsList } from '../types';
 
 async function getFavouriteSubscriptions(apiUrl: string) {
-    console.log('api url', apiUrl);
     const response = await fetch(apiUrl + '/subscriptions/?range=10%2C15');
     return await response.json();
 }

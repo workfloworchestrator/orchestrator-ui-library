@@ -7,64 +7,112 @@ export interface OrchestratorSidebarProps {
 
 export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
     routeTo,
-}) => (
-    <EuiSideNav
-        mobileTitle="Nav Items"
-        isOpenOnMobile={false}
-        items={[
-            {
-                renderItem: () => (
-                    <>
-                        <EuiButton
-                            onClick={(
-                                e: React.MouseEvent<
-                                    HTMLButtonElement | HTMLElement,
-                                    MouseEvent
-                                >,
-                            ) => {
+}) => {
+    return (
+        <EuiSideNav
+            mobileTitle="Nav Items"
+            isOpenOnMobile={false}
+            items={[
+                {
+                    renderItem: () => (
+                        <>
+                            <EuiButton
+                                onClick={(
+                                    e: React.MouseEvent<
+                                        HTMLButtonElement | HTMLElement,
+                                        MouseEvent
+                                    >,
+                                ) => {
+                                    e.preventDefault();
+                                    routeTo('/new-process');
+                                }}
+                                iconType="plus"
+                                fullWidth
+                            >
+                                New Process
+                            </EuiButton>
+                            <EuiSpacer size="m" />
+                        </>
+                    ),
+                    name: 'Menu',
+                    id: '1',
+                    items: [
+                        {
+                            name: 'Start',
+                            id: '2',
+                            onClick: (e) => {
                                 e.preventDefault();
-                                routeTo('/new-process');
-                            }}
-                            iconType="plus"
-                            fullWidth
-                        >
-                            New Process
-                        </EuiButton>
-                        <EuiSpacer size="m" />
-                    </>
-                ),
-                name: 'Menu',
-                id: 1,
-                items: [
-                    {
-                        name: 'Start',
-                        id: 2,
-                        onClick: (e) => {
-                            e.preventDefault();
-                            routeTo('/');
+                                routeTo('/');
+                            },
+                            href: '/',
                         },
-                        href: '/',
-                    },
-                    {
-                        name: 'Subscriptions',
-                        id: 3,
-                        onClick: (e) => {
-                            e.preventDefault();
-                            routeTo('/subscriptions');
+                        {
+                            name: 'Subscriptions',
+                            id: '4',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                routeTo('/subscriptions');
+                            },
+                            href: '/subscriptions',
                         },
-                        href: '/subscriptions',
-                    },
-                    {
-                        name: 'Settings',
-                        id: 4,
-                        onClick: (e) => {
-                            e.preventDefault();
-                            routeTo('/settings');
+                        {
+                            name: 'Metadata',
+                            id: '5',
+                            items: [
+                                {
+                                    name: 'Products',
+                                    id: '5.1',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        routeTo('/metadata/products');
+                                    },
+                                },
+                                {
+                                    name: 'Productblocks',
+                                    id: '5.2',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        routeTo('/metadata/productblocks');
+                                    },
+                                },
+                                {
+                                    name: 'Resource types',
+                                    id: '5.3',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        routeTo('/metadata/resource-types');
+                                    },
+                                },
+                                {
+                                    name: 'Fixed inputs',
+                                    id: '5.4',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        routeTo('/metadata/fixed-inputs');
+                                    },
+                                },
+                                {
+                                    name: 'Workflows',
+                                    id: '5.5',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        routeTo('/metadata/workflows');
+                                    },
+                                },
+                            ],
                         },
-                        href: '/settings',
-                    },
-                ],
-            },
-        ]}
-    />
-);
+                        {
+                            name: 'Settings',
+                            id: '7',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                routeTo('/settings');
+                            },
+                            href: '/settings',
+                        },
+                    ],
+                },
+            ]}
+        />
+    );
+};

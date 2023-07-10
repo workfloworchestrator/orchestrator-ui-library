@@ -11,7 +11,7 @@ import {
     DEFAULT_SORT_FIELD,
     DEFAULT_SORT_ORDER,
     GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
-} from '../../components/Subscriptions/subscriptionQuery';
+} from '../../components/Subscriptions/subscriptionsQuery';
 import {
     defaultSubscriptionsTabs,
     getSortDirectionFromString,

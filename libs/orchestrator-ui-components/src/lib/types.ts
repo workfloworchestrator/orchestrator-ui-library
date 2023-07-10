@@ -100,19 +100,50 @@ export interface Process {
     is_task: boolean;
 }
 
+//// Utility types
+
+export interface GraphQlResultPageInfo {
+    totalItems: string;
+    startCursor: string;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    endCursor: string;
+}
+
 export interface Product {
     name: string;
-    tag: string;
     description: string;
-    product_id: string;
-    created_at: number;
-    product_type: string;
-    end_date: number;
+    tag: string;
+    productType: string;
     status: string;
-    fixed_inputs: [];
-    workflows: [];
-    product_blocks: [];
-    create_subscription_workflow_key: string;
-    modify_subscription_workflow_key: string;
-    terminate_subscription_workflow_key: string;
+    productBlocks: ProductBlock[];
+    createdAt: string;
 }
+
+interface ProductBlock {
+    name: string;
+}
+
+export type Field<Type> = keyof Type;
+
+export enum SortOrder {
+    ASC = 'ASC',
+    DESC = 'DESC',
+}
+
+export type GraphQLSort<Type> = {
+    field: keyof Type;
+    order: SortOrder;
+};
+
+export type GraphqlFilter<Type> = {
+    field: keyof Type;
+    value: string;
+};
+
+export type GraphqlQueryVariables<Type> = {
+    first: number;
+    after: number;
+    sortBy?: GraphQLSort<Type>;
+    filterBy?: GraphqlFilter<Type>[];
+};

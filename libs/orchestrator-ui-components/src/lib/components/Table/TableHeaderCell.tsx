@@ -1,9 +1,10 @@
 import React, { FC, ReactNode } from 'react';
-import { SortDirection } from './utils/columns';
+
+import { SortOrder } from '../../types';
 import { SortDirectionIcon } from './SortDirectionIcon';
 
 export type TableHeaderCellProps = {
-    sortDirection?: SortDirection;
+    sortDirection?: SortOrder;
     onClick?: () => void;
     children: ReactNode;
 };

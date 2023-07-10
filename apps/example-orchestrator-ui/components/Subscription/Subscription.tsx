@@ -14,7 +14,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { useQuery } from 'react-query';
-import { GRAPHQL_ENDPOINT } from '../../constants';
+import { GRAPHQL_ENDPOINT_PYTHIA } from '../../constants';
 import { GraphQLClient } from 'graphql-request';
 import {
     GET_SUBSCRIPTION_DETAIL_COMPLETE,
@@ -34,7 +34,7 @@ type SubscriptionProps = {
     subscriptionId: string;
 };
 
-const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT);
+const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_PYTHIA);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { subscriptionData, setSubscriptionData, loadingStatus } =

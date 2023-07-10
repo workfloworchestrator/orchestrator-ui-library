@@ -40,7 +40,7 @@ import {
     SubscriptionsResult,
     SubscriptionsSort,
     TAG,
-} from './subscriptionQuery';
+} from './subscriptionsQuery';
 import { Criteria, Pagination } from '@elastic/eui';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 
@@ -191,15 +191,19 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const { data, isFetching } = useStringQueryWithGraphql<
         SubscriptionsResult,
         SubscriptionsQueryVariables
-    >(GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT, {
-        first: pageSize,
-        after: pageIndex,
-        sortBy: sortedColumnId && {
-            field: sortedColumnId.toString(),
-            order: sortOrder.order,
+    >(
+        GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+        {
+            first: pageSize,
+            after: pageIndex,
+            sortBy: sortedColumnId && {
+                field: sortedColumnId.toString(),
+                order: sortOrder.order,
+            },
+            filterBy,
         },
-        filterBy,
-    });
+        'subscriptions',
+    );
 
     if (!sortedColumnId) {
         router.replace('/subscriptions');
@@ -211,8 +215,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }
 
     const dataSorting: DataSorting<Subscription> = {
-        columnId: sortedColumnId,
-        sortDirection: sortOrder.order,
+        field: sortedColumnId,
+        sortOrder: sortOrder.order,
     };
     const pagination: Pagination = {
         pageSize: pageSize,

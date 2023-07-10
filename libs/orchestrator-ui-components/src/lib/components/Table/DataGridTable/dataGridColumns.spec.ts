@@ -3,7 +3,8 @@ import {
     mapColumnSortToEuiDataGridSorting,
     DataGridTableColumns,
 } from './dataGridColumns';
-import { DataSorting, SortDirection } from '../utils/columns';
+import { DataSorting } from '../utils/columns';
+import { SortOrder } from '../../../types';
 
 interface TestColumn {
     id: string;
@@ -94,19 +95,19 @@ describe('dataGridColumns', () => {
     describe('columnSortToEuiDataGridSorting', () => {
         it('should return sort dict with columns and onsort', () => {
             const sortBy: DataSorting<TestColumn> = {
-                columnId: 'id',
-                sortDirection: SortDirection.Asc,
+                field: 'id',
+                sortOrder: SortOrder.ASC,
             };
             const onSort = (dataSorting: DataSorting<TestColumn>) => {
-                sortBy.columnId = dataSorting.columnId;
-                sortBy.sortDirection = dataSorting.sortDirection;
+                sortBy.field = dataSorting.field;
+                sortBy.sortOrder = dataSorting.sortOrder;
             };
 
             const sorting = mapColumnSortToEuiDataGridSorting(sortBy, onSort);
             expect(sorting.columns).toEqual([{ id: 'id', direction: 'asc' }]);
 
             sorting.onSort([{ id: 'id', direction: 'desc' }]);
-            expect(sortBy).toEqual({ columnId: 'id', sortDirection: 'DESC' });
+            expect(sortBy).toEqual({ field: 'id', sortOrder: 'DESC' });
         });
     });
 });

@@ -1,6 +1,6 @@
 // The final implementation of this component happens in a different story
 // @ts-nocheck
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { EuiHealth, EuiSearchBar } from '@elastic/eui';
 
 const tags = [
@@ -149,5 +149,5 @@ export const SearchBar = ({
     //     esQueryString = e.toString();
     // }
 
-    return <Fragment>{renderSearch()}</Fragment>;
+    return <>{renderSearch()}</>;
 };
