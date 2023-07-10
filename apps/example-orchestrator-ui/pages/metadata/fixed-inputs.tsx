@@ -1,4 +1,4 @@
-import { MetaDataLayout } from './layout';
+import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
 const FixedInputsPageContent = () => {
     return <div>METADATA Fixed inputs</div>;

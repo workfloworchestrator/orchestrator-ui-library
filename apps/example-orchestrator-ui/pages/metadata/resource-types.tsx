@@ -1,4 +1,4 @@
-import { MetaDataLayout } from './layout';
+import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
 const ResourceTypesPageContent = () => {
     return <div>METADATA RESOURCE TYPES</div>;
