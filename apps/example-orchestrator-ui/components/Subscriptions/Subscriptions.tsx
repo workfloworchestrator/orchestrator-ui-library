@@ -215,8 +215,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }
 
     const dataSorting: DataSorting<Subscription> = {
-        columnId: sortedColumnId,
-        sortDirection: sortOrder.order,
+        field: sortedColumnId,
+        sortOrder: sortOrder.order,
     };
     const pagination: Pagination = {
         pageSize: pageSize,

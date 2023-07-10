@@ -30,8 +30,8 @@ export type TableColumnsWithControlColumns<T> = TableColumns<T> &
 export type TableColumnKeys<T> = Array<keyof T>;
 
 export type DataSorting<T> = {
-    columnId: keyof T;
-    sortDirection: SortOrder;
+    field: keyof T;
+    sortOrder: SortOrder;
 };
 
 export const getSortDirectionFromString = (

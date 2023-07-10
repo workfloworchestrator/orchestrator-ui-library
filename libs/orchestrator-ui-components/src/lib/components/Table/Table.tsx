@@ -62,9 +62,7 @@ function mapTableColumnsToEuiColumns<T>(
         const { name } = column;
 
         const sortDirection =
-            dataSorting?.columnId === colKey
-                ? dataSorting.sortDirection
-                : undefined;
+            dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
 
         const handleClick = () => onDataSort?.(typedColumnKey);
 

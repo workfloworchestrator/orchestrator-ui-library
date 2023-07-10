@@ -35,13 +35,13 @@ export const getDataSortHandler = <Type>(
                 dataDisplayParams.sortBy.field
             ) {
                 return determineNewSortOrder<Type>(
-                    dataDisplayParams.sortBy?.field,
-                    dataDisplayParams.sortBy?.order,
+                    dataDisplayParams.sortBy.field,
+                    dataDisplayParams.sortBy.order,
                     newSortField,
                 );
-            } else {
-                return SortOrder.ASC;
             }
+
+            return SortOrder.ASC;
         })();
 
         setDataDisplayParam('sortBy', {

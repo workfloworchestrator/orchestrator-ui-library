@@ -110,8 +110,8 @@ export const Products: FC<ProductsProps> = ({
         : 0;
 
     const dataSorting: DataSorting<Product> = {
-        columnId: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
-        sortDirection: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
+        field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
+        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     const pagination: Pagination = {

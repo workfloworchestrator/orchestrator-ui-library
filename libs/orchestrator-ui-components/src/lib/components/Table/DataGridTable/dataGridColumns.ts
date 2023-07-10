@@ -59,11 +59,9 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
     columns: columnSort
         ? [
               {
-                  id: columnSort.columnId?.toString() ?? '',
+                  id: columnSort.field?.toString() ?? '',
                   direction:
-                      columnSort.sortDirection === SortOrder.ASC
-                          ? 'asc'
-                          : 'desc',
+                      columnSort.sortOrder === SortOrder.ASC ? 'asc' : 'desc',
               },
           ]
         : [],
@@ -71,8 +69,8 @@ export const mapColumnSortToEuiDataGridSorting = <T>(
         const lastSortData = columns.slice(-1)[0];
         if (updateColumnSort && lastSortData) {
             updateColumnSort({
-                columnId: lastSortData.id as keyof T,
-                sortDirection:
+                field: lastSortData.id as keyof T,
+                sortOrder:
                     lastSortData.direction === 'asc'
                         ? SortOrder.ASC
                         : SortOrder.DESC,
