@@ -104,10 +104,10 @@ describe('dataGridColumns', () => {
             };
 
             const sorting = mapColumnSortToEuiDataGridSorting(sortBy, onSort);
-            expect(sorting.columns).toEqual([{ id: 'id', direction: 'ASC' }]);
+            expect(sorting.columns).toEqual([{ id: 'id', direction: 'asc' }]);
 
             sorting.onSort([{ id: 'id', direction: 'desc' }]);
-            expect(sortBy).toEqual({ columnId: 'id', sortDirection: 'DESC' });
+            expect(sortBy).toEqual({ columnId: 'id', sortDirection: 'desc' });
         });
     });
 });
