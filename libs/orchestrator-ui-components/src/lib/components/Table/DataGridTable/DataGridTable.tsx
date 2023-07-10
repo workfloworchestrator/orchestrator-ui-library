@@ -100,7 +100,7 @@ export const DataGridTable = <T,>({
         id,
         width,
         headerCellRender: (props) => null,
-        rowCellRender: ({ rowIndex }) => {
+        rowCellRender: ({ rowIndex }: { rowIndex: number }) => {
             const { pageSize, pageIndex } = pagination;
             const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
