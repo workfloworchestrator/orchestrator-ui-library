@@ -47,15 +47,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                             href: '/',
                         },
                         {
-                            name: 'Processes',
-                            id: '3',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                alert('TODO');
-                            },
-                            href: '/',
-                        },
-                        {
                             name: 'Subscriptions',
                             id: '4',
                             onClick: (e) => {
@@ -75,7 +66,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                                         e.preventDefault();
                                         routeTo('/metadata/products');
                                     },
-                                    isSelected: true,
                                 },
                                 {
                                     name: 'Productblocks',
@@ -112,15 +102,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                             ],
                         },
                         {
-                            name: 'Tasks',
-                            id: '6',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                alert('TODO');
-                            },
-                            href: '/',
-                        },
-                        {
                             name: 'Settings',
                             id: '7',
                             onClick: (e) => {
@@ -128,15 +109,6 @@ export const OrchestratorSidebar: FC<OrchestratorSidebarProps> = ({
                                 routeTo('/settings');
                             },
                             href: '/settings',
-                        },
-                        {
-                            name: 'LIR prefixes',
-                            id: '8',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                alert('TODO');
-                            },
-                            href: '/',
                         },
                     ],
                 },

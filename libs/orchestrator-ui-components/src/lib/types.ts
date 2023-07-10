@@ -100,23 +100,6 @@ export interface Process {
     is_task: boolean;
 }
 
-export interface ProductTEMP {
-    name: string;
-    tag: string;
-    description: string;
-    product_id: string;
-    created_at: number;
-    product_type: string;
-    end_date: number;
-    status: string;
-    fixed_inputs: [];
-    workflows: [];
-    product_blocks: [];
-    create_subscription_workflow_key: string;
-    modify_subscription_workflow_key: string;
-    terminate_subscription_workflow_key: string;
-}
-
 //// Utility types
 
 export interface GraphQlResultPageInfo {
