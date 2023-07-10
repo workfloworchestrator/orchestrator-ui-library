@@ -15,7 +15,8 @@ interface ListStartPage {
 
 export default function ListStartPage({ list }: ListStartPage): ReactElement {
     return (
-        list && (
+        list &&
+        list.items && (
             <EuiFlexItem style={{ minWidth: 300 }}>
                 <EuiPanel hasShadow={false} hasBorder={true} paddingSize="l">
                     <p style={{ fontWeight: 600 }}>{list.title}</p>
