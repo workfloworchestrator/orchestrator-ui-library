@@ -16,10 +16,7 @@ import {
     DEFAULT_PAGE_SIZES,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import {
-    useStringQueryWithGraphql,
-    determinePageIndex,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { useStringQueryWithGraphql } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { FC } from 'react';
 import { EuiSpacer } from '@elastic/eui';
@@ -99,7 +96,7 @@ export const Products: FC<ProductsProps> = ({
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex,
+            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy: dataDisplayParams.sortBy,
             filterBy: dataDisplayParams.filterBy,
         },
@@ -118,10 +115,7 @@ export const Products: FC<ProductsProps> = ({
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
-        pageIndex: determinePageIndex(
-            dataDisplayParams.pageIndex,
-            dataDisplayParams.pageSize,
-        ),
+        pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItemCount,
     };
