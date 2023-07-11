@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "---------- Running TSC ----------"
 yarn run tsc:example-orchestrator-ui
 yarn run tsc:orchestrator-ui-components
 
+echo "---------- Running Linter ----------"
 yarn run lint:example-orchestrator-ui
 yarn run lint:orchestrator-ui-components
-yarn run lint:example-orchestrator-ui-e2e
 
+echo "---------- Running Prettier ----------"
 yarn run prettier

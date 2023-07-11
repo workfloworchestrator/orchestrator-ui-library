@@ -1,4 +1,4 @@
-import { MetaDataLayout } from './layout';
+import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 import { Products } from '../../components/Metadata/Products/Products';
 import { useDataDisplayParams } from '@orchestrator-ui/orchestrator-ui-components';
 

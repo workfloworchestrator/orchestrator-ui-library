@@ -1,4 +1,4 @@
-import { MetaDataLayout } from './layout';
+import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
 const ProductBlocksPageContent = () => {
     return <div>METADATA PRODUCT BLOCKS</div>;

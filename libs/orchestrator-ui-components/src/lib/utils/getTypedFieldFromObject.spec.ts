@@ -12,7 +12,7 @@ describe('getTypedFieldFromObject', () => {
         expect(field).toEqual('name');
     });
 
-    it('should return undefined when field does not exist in object', () => {
+    it('should return null when field does not exist in object', () => {
         const field_value = getTypedFieldFromObject('test', test_object);
         expect(field_value).toBeNull();
     });

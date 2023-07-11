@@ -1,4 +1,4 @@
-import { MetaDataLayout } from './layout';
+import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
 const WorkflowsPageContent = () => {
     return <div>METADATA WORKFLOWS</div>;
