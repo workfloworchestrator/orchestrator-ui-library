@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
@@ -28,6 +28,7 @@ export const useEngineStatusQuery = () => {
 
 export const useEngineStatusMutation = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
+    const queryClient = useQueryClient();
 
     const setEngineStatus = async (data: EngineStatusPayload) => {
         const response = await fetch(engineStatusEndpoint, {
@@ -40,5 +41,12 @@ export const useEngineStatusMutation = () => {
         return (await response.json()) as EngineStatus;
     };
 
-    return useMutation('engineStatus', setEngineStatus);
+    return useMutation('engineStatus', setEngineStatus, {
+        onMutate: () => {
+            queryClient.setQueryData(['engineStatus'], null); // Set loading state of the button
+        },
+        onSuccess: (data: EngineStatus) => {
+            queryClient.setQueryData(['engineStatus'], data); // Set global status
+        },
+    });
 };

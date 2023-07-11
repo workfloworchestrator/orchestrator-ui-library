@@ -16,6 +16,13 @@ async function getRecentProcesses(apiUrl: string) {
     return await response.json();
 }
 
+export type CacheNames = { [key: string]: string };
+
+async function getCacheNames(apiUrl: string) {
+    const response = await fetch(apiUrl + '/settings/cache-names');
+    return (await response.json()) as CacheNames;
+}
+
 export const useFavouriteSubscriptions = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const { data, isLoading } = useQuery(['favouriteSubscriptions'], () =>
@@ -74,4 +81,10 @@ export const useRecentProcesses = () => {
               ...initialData,
               items: data,
           };
+};
+export const useCacheNames = () => {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    return useQuery(['cacheNames'], () =>
+        getCacheNames(orchestratorApiBaseUrl),
+    );
 };
