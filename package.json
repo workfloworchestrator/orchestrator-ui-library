@@ -58,7 +58,7 @@
         "@nrwl/react": "15.4.5",
         "@nrwl/storybook": "15.4.5",
         "@nrwl/web": "15.4.5",
-        "@nrwl/workspace": "15.4.5",
+        "@nrwl/workspace": "16.5.1",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@rollup/plugin-url": "^7.0.0",
         "@storybook/addon-essentials": "^6.5.15",
