@@ -1,5 +1,13 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "0.0.1-alpha.17",
-    "main": "./src/index.ts"
+    "version": "0.0.1-alpha.18",
+    "main": "./src/index.ts",
+    "peerDependencies": {
+        "react-query": "3.39.3",
+        "@elastic/eui": "77.2.2",
+        "react": "18.2.0",
+        "@emotion/react": "11.11.1",
+        "next": "13.3.0",
+        "graphql-request": "5.2.0"
+    }
 }
