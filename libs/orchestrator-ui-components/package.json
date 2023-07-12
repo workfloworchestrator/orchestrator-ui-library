@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "0.0.1-alpha.17",
+    "version": "0.0.1-alpha.18",
     "main": "./src/index.ts",
     "peerDependencies": {
         "react-query": "3.39.3",
