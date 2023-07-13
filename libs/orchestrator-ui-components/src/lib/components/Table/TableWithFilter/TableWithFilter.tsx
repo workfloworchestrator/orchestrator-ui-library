@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Criteria,
     EuiButton,
@@ -22,7 +22,7 @@ import {
 } from '../TableSettingsModal';
 import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
-import { DEFAULT_PAGE_SIZES } from '../utils/constants';
+import { DEFAULT_PAGE_SIZES, DEFAULT_PAGE_SIZE } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     getTableConfigFromLocalStorage,
@@ -30,6 +30,8 @@ import {
 } from '../utils/tableConfigPersistence';
 
 export type TableWithFilterProps<T> = {
+    __filterQuery?: string; // Deprecated Pythia related way of passing querystring
+    __setFilterQuery?: (updatedFilterQuery: string) => void; // Deprecated Pythia related way of setting querystring
     data: T[];
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
@@ -37,18 +39,17 @@ export type TableWithFilterProps<T> = {
     defaultHiddenColumns: TableColumnKeys<T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
-    filterQuery: string;
-    isInvalidFilterQuery: boolean;
+    esQueryString?: string;
     isLoading: boolean;
     localStorageKey: string;
-    onUpdateFilterQuery: (updatedFilterQuery: string) => void;
-    onCriteriaChange: ({ page }: Criteria<T>) => void;
-    onUpdatePageSize: (updatedPageSize: number) => void;
-    onResetPageSize: () => void;
+    onUpdateEsQueryString: (esQueryString: string) => void;
+    onUpdatePageSize: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
 };
 
 export const TableWithFilter = <T,>({
+    __filterQuery,
+    __setFilterQuery,
     data,
     tableColumns,
     leadingControlColumns,
@@ -56,23 +57,22 @@ export const TableWithFilter = <T,>({
     defaultHiddenColumns,
     dataSorting,
     pagination,
-    filterQuery,
-    isInvalidFilterQuery,
+    esQueryString,
     isLoading,
     localStorageKey,
-    onUpdateFilterQuery,
-    onCriteriaChange,
+    onUpdateEsQueryString,
     onUpdatePageSize,
-    onResetPageSize,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
     const tableConfigFromLocalStorage =
         getTableConfigFromLocalStorage<T>(localStorageKey);
+
     const initialHiddenColumns =
         tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
 
     const [hiddenColumns, setHiddenColumns] =
         useState<TableColumnKeys<T>>(initialHiddenColumns);
+
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
     const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
@@ -102,14 +102,20 @@ export const TableWithFilter = <T,>({
             hiddenColumns: updatedHiddenColumns,
             selectedPageSize: updatedTableConfig.selectedPageSize,
         });
-        onUpdatePageSize(updatedTableConfig.selectedPageSize);
+        onUpdatePageSize({
+            index: 0,
+            size: updatedTableConfig.selectedPageSize,
+        });
     };
 
     const handleResetToDefaults = () => {
         setHiddenColumns(defaultHiddenColumns);
         setShowSettingsModal(false);
         clearTableConfigFromLocalStorage(localStorageKey);
-        onResetPageSize();
+        onUpdatePageSize({
+            index: 0,
+            size: DEFAULT_PAGE_SIZE,
+        });
     };
 
     return (
@@ -117,9 +123,10 @@ export const TableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <SearchField
-                        filterQuery={filterQuery}
-                        onUpdateFilterQuery={onUpdateFilterQuery}
-                        isInvalid={isInvalidFilterQuery}
+                        __filterQuery={__filterQuery}
+                        __setFilterQuery={__setFilterQuery}
+                        esQueryString={esQueryString}
+                        onUpdateEsQueryString={onUpdateEsQueryString}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
@@ -135,7 +142,11 @@ export const TableWithFilter = <T,>({
                 onDataSort={onUpdateDataSort}
                 pagination={pagination}
                 isLoading={isLoading}
-                onCriteriaChange={onCriteriaChange}
+                onCriteriaChange={(criterion: Criteria<T>) => {
+                    if (criterion.page) {
+                        onUpdatePageSize(criterion.page);
+                    }
+                }}
             />
 
             {showSettingsModal && (

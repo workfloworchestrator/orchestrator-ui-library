@@ -21,14 +21,13 @@ import {
     TableWithFilter,
     TableColumnKeys,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
-    GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES,
     GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
     INSYNC,
     NOTE,
@@ -41,7 +40,7 @@ import {
     SubscriptionsSort,
     TAG,
 } from './subscriptionsQuery';
-import { Criteria, Pagination } from '@elastic/eui';
+import { Pagination } from '@elastic/eui';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 
 const COLUMN_LABEL_ID = 'ID';
@@ -57,7 +56,6 @@ const COLUMN_LABEL_NOTE = 'Note';
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
-const defaultPageSize = GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first;
 
 type Subscription = {
     subscriptionId: string;
@@ -181,8 +179,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const filterQueryTupleArray =
         esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
         [];
-    const queryContainsInvalidParts =
-        filterQueryTupleArray?.includes(undefined);
 
     const filterBy = filterQueryTupleArray
         .concat(alwaysOnFilters)
@@ -235,30 +231,24 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         });
 
-    const handleCriteriaChange = ({ page }: Criteria<Subscription>) => {
-        if (page) {
-            const { index, size } = page;
-            setPageSize(size);
-            setPageIndex(index * size);
-        }
-    };
-
     return (
-        <TableWithFilter
+        <TableWithFilter<Subscription>
+            __filterQuery={filterQuery}
+            __setFilterQuery={setFilterQuery}
+            onUpdateEsQueryString={() => console.log('FILLER')}
             data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
-            filterQuery={filterQuery}
-            isInvalidFilterQuery={queryContainsInvalidParts}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdateFilterQuery={setFilterQuery}
-            onCriteriaChange={handleCriteriaChange}
-            onUpdatePageSize={setPageSize}
-            onResetPageSize={() => setPageSize(defaultPageSize)}
+            onUpdatePageSize={(page) => {
+                if (page) {
+                    setPageSize(page.size);
+                }
+            }}
             onUpdateDataSort={handleDataSort}
         />
     );

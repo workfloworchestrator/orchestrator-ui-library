@@ -14,3 +14,4 @@ export const SUBSCRIPTION_ACTIONS_ENDPOINT = `${ORCHESTRATOR_API_BASE_URL}/subsc
 export const SUBSCRIPTION_PROCESSES_ENDPOINT = `${ORCHESTRATOR_API_BASE_URL}/processes/process-subscriptions-by-subscription-id`;
 
 export const SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY = 'subscriptionsTable';
+export const METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY = 'metadataProductTable';

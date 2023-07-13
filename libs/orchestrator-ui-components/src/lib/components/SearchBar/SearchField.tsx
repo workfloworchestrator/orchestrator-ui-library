@@ -1,31 +1,48 @@
-import React, { FC } from 'react';
 import { EuiFormRow, EuiSearchBar } from '@elastic/eui';
 
 export type SearchFieldProps = {
-    filterQuery: string;
-    isInvalid?: boolean;
-    onUpdateFilterQuery: (query: string) => void;
+    __filterQuery?: string; // Deprecated Pythia related way of passing querystring
+    __setFilterQuery?: (updatedFilterQuery: string) => void; // Deprecated Pythia related way of setting querystring
+    esQueryString?: string;
+    onUpdateEsQueryString?: (esQueryString: string) => void;
 };
 
-export const SearchField: FC<SearchFieldProps> = ({
-    filterQuery,
-    onUpdateFilterQuery,
-    isInvalid,
-}) => (
-    <EuiFormRow
-        fullWidth
-        isInvalid={isInvalid}
-        error={['The query contains invalid parts']}
-    >
-        <EuiSearchBar
-            query={filterQuery}
-            onChange={({ queryText }) => onUpdateFilterQuery(queryText)}
-            box={{
-                // Todo: possible bug in EUI component EuiSearchBar
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/129
-                // setting the property 'isInvalid' to true has no effect
-                isInvalid: isInvalid,
-            }}
-        />
-    </EuiFormRow>
-);
+export const SearchField = ({
+    __filterQuery,
+    __setFilterQuery,
+    esQueryString,
+    onUpdateEsQueryString,
+}: SearchFieldProps) => {
+    const queryString = __filterQuery || esQueryString;
+    const queryIsValid = true; // Query validation turned of for now until ESQueries can be sent to the backend
+
+    return (
+        <EuiFormRow
+            fullWidth
+            isInvalid={!queryIsValid}
+            error={['The query contains invalid parts']}
+        >
+            <EuiSearchBar
+                query={queryString}
+                onChange={({ queryText }) => {
+                    if (__setFilterQuery) {
+                        __setFilterQuery(queryText);
+                    } else {
+                        alert(
+                            'Passing an ES query string to the backend still needs to be implemented',
+                        );
+                        if (onUpdateEsQueryString) {
+                            onUpdateEsQueryString(queryText);
+                        }
+                    }
+                }}
+                box={{
+                    // Todo: possible bug in EUI component EuiSearchBar
+                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/129
+                    // setting the property 'isInvalid' to true has no effect
+                    isInvalid: !queryIsValid,
+                }}
+            />
+        </EuiFormRow>
+    );
+};

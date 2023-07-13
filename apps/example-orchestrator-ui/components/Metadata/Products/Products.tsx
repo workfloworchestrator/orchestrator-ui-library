@@ -1,7 +1,8 @@
 import {
     SortOrder,
-    Table,
+    TableWithFilter,
     getDataSortHandler,
+    getEsQueryStringHandler,
     getPageSizeHandler,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -20,10 +21,11 @@ import {
 import { useStringQueryWithGraphql } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { FC } from 'react';
-import { EuiSpacer } from '@elastic/eui';
 import { Pagination } from '@elastic/eui';
 
 import { ProductsResult, GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
+
+import { METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY } from '../../../constants';
 
 export const PRODUCT_FIELD_NAME: keyof Product = 'name';
 export const PRODUCT_FIELD_DESCRIPTION: keyof Product = 'description';
@@ -99,7 +101,6 @@ export const Products: FC<ProductsProps> = ({
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy: dataDisplayParams.sortBy,
-            filterBy: dataDisplayParams.filterBy,
         },
         'products',
         true,
@@ -122,24 +123,24 @@ export const Products: FC<ProductsProps> = ({
     };
 
     return (
-        <>
-            <EuiSpacer size="m" />
-            <Table
-                data={data ? mapApiResponseToProductTableData(data) : []}
-                columns={tableColumns}
-                hiddenColumns={hiddenColumns}
-                dataSorting={dataSorting}
-                onDataSort={getDataSortHandler<Product>(
-                    dataDisplayParams,
-                    setDataDisplayParam,
-                )}
-                pagination={pagination}
-                isLoading={isFetching}
-                onCriteriaChange={getPageSizeHandler<Product>(
-                    setDataDisplayParam,
-                )}
-            />
-        </>
+        <TableWithFilter<Product>
+            data={data ? mapApiResponseToProductTableData(data) : []}
+            tableColumns={tableColumns}
+            defaultHiddenColumns={hiddenColumns}
+            dataSorting={dataSorting}
+            onUpdateDataSort={getDataSortHandler<Product>(
+                dataDisplayParams,
+                setDataDisplayParam,
+            )}
+            onUpdatePageSize={getPageSizeHandler<Product>(setDataDisplayParam)}
+            onUpdateEsQueryString={getEsQueryStringHandler<Product>(
+                setDataDisplayParam,
+            )}
+            pagination={pagination}
+            isLoading={isFetching}
+            esQueryString={dataDisplayParams.esQueryString}
+            localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
+        />
     );
 };
 

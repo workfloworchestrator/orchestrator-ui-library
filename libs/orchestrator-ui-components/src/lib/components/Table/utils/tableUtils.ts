@@ -54,11 +54,19 @@ export const getDataSortHandler = <Type>(
 export const getPageSizeHandler = <Type>(
     setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
 ) => {
-    return ({ page }: Criteria<Type>) => {
+    return (page: Criteria<Type>['page']) => {
         if (page) {
             const { index, size } = page;
             setDataDisplayParam('pageSize', size);
             setDataDisplayParam('pageIndex', index);
         }
+    };
+};
+
+export const getEsQueryStringHandler = <Type>(
+    setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+) => {
+    return (esQueryString: string) => {
+        setDataDisplayParam('esQueryString', esQueryString);
     };
 };
