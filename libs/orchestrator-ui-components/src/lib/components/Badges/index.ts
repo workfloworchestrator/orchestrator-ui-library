@@ -1,5 +1,5 @@
 export * from './Badge';
-export * from './SubscriptionStatusBadge';
+export * from './WFOStatusBadge';
 export * from './ProcessStatusBadge';
 export * from './FailedTasksBadge';
 export * from './EnvironmentBadge';

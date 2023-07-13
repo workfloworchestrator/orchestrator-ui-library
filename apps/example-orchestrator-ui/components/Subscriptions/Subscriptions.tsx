@@ -9,7 +9,7 @@ import {
     parseDate,
     PlusCircleFill,
     getFirstUuidPart,
-    SubscriptionStatusBadge,
+    WFOStatusBadge,
     TableColumns,
     useOrchestratorTheme,
     useStringQueryWithGraphql,
@@ -116,9 +116,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: STATUS,
             name: COLUMN_LABEL_STATUS,
             width: '110',
-            render: (value) => (
-                <SubscriptionStatusBadge subscriptionStatus={value} />
-            ),
+            render: (value) => <WFOStatusBadge status={value} />,
         },
         insync: {
             field: INSYNC,

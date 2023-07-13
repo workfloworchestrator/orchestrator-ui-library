@@ -8,7 +8,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
-import { SubscriptionStatusBadge } from '../Badges';
+import { WFOStatusBadge } from '../Badges';
 import {
     subscriptionDefinitionCellStyle,
     subscriptionTableRowStyle,
@@ -17,8 +17,7 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const RenderField = (field: string, data: any) => {
-    if (field === 'status')
-        return <SubscriptionStatusBadge subscriptionStatus={data[field]} />;
+    if (field === 'status') return <WFOStatusBadge status={data[field]} />;
     else if (field === 'insync')
         return (
             <div style={{ position: 'relative', top: 5 }}>
