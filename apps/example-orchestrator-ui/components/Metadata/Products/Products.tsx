@@ -4,6 +4,8 @@ import {
     getDataSortHandler,
     getEsQueryStringHandler,
     getPageSizeHandler,
+    WFOStatusBadge,
+    WFOProductBlockBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import type {
@@ -81,10 +83,27 @@ export const Products: FC<ProductsProps> = ({
         status: {
             field: PRODUCT_FIELD_STATUS,
             name: COLUMN_LABEL_STATUS,
+            width: '90',
+            render: (value) => (
+                <WFOStatusBadge status={value.toLocaleLowerCase()} />
+            ),
         },
         productBlocks: {
             field: PRODUCT_FIELD_PRODUCT_BLOCKS,
             name: COLUMN_LABEL_PRODUCT_BLOCKS,
+            render: (productBlocks) => {
+                return (
+                    <>
+                        {productBlocks.map((block, index) => {
+                            return (
+                                <WFOProductBlockBadge key={index}>
+                                    {block.name}
+                                </WFOProductBlockBadge>
+                            );
+                        })}
+                    </>
+                );
+            },
         },
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
