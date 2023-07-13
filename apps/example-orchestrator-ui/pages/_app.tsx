@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
 import {
     defaultOrchestratorTheme,
@@ -24,7 +24,6 @@ import {
 } from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
-import { useRouter } from 'next/router';
 import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -54,7 +53,6 @@ const initialOrchestratorConfig: OrchestratorConfig = {
 
 function CustomApp({ Component, pageProps }: AppProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-    const router = useRouter();
 
     return (
         <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
@@ -69,10 +67,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                         client={queryClient}
                         contextSharing={true}
                     >
-                        <OrchestratorPageTemplate
-                            getAppLogo={getAppLogo}
-                            routeTo={router.push}
-                        >
+                        <OrchestratorPageTemplate getAppLogo={getAppLogo}>
                             <QueryParamProvider
                                 adapter={NextAdapter}
                                 options={{
