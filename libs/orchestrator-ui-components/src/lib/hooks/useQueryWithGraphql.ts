@@ -9,6 +9,7 @@ import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext
 export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
+    queryKey: string,
 ) => {
     const { graphqlEndpointPythia: graphqlEndpoint } = useContext(
         OrchestratorConfigContext,
@@ -21,12 +22,11 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await graphQLClient.request(query, queryVars);
-    return useQuery(
-        ['subscriptions', ...Object.values(queryVars)],
-        fetchFromGraphql,
-    );
+
+    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql);
 };
 
+// Todo should be removed
 export const useStringQueryWithGraphql = <T, U extends Variables>(
     query: string,
     queryVars: U,

@@ -14,9 +14,12 @@ const config: CodegenConfig = {
             preset: 'client',
             overwrite: true,
         },
-        // './apps/example-orchestrator-ui/__generated__/graphql.schema.json': {
-        //     plugins: ['introspection'],
-        // },
+        './apps/example-orchestrator-ui/__generated__/graphql-wfo-core.schema.json':
+            {
+                schema: GRAPHQL_ENDPOINT_CORE,
+                overwrite: true,
+                plugins: ['introspection'],
+            },
     },
 };
 

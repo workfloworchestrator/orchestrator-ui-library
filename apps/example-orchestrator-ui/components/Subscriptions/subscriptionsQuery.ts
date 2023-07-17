@@ -1,5 +1,5 @@
-import { gql } from 'graphql-request';
 import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
+import { graphql } from '../../__generated__';
 
 export const SUBSCRIPTION_ID = 'subscriptionId';
 export const DESCRIPTION = 'description';
@@ -72,8 +72,9 @@ export const GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES: SubscriptionsQueryVa
         sortBy: DEFAULT_SUBSCRIPTIONS_SORT_ORDER,
     };
 
-export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = gql`
-    query MyQuery(
+// Todo: possible reuse of Subscription query
+export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = graphql(`
+    query SubscriptionsTable(
         $first: Int!
         $after: Int!
         $sortBy: [GraphqlSort!]
@@ -108,7 +109,11 @@ export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = gql`
             }
         }
     }
-`;
+`);
+
+export const mapToGqlSortOrder = (): SortOrder => {
+    return SortOrder.ASC;
+};
 
 // export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT: string = gql`
 //     query SubscriptionGrid(
