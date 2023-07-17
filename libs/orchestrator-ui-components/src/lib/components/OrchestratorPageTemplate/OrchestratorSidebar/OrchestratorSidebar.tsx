@@ -3,6 +3,7 @@ import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 
 const PATH_START = '/';
+const PATH_NEW_PROCESS = '/new-process';
 const PATH_PROCESSES = '/processes';
 const PATH_SUBSCRIPTIONS = '/subscriptions';
 const PATH_METADATA_PRODUCTS = '/metadata/products';
@@ -32,7 +33,7 @@ export const OrchestratorSidebar: FC = () => {
                                     >,
                                 ) => {
                                     e.preventDefault();
-                                    router.push('/new-process');
+                                    router.push(PATH_NEW_PROCESS);
                                 }}
                                 iconType="plus"
                                 fullWidth
