@@ -23,11 +23,12 @@ export const determineNewSortOrder = <T>(
     return SortOrder.ASC;
 };
 
-export const getDataSortHandler = <Type>(
-    dataDisplayParams: DataDisplayParams<Type>,
-    setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
-) => {
-    return (newSortField: keyof Type) => {
+export const getDataSortHandler =
+    <Type>(
+        dataDisplayParams: DataDisplayParams<Type>,
+        setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+    ) =>
+    (newSortField: keyof Type) => {
         const newOrder = (() => {
             if (
                 dataDisplayParams.sortBy &&
@@ -49,16 +50,23 @@ export const getDataSortHandler = <Type>(
             order: newOrder,
         });
     };
-};
 
-export const getPageSizeHandler = <Type>(
-    setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
-) => {
-    return ({ page }: Criteria<Type>) => {
+export const getPageChangeHandler =
+    <Type>(
+        setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+    ) =>
+    (page: Criteria<Type>['page']) => {
         if (page) {
             const { index, size } = page;
             setDataDisplayParam('pageSize', size);
             setDataDisplayParam('pageIndex', index);
         }
     };
-};
+
+export const getEsQueryStringHandler =
+    <Type>(
+        setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+    ) =>
+    (esQueryString: string) => {
+        setDataDisplayParam('esQueryString', esQueryString);
+    };

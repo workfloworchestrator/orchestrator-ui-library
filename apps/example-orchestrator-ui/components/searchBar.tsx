@@ -11,8 +11,8 @@ const tags = [
     { name: 'Firewall', color: 'success' },
 ];
 
-const loadTags = () => {
-    return new Promise((resolve) => {
+const loadTags = () =>
+    new Promise((resolve) => {
         resolve(
             tags.map((tag) => ({
                 value: tag.name,
@@ -20,7 +20,6 @@ const loadTags = () => {
             })),
         );
     });
-};
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 

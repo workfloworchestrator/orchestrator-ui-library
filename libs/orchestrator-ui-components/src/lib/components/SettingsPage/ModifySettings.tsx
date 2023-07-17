@@ -11,23 +11,21 @@ export type ModifySettingsProps = {
 export const ModifySettings: FC<ModifySettingsProps> = ({
     engineStatus,
     changeEngineStatus,
-}) => {
-    return (
-        <EuiPanel
-            hasShadow={false}
-            color="subdued"
-            paddingSize="l"
-            css={{ width: '50%' }}
-        >
-            <EuiText size={'s'}>
-                <h4>Modify the engine settings</h4>
-                <p>Stop or start workflows through this menu</p>
-            </EuiText>
-            <EuiSpacer size="m"></EuiSpacer>
-            <EngineStatusButton
-                engineStatus={engineStatus}
-                changeEngineStatus={changeEngineStatus}
-            />
-        </EuiPanel>
-    );
-};
+}) => (
+    <EuiPanel
+        hasShadow={false}
+        color="subdued"
+        paddingSize="l"
+        css={{ width: '50%' }}
+    >
+        <EuiText size={'s'}>
+            <h4>Modify the engine settings</h4>
+            <p>Stop or start workflows through this menu</p>
+        </EuiText>
+        <EuiSpacer size="m"></EuiSpacer>
+        <EngineStatusButton
+            engineStatus={engineStatus}
+            changeEngineStatus={changeEngineStatus}
+        />
+    </EuiPanel>
+);

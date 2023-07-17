@@ -5,9 +5,7 @@ import { SortOrder } from '../../../types';
 import { DataGridTable } from './DataGridTable';
 
 const extractedArr = (arr, start, howMany) =>
-    arr.filter((_, index) => {
-        return index >= start && index < howMany + start;
-    });
+    arr.filter((_, index) => index >= start && index < howMany + start);
 
 const TableWithEvents = (args) => {
     const [data, setData] = useState(

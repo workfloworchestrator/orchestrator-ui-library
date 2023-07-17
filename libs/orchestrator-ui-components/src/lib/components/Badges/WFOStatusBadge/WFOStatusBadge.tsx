@@ -2,16 +2,14 @@ import { Badge } from '../Badge';
 import { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 
-export type SubscriptionStatusBadgeProps = {
-    subscriptionStatus: string;
+export type WFOStatusBadgeProps = {
+    status: string;
 };
 
-export const SubscriptionStatusBadge: FC<SubscriptionStatusBadgeProps> = ({
-    subscriptionStatus,
-}) => {
+export const WFOStatusBadge: FC<WFOStatusBadgeProps> = ({ status }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const getBadgeColorFromSubscriptionStatus = (status: string) => {
+    const getBadgeColorFromStatus = (status: string) => {
         const {
             primary,
             darkestShade,
@@ -41,12 +39,11 @@ export const SubscriptionStatusBadge: FC<SubscriptionStatusBadgeProps> = ({
         }
     };
 
-    const { badgeColor, textColor } =
-        getBadgeColorFromSubscriptionStatus(subscriptionStatus);
+    const { badgeColor, textColor } = getBadgeColorFromStatus(status);
 
     return (
         <Badge textColor={textColor} color={badgeColor}>
-            {subscriptionStatus}
+            {status}
         </Badge>
     );
 };

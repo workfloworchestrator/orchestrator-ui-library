@@ -41,10 +41,12 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         React.useContext(SubscriptionContext);
 
     const [selectedTabId, setSelectedTabId] = useState(GENERAL_TAB);
-    const selectedTabContent = useMemo(() => {
-        // @ts-ignore
-        return tabs.find((obj) => obj.id === selectedTabId)?.content;
-    }, [selectedTabId]);
+    const selectedTabContent = useMemo(
+        () =>
+            // @ts-ignore
+            tabs.find((obj) => obj.id === selectedTabId)?.content,
+        [selectedTabId],
+    );
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
@@ -110,8 +112,8 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         setSubscriptionData(mapApiResponseToSubscriptionDetail(data, false), 1);
     }
 
-    const renderTabs = () => {
-        return tabs.map((tab, index) => (
+    const renderTabs = () =>
+        tabs.map((tab, index) => (
             <EuiTab
                 key={index}
                 onClick={() => onSelectedTabChanged(tab.id)}
@@ -123,7 +125,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 {tab.name}
             </EuiTab>
         ));
-    };
 
     return (
         <>

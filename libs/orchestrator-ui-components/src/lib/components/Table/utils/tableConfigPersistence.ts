@@ -7,14 +7,11 @@ export type LocalStorageTableConfig<T> = {
 
 export const isValidLocalStorageTableConfig = <T>(
     object: LocalStorageTableConfig<T>,
-): object is LocalStorageTableConfig<T> => {
-    return (
-        'hiddenColumns' in object &&
-        object.hiddenColumns !== undefined &&
-        'selectedPageSize' in object &&
-        object.selectedPageSize !== undefined
-    );
-};
+): object is LocalStorageTableConfig<T> =>
+    'hiddenColumns' in object &&
+    object.hiddenColumns !== undefined &&
+    'selectedPageSize' in object &&
+    object.selectedPageSize !== undefined;
 
 export const getTableConfigFromLocalStorage = <T>(
     key: string,

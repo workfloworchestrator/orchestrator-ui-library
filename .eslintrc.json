@@ -18,7 +18,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "arrow-body-style": ["warn", "as-needed"]
             }
         },
         {

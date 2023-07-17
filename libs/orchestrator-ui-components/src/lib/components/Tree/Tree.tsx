@@ -7,12 +7,10 @@ type TreeProps = {
     data: TreeBlock[];
 };
 
-export const Tree: FC<TreeProps> = ({ data }) => {
-    return (
-        <div style={{ width: '500px' }}>
-            {data.map((item) => (
-                <TreeBranch key={item.id} item={item} level={0} />
-            ))}
-        </div>
-    );
-};
+export const Tree: FC<TreeProps> = ({ data }) => (
+    <div style={{ width: '500px' }}>
+        {data.map((item) => (
+            <TreeBranch key={item.id} item={item} level={0} />
+        ))}
+    </div>
+);

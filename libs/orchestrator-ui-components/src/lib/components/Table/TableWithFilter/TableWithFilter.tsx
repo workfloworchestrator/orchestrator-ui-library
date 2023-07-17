@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Criteria,
     EuiButton,
@@ -30,6 +30,8 @@ import {
 } from '../utils/tableConfigPersistence';
 
 export type TableWithFilterProps<T> = {
+    __filterQuery?: string; // Deprecated Pythia related way of passing querystring
+    __setFilterQuery?: (updatedFilterQuery: string) => void; // Deprecated Pythia related way of setting querystring
     data: T[];
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
@@ -37,18 +39,17 @@ export type TableWithFilterProps<T> = {
     defaultHiddenColumns: TableColumnKeys<T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
-    filterQuery: string;
-    isInvalidFilterQuery: boolean;
+    esQueryString?: string;
     isLoading: boolean;
     localStorageKey: string;
-    onUpdateFilterQuery: (updatedFilterQuery: string) => void;
-    onCriteriaChange: ({ page }: Criteria<T>) => void;
-    onUpdatePageSize: (updatedPageSize: number) => void;
-    onResetPageSize: () => void;
+    onUpdateEsQueryString: (esQueryString: string) => void;
+    onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
 };
 
 export const TableWithFilter = <T,>({
+    __filterQuery,
+    __setFilterQuery,
     data,
     tableColumns,
     leadingControlColumns,
@@ -56,23 +57,23 @@ export const TableWithFilter = <T,>({
     defaultHiddenColumns,
     dataSorting,
     pagination,
-    filterQuery,
-    isInvalidFilterQuery,
+    esQueryString,
     isLoading,
     localStorageKey,
-    onUpdateFilterQuery,
-    onCriteriaChange,
-    onUpdatePageSize,
-    onResetPageSize,
+    onUpdateEsQueryString,
+    onUpdatePage,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
+    const defaultPageSize = pagination.pageSize;
     const tableConfigFromLocalStorage =
         getTableConfigFromLocalStorage<T>(localStorageKey);
+
     const initialHiddenColumns =
         tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
 
     const [hiddenColumns, setHiddenColumns] =
         useState<TableColumnKeys<T>>(initialHiddenColumns);
+
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
     const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
@@ -102,14 +103,26 @@ export const TableWithFilter = <T,>({
             hiddenColumns: updatedHiddenColumns,
             selectedPageSize: updatedTableConfig.selectedPageSize,
         });
-        onUpdatePageSize(updatedTableConfig.selectedPageSize);
+        onUpdatePage({
+            index: 0,
+            size: updatedTableConfig.selectedPageSize,
+        });
     };
 
     const handleResetToDefaults = () => {
         setHiddenColumns(defaultHiddenColumns);
         setShowSettingsModal(false);
         clearTableConfigFromLocalStorage(localStorageKey);
-        onResetPageSize();
+        onUpdatePage({
+            index: 0,
+            size: defaultPageSize,
+        });
+    };
+
+    const onCriteriaChange = (criterion: Criteria<T>) => {
+        if (criterion.page) {
+            onUpdatePage(criterion.page);
+        }
     };
 
     return (
@@ -117,9 +130,10 @@ export const TableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <SearchField
-                        filterQuery={filterQuery}
-                        onUpdateFilterQuery={onUpdateFilterQuery}
-                        isInvalid={isInvalidFilterQuery}
+                        __filterQuery={__filterQuery}
+                        __setFilterQuery={__setFilterQuery}
+                        esQueryString={esQueryString}
+                        onUpdateEsQueryString={onUpdateEsQueryString}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>

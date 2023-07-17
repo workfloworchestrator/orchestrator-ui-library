@@ -20,11 +20,9 @@ export const TreeBranch: FC<TreeBranchProps> = ({ item, level }) => {
         if (hasChildren) {
             const newLevel = level + 1;
 
-            return item.children.map((child) => {
-                return (
-                    <TreeBranch key={child.id} item={child} level={newLevel} />
-                );
-            });
+            return item.children.map((child) => (
+                <TreeBranch key={child.id} item={child} level={newLevel} />
+            ));
         }
 
         return null;

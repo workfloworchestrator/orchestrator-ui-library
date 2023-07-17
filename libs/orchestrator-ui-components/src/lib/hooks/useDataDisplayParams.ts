@@ -1,18 +1,19 @@
 import {
     NumberParam,
     ObjectParam,
+    StringParam,
     useQueryParams,
     withDefault,
 } from 'use-query-params';
 
-import { GraphQLSort, GraphqlFilter } from '../types';
+import { GraphQLSort } from '../types';
 import { DEFAULT_PAGE_SIZE } from '../components';
 
 export type DataDisplayParams<Type> = {
     pageSize: number;
     pageIndex: number;
     sortBy?: GraphQLSort<Type>;
-    filterBy?: GraphqlFilter<Type>[];
+    esQueryString?: string; // The filter param is going to send to the backend as is for parsing
 };
 
 export interface DataDisplayReturnValues<Type> {
@@ -39,9 +40,9 @@ export const useDataDisplayParams = <Type>(
             ObjectParam,
             defaultParams.sortBy ? defaultParams.sortBy : {},
         ),
-        filterBy: withDefault(
-            ObjectParam,
-            defaultParams.filterBy ? defaultParams.filterBy : {},
+        esQueryString: withDefault(
+            StringParam,
+            defaultParams.esQueryString ? defaultParams.esQueryString : '',
         ),
     });
 
@@ -49,12 +50,10 @@ export const useDataDisplayParams = <Type>(
         prop: PropKey,
         value: DataDisplayParams<Type>[PropKey],
     ) => {
-        setDataDisplayParams((lastParams) => {
-            return {
-                ...lastParams,
-                [prop]: value,
-            };
-        });
+        setDataDisplayParams((lastParams) => ({
+            ...lastParams,
+            [prop]: value,
+        }));
     };
 
     return {

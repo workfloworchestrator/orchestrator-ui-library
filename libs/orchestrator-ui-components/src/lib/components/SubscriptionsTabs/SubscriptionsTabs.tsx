@@ -48,21 +48,19 @@ export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
     tabs,
     selectedSubscriptionsTab,
     onChangeSubscriptionsTab,
-}) => {
-    return (
-        <EuiTabs>
-            {tabs.map(({ id, name }) => (
-                <EuiTab
-                    key={id}
-                    isSelected={id === selectedSubscriptionsTab}
-                    onClick={() =>
-                        id !== selectedSubscriptionsTab &&
-                        onChangeSubscriptionsTab(id)
-                    }
-                >
-                    {name}
-                </EuiTab>
-            ))}
-        </EuiTabs>
-    );
-};
+}) => (
+    <EuiTabs>
+        {tabs.map(({ id, name }) => (
+            <EuiTab
+                key={id}
+                isSelected={id === selectedSubscriptionsTab}
+                onClick={() =>
+                    id !== selectedSubscriptionsTab &&
+                    onChangeSubscriptionsTab(id)
+                }
+            >
+                {name}
+            </EuiTab>
+        ))}
+    </EuiTabs>
+);

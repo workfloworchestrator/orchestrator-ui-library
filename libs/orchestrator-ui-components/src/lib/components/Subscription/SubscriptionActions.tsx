@@ -17,13 +17,11 @@ type MenuItemProps = {
     index: number;
 };
 
-const MenuItem: FC<MenuItemProps> = ({ icon, description, key }) => {
-    return (
-        <EuiContextMenuItem key={key} icon={<EuiAvatar name={icon} size="s" />}>
-            {description}
-        </EuiContextMenuItem>
-    );
-};
+const MenuItem: FC<MenuItemProps> = ({ icon, description, key }) => (
+    <EuiContextMenuItem key={key} icon={<EuiAvatar name={icon} size="s" />}>
+        {description}
+    </EuiContextMenuItem>
+);
 
 type MenuBlockProps = {
     title: string;
