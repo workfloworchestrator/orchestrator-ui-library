@@ -230,7 +230,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         });
 
     return (
-        <TableWithFilter
+        <TableWithFilter<Subscription>
             __filterQuery={filterQuery}
             __setFilterQuery={setFilterQuery}
             onUpdateEsQueryString={() => console.log('FILLER')}
