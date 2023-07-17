@@ -3,7 +3,7 @@ import {
     TableWithFilter,
     getDataSortHandler,
     getEsQueryStringHandler,
-    getPageSizeHandler,
+    getPageChangeHandler,
     WFOStatusBadge,
     WFOProductBlockBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -151,7 +151,7 @@ export const Products: FC<ProductsProps> = ({
                 dataDisplayParams,
                 setDataDisplayParam,
             )}
-            onUpdatePageSize={getPageSizeHandler<Product>(setDataDisplayParam)}
+            onUpdatePage={getPageChangeHandler<Product>(setDataDisplayParam)}
             onUpdateEsQueryString={getEsQueryStringHandler<Product>(
                 setDataDisplayParam,
             )}

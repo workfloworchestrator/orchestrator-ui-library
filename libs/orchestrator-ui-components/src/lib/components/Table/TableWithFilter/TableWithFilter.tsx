@@ -22,7 +22,7 @@ import {
 } from '../TableSettingsModal';
 import { SearchField } from '../../SearchBar';
 import { Table } from '../Table';
-import { DEFAULT_PAGE_SIZES, DEFAULT_PAGE_SIZE } from '../utils/constants';
+import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     getTableConfigFromLocalStorage,
@@ -43,7 +43,7 @@ export type TableWithFilterProps<T> = {
     isLoading: boolean;
     localStorageKey: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
-    onUpdatePageSize: (criterion: Criteria<T>['page']) => void;
+    onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
 };
 
@@ -61,9 +61,10 @@ export const TableWithFilter = <T,>({
     isLoading,
     localStorageKey,
     onUpdateEsQueryString,
-    onUpdatePageSize,
+    onUpdatePage,
     onUpdateDataSort,
 }: TableWithFilterProps<T>) => {
+    const defaultPageSize = pagination.pageSize;
     const tableConfigFromLocalStorage =
         getTableConfigFromLocalStorage<T>(localStorageKey);
 
@@ -102,7 +103,7 @@ export const TableWithFilter = <T,>({
             hiddenColumns: updatedHiddenColumns,
             selectedPageSize: updatedTableConfig.selectedPageSize,
         });
-        onUpdatePageSize({
+        onUpdatePage({
             index: 0,
             size: updatedTableConfig.selectedPageSize,
         });
@@ -112,9 +113,9 @@ export const TableWithFilter = <T,>({
         setHiddenColumns(defaultHiddenColumns);
         setShowSettingsModal(false);
         clearTableConfigFromLocalStorage(localStorageKey);
-        onUpdatePageSize({
+        onUpdatePage({
             index: 0,
-            size: DEFAULT_PAGE_SIZE,
+            size: defaultPageSize,
         });
     };
 
@@ -144,7 +145,7 @@ export const TableWithFilter = <T,>({
                 isLoading={isLoading}
                 onCriteriaChange={(criterion: Criteria<T>) => {
                     if (criterion.page) {
-                        onUpdatePageSize(criterion.page);
+                        onUpdatePage(criterion.page);
                     }
                 }}
             />

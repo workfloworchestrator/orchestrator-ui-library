@@ -230,7 +230,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         });
 
     return (
-        <TableWithFilter<Subscription>
+        <TableWithFilter
             __filterQuery={filterQuery}
             __setFilterQuery={setFilterQuery}
             onUpdateEsQueryString={() => console.log('FILLER')}
@@ -242,7 +242,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdatePageSize={(page) => {
+            onUpdatePage={(page) => {
                 if (page) {
                     setPageSize(page.size);
                 }

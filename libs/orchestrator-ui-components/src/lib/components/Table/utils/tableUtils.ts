@@ -51,7 +51,7 @@ export const getDataSortHandler = <Type>(
     };
 };
 
-export const getPageSizeHandler = <Type>(
+export const getPageChangeHandler = <Type>(
     setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
 ) => {
     return (page: Criteria<Type>['page']) => {
