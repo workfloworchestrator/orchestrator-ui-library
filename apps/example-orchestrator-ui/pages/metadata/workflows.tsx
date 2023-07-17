@@ -1,8 +1,6 @@
 import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
-const WorkflowsPageContent = () => {
-    return <div>METADATA WORKFLOWS</div>;
-};
+const WorkflowsPageContent = () => <div>METADATA WORKFLOWS</div>;
 
 export const WorkflowsPage = () => (
     <MetaDataLayout>

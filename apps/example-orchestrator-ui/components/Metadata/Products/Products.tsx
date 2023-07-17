@@ -91,19 +91,15 @@ export const Products: FC<ProductsProps> = ({
         productBlocks: {
             field: PRODUCT_FIELD_PRODUCT_BLOCKS,
             name: COLUMN_LABEL_PRODUCT_BLOCKS,
-            render: (productBlocks) => {
-                return (
-                    <>
-                        {productBlocks.map((block, index) => {
-                            return (
-                                <WFOProductBlockBadge key={index}>
-                                    {block.name}
-                                </WFOProductBlockBadge>
-                            );
-                        })}
-                    </>
-                );
-            },
+            render: (productBlocks) => (
+                <>
+                    {productBlocks.map((block, index) => (
+                        <WFOProductBlockBadge key={index}>
+                            {block.name}
+                        </WFOProductBlockBadge>
+                    ))}
+                </>
+            ),
         },
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
@@ -166,9 +162,9 @@ export const Products: FC<ProductsProps> = ({
 function mapApiResponseToProductTableData(
     graphqlResponse: ProductsResult,
 ): Product[] {
-    return graphqlResponse.products.page.map((product): Product => {
-        return {
+    return graphqlResponse.products.page.map(
+        (product): Product => ({
             ...product,
-        };
-    });
+        }),
+    );
 }

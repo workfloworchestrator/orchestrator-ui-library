@@ -50,12 +50,10 @@ export const useDataDisplayParams = <Type>(
         prop: PropKey,
         value: DataDisplayParams<Type>[PropKey],
     ) => {
-        setDataDisplayParams((lastParams) => {
-            return {
-                ...lastParams,
-                [prop]: value,
-            };
-        });
+        setDataDisplayParams((lastParams) => ({
+            ...lastParams,
+            [prop]: value,
+        }));
     };
 
     return {
