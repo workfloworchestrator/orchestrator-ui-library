@@ -53,7 +53,7 @@
         "@nrwl/js": "16.5.0",
         "@nrwl/rollup": "16.5.0",
         "@nx/cypress": "16.5.0",
-        "@nx/eslint-plugin": "16.5.0",
+        "@nx/eslint-plugin": "16.5.2",
         "@nx/linter": "16.5.0",
         "@nx/react": "16.5.0",
         "@nx/storybook": "16.5.0",
