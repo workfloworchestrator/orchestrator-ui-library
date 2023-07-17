@@ -24,7 +24,7 @@ import {
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { Criteria, EuiFlexItem, EuiSearchBar } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -229,6 +229,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         });
 
+    const onUpdatePage = (page: Criteria<Subscription>['page']) => {
+        if (page) {
+            setPageSize(page.size);
+        }
+    };
+
     return (
         <TableWithFilter<Subscription>
             __filterQuery={filterQuery}
@@ -242,11 +248,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdatePage={(page) => {
-                if (page) {
-                    setPageSize(page.size);
-                }
-            }}
+            onUpdatePage={onUpdatePage}
             onUpdateDataSort={handleDataSort}
         />
     );

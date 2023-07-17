@@ -119,6 +119,12 @@ export const TableWithFilter = <T,>({
         });
     };
 
+    const onCriteriaChange = (criterion: Criteria<T>) => {
+        if (criterion.page) {
+            onUpdatePage(criterion.page);
+        }
+    };
+
     return (
         <>
             <EuiFlexGroup>
@@ -143,11 +149,7 @@ export const TableWithFilter = <T,>({
                 onDataSort={onUpdateDataSort}
                 pagination={pagination}
                 isLoading={isLoading}
-                onCriteriaChange={(criterion: Criteria<T>) => {
-                    if (criterion.page) {
-                        onUpdatePage(criterion.page);
-                    }
-                }}
+                onCriteriaChange={onCriteriaChange}
             />
 
             {showSettingsModal && (
