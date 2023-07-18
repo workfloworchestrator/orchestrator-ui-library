@@ -11,14 +11,6 @@ export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 export const NOTE = 'note';
 
-export type SubscriptionsResult = {
-    subscriptions: {
-        edges: {
-            node: Subscription;
-        }[];
-        pageInfo: PageInfo;
-    };
-};
 
 export type Subscription = {
     note: string | null;
@@ -37,14 +29,6 @@ export type Product = {
     name: string;
     type: string;
     tag: string | null;
-};
-
-export type PageInfo = {
-    totalItems: string;
-    startCursor: string;
-    hasPreviousPage: boolean;
-    hasNextPage: boolean;
-    endCursor: string;
 };
 
 export type SubscriptionsQueryVariables = {
@@ -110,10 +94,6 @@ export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = graphql(`
         }
     }
 `);
-
-export const mapToGqlSortOrder = (): SortOrder => {
-    return SortOrder.ASC;
-};
 
 // export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT: string = gql`
 //     query SubscriptionGrid(

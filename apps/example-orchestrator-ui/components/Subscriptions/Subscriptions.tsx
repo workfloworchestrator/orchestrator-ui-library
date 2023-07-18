@@ -4,27 +4,26 @@ import {
     DEFAULT_PAGE_SIZES,
     determineNewSortOrder,
     determinePageIndex,
-    getTypedFieldFromObject,
-    MinusCircleOutline,
-    parseDate,
-    PlusCircleFill,
     getFirstUuidPart,
-    WFOStatusBadge,
-    TableColumns,
-    useOrchestratorTheme,
-    useStringQueryWithGraphql,
-    parseDateToLocaleString,
+    getTypedFieldFromObject,
+    isValidQueryPart,
     Loading,
     mapEsQueryContainerToKeyValueTuple,
-    isValidQueryPart,
+    MinusCircleOutline,
+    parseDateToLocaleString,
+    PlusCircleFill,
+    TableColumnKeys,
+    TableColumns,
     TableControlColumnConfig,
     TableWithFilter,
-    TableColumnKeys,
+    useOrchestratorTheme,
+    useQueryWithGraphql,
+    WFOStatusBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Criteria, EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { Criteria, EuiFlexItem, EuiSearchBar, Pagination } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -35,13 +34,15 @@ import {
     START_DATE,
     STATUS,
     SUBSCRIPTION_ID,
-    SubscriptionsQueryVariables,
-    SubscriptionsResult,
     SubscriptionsSort,
     TAG,
 } from './subscriptionsQuery';
-import { Pagination } from '@elastic/eui';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
+import {
+    GraphqlFilter,
+    SortOrder,
+    SubscriptionsTableQuery,
+} from '../../__generated__/graphql';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -178,25 +179,32 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
         [];
 
+    // Todo: isValidQueryPart is not needed
+    // Todo: filterQueryTupleArray needs to be adjusted to return the { field, value }
     const filterBy = filterQueryTupleArray
         .concat(alwaysOnFilters)
         .filter(isValidQueryPart);
 
-    const { data, isFetching } = useStringQueryWithGraphql<
-        SubscriptionsResult,
-        SubscriptionsQueryVariables
-    >(
+    const filterBy2: GraphqlFilter[] = filterBy.map((filter) => ({
+        field: filter[0],
+        value: filter[1],
+    }));
+
+    const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
             first: pageSize,
             after: pageIndex,
+            // Todo introduce a mapper utility function
             sortBy: sortedColumnId && {
                 field: sortedColumnId.toString(),
-                order: sortOrder.order,
+                order:
+                    sortOrder.order === 'ASC' ? SortOrder.Asc : SortOrder.Desc,
             },
-            filterBy,
+            filterBy: filterBy2,
         },
         'subscriptions',
+        true,
     );
 
     if (!sortedColumnId) {
@@ -216,7 +224,11 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         pageSize: pageSize,
         pageIndex: determinePageIndex(pageIndex, pageSize),
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
+        // todo: totalItems is, according to type, not always present
+        totalItemCount: data.subscriptions.pageInfo.totalItems
+            ? parseInt(data.subscriptions.pageInfo.totalItems)
+            : 0,
+        // totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
     };
 
     const handleDataSort = (newSortColumnId: keyof Subscription) =>
@@ -240,7 +252,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             __filterQuery={filterQuery}
             __setFilterQuery={setFilterQuery}
             onUpdateEsQueryString={() => console.log('FILLER')}
-            data={mapApiResponseToSubscriptionTableData(data)}
+            data={mapApiResponseToSubscriptionTableData2(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
@@ -254,33 +266,33 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 };
 
-function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionsResult,
+function mapApiResponseToSubscriptionTableData2(
+    graphqlResponse: SubscriptionsTableQuery,
 ): Subscription[] {
-    return graphqlResponse.subscriptions.edges.map(
-        (baseSubscription): Subscription => {
-            const {
-                description,
-                insync,
-                product,
-                startDate,
-                endDate,
-                status,
-                subscriptionId,
-                note,
-            } = baseSubscription.node;
+    return graphqlResponse.subscriptions.page.map((subscription) => {
+        const {
+            description,
+            insync,
+            product,
+            startDate, // todo any????
+            endDate, // todo any???
+            status,
+            subscriptionId,
+            note,
+        } = subscription;
 
-            return {
-                description,
-                insync,
-                productName: product.name,
-                tag: product.tag ?? null,
-                startDate: parseDate(startDate),
-                endDate: parseDate(endDate),
-                status,
-                subscriptionId,
-                note,
-            };
-        },
-    );
+        const { name: productName, tag } = product;
+
+        return {
+            description,
+            insync,
+            productName,
+            tag,
+            startDate,
+            endDate,
+            status,
+            subscriptionId,
+            note: note ?? null,
+        };
+    });
 }

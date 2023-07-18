@@ -10,10 +10,16 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
     queryKey: string,
+    useCoreConnection = false,
 ) => {
-    const { graphqlEndpointPythia: graphqlEndpoint } = useContext(
+    const { graphqlEndpointPythia, graphqlEndpointCore } = useContext(
         OrchestratorConfigContext,
     );
+
+    const graphqlEndpoint = useCoreConnection
+        ? graphqlEndpointCore
+        : graphqlEndpointPythia;
+
     const graphQLClient = new GraphQLClient(graphqlEndpoint);
 
     const fetchFromGraphql = async () =>
