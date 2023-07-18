@@ -1,4 +1,6 @@
 import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
+import type { GetStaticPropsContext } from 'next';
+
 import {
     Products,
     PRODUCT_FIELD_NAME,
@@ -31,5 +33,14 @@ export const ProductsPage = () => (
         <ProductsPageContent />
     </MetaDataLayout>
 );
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+    return {
+        props: {
+            messages: (await import(`../../messages/${context.locale}.json`))
+                .default,
+        },
+    };
+}
 
 export default ProductsPage;

@@ -1,0 +1,14 @@
+{
+    "metadata": {
+        "name": "1234",
+        "product": {
+            "name": "Name",
+            "description": "Description",
+            "tag": "Tag",
+            "productType": "Type",
+            "status": "status",
+            "productBlocks": "Product blocks",
+            "createdAt": "Created"
+        }
+    }
+}

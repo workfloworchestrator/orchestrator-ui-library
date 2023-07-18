@@ -1,0 +1,13 @@
+{
+    "metadata": {
+        "product": {
+            "name": "Naam",
+            "description": "Beschrijving",
+            "tag": "Tag",
+            "productType": "Type",
+            "status": "Status",
+            "productBlocks": "Product blocks",
+            "createdAt": "Aangemaakt"
+        }
+    }
+}
