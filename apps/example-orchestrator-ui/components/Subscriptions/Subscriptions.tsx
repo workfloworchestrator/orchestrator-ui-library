@@ -1,11 +1,13 @@
 import {
     CheckmarkCircleFill,
+    DataDisplayParams,
     DataSorting,
     DEFAULT_PAGE_SIZES,
-    determineNewSortOrder,
-    determinePageIndex,
     FilterQuery,
+    getDataSortHandler,
+    getEsQueryStringHandler,
     getFirstUuidPart,
+    getPageChangeHandler,
     getTypedFieldFromObject,
     isValidQueryPart,
     Loading,
@@ -13,6 +15,8 @@ import {
     MinusCircleOutline,
     parseDateToLocaleString,
     PlusCircleFill,
+    Product,
+    SortOrder,
     TableColumnKeys,
     TableColumns,
     TableControlColumnConfig,
@@ -24,7 +28,7 @@ import {
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Criteria, EuiFlexItem, EuiSearchBar, Pagination } from '@elastic/eui';
+import { EuiFlexItem, EuiSearchBar, Pagination } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -35,12 +39,11 @@ import {
     START_DATE,
     STATUS,
     SUBSCRIPTION_ID,
-    SubscriptionsSort,
     TAG,
 } from './subscriptionsQuery';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import {
-    SortOrder,
+    SortOrder as SortOrderGraphql,
     SubscriptionsTableQuery,
 } from '../../__generated__/graphql';
 
@@ -71,27 +74,20 @@ export type Subscription = {
 };
 
 export type SubscriptionsProps = {
-    pageSize: number;
-    setPageSize: (updatedPageSize: number) => void;
-    pageIndex: number;
-    setPageIndex: (updatedPageIndex: number) => void;
-    sortOrder: SubscriptionsSort;
-    setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
-    filterQuery: string;
-    setFilterQuery: (updatedFilterQuery: string) => void;
     alwaysOnFilters?: FilterQuery[];
+    dataDisplayParams: DataDisplayParams<Subscription>;
+    setDataDisplayParam: <
+        DisplayParamKey extends keyof DataDisplayParams<Subscription>,
+    >(
+        prop: DisplayParamKey,
+        value: DataDisplayParams<Subscription>[DisplayParamKey],
+    ) => void;
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
-    pageSize,
-    pageIndex,
-    sortOrder,
-    setPageSize,
-    setPageIndex,
-    setSortOrder,
-    filterQuery,
-    setFilterQuery,
     alwaysOnFilters,
+    dataDisplayParams,
+    setDataDisplayParam,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -169,12 +165,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const sortedColumnId = getTypedFieldFromObject(
-        sortOrder.field,
-        tableColumns,
-    );
+    const sortedColumnId = dataDisplayParams.sortBy
+        ? getTypedFieldFromObject(dataDisplayParams.sortBy.field, tableColumns)
+        : null;
 
-    const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
+    // Todo remove this: waiting for implementation in backend
+    // Start handling searchQuery
+    const esQueryContainer = EuiSearchBar.Query.toESQuery(
+        dataDisplayParams.esQueryString ?? '',
+    );
     const filterQueryGraphqlFilter =
         esQueryContainer.bool?.must?.map(mapEsQueryContainerToGraphqlFilter) ??
         [];
@@ -182,18 +181,22 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     const filterBy = filterQueryGraphqlFilter
         .concat(alwaysOnFilters)
         .filter(isValidQueryPart);
+    // End handling searchQuery
 
     const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
-            first: pageSize,
-            after: pageIndex,
+            first: dataDisplayParams.pageSize,
+            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             // Todo introduce a mapper utility function
-            sortBy: sortedColumnId && {
-                field: sortedColumnId.toString(),
-                order:
-                    sortOrder.order === 'ASC' ? SortOrder.Asc : SortOrder.Desc,
-            },
+            sortBy: sortedColumnId &&
+                dataDisplayParams.sortBy?.order && {
+                    field: sortedColumnId.toString(),
+                    order:
+                        dataDisplayParams.sortBy.order === 'ASC'
+                            ? SortOrderGraphql.Asc
+                            : SortOrderGraphql.Desc,
+                },
             filterBy,
         },
         'subscriptions',
@@ -211,40 +214,24 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const dataSorting: DataSorting<Subscription> = {
         field: sortedColumnId,
-        sortOrder: sortOrder.order,
+        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
     const pagination: Pagination = {
-        pageSize: pageSize,
-        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSize: dataDisplayParams.pageSize,
+        pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        // todo: totalItems is, according to type, not always present
+        // todo: totalItems is, according to type, not always present (question for backend)
         totalItemCount: data.subscriptions.pageInfo.totalItems
             ? parseInt(data.subscriptions.pageInfo.totalItems)
             : 0,
-        // totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
-    };
-
-    const handleDataSort = (newSortColumnId: keyof Subscription) =>
-        setSortOrder({
-            field: newSortColumnId,
-            order: determineNewSortOrder(
-                sortedColumnId,
-                sortOrder.order,
-                newSortColumnId,
-            ),
-        });
-
-    const onUpdatePage = (page: Criteria<Subscription>['page']) => {
-        if (page) {
-            setPageSize(page.size);
-        }
     };
 
     return (
         <TableWithFilter<Subscription>
-            __filterQuery={filterQuery}
-            __setFilterQuery={setFilterQuery}
-            onUpdateEsQueryString={(esQueryString) => console.log('FILLER', esQueryString)}
+            esQueryString={dataDisplayParams.esQueryString}
+            onUpdateEsQueryString={getEsQueryStringHandler<Subscription>(
+                setDataDisplayParam,
+            )}
             data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
@@ -253,8 +240,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdatePage={onUpdatePage}
-            onUpdateDataSort={handleDataSort}
+            onUpdatePage={getPageChangeHandler<Subscription>(
+                setDataDisplayParam,
+            )}
+            onUpdateDataSort={getDataSortHandler<Subscription>(
+                dataDisplayParams,
+                setDataDisplayParam,
+            )}
         />
     );
 };

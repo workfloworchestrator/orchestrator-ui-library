@@ -30,8 +30,6 @@ import {
 } from '../utils/tableConfigPersistence';
 
 export type TableWithFilterProps<T> = {
-    __filterQuery?: string; // Deprecated Pythia related way of passing querystring
-    __setFilterQuery?: (updatedFilterQuery: string) => void; // Deprecated Pythia related way of setting querystring
     data: T[];
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
@@ -48,8 +46,6 @@ export type TableWithFilterProps<T> = {
 };
 
 export const TableWithFilter = <T,>({
-    __filterQuery,
-    __setFilterQuery,
     data,
     tableColumns,
     leadingControlColumns,
@@ -130,8 +126,6 @@ export const TableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <SearchField
-                        __filterQuery={__filterQuery}
-                        __setFilterQuery={__setFilterQuery}
                         esQueryString={esQueryString}
                         onUpdateEsQueryString={onUpdateEsQueryString}
                     />

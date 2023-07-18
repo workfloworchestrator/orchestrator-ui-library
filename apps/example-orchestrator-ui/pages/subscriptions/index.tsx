@@ -28,35 +28,6 @@ export default function SubscriptionsPage() {
                 order: SortOrder.DESC,
             },
         });
-    // Todo: remove this, it got replaced by dataDisplayParams
-    // const [pageSize, setPageSize] = useQueryParam(
-    //     'pageSize',
-    //     withDefault(
-    //         NumberParam,
-    //         getTableConfigFromLocalStorage(
-    //             SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
-    //         )?.selectedPageSize ??
-    //             GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.first,
-    //     ),
-    // );
-    // const [pageIndex, setPageIndex] = useQueryParam(
-    //     'pageIndex',
-    //     withDefault(
-    //         NumberParam,
-    //         GET_SUBSCRIPTIONS_PAGINATED_DEFAULT_VARIABLES.after,
-    //     ),
-    // );
-    // const [sorting, setSorting] = useQueryParam(
-    //     'sorting',
-    //     withDefault(ObjectParam, {
-    //         field: DEFAULT_SORT_FIELD,
-    //         direction: DEFAULT_SORT_ORDER.toString(),
-    //     }),
-    // );
-    // const [filterQuery, setFilterQuery] = useQueryParam(
-    //     'filter',
-    //     withDefault(StringParam, ''),
-    // );
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
@@ -99,30 +70,8 @@ export default function SubscriptionsPage() {
             <EuiSpacer size="xxl" />
 
             <Subscriptions
-                pageSize={dataDisplayParams.pageSize}
-                setPageSize={(updatedPageSize) =>
-                    setDataDisplayParam('pageSize', updatedPageSize)
-                }
-                pageIndex={dataDisplayParams.pageIndex}
-                setPageIndex={(updatedPageIndex) =>
-                    setDataDisplayParam('pageIndex', updatedPageIndex)
-                }
-                sortOrder={{
-                    field: dataDisplayParams.sortBy?.field ?? START_DATE,
-                    order: sortOrder,
-                }}
-                setSortOrder={(updatedSortOrder) => {
-                    setDataDisplayParam('sortBy', {
-                        // Todo fix this type error
-                        // @ts-ignore
-                        field: updatedSortOrder.field,
-                        order: updatedSortOrder.order,
-                    });
-                }}
-                filterQuery={dataDisplayParams.esQueryString ?? ''}
-                setFilterQuery={(updatedFilterQuery) =>
-                    setDataDisplayParam('esQueryString', updatedFilterQuery)
-                }
+                dataDisplayParams={dataDisplayParams}
+                setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}
             />
         </NoSSR>
