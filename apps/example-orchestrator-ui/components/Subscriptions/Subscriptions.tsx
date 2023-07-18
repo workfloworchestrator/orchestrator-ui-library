@@ -4,11 +4,12 @@ import {
     DEFAULT_PAGE_SIZES,
     determineNewSortOrder,
     determinePageIndex,
+    FilterQuery,
     getFirstUuidPart,
     getTypedFieldFromObject,
     isValidQueryPart,
     Loading,
-    mapEsQueryContainerToKeyValueTuple,
+    mapEsQueryContainerToGraphqlFilter,
     MinusCircleOutline,
     parseDateToLocaleString,
     PlusCircleFill,
@@ -79,7 +80,7 @@ export type SubscriptionsProps = {
     setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
     filterQuery: string;
     setFilterQuery: (updatedFilterQuery: string) => void;
-    alwaysOnFilters?: [string, string][];
+    alwaysOnFilters?: FilterQuery[];
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
@@ -175,20 +176,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 
     const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
-    const filterQueryTupleArray =
-        esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
+    const filterQueryGraphqlFilter =
+        esQueryContainer.bool?.must?.map(mapEsQueryContainerToGraphqlFilter) ??
         [];
 
-    // Todo: isValidQueryPart is not needed
-    // Todo: filterQueryTupleArray needs to be adjusted to return the { field, value }
-    const filterBy = filterQueryTupleArray
+    const filterBy = filterQueryGraphqlFilter
         .concat(alwaysOnFilters)
         .filter(isValidQueryPart);
-
-    const filterBy2: GraphqlFilter[] = filterBy.map((filter) => ({
-        field: filter[0],
-        value: filter[1],
-    }));
 
     const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
@@ -201,7 +195,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 order:
                     sortOrder.order === 'ASC' ? SortOrder.Asc : SortOrder.Desc,
             },
-            filterBy: filterBy2,
+            filterBy,
         },
         'subscriptions',
         true,
@@ -274,10 +268,10 @@ function mapApiResponseToSubscriptionTableData2(
             description,
             insync,
             product,
-            startDate, // todo any????
-            endDate, // todo any???
+            startDate, // todo handle any
+            endDate, // todo handle any
             status,
-            subscriptionId,
+            subscriptionId, // todo handle any
             note,
         } = subscription;
 

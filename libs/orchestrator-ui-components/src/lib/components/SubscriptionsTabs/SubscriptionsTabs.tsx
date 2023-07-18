@@ -1,5 +1,6 @@
 import { EuiTab, EuiTabs } from '@elastic/eui';
 import { FC } from 'react';
+import { FilterQuery } from '../SearchBar';
 
 export enum SubscriptionsTabType {
     ACTIVE = 'ACTIVE',
@@ -11,24 +12,39 @@ export enum SubscriptionsTabType {
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;
     name: string;
-    alwaysOnFilters?: [string, string][];
+    alwaysOnFilters?: FilterQuery[]; // todo make alia OR use generated type
 };
 
 export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     {
         id: SubscriptionsTabType.ACTIVE,
         name: 'Active',
-        alwaysOnFilters: [['status', 'active']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'active',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.TERMINATED,
         name: 'Terminated',
-        alwaysOnFilters: [['status', 'terminated']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'terminated',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.TRANSIENT,
         name: 'Transient',
-        alwaysOnFilters: [['status', 'initial-provisioning-migrating']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'initial-provisioning-migrating',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.ALL,
