@@ -11,7 +11,6 @@ export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 export const NOTE = 'note';
 
-
 export type Subscription = {
     note: string | null;
     name: string | null;
@@ -43,6 +42,7 @@ export type SubscriptionsSort = {
     order: SortOrder;
 };
 
+// Todo: default might not be needed as they are defined on the page
 export const DEFAULT_SORT_FIELD: keyof Subscription = 'startDate';
 export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.DESC;
 export const DEFAULT_SUBSCRIPTIONS_SORT_ORDER: SubscriptionsSort = {

@@ -12,7 +12,7 @@ export enum SubscriptionsTabType {
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;
     name: string;
-    alwaysOnFilters?: FilterQuery[]; // todo make alia OR use generated type
+    alwaysOnFilters?: FilterQuery[];
 };
 
 export const defaultSubscriptionsTabs: SubscriptionsTab[] = [

@@ -40,7 +40,6 @@ import {
 } from './subscriptionsQuery';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import {
-    GraphqlFilter,
     SortOrder,
     SubscriptionsTableQuery,
 } from '../../__generated__/graphql';
@@ -59,7 +58,7 @@ const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
 
-type Subscription = {
+export type Subscription = {
     subscriptionId: string;
     description: string;
     status: string;
@@ -245,8 +244,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         <TableWithFilter<Subscription>
             __filterQuery={filterQuery}
             __setFilterQuery={setFilterQuery}
-            onUpdateEsQueryString={() => console.log('FILLER')}
-            data={mapApiResponseToSubscriptionTableData2(data)}
+            onUpdateEsQueryString={(esQueryString) => console.log('FILLER', esQueryString)}
+            data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
@@ -260,7 +259,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 };
 
-function mapApiResponseToSubscriptionTableData2(
+function mapApiResponseToSubscriptionTableData(
     graphqlResponse: SubscriptionsTableQuery,
 ): Subscription[] {
     return graphqlResponse.subscriptions.page.map((subscription) => {
