@@ -27,11 +27,9 @@ import { Pagination } from '@elastic/eui';
 import { GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
 
 import { METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY } from '../../../constants';
-import {
-    MetadataProductsQuery,
-    SortOrder as SortOrderGraphql,
-} from '../../../__generated__/graphql';
+import { MetadataProductsQuery } from '../../../__generated__/graphql';
 import { useRouter } from 'next/router';
+import { mapToGraphQlSortBy } from '../../../utils/queryVarsMappers';
 
 export const PRODUCT_FIELD_NAME: keyof Product = 'name';
 export const PRODUCT_FIELD_DESCRIPTION: keyof Product = 'description';
@@ -113,29 +111,19 @@ export const Products: FC<ProductsProps> = ({
         },
     };
 
-    const sortedColumnId = dataDisplayParams.sortBy
-        ? getTypedFieldFromObject(dataDisplayParams.sortBy.field, tableColumns)
-        : null;
-
+    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            // Todo introduce a mapper utility function
-            sortBy: sortedColumnId &&
-                dataDisplayParams.sortBy?.order && {
-                    field: sortedColumnId.toString(),
-                    order:
-                        dataDisplayParams.sortBy.order === 'ASC'
-                            ? SortOrderGraphql.Asc
-                            : SortOrderGraphql.Desc,
-                },
+            sortBy,
         },
         'products',
         true,
     );
 
+    const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
         router.replace('/metadata/products');
         return null;

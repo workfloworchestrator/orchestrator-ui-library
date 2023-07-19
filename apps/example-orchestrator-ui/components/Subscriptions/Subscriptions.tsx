@@ -39,10 +39,8 @@ import {
     TAG,
 } from './subscriptionsQuery';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import {
-    SortOrder as SortOrderGraphql,
-    SubscriptionsTableQuery,
-} from '../../__generated__/graphql';
+import { SubscriptionsTableQuery } from '../../__generated__/graphql';
+import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -162,30 +160,20 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const sortedColumnId = dataDisplayParams.sortBy
-        ? getTypedFieldFromObject(dataDisplayParams.sortBy.field, tableColumns)
-        : null;
-
+    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
     const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            // Todo introduce a mapper utility function
-            sortBy: sortedColumnId &&
-                dataDisplayParams.sortBy?.order && {
-                    field: sortedColumnId.toString(),
-                    order:
-                        dataDisplayParams.sortBy.order === 'ASC'
-                            ? SortOrderGraphql.Asc
-                            : SortOrderGraphql.Desc,
-                },
+            sortBy,
             filterBy: alwaysOnFilters,
         },
         'subscriptions',
         true,
     );
 
+    const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
         router.replace('/subscriptions');
         return null;
