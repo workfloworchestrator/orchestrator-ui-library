@@ -34,6 +34,7 @@ export type TableWithFilterProps<T> = {
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
     trailingControlColumns?: TableControlColumnConfig<T>;
+    // todo make this optional
     defaultHiddenColumns: TableColumnKeys<T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;

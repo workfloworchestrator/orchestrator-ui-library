@@ -20,7 +20,6 @@ import NoSSR from 'react-no-ssr';
 
 export default function SubscriptionsPage() {
     const router = useRouter();
-
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<Subscription>({
             sortBy: {

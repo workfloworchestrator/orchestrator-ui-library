@@ -4,12 +4,17 @@ import {
     PRODUCT_FIELD_NAME,
 } from '../../components/Metadata/Products/Products';
 
-import { useDataDisplayParams } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    getSortDirectionFromString,
+    useDataDisplayParams,
+} from '@orchestrator-ui/orchestrator-ui-components';
 import type { Product } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
+import { useRouter } from 'next/router';
 
 const ProductsPageContent = () => {
+    const router = useRouter();
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<Product>({
             sortBy: {
@@ -17,6 +22,14 @@ const ProductsPageContent = () => {
                 order: SortOrder.ASC,
             },
         });
+
+    const sortOrder = getSortDirectionFromString(
+        dataDisplayParams.sortBy?.order,
+    );
+    if (!sortOrder) {
+        router.replace('/metadata/products');
+        return null;
+    }
 
     return (
         <Products

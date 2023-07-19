@@ -102,14 +102,6 @@ export interface Process {
 
 //// Utility types
 
-export interface GraphQlResultPageInfo {
-    totalItems: string;
-    startCursor: string;
-    hasPreviousPage: boolean;
-    hasNextPage: boolean;
-    endCursor: string;
-}
-
 export interface Product {
     name: string;
     description: string;
