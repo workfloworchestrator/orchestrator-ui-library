@@ -1,4 +1,5 @@
 import {
+    FilterQuery,
     isValidQueryPart,
     mapEsQueryContainerToKeyValueTuple,
 } from './searchQueryMapper';
@@ -73,19 +74,16 @@ describe('searchQueryMapper', () => {
 
     describe('isValidQueryPart', () => {
         it('returns true for valid parts', () => {
-            const filter = ['testKey', 'testValue'];
+            const filter: FilterQuery = {
+                field: 'testKey',
+                value: 'testValue',
+            };
             const result = isValidQueryPart(filter);
             expect(result).toBe(true);
         });
 
         it('returns false for parts being undefined', () => {
             const filter = undefined;
-            const result = isValidQueryPart(filter);
-            expect(result).toBe(false);
-        });
-
-        it('returns false for parts not being arrays with length of 2', () => {
-            const filter = ['testKey'];
             const result = isValidQueryPart(filter);
             expect(result).toBe(false);
         });
