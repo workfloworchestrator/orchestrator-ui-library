@@ -9,9 +9,7 @@ import {
     getFirstUuidPart,
     getPageChangeHandler,
     getTypedFieldFromObject,
-    isValidQueryPart,
     Loading,
-    mapEsQueryContainerToGraphqlFilter,
     MinusCircleOutline,
     parseDateToLocaleString,
     PlusCircleFill,
@@ -27,7 +25,7 @@ import {
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { EuiFlexItem, EuiSearchBar, Pagination } from '@elastic/eui';
+import { EuiFlexItem, Pagination } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -168,20 +166,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         ? getTypedFieldFromObject(dataDisplayParams.sortBy.field, tableColumns)
         : null;
 
-    // Todo remove this: waiting for implementation in backend
-    // Start handling searchQuery
-    const esQueryContainer = EuiSearchBar.Query.toESQuery(
-        dataDisplayParams.esQueryString ?? '',
-    );
-    const filterQueryGraphqlFilter =
-        esQueryContainer.bool?.must?.map(mapEsQueryContainerToGraphqlFilter) ??
-        [];
-
-    const filterBy = filterQueryGraphqlFilter
-        .concat(alwaysOnFilters)
-        .filter(isValidQueryPart);
-    // End handling searchQuery
-
     const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
@@ -196,7 +180,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                             ? SortOrderGraphql.Asc
                             : SortOrderGraphql.Desc,
                 },
-            filterBy,
+            filterBy: alwaysOnFilters,
         },
         'subscriptions',
         true,

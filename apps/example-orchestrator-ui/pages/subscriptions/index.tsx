@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { START_DATE } from '../../components/Subscriptions/subscriptionsQuery';
 import {
+    DEFAULT_PAGE_SIZE,
     defaultSubscriptionsTabs,
     getSortDirectionFromString,
     getSubscriptionsTabTypeFromString,
+    getTableConfigFromLocalStorage,
     SortOrder,
     SubscriptionsTabs,
     SubscriptionsTabType,
@@ -17,11 +19,17 @@ import {
     Subscriptions,
 } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
+import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 
 export default function SubscriptionsPage() {
     const router = useRouter();
+
+    const initialPageSize =
+        getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
+            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<Subscription>({
+            pageSize: initialPageSize,
             sortBy: {
                 field: START_DATE,
                 order: SortOrder.DESC,

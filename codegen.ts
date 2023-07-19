@@ -8,18 +8,16 @@ const config: CodegenConfig = {
         'libs/**/*.tsx',
         'libs/**/*.ts',
     ],
+    overwrite: true,
     generates: {
         './apps/example-orchestrator-ui/__generated__/': {
             schema: GRAPHQL_ENDPOINT_CORE,
             preset: 'client',
-            overwrite: true,
         },
-        './apps/example-orchestrator-ui/__generated__/graphql-wfo-core.schema.json':
-            {
-                schema: GRAPHQL_ENDPOINT_CORE,
-                overwrite: true,
-                plugins: ['introspection'],
-            },
+        './apps/example-orchestrator-ui/__generated__/gql-core.schema.json': {
+            schema: GRAPHQL_ENDPOINT_CORE,
+            plugins: ['introspection'],
+        },
     },
 };
 

@@ -1,6 +1,5 @@
 import { EuiTab, EuiTabs } from '@elastic/eui';
 import { FC } from 'react';
-import { FilterQuery } from '../SearchBar';
 
 export enum SubscriptionsTabType {
     ACTIVE = 'ACTIVE',
@@ -8,6 +7,11 @@ export enum SubscriptionsTabType {
     TRANSIENT = 'TRANSIENT',
     ALL = 'ALL',
 }
+
+export type FilterQuery = {
+    field: string;
+    value: string;
+};
 
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;

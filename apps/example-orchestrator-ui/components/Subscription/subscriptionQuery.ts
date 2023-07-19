@@ -4,6 +4,7 @@ import {
     SubscriptionDetailOutlineQuery,
 } from '../../__generated__/graphql';
 import {
+    ExternalServiceBase,
     parseDate,
     parseDateToLocaleString,
     ProductBase,
@@ -144,28 +145,8 @@ export function mapApiResponseToSubscriptionDetail(
         },
     );
 
-    // Todo: this is removed -- clean up project
-    // const customer: CustomerBase = {
-    //     name: subscription.organisation?.name ?? '',
-    //     abbreviation: subscription.organisation?.abbreviation ?? '',
-    // };
-
-    // todo: IMS does not exist on core backend -- clean up project
-    // let externalServices: ExternalServiceBase[] = [];
-    // if (externalServicesLoaded) {
-    //     // @ts-ignore
-    //     externalServices = subscription?.imsCircuits.map((service) => {
-    //         {
-    //             const externalService: ExternalServiceBase = {
-    //                 externalServiceId: service.ims.id.toString(),
-    //                 externalServiceData: { ...service.ims },
-    //                 externalServiceKey: 'ims',
-    //             };
-    //             return externalService;
-    //         }
-    //     });
-    //     console.log('External services loaded and mapped:', externalServices);
-    // }
+    const externalServices: ExternalServiceBase[] | undefined =
+        externalServicesLoaded ? [] : undefined;
 
     return {
         subscriptionId: subscription.subscriptionId,
@@ -187,5 +168,6 @@ export function mapApiResponseToSubscriptionDetail(
             fixedInputKey: 'fixedInputValue',
         },
         productBlocks: productBlocks,
+        externalServices,
     };
 }

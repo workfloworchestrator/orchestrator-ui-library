@@ -122,6 +122,7 @@ export const Products: FC<ProductsProps> = ({
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
+            // Todo introduce a mapper utility function
             sortBy: sortedColumnId &&
                 dataDisplayParams.sortBy?.order && {
                     field: sortedColumnId.toString(),
