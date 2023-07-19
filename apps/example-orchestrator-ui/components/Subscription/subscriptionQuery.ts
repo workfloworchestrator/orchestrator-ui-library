@@ -1,11 +1,9 @@
 import { graphql } from '../../__generated__';
 import {
-    GetSubscriptionDetailCompleteQuery,
-    GetSubscriptionDetailOutlineQuery,
+    SubscriptionDetailCompleteQuery,
+    SubscriptionDetailOutlineQuery,
 } from '../../__generated__/graphql';
 import {
-    CustomerBase,
-    ExternalServiceBase,
     parseDate,
     parseDateToLocaleString,
     ProductBase,
@@ -17,7 +15,6 @@ import {
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query SubscriptionDetailOutline($id: String!) {
         subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
-            # page is array but in this case only 1 entry
             page {
                 subscriptionId
                 # does not exist
@@ -61,7 +58,6 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
 export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     query SubscriptionDetailComplete($id: String!) {
         subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
-            # page is array but in this case only 1 entry
             page {
                 subscriptionId
                 # does not exist
@@ -102,135 +98,20 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     }
 `);
 
-// export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
-//     query GetSubscriptionDetailOutline($id: ID!) {
-//         subscription(id: $id) {
-//             subscriptionId
-//             customerId
-//             description
-//             fixedInputs
-//             insync
-//             note
-//             product {
-//                 createdAt
-//                 name
-//                 status
-//                 endDate
-//                 description
-//                 tag
-//                 type
-//             }
-//             endDate
-//             startDate
-//             status
-//             organisation {
-//                 abbreviation
-//                 name
-//                 website
-//                 tel
-//             }
-//             productBlocks {
-//                 id
-//                 ownerSubscriptionId
-//                 parent
-//                 resourceTypes
-//             }
-//         }
-//     }
-// `);
-
-// export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
-//     query GetSubscriptionDetailComplete($id: ID!) {
-//         subscription(id: $id) {
-//             subscriptionId
-//             customerId
-//             description
-//             fixedInputs
-//             insync
-//             note
-//             product {
-//                 createdAt
-//                 name
-//                 status
-//                 endDate
-//                 description
-//                 tag
-//                 type
-//             }
-//             endDate
-//             startDate
-//             status
-//             organisation {
-//                 abbreviation
-//                 name
-//                 website
-//                 tel
-//             }
-//             productBlocks {
-//                 id
-//                 ownerSubscriptionId
-//                 parent
-//                 resourceTypes
-//             }
-//             imsCircuits {
-//                 ims {
-//                     product
-//                     speed
-//                     id
-//                     extraInfo
-//                     endpoints(type: PORT) {
-//                         id
-//                         type
-//                         ... on ImsPort {
-//                             id
-//                             lineName
-//                             fiberType
-//                             ifaceType
-//                             patchposition
-//                             port
-//                             status
-//                             node
-//                             type
-//                             vlanranges
-//                             connectorType
-//                         }
-//                         ... on ImsInternalPort {
-//                             id
-//                             lineName
-//                             node
-//                             port
-//                             type
-//                             vlanranges
-//                         }
-//                         ... on ImsService {
-//                             id
-//                             type
-//                             vlanranges
-//                         }
-//                         vlanranges
-//                     }
-//                     location
-//                     name
-//                 }
-//             }
-//         }
-//     }
-// `);
-
 export function mapApiResponseToSubscriptionDetail(
     graphqlResponse:
-        | GetSubscriptionDetailOutlineQuery
-        | GetSubscriptionDetailCompleteQuery,
+        | SubscriptionDetailOutlineQuery
+        | SubscriptionDetailCompleteQuery,
     externalServicesLoaded: boolean,
 ): SubscriptionDetailBase {
-    const subscription = graphqlResponse.subscription;
+    const subscription = graphqlResponse.subscriptions.page[0];
 
     const product: ProductBase = {
         name: subscription.product.name,
         description: subscription.product.description,
         status: subscription.product.status,
         tag: subscription.product.tag ?? '',
-        type: subscription.product.type,
+        type: subscription.product.productType,
         createdAt: parseDateToLocaleString(
             parseDate(subscription.product.createdAt) as Date,
         ),
@@ -263,25 +144,28 @@ export function mapApiResponseToSubscriptionDetail(
         },
     );
 
-    const customer: CustomerBase = {
-        name: subscription.organisation?.name ?? '',
-        abbreviation: subscription.organisation?.abbreviation ?? '',
-    };
-    let externalServices: ExternalServiceBase[] = [];
-    if (externalServicesLoaded) {
-        // @ts-ignore
-        externalServices = subscription?.imsCircuits.map((service) => {
-            {
-                const externalService: ExternalServiceBase = {
-                    externalServiceId: service.ims.id.toString(),
-                    externalServiceData: { ...service.ims },
-                    externalServiceKey: 'ims',
-                };
-                return externalService;
-            }
-        });
-        console.log('External services loaded and mapped:', externalServices);
-    }
+    // Todo: this is removed -- clean up project
+    // const customer: CustomerBase = {
+    //     name: subscription.organisation?.name ?? '',
+    //     abbreviation: subscription.organisation?.abbreviation ?? '',
+    // };
+
+    // todo: IMS does not exist on core backend -- clean up project
+    // let externalServices: ExternalServiceBase[] = [];
+    // if (externalServicesLoaded) {
+    //     // @ts-ignore
+    //     externalServices = subscription?.imsCircuits.map((service) => {
+    //         {
+    //             const externalService: ExternalServiceBase = {
+    //                 externalServiceId: service.ims.id.toString(),
+    //                 externalServiceData: { ...service.ims },
+    //                 externalServiceKey: 'ims',
+    //             };
+    //             return externalService;
+    //         }
+    //     });
+    //     console.log('External services loaded and mapped:', externalServices);
+    // }
 
     return {
         subscriptionId: subscription.subscriptionId,
@@ -298,9 +182,10 @@ export function mapApiResponseToSubscriptionDetail(
         ),
         note: subscription?.note ?? '',
         product: product,
-        fixedInputs: subscription.fixedInputs,
-        customer: customer,
+        // todo should be implemented by backend, temporary mapping to placeholder object
+        fixedInputs: {
+            fixedInputKey: 'fixedInputValue',
+        },
         productBlocks: productBlocks,
-        externalServices: externalServices,
     };
 }

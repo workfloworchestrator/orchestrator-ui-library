@@ -15,7 +15,6 @@ import {
     MinusCircleOutline,
     parseDateToLocaleString,
     PlusCircleFill,
-    Product,
     SortOrder,
     TableColumnKeys,
     TableColumns,

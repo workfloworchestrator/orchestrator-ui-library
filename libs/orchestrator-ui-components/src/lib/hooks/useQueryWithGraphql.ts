@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GraphQLClient, request } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { Variables } from 'graphql-request/build/cjs/types';
@@ -28,27 +28,6 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await graphQLClient.request(query, queryVars);
-
-    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql);
-};
-
-// Todo should be removed
-export const useStringQueryWithGraphql = <T, U extends Variables>(
-    query: string,
-    queryVars: U,
-    queryKey: string,
-    useCoreConnection = false,
-) => {
-    const { graphqlEndpointPythia, graphqlEndpointCore } = useContext(
-        OrchestratorConfigContext,
-    );
-
-    const graphqlEndpoint = useCoreConnection
-        ? graphqlEndpointCore
-        : graphqlEndpointPythia;
-
-    const fetchFromGraphql = async () =>
-        await request<T>(graphqlEndpoint, query, queryVars);
 
     return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql);
 };

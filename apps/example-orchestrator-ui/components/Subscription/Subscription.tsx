@@ -14,7 +14,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { useQuery } from 'react-query';
-import { GRAPHQL_ENDPOINT_PYTHIA } from '../../constants';
+import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
 import { GraphQLClient } from 'graphql-request';
 import {
     GET_SUBSCRIPTION_DETAIL_COMPLETE,
@@ -34,7 +34,7 @@ type SubscriptionProps = {
     subscriptionId: string;
 };
 
-const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_PYTHIA);
+const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_CORE);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     const { subscriptionData, setSubscriptionData, loadingStatus } =
@@ -135,7 +135,9 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 <EuiFlexItem grow={true}>
                     <EuiText>
                         <h2>
-                            {isLoading ? '' : data?.subscription?.description}
+                            {isLoading
+                                ? ''
+                                : data?.subscriptions.page[0].description}
                         </h2>
                     </EuiText>
                 </EuiFlexItem>
