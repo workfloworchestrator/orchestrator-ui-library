@@ -8,6 +8,8 @@ import {
     WFOProductBlockBadge,
     useQueryWithGraphql,
     getTypedFieldFromObject,
+    parseDate,
+    parseDateToLocaleString,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import type {
@@ -108,6 +110,7 @@ export const Products: FC<ProductsProps> = ({
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
             name: COLUMN_LABEL_CREATED_AT,
+            render: parseDateToLocaleString,
         },
     };
 
@@ -170,6 +173,7 @@ function mapApiResponseToProductTableData(
     return graphqlResponse.products.page.map(
         (product): Product => ({
             ...product,
+            createdAt: parseDate(product.createdAt),
         }),
     );
 }

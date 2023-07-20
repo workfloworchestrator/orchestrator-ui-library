@@ -109,7 +109,7 @@ export interface Product {
     productType: string;
     status: string;
     productBlocks: ProductBlock[];
-    createdAt: string;
+    createdAt: Date | null;
 }
 
 interface ProductBlock {
