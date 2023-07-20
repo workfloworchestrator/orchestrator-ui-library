@@ -13,15 +13,14 @@ import {
     SubscriptionDetailBase,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
+// Todo: fixedInputs need to be implemented in backend
+// https://github.com/workfloworchestrator/orchestrator-core/issues/304
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query SubscriptionDetailOutline($id: String!) {
         subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
             page {
                 subscriptionId
-                # does not exist
-                # customerId
                 description
-                # todo should be implemented by backend
                 # fixedInputs
                 insync
                 note
@@ -38,13 +37,6 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
                 endDate
                 startDate
                 status
-                # org is removed
-                # organisation {
-                #     abbreviation
-                #     name
-                #     website
-                #     tel
-                # }
                 productBlocks {
                     id
                     ownerSubscriptionId
@@ -56,15 +48,14 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     }
 `);
 
+// Todo: fixedInputs need to be implemented in backend
+// https://github.com/workfloworchestrator/orchestrator-core/issues/304
 export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     query SubscriptionDetailComplete($id: String!) {
         subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
             page {
                 subscriptionId
-                # does not exist
-                # customerId
                 description
-                # todo should be implemented by backend
                 # fixedInputs
                 insync
                 note
@@ -81,13 +72,6 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
                 endDate
                 startDate
                 status
-                # org is removed
-                # organisation {
-                #     abbreviation
-                #     name
-                #     website
-                #     tel
-                # }
                 productBlocks {
                     id
                     ownerSubscriptionId
@@ -151,8 +135,6 @@ export function mapApiResponseToSubscriptionDetail(
     return {
         subscriptionId: subscription.subscriptionId,
         description: subscription.description,
-        // If you have a customerId field in your subscriptions add it her:
-        // customerId: subscription.customerId,
         insync: subscription.insync,
         status: subscription.status,
         startDate: parseDateToLocaleString(
@@ -163,7 +145,8 @@ export function mapApiResponseToSubscriptionDetail(
         ),
         note: subscription?.note ?? '',
         product: product,
-        // todo should be implemented by backend, temporary mapping to placeholder object
+        // Todo: fixedInputs need to be implemented in backend
+        // https://github.com/workfloworchestrator/orchestrator-core/issues/304
         fixedInputs: {
             fixedInputKey: 'fixedInputValue',
         },
