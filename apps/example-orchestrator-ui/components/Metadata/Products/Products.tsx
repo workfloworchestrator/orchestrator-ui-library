@@ -65,8 +65,6 @@ export const Products: FC<ProductsProps> = ({
 }) => {
     const router = useRouter();
 
-    const hiddenColumns: Array<keyof Product> = [];
-
     const tableColumns: TableColumns<Product> = {
         name: {
             field: PRODUCT_FIELD_NAME,
@@ -149,7 +147,6 @@ export const Products: FC<ProductsProps> = ({
         <TableWithFilter<Product>
             data={data ? mapApiResponseToProductTableData(data) : []}
             tableColumns={tableColumns}
-            defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             onUpdateDataSort={getDataSortHandler<Product>(
                 dataDisplayParams,

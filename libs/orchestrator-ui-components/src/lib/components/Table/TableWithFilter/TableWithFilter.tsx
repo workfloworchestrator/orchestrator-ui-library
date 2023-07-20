@@ -34,8 +34,7 @@ export type TableWithFilterProps<T> = {
     tableColumns: TableColumns<T>;
     leadingControlColumns?: TableControlColumnConfig<T>;
     trailingControlColumns?: TableControlColumnConfig<T>;
-    // todo make this optional
-    defaultHiddenColumns: TableColumnKeys<T>;
+    defaultHiddenColumns?: TableColumnKeys<T>;
     dataSorting: DataSorting<T>;
     pagination: Pagination;
     esQueryString?: string;
@@ -51,7 +50,7 @@ export const TableWithFilter = <T,>({
     tableColumns,
     leadingControlColumns,
     trailingControlColumns,
-    defaultHiddenColumns,
+    defaultHiddenColumns = [],
     dataSorting,
     pagination,
     esQueryString,
