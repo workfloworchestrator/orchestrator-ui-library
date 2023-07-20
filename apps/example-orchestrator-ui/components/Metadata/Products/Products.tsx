@@ -129,20 +129,17 @@ export const Products: FC<ProductsProps> = ({
         return null;
     }
 
-    // Todo: handle this better
-    const totalItems = data?.products.pageInfo.totalItems ?? '0';
-    const totalItemCount = data ? parseInt(totalItems) : 0;
-
-    const dataSorting: DataSorting<Product> = {
-        field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
-    };
-
+    const totalItems = data?.products.pageInfo.totalItems;
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItemCount,
+        totalItemCount: totalItems ? parseInt(totalItems) : 0,
+    };
+
+    const dataSorting: DataSorting<Product> = {
+        field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
+        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     return (

@@ -11,6 +11,7 @@ import {
     getTypedFieldFromObject,
     Loading,
     MinusCircleOutline,
+    parseDate,
     parseDateToLocaleString,
     PlusCircleFill,
     SortOrder,
@@ -187,14 +188,12 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
+    const { totalItems } = data.subscriptions.pageInfo;
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        // todo: totalItems is, according to type, not always present (question for backend)
-        totalItemCount: data.subscriptions.pageInfo.totalItems
-            ? parseInt(data.subscriptions.pageInfo.totalItems)
-            : 0,
+        totalItemCount: totalItems ? parseInt(totalItems) : 0,
     };
 
     return (
@@ -230,10 +229,10 @@ function mapApiResponseToSubscriptionTableData(
             description,
             insync,
             product,
-            startDate, // todo handle any
-            endDate, // todo handle any
+            startDate,
+            endDate,
             status,
-            subscriptionId, // todo handle any
+            subscriptionId,
             note,
         } = subscription;
 
@@ -244,8 +243,8 @@ function mapApiResponseToSubscriptionTableData(
             insync,
             productName,
             tag,
-            startDate,
-            endDate,
+            startDate: parseDate(startDate),
+            endDate: parseDate(endDate),
             status,
             subscriptionId,
             note: note ?? null,
