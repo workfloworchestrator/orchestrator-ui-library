@@ -1,34 +1,37 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
     "version": "0.0.0",
-    "main": "./src/index.ts",
     "scripts": {
+        "build": "tsup src/index.ts --format esm --dts",
         "tsc": "tsc --noEmit",
-        "lint": "eslint \"src/**/*.ts*\""
+        "lint": "eslint \"src/**/*.ts*\"",
+        "dev": "yarn build -- --watch"
     },
-    "peerDependencies": {
-        "react-query": "3.39.3",
-        "@elastic/eui": "77.2.2",
-        "react": "18.2.0",
-        "@emotion/react": "11.11.1",
-        "next": "13.3.0",
-        "graphql-request": "5.2.0"
-    },
-    "devDependencies": {
-        "react-query": "3.39.3",
-        "@elastic/eui": "77.2.2",
-        "react": "18.2.0",
-        "@emotion/react": "11.11.1",
-        "next": "13.3.0",
-        "graphql-request": "5.2.0",
-        "eslint-config-custom": "*"
-    },
-    "module": "./index.js",
-    "type": "module",
-    "types": "./src/index.ts",
     "dependencies": {
         "@graphql-typed-document-node/core": "3.2.0",
         "moment": "2.29.4",
-        "use-query-params": "2.2.1"
-    }
+
+        "use-query-params": "2.2.1",
+        "@elastic/eui": "77.2.2",
+        "@emotion/css": "^11.11.2",
+        "@emotion/react": "^11.11.1",
+        "graphql-request": "5.2.0",
+        "next": "^13.4.1",
+        "next-intl": "2.19.0",
+        "next-query-params": "4.2.2",
+        "react": "^18.2.0",
+        "react-query": "3.39.3"
+    },
+    "peerDependencies": {
+    },
+    "devDependencies": {
+        "tsup": "^7.1.0",      
+        "@elastic/eui": "77.2.2",
+        "@emotion/react": "11.11.1",
+        "eslint-config-custom": "*"
+    },
+    "main": "./dist/index.js",
+    "module": "./index.js",
+    "type": "module",
+    "types": "./dist/index.d.ts"
 }
