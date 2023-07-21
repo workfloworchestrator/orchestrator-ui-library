@@ -15,6 +15,9 @@ import {
 
 // Todo: fixedInputs need to be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/304
+
+// Todo: customerId will be implemented in backend
+// https://github.com/workfloworchestrator/orchestrator-core/issues/238
 export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
     query SubscriptionDetailOutline($id: String!) {
         subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
@@ -31,7 +34,6 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
                     endDate
                     description
                     tag
-                    # type
                     productType
                 }
                 endDate
@@ -66,7 +68,6 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
                     endDate
                     description
                     tag
-                    # type
                     productType
                 }
                 endDate
