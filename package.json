@@ -3,9 +3,11 @@
   "scripts": {
     "dev": "turbo run dev --filter wfo-ui",
     "dev:all": "turbo run dev",
-    "build": "turbo run build",
+    "tsc": "turbo run tsc",
     "lint": "turbo run lint",
-    "tsc": "turbo run tsc"
+    "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
+    "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
+    "build": "turbo run build"
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
