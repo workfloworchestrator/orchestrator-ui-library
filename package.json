@@ -5,8 +5,8 @@
         "dev:all": "turbo run dev",
         "tsc": "turbo run tsc",
         "lint": "turbo run lint",
-        "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
-        "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json,md},libs/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
+        "prettier": "prettier -c \"{apps/**/*.{ts,tsx,json,md},packages/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
+        "prettier-fix": "prettier --write \"{apps/**/*.{ts,tsx,json,md},packages/**/*{ts,tsx,json,md},*.{ts,js,json,md}}\"",
         "build": "turbo run build"
     },
     "devDependencies": {
