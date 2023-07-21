@@ -1,13 +1,7 @@
-export * from './lib/components';
-
-export * from './lib/icons';
-
-export * from './lib/theme';
-
-export * from './lib/utils';
-
-export * from './lib/contexts';
-
-export * from './lib/types';
-
-export * from './lib/hooks';
+export * from "./components";
+export * from "./icons";
+export * from "./theme";
+export * from "./utils";
+export * from "./contexts";
+export * from "./types";
+export * from "./hooks";
