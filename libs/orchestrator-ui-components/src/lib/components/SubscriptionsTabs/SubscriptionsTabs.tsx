@@ -8,27 +8,47 @@ export enum SubscriptionsTabType {
     ALL = 'ALL',
 }
 
+export type FilterQuery = {
+    field: string;
+    value: string;
+};
+
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;
     name: string;
-    alwaysOnFilters?: [string, string][];
+    alwaysOnFilters?: FilterQuery[];
 };
 
 export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     {
         id: SubscriptionsTabType.ACTIVE,
         name: 'Active',
-        alwaysOnFilters: [['status', 'active']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'active',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.TERMINATED,
         name: 'Terminated',
-        alwaysOnFilters: [['status', 'terminated']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'terminated',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.TRANSIENT,
         name: 'Transient',
-        alwaysOnFilters: [['status', 'initial-provisioning-migrating']],
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'initial-provisioning-migrating',
+            },
+        ],
     },
     {
         id: SubscriptionsTabType.ALL,

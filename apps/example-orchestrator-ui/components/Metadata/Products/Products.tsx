@@ -6,12 +6,15 @@ import {
     getPageChangeHandler,
     WFOStatusBadge,
     WFOProductBlockBadge,
+    useQueryWithGraphql,
+    getTypedFieldFromObject,
+    parseDate,
+    parseDateToLocaleString,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import type {
     DataDisplayParams,
     Product,
-    GraphqlQueryVariables,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import {
@@ -20,14 +23,15 @@ import {
     DEFAULT_PAGE_SIZES,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { useStringQueryWithGraphql } from '@orchestrator-ui/orchestrator-ui-components';
-
 import { FC } from 'react';
 import { Pagination } from '@elastic/eui';
 
-import { ProductsResult, GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
+import { GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
 
 import { METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY } from '../../../constants';
+import { MetadataProductsQuery } from '../../../__generated__/graphql';
+import { useRouter } from 'next/router';
+import { mapToGraphQlSortBy } from '../../../utils/queryVarsMappers';
 
 export const PRODUCT_FIELD_NAME: keyof Product = 'name';
 export const PRODUCT_FIELD_DESCRIPTION: keyof Product = 'description';
@@ -59,7 +63,7 @@ export const Products: FC<ProductsProps> = ({
     dataDisplayParams,
     setDataDisplayParam,
 }) => {
-    const hiddenColumns: Array<keyof Product> = [];
+    const router = useRouter();
 
     const tableColumns: TableColumns<Product> = {
         name: {
@@ -104,44 +108,45 @@ export const Products: FC<ProductsProps> = ({
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
             name: COLUMN_LABEL_CREATED_AT,
+            render: parseDateToLocaleString,
         },
     };
 
-    const { data, isFetching } = useStringQueryWithGraphql<
-        ProductsResult,
-        GraphqlQueryVariables<Product>
-    >(
+    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
+    const { data, isFetching } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: dataDisplayParams.sortBy,
+            sortBy,
         },
         'products',
         true,
     );
 
-    const totalItemCount = data
-        ? parseInt(data.products.pageInfo.totalItems)
-        : 0;
+    const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
+    if (!sortedColumnId) {
+        router.replace('/metadata/products');
+        return null;
+    }
+
+    const totalItems = data?.products.pageInfo.totalItems;
+    const pagination: Pagination = {
+        pageSize: dataDisplayParams.pageSize,
+        pageIndex: dataDisplayParams.pageIndex,
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: totalItems ? parseInt(totalItems) : 0,
+    };
 
     const dataSorting: DataSorting<Product> = {
         field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const pagination: Pagination = {
-        pageSize: dataDisplayParams.pageSize,
-        pageIndex: dataDisplayParams.pageIndex,
-        pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItemCount,
-    };
-
     return (
         <TableWithFilter<Product>
             data={data ? mapApiResponseToProductTableData(data) : []}
             tableColumns={tableColumns}
-            defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             onUpdateDataSort={getDataSortHandler<Product>(
                 dataDisplayParams,
@@ -160,11 +165,12 @@ export const Products: FC<ProductsProps> = ({
 };
 
 function mapApiResponseToProductTableData(
-    graphqlResponse: ProductsResult,
+    graphqlResponse: MetadataProductsQuery,
 ): Product[] {
     return graphqlResponse.products.page.map(
         (product): Product => ({
             ...product,
+            createdAt: parseDate(product.createdAt),
         }),
     );
 }

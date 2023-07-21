@@ -1,8 +1,8 @@
 export function getTypedFieldFromObject<T extends object>(
-    field: string,
+    field: string | undefined,
     object: T,
 ): null | keyof T {
-    if (!Object.keys(object).includes(field)) {
+    if (field === undefined || !Object.keys(object).includes(field)) {
         return null;
     }
     return field as keyof T;

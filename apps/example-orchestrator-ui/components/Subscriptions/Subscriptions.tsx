@@ -1,30 +1,32 @@
 import {
     CheckmarkCircleFill,
+    DataDisplayParams,
     DataSorting,
     DEFAULT_PAGE_SIZES,
-    determineNewSortOrder,
-    determinePageIndex,
+    FilterQuery,
+    getDataSortHandler,
+    getEsQueryStringHandler,
+    getFirstUuidPart,
+    getPageChangeHandler,
     getTypedFieldFromObject,
+    Loading,
     MinusCircleOutline,
     parseDate,
-    PlusCircleFill,
-    getFirstUuidPart,
-    WFOStatusBadge,
-    TableColumns,
-    useOrchestratorTheme,
-    useStringQueryWithGraphql,
     parseDateToLocaleString,
-    Loading,
-    mapEsQueryContainerToKeyValueTuple,
-    isValidQueryPart,
+    PlusCircleFill,
+    SortOrder,
+    TableColumnKeys,
+    TableColumns,
     TableControlColumnConfig,
     TableWithFilter,
-    TableColumnKeys,
+    useOrchestratorTheme,
+    useQueryWithGraphql,
+    WFOStatusBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Criteria, EuiFlexItem, EuiSearchBar } from '@elastic/eui';
+import { EuiFlexItem, Pagination } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
@@ -35,13 +37,11 @@ import {
     START_DATE,
     STATUS,
     SUBSCRIPTION_ID,
-    SubscriptionsQueryVariables,
-    SubscriptionsResult,
-    SubscriptionsSort,
     TAG,
 } from './subscriptionsQuery';
-import { Pagination } from '@elastic/eui';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
+import { SubscriptionsTableQuery } from '../../__generated__/graphql';
+import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
 
 const COLUMN_LABEL_ID = 'ID';
 const COLUMN_LABEL_DESCRIPTION = 'Description';
@@ -57,7 +57,7 @@ const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
 
-type Subscription = {
+export type Subscription = {
     subscriptionId: string;
     description: string;
     status: string;
@@ -70,27 +70,20 @@ type Subscription = {
 };
 
 export type SubscriptionsProps = {
-    pageSize: number;
-    setPageSize: (updatedPageSize: number) => void;
-    pageIndex: number;
-    setPageIndex: (updatedPageIndex: number) => void;
-    sortOrder: SubscriptionsSort;
-    setSortOrder: (updatedSortOrder: SubscriptionsSort) => void;
-    filterQuery: string;
-    setFilterQuery: (updatedFilterQuery: string) => void;
-    alwaysOnFilters?: [string, string][];
+    alwaysOnFilters?: FilterQuery[];
+    dataDisplayParams: DataDisplayParams<Subscription>;
+    setDataDisplayParam: <
+        DisplayParamKey extends keyof DataDisplayParams<Subscription>,
+    >(
+        prop: DisplayParamKey,
+        value: DataDisplayParams<Subscription>[DisplayParamKey],
+    ) => void;
 };
 
 export const Subscriptions: FC<SubscriptionsProps> = ({
-    pageSize,
-    pageIndex,
-    sortOrder,
-    setPageSize,
-    setPageIndex,
-    setSortOrder,
-    filterQuery,
-    setFilterQuery,
     alwaysOnFilters,
+    dataDisplayParams,
+    setDataDisplayParam,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -168,37 +161,20 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const sortedColumnId = getTypedFieldFromObject(
-        sortOrder.field,
-        tableColumns,
-    );
-
-    const esQueryContainer = EuiSearchBar.Query.toESQuery(filterQuery);
-    const filterQueryTupleArray =
-        esQueryContainer.bool?.must?.map(mapEsQueryContainerToKeyValueTuple) ??
-        [];
-
-    const filterBy = filterQueryTupleArray
-        .concat(alwaysOnFilters)
-        .filter(isValidQueryPart);
-
-    const { data, isFetching } = useStringQueryWithGraphql<
-        SubscriptionsResult,
-        SubscriptionsQueryVariables
-    >(
+    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
+    const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
         {
-            first: pageSize,
-            after: pageIndex,
-            sortBy: sortedColumnId && {
-                field: sortedColumnId.toString(),
-                order: sortOrder.order,
-            },
-            filterBy,
+            first: dataDisplayParams.pageSize,
+            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
+            sortBy,
+            filterBy: alwaysOnFilters,
         },
         'subscriptions',
+        true,
     );
 
+    const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
         router.replace('/subscriptions');
         return null;
@@ -210,36 +186,22 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const dataSorting: DataSorting<Subscription> = {
         field: sortedColumnId,
-        sortOrder: sortOrder.order,
+        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
+    const { totalItems } = data.subscriptions.pageInfo;
     const pagination: Pagination = {
-        pageSize: pageSize,
-        pageIndex: determinePageIndex(pageIndex, pageSize),
+        pageSize: dataDisplayParams.pageSize,
+        pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: parseInt(data.subscriptions.pageInfo.totalItems),
-    };
-
-    const handleDataSort = (newSortColumnId: keyof Subscription) =>
-        setSortOrder({
-            field: newSortColumnId,
-            order: determineNewSortOrder(
-                sortedColumnId,
-                sortOrder.order,
-                newSortColumnId,
-            ),
-        });
-
-    const onUpdatePage = (page: Criteria<Subscription>['page']) => {
-        if (page) {
-            setPageSize(page.size);
-        }
+        totalItemCount: totalItems ? parseInt(totalItems) : 0,
     };
 
     return (
         <TableWithFilter<Subscription>
-            __filterQuery={filterQuery}
-            __setFilterQuery={setFilterQuery}
-            onUpdateEsQueryString={() => console.log('FILLER')}
+            esQueryString={dataDisplayParams.esQueryString}
+            onUpdateEsQueryString={getEsQueryStringHandler<Subscription>(
+                setDataDisplayParam,
+            )}
             data={mapApiResponseToSubscriptionTableData(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
@@ -248,39 +210,44 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdatePage={onUpdatePage}
-            onUpdateDataSort={handleDataSort}
+            onUpdatePage={getPageChangeHandler<Subscription>(
+                setDataDisplayParam,
+            )}
+            onUpdateDataSort={getDataSortHandler<Subscription>(
+                dataDisplayParams,
+                setDataDisplayParam,
+            )}
         />
     );
 };
 
 function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionsResult,
+    graphqlResponse: SubscriptionsTableQuery,
 ): Subscription[] {
-    return graphqlResponse.subscriptions.edges.map(
-        (baseSubscription): Subscription => {
-            const {
-                description,
-                insync,
-                product,
-                startDate,
-                endDate,
-                status,
-                subscriptionId,
-                note,
-            } = baseSubscription.node;
+    return graphqlResponse.subscriptions.page.map((subscription) => {
+        const {
+            description,
+            insync,
+            product,
+            startDate,
+            endDate,
+            status,
+            subscriptionId,
+            note,
+        } = subscription;
 
-            return {
-                description,
-                insync,
-                productName: product.name,
-                tag: product.tag ?? null,
-                startDate: parseDate(startDate),
-                endDate: parseDate(endDate),
-                status,
-                subscriptionId,
-                note,
-            };
-        },
-    );
+        const { name: productName, tag } = product;
+
+        return {
+            description,
+            insync,
+            productName,
+            tag,
+            startDate: parseDate(startDate),
+            endDate: parseDate(endDate),
+            status,
+            subscriptionId,
+            note: note ?? null,
+        };
+    });
 }
