@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
+    "dev": "turbo run dev --filter wfo-ui",
+    "dev:all": "turbo run dev",
     "build": "turbo run build",
-    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
