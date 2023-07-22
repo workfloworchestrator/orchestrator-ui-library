@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "scripts": {
         "build": "tsup src/index.ts --format esm --dts --external react --inject react-shim.js",
         "tsc": "tsc --noEmit",
@@ -21,8 +21,7 @@
         "react": "^18.2.0",
         "react-query": "3.39.3"
     },
-    "peerDependencies": {
-    },
+    "peerDependencies": {},
     "devDependencies": {
         "tsup": "^7.1.0",      
         "@elastic/eui": "77.2.2",
