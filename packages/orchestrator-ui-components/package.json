@@ -2,7 +2,7 @@
     "name": "@orchestrator-ui/orchestrator-ui-components",
     "version": "0.0.0",
     "scripts": {
-        "build": "tsup src/index.ts --format esm --dts",
+        "build": "tsup src/index.ts --format esm --dts --external react --inject react-shim.js",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
         "dev": "yarn build -- --watch"
@@ -10,7 +10,6 @@
     "dependencies": {
         "@graphql-typed-document-node/core": "3.2.0",
         "moment": "2.29.4",
-
         "use-query-params": "2.2.1",
         "@elastic/eui": "77.2.2",
         "@emotion/css": "^11.11.2",
