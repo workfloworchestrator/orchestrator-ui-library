@@ -1,5 +1,5 @@
 import { Badge } from '../Badge';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 
 export type WFOStatusBadgeProps = {

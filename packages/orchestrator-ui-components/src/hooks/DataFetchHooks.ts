@@ -50,7 +50,7 @@ export const useProcessesAttention = () => {
     );
     const initialData: ItemsList = {
         type: 'process',
-        title: 'Processes that need attention',
+        title: 'Processes that need attention 123',
         items: [],
         buttonName: 'Show all active processes',
     };

@@ -1,3 +1,4 @@
+import React from 'react'
 import { EuiToolTip } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from '../HeaderBadge';
