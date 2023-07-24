@@ -59,7 +59,7 @@
         "@nx/storybook": "16.5.0",
         "@nx/web": "16.5.0",
         "@nx/webpack": "16.5.0",
-        "@nx/workspace": "16.5.0",
+        "@nx/workspace": "16.5.5",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@rollup/plugin-url": "^7.0.0",
         "@storybook/addon-essentials": "7.0.26",
