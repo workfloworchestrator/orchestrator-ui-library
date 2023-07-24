@@ -2,6 +2,9 @@
     "name": "@orchestrator-ui/orchestrator-ui-components",
     "version": "0.0.0",
     "main": "./src/index.ts",
+    "scripts": {
+        "tsc": "tsc --noEmit"
+    },
     "peerDependencies": {
         "react-query": "3.39.3",
         "@elastic/eui": "77.2.2",
