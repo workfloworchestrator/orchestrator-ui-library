@@ -122,7 +122,7 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
                                         </td>
                                     </tr>
                                 ) : (
-                                    <tr>
+                                    <tr key={i}>
                                         <td
                                             colSpan={3}
                                             style={{

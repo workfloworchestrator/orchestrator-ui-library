@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "main": "./src/index.ts",
     "scripts": {
-        "tsc": "tsc --noEmit"
+        "tsc": "tsc --noEmit",
+        "lint": "eslint \"src/**/*.ts*\""
     },
     "peerDependencies": {
         "react-query": "3.39.3",
@@ -19,7 +20,8 @@
         "react": "18.2.0",
         "@emotion/react": "11.11.1",
         "next": "13.3.0",
-        "graphql-request": "5.2.0"
+        "graphql-request": "5.2.0",
+        "eslint-config-custom": "*"
     },
     "module": "./index.js",
     "type": "module",
