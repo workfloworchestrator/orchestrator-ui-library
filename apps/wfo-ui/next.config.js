@@ -1,4 +1,3 @@
 module.exports = {
-    reactStrictMode: false,
-    transpilePackages: ["ui"],
+    reactStrictMode: false
 };

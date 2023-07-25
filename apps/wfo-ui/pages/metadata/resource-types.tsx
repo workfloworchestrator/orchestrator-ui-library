@@ -1,3 +1,4 @@
+import React from 'react'
 import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
 
 const ResourceTypesPageContent = () => <div>METADATA RESOURCE TYPES</div>;

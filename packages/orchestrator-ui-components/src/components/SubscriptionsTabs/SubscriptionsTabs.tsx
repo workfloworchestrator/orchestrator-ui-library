@@ -1,5 +1,5 @@
 import { EuiTab, EuiTabs } from '@elastic/eui';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 export enum SubscriptionsTabType {
     ACTIVE = 'ACTIVE',

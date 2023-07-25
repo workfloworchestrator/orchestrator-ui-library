@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { IconProps } from './IconProps';
 
 export const ArrowNarrowDown: FC<IconProps> = ({

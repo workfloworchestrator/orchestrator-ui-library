@@ -1,3 +1,5 @@
+
+import React from 'react'
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { TableHeaderCell } from './TableHeaderCell';
