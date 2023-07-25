@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "license": "MIT",
     "scripts": {
-        "build": "tsup src/index.ts --format esm --dts --external react --inject react-shim.js",
+        "build": "tsup src/index.ts --format esm --dts",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
         "dev": "yarn build -- --watch"
