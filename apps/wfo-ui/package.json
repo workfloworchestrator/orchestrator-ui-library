@@ -11,12 +11,12 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@orchestrator-ui/orchestrator-ui-components": "*",
         "@elastic/datemath": "^5.0.3",
         "@elastic/eui": "77.2.2",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@graphql-typed-document-node/core": "3.2.0",
+        "@orchestrator-ui/orchestrator-ui-components": "*",
         "graphql": "16.7.1",
         "graphql-request": "5.2.0",
         "moment": "^2.29.4",
