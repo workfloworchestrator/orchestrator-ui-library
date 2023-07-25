@@ -26,8 +26,6 @@
     },
     "devDependencies": {
         "tsup": "^7.1.0",      
-        "@elastic/eui": "77.2.2",
-        "@emotion/react": "11.11.1",
         "eslint-config-custom": "*"
     },
     "type": "module",
