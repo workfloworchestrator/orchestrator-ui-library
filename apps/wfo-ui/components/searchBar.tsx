@@ -23,6 +23,7 @@ const loadTags = () =>
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const SearchBar = ({
     searchPhrase,
     handleSearch,
