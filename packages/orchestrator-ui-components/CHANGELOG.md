@@ -4,4 +4,4 @@
 
 ### Minor Changes
 
-- c597fc5: Switched to tsup build in turborepo
+-   c597fc5: Switched to tsup build in turborepo

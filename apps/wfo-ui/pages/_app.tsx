@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useState } from 'react';

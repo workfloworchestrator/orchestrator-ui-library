@@ -4,7 +4,7 @@ for now:
 
 ```
 yarn
-turbo dev 
+turbo dev
 ```
 
 release and publish

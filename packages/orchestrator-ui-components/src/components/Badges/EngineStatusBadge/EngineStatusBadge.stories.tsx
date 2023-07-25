@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import type { Meta } from '@storybook/react';
 import { EngineStatusBadge } from './EngineStatusBadge';
 

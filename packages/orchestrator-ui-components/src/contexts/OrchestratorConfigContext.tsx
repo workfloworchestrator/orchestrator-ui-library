@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { createContext, FC, ReactNode } from 'react';
 import {
     OrchestratorConfig,
