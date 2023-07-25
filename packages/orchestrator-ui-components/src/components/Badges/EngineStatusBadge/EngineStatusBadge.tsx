@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { HeaderBadge } from '../HeaderBadge';
 import { useEngineStatusQuery } from '../../../hooks/useEngineStatusQuery';

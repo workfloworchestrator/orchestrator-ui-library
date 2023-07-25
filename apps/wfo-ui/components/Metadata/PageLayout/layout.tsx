@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import type { ReactNode } from 'react';
 import { EuiSpacer, EuiPageHeader, EuiTab, EuiTabs } from '@elastic/eui';
 import { useRouter } from 'next/router';
