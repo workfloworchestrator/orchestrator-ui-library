@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/nextjs.json",
+    "extends": "@orchestrator-ui/tsconfig/nextjs.json",
     "compilerOptions": {
         "plugins": [
             {

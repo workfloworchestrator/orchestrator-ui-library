@@ -1,8 +1,13 @@
 {
-    "name": "eslint-config-custom",
+    "name": "@orchestrator-ui/eslint-config-custom",
     "version": "0.0.0",
-    "main": "index.js",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "license": "MIT",
+    "scripts": {
+        "build": "tsup index.js --format esm",
+        "dev": "yarn build -- --watch"
+    },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "5.61.0",
         "eslint-config-next": "^13.4.1",
