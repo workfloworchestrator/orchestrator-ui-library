@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Default",
     "compilerOptions": {
-        "jsx": "preserve",
+        "jsx": "react-jsx",
         "jsxImportSource": "@emotion/react",
         "composite": false,
         "declaration": true,
