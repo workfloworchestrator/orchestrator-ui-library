@@ -5,3 +5,4 @@ export * from './utils';
 export * from './contexts';
 export * from './types';
 export * from './hooks';
+export * from './messages';
