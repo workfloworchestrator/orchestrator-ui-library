@@ -1,12 +1,4 @@
-const path = require('path');
-
-const fromRoot = (d) => path.join(__dirname, d);
-
 module.exports = {
-    roots: [
-        fromRoot('apps/wfo-ui'),
-        fromRoot('packages/orchestrator-ui-components'),
-    ],
     resetMocks: true,
     coveragePathIgnorePatterns: [],
     collectCoverageFrom: ['<rootDir>/src/**/*.{js,ts,tsx}'],
