@@ -1,4 +1,4 @@
-const base = require('jest-config/jest-base.config.js');
+const base = require('@orchestrator-ui/jest-config/jest-base.config.js');
 
 module.exports = {
     ...base,
