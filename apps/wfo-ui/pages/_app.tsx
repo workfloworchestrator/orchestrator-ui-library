@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppProps } from 'next/app';
+
 import Head from 'next/head';
 import { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
@@ -11,6 +12,8 @@ import {
     OrchestratorPageTemplate,
     Breadcrumbs,
 } from '@orchestrator-ui/orchestrator-ui-components';
+
+
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -28,6 +31,7 @@ import { QueryParamProvider } from 'use-query-params';
 import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { TranslationsProvider } from './_translationsProvider';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -56,6 +60,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
+      <TranslationsProvider>
         <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
             <Head>
                 <title>Welcome to example-orchestrator-ui!</title>
@@ -85,6 +90,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 </OrchestratorConfigProvider>
             </main>
         </EuiProvider>
+        </TranslationsProvider>
     );
 }
 
