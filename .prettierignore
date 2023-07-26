@@ -3,5 +3,6 @@
 /**/__generated__
 /**/dist
 /coverage
+/mkdocs
 .next
 node_modules

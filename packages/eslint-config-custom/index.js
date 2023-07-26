@@ -11,7 +11,7 @@ module.exports = {
         '@typescript-eslint/ban-ts-comment': 'warn',
         '@typescript-eslint/no-explicit-any': 'error',
         'react/react-in-jsx-scope': 2,
-        'react/jsx-uses-react': 2
+        'react/jsx-uses-react': 2,
     },
     parserOptions: {
         babelOptions: {
