@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "license": "MIT",
     "scripts": {
+        "test": "jest",
         "build": "tsup src/index.ts --format esm --dts",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
@@ -28,7 +29,6 @@
         "tsup": "^7.1.0",
         "eslint-config-custom": "*"
     },
-    "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts"
 }

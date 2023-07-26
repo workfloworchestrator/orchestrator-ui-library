@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
+        "test": "jest",
         "tsc": "tsc --noEmit",
         "build": "next build",
         "start": "next start",
