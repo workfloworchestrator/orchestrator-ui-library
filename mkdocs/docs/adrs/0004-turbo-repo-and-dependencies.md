@@ -1,6 +1,6 @@
-# ADR 0003 - Next JS
+# ADR 0004 - Turbo Repo and dependencies
 
-Date: 2023-06-30
+Date: 2023-07-25
 
 ## Status
 
