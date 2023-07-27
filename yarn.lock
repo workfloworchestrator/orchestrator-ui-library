@@ -6578,7 +6578,7 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-next-intl@^2.19.0:
+next-intl@2.19.0:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-2.19.0.tgz#9f80f1c56680385f8ef97e1075f2a56cb35504af"
   integrity sha512-vK/3Lk1A2zPVl+D6n/cft+MsD6nsZO5/F4l+pHXSXrNQIjdClvGMKouM3xK/u5n75E4mmHQevVdyJQ1a7zWICw==
@@ -6594,7 +6594,7 @@ next-query-params@4.2.2:
   dependencies:
     tslib "^2.0.3"
 
-next@^13.4.12:
+next@^13.4.2:
   version "13.4.12"
   resolved "https://registry.yarnpkg.com/next/-/next-13.4.12.tgz#809b21ea0aabbe88ced53252c88c4a5bd5af95df"
   integrity sha512-eHfnru9x6NRmTMcjQp6Nz0J4XH9OubmzOa7CkWL+AUrUxpibub3vWwttjduu9No16dug1kq04hiUUpo7J3m3Xw==

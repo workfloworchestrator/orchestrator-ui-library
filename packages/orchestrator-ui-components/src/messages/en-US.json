@@ -1,31 +1,31 @@
 {
-  "main": {
-    "title": "Welcome to example-orchestrator-ui!"
-  },
-  "metadata": {
-    "tabs": {
-      "products": "Products",
-      "productBlocks": "Productblocks",
-      "resourceTypes": "Resource types",
-      "fixedInputs": "Fixed inputs",
-      "workflows": "Workflows"
-     },
-     "product": {
-          "name": "Name",
-          "description": "Description",
-          "tag": "Tag",
-          "productType": "Type",
-          "status": "status",
-          "productBlocks": "Product blocks",
-          "createdAt": "Created"
-      }
-  },
-  "subscriptions": {
-    "tabs": {
-      "active": "Active",
-      "terminated": "Terminated",
-      "transient": "Transient",
-      "all": "All"
+    "main": {
+        "title": "Welcome to example-orchestrator-ui!"
+    },
+    "metadata": {
+        "tabs": {
+            "products": "Products",
+            "productBlocks": "Productblocks",
+            "resourceTypes": "Resource types",
+            "fixedInputs": "Fixed inputs",
+            "workflows": "Workflows"
+        },
+        "product": {
+            "name": "Name",
+            "description": "Description",
+            "tag": "Tag",
+            "productType": "Type",
+            "status": "status",
+            "productBlocks": "Product blocks",
+            "createdAt": "Created"
+        }
+    },
+    "subscriptions": {
+        "tabs": {
+            "active": "Active",
+            "terminated": "Terminated",
+            "transient": "Transient",
+            "all": "All"
+        }
     }
-  }
 }

@@ -1,35 +1,34 @@
+import React from 'react';
+import { NextIntlProvider } from 'next-intl';
+import type { ReactNode } from 'react';
+import {
+    Locale,
+    getTranslationMessages,
+} from '@orchestrator-ui/orchestrator-ui-components';
+import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components';
+import { useRouter } from 'next/router';
+import { merge } from 'lodash';
 
-import React from 'react'
-import { NextIntlProvider } from 'next-intl'
-import type { ReactNode } from 'react'
-import { Locale, getTranslationMessages } from '@orchestrator-ui/orchestrator-ui-components'
-import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components'
-import { useRouter } from 'next/router'
-import { merge } from 'lodash'
-
-import enUS from './en-US.json'
-import nlNL from './nl-NL.json' 
+import enUS from './en-US.json';
+import nlNL from './nl-NL.json';
 
 interface TranslationsProviderProps {
-  children: ReactNode,
+    children: ReactNode;
 }
 
-export const TranslationsProvider = ({children}: TranslationsProviderProps) => {
-  const { locale } = useRouter()
-  
-  const standardMessages = getTranslationMessages(locale)
-  const customMessageMap: TranslationMessagesMap = new Map([
-    [Locale.enUS, enUS],
-    [Locale.nlNL, nlNL]
-  ])
-  const customMessages = getTranslationMessages(locale, customMessageMap)
+export const TranslationsProvider = ({
+    children,
+}: TranslationsProviderProps) => {
+    const { locale } = useRouter();
 
-  const messages = merge(standardMessages, customMessages)
+    const standardMessages = getTranslationMessages(locale);
+    const customMessageMap: TranslationMessagesMap = new Map([
+        [Locale.enUS, enUS],
+        [Locale.nlNL, nlNL],
+    ]);
+    const customMessages = getTranslationMessages(locale, customMessageMap);
 
-  return (
-    <NextIntlProvider messages={messages}>
-      {children}
-    </NextIntlProvider>
-  )
+    const messages = merge(standardMessages, customMessages);
 
-}
+    return <NextIntlProvider messages={messages}>{children}</NextIntlProvider>;
+};

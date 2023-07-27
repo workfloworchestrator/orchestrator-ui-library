@@ -10,7 +10,7 @@ interface MetadataLayoutProps {
 
 export const MetaDataLayout = ({ children }: MetadataLayoutProps) => {
     const router = useRouter();
-    const t = useTranslations('metadata.tabs')
+    const t = useTranslations('metadata.tabs');
     const currentPath = router.pathname;
 
     const tabs = [

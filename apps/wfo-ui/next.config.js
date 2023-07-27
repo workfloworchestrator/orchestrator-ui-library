@@ -1,5 +1,5 @@
 module.exports = {
-    reactStrictMode: false,    
+    reactStrictMode: false,
     i18n: {
       // These are all the locales you want to support in
       // your application
