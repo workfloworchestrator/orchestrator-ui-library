@@ -11,7 +11,6 @@ const tags = [
     { name: 'Firewall', color: 'success' },
 ];
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const loadTags = () =>
     new Promise((resolve) => {
         resolve(
@@ -24,6 +23,7 @@ const loadTags = () =>
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const SearchBar = ({
     searchPhrase,
     handleSearch,
