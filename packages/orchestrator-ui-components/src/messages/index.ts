@@ -1,3 +1,3 @@
-export * from './useTranslationMessages'
+export * from './getTranslationMessages'
 
 
