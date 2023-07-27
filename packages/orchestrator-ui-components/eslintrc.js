@@ -1,3 +1,3 @@
 module.exports = {
-    extends: ['custom'],
+    extends: ['@orchestrator-ui/eslint-config-custom'],
 };

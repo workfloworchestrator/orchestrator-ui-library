@@ -11,6 +11,7 @@ const tags = [
     { name: 'Firewall', color: 'success' },
 ];
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const loadTags = () =>
     new Promise((resolve) => {
         resolve(
