@@ -8,22 +8,27 @@ Date: 2023-07-25
 
 ## Decisions
 
-Initially we tried to make the components in lib so that they could be used form any react app. This resulted in some complex
-code when components in the lib need access to functionality in the Next JS router or other Next JS functionality. 
+The developer experience with NX was nice, but we ran into problems when we wanted to test our example app standalone.
+A couple of lib versions had problems that were encountered too long after the release. So we decided to switch to
+Turbo Repo.
 
-We will also use Next JS for authentication, internationalisation and localisation. 
+We did some tests and found out that it was easy to let the packages/lib build itself into a `dist/` folder and use this
+to serve the app. This ensures the standalone example app version will work; as we use it in teh same way whilst developing. 
 
-Decision: we will allow Next JS functionality inside the lib and assume that our users will implement their React app with Next JS.
+During this investigation we also reached consensus on a vision regarding dependency management. We found out that we didn't 
+need to ship EUI/React or Next JS with our package. So we moved these dependencies to the `peerDependencies`: this ensures an 
+ultra small lib, and no chances on double React versions. It gives users of the package some flexibility when choosing their 
+versions of the dependencies.
 
 ## Action items
 
-- Refactor components in the lib so the can use the Next JS router
-- Start adding localisation
-- Investigate [Next-Auth](https://next-auth.js.org/)
+- Switch to Turbo Repo
+- Create 3
+  packages: `@orchestrator-ui/orchestrator-ui-components`, `@orchestrator-ui/eslint-config-custom`, `@orchestrator-ui/tsconfig`
+- Keep the core dependencies as light as possible and let package users choose: React, Next JS and EUI versions
 
 ## Attendees
 
-- Hans Trompert
 - René Dohmen
 - Ricardo van der Heijden
 - Ruben van Leeuwen
