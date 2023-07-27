@@ -8,7 +8,9 @@
             "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
         },
         "test": {},
-        "lint": {},
+        "lint": {
+            "dependsOn": ["^build"]
+        },
         "tsc": {
             "dependsOn": ["^build"]
         },
