@@ -31,7 +31,7 @@ import { QueryParamProvider } from 'use-query-params';
 import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { TranslationsProvider } from './_translationsProvider';
+import { TranslationsProvider } from '../translations/translationsProvider';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
