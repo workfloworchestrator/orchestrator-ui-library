@@ -1,5 +1,15 @@
 {
+  "main": {
+    "title": "Welcome to example-orchestrator-ui!"
+  },
   "metadata": {
+    "tabs": {
+      "products": "Producten",
+      "productBlocks": "Productblokken",
+      "resourceTypes": "Resource types",
+      "fixedInputs": "Vaste inputs",
+      "workflows": "Workflows"
+},
       "product": {
           "name": "Naam",
           "description": "Beschrijving",
