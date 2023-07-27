@@ -29,12 +29,12 @@ export const MetaDataLayout = ({ children }: MetadataLayoutProps) => {
         },
         {
             id: 4,
-            name: 'Products',
+            name: 'Fixed inputs',
             path: '/metadata/fixed-inputs',
         },
         {
             id: 5,
-            name: 'Products',
+            name: 'Workflows',
             path: '/metadata/workflows',
         },
     ];
