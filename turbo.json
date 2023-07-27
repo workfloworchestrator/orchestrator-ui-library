@@ -7,8 +7,11 @@
             "dependsOn": ["^build"],
             "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
         },
+        "test": {},
         "lint": {},
-        "tsc": {},
+        "tsc": {
+            "dependsOn": ["^build"]
+        },
         "dev": {
             "cache": false,
             "persistent": true

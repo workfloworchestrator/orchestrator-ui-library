@@ -1,0 +1,74 @@
+name: Lint, test and build
+on: [push]
+jobs:
+    cache-dependencies:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
+            - uses: actions/cache@v2
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+            - name: Installing dependencies
+              run: yarn install --frozen-lockfile
+
+    linting-and-prettier:
+        runs-on: ubuntu-latest
+        needs: cache-dependencies
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
+            - uses: actions/cache@v2
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+            - name: Installing dependencies
+              run: yarn install --frozen-lockfile
+            - run: yarn run tsc
+            - run: yarn run lint
+            - run: yarn run prettier
+
+    unit-tests:
+        runs-on: ubuntu-latest
+        needs: cache-dependencies
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
+            - uses: actions/cache@v2
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+            - name: Installing dependencies
+              run: yarn install --frozen-lockfile
+            - run: yarn run test
+
+    build:
+        runs-on: ubuntu-latest
+        needs: cache-dependencies
+        steps:
+            -   uses: actions/checkout@v3
+            -   name: Use Node.js ${{ matrix.node-version }}
+                uses: actions/setup-node@v3
+                with:
+                    node-version: ${{ matrix.node-version }}
+                    cache: 'yarn'
+            -   uses: actions/cache@v2
+                with:
+                    path: '**/node_modules'
+                    key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+            -   name: Installing dependencies
+                run: yarn install --frozen-lockfile
+            -   run: yarn run build

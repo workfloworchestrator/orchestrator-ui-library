@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "---------- Running TSC ----------"
+yarn run tsc
+
+echo "---------- Running Linter ----------"
+yarn run lint
+
+echo "---------- Running Prettier ----------"
+yarn run prettier
