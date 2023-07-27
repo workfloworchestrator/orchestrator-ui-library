@@ -1,31 +1,31 @@
 {
-  "main": {
-    "title": "Welcome to example-orchestrator-ui!"
-  },
-  "metadata": {
-    "tabs": {
-      "products": "Producten",
-      "productBlocks": "Productblokken",
-      "resourceTypes": "Resource types",
-      "fixedInputs": "Vaste inputs",
-      "workflows": "Workflows"
-},
-      "product": {
-          "name": "Naam",
-          "description": "Beschrijving",
-          "tag": "Tag",
-          "productType": "Type",
-          "status": "Status",
-          "productBlocks": "Product blocks",
-          "createdAt": "Aangemaakt"
-      }
-  },
-  "subscriptions": {
-    "tabs": {
-      "active": "Actief",
-      "terminated": "Beeindigd",
-      "transient": "Tijdelijk",
-      "all": "Alles"
+    "main": {
+        "title": "Welcome to example-orchestrator-ui!"
+    },
+    "metadata": {
+        "tabs": {
+            "products": "Producten",
+            "productBlocks": "Productblokken",
+            "resourceTypes": "Resource types",
+            "fixedInputs": "Vaste inputs",
+            "workflows": "Workflows"
+        },
+        "product": {
+            "name": "Naam",
+            "description": "Beschrijving",
+            "tag": "Tag",
+            "productType": "Type",
+            "status": "Status",
+            "productBlocks": "Product blocks",
+            "createdAt": "Aangemaakt"
+        }
+    },
+    "subscriptions": {
+        "tabs": {
+            "active": "Actief",
+            "terminated": "Beeindigd",
+            "transient": "Tijdelijk",
+            "all": "Alles"
+        }
     }
-  }  
 }

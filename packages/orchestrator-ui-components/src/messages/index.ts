@@ -1,3 +1,1 @@
-export * from './getTranslationMessages'
-
-
+export * from './getTranslationMessages';

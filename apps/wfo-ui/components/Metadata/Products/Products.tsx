@@ -58,7 +58,7 @@ export const Products: FC<ProductsProps> = ({
     setDataDisplayParam,
 }) => {
     const router = useRouter();
-    const t = useTranslations('metadata.product')
+    const t = useTranslations('metadata.product');
     const tableColumns: TableColumns<Product> = {
         name: {
             field: PRODUCT_FIELD_NAME,

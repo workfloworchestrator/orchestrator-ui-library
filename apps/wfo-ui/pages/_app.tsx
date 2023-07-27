@@ -13,7 +13,6 @@ import {
     Breadcrumbs,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -60,36 +59,36 @@ function CustomApp({ Component, pageProps }: AppProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
-      <TranslationsProvider>
-        <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
-            <Head>
-                <title>Welcome to example-orchestrator-ui!</title>
-            </Head>
-            <main className="app">
-                <OrchestratorConfigProvider
-                    initialOrchestratorConfig={initialOrchestratorConfig}
-                >
-                    <QueryClientProvider
-                        client={queryClient}
-                        contextSharing={true}
+        <TranslationsProvider>
+            <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
+                <Head>
+                    <title>Welcome to example-orchestrator-ui!</title>
+                </Head>
+                <main className="app">
+                    <OrchestratorConfigProvider
+                        initialOrchestratorConfig={initialOrchestratorConfig}
                     >
-                        <OrchestratorPageTemplate getAppLogo={getAppLogo}>
-                            <QueryParamProvider
-                                adapter={NextAdapter}
-                                options={{
-                                    removeDefaultsFromUrl: false,
-                                    enableBatching: true,
-                                }}
-                            >
-                                <Breadcrumbs />
-                                <Component {...pageProps} />
-                            </QueryParamProvider>
-                        </OrchestratorPageTemplate>
-                        <ReactQueryDevtools initialIsOpen={false} />
-                    </QueryClientProvider>
-                </OrchestratorConfigProvider>
-            </main>
-        </EuiProvider>
+                        <QueryClientProvider
+                            client={queryClient}
+                            contextSharing={true}
+                        >
+                            <OrchestratorPageTemplate getAppLogo={getAppLogo}>
+                                <QueryParamProvider
+                                    adapter={NextAdapter}
+                                    options={{
+                                        removeDefaultsFromUrl: false,
+                                        enableBatching: true,
+                                    }}
+                                >
+                                    <Breadcrumbs />
+                                    <Component {...pageProps} />
+                                </QueryParamProvider>
+                            </OrchestratorPageTemplate>
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        </QueryClientProvider>
+                    </OrchestratorConfigProvider>
+                </main>
+            </EuiProvider>
         </TranslationsProvider>
     );
 }

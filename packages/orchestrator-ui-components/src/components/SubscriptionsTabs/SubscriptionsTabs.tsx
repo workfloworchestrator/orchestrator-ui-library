@@ -70,21 +70,21 @@ export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
     selectedSubscriptionsTab,
     onChangeSubscriptionsTab,
 }) => {
-  const t = useTranslations('subscriptions.tabs')
-  return (
-    <EuiTabs>
-        {tabs.map(({ id, translationKey: name }) => (
-            <EuiTab
-                key={id}
-                isSelected={id === selectedSubscriptionsTab}
-                onClick={() =>
-                    id !== selectedSubscriptionsTab &&
-                    onChangeSubscriptionsTab(id)
-                }
-            >
-                {t(name)}
-            </EuiTab>
-        ))}
-    </EuiTabs>
-  )
+    const t = useTranslations('subscriptions.tabs');
+    return (
+        <EuiTabs>
+            {tabs.map(({ id, translationKey: name }) => (
+                <EuiTab
+                    key={id}
+                    isSelected={id === selectedSubscriptionsTab}
+                    onClick={() =>
+                        id !== selectedSubscriptionsTab &&
+                        onChangeSubscriptionsTab(id)
+                    }
+                >
+                    {t(name)}
+                </EuiTab>
+            ))}
+        </EuiTabs>
+    );
 };

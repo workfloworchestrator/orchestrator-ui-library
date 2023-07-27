@@ -20,4 +20,4 @@
         "resolveJsonModule": true
     },
     "exclude": ["node_modules"]
-}    
+}
