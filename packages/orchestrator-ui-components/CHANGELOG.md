@@ -4,10 +4,10 @@
 
 ### Patch Changes
 
-- Converted tsconfig and eslint to standalone NPM package
+-   Converted tsconfig and eslint to standalone NPM package
 
 ## 0.1.0
 
 ### Minor Changes
 
-- c597fc5: Switched to tsup build in turborepo
+-   c597fc5: Switched to tsup build in turborepo

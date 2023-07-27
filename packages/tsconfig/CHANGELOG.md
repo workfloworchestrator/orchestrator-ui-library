@@ -4,4 +4,4 @@
 
 ### Patch Changes
 
-- Converted tsconfig and eslint to standalone NPM package
+-   Converted tsconfig and eslint to standalone NPM package

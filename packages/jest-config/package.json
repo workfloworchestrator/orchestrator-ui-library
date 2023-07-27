@@ -6,6 +6,11 @@
     "publishConfig": {
         "access": "public"
     },
+    "scripts": {
+        "build": "tsup jest-base.config.js --format esm",
+        "dev": "yarn build -- --watch"
+    },
+    "main": "./dist/",
     "dependencies": {
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^14.0.0",
