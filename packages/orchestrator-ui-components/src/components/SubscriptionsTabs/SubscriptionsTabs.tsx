@@ -1,5 +1,6 @@
 import { EuiTab, EuiTabs } from '@elastic/eui';
 import React, { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
 export enum SubscriptionsTabType {
     ACTIVE = 'ACTIVE',
@@ -15,14 +16,14 @@ export type FilterQuery = {
 
 export type SubscriptionsTab = {
     id: SubscriptionsTabType;
-    name: string;
+    translationKey: string;
     alwaysOnFilters?: FilterQuery[];
 };
 
 export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     {
         id: SubscriptionsTabType.ACTIVE,
-        name: 'Active',
+        translationKey: 'active',
         alwaysOnFilters: [
             {
                 field: 'status',
@@ -32,7 +33,7 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     },
     {
         id: SubscriptionsTabType.TERMINATED,
-        name: 'Terminated',
+        translationKey: 'terminated',
         alwaysOnFilters: [
             {
                 field: 'status',
@@ -42,7 +43,7 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     },
     {
         id: SubscriptionsTabType.TRANSIENT,
-        name: 'Transient',
+        translationKey: 'transient',
         alwaysOnFilters: [
             {
                 field: 'status',
@@ -52,7 +53,7 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
     },
     {
         id: SubscriptionsTabType.ALL,
-        name: 'All',
+        translationKey: 'all',
     },
 ];
 
@@ -68,9 +69,11 @@ export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
     tabs,
     selectedSubscriptionsTab,
     onChangeSubscriptionsTab,
-}) => (
+}) => {
+  const t = useTranslations('subscriptions.tabs')
+  return (
     <EuiTabs>
-        {tabs.map(({ id, name }) => (
+        {tabs.map(({ id, translationKey: name }) => (
             <EuiTab
                 key={id}
                 isSelected={id === selectedSubscriptionsTab}
@@ -79,8 +82,9 @@ export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
                     onChangeSubscriptionsTab(id)
                 }
             >
-                {name}
+                {t(name)}
             </EuiTab>
         ))}
     </EuiTabs>
-);
+  )
+};

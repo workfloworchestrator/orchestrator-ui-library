@@ -19,5 +19,13 @@
           "productBlocks": "Product blocks",
           "createdAt": "Aangemaakt"
       }
-  }
+  },
+  "subscriptions": {
+    "tabs": {
+      "active": "Actief",
+      "terminated": "Beeindigd",
+      "transient": "Tijdelijk",
+      "all": "Alles"
+    }
+  }  
 }

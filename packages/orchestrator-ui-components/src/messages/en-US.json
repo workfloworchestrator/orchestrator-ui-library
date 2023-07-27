@@ -9,8 +9,8 @@
       "resourceTypes": "Resource types",
       "fixedInputs": "Fixed inputs",
       "workflows": "Workflows"
-},
-"product": {
+     },
+     "product": {
           "name": "Name",
           "description": "Description",
           "tag": "Tag",
@@ -19,5 +19,13 @@
           "productBlocks": "Product blocks",
           "createdAt": "Created"
       }
+  },
+  "subscriptions": {
+    "tabs": {
+      "active": "Active",
+      "terminated": "Terminated",
+      "transient": "Transient",
+      "all": "All"
+    }
   }
 }
