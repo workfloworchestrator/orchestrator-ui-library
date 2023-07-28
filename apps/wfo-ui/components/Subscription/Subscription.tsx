@@ -14,8 +14,10 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { useQuery } from 'react-query';
-import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
 import { GraphQLClient } from 'graphql-request';
+import { useTranslations } from 'next-intl'
+
+import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
 import {
     GET_SUBSCRIPTION_DETAIL_COMPLETE,
     GET_SUBSCRIPTION_DETAIL_OUTLINE,
@@ -37,6 +39,7 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_CORE);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
+    const t = useTranslations('subscriptions.detail')      
     const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
@@ -122,7 +125,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 prepend={tab.prepend}
                 append={tab.append}
             >
-                {tab.name}
+                {t(tab.translationKey)}
             </EuiTab>
         ));
 

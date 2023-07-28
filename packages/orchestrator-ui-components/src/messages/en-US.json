@@ -37,6 +37,15 @@
             "startDate": "Start Date",
             "endDate": "End Date",
             "note": "Note"
+        },
+        "detail": {
+          "tabs": {
+              "general": "General",
+              "serviceConfiguration": "Service configuration",
+              "processes": "Processes",
+              "relatedSubscriptions": "Related subscriptions"
+          }
         }
     }
 }
+
