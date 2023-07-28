@@ -40,19 +40,10 @@ import {
     SUBSCRIPTION_ID,
     TAG,
 } from './subscriptionsQuery';
+import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import { SubscriptionsTableQuery } from '../../__generated__/graphql';
 import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
-
-const COLUMN_LABEL_ID = 'ID';
-const COLUMN_LABEL_DESCRIPTION = 'Description';
-const COLUMN_LABEL_STATUS = 'Status';
-const COLUMN_LABEL_INSYNC = 'In Sync';
-const COLUMN_LABEL_PRODUCT = 'Product';
-const COLUMN_LABEL_TAG = 'Tag';
-const COLUMN_LABEL_START_DATE = 'Start Date';
-const COLUMN_LABEL_END_DATE = 'End Date';
-const COLUMN_LABEL_NOTE = 'Note';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -87,18 +78,20 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setDataDisplayParam,
 }) => {
     const router = useRouter();
+    const t = useTranslations('subscriptions.index')
+
     const { theme } = useOrchestratorTheme();
 
     const tableColumns: TableColumns<Subscription> = {
         subscriptionId: {
             field: SUBSCRIPTION_ID,
-            name: COLUMN_LABEL_ID,
+            name: t('id'),
             width: '100',
             render: (value) => getFirstUuidPart(value),
         },
         description: {
             field: DESCRIPTION,
-            name: COLUMN_LABEL_DESCRIPTION,
+            name: t('description'),
             width: '400',
             render: (value, record) => (
                 <Link href={`/subscriptions/${record.subscriptionId}`}>
@@ -108,13 +101,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         status: {
             field: STATUS,
-            name: COLUMN_LABEL_STATUS,
+            name: t('status'),
             width: '110',
             render: (value) => <WFOStatusBadge status={value} />,
         },
         insync: {
             field: INSYNC,
-            name: COLUMN_LABEL_INSYNC,
+            name: t('insync'),
             width: '110',
             render: (value) =>
                 value ? (
@@ -125,28 +118,28 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         productName: {
             field: PRODUCT_NAME,
-            name: COLUMN_LABEL_PRODUCT,
+            name: t('product')
         },
         tag: {
             field: TAG,
-            name: COLUMN_LABEL_TAG,
+            name: t('tag'),
             width: '100',
         },
         startDate: {
             field: START_DATE,
-            name: COLUMN_LABEL_START_DATE,
+            name: t('startDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         endDate: {
             field: END_DATE,
-            name: COLUMN_LABEL_END_DATE,
+            name: t('endDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         note: {
             field: NOTE,
-            name: COLUMN_LABEL_NOTE,
+            name: t('note')
         },
     };
 

@@ -26,6 +26,17 @@
             "terminated": "Terminated",
             "transient": "Transient",
             "all": "All"
+        },
+        "index": {
+            "id": "ID",
+            "description": "Description",
+            "status": "Status",
+            "insync": "In Sync",
+            "product": "Product",
+            "tag": "Tag",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "note": "Note"
         }
     }
 }

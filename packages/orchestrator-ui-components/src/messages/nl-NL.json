@@ -26,6 +26,17 @@
             "terminated": "Beeindigd",
             "transient": "Tijdelijk",
             "all": "Alles"
+        },
+        "index": {
+            "id": "ID",
+            "description": "Beschrijving",
+            "status": "Status",
+            "insync": "In Sync",
+            "product": "Produkt",
+            "tag": "Tag",
+            "startDate": "Start datum",
+            "endDate": "Eind Datum",
+            "note": "Notitite"
         }
     }
 }
