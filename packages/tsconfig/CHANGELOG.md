@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 0.0.3
+
+### Patch Changes
+
+- c780503: Initial release
+
 ## 0.0.2
 
 ### Patch Changes
