@@ -2,6 +2,7 @@
 
 /**/__generated__
 /**/dist
+packages/*/CHANGELOG.md
 /coverage
 /mkdocs
 .next
