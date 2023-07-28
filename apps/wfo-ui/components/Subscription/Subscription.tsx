@@ -148,7 +148,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                     <EuiFlexGroup justifyContent="spaceBetween">
                         <EuiFlexItem style={{ width: 140 }}>
                             <span style={{ marginTop: 5 }}>
-                                Loading status
+                                {t('loadingStatus')}
                                 <EuiBadge
                                     style={{ marginLeft: 4 }}
                                     color={getColor(loadingStatus)}
