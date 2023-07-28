@@ -1,6 +1,11 @@
 {
-    "name": "tsconfig",
-    "version": "0.0.0",
+    "name": "@orchestrator-ui/tsconfig",
+    "scripts": {
+        "build": "tsup base.json nextjs.json tsconfig.json --format esm --dts",
+        "dev": "yarn build -- --watch"
+    },
+    "main": "./dist/",
+    "version": "0.0.1",
     "private": true,
     "license": "MIT",
     "publishConfig": {

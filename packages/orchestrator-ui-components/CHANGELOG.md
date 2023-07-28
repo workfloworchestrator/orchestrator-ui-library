@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.1.1
+
+### Patch Changes
+
+-   Converted tsconfig and eslint to standalone NPM package
+
 ## 0.1.0
 
 ### Minor Changes

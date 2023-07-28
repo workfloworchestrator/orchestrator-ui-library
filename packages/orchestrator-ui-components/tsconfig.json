@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/base.json",
+    "extends": "@orchestrator-ui/tsconfig/base.json",
     "compilerOptions": {
         "strictNullChecks": true
     },

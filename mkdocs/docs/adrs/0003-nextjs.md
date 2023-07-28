@@ -1,4 +1,4 @@
-# ADR 0002 - Typescript guidelines and rules
+# ADR 0003 - Next JS
 
 Date: 2023-06-30
 
