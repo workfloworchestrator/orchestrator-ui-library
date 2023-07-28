@@ -10,6 +10,7 @@ import {
 import { ProcessStatusBadge } from '../Badges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
+/** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
 const Card = (processInfo: SubscriptionProcess) => (
     <div style={{ marginTop: 5 }}>
         <table width="100%" bgcolor={'#F1F5F9'}>
@@ -87,7 +88,6 @@ export const ProcessesTimeline: FC<ProcessesTimelineProps> = ({
 }) => {
     const { data: subscriptionProcesses } =
         useSubscriptionProcesses(subscriptionId);
-    console.log('SUB', subscriptionProcesses);
 
     return (
         <>
