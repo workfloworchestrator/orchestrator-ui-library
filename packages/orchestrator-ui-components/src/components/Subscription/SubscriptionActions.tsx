@@ -44,7 +44,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     const [isPopoverOpen, setPopover] = useState(false);
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);
-console.log(subscriptionActions)
+
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
     };

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+import { EuiListGroup } from '@elastic/eui';
 
 import { TreeNode } from './TreeNode';
-import { EuiListGroup } from '@elastic/eui';
 import { TreeBlock } from '../../types';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 

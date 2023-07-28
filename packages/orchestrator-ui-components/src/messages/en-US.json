@@ -2,6 +2,11 @@
     "main": {
         "title": "Welcome to example-orchestrator-ui!"
     },
+    "common": {
+      "addToFavorites": "Add to favorites",
+      "product": "Product",
+      "deselect": "Deselect"
+    },  
     "metadata": {
         "tabs": {
             "products": "Products",
@@ -51,7 +56,17 @@
             "modify": "Modify workflow",
             "system": "System workflow",
             "terminate": "Terminate workflow"
-          }
+          },
+          "subscriptionDetails": "Subscription details",
+          "fixedInputs": "Fixed inputs",
+          "productInfo": "Product info",
+          "noProductBlockSelected": "No product block selected",
+          "productBlocks": "Product blocks",
+          "ctaSelectProductBlock": "Select one or more product blocks to view their details",
+          "startedBy": "Started by",
+          "startedAt": "Started at",
+          "status": "Status",
+          "id": "ID"
         }
     }
 }
