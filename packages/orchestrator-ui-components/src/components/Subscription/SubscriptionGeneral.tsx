@@ -44,7 +44,6 @@ export const SubscriptionGeneral = () => {
                 <EuiFlexItem>
                     {FixedInputBlock('Product Info', subscriptionData.product)}
                 </EuiFlexItem>
-                E
             </>
         </EuiFlexGrid>
     );
