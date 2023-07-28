@@ -1,8 +1,10 @@
+import { AbstractIntlMessages } from 'next-intl';
+
 import { Locale } from '../types';
 import nlNL from './nl-NL.json';
 import enUS from './en-US.json';
 
-export type TranslationMessagesMap = Map<Locale, object>;
+export type TranslationMessagesMap = Map<Locale, AbstractIntlMessages>;
 
 const standardMessageMap: TranslationMessagesMap = new Map([
     [Locale.enUS, enUS],
