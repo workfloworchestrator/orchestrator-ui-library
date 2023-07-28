@@ -39,12 +39,12 @@
             "note": "Notitite"
         },
         "detail": {
-          "tabs": {
-              "general": "Algemeen",
-              "serviceConfiguration": "Service configuratie",
-              "processes": "Processen",
-              "relatedSubscriptions": "Geralateerde subscriptions"
-          }
+            "tabs": {
+                "general": "Algemeen",
+                "serviceConfiguration": "Service configuratie",
+                "processes": "Processen",
+                "relatedSubscriptions": "Geralateerde subscriptions"
+            }
         }
     }
 }

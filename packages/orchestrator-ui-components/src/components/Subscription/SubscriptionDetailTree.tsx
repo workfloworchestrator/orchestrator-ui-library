@@ -41,7 +41,7 @@ function getProductBlockTitle(resourceType: ResourceTypeBase): string {
 }
 
 export const SubscriptionDetailTree = () => {
-    const t = useTranslations('subscriptions.detail')
+    const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedTreeNode, setSelectedTreeNode] = useState(-1);

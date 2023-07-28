@@ -40,7 +40,7 @@ export type SubscriptionActionsProps = {
 export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
-    const t = useTranslations('subscriptions.detail.workflow')
+    const t = useTranslations('subscriptions.detail.workflow');
     const [isPopoverOpen, setPopover] = useState(false);
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);

@@ -78,7 +78,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     setDataDisplayParam,
 }) => {
     const router = useRouter();
-    const t = useTranslations('subscriptions.index')
+    const t = useTranslations('subscriptions.index');
 
     const { theme } = useOrchestratorTheme();
 
@@ -118,7 +118,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         productName: {
             field: PRODUCT_NAME,
-            name: t('product')
+            name: t('product'),
         },
         tag: {
             field: TAG,
@@ -139,7 +139,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
         note: {
             field: NOTE,
-            name: t('note')
+            name: t('note'),
         },
     };
 

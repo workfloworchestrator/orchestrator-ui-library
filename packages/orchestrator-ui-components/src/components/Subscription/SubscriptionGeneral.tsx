@@ -14,7 +14,8 @@ import { FixedInputBlock } from './FixedInputBlock';
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
 
 export const SubscriptionGeneral = () => {
-    const { subscriptionData, loadingStatus } =  React.useContext(SubscriptionContext);
+    const { subscriptionData, loadingStatus } =
+        React.useContext(SubscriptionContext);
 
     if (!loadingStatus) {
         return (
@@ -42,7 +43,8 @@ export const SubscriptionGeneral = () => {
                 </EuiFlexItem>
                 <EuiFlexItem>
                     {FixedInputBlock('Product Info', subscriptionData.product)}
-                </EuiFlexItem>E
+                </EuiFlexItem>
+                E
             </>
         </EuiFlexGrid>
     );
