@@ -44,6 +44,13 @@
               "serviceConfiguration": "Service configuration",
               "processes": "Processes",
               "relatedSubscriptions": "Related subscriptions"
+          },
+          "loadingStatus": "Loading status",
+          "workflow": {
+            "create": "Create workflow",
+            "modify": "Modify workflow",
+            "system": "System workflow",
+            "terminate": "Terminate workflow"
           }
         }
     }
