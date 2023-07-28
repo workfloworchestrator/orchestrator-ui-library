@@ -37,6 +37,14 @@
             "startDate": "Start datum",
             "endDate": "Eind Datum",
             "note": "Notitite"
+        },
+        "detail": {
+          "tabs": {
+              "general": "Algemeen",
+              "serviceConfiguration": "Service configuratie",
+              "processes": "Processen",
+              "relatedSubscriptions": "Geralateerde subscriptions"
+          }
         }
     }
 }
