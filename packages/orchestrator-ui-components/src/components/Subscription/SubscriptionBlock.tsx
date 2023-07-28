@@ -34,7 +34,7 @@ export const RenderField = (field: string, data: any) => {
 };
 
 export const SubscriptionBlock = (title: string, data: object) => {
-    const t = useTranslations('common')
+    const t = useTranslations('common');
     const keys = [];
     for (const key in data) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

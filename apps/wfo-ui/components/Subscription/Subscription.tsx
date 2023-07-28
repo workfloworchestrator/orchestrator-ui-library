@@ -15,7 +15,7 @@ import {
 } from '@elastic/eui';
 import { useQuery } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl';
 
 import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
 import {
@@ -39,7 +39,7 @@ type SubscriptionProps = {
 const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_CORE);
 
 export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
-    const t = useTranslations('subscriptions.detail')      
+    const t = useTranslations('subscriptions.detail');
     const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl';
 import {
     EuiFlexGroup,
     EuiFlexItem,
@@ -22,7 +22,7 @@ type TreeNodeProps = {
 };
 
 export const TreeNode: FC<TreeNodeProps> = ({ item, hasChildren, level }) => {
-    const t = useTranslations('common')
+    const t = useTranslations('common');
     const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
         React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
