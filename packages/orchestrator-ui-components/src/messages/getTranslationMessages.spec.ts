@@ -18,7 +18,7 @@ describe('getTransalationMessages', () => {
         const translation = getTranslationMessages(undefined);
         expect(translation).toEqual(enUS);
     });
-    it('Returns en-US translation unknown locale  is requested', () => {
+    it('Returns en-US translation unknown locale is requested', () => {
         const translation = getTranslationMessages('UNKNOWN-LOCALE');
         expect(translation).toEqual(enUS);
     });
