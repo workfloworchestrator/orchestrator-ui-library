@@ -5,7 +5,7 @@
         "dev": "yarn build -- --watch"
     },
     "main": "./dist/",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "license": "MIT",
     "publishConfig": {
         "access": "public"
