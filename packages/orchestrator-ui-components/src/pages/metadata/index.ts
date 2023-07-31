@@ -1,1 +1,1 @@
-export * from './ProductBlocksPage';
+export * from './WFOProductBlocksPage';

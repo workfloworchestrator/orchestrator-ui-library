@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductBlocksPage as Page } from '@orchestrator-ui/orchestrator-ui-components';
+import { WFOProductBlocksPage as Page } from '@orchestrator-ui/orchestrator-ui-components';
 
 export const ProductBlocksPage = () => <Page />;
 
