@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const ProductBlocksPage = () => {
-  return (
-    <div>ProductBLOCKSpaGE!!!!</div>
-  )
-}
+    return <div>ProductBLOCKSpaGE!!!!</div>;
+};
