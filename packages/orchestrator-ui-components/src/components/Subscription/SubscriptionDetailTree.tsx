@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ProductBlockBase, ResourceTypeBase, TreeBlock } from '../../types';
 import { ProductBlock } from './ProductBlock';
 import {
@@ -40,6 +41,7 @@ function getProductBlockTitle(resourceType: ResourceTypeBase): string {
 }
 
 export const SubscriptionDetailTree = () => {
+    const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedTreeNode, setSelectedTreeNode] = useState(-1);
@@ -109,8 +111,8 @@ export const SubscriptionDetailTree = () => {
                 parentNode.children?.push(shallowCopy);
             }
         });
-        console.log('Tree', tree);
     }
+
     if (!tree) return null;
 
     return (
@@ -121,7 +123,7 @@ export const SubscriptionDetailTree = () => {
                         <EuiFlexGroup>
                             <EuiFlexItem grow={false}>
                                 <EuiText>
-                                    <h3>Product blocks</h3>
+                                    <h3>{t('productBlocks')}</h3>
                                 </EuiText>
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
@@ -158,13 +160,10 @@ export const SubscriptionDetailTree = () => {
                                 minHeight: 600,
                             }}
                             size="m"
-                            title="No product block selected"
+                            title={t('noProductBlockSelected')}
                             iconType="inspect"
                         >
-                            <p>
-                                Select one or more product blocks to view their
-                                details
-                            </p>
+                            <p>{t('ctaSelectProductBlock')} </p>
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&

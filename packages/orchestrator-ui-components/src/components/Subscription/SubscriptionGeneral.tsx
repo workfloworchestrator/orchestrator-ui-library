@@ -6,13 +6,17 @@ import {
     EuiLoadingContent,
     EuiSpacer,
 } from '@elastic/eui';
+// import { useTranslations } from 'next-intl';
 import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 import { SubscriptionBlock } from './SubscriptionBlock';
 import { FixedInputBlock } from './FixedInputBlock';
 
+/** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
+
 export const SubscriptionGeneral = () => {
     const { subscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
+
     if (!loadingStatus) {
         return (
             <>
@@ -33,12 +37,12 @@ export const SubscriptionGeneral = () => {
                 </EuiFlexItem>
                 <EuiFlexItem>
                     {FixedInputBlock(
-                        'Fixed inputs',
+                        'Fixed Inputs',
                         subscriptionData.fixedInputs,
                     )}
                 </EuiFlexItem>
                 <EuiFlexItem>
-                    {FixedInputBlock('Product info', subscriptionData.product)}
+                    {FixedInputBlock('Product Info', subscriptionData.product)}
                 </EuiFlexItem>
             </>
         </EuiFlexGrid>

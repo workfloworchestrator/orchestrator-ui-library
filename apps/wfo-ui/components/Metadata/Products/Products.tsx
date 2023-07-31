@@ -26,6 +26,7 @@ import {
 
 import { FC } from 'react';
 import { Pagination } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
 
 import { GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
 
@@ -42,14 +43,6 @@ export const PRODUCT_FIELD_STATUS: keyof Product = 'status';
 export const PRODUCT_FIELD_PRODUCT_BLOCKS: keyof Product = 'productBlocks';
 export const PRODUCT_FIELD_CREATED_AT: keyof Product = 'createdAt';
 
-const COLUMN_LABEL_NAME = 'Name';
-const COLUMN_LABEL_DESCRIPTION = 'Description';
-const COLUMN_LABEL_TAG = 'Tag';
-const COLUMN_LABEL_PRODUCT_TYPE = 'Type';
-const COLUMN_LABEL_STATUS = 'Status';
-const COLUMN_LABEL_PRODUCT_BLOCKS = 'Product blocks';
-const COLUMN_LABEL_CREATED_AT = 'Created';
-
 export type ProductsProps = {
     dataDisplayParams: DataDisplayParams<Product>;
     setDataDisplayParam: <
@@ -65,29 +58,29 @@ export const Products: FC<ProductsProps> = ({
     setDataDisplayParam,
 }) => {
     const router = useRouter();
-
+    const t = useTranslations('metadata.product');
     const tableColumns: TableColumns<Product> = {
         name: {
             field: PRODUCT_FIELD_NAME,
-            name: COLUMN_LABEL_NAME,
+            name: t('name'),
             width: '110',
         },
         description: {
             field: PRODUCT_FIELD_DESCRIPTION,
-            name: COLUMN_LABEL_DESCRIPTION,
+            name: t('description'),
             width: '400',
         },
         tag: {
             field: PRODUCT_FIELD_TAG,
-            name: COLUMN_LABEL_TAG,
+            name: t('tag'),
         },
         productType: {
             field: PRODUCT_FIELD_PRODUCT_TYPE,
-            name: COLUMN_LABEL_PRODUCT_TYPE,
+            name: t('productType'),
         },
         status: {
             field: PRODUCT_FIELD_STATUS,
-            name: COLUMN_LABEL_STATUS,
+            name: t('status'),
             width: '90',
             render: (value) => (
                 <WFOStatusBadge status={value.toLocaleLowerCase()} />
@@ -95,7 +88,7 @@ export const Products: FC<ProductsProps> = ({
         },
         productBlocks: {
             field: PRODUCT_FIELD_PRODUCT_BLOCKS,
-            name: COLUMN_LABEL_PRODUCT_BLOCKS,
+            name: t('productBlocks'),
             render: (productBlocks) => (
                 <>
                     {productBlocks.map((block, index) => (
@@ -108,7 +101,7 @@ export const Products: FC<ProductsProps> = ({
         },
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
-            name: COLUMN_LABEL_CREATED_AT,
+            name: t('createdAt'),
             render: parseDateToLocaleString,
         },
     };

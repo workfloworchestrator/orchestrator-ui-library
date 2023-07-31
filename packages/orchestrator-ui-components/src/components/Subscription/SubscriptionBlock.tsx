@@ -7,6 +7,7 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
 import { WFOStatusBadge } from '../Badges';
 import {
@@ -33,6 +34,7 @@ export const RenderField = (field: string, data: any) => {
 };
 
 export const SubscriptionBlock = (title: string, data: object) => {
+    const t = useTranslations('common');
     const keys = [];
     for (const key in data) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -56,7 +58,7 @@ export const SubscriptionBlock = (title: string, data: object) => {
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
                             <EuiButtonEmpty size={'s'} iconType={'starEmpty'}>
-                                Add to favorites
+                                {t('addToFavorites')}
                             </EuiButtonEmpty>
                         </EuiFlexItem>
                     </EuiFlexGroup>
@@ -69,7 +71,7 @@ export const SubscriptionBlock = (title: string, data: object) => {
                                     valign={'top'}
                                     css={subscriptionDefinitionCellStyle}
                                 >
-                                    <b>Product</b>
+                                    <b>{t('product')}</b>
                                 </td>
                                 <td css={subscriptionValueCellStyle}>
                                     {/*

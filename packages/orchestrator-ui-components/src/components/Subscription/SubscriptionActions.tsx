@@ -8,6 +8,7 @@ import {
     EuiTitle,
     EuiPopover,
 } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
 import { useSubscriptionActions } from '../../hooks/useSubscriptionActions';
 
 type MenuItemProps = {
@@ -39,6 +40,7 @@ export type SubscriptionActionsProps = {
 export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
+    const t = useTranslations('subscriptions.detail.workflow');
     const [isPopoverOpen, setPopover] = useState(false);
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);
@@ -74,7 +76,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
                 <EuiPanel color="transparent" paddingSize="s">
                     {subscriptionActions && subscriptionActions.create && (
                         <>
-                            <MenuBlock title={'Create workflow'}></MenuBlock>
+                            <MenuBlock title={t('create')}></MenuBlock>
                             {subscriptionActions.create.map((item, index) => (
                                 <MenuItem
                                     key={`c_${index}`}
@@ -88,7 +90,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
 
                     {subscriptionActions && subscriptionActions.modify && (
                         <>
-                            <MenuBlock title={'Modify workflow'}></MenuBlock>
+                            <MenuBlock title={t('modify')}></MenuBlock>
                             {subscriptionActions.modify.map((item, index) => (
                                 <MenuItem
                                     key={`m_${index}`}
@@ -102,11 +104,11 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
 
                     {subscriptionActions && subscriptionActions.system && (
                         <>
-                            <MenuBlock title={'System workflow'}></MenuBlock>
+                            <MenuBlock title={t('system')}></MenuBlock>
                             {subscriptionActions.system.map((item, index) => (
                                 <MenuItem
                                     key={`s_${index}`}
-                                    icon={'Syste'}
+                                    icon={'System'}
                                     description={item.description}
                                     index={index}
                                 />
@@ -116,7 +118,7 @@ export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
 
                     {subscriptionActions && subscriptionActions.terminate && (
                         <>
-                            <MenuBlock title={'Terminate workflow'}></MenuBlock>
+                            <MenuBlock title={t('terminate')}></MenuBlock>
                             {subscriptionActions.terminate.map(
                                 (item, index) => (
                                     <MenuItem

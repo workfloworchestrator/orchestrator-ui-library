@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslations } from 'next-intl';
 import {
     EuiFlexGroup,
     EuiFlexItem,
@@ -21,6 +22,7 @@ type TreeNodeProps = {
 };
 
 export const TreeNode: FC<TreeNodeProps> = ({ item, hasChildren, level }) => {
+    const t = useTranslations('common');
     const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
         React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
@@ -59,7 +61,7 @@ export const TreeNode: FC<TreeNodeProps> = ({ item, hasChildren, level }) => {
                                 onClick: () => toggleSelectedId(item.id),
                                 iconType: 'error',
                                 iconSize: 's',
-                                'aria-label': 'Deselect',
+                                'aria-label': t('deselect'),
                                 alwaysShow: true,
                             }}
                         />

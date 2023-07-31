@@ -15,24 +15,24 @@ export const RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id';
 export const tabs = [
     {
         id: GENERAL_TAB,
-        name: 'General',
+        translationKey: 'tabs.general',
         prepend: <EuiIcon type="devToolsApp" />,
         append: <></>,
     },
     {
         id: SERVICE_CONFIGURATION_TAB,
-        name: 'Service configuration',
+        translationKey: 'tabs.serviceConfiguration',
         prepend: <EuiIcon type="submodule" />,
     },
     {
         id: PROCESSES_TAB,
-        name: 'Processes',
+        translationKey: 'tabs.processes',
         prepend: <EuiIcon type="indexRuntime" />,
     },
     {
         id: RELATED_SUBSCRIPTIONS_TAB,
         disabled: true,
-        name: 'Related subscriptions',
+        translationKey: 'tabs.relatedSubscriptions',
         prepend: <EuiIcon type="heatmap" />,
     },
 ];

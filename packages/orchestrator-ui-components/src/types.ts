@@ -144,3 +144,9 @@ export interface CacheOption {
     value: string;
     label: string;
 }
+``;
+
+export enum Locale {
+    enUS = 'en-Us',
+    nlNL = 'nl-NL',
+}
