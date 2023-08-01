@@ -26,7 +26,7 @@
             "createdAt": "Created"
         },
         "productBlocks": {
-            "id": "ID",
+            "id": "ID", 
             "name": "Name",
             "description": "Description",
             "tag": "Tag",
