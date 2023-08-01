@@ -12,7 +12,7 @@ import { DEFAULT_PAGE_SIZE } from '../components';
 export type DataDisplayParams<Type> = {
     pageSize: number;
     pageIndex: number;
-    sortBy?: GraphQLSort<Type>;
+    sortBy: GraphQLSort<Type>;
     esQueryString?: string; // The filter param is going to send to the backend as is for parsing
 };
 

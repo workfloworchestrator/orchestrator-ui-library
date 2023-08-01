@@ -36,6 +36,23 @@ export type ProductBlockBase = {
     resourceTypes: ResourceTypeBase;
 };
 
+export interface ResourceTypeDefinition {
+    description: string;
+    resourceType: string;
+    resourceTypeId: string;
+}
+
+export interface ProductBlockDefinition {
+    name: string;
+    tag: string;
+    description: string;
+    status: string;
+    createdAt: Date | null;
+    endDate: Date | null;
+    resourceTypes: ResourceTypeDefinition[];
+    parentIds: string[];
+}
+
 export type FixedInputsBase = GenericField;
 
 export type ExternalServiceBase = {
@@ -139,6 +156,19 @@ export type GraphqlQueryVariables<Type> = {
     sortBy?: GraphQLSort<Type>;
     filterBy?: GraphqlFilter<Type>[];
 };
+
+export interface GraphQLResult<T> {
+    results: {
+        page: T[];
+        pageInfo: {
+            hasNextPage: boolean;
+            hasPreviousPage: boolean;
+            startCursor: number;
+            totalItems: number;
+            endCursor: number;
+        };
+    };
+}
 
 export interface CacheOption {
     value: string;
