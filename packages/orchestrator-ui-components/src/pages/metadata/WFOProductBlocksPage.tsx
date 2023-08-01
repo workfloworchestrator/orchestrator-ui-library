@@ -28,6 +28,35 @@ import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 
 import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
+import { useTranslations } from 'next-intl';
+import type { Pagination } from '@elastic/eui/src/components';
+
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZES,
+    METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+} from '../../components';
+import {
+    WFOStatusBadge,
+    WFOProductBlockBadge,
+    TableWithFilter,
+} from '../../components';
+import {
+    getTableConfigFromLocalStorage,
+    getDataSortHandler,
+    getPageChangeHandler,
+    getEsQueryStringHandler,
+} from '../../components';
+import type { TableColumns, DataSorting } from '../../components';
+
+import { parseDateToLocaleString } from '../../utils';
+import type { ProductBlockDefinition } from '../../types';
+import { SortOrder } from '../../types';
+
+import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
+
+import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
+
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 
 export const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition =
