@@ -43,7 +43,10 @@ export interface ResourceTypeDefinition {
 }
 
 export interface ProductBlockDefinition {
+<<<<<<< HEAD
     productBlockId: string;
+=======
+>>>>>>> 64b74a7 (86-metadata-productblocks: Create page and move to lib as much as possible)
     name: string;
     tag: string;
     description: string;
@@ -51,6 +54,10 @@ export interface ProductBlockDefinition {
     createdAt: Date | null;
     endDate: Date | null;
     resourceTypes: ResourceTypeDefinition[];
+<<<<<<< HEAD
+=======
+    parentIds: string[];
+>>>>>>> 64b74a7 (86-metadata-productblocks: Create page and move to lib as much as possible)
 }
 
 export type FixedInputsBase = GenericField;
@@ -167,6 +174,7 @@ export type GraphqlQueryVariables<Type> = {
     filterBy?: GraphqlFilter<Type>[];
 };
 
+<<<<<<< HEAD
 type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
@@ -186,6 +194,18 @@ export interface ProductBlockDefinitionsResult {
     productBlocks: {
         page: ProductBlockDefinition[];
         pageInfo: GraphQLPageInfo;
+=======
+export interface GraphQLResult<T> {
+    results: {
+        page: T[];
+        pageInfo: {
+            hasNextPage: boolean;
+            hasPreviousPage: boolean;
+            startCursor: number;
+            totalItems: number;
+            endCursor: number;
+        };
+>>>>>>> 64b74a7 (86-metadata-productblocks: Create page and move to lib as much as possible)
     };
 }
 
