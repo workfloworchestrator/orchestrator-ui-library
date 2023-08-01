@@ -110,7 +110,7 @@ export const WFOProductBlocksPage = () => {
         },
         parentIds: {
             field: PRODUCT_BLOCK_FIELD_PARENT_IDS,
-            name: t('endDate'),
+            name: t('parentIds'),
             render: (parentIds) => (
                 <>
                     {parentIds.map((parentId, index) => (

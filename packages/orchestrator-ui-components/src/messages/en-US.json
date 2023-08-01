@@ -21,9 +21,19 @@
             "description": "Description",
             "tag": "Tag",
             "productType": "Type",
-            "status": "status",
+            "status": "Status",
             "productBlocks": "Product blocks",
             "createdAt": "Created"
+        },
+        "productBlocks": {
+            "name": "Name",
+            "description": "Description",
+            "tag": "Tag",
+            "status": "status",
+            "resourceTypes": "Resource types",
+            "createdAt": "Created",
+            "endDate": "End date",
+            "parentIds": "Parents"
         }
     },
     "subscriptions": {
