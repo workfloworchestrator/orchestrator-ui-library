@@ -3,6 +3,7 @@ import type { Meta } from '@storybook/react';
 import React, { ReactElement } from 'react';
 import { OrchestratorPageHeader } from './OrchestratorPageHeader';
 import Logo from '../../../../../.storybook/mockdata/logo-orchestrator.svg';
+import Image from 'next/image';
 
 const Story: Meta<typeof OrchestratorPageHeader> = {
     component: OrchestratorPageHeader,
@@ -14,7 +15,7 @@ function getAppLogo(navigationLogo: number): ReactElement {
     return (
         <EuiFlexGroup alignItems="center" css={{ height: navigationLogo }}>
             <EuiFlexItem>
-                <img
+                <Image
                     src={Logo}
                     alt="Orchestrator Logo"
                     width={134}
