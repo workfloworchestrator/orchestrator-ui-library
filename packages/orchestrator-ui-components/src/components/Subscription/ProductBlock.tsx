@@ -74,6 +74,7 @@ export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
                             <EuiButtonIcon
+                                aria-label="Close"
                                 size={'m'}
                                 iconType={'cross'}
                                 onClick={() => toggleSelectedId(id)}

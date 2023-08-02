@@ -100,7 +100,7 @@ export const DataGridTable = <T,>({
     ) => EuiDataGridControlColumn = ({ id, width, rowCellRender }) => ({
         id,
         width,
-        headerCellRender: (props) => null,
+        headerCellRender: () => null,
         rowCellRender: ({ rowIndex }: { rowIndex: number }) => {
             const { pageSize, pageIndex } = pagination;
             const rowIndexOnPage = rowIndex - pageIndex * pageSize;
