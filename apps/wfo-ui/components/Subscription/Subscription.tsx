@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
     ProcessesTimeline,
     SubscriptionActions,
@@ -44,12 +44,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
         React.useContext(SubscriptionContext);
 
     const [selectedTabId, setSelectedTabId] = useState(GENERAL_TAB);
-    const selectedTabContent = useMemo(
-        () =>
-            // @ts-ignore
-            tabs.find((obj) => obj.id === selectedTabId)?.content,
-        [selectedTabId],
-    );
+
     const onSelectedTabChanged = (id: string) => {
         setSelectedTabId(id);
     };
@@ -167,7 +162,6 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
             </EuiFlexGroup>
             <>
                 <EuiTabs>{renderTabs()}</EuiTabs>
-                {selectedTabContent}
             </>
 
             {selectedTabId === GENERAL_TAB && <SubscriptionGeneral />}

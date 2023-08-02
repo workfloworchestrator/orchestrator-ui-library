@@ -1,7 +1,7 @@
 // The final implementation of this component happens in a different story
-// @ts-nocheck
 import React, { useState } from 'react';
 import { EuiHealth, EuiSearchBar } from '@elastic/eui';
+import type { EuiSearchBarOnChangeArgs } from '@elastic/eui';
 
 const tags = [
     { name: 'L3VPN', color: 'succes' },
@@ -32,15 +32,15 @@ export const SearchBar = ({
     handleSearch: (value: any) => void;
 }) => {
     const [query, setQuery] = useState(initialQuery);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error>();
     console.log('query', query);
     console.log('error', error);
 
-    const onChange = ({ query, error }) => {
+    const onChange = ({ query, error }: EuiSearchBarOnChangeArgs) => {
         if (error) {
             setError(error);
         } else {
-            setError(null);
+            setError(undefined);
             setQuery(query);
             handleSearch(query);
         }
@@ -87,7 +87,7 @@ export const SearchBar = ({
                 },
                 tag: {
                     type: 'string',
-                    validate: (value) => {
+                    validate: (value: string) => {
                         if (
                             value !== '' &&
                             !tags.some((tag) => tag.name === value)
