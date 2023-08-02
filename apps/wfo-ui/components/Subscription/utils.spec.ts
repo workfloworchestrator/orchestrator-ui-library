@@ -3,7 +3,7 @@ import { getColor } from './utils';
 describe('getColor()', () => {
     it('returns "error" when color is 0', () => {
         const result = getColor(0);
-        expect(result).toEqual('error');
+        expect(result).toEqual('danger');
     });
     it('returns "warning" when color is 1', () => {
         const result = getColor(1);
