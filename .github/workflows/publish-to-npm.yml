@@ -17,4 +17,4 @@ jobs:
             - name: Installing dependencies
               run: yarn install --frozen-lockfile
             - name: Changeset status
-              run: yarn changeset status --since=main
+              run: yarn changeset version
