@@ -32,7 +32,7 @@ export const RESOURCE_TYPE_FIELD_TYPE: keyof ResourceTypeDefinition =
 export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
     'description';
 
-export const WFOProductBlocksPage = () => {
+export const WFOResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
 
     const initialPageSize =
@@ -52,7 +52,7 @@ export const WFOProductBlocksPage = () => {
     const tableColumns: TableColumns<ResourceTypeDefinition> = {
         resourceType: {
             field: RESOURCE_TYPE_FIELD_TYPE,
-            name: t('name'),
+            name: t('type'),
             width: '110',
         },
         description: {
@@ -62,7 +62,7 @@ export const WFOProductBlocksPage = () => {
         },
         resourceTypeId: {
             field: RESOURCE_TYPE_FIELD_ID,
-            name: t('resource_id'),
+            name: t('resourceId'),
             width: '110',
         },
     };

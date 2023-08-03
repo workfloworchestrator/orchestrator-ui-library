@@ -35,6 +35,11 @@
             "createdAt": "Created",
             "endDate": "End date",
             "parentIds": "Parents"
+        },
+        "resourceTypes": {
+            "type": "Type",
+            "description": "Description",
+            "resourceId": "Resource ID"
         }
     },
     "subscriptions": {
