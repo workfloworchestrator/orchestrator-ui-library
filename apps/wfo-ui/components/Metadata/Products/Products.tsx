@@ -16,8 +16,7 @@ import type {
     ProductDefinition,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import {
-    TableColumns,
+import {    TableColumns,
     DataSorting,
     DEFAULT_PAGE_SIZES,
 } from '@orchestrator-ui/orchestrator-ui-components';
