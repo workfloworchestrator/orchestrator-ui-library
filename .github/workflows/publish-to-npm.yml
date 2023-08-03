@@ -14,7 +14,23 @@ jobs:
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+            - name: Create .npmrc file with the NPM token
+              run: |
+                cat << EOF > "$HOME/.npmrc"
+                  //registry.npmjs.org/:_authToken=$NPM_TOKEN
+                EOF
+              env:
+                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Installing dependencies
               run: yarn install --frozen-lockfile
-            - name: Changeset status
-              run: yarn changeset status --since=main
+            - name: Processing changes
+              run: yarn changeset version
+            - name: Publishing changes
+              run: yarn changeset publish
+            - name: Adding version bumps and tags to GIT
+              run: |
+                git config user.name github-actions-publish-to-npm
+                git config user.email github-actions@github.com
+                git add .
+                git commit -m "Github Actions: Updates packages and publish to npm" --no-verify
+                git push --follow-tags
