@@ -14,9 +14,9 @@ export const mapSortOrderToGraphQlSortOrder = (
 
 export const mapToGraphQlSortBy = <Type>(
     sortBy: GraphQLSort<Type> | undefined,
-): GraphqlSort | null => {
+): GraphqlSort | undefined => {
     if (!sortBy?.order || !sortBy?.field) {
-        return null;
+        return undefined;
     }
 
     const { field, order } = sortBy;

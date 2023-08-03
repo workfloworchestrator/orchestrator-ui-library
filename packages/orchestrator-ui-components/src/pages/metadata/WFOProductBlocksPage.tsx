@@ -30,7 +30,10 @@ import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 
+export const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition =
+    'productBlockId';
 export const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
+
 export const PRODUCT_BLOCK_FIELD_TAG: keyof ProductBlockDefinition = 'tag';
 export const PRODUCT_BLOCK_FIELD_DESCRIPTION: keyof ProductBlockDefinition =
     'description';
@@ -42,8 +45,6 @@ export const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition =
     'endDate';
 export const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
-export const PRODUCT_BLOCK_FIELD_PARENT_IDS: keyof ProductBlockDefinition =
-    'parentIds';
 
 export const WFOProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
@@ -63,6 +64,11 @@ export const WFOProductBlocksPage = () => {
         });
 
     const tableColumns: TableColumns<ProductBlockDefinition> = {
+        productBlockId: {
+            field: PRODUCT_BLOCK_FIELD_ID,
+            name: t('id'),
+            width: '110',
+        },
         name: {
             field: PRODUCT_BLOCK_FIELD_NAME,
             name: t('name'),
@@ -108,17 +114,6 @@ export const WFOProductBlocksPage = () => {
             name: t('endDate'),
             render: parseDateToLocaleString,
         },
-        parentIds: {
-            field: PRODUCT_BLOCK_FIELD_PARENT_IDS,
-            name: t('parentIds'),
-            render: (parentIds) => (
-                <>
-                    {parentIds.map((parentId, index) => (
-                        <div key={index}>{parentId}</div>
-                    ))}
-                </>
-            ),
-        },
     };
 
     const { data, isFetching } = useQueryWithGraphql(
@@ -137,7 +132,7 @@ export const WFOProductBlocksPage = () => {
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const totalItems = data?.results.pageInfo.totalItems;
+    const totalItems = data?.productBlocks.pageInfo.totalItems;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -149,7 +144,7 @@ export const WFOProductBlocksPage = () => {
     return (
         <WFOMetadataPageLayout>
             <TableWithFilter<ProductBlockDefinition>
-                data={data ? data.results.page : []}
+                data={data ? data.productBlocks.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
                 onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(

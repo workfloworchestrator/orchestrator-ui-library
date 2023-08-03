@@ -11,7 +11,7 @@ import {
     getTableConfigFromLocalStorage,
     useDataDisplayParams,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import type { Product } from '@orchestrator-ui/orchestrator-ui-components';
+import type { ProductDefinition } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
 import { useRouter } from 'next/router';
@@ -24,7 +24,7 @@ const ProductsPageContent = () => {
         getTableConfigFromLocalStorage(METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY)
             ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<Product>({
+        useDataDisplayParams<ProductDefinition>({
             pageSize: initialPageSize,
             sortBy: {
                 field: PRODUCT_FIELD_NAME,

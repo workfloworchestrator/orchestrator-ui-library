@@ -1,18 +1,29 @@
-import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
-import type { Product } from '@orchestrator-ui/orchestrator-ui-components';
-import { graphql } from '../../../__generated__';
+import { gql } from 'graphql-request';
+import { parse } from 'graphql';
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-export const DEFAULT_SORT_FIELD: keyof Product = 'name';
+import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
+import type {
+    ProductDefinition,
+    GraphqlQueryVariables,
+    ProductDefinitionsResult,
+} from '@orchestrator-ui/orchestrator-ui-components';
+
+export const DEFAULT_SORT_FIELD: keyof ProductDefinition = 'name';
 export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.DESC;
 
-export const GET_PRODUCTS_GRAPHQL_QUERY = graphql(`
+export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
+    ProductDefinitionsResult,
+    GraphqlQueryVariables<ProductDefinition>
+> = parse(gql`
     query MetadataProducts(
-        $first: Int!
-        $after: Int!
+        $first: IntType!
+        $after: IntType!
         $sortBy: [GraphqlSort!]
     ) {
         products(first: $first, after: $after, sortBy: $sortBy) {
             page {
+                productId
                 name
                 description
                 tag
@@ -22,6 +33,11 @@ export const GET_PRODUCTS_GRAPHQL_QUERY = graphql(`
                 productBlocks {
                     name
                 }
+                fixedInputs {
+                    name
+                    value
+                }
+                endDate
             }
             pageInfo {
                 endCursor
