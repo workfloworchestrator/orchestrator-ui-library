@@ -9,7 +9,6 @@ import {
     WFOProductBlockBadge,
     useQueryWithGraphql,
     getTypedFieldFromObject,
-    parseDateToLocaleString,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import type {
@@ -30,7 +29,6 @@ import { useTranslations } from 'next-intl';
 import { GET_PRODUCTS_GRAPHQL_QUERY } from './productsQuery';
 
 import { METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY } from '../../../constants';
-import { MetadataProductsQuery } from '../../../__generated__/graphql';
 import { useRouter } from 'next/router';
 import { mapToGraphQlSortBy } from '../../../utils/queryVarsMappers';
 
@@ -181,16 +179,3 @@ export const Products: FC<ProductsProps> = ({
         />
     );
 };
-/*
-function mapApiResponseToProductTableData(
-    graphqlResponse: MetadataProductsQuery,
-): ProductDefinition[] {
-    return graphqlResponse.products.page.map(
-        (product): ProductDefinition => ({
-            ...product,
-            createdAt: product.createdAt,
-            productId: 'TEMPID'
-        }),
-    );
-}
-*/
