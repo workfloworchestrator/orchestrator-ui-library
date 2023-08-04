@@ -9,7 +9,6 @@ const PATH_SUBSCRIPTIONS = '/subscriptions';
 const PATH_METADATA_PRODUCTS = '/metadata/products';
 const PATH_METADATA_PRODUCT_BLOCKS = '/metadata/productblocks';
 const PATH_METADATA_RESOURCE_TYPES = '/metadata/resource-types';
-const PATH_METADATA_FIXED_INPUTS = '/metadata/fixed-inputs';
 const PATH_METADATA_WORKFLOWS = '/metadata/workflows';
 const PATH_TASKS = '/tasks';
 const PATH_SETTINGS = '/settings';
@@ -120,19 +119,8 @@ export const OrchestratorSidebar: FC = () => {
                                     },
                                 },
                                 {
-                                    name: 'Fixed inputs',
-                                    id: '5.4',
-                                    isSelected:
-                                        router.pathname ===
-                                        PATH_METADATA_FIXED_INPUTS,
-                                    onClick: (e) => {
-                                        e.preventDefault();
-                                        router.push(PATH_METADATA_FIXED_INPUTS);
-                                    },
-                                },
-                                {
                                     name: 'Workflows',
-                                    id: '5.5',
+                                    id: '5.4',
                                     isSelected:
                                         router.pathname ===
                                         PATH_METADATA_WORKFLOWS,
