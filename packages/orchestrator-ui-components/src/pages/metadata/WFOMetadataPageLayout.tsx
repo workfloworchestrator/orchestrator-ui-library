@@ -32,11 +32,6 @@ const metaDataTabs: MetaDataTab[] = [
         path: '/metadata/resource-types',
     },
     {
-        id: 4,
-        translationKey: 'fixedInputs',
-        path: '/metadata/fixed-inputs',
-    },
-    {
         id: 5,
         translationKey: 'workflows',
         path: '/metadata/workflows',
