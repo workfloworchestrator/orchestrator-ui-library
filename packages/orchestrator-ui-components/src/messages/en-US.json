@@ -13,10 +13,9 @@
             "products": "Products",
             "productBlocks": "Productblocks",
             "resourceTypes": "Resource types",
-            "fixedInputs": "Fixed inputs",
             "workflows": "Workflows"
         },
-        "product": {
+        "products": {
             "name": "Name",
             "description": "Description",
             "tag": "Tag",
