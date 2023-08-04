@@ -13,12 +13,8 @@ export const mapSortOrderToGraphQlSortOrder = (
     value === SortOrder.ASC ? SortOrderGraphql.Asc : SortOrderGraphql.Desc;
 
 export const mapToGraphQlSortBy = <Type>(
-    sortBy: GraphQLSort<Type> | undefined,
-): GraphqlSort | null => {
-    if (!sortBy?.order || !sortBy?.field) {
-        return null;
-    }
-
+    sortBy: GraphQLSort<Type>,
+): GraphqlSort => {
     const { field, order } = sortBy;
     return {
         field: field.toString(),

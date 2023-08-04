@@ -36,7 +36,36 @@ export type ProductBlockBase = {
     resourceTypes: ResourceTypeBase;
 };
 
+export interface ResourceTypeDefinition {
+    description: string;
+    resourceType: string;
+    resourceTypeId: string;
+}
+
+export interface ProductBlockDefinition {
+    productBlockId: string;
+    name: string;
+    tag: string;
+    description: string;
+    status: string;
+    createdAt: Date | null;
+    endDate: Date | null;
+    resourceTypes: ResourceTypeDefinition[];
+}
+
 export type FixedInputsBase = GenericField;
+
+export interface FixedInputDefinition {
+    fixedInputId: string;
+    name: string;
+    value: string;
+    productId: string;
+    createdAt: string;
+
+    // Display only?
+    description: string;
+    required: boolean;
+}
 
 export type ExternalServiceBase = {
     externalServiceKey: string;
@@ -100,23 +129,21 @@ export interface Process {
     is_task: boolean;
 }
 
-//// Utility types
-
-export interface Product {
+export interface ProductDefinition {
+    productId: string;
     name: string;
     description: string;
     tag: string;
+    createdAt: string;
     productType: string;
     status: string;
-    productBlocks: ProductBlock[];
-    createdAt: Date | null;
-}
-
-interface ProductBlock {
-    name: string;
+    productBlocks: Pick<ProductBlockDefinition, 'name'>[];
+    fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
 
 export type Field<Type> = keyof Type;
+
+//// Utility types
 
 export enum SortOrder {
     ASC = 'ASC',
@@ -139,6 +166,28 @@ export type GraphqlQueryVariables<Type> = {
     sortBy?: GraphQLSort<Type>;
     filterBy?: GraphqlFilter<Type>[];
 };
+
+type GraphQLPageInfo = {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: number;
+    totalItems: number;
+    endCursor: number;
+};
+
+export interface ProductDefinitionsResult {
+    products: {
+        page: ProductDefinition[];
+        pageInfo: GraphQLPageInfo;
+    };
+}
+
+export interface ProductBlockDefinitionsResult {
+    productBlocks: {
+        page: ProductBlockDefinition[];
+        pageInfo: GraphQLPageInfo;
+    };
+}
 
 export interface CacheOption {
     value: string;

@@ -1,12 +1,6 @@
 import React from 'react';
-import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
+import { WFOProductBlocksPage as Page } from '@orchestrator-ui/orchestrator-ui-components';
 
-const ProductBlocksPageContent = () => <div>METADATA PRODUCT BLOCKS</div>;
-
-export const ProductBlocksPage = () => (
-    <MetaDataLayout>
-        <ProductBlocksPageContent />
-    </MetaDataLayout>
-);
+export const ProductBlocksPage = () => <Page />;
 
 export default ProductBlocksPage;
