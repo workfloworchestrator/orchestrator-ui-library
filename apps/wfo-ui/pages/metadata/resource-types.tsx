@@ -1,12 +1,6 @@
 import React from 'react';
-import { MetaDataLayout } from '../../components/Metadata/PageLayout/layout';
+import { WFOResourceTypesPage as Page } from '@orchestrator-ui/orchestrator-ui-components';
 
-const ResourceTypesPageContent = () => <div>METADATA RESOURCE TYPES</div>;
-
-export const ResourceTypesPage = () => (
-    <MetaDataLayout>
-        <ResourceTypesPageContent />
-    </MetaDataLayout>
-);
+export const ResourceTypesPage = () => <Page />;
 
 export default ResourceTypesPage;

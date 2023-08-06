@@ -40,6 +40,7 @@ export interface ResourceTypeDefinition {
     description: string;
     resourceType: string;
     resourceTypeId: string;
+    productBlocks?: ProductBlockDefinition[];
 }
 
 export interface ProductBlockDefinition {
@@ -178,6 +179,13 @@ type GraphQLPageInfo = {
 export interface ProductDefinitionsResult {
     products: {
         page: ProductDefinition[];
+        pageInfo: GraphQLPageInfo;
+    };
+}
+
+export interface ResourceTypeDefinitionsResult {
+    resourceTypes: {
+        page: ResourceTypeDefinition[];
         pageInfo: GraphQLPageInfo;
     };
 }

@@ -18,6 +18,12 @@
             "status": "Status",
             "productBlocks": "Product blocks",
             "createdAt": "Aangemaakt"
+        },
+        "resourceTypes": {
+            "resourceTypeId": "ID",
+            "description": "Beschrijving",
+            "resourceType": "Resource type",
+            "productBlocks": "Product blocks"
         }
     },
     "subscriptions": {
