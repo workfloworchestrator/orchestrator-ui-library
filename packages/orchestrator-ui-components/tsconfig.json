@@ -1,11 +1,9 @@
 {
     "extends": "@orchestrator-ui/tsconfig/base.json",
     "compilerOptions": {
-        "strictNullChecks": true,
-        "rootDir": "./src",
-        "outDir": "./dist"
+        "strictNullChecks": true
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+    "include": ["**/*.ts", "**/*.tsx"],
     "exclude": [
         "node_modules",
         "**/*.stories.ts",
