@@ -20,7 +20,7 @@
         "graphql": "16.7.1",
         "graphql-request": "5.2.0",
         "moment": "^2.29.4",
-        "next": "^13.4.12",
+        "next": "^13.4.13",
         "next-intl": "2.19.0",
         "next-query-params": "4.2.2",
         "process": "0.11.10",
