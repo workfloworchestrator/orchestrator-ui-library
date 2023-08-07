@@ -30,20 +30,17 @@ import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 
-export const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition =
-    'productBlockId';
-export const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
+const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
+const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
 
-export const PRODUCT_BLOCK_FIELD_TAG: keyof ProductBlockDefinition = 'tag';
-export const PRODUCT_BLOCK_FIELD_DESCRIPTION: keyof ProductBlockDefinition =
+const PRODUCT_BLOCK_FIELD_TAG: keyof ProductBlockDefinition = 'tag';
+const PRODUCT_BLOCK_FIELD_DESCRIPTION: keyof ProductBlockDefinition =
     'description';
-export const PRODUCT_BLOCK_FIELD_STATUS: keyof ProductBlockDefinition =
-    'status';
-export const PRODUCT_BLOCK_FIELD_CREATED_AT: keyof ProductBlockDefinition =
+const PRODUCT_BLOCK_FIELD_STATUS: keyof ProductBlockDefinition = 'status';
+const PRODUCT_BLOCK_FIELD_CREATED_AT: keyof ProductBlockDefinition =
     'createdAt';
-export const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition =
-    'endDate';
-export const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
+const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition = 'endDate';
+const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
 
 export const WFOProductBlocksPage = () => {

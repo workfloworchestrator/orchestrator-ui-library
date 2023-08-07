@@ -2,15 +2,11 @@ import { gql } from 'graphql-request';
 import { parse } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-import { SortOrder } from '@orchestrator-ui/orchestrator-ui-components';
 import type {
     ProductDefinition,
     GraphqlQueryVariables,
     ProductDefinitionsResult,
 } from '@orchestrator-ui/orchestrator-ui-components';
-
-export const DEFAULT_SORT_FIELD: keyof ProductDefinition = 'name';
-export const DEFAULT_SORT_ORDER: SortOrder = SortOrder.DESC;
 
 export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
     ProductDefinitionsResult,

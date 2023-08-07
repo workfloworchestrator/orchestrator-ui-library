@@ -183,17 +183,16 @@ export interface ProductDefinitionsResult {
 }
 
 export interface ProductBlockDefinitionsResult {
-    productBlocks: {
-        page: ProductBlockDefinition[];
-        pageInfo: GraphQLPageInfo;
-    };
+    productBlocks: GraphQlResultPage<ProductBlockDefinition>;
 }
 
 export interface ResourceTypeDefinitionsResult {
-    resourceTypes: {
-        page: ResourceTypeDefinition[];
-        pageInfo: GraphQLPageInfo;
-    };
+    resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
+}
+
+interface GraphQlResultPage<T> {
+    page: T[];
+    pageInfo: GraphQLPageInfo;
 }
 
 export interface CacheOption {

@@ -2,15 +2,20 @@
     "main": {
         "title": "Welcome to example-orchestrator-ui!"
     },
+    "common": {
+        "addToFavorites": "Favoriet",
+        "product": "Produkt",
+        "deselect": "Deselecteer",
+        "close": "Sluiten"
+    },
     "metadata": {
         "tabs": {
             "products": "Producten",
             "productBlocks": "Productblokken",
             "resourceTypes": "Resource types",
-            "fixedInputs": "Vaste inputs",
             "workflows": "Workflows"
         },
-        "product": {
+        "products": {
             "name": "Naam",
             "description": "Beschrijving",
             "tag": "Tag",
@@ -18,6 +23,22 @@
             "status": "Status",
             "productBlocks": "Product blocks",
             "createdAt": "Aangemaakt"
+        },
+        "productBlocks": {
+            "id": "ID",
+            "name": "Naam",
+            "description": "Beschrijving",
+            "tag": "Tag",
+            "status": "Status",
+            "resourceTypes": "Resource types",
+            "createdAt": "Aangemaakt",
+            "endDate": "Eind datum",
+            "parentIds": "Parents"
+        },
+        "resourceTypes": {
+            "type": "Type",
+            "description": "Description",
+            "resourceId": "Resource ID"
         }
     },
     "subscriptions": {
@@ -44,7 +65,24 @@
                 "serviceConfiguration": "Service configuratie",
                 "processes": "Processen",
                 "relatedSubscriptions": "Geralateerde subscriptions"
-            }
+            },
+            "loadingStatus": "Loading status",
+            "workflow": {
+                "create": "Create workflow",
+                "modify": "Modify workflow",
+                "system": "System workflow",
+                "terminate": "Terminate workflow"
+            },
+            "subscriptionDetails": "Subscription details",
+            "fixedInputs": "Fixed inputs",
+            "productInfo": "Product info",
+            "noProductBlockSelected": "No product block selected",
+            "productBlocks": "Product blocks",
+            "ctaSelectProductBlock": "Select one or more product blocks to view their details",
+            "startedBy": "Started by",
+            "startedAt": "Started at",
+            "status": "Status",
+            "id": "ID"
         }
     }
 }
