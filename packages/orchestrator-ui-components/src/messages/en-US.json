@@ -16,16 +16,18 @@
             "workflows": "Workflows"
         },
         "products": {
+            "id": "ID",
             "name": "Name",
             "description": "Description",
             "tag": "Tag",
             "productType": "Type",
             "status": "Status",
             "productBlocks": "Product blocks",
+            "fixedInputs": "Fixed inputs",
             "createdAt": "Created"
         },
         "productBlocks": {
-            "id": "ID", 
+            "id": "ID",
             "name": "Name",
             "description": "Description",
             "tag": "Tag",
