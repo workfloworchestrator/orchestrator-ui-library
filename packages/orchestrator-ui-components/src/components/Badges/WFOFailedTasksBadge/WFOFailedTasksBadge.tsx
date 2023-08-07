@@ -1,7 +1,7 @@
 import React from 'react';
 import { EuiToolTip } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { HeaderBadge } from '../HeaderBadge';
+import { WFOHeaderBadge } from '../WFOHeaderBadge';
 import { XCircleFill } from '../../../icons/XCircleFill';
 import {
     ProcessStatusCounts,
@@ -31,7 +31,7 @@ const getTaskCountsSummary = (
     };
 };
 
-export const FailedTasksBadge = () => {
+export const WFOFailedTasksBadge = () => {
     const { theme } = useOrchestratorTheme();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
@@ -51,13 +51,13 @@ export const FailedTasksBadge = () => {
                 </>
             }
         >
-            <HeaderBadge
+            <WFOHeaderBadge
                 color={theme.colors.emptyShade}
                 textColor={theme.colors.shadow}
                 iconType={() => <XCircleFill color={theme.colors.danger} />}
             >
                 {taskCountsSummary.total}
-            </HeaderBadge>
+            </WFOHeaderBadge>
         </EuiToolTip>
     );
 };

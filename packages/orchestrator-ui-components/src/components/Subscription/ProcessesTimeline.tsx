@@ -7,7 +7,7 @@ import {
     EuiLoadingContent,
 } from '@elastic/eui';
 
-import { ProcessStatusBadge } from '../Badges';
+import { WFOProcessStatusBadge } from '../Badges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
@@ -41,7 +41,7 @@ const Card = (processInfo: SubscriptionProcess) => (
                     <b>Status</b>
                 </td>
                 <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
-                    <ProcessStatusBadge
+                    <WFOProcessStatusBadge
                         processStatus={processInfo.process.last_status}
                     />
                 </td>

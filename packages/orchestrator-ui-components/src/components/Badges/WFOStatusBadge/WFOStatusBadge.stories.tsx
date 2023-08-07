@@ -3,7 +3,7 @@ import { WFOStatusBadge } from './WFOStatusBadge';
 
 const Story: Meta<typeof WFOStatusBadge> = {
     component: WFOStatusBadge,
-    title: 'Badges/StatusBadge',
+    title: 'Badges/WFOStatusBadge',
 };
 export default Story;
 

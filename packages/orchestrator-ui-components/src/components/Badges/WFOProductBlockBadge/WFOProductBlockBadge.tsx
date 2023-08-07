@@ -1,4 +1,4 @@
-import { Badge } from '../Badge';
+import { WFOBadge } from '../WFOBadge';
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 
@@ -12,11 +12,11 @@ export const WFOProductBlockBadge: FC<WFOProductBlockBadgeProps> = ({
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     return (
-        <Badge
+        <WFOBadge
             textColor={theme.colors.link}
             color={toSecondaryColor(theme.colors.primary)}
         >
             {children}
-        </Badge>
+        </WFOBadge>
     );
 };

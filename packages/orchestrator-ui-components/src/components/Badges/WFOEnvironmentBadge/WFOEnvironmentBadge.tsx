@@ -1,27 +1,27 @@
 import React, { useContext } from 'react';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { HeaderBadge } from '../HeaderBadge/HeaderBadge';
+import { WFOHeaderBadge } from '../WFOHeaderBadge/WFOHeaderBadge';
 import { OrchestratorConfigContext } from '../../../contexts/OrchestratorConfigContext';
 import { Environment } from '../../../hooks/useOrchestratorConfig';
 
-export const EnvironmentBadge = () => {
+export const WFOEnvironmentBadge = () => {
     const { environmentName } = useContext(OrchestratorConfigContext);
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     if (environmentName !== Environment.PRODUCTION) {
         return (
-            <HeaderBadge color="warning" textColor={theme.colors.shadow}>
+            <WFOHeaderBadge color="warning" textColor={theme.colors.shadow}>
                 {environmentName}
-            </HeaderBadge>
+            </WFOHeaderBadge>
         );
     }
 
     return (
-        <HeaderBadge
+        <WFOHeaderBadge
             color={toSecondaryColor(theme.colors.primary)}
             textColor={theme.colors.primary}
         >
             {environmentName}
-        </HeaderBadge>
+        </WFOHeaderBadge>
     );
 };

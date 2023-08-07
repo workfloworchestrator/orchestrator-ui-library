@@ -1,4 +1,4 @@
-import { Badge } from '../Badge';
+import { WFOBadge } from '../WFOBadge';
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 
@@ -42,8 +42,8 @@ export const WFOStatusBadge: FC<WFOStatusBadgeProps> = ({ status }) => {
     const { badgeColor, textColor } = getBadgeColorFromStatus(status);
 
     return (
-        <Badge textColor={textColor} color={badgeColor}>
+        <WFOBadge textColor={textColor} color={badgeColor}>
             {status}
-        </Badge>
+        </WFOBadge>
     );
 };

@@ -8,9 +8,9 @@ import {
     EuiHeaderSectionItem,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { FailedTasksBadge } from '../../Badges/FailedTasksBadge';
-import { EngineStatusBadge } from '../../Badges/EngineStatusBadge';
-import { EnvironmentBadge } from '../../Badges/EnvironmentBadge';
+import { WFOFailedTasksBadge } from '../../Badges/WFOFailedTasksBadge';
+import { WFOEngineStatusBadge } from '../../Badges/WFOEngineStatusBadge';
+import { WFOEnvironmentBadge } from '../../Badges/WFOEnvironmentBadge';
 import { LogoutIcon } from '../../../icons/LogoutIcon';
 
 export interface OrchestratorPageHeaderProps {
@@ -40,15 +40,15 @@ export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
                     />
                 </EuiHeaderSectionItem>
                 <EuiHeaderSectionItem>
-                    <EnvironmentBadge />
+                    <WFOEnvironmentBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <EngineStatusBadge />
-                        <FailedTasksBadge />
+                        <WFOEngineStatusBadge />
+                        <WFOFailedTasksBadge />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon

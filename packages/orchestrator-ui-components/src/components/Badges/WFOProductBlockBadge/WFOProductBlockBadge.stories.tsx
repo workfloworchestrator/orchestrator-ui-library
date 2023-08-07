@@ -3,7 +3,7 @@ import { WFOProductBlockBadge } from './WFOProductBlockBadge';
 
 const Story: Meta<typeof WFOProductBlockBadge> = {
     component: WFOProductBlockBadge,
-    title: 'Badges/ProductBlockBadge',
+    title: 'Badges/WFOProductBlockBadge',
 };
 
 export default Story;

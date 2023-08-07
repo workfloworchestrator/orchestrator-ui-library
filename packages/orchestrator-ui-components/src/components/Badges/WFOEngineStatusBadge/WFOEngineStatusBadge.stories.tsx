@@ -1,14 +1,14 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { EngineStatusBadge } from './EngineStatusBadge';
+import { WFOEngineStatusBadge } from './WFOEngineStatusBadge';
 
-const Story: Meta<typeof EngineStatusBadge> = {
+const Story: Meta<typeof WFOEngineStatusBadge> = {
     component: (args) => (
         <div style={{ display: 'flex' }}>
-            <EngineStatusBadge {...args} />
+            <WFOEngineStatusBadge {...args} />
         </div>
     ),
-    title: 'Badges/EngineStatusBadge',
+    title: 'Badges/WFOEngineStatusBadge',
     parameters: {
         mockData: [
             {
