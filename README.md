@@ -1,4 +1,4 @@
-Todo: copy old README
+Todo: copy old README.md
 
 # Getting started
 
