@@ -189,6 +189,13 @@ export interface ProductBlockDefinitionsResult {
     };
 }
 
+export interface ResourceTypeDefinitionsResult {
+    resourceTypes: {
+        page: ResourceTypeDefinition[];
+        pageInfo: GraphQLPageInfo;
+    };
+}
+
 export interface CacheOption {
     value: string;
     label: string;
