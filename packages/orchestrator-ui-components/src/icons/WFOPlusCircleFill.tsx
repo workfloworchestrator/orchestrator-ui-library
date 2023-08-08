@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { IconProps } from './IconProps';
+import { WFOIconProps } from './WFOIconProps';
 
-export const PlusCircleFill: FC<IconProps> = ({
+export const WFOPlusCircleFill: FC<WFOIconProps> = ({
     width = 24,
     height = 24,
     color = '#000000',

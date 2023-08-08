@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { ArrowNarrowDown } from '../../icons/ArrowNarrowDown';
-import { ArrowNarrowUp } from '../../icons/ArrowNarrowUp';
+import { WFOArrowNarrowDown } from '../../icons/WFOArrowNarrowDown';
+import { WFOArrowNarrowUp } from '../../icons/WFOArrowNarrowUp';
 import { SortOrder } from '../../types';
 
 export type WFOSortDirectionIconProps = {
@@ -14,13 +14,13 @@ export const WFOSortDirectionIcon: FC<WFOSortDirectionIconProps> = ({
     const { theme } = useOrchestratorTheme();
 
     return sortDirection === SortOrder.ASC ? (
-        <ArrowNarrowUp
+        <WFOArrowNarrowUp
             color={theme.colors.subduedText}
             height={24}
             width={24}
         />
     ) : (
-        <ArrowNarrowDown
+        <WFOArrowNarrowDown
             color={theme.colors.subduedText}
             height={24}
             width={24}

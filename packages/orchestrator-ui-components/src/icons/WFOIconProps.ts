@@ -1,4 +1,4 @@
-export type IconProps = {
+export type WFOIconProps = {
     width?: number | string;
     height?: number | string;
     color?: string;

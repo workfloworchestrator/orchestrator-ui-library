@@ -8,7 +8,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
+import { WFOCheckmarkCircleFill, WFOMinusCircleOutline } from '../../icons';
 import { WFOStatusBadge } from '../WFOBadges';
 import {
     subscriptionDefinitionCellStyle,
@@ -23,9 +23,9 @@ export const RenderField = (field: string, data: any) => {
         return (
             <div style={{ position: 'relative', top: 5 }}>
                 {data[field] ? (
-                    <CheckmarkCircleFill color="#007832" />
+                    <WFOCheckmarkCircleFill color="#007832" />
                 ) : (
-                    <MinusCircleOutline color="#BD271F" />
+                    <WFOMinusCircleOutline color="#BD271F" />
                 )}
             </div>
         );

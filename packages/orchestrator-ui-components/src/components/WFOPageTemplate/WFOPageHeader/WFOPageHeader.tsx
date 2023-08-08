@@ -11,7 +11,7 @@ import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WFOFailedTasksBadge } from '../../WFOBadges/WFOFailedTasksBadge';
 import { WFOEngineStatusBadge } from '../../WFOBadges/WFOEngineStatusBadge';
 import { WFOEnvironmentBadge } from '../../WFOBadges/WFOEnvironmentBadge';
-import { LogoutIcon } from '../../../icons/LogoutIcon';
+import { WFOLogoutIcon } from '../../../icons/WFOLogoutIcon';
 
 export interface WFOPageHeaderProps {
     // todo: should be part of theme!
@@ -55,7 +55,7 @@ export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
                         aria-label="Logout"
                         display="empty"
                         iconType={() => (
-                            <LogoutIcon color={theme.colors.emptyShade} />
+                            <WFOLogoutIcon color={theme.colors.emptyShade} />
                         )}
                         css={{ width: 48, height: 48 }}
                         color="ghost"

@@ -2,7 +2,7 @@ import React from 'react';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WFOHeaderBadge } from '../WFOHeaderBadge';
 import { useEngineStatusQuery } from '../../../hooks/useEngineStatusQuery';
-import { StatusDotIcon } from '../../../icons/StatusDotIcon';
+import { WFOStatusDotIcon } from '../../../icons/WFOStatusDotIcon';
 
 export const WFOEngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
@@ -16,7 +16,7 @@ export const WFOEngineStatusBadge = () => {
         <WFOHeaderBadge
             color={theme.colors.emptyShade}
             textColor={theme.colors.shadow}
-            iconType={() => <StatusDotIcon color={theme.colors.success} />}
+            iconType={() => <WFOStatusDotIcon color={theme.colors.success} />}
         >
             {engineStatusText}
         </WFOHeaderBadge>

@@ -6,7 +6,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import React, { FC } from 'react';
-import { StatusDotIcon } from '../../icons';
+import { WFOStatusDotIcon } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 import { EngineStatusValue } from '../../types';
 
@@ -47,7 +47,7 @@ export const WFOStatus: FC<WFOStatusProps> = ({ engineStatus }) => {
                 <EuiFlexItem grow={false}>
                     <EuiFlexGroup gutterSize="xs">
                         <EuiFlexItem>
-                            <StatusDotIcon
+                            <WFOStatusDotIcon
                                 color={
                                     isRunning
                                         ? theme.colors.success

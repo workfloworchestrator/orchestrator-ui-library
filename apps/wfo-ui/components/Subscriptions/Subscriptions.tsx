@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    CheckmarkCircleFill,
+    WFOCheckmarkCircleFill,
     DataDisplayParams,
     WFODataSorting,
     DEFAULT_PAGE_SIZES,
@@ -11,10 +11,10 @@ import {
     getPageChangeHandler,
     getTypedFieldFromObject,
     WFOLoading,
-    MinusCircleOutline,
+    WFOMinusCircleOutline,
     parseDate,
     parseDateToLocaleString,
-    PlusCircleFill,
+    WFOPlusCircleFill,
     SortOrder,
     TableColumnKeys,
     WFOTableColumns,
@@ -111,9 +111,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             width: '110',
             render: (value) =>
                 value ? (
-                    <CheckmarkCircleFill color={theme.colors.primary} />
+                    <WFOCheckmarkCircleFill color={theme.colors.primary} />
                 ) : (
-                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                    <WFOMinusCircleOutline color={theme.colors.mediumShade} />
                 ),
         },
         productName: {
@@ -149,7 +149,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             width: '40',
             render: () => (
                 <EuiFlexItem>
-                    <PlusCircleFill color={theme.colors.mediumShade} />
+                    <WFOPlusCircleFill color={theme.colors.mediumShade} />
                 </EuiFlexItem>
             ),
         },

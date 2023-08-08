@@ -2,7 +2,7 @@ import React from 'react';
 import { EuiToolTip } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WFOHeaderBadge } from '../WFOHeaderBadge';
-import { XCircleFill } from '../../../icons/XCircleFill';
+import { WFOXCircleFill } from '../../../icons/WFOXCircleFill';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
@@ -54,7 +54,7 @@ export const WFOFailedTasksBadge = () => {
             <WFOHeaderBadge
                 color={theme.colors.emptyShade}
                 textColor={theme.colors.shadow}
-                iconType={() => <XCircleFill color={theme.colors.danger} />}
+                iconType={() => <WFOXCircleFill color={theme.colors.danger} />}
             >
                 {taskCountsSummary.total}
             </WFOHeaderBadge>
