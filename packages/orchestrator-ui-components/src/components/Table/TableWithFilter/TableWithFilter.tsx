@@ -20,7 +20,7 @@ import {
     TableConfig,
     TableSettingsModal,
 } from '../TableSettingsModal';
-import { SearchField } from '../../SearchBar';
+import { SearchField } from '../../WFOSearchBar';
 import { Table } from '../Table';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
