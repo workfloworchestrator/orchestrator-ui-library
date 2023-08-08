@@ -10,7 +10,7 @@ import {
 import {
     WFOStatusBadge,
     WFOProductBlockBadge,
-    TableWithFilter,
+    WFOTableWithFilter,
 } from '../../components';
 import {
     getTableConfigFromLocalStorage,
@@ -18,7 +18,7 @@ import {
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { TableColumns, DataSorting } from '../../components';
+import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { parseDateToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
@@ -60,7 +60,7 @@ export const WFOProductBlocksPage = () => {
             },
         });
 
-    const tableColumns: TableColumns<ProductBlockDefinition> = {
+    const tableColumns: WFOTableColumns<ProductBlockDefinition> = {
         productBlockId: {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
@@ -124,7 +124,7 @@ export const WFOProductBlocksPage = () => {
         true,
     );
 
-    const dataSorting: DataSorting<ProductBlockDefinition> = {
+    const dataSorting: WFODataSorting<ProductBlockDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -140,7 +140,7 @@ export const WFOProductBlocksPage = () => {
 
     return (
         <WFOMetadataPageLayout>
-            <TableWithFilter<ProductBlockDefinition>
+            <WFOTableWithFilter<ProductBlockDefinition>
                 data={data ? data.productBlocks.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}

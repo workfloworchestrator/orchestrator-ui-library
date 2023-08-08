@@ -8,20 +8,20 @@ import {
     Pagination,
 } from '@elastic/eui';
 import {
-    DataSorting,
+    WFODataSorting,
     TableColumnKeys,
-    TableColumns,
-    TableColumnsWithControlColumns,
-    TableControlColumnConfig,
-    TableDataColumnConfig,
+    WFOTableColumns,
+    WFOTableColumnsWithControlColumns,
+    WFOTableControlColumnConfig,
+    WFOTableDataColumnConfig,
 } from '../utils/columns';
 import {
     ColumnConfig,
     TableConfig,
     TableSettingsModal,
-} from '../TableSettingsModal';
+} from '../WFOTableSettingsModal';
 import { WFOSearchField } from '../../WFOSearchBar';
-import { Table } from '../Table';
+import { WFOTable } from '../WFOTable';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
@@ -29,13 +29,13 @@ import {
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
 
-export type TableWithFilterProps<T> = {
+export type WFOTableWithFilterProps<T> = {
     data: T[];
-    tableColumns: TableColumns<T>;
-    leadingControlColumns?: TableControlColumnConfig<T>;
-    trailingControlColumns?: TableControlColumnConfig<T>;
+    tableColumns: WFOTableColumns<T>;
+    leadingControlColumns?: WFOTableControlColumnConfig<T>;
+    trailingControlColumns?: WFOTableControlColumnConfig<T>;
     defaultHiddenColumns?: TableColumnKeys<T>;
-    dataSorting: DataSorting<T>;
+    dataSorting: WFODataSorting<T>;
     pagination: Pagination;
     esQueryString?: string;
     isLoading: boolean;
@@ -45,7 +45,7 @@ export type TableWithFilterProps<T> = {
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
 };
 
-export const TableWithFilter = <T,>({
+export const WFOTableWithFilter = <T,>({
     data,
     tableColumns,
     leadingControlColumns,
@@ -59,7 +59,7 @@ export const TableWithFilter = <T,>({
     onUpdateEsQueryString,
     onUpdatePage,
     onUpdateDataSort,
-}: TableWithFilterProps<T>) => {
+}: WFOTableWithFilterProps<T>) => {
     const defaultPageSize = pagination.pageSize;
     const tableConfigFromLocalStorage =
         getTableConfigFromLocalStorage<T>(localStorageKey);
@@ -72,14 +72,15 @@ export const TableWithFilter = <T,>({
 
     const [showSettingsModal, setShowSettingsModal] = useState(false);
 
-    const tableColumnsWithControlColumns: TableColumnsWithControlColumns<T> = {
-        ...leadingControlColumns,
-        ...tableColumns,
-        ...trailingControlColumns,
-    };
+    const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
+        {
+            ...leadingControlColumns,
+            ...tableColumns,
+            ...trailingControlColumns,
+        };
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
-        TableDataColumnConfig<T, keyof T>
+        WFOTableDataColumnConfig<T, keyof T>
     >(tableColumns).map((keyValuePair) => {
         const { field, name } = keyValuePair[1];
         return {
@@ -135,7 +136,7 @@ export const TableWithFilter = <T,>({
                 </EuiButton>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            <Table
+            <WFOTable
                 data={data}
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}

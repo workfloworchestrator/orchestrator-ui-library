@@ -4,41 +4,41 @@ import { SortOrder } from '../../../types';
 
 // Todo need to Pick a few more props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 // https://github.com/workfloworchestrator/orchestrator-ui/issues/130
-export type BasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
+export type WFOBasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
 
-export type TableDataColumnConfig<T, Property> = BasicTableColumn<T> & {
+export type WFOTableDataColumnConfig<T, Property> = WFOBasicTableColumn<T> & {
     field: Property;
     name: string;
 };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-export type TableColumnsWithExtraNonDataFields<T> = TableColumns<T> & {
+export type WFOTableColumnsWithExtraNonDataFields<T> = WFOTableColumns<T> & {
     [key: string]: EuiBasicTableColumn<T> & {
         field: string;
         name?: string;
     };
 };
 
-export type TableColumns<T> = {
-    [Property in keyof T]: TableDataColumnConfig<T, Property> & {
+export type WFOTableColumns<T> = {
+    [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
         render?: (cellValue: T[Property], row: T) => ReactNode;
     };
 };
 
-export type TableControlColumnConfig<T> = {
-    [key: string]: BasicTableColumn<T> & {
+export type WFOTableControlColumnConfig<T> = {
+    [key: string]: WFOBasicTableColumn<T> & {
         field: string;
         name?: string;
         render: (row: T) => ReactNode;
     };
 };
 
-export type TableColumnsWithControlColumns<T> = TableColumns<T> &
-    TableControlColumnConfig<T>;
+export type WFOTableColumnsWithControlColumns<T> = WFOTableColumns<T> &
+    WFOTableControlColumnConfig<T>;
 
 export type TableColumnKeys<T> = Array<keyof T>;
 
-export type DataSorting<T> = {
+export type WFODataSorting<T> = {
     field: keyof T;
     sortOrder: SortOrder;
 };

@@ -1,8 +1,8 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { DataSorting } from '../utils/columns';
+import { WFODataSorting } from '../utils/columns';
 import { SortOrder } from '../../../types';
-import { DataGridTable } from './DataGridTable';
+import { WFODataGridTable } from './WFODataGridTable';
 
 const extractedArr = (arr, start, howMany) =>
     arr.filter((_, index) => index >= start && index < howMany + start);
@@ -32,7 +32,7 @@ const TableWithEvents = (args) => {
         setPageSize(updatedPageSize);
     };
 
-    const updateDataSorting = (dataSorting: DataSorting<unknown>) => {
+    const updateDataSorting = (dataSorting: WFODataSorting<unknown>) => {
         setSorting(dataSorting);
 
         const sortData = args.data.sort((a, b) => {
@@ -46,7 +46,7 @@ const TableWithEvents = (args) => {
         setData(extractedArr(sortData, pageIndex, pageIndex + pageSize));
     };
     return (
-        <DataGridTable
+        <WFODataGridTable
             {...args}
             data={data}
             pagination={{
@@ -62,9 +62,9 @@ const TableWithEvents = (args) => {
     );
 };
 
-const Story: Meta<typeof DataGridTable> = {
+const Story: Meta<typeof WFODataGridTable> = {
     component: TableWithEvents,
-    title: 'Tables/DataGridTable',
+    title: 'WFOTables/WFODataGridTable',
     parameters: { actions: { argTypesRegex: '^on*' } },
 };
 export default Story;

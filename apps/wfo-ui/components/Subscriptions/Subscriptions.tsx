@@ -2,7 +2,7 @@ import React from 'react';
 import {
     CheckmarkCircleFill,
     DataDisplayParams,
-    DataSorting,
+    WFODataSorting,
     DEFAULT_PAGE_SIZES,
     FilterQuery,
     getDataSortHandler,
@@ -17,9 +17,9 @@ import {
     PlusCircleFill,
     SortOrder,
     TableColumnKeys,
-    TableColumns,
-    TableControlColumnConfig,
-    TableWithFilter,
+    WFOTableColumns,
+    WFOTableControlColumnConfig,
+    WFOTableWithFilter,
     useOrchestratorTheme,
     useQueryWithGraphql,
     WFOStatusBadge,
@@ -82,7 +82,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const { theme } = useOrchestratorTheme();
 
-    const tableColumns: TableColumns<Subscription> = {
+    const tableColumns: WFOTableColumns<Subscription> = {
         subscriptionId: {
             field: SUBSCRIPTION_ID,
             name: t('id'),
@@ -143,7 +143,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const leadingControlColumns: TableControlColumnConfig<Subscription> = {
+    const leadingControlColumns: WFOTableControlColumnConfig<Subscription> = {
         inlineSubscriptionDetails: {
             field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
             width: '40',
@@ -178,7 +178,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         return <WFOLoading />;
     }
 
-    const dataSorting: DataSorting<Subscription> = {
+    const dataSorting: WFODataSorting<Subscription> = {
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -191,7 +191,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     };
 
     return (
-        <TableWithFilter<Subscription>
+        <WFOTableWithFilter<Subscription>
             esQueryString={dataDisplayParams.esQueryString}
             onUpdateEsQueryString={getEsQueryStringHandler<Subscription>(
                 setDataDisplayParam,

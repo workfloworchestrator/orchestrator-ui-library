@@ -1,27 +1,27 @@
 import React from 'react';
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
-import { TableHeaderCell } from './TableHeaderCell';
+import { WFOTableHeaderCell } from './WFOTableHeaderCell';
 
 import type {
-    DataSorting,
+    WFODataSorting,
     TableColumnKeys,
-    TableColumns,
-    TableColumnsWithControlColumns,
+    WFOTableColumns,
+    WFOTableColumnsWithControlColumns,
 } from './utils/columns';
 
-export type TableProps<T> = {
+export type WFOTableProps<T> = {
     data: T[];
-    columns: TableColumnsWithControlColumns<T> | TableColumns<T>;
+    columns: WFOTableColumnsWithControlColumns<T> | WFOTableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
-    dataSorting?: DataSorting<T>;
+    dataSorting?: WFODataSorting<T>;
     pagination: Pagination;
     isLoading?: boolean;
     onCriteriaChange: (criteria: Criteria<T>) => void;
     onDataSort?: (columnId: keyof T) => void;
 };
 
-export const Table = <T,>({
+export const WFOTable = <T,>({
     data,
     columns,
     hiddenColumns,
@@ -30,7 +30,7 @@ export const Table = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: TableProps<T>) => (
+}: WFOTableProps<T>) => (
     <EuiBasicTable
         items={data}
         columns={mapTableColumnsToEuiColumns(
@@ -46,9 +46,9 @@ export const Table = <T,>({
 );
 
 function mapTableColumnsToEuiColumns<T>(
-    columns: TableColumns<T>,
+    columns: WFOTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
-    dataSorting?: DataSorting<T>,
+    dataSorting?: WFODataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,
 ): EuiBasicTableColumn<T>[] {
     function isVisibleColumn(columnKey: string) {
@@ -69,12 +69,12 @@ function mapTableColumnsToEuiColumns<T>(
             ...column,
             field: typedColumnKey,
             name: name && (
-                <TableHeaderCell
+                <WFOTableHeaderCell
                     sortDirection={sortDirection}
                     onClick={handleClick}
                 >
                     {name}
-                </TableHeaderCell>
+                </WFOTableHeaderCell>
             ),
             truncateText: true,
             textOnly: true,

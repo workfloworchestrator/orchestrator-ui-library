@@ -7,14 +7,14 @@ import {
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
-import { TableWithFilter } from '../../components';
+import { WFOTableWithFilter } from '../../components';
 import {
     getTableConfigFromLocalStorage,
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { TableColumns, DataSorting } from '../../components';
+import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import type { ResourceTypeDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -49,7 +49,7 @@ export const WFOResourceTypesPage = () => {
             },
         });
 
-    const tableColumns: TableColumns<ResourceTypeDefinition> = {
+    const tableColumns: WFOTableColumns<ResourceTypeDefinition> = {
         resourceType: {
             field: RESOURCE_TYPE_FIELD_TYPE,
             name: t('type'),
@@ -78,7 +78,7 @@ export const WFOResourceTypesPage = () => {
         true,
     );
 
-    const dataSorting: DataSorting<ResourceTypeDefinition> = {
+    const dataSorting: WFODataSorting<ResourceTypeDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -94,7 +94,7 @@ export const WFOResourceTypesPage = () => {
 
     return (
         <WFOMetadataPageLayout>
-            <TableWithFilter<ResourceTypeDefinition>
+            <WFOTableWithFilter<ResourceTypeDefinition>
                 data={data ? data.resourceTypes.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}

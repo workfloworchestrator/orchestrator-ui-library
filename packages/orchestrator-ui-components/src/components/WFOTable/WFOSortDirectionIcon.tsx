@@ -4,11 +4,11 @@ import { ArrowNarrowDown } from '../../icons/ArrowNarrowDown';
 import { ArrowNarrowUp } from '../../icons/ArrowNarrowUp';
 import { SortOrder } from '../../types';
 
-export type SortDirectionIconProps = {
+export type WFOSortDirectionIconProps = {
     sortDirection: SortOrder;
 };
 
-export const SortDirectionIcon: FC<SortDirectionIconProps> = ({
+export const WFOSortDirectionIcon: FC<WFOSortDirectionIconProps> = ({
     sortDirection,
 }) => {
     const { theme } = useOrchestratorTheme();

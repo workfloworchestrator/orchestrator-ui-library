@@ -5,17 +5,17 @@ import {
     EuiDataGridSorting,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
-import { DataSorting, TableColumnKeys } from '../utils/columns';
+import { WFODataSorting, TableColumnKeys } from '../utils/columns';
 import { SortOrder } from '../../../types';
 
-export type DataGridTableColumns<T> = {
+export type WFODataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {
         renderCell?: (cellValue: T[Property], row: T) => ReactNode;
         isHiddenByDefault?: boolean;
     };
 };
 
-export type ControlColumn<T> = Omit<
+export type WFOControlColumn<T> = Omit<
     EuiDataGridControlColumn,
     | 'rowCellRender'
     | 'headerCellRender'
@@ -27,7 +27,7 @@ export type ControlColumn<T> = Omit<
 };
 
 export const getInitialColumnOrder = <T>(
-    columns: DataGridTableColumns<T>,
+    columns: WFODataGridTableColumns<T>,
     initialColumnOrder: TableColumnKeys<T>,
 ) => {
     const euiDataGridColumns: EuiDataGridColumn[] = Object.keys(columns).map(
@@ -53,8 +53,8 @@ export const getInitialColumnOrder = <T>(
 };
 
 export const mapColumnSortToEuiDataGridSorting = <T>(
-    columnSort?: DataSorting<T>,
-    updateColumnSort?: (columnSort: DataSorting<T>) => void,
+    columnSort?: WFODataSorting<T>,
+    updateColumnSort?: (columnSort: WFODataSorting<T>) => void,
 ): EuiDataGridSorting => ({
     columns: columnSort
         ? [

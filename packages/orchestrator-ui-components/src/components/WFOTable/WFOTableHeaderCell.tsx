@@ -1,15 +1,15 @@
 import React, { FC, ReactNode } from 'react';
 
 import { SortOrder } from '../../types';
-import { SortDirectionIcon } from './SortDirectionIcon';
+import { WFOSortDirectionIcon } from './WFOSortDirectionIcon';
 
-export type TableHeaderCellProps = {
+export type WFOTableHeaderCellProps = {
     sortDirection?: SortOrder;
     onClick?: () => void;
     children: ReactNode;
 };
 
-export const TableHeaderCell: FC<TableHeaderCellProps> = ({
+export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
     sortDirection,
     children,
     onClick,
@@ -24,7 +24,7 @@ export const TableHeaderCell: FC<TableHeaderCellProps> = ({
     >
         <div>{children}</div>
         {sortDirection ? (
-            <SortDirectionIcon sortDirection={sortDirection} />
+            <WFOSortDirectionIcon sortDirection={sortDirection} />
         ) : null}
     </div>
 );
