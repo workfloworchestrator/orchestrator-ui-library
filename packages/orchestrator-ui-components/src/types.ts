@@ -89,7 +89,7 @@ export type SubscriptionDetailBase = {
     product: ProductBase;
     fixedInputs: FixedInputsBase;
     customer?: CustomerBase;
-    productBlocks: ProductBlockBase[];
+    productBlocks: ProductBlockBase[]; // todo: will be renamed in productBlockInstance
 
     externalServices?: ExternalServiceBase[];
 };
@@ -141,6 +141,33 @@ export interface ProductDefinition {
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
 
+// Todo: this one is incomplete
+// Todo rename, this is not a Definition --> Process
+export type ProcessDefinition = {
+    workflowName: string;
+    lastStep: string;
+    status: string;
+    // target: string;
+    product: string;
+    customer: string;
+    // abbrev: string; // currently not in backend, not sure if it will be added
+    subscriptions: {
+        page: Pick<Subscription, 'subscriptionId' | 'description'>[];
+    };
+    createdBy: string;
+    assignee: string;
+    id: string;
+    started: string; // DateTime
+    lastModified: string; // DateTime
+};
+
+// Todo: this will replace the generated Subscription
+// Currently partially implemented since it is used in Process object
+export type Subscription = {
+    subscriptionId: string;
+    description: string;
+};
+
 export type Field<Type> = keyof Type;
 
 //// Utility types
@@ -190,6 +217,10 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
+export interface ProcessesDefinitionsResult {
+    processes: GraphQlResultPage<ProcessDefinition>;
+}
+
 interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
@@ -199,7 +230,6 @@ export interface CacheOption {
     value: string;
     label: string;
 }
-``;
 
 export enum Locale {
     enUS = 'en-Us',
