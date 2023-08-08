@@ -4,7 +4,7 @@ export * from './OrchestratorPageTemplate';
 export * from './WFOSearchBar';
 export * from './WFOSettingsModal';
 export * from './WFOSettingsPage';
-export * from './StartPage';
+export * from './WFOStartPage';
 export * from './Subscription';
 export * from './SubscriptionsTabs';
 export * from './Table';

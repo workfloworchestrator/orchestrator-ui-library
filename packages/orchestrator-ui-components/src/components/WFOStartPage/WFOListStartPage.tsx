@@ -6,14 +6,16 @@ import {
     EuiPanel,
     EuiSpacer,
 } from '@elastic/eui';
-import { ListItemStartPage } from './ListItemStartPage';
+import { WFOListItemStartPage } from './WFOListItemStartPage';
 import { ItemsList } from '../../types';
 
-interface ListStartPage {
+interface WFOListStartPage {
     list: ItemsList;
 }
 
-export default function ListStartPage({ list }: ListStartPage): ReactElement {
+export default function WFOListStartPage({
+    list,
+}: WFOListStartPage): ReactElement {
     return (
         list?.items && (
             <EuiFlexItem style={{ minWidth: 300 }}>
@@ -22,7 +24,10 @@ export default function ListStartPage({ list }: ListStartPage): ReactElement {
                     <EuiSpacer size="m" />
                     {list.items.map((item, index) => (
                         <div key={index}>
-                            <ListItemStartPage item={item} type={list.type} />
+                            <WFOListItemStartPage
+                                item={item}
+                                type={list.type}
+                            />
                             {index === list.items.length - 1 ? null : (
                                 <EuiHorizontalRule margin="none" />
                             )}

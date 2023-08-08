@@ -1,22 +1,22 @@
 import React, { FC } from 'react';
 import { EuiFlexGroup } from '@elastic/eui';
-import ListStartPage from './ListStartPage';
+import WFOListStartPage from './WFOListStartPage';
 import {
     useFavouriteSubscriptions,
     useProcessesAttention,
     useRecentProcesses,
 } from '../../hooks/DataFetchHooks';
 
-export const MultiListSection: FC = () => {
+export const WFOMultiListSection: FC = () => {
     const favouriteSubscriptionsList = useFavouriteSubscriptions();
     const processesAttentionList = useProcessesAttention();
     const completedProcessesList = useRecentProcesses();
 
     return (
         <EuiFlexGroup wrap>
-            <ListStartPage list={favouriteSubscriptionsList} />
-            <ListStartPage list={processesAttentionList} />
-            <ListStartPage list={completedProcessesList} />
+            <WFOListStartPage list={favouriteSubscriptionsList} />
+            <WFOListStartPage list={processesAttentionList} />
+            <WFOListStartPage list={completedProcessesList} />
         </EuiFlexGroup>
     );
 };

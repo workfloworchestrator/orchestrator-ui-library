@@ -30,7 +30,7 @@ const totalStats: TotalStat[] = [
     },
 ];
 
-export const StatCards: FC = () => {
+export const WFOStatCards: FC = () => {
     const [stats] = useState<TotalStat[]>(totalStats);
     const { theme } = useOrchestratorTheme();
 

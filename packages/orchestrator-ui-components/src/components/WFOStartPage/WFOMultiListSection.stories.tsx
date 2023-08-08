@@ -1,6 +1,5 @@
-import React from 'react';
 import type { Meta } from '@storybook/react';
-import ListStartPage from './ListStartPage';
+import { WFOMultiListSection } from './WFOMultiListSection';
 
 const subscriptionsList = [
     {
@@ -63,34 +62,28 @@ const processesList = [
     },
 ];
 
-const Story: Meta<typeof ListStartPage> = {
-    component: (args) => (
-        <div style={{ width: '250px' }}>
-            <ListStartPage {...args} />
-        </div>
-    ),
-    title: 'StartPage/ListStartPage',
+const Story: Meta<typeof WFOMultiListSection> = {
+    component: WFOMultiListSection,
+    title: 'WFOStartPage/WFOMultiListSection',
+    parameters: {
+        mockData: [
+            {
+                url: 'https://testing.test//subscriptions/?range=10%2C15',
+                method: 'GET',
+                status: 200,
+                response: subscriptionsList,
+            },
+            {
+                url: 'https://testing.test//processes/?range=106-111',
+                method: 'GET',
+                status: 200,
+                response: processesList,
+            },
+        ],
+    },
 };
 export default Story;
 
-export const SubscriptionsList = {
-    args: {
-        list: {
-            title: 'Subscription title',
-            items: subscriptionsList,
-            buttonName: 'Subscription button',
-            type: 'subscription',
-        },
-    },
-};
-
-export const ProcessesList = {
-    args: {
-        list: {
-            title: 'Process title',
-            items: processesList,
-            buttonName: 'Process button',
-            type: 'process',
-        },
-    },
+export const Primary = {
+    args: {},
 };

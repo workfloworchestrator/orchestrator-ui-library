@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import ListItemStartPage from './ListItemStartPage';
+import WFOListItemStartPage from './WFOListItemStartPage';
 
-const Story: Meta<typeof ListItemStartPage> = {
-    component: ListItemStartPage,
-    title: 'StartPage/ListItemStartPage',
+const Story: Meta<typeof WFOListItemStartPage> = {
+    component: WFOListItemStartPage,
+    title: 'WFOStartPage/WFOListItemStartPage',
     tags: ['autodocs'],
     decorators: [
         (Story) => (
