@@ -6,7 +6,7 @@ import {
     SubscriptionContext,
     SubscriptionContextType,
 } from '../../contexts/SubscriptionContext';
-import { Tree } from '../Tree/Tree';
+import { WFOTree } from '../WFOTree/WFOTree';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 
 import {
@@ -146,7 +146,7 @@ export const SubscriptionDetailTree = () => {
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
                         {!tree && <EuiLoadingContent />}
-                        {tree && <Tree data={[tree]} />}
+                        {tree && <WFOTree data={[tree]} />}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>
