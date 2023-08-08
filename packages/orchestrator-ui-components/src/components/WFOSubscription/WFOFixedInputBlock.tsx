@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
-import { RenderField } from './SubscriptionBlock';
+import { RenderField } from './WFOSubscriptionBlock';
 import {
     subscriptionDefinitionCellStyle,
     subscriptionValueCellStyle,
 } from './styles';
 
-export const FixedInputBlock = (title: string, data: object) => {
+export const WFOFixedInputBlock = (title: string, data: object) => {
     const keys = [];
     for (const key in data) {
         keys.push(key);

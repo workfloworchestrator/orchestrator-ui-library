@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ProductBlockBase, ResourceTypeBase, TreeBlock } from '../../types';
-import { ProductBlock } from './ProductBlock';
+import { WFOProductBlock } from './WFOProductBlock';
 import {
     SubscriptionContext,
     SubscriptionContextType,
@@ -40,7 +40,7 @@ function getProductBlockTitle(resourceType: ResourceTypeBase): string {
         : resourceType.title;
 }
 
-export const SubscriptionDetailTree = () => {
+export const WFOSubscriptionDetailTree = () => {
     const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -170,7 +170,7 @@ export const SubscriptionDetailTree = () => {
                         selectedIds
                             .reverse()
                             .map((id, index) =>
-                                ProductBlock(
+                                WFOProductBlock(
                                     subscriptionData.productBlocks[
                                         selectedIds[index]
                                     ].resourceTypes,

@@ -5,7 +5,7 @@ export * from './WFOSearchBar';
 export * from './WFOSettingsModal';
 export * from './WFOSettingsPage';
 export * from './WFOStartPage';
-export * from './Subscription';
+export * from './WFOSubscription';
 export * from './SubscriptionsTabs';
 export * from './WFOTable';
 export * from './WFOLoading';

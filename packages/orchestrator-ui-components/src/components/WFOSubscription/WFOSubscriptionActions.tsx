@@ -37,7 +37,7 @@ export type SubscriptionActionsProps = {
     subscriptionId: string;
 };
 
-export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
+export const WFOSubscriptionActions: FC<SubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
     const t = useTranslations('subscriptions.detail.workflow');

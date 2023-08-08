@@ -16,7 +16,10 @@ import {
 } from '../../contexts';
 import { ResourceTypeBase } from '../../types';
 
-export const ProductBlock = (resourceTypes: ResourceTypeBase, id: number) => {
+export const WFOProductBlock = (
+    resourceTypes: ResourceTypeBase,
+    id: number,
+) => {
     const { toggleSelectedId } = React.useContext(
         TreeContext,
     ) as TreeContextType;

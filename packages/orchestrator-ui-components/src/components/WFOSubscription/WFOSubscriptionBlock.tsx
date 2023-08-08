@@ -33,7 +33,7 @@ export const RenderField = (field: string, data: any) => {
     return <div>{data[field]}</div>;
 };
 
-export const SubscriptionBlock = (title: string, data: object) => {
+export const WFOSubscriptionBlock = (title: string, data: object) => {
     const t = useTranslations('common');
     const keys = [];
     for (const key in data) {

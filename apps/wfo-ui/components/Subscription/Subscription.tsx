@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import {
     ProcessesTimeline,
-    SubscriptionActions,
-    SubscriptionDetailTree,
-    SubscriptionGeneral,
+    WFOSubscriptionActions,
+    WFOSubscriptionDetailTree,
+    WFOSubscriptionGeneral,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import {
     EuiBadge,
@@ -153,7 +153,7 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                             </span>
                         </EuiFlexItem>
                         <EuiFlexItem>
-                            <SubscriptionActions
+                            <WFOSubscriptionActions
                                 subscriptionId={subscriptionId}
                             />
                         </EuiFlexItem>
@@ -164,9 +164,9 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
                 <EuiTabs>{renderTabs()}</EuiTabs>
             </>
 
-            {selectedTabId === GENERAL_TAB && <SubscriptionGeneral />}
+            {selectedTabId === GENERAL_TAB && <WFOSubscriptionGeneral />}
             {selectedTabId === SERVICE_CONFIGURATION_TAB && (
-                <SubscriptionDetailTree />
+                <WFOSubscriptionDetailTree />
             )}
             {selectedTabId === PROCESSES_TAB && data && (
                 <ProcessesTimeline subscriptionId={subscriptionId} />

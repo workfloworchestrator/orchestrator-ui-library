@@ -11,7 +11,7 @@ import { WFOProcessStatusBadge } from '../WFOBadges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
-const Card = (processInfo: SubscriptionProcess) => (
+const WFOCard = (processInfo: SubscriptionProcess) => (
     <div style={{ marginTop: 5 }}>
         <table width="100%" bgcolor={'#F1F5F9'}>
             <tr>
@@ -75,7 +75,7 @@ const RenderProcess = (processInfo: SubscriptionProcess) => (
         timelineAvatarAriaLabel={processInfo.process.workflow}
         timelineAvatar={<EuiAvatar name="C" />}
     >
-        {Card(processInfo)}
+        {WFOCard(processInfo)}
     </EuiComment>
 );
 
