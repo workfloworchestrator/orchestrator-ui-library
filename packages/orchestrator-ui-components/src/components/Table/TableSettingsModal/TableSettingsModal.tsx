@@ -7,7 +7,7 @@ import {
     EuiSpacer,
     EuiSwitch,
 } from '@elastic/eui';
-import { SettingsModal } from '../../SettingsModal';
+import { SettingsModal } from '../../WFOSettingsModal';
 
 export type ColumnConfig<T> = {
     field: keyof T;

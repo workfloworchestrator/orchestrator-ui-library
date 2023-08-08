@@ -20,7 +20,7 @@ import {
     TableConfig,
     TableSettingsModal,
 } from '../TableSettingsModal';
-import { SearchField } from '../../WFOSearchBar';
+import { WFOSearchField } from '../../WFOSearchBar';
 import { Table } from '../Table';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
@@ -125,7 +125,7 @@ export const TableWithFilter = <T,>({
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
-                    <SearchField
+                    <WFOSearchField
                         esQueryString={esQueryString}
                         onUpdateEsQueryString={onUpdateEsQueryString}
                     />
