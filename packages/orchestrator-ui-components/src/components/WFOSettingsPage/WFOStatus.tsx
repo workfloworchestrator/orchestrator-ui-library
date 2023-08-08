@@ -10,11 +10,11 @@ import { StatusDotIcon } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 import { EngineStatusValue } from '../../types';
 
-export type StatusProps = {
+export type WFOStatusProps = {
     engineStatus?: EngineStatusValue;
 };
 
-export const Status: FC<StatusProps> = ({ engineStatus }) => {
+export const WFOStatus: FC<WFOStatusProps> = ({ engineStatus }) => {
     const { theme } = useOrchestratorTheme();
     const isRunning = engineStatus === 'RUNNING';
 

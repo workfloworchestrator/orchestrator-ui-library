@@ -1,11 +1,11 @@
 import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import React, { FunctionComponent } from 'react';
-import { FlushSettings } from './FlushSettings';
-import { ModifySettings } from './ModifySettings';
-import { Status } from './Status';
+import { WFOFlushSettings } from './WFOFlushSettings';
+import { WFOModifySettings } from './WFOModifySettings';
+import { WFOStatus } from './WFOStatus';
 import { useEngineStatusMutation, useEngineStatusQuery } from '../../hooks';
 
-export const Settings: FunctionComponent = () => {
+export const WFOSettings: FunctionComponent = () => {
     const { data: engineStatus } = useEngineStatusQuery();
     const { mutate, data: newEngineStatus } = useEngineStatusMutation();
 
@@ -23,14 +23,14 @@ export const Settings: FunctionComponent = () => {
         <>
             <EuiPageHeader pageTitle="Settings" />
             <EuiHorizontalRule />
-            <FlushSettings />
+            <WFOFlushSettings />
             <EuiSpacer />
-            <ModifySettings
+            <WFOModifySettings
                 engineStatus={currentEngineStatus}
                 changeEngineStatus={changeEngineStatus}
             />
             <EuiSpacer />
-            <Status engineStatus={currentEngineStatus} />
+            <WFOStatus engineStatus={currentEngineStatus} />
         </>
     );
 };

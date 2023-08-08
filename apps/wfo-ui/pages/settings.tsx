@@ -1,8 +1,8 @@
 import React from 'react';
-import { Settings } from '@orchestrator-ui/orchestrator-ui-components';
+import { WFOSettings } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function SettingsPage() {
-    return <Settings />;
+    return <WFOSettings />;
 }
 
 export default SettingsPage;
