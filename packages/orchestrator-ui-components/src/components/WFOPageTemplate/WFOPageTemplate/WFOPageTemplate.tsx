@@ -1,15 +1,15 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 import { EuiPageTemplate } from '@elastic/eui';
-import { OrchestratorPageHeader } from '../OrchestratorPageHeader';
-import { OrchestratorSidebar } from '../OrchestratorSidebar';
+import { WFOPageHeader } from '../WFOPageHeader';
+import { WFOSidebar } from '../WFOSidebar';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 
-export interface OrchestratorPageTemplateProps {
+export interface WFOPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
     children: ReactNode;
 }
 
-export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
+export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
     children,
     getAppLogo,
 }) => {
@@ -20,7 +20,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
 
     return (
         <>
-            <OrchestratorPageHeader
+            <WFOPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
                 handleLogoutClick={() =>
@@ -42,7 +42,7 @@ export const OrchestratorPageTemplate: FC<OrchestratorPageTemplateProps> = ({
                             backgroundColor: theme.colors.body,
                         }}
                     >
-                        <OrchestratorSidebar />
+                        <WFOSidebar />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section

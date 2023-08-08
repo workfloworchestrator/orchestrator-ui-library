@@ -1,6 +1,6 @@
 export * from './WFOBadges';
 export * from './WFOBreadcrumbs';
-export * from './OrchestratorPageTemplate';
+export * from './WFOPageTemplate';
 export * from './WFOSearchBar';
 export * from './WFOSettingsModal';
 export * from './WFOSettingsPage';

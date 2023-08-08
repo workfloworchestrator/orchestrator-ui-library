@@ -9,7 +9,7 @@ import {
     Environment,
     OrchestratorConfig,
     OrchestratorConfigProvider,
-    OrchestratorPageTemplate,
+    WFOPageTemplate,
     WFOBreadcrumbs,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -72,7 +72,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                             client={queryClient}
                             contextSharing={true}
                         >
-                            <OrchestratorPageTemplate getAppLogo={getAppLogo}>
+                            <WFOPageTemplate getAppLogo={getAppLogo}>
                                 <QueryParamProvider
                                     adapter={NextAdapter}
                                     options={{
@@ -83,7 +83,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     <WFOBreadcrumbs />
                                     <Component {...pageProps} />
                                 </QueryParamProvider>
-                            </OrchestratorPageTemplate>
+                            </WFOPageTemplate>
                             <ReactQueryDevtools initialIsOpen={false} />
                         </QueryClientProvider>
                     </OrchestratorConfigProvider>

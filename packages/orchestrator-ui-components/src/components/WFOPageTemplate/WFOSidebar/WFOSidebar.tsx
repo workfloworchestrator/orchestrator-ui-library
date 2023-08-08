@@ -13,7 +13,7 @@ const PATH_METADATA_WORKFLOWS = '/metadata/workflows';
 const PATH_TASKS = '/tasks';
 const PATH_SETTINGS = '/settings';
 
-export const OrchestratorSidebar: FC = () => {
+export const WFOSidebar: FC = () => {
     const router = useRouter();
 
     return (

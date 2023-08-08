@@ -1,11 +1,11 @@
 import type { Meta } from '@storybook/react';
-import { OrchestratorPageTemplate } from './OrchestratorPageTemplate';
+import { WFOPageTemplate } from './WFOPageTemplate';
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import React, { ReactElement } from 'react';
 
-const Story: Meta<typeof OrchestratorPageTemplate> = {
-    component: OrchestratorPageTemplate,
-    title: 'PageTemplate/OrchestratorPageTemplate',
+const Story: Meta<typeof WFOPageTemplate> = {
+    component: WFOPageTemplate,
+    title: 'WFOPageTemplate/WFOPageTemplate',
 };
 export default Story;
 

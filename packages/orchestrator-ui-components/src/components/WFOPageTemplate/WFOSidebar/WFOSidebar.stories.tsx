@@ -1,11 +1,11 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { OrchestratorSidebar } from './OrchestratorSidebar';
+import { WFOSidebar } from './WFOSidebar';
 
-const Story: Meta<typeof OrchestratorSidebar> = {
+const Story: Meta<typeof WFOSidebar> = {
     component: (args) => (
         <div style={{ width: '250px', backgroundColor: '#F1F5F9' }}>
-            <OrchestratorSidebar {...args} />
+            <WFOSidebar {...args} />
         </div>
     ),
     title: 'PageTemplate/OrchestratorSidebar',

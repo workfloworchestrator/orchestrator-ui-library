@@ -13,14 +13,14 @@ import { WFOEngineStatusBadge } from '../../WFOBadges/WFOEngineStatusBadge';
 import { WFOEnvironmentBadge } from '../../WFOBadges/WFOEnvironmentBadge';
 import { LogoutIcon } from '../../../icons/LogoutIcon';
 
-export interface OrchestratorPageHeaderProps {
+export interface WFOPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
     getAppLogo: (navigationHeight: number) => ReactElement;
     handleLogoutClick: () => void;
 }
 
-export const OrchestratorPageHeader: FC<OrchestratorPageHeaderProps> = ({
+export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
     handleLogoutClick,
