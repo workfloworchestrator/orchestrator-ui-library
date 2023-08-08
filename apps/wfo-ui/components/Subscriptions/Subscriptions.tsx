@@ -10,7 +10,7 @@ import {
     getFirstUuidPart,
     getPageChangeHandler,
     getTypedFieldFromObject,
-    Loading,
+    WFOLoading,
     MinusCircleOutline,
     parseDate,
     parseDateToLocaleString,
@@ -175,7 +175,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }
 
     if (!data) {
-        return <Loading />;
+        return <WFOLoading />;
     }
 
     const dataSorting: DataSorting<Subscription> = {
