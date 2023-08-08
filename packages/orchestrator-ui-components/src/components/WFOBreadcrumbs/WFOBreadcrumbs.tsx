@@ -3,7 +3,7 @@ import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import { isUuid4, removeSuffix, upperCaseFirstChar } from '../../utils';
 
-export const Breadcrumbs = () => {
+export const WFOBreadcrumbs = () => {
     const router = useRouter();
     // Setup initial breadcrumbs with navigation to home
     const breadcrumbs: EuiBreadcrumb[] = [

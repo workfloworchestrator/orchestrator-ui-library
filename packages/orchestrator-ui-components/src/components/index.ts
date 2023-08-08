@@ -1,5 +1,5 @@
-export * from './Badges';
-export * from './Breadcrumbs';
+export * from './WFOBadges';
+export * from './WFOBreadcrumbs';
 export * from './OrchestratorPageTemplate';
 export * from './SearchBar';
 export * from './SettingsModal';

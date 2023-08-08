@@ -8,9 +8,9 @@ import {
     EuiHeaderSectionItem,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WFOFailedTasksBadge } from '../../Badges/WFOFailedTasksBadge';
-import { WFOEngineStatusBadge } from '../../Badges/WFOEngineStatusBadge';
-import { WFOEnvironmentBadge } from '../../Badges/WFOEnvironmentBadge';
+import { WFOFailedTasksBadge } from '../../WFOBadges/WFOFailedTasksBadge';
+import { WFOEngineStatusBadge } from '../../WFOBadges/WFOEngineStatusBadge';
+import { WFOEnvironmentBadge } from '../../WFOBadges/WFOEnvironmentBadge';
 import { LogoutIcon } from '../../../icons/LogoutIcon';
 
 export interface OrchestratorPageHeaderProps {

@@ -9,7 +9,7 @@ import {
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { CheckmarkCircleFill, MinusCircleOutline } from '../../icons';
-import { WFOStatusBadge } from '../Badges';
+import { WFOStatusBadge } from '../WFOBadges';
 import {
     subscriptionDefinitionCellStyle,
     subscriptionTableRowStyle,

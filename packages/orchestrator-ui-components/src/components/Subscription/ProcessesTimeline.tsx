@@ -7,7 +7,7 @@ import {
     EuiLoadingContent,
 } from '@elastic/eui';
 
-import { WFOProcessStatusBadge } from '../Badges';
+import { WFOProcessStatusBadge } from '../WFOBadges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */

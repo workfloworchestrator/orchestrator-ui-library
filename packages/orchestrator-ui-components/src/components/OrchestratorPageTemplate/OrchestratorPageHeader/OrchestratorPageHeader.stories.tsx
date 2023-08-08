@@ -2,8 +2,6 @@ import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import type { Meta } from '@storybook/react';
 import React, { ReactElement } from 'react';
 import { OrchestratorPageHeader } from './OrchestratorPageHeader';
-import Logo from '../../../../../.storybook/mockdata/logo-orchestrator.svg';
-import Image from 'next/image';
 
 const Story: Meta<typeof OrchestratorPageHeader> = {
     component: OrchestratorPageHeader,
@@ -14,14 +12,7 @@ export default Story;
 function getAppLogo(navigationLogo: number): ReactElement {
     return (
         <EuiFlexGroup alignItems="center" css={{ height: navigationLogo }}>
-            <EuiFlexItem>
-                <Image
-                    src={Logo}
-                    alt="Orchestrator Logo"
-                    width={134}
-                    height={32}
-                />
-            </EuiFlexItem>
+            <EuiFlexItem>FLEX ITEM PLACEHOLDER</EuiFlexItem>
         </EuiFlexGroup>
     );
 }
