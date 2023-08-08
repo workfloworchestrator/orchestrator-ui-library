@@ -3,7 +3,7 @@ import { WFONewProcessPanel } from './WFONewProcessPanel';
 
 const Story: Meta<typeof WFONewProcessPanel> = {
     component: WFONewProcessPanel,
-    title: 'WFOStartPage/WFONewProcessPanel',
+    title: 'StartPage/WFONewProcessPanel',
 };
 export default Story;
 

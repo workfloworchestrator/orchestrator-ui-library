@@ -2,7 +2,7 @@ import { EuiTab, EuiTabs } from '@elastic/eui';
 import React, { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-export enum SubscriptionsTabType {
+export enum WFOSubscriptionsTabType {
     ACTIVE = 'ACTIVE',
     TERMINATED = 'TERMINATED',
     TRANSIENT = 'TRANSIENT',
@@ -14,15 +14,15 @@ export type FilterQuery = {
     value: string;
 };
 
-export type SubscriptionsTab = {
-    id: SubscriptionsTabType;
+export type WFOSubscriptionsTab = {
+    id: WFOSubscriptionsTabType;
     translationKey: string;
     alwaysOnFilters?: FilterQuery[];
 };
 
-export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
+export const defaultSubscriptionsTabs: WFOSubscriptionsTab[] = [
     {
-        id: SubscriptionsTabType.ACTIVE,
+        id: WFOSubscriptionsTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
@@ -32,7 +32,7 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
         ],
     },
     {
-        id: SubscriptionsTabType.TERMINATED,
+        id: WFOSubscriptionsTabType.TERMINATED,
         translationKey: 'terminated',
         alwaysOnFilters: [
             {
@@ -42,7 +42,7 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
         ],
     },
     {
-        id: SubscriptionsTabType.TRANSIENT,
+        id: WFOSubscriptionsTabType.TRANSIENT,
         translationKey: 'transient',
         alwaysOnFilters: [
             {
@@ -52,20 +52,20 @@ export const defaultSubscriptionsTabs: SubscriptionsTab[] = [
         ],
     },
     {
-        id: SubscriptionsTabType.ALL,
+        id: WFOSubscriptionsTabType.ALL,
         translationKey: 'all',
     },
 ];
 
-export type SubscriptionsTabsProps = {
-    tabs: SubscriptionsTab[];
-    selectedSubscriptionsTab: SubscriptionsTabType;
+export type WFOSubscriptionsTabsProps = {
+    tabs: WFOSubscriptionsTab[];
+    selectedSubscriptionsTab: WFOSubscriptionsTabType;
     onChangeSubscriptionsTab: (
-        updatedSubscriptionsTab: SubscriptionsTabType,
+        updatedSubscriptionsTab: WFOSubscriptionsTabType,
     ) => void;
 };
 
-export const SubscriptionsTabs: FC<SubscriptionsTabsProps> = ({
+export const WFOSubscriptionsTabs: FC<WFOSubscriptionsTabsProps> = ({
     tabs,
     selectedSubscriptionsTab,
     onChangeSubscriptionsTab,

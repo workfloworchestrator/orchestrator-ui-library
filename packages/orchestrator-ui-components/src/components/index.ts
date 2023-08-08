@@ -6,6 +6,6 @@ export * from './WFOSettingsModal';
 export * from './WFOSettingsPage';
 export * from './WFOStartPage';
 export * from './WFOSubscription';
-export * from './SubscriptionsTabs';
+export * from './WFOSubscriptionsTabs';
 export * from './WFOTable';
 export * from './WFOLoading';

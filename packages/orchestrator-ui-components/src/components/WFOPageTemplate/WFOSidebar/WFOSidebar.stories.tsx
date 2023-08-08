@@ -8,7 +8,7 @@ const Story: Meta<typeof WFOSidebar> = {
             <WFOSidebar {...args} />
         </div>
     ),
-    title: 'PageTemplate/OrchestratorSidebar',
+    title: 'PageTemplate/WFOSidebar',
 };
 export default Story;
 

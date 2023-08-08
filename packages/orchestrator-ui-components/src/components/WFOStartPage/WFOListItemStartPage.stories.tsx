@@ -4,7 +4,7 @@ import WFOListItemStartPage from './WFOListItemStartPage';
 
 const Story: Meta<typeof WFOListItemStartPage> = {
     component: WFOListItemStartPage,
-    title: 'WFOStartPage/WFOListItemStartPage',
+    title: 'StartPage/WFOListItemStartPage',
     tags: ['autodocs'],
     decorators: [
         (Story) => (

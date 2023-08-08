@@ -3,7 +3,7 @@ import { WFOStatCards } from './WFOStatCards';
 
 const Story: Meta<typeof WFOStatCards> = {
     component: WFOStatCards,
-    title: 'WFOStartPage/WFOStatCards',
+    title: 'StartPage/WFOStatCards',
 };
 export default Story;
 

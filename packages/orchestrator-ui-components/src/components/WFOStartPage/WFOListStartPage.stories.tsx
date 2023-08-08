@@ -69,7 +69,7 @@ const Story: Meta<typeof WFOListStartPage> = {
             <WFOListStartPage {...args} />
         </div>
     ),
-    title: 'StartPage/ListStartPage',
+    title: 'StartPage/WFOListStartPage',
 };
 export default Story;
 

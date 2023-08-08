@@ -64,7 +64,7 @@ const TableWithEvents = (args) => {
 
 const Story: Meta<typeof WFODataGridTable> = {
     component: TableWithEvents,
-    title: 'WFOTables/WFODataGridTable',
+    title: 'Tables/WFODataGridTable',
     parameters: { actions: { argTypesRegex: '^on*' } },
 };
 export default Story;

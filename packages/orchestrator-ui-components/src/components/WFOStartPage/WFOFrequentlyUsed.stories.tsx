@@ -3,7 +3,7 @@ import { WFOFrequentlyUsed } from './WFOFrequentlyUsed';
 
 const Story: Meta<typeof WFOFrequentlyUsed> = {
     component: WFOFrequentlyUsed,
-    title: 'WFOStartPage/WFOFrequentlyUsed',
+    title: 'StartPage/WFOFrequentlyUsed',
     tags: ['autodocs'],
 };
 export default Story;

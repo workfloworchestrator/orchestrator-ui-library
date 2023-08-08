@@ -64,7 +64,7 @@ const processesList = [
 
 const Story: Meta<typeof WFOMultiListSection> = {
     component: WFOMultiListSection,
-    title: 'WFOStartPage/WFOMultiListSection',
+    title: 'StartPage/WFOMultiListSection',
     parameters: {
         mockData: [
             {

@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react';
 
 const Story: Meta<typeof WFOPageTemplate> = {
     component: WFOPageTemplate,
-    title: 'WFOPageTemplate/WFOPageTemplate',
+    title: 'PageTemplate/WFOPageTemplate',
 };
 export default Story;
 

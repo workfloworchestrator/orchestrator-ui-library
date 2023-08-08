@@ -1,25 +1,25 @@
 import { getSubscriptionsTabTypeFromString } from './getSubscriptionsTabTypeFromString';
-import { SubscriptionsTabType } from './SubscriptionsTabs';
+import { WFOSubscriptionsTabType } from './WFOSubscriptionsTabs';
 
 describe('getSubscriptionsTabTypeFromString', () => {
     it('returns SubscriptionsTabType.ACTIVE', () => {
         const result = getSubscriptionsTabTypeFromString('ACTIVE');
-        expect(result).toEqual(SubscriptionsTabType.ACTIVE);
+        expect(result).toEqual(WFOSubscriptionsTabType.ACTIVE);
     });
 
     it('returns SubscriptionsTabType.TERMINATED', () => {
         const result = getSubscriptionsTabTypeFromString('TERMINATED');
-        expect(result).toEqual(SubscriptionsTabType.TERMINATED);
+        expect(result).toEqual(WFOSubscriptionsTabType.TERMINATED);
     });
 
     it('returns SubscriptionsTabType.TRANSIENT', () => {
         const result = getSubscriptionsTabTypeFromString('TRANSIENT');
-        expect(result).toEqual(SubscriptionsTabType.TRANSIENT);
+        expect(result).toEqual(WFOSubscriptionsTabType.TRANSIENT);
     });
 
     it('returns SubscriptionsTabType.ALL', () => {
         const result = getSubscriptionsTabTypeFromString('ALL');
-        expect(result).toEqual(SubscriptionsTabType.ALL);
+        expect(result).toEqual(WFOSubscriptionsTabType.ALL);
     });
 
     it('returns undefined when no tabId is provided', () => {

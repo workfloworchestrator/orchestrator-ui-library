@@ -1,2 +1,2 @@
-export * from './SubscriptionsTabs';
+export * from './WFOSubscriptionsTabs';
 export * from './getSubscriptionsTabTypeFromString';

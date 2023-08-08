@@ -5,7 +5,7 @@ import { WFOPageHeader } from './WFOPageHeader';
 
 const Story: Meta<typeof WFOPageHeader> = {
     component: WFOPageHeader,
-    title: 'WFOPageTemplate/WFOPageHeader',
+    title: 'PageTemplate/WFOPageHeader',
 };
 export default Story;
 
