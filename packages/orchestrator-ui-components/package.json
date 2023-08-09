@@ -50,7 +50,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "storybook": "^7.2.1",
-        "tsup": "^7.1.0"
+        "tsup": "^7.2.0"
     },
     "type": "module",
     "main": "./dist/index.js",
