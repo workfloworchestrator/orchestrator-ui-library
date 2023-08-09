@@ -9,8 +9,8 @@ import {
     getSubscriptionsTabTypeFromString,
     getTableConfigFromLocalStorage,
     SortOrder,
-    SubscriptionsTabs,
-    SubscriptionsTabType,
+    WFOSubscriptionsTabs,
+    WFOSubscriptionsTabType,
     useDataDisplayParams,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
@@ -38,7 +38,7 @@ export default function SubscriptionsPage() {
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, SubscriptionsTabType.ACTIVE),
+        withDefault(StringParam, WFOSubscriptionsTabType.ACTIVE),
     );
 
     const sortOrder = getSortDirectionFromString(
@@ -52,7 +52,7 @@ export default function SubscriptionsPage() {
     }
 
     const handleChangeSubscriptionsTab = (
-        updatedSubscriptionsTab: SubscriptionsTabType,
+        updatedSubscriptionsTab: WFOSubscriptionsTabType,
     ) => {
         setActiveTab(updatedSubscriptionsTab);
         setDataDisplayParam('pageIndex', 0);
@@ -69,7 +69,7 @@ export default function SubscriptionsPage() {
             <EuiPageHeader pageTitle="Subscriptions" />
             <EuiSpacer size="m" />
 
-            <SubscriptionsTabs
+            <WFOSubscriptionsTabs
                 tabs={defaultSubscriptionsTabs}
                 selectedSubscriptionsTab={selectedSubscriptionsTab}
                 onChangeSubscriptionsTab={handleChangeSubscriptionsTab}

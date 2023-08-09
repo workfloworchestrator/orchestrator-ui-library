@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-    CheckmarkCircleFill,
+    WFOCheckmarkCircleFill,
     DataDisplayParams,
-    DataSorting,
+    WFODataSorting,
     DEFAULT_PAGE_SIZES,
     FilterQuery,
     getDataSortHandler,
@@ -10,16 +10,16 @@ import {
     getFirstUuidPart,
     getPageChangeHandler,
     getTypedFieldFromObject,
-    Loading,
-    MinusCircleOutline,
+    WFOLoading,
+    WFOMinusCircleOutline,
     parseDate,
     parseDateToLocaleString,
-    PlusCircleFill,
+    WFOPlusCircleFill,
     SortOrder,
     TableColumnKeys,
-    TableColumns,
-    TableControlColumnConfig,
-    TableWithFilter,
+    WFOTableColumns,
+    WFOTableControlColumnConfig,
+    WFOTableWithFilter,
     useOrchestratorTheme,
     useQueryWithGraphql,
     WFOStatusBadge,
@@ -82,7 +82,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const { theme } = useOrchestratorTheme();
 
-    const tableColumns: TableColumns<Subscription> = {
+    const tableColumns: WFOTableColumns<Subscription> = {
         subscriptionId: {
             field: SUBSCRIPTION_ID,
             name: t('id'),
@@ -111,9 +111,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             width: '110',
             render: (value) =>
                 value ? (
-                    <CheckmarkCircleFill color={theme.colors.primary} />
+                    <WFOCheckmarkCircleFill color={theme.colors.primary} />
                 ) : (
-                    <MinusCircleOutline color={theme.colors.mediumShade} />
+                    <WFOMinusCircleOutline color={theme.colors.mediumShade} />
                 ),
         },
         productName: {
@@ -143,13 +143,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const leadingControlColumns: TableControlColumnConfig<Subscription> = {
+    const leadingControlColumns: WFOTableControlColumnConfig<Subscription> = {
         inlineSubscriptionDetails: {
             field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
             width: '40',
             render: () => (
                 <EuiFlexItem>
-                    <PlusCircleFill color={theme.colors.mediumShade} />
+                    <WFOPlusCircleFill color={theme.colors.mediumShade} />
                 </EuiFlexItem>
             ),
         },
@@ -175,10 +175,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     }
 
     if (!data) {
-        return <Loading />;
+        return <WFOLoading />;
     }
 
-    const dataSorting: DataSorting<Subscription> = {
+    const dataSorting: WFODataSorting<Subscription> = {
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -191,7 +191,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     };
 
     return (
-        <TableWithFilter<Subscription>
+        <WFOTableWithFilter<Subscription>
             esQueryString={dataDisplayParams.esQueryString}
             onUpdateEsQueryString={getEsQueryStringHandler<Subscription>(
                 setDataDisplayParam,

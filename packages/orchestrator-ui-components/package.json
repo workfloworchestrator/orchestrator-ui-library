@@ -7,7 +7,9 @@
         "build": "tsup src/index.ts --format esm --dts",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
-        "dev": "yarn build -- --watch"
+        "dev": "yarn build -- --watch",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@graphql-typed-document-node/core": "3.2.0",
@@ -26,8 +28,16 @@
         "react-query": "3.39.3"
     },
     "devDependencies": {
-        "tsup": "^7.1.0",
         "@orchestrator-ui/eslint-config-custom": "*",
+        "@orchestrator-ui/jest-config": "*",
+        "@storybook/addon-essentials": "^7.2.1",
+        "@storybook/addon-interactions": "^7.2.1",
+        "@storybook/addon-links": "^7.2.1",
+        "@storybook/addon-onboarding": "^1.0.8",
+        "@storybook/blocks": "^7.2.1",
+        "@storybook/nextjs": "^7.2.1",
+        "@storybook/react": "^7.2.1",
+        "@storybook/testing-library": "^0.2.0",
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^14.0.0",
         "@testing-library/react-hooks": "^8.0.1",
@@ -37,9 +47,13 @@
         "esbuild-jest": "^0.5.0",
         "jest": "^27.4.7",
         "jest-watch-typeahead": "^1.0.0",
-        "@orchestrator-ui/jest-config": "*"
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "storybook": "^7.2.1",
+        "tsup": "^7.1.0"
     },
     "type": "module",
     "main": "./dist/index.js",
+    "browser": "./dist/index.js",
     "types": "./dist/index.d.ts"
 }
