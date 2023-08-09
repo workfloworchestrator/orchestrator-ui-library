@@ -12,12 +12,19 @@ import {
     TableColumnKeys,
     WFOTableColumns,
     WFOTableWithFilter,
+    getProcessListTabTypeFromString,
+    defaultProcessListTabs,
+    WFOProcessListTabType,
+    WFOFilterTabs,
 } from '../../components';
 import { ProcessDefinition, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
 import { Pagination } from '@elastic/eui/src/components';
 import { WFOProcessesListSubscriptionsCell } from './WFOProcessesListSubscriptionsCell';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { useRouter } from 'next/router';
+import { EuiSpacer } from '@elastic/eui';
 
 const defaultHiddenColumns: TableColumnKeys<ProcessDefinition> = [
     'product',
@@ -28,6 +35,13 @@ const defaultHiddenColumns: TableColumnKeys<ProcessDefinition> = [
 ];
 
 export const WFOProcessListPage = () => {
+    const router = useRouter();
+
+    const [activeTab, setActiveTab] = useQueryParam(
+        'activeTab',
+        withDefault(StringParam, WFOProcessListTabType.ACTIVE),
+    );
+
     const initialPageSize =
         getTableConfigFromLocalStorage(
             ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
@@ -41,6 +55,21 @@ export const WFOProcessListPage = () => {
                 order: SortOrder.DESC,
             },
         });
+
+    const selectedProcessListTab = getProcessListTabTypeFromString(activeTab);
+
+    const handleChangeProcessListTab = (
+        updatedProcessListTab: WFOProcessListTabType,
+    ) => {
+        setActiveTab(updatedProcessListTab);
+        setDataDisplayParam('pageIndex', 0);
+    };
+
+    const alwaysOnFilters = defaultProcessListTabs.find(
+        ({ id }) => id === selectedProcessListTab,
+    )?.alwaysOnFilters;
+    // Todo: implement this in the call to data endpoint
+    console.log({ alwaysOnFilters });
 
     const tableColumns: WFOTableColumns<ProcessDefinition> = {
         workflowName: {
@@ -119,6 +148,11 @@ export const WFOProcessListPage = () => {
         return <WFOLoading />;
     }
 
+    if (!selectedProcessListTab) {
+        router.replace('/processes');
+        return null;
+    }
+
     const dataSorting: WFODataSorting<ProcessDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? 'lastModified',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
@@ -134,24 +168,33 @@ export const WFOProcessListPage = () => {
     };
 
     return (
-        <WFOTableWithFilter
-            data={data.processes.page}
-            tableColumns={tableColumns}
-            dataSorting={dataSorting}
-            pagination={pagination}
-            isLoading={isFetching}
-            defaultHiddenColumns={defaultHiddenColumns}
-            localStorageKey={ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY}
-            onUpdateEsQueryString={getEsQueryStringHandler<ProcessDefinition>(
-                setDataDisplayParam,
-            )}
-            onUpdatePage={getPageChangeHandler<ProcessDefinition>(
-                setDataDisplayParam,
-            )}
-            onUpdateDataSort={getDataSortHandler<ProcessDefinition>(
-                dataDisplayParams,
-                setDataDisplayParam,
-            )}
-        />
+        <>
+            <WFOFilterTabs
+                tabs={defaultProcessListTabs}
+                selectedSubscriptionsTab={selectedProcessListTab}
+                onChangeSubscriptionsTab={handleChangeProcessListTab}
+            />
+            <EuiSpacer size="xxl" />
+
+            <WFOTableWithFilter
+                data={data.processes.page}
+                tableColumns={tableColumns}
+                dataSorting={dataSorting}
+                pagination={pagination}
+                isLoading={isFetching}
+                defaultHiddenColumns={defaultHiddenColumns}
+                localStorageKey={ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY}
+                onUpdateEsQueryString={getEsQueryStringHandler<ProcessDefinition>(
+                    setDataDisplayParam,
+                )}
+                onUpdatePage={getPageChangeHandler<ProcessDefinition>(
+                    setDataDisplayParam,
+                )}
+                onUpdateDataSort={getDataSortHandler<ProcessDefinition>(
+                    dataDisplayParams,
+                    setDataDisplayParam,
+                )}
+            />
+        </>
     );
 };

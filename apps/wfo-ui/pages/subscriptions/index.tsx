@@ -9,7 +9,7 @@ import {
     getSubscriptionsTabTypeFromString,
     getTableConfigFromLocalStorage,
     SortOrder,
-    WFOSubscriptionsTabs,
+    WFOFilterTabs,
     WFOSubscriptionsTabType,
     useDataDisplayParams,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -69,7 +69,7 @@ export default function SubscriptionsPage() {
             <EuiPageHeader pageTitle="Subscriptions" />
             <EuiSpacer size="m" />
 
-            <WFOSubscriptionsTabs
+            <WFOFilterTabs
                 tabs={defaultSubscriptionsTabs}
                 selectedSubscriptionsTab={selectedSubscriptionsTab}
                 onChangeSubscriptionsTab={handleChangeSubscriptionsTab}

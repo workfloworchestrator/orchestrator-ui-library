@@ -1,5 +1,5 @@
 import { getSubscriptionsTabTypeFromString } from './getSubscriptionsTabTypeFromString';
-import { WFOSubscriptionsTabType } from './WFOSubscriptionsTabs';
+import { WFOSubscriptionsTabType } from './WFOFilterTabs';
 
 describe('getSubscriptionsTabTypeFromString', () => {
     it('returns SubscriptionsTabType.ACTIVE', () => {
