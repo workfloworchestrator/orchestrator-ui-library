@@ -3,7 +3,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
 import { Process, ProductBase } from '../../types';
 
-interface WFOSubscription {
+interface Subscription {
     name: string;
     subscription_id: string;
     description: string;
@@ -18,7 +18,7 @@ interface WFOSubscription {
 }
 
 export interface WFOListItemStartPageProps {
-    item: WFOSubscription | Process;
+    item: Subscription | Process;
     type: string;
 }
 
@@ -27,9 +27,9 @@ export const WFOListItemStartPage: FC<WFOListItemStartPageProps> = ({
     type,
 }) => {
     const [hoverState, setHoverState] = useState(false);
-    const renderItem = (item: WFOSubscription | Process, type: string) => {
+    const renderItem = (item: Subscription | Process, type: string) => {
         if (type === 'subscription') {
-            item = item as WFOSubscription;
+            item = item as Subscription;
             return (
                 <EuiFlexItem>
                     <EuiTextColor
