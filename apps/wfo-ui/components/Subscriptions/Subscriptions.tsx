@@ -62,7 +62,7 @@ export type Subscription = {
 };
 
 export type SubscriptionsProps = {
-    alwaysOnFilters?: FilterQuery[];
+    alwaysOnFilters?: FilterQuery<Subscription>[];
     dataDisplayParams: DataDisplayParams<Subscription>;
     setDataDisplayParam: <
         DisplayParamKey extends keyof DataDisplayParams<Subscription>,

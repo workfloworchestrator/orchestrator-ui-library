@@ -13,9 +13,8 @@ import {
     WFOTableColumns,
     WFOTableWithFilter,
     getProcessListTabTypeFromString,
-    defaultProcessListTabs,
-    WFOProcessListTabType,
     WFOFilterTabs,
+    WFOFilterTab,
 } from '../../components';
 import { ProcessDefinition, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -26,12 +25,44 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
 import { EuiSpacer } from '@elastic/eui';
 
+// Todo: Consider to move this out of this component
+export enum WFOProcessListTabType {
+    ACTIVE = 'ACTIVE',
+    COMPLETED = 'COMPLETED',
+}
+
 const defaultHiddenColumns: TableColumnKeys<ProcessDefinition> = [
     'product',
     'customer',
     'createdBy',
     'assignee',
     'id',
+];
+
+export const defaultProcessListTabs: WFOFilterTab<
+    WFOProcessListTabType,
+    ProcessDefinition
+>[] = [
+    {
+        id: WFOProcessListTabType.ACTIVE,
+        translationKey: 'active',
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'created-running-suspended-waiting-failed-resumed',
+            },
+        ],
+    },
+    {
+        id: WFOProcessListTabType.COMPLETED,
+        translationKey: 'completed',
+        alwaysOnFilters: [
+            {
+                field: 'status',
+                value: 'completed',
+            },
+        ],
+    },
 ];
 
 export const WFOProcessListPage = () => {
@@ -68,8 +99,6 @@ export const WFOProcessListPage = () => {
     const alwaysOnFilters = defaultProcessListTabs.find(
         ({ id }) => id === selectedProcessListTab,
     )?.alwaysOnFilters;
-    // Todo: implement this in the call to data endpoint
-    console.log({ alwaysOnFilters });
 
     const tableColumns: WFOTableColumns<ProcessDefinition> = {
         workflowName: {
@@ -132,13 +161,7 @@ export const WFOProcessListPage = () => {
             // sortBy: { field: 'lastModified', order: SortOrder.DESC },
             // @ts-ignore
             sortBy: { field: 'modified', order: SortOrder.DESC },
-            // Todo: this should be an always-on filter, see Subscriptions page
-            filterBy: [
-                {
-                    field: 'status',
-                    value: 'created-running-suspended-waiting-failed-resumed',
-                },
-            ],
+            filterBy: alwaysOnFilters,
         },
         'processList',
         true,

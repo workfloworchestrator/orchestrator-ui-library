@@ -1,5 +1,5 @@
 import { getSubscriptionsTabTypeFromString } from './getSubscriptionsTabTypeFromString';
-import { WFOSubscriptionsTabType } from './WFOFilterTabs';
+import { WFOSubscriptionsTabType } from 'wfo-ui/pages/subscriptions';
 
 describe('getSubscriptionsTabTypeFromString', () => {
     it('returns SubscriptionsTabType.ACTIVE', () => {
