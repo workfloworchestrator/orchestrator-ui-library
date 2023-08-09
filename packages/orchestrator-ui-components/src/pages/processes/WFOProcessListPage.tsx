@@ -1,17 +1,17 @@
 import React from 'react';
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    DataSorting,
+    WFODataSorting,
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     getDataSortHandler,
     getEsQueryStringHandler,
     getPageChangeHandler,
     getTableConfigFromLocalStorage,
-    Loading,
+    WFOLoading,
     TableColumnKeys,
-    TableColumns,
-    TableWithFilter,
+    WFOTableColumns,
+    WFOTableWithFilter,
 } from '../../components';
 import { ProcessDefinition, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -42,7 +42,7 @@ export const WFOProcessListPage = () => {
             },
         });
 
-    const tableColumns: TableColumns<ProcessDefinition> = {
+    const tableColumns: WFOTableColumns<ProcessDefinition> = {
         workflowName: {
             field: 'workflowName',
             name: 'Workflow Name',
@@ -116,10 +116,10 @@ export const WFOProcessListPage = () => {
     );
 
     if (!data) {
-        return <Loading />;
+        return <WFOLoading />;
     }
 
-    const dataSorting: DataSorting<ProcessDefinition> = {
+    const dataSorting: WFODataSorting<ProcessDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? 'lastModified',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -134,7 +134,7 @@ export const WFOProcessListPage = () => {
     };
 
     return (
-        <TableWithFilter
+        <WFOTableWithFilter
             data={data.processes.page}
             tableColumns={tableColumns}
             dataSorting={dataSorting}
