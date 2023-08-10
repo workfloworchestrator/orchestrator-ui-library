@@ -10,16 +10,14 @@ import {
     SortOrder,
     WFOFilterTabs,
     useDataDisplayParams,
+    defaultSubscriptionsTabs,
+    SubscriptionListItem,
+    WFOSubscriptionsTabType,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import {
-    defaultSubscriptionsTabs,
-    SubscriptionListItem,
-    WFOSubscriptionsTabType,
-} from '@orchestrator-ui/orchestrator-ui-components/src';
 
 export default function SubscriptionsPage() {
     const router = useRouter();

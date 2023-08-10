@@ -16,6 +16,7 @@ import {
     parseDateToLocaleString,
     WFOPlusCircleFill,
     SortOrder,
+    SubscriptionListItem,
     TableColumnKeys,
     WFOTableColumns,
     WFOTableControlColumnConfig,
@@ -44,7 +45,6 @@ import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import { SubscriptionsTableQuery } from '../../__generated__/graphql';
 import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
-import { SubscriptionListItem } from '@orchestrator-ui/orchestrator-ui-components/src';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
