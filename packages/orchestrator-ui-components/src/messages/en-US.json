@@ -41,6 +41,13 @@
             "type": "Type",
             "description": "Description",
             "resourceId": "Resource ID"
+        },
+        "workflows": {
+            "name": "Name",
+            "description": "Description",
+            "target": "Target",
+            "productTags": "Product Tags",
+            "createdAt": "Created"
         }
     },
     "processes": {

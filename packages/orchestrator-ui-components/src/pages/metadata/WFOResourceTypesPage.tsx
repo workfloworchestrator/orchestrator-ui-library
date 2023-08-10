@@ -78,9 +78,6 @@ export const WFOResourceTypesPage = () => {
         true,
     );
 
-    console.log("DATA resource types", data)
-
-
     const dataSorting: WFODataSorting<ResourceTypeDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,

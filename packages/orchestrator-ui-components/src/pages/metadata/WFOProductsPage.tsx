@@ -129,8 +129,6 @@ export const WFOProductsPage = () => {
         'products',
         true,
     );
-    console.log("DATA products", data)
-
     const totalItems = data?.products.pageInfo.totalItems;
 
     const pagination: Pagination = {

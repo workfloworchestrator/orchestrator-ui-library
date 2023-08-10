@@ -1,7 +1,6 @@
 import React from 'react';
+import { WFOWorkflowsPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-const WorkflowsPageContent = () => <div>METADATA WORKFLOWS</div>;
-
-export const WorkflowsPage = () => <WorkflowsPageContent />;
+export const WorkflowsPage = () => <WFOWorkflowsPage />;
 
 export default WorkflowsPage;

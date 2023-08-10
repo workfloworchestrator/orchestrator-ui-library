@@ -172,6 +172,14 @@ export type Subscription = {
     description: string;
 };
 
+export interface WorkflowDefinition {
+    name: string;
+    description: string;
+    target: string;
+    productTags: string[];
+    createdAt: string;
+}
+
 export type Field<Type> = keyof Type;
 
 //// Utility types
@@ -207,10 +215,7 @@ type GraphQLPageInfo = {
 };
 
 export interface ProductDefinitionsResult {
-    products: {
-        page: ProductDefinition[];
-        pageInfo: GraphQLPageInfo;
-    };
+    products: GraphQlResultPage<ProductDefinition>;
 }
 
 export interface ProductBlockDefinitionsResult {
@@ -223,6 +228,10 @@ export interface ResourceTypeDefinitionsResult {
 
 export interface ProcessesDefinitionsResult {
     processes: GraphQlResultPage<Process>;
+}
+
+export interface WorkflowDefinitionsResult {
+    workflows: GraphQlResultPage<WorkflowDefinition>;
 }
 
 interface GraphQlResultPage<T> {
