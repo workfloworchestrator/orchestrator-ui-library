@@ -53,6 +53,7 @@ export const WFOFlushSettings: FunctionComponent = () => {
                     Cache for cache key &quot;{cacheKey}&quot; flushed
                     successfully
                 </p>,
+                'Cache cleared',
             );
         });
     };

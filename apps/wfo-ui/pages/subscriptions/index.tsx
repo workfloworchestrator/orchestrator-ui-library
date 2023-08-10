@@ -20,13 +20,25 @@ import {
 } from '../../components/Subscriptions/Subscriptions';
 import NoSSR from 'react-no-ssr';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
+import {
+    useToastMessage,
+    ToastTypes,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 export default function SubscriptionsPage() {
+    const toastMessage = useToastMessage();
     const router = useRouter();
+    let initialPageSize = DEFAULT_PAGE_SIZE;
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
-            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    try {
+        initialPageSize =
+            getTableConfigFromLocalStorage(
+                SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+            )?.selectedPageSize || initialPageSize;
+    } catch {
+        toastMessage.addToast(ToastTypes.ERROR, 'TEXT', 'TITLE');
+    }
+
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<Subscription>({
             pageSize: initialPageSize,

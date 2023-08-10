@@ -15,6 +15,8 @@ import {
     getEsQueryStringHandler,
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
+import { useToastMessage } from '../../hooks';
+import { ToastTypes } from '../../contexts';
 
 import type { ResourceTypeDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -34,11 +36,16 @@ export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
 
 export const WFOResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
-
-    const initialPageSize =
-        getTableConfigFromLocalStorage(
-            METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-        )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const toastMessage = useToastMessage();
+    let initialPageSize = DEFAULT_PAGE_SIZE;
+    try {
+        initialPageSize =
+            getTableConfigFromLocalStorage(
+                METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+            )?.selectedPageSize || initialPageSize;
+    } catch {
+        toastMessage.addToast(ToastTypes.ERROR, 'TEXT', 'TITLE');
+    }
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ResourceTypeDefinition>({

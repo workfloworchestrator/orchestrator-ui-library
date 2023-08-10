@@ -23,6 +23,8 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 import { parseDateToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
+import { useToastMessage } from '../../hooks';
+import { ToastTypes } from '../../contexts';
 
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 
@@ -45,11 +47,17 @@ const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
 
 export const WFOProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
+    const toastMessage = useToastMessage();
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(
-            METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
-        )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    let initialPageSize = DEFAULT_PAGE_SIZE;
+    try {
+        initialPageSize =
+            getTableConfigFromLocalStorage(
+                METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+            )?.selectedPageSize || initialPageSize;
+    } catch {
+        toastMessage.addToast(ToastTypes.ERROR, 'TEXT', 'TITLE');
+    }
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductBlockDefinition>({

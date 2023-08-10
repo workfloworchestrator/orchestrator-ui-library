@@ -73,20 +73,20 @@ function CustomApp({ Component, pageProps }: AppProps) {
                             client={queryClient}
                             contextSharing={true}
                         >
-                            <ToastsContextProvider>
-                                <WFOPageTemplate getAppLogo={getAppLogo}>
-                                    <QueryParamProvider
-                                        adapter={NextAdapter}
-                                        options={{
-                                            removeDefaultsFromUrl: false,
-                                            enableBatching: true,
-                                        }}
-                                    >
+                            <WFOPageTemplate getAppLogo={getAppLogo}>
+                                <QueryParamProvider
+                                    adapter={NextAdapter}
+                                    options={{
+                                        removeDefaultsFromUrl: false,
+                                        enableBatching: true,
+                                    }}
+                                >
+                                    <ToastsContextProvider>
                                         <WFOBreadcrumbs />
                                         <Component {...pageProps} />
-                                    </QueryParamProvider>
-                                </WFOPageTemplate>
-                            </ToastsContextProvider>
+                                    </ToastsContextProvider>
+                                </QueryParamProvider>
+                            </WFOPageTemplate>
                             <ReactQueryDevtools initialIsOpen={false} />
                         </QueryClientProvider>
                     </OrchestratorConfigProvider>

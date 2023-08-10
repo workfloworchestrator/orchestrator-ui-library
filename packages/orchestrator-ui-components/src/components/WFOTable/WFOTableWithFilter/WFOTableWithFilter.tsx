@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     Criteria,
     EuiButton,
@@ -15,6 +15,7 @@ import {
     WFOTableControlColumnConfig,
     WFOTableDataColumnConfig,
 } from '../utils/columns';
+
 import {
     ColumnConfig,
     TableConfig,
@@ -22,12 +23,16 @@ import {
 } from '../WFOTableSettingsModal';
 import { WFOSearchField } from '../../WFOSearchBar';
 import { WFOTable } from '../WFOTable';
-import { DEFAULT_PAGE_SIZES } from '../utils/constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../utils/constants';
+import { ToastContext } from '../../../contexts';
+import { ToastTypes } from '../../../contexts';
+
 import {
     clearTableConfigFromLocalStorage,
     getTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
+import type { LocalStorageTableConfig } from '../utils/tableConfigPersistence';
 
 export type WFOTableWithFilterProps<T> = {
     data: T[];
@@ -60,17 +65,34 @@ export const WFOTableWithFilter = <T,>({
     onUpdatePage,
     onUpdateDataSort,
 }: WFOTableWithFilterProps<T>) => {
-    const defaultPageSize = pagination.pageSize;
-    const tableConfigFromLocalStorage =
-        getTableConfigFromLocalStorage<T>(localStorageKey);
-
-    const initialHiddenColumns =
-        tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
-
+    const toastMessage = useContext(ToastContext);
     const [hiddenColumns, setHiddenColumns] =
-        useState<TableColumnKeys<T>>(initialHiddenColumns);
-
+        useState<TableColumnKeys<T>>(defaultHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+    const defaultTableConfig: LocalStorageTableConfig<T> = {
+        hiddenColumns: defaultHiddenColumns,
+        selectedPageSize: DEFAULT_PAGE_SIZE,
+    };
+    const defaultPageSize = pagination.pageSize;
+
+    let tableConfigFromLocalStorage;
+
+    try {
+        tableConfigFromLocalStorage =
+            getTableConfigFromLocalStorage<T>(localStorageKey);
+    } catch {
+        toastMessage.addToast(ToastTypes.ERROR, 'ERROR SAVING', 'SAVING ERROR');
+    }
+
+    const tableConfig: LocalStorageTableConfig<T> =
+        tableConfigFromLocalStorage || defaultTableConfig;
+
+    useEffect(() => {
+        if (tableConfig && tableConfig.hiddenColumns) {
+            setHiddenColumns(tableConfig.hiddenColumns);
+        }
+    }, [tableConfig]);
 
     const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
         {
@@ -96,10 +118,12 @@ export const WFOTableWithFilter = <T,>({
             .map((hiddenColumn) => hiddenColumn.field);
         setHiddenColumns(updatedHiddenColumns);
         setShowSettingsModal(false);
+
         setTableConfigToLocalStorage(localStorageKey, {
             hiddenColumns: updatedHiddenColumns,
             selectedPageSize: updatedTableConfig.selectedPageSize,
         });
+
         onUpdatePage({
             index: 0,
             size: updatedTableConfig.selectedPageSize,
@@ -152,7 +176,7 @@ export const WFOTableWithFilter = <T,>({
                     tableConfig={{
                         columns: tableSettingsColumns,
                         selectedPageSize:
-                            tableConfigFromLocalStorage?.selectedPageSize ??
+                            tableConfig?.selectedPageSize ??
                             pagination.pageSize,
                     }}
                     pageSizeOptions={

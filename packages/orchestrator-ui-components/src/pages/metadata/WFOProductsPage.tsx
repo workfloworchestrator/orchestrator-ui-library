@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
-
+import NoSSR from 'react-no-ssr';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
@@ -19,6 +19,8 @@ import {
     getEsQueryStringHandler,
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
+import { useToastMessage } from '../../hooks';
+import { ToastTypes } from '../../contexts';
 
 import type { ProductDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -42,13 +44,9 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 export const WFOProductsPage = () => {
     const t = useTranslations('metadata.products');
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY)
-            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
-
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductDefinition>({
-            pageSize: initialPageSize,
+            pageSize: 10,
             sortBy: {
                 field: PRODUCT_FIELD_NAME,
                 order: SortOrder.ASC,

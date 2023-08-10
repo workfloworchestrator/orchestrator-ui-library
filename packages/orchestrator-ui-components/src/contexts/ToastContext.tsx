@@ -5,7 +5,11 @@ import { createContext, useReducer, FC } from 'react';
 import type { ReactElement, Reducer } from 'react';
 
 export interface ToastContext {
-    addToast: (type: ToastTypes, text: ReactElement) => void;
+    addToast: (
+        type: ToastTypes,
+        text: ReactElement | string,
+        title: string,
+    ) => void;
     removeToast: (id: string) => void;
 }
 
@@ -62,22 +66,8 @@ const toastsReducer = (
     }
 };
 
-/**
-id: string;
-text?: ReactChild;
-toastLifeTimeMs?: number;
-  title?: ReactNode;
-color?: ToastColor;
-iconType?: IconType;
-onClose?: () => void;
-className?: string;
-'aria-label'?: string;
-'data-test-subj'?: string;
-css?: Interpolation<Theme>;
- */
-
 interface ToastsContextProviderProps {
-    children: ReactElement;
+    children: ReactElement[];
 }
 
 export const ToastsContextProvider: FC<ToastsContextProviderProps> = ({
@@ -86,21 +76,44 @@ export const ToastsContextProvider: FC<ToastsContextProviderProps> = ({
     const initialState: ToastsState = {
         toasts: [],
     };
+
     const [state, dispatch] = useReducer<
         Reducer<ToastsState, ToastAddAction | ToastRemoveAction>
     >(toastsReducer, initialState);
 
-    const addToast = (type: ToastTypes, text: ReactElement) => {
-        console.log('ADDING A MESSAGEE');
+    const getTypeProps = (type: ToastTypes): Partial<Toast> => {
+        switch (type) {
+            case ToastTypes.ERROR:
+                return {
+                    color: 'success',
+                    iconType: 'check',
+                };
+            case ToastTypes.SUCCESS:
+                return {
+                    color: 'success',
+                    iconType: 'check',
+                };
+        }
+    };
+
+    const addToast = (
+        type: ToastTypes,
+        text: ReactElement | string,
+        title: string,
+    ) => {
+        const typeProps = getTypeProps(type);
         const id = Math.floor(Math.random() * 10000000).toString();
         dispatch({
             type: ToastActionTypes.ADD,
             payload: {
                 id,
                 text,
+                title,
+                ...typeProps,
             },
         });
     };
+
     const removeToast = (id: string) => {
         dispatch({
             type: ToastActionTypes.REMOVE,
