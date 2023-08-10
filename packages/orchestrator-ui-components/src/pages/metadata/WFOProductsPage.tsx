@@ -126,11 +126,13 @@ export const WFOProductsPage = () => {
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy: dataDisplayParams.sortBy,
         },
-        'productBlocks',
+        'products',
         true,
     );
+    console.log("DATA products", data)
 
     const totalItems = data?.products.pageInfo.totalItems;
+
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,

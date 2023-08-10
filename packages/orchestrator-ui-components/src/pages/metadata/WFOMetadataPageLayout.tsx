@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { EuiSpacer, EuiPageHeader, EuiTab, EuiTabs } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
+import {log} from "next/dist/server/typescript/utils";
 
 interface MetadataLayoutProps {
     children: ReactNode;
@@ -48,6 +49,7 @@ export const WFOMetadataPageLayout = ({
 
     return (
         <>
+            {console.log("Layout")}
             <EuiSpacer />
 
             <EuiPageHeader pageTitle="Metadata" />
