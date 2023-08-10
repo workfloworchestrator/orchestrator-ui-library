@@ -12,7 +12,6 @@ import {
     TableColumnKeys,
     WFOTableColumns,
     WFOTableWithFilter,
-    getProcessListTabTypeFromString,
     WFOFilterTabs,
     WFOFilterTab,
 } from '../../components';
@@ -39,6 +38,7 @@ const defaultHiddenColumns: TableColumnKeys<ProcessDefinition> = [
     'id',
 ];
 
+// Todo move to separate file
 export const defaultProcessListTabs: WFOFilterTab<
     WFOProcessListTabType,
     ProcessDefinition
@@ -64,6 +64,25 @@ export const defaultProcessListTabs: WFOFilterTab<
         ],
     },
 ];
+
+// Todo move to separate file
+export const getProcessListTabTypeFromString = (
+    tabId?: string,
+): WFOProcessListTabType | undefined => {
+    if (!tabId) {
+        return undefined;
+    }
+
+    switch (tabId.toUpperCase()) {
+        case WFOProcessListTabType.ACTIVE.toString():
+            return WFOProcessListTabType.ACTIVE;
+        case WFOProcessListTabType.COMPLETED.toString():
+            return WFOProcessListTabType.COMPLETED;
+
+        default:
+            return undefined;
+    }
+};
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
