@@ -1,7 +1,4 @@
-import { WFOProcessListTabType } from '../../pages';
-// Todo: This circular dependency will be resolved when moving subscriptions page to lib
-// https://github.com/workfloworchestrator/orchestrator-ui/issues/149
-import { WFOSubscriptionsTabType } from 'wfo-ui/pages/subscriptions';
+import { WFOProcessListTabType, WFOSubscriptionsTabType } from '../../pages';
 
 export const getSubscriptionsTabTypeFromString = (
     tabId?: string,

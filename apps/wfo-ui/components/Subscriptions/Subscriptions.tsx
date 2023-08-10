@@ -44,31 +44,22 @@ import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import { SubscriptionsTableQuery } from '../../__generated__/graphql';
 import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
+import { SubscriptionListItem } from '@orchestrator-ui/orchestrator-ui-components/src';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
-const defaultHiddenColumns: TableColumnKeys<Subscription> = [PRODUCT_NAME];
-
-export type Subscription = {
-    subscriptionId: string;
-    description: string;
-    status: string;
-    insync: boolean;
-    startDate: Date | null;
-    endDate: Date | null;
-    productName: string;
-    tag: string | null;
-    note: string | null;
-};
+const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
+    PRODUCT_NAME,
+];
 
 export type SubscriptionsProps = {
-    alwaysOnFilters?: FilterQuery<Subscription>[];
-    dataDisplayParams: DataDisplayParams<Subscription>;
+    alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
+    dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
     setDataDisplayParam: <
-        DisplayParamKey extends keyof DataDisplayParams<Subscription>,
+        DisplayParamKey extends keyof DataDisplayParams<SubscriptionListItem>,
     >(
         prop: DisplayParamKey,
-        value: DataDisplayParams<Subscription>[DisplayParamKey],
+        value: DataDisplayParams<SubscriptionListItem>[DisplayParamKey],
     ) => void;
 };
 
@@ -82,7 +73,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const { theme } = useOrchestratorTheme();
 
-    const tableColumns: WFOTableColumns<Subscription> = {
+    const tableColumns: WFOTableColumns<SubscriptionListItem> = {
         subscriptionId: {
             field: SUBSCRIPTION_ID,
             name: t('id'),
@@ -143,17 +134,18 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         },
     };
 
-    const leadingControlColumns: WFOTableControlColumnConfig<Subscription> = {
-        inlineSubscriptionDetails: {
-            field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
-            width: '40',
-            render: () => (
-                <EuiFlexItem>
-                    <WFOPlusCircleFill color={theme.colors.mediumShade} />
-                </EuiFlexItem>
-            ),
-        },
-    };
+    const leadingControlColumns: WFOTableControlColumnConfig<SubscriptionListItem> =
+        {
+            inlineSubscriptionDetails: {
+                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
+                width: '40',
+                render: () => (
+                    <EuiFlexItem>
+                        <WFOPlusCircleFill color={theme.colors.mediumShade} />
+                    </EuiFlexItem>
+                ),
+            },
+        };
 
     const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
     const { data, isFetching } = useQueryWithGraphql(
@@ -178,7 +170,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         return <WFOLoading />;
     }
 
-    const dataSorting: WFODataSorting<Subscription> = {
+    const dataSorting: WFODataSorting<SubscriptionListItem> = {
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -191,9 +183,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     };
 
     return (
-        <WFOTableWithFilter<Subscription>
+        <WFOTableWithFilter<SubscriptionListItem>
             esQueryString={dataDisplayParams.esQueryString}
-            onUpdateEsQueryString={getEsQueryStringHandler<Subscription>(
+            onUpdateEsQueryString={getEsQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
             data={mapApiResponseToSubscriptionTableData(data)}
@@ -204,10 +196,10 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            onUpdatePage={getPageChangeHandler<Subscription>(
+            onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            onUpdateDataSort={getDataSortHandler<Subscription>(
+            onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 dataDisplayParams,
                 setDataDisplayParam,
             )}
@@ -217,7 +209,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
 function mapApiResponseToSubscriptionTableData(
     graphqlResponse: SubscriptionsTableQuery,
-): Subscription[] {
+): SubscriptionListItem[] {
     return graphqlResponse.subscriptions.page.map((subscription) => {
         const {
             description,
