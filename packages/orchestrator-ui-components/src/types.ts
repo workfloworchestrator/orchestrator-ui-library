@@ -89,7 +89,7 @@ export type SubscriptionDetailBase = {
     product: ProductBase;
     fixedInputs: FixedInputsBase;
     customer?: CustomerBase;
-    productBlocks: ProductBlockBase[]; // todo: will be renamed in productBlockInstance
+    productBlocks: ProductBlockBase[];
 
     externalServices?: ExternalServiceBase[];
 };
@@ -104,7 +104,7 @@ export interface TreeBlock extends ProductBlockBase {
 export interface ItemsList {
     type: string;
     title: string;
-    items: Process[];
+    items: ProcessFromRestApi[];
     buttonName: string;
 }
 
@@ -115,7 +115,9 @@ export interface TotalStat {
     color: keyof _EuiThemeColorsMode;
 }
 
-export interface Process {
+// Todo: Temporary renamed this type, will be fixed in:
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/216
+export interface ProcessFromRestApi {
     pid: string;
     workflow: string;
     assignee: string;
@@ -141,7 +143,7 @@ export interface ProductDefinition {
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
 
-// Todo: this one is incomplete
+// Todo: Some props are not implemented in backend yet
 // Todo rename, this is not a Definition --> Process
 export type ProcessDefinition = {
     workflowName: string;
@@ -150,15 +152,15 @@ export type ProcessDefinition = {
     // target: string;
     product: string;
     customer: string;
-    // abbrev: string; // currently not in backend, not sure if it will be added
+    // abbrev: string;
     subscriptions: {
         page: Pick<Subscription, 'subscriptionId' | 'description'>[];
     };
     createdBy: string;
     assignee: string;
     id: string;
-    started: string; // DateTime
-    lastModified: string; // DateTime
+    started: string;
+    lastModified: string;
 };
 
 // Todo: this will replace the generated Subscription
