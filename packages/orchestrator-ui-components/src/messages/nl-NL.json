@@ -41,6 +41,12 @@
             "resourceId": "Resource ID"
         }
     },
+    "processes": {
+        "tabs": {
+            "active": "Actief",
+            "completed": "Voltooid"
+        }
+    },
     "subscriptions": {
         "tabs": {
             "active": "Actief",

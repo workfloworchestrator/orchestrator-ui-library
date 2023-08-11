@@ -43,6 +43,12 @@
             "resourceId": "Resource ID"
         }
     },
+    "processes": {
+        "tabs": {
+            "active": "Active",
+            "completed": "Completed"
+        }
+    },
     "subscriptions": {
         "tabs": {
             "active": "Active",

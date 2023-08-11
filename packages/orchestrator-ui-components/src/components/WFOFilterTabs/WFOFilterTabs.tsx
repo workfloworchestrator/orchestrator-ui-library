@@ -16,16 +16,17 @@ export type WFOFilterTab<TabType, DataType> = {
 export type WFOFilterTabsProps<TabType, DataType> = {
     tabs: WFOFilterTab<TabType, DataType>[];
     selectedSubscriptionsTab: TabType;
+    translationNamespace: string;
     onChangeSubscriptionsTab: (updatedSubscriptionsTab: TabType) => void;
 };
 
 export const WFOFilterTabs = <TabType extends string, DataType>({
     tabs,
     selectedSubscriptionsTab,
+    translationNamespace,
     onChangeSubscriptionsTab,
 }: WFOFilterTabsProps<TabType, DataType>) => {
-    // Todo, introduce a prop to pass the translation key
-    const t = useTranslations('subscriptions.tabs');
+    const t = useTranslations(translationNamespace);
     return (
         <EuiTabs>
             {tabs.map(({ id, translationKey: name }) => (
