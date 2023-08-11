@@ -28,9 +28,11 @@ import {
     defaultHiddenColumnsActiveProcesses,
     defaultHiddenColumnsCompletedProcesses,
 } from './tableConfig';
+import { useTranslations } from 'next-intl';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
+    const t = useTranslations('processes.index'); // todo
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
@@ -67,28 +69,28 @@ export const WFOProcessListPage = () => {
     const tableColumns: WFOTableColumns<ProcessDefinition> = {
         workflowName: {
             field: 'workflowName',
-            name: 'Workflow Name',
+            name: t('workflowName'),
         },
         lastStep: {
             field: 'lastStep',
-            name: 'Last Step',
+            name: t('lastStep'),
         },
 
         status: {
             field: 'status',
-            name: 'Status',
+            name: t('status'),
         },
         product: {
             field: 'product',
-            name: 'Product',
+            name: t('product'),
         },
         customer: {
             field: 'customer',
-            name: 'Customer',
+            name: t('customer'),
         },
         subscriptions: {
             field: 'subscriptions',
-            name: 'Subscriptions',
+            name: t('subscriptions'),
             width: '400',
             render: ({ page }) => (
                 <WFOProcessesListSubscriptionsCell subscriptions={page} />
@@ -96,23 +98,23 @@ export const WFOProcessListPage = () => {
         },
         createdBy: {
             field: 'createdBy',
-            name: 'Created By',
+            name: t('createdBy'),
         },
         assignee: {
             field: 'assignee',
-            name: 'Assignee',
+            name: t('assignee'),
         },
         id: {
             field: 'id',
-            name: 'ID',
+            name: t('id'),
         },
         started: {
             field: 'started',
-            name: 'Started',
+            name: t('started'),
         },
         lastModified: {
             field: 'lastModified',
-            name: 'Last Modified',
+            name: t('lastModified'),
         },
     };
 
