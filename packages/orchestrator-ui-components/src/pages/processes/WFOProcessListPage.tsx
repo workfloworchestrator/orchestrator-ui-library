@@ -9,11 +9,10 @@ import {
     getPageChangeHandler,
     getTableConfigFromLocalStorage,
     WFOLoading,
-    TableColumnKeys,
     WFOTableColumns,
     WFOTableWithFilter,
     WFOFilterTabs,
-    WFOFilterTab,
+    COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import { ProcessDefinition, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -23,66 +22,12 @@ import { WFOProcessesListSubscriptionsCell } from './WFOProcessesListSubscriptio
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
 import { EuiSpacer } from '@elastic/eui';
-
-// Todo: Consider to move this out of this component
-export enum WFOProcessListTabType {
-    ACTIVE = 'ACTIVE',
-    COMPLETED = 'COMPLETED',
-}
-
-const defaultHiddenColumns: TableColumnKeys<ProcessDefinition> = [
-    'product',
-    'customer',
-    'createdBy',
-    'assignee',
-    'id',
-];
-
-// Todo move to separate file
-export const defaultProcessListTabs: WFOFilterTab<
-    WFOProcessListTabType,
-    ProcessDefinition
->[] = [
-    {
-        id: WFOProcessListTabType.ACTIVE,
-        translationKey: 'active',
-        alwaysOnFilters: [
-            {
-                field: 'status',
-                value: 'created-running-suspended-waiting-failed-resumed',
-            },
-        ],
-    },
-    {
-        id: WFOProcessListTabType.COMPLETED,
-        translationKey: 'completed',
-        alwaysOnFilters: [
-            {
-                field: 'status',
-                value: 'completed',
-            },
-        ],
-    },
-];
-
-// Todo move to separate file
-export const getProcessListTabTypeFromString = (
-    tabId?: string,
-): WFOProcessListTabType | undefined => {
-    if (!tabId) {
-        return undefined;
-    }
-
-    switch (tabId.toUpperCase()) {
-        case WFOProcessListTabType.ACTIVE.toString():
-            return WFOProcessListTabType.ACTIVE;
-        case WFOProcessListTabType.COMPLETED.toString():
-            return WFOProcessListTabType.COMPLETED;
-
-        default:
-            return undefined;
-    }
-};
+import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
+import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
+import {
+    defaultHiddenColumnsActiveProcesses,
+    defaultHiddenColumnsCompletedProcesses,
+} from './tableConfig';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
@@ -209,6 +154,16 @@ export const WFOProcessListPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
+    const defaultHiddenColumns =
+        selectedProcessListTab === WFOProcessListTabType.ACTIVE
+            ? defaultHiddenColumnsActiveProcesses
+            : defaultHiddenColumnsCompletedProcesses;
+
+    const localStorageKey =
+        selectedProcessListTab === WFOProcessListTabType.ACTIVE
+            ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
+            : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
+
     return (
         <>
             <WFOFilterTabs
@@ -226,7 +181,7 @@ export const WFOProcessListPage = () => {
                 pagination={pagination}
                 isLoading={isFetching}
                 defaultHiddenColumns={defaultHiddenColumns}
-                localStorageKey={ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={localStorageKey}
                 onUpdateEsQueryString={getEsQueryStringHandler<ProcessDefinition>(
                     setDataDisplayParam,
                 )}
