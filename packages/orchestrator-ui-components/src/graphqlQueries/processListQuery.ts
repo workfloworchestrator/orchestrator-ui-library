@@ -3,13 +3,13 @@ import { gql } from 'graphql-request';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import {
     GraphqlQueryVariables,
-    ProcessDefinition,
+    Process,
     ProcessesDefinitionsResult,
 } from '../types';
 
 export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
     ProcessesDefinitionsResult,
-    GraphqlQueryVariables<ProcessDefinition>
+    GraphqlQueryVariables<Process>
 > = parse(gql`
     query ProcessList(
         $first: IntType!

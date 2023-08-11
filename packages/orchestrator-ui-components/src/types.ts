@@ -144,8 +144,8 @@ export interface ProductDefinition {
 }
 
 // Todo: Some props are not implemented in backend yet
-// Todo rename, this is not a Definition --> Process
-export type ProcessDefinition = {
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/217
+export type Process = {
     workflowName: string;
     lastStep: string;
     status: string;
@@ -165,6 +165,7 @@ export type ProcessDefinition = {
 
 // Todo: this will replace the generated Subscription
 // Currently partially implemented since it is used in Process object
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/149
 export type Subscription = {
     subscriptionId: string;
     description: string;
@@ -220,7 +221,7 @@ export interface ResourceTypeDefinitionsResult {
 }
 
 export interface ProcessesDefinitionsResult {
-    processes: GraphQlResultPage<ProcessDefinition>;
+    processes: GraphQlResultPage<Process>;
 }
 
 interface GraphQlResultPage<T> {

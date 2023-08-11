@@ -14,7 +14,7 @@ import {
     WFOFilterTabs,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
-import { ProcessDefinition, SortOrder } from '../../types';
+import { Process, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
 import { Pagination } from '@elastic/eui/src/components';
@@ -45,7 +45,7 @@ export const WFOProcessListPage = () => {
         )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<ProcessDefinition>({
+        useDataDisplayParams<Process>({
             pageSize: initialPageSize,
             sortBy: {
                 field: 'lastModified',
@@ -66,7 +66,7 @@ export const WFOProcessListPage = () => {
         ({ id }) => id === selectedProcessListTab,
     )?.alwaysOnFilters;
 
-    const tableColumns: WFOTableColumns<ProcessDefinition> = {
+    const tableColumns: WFOTableColumns<Process> = {
         workflowName: {
             field: 'workflowName',
             name: t('workflowName'),
@@ -142,7 +142,7 @@ export const WFOProcessListPage = () => {
         return null;
     }
 
-    const dataSorting: WFODataSorting<ProcessDefinition> = {
+    const dataSorting: WFODataSorting<Process> = {
         field: dataDisplayParams.sortBy?.field ?? 'lastModified',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -184,13 +184,13 @@ export const WFOProcessListPage = () => {
                 isLoading={isFetching}
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={localStorageKey}
-                onUpdateEsQueryString={getEsQueryStringHandler<ProcessDefinition>(
+                onUpdateEsQueryString={getEsQueryStringHandler<Process>(
                     setDataDisplayParam,
                 )}
-                onUpdatePage={getPageChangeHandler<ProcessDefinition>(
+                onUpdatePage={getPageChangeHandler<Process>(
                     setDataDisplayParam,
                 )}
-                onUpdateDataSort={getDataSortHandler<ProcessDefinition>(
+                onUpdateDataSort={getDataSortHandler<Process>(
                     dataDisplayParams,
                     setDataDisplayParam,
                 )}

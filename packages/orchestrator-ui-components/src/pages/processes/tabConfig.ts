@@ -1,4 +1,4 @@
-import { ProcessDefinition } from '../../types';
+import { Process } from '../../types';
 import { WFOFilterTab } from '../../components';
 
 export enum WFOProcessListTabType {
@@ -8,7 +8,7 @@ export enum WFOProcessListTabType {
 
 export const defaultProcessListTabs: WFOFilterTab<
     WFOProcessListTabType,
-    ProcessDefinition
+    Process
 >[] = [
     {
         id: WFOProcessListTabType.ACTIVE,
