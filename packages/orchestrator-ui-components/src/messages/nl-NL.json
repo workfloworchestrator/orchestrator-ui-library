@@ -41,7 +41,7 @@
             "resourceId": "Resource ID"
         },
         "workflows": {
-            "name": "Name",
+            "name": "Naam",
             "description": "Beschrijving",
             "target": "Target",
             "productTags": "Product Tags",

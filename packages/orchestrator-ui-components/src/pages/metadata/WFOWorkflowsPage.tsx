@@ -22,7 +22,6 @@ import { SortOrder } from '../../types';
 
 import { useDataDisplayParams } from '../../hooks';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
-import {useQueryClient} from "react-query";
 
 const WORKFLOW_FIELD_NAME: keyof WorkflowDefinition = 'name';
 const WORKFLOW_FIELD_DESCRIPTION: keyof WorkflowDefinition = 'description';
@@ -31,9 +30,9 @@ const WORKFLOW_FIELD_PRODUCT_TAGS: keyof WorkflowDefinition = 'productTags';
 const WORKFLOW_FIELD_CREATED_AT: keyof WorkflowDefinition = 'createdAt';
 
 export const WFOWorkflowsPage = () => {
+    //TODO: Delete when backend is implemented - see issue #219
 
-    //TODO: Delete when backend is implemented
-
+    const isFetching = false;
     const data = {
         workflows: {
             page: [
@@ -243,7 +242,7 @@ export const WFOWorkflowsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={true}
+                isLoading={isFetching}
                 esQueryString={dataDisplayParams.esQueryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />
