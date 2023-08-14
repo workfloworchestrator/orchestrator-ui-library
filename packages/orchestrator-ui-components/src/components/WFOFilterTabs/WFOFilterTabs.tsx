@@ -15,16 +15,16 @@ export type WFOFilterTab<TabType, DataType> = {
 
 export type WFOFilterTabsProps<TabType, DataType> = {
     tabs: WFOFilterTab<TabType, DataType>[];
-    selectedSubscriptionsTab: TabType;
+    selectedTab: TabType;
     translationNamespace: string;
-    onChangeSubscriptionsTab: (updatedSubscriptionsTab: TabType) => void;
+    onChangeTab: (updatedTab: TabType) => void;
 };
 
 export const WFOFilterTabs = <TabType extends string, DataType>({
     tabs,
-    selectedSubscriptionsTab,
+    selectedTab,
     translationNamespace,
-    onChangeSubscriptionsTab,
+    onChangeTab,
 }: WFOFilterTabsProps<TabType, DataType>) => {
     const t = useTranslations(translationNamespace);
     return (
@@ -32,11 +32,8 @@ export const WFOFilterTabs = <TabType extends string, DataType>({
             {tabs.map(({ id, translationKey: name }) => (
                 <EuiTab
                     key={id}
-                    isSelected={id === selectedSubscriptionsTab}
-                    onClick={() =>
-                        id !== selectedSubscriptionsTab &&
-                        onChangeSubscriptionsTab(id)
-                    }
+                    isSelected={id === selectedTab}
+                    onClick={() => id !== selectedTab && onChangeTab(id)}
                 >
                     {t(name)}
                 </EuiTab>

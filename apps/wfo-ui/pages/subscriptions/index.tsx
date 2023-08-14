@@ -69,9 +69,9 @@ export default function SubscriptionsPage() {
 
             <WFOFilterTabs
                 tabs={defaultSubscriptionsTabs}
+                selectedTab={selectedSubscriptionsTab}
                 translationNamespace="subscriptions.tabs"
-                selectedSubscriptionsTab={selectedSubscriptionsTab}
-                onChangeSubscriptionsTab={handleChangeSubscriptionsTab}
+                onChangeTab={handleChangeSubscriptionsTab}
             />
             <EuiSpacer size="xxl" />
 

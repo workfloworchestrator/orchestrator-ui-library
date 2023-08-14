@@ -171,8 +171,8 @@ export const WFOProcessListPage = () => {
             <WFOFilterTabs
                 tabs={defaultProcessListTabs}
                 translationNamespace="processes.tabs"
-                selectedSubscriptionsTab={selectedProcessListTab}
-                onChangeSubscriptionsTab={handleChangeProcessListTab}
+                selectedTab={selectedProcessListTab}
+                onChangeTab={handleChangeProcessListTab}
             />
             <EuiSpacer size="xxl" />
 
