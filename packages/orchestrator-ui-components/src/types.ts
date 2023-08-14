@@ -1,4 +1,5 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
+import { ProcessStatus } from './hooks';
 
 export type Nullable<T> = T | null;
 
@@ -148,7 +149,7 @@ export interface ProductDefinition {
 export type Process = {
     workflowName: string;
     lastStep: string;
-    status: string;
+    status: ProcessStatus;
     // target: string;
     product: string;
     customer: string;

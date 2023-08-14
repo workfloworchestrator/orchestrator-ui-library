@@ -13,6 +13,7 @@ import {
     WFOTableWithFilter,
     WFOFilterTabs,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
+    WFOProcessStatusBadge,
 } from '../../components';
 import { Process, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -79,6 +80,9 @@ export const WFOProcessListPage = () => {
         status: {
             field: 'status',
             name: t('status'),
+            render: (cellValue) => (
+                <WFOProcessStatusBadge processStatus={cellValue} />
+            ),
         },
         product: {
             field: 'product',
