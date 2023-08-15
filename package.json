@@ -8,7 +8,8 @@
         "prettier": "prettier -c \"{**/*,*}.{ts,tsx,json,js,md}\"",
         "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
         "build": "turbo run build",
-        "publish-packages": "turbo run build lint test && changeset publish",
+        "packages:changeset": "changeset",
+        "packages:publish": "turbo run build lint test && changeset publish",
         "prepare": "husky install"
     },
     "devDependencies": {
