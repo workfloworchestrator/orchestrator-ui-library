@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.2
+
+### Patch Changes
+
+- f49382c: Updates metadata pages and adds initial version of process-list page
+
 ## 0.2.1
 
 ### Patch Changes
