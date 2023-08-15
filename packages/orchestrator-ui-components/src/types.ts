@@ -1,4 +1,5 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
+import { ProcessStatus } from './hooks';
 
 export type Nullable<T> = T | null;
 
@@ -104,7 +105,7 @@ export interface TreeBlock extends ProductBlockBase {
 export interface ItemsList {
     type: string;
     title: string;
-    items: Process[];
+    items: ProcessFromRestApi[];
     buttonName: string;
 }
 
@@ -115,7 +116,9 @@ export interface TotalStat {
     color: keyof _EuiThemeColorsMode;
 }
 
-export interface Process {
+// Todo: Temporary renamed this type, will be fixed in:
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/216
+export interface ProcessFromRestApi {
     pid: string;
     workflow: string;
     assignee: string;
@@ -140,6 +143,34 @@ export interface ProductDefinition {
     productBlocks: Pick<ProductBlockDefinition, 'name'>[];
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
+
+// Todo: Some props are not implemented in backend yet
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/217
+export type Process = {
+    workflowName: string;
+    lastStep: string;
+    status: ProcessStatus;
+    // target: string;
+    product: string;
+    customer: string;
+    // abbrev: string;
+    subscriptions: {
+        page: Pick<Subscription, 'subscriptionId' | 'description'>[];
+    };
+    createdBy: string;
+    assignee: string;
+    id: string;
+    started: string;
+    lastModified: string;
+};
+
+// Todo: this will replace the generated Subscription
+// Currently partially implemented since it is used in Process object
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/149
+export type Subscription = {
+    subscriptionId: string;
+    description: string;
+};
 
 export type Field<Type> = keyof Type;
 
@@ -190,6 +221,10 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
+export interface ProcessesDefinitionsResult {
+    processes: GraphQlResultPage<Process>;
+}
+
 interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
@@ -199,7 +234,6 @@ export interface CacheOption {
     value: string;
     label: string;
 }
-``;
 
 export enum Locale {
     enUS = 'en-Us',

@@ -41,6 +41,25 @@
             "resourceId": "Resource ID"
         }
     },
+    "processes": {
+        "tabs": {
+            "active": "Actief",
+            "completed": "Voltooid"
+        },
+        "index": {
+            "workflowName": "Workflow naam",
+            "lastStep": "Laatste stap",
+            "status": "Status",
+            "product": "Product",
+            "customer": "Klant",
+            "subscriptions": "Subscriptions",
+            "createdBy": "Gecreëerd door",
+            "assignee": "Assignee",
+            "id": "ID",
+            "started": "Gestart",
+            "lastModified": "Aangepast op"
+        }
+    },
     "subscriptions": {
         "tabs": {
             "active": "Actief",

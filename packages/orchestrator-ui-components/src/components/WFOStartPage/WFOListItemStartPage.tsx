@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
-import { Process, ProductBase } from '../../types';
+import { ProcessFromRestApi, ProductBase } from '../../types';
 
 interface Subscription {
     name: string;
@@ -18,7 +18,7 @@ interface Subscription {
 }
 
 export interface WFOListItemStartPageProps {
-    item: Subscription | Process;
+    item: Subscription | ProcessFromRestApi;
     type: string;
 }
 
@@ -27,7 +27,10 @@ export const WFOListItemStartPage: FC<WFOListItemStartPageProps> = ({
     type,
 }) => {
     const [hoverState, setHoverState] = useState(false);
-    const renderItem = (item: Subscription | Process, type: string) => {
+    const renderItem = (
+        item: Subscription | ProcessFromRestApi,
+        type: string,
+    ) => {
         if (type === 'subscription') {
             item = item as Subscription;
             return (
@@ -44,7 +47,7 @@ export const WFOListItemStartPage: FC<WFOListItemStartPageProps> = ({
                 </EuiFlexItem>
             );
         } else if (type === 'process') {
-            item = item as Process;
+            item = item as ProcessFromRestApi;
             const date = new Date(item.last_modified_at * 1000);
             const formattedDate = moment(date).format('DD-MM-YYYY, HH:mm');
             return (

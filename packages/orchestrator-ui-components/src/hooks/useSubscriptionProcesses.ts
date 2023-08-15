@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { Nullable } from '../types';
+import { ProcessStatus } from './useProcessStatusCountsQuery';
 
 interface Process {
     workflow: string;
@@ -10,7 +11,7 @@ interface Process {
     created_by: Nullable<string>;
     failed_reason: Nullable<string>;
     started_at: number;
-    last_status: 'completed' | 'aborted';
+    last_status: ProcessStatus;
     assignee: 'NOC' | 'SYSTEM' | 'CHANGES' | 'USER';
     last_modified_at: number;
     traceback: Nullable<string>;

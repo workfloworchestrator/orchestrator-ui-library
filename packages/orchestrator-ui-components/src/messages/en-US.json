@@ -43,6 +43,25 @@
             "resourceId": "Resource ID"
         }
     },
+    "processes": {
+        "tabs": {
+            "active": "Active",
+            "completed": "Completed"
+        },
+        "index": {
+            "workflowName": "Workflow",
+            "lastStep": "Last step",
+            "status": "Status",
+            "product": "Product",
+            "customer": "Customer",
+            "subscriptions": "Subscriptions",
+            "createdBy": "Created By",
+            "assignee": "Assignee",
+            "id": "ID",
+            "started": "Started",
+            "lastModified": "Last Modified"
+        }
+    },
     "subscriptions": {
         "tabs": {
             "active": "Active",

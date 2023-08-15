@@ -9,6 +9,7 @@ export enum ProcessStatus {
     WAITING = 'waiting',
     ABORTED = 'aborted',
     FAILED = 'failed',
+    RESUMED = 'resumed',
     API_UNAVAILABLE = 'api_unavailable',
     INCONSISTENT_DATA = 'inconsistent_data',
     COMPLETED = 'completed',

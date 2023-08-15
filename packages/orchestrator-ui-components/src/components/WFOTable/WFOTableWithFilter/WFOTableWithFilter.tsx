@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Criteria,
     EuiButton,
@@ -71,6 +71,12 @@ export const WFOTableWithFilter = <T,>({
         useState<TableColumnKeys<T>>(initialHiddenColumns);
 
     const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+    useEffect(() => {
+        setHiddenColumns(
+            tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns,
+        );
+    }, [localStorageKey]);
 
     const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
         {
