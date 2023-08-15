@@ -1,5 +1,8 @@
 name: Publish to NPM
 on: [workflow_dispatch]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
     publish:
         runs-on: ubuntu-latest
@@ -23,14 +26,11 @@ jobs:
                 NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Installing dependencies
               run: yarn install --frozen-lockfile
-            - name: Processing changes
-              run: yarn changeset version
-            - name: Publishing changes
-              run: yarn changeset publish
-            - name: Adding version bumps and tags to GIT
-              run: |
-                git config user.name github-actions-publish-to-npm
-                git config user.email github-actions@github.com
-                git add .
-                git commit -m "Github Actions: Updates packages and publish to npm" --no-verify
-                git push --follow-tags
+            - name: Create Release Pull Request or Publish
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: yarn run publish-packages
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
