@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.3
+
+### Patch Changes
+
+- 577825a: Adds title to process list page
+
 ## 0.2.2
 
 ### Patch Changes
