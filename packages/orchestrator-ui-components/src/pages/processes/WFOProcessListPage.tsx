@@ -22,7 +22,7 @@ import { Pagination } from '@elastic/eui/src/components';
 import { WFOProcessesListSubscriptionsCell } from './WFOProcessesListSubscriptionsCell';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
-import { EuiSpacer } from '@elastic/eui';
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import {
@@ -172,6 +172,11 @@ export const WFOProcessListPage = () => {
 
     return (
         <>
+            <EuiSpacer />
+
+            <EuiPageHeader pageTitle="Processes" />
+            <EuiSpacer size="m" />
+
             <WFOFilterTabs
                 tabs={defaultProcessListTabs}
                 translationNamespace="processes.tabs"
