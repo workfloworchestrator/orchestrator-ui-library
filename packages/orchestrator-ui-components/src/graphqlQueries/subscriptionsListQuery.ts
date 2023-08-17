@@ -7,10 +7,7 @@ import {
     SubscriptionsResult,
 } from '../types';
 
-export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
-    SubscriptionsResult,
-    GraphqlQueryVariables<Subscription>
-> = parse(gql`
+export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
     query SubscriptionsList(
         $first: IntType!
         $after: IntType!
@@ -47,3 +44,12 @@ export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
         }
     }
 `);
+
+export function getSubscriptionsListGraphQlQuery<
+    QueryVariablesType = Subscription,
+>(): TypedDocumentNode<
+    SubscriptionsResult,
+    GraphqlQueryVariables<QueryVariablesType>
+> {
+    return GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY;
+}

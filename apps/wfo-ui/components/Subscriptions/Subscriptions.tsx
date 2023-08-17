@@ -25,8 +25,6 @@ import {
     useQueryWithGraphql,
     WFOStatusBadge,
     SubscriptionsResult,
-    GraphqlQueryVariables,
-    GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
@@ -34,7 +32,7 @@ import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import { getSubscriptionsListGraphQlQuery } from '@orchestrator-ui/orchestrator-ui-components/src';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -138,15 +136,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         };
 
     const { sortBy } = dataDisplayParams;
-
-    // Todo introduce a function that return the query and introduce generic to add to the sort-field
-    const getSubscriptionsListQuery =
-        GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY as unknown as TypedDocumentNode<
-            SubscriptionsResult,
-            GraphqlQueryVariables<SubscriptionListItem>
-        >;
     const { data, isFetching } = useQueryWithGraphql(
-        getSubscriptionsListQuery,
+        getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
