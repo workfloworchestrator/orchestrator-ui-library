@@ -164,12 +164,24 @@ export type Process = {
     lastModified: string;
 };
 
-// Todo: this will replace the generated Subscription
-// Currently partially implemented since it is used in Process object
-// https://github.com/workfloworchestrator/orchestrator-ui/issues/149
+export enum SubscriptionStatus {
+    INITIAL = 'INITIAL',
+    ACTIVE = 'ACTIVE',
+    MIGRATING = 'MIGRATING',
+    DISABLED = 'DISABLED',
+    TERMINATED = 'TERMINATED',
+    PROVISIONING = 'PROVISIONING',
+}
+
 export type Subscription = {
     subscriptionId: string;
     description: string;
+    note: string;
+    startDate: string;
+    endDate: string;
+    insync: boolean;
+    status: SubscriptionStatus;
+    product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
 };
 
 export interface WorkflowDefinition {
@@ -206,13 +218,18 @@ export type GraphqlQueryVariables<Type> = {
     filterBy?: GraphqlFilter<Type>[];
 };
 
-type GraphQLPageInfo = {
+// Todo all numbers are optional
+export type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor: number;
-    totalItems: number;
-    endCursor: number;
+    startCursor: number; // optional
+    totalItems?: number;
+    endCursor: number; // optional
 };
+
+export interface SubscriptionsResult {
+    subscriptions: GraphQlResultPage<Subscription>;
+}
 
 export interface ProductDefinitionsResult {
     products: GraphQlResultPage<ProductDefinition>;

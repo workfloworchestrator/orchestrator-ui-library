@@ -10,6 +10,7 @@ export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 export const NOTE = 'note';
 
+// todo remove me
 export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = graphql(`
     query SubscriptionsTable(
         $first: Int!

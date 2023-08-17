@@ -24,6 +24,9 @@ import {
     useOrchestratorTheme,
     useQueryWithGraphql,
     WFOStatusBadge,
+    SubscriptionsResult,
+    GraphqlQueryVariables,
+    GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
@@ -32,7 +35,6 @@ import { EuiFlexItem, Pagination } from '@elastic/eui';
 import {
     DESCRIPTION,
     END_DATE,
-    GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
     INSYNC,
     NOTE,
     PRODUCT_NAME,
@@ -43,8 +45,7 @@ import {
 } from './subscriptionsQuery';
 import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import { SubscriptionsTableQuery } from '../../__generated__/graphql';
-import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -147,13 +148,21 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             },
         };
 
-    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
+    const { sortBy } = dataDisplayParams;
+
+    // Todo introduce a function that return the query and introduce generic to add to the sort-field
+    const getSubscriptionsListQuery =
+        GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY as unknown as TypedDocumentNode<
+            SubscriptionsResult,
+            GraphqlQueryVariables<SubscriptionListItem>
+        >;
     const { data, isFetching } = useQueryWithGraphql(
-        GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+        getSubscriptionsListQuery,
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy,
+            // @ts-ignore
             filterBy: alwaysOnFilters,
         },
         'subscriptions',
@@ -179,7 +188,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItems ? parseInt(totalItems) : 0,
+        totalItemCount: totalItems ?? 0,
     };
 
     return (
@@ -188,7 +197,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             onUpdateEsQueryString={getEsQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            data={mapApiResponseToSubscriptionTableData(data)}
+            data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
@@ -207,8 +216,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 };
 
-function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionsTableQuery,
+function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
+    graphqlResponse: SubscriptionsResult,
 ): SubscriptionListItem[] {
     return graphqlResponse.subscriptions.page.map((subscription) => {
         const {
