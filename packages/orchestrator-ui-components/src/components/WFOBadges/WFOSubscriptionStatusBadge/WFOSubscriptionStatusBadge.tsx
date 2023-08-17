@@ -2,11 +2,13 @@ import { WFOBadge } from '../WFOBadge';
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 
-export type WFOStatusBadgeProps = {
+export type WFOSubscriptionStatusBadgeProps = {
     status: string;
 };
 
-export const WFOStatusBadge: FC<WFOStatusBadgeProps> = ({ status }) => {
+export const WFOSubscriptionStatusBadge: FC<
+    WFOSubscriptionStatusBadgeProps
+> = ({ status }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const getBadgeColorFromStatus = (status: string) => {
@@ -19,7 +21,7 @@ export const WFOStatusBadge: FC<WFOStatusBadgeProps> = ({ status }) => {
             successText,
         } = theme.colors;
 
-        switch (status) {
+        switch (status.toLowerCase()) {
             case 'active':
                 return {
                     badgeColor: toSecondaryColor(success),

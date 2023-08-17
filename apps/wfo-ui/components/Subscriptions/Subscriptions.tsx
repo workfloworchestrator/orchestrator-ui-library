@@ -23,7 +23,7 @@ import {
     WFOTableWithFilter,
     useOrchestratorTheme,
     useQueryWithGraphql,
-    WFOStatusBadge,
+    WFOSubscriptionStatusBadge,
     SubscriptionsResult,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
@@ -82,7 +82,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             field: 'status',
             name: t('status'),
             width: '110',
-            render: (value) => <WFOStatusBadge status={value} />,
+            render: (value) => (
+                <WFOSubscriptionStatusBadge status={value.toLowerCase()} />
+            ),
         },
         insync: {
             field: 'insync',

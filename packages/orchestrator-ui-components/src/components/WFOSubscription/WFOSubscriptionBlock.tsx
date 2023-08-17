@@ -9,7 +9,7 @@ import {
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { WFOCheckmarkCircleFill, WFOMinusCircleOutline } from '../../icons';
-import { WFOStatusBadge } from '../WFOBadges';
+import { WFOSubscriptionStatusBadge } from '../WFOBadges';
 import {
     subscriptionDefinitionCellStyle,
     subscriptionTableRowStyle,
@@ -18,7 +18,8 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const RenderField = (field: string, data: any) => {
-    if (field === 'status') return <WFOStatusBadge status={data[field]} />;
+    if (field === 'status')
+        return <WFOSubscriptionStatusBadge status={data[field]} />;
     else if (field === 'insync')
         return (
             <div style={{ position: 'relative', top: 5 }}>
