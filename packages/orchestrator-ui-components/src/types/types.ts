@@ -1,5 +1,6 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
-import { ProcessStatus } from './hooks';
+import { ProcessStatus } from '../hooks';
+import { Subscription } from './subscription';
 
 export type Nullable<T> = T | null;
 
@@ -164,14 +165,6 @@ export type Process = {
     lastModified: string;
 };
 
-// Todo: this will replace the generated Subscription
-// Currently partially implemented since it is used in Process object
-// https://github.com/workfloworchestrator/orchestrator-ui/issues/149
-export type Subscription = {
-    subscriptionId: string;
-    description: string;
-};
-
 export interface WorkflowDefinition {
     name: string;
     description: string;
@@ -206,13 +199,17 @@ export type GraphqlQueryVariables<Type> = {
     filterBy?: GraphqlFilter<Type>[];
 };
 
-type GraphQLPageInfo = {
+export type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor: number;
-    totalItems: number;
-    endCursor: number;
+    startCursor?: number;
+    totalItems?: number;
+    endCursor?: number;
 };
+
+export interface SubscriptionsResult {
+    subscriptions: GraphQlResultPage<Subscription>;
+}
 
 export interface ProductDefinitionsResult {
     products: GraphQlResultPage<ProductDefinition>;

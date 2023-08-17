@@ -1,12 +1,11 @@
 import { gql } from 'graphql-request';
 import { parse } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
-
-import type {
-    ProductDefinition,
+import {
     GraphqlQueryVariables,
+    ProductDefinition,
     ProductDefinitionsResult,
-} from '@orchestrator-ui/orchestrator-ui-components';
+} from '../types';
 
 export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
     ProductDefinitionsResult,

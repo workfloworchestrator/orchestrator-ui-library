@@ -8,7 +8,7 @@ import {
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import {
-    WFOStatusBadge,
+    WFOSubscriptionStatusBadge,
     WFOProductBlockBadge,
     WFOTableWithFilter,
 } from '../../components';
@@ -84,7 +84,9 @@ export const WFOProductsPage = () => {
             name: t('status'),
             width: '90',
             render: (value) => (
-                <WFOStatusBadge status={value.toLocaleLowerCase()} />
+                <WFOSubscriptionStatusBadge
+                    status={value.toLocaleLowerCase()}
+                />
             ),
         },
         productBlocks: {

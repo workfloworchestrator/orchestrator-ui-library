@@ -1,3 +1,4 @@
+export * from './subscriptionsListQuery';
 export * from './productBlocksQuery';
-export * from './resourceTypesQuery';
 export * from './productsQuery';
+export * from './resourceTypesQuery';

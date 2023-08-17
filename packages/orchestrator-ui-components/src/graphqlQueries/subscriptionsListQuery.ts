@@ -1,19 +1,16 @@
-import { graphql } from '../../__generated__';
+import { parse } from 'graphql';
+import { gql } from 'graphql-request';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import {
+    GraphqlQueryVariables,
+    Subscription,
+    SubscriptionsResult,
+} from '../types';
 
-export const SUBSCRIPTION_ID = 'subscriptionId';
-export const DESCRIPTION = 'description';
-export const STATUS = 'status';
-export const INSYNC = 'insync';
-export const PRODUCT_NAME = 'productName';
-export const TAG = 'tag';
-export const START_DATE = 'startDate';
-export const END_DATE = 'endDate';
-export const NOTE = 'note';
-
-export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = graphql(`
-    query SubscriptionsTable(
-        $first: Int!
-        $after: Int!
+export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
+    query SubscriptionsList(
+        $first: IntType!
+        $after: IntType!
         $sortBy: [GraphqlSort!]
         $filterBy: [GraphqlFilter!]
     ) {
@@ -47,3 +44,12 @@ export const GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT = graphql(`
         }
     }
 `);
+
+export function getSubscriptionsListGraphQlQuery<
+    QueryVariablesType = Subscription,
+>(): TypedDocumentNode<
+    SubscriptionsResult,
+    GraphqlQueryVariables<QueryVariablesType>
+> {
+    return GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY;
+}

@@ -23,33 +23,21 @@ import {
     WFOTableWithFilter,
     useOrchestratorTheme,
     useQueryWithGraphql,
-    WFOStatusBadge,
+    WFOSubscriptionStatusBadge,
+    SubscriptionsResult,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
-import {
-    DESCRIPTION,
-    END_DATE,
-    GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
-    INSYNC,
-    NOTE,
-    PRODUCT_NAME,
-    START_DATE,
-    STATUS,
-    SUBSCRIPTION_ID,
-    TAG,
-} from './subscriptionsQuery';
 import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import { SubscriptionsTableQuery } from '../../__generated__/graphql';
-import { mapToGraphQlSortBy } from '../../utils/queryVarsMappers';
+import { getSubscriptionsListGraphQlQuery } from '@orchestrator-ui/orchestrator-ui-components/src';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
-    PRODUCT_NAME,
+    'productName',
 ];
 
 export type SubscriptionsProps = {
@@ -75,13 +63,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const tableColumns: WFOTableColumns<SubscriptionListItem> = {
         subscriptionId: {
-            field: SUBSCRIPTION_ID,
+            field: 'subscriptionId',
             name: t('id'),
             width: '100',
             render: (value) => getFirstUuidPart(value),
         },
         description: {
-            field: DESCRIPTION,
+            field: 'description',
             name: t('description'),
             width: '400',
             render: (value, record) => (
@@ -91,13 +79,15 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         },
         status: {
-            field: STATUS,
+            field: 'status',
             name: t('status'),
             width: '110',
-            render: (value) => <WFOStatusBadge status={value} />,
+            render: (value) => (
+                <WFOSubscriptionStatusBadge status={value.toLowerCase()} />
+            ),
         },
         insync: {
-            field: INSYNC,
+            field: 'insync',
             name: t('insync'),
             width: '110',
             render: (value) =>
@@ -108,28 +98,28 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 ),
         },
         productName: {
-            field: PRODUCT_NAME,
+            field: 'productName',
             name: t('product'),
         },
         tag: {
-            field: TAG,
+            field: 'tag',
             name: t('tag'),
             width: '100',
         },
         startDate: {
-            field: START_DATE,
+            field: 'startDate',
             name: t('startDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         endDate: {
-            field: END_DATE,
+            field: 'endDate',
             name: t('endDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         note: {
-            field: NOTE,
+            field: 'note',
             name: t('note'),
         },
     };
@@ -147,9 +137,9 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             },
         };
 
-    const sortBy = mapToGraphQlSortBy(dataDisplayParams.sortBy);
+    const { sortBy } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
-        GET_SUBSCRIPTIONS_PAGINATED_REQUEST_DOCUMENT,
+        getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
@@ -179,7 +169,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItems ? parseInt(totalItems) : 0,
+        totalItemCount: totalItems ?? 0,
     };
 
     return (
@@ -188,7 +178,7 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             onUpdateEsQueryString={getEsQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            data={mapApiResponseToSubscriptionTableData(data)}
+            data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={defaultHiddenColumns}
@@ -207,8 +197,8 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
     );
 };
 
-function mapApiResponseToSubscriptionTableData(
-    graphqlResponse: SubscriptionsTableQuery,
+function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
+    graphqlResponse: SubscriptionsResult,
 ): SubscriptionListItem[] {
     return graphqlResponse.subscriptions.page.map((subscription) => {
         const {
