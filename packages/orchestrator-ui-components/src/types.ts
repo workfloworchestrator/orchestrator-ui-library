@@ -159,7 +159,7 @@ export type Process = {
     };
     createdBy: string;
     assignee: string;
-    id: string;
+    processId: string;
     started: string;
     lastModified: string;
 };
@@ -226,7 +226,7 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
-export interface ProcessesDefinitionsResult {
+export interface ProcessesResult {
     processes: GraphQlResultPage<Process>;
 }
 

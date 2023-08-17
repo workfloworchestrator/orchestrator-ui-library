@@ -108,9 +108,9 @@ export const WFOProcessListPage = () => {
             field: 'assignee',
             name: t('assignee'),
         },
-        id: {
-            field: 'id',
-            name: t('id'),
+        processId: {
+            field: 'processId',
+            name: t('processId'),
         },
         started: {
             field: 'started',
