@@ -6,7 +6,7 @@ export const defaultHiddenColumnsActiveProcesses: TableColumnKeys<Process> = [
     'customer',
     'createdBy',
     'assignee',
-    'id',
+    'processId',
 ];
 
 export const defaultHiddenColumnsCompletedProcesses: TableColumnKeys<Process> =
@@ -17,6 +17,6 @@ export const defaultHiddenColumnsCompletedProcesses: TableColumnKeys<Process> =
         'customer',
         'createdBy',
         'assignee',
-        'id',
+        'processId',
         'started',
     ];

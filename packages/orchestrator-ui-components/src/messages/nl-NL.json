@@ -62,7 +62,7 @@
             "subscriptions": "Subscriptions",
             "createdBy": "Gecreëerd door",
             "assignee": "Assignee",
-            "id": "ID",
+            "processId": "ID",
             "started": "Gestart",
             "lastModified": "Aangepast op"
         }
