@@ -1,0 +1,49 @@
+import { parse } from 'graphql';
+import { gql } from 'graphql-request';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import {
+    GraphqlQueryVariables,
+    Subscription,
+    SubscriptionsResult,
+} from '../types';
+
+export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
+    SubscriptionsResult,
+    GraphqlQueryVariables<Subscription>
+> = parse(gql`
+    query SubscriptionsList(
+        $first: IntType!
+        $after: IntType!
+        $sortBy: [GraphqlSort!]
+        $filterBy: [GraphqlFilter!]
+    ) {
+        subscriptions(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
+        ) {
+            page {
+                note
+                startDate
+                endDate
+                description
+                insync
+                status
+                subscriptionId
+                product {
+                    name
+                    tag
+                    productType
+                }
+            }
+            pageInfo {
+                totalItems
+                startCursor
+                hasPreviousPage
+                hasNextPage
+                endCursor
+            }
+        }
+    }
+`);
