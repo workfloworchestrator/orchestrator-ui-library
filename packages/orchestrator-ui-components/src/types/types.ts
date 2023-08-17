@@ -199,13 +199,12 @@ export type GraphqlQueryVariables<Type> = {
     filterBy?: GraphqlFilter<Type>[];
 };
 
-// Todo all numbers are optional
 export type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor: number; // optional
+    startCursor?: number;
     totalItems?: number;
-    endCursor: number; // optional
+    endCursor?: number;
 };
 
 export interface SubscriptionsResult {
