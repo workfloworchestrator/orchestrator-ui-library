@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { START_DATE } from '../../components/Subscriptions/subscriptionsQuery';
 import {
     DEFAULT_PAGE_SIZE,
     getSortDirectionFromString,
@@ -29,7 +28,7 @@ export default function SubscriptionsPage() {
         useDataDisplayParams<SubscriptionListItem>({
             pageSize: initialPageSize,
             sortBy: {
-                field: START_DATE,
+                field: 'startDate',
                 order: SortOrder.DESC,
             },
         });

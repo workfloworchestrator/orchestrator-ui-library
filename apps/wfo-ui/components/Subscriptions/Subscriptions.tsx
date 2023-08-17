@@ -32,17 +32,6 @@ import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
-import {
-    DESCRIPTION,
-    END_DATE,
-    INSYNC,
-    NOTE,
-    PRODUCT_NAME,
-    START_DATE,
-    STATUS,
-    SUBSCRIPTION_ID,
-    TAG,
-} from './subscriptionsQuery';
 import { useTranslations } from 'next-intl';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
@@ -50,7 +39,7 @@ import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
-    PRODUCT_NAME,
+    'productName',
 ];
 
 export type SubscriptionsProps = {
@@ -76,13 +65,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
 
     const tableColumns: WFOTableColumns<SubscriptionListItem> = {
         subscriptionId: {
-            field: SUBSCRIPTION_ID,
+            field: 'subscriptionId',
             name: t('id'),
             width: '100',
             render: (value) => getFirstUuidPart(value),
         },
         description: {
-            field: DESCRIPTION,
+            field: 'description',
             name: t('description'),
             width: '400',
             render: (value, record) => (
@@ -92,13 +81,13 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             ),
         },
         status: {
-            field: STATUS,
+            field: 'status',
             name: t('status'),
             width: '110',
             render: (value) => <WFOStatusBadge status={value} />,
         },
         insync: {
-            field: INSYNC,
+            field: 'insync',
             name: t('insync'),
             width: '110',
             render: (value) =>
@@ -109,28 +98,28 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
                 ),
         },
         productName: {
-            field: PRODUCT_NAME,
+            field: 'productName',
             name: t('product'),
         },
         tag: {
-            field: TAG,
+            field: 'tag',
             name: t('tag'),
             width: '100',
         },
         startDate: {
-            field: START_DATE,
+            field: 'startDate',
             name: t('startDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         endDate: {
-            field: END_DATE,
+            field: 'endDate',
             name: t('endDate'),
             width: '150',
             render: parseDateToLocaleString,
         },
         note: {
-            field: NOTE,
+            field: 'note',
             name: t('note'),
         },
     };

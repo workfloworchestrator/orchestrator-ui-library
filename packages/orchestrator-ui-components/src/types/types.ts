@@ -1,5 +1,6 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
-import { ProcessStatus } from './hooks';
+import { ProcessStatus } from '../hooks';
+import { Subscription } from './subscription';
 
 export type Nullable<T> = T | null;
 
@@ -162,26 +163,6 @@ export type Process = {
     processId: string;
     started: string;
     lastModified: string;
-};
-
-export enum SubscriptionStatus {
-    INITIAL = 'INITIAL',
-    ACTIVE = 'ACTIVE',
-    MIGRATING = 'MIGRATING',
-    DISABLED = 'DISABLED',
-    TERMINATED = 'TERMINATED',
-    PROVISIONING = 'PROVISIONING',
-}
-
-export type Subscription = {
-    subscriptionId: string;
-    description: string;
-    note: string;
-    startDate: string;
-    endDate: string;
-    insync: boolean;
-    status: SubscriptionStatus;
-    product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
 };
 
 export interface WorkflowDefinition {
