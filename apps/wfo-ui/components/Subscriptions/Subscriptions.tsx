@@ -142,7 +142,6 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy,
-            // @ts-ignore
             filterBy: alwaysOnFilters,
         },
         'subscriptions',
