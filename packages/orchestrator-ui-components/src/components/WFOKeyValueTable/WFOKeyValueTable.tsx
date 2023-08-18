@@ -8,8 +8,8 @@ export const keyColumnStyle: SerializedStyles = css({
     paddingRight: 100,
     paddingTop: 10,
     paddingBottom: 10,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: 6,
 });
 export const valueColumnStyle: SerializedStyles = css({
     padding: 10,
@@ -17,8 +17,8 @@ export const valueColumnStyle: SerializedStyles = css({
 
 export const copyColumnStyle: SerializedStyles = css({
     padding: 10,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
 });
 
 export type WFOKeyValueTableDataType = {

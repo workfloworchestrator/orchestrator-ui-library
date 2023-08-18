@@ -205,6 +205,13 @@ export const WFOProcessListPage = () => {
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
+    // tableColumns<Process> -- key.render()
+    // data<Process> -- Single process
+    // Combine both and grab every key from Process and get the render function from the tableColumns
+    // Do note we might want to override the render function in some cases -- maybe we want to add this to the tableWithSearch
+    // --> selectedProcessForModalContent: Process
+    // --> keyValueTableData[]: { key: string, render: () => ReactNode }
+
     const processDetailData: WFOKeyValueTableDataType[] | undefined =
         selectedProcessForModalContent &&
         Object.entries(selectedProcessForModalContent).map(([key, value]) => ({
