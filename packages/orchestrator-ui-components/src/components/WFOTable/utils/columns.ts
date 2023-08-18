@@ -29,7 +29,7 @@ export type WFOTableControlColumnConfig<T> = {
     [key: string]: WFOBasicTableColumn<T> & {
         field: string;
         name?: string;
-        render: (row: T) => ReactNode;
+        render: (cellValue: never, row: T) => ReactNode;
     };
 };
 
