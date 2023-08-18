@@ -1,38 +1,39 @@
 import React from 'react';
-import {
-    WFOCheckmarkCircleFill,
-    DataDisplayParams,
-    WFODataSorting,
-    DEFAULT_PAGE_SIZES,
-    FilterQuery,
-    getDataSortHandler,
-    getEsQueryStringHandler,
-    getFirstUuidPart,
-    getPageChangeHandler,
-    getTypedFieldFromObject,
-    WFOLoading,
-    WFOMinusCircleOutline,
-    parseDate,
-    parseDateToLocaleString,
-    WFOPlusCircleFill,
-    SortOrder,
-    SubscriptionListItem,
-    TableColumnKeys,
-    WFOTableColumns,
-    WFOTableControlColumnConfig,
-    WFOTableWithFilter,
-    useOrchestratorTheme,
-    useQueryWithGraphql,
-    WFOSubscriptionStatusBadge,
-    SubscriptionsResult,
-} from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import { getSubscriptionsListGraphQlQuery } from '@orchestrator-ui/orchestrator-ui-components/src';
+import {
+    DEFAULT_PAGE_SIZES,
+    getDataSortHandler,
+    getEsQueryStringHandler,
+    getPageChangeHandler,
+    SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+    TableColumnKeys,
+    WFODataSorting,
+    WFOTableColumns,
+    WFOTableControlColumnConfig,
+    WFOTableWithFilter,
+} from '../WFOTable';
+import { SubscriptionListItem } from './types';
+import { FilterQuery } from '../WFOFilterTabs';
+import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
+import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { getFirstUuidPart } from '../../utils/uuid';
+import { WFOSubscriptionStatusBadge } from '../WFOBadges/WFOSubscriptionStatusBadge';
+import {
+    WFOCheckmarkCircleFill,
+    WFOMinusCircleOutline,
+    WFOPlusCircleFill,
+} from '../../icons';
+import { parseDateToLocaleString } from '../../utils/date';
+import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
+import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
+import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
+import { WFOLoading } from '../WFOLoading';
+import { SortOrder } from '../../types';
+import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -40,7 +41,7 @@ const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
     'productName',
 ];
 
-export type SubscriptionsProps = {
+export type WFOSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
     dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
     setDataDisplayParam: <
@@ -51,7 +52,7 @@ export type SubscriptionsProps = {
     ) => void;
 };
 
-export const Subscriptions: FC<SubscriptionsProps> = ({
+export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
     alwaysOnFilters,
     dataDisplayParams,
     setDataDisplayParam,
@@ -196,34 +197,3 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         />
     );
 };
-
-function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
-    graphqlResponse: SubscriptionsResult,
-): SubscriptionListItem[] {
-    return graphqlResponse.subscriptions.page.map((subscription) => {
-        const {
-            description,
-            insync,
-            product,
-            startDate,
-            endDate,
-            status,
-            subscriptionId,
-            note,
-        } = subscription;
-
-        const { name: productName, tag } = product;
-
-        return {
-            description,
-            insync,
-            productName,
-            tag,
-            startDate: parseDate(startDate),
-            endDate: parseDate(endDate),
-            status,
-            subscriptionId,
-            note: note ?? null,
-        };
-    });
-}

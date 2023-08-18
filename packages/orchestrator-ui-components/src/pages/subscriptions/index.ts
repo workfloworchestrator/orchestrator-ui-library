@@ -1,2 +1,1 @@
-export * from './subscriptionListTabs';
-export * from './types';
+export * from './WFOSubscriptionsListPage';
