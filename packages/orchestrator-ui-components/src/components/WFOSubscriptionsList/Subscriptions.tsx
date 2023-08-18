@@ -1,38 +1,38 @@
 import React from 'react';
-import {
-    WFOCheckmarkCircleFill,
-    DataDisplayParams,
-    WFODataSorting,
-    DEFAULT_PAGE_SIZES,
-    FilterQuery,
-    getDataSortHandler,
-    getEsQueryStringHandler,
-    getFirstUuidPart,
-    getPageChangeHandler,
-    getTypedFieldFromObject,
-    WFOLoading,
-    WFOMinusCircleOutline,
-    parseDate,
-    parseDateToLocaleString,
-    WFOPlusCircleFill,
-    SortOrder,
-    SubscriptionListItem,
-    TableColumnKeys,
-    WFOTableColumns,
-    WFOTableControlColumnConfig,
-    WFOTableWithFilter,
-    useOrchestratorTheme,
-    useQueryWithGraphql,
-    WFOSubscriptionStatusBadge,
-    SubscriptionsResult,
-} from '@orchestrator-ui/orchestrator-ui-components';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../constants';
-import { getSubscriptionsListGraphQlQuery } from '@orchestrator-ui/orchestrator-ui-components/src';
+import {
+    DEFAULT_PAGE_SIZES,
+    getDataSortHandler,
+    getEsQueryStringHandler,
+    getPageChangeHandler,
+    SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+    TableColumnKeys,
+    WFODataSorting,
+    WFOTableColumns,
+    WFOTableControlColumnConfig,
+    WFOTableWithFilter,
+} from '../WFOTable';
+import { SubscriptionListItem } from './types';
+import { FilterQuery } from '../WFOFilterTabs';
+import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
+import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { getFirstUuidPart } from '../../utils/uuid';
+import { WFOSubscriptionStatusBadge } from '../WFOBadges/WFOSubscriptionStatusBadge';
+import {
+    WFOCheckmarkCircleFill,
+    WFOMinusCircleOutline,
+    WFOPlusCircleFill,
+} from '../../icons';
+import { parseDate, parseDateToLocaleString } from '../../utils/date';
+import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
+import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
+import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
+import { WFOLoading } from '../WFOLoading';
+import { SortOrder, SubscriptionsResult } from '../../types';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
