@@ -37,6 +37,10 @@ import {
 } from './tableConfig';
 import { useTranslations } from 'next-intl';
 import { WFOArrowsExpand } from '../../icons';
+import {
+    WFOKeyValueTable,
+    WFOKeyValueTableDataType,
+} from '../../components/WFOKeyValueTable/WFOKeyValueTable';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
@@ -49,9 +53,8 @@ export const WFOProcessListPage = () => {
         withDefault(StringParam, WFOProcessListTabType.ACTIVE),
     );
 
-    const [processDetailModalContent, setProcessDetailModalContent] = useState<
-        Process | undefined
-    >(undefined);
+    const [selectedProcessForModalContent, setSelectedProcessForModalContent] =
+        useState<Process | undefined>(undefined);
 
     const initialPageSize =
         getTableConfigFromLocalStorage(
@@ -149,7 +152,7 @@ export const WFOProcessListPage = () => {
             render: (_, row) => (
                 <EuiFlexItem
                     css={{ cursor: 'pointer' }}
-                    onClick={() => setProcessDetailModalContent(row)}
+                    onClick={() => setSelectedProcessForModalContent(row)}
                 >
                     <WFOArrowsExpand color={theme.colors.mediumShade} />
                 </EuiFlexItem>
@@ -202,6 +205,13 @@ export const WFOProcessListPage = () => {
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
+    const processDetailData: WFOKeyValueTableDataType[] | undefined =
+        selectedProcessForModalContent &&
+        Object.entries(selectedProcessForModalContent).map(([key, value]) => ({
+            key,
+            value: value?.toString() ?? '',
+        }));
+
     return (
         <>
             <EuiSpacer />
@@ -238,14 +248,12 @@ export const WFOProcessListPage = () => {
                 )}
             />
 
-            {processDetailModalContent && (
+            {processDetailData && (
                 <WFOInformationModal
-                    title={'Title'}
-                    onClose={() => setProcessDetailModalContent(undefined)}
+                    title={'Details - Process'}
+                    onClose={() => setSelectedProcessForModalContent(undefined)}
                 >
-                    <textarea cols={70} rows={30}>
-                        {JSON.stringify(processDetailModalContent, null, 4)}
-                    </textarea>
+                    <WFOKeyValueTable keyValues={processDetailData} />
                 </WFOInformationModal>
             )}
         </>

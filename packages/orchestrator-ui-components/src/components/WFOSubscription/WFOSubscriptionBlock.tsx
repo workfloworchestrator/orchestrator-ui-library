@@ -65,6 +65,7 @@ export const WFOSubscriptionBlock = (title: string, data: object) => {
                     </EuiFlexGroup>
 
                     <EuiSpacer size={'s'}></EuiSpacer>
+                    {/* Todo: creating generic component from this - update this section*/}
                     <table width="100%">
                         <tbody>
                             <tr key={0} css={subscriptionTableRowStyle}>
