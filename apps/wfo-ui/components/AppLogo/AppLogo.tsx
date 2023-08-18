@@ -8,6 +8,7 @@ export function getAppLogo(navigationLogo: number): ReactElement {
         <EuiFlexGroup alignItems="center" css={{ height: navigationLogo }}>
             <EuiFlexItem>
                 <Image
+                    priority
                     src={Logo}
                     alt="Orchestrator Logo"
                     width={134}
