@@ -149,9 +149,9 @@ export interface ProductDefinition {
 // https://github.com/workfloworchestrator/orchestrator-ui/issues/217
 export type Process = {
     workflowName: string;
-    lastStep: string;
+    step: string;
     status: ProcessStatus;
-    // target: string;
+    workflowTarget: string;
     product: string;
     customer: string;
     // abbrev: string;

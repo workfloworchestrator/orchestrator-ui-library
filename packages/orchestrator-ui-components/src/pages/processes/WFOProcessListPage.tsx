@@ -49,7 +49,11 @@ export const WFOProcessListPage = () => {
         useDataDisplayParams<Process>({
             pageSize: initialPageSize,
             sortBy: {
-                field: 'lastModified',
+                // Todo: waiting for fix in backend -- currently the sortBy field id's are not matching with the returned data
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/91
+                // @ts-ignore
+                field: 'modified',
+                // field: 'lastModified',
                 order: SortOrder.DESC,
             },
         });
@@ -72,17 +76,20 @@ export const WFOProcessListPage = () => {
             field: 'workflowName',
             name: t('workflowName'),
         },
-        lastStep: {
-            field: 'lastStep',
-            name: t('lastStep'),
+        step: {
+            field: 'step',
+            name: t('step'),
         },
-
         status: {
             field: 'status',
             name: t('status'),
             render: (cellValue) => (
                 <WFOProcessStatusBadge processStatus={cellValue} />
             ),
+        },
+        workflowTarget: {
+            field: 'workflowTarget',
+            name: t('workflowTarget'),
         },
         product: {
             field: 'product',
@@ -127,10 +134,7 @@ export const WFOProcessListPage = () => {
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            // Todo: waiting for fix in backend -- currently the sortBy field id's are not matching with the returned data
-            // sortBy: { field: 'lastModified', order: SortOrder.DESC },
-            // @ts-ignore
-            sortBy: { field: 'modified', order: SortOrder.DESC },
+            sortBy: dataDisplayParams.sortBy,
             filterBy: alwaysOnFilters,
         },
         'processList',

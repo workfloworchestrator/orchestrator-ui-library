@@ -55,7 +55,7 @@
         },
         "index": {
             "workflowName": "Workflow naam",
-            "lastStep": "Laatste stap",
+            "step": "Laatste stap",
             "status": "Status",
             "product": "Product",
             "customer": "Klant",
@@ -64,7 +64,8 @@
             "assignee": "Assignee",
             "processId": "ID",
             "started": "Gestart",
-            "lastModified": "Aangepast op"
+            "lastModified": "Aangepast op",
+            "workflowTarget": "Doel"
         }
     },
     "subscriptions": {

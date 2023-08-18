@@ -11,7 +11,7 @@ export const defaultHiddenColumnsActiveProcesses: TableColumnKeys<Process> = [
 
 export const defaultHiddenColumnsCompletedProcesses: TableColumnKeys<Process> =
     [
-        'lastStep',
+        'step',
         'status',
         'product',
         'customer',
