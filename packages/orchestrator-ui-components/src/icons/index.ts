@@ -1,4 +1,5 @@
 export * from './WFOXCircleFill';
+export * from './WFOArrowsExpand';
 export * from './WFOStatusDotIcon';
 export * from './WFOLogoutIcon';
 export * from './WFOCheckmarkCircleFill';

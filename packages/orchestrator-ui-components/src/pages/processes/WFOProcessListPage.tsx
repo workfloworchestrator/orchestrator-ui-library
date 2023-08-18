@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     WFODataSorting,
@@ -14,15 +14,21 @@ import {
     WFOFilterTabs,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     WFOProcessStatusBadge,
+    WFOTableControlColumnConfig,
+    WFOInformationModal,
 } from '../../components';
 import { Process, SortOrder } from '../../types';
-import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
+import {
+    useDataDisplayParams,
+    useOrchestratorTheme,
+    useQueryWithGraphql,
+} from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
 import { Pagination } from '@elastic/eui/src/components';
 import { WFOProcessesListSubscriptionsCell } from './WFOProcessesListSubscriptionsCell';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiFlexItem, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import {
@@ -30,15 +36,22 @@ import {
     defaultHiddenColumnsCompletedProcesses,
 } from './tableConfig';
 import { useTranslations } from 'next-intl';
+import { WFOArrowsExpand } from '../../icons';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
-    const t = useTranslations('processes.index'); // todo
+    const t = useTranslations('processes.index');
+
+    const { theme } = useOrchestratorTheme();
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WFOProcessListTabType.ACTIVE),
     );
+
+    const [processDetailModalContent, setProcessDetailModalContent] = useState<
+        Process | undefined
+    >(undefined);
 
     const initialPageSize =
         getTableConfigFromLocalStorage(
@@ -129,6 +142,21 @@ export const WFOProcessListPage = () => {
         },
     };
 
+    const trailingControlColumns: WFOTableControlColumnConfig<Process> = {
+        viewDetails: {
+            field: 'viewDetaild',
+            width: '36px',
+            render: (_, row) => (
+                <EuiFlexItem
+                    css={{ cursor: 'pointer' }}
+                    onClick={() => setProcessDetailModalContent(row)}
+                >
+                    <WFOArrowsExpand color={theme.colors.mediumShade} />
+                </EuiFlexItem>
+            ),
+        },
+    };
+
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
@@ -192,6 +220,7 @@ export const WFOProcessListPage = () => {
             <WFOTableWithFilter
                 data={data.processes.page}
                 tableColumns={tableColumns}
+                trailingControlColumns={trailingControlColumns}
                 dataSorting={dataSorting}
                 pagination={pagination}
                 isLoading={isFetching}
@@ -208,6 +237,17 @@ export const WFOProcessListPage = () => {
                     setDataDisplayParam,
                 )}
             />
+
+            {processDetailModalContent && (
+                <WFOInformationModal
+                    title={'Title'}
+                    onClose={() => setProcessDetailModalContent(undefined)}
+                >
+                    <textarea cols={70} rows={30}>
+                        {JSON.stringify(processDetailModalContent, null, 4)}
+                    </textarea>
+                </WFOInformationModal>
+            )}
         </>
     );
 };
