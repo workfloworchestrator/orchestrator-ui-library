@@ -7,7 +7,7 @@ import {
     defaultSubscriptionsTabs,
     getSubscriptionsTabTypeFromString,
     SubscriptionListItem,
-    Subscriptions,
+    WFOSubscriptionsList,
     WFOSubscriptionsTabType,
 } from '../../components/WFOSubscriptionsList';
 import { SortOrder } from '../../types';
@@ -75,7 +75,7 @@ export const WFOSubscriptionsListPage = () => {
             />
             <EuiSpacer size="xxl" />
 
-            <Subscriptions
+            <WFOSubscriptionsList
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}

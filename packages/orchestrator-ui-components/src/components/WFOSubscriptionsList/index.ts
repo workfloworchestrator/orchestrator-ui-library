@@ -1,3 +1,4 @@
+export * from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 export * from './subscriptionListTabs';
-export * from './Subscriptions';
+export * from './WFOSubscriptionsList';
 export * from './types';

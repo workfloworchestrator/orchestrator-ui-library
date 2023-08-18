@@ -27,12 +27,13 @@ import {
     WFOMinusCircleOutline,
     WFOPlusCircleFill,
 } from '../../icons';
-import { parseDate, parseDateToLocaleString } from '../../utils/date';
+import { parseDateToLocaleString } from '../../utils/date';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
 import { WFOLoading } from '../WFOLoading';
-import { SortOrder, SubscriptionsResult } from '../../types';
+import { SortOrder } from '../../types';
+import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -40,7 +41,7 @@ const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
     'productName',
 ];
 
-export type SubscriptionsProps = {
+export type WFOSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
     dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
     setDataDisplayParam: <
@@ -51,7 +52,7 @@ export type SubscriptionsProps = {
     ) => void;
 };
 
-export const Subscriptions: FC<SubscriptionsProps> = ({
+export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
     alwaysOnFilters,
     dataDisplayParams,
     setDataDisplayParam,
@@ -196,34 +197,3 @@ export const Subscriptions: FC<SubscriptionsProps> = ({
         />
     );
 };
-
-function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
-    graphqlResponse: SubscriptionsResult,
-): SubscriptionListItem[] {
-    return graphqlResponse.subscriptions.page.map((subscription) => {
-        const {
-            description,
-            insync,
-            product,
-            startDate,
-            endDate,
-            status,
-            subscriptionId,
-            note,
-        } = subscription;
-
-        const { name: productName, tag } = product;
-
-        return {
-            description,
-            insync,
-            productName,
-            tag,
-            startDate: parseDate(startDate),
-            endDate: parseDate(endDate),
-            status,
-            subscriptionId,
-            note: note ?? null,
-        };
-    });
-}
