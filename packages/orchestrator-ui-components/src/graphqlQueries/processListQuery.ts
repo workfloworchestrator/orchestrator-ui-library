@@ -21,7 +21,7 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
         ) {
             page {
                 workflowName
-                lastStep
+                step
                 status
                 product
                 customer
@@ -30,6 +30,7 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
                 processId
                 started
                 lastModified
+                workflowTarget
                 subscriptions {
                     page {
                         subscriptionId
