@@ -28,6 +28,14 @@ import {
     getTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
+import { WFOInformationModal } from '../../WFOSettingsModal';
+import {
+    WFOKeyValueTable,
+    WFOKeyValueTableDataType,
+} from '../../WFOKeyValueTable/WFOKeyValueTable';
+import { getTypedFieldFromObject } from '../../../utils';
+import { WFOArrowsExpand } from '../../../icons';
+import { useOrchestratorTheme } from '../../../hooks';
 
 export type WFOTableWithFilterProps<T> = {
     data: T[];
@@ -40,6 +48,7 @@ export type WFOTableWithFilterProps<T> = {
     esQueryString?: string;
     isLoading: boolean;
     localStorageKey: string;
+    disableDetailModal?: boolean;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
@@ -56,10 +65,13 @@ export const WFOTableWithFilter = <T,>({
     esQueryString,
     isLoading,
     localStorageKey,
+    disableDetailModal = false,
     onUpdateEsQueryString,
     onUpdatePage,
     onUpdateDataSort,
 }: WFOTableWithFilterProps<T>) => {
+    const { theme } = useOrchestratorTheme();
+
     const defaultPageSize = pagination.pageSize;
     const tableConfigFromLocalStorage =
         getTableConfigFromLocalStorage<T>(localStorageKey);
@@ -71,6 +83,8 @@ export const WFOTableWithFilter = <T,>({
         useState<TableColumnKeys<T>>(initialHiddenColumns);
 
     const [showSettingsModal, setShowSettingsModal] = useState(false);
+    const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
+        useState<T | undefined>(undefined);
 
     useEffect(() => {
         setHiddenColumns(
@@ -78,12 +92,34 @@ export const WFOTableWithFilter = <T,>({
         );
     }, [localStorageKey]);
 
+    const viewDetailsColumn: WFOTableControlColumnConfig<T> = {
+        viewDetails: {
+            field: 'viewDetails',
+            width: '36px',
+            render: (_, row) => (
+                <EuiFlexItem
+                    css={{ cursor: 'pointer' }}
+                    onClick={() => setSelectedDataForDetailModal(row)}
+                >
+                    <WFOArrowsExpand color={theme.colors.mediumShade} />
+                </EuiFlexItem>
+            ),
+        },
+    };
+
     const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
-        {
-            ...leadingControlColumns,
-            ...tableColumns,
-            ...trailingControlColumns,
-        };
+        disableDetailModal
+            ? {
+                  ...leadingControlColumns,
+                  ...tableColumns,
+                  ...trailingControlColumns,
+              }
+            : {
+                  ...leadingControlColumns,
+                  ...tableColumns,
+                  ...trailingControlColumns,
+                  ...viewDetailsColumn,
+              };
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
         WFOTableDataColumnConfig<T, keyof T>
@@ -95,6 +131,30 @@ export const WFOTableWithFilter = <T,>({
             isVisible: hiddenColumns.indexOf(field) === -1,
         };
     });
+
+    const processDetailData: WFOKeyValueTableDataType[] | undefined =
+        selectedDataForDetailModal &&
+        Object.entries(selectedDataForDetailModal).map(([key, value]) => {
+            const theKey = getTypedFieldFromObject(key, tableColumns);
+            if (theKey === null) {
+                return {
+                    key,
+                    value: <>{value}</>,
+                };
+            }
+
+            const { renderDetails, render } = tableColumns[theKey];
+            const theValue = selectedDataForDetailModal[theKey];
+            return {
+                key: theKey.toString(),
+                value: (renderDetails &&
+                    renderDetails(theValue, selectedDataForDetailModal)) ??
+                    (render &&
+                        render(theValue, selectedDataForDetailModal)) ?? (
+                        <>{theValue}</>
+                    ),
+            };
+        });
 
     const handleUpdateTableConfig = (updatedTableConfig: TableConfig<T>) => {
         const updatedHiddenColumns = updatedTableConfig.columns
@@ -168,6 +228,15 @@ export const WFOTableWithFilter = <T,>({
                     onUpdateTableConfig={handleUpdateTableConfig}
                     onResetToDefaults={handleResetToDefaults}
                 />
+            )}
+
+            {processDetailData && (
+                <WFOInformationModal
+                    title={'Details - Process'}
+                    onClose={() => setSelectedDataForDetailModal(undefined)}
+                >
+                    <WFOKeyValueTable keyValues={processDetailData} />
+                </WFOInformationModal>
             )}
         </>
     );

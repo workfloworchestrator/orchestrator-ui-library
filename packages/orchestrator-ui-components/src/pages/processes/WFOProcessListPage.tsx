@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     WFODataSorting,
@@ -14,21 +14,15 @@ import {
     WFOFilterTabs,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     WFOProcessStatusBadge,
-    WFOTableControlColumnConfig,
-    WFOInformationModal,
 } from '../../components';
 import { Process, SortOrder } from '../../types';
-import {
-    useDataDisplayParams,
-    useOrchestratorTheme,
-    useQueryWithGraphql,
-} from '../../hooks';
+import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
 import { Pagination } from '@elastic/eui/src/components';
 import { WFOProcessesListSubscriptionsCell } from './WFOProcessesListSubscriptionsCell';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
-import { EuiFlexItem, EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import {
@@ -36,25 +30,15 @@ import {
     defaultHiddenColumnsCompletedProcesses,
 } from './tableConfig';
 import { useTranslations } from 'next-intl';
-import { WFOArrowsExpand } from '../../icons';
-import {
-    WFOKeyValueTable,
-    WFOKeyValueTableDataType,
-} from '../../components/WFOKeyValueTable/WFOKeyValueTable';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
     const t = useTranslations('processes.index');
 
-    const { theme } = useOrchestratorTheme();
-
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WFOProcessListTabType.ACTIVE),
     );
-
-    const [selectedProcessForModalContent, setSelectedProcessForModalContent] =
-        useState<Process | undefined>(undefined);
 
     const initialPageSize =
         getTableConfigFromLocalStorage(
@@ -119,8 +103,16 @@ export const WFOProcessListPage = () => {
             field: 'subscriptions',
             name: t('subscriptions'),
             width: '400',
-            render: ({ page }) => (
-                <WFOProcessesListSubscriptionsCell subscriptions={page} />
+            render: ({ page: subscriptions }) => (
+                <WFOProcessesListSubscriptionsCell
+                    subscriptions={subscriptions}
+                    numberOfSubscriptionsToRender={1}
+                />
+            ),
+            renderDetails: ({ page: subscriptions }) => (
+                <WFOProcessesListSubscriptionsCell
+                    subscriptions={subscriptions}
+                />
             ),
         },
         createdBy: {
@@ -142,21 +134,6 @@ export const WFOProcessListPage = () => {
         lastModified: {
             field: 'lastModified',
             name: t('lastModified'),
-        },
-    };
-
-    const trailingControlColumns: WFOTableControlColumnConfig<Process> = {
-        viewDetails: {
-            field: 'viewDetaild',
-            width: '36px',
-            render: (_, row) => (
-                <EuiFlexItem
-                    css={{ cursor: 'pointer' }}
-                    onClick={() => setSelectedProcessForModalContent(row)}
-                >
-                    <WFOArrowsExpand color={theme.colors.mediumShade} />
-                </EuiFlexItem>
-            ),
         },
     };
 
@@ -205,20 +182,6 @@ export const WFOProcessListPage = () => {
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
-    // tableColumns<Process> -- key.render()
-    // data<Process> -- Single process
-    // Combine both and grab every key from Process and get the render function from the tableColumns
-    // Do note we might want to override the render function in some cases -- maybe we want to add this to the tableWithSearch
-    // --> selectedProcessForModalContent: Process
-    // --> keyValueTableData[]: { key: string, render: () => ReactNode }
-
-    const processDetailData: WFOKeyValueTableDataType[] | undefined =
-        selectedProcessForModalContent &&
-        Object.entries(selectedProcessForModalContent).map(([key, value]) => ({
-            key,
-            value: value?.toString() ?? '',
-        }));
-
     return (
         <>
             <EuiSpacer />
@@ -237,7 +200,6 @@ export const WFOProcessListPage = () => {
             <WFOTableWithFilter
                 data={data.processes.page}
                 tableColumns={tableColumns}
-                trailingControlColumns={trailingControlColumns}
                 dataSorting={dataSorting}
                 pagination={pagination}
                 isLoading={isFetching}
@@ -254,15 +216,6 @@ export const WFOProcessListPage = () => {
                     setDataDisplayParam,
                 )}
             />
-
-            {processDetailData && (
-                <WFOInformationModal
-                    title={'Details - Process'}
-                    onClose={() => setSelectedProcessForModalContent(undefined)}
-                >
-                    <WFOKeyValueTable keyValues={processDetailData} />
-                </WFOInformationModal>
-            )}
         </>
     );
 };
