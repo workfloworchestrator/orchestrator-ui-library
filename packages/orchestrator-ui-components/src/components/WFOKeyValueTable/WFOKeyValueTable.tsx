@@ -1,5 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 import { css, SerializedStyles } from '@emotion/react';
+import { WFOClipboardCopy } from '../../icons/WFOClipboardCopy';
+import { EuiCopy } from '@elastic/eui';
+import { useOrchestratorTheme } from '../../hooks';
 
 // Todo: use theme hook!
 export const keyColumnStyle: SerializedStyles = css({
@@ -10,15 +13,19 @@ export const keyColumnStyle: SerializedStyles = css({
     paddingBottom: 10,
     borderTopLeftRadius: 6,
     borderBottomLeftRadius: 6,
+    verticalAlign: 'middle',
 });
 export const valueColumnStyle: SerializedStyles = css({
     padding: 10,
+    verticalAlign: 'middle',
 });
 
 export const copyColumnStyle: SerializedStyles = css({
     padding: 10,
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
+    verticalAlign: 'middle',
+    cursor: 'pointer',
 });
 
 export type WFOKeyValueTableDataType = {
@@ -31,6 +38,8 @@ export type WFOKeyValueTableProps = {
 };
 
 export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({ keyValues }) => {
+    const { theme } = useOrchestratorTheme();
+
     return (
         <table width="100%">
             <tbody>
@@ -45,8 +54,20 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({ keyValues }) => {
                             <b>{key}</b>
                         </td>
                         <td css={valueColumnStyle}>{value}</td>
-                        {/*Placeholder for copy button*/}
-                        <td css={copyColumnStyle}>[C]</td>
+                        {/*Todo: value is not a string (ReactNode), find a way to make it a string, or add a plain-text prop */}
+                        <td css={copyColumnStyle}>
+                            <EuiCopy textToCopy={'VALUE'}>
+                                {(copy) => (
+                                    <div onClick={copy}>
+                                        <WFOClipboardCopy
+                                            width={16}
+                                            height={16}
+                                            color={theme.colors.mediumShade}
+                                        />
+                                    </div>
+                                )}
+                            </EuiCopy>
+                        </td>
                     </tr>
                 ))}
             </tbody>
