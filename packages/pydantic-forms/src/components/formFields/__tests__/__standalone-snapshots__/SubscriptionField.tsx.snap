@@ -1,0 +1,682 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SubscriptionField> <SubscriptionField> - renders a select with correct options (no filter) 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-sl7cng-EuiFlexItem"
+  >
+    <section
+      class=" subscription-field"
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="snapshot-test-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="snapshot-test"
+            id="snapshot-test-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            id="snapshot-test"
+          >
+            <button
+              aria-label="reload-"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall reload-subscriptions-icon-button"
+              id="refresh-icon-snapshot-test"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--large euiIcon--inherit euiButtonIcon__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.228 2.942a.5.5 0 11-.538.842A5 5 0 1013 8a.5.5 0 111 0 6 6 0 11-2.772-5.058zM14 1.5v3A1.5 1.5 0 0112.5 6h-3a.5.5 0 010-1h3a.5.5 0 00.5-.5v-3a.5.5 0 111 0z"
+                />
+              </svg>
+            </button>
+            <div
+              class="subscription-field-select css-b62m3t-container"
+              id="snapshot-test"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-7-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+              />
+              <div
+                class=" css-j34sbj-control"
+              >
+                <div
+                  class=" css-319lph-ValueContainer"
+                >
+                  <div
+                    class=" css-14el2xx-placeholder"
+                    id="react-select-7-placeholder"
+                  >
+                    Search and select a subscription...
+                  </div>
+                  <div
+                    class=" css-16cuj0n-Input"
+                    data-value=""
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      aria-describedby="react-select-7-placeholder"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class=""
+                      id="snapshot-test.search"
+                      role="combobox"
+                      spellcheck="false"
+                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class=" css-1hb7zxy-IndicatorsContainer"
+                >
+                  <span
+                    class=" css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class=" css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-tj5bde-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="x"
+                type="hidden"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<SubscriptionField> <SubscriptionField> - renders a select with correct value (as uniqueItem list child) 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="subscriptionfield-uniqueitem-0000"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <div
+          class="euiFlexItem css-sl7cng-EuiFlexItem"
+        >
+          <section
+            class=" subscription-field"
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="snapshot-test-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="snapshot-test"
+                  id="snapshot-test-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  id="snapshot-test"
+                >
+                  <button
+                    aria-label="reload-"
+                    class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall reload-subscriptions-icon-button"
+                    id="refresh-icon-snapshot-test"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--large euiIcon--inherit euiButtonIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.228 2.942a.5.5 0 11-.538.842A5 5 0 1013 8a.5.5 0 111 0 6 6 0 11-2.772-5.058zM14 1.5v3A1.5 1.5 0 0112.5 6h-3a.5.5 0 010-1h3a.5.5 0 00.5-.5v-3a.5.5 0 111 0z"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="subscription-field-select css-b62m3t-container"
+                    id="snapshot-test"
+                  >
+                    <span
+                      class="css-1f43avz-a11yText-A11yText"
+                      id="react-select-29-live-region"
+                    />
+                    <span
+                      aria-atomic="false"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                      class="css-1f43avz-a11yText-A11yText"
+                    />
+                    <div
+                      class=" css-j34sbj-control"
+                    >
+                      <div
+                        class=" css-319lph-ValueContainer"
+                      >
+                        <div
+                          class=" css-30t56x-singleValue"
+                        >
+                          dec1
+                        </div>
+                        <div
+                          class=" css-16cuj0n-Input"
+                          data-value=""
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            class=""
+                            id="snapshot-test.search"
+                            role="combobox"
+                            spellcheck="false"
+                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class=" css-1hb7zxy-IndicatorsContainer"
+                      >
+                        <span
+                          class=" css-1okebmr-indicatorSeparator"
+                        />
+                        <div
+                          aria-hidden="true"
+                          class=" css-tlfecz-indicatorContainer"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="css-tj5bde-Svg"
+                            focusable="false"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            width="20"
+                          >
+                            <path
+                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      name="x.0"
+                      type="hidden"
+                      value="a"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div
+          class="euiFlexItem css-sl7cng-EuiFlexItem"
+        >
+          <section
+            class=" subscription-field"
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="snapshot-test-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="snapshot-test"
+                  id="snapshot-test-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  id="snapshot-test"
+                >
+                  <button
+                    aria-label="reload-"
+                    class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall reload-subscriptions-icon-button"
+                    id="refresh-icon-snapshot-test"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--large euiIcon--inherit euiButtonIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.228 2.942a.5.5 0 11-.538.842A5 5 0 1013 8a.5.5 0 111 0 6 6 0 11-2.772-5.058zM14 1.5v3A1.5 1.5 0 0112.5 6h-3a.5.5 0 010-1h3a.5.5 0 00.5-.5v-3a.5.5 0 111 0z"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="subscription-field-select css-b62m3t-container"
+                    id="snapshot-test"
+                  >
+                    <span
+                      class="css-1f43avz-a11yText-A11yText"
+                      id="react-select-30-live-region"
+                    />
+                    <span
+                      aria-atomic="false"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                      class="css-1f43avz-a11yText-A11yText"
+                    />
+                    <div
+                      class=" css-j34sbj-control"
+                    >
+                      <div
+                        class=" css-319lph-ValueContainer"
+                      >
+                        <div
+                          class=" css-14el2xx-placeholder"
+                          id="react-select-30-placeholder"
+                        >
+                          Search and select a subscription...
+                        </div>
+                        <div
+                          class=" css-16cuj0n-Input"
+                          data-value=""
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-describedby="react-select-30-placeholder"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            class=""
+                            id="snapshot-test.search"
+                            role="combobox"
+                            spellcheck="false"
+                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class=" css-1hb7zxy-IndicatorsContainer"
+                      >
+                        <span
+                          class=" css-1okebmr-indicatorSeparator"
+                        />
+                        <div
+                          aria-hidden="true"
+                          class=" css-tlfecz-indicatorContainer"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="css-tj5bde-Svg"
+                            focusable="false"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            width="20"
+                          >
+                            <path
+                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      name="x.1"
+                      type="hidden"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div
+          class="add-item"
+          id="subscriptionfield-uniqueitem-0006"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<SubscriptionField> <SubscriptionField> - renders a sync button 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-sl7cng-EuiFlexItem"
+  >
+    <section
+      class=" subscription-field"
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="snapshot-test-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="snapshot-test"
+            id="snapshot-test-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            id="snapshot-test"
+          >
+            <button
+              aria-label="reload-"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall reload-subscriptions-icon-button"
+              id="refresh-icon-snapshot-test"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--large euiIcon--inherit euiButtonIcon__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.228 2.942a.5.5 0 11-.538.842A5 5 0 1013 8a.5.5 0 111 0 6 6 0 11-2.772-5.058zM14 1.5v3A1.5 1.5 0 0112.5 6h-3a.5.5 0 010-1h3a.5.5 0 00.5-.5v-3a.5.5 0 111 0z"
+                />
+              </svg>
+            </button>
+            <div
+              class="subscription-field-select css-b62m3t-container"
+              id="snapshot-test"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-27-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+              />
+              <div
+                class=" css-1r94s9j-control"
+              >
+                <div
+                  class=" css-319lph-ValueContainer"
+                >
+                  <div
+                    class=" css-14el2xx-placeholder"
+                    id="react-select-27-placeholder"
+                  >
+                    Search and select a subscription...
+                  </div>
+                  <div
+                    class=" css-gc9s0u-Input"
+                    data-value=""
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      aria-describedby="react-select-27-placeholder"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class=""
+                      id="snapshot-test.search"
+                      role="combobox"
+                      spellcheck="false"
+                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class=" css-1hb7zxy-IndicatorsContainer"
+                >
+                  <span
+                    class=" css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class=" css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-tj5bde-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="x"
+                type="hidden"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;

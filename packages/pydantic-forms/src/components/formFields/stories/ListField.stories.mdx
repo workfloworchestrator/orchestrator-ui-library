@@ -1,0 +1,79 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { number } from "@storybook/addon-knobs";
+
+import UserInputContainer from "../../../stories/UserInputContainer";
+import { createForm } from "../../../stories/utils";
+import { ListField } from "../src";
+
+<Meta title="Uniforms/ListField" component={ListField} />
+
+## ListField
+
+<Story name="ListField">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "array",
+                items: { type: "string" },
+                minItems: number("Minimal number of items"),
+                maxItems: number("Maximal number of items")
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "array",
+        "items": { "type": "string" },
+        "minItems": "<min nr of items>",
+        "maxItems": "<min nr of items>"
+    }
+}
+```
+
+## ListInList
+
+<Story name="ListInList">
+    <UserInputContainer
+        stepUserInput={createForm({ name: { type: "array", items: { type: "array", items: { type: "string" } } } })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "array",
+        "items": { "type": "array", "items": { "type": "string" } }
+    }
+}
+```
+
+## ListWithNestField
+
+<Story name="ListWithNestField">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "array",
+                items: { type: "object", properties: { a: { type: "string" }, b: { type: "string" } } }
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "array",
+        "items": { "type": "object", "properties": { "a": { "type": "string" }, "b": { "type": "string" } } }
+    }
+}
+```

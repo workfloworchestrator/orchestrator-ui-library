@@ -1,0 +1,354 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OptGroupField> - renders an the correct fields when disabled 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiDescribedFormGroup  optgroup-field"
+    id="snapshot-test"
+    required=""
+    role="group"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <span
+          class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+        >
+          forms.fields.x.title
+        </span>
+        <div
+          class="euiText euiText--small euiDescribedFormGroup__description"
+        >
+          <div
+            class="euiTextColor euiTextColor--subdued"
+          >
+            forms.fields.x.info
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiFormRow"
+            id="x-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFlexItem css-weze4d-EuiFlexItem"
+              >
+                <section
+                  class=" bool-field"
+                  required=""
+                >
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="x-row"
+                  >
+                    <div
+                      class="euiFormRow__labelWrapper"
+                    >
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="x"
+                        id="x-label"
+                      />
+                       
+                      <div
+                        class="euiText euiText--medium"
+                      />
+                    </div>
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiCheckbox"
+                      >
+                        <input
+                          class="euiCheckbox__input"
+                          id="x"
+                          name="x.enabled"
+                          type="checkbox"
+                        />
+                        <div
+                          class="euiCheckbox__square"
+                        />
+                        <label
+                          class="euiCheckbox__label"
+                          for="x"
+                        >
+                          x.enabled
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<OptGroupField> - renders an the correct fields when enabled 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiDescribedFormGroup  optgroup-field"
+    id="snapshot-test"
+    required=""
+    role="group"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <span
+          class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+        >
+          forms.fields.x.title
+        </span>
+        <div
+          class="euiText euiText--small euiDescribedFormGroup__description"
+        >
+          <div
+            class="euiTextColor euiTextColor--subdued"
+          >
+            forms.fields.x.info
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiFormRow"
+            id="x-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFlexItem css-weze4d-EuiFlexItem"
+              >
+                <section
+                  class=" bool-field"
+                  required=""
+                >
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="x-row"
+                  >
+                    <div
+                      class="euiFormRow__labelWrapper"
+                    >
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="x"
+                        id="x-label"
+                      />
+                       
+                      <div
+                        class="euiText euiText--medium"
+                      />
+                    </div>
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiCheckbox"
+                      >
+                        <input
+                          checked=""
+                          class="euiCheckbox__input"
+                          id="x"
+                          name="x.enabled"
+                          type="checkbox"
+                        />
+                        <div
+                          class="euiCheckbox__square"
+                        />
+                        <label
+                          class="euiCheckbox__label"
+                          for="x"
+                        >
+                          x.enabled
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            required=""
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="optgroupfield-enabled-0003-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="optgroupfield-enabled-0003"
+                  id="optgroupfield-enabled-0003-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldNumber"
+                      id="optgroupfield-enabled-0003"
+                      name="x.b"
+                      placeholder=""
+                      step="1"
+                      type="number"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            required=""
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="optgroupfield-enabled-0004-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="optgroupfield-enabled-0004"
+                  id="optgroupfield-enabled-0004-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldNumber"
+                      id="optgroupfield-enabled-0004"
+                      name="x.c"
+                      placeholder=""
+                      step="1"
+                      type="number"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
