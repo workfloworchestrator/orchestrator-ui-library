@@ -13,11 +13,9 @@ export const keyColumnStyle: SerializedStyles = css({
     paddingBottom: 10,
     borderTopLeftRadius: 6,
     borderBottomLeftRadius: 6,
-    verticalAlign: 'middle',
 });
 export const valueColumnStyle: SerializedStyles = css({
     padding: 10,
-    verticalAlign: 'middle',
 });
 
 export const copyColumnStyle: SerializedStyles = css({

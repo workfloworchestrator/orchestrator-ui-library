@@ -1,19 +1,19 @@
 import React from 'react';
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    WFODataSorting,
+    COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     getDataSortHandler,
     getEsQueryStringHandler,
     getPageChangeHandler,
     getTableConfigFromLocalStorage,
+    WFODataSorting,
+    WFOFilterTabs,
     WFOLoading,
+    WFOProcessStatusBadge,
     WFOTableColumns,
     WFOTableWithFilter,
-    WFOFilterTabs,
-    COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    WFOProcessStatusBadge,
 } from '../../components';
 import { Process, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
