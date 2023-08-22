@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import {
+    PATH_METADATA,
     PATH_METADATA_PRODUCT_BLOCKS,
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_RESOURCE_TYPES,
@@ -79,7 +80,7 @@ export const WFOSidebar: FC = () => {
                             name: 'Metadata',
                             id: '5',
                             onClick: () => {
-                                router.push(PATH_METADATA_PRODUCTS);
+                                router.push(PATH_METADATA);
                             },
                             items: [
                                 {
