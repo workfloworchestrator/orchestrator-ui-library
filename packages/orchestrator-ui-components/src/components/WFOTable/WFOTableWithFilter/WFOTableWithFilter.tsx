@@ -49,6 +49,7 @@ export type WFOTableWithFilterProps<T> = {
     isLoading: boolean;
     localStorageKey: string;
     disableDetailModal?: boolean;
+    detailModalTitle?: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (newSortColumnId: keyof T) => void;
@@ -66,6 +67,7 @@ export const WFOTableWithFilter = <T,>({
     isLoading,
     localStorageKey,
     disableDetailModal = false,
+    detailModalTitle = 'Details',
     onUpdateEsQueryString,
     onUpdatePage,
     onUpdateDataSort,
@@ -238,7 +240,7 @@ export const WFOTableWithFilter = <T,>({
 
             {processDetailData && (
                 <WFOInformationModal
-                    title={'Details - Process'}
+                    title={detailModalTitle}
                     onClose={() => setSelectedDataForDetailModal(undefined)}
                 >
                     <WFOKeyValueTable

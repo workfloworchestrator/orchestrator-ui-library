@@ -209,6 +209,7 @@ export const WFOProcessListPage = () => {
                 isLoading={isFetching}
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={localStorageKey}
+                detailModalTitle={'Details - Process'}
                 onUpdateEsQueryString={getEsQueryStringHandler<Process>(
                     setDataDisplayParam,
                 )}
