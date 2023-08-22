@@ -1,17 +1,19 @@
 import React, { FC } from 'react';
 import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
-
-const PATH_START = '/';
-const PATH_NEW_PROCESS = '/new-process';
-const PATH_PROCESSES = '/processes';
-const PATH_SUBSCRIPTIONS = '/subscriptions';
-const PATH_METADATA_PRODUCTS = '/metadata/products';
-const PATH_METADATA_PRODUCT_BLOCKS = '/metadata/productblocks';
-const PATH_METADATA_RESOURCE_TYPES = '/metadata/resource-types';
-const PATH_METADATA_WORKFLOWS = '/metadata/workflows';
-const PATH_TASKS = '/tasks';
-const PATH_SETTINGS = '/settings';
+import {
+    PATH_METADATA,
+    PATH_METADATA_PRODUCT_BLOCKS,
+    PATH_METADATA_PRODUCTS,
+    PATH_METADATA_RESOURCE_TYPES,
+    PATH_METADATA_WORKFLOWS,
+    PATH_NEW_PROCESS,
+    PATH_PROCESSES,
+    PATH_SETTINGS,
+    PATH_START,
+    PATH_SUBSCRIPTIONS,
+    PATH_TASKS,
+} from '../paths';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -78,7 +80,7 @@ export const WFOSidebar: FC = () => {
                             name: 'Metadata',
                             id: '5',
                             onClick: () => {
-                                router.push(PATH_METADATA_PRODUCTS);
+                                router.push(PATH_METADATA);
                             },
                             items: [
                                 {

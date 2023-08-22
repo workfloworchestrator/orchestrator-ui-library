@@ -10,7 +10,6 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     WFOPageTemplate,
-    WFOBreadcrumbs,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -80,7 +79,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                         enableBatching: true,
                                     }}
                                 >
-                                    <WFOBreadcrumbs />
                                     <Component {...pageProps} />
                                 </QueryParamProvider>
                             </WFOPageTemplate>
