@@ -1,0 +1,247 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AcceptField> <AcceptField> - legacy renders an input 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-iqegkc-EuiFlexItem"
+  >
+    <section
+      class=" accept-field"
+      id="acceptfield-legacy-0000"
+      required=""
+    >
+      <label
+        class="euiFormLabel euiFormRow__label"
+      >
+        forms.fields.x
+      </label>
+      <div
+        class="euiText euiText--medium"
+      >
+        forms.fields.x_info
+      </div>
+      <div
+        class="euiCheckbox"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="x"
+          name="x"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="x"
+        >
+          forms.fields.x
+        </label>
+      </div>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<AcceptField> <AcceptField> - renders inputs 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-iqegkc-EuiFlexItem"
+  >
+    <section
+      class=" accept-field"
+      id="acceptfield-render-0000"
+      required=""
+    >
+      <label
+        class="euiFormLabel euiFormRow__label"
+      >
+        forms.fields.x_accept.label
+      </label>
+      <div
+        class="euiText euiText--medium"
+      >
+        forms.fields.x_accept.info
+      </div>
+      <label
+        class="euiFormLabel euiFormRow__label warning"
+      >
+        forms.fields.x_accept.warning
+      </label>
+      <br />
+      <div>
+        <input
+          disabled=""
+          value="value"
+        />
+      </div>
+      <div>
+        <a
+          href="http://example.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://example.com
+        </a>
+      </div>
+      <div
+        class="euiCheckbox"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="checkbox16"
+          name="checkbox16"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="checkbox16"
+        >
+          forms.fields.x_accept.checkbox1
+        </label>
+      </div>
+      <label
+        class="euiFormLabel euiFormRow__label"
+      >
+        forms.fields.x_accept.label_with_context
+      </label>
+      <div
+        class="euiCheckbox level_2"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="sub_checkbox8"
+          name="sub_checkbox8"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="sub_checkbox8"
+        >
+          forms.fields.x_accept.sub_checkbox
+        </label>
+      </div>
+      <div
+        class="euiCheckbox level_2"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="sub_checkbox29"
+          name="sub_checkbox29"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="sub_checkbox29"
+        >
+          forms.fields.x_accept.sub_checkbox2
+        </label>
+      </div>
+      <div
+        class="euiCheckbox"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="optional_checkbox10"
+          name="optional_checkbox10"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="optional_checkbox10"
+        >
+          forms.fields.x_accept.optional_checkbox
+        </label>
+      </div>
+      <div
+        class="euiCheckbox skip"
+      >
+        <input
+          class="euiCheckbox__input"
+          id="skip_checkbox"
+          name="skip_checkbox"
+          type="checkbox"
+        />
+        <div
+          class="euiCheckbox__square"
+        />
+        <label
+          class="euiCheckbox__label"
+          for="skip_checkbox"
+        >
+          forms.fields.x_accept.skip_checkbox
+        </label>
+      </div>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;

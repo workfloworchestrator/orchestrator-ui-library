@@ -1,0 +1,56 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { number } from "@storybook/addon-knobs";
+
+import UserInputContainer from "../../../stories/UserInputContainer";
+import { createForm } from "../../../stories/utils";
+import { NestField } from "../src";
+
+<Meta title="Uniforms/NestField" component={NestField} />
+
+## NestField
+
+<Story name="NestField">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "object",
+                properties: { a: { type: "string" }, b: { type: "string" }  }
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "object",
+        "properties": { "a": { "type": "string" }, "b": { "type": "string" } },
+    }
+}
+```
+
+## NestFieldInList
+
+<Story name="NestFieldInList">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "array",
+                items: { type: "object", properties: { a: { type: "string" }, b: { type: "string" } } }
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "array",
+        "items": { "type": "object", "properties": { "a": { "type": "string" }, "b": { "type": "string" } } }
+    }
+}
+```
