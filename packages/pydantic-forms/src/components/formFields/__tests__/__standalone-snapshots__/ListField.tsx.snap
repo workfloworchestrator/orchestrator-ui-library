@@ -1,0 +1,740 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ListField> - renders children with correct name (value) 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-correct-name-0003-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-correct-name-0003"
+                  id="listfield-correct-name-0003-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-correct-name-0003"
+                      name="x.0"
+                      placeholder=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-correct-name-0004.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-correct-name-0007-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-correct-name-0007"
+                  id="listfield-correct-name-0007-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-correct-name-0007"
+                      name="x.1"
+                      placeholder=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-correct-name-0008.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="listfield-correct-name-000a"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<ListField> - renders children with correct values 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-correct-values-0003-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-correct-values-0003"
+                  id="listfield-correct-values-0003-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-correct-values-0003"
+                      name="x.0"
+                      placeholder=""
+                      type="text"
+                      value="a"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-correct-values-0004.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-correct-values-0007-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-correct-values-0007"
+                  id="listfield-correct-values-0007-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-correct-values-0007"
+                      name="x.1"
+                      placeholder=""
+                      type="text"
+                      value="b"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-correct-values-0008.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-correct-values-000b-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-correct-values-000b"
+                  id="listfield-correct-values-000b-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-correct-values-000b"
+                      name="x.2"
+                      placeholder=""
+                      type="text"
+                      value="c"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-correct-values-000c.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="listfield-correct-values-000e"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<ListField> - renders correctly when child is list 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field outer-list"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <div
+            class="euiFlexItem css-ys1ii3-EuiFlexItem"
+          >
+            <section
+              class="list-field"
+              id="listfield-childlist-0004"
+            >
+              <div
+                class="euiFormRow euiFormRow--fullWidth"
+                id="formrow-x.0-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="formrow-x.0"
+                    id="formrow-x.0-label"
+                  />
+                   
+                  <div
+                    class="euiText euiText--medium"
+                  />
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                />
+              </div>
+              <ul>
+                <li>
+                  <section>
+                    <div
+                      class="euiFormRow euiFormRow--fullWidth"
+                      id="listfield-childlist-0007-row"
+                    >
+                      <div
+                        class="euiFormRow__labelWrapper"
+                      >
+                        <label
+                          class="euiFormLabel euiFormRow__label"
+                          for="listfield-childlist-0007"
+                          id="listfield-childlist-0007-label"
+                        />
+                         
+                        <div
+                          class="euiText euiText--medium"
+                        />
+                      </div>
+                      <div
+                        class="euiFormRow__fieldWrapper"
+                      >
+                        <div
+                          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                        >
+                          <div
+                            class="euiFormControlLayout__childrenWrapper"
+                          >
+                            <input
+                              class="euiFieldText euiFieldText--fullWidth"
+                              id="listfield-childlist-0007"
+                              name="x.0.0"
+                              placeholder=""
+                              type="text"
+                              value="test"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <div
+                    class="del-item"
+                    id="listfield-childlist-0008.remove"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <i
+                      class="fa fa-minus "
+                    />
+                    <label />
+                  </div>
+                </li>
+                <div
+                  class="add-item"
+                  id="listfield-childlist-000a"
+                  role="button"
+                  tabindex="0"
+                >
+                  <i
+                    class="fa fa-plus "
+                  />
+                  <label />
+                </div>
+              </ul>
+            </section>
+          </div>
+          <div
+            class="del-item"
+            id="listfield-childlist-000c.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label>
+              forms.fields.x_del
+            </label>
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="listfield-childlist-000e"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label>
+            forms.fields.x_add
+          </label>
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<ListField> - works 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="listfield-works-0003-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="listfield-works-0003"
+                  id="listfield-works-0003-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldText euiFieldText--fullWidth"
+                      id="listfield-works-0003"
+                      name="x.0"
+                      placeholder=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="listfield-works-0004.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="listfield-works-0006"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;

@@ -1,0 +1,329 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NestField> - renders an <AutoField> for each field 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiDescribedFormGroup  nest-field"
+    id="snapshot-test"
+    required=""
+    role="group"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <span
+          class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+        />
+      </div>
+      <div
+        class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+      >
+        <section
+          required=""
+        >
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="nestfield-autofield-0001-row"
+          >
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                class="euiFormLabel euiFormRow__label"
+                for="nestfield-autofield-0001"
+                id="nestfield-autofield-0001-label"
+              />
+               
+              <div
+                class="euiText euiText--medium"
+              />
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--fullWidth"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText euiFieldText--fullWidth"
+                    id="nestfield-autofield-0001"
+                    name="x.a"
+                    placeholder=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div
+          required=""
+        >
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="nestfield-autofield-0002-row"
+          >
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                class="euiFormLabel euiFormRow__label"
+                for="nestfield-autofield-0002"
+                id="nestfield-autofield-0002-label"
+              />
+               
+              <div
+                class="euiText euiText--medium"
+              />
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldNumber"
+                    id="nestfield-autofield-0002"
+                    name="x.b"
+                    placeholder=""
+                    step="1"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<NestField> - renders correctly in list 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive  nest-field"
+            id="nestfield-list-0004"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <section
+                required=""
+              >
+                <div
+                  class="euiFormRow euiFormRow--fullWidth"
+                  id="nestfield-list-0005-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="nestfield-list-0005"
+                      id="nestfield-list-0005-label"
+                    />
+                     
+                    <div
+                      class="euiText euiText--medium"
+                    />
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldText euiFieldText--fullWidth"
+                          id="nestfield-list-0005"
+                          name="x.0.a"
+                          placeholder=""
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                required=""
+              >
+                <div
+                  class="euiFormRow euiFormRow--fullWidth"
+                  id="nestfield-list-0006-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="nestfield-list-0006"
+                      id="nestfield-list-0006-label"
+                    />
+                     
+                    <div
+                      class="euiText euiText--medium"
+                    />
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldNumber"
+                          id="nestfield-list-0006"
+                          name="x.0.b"
+                          placeholder=""
+                          step="1"
+                          type="number"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="del-item"
+            id="nestfield-list-0007.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="nestfield-list-0009"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;

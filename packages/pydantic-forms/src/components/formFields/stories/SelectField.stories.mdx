@@ -1,0 +1,126 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { array, boolean } from "@storybook/addon-knobs";
+
+import UserInputContainer from "../../../stories/UserInputContainer";
+import { createForm } from "../../../stories/utils";
+import { SelectField } from "../src";
+
+<Meta title="Uniforms/SelectField" component={SelectField} />
+
+## SelectField
+
+<Story name="SelectField">
+    <UserInputContainer
+        stepUserInput={createForm({ name: { type: "string", enum: array("allowed values", ["a", "b", "c"]) } })}
+    />
+</Story>
+
+## SelectFieldCheckboxes
+
+<Story name="SelectFieldCheckboxes">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: { type: "string", enum: array("allowed values", ["a", "b", "c"]), checkboxes: true }
+        })}
+    />
+</Story>
+
+## SelectFieldTransform
+
+When called from another component this component allows to set labels using a transform function
+
+<Story name="SelectFieldTransform">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "string",
+                enum: array("allowed values", ["a", "b", "c"]),
+                transform: value => {
+                    return "Label: " + value.toUpperCase();
+                }
+            }
+        })}
+    />
+</Story>
+
+### component
+
+```jsx
+<SelectField
+    name="name"
+    allowedValues={["a", "b", "c"]}
+    transform={value => {
+        return "Label: " + value.toUpperCase();
+    }}
+/>
+```
+
+### JSON Schema form json
+
+The transform part needs to be done in javascript
+
+```Json
+{
+    "name": {
+        "type": "string",
+        "enum":["a", "b", "c"]
+    }
+}
+```
+
+## SelectFieldOptions
+
+When using `options` the label can be given in the json definition
+
+<Story name="SelectFieldOptions">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "string",
+                options: { a: "Label A", b: "Label B", c: "Label c" }
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```Json
+{
+    "name": {
+        "type": "string",
+        "options": { "a": "Label A", "b": "Label B", "c": "Label c" }
+    }
+}
+```
+
+## SelectFieldMulti
+
+This component also works as a multi select. Where optionally the items can be selected only once
+
+<Story name="SelectFieldMulti">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "array",
+                enum: array("allowed values", ["a", "b", "c"]),
+                items: { type: "string" },
+                uniqueItems: boolean("Items need to be unique")
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```Json
+{
+    "name": {
+        "type": "array",
+        "options": { "a": "Label A", "b": "Label B", "c": "Label c" },
+        "items": { "type": "string" },
+        "uniqueItems": true
+
+    }
+}
+```

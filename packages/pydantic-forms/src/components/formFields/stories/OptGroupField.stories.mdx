@@ -1,0 +1,83 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+
+import UserInputContainer from "../../../stories/UserInputContainer";
+import { createForm } from "../../../stories/utils";
+import { OptGroupField } from "../src";
+
+<Meta title="Uniforms/OptGroupField" component={OptGroupField} />
+
+## OptGroupField
+
+<Story name="OptGroupField">
+    <UserInputContainer
+        stepUserInput={createForm({
+            name: {
+                type: "object",
+                format: "optGroup",
+                properties: { enabled: { type: "boolean" }, a: { type: "string" } }
+            }
+        })}
+    />
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "name": {
+        "type": "object",
+        "format": "optGroup",
+        "properties": { "enabled": { "type": "boolean" }, "a": { "type": "string" } }
+    }
+}
+```
+
+<Story name="BFD Field">
+    <UserInputContainer
+        stepUserInput={{
+            title: "SN8 SURFinternet BGP",
+            type: "object",
+            properties: {
+                bfd: {
+                    title: "Bfd",
+                    default: {
+                        enabled: false,
+                    },
+                    allOf: [
+                        {
+                            $ref: "#/definitions/BFD",
+                        },
+                    ],
+                },
+            },
+            definitions: {
+                BFD: {
+                    title: "BFD",
+                    type: "object",
+                    properties: {
+                        enabled: {
+                            title: "Enabled",
+                            type: "boolean",
+                        },
+                        minimum_interval: {
+                            title: "Minimum Interval",
+                            default: 900,
+                            minimum: 1,
+                            maximum: 255000,
+                            type: "integer",
+                        },
+                        multiplier: {
+                            title: "Multiplier",
+                            default: 3,
+                            minimum: 1,
+                            maximum: 255,
+                            type: "integer",
+                        },
+                    },
+                    required: ["enabled"],
+                    format: "optGroup",
+                },
+            },
+        }}
+    />
+</Story>
