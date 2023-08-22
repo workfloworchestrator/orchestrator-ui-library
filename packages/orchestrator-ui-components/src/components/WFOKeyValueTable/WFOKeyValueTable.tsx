@@ -38,45 +38,58 @@ export type WFOKeyValueTableDataType = {
 };
 
 export type WFOKeyValueTableProps = {
-    keyValues: WFOKeyValueTableDataType[]; // try to make the table config map to this datatype -- key: string, render: () => ReactNode
+    keyValues: WFOKeyValueTableDataType[];
+    showCopyToClipboardIcon?: boolean;
 };
 
-export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({ keyValues }) => {
+export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
+    keyValues,
+    showCopyToClipboardIcon = false,
+}) => {
     const { theme } = useOrchestratorTheme();
 
     return (
         <table width="100%">
             <tbody>
-                {keyValues.map(({ key, value, plainTextValue }, i) => (
-                    <tr
-                        key={key}
-                        style={{
-                            backgroundColor: i % 2 ? '#FFF' : '#F1F5F9',
-                        }}
-                    >
-                        <td valign={'top'} css={keyColumnStyle}>
-                            <b>{key}</b>
-                        </td>
-                        <td css={valueColumnStyle}>{value}</td>
-                        <td
-                            css={[copyColumnStyle, plainTextValue && clickable]}
+                {keyValues.map(({ key, value, plainTextValue }, i) => {
+                    const shouldRenderCopyColumn =
+                        showCopyToClipboardIcon && plainTextValue;
+                    return (
+                        <tr
+                            key={key}
+                            style={{
+                                backgroundColor: i % 2 ? '#FFF' : '#F1F5F9',
+                            }}
                         >
-                            {plainTextValue && (
-                                <EuiCopy textToCopy={plainTextValue}>
-                                    {(copy) => (
-                                        <div onClick={copy}>
-                                            <WFOClipboardCopy
-                                                width={16}
-                                                height={16}
-                                                color={theme.colors.mediumShade}
-                                            />
-                                        </div>
-                                    )}
-                                </EuiCopy>
-                            )}
-                        </td>
-                    </tr>
-                ))}
+                            <td valign={'top'} css={keyColumnStyle}>
+                                <b>{key}</b>
+                            </td>
+                            <td css={valueColumnStyle}>{value}</td>
+                            <td
+                                css={[
+                                    copyColumnStyle,
+                                    shouldRenderCopyColumn && clickable,
+                                ]}
+                            >
+                                {shouldRenderCopyColumn && (
+                                    <EuiCopy textToCopy={plainTextValue}>
+                                        {(copy) => (
+                                            <div onClick={copy}>
+                                                <WFOClipboardCopy
+                                                    width={16}
+                                                    height={16}
+                                                    color={
+                                                        theme.colors.mediumShade
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+                                    </EuiCopy>
+                                )}
+                            </td>
+                        </tr>
+                    );
+                })}
             </tbody>
         </table>
     );

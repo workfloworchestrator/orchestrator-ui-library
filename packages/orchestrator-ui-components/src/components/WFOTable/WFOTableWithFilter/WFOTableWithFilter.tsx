@@ -241,7 +241,10 @@ export const WFOTableWithFilter = <T,>({
                     title={'Details - Process'}
                     onClose={() => setSelectedDataForDetailModal(undefined)}
                 >
-                    <WFOKeyValueTable keyValues={processDetailData} />
+                    <WFOKeyValueTable
+                        keyValues={processDetailData}
+                        showCopyToClipboardIcon
+                    />
                 </WFOInformationModal>
             )}
         </>
