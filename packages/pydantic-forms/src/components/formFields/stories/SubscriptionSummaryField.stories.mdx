@@ -1,0 +1,44 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import mock from "axios-mock";
+
+import PRODUCTS from "../../../stories/data/products.json";
+import SUBSCRIPTION_JSON from "../../../stories/data/subscription.json";
+import UserInputContainer from "../../../stories/UserInputContainer";
+import { createForm } from "../../../stories/utils";
+import { SubscriptionSummaryField } from "../src";
+
+<Meta title="Uniforms/SubscriptionSummaryField" component={SubscriptionSummaryField} />
+
+## SubscriptionSummaryField
+
+<Story name="SubscriptionSummaryField">
+    {() => {
+        mock.reset();
+        mock.onGet(/subscriptions\/in_use_by\/.*/).reply(200, []);
+        mock.onGet(/subscriptions\/.*/).reply(200, SUBSCRIPTION_JSON);
+        mock.onGet("products/a3bf8b26-50a6-4586-8e58-ad552cb39798").reply(200, PRODUCTS[22]);
+        return (
+            <UserInputContainer
+                stepUserInput={createForm({
+                    subscription: {
+                        type: "string",
+                        format: "subscription",
+                        value: "48f28a55-7764-4c84-9848-964d14906a27"
+                    }
+                })}
+            />
+        );
+    }}
+</Story>
+
+### JSON Schema form json
+
+```json
+{
+    "subscription": {
+        "type": "string",
+        "format": "subscription",
+        "value": "48f28a55-7764-4c84-9848-964d14906a27"
+    }
+}
+```
