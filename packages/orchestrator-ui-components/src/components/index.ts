@@ -1,5 +1,5 @@
 export * from './WFOBadges';
-export * from './WFOBreadcrumbs';
+export * from './WFOPageTemplate/WFOBreadcrumbs';
 export * from './WFOFilterTabs';
 export * from './WFOPageTemplate';
 export * from './WFOSearchBar';

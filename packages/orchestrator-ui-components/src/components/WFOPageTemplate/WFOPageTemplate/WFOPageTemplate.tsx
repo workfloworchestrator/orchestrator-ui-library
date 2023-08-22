@@ -3,6 +3,7 @@ import { EuiPageTemplate } from '@elastic/eui';
 import { WFOPageHeader } from '../WFOPageHeader';
 import { WFOSidebar } from '../WFOSidebar';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
+import { WFOBreadcrumbs } from '../WFOBreadcrumbs';
 
 export interface WFOPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -50,6 +51,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
                         backgroundColor: theme.colors.emptyShade,
                     }}
                 >
+                    <WFOBreadcrumbs />
                     {children}
                 </EuiPageTemplate.Section>
             </EuiPageTemplate>

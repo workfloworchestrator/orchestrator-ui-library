@@ -7,4 +7,13 @@ module.exports = {
         defaultLocale: 'en-US',
     },
     transpilePackages: ['@orchestrator-ui/orchestrator-ui-components'],
+    async redirects() {
+        return [
+            {
+                source: '/metadata',
+                destination: '/metadata/products',
+                permanent: true,
+            },
+        ];
+    },
 };
