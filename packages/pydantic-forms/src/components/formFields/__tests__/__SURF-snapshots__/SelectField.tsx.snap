@@ -1,0 +1,479 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectField> <SelectField> - renders a select with correct value (as uniqueItem list child) 1`] = `
+LoadedCheerio {
+  "0": <div
+    class="euiFlexItem css-ys1ii3-EuiFlexItem"
+  >
+    <section
+      class="list-field"
+      id="snapshot-test"
+      required=""
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="formrow-x-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="formrow-x"
+            id="formrow-x-label"
+          />
+           
+          <div
+            class="euiText euiText--medium"
+          />
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        />
+      </div>
+      <ul>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="selectfield-uniqueitem-0003-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="selectfield-uniqueitem-0003"
+                  id="selectfield-uniqueitem-0003-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class=" css-b62m3t-container"
+                  id="selectfield-uniqueitem-0003"
+                >
+                  <span
+                    class="css-1f43avz-a11yText-A11yText"
+                    id="react-select-20-live-region"
+                  />
+                  <span
+                    aria-atomic="false"
+                    aria-live="polite"
+                    aria-relevant="additions text"
+                    class="css-1f43avz-a11yText-A11yText"
+                  />
+                  <div
+                    class=" css-j34sbj-control"
+                  >
+                    <div
+                      class=" css-319lph-ValueContainer"
+                    >
+                      <div
+                        class=" css-30t56x-singleValue"
+                      >
+                        a
+                      </div>
+                      <div
+                        class=" css-16cuj0n-Input"
+                        data-value=""
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          class=""
+                          id="selectfield-uniqueitem-0003.search"
+                          role="combobox"
+                          spellcheck="false"
+                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class=" css-1hb7zxy-IndicatorsContainer"
+                    >
+                      <div
+                        aria-hidden="true"
+                        class=" css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-tj5bde-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                          />
+                        </svg>
+                      </div>
+                      <span
+                        class=" css-1okebmr-indicatorSeparator"
+                      />
+                      <div
+                        aria-hidden="true"
+                        class=" css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-tj5bde-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    name="x.0"
+                    type="hidden"
+                    value="a"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="selectfield-uniqueitem-0005.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <li>
+          <section>
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              id="selectfield-uniqueitem-0008-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="selectfield-uniqueitem-0008"
+                  id="selectfield-uniqueitem-0008-label"
+                />
+                 
+                <div
+                  class="euiText euiText--medium"
+                />
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class=" css-b62m3t-container"
+                  id="selectfield-uniqueitem-0008"
+                >
+                  <span
+                    class="css-1f43avz-a11yText-A11yText"
+                    id="react-select-21-live-region"
+                  />
+                  <span
+                    aria-atomic="false"
+                    aria-live="polite"
+                    aria-relevant="additions text"
+                    class="css-1f43avz-a11yText-A11yText"
+                  />
+                  <div
+                    class=" css-j34sbj-control"
+                  >
+                    <div
+                      class=" css-319lph-ValueContainer"
+                    >
+                      <div
+                        class=" css-14el2xx-placeholder"
+                        id="react-select-21-placeholder"
+                      >
+                        Search and select a value...
+                      </div>
+                      <div
+                        class=" css-16cuj0n-Input"
+                        data-value=""
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-describedby="react-select-21-placeholder"
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          class=""
+                          id="selectfield-uniqueitem-0008.search"
+                          role="combobox"
+                          spellcheck="false"
+                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class=" css-1hb7zxy-IndicatorsContainer"
+                    >
+                      <span
+                        class=" css-1okebmr-indicatorSeparator"
+                      />
+                      <div
+                        aria-hidden="true"
+                        class=" css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-tj5bde-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    name="x.1"
+                    type="hidden"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="del-item"
+            id="selectfield-uniqueitem-000a.remove"
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="fa fa-minus "
+            />
+            <label />
+          </div>
+        </li>
+        <div
+          class="add-item"
+          id="selectfield-uniqueitem-000c"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            class="fa fa-plus "
+          />
+          <label />
+        </div>
+      </ul>
+    </section>
+  </div>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`<SelectField> <SelectField> - renders a select with correct value (model) 1`] = `
+LoadedCheerio {
+  "0": <section>
+    <div
+      class="euiFormRow euiFormRow--fullWidth"
+      id="snapshot-test-row"
+    >
+      <div
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          class="euiFormLabel euiFormRow__label"
+          for="snapshot-test"
+          id="snapshot-test-label"
+        />
+         
+        <div
+          class="euiText euiText--medium"
+        />
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class=" css-b62m3t-container"
+          id="snapshot-test"
+        >
+          <span
+            class="css-1f43avz-a11yText-A11yText"
+            id="react-select-13-live-region"
+          />
+          <span
+            aria-atomic="false"
+            aria-live="polite"
+            aria-relevant="additions text"
+            class="css-1f43avz-a11yText-A11yText"
+          />
+          <div
+            class=" css-j34sbj-control"
+          >
+            <div
+              class=" css-319lph-ValueContainer"
+            >
+              <div
+                class=" css-30t56x-singleValue"
+              >
+                b
+              </div>
+              <div
+                class=" css-16cuj0n-Input"
+                data-value=""
+              >
+                <input
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  autocapitalize="none"
+                  autocomplete="off"
+                  autocorrect="off"
+                  class=""
+                  id="snapshot-test.search"
+                  role="combobox"
+                  spellcheck="false"
+                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                  tabindex="0"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class=" css-1hb7zxy-IndicatorsContainer"
+            >
+              <div
+                aria-hidden="true"
+                class=" css-tlfecz-indicatorContainer"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="css-tj5bde-Svg"
+                  focusable="false"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                >
+                  <path
+                    d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                  />
+                </svg>
+              </div>
+              <span
+                class=" css-1okebmr-indicatorSeparator"
+              />
+              <div
+                aria-hidden="true"
+                class=" css-tlfecz-indicatorContainer"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="css-tj5bde-Svg"
+                  focusable="false"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                >
+                  <path
+                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <input
+            name="x"
+            type="hidden"
+            value="b"
+          />
+        </div>
+      </div>
+    </div>
+  </section>,
+  "_root": LoadedCheerio {
+    "0": Document {
+      "children": Array [
+        <html>
+          <head />
+          <body />
+        </html>,
+      ],
+      "endIndex": null,
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "startIndex": null,
+      "type": "root",
+      "x-mode": "quirks",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
