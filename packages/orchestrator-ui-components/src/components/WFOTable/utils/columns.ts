@@ -23,6 +23,7 @@ export type WFOTableColumns<T> = {
     [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
         render?: (cellValue: T[Property], row: T) => ReactNode;
         renderDetails?: (cellValue: T[Property], row: T) => ReactNode;
+        clipboardText?: (cellValue: T[Property], row: T) => string;
     };
 };
 

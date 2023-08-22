@@ -135,24 +135,30 @@ export const WFOTableWithFilter = <T,>({
     const processDetailData: WFOKeyValueTableDataType[] | undefined =
         selectedDataForDetailModal &&
         Object.entries(selectedDataForDetailModal).map(([key, value]) => {
-            const theKey = getTypedFieldFromObject(key, tableColumns);
-            if (theKey === null) {
+            const dataField = getTypedFieldFromObject(key, tableColumns);
+            if (dataField === null) {
                 return {
                     key,
                     value: <>{value}</>,
+                    plainTextValue:
+                        typeof value === 'string' ? value : undefined,
                 };
             }
 
-            const { renderDetails, render } = tableColumns[theKey];
-            const theValue = selectedDataForDetailModal[theKey];
+            const { renderDetails, render, clipboardText } =
+                tableColumns[dataField];
+            const dataValue = selectedDataForDetailModal[dataField];
             return {
-                key: theKey.toString(),
+                key: dataField.toString(),
                 value: (renderDetails &&
-                    renderDetails(theValue, selectedDataForDetailModal)) ??
+                    renderDetails(dataValue, selectedDataForDetailModal)) ??
                     (render &&
-                        render(theValue, selectedDataForDetailModal)) ?? (
-                        <>{theValue}</>
+                        render(dataValue, selectedDataForDetailModal)) ?? (
+                        <>{dataValue}</>
                     ),
+                plainTextValue:
+                    clipboardText?.(dataValue, selectedDataForDetailModal) ??
+                    (typeof dataValue === 'string' ? dataValue : undefined),
             };
         });
 

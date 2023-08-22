@@ -25,12 +25,16 @@ export const copyColumnStyle: SerializedStyles = css({
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
     verticalAlign: 'middle',
+});
+
+export const clickable: SerializedStyles = css({
     cursor: 'pointer',
 });
 
 export type WFOKeyValueTableDataType = {
     key: string;
-    value: ReactNode | string;
+    value: ReactNode;
+    plainTextValue?: string;
 };
 
 export type WFOKeyValueTableProps = {
@@ -43,7 +47,7 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({ keyValues }) => {
     return (
         <table width="100%">
             <tbody>
-                {keyValues.map(({ key, value }, i) => (
+                {keyValues.map(({ key, value, plainTextValue }, i) => (
                     <tr
                         key={key}
                         style={{
@@ -54,19 +58,22 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({ keyValues }) => {
                             <b>{key}</b>
                         </td>
                         <td css={valueColumnStyle}>{value}</td>
-                        {/*Todo: value is not a string (ReactNode), find a way to make it a string, or add a plain-text prop */}
-                        <td css={copyColumnStyle}>
-                            <EuiCopy textToCopy={'VALUE'}>
-                                {(copy) => (
-                                    <div onClick={copy}>
-                                        <WFOClipboardCopy
-                                            width={16}
-                                            height={16}
-                                            color={theme.colors.mediumShade}
-                                        />
-                                    </div>
-                                )}
-                            </EuiCopy>
+                        <td
+                            css={[copyColumnStyle, plainTextValue && clickable]}
+                        >
+                            {plainTextValue && (
+                                <EuiCopy textToCopy={plainTextValue}>
+                                    {(copy) => (
+                                        <div onClick={copy}>
+                                            <WFOClipboardCopy
+                                                width={16}
+                                                height={16}
+                                                color={theme.colors.mediumShade}
+                                            />
+                                        </div>
+                                    )}
+                                </EuiCopy>
+                            )}
                         </td>
                     </tr>
                 ))}

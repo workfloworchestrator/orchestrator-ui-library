@@ -114,6 +114,10 @@ export const WFOProcessListPage = () => {
                     subscriptions={subscriptions}
                 />
             ),
+            clipboardText: ({ page: subscriptions }) =>
+                subscriptions
+                    .map(({ subscriptionId }) => subscriptionId)
+                    .join(', '),
         },
         createdBy: {
             field: 'createdBy',
