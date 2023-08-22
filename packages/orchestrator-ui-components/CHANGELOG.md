@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.4
+
+### Patch Changes
+
+- 38d1229: Fixed handling navigation for pages with sidebar submenu items
+
 ## 0.2.3
 
 ### Patch Changes
