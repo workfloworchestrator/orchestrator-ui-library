@@ -3,6 +3,7 @@ import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const padding = theme.font.baseline * 2;
+    const keyColumnWidth = theme.base * 12;
     const radius = theme.border.radius.medium;
 
     const lightBackground = css({
@@ -14,9 +15,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const keyColumnStyle = css({
-        minWidth: 'fit-content',
+        width: keyColumnWidth,
         padding: padding,
-        paddingRight: padding * 10,
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
     });
