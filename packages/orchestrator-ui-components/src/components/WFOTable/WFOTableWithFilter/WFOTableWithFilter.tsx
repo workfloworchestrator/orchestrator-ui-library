@@ -147,11 +147,11 @@ export const WFOTableWithFilter = <T,>({
                 };
             }
 
-            const { renderDetails, render, clipboardText } =
+            const { renderDetails, render, clipboardText, name } =
                 tableColumns[dataField];
             const dataValue = selectedDataForDetailModal[dataField];
             return {
-                key: dataField.toString(),
+                key: name ?? dataField.toString(),
                 value: (renderDetails &&
                     renderDetails(dataValue, selectedDataForDetailModal)) ??
                     (render &&

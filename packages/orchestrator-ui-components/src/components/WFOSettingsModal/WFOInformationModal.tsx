@@ -15,7 +15,6 @@ export type WFOInformationModalProps = {
     children: ReactNode;
 };
 
-// Todo add translations
 export const WFOInformationModal: FC<WFOInformationModalProps> = ({
     title,
     onClose,
