@@ -62,7 +62,7 @@
             "subscriptions": "Subscriptions",
             "createdBy": "Gecreëerd door",
             "assignee": "Assignee",
-            "processId": "ID",
+            "processId": "PID",
             "started": "Gestart",
             "lastModified": "Aangepast op",
             "workflowTarget": "Doel"
