@@ -48,7 +48,7 @@ export type WFOTableWithFilterProps<T> = {
     esQueryString?: string;
     isLoading: boolean;
     localStorageKey: string;
-    disableDetailModal?: boolean;
+    detailModal?: boolean;
     detailModalTitle?: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
@@ -66,7 +66,7 @@ export const WFOTableWithFilter = <T,>({
     esQueryString,
     isLoading,
     localStorageKey,
-    disableDetailModal = false,
+    detailModal = true,
     detailModalTitle = 'Details',
     onUpdateEsQueryString,
     onUpdatePage,
@@ -94,7 +94,7 @@ export const WFOTableWithFilter = <T,>({
         );
     }, [localStorageKey]);
 
-    const viewDetailsColumn: WFOTableControlColumnConfig<T> = {
+    const detailsIconColumn: WFOTableControlColumnConfig<T> = {
         viewDetails: {
             field: 'viewDetails',
             width: '36px',
@@ -110,18 +110,12 @@ export const WFOTableWithFilter = <T,>({
     };
 
     const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
-        disableDetailModal
-            ? {
-                  ...leadingControlColumns,
-                  ...tableColumns,
-                  ...trailingControlColumns,
-              }
-            : {
-                  ...leadingControlColumns,
-                  ...tableColumns,
-                  ...trailingControlColumns,
-                  ...viewDetailsColumn,
-              };
+        {
+            ...leadingControlColumns,
+            ...tableColumns,
+            ...trailingControlColumns,
+            ...(detailModal ? detailsIconColumn : []),
+        };
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
         WFOTableDataColumnConfig<T, keyof T>
