@@ -68,6 +68,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             name: t('id'),
             width: '100',
             render: (value) => getFirstUuidPart(value),
+            renderDetails: (value) => value,
         },
         description: {
             field: 'description',
@@ -187,6 +188,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             pagination={pagination}
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
+            detailModalTitle={'Details - Subscription'}
             onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}

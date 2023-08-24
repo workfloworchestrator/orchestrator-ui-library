@@ -3,8 +3,14 @@ import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const padding = theme.font.baseline * 2;
+    const clipboardIconMargin = theme.font.baseline * 2;
     const keyColumnWidth = theme.base * 12;
     const radius = theme.border.radius.medium;
+
+    const keyValueTable = css({
+        display: 'grid',
+        gridTemplateColumns: `${keyColumnWidth}px 1fr`,
+    });
 
     const lightBackground = css({
         backgroundColor: theme.colors.emptyShade,
@@ -14,8 +20,10 @@ export const getStyles = (theme: EuiThemeComputed) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
+    const getBackgroundColorStyleForRow = (rowNumber: number) =>
+        rowNumber % 2 ? lightBackground : darkBackground;
+
     const keyColumnStyle = css({
-        width: keyColumnWidth,
         padding: padding,
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
@@ -23,25 +31,33 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     const valueColumnStyle: SerializedStyles = css({
         padding: padding,
-    });
-
-    const copyColumnStyle: SerializedStyles = css({
-        padding: padding,
         borderTopRightRadius: radius,
         borderBottomRightRadius: radius,
-        verticalAlign: 'middle',
+        display: 'flex',
+
+        '&:hover > div': {
+            visibility: 'visible',
+        },
+    });
+
+    const clipboardIconStyle = css({
+        visibility: 'hidden',
+        paddingBottom: 0,
     });
 
     const clickable: SerializedStyles = css({
+        marginLeft: clipboardIconMargin,
         cursor: 'pointer',
     });
 
     return {
+        keyValueTable,
         keyColumnStyle,
         valueColumnStyle,
-        copyColumnStyle,
+        clipboardIconStyle,
         clickable,
         lightBackground,
         darkBackground,
+        getBackgroundColorStyleForRow,
     };
 };

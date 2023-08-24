@@ -23,39 +23,38 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
     const {
         keyColumnStyle,
         valueColumnStyle,
-        copyColumnStyle,
+        clipboardIconStyle,
         clickable,
-        lightBackground,
-        darkBackground,
+        keyValueTable,
+        getBackgroundColorStyleForRow,
     } = getStyles(theme);
-
     return (
-        <table width="100%">
-            <tbody>
-                {keyValues.map(({ key, value, plainTextValue }, rowNumber) => {
-                    const shouldRenderCopyColumn =
-                        showCopyToClipboardIcon && plainTextValue;
-                    return (
-                        <tr
-                            key={key}
-                            css={
-                                rowNumber % 2 ? lightBackground : darkBackground
-                            }
+        <div css={keyValueTable}>
+            {keyValues.map(({ key, value, plainTextValue }, rowNumber) => {
+                const shouldRenderCopyColumn =
+                    showCopyToClipboardIcon && plainTextValue;
+                return (
+                    <>
+                        <div
+                            css={[
+                                getBackgroundColorStyleForRow(rowNumber),
+                                keyColumnStyle,
+                            ]}
                         >
-                            <td valign={'top'} css={keyColumnStyle}>
-                                <b>{key}</b>
-                            </td>
-                            <td css={valueColumnStyle}>{value}</td>
-                            <td
-                                css={[
-                                    copyColumnStyle,
-                                    shouldRenderCopyColumn && clickable,
-                                ]}
-                            >
+                            <b>{key}</b>
+                        </div>
+                        <div
+                            css={[
+                                getBackgroundColorStyleForRow(rowNumber),
+                                valueColumnStyle,
+                            ]}
+                        >
+                            <div>{value}</div>
+                            <div css={clipboardIconStyle}>
                                 {shouldRenderCopyColumn && (
                                     <EuiCopy textToCopy={plainTextValue}>
                                         {(copy) => (
-                                            <div onClick={copy}>
+                                            <div onClick={copy} css={clickable}>
                                                 <WFOClipboardCopy
                                                     width={16}
                                                     height={16}
@@ -67,11 +66,11 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
                                         )}
                                     </EuiCopy>
                                 )}
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </table>
+                            </div>
+                        </div>
+                    </>
+                );
+            })}
+        </div>
     );
 };
