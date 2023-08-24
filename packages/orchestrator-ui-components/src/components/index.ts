@@ -1,6 +1,7 @@
 export * from './WFOBadges';
 export * from './WFOPageTemplate/WFOBreadcrumbs';
 export * from './WFOFilterTabs';
+export * from './WFOKeyValueTable';
 export * from './WFOPageTemplate';
 export * from './WFOSearchBar';
 export * from './WFOSettingsModal';
