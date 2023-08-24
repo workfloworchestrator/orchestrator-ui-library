@@ -22,10 +22,7 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { defaultHiddenColumnsProductblocks } from './tableConfig';
 
-import { getFirstUuidPart } from '../../utils/uuid';
-
-import { parseDateToLocaleString } from '../../utils';
-
+import { getFirstUuidPart, parseDateToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -70,7 +67,9 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
             width: '90',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => (
+                <span title={value}>{getFirstUuidPart(value)}</span>
+            ),
             renderDetails: (value) => value,
         },
         name: {

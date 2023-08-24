@@ -67,7 +67,9 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'subscriptionId',
             name: t('id'),
             width: '100',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => (
+                <span title={value}>{getFirstUuidPart(value)}</span>
+            ),
             renderDetails: (value) => value,
         },
         description: {

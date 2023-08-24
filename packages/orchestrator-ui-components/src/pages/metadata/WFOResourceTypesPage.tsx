@@ -16,8 +16,6 @@ import {
     getEsQueryStringHandler,
 } from '../../components';
 
-import { getFirstUuidPart } from '../../utils/uuid';
-
 import { defaultHiddenColumnsResourcetypes } from './tableConfig';
 
 import type { ResourceTypeDefinition } from '../../types';
@@ -28,6 +26,7 @@ import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { getFirstUuidPart } from '../../utils';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -58,7 +57,9 @@ export const WFOResourceTypesPage = () => {
             field: RESOURCE_TYPE_FIELD_ID,
             name: t('resourceId'),
             width: '90',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => (
+                <span title={value}>{getFirstUuidPart(value)}</span>
+            ),
             renderDetails: (value) => value,
         },
         resourceType: {
