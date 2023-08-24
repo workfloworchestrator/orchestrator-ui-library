@@ -64,7 +64,7 @@
             "subscriptions": "Subscriptions",
             "createdBy": "Created By",
             "assignee": "Assignee",
-            "processId": "ID",
+            "processId": "PID",
             "started": "Started",
             "lastModified": "Last Modified",
             "workflowTarget": "Target"

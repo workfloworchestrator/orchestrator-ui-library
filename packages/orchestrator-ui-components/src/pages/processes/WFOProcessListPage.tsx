@@ -1,19 +1,19 @@
 import React from 'react';
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    WFODataSorting,
+    COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     getDataSortHandler,
     getEsQueryStringHandler,
     getPageChangeHandler,
     getTableConfigFromLocalStorage,
+    WFODataSorting,
+    WFOFilterTabs,
     WFOLoading,
+    WFOProcessStatusBadge,
     WFOTableColumns,
     WFOTableWithFilter,
-    WFOFilterTabs,
-    COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    WFOProcessStatusBadge,
 } from '../../components';
 import { Process, SortOrder } from '../../types';
 import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -33,7 +33,7 @@ import { useTranslations } from 'next-intl';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
-    const t = useTranslations('processes.index'); // todo
+    const t = useTranslations('processes.index');
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
@@ -103,9 +103,21 @@ export const WFOProcessListPage = () => {
             field: 'subscriptions',
             name: t('subscriptions'),
             width: '400',
-            render: ({ page }) => (
-                <WFOProcessesListSubscriptionsCell subscriptions={page} />
+            render: ({ page: subscriptions }) => (
+                <WFOProcessesListSubscriptionsCell
+                    subscriptions={subscriptions}
+                    numberOfSubscriptionsToRender={1}
+                />
             ),
+            renderDetails: ({ page: subscriptions }) => (
+                <WFOProcessesListSubscriptionsCell
+                    subscriptions={subscriptions}
+                />
+            ),
+            clipboardText: ({ page: subscriptions }) =>
+                subscriptions
+                    .map(({ subscriptionId }) => subscriptionId)
+                    .join(', '),
         },
         createdBy: {
             field: 'createdBy',
@@ -197,6 +209,7 @@ export const WFOProcessListPage = () => {
                 isLoading={isFetching}
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={localStorageKey}
+                detailModalTitle={'Details - Process'}
                 onUpdateEsQueryString={getEsQueryStringHandler<Process>(
                     setDataDisplayParam,
                 )}

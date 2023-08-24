@@ -11,30 +11,41 @@ import { useTranslations } from 'next-intl';
 import { WFOCheckmarkCircleFill, WFOMinusCircleOutline } from '../../icons';
 import { WFOSubscriptionStatusBadge } from '../WFOBadges';
 import {
-    subscriptionDefinitionCellStyle,
-    subscriptionTableRowStyle,
-    subscriptionValueCellStyle,
-} from './styles';
+    WFOKeyValueTable,
+    WFOKeyValueTableDataType,
+} from '../WFOKeyValueTable/WFOKeyValueTable';
+import { useOrchestratorTheme } from '../../hooks';
+import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const RenderField = (field: string, data: any) => {
+export const RenderField = (
+    field: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any,
+    theme: EuiThemeComputed,
+) => {
     if (field === 'status')
         return <WFOSubscriptionStatusBadge status={data[field]} />;
     else if (field === 'insync')
-        return (
-            <div style={{ position: 'relative', top: 5 }}>
-                {data[field] ? (
-                    <WFOCheckmarkCircleFill color="#007832" />
-                ) : (
-                    <WFOMinusCircleOutline color="#BD271F" />
-                )}
-            </div>
+        return data[field] ? (
+            <WFOCheckmarkCircleFill
+                height={20}
+                width={20}
+                color={theme.colors.primary}
+            />
+        ) : (
+            <WFOMinusCircleOutline
+                height={20}
+                width={20}
+                color={theme.colors.mediumShade}
+            />
         );
     else if (field === 'product.name') return <div>{data.product.name}</div>;
     return <div>{data[field]}</div>;
 };
 
 export const WFOSubscriptionBlock = (title: string, data: object) => {
+    const { theme } = useOrchestratorTheme();
+
     const t = useTranslations('common');
     const keys = [];
     for (const key in data) {
@@ -45,6 +56,24 @@ export const WFOSubscriptionBlock = (title: string, data: object) => {
         }
     }
     if (keys.length === 0) return;
+
+    const productNameKeyValue: WFOKeyValueTableDataType = {
+        key: 'Product',
+        // @ts-ignore
+        value: data.product.name,
+    };
+
+    const subscriptionKeyValues: WFOKeyValueTableDataType[] = keys.map(
+        (key) => ({
+            key: key,
+            value: RenderField(key, data, theme),
+        }),
+    );
+
+    const keyValues: WFOKeyValueTableDataType[] = [
+        productNameKeyValue,
+        ...subscriptionKeyValues,
+    ];
 
     return (
         <>
@@ -65,43 +94,10 @@ export const WFOSubscriptionBlock = (title: string, data: object) => {
                     </EuiFlexGroup>
 
                     <EuiSpacer size={'s'}></EuiSpacer>
-                    <table width="100%">
-                        <tbody>
-                            <tr key={0} css={subscriptionTableRowStyle}>
-                                <td
-                                    valign={'top'}
-                                    css={subscriptionDefinitionCellStyle}
-                                >
-                                    <b>{t('product')}</b>
-                                </td>
-                                <td css={subscriptionValueCellStyle}>
-                                    {/*
-                                    @typescript-eslint/ban-ts-comment
-                                    @ts-ignore */}
-                                    {data.product.name}
-                                </td>
-                            </tr>
-                            {keys.map((k, i) => (
-                                <tr
-                                    key={i}
-                                    style={{
-                                        backgroundColor:
-                                            i % 2 ? '#F1F5F9' : '#FFF',
-                                    }}
-                                >
-                                    <td
-                                        valign={'top'}
-                                        css={subscriptionDefinitionCellStyle}
-                                    >
-                                        <b>{k}</b>
-                                    </td>
-                                    <td css={subscriptionValueCellStyle}>
-                                        {RenderField(k, data)}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <WFOKeyValueTable
+                        keyValues={keyValues}
+                        showCopyToClipboardIcon={false}
+                    />
                 </div>
             </div>
         </>

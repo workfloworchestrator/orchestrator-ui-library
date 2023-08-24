@@ -2,17 +2,27 @@ import React from 'react';
 
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 import { RenderField } from './WFOSubscriptionBlock';
+import { useOrchestratorTheme } from '../../hooks';
 import {
-    subscriptionDefinitionCellStyle,
-    subscriptionValueCellStyle,
-} from './styles';
+    WFOKeyValueTable,
+    WFOKeyValueTableDataType,
+} from '../WFOKeyValueTable/WFOKeyValueTable';
 
 export const WFOFixedInputBlock = (title: string, data: object) => {
+    const { theme } = useOrchestratorTheme();
+
     const keys = [];
     for (const key in data) {
         keys.push(key);
     }
     if (keys.length === 0) return;
+
+    const fixedInoutsKeyValues: WFOKeyValueTableDataType[] = keys.map(
+        (key) => ({
+            key: key,
+            value: RenderField(key, data, theme),
+        }),
+    );
 
     return (
         <>
@@ -28,29 +38,10 @@ export const WFOFixedInputBlock = (title: string, data: object) => {
                     </EuiFlexGroup>
 
                     <EuiSpacer size={'s'}></EuiSpacer>
-                    <table width="100%">
-                        <tbody>
-                            {keys.map((k, i) => (
-                                <tr
-                                    key={i}
-                                    style={{
-                                        backgroundColor:
-                                            i % 2 ? '#FFF' : '#F1F5F9',
-                                    }}
-                                >
-                                    <td
-                                        valign={'top'}
-                                        css={subscriptionDefinitionCellStyle}
-                                    >
-                                        <b>{k}</b>
-                                    </td>
-                                    <td css={subscriptionValueCellStyle}>
-                                        {RenderField(k, data)}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <WFOKeyValueTable
+                        keyValues={fixedInoutsKeyValues}
+                        showCopyToClipboardIcon={false}
+                    />
                 </div>
             </div>
         </>

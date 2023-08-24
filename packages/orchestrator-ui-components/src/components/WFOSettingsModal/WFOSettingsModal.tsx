@@ -11,7 +11,7 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-export type SettingsModalProps = {
+export type WFOSettingsModalProps = {
     title: string;
     onClose: () => void;
     onResetToDefaults: () => void;
@@ -19,7 +19,7 @@ export type SettingsModalProps = {
     children: ReactNode;
 };
 
-export const SettingsModal: FC<SettingsModalProps> = ({
+export const WFOSettingsModal: FC<WFOSettingsModalProps> = ({
     title,
     onClose,
     onResetToDefaults,
