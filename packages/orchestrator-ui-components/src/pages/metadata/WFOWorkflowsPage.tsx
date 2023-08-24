@@ -17,6 +17,10 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
+import {
+    defaultHiddenColumnsWorkflows
+} from './tableConfig';
+
 import type { WorkflowDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -231,6 +235,7 @@ export const WFOWorkflowsPage = () => {
                 data={data ? data.workflows.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
+                defaultHiddenColumns={defaultHiddenColumnsWorkflows}
                 onUpdateDataSort={getDataSortHandler<WorkflowDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,

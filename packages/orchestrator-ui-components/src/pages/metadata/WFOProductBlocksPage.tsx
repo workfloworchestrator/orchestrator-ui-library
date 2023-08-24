@@ -20,7 +20,14 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
+import {
+    defaultHiddenColumnsProductblocks
+} from './tableConfig';
+
+import { getFirstUuidPart } from '../../utils/uuid';
+
 import { parseDateToLocaleString } from '../../utils';
+
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -64,12 +71,14 @@ export const WFOProductBlocksPage = () => {
         productBlockId: {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
-            width: '110',
+            width: '90',
+            render: (value) => getFirstUuidPart(value),
+            renderDetails: (value) => value,
         },
         name: {
             field: PRODUCT_BLOCK_FIELD_NAME,
             name: t('name'),
-            width: '110',
+            width: '200',
         },
         description: {
             field: PRODUCT_BLOCK_FIELD_DESCRIPTION,
@@ -79,6 +88,7 @@ export const WFOProductBlocksPage = () => {
         tag: {
             field: PRODUCT_BLOCK_FIELD_TAG,
             name: t('tag'),
+            width: '90',
         },
         status: {
             field: PRODUCT_BLOCK_FIELD_STATUS,
@@ -146,6 +156,7 @@ export const WFOProductBlocksPage = () => {
                 data={data ? data.productBlocks.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
+                defaultHiddenColumns={defaultHiddenColumnsProductblocks}
                 onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,

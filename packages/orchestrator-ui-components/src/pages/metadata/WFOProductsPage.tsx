@@ -7,6 +7,7 @@ import {
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
+import type { WFOTableColumns, WFODataSorting } from '../../components';
 import {
     WFOSubscriptionStatusBadge,
     WFOProductBlockBadge,
@@ -18,7 +19,12 @@ import {
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
+
+import {
+    defaultHiddenColumnsProducts
+} from './tableConfig';
+
+import { getFirstUuidPart } from '../../utils/uuid';
 
 import type { ProductDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -59,12 +65,14 @@ export const WFOProductsPage = () => {
         productId: {
             field: PRODUCT_FIELD_PRODUCT_ID,
             name: t('id'),
-            width: '110',
+            width: '90',
+            render: (value) => getFirstUuidPart(value),
+            renderDetails: (value) => value,
         },
         name: {
             field: PRODUCT_FIELD_NAME,
             name: t('name'),
-            width: '110',
+            width: '200',
         },
         description: {
             field: PRODUCT_FIELD_DESCRIPTION,
@@ -151,6 +159,7 @@ export const WFOProductsPage = () => {
                 data={data ? data.products.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
+                defaultHiddenColumns={defaultHiddenColumnsProducts}
                 onUpdateDataSort={getDataSortHandler<ProductDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,
