@@ -168,22 +168,21 @@ export const WFOWorkflowsPage = () => {
         name: {
             field: WORKFLOW_FIELD_NAME,
             name: t('name'),
-            width: '110',
+            width: '200',
         },
         description: {
             field: WORKFLOW_FIELD_DESCRIPTION,
             name: t('description'),
-            width: '220',
+            width: '300',
         },
         target: {
             field: WORKFLOW_FIELD_TARGET,
             name: t('target'),
-            width: '50',
+            width: '90',
         },
         productTags: {
             field: WORKFLOW_FIELD_PRODUCT_TAGS,
             name: t('productTags'),
-            width: '200',
             render: (productTags) => (
                 <>
                     {productTags &&
