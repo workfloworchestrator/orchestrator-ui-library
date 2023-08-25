@@ -7,6 +7,7 @@ import {
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
+import type { WFOTableColumns, WFODataSorting } from '../../components';
 import { WFOTableWithFilter } from '../../components';
 import {
     getTableConfigFromLocalStorage,
@@ -14,7 +15,10 @@ import {
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
+
+import { getFirstUuidPart } from '../../utils/uuid';
+
+import { defaultHiddenColumnsResourcetypes } from './tableConfig';
 
 import type { ResourceTypeDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -50,20 +54,22 @@ export const WFOResourceTypesPage = () => {
         });
 
     const tableColumns: WFOTableColumns<ResourceTypeDefinition> = {
+        resourceTypeId: {
+            field: RESOURCE_TYPE_FIELD_ID,
+            name: t('resourceId'),
+            width: '90',
+            render: (value) => getFirstUuidPart(value),
+            renderDetails: (value) => value,
+        },
         resourceType: {
             field: RESOURCE_TYPE_FIELD_TYPE,
             name: t('type'),
-            width: '110',
+            width: '200',
         },
         description: {
             field: RESOURCE_TYPE_FIELD_DESCRIPTION,
             name: t('description'),
             width: '400',
-        },
-        resourceTypeId: {
-            field: RESOURCE_TYPE_FIELD_ID,
-            name: t('resourceId'),
-            width: '110',
         },
     };
 
@@ -98,6 +104,7 @@ export const WFOResourceTypesPage = () => {
                 data={data ? data.resourceTypes.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
+                defaultHiddenColumns={defaultHiddenColumnsResourcetypes}
                 onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,
