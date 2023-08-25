@@ -22,7 +22,7 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { defaultHiddenColumnsProductblocks } from './tableConfig';
 
-import { getFirstUuidPart, parseDateToLocaleString } from '../../utils';
+import { parseDateToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -32,6 +32,7 @@ import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
+import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -68,9 +69,7 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
             width: '90',
-            render: (value) => (
-                <span title={value}>{getFirstUuidPart(value)}</span>
-            ),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {

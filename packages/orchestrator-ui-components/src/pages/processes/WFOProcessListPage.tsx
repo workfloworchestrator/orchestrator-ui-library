@@ -30,7 +30,7 @@ import {
     defaultHiddenColumnsCompletedProcesses,
 } from './tableConfig';
 import { useTranslations } from 'next-intl';
-import { getFirstUuidPart } from '../../utils';
+import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
@@ -131,9 +131,7 @@ export const WFOProcessListPage = () => {
         processId: {
             field: 'processId',
             name: t('processId'),
-            render: (value) => (
-                <span title={value}>{getFirstUuidPart(value)}</span>
-            ),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         started: {

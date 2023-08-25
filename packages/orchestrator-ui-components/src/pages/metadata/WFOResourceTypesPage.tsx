@@ -26,7 +26,7 @@ import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
-import { getFirstUuidPart } from '../../utils';
+import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -57,9 +57,7 @@ export const WFOResourceTypesPage = () => {
             field: RESOURCE_TYPE_FIELD_ID,
             name: t('resourceId'),
             width: '90',
-            render: (value) => (
-                <span title={value}>{getFirstUuidPart(value)}</span>
-            ),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         resourceType: {
