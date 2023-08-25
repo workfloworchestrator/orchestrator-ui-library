@@ -24,6 +24,7 @@ import { SortOrder } from '../../types';
 
 import { useDataDisplayParams } from '../../hooks';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { EuiBadgeGroup } from '@elastic/eui';
 
 const WORKFLOW_FIELD_NAME: keyof WorkflowDefinition = 'name';
 const WORKFLOW_FIELD_DESCRIPTION: keyof WorkflowDefinition = 'description';
@@ -183,13 +184,21 @@ export const WFOWorkflowsPage = () => {
             name: t('productTags'),
             render: (productTags) => (
                 <>
-                    {productTags &&
-                        productTags.map((productTag, index) => (
-                            <WFOProductBlockBadge key={index}>
-                                {productTag}
-                            </WFOProductBlockBadge>
-                        ))}
+                    {productTags?.map((productTag, index) => (
+                        <WFOProductBlockBadge key={index}>
+                            {productTag}
+                        </WFOProductBlockBadge>
+                    ))}
                 </>
+            ),
+            renderDetails: (productTags) => (
+                <EuiBadgeGroup gutterSize="s">
+                    {productTags?.map((productTag, index) => (
+                        <WFOProductBlockBadge key={index}>
+                            {productTag}
+                        </WFOProductBlockBadge>
+                    ))}
+                </EuiBadgeGroup>
             ),
         },
         createdAt: {

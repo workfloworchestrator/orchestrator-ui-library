@@ -20,7 +20,6 @@ import { SubscriptionListItem } from './types';
 import { FilterQuery } from '../WFOFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { getFirstUuidPart } from '../../utils/uuid';
 import { WFOSubscriptionStatusBadge } from '../WFOBadges/WFOSubscriptionStatusBadge';
 import {
     WFOCheckmarkCircleFill,
@@ -34,6 +33,7 @@ import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
 import { WFOLoading } from '../WFOLoading';
 import { SortOrder } from '../../types';
 import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
+import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -67,7 +67,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'subscriptionId',
             name: t('id'),
             width: '100',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         description: {

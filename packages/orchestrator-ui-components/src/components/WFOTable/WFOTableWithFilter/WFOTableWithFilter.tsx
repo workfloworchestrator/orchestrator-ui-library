@@ -128,16 +128,14 @@ export const WFOTableWithFilter = <T,>({
         };
     });
 
-    const processDetailData: WFOKeyValueTableDataType[] | undefined =
+    const rowDetailData: WFOKeyValueTableDataType[] | undefined =
         selectedDataForDetailModal &&
-        Object.entries(selectedDataForDetailModal).map(([key, value]) => {
+        Object.entries(tableColumns).map(([key]) => {
             const dataField = getTypedFieldFromObject(key, tableColumns);
             if (dataField === null) {
                 return {
                     key,
-                    value: <>{value}</>,
-                    plainTextValue:
-                        typeof value === 'string' ? value : undefined,
+                    value: undefined,
                 };
             }
 
@@ -232,13 +230,13 @@ export const WFOTableWithFilter = <T,>({
                 />
             )}
 
-            {processDetailData && (
+            {rowDetailData && (
                 <WFOInformationModal
                     title={detailModalTitle}
                     onClose={() => setSelectedDataForDetailModal(undefined)}
                 >
                     <WFOKeyValueTable
-                        keyValues={processDetailData}
+                        keyValues={rowDetailData}
                         showCopyToClipboardIcon
                     />
                 </WFOInformationModal>

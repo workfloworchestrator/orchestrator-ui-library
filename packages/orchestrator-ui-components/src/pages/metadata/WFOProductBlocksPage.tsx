@@ -22,10 +22,7 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { defaultHiddenColumnsProductblocks } from './tableConfig';
 
-import { getFirstUuidPart } from '../../utils/uuid';
-
 import { parseDateToLocaleString } from '../../utils';
-
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -34,6 +31,8 @@ import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { EuiBadgeGroup } from '@elastic/eui';
+import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -70,7 +69,7 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
             width: '90',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {
@@ -109,6 +108,15 @@ export const WFOProductBlocksPage = () => {
                         </WFOProductBlockBadge>
                     ))}
                 </>
+            ),
+            renderDetails: (resourceTypes) => (
+                <EuiBadgeGroup gutterSize="s">
+                    {resourceTypes.map((resourceType, index) => (
+                        <WFOProductBlockBadge key={index}>
+                            {resourceType.resourceType}
+                        </WFOProductBlockBadge>
+                    ))}
+                </EuiBadgeGroup>
             ),
         },
         createdAt: {

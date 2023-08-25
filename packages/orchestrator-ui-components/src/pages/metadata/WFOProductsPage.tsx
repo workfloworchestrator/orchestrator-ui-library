@@ -22,8 +22,6 @@ import {
 
 import { defaultHiddenColumnsProducts } from './tableConfig';
 
-import { getFirstUuidPart } from '../../utils/uuid';
-
 import type { ProductDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
@@ -32,6 +30,7 @@ import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -64,7 +63,7 @@ export const WFOProductsPage = () => {
             field: PRODUCT_FIELD_PRODUCT_ID,
             name: t('id'),
             width: '90',
-            render: (value) => getFirstUuidPart(value),
+            render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {
