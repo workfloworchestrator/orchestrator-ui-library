@@ -19,13 +19,19 @@ import { WFOProcessesListSubscriptionsCell } from '../processes';
 import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
+import {
+    useDataDisplayParams,
+    useOrchestratorTheme,
+    useQueryWithGraphql,
+} from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { Pagination } from '@elastic/eui/src/components';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
+import { WFOPlusCircleFill } from '../../icons';
 
 export const WFOTaskListPage = () => {
+    const { theme } = useOrchestratorTheme();
     const t = useTranslations('processes.index');
 
     const initialPageSize =
@@ -173,7 +179,14 @@ export const WFOTaskListPage = () => {
 
             <WFOPageHeader pageTitle="Tasks">
                 <EuiButton>Rerun all</EuiButton>
-                <EuiButton fill>New task</EuiButton>
+                <EuiButton
+                    fill
+                    iconType={() => (
+                        <WFOPlusCircleFill color={theme.colors.emptyShade} />
+                    )}
+                >
+                    New task
+                </EuiButton>
             </WFOPageHeader>
             <EuiHorizontalRule />
 
