@@ -20,9 +20,7 @@ import {
     getEsQueryStringHandler,
 } from '../../components';
 
-import {
-    defaultHiddenColumnsProducts
-} from './tableConfig';
+import { defaultHiddenColumnsProducts } from './tableConfig';
 
 import { getFirstUuidPart } from '../../utils/uuid';
 

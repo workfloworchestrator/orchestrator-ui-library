@@ -20,9 +20,7 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import {
-    defaultHiddenColumnsProductblocks
-} from './tableConfig';
+import { defaultHiddenColumnsProductblocks } from './tableConfig';
 
 import { getFirstUuidPart } from '../../utils/uuid';
 

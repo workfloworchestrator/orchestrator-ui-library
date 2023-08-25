@@ -17,9 +17,7 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import {
-    defaultHiddenColumnsWorkflows
-} from './tableConfig';
+import { defaultHiddenColumnsWorkflows } from './tableConfig';
 
 import type { WorkflowDefinition } from '../../types';
 import { SortOrder } from '../../types';

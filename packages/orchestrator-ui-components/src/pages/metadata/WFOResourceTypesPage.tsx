@@ -18,9 +18,7 @@ import {
 
 import { getFirstUuidPart } from '../../utils/uuid';
 
-import {
-    defaultHiddenColumnsResourcetypes
-} from './tableConfig';
+import { defaultHiddenColumnsResourcetypes } from './tableConfig';
 
 import type { ResourceTypeDefinition } from '../../types';
 import { SortOrder } from '../../types';
