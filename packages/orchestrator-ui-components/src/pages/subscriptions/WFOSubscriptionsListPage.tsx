@@ -18,13 +18,22 @@ import {
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components/WFOTable';
 import { WFOFilterTabs } from '../../components';
+import { ToastTypes } from '../../contexts';
+import { useToastMessage } from '../../hooks';
 
 export const WFOSubscriptionsListPage = () => {
     const router = useRouter();
+    const toastMessage = useToastMessage()
+    let initialPageSize = DEFAULT_PAGE_SIZE
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
-            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    try {
+      initialPageSize =
+      getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
+          ?.selectedPageSize || initialPageSize;
+    } catch {
+        toastMessage.addToast(ToastTypes.ERROR, 'TEXT', 'TITLE');
+    }
+
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<SubscriptionListItem>({
             pageSize: initialPageSize,
