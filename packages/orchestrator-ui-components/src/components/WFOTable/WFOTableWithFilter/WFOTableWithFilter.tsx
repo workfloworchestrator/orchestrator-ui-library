@@ -76,9 +76,11 @@ export const WFOTableWithFilter = <T,>({
     const { theme } = useOrchestratorTheme();
 
     const defaultPageSize = pagination.pageSize;
-    const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+    const [hiddenColumns, setHiddenColumns] =
+        useState<TableColumnKeys<T>>(defaultHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
-    const [selectedDataForDetailModal, setSelectedDataForDetailModal] = useState<T | undefined>(undefined);
+    const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
+        useState<T | undefined>(undefined);
 
     const detailsIconColumn: WFOTableControlColumnConfig<T> = {
         viewDetails: {

@@ -25,7 +25,11 @@ import { defaultHiddenColumnsProducts } from './tableConfig';
 import type { ProductDefinition } from '../../types';
 import { SortOrder } from '../../types';
 
-import { useDataDisplayParams, useQueryWithGraphql, useToastMessage } from '../../hooks';
+import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useToastMessage,
+} from '../../hooks';
 import { ToastTypes } from '../../../dist';
 import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
@@ -44,23 +48,23 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 
 export const WFOProductsPage = () => {
     const t = useTranslations('metadata.products');
-    const toastMessage = useToastMessage()
+    const toastMessage = useToastMessage();
 
-    let initialPageSize = DEFAULT_PAGE_SIZE
+    let initialPageSize = DEFAULT_PAGE_SIZE;
 
     try {
         const storedConfig = getTableConfigFromLocalStorage(
             METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
-        )
-        if(storedConfig && storedConfig.selectedPageSize)  {
-          initialPageSize = storedConfig.selectedPageSize
+        );
+        if (storedConfig && storedConfig.selectedPageSize) {
+            initialPageSize = storedConfig.selectedPageSize;
         }
     } catch {
-      toastMessage.addToast(
-        ToastTypes.ERROR,
-        'Failed to retrieve stored table setting',
-        'Settings Error',
-      )
+        toastMessage.addToast(
+            ToastTypes.ERROR,
+            'Failed to retrieve stored table setting',
+            'Settings Error',
+        );
     }
 
     const { dataDisplayParams, setDataDisplayParam } =
@@ -150,7 +154,7 @@ export const WFOProductsPage = () => {
         'products',
         true,
     );
-    
+
     const totalItems = data?.products.pageInfo.totalItems;
 
     const pagination: Pagination = {

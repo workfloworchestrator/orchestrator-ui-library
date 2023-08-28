@@ -10,7 +10,7 @@ import {
     OrchestratorConfig,
     OrchestratorConfigProvider,
     WFOPageTemplate,
-    ToastsContextProvider
+    ToastsContextProvider,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -73,17 +73,17 @@ function CustomApp({ Component, pageProps }: AppProps) {
                             contextSharing={true}
                         >
                             <ToastsContextProvider>
-                              <WFOPageTemplate getAppLogo={getAppLogo}>
-                                  <QueryParamProvider
-                                      adapter={NextAdapter}
-                                      options={{
-                                          removeDefaultsFromUrl: false,
-                                          enableBatching: true,
-                                      }}
-                                  >
-                                      <Component {...pageProps} />
-                                  </QueryParamProvider>
-                              </WFOPageTemplate>
+                                <WFOPageTemplate getAppLogo={getAppLogo}>
+                                    <QueryParamProvider
+                                        adapter={NextAdapter}
+                                        options={{
+                                            removeDefaultsFromUrl: false,
+                                            enableBatching: true,
+                                        }}
+                                    >
+                                        <Component {...pageProps} />
+                                    </QueryParamProvider>
+                                </WFOPageTemplate>
                             </ToastsContextProvider>
                             <ReactQueryDevtools initialIsOpen={false} />
                         </QueryClientProvider>

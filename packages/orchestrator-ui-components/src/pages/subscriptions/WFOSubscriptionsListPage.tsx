@@ -23,13 +23,14 @@ import { useToastMessage } from '../../hooks';
 
 export const WFOSubscriptionsListPage = () => {
     const router = useRouter();
-    const toastMessage = useToastMessage()
-    let initialPageSize = DEFAULT_PAGE_SIZE
+    const toastMessage = useToastMessage();
+    let initialPageSize = DEFAULT_PAGE_SIZE;
 
     try {
-      initialPageSize =
-      getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
-          ?.selectedPageSize || initialPageSize;
+        initialPageSize =
+            getTableConfigFromLocalStorage(
+                SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+            )?.selectedPageSize || initialPageSize;
     } catch {
         toastMessage.addToast(ToastTypes.ERROR, 'TEXT', 'TITLE');
     }

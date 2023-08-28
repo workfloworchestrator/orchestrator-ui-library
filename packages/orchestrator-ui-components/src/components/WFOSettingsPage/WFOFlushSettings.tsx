@@ -3,7 +3,7 @@ import {
     EuiSpacer,
     EuiPanel,
     EuiText,
-    EuiComboBox
+    EuiComboBox,
 } from '@elastic/eui';
 import React, { FunctionComponent, useContext, useState } from 'react';
 import { useCacheNames } from '../../hooks/DataFetchHooks';
@@ -24,8 +24,8 @@ export const WFOFlushSettings: FunctionComponent = () => {
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
     );
-    const toastMessage = useToastMessage()
-    
+    const toastMessage = useToastMessage();
+
     const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
         setSelected(selectedOptions);
     };
@@ -47,14 +47,14 @@ export const WFOFlushSettings: FunctionComponent = () => {
         }
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
         await clearCache(orchestratorApiBaseUrl, cacheKey).then(() => {
-          toastMessage?.addToast(
-            ToastTypes.ERROR,
-            <p>
-                Cache123 for cache key &quot;{cacheKey}&quot; flushed
-                successfully
-            </p>,
-            'Cache cleared',
-        );
+            toastMessage?.addToast(
+                ToastTypes.ERROR,
+                <p>
+                    Cache123 for cache key &quot;{cacheKey}&quot; flushed
+                    successfully
+                </p>,
+                'Cache cleared',
+            );
         });
     };
 
