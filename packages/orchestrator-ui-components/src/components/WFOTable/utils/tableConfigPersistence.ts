@@ -16,31 +16,26 @@ export const isValidLocalStorageTableConfig = <T>(
 export const getTableConfigFromLocalStorage = <T>(
     key: string,
 ): LocalStorageTableConfig<T> | undefined => {
-    try {
-        const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
-        return isValidLocalStorageTableConfig(parsedJson)
-            ? parsedJson
-            : undefined;
-    } catch (e) {
-        return undefined;
-    }
+  
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
+    return isValidLocalStorageTableConfig(parsedJson) ? parsedJson : undefined;
+  }
+  return undefined
 };
 
 export const setTableConfigToLocalStorage = <T>(
     key: string,
     updatedTableConfig: LocalStorageTableConfig<T>,
 ) => {
-    try {
-        localStorage.setItem(key, JSON.stringify(updatedTableConfig));
-    } catch {
-        // Todo: implement error handling
-        // https://github.com/workfloworchestrator/orchestrator-ui/issues/134
-        console.error(
-            `An error occurred while updating the default table config for "${key}" in local storage`,
-        );
-    }
+  console.log(key, updatedTableConfig)
+  if (typeof window !== 'undefined' && window.localStorage) {
+    localStorage.setItem(key, JSON.stringify(updatedTableConfig));
+  }  
 };
 
 export const clearTableConfigFromLocalStorage = (key: string) => {
+  if (typeof window !== 'undefined' && window.localStorage) {
     localStorage.removeItem(key);
+  }  
 };
