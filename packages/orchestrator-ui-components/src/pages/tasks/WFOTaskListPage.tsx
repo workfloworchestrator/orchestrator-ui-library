@@ -36,11 +36,17 @@ export const WFOTaskListPage = () => {
             },
         });
 
-    const isTaskFilter: FilterQuery<Process> = {
-        // @ts-ignore waiting for fix in backend
-        field: 'istask',
-        value: 'true',
-    };
+    const alwaysOnFilters: FilterQuery<Process>[] = [
+        {
+            // @ts-ignore waiting for fix in backend
+            field: 'istask',
+            value: 'true',
+        },
+        {
+            field: 'status',
+            value: 'running-failed-api_unavailable-inconsistent_data',
+        },
+    ];
 
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
@@ -99,7 +105,7 @@ export const WFOTaskListPage = () => {
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 overrideDefaultTableColumns={handleOverrideTableColumns}
-                alwaysOnFilters={[isTaskFilter]}
+                alwaysOnFilters={alwaysOnFilters}
             />
         </>
     );
