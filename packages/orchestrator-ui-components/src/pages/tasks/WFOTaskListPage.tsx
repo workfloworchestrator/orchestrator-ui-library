@@ -28,7 +28,7 @@ import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processList
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { Pagination } from '@elastic/eui/src/components';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
-import { WFOPlusCircleFill } from '../../icons';
+import { WFOPlusCircleFill, WFORefresh } from '../../icons';
 
 export const WFOTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
@@ -178,7 +178,13 @@ export const WFOTaskListPage = () => {
             <EuiSpacer />
 
             <WFOPageHeader pageTitle="Tasks">
-                <EuiButton>Rerun all</EuiButton>
+                <EuiButton
+                    iconType={() => (
+                        <WFORefresh color={theme.colors.primaryText} />
+                    )}
+                >
+                    Rerun all
+                </EuiButton>
                 <EuiButton
                     fill
                     iconType={() => (
