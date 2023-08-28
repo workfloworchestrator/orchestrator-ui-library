@@ -31,7 +31,7 @@ export type WFOProcessesListProps = {
         prop: DisplayParamKey,
         value: DataDisplayParams<Process>[DisplayParamKey],
     ) => void;
-    overrideTableColumns?: (
+    overrideDefaultTableColumns?: (
         defaultTableColumns: WFOTableColumns<Process>,
     ) => WFOTableColumns<Process>;
 };
@@ -42,7 +42,7 @@ export const WFOProcessesList: FC<WFOProcessesListProps> = ({
     localStorageKey,
     dataDisplayParams,
     setDataDisplayParam,
-    overrideTableColumns,
+    overrideDefaultTableColumns,
 }) => {
     const t = useTranslations('processes.index');
 
@@ -117,8 +117,8 @@ export const WFOProcessesList: FC<WFOProcessesListProps> = ({
             name: t('lastModified'),
         },
     };
-    const tableColumns: WFOTableColumns<Process> = overrideTableColumns
-        ? overrideTableColumns(defaultTableColumns)
+    const tableColumns: WFOTableColumns<Process> = overrideDefaultTableColumns
+        ? overrideDefaultTableColumns(defaultTableColumns)
         : defaultTableColumns;
 
     const { data, isFetching } = useQueryWithGraphql(
