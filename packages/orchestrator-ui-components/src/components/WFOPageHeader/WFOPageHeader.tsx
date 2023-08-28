@@ -9,20 +9,16 @@ export type WFOPageHeaderProps = {
 export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
     pageTitle,
     children,
-}) => {
-    return (
-        <EuiFlexGroup>
-            <EuiFlexItem>
-                <EuiPageHeader pageTitle={pageTitle}></EuiPageHeader>
-            </EuiFlexItem>
+}) => (
+    <EuiFlexGroup>
+        <EuiFlexItem>
+            <EuiPageHeader pageTitle={pageTitle}></EuiPageHeader>
+        </EuiFlexItem>
 
-            {children && (
-                <EuiFlexItem>
-                    <EuiFlexGroup justifyContent="flexEnd">
-                        {children}
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-            )}
-        </EuiFlexGroup>
-    );
-};
+        {children && (
+            <EuiFlexItem>
+                <EuiFlexGroup justifyContent="flexEnd">{children}</EuiFlexGroup>
+            </EuiFlexItem>
+        )}
+    </EuiFlexGroup>
+);
