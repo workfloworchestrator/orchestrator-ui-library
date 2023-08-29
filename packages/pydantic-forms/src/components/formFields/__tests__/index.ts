@@ -12,9 +12,9 @@
  * limitations under the License.
  *
  */
-import * as surfnet from "lib/uniforms-surfnet/src";
+import * as surfnet from 'lib/uniforms-surfnet/src';
 
-it("exports everything", () => {
+it('exports everything', () => {
     expect(surfnet).toEqual({
         AcceptField: expect.any(Function),
         AutoFields: expect.any(Function),

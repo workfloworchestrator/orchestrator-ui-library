@@ -1,7 +1,11 @@
-import { css } from "@emotion/core";
+import { css } from '@emotion/core';
 
-import { LIGHT_GREY_COLOR, MEDIUM_GREY_COLOR, PRIMARY_COLOR } from "../../../stylesheets/emotion/colors";
-import { shadeColor } from "../../../stylesheets/emotion/utils";
+import {
+    LIGHT_GREY_COLOR,
+    MEDIUM_GREY_COLOR,
+    PRIMARY_COLOR,
+} from '../../../stylesheets/emotion/colors';
+import { shadeColor } from '../../../stylesheets/emotion/utils';
 
 export const boolFieldStyling = css`
   .bool-field {

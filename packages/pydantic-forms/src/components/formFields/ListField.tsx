@@ -13,28 +13,28 @@
  *
  */
 
-import { EuiFlexItem, EuiFormRow, EuiText } from "@elastic/eui";
-import ListAddField from "lib/uniforms-surfnet/src/ListAddField";
-import ListItemField from "lib/uniforms-surfnet/src/ListItemField";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import range from "lodash/range";
-import React, { Children, cloneElement, isValidElement } from "react";
-import { connectField, filterDOMProps, joinName, useField } from "uniforms";
+import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
+import ListAddField from 'lib/uniforms-surfnet/src/ListAddField';
+import ListItemField from 'lib/uniforms-surfnet/src/ListItemField';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import range from 'lodash/range';
+import React, { Children, cloneElement, isValidElement } from 'react';
+import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
-import { listFieldStyling } from "./ListFieldStyling";
+import { listFieldStyling } from './ListFieldStyling';
 
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         items: never;
         uniqueItems: never;
         outerList: never;
     }
 }
-filterDOMProps.register("minCount");
-filterDOMProps.register("maxCount");
-filterDOMProps.register("items");
-filterDOMProps.register("uniqueItems");
-filterDOMProps.register("outerList");
+filterDOMProps.register('minCount');
+filterDOMProps.register('maxCount');
+filterDOMProps.register('items');
+filterDOMProps.register('uniqueItems');
+filterDOMProps.register('outerList');
 
 export type ListFieldProps = FieldProps<
     any[],
@@ -48,7 +48,7 @@ function List({
     children = <ListItemField name="$" disabled={disabled} outerList={false} />,
     initialCount = 1,
     itemProps,
-    className = "",
+    className = '',
     label,
     description,
     name,
@@ -60,12 +60,15 @@ function List({
     uniqueItems, // Not used here but inspected by selectfields to determine unique values
     ...props
 }: ListFieldProps) {
-    const child = useField(joinName(name, "$"), {}, { absoluteName: true })[0];
+    const child = useField(joinName(name, '$'), {}, { absoluteName: true })[0];
     const hasListAsChild = child.fieldType === Array;
 
     return (
         <EuiFlexItem css={listFieldStyling}>
-            <section {...filterDOMProps(props)} className={`list-field${hasListAsChild ? " outer-list" : ""}`}>
+            <section
+                {...filterDOMProps(props)}
+                className={`list-field${hasListAsChild ? ' outer-list' : ''}`}
+            >
                 <EuiFormRow
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
@@ -78,20 +81,29 @@ function List({
                 </EuiFormRow>
 
                 <ul>
-                    {range(Math.max(value?.length ?? 0, initialCount ?? 0)).map((itemIndex) =>
-                        Children.map(children, (child, childIndex) =>
-                            isValidElement(child)
-                                ? cloneElement(child, {
-                                      key: `${itemIndex}-${childIndex}`,
-                                      name: child.props.name?.replace("$", "" + itemIndex),
-                                      outerList: hasListAsChild,
-                                      ...itemProps,
-                                  })
-                                : child
-                        )
+                    {range(Math.max(value?.length ?? 0, initialCount ?? 0)).map(
+                        (itemIndex) =>
+                            Children.map(children, (child, childIndex) =>
+                                isValidElement(child)
+                                    ? cloneElement(child, {
+                                          key: `${itemIndex}-${childIndex}`,
+                                          name: child.props.name?.replace(
+                                              '$',
+                                              '' + itemIndex,
+                                          ),
+                                          outerList: hasListAsChild,
+                                          ...itemProps,
+                                      })
+                                    : child,
+                            ),
                     )}
 
-                    <ListAddField initialCount={initialCount} name="$" disabled={disabled} outerList={hasListAsChild} />
+                    <ListAddField
+                        initialCount={initialCount}
+                        name="$"
+                        disabled={disabled}
+                        outerList={hasListAsChild}
+                    />
                 </ul>
             </section>
         </EuiFlexItem>

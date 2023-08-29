@@ -13,26 +13,32 @@
  *
  */
 
-import SelectField, { SelectFieldProps } from "lib/uniforms-surfnet/src/SelectField";
-import React, { useContext } from "react";
-import { useIntl } from "react-intl";
-import { connectField, filterDOMProps } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
+import SelectField, {
+    SelectFieldProps,
+} from 'lib/uniforms-surfnet/src/SelectField';
+import React, { useContext } from 'react';
+import { useIntl } from 'react-intl';
+import { connectField, filterDOMProps } from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
 
 export type LocationCodeFieldProps = { locationCodes?: string[] } & Omit<
     SelectFieldProps,
-    "placeholder" | "allowedValues"
+    'placeholder' | 'allowedValues'
 >;
 
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         locationCodes: never;
     }
 }
 
-filterDOMProps.register("locationCodes");
+filterDOMProps.register('locationCodes');
 
-function LocationCode({ name, locationCodes, ...props }: LocationCodeFieldProps) {
+function LocationCode({
+    name,
+    locationCodes,
+    ...props
+}: LocationCodeFieldProps) {
     const intl = useIntl();
     const allLocationCodes = useContext(ApplicationContext).locationCodes || [];
 
@@ -45,7 +51,9 @@ function LocationCode({ name, locationCodes, ...props }: LocationCodeFieldProps)
             name=""
             {...props}
             allowedValues={locationCodes}
-            placeholder={intl.formatMessage({ id: "forms.widgets.locationCode.placeholder" })}
+            placeholder={intl.formatMessage({
+                id: 'forms.widgets.locationCode.placeholder',
+            })}
         />
     );
 }

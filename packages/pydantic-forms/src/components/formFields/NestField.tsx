@@ -13,20 +13,28 @@
  *
  */
 
-import { EuiDescribedFormGroup, EuiFlexGroup, EuiFlexItem, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { connectField, filterDOMProps, joinName } from "uniforms";
-import { AutoField } from "uniforms-unstyled";
+import {
+    EuiDescribedFormGroup,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiText,
+} from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { connectField, filterDOMProps, joinName } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
 
-export type NestFieldProps = FieldProps<null, { fields?: any[]; itemProps?: object }>;
+export type NestFieldProps = FieldProps<
+    null,
+    { fields?: any[]; itemProps?: object }
+>;
 
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         properties: never;
     }
 }
-filterDOMProps.register("properties");
+filterDOMProps.register('properties');
 
 function Nest({
     children,
@@ -38,7 +46,7 @@ function Nest({
     onChange, // Not used on purpose
     wrap, // Not used on purpose
     ref, // Not used on purpose
-    className = "",
+    className = '',
     ...props
 }: NestFieldProps) {
     const nameArray = joinName(null, name);
@@ -48,10 +56,15 @@ function Nest({
 
     if (isInList) {
         return (
-            <EuiFlexGroup {...filterDOMProps(props)} className={`${className} nest-field`}>
+            <EuiFlexGroup
+                {...filterDOMProps(props)}
+                className={`${className} nest-field`}
+            >
                 {label && (
                     <>
-                        <label className="euiFormLabel euiFormRow__label">{label}</label>
+                        <label className="euiFormLabel euiFormRow__label">
+                            {label}
+                        </label>
                         <EuiText size="m">{description}</EuiText>
                     </>
                 )}
@@ -59,7 +72,11 @@ function Nest({
                 {children ||
                     fields?.map((field) => (
                         <EuiFlexItem key={field}>
-                            <AutoField name={field} {...itemProps} label={itemIndex === 0 ? undefined : false} />
+                            <AutoField
+                                name={field}
+                                {...itemProps}
+                                label={itemIndex === 0 ? undefined : false}
+                            />
                         </EuiFlexItem>
                     ))}
             </EuiFlexGroup>

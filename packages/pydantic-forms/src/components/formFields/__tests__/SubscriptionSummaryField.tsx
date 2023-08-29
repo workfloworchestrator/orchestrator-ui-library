@@ -13,26 +13,33 @@
  *
  */
 
-import SubscriptionDetail from "components/subscriptionDetail/SubscriptionDetail";
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { SubscriptionSummaryField } from "lib/uniforms-surfnet/src";
-import React from "react";
+import SubscriptionDetail from 'components/subscriptionDetail/SubscriptionDetail';
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { SubscriptionSummaryField } from 'lib/uniforms-surfnet/src';
+import React from 'react';
 
-jest.mock("components/subscriptionDetail/SubscriptionDetail", () => {
+jest.mock('components/subscriptionDetail/SubscriptionDetail', () => {
     return { __esModule: true, default: () => <br /> };
 });
 
-describe("<SubscriptionSummaryField>", () => {
-    test("<SubscriptionSummaryField> - renders inputs", () => {
+describe('<SubscriptionSummaryField>', () => {
+    test('<SubscriptionSummaryField> - renders inputs', () => {
         const element = <SubscriptionSummaryField name="x" />;
 
         const wrapper = mount(
             element,
-            createContext({ x: { type: String, defaultValue: "48f28a55-7764-4c84-9848-964d14906a27" } })
+            createContext({
+                x: {
+                    type: String,
+                    defaultValue: '48f28a55-7764-4c84-9848-964d14906a27',
+                },
+            }),
         );
 
         expect(wrapper.find(SubscriptionDetail)).toHaveLength(1);
-        expect(wrapper.find(SubscriptionDetail).prop("subscriptionId")).toBe("48f28a55-7764-4c84-9848-964d14906a27");
+        expect(wrapper.find(SubscriptionDetail).prop('subscriptionId')).toBe(
+            '48f28a55-7764-4c84-9848-964d14906a27',
+        );
     });
 });

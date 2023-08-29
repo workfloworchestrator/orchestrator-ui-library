@@ -1,6 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from '@emotion/core';
 
-import { DANGER, LIGHT_GREY_COLOR, SUCCESS } from "../../../stylesheets/emotion/colors";
+import {
+    DANGER,
+    LIGHT_GREY_COLOR,
+    SUCCESS,
+} from '../../../stylesheets/emotion/colors';
 
 export const listFieldStyling = css`
     .list-field {
@@ -45,7 +49,7 @@ export const listFieldStyling = css`
             margin-bottom: 30px;
             cursor: pointer;
 
-            &[id$="0.remove"] {
+            &[id$='0.remove'] {
                 margin-top: 15px;
             }
 
@@ -69,7 +73,7 @@ export const listFieldStyling = css`
                 color: ${LIGHT_GREY_COLOR};
             }
         }
-        .nest-field + div.del-item[id$="0.remove"] {
+        .nest-field + div.del-item[id$='0.remove'] {
             margin-top: 33px;
         }
 

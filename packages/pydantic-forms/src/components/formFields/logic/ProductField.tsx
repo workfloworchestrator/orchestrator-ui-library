@@ -13,33 +13,40 @@
  *
  */
 
-import SelectField, { SelectFieldProps } from "lib/uniforms-surfnet/src/SelectField";
-import get from "lodash/get";
-import React, { useContext } from "react";
-import { useIntl } from "react-intl";
-import { connectField, filterDOMProps } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
-import { productById } from "utils/Lookups";
+import SelectField, {
+    SelectFieldProps,
+} from 'lib/uniforms-surfnet/src/SelectField';
+import get from 'lodash/get';
+import React, { useContext } from 'react';
+import { useIntl } from 'react-intl';
+import { connectField, filterDOMProps } from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
+import { productById } from 'utils/Lookups';
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,
-    "placeholder" | "transform" | "allowedValues"
+    'placeholder' | 'transform' | 'allowedValues'
 >;
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         productIds: never;
     }
 }
-filterDOMProps.register("productIds");
+filterDOMProps.register('productIds');
 
 function Product({ name, productIds, ...props }: ProductFieldProps) {
     const intl = useIntl();
     const all_products = useContext(ApplicationContext).products;
 
-    const products = productIds ? productIds.map((id) => productById(id, all_products)) : all_products;
+    const products = productIds
+        ? productIds.map((id) => productById(id, all_products))
+        : all_products;
 
     const productLabelLookup =
-        products.reduce<{ [index: string]: string }>(function (mapping, product) {
+        products.reduce<{ [index: string]: string }>(function (
+            mapping,
+            product,
+        ) {
             mapping[product.product_id] = product.name;
             return mapping;
         }, {}) ?? {};
@@ -50,7 +57,9 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
             {...props}
             allowedValues={Object.keys(productLabelLookup)}
             transform={(uuid: string) => get(productLabelLookup, uuid, uuid)}
-            placeholder={intl.formatMessage({ id: "forms.widgets.product.placeholder" })}
+            placeholder={intl.formatMessage({
+                id: 'forms.widgets.product.placeholder',
+            })}
         />
     );
 }
