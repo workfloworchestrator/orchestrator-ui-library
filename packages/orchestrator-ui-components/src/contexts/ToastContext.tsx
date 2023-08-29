@@ -85,8 +85,8 @@ export const ToastsContextProvider = ({
         switch (type) {
             case ToastTypes.ERROR:
                 return {
-                    color: 'success',
-                    iconType: 'check',
+                    color: 'danger',
+                    iconType: 'cross',
                 };
             case ToastTypes.SUCCESS:
                 return {
