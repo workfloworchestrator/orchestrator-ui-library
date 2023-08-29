@@ -17,9 +17,9 @@ import {
     defaultHiddenColumnsActiveProcesses,
     defaultHiddenColumnsCompletedProcesses,
 } from './tableConfig';
-import { WFOProcessesList } from '../../components/WFOProcessesList/WFOProcessesList';
+import { WFOProcessList } from '../../components/WFOProcessesList/WFOProcessList';
 
-export const WFOProcessesListPage = () => {
+export const WFOProcessListPage = () => {
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useQueryParam(
@@ -88,7 +88,7 @@ export const WFOProcessesListPage = () => {
             />
             <EuiSpacer size="xxl" />
 
-            <WFOProcessesList
+            <WFOProcessList
                 alwaysOnFilters={alwaysOnFilters}
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={localStorageKey}

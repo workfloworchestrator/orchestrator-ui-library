@@ -11,7 +11,7 @@ import {
 } from '../WFOTable';
 import { Process, SortOrder } from '../../types';
 import { WFOProcessStatusBadge } from '../WFOBadges';
-import { WFOProcessesListSubscriptionsCell } from '../../pages';
+import { WFOProcessListSubscriptionsCell } from '../../pages';
 import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
 import { useTranslations } from 'next-intl';
 import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
@@ -20,7 +20,7 @@ import { WFOLoading } from '../WFOLoading';
 import { Pagination } from '@elastic/eui/src/components';
 import { FilterQuery } from '../WFOFilterTabs';
 
-export type WFOProcessesListProps = {
+export type WFOProcessListProps = {
     alwaysOnFilters?: FilterQuery<Process>[];
     defaultHiddenColumns: TableColumnKeys<Process>;
     localStorageKey: string;
@@ -36,7 +36,7 @@ export type WFOProcessesListProps = {
     ) => WFOTableColumns<Process>;
 };
 
-export const WFOProcessesList: FC<WFOProcessesListProps> = ({
+export const WFOProcessList: FC<WFOProcessListProps> = ({
     alwaysOnFilters,
     defaultHiddenColumns,
     localStorageKey,
@@ -79,13 +79,13 @@ export const WFOProcessesList: FC<WFOProcessesListProps> = ({
             name: t('subscriptions'),
             width: '400',
             render: ({ page: subscriptions }) => (
-                <WFOProcessesListSubscriptionsCell
+                <WFOProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                     numberOfSubscriptionsToRender={1}
                 />
             ),
             renderDetails: ({ page: subscriptions }) => (
-                <WFOProcessesListSubscriptionsCell
+                <WFOProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                 />
             ),

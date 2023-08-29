@@ -13,7 +13,7 @@ import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
 import { WFOPlusCircleFill, WFORefresh } from '../../icons';
-import { WFOProcessesList } from '../../components/WFOProcessesList/WFOProcessesList';
+import { WFOProcessList } from '../../components/WFOProcessesList/WFOProcessList';
 
 export const WFOTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
@@ -99,7 +99,7 @@ export const WFOTaskListPage = () => {
 
             <EuiSpacer size="xxl" />
 
-            <WFOProcessesList
+            <WFOProcessList
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={TASK_LIST_TABLE_LOCAL_STORAGE_KEY}
                 dataDisplayParams={dataDisplayParams}
