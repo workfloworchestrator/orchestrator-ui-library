@@ -8,6 +8,7 @@ export type StoredTableConfig<T> = {
 export const isValidLocalStorageTableConfig = <T>(
     object: StoredTableConfig<T>,
 ): object is StoredTableConfig<T> =>
+    typeof object === 'object' &&
     'hiddenColumns' in object &&
     object.hiddenColumns !== undefined &&
     'selectedPageSize' in object &&
@@ -18,9 +19,11 @@ export const getTableConfigFromLocalStorage = <T>(
 ): StoredTableConfig<T> | undefined => {
     if (typeof window !== 'undefined' && window.localStorage) {
         const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
-        return isValidLocalStorageTableConfig(parsedJson)
-            ? parsedJson
-            : undefined;
+        if (parsedJson) {
+            return isValidLocalStorageTableConfig(parsedJson)
+                ? parsedJson
+                : undefined;
+        }
     }
     return undefined;
 };
