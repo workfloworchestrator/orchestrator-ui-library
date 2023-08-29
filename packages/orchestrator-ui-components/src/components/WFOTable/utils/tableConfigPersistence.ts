@@ -1,13 +1,13 @@
 import { TableColumnKeys } from './columns';
 
-export type LocalStorageTableConfig<T> = {
+export type StoredTableConfig<T> = {
     hiddenColumns: TableColumnKeys<T>;
     selectedPageSize: number;
 };
 
 export const isValidLocalStorageTableConfig = <T>(
-    object: LocalStorageTableConfig<T>,
-): object is LocalStorageTableConfig<T> =>
+    object: StoredTableConfig<T>,
+): object is StoredTableConfig<T> =>
     'hiddenColumns' in object &&
     object.hiddenColumns !== undefined &&
     'selectedPageSize' in object &&
@@ -15,7 +15,7 @@ export const isValidLocalStorageTableConfig = <T>(
 
 export const getTableConfigFromLocalStorage = <T>(
     key: string,
-): LocalStorageTableConfig<T> | undefined => {
+): StoredTableConfig<T> | undefined => {
     if (typeof window !== 'undefined' && window.localStorage) {
         const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
         return isValidLocalStorageTableConfig(parsedJson)
@@ -27,7 +27,7 @@ export const getTableConfigFromLocalStorage = <T>(
 
 export const setTableConfigToLocalStorage = <T>(
     key: string,
-    updatedTableConfig: LocalStorageTableConfig<T>,
+    updatedTableConfig: StoredTableConfig<T>,
 ) => {
     if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem(key, JSON.stringify(updatedTableConfig));

@@ -8,3 +8,4 @@ export * from './useSubscriptionActions';
 export * from './useSubscriptionProcesses';
 export * from './useDataDisplayParams';
 export * from './useToast';
+export * from './useStoredTableConfig';

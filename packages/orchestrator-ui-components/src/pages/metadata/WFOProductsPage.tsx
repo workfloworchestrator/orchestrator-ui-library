@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
-    DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
@@ -14,13 +13,10 @@ import {
     WFOTableWithFilter,
 } from '../../components';
 import {
-    getTableConfigFromLocalStorage,
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-
-import { defaultHiddenColumnsProducts } from './tableConfig';
 
 import type { ProductDefinition } from '../../types';
 import { SortOrder } from '../../types';
@@ -28,13 +24,14 @@ import { SortOrder } from '../../types';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
-    useToastMessage,
+    useStoredTableConfig,
 } from '../../hooks';
-import { ToastTypes } from '../../../dist';
+
 import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
+import { StoredTableConfig } from '../../components';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -48,28 +45,27 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 
 export const WFOProductsPage = () => {
     const t = useTranslations('metadata.products');
-    const toastMessage = useToastMessage();
+    const [tableDefaults, setTableDefaults] = useState<
+        StoredTableConfig<ProductDefinition>
+    >({
+        selectedPageSize: 10,
+        hiddenColumns: [],
+    });
+    const getStoredTableConfig = useStoredTableConfig<ProductDefinition>(
+        METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
+    );
 
-    let initialPageSize = DEFAULT_PAGE_SIZE;
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
 
-    try {
-        const storedConfig = getTableConfigFromLocalStorage(
-            METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
-        );
-        if (storedConfig && storedConfig.selectedPageSize) {
-            initialPageSize = storedConfig.selectedPageSize;
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
         }
-    } catch {
-        toastMessage.addToast(
-            ToastTypes.ERROR,
-            'Failed to retrieve stored table setting',
-            'Settings Error',
-        );
-    }
+    }, []);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductDefinition>({
-            pageSize: initialPageSize,
+            pageSize: tableDefaults?.selectedPageSize,
             sortBy: {
                 field: PRODUCT_FIELD_NAME,
                 order: SortOrder.ASC,
@@ -175,7 +171,7 @@ export const WFOProductsPage = () => {
                 data={data ? data.products.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
-                defaultHiddenColumns={defaultHiddenColumnsProducts}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,
