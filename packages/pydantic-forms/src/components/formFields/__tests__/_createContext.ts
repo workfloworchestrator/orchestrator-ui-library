@@ -1,4 +1,4 @@
-import createSchema from "lib/uniforms-surfnet/__tests__/_createSchema";
+import createSchema from 'lib/uniforms-surfnet/__tests__/_createSchema';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,14 @@ import createSchema from "lib/uniforms-surfnet/__tests__/_createSchema";
  * limitations under the License.
  *
  */
-import { Context, randomIds } from "uniforms";
+import { Context, randomIds } from 'uniforms';
 
-test("Test suite must contain at least one test", () => {});
+test('Test suite must contain at least one test', () => {});
 
 export default function createContext(
     schema?: object,
     context?: Partial<Context<{}>>,
-    random_id_prefix?: string // Provide a unique prefix per testcase to ensure deterministic randomIds
+    random_id_prefix?: string, // Provide a unique prefix per testcase to ensure deterministic randomIds
 ): { context: Context<{}> } {
     return {
         context: {

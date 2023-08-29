@@ -13,38 +13,80 @@
  *
  */
 
-import { EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiModal, EuiOverlayMask, EuiText } from "@elastic/eui";
-import ServicePortSelectorModal from "components/modals/ServicePortSelectorModal";
-import { SubscriptionsContext } from "components/subscriptionContext";
-import { ListFieldProps } from "lib/uniforms-surfnet/src/ListField";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import { intl } from "locale/i18n";
-import get from "lodash/get";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import ReactSelect from "react-select";
-import { getReactSelectTheme } from "stylesheets/emotion/utils";
-import { connectField, filterDOMProps, joinName, useField, useForm } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
-import { productById } from "utils/Lookups";
-import { Option, Organization, Product, ServicePortSubscription, Subscription as iSubscription } from "utils/types";
-import { filterProductsByBandwidth } from "validations/Products";
+import {
+    EuiButtonIcon,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiFormRow,
+    EuiModal,
+    EuiOverlayMask,
+    EuiText,
+} from '@elastic/eui';
+import ServicePortSelectorModal from 'components/modals/ServicePortSelectorModal';
+import { SubscriptionsContext } from 'components/subscriptionContext';
+import { ListFieldProps } from 'lib/uniforms-surfnet/src/ListField';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import { intl } from 'locale/i18n';
+import get from 'lodash/get';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
+import ReactSelect from 'react-select';
+import { getReactSelectTheme } from 'stylesheets/emotion/utils';
+import {
+    connectField,
+    filterDOMProps,
+    joinName,
+    useField,
+    useForm,
+} from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
+import { productById } from 'utils/Lookups';
+import {
+    Option,
+    Organization,
+    Product,
+    ServicePortSubscription,
+    Subscription as iSubscription,
+} from 'utils/types';
+import { filterProductsByBandwidth } from 'validations/Products';
 
-import { subscriptionFieldStyling } from "./SubscriptionFieldStyling";
+import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
 
-export function makeLabel(subscription: iSubscription, products: Product[], organisations?: Organization[]) {
-    const organisation = organisations && organisations.find((org) => org.uuid === subscription.customer_id);
-    const organisationName = organisation ? organisation.name : subscription.customer_id.substring(0, 8);
-    const product = subscription.product || productById(subscription.product_id!, products);
+export function makeLabel(
+    subscription: iSubscription,
+    products: Product[],
+    organisations?: Organization[],
+) {
+    const organisation =
+        organisations &&
+        organisations.find((org) => org.uuid === subscription.customer_id);
+    const organisationName = organisation
+        ? organisation.name
+        : subscription.customer_id.substring(0, 8);
+    const product =
+        subscription.product || productById(subscription.product_id!, products);
     const description =
-        subscription.description || intl.formatMessage({ id: "forms.widgets.subscription.missingDescription" });
+        subscription.description ||
+        intl.formatMessage({
+            id: 'forms.widgets.subscription.missingDescription',
+        });
     const subscription_substring = subscription.subscription_id.substring(0, 8);
 
-    if (["Node"].includes(product.tag)) {
+    if (['Node'].includes(product.tag)) {
         const description =
-            subscription.description || intl.formatMessage({ id: "forms.widgets.subscription.missingDescription" });
-        return `${subscription.subscription_id.substring(0, 8)} ${description.trim()}`;
-    } else if (["SP", "SPNL", "AGGSP", "AGGSPNL", "MSC", "MSCNL", "IRBSP"].includes(product.tag)) {
+            subscription.description ||
+            intl.formatMessage({
+                id: 'forms.widgets.subscription.missingDescription',
+            });
+        return `${subscription.subscription_id.substring(
+            0,
+            8,
+        )} ${description.trim()}`;
+    } else if (
+        ['SP', 'SPNL', 'AGGSP', 'AGGSPNL', 'MSC', 'MSCNL', 'IRBSP'].includes(
+            product.tag,
+        )
+    ) {
         let portSubscription = subscription as ServicePortSubscription;
         const portMode = getPortMode(portSubscription, products);
         return `${subscription_substring} ${portMode.toUpperCase()} ${description.trim()} ${organisationName}`;
@@ -53,13 +95,22 @@ export function makeLabel(subscription: iSubscription, products: Product[], orga
     }
 }
 
-export function getPortMode(subscription: ServicePortSubscription, products: Product[]) {
-    const product = subscription.product || productById(subscription.product_id!, products);
+export function getPortMode(
+    subscription: ServicePortSubscription,
+    products: Product[],
+) {
+    const product =
+        subscription.product || productById(subscription.product_id!, products);
 
-    return subscription?.port_mode || (["MSC", "MSCNL", "IRBSP"].includes(product.tag!) ? "tagged" : "untagged");
+    return (
+        subscription?.port_mode ||
+        (['MSC', 'MSCNL', 'IRBSP'].includes(product.tag!)
+            ? 'tagged'
+            : 'untagged')
+    );
 }
 
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         excludedSubscriptionIds: never;
         organisationId: never;
@@ -72,15 +123,15 @@ declare module "uniforms" {
     }
 }
 filterDOMProps.register(
-    "productIds",
-    "excludedSubscriptionIds",
-    "organisationId",
-    "organisationKey",
-    "visiblePortMode",
-    "bandwidth",
-    "bandwidthKey",
-    "tags",
-    "statuses"
+    'productIds',
+    'excludedSubscriptionIds',
+    'organisationId',
+    'organisationKey',
+    'visiblePortMode',
+    'bandwidth',
+    'bandwidthKey',
+    'tags',
+    'statuses',
 );
 
 export type SubscriptionFieldProps = FieldProps<
@@ -114,12 +165,12 @@ function Subscription({
     error,
     showInlineError,
     errorMessage,
-    className = "",
+    className = '',
     productIds,
     excludedSubscriptionIds,
     organisationId,
     organisationKey,
-    visiblePortMode = "all",
+    visiblePortMode = 'all',
     bandwidth,
     bandwidthKey,
     tags,
@@ -128,13 +179,20 @@ function Subscription({
     intl,
     ...props
 }: SubscriptionFieldProps) {
-    const { theme, organisations, products: allProducts, apiClient, customApiClient } = useContext(ApplicationContext);
-    const { getSubscriptions, clearSubscriptions } = useContext(SubscriptionsContext);
+    const {
+        theme,
+        organisations,
+        products: allProducts,
+        apiClient,
+        customApiClient,
+    } = useContext(ApplicationContext);
+    const { getSubscriptions, clearSubscriptions } =
+        useContext(SubscriptionsContext);
 
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
     // We cant call useField conditionally so we call it for ourselfs if there is no parent
-    if (parentName === "") {
+    if (parentName === '') {
         parentName = name;
     }
     const parent = useField(parentName, {}, { absoluteName: true })[0];
@@ -156,17 +214,21 @@ function Subscription({
 
     // Get value from org field if organisationKey is set.
     const usedOrganisationId = organisationKey
-        ? get(model, organisationKey, "nonExistingOrgToFilterEverything")
+        ? get(model, organisationKey, 'nonExistingOrgToFilterEverything')
         : organisationId;
 
     const filteredProductIds = useMemo(() => {
         let products = allProducts;
         if (tags?.length) {
-            products = allProducts.filter((product) => tags?.includes(product.tag));
+            products = allProducts.filter(
+                (product) => tags?.includes(product.tag),
+            );
         }
 
         if (productIds?.length) {
-            products = allProducts.filter((product) => productIds?.includes(product.product_id));
+            products = allProducts.filter(
+                (product) => productIds?.includes(product.product_id),
+            );
         }
 
         if (usedBandwidth) {
@@ -177,58 +239,75 @@ function Subscription({
     }, [allProducts, usedBandwidth, productIds, tags]);
 
     useEffect(() => {
-        getSubscriptions(apiClient, customApiClient, tags, statuses).then((result) => updateSubscriptions(result));
+        getSubscriptions(apiClient, customApiClient, tags, statuses).then(
+            (result) => updateSubscriptions(result),
+        );
     }, [getSubscriptions, tags, statuses, apiClient, customApiClient]);
 
     // Filter by product, needed because getSubscriptions might return more than we want
     let subscriptionsFiltered =
         filteredProductIds.length === allProducts.length
             ? subscriptions
-            : subscriptions.filter((sp) => filteredProductIds.includes(sp.product.product_id));
+            : subscriptions.filter((sp) =>
+                  filteredProductIds.includes(sp.product.product_id),
+              );
 
     if (excludedSubscriptionIds) {
         subscriptionsFiltered = subscriptionsFiltered.filter(
-            (item) => !excludedSubscriptionIds.includes(item.subscription_id)
+            (item) => !excludedSubscriptionIds.includes(item.subscription_id),
         );
     }
 
     // Port mode filter
-    if (visiblePortMode !== "all") {
-        if (visiblePortMode === "normal") {
+    if (visiblePortMode !== 'all') {
+        if (visiblePortMode === 'normal') {
             subscriptionsFiltered = subscriptionsFiltered.filter(
-                (item) => getPortMode(item, allProducts) === "tagged" || getPortMode(item, allProducts) === "untagged"
+                (item) =>
+                    getPortMode(item, allProducts) === 'tagged' ||
+                    getPortMode(item, allProducts) === 'untagged',
             );
         } else {
             subscriptionsFiltered = subscriptionsFiltered.filter(
-                (item) => getPortMode(item, allProducts) === visiblePortMode
+                (item) => getPortMode(item, allProducts) === visiblePortMode,
             );
         }
     }
 
     // Customer filter toggle
     if (usedOrganisationId) {
-        subscriptionsFiltered = subscriptionsFiltered.filter((item) => item.customer_id === usedOrganisationId);
+        subscriptionsFiltered = subscriptionsFiltered.filter(
+            (item) => item.customer_id === usedOrganisationId,
+        );
     }
 
     if (parentName !== name) {
-        if (parent.fieldType === Array && (parent as ListFieldProps).uniqueItems) {
+        if (
+            parent.fieldType === Array &&
+            (parent as ListFieldProps).uniqueItems
+        ) {
             const allValues: string[] = get(model, parentName, []);
             const chosenValues = allValues.filter(
-                (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
+                (_item, index) =>
+                    index.toString() !== nameArray[nameArray.length - 1],
             );
 
             subscriptionsFiltered = subscriptionsFiltered.filter(
-                (subscription) => !chosenValues.includes(subscription.subscription_id)
+                (subscription) =>
+                    !chosenValues.includes(subscription.subscription_id),
             );
         }
     }
 
-    const options = subscriptionsFiltered.map((subscription: iSubscription) => ({
-        label: makeLabel(subscription, allProducts, organisations),
-        value: subscription.subscription_id,
-    }));
+    const options = subscriptionsFiltered.map(
+        (subscription: iSubscription) => ({
+            label: makeLabel(subscription, allProducts, organisations),
+            value: subscription.subscription_id,
+        }),
+    );
 
-    const selectedValue = options.find((option: Option) => option.value === value);
+    const selectedValue = options.find(
+        (option: Option) => option.value === value,
+    );
 
     const selectSubscriptionFromModal = (s: any) => {
         onChange(s);
@@ -240,7 +319,9 @@ function Subscription({
         <EuiFlexItem css={subscriptionFieldStyling} grow={1}>
             <section
                 {...filterDOMProps(props)}
-                className={`${className} subscription-field${disabled ? "-disabled" : ""}`}
+                className={`${className} subscription-field${
+                    disabled ? '-disabled' : ''
+                }`}
             >
                 <EuiFormRow
                     label={label}
@@ -252,7 +333,11 @@ function Subscription({
                 >
                     <div>
                         {!disabled && (
-                            <EuiFlexGroup alignItems={"center"} gutterSize={"none"} responsive={false}>
+                            <EuiFlexGroup
+                                alignItems={'center'}
+                                gutterSize={'none'}
+                                responsive={false}
+                            >
                                 <EuiButtonIcon
                                     className="reload-subscriptions-icon-button"
                                     id={`refresh-icon-${id}`}
@@ -262,13 +347,18 @@ function Subscription({
                                     onClick={() => {
                                         setLoading(true);
                                         clearSubscriptions();
-                                        getSubscriptions(apiClient, customApiClient, tags, statuses).then((result) => {
+                                        getSubscriptions(
+                                            apiClient,
+                                            customApiClient,
+                                            tags,
+                                            statuses,
+                                        ).then((result) => {
                                             updateSubscriptions(result);
                                             setLoading(false);
                                         });
                                     }}
                                 />
-                                {tags?.includes("SP") && (
+                                {tags?.includes('SP') && (
                                     <EuiButtonIcon
                                         className="show-service-port-modal-icon-button"
                                         id={`filter-icon-${id}`}
@@ -283,10 +373,15 @@ function Subscription({
 
                         {isModalVisible && (
                             <EuiOverlayMask>
-                                <EuiModal onClose={closeModal} initialFocus="[id=modalNodeSelector]">
+                                <EuiModal
+                                    onClose={closeModal}
+                                    initialFocus="[id=modalNodeSelector]"
+                                >
                                     <ServicePortSelectorModal
                                         selectedTabId="nodeFilter"
-                                        handleSelect={selectSubscriptionFromModal}
+                                        handleSelect={
+                                            selectSubscriptionFromModal
+                                        }
                                         subscriptions={subscriptionsFiltered}
                                     />
                                 </EuiModal>
@@ -303,7 +398,9 @@ function Subscription({
                             value={selectedValue}
                             isSearchable={true}
                             isClearable={false}
-                            placeholder={intl.formatMessage({ id: "forms.widgets.subscription.placeholder" })}
+                            placeholder={intl.formatMessage({
+                                id: 'forms.widgets.subscription.placeholder',
+                            })}
                             isDisabled={disabled || readOnly}
                             styles={customStyles}
                             className="subscription-field-select"
@@ -315,4 +412,4 @@ function Subscription({
     );
 }
 
-export default connectField(injectIntl(Subscription), { kind: "leaf" });
+export default connectField(injectIntl(Subscription), { kind: 'leaf' });

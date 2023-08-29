@@ -1,4 +1,4 @@
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +13,32 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type LabelFieldProps = FieldProps<null, {}, null, HTMLDivElement>;
 
 // onChange not used on purpose
-function Label({ id, name, value, label, onChange, ...props }: LabelFieldProps) {
+function Label({
+    id,
+    name,
+    value,
+    label,
+    onChange,
+    ...props
+}: LabelFieldProps) {
     return (
         <section {...filterDOMProps(props)}>
-            <label id={id} className={`euiFormLabel euiFormRow__label${value ? "__large" : ""}`}>
+            <label
+                id={id}
+                className={`euiFormLabel euiFormRow__label${
+                    value ? '__large' : ''
+                }`}
+            >
                 {value ? value : label}
             </label>
         </section>
     );
 }
 
-export default connectField(Label, { kind: "leaf" });
+export default connectField(Label, { kind: 'leaf' });

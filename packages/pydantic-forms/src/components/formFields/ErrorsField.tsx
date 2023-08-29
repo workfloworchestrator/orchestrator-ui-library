@@ -12,8 +12,8 @@
  * limitations under the License.
  *
  */
-import React, { HTMLProps } from "react";
-import { filterDOMProps, useForm } from "uniforms";
+import React, { HTMLProps } from 'react';
+import { filterDOMProps, useForm } from 'uniforms';
 
 export type ErrorsFieldProps = HTMLProps<HTMLDivElement>;
 

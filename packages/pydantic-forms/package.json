@@ -12,9 +12,7 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
-        "@graphql-typed-document-node/core": "3.2.0",
-        "moment": "2.29.4",
-        "use-query-params": "2.2.1",
+        "invariant": "^2.2.4",
         "uniforms": "^3.8.1",
         "uniforms-bridge-json-schema": "^3.8.1",
         "uniforms-unstyled": "^3.8.1"
@@ -25,7 +23,6 @@
         "@emotion/react": "^11.11.1",
         "next": "^13.4.1",
         "next-intl": "2.19.0",
-        "next-query-params": "4.2.2",
         "react": "^18.2.0",
         "react-query": "3.39.3"
     },
@@ -44,6 +41,7 @@
         "@testing-library/react": "^14.0.0",
         "@testing-library/react-hooks": "^8.0.1",
         "@testing-library/user-event": "^14.4.3",
+        "@types/invariant": "^2.2.33",
         "@types/jest": "^27.4.0",
         "esbuild": "^0.14.10",
         "esbuild-jest": "^0.5.0",

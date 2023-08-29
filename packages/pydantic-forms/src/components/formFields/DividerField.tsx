@@ -1,5 +1,5 @@
-import { EuiHorizontalRule } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { EuiHorizontalRule } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,13 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { connectField } from "uniforms";
+import React from 'react';
+import { connectField } from 'uniforms';
 
 export type LabelFieldProps = FieldProps<null, {}, null, HTMLDivElement>;
 
 function Divider({ id }: LabelFieldProps) {
-    return <EuiHorizontalRule style={{ marginTop: "-30px" }} />;
+    return <EuiHorizontalRule style={{ marginTop: '-30px' }} />;
 }
 
-export default connectField(Divider, { kind: "leaf" });
+export default connectField(Divider, { kind: 'leaf' });

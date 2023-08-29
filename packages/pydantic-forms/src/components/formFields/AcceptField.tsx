@@ -13,38 +13,38 @@
  *
  */
 
-import { EuiCheckbox, EuiFlexItem, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React, { useReducer } from "react";
-import { FormattedMessage } from "react-intl";
-import { connectField, filterDOMProps } from "uniforms";
+import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React, { useReducer } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connectField, filterDOMProps } from 'uniforms';
 
-import { acceptFieldStyling } from "./AcceptFieldStyling";
+import { acceptFieldStyling } from './AcceptFieldStyling';
 
 type AcceptItemType =
-    | "info"
-    | "label"
-    | "warning"
-    | "url"
-    | "checkbox"
-    | ">checkbox"
-    | "checkbox?"
-    | ">checkbox?"
-    | "skip"
-    | "margin"
-    | "value";
+    | 'info'
+    | 'label'
+    | 'warning'
+    | 'url'
+    | 'checkbox'
+    | '>checkbox'
+    | 'checkbox?'
+    | '>checkbox?'
+    | 'skip'
+    | 'margin'
+    | 'value';
 type AcceptItem = [string, AcceptItemType, Record<string, string>?];
-type AcceptValue = "SKIPPED" | "ACCEPTED" | "INCOMPLETE";
+type AcceptValue = 'SKIPPED' | 'ACCEPTED' | 'INCOMPLETE';
 
 export type AcceptFieldProps = FieldProps<AcceptValue, { data?: AcceptItem[] }>;
 
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         data: never;
     }
 }
 
-filterDOMProps.register("data");
+filterDOMProps.register('data');
 
 interface AcceptState {
     checks: { [index: number]: boolean };
@@ -60,7 +60,7 @@ interface Action {
 
 function Accept({
     disabled,
-    className = "",
+    className = '',
     name,
     onChange,
     value,
@@ -71,17 +71,17 @@ function Accept({
     ...props
 }: AcceptFieldProps) {
     const legacy = !data;
-    const i18nBaseKey = data ? `forms.fields.${name}_accept` : "forms.fields";
+    const i18nBaseKey = data ? `forms.fields.${name}_accept` : 'forms.fields';
 
     data = data ?? [
-        [name, "label", {}],
-        [`${name}_info`, "info", {}],
-        [name, "checkbox", {}],
+        [name, 'label', {}],
+        [`${name}_info`, 'info', {}],
+        [name, 'checkbox', {}],
     ];
 
     let [state, dispatch] = useReducer(
         (state: AcceptState, action: Action) => {
-            if (action.type === "skip") {
+            if (action.type === 'skip') {
                 state.skip = action.value;
                 state.checks = {};
             } else {
@@ -91,85 +91,133 @@ function Accept({
             // We intentionally skip optional checkboxes here
             state.allChecked = data!
                 .map(
-                    (entry: AcceptItem, index: number) => [entry, state.checks[index] || false] as [AcceptItem, boolean]
+                    (entry: AcceptItem, index: number) =>
+                        [entry, state.checks[index] || false] as [
+                            AcceptItem,
+                            boolean,
+                        ],
                 )
-                .filter((entry: [AcceptItem, boolean]) => entry[0][1].endsWith("checkbox"))
+                .filter((entry: [AcceptItem, boolean]) =>
+                    entry[0][1].endsWith('checkbox'),
+                )
                 .map((entry: [AcceptItem, boolean]) => entry[1])
                 .every((check: boolean) => check);
 
-            onChange(state.skip ? "SKIPPED" : state.allChecked ? "ACCEPTED" : "INCOMPLETE");
+            onChange(
+                state.skip
+                    ? 'SKIPPED'
+                    : state.allChecked
+                    ? 'ACCEPTED'
+                    : 'INCOMPLETE',
+            );
 
             return { ...state };
         },
-        { checks: {}, skip: false, allChecked: false }
+        { checks: {}, skip: false, allChecked: false },
     );
 
     return (
         <EuiFlexItem css={acceptFieldStyling}>
-            <section {...filterDOMProps(props)} className={`${className} accept-field`}>
+            <section
+                {...filterDOMProps(props)}
+                className={`${className} accept-field`}
+            >
                 {data.map((entry: any[], index: number) => {
-                    const label = <FormattedMessage id={`${i18nBaseKey}.${entry[0]}`} values={entry[2]} />;
+                    const label = (
+                        <FormattedMessage
+                            id={`${i18nBaseKey}.${entry[0]}`}
+                            values={entry[2]}
+                        />
+                    );
                     switch (entry[1]) {
-                        case "label":
+                        case 'label':
                             return (
-                                <label key={index} className="euiFormLabel euiFormRow__label">
+                                <label
+                                    key={index}
+                                    className="euiFormLabel euiFormRow__label"
+                                >
                                     {label}
                                 </label>
                             );
-                        case "info":
+                        case 'info':
                             return (
                                 <EuiText key={index} size="m">
                                     {label}
                                 </EuiText>
                             );
-                        case "url":
+                        case 'url':
                             return (
                                 <div key={index}>
-                                    <a href={entry[0]} target="_blank" rel="noopener noreferrer">
+                                    <a
+                                        href={entry[0]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         {entry[0]}
                                     </a>
                                 </div>
                             );
-                        case "value":
+                        case 'value':
                             return (
                                 <div key={index}>
                                     <input value={entry[0]} disabled={true} />
                                 </div>
                             );
-                        case "margin":
+                        case 'margin':
                             return <br key={index} />;
-                        case "warning":
+                        case 'warning':
                             return (
-                                <label key={index} className="euiFormLabel euiFormRow__label warning">
+                                <label
+                                    key={index}
+                                    className="euiFormLabel euiFormRow__label warning"
+                                >
                                     {label}
                                 </label>
                             );
-                        case "skip":
+                        case 'skip':
                             return (
                                 <EuiCheckbox
                                     id={entry[0]}
                                     key={index}
                                     name={entry[0]}
-                                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                                        const target = e.target as HTMLInputElement;
-                                        dispatch({ field: index, type: "skip", value: target.checked });
+                                    onChange={(
+                                        e: React.FormEvent<HTMLInputElement>,
+                                    ) => {
+                                        const target =
+                                            e.target as HTMLInputElement;
+                                        dispatch({
+                                            field: index,
+                                            type: 'skip',
+                                            value: target.checked,
+                                        });
                                     }}
                                     checked={state.skip}
                                     label={label}
-                                    className={"skip"}
+                                    className={'skip'}
                                 />
                             );
                         default:
                             return (
                                 <EuiCheckbox
-                                    id={entry[0] + (legacy ? "" : index)}
+                                    id={entry[0] + (legacy ? '' : index)}
                                     key={index}
-                                    name={entry[0] + (legacy ? "" : index)} // Index needed to allow checkboxes with same name (we can skip this in legacy mode)
-                                    className={entry[1].startsWith(">") ? "level_2" : undefined}
-                                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                                        const target = e.target as HTMLInputElement;
+                                    name={entry[0] + (legacy ? '' : index)} // Index needed to allow checkboxes with same name (we can skip this in legacy mode)
+                                    className={
+                                        entry[1].startsWith('>')
+                                            ? 'level_2'
+                                            : undefined
+                                    }
+                                    onChange={(
+                                        e: React.FormEvent<HTMLInputElement>,
+                                    ) => {
+                                        const target =
+                                            e.target as HTMLInputElement;
 
-                                        dispatch({ field: index, type: "check", value: target.checked });
+                                        dispatch({
+                                            field: index,
+                                            type: 'check',
+                                            value: target.checked,
+                                        });
                                     }}
                                     checked={state.checks[index]}
                                     label={label}
