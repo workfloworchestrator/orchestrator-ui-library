@@ -13,26 +13,29 @@
  *
  */
 
-import UserInputForm from 'components/inputForms/UserInputForm';
-import { intl } from 'locale/i18n';
+import UserInputForm from './UserInputForm';
 import hash from 'object-hash';
 import React, { useContext, useEffect, useState } from 'react';
-import { WrappedComponentProps, injectIntl } from 'react-intl';
 import ApplicationContext from 'utils/ApplicationContext';
-import { setFlash } from 'utils/Flash';
-import { FormNotCompleteResponse, InputForm } from 'utils/types';
-import { stop } from 'utils/Utils';
+import { FormNotCompleteResponse, InputForm } from '../../types';
 
 interface Form {
     form: InputForm;
     hasNext?: boolean;
 }
 
-interface IProps extends WrappedComponentProps {
+interface IProps {
     stepUserInput: InputForm;
     validSubmit: (form: {}[]) => Promise<void>;
     cancel: () => void;
     hasNext?: boolean;
+}
+
+function stop(e: React.SyntheticEvent) {
+    if (e !== undefined && e !== null) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
 }
 
 function UserInputFormWizard({
@@ -68,11 +71,12 @@ function UserInputFormWizard({
             (json) => {
                 // Scroll to top when navigating to next screen of wizard
                 window.scrollTo(0, 0);
-                setFlash(
-                    intl.formatMessage({
-                        id: 'process.flash.wizard_next_step',
-                    }),
-                );
+                // No Flash for now
+                // setFlash(
+                //     intl.formatMessage({
+                //         id: 'process.flash.wizard_next_step',
+                //     }),
+                // );
                 setForms([
                     ...forms,
                     { form: json.form, hasNext: json.hasNext },
@@ -113,4 +117,4 @@ function UserInputFormWizard({
     );
 }
 
-export default injectIntl(UserInputFormWizard);
+export default UserInputFormWizard;

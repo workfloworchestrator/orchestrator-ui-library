@@ -1,4 +1,3 @@
-import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,7 @@ import { FieldProps } from 'lib/uniforms-surfnet/src/types';
  */
 import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
+import { FieldProps } from '../../types';
 
 const DateConstructor = (typeof global === 'object' ? global : window).Date;
 const dateFormat = (value?: Date) => value?.toISOString().slice(0, -8);
