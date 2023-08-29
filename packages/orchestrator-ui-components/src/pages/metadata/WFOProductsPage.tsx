@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
@@ -62,7 +63,7 @@ export const WFOProductsPage = () => {
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductDefinition>({
-            pageSize: tableDefaults?.selectedPageSize,
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: PRODUCT_FIELD_NAME,
                 order: SortOrder.ASC,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
 
@@ -10,18 +10,19 @@ import {
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 import { WFOTableWithFilter } from '../../components';
 import {
-    getTableConfigFromLocalStorage,
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
 
-import { defaultHiddenColumnsResourcetypes } from './tableConfig';
-
 import type { ResourceTypeDefinition } from '../../types';
 import { SortOrder } from '../../types';
-
-import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
+import type { StoredTableConfig } from '../../components';
+import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useStoredTableConfig,
+} from '../../hooks';
 
 import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
@@ -38,14 +39,27 @@ export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
 export const WFOResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(
-            METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-        )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<ResourceTypeDefinition>>();
+
+    const getStoredTableConfig = useStoredTableConfig<ResourceTypeDefinition>(
+        METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    );
+
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
+
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
+        }
+    }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ResourceTypeDefinition>({
-            pageSize: initialPageSize,
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: RESOURCE_TYPE_FIELD_TYPE,
                 order: SortOrder.ASC,
@@ -103,7 +117,7 @@ export const WFOResourceTypesPage = () => {
                 data={data ? data.resourceTypes.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
-                defaultHiddenColumns={defaultHiddenColumnsResourcetypes}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,

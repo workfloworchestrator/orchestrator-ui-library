@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
 
@@ -10,19 +10,17 @@ import {
 } from '../../components';
 import { WFOTableWithFilter } from '../../components';
 import {
-    getTableConfigFromLocalStorage,
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import { defaultHiddenColumnsWorkflows } from './tableConfig';
-
 import type { WorkflowDefinition } from '../../types';
 import { SortOrder } from '../../types';
+import { StoredTableConfig } from '../../components';
 
-import { useDataDisplayParams } from '../../hooks';
+import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 
@@ -149,14 +147,27 @@ export const WFOWorkflowsPage = () => {
 
     const t = useTranslations('metadata.workflows');
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(
-            METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-        )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<WorkflowDefinition>>();
+
+    const getStoredTableConfig = useStoredTableConfig<WorkflowDefinition>(
+        METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    );
+
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
+
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
+        }
+    }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<WorkflowDefinition>({
-            pageSize: initialPageSize,
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: WORKFLOW_FIELD_NAME,
                 order: SortOrder.ASC,
@@ -241,7 +252,7 @@ export const WFOWorkflowsPage = () => {
                 data={data ? data.workflows.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
-                defaultHiddenColumns={defaultHiddenColumnsWorkflows}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<WorkflowDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,
