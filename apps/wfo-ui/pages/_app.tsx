@@ -11,9 +11,9 @@ import {
     OrchestratorConfigProvider,
     WFOPageTemplate,
     ToastsContextProvider,
+    ToastsList,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
@@ -84,6 +84,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                         <Component {...pageProps} />
                                     </QueryParamProvider>
                                 </WFOPageTemplate>
+                                <ToastsList />
                             </ToastsContextProvider>
                             <ReactQueryDevtools initialIsOpen={false} />
                         </QueryClientProvider>

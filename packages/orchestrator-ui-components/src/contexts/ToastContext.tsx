@@ -1,23 +1,6 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import { EuiGlobalToastList } from '@elastic/eui';
+import React, { createContext, useReducer } from 'react';
 import type { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
-import { createContext, useReducer } from 'react';
 import type { ReactElement, ReactNode, Reducer } from 'react';
-
-export interface ToastContextProps {
-    addToast: (
-        type: ToastTypes,
-        text: ReactElement | string,
-        title: string,
-    ) => void;
-    removeToast: (id: string) => void;
-}
-
-export const ToastContext = createContext<ToastContextProps>({
-    addToast: () => {},
-    removeToast: () => {},
-});
 
 export enum ToastTypes {
     ERROR = 'ERROR',
@@ -45,6 +28,26 @@ type ToastsState = {
     toasts: Toast[];
 };
 
+export interface ToastContextProps {
+    addToast: (
+        type: ToastTypes,
+        text: ReactElement | string,
+        title: string,
+    ) => void;
+    removeToast: (id: string) => void;
+    toasts: Toast[];
+}
+
+export const ToastContext = createContext<ToastContextProps>({
+    addToast: () => {},
+    removeToast: () => {},
+    toasts: [],
+});
+
+interface ToastsContextProviderProps {
+    children: ReactNode;
+}
+
 const toastsReducer = (
     state: ToastsState,
     action: ToastAddAction | ToastRemoveAction,
@@ -67,16 +70,11 @@ const toastsReducer = (
     }
 };
 
-
-interface ToastsContextProviderProps {
-  children: ReactNode
-}
-
 export const ToastsContextProvider = ({
-    children
+    children,
 }: ToastsContextProviderProps) => {
     const initialState: ToastsState = {
-        toasts: []
+        toasts: [],
     };
 
     const [state, dispatch] = useReducer<
@@ -124,23 +122,14 @@ export const ToastsContextProvider = ({
     };
 
     return (
-      <ToastContext.Provider
-        value={{
-          addToast,
-          removeToast,
-        }}
-      >
-        {children}
-        {
-          typeof document !== 'undefined' &&  createPortal(
-              <EuiGlobalToastList
-                  toasts={state.toasts}
-                  dismissToast={(toast) => removeToast(toast.id)}
-                  toastLifeTimeMs={5000}
-               />,
-               document.body
-            )
-        }
-      </ToastContext.Provider>
+        <ToastContext.Provider
+            value={{
+                addToast,
+                removeToast,
+                toasts: state.toasts,
+            }}
+        >
+            {children}
+        </ToastContext.Provider>
     );
 };

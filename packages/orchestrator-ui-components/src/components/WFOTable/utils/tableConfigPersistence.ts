@@ -16,26 +16,26 @@ export const isValidLocalStorageTableConfig = <T>(
 export const getTableConfigFromLocalStorage = <T>(
     key: string,
 ): LocalStorageTableConfig<T> | undefined => {
-  
-  if (typeof window !== 'undefined' && window.localStorage) {
-    const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
-    return isValidLocalStorageTableConfig(parsedJson) ? parsedJson : undefined;
-  }
-  return undefined
+    if (typeof window !== 'undefined' && window.localStorage) {
+        const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
+        return isValidLocalStorageTableConfig(parsedJson)
+            ? parsedJson
+            : undefined;
+    }
+    return undefined;
 };
 
 export const setTableConfigToLocalStorage = <T>(
     key: string,
     updatedTableConfig: LocalStorageTableConfig<T>,
 ) => {
-  console.log(key, updatedTableConfig)
-  if (typeof window !== 'undefined' && window.localStorage) {
-    localStorage.setItem(key, JSON.stringify(updatedTableConfig));
-  }  
+    if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(key, JSON.stringify(updatedTableConfig));
+    }
 };
 
 export const clearTableConfigFromLocalStorage = (key: string) => {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    localStorage.removeItem(key);
-  }  
+    if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem(key);
+    }
 };
