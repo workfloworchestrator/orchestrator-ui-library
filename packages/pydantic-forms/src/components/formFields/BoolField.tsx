@@ -14,11 +14,11 @@
  */
 
 import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
-import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { boolFieldStyling } from './BoolFieldStyling';
+import { FieldProps } from '../../types';
 
 export type BoolFieldProps = FieldProps<boolean>;
 
