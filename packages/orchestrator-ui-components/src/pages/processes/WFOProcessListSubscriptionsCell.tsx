@@ -16,7 +16,7 @@ export type WFOProcessesListSubscriptionsCellProps = {
     renderDirection?: RenderDirection;
 };
 
-export const WFOProcessesListSubscriptionsCell: FC<
+export const WFOProcessListSubscriptionsCell: FC<
     WFOProcessesListSubscriptionsCellProps
 > = ({
     subscriptions,

@@ -9,3 +9,4 @@ export * from './WFOPlusCircleFill';
 export * from './WFOChevronDown';
 export * from './WFOArrowNarrowDown';
 export * from './WFOArrowNarrowUp';
+export * from './WFORefresh';

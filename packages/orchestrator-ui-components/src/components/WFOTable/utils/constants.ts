@@ -15,3 +15,5 @@ export const METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY =
     'metadataWorkflowsTable';
 
 export const SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY = 'subscriptionsTable';
+
+export const TASK_LIST_TABLE_LOCAL_STORAGE_KEY = 'taskListTable';

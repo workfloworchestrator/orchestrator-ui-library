@@ -113,5 +113,11 @@
             "status": "Status",
             "id": "ID"
         }
+    },
+    "tasks": {
+        "page": {
+            "rerunAll": "Rerun all",
+            "newTask": "New task"
+        }
     }
 }

@@ -21,6 +21,8 @@ export const WFOSettings: FunctionComponent = () => {
 
     return (
         <>
+            <EuiSpacer />
+
             <EuiPageHeader pageTitle="Settings" />
             <EuiHorizontalRule />
             <WFOFlushSettings />
