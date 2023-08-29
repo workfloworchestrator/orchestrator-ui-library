@@ -45,12 +45,9 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 
 export const WFOProductsPage = () => {
     const t = useTranslations('metadata.products');
-    const [tableDefaults, setTableDefaults] = useState<
-        StoredTableConfig<ProductDefinition>
-    >({
-        selectedPageSize: 10,
-        hiddenColumns: [],
-    });
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<ProductDefinition>>();
+
     const getStoredTableConfig = useStoredTableConfig<ProductDefinition>(
         METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     );
@@ -61,7 +58,7 @@ export const WFOProductsPage = () => {
         if (storedConfig) {
             setTableDefaults(storedConfig);
         }
-    }, []);
+    }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductDefinition>({

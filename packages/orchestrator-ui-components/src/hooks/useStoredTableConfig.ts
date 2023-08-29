@@ -1,14 +1,17 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
 import { useToastMessage } from './useToast';
+
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
 import { ToastTypes } from '../contexts';
 
 export const useStoredTableConfig = <T>(localeStorageKey: string) => {
     const toastMessage = useToastMessage();
-    const tableConfig: StoredTableConfig<T> =
-        getDefaultTableConfig<T>(localeStorageKey);
+    const tableConfig: StoredTableConfig<T> = useMemo(
+        () => getDefaultTableConfig<T>(localeStorageKey),
+        [localeStorageKey],
+    );
 
     const getStoredTableConfig = useCallback(():
         | StoredTableConfig<T>
@@ -29,7 +32,7 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
             );
             return tableConfig;
         }
-    }, [localeStorageKey, tableConfig, toastMessage]);
+    }, [localeStorageKey, tableConfig]); // Adding toastMessage to the dependancy array here will result in an infite loop in code calling the useStoredTabelConfig hook
 
     return getStoredTableConfig;
 };
