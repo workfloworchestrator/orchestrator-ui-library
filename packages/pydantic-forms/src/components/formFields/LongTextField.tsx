@@ -1,5 +1,5 @@
-import { EuiFormRow, EuiText, EuiTextArea } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { EuiFormRow, EuiText, EuiTextArea } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type LongTextFieldProps = FieldProps<string, {}, HTMLTextAreaElement>;
 
@@ -52,7 +52,7 @@ function LongText({
                     onChange={(event) => onChange(event.target.value)}
                     placeholder={placeholder}
                     readOnly={readOnly}
-                    value={value ?? ""}
+                    value={value ?? ''}
                     fullWidth
                 />
             </EuiFormRow>
@@ -60,4 +60,4 @@ function LongText({
     );
 }
 
-export default connectField(LongText, { kind: "leaf" });
+export default connectField(LongText, { kind: 'leaf' });

@@ -12,10 +12,10 @@
  * limitations under the License.
  *
  */
-import { EuiFieldText, EuiFormRow, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type TextFieldProps = FieldProps<string>;
 
@@ -56,7 +56,7 @@ function Text({
                     placeholder={placeholder}
                     readOnly={readOnly}
                     type={type}
-                    value={value ?? ""}
+                    value={value ?? ''}
                     fullWidth
                 />
             </EuiFormRow>
@@ -64,6 +64,6 @@ function Text({
     );
 }
 
-Text.defaultProps = { type: "text" };
+Text.defaultProps = { type: 'text' };
 
-export default connectField(Text, { kind: "leaf" });
+export default connectField(Text, { kind: 'leaf' });

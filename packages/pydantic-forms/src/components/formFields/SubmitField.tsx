@@ -1,4 +1,4 @@
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,18 +13,32 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { filterDOMProps, useForm } from "uniforms";
+import React from 'react';
+import { filterDOMProps, useForm } from 'uniforms';
 
-export type SubmitFieldProps = FieldProps<null, {}, HTMLInputElement, HTMLInputElement>;
+export type SubmitFieldProps = FieldProps<
+    null,
+    {},
+    HTMLInputElement,
+    HTMLInputElement
+>;
 
 // onChange not used on purpose
-export default function SubmitField({ disabled, inputRef, readOnly, value, onChange, ...props }: SubmitFieldProps) {
+export default function SubmitField({
+    disabled,
+    inputRef,
+    readOnly,
+    value,
+    onChange,
+    ...props
+}: SubmitFieldProps) {
     const { error, state } = useForm();
 
     return (
         <input
-            disabled={disabled === undefined ? !!(error || state.disabled) : disabled}
+            disabled={
+                disabled === undefined ? !!(error || state.disabled) : disabled
+            }
             readOnly={readOnly}
             ref={inputRef}
             type="submit"

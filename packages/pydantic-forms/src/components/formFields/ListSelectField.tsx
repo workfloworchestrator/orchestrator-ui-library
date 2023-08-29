@@ -18,19 +18,22 @@ after the upgrade to react-script 5.0. The original SelectField would import its
 that seems to be impossible with the new webpack.
  */
 
-import ListField, { ListFieldProps } from "lib/uniforms-surfnet/src/ListField";
-import ListItemField from "lib/uniforms-surfnet/src/ListItemField";
+import ListField, { ListFieldProps } from 'lib/uniforms-surfnet/src/ListField';
+import ListItemField from 'lib/uniforms-surfnet/src/ListItemField';
 // Avoid circular deps
-import { default as SelectField } from "lib/uniforms-surfnet/src/SelectField";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import { get } from "lodash";
-import React from "react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import { connectField, joinName, useField, useForm } from "uniforms";
+import { default as SelectField } from 'lib/uniforms-surfnet/src/SelectField';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import { get } from 'lodash';
+import React from 'react';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
+import { connectField, joinName, useField, useForm } from 'uniforms';
 
 export type SelectFieldProps = FieldProps<
     string | string[],
-    { allowedValues?: string[]; transform?(value: string): string } & WrappedComponentProps
+    {
+        allowedValues?: string[];
+        transform?(value: string): string;
+    } & WrappedComponentProps
 >;
 
 function ListSelect({
@@ -58,20 +61,26 @@ function ListSelect({
     let parentName = joinName(nameArray.slice(0, -1));
 
     // We can't call useField conditionally so we call it for ourselves if there is no parent
-    if (parentName === "") {
+    if (parentName === '') {
         parentName = name;
     }
     const parent = useField(parentName, {}, { absoluteName: true })[0];
     const { model } = useForm();
 
     if (parentName !== name) {
-        if (parent.fieldType === Array && (parent as ListFieldProps).uniqueItems) {
+        if (
+            parent.fieldType === Array &&
+            (parent as ListFieldProps).uniqueItems
+        ) {
             const allValues: string[] = get(model, parentName, []);
             const chosenValues = allValues.filter(
-                (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
+                (_item, index) =>
+                    index.toString() !== nameArray[nameArray.length - 1],
             );
 
-            allowedValues = allowedValues.filter((value) => !chosenValues.includes(value));
+            allowedValues = allowedValues.filter(
+                (value) => !chosenValues.includes(value),
+            );
         }
     }
 
@@ -79,13 +88,23 @@ function ListSelect({
         return (
             <ListField name={name}>
                 <ListItemField name="$">
-                    <SelectField name="" transform={transform} allowedValues={allowedValues} />
+                    <SelectField
+                        name=""
+                        transform={transform}
+                        allowedValues={allowedValues}
+                    />
                 </ListItemField>
             </ListField>
         );
     } else {
-        return <SelectField name="" transform={transform} allowedValues={allowedValues} />;
+        return (
+            <SelectField
+                name=""
+                transform={transform}
+                allowedValues={allowedValues}
+            />
+        );
     }
 }
 
-export default connectField(injectIntl(ListSelect), { kind: "leaf" });
+export default connectField(injectIntl(ListSelect), { kind: 'leaf' });

@@ -1,6 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from '@emotion/core';
 
-import { DANGER, SUCCESS } from "../../../stylesheets/emotion/colors";
+import { DANGER, SUCCESS } from '../../../stylesheets/emotion/colors';
 
 export const acceptFieldStyling = css`
     .accept-field {

@@ -13,17 +13,24 @@
  *
  */
 
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import { omit } from "lodash";
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import { omit } from 'lodash';
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
-const base64 = typeof btoa !== "undefined" ? btoa : (x: string) => Buffer.from(x).toString("base64");
-const escape = (x: string) => base64(encodeURIComponent(x)).replace(/=+$/, "");
+const base64 =
+    typeof btoa !== 'undefined'
+        ? btoa
+        : (x: string) => Buffer.from(x).toString('base64');
+const escape = (x: string) => base64(encodeURIComponent(x)).replace(/=+$/, '');
 
 export type RadioFieldProps = FieldProps<
     string,
-    { allowedValues?: string[]; checkboxes?: boolean; transform?(value: string): string }
+    {
+        allowedValues?: string[];
+        checkboxes?: boolean;
+        transform?(value: string): string;
+    }
 >;
 
 function Radio({
@@ -39,8 +46,8 @@ function Radio({
     ...props
 }: RadioFieldProps) {
     return (
-        <div {...omit(filterDOMProps(props), ["checkboxes"])}>
-            {label && <label style={{ fontWeight: "bolder" }}>{label}</label>}
+        <div {...omit(filterDOMProps(props), ['checkboxes'])}>
+            {label && <label style={{ fontWeight: 'bolder' }}>{label}</label>}
 
             {allowedValues?.map((item) => (
                 <div key={item}>
@@ -57,7 +64,10 @@ function Radio({
                         type="radio"
                     />
 
-                    <label htmlFor={`${id}-${escape(item)}`} style={{ paddingLeft: "5px" }}>
+                    <label
+                        htmlFor={`${id}-${escape(item)}`}
+                        style={{ paddingLeft: '5px' }}
+                    >
                         {transform ? transform(item) : item}
                     </label>
                 </div>
@@ -66,4 +76,4 @@ function Radio({
     );
 }
 
-export default connectField(Radio, { kind: "leaf" });
+export default connectField(Radio, { kind: 'leaf' });

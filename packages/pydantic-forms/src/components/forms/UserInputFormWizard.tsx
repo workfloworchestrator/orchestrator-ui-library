@@ -13,15 +13,15 @@
  *
  */
 
-import UserInputForm from "components/inputForms/UserInputForm";
-import { intl } from "locale/i18n";
-import hash from "object-hash";
-import React, { useContext, useEffect, useState } from "react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import ApplicationContext from "utils/ApplicationContext";
-import { setFlash } from "utils/Flash";
-import { FormNotCompleteResponse, InputForm } from "utils/types";
-import { stop } from "utils/Utils";
+import UserInputForm from 'components/inputForms/UserInputForm';
+import { intl } from 'locale/i18n';
+import hash from 'object-hash';
+import React, { useContext, useEffect, useState } from 'react';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
+import ApplicationContext from 'utils/ApplicationContext';
+import { setFlash } from 'utils/Flash';
+import { FormNotCompleteResponse, InputForm } from 'utils/types';
+import { stop } from 'utils/Utils';
 
 interface Form {
     form: InputForm;
@@ -35,9 +35,16 @@ interface IProps extends WrappedComponentProps {
     hasNext?: boolean;
 }
 
-function UserInputFormWizard({ hasNext = false, stepUserInput, validSubmit, cancel }: IProps) {
+function UserInputFormWizard({
+    hasNext = false,
+    stepUserInput,
+    validSubmit,
+    cancel,
+}: IProps) {
     const { apiClient } = useContext(ApplicationContext);
-    const [forms, setForms] = useState<Form[]>([{ form: stepUserInput, hasNext: hasNext }]);
+    const [forms, setForms] = useState<Form[]>([
+        { form: stepUserInput, hasNext: hasNext },
+    ]);
     const [userInputs, setUserInputs] = useState<{}[]>([]);
 
     useEffect(() => {
@@ -55,13 +62,24 @@ function UserInputFormWizard({ hasNext = false, stepUserInput, validSubmit, canc
         newUserInputs.push(currentFormData);
 
         let result = validSubmit(newUserInputs);
-        return apiClient.catchErrorStatus<FormNotCompleteResponse>(result, 510, (json) => {
-            // Scroll to top when navigating to next screen of wizard
-            window.scrollTo(0, 0);
-            setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
-            setForms([...forms, { form: json.form, hasNext: json.hasNext }]);
-            setUserInputs(newUserInputs);
-        });
+        return apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            result,
+            510,
+            (json) => {
+                // Scroll to top when navigating to next screen of wizard
+                window.scrollTo(0, 0);
+                setFlash(
+                    intl.formatMessage({
+                        id: 'process.flash.wizard_next_step',
+                    }),
+                );
+                setForms([
+                    ...forms,
+                    { form: json.form, hasNext: json.hasNext },
+                ]);
+                setUserInputs(newUserInputs);
+            },
+        );
     };
 
     const currentForm = forms[forms.length - 1];

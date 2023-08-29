@@ -12,11 +12,11 @@
  * limitations under the License.
  *
  */
-import { EuiFieldNumber, EuiFormRow, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import NumericInput from "react-numeric-input";
-import { connectField, filterDOMProps } from "uniforms";
+import { EuiFieldNumber, EuiFormRow, EuiText } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import NumericInput from 'react-numeric-input';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type NumFieldProps = FieldProps<
     number,
@@ -63,7 +63,7 @@ function Num({
                     min={min}
                     max={max}
                     step={step ?? 1}
-                    value={value ?? ""}
+                    value={value ?? ''}
                     disabled={disabled}
                 />
             </EuiFormRow>
@@ -71,4 +71,4 @@ function Num({
     );
 }
 
-export default connectField(Num, { kind: "leaf" });
+export default connectField(Num, { kind: 'leaf' });
