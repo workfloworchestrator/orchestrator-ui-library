@@ -16,12 +16,14 @@
             "workflows": "Workflows"
         },
         "products": {
+            "id": "ID",
             "name": "Naam",
             "description": "Beschrijving",
             "tag": "Tag",
             "productType": "Type",
             "status": "Status",
             "productBlocks": "Product blocks",
+            "fixedInputs": "Fixed inputs",
             "createdAt": "Aangemaakt"
         },
         "productBlocks": {
