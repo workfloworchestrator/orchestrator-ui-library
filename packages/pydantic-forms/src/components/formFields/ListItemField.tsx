@@ -13,10 +13,10 @@
  *
  */
 
-import ListDelField from "lib/uniforms-surfnet/src/ListDelField";
-import React, { ReactNode } from "react";
-import { connectField } from "uniforms";
-import { AutoField } from "uniforms-unstyled";
+import ListDelField from 'lib/uniforms-surfnet/src/ListDelField';
+import React, { ReactNode } from 'react';
+import { connectField } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
 
 export type ListItemFieldProps = {
     children?: ReactNode;
@@ -24,7 +24,10 @@ export type ListItemFieldProps = {
     outerList?: boolean;
 };
 
-function ListItem({ children = <AutoField label={null} name="" />, outerList = false }: ListItemFieldProps) {
+function ListItem({
+    children = <AutoField label={null} name="" />,
+    outerList = false,
+}: ListItemFieldProps) {
     return (
         <li>
             {children}

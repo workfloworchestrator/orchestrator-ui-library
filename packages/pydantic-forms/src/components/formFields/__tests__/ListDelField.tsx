@@ -1,6 +1,6 @@
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { ListDelField } from "lib/uniforms-surfnet/src";
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { ListDelField } from 'lib/uniforms-surfnet/src';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,66 +15,71 @@ import { ListDelField } from "lib/uniforms-surfnet/src";
  * limitations under the License.
  *
  */
-import merge from "lodash/merge";
-import React from "react";
+import merge from 'lodash/merge';
+import React from 'react';
 
 const onChange = jest.fn();
 const context = (schema?: object) =>
-    createContext(merge({ x: { type: Array, maxCount: 3 }, "x.$": String }, schema), {
-        onChange,
-        model: { x: ["x", "y", "z"] },
-    });
+    createContext(
+        merge({ x: { type: Array, maxCount: 3 }, 'x.$': String }, schema),
+        {
+            onChange,
+            model: { x: ['x', 'y', 'z'] },
+        },
+    );
 
 beforeEach(() => {
     onChange.mockClear();
 });
 
-test("<ListDelField> - works", () => {
+test('<ListDelField> - works', () => {
     const element = <ListDelField name="x.1" />;
     const wrapper = mount(element, context());
 
     expect(wrapper.find(ListDelField)).toHaveLength(1);
-    expect(wrapper.find("label")).toHaveLength(1);
-    expect(wrapper.find("label").text()).toBe("");
+    expect(wrapper.find('label')).toHaveLength(1);
+    expect(wrapper.find('label').text()).toBe('');
 });
 
-test("<ListDelField> - renders label when outerList", () => {
+test('<ListDelField> - renders label when outerList', () => {
     const element = <ListDelField name="x.1" outerList={true} />;
     const wrapper = mount(element, context());
 
     expect(wrapper.find(ListDelField)).toHaveLength(1);
-    expect(wrapper.find("label")).toHaveLength(1);
-    expect(wrapper.find("label").text()).toBe("forms.fields.x_del");
+    expect(wrapper.find('label')).toHaveLength(1);
+    expect(wrapper.find('label').text()).toBe('forms.fields.x_del');
 });
 
-test("<ListDelField> - prevents onClick when disabled", () => {
+test('<ListDelField> - prevents onClick when disabled', () => {
     const element = <ListDelField name="x.1" disabled />;
     const wrapper = mount(element, context());
 
-    expect(wrapper.find('[role="button"]').simulate("click")).toBeTruthy();
+    expect(wrapper.find('[role="button"]').simulate('click')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 });
 
-test("<ListDelField> - prevents onClick when limit reached", () => {
+test('<ListDelField> - prevents onClick when limit reached', () => {
     const element = <ListDelField name="x.1" />;
     const wrapper = mount(element, context({ x: { minCount: 3 } }));
 
-    expect(wrapper.find('[role="button"]').simulate("click")).toBeTruthy();
+    expect(wrapper.find('[role="button"]').simulate('click')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 });
 
-test("<ListDelField> - correctly reacts on click", () => {
+test('<ListDelField> - correctly reacts on click', () => {
     const element = <ListDelField name="x.1" />;
     const wrapper = mount(element, context());
 
-    expect(wrapper.find('[role="button"]').simulate("click")).toBeTruthy();
-    expect(onChange).toHaveBeenLastCalledWith("x", ["x", "z"]);
+    expect(wrapper.find('[role="button"]').simulate('click')).toBeTruthy();
+    expect(onChange).toHaveBeenLastCalledWith('x', ['x', 'z']);
 });
 
-test("<ListDelField> - correctly reacts on keyboard enter key", () => {
+test('<ListDelField> - correctly reacts on keyboard enter key', () => {
     const element = <ListDelField name="x.1" />;
     const wrapper = mount(element, context());
 
-    expect(wrapper.find('[role="button"]').simulate("keydown", { key: "Enter" })).toBeTruthy();
-    expect(onChange).toHaveBeenLastCalledWith("x", ["x", "z"]);
+    expect(
+        wrapper.find('[role="button"]').simulate('keydown', { key: 'Enter' }),
+    ).toBeTruthy();
+    expect(onChange).toHaveBeenLastCalledWith('x', ['x', 'z']);
 });

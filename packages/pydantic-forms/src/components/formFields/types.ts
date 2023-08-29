@@ -13,14 +13,14 @@
  *
  */
 
-import { Ref } from "react";
-import { HTMLFieldProps } from "uniforms";
+import { Ref } from 'react';
+import { HTMLFieldProps } from 'uniforms';
 
 export type FieldProps<
     Value,
     Extra = {},
     InputElementType = HTMLInputElement,
-    ElementType = HTMLDivElement
+    ElementType = HTMLDivElement,
 > = HTMLFieldProps<
     Value,
     ElementType,

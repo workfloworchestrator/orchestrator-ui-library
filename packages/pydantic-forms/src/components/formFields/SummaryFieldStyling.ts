@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+import { css } from '@emotion/core';
 import {
     DARKEST_GREY,
     DARKEST_PRIMARY_COLOR,
@@ -6,7 +6,7 @@ import {
     LIGHT_GREY_COLOR,
     LIGHT_PRIMARY_COLOR,
     PRIMARY_COLOR,
-} from "stylesheets/emotion/colors";
+} from 'stylesheets/emotion/colors';
 
 export const summaryFieldStyling = css`
     div.emailMessage {

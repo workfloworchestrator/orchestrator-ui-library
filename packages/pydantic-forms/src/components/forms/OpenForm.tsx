@@ -13,12 +13,12 @@
  *
  */
 
-import UserInputFormWizard from "components/inputForms/UserInputFormWizard";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useIntl } from "react-intl";
-import ApplicationContext from "utils/ApplicationContext";
-import { setFlash } from "utils/Flash";
-import { Form, FormNotCompleteResponse } from "utils/types";
+import UserInputFormWizard from 'components/inputForms/UserInputFormWizard';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
+import ApplicationContext from 'utils/ApplicationContext';
+import { setFlash } from 'utils/Flash';
+import { Form, FormNotCompleteResponse } from 'utils/types';
 
 interface IProps {
     formKey: string;
@@ -27,7 +27,12 @@ interface IProps {
     handleCancel: () => void;
 }
 
-export default function OpenForm({ formKey, ticketId, handleSubmit, handleCancel }: IProps) {
+export default function OpenForm({
+    formKey,
+    ticketId,
+    handleSubmit,
+    handleCancel,
+}: IProps) {
     const intl = useIntl();
     const { redirect, customApiClient } = useContext(ApplicationContext);
     const [form, setForm] = useState<Form>({});
@@ -36,31 +41,43 @@ export default function OpenForm({ formKey, ticketId, handleSubmit, handleCancel
     const submit = useCallback(
         (userInputs: {}[]) => {
             userInputs = [{ ticket_id: ticketId }, ...userInputs];
-            let promise = customApiClient.cimStartForm(formKey, userInputs).then(
-                (form) => {
-                    handleSubmit(form);
-                    setFlash(intl.formatMessage({ id: `cim.flash.${formKey}` }));
-                },
-                (e) => {
-                    if (
-                        e.response.status === 400 &&
-                        ["invalid statemachine transition", "unfinished inform"].includes(
-                            e.response.data?.title.toLowerCase()
-                        )
-                    ) {
-                        setFlash(e.response.data.detail, "error");
-                        redirect(`/tickets/${ticketId}`);
-                    }
-                    throw e;
-                }
-            );
+            let promise = customApiClient
+                .cimStartForm(formKey, userInputs)
+                .then(
+                    (form) => {
+                        handleSubmit(form);
+                        setFlash(
+                            intl.formatMessage({ id: `cim.flash.${formKey}` }),
+                        );
+                    },
+                    (e) => {
+                        if (
+                            e.response.status === 400 &&
+                            [
+                                'invalid statemachine transition',
+                                'unfinished inform',
+                            ].includes(e.response.data?.title.toLowerCase())
+                        ) {
+                            setFlash(e.response.data.detail, 'error');
+                            redirect(`/tickets/${ticketId}`);
+                        }
+                        throw e;
+                    },
+                );
 
-            return customApiClient.catchErrorStatus<any>(promise, 503, (json) => {
-                redirect("/tickets");
-                setFlash(intl.formatMessage({ id: `cim.backendProblem` }), "error");
-            });
+            return customApiClient.catchErrorStatus<any>(
+                promise,
+                503,
+                (json) => {
+                    redirect('/tickets');
+                    setFlash(
+                        intl.formatMessage({ id: `cim.backendProblem` }),
+                        'error',
+                    );
+                },
+            );
         },
-        [redirect, intl, customApiClient, formKey, ticketId, handleSubmit]
+        [redirect, intl, customApiClient, formKey, ticketId, handleSubmit],
     );
 
     const cancel = useCallback(() => {
@@ -69,12 +86,16 @@ export default function OpenForm({ formKey, ticketId, handleSubmit, handleCancel
 
     useEffect(() => {
         if (formKey) {
-            customApiClient.catchErrorStatus<FormNotCompleteResponse>(submit([]), 510, (json) => {
-                setForm({
-                    stepUserInput: json.form,
-                    hasNext: json.hasNext ?? false,
-                });
-            });
+            customApiClient.catchErrorStatus<FormNotCompleteResponse>(
+                submit([]),
+                510,
+                (json) => {
+                    setForm({
+                        stepUserInput: json.form,
+                        hasNext: json.hasNext ?? false,
+                    });
+                },
+            );
         }
     }, [formKey, submit, intl, customApiClient]);
 

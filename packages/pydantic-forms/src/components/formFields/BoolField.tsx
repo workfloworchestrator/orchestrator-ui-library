@@ -13,12 +13,12 @@
  *
  */
 
-import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
-import { boolFieldStyling } from "./BoolFieldStyling";
+import { boolFieldStyling } from './BoolFieldStyling';
 
 export type BoolFieldProps = FieldProps<boolean>;
 
@@ -26,7 +26,7 @@ function Bool({
     disabled,
     id,
     inputRef,
-    className = "",
+    className = '',
     label,
     description,
     name,
@@ -40,7 +40,10 @@ function Bool({
 }: BoolFieldProps) {
     return (
         <EuiFlexItem css={boolFieldStyling}>
-            <section {...filterDOMProps(props)} className={`${className} bool-field`}>
+            <section
+                {...filterDOMProps(props)}
+                className={`${className} bool-field`}
+            >
                 <EuiFormRow
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
@@ -55,7 +58,9 @@ function Bool({
                         id={id}
                         name={name}
                         label={name}
-                        onChange={() => !disabled && !readOnly && onChange(!value)}
+                        onChange={() =>
+                            !disabled && !readOnly && onChange(!value)
+                        }
                     />
                 </EuiFormRow>
             </section>
@@ -63,4 +68,4 @@ function Bool({
     );
 }
 
-export default connectField(Bool, { kind: "leaf" });
+export default connectField(Bool, { kind: 'leaf' });

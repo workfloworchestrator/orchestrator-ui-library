@@ -1,4 +1,4 @@
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,22 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type ErrorFieldProps = FieldProps<null>;
 
 // onChange not used on purpose
-function Error({ children, onChange, error, errorMessage, ...props }: ErrorFieldProps) {
-    return !error ? null : <div {...filterDOMProps(props)}>{children || errorMessage}</div>;
+function Error({
+    children,
+    onChange,
+    error,
+    errorMessage,
+    ...props
+}: ErrorFieldProps) {
+    return !error ? null : (
+        <div {...filterDOMProps(props)}>{children || errorMessage}</div>
+    );
 }
 
-export default connectField(Error, { initialValue: false, kind: "leaf" });
+export default connectField(Error, { initialValue: false, kind: 'leaf' });

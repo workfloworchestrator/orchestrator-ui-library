@@ -1,4 +1,4 @@
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +13,10 @@ import { FieldProps } from "lib/uniforms-surfnet/src/types";
  * limitations under the License.
  *
  */
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
-const DateConstructor = (typeof global === "object" ? global : window).Date;
+const DateConstructor = (typeof global === 'object' ? global : window).Date;
 const dateFormat = (value?: Date) => value?.toISOString().slice(0, -8);
 
 export type DateFieldProps = FieldProps<Date, { max?: Date; min?: Date }>;
@@ -46,7 +46,9 @@ function Date({
                 min={dateFormat(min)}
                 name={name}
                 onChange={(event) => {
-                    const date = new DateConstructor(event.target.valueAsNumber);
+                    const date = new DateConstructor(
+                        event.target.valueAsNumber,
+                    );
                     if (date.getFullYear() < 10000) {
                         onChange(date);
                     } else if (isNaN(event.target.valueAsNumber)) {
@@ -57,10 +59,10 @@ function Date({
                 readOnly={readOnly}
                 ref={inputRef}
                 type="datetime-local"
-                value={dateFormat(value) ?? ""}
+                value={dateFormat(value) ?? ''}
             />
         </div>
     );
 }
 
-export default connectField(Date, { kind: "leaf" });
+export default connectField(Date, { kind: 'leaf' });

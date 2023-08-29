@@ -1,6 +1,6 @@
-import { EuiDatePicker, EuiFormRow, EuiText } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import moment from "moment";
+import { EuiDatePicker, EuiFormRow, EuiText } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import moment from 'moment';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,22 @@ import moment from "moment";
  * limitations under the License.
  *
  */
-import { connectField, filterDOMProps } from "uniforms";
-import { localMomentToUtcTimestamp, utcTimestampToLocalMoment } from "utils/Time";
+import { connectField, filterDOMProps } from 'uniforms';
+import {
+    localMomentToUtcTimestamp,
+    utcTimestampToLocalMoment,
+} from 'utils/Time';
 
 export type TimestampFieldProps = FieldProps<
     number,
-    { max?: number; min?: number; showTimeSelect: boolean; locale?: string; dateFormat?: string; timeFormat?: string }
+    {
+        max?: number;
+        min?: number;
+        showTimeSelect: boolean;
+        locale?: string;
+        dateFormat?: string;
+        timeFormat?: string;
+    }
 >;
 
 function TimestampField({
@@ -61,12 +71,16 @@ function TimestampField({
                     // @ts-ignore
                     value={value ? utcTimestampToLocalMoment(value) : undefined}
                     onChange={(event) => {
-                        onChange(event ? localMomentToUtcTimestamp(event) : undefined);
+                        onChange(
+                            event
+                                ? localMomentToUtcTimestamp(event)
+                                : undefined,
+                        );
                     }}
                     showTimeSelect={showTimeSelect}
                     dateFormat={dateFormat ? dateFormat : undefined}
                     timeFormat={timeFormat ? timeFormat : undefined}
-                    locale={locale ? locale : "en-en"}
+                    locale={locale ? locale : 'en-en'}
                     maxDate={max ? moment.unix(max) : undefined}
                     minDate={min ? moment.unix(min) : undefined}
                 />
@@ -75,4 +89,4 @@ function TimestampField({
     );
 }
 
-export default connectField(TimestampField, { kind: "leaf" });
+export default connectField(TimestampField, { kind: 'leaf' });

@@ -1,6 +1,6 @@
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { SubmitField } from "lib/uniforms-surfnet/src";
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { SubmitField } from 'lib/uniforms-surfnet/src';
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,35 +15,35 @@ import { SubmitField } from "lib/uniforms-surfnet/src";
  * limitations under the License.
  *
  */
-import React from "react";
+import React from 'react';
 
-test("<SubmitField> - renders", () => {
+test('<SubmitField> - renders', () => {
     const element = <SubmitField />;
     const wrapper = mount(element, createContext());
 
     expect(wrapper).toHaveLength(1);
 });
 
-test("<SubmitField> - renders disabled if error", () => {
+test('<SubmitField> - renders disabled if error', () => {
     const element = <SubmitField />;
     const wrapper = mount(element, createContext(undefined, { error: {} }));
 
     expect(wrapper).toHaveLength(1);
-    expect(wrapper.find("input").prop("disabled")).toBe(true);
+    expect(wrapper.find('input').prop('disabled')).toBe(true);
 });
 
-test("<SubmitField> - renders enabled if error and enabled", () => {
+test('<SubmitField> - renders enabled if error and enabled', () => {
     const element = <SubmitField disabled={false} />;
     const wrapper = mount(element, createContext(undefined, { error: {} }));
 
     expect(wrapper).toHaveLength(1);
-    expect(wrapper.find("input").prop("disabled")).toBe(false);
+    expect(wrapper.find('input').prop('disabled')).toBe(false);
 });
 
-test("<SubmitField> - renders a wrapper with correct value", () => {
+test('<SubmitField> - renders a wrapper with correct value', () => {
     const element = <SubmitField value="Example" />;
     const wrapper = mount(element, createContext());
 
     expect(wrapper).toHaveLength(1);
-    expect(wrapper.find("input").prop("value")).toBe("Example");
+    expect(wrapper.find('input').prop('value')).toBe('Example');
 });

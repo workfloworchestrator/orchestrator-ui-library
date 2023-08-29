@@ -13,11 +13,11 @@
  *
  */
 
-import { EuiFormRow, EuiText } from "@elastic/eui";
-import SubscriptionDetail from "components/subscriptionDetail/SubscriptionDetail";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
+import { EuiFormRow, EuiText } from '@elastic/eui';
+import SubscriptionDetail from 'components/subscriptionDetail/SubscriptionDetail';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
 
 export type SubscriptionSummaryFieldProps = FieldProps<string>;
 function SubscriptionSummary({
@@ -35,11 +35,16 @@ function SubscriptionSummary({
 
     return (
         <section {...filterDOMProps(props)}>
-            <EuiFormRow label={label} labelAppend={<EuiText size="m">{description}</EuiText>} id={id} fullWidth>
+            <EuiFormRow
+                label={label}
+                labelAppend={<EuiText size="m">{description}</EuiText>}
+                id={id}
+                fullWidth
+            >
                 <SubscriptionDetail subscriptionId={value} />
             </EuiFormRow>
         </section>
     );
 }
 
-export default connectField(SubscriptionSummary, { kind: "leaf" });
+export default connectField(SubscriptionSummary, { kind: 'leaf' });

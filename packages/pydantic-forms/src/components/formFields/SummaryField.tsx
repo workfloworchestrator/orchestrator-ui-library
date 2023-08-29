@@ -13,14 +13,14 @@
  *
  */
 
-import { EuiFlexItem, EuiFormRow, EuiText } from "@elastic/eui";
-import { summaryFieldStyling } from "lib/uniforms-surfnet/src/SummaryFieldStyling";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React, { useContext } from "react";
-import ReactHtmlParser from "react-html-parser";
-import { connectField, filterDOMProps } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
-import { isEmpty } from "utils/Utils";
+import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
+import { summaryFieldStyling } from 'lib/uniforms-surfnet/src/SummaryFieldStyling';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React, { useContext } from 'react';
+import ReactHtmlParser from 'react-html-parser';
+import { connectField, filterDOMProps } from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
+import { isEmpty } from 'utils/Utils';
 
 export type SummaryFieldProps = FieldProps<
     null,
@@ -28,7 +28,15 @@ export type SummaryFieldProps = FieldProps<
 >;
 
 // onChange not used on purpose
-function Summary({ id, name, label, description, onChange, data, ...props }: SummaryFieldProps) {
+function Summary({
+    id,
+    name,
+    label,
+    description,
+    onChange,
+    data,
+    ...props
+}: SummaryFieldProps) {
     const { theme } = useContext(ApplicationContext);
     if (!data) {
         return null;
@@ -42,7 +50,7 @@ function Summary({ id, name, label, description, onChange, data, ...props }: Sum
         <tr key={index}>
             {labels && <td className={`label ${theme}`}>{labels[index]}</td>}
             <td className={`value ${theme}`}>
-                {typeof row == "string" && row.includes("<!doctype html>") ? (
+                {typeof row == 'string' && row.includes('<!doctype html>') ? (
                     <div className="emailMessage">{ReactHtmlParser(row)}</div>
                 ) : (
                     row
@@ -69,7 +77,12 @@ function Summary({ id, name, label, description, onChange, data, ...props }: Sum
     return (
         <EuiFlexItem css={summaryFieldStyling}>
             <section {...filterDOMProps(props)}>
-                <EuiFormRow label={label} labelAppend={<EuiText size="m">{description}</EuiText>} id={id} fullWidth>
+                <EuiFormRow
+                    label={label}
+                    labelAppend={<EuiText size="m">{description}</EuiText>}
+                    id={id}
+                    fullWidth
+                >
                     <section className="table-summary">
                         <table id={`${id}-table`}>
                             <thead>{table_header}</thead>
@@ -82,4 +95,4 @@ function Summary({ id, name, label, description, onChange, data, ...props }: Sum
     );
 }
 
-export default connectField(Summary, { kind: "leaf" });
+export default connectField(Summary, { kind: 'leaf' });

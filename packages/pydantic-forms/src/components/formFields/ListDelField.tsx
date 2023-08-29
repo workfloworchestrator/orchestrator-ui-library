@@ -13,24 +13,44 @@
  *
  */
 
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { FormattedMessage } from "react-intl";
-import { connectField, filterDOMProps, joinName, useField } from "uniforms";
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
-export type ListDelFieldProps = FieldProps<null, { initialCount?: number; itemProps?: {}; outerList?: boolean }>;
+export type ListDelFieldProps = FieldProps<
+    null,
+    { initialCount?: number; itemProps?: {}; outerList?: boolean }
+>;
 
 // onChange not used on purpose
-function ListDel({ disabled, name, readOnly, id, onChange, outerList = false, ...props }: ListDelFieldProps) {
+function ListDel({
+    disabled,
+    name,
+    readOnly,
+    id,
+    onChange,
+    outerList = false,
+    ...props
+}: ListDelFieldProps) {
     const nameParts = joinName(null, name);
     const nameIndex = +nameParts[nameParts.length - 1];
     const parentName = joinName(nameParts.slice(0, -1));
-    const parent = useField<{ minCount?: number }, unknown[]>(parentName, {}, { absoluteName: true })[0];
+    const parent = useField<{ minCount?: number }, unknown[]>(
+        parentName,
+        {},
+        { absoluteName: true },
+    )[0];
 
-    const limitNotReached = !disabled && !(parent.minCount! >= parent.value!.length);
+    const limitNotReached =
+        !disabled && !(parent.minCount! >= parent.value!.length);
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
-        if (limitNotReached && !readOnly && (!("key" in event) || event.key === "Enter")) {
+        if (
+            limitNotReached &&
+            !readOnly &&
+            (!('key' in event) || event.key === 'Enter')
+        ) {
             const value = parent.value!.slice();
             value.splice(nameIndex, 1);
             parent.onChange(value);
@@ -47,11 +67,17 @@ function ListDel({ disabled, name, readOnly, id, onChange, outerList = false, ..
             role="button"
             tabIndex={0}
         >
-            <i className={`fa fa-minus ${!limitNotReached ? "disabled" : ""}`} />
+            <i
+                className={`fa fa-minus ${!limitNotReached ? 'disabled' : ''}`}
+            />
 
-            <label>{outerList && <FormattedMessage id={`forms.fields.${parentName}_del`} />}</label>
+            <label>
+                {outerList && (
+                    <FormattedMessage id={`forms.fields.${parentName}_del`} />
+                )}
+            </label>
         </div>
     );
 }
 
-export default connectField(ListDel, { initialValue: false, kind: "leaf" });
+export default connectField(ListDel, { initialValue: false, kind: 'leaf' });

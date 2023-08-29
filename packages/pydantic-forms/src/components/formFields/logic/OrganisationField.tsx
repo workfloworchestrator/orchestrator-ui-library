@@ -13,20 +13,28 @@
  *
  */
 
-import SelectField, { SelectFieldProps } from "lib/uniforms-surfnet/src/SelectField";
-import get from "lodash/get";
-import React, { useContext } from "react";
-import { useIntl } from "react-intl";
-import { connectField } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
+import SelectField, {
+    SelectFieldProps,
+} from 'lib/uniforms-surfnet/src/SelectField';
+import get from 'lodash/get';
+import React, { useContext } from 'react';
+import { useIntl } from 'react-intl';
+import { connectField } from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
 
-export type OrganisationFieldProps = Omit<SelectFieldProps, "placeholder" | "transform" | "allowedValues">;
+export type OrganisationFieldProps = Omit<
+    SelectFieldProps,
+    'placeholder' | 'transform' | 'allowedValues'
+>;
 
 function Organisation({ name, ...props }: OrganisationFieldProps) {
     const intl = useIntl();
     const { organisations } = useContext(ApplicationContext);
     const organisationLabelLookup =
-        organisations?.reduce<{ [index: string]: string }>(function (mapping, org) {
+        organisations?.reduce<{ [index: string]: string }>(function (
+            mapping,
+            org,
+        ) {
             mapping[org.uuid] = org.name;
             return mapping;
         }, {}) ?? {};
@@ -36,8 +44,12 @@ function Organisation({ name, ...props }: OrganisationFieldProps) {
             name=""
             {...props}
             allowedValues={Object.keys(organisationLabelLookup)}
-            transform={(uuid: string) => get(organisationLabelLookup, uuid, uuid)}
-            placeholder={intl.formatMessage({ id: "forms.widgets.organisation.placeholder" })}
+            transform={(uuid: string) =>
+                get(organisationLabelLookup, uuid, uuid)
+            }
+            placeholder={intl.formatMessage({
+                id: 'forms.widgets.organisation.placeholder',
+            })}
         />
     );
 }
