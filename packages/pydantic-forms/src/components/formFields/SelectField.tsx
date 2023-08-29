@@ -13,24 +13,33 @@
  *
  */
 
-import { EuiFormRow, EuiText } from "@elastic/eui";
-import ListField, { ListFieldProps } from "lib/uniforms-surfnet/src/ListField";
-import ListItemField from "lib/uniforms-surfnet/src/ListItemField";
+import { EuiFormRow, EuiText } from '@elastic/eui';
+import ListField, { ListFieldProps } from 'lib/uniforms-surfnet/src/ListField';
+import ListItemField from 'lib/uniforms-surfnet/src/ListItemField';
 // Avoid circular deps
-import { default as ListSelectField } from "lib/uniforms-surfnet/src/ListSelectField";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import { get } from "lodash";
-import React, { useContext } from "react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import ReactSelect from "react-select";
-import { getReactSelectTheme } from "stylesheets/emotion/utils";
-import { connectField, filterDOMProps, joinName, useField, useForm } from "uniforms";
-import ApplicationContext from "utils/ApplicationContext";
-import { Option } from "utils/types";
+import { default as ListSelectField } from 'lib/uniforms-surfnet/src/ListSelectField';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import { get } from 'lodash';
+import React, { useContext } from 'react';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
+import ReactSelect from 'react-select';
+import { getReactSelectTheme } from 'stylesheets/emotion/utils';
+import {
+    connectField,
+    filterDOMProps,
+    joinName,
+    useField,
+    useForm,
+} from 'uniforms';
+import ApplicationContext from 'utils/ApplicationContext';
+import { Option } from 'utils/types';
 
 export type SelectFieldProps = FieldProps<
     string | string[],
-    { allowedValues?: string[]; transform?(value: string): string } & WrappedComponentProps
+    {
+        allowedValues?: string[];
+        transform?(value: string): string;
+    } & WrappedComponentProps
 >;
 
 function Select({
@@ -60,20 +69,26 @@ function Select({
     let parentName = joinName(nameArray.slice(0, -1));
 
     // We can't call useField conditionally so we call it for ourselves if there is no parent
-    if (parentName === "") {
+    if (parentName === '') {
         parentName = name;
     }
     const parent = useField(parentName, {}, { absoluteName: true })[0];
     const { model } = useForm();
 
     if (parentName !== name) {
-        if (parent.fieldType === Array && (parent as ListFieldProps).uniqueItems) {
+        if (
+            parent.fieldType === Array &&
+            (parent as ListFieldProps).uniqueItems
+        ) {
             const allValues: string[] = get(model, parentName, []);
             const chosenValues = allValues.filter(
-                (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
+                (_item, index) =>
+                    index.toString() !== nameArray[nameArray.length - 1],
             );
 
-            allowedValues = allowedValues.filter((value) => !chosenValues.includes(value));
+            allowedValues = allowedValues.filter(
+                (value) => !chosenValues.includes(value),
+            );
         }
     }
     const options = allowedValues.map((value: any) => ({
@@ -82,7 +97,9 @@ function Select({
         value: value,
     }));
 
-    const selectedValue = options.find((option: Option) => option.value === value);
+    const selectedValue = options.find(
+        (option: Option) => option.value === value,
+    );
 
     const customStyles = getReactSelectTheme(theme);
 
@@ -91,7 +108,11 @@ function Select({
         return (
             <ListField name={name}>
                 <ListItemField name="$">
-                    <ListSelectField name="" transform={transform} allowedValues={allowedValues} />
+                    <ListSelectField
+                        name=""
+                        transform={transform}
+                        allowedValues={allowedValues}
+                    />
                 </ListItemField>
             </ListField>
         );
@@ -120,7 +141,12 @@ function Select({
                         value={selectedValue}
                         isSearchable={true}
                         isClearable={true}
-                        placeholder={placeholder || intl.formatMessage({ id: "forms.widgets.select.placeholder" })}
+                        placeholder={
+                            placeholder ||
+                            intl.formatMessage({
+                                id: 'forms.widgets.select.placeholder',
+                            })
+                        }
                         isDisabled={disabled || readOnly}
                     />
                 </EuiFormRow>
@@ -129,4 +155,4 @@ function Select({
     }
 }
 
-export default connectField(injectIntl(Select), { kind: "leaf" });
+export default connectField(injectIntl(Select), { kind: 'leaf' });

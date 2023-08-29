@@ -12,8 +12,8 @@
  * limitations under the License.
  *
  */
-import React, { HTMLProps, Ref, useEffect } from "react";
-import { Override, filterDOMProps, useField } from "uniforms";
+import React, { HTMLProps, Ref, useEffect } from 'react';
+import { Override, filterDOMProps, useField } from 'uniforms';
 
 export type HiddenFieldProps = Override<
     HTMLProps<HTMLInputElement>,
@@ -41,7 +41,7 @@ export default function HiddenField({ value, ...rawProps }: HiddenFieldProps) {
             readOnly={props.readOnly}
             ref={props.inputRef}
             type="hidden"
-            value={value ?? props.value ?? ""}
+            value={value ?? props.value ?? ''}
             {...filterDOMProps(props)}
         />
     );

@@ -5,6 +5,10 @@ import {
     Locale,
     getTranslationMessages,
 } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    Locale as FormLocale,
+    getTranslationMessages as getFormTranslationMessages,
+} from '@orchestrator-ui/pydantic-forms';
 import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components';
 import { useRouter } from 'next/router';
 import { merge } from 'lodash';
@@ -23,8 +27,8 @@ export const TranslationsProvider = ({
 
     const standardMessages = getTranslationMessages(locale);
     const customMessageMap: TranslationMessagesMap = new Map([
-        [Locale.enUS, enUS],
-        [Locale.nlNL, nlNL],
+        [Locale.enUS, FormLocale.enUS, enUS],
+        [Locale.nlNL, FormLocale.nlNL, nlNL],
     ]);
     const customMessages = getTranslationMessages(locale, customMessageMap);
 

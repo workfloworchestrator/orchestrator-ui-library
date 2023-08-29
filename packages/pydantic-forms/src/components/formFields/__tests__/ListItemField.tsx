@@ -13,45 +13,57 @@
  *
  */
 
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { ListDelField, ListItemField } from "lib/uniforms-surfnet/src";
-import React from "react";
-import { AutoField } from "uniforms-unstyled";
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { ListDelField, ListItemField } from 'lib/uniforms-surfnet/src';
+import React from 'react';
+import { AutoField } from 'uniforms-unstyled';
 
-test("<ListItemField> - works", () => {
+test('<ListItemField> - works', () => {
     const element = <ListItemField name="x.1" />;
-    const wrapper = mount(element, createContext({ x: { type: Array }, "x.$": { type: String } }));
+    const wrapper = mount(
+        element,
+        createContext({ x: { type: Array }, 'x.$': { type: String } }),
+    );
 
     expect(wrapper.find(ListItemField)).toHaveLength(1);
 });
 
-test("<ListItemField> - renders ListDelField", () => {
+test('<ListItemField> - renders ListDelField', () => {
     const element = <ListItemField name="x.1" />;
-    const wrapper = mount(element, createContext({ x: { type: Array }, "x.$": { type: String } }));
+    const wrapper = mount(
+        element,
+        createContext({ x: { type: Array }, 'x.$': { type: String } }),
+    );
 
     expect(wrapper.find(ListDelField)).toHaveLength(1);
-    expect(wrapper.find(ListDelField).childAt(0).prop("name")).toBe("x.1");
+    expect(wrapper.find(ListDelField).childAt(0).prop('name')).toBe('x.1');
 });
 
-test("<ListItemField> - renders ListDelField with label", () => {
+test('<ListItemField> - renders ListDelField with label', () => {
     const element = <ListItemField name="x.1" outerList={true} />;
-    const wrapper = mount(element, createContext({ x: { type: Array }, "x.$": { type: String } }));
+    const wrapper = mount(
+        element,
+        createContext({ x: { type: Array }, 'x.$': { type: String } }),
+    );
 
     expect(wrapper.find(ListDelField)).toHaveLength(1);
-    expect(wrapper.find(ListDelField).childAt(0).prop("name")).toBe("x.1");
+    expect(wrapper.find(ListDelField).childAt(0).prop('name')).toBe('x.1');
     expect(wrapper.find(ListDelField)).toHaveLength(1);
-    expect(wrapper.find(ListDelField).prop("outerList")).toBe(true);
+    expect(wrapper.find(ListDelField).prop('outerList')).toBe(true);
 });
 
-test("<ListItemField> - renders AutoField", () => {
+test('<ListItemField> - renders AutoField', () => {
     const element = <ListItemField name="x.1" />;
-    const wrapper = mount(element, createContext({ x: { type: Array }, "x.$": { type: String } }));
+    const wrapper = mount(
+        element,
+        createContext({ x: { type: Array }, 'x.$': { type: String } }),
+    );
 
     expect(wrapper.find(AutoField)).toHaveLength(1);
 });
 
-test("<ListItemField> - renders children if specified", () => {
+test('<ListItemField> - renders children if specified', () => {
     const Child: () => null = jest.fn(() => null);
 
     const element = (
@@ -59,7 +71,10 @@ test("<ListItemField> - renders children if specified", () => {
             <Child />
         </ListItemField>
     );
-    mount(element, createContext({ x: { type: Array }, "x.$": { type: String } }));
+    mount(
+        element,
+        createContext({ x: { type: Array }, 'x.$': { type: String } }),
+    );
 
     expect(Child).toHaveBeenCalledTimes(1);
 });

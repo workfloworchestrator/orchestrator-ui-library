@@ -13,34 +13,34 @@
  *
  */
 
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { ListField, NestField } from "lib/uniforms-surfnet/src";
-import React from "react";
-import { AutoField } from "uniforms-unstyled";
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { ListField, NestField } from 'lib/uniforms-surfnet/src';
+import React from 'react';
+import { AutoField } from 'uniforms-unstyled';
 
-test("<NestField> - renders an <AutoField> for each field", () => {
+test('<NestField> - renders an <AutoField> for each field', () => {
     const element = <NestField name="x" id="snapshot-test" />;
     const wrapper = mount(
         element,
         createContext(
             {
                 x: { type: Object },
-                "x.a": { type: String },
-                "x.b": { type: Number },
+                'x.a': { type: String },
+                'x.b': { type: Number },
             },
             undefined,
-            "nestfield-autofield"
-        )
+            'nestfield-autofield',
+        ),
     );
 
     expect(wrapper.find(AutoField)).toHaveLength(2);
-    expect(wrapper.find(AutoField).at(0).prop("name")).toBe("a");
-    expect(wrapper.find(AutoField).at(1).prop("name")).toBe("b");
+    expect(wrapper.find(AutoField).at(0).prop('name')).toBe('a');
+    expect(wrapper.find(AutoField).at(1).prop('name')).toBe('b');
     expect(wrapper.render()).toMatchSnapshot();
 });
 
-test("<NestField> - renders custom content if given", () => {
+test('<NestField> - renders custom content if given', () => {
     const element = (
         <NestField name="x">
             <article data-test="content" />
@@ -50,61 +50,61 @@ test("<NestField> - renders custom content if given", () => {
         element,
         createContext({
             x: { type: Object },
-            "x.a": { type: String },
-            "x.b": { type: Number },
-        })
+            'x.a': { type: String },
+            'x.b': { type: Number },
+        }),
     );
 
     expect(wrapper.find(AutoField)).toHaveLength(0);
-    expect(wrapper.find("article")).toHaveLength(1);
-    expect(wrapper.find("article").prop("data-test")).toBe("content");
+    expect(wrapper.find('article')).toHaveLength(1);
+    expect(wrapper.find('article').prop('data-test')).toBe('content');
 });
 
-test("<NestField> - renders a label", () => {
+test('<NestField> - renders a label', () => {
     const element = <NestField name="x" label="y" />;
     const wrapper = mount(
         element,
         createContext({
             x: { type: Object },
-            "x.a": { type: String },
-            "x.b": { type: Number },
-        })
+            'x.a': { type: String },
+            'x.b': { type: Number },
+        }),
     );
 
-    expect(wrapper.find("label")).toHaveLength(2);
-    expect(wrapper.find("span.euiTitle").at(0).text()).toBe("y");
+    expect(wrapper.find('label')).toHaveLength(2);
+    expect(wrapper.find('span.euiTitle').at(0).text()).toBe('y');
 });
 
-test("<NestField> - renders a wrapper with unknown props", () => {
+test('<NestField> - renders a wrapper with unknown props', () => {
     const element = <NestField name="x" data-x="x" data-y="y" data-z="z" />;
     const wrapper = mount(
         element,
         createContext({
             x: { type: Object },
-            "x.a": { type: String },
-            "x.b": { type: Number },
-        })
+            'x.a': { type: String },
+            'x.b': { type: Number },
+        }),
     );
 
-    expect(wrapper.find(".nest-field").at(0).prop("data-x")).toBe("x");
-    expect(wrapper.find(".nest-field").at(0).prop("data-y")).toBe("y");
-    expect(wrapper.find(".nest-field").at(0).prop("data-z")).toBe("z");
+    expect(wrapper.find('.nest-field').at(0).prop('data-x')).toBe('x');
+    expect(wrapper.find('.nest-field').at(0).prop('data-y')).toBe('y');
+    expect(wrapper.find('.nest-field').at(0).prop('data-z')).toBe('z');
 });
 
-test("<NestField> - renders correctly in list", () => {
+test('<NestField> - renders correctly in list', () => {
     const element = <ListField name="x" id="snapshot-test" />;
     const wrapper = mount(
         element,
         createContext(
             {
                 x: { type: Array },
-                "x.$": { type: Object },
-                "x.$.a": { type: String },
-                "x.$.b": { type: Number },
+                'x.$': { type: Object },
+                'x.$.a': { type: String },
+                'x.$.b': { type: Number },
             },
             undefined,
-            "nestfield-list"
-        )
+            'nestfield-list',
+        ),
     );
 
     expect(wrapper.render()).toMatchSnapshot();

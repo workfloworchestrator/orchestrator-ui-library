@@ -13,56 +13,70 @@
  *
  */
 
-import createContext from "lib/uniforms-surfnet/__tests__/_createContext";
-import mount from "lib/uniforms-surfnet/__tests__/_mount";
-import { LocationCodeField, SelectField } from "lib/uniforms-surfnet/src";
-import React from "react";
-import ApplicationContext, { ApplicationContextInterface } from "utils/ApplicationContext";
+import createContext from 'lib/uniforms-surfnet/__tests__/_createContext';
+import mount from 'lib/uniforms-surfnet/__tests__/_mount';
+import { LocationCodeField, SelectField } from 'lib/uniforms-surfnet/src';
+import React from 'react';
+import ApplicationContext, {
+    ApplicationContextInterface,
+} from 'utils/ApplicationContext';
 
-jest.mock("lib/uniforms-surfnet/src/SelectField", () => {
+jest.mock('lib/uniforms-surfnet/src/SelectField', () => {
     return { __esModule: true, default: () => <br /> };
 });
 
-describe("<LocationCodeField>", () => {
-    test("<LocationCodeField> - calls selectField with all locationCodes", () => {
+describe('<LocationCodeField>', () => {
+    test('<LocationCodeField> - calls selectField with all locationCodes', () => {
         const element = (
-            <ApplicationContext.Provider value={{ locationCodes: ["aaa", "bbb"] } as ApplicationContextInterface}>
+            <ApplicationContext.Provider
+                value={
+                    {
+                        locationCodes: ['aaa', 'bbb'],
+                    } as ApplicationContextInterface
+                }
+            >
                 <LocationCodeField name="x" />
             </ApplicationContext.Provider>
         );
         const wrapper = mount(element, createContext({ x: { type: String } }));
-        expect(wrapper.html()).toBe("<br>");
+        expect(wrapper.html()).toBe('<br>');
         expect(wrapper.find(SelectField)).toHaveLength(1);
         expect(wrapper.find(SelectField).props()).toMatchObject({
-            allowedValues: ["aaa", "bbb"],
+            allowedValues: ['aaa', 'bbb'],
             disabled: false,
             error: null,
-            errorMessage: "",
+            errorMessage: '',
             required: true,
             showInlineError: false,
             value: undefined,
-            placeholder: "Search and select a location code...",
+            placeholder: 'Search and select a location code...',
         });
     });
 
-    test("<LocationCodeField> - calls selectField with specified locationCodes", () => {
+    test('<LocationCodeField> - calls selectField with specified locationCodes', () => {
         const element = (
-            <ApplicationContext.Provider value={{ locationCodes: ["aaa", "bbb"] } as ApplicationContextInterface}>
-                <LocationCodeField name="x" locationCodes={["ccc", "ddd"]} />
+            <ApplicationContext.Provider
+                value={
+                    {
+                        locationCodes: ['aaa', 'bbb'],
+                    } as ApplicationContextInterface
+                }
+            >
+                <LocationCodeField name="x" locationCodes={['ccc', 'ddd']} />
             </ApplicationContext.Provider>
         );
         const wrapper = mount(element, createContext({ x: { type: String } }));
-        expect(wrapper.html()).toBe("<br>");
+        expect(wrapper.html()).toBe('<br>');
         expect(wrapper.find(SelectField)).toHaveLength(1);
         expect(wrapper.find(SelectField).props()).toMatchObject({
-            allowedValues: ["ccc", "ddd"],
+            allowedValues: ['ccc', 'ddd'],
             disabled: false,
             error: null,
-            errorMessage: "",
+            errorMessage: '',
             required: true,
             showInlineError: false,
             value: undefined,
-            placeholder: "Search and select a location code...",
+            placeholder: 'Search and select a location code...',
         });
     });
 });

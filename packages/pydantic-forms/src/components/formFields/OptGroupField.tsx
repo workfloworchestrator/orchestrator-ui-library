@@ -13,18 +13,21 @@
  *
  */
 
-import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from "@elastic/eui";
-import { FieldProps } from "lib/uniforms-surfnet/src/types";
-import React from "react";
-import { useIntl } from "react-intl";
-import { connectField, filterDOMProps, useField } from "uniforms";
-import { AutoField } from "uniforms-unstyled";
+import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from '@elastic/eui';
+import { FieldProps } from 'lib/uniforms-surfnet/src/types';
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { connectField, filterDOMProps, useField } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
 
-import BoolField from "./BoolField";
+import BoolField from './BoolField';
 
-export type OptGroupFieldProps = FieldProps<null, { fields?: any[]; itemProps?: object }>;
+export type OptGroupFieldProps = FieldProps<
+    null,
+    { fields?: any[]; itemProps?: object }
+>;
 
-filterDOMProps.register("properties");
+filterDOMProps.register('properties');
 
 function OptGroup({
     fields,
@@ -32,17 +35,23 @@ function OptGroup({
     name,
     onChange, // Not used on purpose
     readOnly,
-    className = "",
+    className = '',
     ...props
 }: OptGroupFieldProps) {
-    const enabled = useField("enabled", {})[0].value;
+    const enabled = useField('enabled', {})[0].value;
     const intl = useIntl();
 
     return (
         <EuiDescribedFormGroup
             {...filterDOMProps(props)}
-            title={<span>{intl.formatMessage({ id: `forms.fields.${name}.title` })}</span>}
-            description={intl.formatMessage({ id: `forms.fields.${name}.info` })}
+            title={
+                <span>
+                    {intl.formatMessage({ id: `forms.fields.${name}.title` })}
+                </span>
+            }
+            description={intl.formatMessage({
+                id: `forms.fields.${name}.info`,
+            })}
             className={`${className} optgroup-field`}
         >
             <>
@@ -57,7 +66,7 @@ function OptGroup({
                 </EuiFlexItem>
                 {enabled &&
                     fields
-                        ?.filter((field) => field !== "enabled")
+                        ?.filter((field) => field !== 'enabled')
                         .map((field) => (
                             <EuiFlexItem key={field}>
                                 <AutoField name={field} {...itemProps} />
