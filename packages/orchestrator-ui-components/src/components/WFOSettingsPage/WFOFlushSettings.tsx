@@ -48,9 +48,9 @@ export const WFOFlushSettings: FunctionComponent = () => {
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
         await clearCache(orchestratorApiBaseUrl, cacheKey).then(() => {
             toastMessage?.addToast(
-                ToastTypes.ERROR,
+                ToastTypes.SUCCESS,
                 <p>
-                    Cache123 for cache key &quot;{cacheKey}&quot; flushed
+                    Cache for cache key &quot;{cacheKey}&quot; flushed
                     successfully
                 </p>,
                 'Cache cleared',

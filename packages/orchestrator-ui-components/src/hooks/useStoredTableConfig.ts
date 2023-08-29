@@ -2,12 +2,14 @@ import { useCallback, useMemo } from 'react';
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
 import { useToastMessage } from './useToast';
+import { useTranslations } from 'next-intl';
 
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
 import { ToastTypes } from '../contexts';
 
 export const useStoredTableConfig = <T>(localeStorageKey: string) => {
     const toastMessage = useToastMessage();
+    const t = useTranslations('errors');
     const tableConfig: StoredTableConfig<T> = useMemo(
         () => getDefaultTableConfig<T>(localeStorageKey),
         [localeStorageKey],
@@ -27,8 +29,8 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
         } catch {
             toastMessage.addToast(
                 ToastTypes.ERROR,
-                'Use tableConfig error text',
-                'Use tableConfig error title',
+                t('retrieve_stored_settings'),
+                t('retrieve_stored_settings_title'),
             );
             return tableConfig;
         }
