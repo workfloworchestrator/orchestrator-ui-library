@@ -11,4 +11,3 @@ export * from './utils/tableUtils';
 
 export * from './WFOBasicTable';
 export * from './WFOTableWithFilter';
-export * from './WFOTableHeaderCell';

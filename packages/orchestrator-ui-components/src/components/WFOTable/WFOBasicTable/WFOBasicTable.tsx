@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
-import { WFOTableHeaderCell } from '../WFOTableHeaderCell';
+import { WFOTableHeaderCell } from './WFOTableHeaderCell';
 
-import type {
-    WFODataSorting,
-    TableColumnKeys,
-    WFOTableColumns,
-    WFOTableColumnsWithControlColumns,
+import type { WFODataSorting, TableColumnKeys } from '../utils/columns';
+import {
+    WFOTableControlColumnConfig,
+    WFOTableDataColumnConfig,
 } from '../utils/columns';
+
+export type WFOBasicTableColumns<T> = {
+    [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
+        render?: (cellValue: T[Property], row: T) => ReactNode;
+    };
+};
+
+export type WFOBasicTableColumnsWithControlColumns<T> =
+    WFOBasicTableColumns<T> & WFOTableControlColumnConfig<T>;
 
 export type WFOBasicTableProps<T> = {
     data: T[];
-    columns: WFOTableColumnsWithControlColumns<T> | WFOTableColumns<T>;
+    columns:
+        | WFOBasicTableColumnsWithControlColumns<T>
+        | WFOBasicTableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: WFODataSorting<T>;
     pagination: Pagination;
@@ -46,7 +56,7 @@ export const WFOBasicTable = <T,>({
 );
 
 function mapWFOTableColumnsToEuiColumns<T>(
-    tableColumns: WFOTableColumns<T>,
+    tableColumns: WFOBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: WFODataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,
@@ -57,7 +67,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
 
     function mapColumnKeyToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
         const typedColumnKey = colKey as keyof T;
-        const column: WFOTableColumns<T>[keyof T] =
+        const column: WFOBasicTableColumns<T>[keyof T] =
             tableColumns[typedColumnKey];
         const { name, render, width, description } = column;
 
@@ -66,6 +76,8 @@ function mapWFOTableColumnsToEuiColumns<T>(
 
         const handleClick = () => onDataSort?.(typedColumnKey);
 
+        // Not spreading the column object here as it might contain additional props.
+        // EUI does not handle extra props well.
         return {
             render,
             width,
