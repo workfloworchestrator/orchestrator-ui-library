@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, Fragment, ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { WFOKeyCell } from './WFOKeyCell';
@@ -25,7 +25,7 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
     return (
         <div css={keyValueTable}>
             {keyValues.map(({ key, value, plainTextValue }, rowNumber) => (
-                <>
+                <Fragment key={key}>
                     <WFOKeyCell value={key} rowNumber={rowNumber} />
                     <WFOValueCell
                         value={value}
@@ -33,7 +33,7 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
                         rowNumber={rowNumber}
                         enableCopyIcon={showCopyToClipboardIcon}
                     />
-                </>
+                </Fragment>
             ))}
         </div>
     );
