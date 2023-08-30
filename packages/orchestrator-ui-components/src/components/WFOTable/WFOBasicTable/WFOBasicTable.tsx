@@ -1,16 +1,16 @@
 import React from 'react';
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
-import { WFOTableHeaderCell } from './WFOTableHeaderCell';
+import { WFOTableHeaderCell } from '../WFOTableHeaderCell';
 
 import type {
     WFODataSorting,
     TableColumnKeys,
     WFOTableColumns,
     WFOTableColumnsWithControlColumns,
-} from './utils/columns';
+} from '../utils/columns';
 
-export type WFOTableProps<T> = {
+export type WFOBasicTableProps<T> = {
     data: T[];
     columns: WFOTableColumnsWithControlColumns<T> | WFOTableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
@@ -21,7 +21,7 @@ export type WFOTableProps<T> = {
     onDataSort?: (columnId: keyof T) => void;
 };
 
-export const WFOTable = <T,>({
+export const WFOBasicTable = <T,>({
     data,
     columns,
     hiddenColumns,
@@ -30,10 +30,10 @@ export const WFOTable = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: WFOTableProps<T>) => (
+}: WFOBasicTableProps<T>) => (
     <EuiBasicTable
         items={data}
-        columns={mapTableColumnsToEuiColumns(
+        columns={mapWFOTableColumnsToEuiColumns(
             columns,
             hiddenColumns,
             dataSorting,
@@ -45,8 +45,8 @@ export const WFOTable = <T,>({
     />
 );
 
-function mapTableColumnsToEuiColumns<T>(
-    columns: WFOTableColumns<T>,
+function mapWFOTableColumnsToEuiColumns<T>(
+    tableColumns: WFOTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: WFODataSorting<T>,
     onDataSort?: (columnId: keyof T) => void,
@@ -55,10 +55,11 @@ function mapTableColumnsToEuiColumns<T>(
         return !hiddenColumns?.includes(columnKey as keyof T);
     }
 
-    function mapToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
+    function mapColumnKeyToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
         const typedColumnKey = colKey as keyof T;
-        const column = columns[typedColumnKey];
-        const { name } = column;
+        const column: WFOTableColumns<T>[keyof T] =
+            tableColumns[typedColumnKey];
+        const { name, render, width, description } = column;
 
         const sortDirection =
             dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
@@ -66,7 +67,9 @@ function mapTableColumnsToEuiColumns<T>(
         const handleClick = () => onDataSort?.(typedColumnKey);
 
         return {
-            ...column,
+            render,
+            width,
+            description,
             field: typedColumnKey,
             name: name && (
                 <WFOTableHeaderCell
@@ -81,5 +84,7 @@ function mapTableColumnsToEuiColumns<T>(
         };
     }
 
-    return Object.keys(columns).filter(isVisibleColumn).map(mapToEuiColumn);
+    return Object.keys(tableColumns)
+        .filter(isVisibleColumn)
+        .map(mapColumnKeyToEuiColumn);
 }

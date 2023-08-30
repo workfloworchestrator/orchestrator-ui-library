@@ -21,7 +21,7 @@ import {
     TableSettingsModal,
 } from '../WFOTableSettingsModal';
 import { WFOSearchField } from '../../WFOSearchBar';
-import { WFOTable } from '../WFOTable';
+import { WFOBasicTable } from '../WFOBasicTable';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
@@ -202,7 +202,7 @@ export const WFOTableWithFilter = <T,>({
                 </EuiButton>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            <WFOTable
+            <WFOBasicTable
                 data={data}
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}

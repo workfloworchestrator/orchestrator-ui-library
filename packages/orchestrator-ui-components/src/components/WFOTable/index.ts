@@ -9,6 +9,6 @@ export * from './utils/constants';
 export * from './utils/tableConfigPersistence';
 export * from './utils/tableUtils';
 
-export * from './WFOTable';
+export * from './WFOBasicTable';
 export * from './WFOTableWithFilter';
 export * from './WFOTableHeaderCell';
