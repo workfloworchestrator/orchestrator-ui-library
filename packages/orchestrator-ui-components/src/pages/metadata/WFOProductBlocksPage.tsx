@@ -68,6 +68,10 @@ export const WFOProductBlocksPage = () => {
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductBlockDefinition>({
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: PRODUCT_BLOCK_FIELD_NAME,
