@@ -1,3 +1,4 @@
+export * from './utils';
 export * from './WFOFixedInputBlock';
 export * from './WFOProcessesTimeline';
 export * from './WFOProductBlock';

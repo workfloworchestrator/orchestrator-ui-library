@@ -1,11 +1,5 @@
 import React, { FC, useState } from 'react';
 import {
-    ProcessesTimeline,
-    WFOSubscriptionActions,
-    WFOSubscriptionDetailTree,
-    WFOSubscriptionGeneral,
-} from '@orchestrator-ui/orchestrator-ui-components';
-import {
     EuiBadge,
     EuiFlexGroup,
     EuiFlexItem,
@@ -23,14 +17,18 @@ import {
     GET_SUBSCRIPTION_DETAIL_OUTLINE,
     mapApiResponseToSubscriptionDetail,
 } from './subscriptionQuery';
-import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components';
 import {
     GENERAL_TAB,
     getColor,
     PROCESSES_TAB,
     SERVICE_CONFIGURATION_TAB,
     tabs,
-} from './utils';
+    SubscriptionContext,
+    ProcessesTimeline,
+    WFOSubscriptionActions,
+    WFOSubscriptionDetailTree,
+    WFOSubscriptionGeneral,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 type SubscriptionProps = {
     subscriptionId: string;
