@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
-import { SortOrder } from '../../types';
+import { SortOrder } from '../../../types';
 import { WFOSortDirectionIcon } from './WFOSortDirectionIcon';
 
 export type WFOTableHeaderCellProps = {

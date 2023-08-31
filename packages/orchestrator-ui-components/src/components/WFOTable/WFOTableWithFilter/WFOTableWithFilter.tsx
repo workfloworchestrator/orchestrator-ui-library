@@ -11,7 +11,6 @@ import {
     WFODataSorting,
     TableColumnKeys,
     WFOTableColumns,
-    WFOTableColumnsWithControlColumns,
     WFOTableControlColumnConfig,
     WFOTableDataColumnConfig,
 } from '../utils/columns';
@@ -21,7 +20,10 @@ import {
     TableSettingsModal,
 } from '../WFOTableSettingsModal';
 import { WFOSearchField } from '../../WFOSearchBar';
-import { WFOTable } from '../WFOTable';
+import {
+    WFOBasicTable,
+    WFOBasicTableColumnsWithControlColumns,
+} from '../WFOBasicTable';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
@@ -109,7 +111,7 @@ export const WFOTableWithFilter = <T,>({
         },
     };
 
-    const tableColumnsWithControlColumns: WFOTableColumnsWithControlColumns<T> =
+    const tableColumnsWithControlColumns: WFOBasicTableColumnsWithControlColumns<T> =
         {
             ...leadingControlColumns,
             ...tableColumns,
@@ -202,7 +204,7 @@ export const WFOTableWithFilter = <T,>({
                 </EuiButton>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            <WFOTable
+            <WFOBasicTable
                 data={data}
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}

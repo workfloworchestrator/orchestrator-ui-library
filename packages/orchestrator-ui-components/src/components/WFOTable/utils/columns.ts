@@ -4,12 +4,13 @@ import { SortOrder } from '../../../types';
 
 // Todo need to Pick a few more props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 // https://github.com/workfloworchestrator/orchestrator-ui/issues/130
-export type WFOBasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
+export type WFOEuiBasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
 
-export type WFOTableDataColumnConfig<T, Property> = WFOBasicTableColumn<T> & {
-    field: Property;
-    name: string;
-};
+export type WFOTableDataColumnConfig<T, Property> =
+    WFOEuiBasicTableColumn<T> & {
+        field: Property;
+        name: string;
+    };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 export type WFOTableColumnsWithExtraNonDataFields<T> = WFOTableColumns<T> & {
@@ -28,15 +29,12 @@ export type WFOTableColumns<T> = {
 };
 
 export type WFOTableControlColumnConfig<T> = {
-    [key: string]: WFOBasicTableColumn<T> & {
+    [key: string]: WFOEuiBasicTableColumn<T> & {
         field: string;
         name?: string;
         render: (cellValue: never, row: T) => ReactNode;
     };
 };
-
-export type WFOTableColumnsWithControlColumns<T> = WFOTableColumns<T> &
-    WFOTableControlColumnConfig<T>;
 
 export type TableColumnKeys<T> = Array<keyof T>;
 
