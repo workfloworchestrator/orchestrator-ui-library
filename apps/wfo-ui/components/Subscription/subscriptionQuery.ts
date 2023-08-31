@@ -13,6 +13,32 @@ import {
     SubscriptionDetailBase,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
+// Example test data: 47f35846-a55a-40c4-ab4c-2ae0574ecf3c
+//
+//     subscriptionId: string
+//     description: string
+//     # fixedInputs
+//     insync: boolean
+//     note: string
+//     product {
+//         createdAt: string (DateTime as string)
+//         name: string
+//         status: ProductLifecycle (enum: "ACTIVE" "PRE_PRODUCTION" "PHASE_OUT" "END_OF_LIFE"
+//         endDate: string (DateTime as string)
+//         description: string
+//         tag: string
+//         productType: string
+//     }
+//     endDate: string (DateTime as string)
+//     startDate: string (DateTime as string)
+//     status: SubscriptionLifecycle (enum: "INITIAL" "ACTIVE" "MIGRATING" "DISABLED" "TERMINATED" "PROVISIONING")
+//     productBlocks {
+//         id: int
+//         ownerSubscriptionId: string
+//         parent: int
+//         resourceTypes: object (key value pairs)
+//     }
+
 // Todo: fixedInputs need to be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/304
 
