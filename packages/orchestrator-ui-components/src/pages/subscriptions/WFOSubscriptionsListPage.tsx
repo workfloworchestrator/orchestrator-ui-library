@@ -10,7 +10,8 @@ import {
     WFOSubscriptionsList,
     WFOSubscriptionsTabType,
 } from '../../components/WFOSubscriptionsList';
-import { SortOrder, Subscription } from '../../types';
+import { SortOrder } from '../../types';
+
 import { StoredTableConfig } from '../../components/WFOTable';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WFOTable';
 import {
@@ -23,9 +24,9 @@ export const WFOSubscriptionsListPage = () => {
     const router = useRouter();
 
     const [tableDefaults, setTableDefaults] =
-        useState<StoredTableConfig<Subscription>>();
+        useState<StoredTableConfig<SubscriptionListItem>>();
 
-    const getStoredTableConfig = useStoredTableConfig<Subscription>(
+    const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(
         SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
     );
 
@@ -92,6 +93,7 @@ export const WFOSubscriptionsListPage = () => {
             <EuiSpacer size="xxl" />
 
             <WFOSubscriptionsList
+                hiddenColumns={tableDefaults?.hiddenColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}

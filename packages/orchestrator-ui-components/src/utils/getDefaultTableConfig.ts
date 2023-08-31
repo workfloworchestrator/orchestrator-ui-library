@@ -10,11 +10,13 @@ import {
 } from '../components';
 
 import type { StoredTableConfig } from '../components';
+
 import {
     ProductBlockDefinition,
     ProductDefinition,
     WorkflowDefinition,
     Process,
+    SubscriptionListItem,
 } from '../types';
 
 function getTableConfig<T>(
@@ -74,6 +76,10 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             ];
             return getTableConfig<T>(completedProcessColumns as (keyof T)[]);
         case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY:
+            const subscriptionColumns: (keyof SubscriptionListItem)[] = [
+                'productName',
+            ];
+            return getTableConfig<T>(subscriptionColumns as (keyof T)[]);
         case METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY:
         default:
             return getTableConfig();

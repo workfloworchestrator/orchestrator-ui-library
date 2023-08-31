@@ -17,7 +17,6 @@ export const isValidLocalStorageTableConfig = <T>(
 export const getTableConfigFromLocalStorage = <T>(
     key: string,
 ): StoredTableConfig<T> | undefined => {
-    throw new Error('!!');
     if (typeof window !== 'undefined' && window.localStorage) {
         const parsedJson = JSON.parse(localStorage.getItem(key) ?? '{}');
         return isValidLocalStorageTableConfig(parsedJson)
