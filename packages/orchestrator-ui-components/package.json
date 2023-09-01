@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "test": "jest",
-        "build": "tsup src/index.ts --format esm --dts",
+        "build": "tsup src/index.ts --format esm --dts --tsconfig tsconfig.build.json",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
         "dev": "yarn build -- --watch",
