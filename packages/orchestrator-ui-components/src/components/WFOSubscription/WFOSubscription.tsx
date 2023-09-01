@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import {
     EuiBadge,
     EuiFlexGroup,
@@ -11,33 +11,33 @@ import { useQuery } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
 import { useTranslations } from 'next-intl';
 
-import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
-import {
-    getSubscriptionsDetailCompleteGraphQlQuery,
-    getSubscriptionsDetailOutlineGraphQlQuery,
-    mapApiResponseToSubscriptionDetail,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { OrchestratorConfigContext, SubscriptionContext } from '../../contexts';
 import {
     GENERAL_TAB,
     getColor,
     PROCESSES_TAB,
     SERVICE_CONFIGURATION_TAB,
     tabs,
-    SubscriptionContext,
-    ProcessesTimeline,
-    WFOSubscriptionActions,
-    WFOSubscriptionDetailTree,
-    WFOSubscriptionGeneral,
-} from '@orchestrator-ui/orchestrator-ui-components';
+} from './utils';
+import {
+    getSubscriptionsDetailCompleteGraphQlQuery,
+    getSubscriptionsDetailOutlineGraphQlQuery,
+    mapApiResponseToSubscriptionDetail,
+} from '../../graphqlQueries';
+import { WFOSubscriptionActions } from './WFOSubscriptionActions';
+import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
+import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
+import { ProcessesTimeline } from './WFOProcessesTimeline';
 
-type SubscriptionProps = {
+type WFOSubscriptionProps = {
     subscriptionId: string;
 };
 
-const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_CORE);
-
-export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
+export const WFOSubscription: FC<WFOSubscriptionProps> = ({
+    subscriptionId,
+}) => {
     const t = useTranslations('subscriptions.detail');
+    const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
@@ -56,6 +56,8 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     //             (d) => d.node.subscriptionId == subscriptionId,
     //         ).node,
     // };
+
+    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 
     const fetchSubscriptionOutline = async () => {
         console.log('Fetch outline query results for ID: ', subscriptionId);

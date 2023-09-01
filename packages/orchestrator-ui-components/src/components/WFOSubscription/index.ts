@@ -6,3 +6,4 @@ export * from './WFOSubscriptionActions';
 export * from './WFOSubscriptionBlock';
 export * from './WFOSubscriptionDetailTree';
 export * from './WFOSubscriptionGeneral';
+export * from './WFOSubscription';
