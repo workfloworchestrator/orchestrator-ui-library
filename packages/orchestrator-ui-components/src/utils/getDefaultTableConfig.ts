@@ -16,8 +16,9 @@ import {
     ProductDefinition,
     WorkflowDefinition,
     Process,
-    SubscriptionListItem,
 } from '../types';
+
+import { SubscriptionListItem } from '../components/WFOSubscriptionsList';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],

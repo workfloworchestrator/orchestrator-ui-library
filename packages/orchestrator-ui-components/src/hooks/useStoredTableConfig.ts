@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
-import { useToastMessage } from './useToast';
+import { useToastMessage } from './useToastMessage';
 import { useTranslations } from 'next-intl';
 
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
