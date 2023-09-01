@@ -16,7 +16,7 @@ import {
     getSubscriptionsDetailCompleteGraphQlQuery,
     getSubscriptionsDetailOutlineGraphQlQuery,
     mapApiResponseToSubscriptionDetail,
-} from './subscriptionQuery';
+} from '@orchestrator-ui/orchestrator-ui-components';
 import {
     GENERAL_TAB,
     getColor,

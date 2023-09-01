@@ -1,17 +1,16 @@
-import {
-    ExternalServiceBase,
-    parseDate,
-    parseDateToLocaleString,
-    ProductBase,
-    ProductBlockBase,
-    SubscriptionDetailBase,
-    GraphqlQueryVariables,
-    SubscriptionDetail,
-    SubscriptionDetailResult,
-} from '@orchestrator-ui/orchestrator-ui-components';
 import { parse } from 'graphql';
 import { gql } from 'graphql-request';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import { SubscriptionDetail } from '../types/subscription';
+import {
+    ExternalServiceBase,
+    GraphqlQueryVariables,
+    ProductBase,
+    ProductBlockBase,
+    SubscriptionDetailBase,
+    SubscriptionDetailResult,
+} from '../types';
+import { parseDate, parseDateToLocaleString } from '../utils/date';
 
 // Example test data: 47f35846-a55a-40c4-ab4c-2ae0574ecf3c
 //
