@@ -17,6 +17,7 @@ import {
     WFOTableWithFilter,
 } from '../WFOTable';
 import { SubscriptionListItem } from './types';
+
 import { FilterQuery } from '../WFOFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
@@ -37,10 +38,6 @@ import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
-const defaultHiddenColumns: TableColumnKeys<SubscriptionListItem> = [
-    'productName',
-];
-
 export type WFOSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
     dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
@@ -50,13 +47,18 @@ export type WFOSubscriptionsListProps = {
         prop: DisplayParamKey,
         value: DataDisplayParams<SubscriptionListItem>[DisplayParamKey],
     ) => void;
+    hiddenColumns: TableColumnKeys<SubscriptionListItem> | undefined;
 };
 
 export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
     alwaysOnFilters,
     dataDisplayParams,
     setDataDisplayParam,
+    hiddenColumns,
 }) => {
+    // TODO: There seems to be a problem showing the product/productName in this list
+    // https://github.com/workfloworchestrator/orchestrator-ui/issues/262
+
     const router = useRouter();
     const t = useTranslations('subscriptions.index');
 
@@ -183,7 +185,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
             tableColumns={tableColumns}
             leadingControlColumns={leadingControlColumns}
-            defaultHiddenColumns={defaultHiddenColumns}
+            defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
             isLoading={isFetching}

@@ -4,13 +4,13 @@ import {
     EuiPanel,
     EuiText,
     EuiComboBox,
-    EuiGlobalToastList,
 } from '@elastic/eui';
 import React, { FunctionComponent, useContext, useState } from 'react';
 import { useCacheNames } from '../../hooks/DataFetchHooks';
 import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
-import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
+import { useToastMessage } from '../../hooks';
+import { ToastTypes } from '../../contexts';
 
 const clearCache = async (apiUrl: string, settingName: string) => {
     const response = await fetch(apiUrl + `/settings/cache/${settingName}`, {
@@ -24,7 +24,7 @@ export const WFOFlushSettings: FunctionComponent = () => {
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
     );
-    const [toasts, setToasts] = useState<Toast[]>([]);
+    const toastMessage = useToastMessage();
 
     const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
         setSelected(selectedOptions);
@@ -47,23 +47,15 @@ export const WFOFlushSettings: FunctionComponent = () => {
         }
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
         await clearCache(orchestratorApiBaseUrl, cacheKey).then(() => {
-            addToast({
-                id: crypto.randomUUID(),
-                title: `Cache cleared`,
-                color: 'success',
-                iconType: 'check',
-                text: (
-                    <p>
-                        Cache for cache key &quot;{cacheKey}&quot; flushed
-                        successfully
-                    </p>
-                ),
-            });
+            toastMessage?.addToast(
+                ToastTypes.SUCCESS,
+                <p>
+                    Cache for cache key &quot;{cacheKey}&quot; flushed
+                    successfully
+                </p>,
+                'Cache cleared',
+            );
         });
-    };
-
-    const addToast = (toast: Toast) => {
-        setToasts((toasts) => [...toasts, toast]);
     };
 
     return (
@@ -90,11 +82,6 @@ export const WFOFlushSettings: FunctionComponent = () => {
             <EuiButton onClick={flushCache} iconType="refresh">
                 Flush
             </EuiButton>
-            <EuiGlobalToastList
-                toasts={toasts}
-                dismissToast={() => setToasts([])}
-                toastLifeTimeMs={5000}
-            />
         </EuiPanel>
     );
 };

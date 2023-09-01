@@ -22,7 +22,7 @@ import { FilterQuery } from '../WFOFilterTabs';
 
 export type WFOProcessListProps = {
     alwaysOnFilters?: FilterQuery<Process>[];
-    defaultHiddenColumns: TableColumnKeys<Process>;
+    defaultHiddenColumns: TableColumnKeys<Process> | undefined;
     localStorageKey: string;
     dataDisplayParams: DataDisplayParams<Process>;
     setDataDisplayParam: <
@@ -38,7 +38,7 @@ export type WFOProcessListProps = {
 
 export const WFOProcessList: FC<WFOProcessListProps> = ({
     alwaysOnFilters,
-    defaultHiddenColumns,
+    defaultHiddenColumns = [],
     localStorageKey,
     dataDisplayParams,
     setDataDisplayParam,
@@ -136,12 +136,6 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
     if (!data) {
         return <WFOLoading />;
     }
-
-    const dataSorting: WFODataSorting<Process> = {
-        field: dataDisplayParams.sortBy?.field ?? 'lastModified',
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
-    };
-
     const { totalItems } = data.processes.pageInfo;
 
     const pagination: Pagination = {
@@ -149,6 +143,10 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         pageIndex: dataDisplayParams.pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
+    };
+    const dataSorting: WFODataSorting<Process> = {
+        field: dataDisplayParams.sortBy?.field ?? 'lastModified',
+        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     return (

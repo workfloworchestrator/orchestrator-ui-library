@@ -8,6 +8,10 @@
         "deselect": "Deselect",
         "close": "Close"
     },
+    "errors": {
+        "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
+        "retrieve_stored_settings_title": "Error retrieving settings"
+    },
     "metadata": {
         "tabs": {
             "products": "Products",

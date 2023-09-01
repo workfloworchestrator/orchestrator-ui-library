@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Pagination } from '@elastic/eui/src/components';
 
@@ -13,20 +13,21 @@ import {
     WFOTableWithFilter,
 } from '../../components';
 import {
-    getTableConfigFromLocalStorage,
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import { defaultHiddenColumnsProductblocks } from './tableConfig';
-
 import { parseDateToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
-
-import { useDataDisplayParams, useQueryWithGraphql } from '../../hooks';
+import type { StoredTableConfig } from '../../components';
+import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useStoredTableConfig,
+} from '../../hooks';
 
 import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
@@ -50,14 +51,28 @@ const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
 export const WFOProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(
-            METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
-        )?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<ProductBlockDefinition>>();
+
+    const getStoredTableConfig = useStoredTableConfig<ProductBlockDefinition>(
+        METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+    );
+
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
+
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
+        }
+    }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProductBlockDefinition>({
-            pageSize: initialPageSize,
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: PRODUCT_BLOCK_FIELD_NAME,
                 order: SortOrder.ASC,
@@ -162,7 +177,7 @@ export const WFOProductBlocksPage = () => {
                 data={data ? data.productBlocks.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
-                defaultHiddenColumns={defaultHiddenColumnsProductblocks}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(
                     dataDisplayParams,
                     setDataDisplayParam,

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import { useDataDisplayParams } from '../../hooks';
+import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import {
     defaultSubscriptionsTabs,
     getSubscriptionsTabTypeFromString,
@@ -11,23 +11,40 @@ import {
     WFOSubscriptionsTabType,
 } from '../../components/WFOSubscriptionsList';
 import { SortOrder } from '../../types';
+
+import { StoredTableConfig } from '../../components/WFOTable';
+import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WFOTable';
 import {
     DEFAULT_PAGE_SIZE,
     getSortDirectionFromString,
-    getTableConfigFromLocalStorage,
-    SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components/WFOTable';
 import { WFOFilterTabs } from '../../components';
 
 export const WFOSubscriptionsListPage = () => {
     const router = useRouter();
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY)
-            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<SubscriptionListItem>>();
+
+    const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(
+        SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+    );
+
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
+
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
+        }
+    }, [getStoredTableConfig]);
+
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<SubscriptionListItem>({
-            pageSize: initialPageSize,
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: 'startDate',
                 order: SortOrder.DESC,
@@ -76,6 +93,7 @@ export const WFOSubscriptionsListPage = () => {
             <EuiSpacer size="xxl" />
 
             <WFOSubscriptionsList
+                hiddenColumns={tableDefaults?.hiddenColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}

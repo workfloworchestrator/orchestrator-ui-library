@@ -10,3 +10,4 @@ export * from './WFOStartPage';
 export * from './WFOSubscription';
 export * from './WFOTable';
 export * from './WFOLoading';
+export * from './WFOToastsList';

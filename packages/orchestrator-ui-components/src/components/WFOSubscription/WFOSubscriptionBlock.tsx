@@ -59,6 +59,7 @@ export const WFOSubscriptionBlock = (title: string, data: object) => {
 
     const productNameKeyValue: WFOKeyValueTableDataType = {
         key: 'Product',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         value: data.product.name,
     };

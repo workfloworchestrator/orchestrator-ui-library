@@ -8,6 +8,10 @@
         "deselect": "Deselecteer",
         "close": "Sluiten"
     },
+    "errors": {
+        "retrieve_stored_settings": "TODO Translate: Something went wrong restoring your settings. Falling back to default settings",
+        "retrieve_stored_settings_title": "TODO Translate: Error retrieving settings"
+    },
     "metadata": {
         "tabs": {
             "products": "Producten",
@@ -16,12 +20,14 @@
             "workflows": "Workflows"
         },
         "products": {
+            "id": "ID",
             "name": "Naam",
             "description": "Beschrijving",
             "tag": "Tag",
             "productType": "Type",
             "status": "Status",
             "productBlocks": "Product blocks",
+            "fixedInputs": "Fixed inputs",
             "createdAt": "Aangemaakt"
         },
         "productBlocks": {

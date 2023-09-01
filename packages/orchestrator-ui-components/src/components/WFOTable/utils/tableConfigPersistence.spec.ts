@@ -1,14 +1,14 @@
 import {
     getTableConfigFromLocalStorage,
     isValidLocalStorageTableConfig,
-    LocalStorageTableConfig,
+    StoredTableConfig,
 } from './tableConfigPersistence';
 
 // Note: for some testcases a typecast is needed on the testObject to bypass TSC errors
 describe('tableConfigPersistence', () => {
     describe('isValidLocalStorageTableConfig', () => {
         it('returns true if the input-object does contain LocalStorageTableConfig properties', () => {
-            const testObject: LocalStorageTableConfig<unknown> = {
+            const testObject: StoredTableConfig<unknown> = {
                 hiddenColumns: [],
                 selectedPageSize: 10,
             };
@@ -20,13 +20,13 @@ describe('tableConfigPersistence', () => {
             const testObject = {
                 hiddenColumns: undefined,
                 selectedPageSize: undefined,
-            } as unknown as LocalStorageTableConfig<unknown>;
+            } as unknown as StoredTableConfig<unknown>;
             const result = isValidLocalStorageTableConfig(testObject);
             expect(result).toEqual(false);
         });
 
         it('returns false if the input-object does not contain LocalStorageTableConfig properties', () => {
-            const testObject = {} as LocalStorageTableConfig<unknown>;
+            const testObject = {} as StoredTableConfig<unknown>;
             const result = isValidLocalStorageTableConfig(testObject);
             expect(result).toEqual(false);
         });

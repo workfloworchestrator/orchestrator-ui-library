@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Criteria,
     EuiButton,
@@ -27,7 +27,6 @@ import {
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
-    getTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
 import { WFOInformationModal } from '../../WFOSettingsModal';
@@ -77,24 +76,17 @@ export const WFOTableWithFilter = <T,>({
     const { theme } = useOrchestratorTheme();
 
     const defaultPageSize = pagination.pageSize;
-    const tableConfigFromLocalStorage =
-        getTableConfigFromLocalStorage<T>(localStorageKey);
-
-    const initialHiddenColumns =
-        tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns;
-
     const [hiddenColumns, setHiddenColumns] =
-        useState<TableColumnKeys<T>>(initialHiddenColumns);
-
+        useState<TableColumnKeys<T>>(defaultHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
         useState<T | undefined>(undefined);
 
     useEffect(() => {
-        setHiddenColumns(
-            tableConfigFromLocalStorage?.hiddenColumns ?? defaultHiddenColumns,
-        );
-    }, [localStorageKey]);
+        if (defaultHiddenColumns) {
+            setHiddenColumns(defaultHiddenColumns);
+        }
+    }, [defaultHiddenColumns]);
 
     const detailsIconColumn: WFOTableControlColumnConfig<T> = {
         viewDetails: {
@@ -219,9 +211,7 @@ export const WFOTableWithFilter = <T,>({
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
-                        selectedPageSize:
-                            tableConfigFromLocalStorage?.selectedPageSize ??
-                            pagination.pageSize,
+                        selectedPageSize: pagination.pageSize,
                     }}
                     pageSizeOptions={
                         pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES
