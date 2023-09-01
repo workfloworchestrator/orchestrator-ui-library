@@ -13,8 +13,8 @@ import { useTranslations } from 'next-intl';
 
 import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
 import {
-    GET_SUBSCRIPTION_DETAIL_COMPLETE,
-    GET_SUBSCRIPTION_DETAIL_OUTLINE,
+    getSubscriptionsDetailCompleteGraphQlQuery,
+    getSubscriptionsDetailOutlineGraphQlQuery,
     mapApiResponseToSubscriptionDetail,
 } from './subscriptionQuery';
 import {
@@ -59,15 +59,21 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
 
     const fetchSubscriptionOutline = async () => {
         console.log('Fetch outline query results for ID: ', subscriptionId);
-        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
-            id: subscriptionId,
-        });
+        return graphQLClient.request(
+            getSubscriptionsDetailOutlineGraphQlQuery(),
+            {
+                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
+            },
+        );
     };
     const fetchSubscriptionComplete = async () => {
         console.log('Fetch complete query results for ID: ', subscriptionId);
-        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_COMPLETE, {
-            id: subscriptionId,
-        });
+        return graphQLClient.request(
+            getSubscriptionsDetailCompleteGraphQlQuery(),
+            {
+                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
+            },
+        );
     };
 
     const { isLoading, data } = useQuery(

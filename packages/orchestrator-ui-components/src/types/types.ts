@@ -1,6 +1,6 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
 import { ProcessStatus } from '../hooks';
-import { Subscription } from './subscription';
+import { Subscription, SubscriptionDetail } from './subscription';
 
 export type Nullable<T> = T | null;
 
@@ -193,8 +193,8 @@ export type GraphqlFilter<Type> = {
 };
 
 export type GraphqlQueryVariables<Type> = {
-    first: number;
-    after: number;
+    first?: number;
+    after?: number;
     sortBy?: GraphQLSort<Type>;
     filterBy?: GraphqlFilter<Type>[];
 };
@@ -209,6 +209,10 @@ export type GraphQLPageInfo = {
 
 export interface SubscriptionsResult {
     subscriptions: GraphQlResultPage<Subscription>;
+}
+
+export interface SubscriptionDetailResult {
+    subscriptions: GraphQlResultPage<SubscriptionDetail>;
 }
 
 export interface ProductDefinitionsResult {
