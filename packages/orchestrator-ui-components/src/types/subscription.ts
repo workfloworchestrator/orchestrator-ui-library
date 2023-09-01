@@ -9,7 +9,6 @@ export enum SubscriptionStatus {
     PROVISIONING = 'PROVISIONING',
 }
 
-// todo merge this type with the detail one
 export type Subscription = {
     subscriptionId: string;
     description: string;
