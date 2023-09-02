@@ -18,7 +18,7 @@ import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { boolFieldStyling } from './BoolFieldStyling';
-import {FieldProps} from "../../../types/forms";
+import { FieldProps } from '../../../types/forms';
 
 export type BoolFieldProps = FieldProps<boolean>;
 

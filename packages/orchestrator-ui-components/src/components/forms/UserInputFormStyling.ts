@@ -1,8 +1,8 @@
 // Todo: theme with decent colors from theme (style was copied from v1)
-const PRIMARY_COLOR = "#0077cc";
-const LIGHT_PRIMARY_COLOR = "#520980";
+const PRIMARY_COLOR = '#0077cc';
+const LIGHT_PRIMARY_COLOR = '#520980';
 
-import {css} from "@emotion/react";
+import { css } from '@emotion/react';
 
 export const userInputFormStyling = css`
     .user-input-form {
