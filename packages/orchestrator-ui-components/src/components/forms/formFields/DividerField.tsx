@@ -16,7 +16,7 @@
 import { EuiHorizontalRule } from '@elastic/eui';
 import React from 'react';
 import { connectField } from 'uniforms';
-import {FieldProps} from "../../../types/forms";
+import { FieldProps } from '../../../types/forms';
 
 export type LabelFieldProps = FieldProps<null, {}, null, HTMLDivElement>;
 

@@ -17,8 +17,8 @@ import UserInputForm from './UserInputForm';
 import hash from 'object-hash';
 import React, { useEffect, useState } from 'react';
 // import ApplicationContext from 'utils/ApplicationContext';
-import {InputForm} from "../../types/forms";
-import {useRouter} from "next/router";
+import { InputForm } from '../../types/forms';
+import { useRouter } from 'next/router';
 
 interface Form {
     form: InputForm;
