@@ -17,7 +17,6 @@
         "@emotion/react": "^11.11.1",
         "@graphql-typed-document-node/core": "3.2.0",
         "@orchestrator-ui/orchestrator-ui-components": "*",
-        "@orchestrator-ui/pydantic-forms": "*",
         "graphql": "16.7.1",
         "graphql-request": "5.2.0",
         "moment": "^2.29.4",
