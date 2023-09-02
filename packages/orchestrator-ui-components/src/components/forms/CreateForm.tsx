@@ -13,9 +13,10 @@
  *
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import {Form, FormNotCompleteResponse} from "../../types/forms";
-import UserInputFormWizard from "./UserInputFormWizard";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Form, FormNotCompleteResponse } from '../../types/forms';
+import UserInputFormWizard from './UserInputFormWizard';
+import { BaseApiClient } from '../../api';
 
 interface IProps {
     preselectedInput?: any;
@@ -23,33 +24,18 @@ interface IProps {
     handleSubmit: (userInputs: any) => void;
 }
 
-const postPutJson = (path: string, body: {}, method: string): Promise<R> => {
-    return fetch(path, { method: method, body: JSON.stringify(body), headers: { "Content-Type": "application/json" }}).then(response => alert(response.json()));
+abstract class ApiClientInterface extends BaseApiClient {
+    abstract cimStartForm: (formKey: string, userInputs: {}[]) => Promise<any>;
 }
-
-const catchErrorStatus = (promise: Promise<any>, status: number, callback: (json: T) => void) => {
-    // if(status===503) alert("503");
-    if (status === 510) {
-        // debugger
-        // return promise.catch((err) => {
-        //     alert();
-        //     if (err.response && err.response.status === status) {
-        //         callback(err.response.data);
-        //     } else {
-        //         throw err;
-        //     }
-        // });
-    }
-    ;
+class ApiClient extends ApiClientInterface {
+    cimStartForm = (
+        formKey: string,
+        userInputs: {}[],
+    ): Promise<{ id: string }> => {
+        return this.postPutJson(formKey, userInputs, 'post', false, true);
+    };
 }
-
-function cimStartForm(formKey: string, userInputs: {}[]): Promise<{ id: string }> {
-    console.log("userInputs:", userInputs)
-    const putJson = postPutJson("http://localhost:8080/api/surf/forms/" + formKey, userInputs, "post");
-    console.log("putJson:", putJson)
-    return putJson
-};
-
+const apiClient: ApiClient = new ApiClient();
 
 export default function CreateForm(props: IProps) {
     const { preselectedInput, formKey, handleSubmit } = props;
@@ -62,31 +48,35 @@ export default function CreateForm(props: IProps) {
             // Todo: decide if we want to implement pre-selections and design a way to do it generic
             //     userInputs = [{ preselectedInput }, ...userInputs];
             // }
-            let promise = cimStartForm(formKey, userInputs).then(
+            let promise = apiClient.cimStartForm(formKey, userInputs).then(
                 (form) => {
-                    console.log("Submit {formkey} =", formKey)
+                    console.log('Submit {formkey} =', formKey);
                     handleSubmit(form);
                 },
                 (e) => {
                     throw e;
-                }
+                },
             );
 
-            // return catchErrorStatus<any>(promise, 503, (json) => {
-            //     alert("/tickets");
-            // });
+            return apiClient.catchErrorStatus<any>(promise, 503, (json) => {
+                alert('/tickets');
+            });
         },
-        [formKey, handleSubmit]
+        [formKey, handleSubmit],
     );
 
     useEffect(() => {
         if (formKey) {
-            catchErrorStatus<FormNotCompleteResponse>(submit([]), 510, (json) => {
-                setForm({
-                    stepUserInput: json.form,
-                    hasNext: json.hasNext ?? false,
-                });
-            });
+            apiClient.catchErrorStatus<FormNotCompleteResponse>(
+                submit([]),
+                510,
+                (json) => {
+                    setForm({
+                        stepUserInput: json.form,
+                        hasNext: json.hasNext ?? false,
+                    });
+                },
+            );
         }
     }, [formKey, submit, preselectedInput]);
 
@@ -96,7 +86,7 @@ export default function CreateForm(props: IProps) {
                 <UserInputFormWizard
                     stepUserInput={stepUserInput}
                     validSubmit={submit}
-                    cancel={() => alert("cancelled")}
+                    cancel={() => alert('cancelled')}
                     hasNext={hasNext ?? false}
                 />
             )}

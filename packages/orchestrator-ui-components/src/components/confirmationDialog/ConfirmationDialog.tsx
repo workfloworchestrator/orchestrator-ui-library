@@ -49,12 +49,8 @@ export default function ConfirmationDialog({
                 <section
                     className={`dialog-content ${isError ? ' error' : ''}`}
                 >
-                    <h2>
-                        Leave
-                    </h2>
-                    <p>
-                        Leave paragraph
-                    </p>
+                    <h2>Leave</h2>
+                    <p>Leave paragraph</p>
                 </section>
             ) : (
                 <section className="dialog-content">
