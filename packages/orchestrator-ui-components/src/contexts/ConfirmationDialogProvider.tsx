@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import ConfirmationDialog from "../components/confirmationDialog/ConfirmationDialog";
+import ConfirmationDialog from '../components/confirmationDialog/ConfirmationDialog';
 
 export interface ShowConfirmDialog {
     question: string;

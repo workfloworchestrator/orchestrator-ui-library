@@ -1,9 +1,9 @@
-import {css} from "@emotion/react";
+import { css } from '@emotion/react';
 
 // Todo: theme with decent colors from theme (style was copied from v1)
-const PRIMARY_COLOR = "#0077cc";
-const LIGHT_GREY_COLOR = "#eff2f3";
-const MEDIUM_GREY_COLOR = "#a6b6be";
+const PRIMARY_COLOR = '#0077cc';
+const LIGHT_GREY_COLOR = '#eff2f3';
+const MEDIUM_GREY_COLOR = '#a6b6be';
 
 export const boolFieldStyling = css`
 

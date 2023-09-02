@@ -37,7 +37,7 @@ import { AutoField, AutoForm } from 'uniforms-unstyled';
 import { userInputFormStyling } from './UserInputFormStyling';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
 import AutoFields from './AutoFields';
-import {ValidationError} from "../../types/forms";
+import { ValidationError } from '../../types/forms';
 
 interface IProps {
     router: NextRouter;
