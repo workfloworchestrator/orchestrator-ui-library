@@ -19,7 +19,3 @@ export type Subscription = {
     status: SubscriptionStatus;
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
 };
-export type SubscriptionListItem = {
-    productName: string;
-    tag: string | null;
-};
