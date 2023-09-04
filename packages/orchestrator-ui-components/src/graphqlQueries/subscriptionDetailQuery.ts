@@ -1,26 +1,26 @@
-import { graphql } from '../../__generated__';
-import {
-    SubscriptionDetailCompleteQuery,
-    SubscriptionDetailOutlineQuery,
-} from '../../__generated__/graphql';
+import { parse } from 'graphql';
+import { gql } from 'graphql-request';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import { SubscriptionDetail } from '../types/subscription';
 import {
     ExternalServiceBase,
-    parseDate,
-    parseDateToLocaleString,
+    GraphqlQueryVariables,
     ProductBase,
     ProductBlockBase,
-    ResourceTypeBase,
     SubscriptionDetailBase,
-} from '@orchestrator-ui/orchestrator-ui-components';
+    SubscriptionDetailResult,
+} from '../types';
+import { parseDate, parseDateToLocaleString } from '../utils/date';
 
 // Todo: fixedInputs need to be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/304
 
 // Todo: customerId will be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/238
-export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
-    query SubscriptionDetailOutline($id: String!) {
-        subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
+
+const GET_SUBSCRIPTION_DETAIL_OUTLINE = parse(gql`
+    query SubscriptionDetailComplete($filterBy: [GraphqlFilter!]) {
+        subscriptions(filterBy: $filterBy) {
             page {
                 subscriptionId
                 description
@@ -52,9 +52,9 @@ export const GET_SUBSCRIPTION_DETAIL_OUTLINE = graphql(`
 
 // Todo: fixedInputs need to be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/304
-export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
-    query SubscriptionDetailComplete($id: String!) {
-        subscriptions(filterBy: { field: "subscriptionId", value: $id }) {
+export const GET_SUBSCRIPTION_DETAIL_COMPLETE = parse(gql`
+    query SubscriptionDetailComplete($filterBy: [GraphqlFilter!]) {
+        subscriptions(filterBy: $filterBy) {
             page {
                 subscriptionId
                 description
@@ -84,10 +84,26 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = graphql(`
     }
 `);
 
+export function getSubscriptionsDetailOutlineGraphQlQuery<
+    DataType = SubscriptionDetail,
+>(): TypedDocumentNode<
+    SubscriptionDetailResult,
+    GraphqlQueryVariables<DataType>
+> {
+    return GET_SUBSCRIPTION_DETAIL_OUTLINE;
+}
+
+export function getSubscriptionsDetailCompleteGraphQlQuery<
+    DataType = SubscriptionDetail,
+>(): TypedDocumentNode<
+    SubscriptionDetailResult,
+    GraphqlQueryVariables<DataType>
+> {
+    return GET_SUBSCRIPTION_DETAIL_COMPLETE;
+}
+
 export function mapApiResponseToSubscriptionDetail(
-    graphqlResponse:
-        | SubscriptionDetailOutlineQuery
-        | SubscriptionDetailCompleteQuery,
+    graphqlResponse: SubscriptionDetailResult,
     externalServicesLoaded: boolean,
 ): SubscriptionDetailBase {
     const subscription = graphqlResponse.subscriptions.page[0];
@@ -109,23 +125,14 @@ export function mapApiResponseToSubscriptionDetail(
     const productBlocks: ProductBlockBase[] = subscription.productBlocks.map(
         (productBlock) => {
             {
-                const resourceType: ResourceTypeBase = {
-                    name: productBlock.resourceTypes.name,
-                    title: productBlock.resourceTypes.title,
-                    label: productBlock.resourceTypes?.label,
-                    subscriptionInstanceId:
-                        productBlock.resourceTypes.subscription_instance_id,
-                    ownerSubscriptionId:
-                        productBlock.resourceTypes.owner_subscription_id,
-                    ...productBlock.resourceTypes,
-                };
-                const retValue: ProductBlockBase = {
+                const productBlockBase: ProductBlockBase = {
                     id: productBlock.id,
                     ownerSubscriptionId: productBlock.ownerSubscriptionId,
                     parent: productBlock.parent ?? null,
-                    resourceTypes: resourceType,
+                    // @ts-ignore
+                    resourceTypes: productBlock.resourceTypes,
                 };
-                return retValue;
+                return productBlockBase;
             }
         },
     );

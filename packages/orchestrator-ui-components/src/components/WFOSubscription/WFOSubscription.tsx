@@ -1,10 +1,4 @@
-import React, { FC, useState } from 'react';
-import {
-    ProcessesTimeline,
-    WFOSubscriptionActions,
-    WFOSubscriptionDetailTree,
-    WFOSubscriptionGeneral,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import React, { FC, useContext, useState } from 'react';
 import {
     EuiBadge,
     EuiFlexGroup,
@@ -17,13 +11,7 @@ import { useQuery } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
 import { useTranslations } from 'next-intl';
 
-import { GRAPHQL_ENDPOINT_CORE } from '../../constants';
-import {
-    GET_SUBSCRIPTION_DETAIL_COMPLETE,
-    GET_SUBSCRIPTION_DETAIL_OUTLINE,
-    mapApiResponseToSubscriptionDetail,
-} from './subscriptionQuery';
-import { SubscriptionContext } from '@orchestrator-ui/orchestrator-ui-components';
+import { OrchestratorConfigContext, SubscriptionContext } from '../../contexts';
 import {
     GENERAL_TAB,
     getColor,
@@ -31,15 +19,25 @@ import {
     SERVICE_CONFIGURATION_TAB,
     tabs,
 } from './utils';
+import {
+    getSubscriptionsDetailCompleteGraphQlQuery,
+    getSubscriptionsDetailOutlineGraphQlQuery,
+    mapApiResponseToSubscriptionDetail,
+} from '../../graphqlQueries';
+import { WFOSubscriptionActions } from './WFOSubscriptionActions';
+import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
+import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
+import { ProcessesTimeline } from './WFOProcessesTimeline';
 
-type SubscriptionProps = {
+type WFOSubscriptionProps = {
     subscriptionId: string;
 };
 
-const graphQLClient = new GraphQLClient(GRAPHQL_ENDPOINT_CORE);
-
-export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
+export const WFOSubscription: FC<WFOSubscriptionProps> = ({
+    subscriptionId,
+}) => {
     const t = useTranslations('subscriptions.detail');
+    const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const { subscriptionData, setSubscriptionData, loadingStatus } =
         React.useContext(SubscriptionContext);
 
@@ -59,17 +57,25 @@ export const Subscription: FC<SubscriptionProps> = ({ subscriptionId }) => {
     //         ).node,
     // };
 
+    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
+
     const fetchSubscriptionOutline = async () => {
         console.log('Fetch outline query results for ID: ', subscriptionId);
-        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_OUTLINE, {
-            id: subscriptionId,
-        });
+        return graphQLClient.request(
+            getSubscriptionsDetailOutlineGraphQlQuery(),
+            {
+                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
+            },
+        );
     };
     const fetchSubscriptionComplete = async () => {
         console.log('Fetch complete query results for ID: ', subscriptionId);
-        return graphQLClient.request(GET_SUBSCRIPTION_DETAIL_COMPLETE, {
-            id: subscriptionId,
-        });
+        return graphQLClient.request(
+            getSubscriptionsDetailCompleteGraphQlQuery(),
+            {
+                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
+            },
+        );
     };
 
     const { isLoading, data } = useQuery(
