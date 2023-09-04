@@ -20,12 +20,6 @@ export type Subscription = {
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
 };
 
-// Todo: remove
-export type SubscriptionListItem = {
-    productName: string;
-    tag: string | null;
-};
-
 export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;
