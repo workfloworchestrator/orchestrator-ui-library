@@ -16,6 +16,7 @@ import {
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 import { WFODataSorting, TableColumnKeys } from '../utils/columns';
+import { DEFAULT_PAGE_SIZE } from '../utils/constants';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;
@@ -66,13 +67,15 @@ export const WFODataGridTable = <T,>({
         .filter((columnId) => !columns[columnId].isHiddenByDefault)
         .map((columnId) => columnId.toString());
     const [visibleColumns, setVisibleColumns] = useState(defaultVisibleColumns);
+    const pageSize = pagination.pageSize ?? DEFAULT_PAGE_SIZE;
+    const { pageIndex } = pagination;
 
     const renderCellValue = ({
         rowIndex,
         columnId,
         setCellProps,
     }: EuiDataGridCellValueElementProps) => {
-        const { pageSize, pageIndex } = pagination;
+        // const { pageSize, pageIndex } = pagination;
         const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
         const dataRow = data[rowIndexOnPage];
@@ -102,7 +105,8 @@ export const WFODataGridTable = <T,>({
         width,
         headerCellRender: () => null,
         rowCellRender: ({ rowIndex }: { rowIndex: number }) => {
-            const { pageSize, pageIndex } = pagination;
+            // const { pageSize, pageIndex } = pagination;
+            // const currentPageSize = pageSize ?? DEFAULT_PAGE_SIZE
             const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
             const dataRow = data[rowIndexOnPage];
@@ -120,8 +124,7 @@ export const WFODataGridTable = <T,>({
     );
 
     const gridHeightValue =
-        pagination.pageSize * EUI_DATA_GRID_ROW_HEIGHT +
-        EUI_DATA_GRID_HEIGHT_OFFSET;
+        pageSize * EUI_DATA_GRID_ROW_HEIGHT + EUI_DATA_GRID_HEIGHT_OFFSET;
 
     return (
         <EuiDataGrid

@@ -17,7 +17,7 @@
         "use-query-params": "2.2.1"
     },
     "peerDependencies": {
-        "@elastic/eui": "77.2.2",
+        "@elastic/eui": "^88.1.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "graphql-request": "5.2.0",

@@ -24,7 +24,7 @@ import {
     WFOBasicTable,
     WFOBasicTableColumnsWithControlColumns,
 } from '../WFOBasicTable';
-import { DEFAULT_PAGE_SIZES } from '../utils/constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
@@ -172,7 +172,7 @@ export const WFOTableWithFilter = <T,>({
         clearTableConfigFromLocalStorage(localStorageKey);
         onUpdatePage({
             index: 0,
-            size: defaultPageSize,
+            size: defaultPageSize ?? DEFAULT_PAGE_SIZE,
         });
     };
 
@@ -211,7 +211,8 @@ export const WFOTableWithFilter = <T,>({
                 <TableSettingsModal
                     tableConfig={{
                         columns: tableSettingsColumns,
-                        selectedPageSize: pagination.pageSize,
+                        selectedPageSize:
+                            pagination.pageSize ?? DEFAULT_PAGE_SIZE,
                     }}
                     pageSizeOptions={
                         pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES

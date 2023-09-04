@@ -1,14 +1,9 @@
 import React, { FC } from 'react';
-import {
-    EuiAvatar,
-    EuiComment,
-    EuiCommentList,
-    EuiSpacer,
-    EuiLoadingContent,
-} from '@elastic/eui';
+import { EuiAvatar, EuiComment, EuiCommentList, EuiSpacer } from '@elastic/eui';
 
 import { WFOProcessStatusBadge } from '../WFOBadges';
 import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
+import { WFOLoading } from '../WFOLoading';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
 const WFOCard = (processInfo: SubscriptionProcess) => (
@@ -92,7 +87,7 @@ export const ProcessesTimeline: FC<ProcessesTimelineProps> = ({
     return (
         <>
             <EuiSpacer size={'m'} />
-            {!subscriptionProcesses && <EuiLoadingContent />}
+            {!subscriptionProcesses && <WFOLoading />}
             <EuiCommentList aria-label="Processes">
                 {subscriptionProcesses && (
                     <EuiCommentList aria-label="Processes">
