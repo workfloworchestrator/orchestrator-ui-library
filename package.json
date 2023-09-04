@@ -18,7 +18,7 @@
         "eslint-config-custom": "*",
         "husky": "^8.0.0",
         "prettier": "^3.0.0",
-        "turbo": "^1.10.12"
+        "turbo": "^1.10.13"
     },
     "name": "orchestrator-core-ui",
     "packageManager": "yarn@1.22.19",
