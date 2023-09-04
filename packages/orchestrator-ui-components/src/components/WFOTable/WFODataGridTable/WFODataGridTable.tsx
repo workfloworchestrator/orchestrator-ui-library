@@ -75,7 +75,6 @@ export const WFODataGridTable = <T,>({
         columnId,
         setCellProps,
     }: EuiDataGridCellValueElementProps) => {
-        // const { pageSize, pageIndex } = pagination;
         const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
         const dataRow = data[rowIndexOnPage];
@@ -105,8 +104,6 @@ export const WFODataGridTable = <T,>({
         width,
         headerCellRender: () => null,
         rowCellRender: ({ rowIndex }: { rowIndex: number }) => {
-            // const { pageSize, pageIndex } = pagination;
-            // const currentPageSize = pageSize ?? DEFAULT_PAGE_SIZE
             const rowIndexOnPage = rowIndex - pageIndex * pageSize;
 
             const dataRow = data[rowIndexOnPage];
