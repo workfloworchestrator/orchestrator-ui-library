@@ -32,6 +32,7 @@ import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
+import NoSSR from 'react-no-ssr';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -60,39 +61,46 @@ function CustomApp({ Component, pageProps }: AppProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
-        <TranslationsProvider>
-            <EuiProvider colorMode="light" modify={defaultOrchestratorTheme}>
-                <Head>
-                    <title>Welcome to example-orchestrator-ui!</title>
-                </Head>
-                <main className="app">
-                    <OrchestratorConfigProvider
-                        initialOrchestratorConfig={initialOrchestratorConfig}
-                    >
-                        <QueryClientProvider
-                            client={queryClient}
-                            contextSharing={true}
+        <NoSSR>
+            <TranslationsProvider>
+                <EuiProvider
+                    colorMode="light"
+                    modify={defaultOrchestratorTheme}
+                >
+                    <Head>
+                        <title>Welcome to example-orchestrator-ui!</title>
+                    </Head>
+                    <main className="app">
+                        <OrchestratorConfigProvider
+                            initialOrchestratorConfig={
+                                initialOrchestratorConfig
+                            }
                         >
-                            <ToastsContextProvider>
-                                <WFOPageTemplate getAppLogo={getAppLogo}>
-                                    <QueryParamProvider
-                                        adapter={NextAdapter}
-                                        options={{
-                                            removeDefaultsFromUrl: false,
-                                            enableBatching: true,
-                                        }}
-                                    >
-                                        <Component {...pageProps} />
-                                    </QueryParamProvider>
-                                </WFOPageTemplate>
-                                <ToastsList />
-                            </ToastsContextProvider>
-                            <ReactQueryDevtools initialIsOpen={false} />
-                        </QueryClientProvider>
-                    </OrchestratorConfigProvider>
-                </main>
-            </EuiProvider>
-        </TranslationsProvider>
+                            <QueryClientProvider
+                                client={queryClient}
+                                contextSharing={true}
+                            >
+                                <ToastsContextProvider>
+                                    <WFOPageTemplate getAppLogo={getAppLogo}>
+                                        <QueryParamProvider
+                                            adapter={NextAdapter}
+                                            options={{
+                                                removeDefaultsFromUrl: false,
+                                                enableBatching: true,
+                                            }}
+                                        >
+                                            <Component {...pageProps} />
+                                        </QueryParamProvider>
+                                    </WFOPageTemplate>
+                                    <ToastsList />
+                                </ToastsContextProvider>
+                                <ReactQueryDevtools initialIsOpen={false} />
+                            </QueryClientProvider>
+                        </OrchestratorConfigProvider>
+                    </main>
+                </EuiProvider>
+            </TranslationsProvider>
+        </NoSSR>
     );
 }
 
