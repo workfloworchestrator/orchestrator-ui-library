@@ -72,6 +72,18 @@
             "started": "Started",
             "lastModified": "Last Modified",
             "workflowTarget": "Target"
+        },
+        "detail": {
+            "retry": "Retry",
+            "resume": "Resume",
+            "abort": "Abort",
+            "status": "Status",
+            "startedBy": "Started by",
+            "currentStep": "Current step",
+            "startedOn": "Started on",
+            "lastUpdate": "Last update",
+            "relatedSubscriptions": "Related subscriptions",
+            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}"
         }
     },
     "subscriptions": {

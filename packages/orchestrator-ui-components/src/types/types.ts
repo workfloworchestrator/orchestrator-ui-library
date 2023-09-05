@@ -184,13 +184,13 @@ export interface ProcessDetail {
     steps: ProcessDetailStep[];
     subscriptions: {
         page: {
-            product: Pick<ProductDefinition, 'name'>[];
-        };
+            product: Pick<ProductDefinition, 'name'>;
+        }[];
     };
     customer: string;
 }
 
-interface ProcessDetailStep {
+export interface ProcessDetailStep {
     name: string;
     status: StepStatus;
     stepid: string; // sic backend
