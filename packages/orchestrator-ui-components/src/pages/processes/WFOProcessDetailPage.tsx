@@ -35,10 +35,22 @@ const ProcessHeaderValue = ({
 }: ProcessHeaderValueProps) => {
     const t = useTranslations('processes.detail');
     return (
-        <EuiFlexGroup direction="column" gutterSize="xs">
+        <EuiFlexGroup
+            direction="column"
+            gutterSize="xs"
+            css={{ flexGrow: 0, width: '155px', margin: '0 4px' }}
+        >
             <EuiText size="xs">{t(translationKey)}</EuiText>
             <EuiText size="s">
-                <h4>{value}</h4>
+                <h4
+                    css={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                    }}
+                >
+                    {value}
+                </h4>
             </EuiText>
         </EuiFlexGroup>
     );
@@ -153,7 +165,13 @@ export const WFOProcessDetailPage = ({
                 element="div"
             >
                 {(isFetching && <WFOLoading />) || (
-                    <EuiFlexGroup direction="row" gutterSize="xs">
+                    <EuiFlexGroup
+                        direction="row"
+                        gutterSize="xs"
+                        css={{
+                            flexGrow: 0,
+                        }}
+                    >
                         <ProcessHeaderValue
                             translationKey="status"
                             value={process?.status}
