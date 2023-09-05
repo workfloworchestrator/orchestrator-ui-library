@@ -8,9 +8,14 @@ import {
     EuiText,
     EuiPanel,
 } from '@elastic/eui';
-
-import { ProcessDetailStep } from '../../types';
 import { useTranslations } from 'next-intl';
+
+import { ProcessDetailStep, ProcessStatus } from '../../types';
+import {
+    parseDateToLocaleString,
+    parseDate,
+    getProductNamesFromProcess,
+} from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOLoading } from '../../components';
@@ -18,6 +23,26 @@ import { WFOLoading } from '../../components';
 interface WFOProcessDetailPageProps {
     processId: string;
 }
+
+interface ProcessHeaderValueProps {
+    translationKey: string;
+    value: string | ProcessStatus | undefined;
+}
+
+const ProcessHeaderValue = ({
+    translationKey,
+    value = '',
+}: ProcessHeaderValueProps) => {
+    const t = useTranslations('processes.detail');
+    return (
+        <EuiFlexGroup direction="column" gutterSize="xs">
+            <EuiText size="xs">{t(translationKey)}</EuiText>
+            <EuiText size="s">
+                <h4>{value}</h4>
+            </EuiText>
+        </EuiFlexGroup>
+    );
+};
 
 export const WFOProcessDetailPage = ({
     processId,
@@ -57,12 +82,17 @@ export const WFOProcessDetailPage = ({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <EuiPageHeader
-                        pageTitle={isFetching ? '...' : 'NAMEOFPROCESS'}
+                        pageTitle={isFetching ? '...' : 'TODO: WORKFLOW NAME'}
                     />
+                    <EuiSpacer />
+                    <EuiText size="s">
+                        {getProductNamesFromProcess(process)}
+                    </EuiText>
                 </EuiFlexItem>
                 <EuiFlexGroup
                     justifyContent="flexEnd"
                     direction="row"
+                    css={{ flexGrow: 0 }}
                     gutterSize="s"
                 >
                     <EuiButton
@@ -124,55 +154,45 @@ export const WFOProcessDetailPage = ({
             >
                 {(isFetching && <WFOLoading />) || (
                     <EuiFlexGroup direction="row" gutterSize="xs">
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">{t('status')}</EuiText>
-                            <EuiText size="s">
-                                <h4>{process?.status}</h4>
-                            </EuiText>
-                        </EuiFlexGroup>
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">{t('startedBy')}</EuiText>
-                            <EuiText size="s">
-                                <h4>{process?.createdBy}</h4>
-                            </EuiText>
-                        </EuiFlexGroup>
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">{t('currentStep')}</EuiText>
-                            <EuiText size="s">
-                                <h4>
-                                    {getCurrentStep(
-                                        process?.steps,
-                                        process?.step,
-                                    )}
-                                </h4>
-                            </EuiText>
-                        </EuiFlexGroup>
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">{t('startedOn')}</EuiText>
-                            <EuiText size="s">
-                                <h4>{process?.started}</h4>
-                            </EuiText>
-                        </EuiFlexGroup>
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">{t('lastUpdate')}</EuiText>
-                            <EuiText size="s">
-                                <h4>{process?.lastModified}</h4>
-                            </EuiText>
-                        </EuiFlexGroup>
-                        <EuiFlexGroup direction="column" gutterSize="xs">
-                            <EuiText size="xs">
-                                {t('relatedSubscriptions')}
-                            </EuiText>
-                            <EuiText size="s">
-                                <h4>
-                                    {t('subscriptions', {
-                                        count:
-                                            process?.subscriptions.page
-                                                .length || 0,
-                                    })}
-                                </h4>
-                            </EuiText>
-                        </EuiFlexGroup>
+                        <ProcessHeaderValue
+                            translationKey="status"
+                            value={process?.status}
+                        />
+                        <ProcessHeaderValue
+                            translationKey="startedBy"
+                            value={process?.createdBy}
+                        />
+                        {process?.customer && (
+                            <ProcessHeaderValue
+                                translationKey="customer"
+                                value={process?.customer}
+                            />
+                        )}
+                        <ProcessHeaderValue
+                            translationKey="currentStep"
+                            value={getCurrentStep(
+                                process?.steps,
+                                process?.step,
+                            )}
+                        />
+                        <ProcessHeaderValue
+                            translationKey="startedOn"
+                            value={parseDateToLocaleString(
+                                parseDate(process?.started),
+                            )}
+                        />
+                        <ProcessHeaderValue
+                            translationKey="lastUpdate"
+                            value={parseDateToLocaleString(
+                                parseDate(process?.lastModified),
+                            )}
+                        />
+                        <ProcessHeaderValue
+                            translationKey="relatedSubscriptions"
+                            value={t('subscriptions', {
+                                count: process?.subscriptions.page.length || 0,
+                            })}
+                        />
                     </EuiFlexGroup>
                 )}
             </EuiPanel>

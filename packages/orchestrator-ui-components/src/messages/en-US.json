@@ -83,7 +83,8 @@
             "startedOn": "Started on",
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",
-            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}"
+            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
+            "customer": "Customer"
         }
     },
     "subscriptions": {
