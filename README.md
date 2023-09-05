@@ -2,10 +2,30 @@ Todo: copy old README.md
 
 # Getting started
 
+-   set `AUTH_ENABLED` env variable to false or use setup below with auth.
+
 ```
 yarn
 turbo dev
 ```
+
+### AUTH with keycloak
+
+setup auth with keycloak in docker.
+
+-   copy env: `cp .env.example .env`
+-   change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
+-   run `docker compose up` to start keycloak.
+-   log into keycloak.
+-   keycloak setup
+    -   follow the [keycloak docs](https://www.keycloak.org/getting-started/getting-started-docker#_secure_the_first_application) till `Create a User` to create a new realm and at least one user.
+    -   after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `KEYCLOAK_ISSUER`.
+    -   Create a client, you want to enable `Client authentication` and `Authorization` in `Capability config`.
+        -   first page: fill in a name for `ClientID`. (`.env.example` default is `orchestrator-client`)
+        -   second page: enable `Client authentication` and `Authorization`.
+        -   third page: fill in `Valid redirect URIs` with `{FRONTEND_URL}/callback` and `Web Origins` with the base frontend url. (eg `http://localhost:3000/callback`)
+    -   go to the client details and go to tab `Credentials` and copy the Client secret and pase it into your env file. (`KEYCLOAK_SECRET`)
+        -   run the app with `turbo dev`
 
 # Release and publish
 

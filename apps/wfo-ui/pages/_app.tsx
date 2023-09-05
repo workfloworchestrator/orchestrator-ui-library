@@ -23,6 +23,8 @@ import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
+import { SessionProvider } from 'next-auth/react';
+import Auth from '../components/Auth';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
@@ -57,34 +59,43 @@ function CustomApp({
                             <title>Welcome to example-orchestrator-ui!</title>
                         </Head>
                         <main className="app">
-                            <OrchestratorConfigProvider
-                                initialOrchestratorConfig={orchestratorConfig}
-                            >
-                                <QueryClientProvider
-                                    client={queryClient}
-                                    contextSharing={true}
-                                >
-                                    <ToastsContextProvider>
-                                        <WfoPageTemplate
-                                            getAppLogo={getAppLogo}
+                            <SessionProvider session={pageProps.session}>
+                                <Auth>
+                                    <OrchestratorConfigProvider
+                                        initialOrchestratorConfig={orchestratorConfig}
+                                    >
+                                        <QueryClientProvider
+                                            client={queryClient}
+                                            contextSharing={true}
                                         >
-                                            <QueryParamProvider
-                                                adapter={NextAdapter}
-                                                options={{
-                                                    removeDefaultsFromUrl:
-                                                        false,
-                                                    enableBatching: true,
-                                                }}
-                                            >
-                                                <Component {...pageProps} />
-                                            </QueryParamProvider>
-                                        </WfoPageTemplate>
-                                        <ToastsList />
-                                    </ToastsContextProvider>
-                                    <ReactQueryDevtools initialIsOpen={false} />
-                                </QueryClientProvider>
-                            </OrchestratorConfigProvider>
-                        </main>{' '}
+                                            <ToastsContextProvider>
+                                                <WfoPageTemplate
+                                                    getAppLogo={getAppLogo}
+                                                >
+                                                    <QueryParamProvider
+                                                        adapter={NextAdapter}
+                                                        options={{
+                                                            removeDefaultsFromUrl:
+                                                                false,
+                                                            enableBatching:
+                                                                true,
+                                                        }}
+                                                    >
+                                                        <Component
+                                                            {...pageProps}
+                                                        />
+                                                    </QueryParamProvider>
+                                                </WfoPageTemplate>
+                                                <ToastsList />
+                                            </ToastsContextProvider>
+                                            <ReactQueryDevtools
+                                                initialIsOpen={false}
+                                            />
+                                        </QueryClientProvider>
+                                    </OrchestratorConfigProvider>
+                                </Auth>
+                            </SessionProvider>
+                        </main>
                     </ApiClientContextProvider>
                 </EuiProvider>
             </TranslationsProvider>
