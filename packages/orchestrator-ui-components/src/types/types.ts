@@ -1,5 +1,5 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
-import { ProcessStatus } from '../hooks';
+
 import { Subscription, SubscriptionDetail } from './subscription';
 
 export type Nullable<T> = T | null;
@@ -188,6 +188,18 @@ export interface ProcessDetail {
         }[];
     };
     customer: string;
+}
+export enum ProcessStatus {
+    CREATED = 'created',
+    RUNNING = 'running',
+    SUSPENDED = 'suspended',
+    WAITING = 'waiting',
+    ABORTED = 'aborted',
+    FAILED = 'failed',
+    RESUMED = 'resumed',
+    API_UNAVAILABLE = 'api_unavailable',
+    INCONSISTENT_DATA = 'inconsistent_data',
+    COMPLETED = 'completed',
 }
 
 export interface ProcessDetailStep {
