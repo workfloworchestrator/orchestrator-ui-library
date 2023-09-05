@@ -15,7 +15,6 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-let calls = 0;
 const apiPath = 'http://localhost:8080/api/surf/forms';
 
 // basic configuration for axios.
