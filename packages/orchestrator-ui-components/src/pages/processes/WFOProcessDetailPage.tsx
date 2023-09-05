@@ -39,16 +39,19 @@ const ProcessHeaderValue = ({
         <EuiFlexGroup
             direction="column"
             gutterSize="xs"
-            css={{ flexGrow: 0, width: '155px', margin: '0 4px' }}
+            css={{
+                flex: 1,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+            }}
         >
             <EuiText size="xs">{t(translationKey)}</EuiText>
             <EuiText
                 css={{
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
                     fontWeight: theme.font.weight.bold,
                     fontSize: theme.size.base,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                 }}
             >
                 {value}
@@ -162,17 +165,10 @@ export const WFOProcessDetailPage = ({
                 hasShadow={false}
                 hasBorder={false}
                 color="subdued"
-                grow={false}
                 element="div"
             >
                 {(isFetching && <WFOLoading />) || (
-                    <EuiFlexGroup
-                        direction="row"
-                        gutterSize="xs"
-                        css={{
-                            flexGrow: 0,
-                        }}
-                    >
+                    <EuiFlexGroup direction="row" gutterSize="m">
                         <ProcessHeaderValue
                             translationKey="status"
                             value={process?.status}
