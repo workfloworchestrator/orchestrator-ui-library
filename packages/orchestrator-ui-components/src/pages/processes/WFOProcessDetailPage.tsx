@@ -16,7 +16,7 @@ import {
     parseDate,
     getProductNamesFromProcess,
 } from '../../utils';
-import { useQueryWithGraphql } from '../../hooks';
+import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOLoading } from '../../components';
 
@@ -34,6 +34,7 @@ const ProcessHeaderValue = ({
     value = '',
 }: ProcessHeaderValueProps) => {
     const t = useTranslations('processes.detail');
+    const { theme } = useOrchestratorTheme();
     return (
         <EuiFlexGroup
             direction="column"
@@ -41,16 +42,16 @@ const ProcessHeaderValue = ({
             css={{ flexGrow: 0, width: '155px', margin: '0 4px' }}
         >
             <EuiText size="xs">{t(translationKey)}</EuiText>
-            <EuiText size="s">
-                <h4
-                    css={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                    }}
-                >
-                    {value}
-                </h4>
+            <EuiText
+                css={{
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    fontWeight: theme.font.weight.bold,
+                    fontSize: theme.size.base,
+                }}
+            >
+                {value}
             </EuiText>
         </EuiFlexGroup>
     );
