@@ -14,12 +14,12 @@ import {
     EuiCallOut,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiLoadingContent,
     EuiSearchBar,
     EuiText,
 } from '@elastic/eui';
 
 import { getTokenName } from '../../utils/getTokenName';
+import { WFOLoading } from '../WFOLoading';
 
 interface TreeBlockOptional extends ProductBlockBase {
     icon?: string;
@@ -145,7 +145,7 @@ export const WFOSubscriptionDetailTree = () => {
                         </EuiFlexGroup>
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
-                        {!tree && <EuiLoadingContent />}
+                        {!tree && <WFOLoading />}
                         {tree && <WFOTree data={[tree]} />}
                     </EuiFlexItem>
                 </EuiFlexGroup>

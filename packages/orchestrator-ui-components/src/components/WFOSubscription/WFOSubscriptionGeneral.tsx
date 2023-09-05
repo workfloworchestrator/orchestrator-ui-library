@@ -1,15 +1,10 @@
 import React from 'react';
 
-import {
-    EuiFlexGrid,
-    EuiFlexItem,
-    EuiLoadingContent,
-    EuiSpacer,
-} from '@elastic/eui';
-// import { useTranslations } from 'next-intl';
+import { EuiFlexGrid, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 import { WFOSubscriptionBlock } from './WFOSubscriptionBlock';
 import { WFOFixedInputBlock } from './WFOFixedInputBlock';
+import { WFOLoading } from '../WFOLoading';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
 
@@ -21,7 +16,7 @@ export const WFOSubscriptionGeneral = () => {
         return (
             <>
                 <EuiSpacer size={'m'} />
-                <EuiLoadingContent />
+                <WFOLoading />
             </>
         );
     }
