@@ -84,3 +84,16 @@ export class BaseApiClient {
         );
     };
 }
+
+abstract class ApiClientInterface extends BaseApiClient {
+    abstract cimStartForm: (formKey: string, userInputs: {}[]) => Promise<any>;
+}
+class ApiClient extends ApiClientInterface {
+    cimStartForm = (
+        formKey: string,
+        userInputs: {}[],
+    ): Promise<{ id: string }> => {
+        return this.postPutJson(formKey, userInputs, 'post', false, true);
+    };
+}
+export const apiClient: ApiClient = new ApiClient();
