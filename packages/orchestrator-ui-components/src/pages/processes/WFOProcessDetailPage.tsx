@@ -51,7 +51,7 @@ const ProcessHeaderValue = ({
             <EuiText
                 css={{
                     fontWeight: theme.font.weight.bold,
-                    fontSize: theme.size.base,
+                    fontSize: theme.size.m,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                 }}
@@ -66,6 +66,7 @@ export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
     const t = useTranslations('processes.detail');
+    const { theme } = useOrchestratorTheme();
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
@@ -94,7 +95,14 @@ export const WFOProcessDetailPage = ({
 
         return steps[0] ? steps[0].name : '';
     };
-
+    console.log(process);
+    if (process) {
+        process.subscriptions.page = [
+            ...process.subscriptions.page,
+            ...process.subscriptions.page,
+        ];
+        process.lastModified = '2023-09-06T12:33:47.589561+00:00';
+    }
     return (
         <>
             <EuiFlexGroup>
@@ -220,6 +228,7 @@ export const WFOProcessDetailPage = ({
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
+                                    fontSize: theme.size.m,
                                 }}
                             >
                                 <WFOProcessListSubscriptionsCell
