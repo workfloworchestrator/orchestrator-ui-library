@@ -52,6 +52,10 @@ export const WFOProcessListSubscriptionsCell: FC<
                     <Link
                         key={subscription.subscriptionId}
                         href={`/subscriptions/${subscription.subscriptionId}`}
+                        css={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                        }}
                     >
                         {subscription.description}
                     </Link>

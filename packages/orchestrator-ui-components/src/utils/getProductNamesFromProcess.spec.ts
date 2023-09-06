@@ -23,6 +23,8 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
             page: [
                 {
                     product: { name: 'productName' },
+                    subscriptionId: 'id',
+                    description: 'description',
                 },
             ],
         },
@@ -41,7 +43,15 @@ describe('getProductNamesFromProcess()', () => {
     it('returns 1 productName when process has 1 subscriptions', () => {
         const result = getProductNamesFromProcess(
             getProcessDetail({
-                subscriptions: { page: [{ product: { name: 'TEST NAME' } }] },
+                subscriptions: {
+                    page: [
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
+                    ],
+                },
             }),
         );
         expect(result).toEqual('TEST NAME');
@@ -52,8 +62,16 @@ describe('getProductNamesFromProcess()', () => {
             getProcessDetail({
                 subscriptions: {
                     page: [
-                        { product: { name: 'TEST NAME' } },
-                        { product: { name: 'TEST NAME 2' } },
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
+                        {
+                            product: { name: 'TEST NAME 2' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
                     ],
                 },
             }),
@@ -65,8 +83,16 @@ describe('getProductNamesFromProcess()', () => {
             getProcessDetail({
                 subscriptions: {
                     page: [
-                        { product: { name: 'TEST NAME' } },
-                        { product: { name: 'TEST NAME' } },
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
                     ],
                 },
             }),
@@ -79,9 +105,21 @@ describe('getProductNamesFromProcess()', () => {
             getProcessDetail({
                 subscriptions: {
                     page: [
-                        { product: { name: 'TEST NAME' } },
-                        { product: { name: 'TEST NAME' } },
-                        { product: { name: 'TEST NAME 2' } },
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
+                        {
+                            product: { name: 'TEST NAME' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
+                        {
+                            product: { name: 'TEST NAME 2' },
+                            subscriptionId: 'id',
+                            description: 'description',
+                        },
                     ],
                 },
             }),

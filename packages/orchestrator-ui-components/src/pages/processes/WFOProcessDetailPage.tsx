@@ -9,16 +9,18 @@ import {
     EuiPanel,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-
 import { ProcessDetailStep, ProcessStatus } from '../../types';
 import {
-    parseDateToLocaleString,
-    parseDate,
+    parseDateRelativeToToday,
     getProductNamesFromProcess,
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOLoading } from '../../components';
+import {
+    WFOProcessListSubscriptionsCell,
+    RenderDirection,
+} from './WFOProcessListSubscriptionsCell';
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -192,22 +194,51 @@ export const WFOProcessDetailPage = ({
                         />
                         <ProcessHeaderValue
                             translationKey="startedOn"
-                            value={parseDateToLocaleString(
-                                parseDate(process?.started),
-                            )}
+                            value={parseDateRelativeToToday(process?.started)}
                         />
                         <ProcessHeaderValue
                             translationKey="lastUpdate"
-                            value={parseDateToLocaleString(
-                                parseDate(process?.lastModified),
+                            value={parseDateRelativeToToday(
+                                process?.lastModified,
                             )}
                         />
-                        <ProcessHeaderValue
-                            translationKey="relatedSubscriptions"
-                            value={t('subscriptions', {
-                                count: process?.subscriptions.page.length || 0,
-                            })}
-                        />
+
+                        <EuiFlexGroup
+                            gutterSize="xs"
+                            direction="column"
+                            css={{
+                                flex: 1,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <EuiText size="xs">
+                                {t('relatedSubscriptions')}
+                            </EuiText>
+                            <EuiText
+                                css={{
+                                    flex: 1,
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                }}
+                            >
+                                <WFOProcessListSubscriptionsCell
+                                    subscriptions={
+                                        (process &&
+                                            process?.subscriptions.page.map(
+                                                (subscription) => ({
+                                                    subscriptionId:
+                                                        subscription.subscriptionId,
+                                                    description:
+                                                        subscription.description,
+                                                }),
+                                            )) ||
+                                        []
+                                    }
+                                    renderDirection={RenderDirection.VERTICAL}
+                                />
+                            </EuiText>
+                        </EuiFlexGroup>
                     </EuiFlexGroup>
                 )}
             </EuiPanel>

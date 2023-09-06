@@ -185,6 +185,8 @@ export interface ProcessDetail {
     subscriptions: {
         page: {
             product: Pick<ProductDefinition, 'name'>;
+            description: Subscription['description'];
+            subscriptionId: Subscription['subscriptionId'];
         }[];
     };
     customer: string;

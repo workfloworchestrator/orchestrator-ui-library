@@ -22,6 +22,8 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                         product {
                             name
                         }
+                        description
+                        subscriptionId
                     }
                 }
                 steps {
