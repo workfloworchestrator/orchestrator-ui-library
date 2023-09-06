@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Link from 'next/link';
 import {
     DEFAULT_PAGE_SIZES,
     getDataSortHandler,
@@ -50,6 +51,9 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         workflowName: {
             field: 'workflowName',
             name: t('workflowName'),
+            render: (value, { processId }) => (
+                <Link href={`/processes/${processId}`}>{value}</Link>
+            ),
         },
         step: {
             field: 'step',
