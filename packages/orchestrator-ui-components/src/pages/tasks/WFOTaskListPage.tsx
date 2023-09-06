@@ -29,6 +29,7 @@ export const WFOTaskListPage = () => {
             sortBy: {
                 // Todo: waiting for fix in backend -- currently the sortBy field id's are not matching with the returned data
                 // https://github.com/workfloworchestrator/orchestrator-ui/issues/91
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 field: 'modified',
                 // field: 'lastModified',
@@ -38,6 +39,7 @@ export const WFOTaskListPage = () => {
 
     const alwaysOnFilters: FilterQuery<Process>[] = [
         {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore waiting for fix in backend
             field: 'istask',
             value: 'true',

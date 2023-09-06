@@ -1,5 +1,5 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
-import { ProcessStatus } from '../hooks';
+
 import { Subscription, SubscriptionDetail } from './subscription';
 
 export type Nullable<T> = T | null;
@@ -165,6 +165,52 @@ export type Process = {
     lastModified: string;
 };
 
+export enum StepStatus {
+    SUCCESS = 'success',
+    FAILED = 'failed',
+    PENDING = 'pending',
+    RUNNING = 'running',
+}
+
+export interface ProcessDetail {
+    processId: Process['processId'];
+    status: Process['status'];
+    createdBy: Process['createdBy'];
+    started: Process['started'];
+    lastStep: string;
+    lastModified: Process['lastModified'];
+    step: string;
+    workflowName: string;
+    steps: ProcessDetailStep[];
+    subscriptions: {
+        page: {
+            product: Pick<ProductDefinition, 'name'>;
+            description: Subscription['description'];
+            subscriptionId: Subscription['subscriptionId'];
+        }[];
+    };
+    customer: string;
+}
+export enum ProcessStatus {
+    CREATED = 'created',
+    RUNNING = 'running',
+    SUSPENDED = 'suspended',
+    WAITING = 'waiting',
+    ABORTED = 'aborted',
+    FAILED = 'failed',
+    RESUMED = 'resumed',
+    API_UNAVAILABLE = 'api_unavailable',
+    INCONSISTENT_DATA = 'inconsistent_data',
+    COMPLETED = 'completed',
+}
+
+export interface ProcessDetailStep {
+    name: string;
+    status: StepStatus;
+    stepid: string; // sic backend
+    executed: string;
+}
+
 export interface WorkflowDefinition {
     name: string;
     description: string;
@@ -231,6 +277,10 @@ export interface ProcessesResult {
     processes: GraphQlResultPage<Process>;
 }
 
+export interface ProcessesDetailResult {
+    processes: GraphQlSinglePage<ProcessDetail>;
+}
+
 export interface WorkflowDefinitionsResult {
     workflows: GraphQlResultPage<WorkflowDefinition>;
 }
@@ -238,6 +288,10 @@ export interface WorkflowDefinitionsResult {
 interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
+}
+
+interface GraphQlSinglePage<T> {
+    page: T[];
 }
 
 export interface CacheOption {

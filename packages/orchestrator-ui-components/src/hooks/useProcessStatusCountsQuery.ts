@@ -1,19 +1,7 @@
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { useQuery } from 'react-query';
-
-export enum ProcessStatus {
-    CREATED = 'created',
-    RUNNING = 'running',
-    SUSPENDED = 'suspended',
-    WAITING = 'waiting',
-    ABORTED = 'aborted',
-    FAILED = 'failed',
-    RESUMED = 'resumed',
-    API_UNAVAILABLE = 'api_unavailable',
-    INCONSISTENT_DATA = 'inconsistent_data',
-    COMPLETED = 'completed',
-}
+import { ProcessStatus } from '../types';
 
 export type ProcessStatusCounts = {
     process_counts: Record<ProcessStatus, number>;

@@ -1,8 +1,7 @@
 import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
-import { Nullable } from '../types';
-import { ProcessStatus } from './useProcessStatusCountsQuery';
+import { ProcessStatus, Nullable } from '../types';
 
 interface Process {
     workflow: string;
