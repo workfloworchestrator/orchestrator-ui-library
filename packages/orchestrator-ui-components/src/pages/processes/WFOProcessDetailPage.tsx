@@ -95,14 +95,7 @@ export const WFOProcessDetailPage = ({
 
         return steps[0] ? steps[0].name : '';
     };
-    console.log(process);
-    if (process) {
-        process.subscriptions.page = [
-            ...process.subscriptions.page,
-            ...process.subscriptions.page,
-        ];
-        process.lastModified = '2023-09-06T12:33:47.589561+00:00';
-    }
+
     return (
         <>
             <EuiFlexGroup>
