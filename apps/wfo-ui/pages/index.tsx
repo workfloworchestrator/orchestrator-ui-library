@@ -4,13 +4,11 @@ import {
     WFOMultiListSection,
     WFONewProcessPanel,
     WFOStatCards,
-    WFOTimeline,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
     return (
         <>
-            <WFOTimeline />
             <EuiPageHeader pageTitle="Goodmorning Hans" />
             <EuiSpacer />
             <WFONewProcessPanel />

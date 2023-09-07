@@ -1,110 +1,105 @@
 import { useOrchestratorTheme } from '../../hooks';
-import { css } from '@emotion/css';
-import {
-    EuiStepsHorizontal,
-    EuiStepsHorizontalProps,
-    makeHighContrastColor,
-} from '@elastic/eui';
-import React from 'react';
+import { EuiStepsHorizontal, EuiStepsHorizontalProps } from '@elastic/eui';
+import React, { FC } from 'react';
+import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
+import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
+import { getStyles } from './styles';
+import { SerializedStyles } from '@emotion/react';
 
-export const WFOTimeline = () => {
+export enum TimelineStatus {
+    Complete = 'complete',
+    Warning = 'warning',
+    Error = 'error',
+    Incomplete = 'incomplete',
+    InProgress = 'inProgress',
+}
+
+export type TimelineItem = {
+    timelineStatus: TimelineStatus;
+    value?: number | 'icon';
+    onClick: () => void;
+};
+
+export type WFOTimelineProps = {
+    items: TimelineItem[];
+};
+
+export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const {
+        stepWarningStyle,
+        stepIncompleteStyle,
+        stepCompleteStyle,
+        stepErrorStyle,
+        stepHideIconStyle,
+    } = getStyles(theme, toSecondaryColor);
 
-    // Styles
-    const stepCompleteStyle = css({
-        '.euiStepNumber': {
-            backgroundColor: toSecondaryColor(theme.colors.primary),
-            color: makeHighContrastColor(theme.colors.primaryText)(
-                toSecondaryColor(theme.colors.primary),
-            ),
-            '.euiIcon': {
-                display: 'none',
-            },
-        },
-    });
+    const mapTimelineStatusToEuiStepStatus = (
+        timelineStatus: TimelineStatus,
+    ): EuiStepStatus => {
+        switch (timelineStatus) {
+            case TimelineStatus.Complete:
+                return 'complete';
+            case TimelineStatus.Warning:
+                return 'warning';
+            case TimelineStatus.Error:
+                return 'danger';
+            case TimelineStatus.Incomplete:
+                return 'incomplete';
+            case TimelineStatus.InProgress:
+                return 'loading';
+        }
+    };
 
-    const stepWarningStyle = css({
-        '.euiStepNumber': {
-            backgroundColor: toSecondaryColor(theme.colors.warning),
-            borderColor: toSecondaryColor(theme.colors.warning),
-            color: makeHighContrastColor(theme.colors.warningText)(
-                toSecondaryColor(theme.colors.warning),
-            ),
-            '.euiIcon': {
-                display: 'none',
-            },
-        },
-    });
+    const getStyleForTimelineStatus = (
+        timelineStatus: TimelineStatus,
+        showIcon: boolean,
+    ) => {
+        const getOptionalIconStyle = (
+            style: SerializedStyles,
+            showIcon: boolean,
+        ): SerializedStyles | SerializedStyles[] =>
+            showIcon ? style : [style, stepHideIconStyle];
 
-    const stepErrorStyle = css({
-        '.euiStepNumber': {
-            backgroundColor: toSecondaryColor(theme.colors.danger),
-            borderColor: toSecondaryColor(theme.colors.danger),
-            color: makeHighContrastColor(theme.colors.danger)(
-                toSecondaryColor(theme.colors.warning),
-            ),
-        },
-    });
+        switch (timelineStatus) {
+            case TimelineStatus.Complete:
+                return getOptionalIconStyle(stepCompleteStyle, showIcon);
+            case TimelineStatus.Warning:
+                return getOptionalIconStyle(stepWarningStyle, showIcon);
+            case TimelineStatus.Error:
+                return getOptionalIconStyle(stepErrorStyle, showIcon);
+            case TimelineStatus.Incomplete:
+                return getOptionalIconStyle(stepIncompleteStyle, showIcon);
+            case TimelineStatus.InProgress:
+            default:
+                return undefined;
+        }
+    };
 
-    const stepIncompleteStyle = css({
-        '.euiStepNumber__number': {
-            display: 'none',
-        },
-    });
+    const horizontalSteps: EuiStepsHorizontalProps['steps'] = items.map(
+        ({ timelineStatus, value, onClick }): EuiStepHorizontalProps => {
+            const euiStatus = mapTimelineStatusToEuiStepStatus(timelineStatus);
 
-    // Reuse / override
-    // const testStyle = css([
-    //     stepCompleteStyle,
-    //     {
-    //         '.euiStepNumber': {
-    //             backgroundColor: 'red',
-    //         },
-    //     },
-    // ]);
-
-    const horizontalSteps: EuiStepsHorizontalProps['steps'] = [
-        // complete
-        {
-            status: 'complete',
-            css: stepCompleteStyle,
-            onClick: () => {},
+            return {
+                status: typeof value === 'number' ? undefined : euiStatus,
+                step: typeof value === 'number' ? value : undefined,
+                css: getStyleForTimelineStatus(
+                    timelineStatus,
+                    value === 'icon',
+                ),
+                onClick: () => onClick(),
+            };
         },
-        // warning
-        {
-            // @ts-ignore
-            step: 9, // number of retries
-            css: stepWarningStyle,
-            onClick: () => {},
-        },
-        // error
-        {
-            status: 'danger',
-            css: stepErrorStyle,
-            onClick: () => {},
-        },
-        // current
-        {
-            status: 'loading',
-            onClick: () => {},
-        },
-        // future step
-        {
-            css: stepIncompleteStyle,
-            // title: 'Disabled step 4',
-            onClick: () => {},
-        },
-    ];
+    );
 
     return (
-        <div>
-            <div
-                css={{
-                    backgroundColor: theme.colors.body,
-                    borderRadius: theme.border.radius.medium,
-                }}
-            >
-                <EuiStepsHorizontal steps={horizontalSteps} size={'s'} />
-            </div>
+        <div
+            css={{
+                backgroundColor: theme.colors.body,
+                borderRadius: theme.border.radius.medium,
+            }}
+        >
+            <EuiStepsHorizontal steps={horizontalSteps} size={'s'} />
         </div>
     );
 };
