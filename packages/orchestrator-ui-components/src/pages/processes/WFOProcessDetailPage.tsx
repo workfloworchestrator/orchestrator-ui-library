@@ -9,6 +9,7 @@ import {
     EuiPanel,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
+
 import { ProcessDetailStep, ProcessStatus } from '../../types';
 import {
     parseDateRelativeToToday,
@@ -17,6 +18,7 @@ import {
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOLoading } from '../../components';
+
 import {
     WFOProcessListSubscriptionsCell,
     RenderDirection,
@@ -67,6 +69,7 @@ export const WFOProcessDetailPage = ({
 }: WFOProcessDetailPageProps) => {
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
+
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
