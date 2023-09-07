@@ -181,7 +181,7 @@ export interface ProcessDetail {
     lastModified: Process['lastModified'];
     step: string;
     workflowName: string;
-    steps: ProcessDetailStep[];
+    steps: Step[];
     subscriptions: {
         page: {
             product: Pick<ProductDefinition, 'name'>;
@@ -204,11 +204,12 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
-export interface ProcessDetailStep {
+export interface Step {
     name: string;
     status: StepStatus;
     stepid: string; // sic backend
     executed: string;
+    state: string
 }
 
 export interface WorkflowDefinition {

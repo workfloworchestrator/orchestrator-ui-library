@@ -10,7 +10,7 @@ import {
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
-import { ProcessDetailStep, ProcessStatus } from '../../types';
+import { Step, ProcessStatus } from '../../types';
 import {
     parseDateRelativeToToday,
     getProductNamesFromProcess,
@@ -82,7 +82,7 @@ export const WFOProcessDetailPage = ({
     const process = data?.processes.page[0];
 
     const getCurrentStep = (
-        steps: ProcessDetailStep[] = [],
+        steps: Step[] = [],
         lastCompletedStepName: string = '',
     ) => {
         const lastCompletedStep = steps.find(
