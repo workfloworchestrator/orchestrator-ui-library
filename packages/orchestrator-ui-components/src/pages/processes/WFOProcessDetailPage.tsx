@@ -4,22 +4,27 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiPageHeader,
+    EuiPanel,
     EuiSpacer,
     EuiText,
-    EuiPanel,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { ProcessDetailStep, ProcessStatus } from '../../types';
+import { ProcessDetailStep, ProcessStatus, StepStatus } from '../../types';
 import {
-    parseDateRelativeToToday,
     getProductNamesFromProcess,
+    parseDateRelativeToToday,
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { WFOLoading } from '../../components';
 import {
-    WFOProcessListSubscriptionsCell,
+    TimelineItem,
+    TimelineStatus,
+    WFOLoading,
+    WFOTimeline,
+} from '../../components';
+import {
     RenderDirection,
+    WFOProcessListSubscriptionsCell,
 } from './WFOProcessListSubscriptionsCell';
 
 interface WFOProcessDetailPageProps {
@@ -78,6 +83,33 @@ export const WFOProcessDetailPage = ({
 
     const process = data?.processes.page[0];
 
+    const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
+        const mapEuiStepStatusToTimelineStatus = (status: StepStatus) => {
+            switch (status) {
+                case StepStatus.SUCCESS:
+                    return TimelineStatus.Complete;
+                case StepStatus.FAILED:
+                    return TimelineStatus.Error;
+                case StepStatus.RUNNING:
+                    return TimelineStatus.InProgress;
+                case StepStatus.SUSPEND:
+                    return TimelineStatus.Warning;
+                case StepStatus.PENDING:
+                default:
+                    return TimelineStatus.Incomplete;
+            }
+        };
+        return {
+            timelineStatus: mapEuiStepStatusToTimelineStatus(step.status),
+            // value,
+            onClick: () => {
+                console.log(`Clicked on ${step.name} (${step.stepid})`);
+            },
+        };
+    };
+
+    const timelineItems = process?.steps.map(mapStepToTimelineItem) ?? [];
+
     const getCurrentStep = (
         steps: ProcessDetailStep[] = [],
         lastCompletedStepName: string = '',
@@ -95,6 +127,8 @@ export const WFOProcessDetailPage = ({
 
         return steps[0] ? steps[0].name : '';
     };
+
+    console.log(process);
 
     return (
         <>
@@ -244,6 +278,9 @@ export const WFOProcessDetailPage = ({
                     </EuiFlexGroup>
                 )}
             </EuiPanel>
+
+            <EuiSpacer />
+            <WFOTimeline items={timelineItems} />
         </>
     );
 };

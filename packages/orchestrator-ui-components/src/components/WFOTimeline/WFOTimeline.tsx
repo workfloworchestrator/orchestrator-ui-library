@@ -5,6 +5,7 @@ import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
 import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
 import { getStyles } from './styles';
 import { SerializedStyles } from '@emotion/react';
+import { useEuiScrollBar } from '@elastic/eui';
 
 export enum TimelineStatus {
     Complete = 'complete',
@@ -94,10 +95,15 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
 
     return (
         <div
-            css={{
-                backgroundColor: theme.colors.body,
-                borderRadius: theme.border.radius.medium,
-            }}
+            css={[
+                {
+                    backgroundColor: theme.colors.body,
+                    borderRadius: theme.border.radius.medium,
+                    overflow: 'auto',
+                    scrollbarWidth: 'auto',
+                },
+                useEuiScrollBar(),
+            ]}
         >
             <EuiStepsHorizontal steps={horizontalSteps} size={'s'} />
         </div>

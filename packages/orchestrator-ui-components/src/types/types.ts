@@ -170,6 +170,7 @@ export enum StepStatus {
     FAILED = 'failed',
     PENDING = 'pending',
     RUNNING = 'running',
+    SUSPEND = 'suspend',
 }
 
 export interface ProcessDetail {
