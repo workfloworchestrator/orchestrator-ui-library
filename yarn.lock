@@ -14152,7 +14152,7 @@ unified@^9.2.2:
     trough "^1.0.0"
     vfile "^4.0.0"
 
-uniforms-bridge-json-schema@^3.8.1:
+uniforms-bridge-json-schema@^3.10.2:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/uniforms-bridge-json-schema/-/uniforms-bridge-json-schema-3.10.2.tgz#61740cab4a567eca85557b824de7ef32fdbb5b5d"
   integrity sha512-J2RG0WQrMH39M9124lhopXnbR/ycuLJk9IkA/ix9Dxpk1dQ7EuHLg/CeXTeZTeQiF2KZrKMYXxUswEmFh7kIMQ==
@@ -14162,7 +14162,7 @@ uniforms-bridge-json-schema@^3.8.1:
     tslib "^2.2.0"
     uniforms "^3.10.2"
 
-uniforms-bridge-simple-schema-2@^3.8.1:
+uniforms-bridge-simple-schema-2@^3.10.2:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/uniforms-bridge-simple-schema-2/-/uniforms-bridge-simple-schema-2-3.10.2.tgz#418609b00b2c3fe2535f66948b4532fc8ec0cf4c"
   integrity sha512-FM6njDK5EjB4scZ6lUXtnbacdueAOzG4U+j9bV6VjgAEUZGN057G3ui+va8PUvvxRLH9YldvB2+qesbohUpZhQ==
@@ -14173,7 +14173,7 @@ uniforms-bridge-simple-schema-2@^3.8.1:
     tslib "^2.2.0"
     uniforms "^3.10.2"
 
-uniforms-unstyled@^3.8.1:
+uniforms-unstyled@^3.10.2:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/uniforms-unstyled/-/uniforms-unstyled-3.10.2.tgz#ede3f0eb159c87f929f3b10eaf62ffa73d681fa3"
   integrity sha512-Wd4RoWaPldCGNJuEhiyrkCb6hhr823+0pFqH8qlkY58dpggwTcbu2gdWQrnfR8J3o3hB6mpt0SvcDXVfl2CLMA==
@@ -14183,7 +14183,7 @@ uniforms-unstyled@^3.8.1:
     tslib "^2.2.0"
     uniforms "^3.10.2"
 
-uniforms@^3.10.2, uniforms@^3.8.1:
+uniforms@^3.10.2:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/uniforms/-/uniforms-3.10.2.tgz#6e5cd6e629c0ca76e65bd74e7fe791b7a8c7fb4b"
   integrity sha512-5FIqpAqyWDmDhaNkmXOxuz8dJ09jPg0gTpn13O6WiqtCY+nmVtHK4yGSpFU1UIjwBt9KfbRPFFmCAbYlCyV4bw==
