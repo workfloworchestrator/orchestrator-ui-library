@@ -9,7 +9,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { ProcessDetailStep, ProcessStatus, StepStatus } from '../../types';
+import { ProcessDetailStep, ProcessStatus } from '../../types';
 import {
     getProductNamesFromProcess,
     parseDateRelativeToToday,
@@ -21,6 +21,7 @@ import {
     RenderDirection,
     WFOProcessListSubscriptionsCell,
 } from './WFOProcessListSubscriptionsCell';
+import { mapProcessStepsToTimelineItems } from './timelineUtils';
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -78,50 +79,9 @@ export const WFOProcessDetailPage = ({
 
     const process = data?.processes.page[0];
 
-    const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
-        return {
-            processStepStatus: step.status,
-            onClick: () => {
-                console.log(`Clicked on ${step.name} (${step.stepid})`);
-            },
-        };
-    };
-
-    const getMostAccurateTimelineStatus = (
-        statusPreviousStep: StepStatus,
-        statusCurrentStep: StepStatus,
-    ): StepStatus => {
-        return statusCurrentStep !== StepStatus.PENDING
-            ? statusCurrentStep
-            : statusPreviousStep;
-    };
-
-    const timelineItems: TimelineItem[] =
-        process?.steps.reduce<TimelineItem[]>(
-            (acc: TimelineItem[], curr, index, arr) => {
-                const previousStep = acc.slice(-1)[0];
-
-                if (index > 0 && arr[index - 1].name === curr.name) {
-                    const allStepsExceptPrevious = acc.slice(0, -1);
-                    const updatedPreviousStep: TimelineItem = {
-                        ...previousStep,
-                        processStepStatus: getMostAccurateTimelineStatus(
-                            previousStep.processStepStatus,
-                            curr.status,
-                        ),
-                        value:
-                            typeof previousStep.value === 'number'
-                                ? previousStep.value + 1
-                                : 2,
-                    };
-
-                    return [...allStepsExceptPrevious, updatedPreviousStep];
-                }
-
-                return [...acc, mapStepToTimelineItem(curr)];
-            },
-            [],
-        ) ?? [];
+    const timelineItems: TimelineItem[] = process?.steps
+        ? mapProcessStepsToTimelineItems(process.steps)
+        : [];
 
     const getCurrentStep = (
         steps: ProcessDetailStep[] = [],
@@ -293,7 +253,7 @@ export const WFOProcessDetailPage = ({
             </EuiPanel>
 
             <EuiSpacer />
-            <WFOTimeline items={timelineItems} />
+            <WFOTimeline timelineItems={timelineItems} />
         </>
     );
 };

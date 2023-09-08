@@ -1,15 +1,11 @@
 import { useOrchestratorTheme } from '../../hooks';
-import {
-    EuiStepsHorizontal,
-    EuiStepsHorizontalProps,
-    useEuiScrollBar,
-} from '@elastic/eui';
+import { EuiStepsHorizontal, useEuiScrollBar } from '@elastic/eui';
 import React, { FC } from 'react';
-import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
 import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
 import { getStyles } from './styles';
 import { SerializedStyles } from '@emotion/react';
 import { StepStatus } from '../../types';
+import { mapProcessStepStatusToEuiStepStatus } from './mapProcessStepStatusToEuiStepStatus';
 
 export type TimelineItem = {
     processStepStatus: StepStatus;
@@ -18,10 +14,10 @@ export type TimelineItem = {
 };
 
 export type WFOTimelineProps = {
-    items: TimelineItem[];
+    timelineItems: TimelineItem[];
 };
 
-export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
+export const WFOTimeline: FC<WFOTimelineProps> = ({ timelineItems }) => {
     const { theme } = useOrchestratorTheme();
     const {
         stepWarningStyle,
@@ -31,26 +27,6 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
         stepHideIconStyle,
         timelinePanelStyle,
     } = getStyles(theme);
-
-    const mapProcessStepStatusToEuiStepStatus = (
-        processStepStatus: StepStatus,
-    ): EuiStepStatus => {
-        switch (processStepStatus) {
-            case StepStatus.SUCCESS:
-            case StepStatus.SKIPPED:
-            case StepStatus.COMPLETE:
-                return 'complete';
-            case StepStatus.FAILED:
-                return 'danger';
-            case StepStatus.RUNNING:
-                return 'loading';
-            case StepStatus.SUSPEND:
-                return 'warning';
-            case StepStatus.PENDING:
-            default:
-                return 'incomplete';
-        }
-    };
 
     const getStyleForProcessStepStatus = (
         processStepStatus: StepStatus,
@@ -79,26 +55,31 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
         }
     };
 
-    const horizontalSteps: EuiStepsHorizontalProps['steps'] = items.map(
-        ({ processStepStatus, value, onClick }): EuiStepHorizontalProps => {
-            const euiStepStatus =
-                mapProcessStepStatusToEuiStepStatus(processStepStatus);
+    const mapTimelineItemToEuiStep = ({
+        processStepStatus,
+        value,
+        onClick,
+    }: TimelineItem): EuiStepHorizontalProps => {
+        const euiStepStatus =
+            mapProcessStepStatusToEuiStepStatus(processStepStatus);
 
-            return {
-                status: typeof value === 'number' ? undefined : euiStepStatus,
-                step: typeof value === 'number' ? value : undefined,
-                css: getStyleForProcessStepStatus(
-                    processStepStatus,
-                    value === 'icon',
-                ),
-                onClick: () => onClick(),
-            };
-        },
-    );
+        return {
+            status: typeof value === 'number' ? undefined : euiStepStatus,
+            step: typeof value === 'number' ? value : undefined,
+            css: getStyleForProcessStepStatus(
+                processStepStatus,
+                value === 'icon',
+            ),
+            onClick: () => onClick(),
+        };
+    };
 
     return (
         <div css={[timelinePanelStyle, useEuiScrollBar()]}>
-            <EuiStepsHorizontal steps={horizontalSteps} size={'s'} />
+            <EuiStepsHorizontal
+                steps={timelineItems.map(mapTimelineItemToEuiStep)}
+                size={'s'}
+            />
         </div>
     );
 };
