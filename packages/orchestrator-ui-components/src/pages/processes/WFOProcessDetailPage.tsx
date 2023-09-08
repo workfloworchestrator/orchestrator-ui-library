@@ -83,34 +83,68 @@ export const WFOProcessDetailPage = ({
 
     const process = data?.processes.page[0];
 
+    const mapEuiStepStatusToTimelineStatus = (status: StepStatus) => {
+        switch (status) {
+            case StepStatus.SUCCESS:
+            case StepStatus.SKIPPED:
+            case StepStatus.COMPLETE:
+                return TimelineStatus.Complete;
+            case StepStatus.FAILED:
+                return TimelineStatus.Failed;
+            case StepStatus.RUNNING:
+                return TimelineStatus.Running;
+            case StepStatus.SUSPEND:
+                return TimelineStatus.Warning;
+            case StepStatus.PENDING:
+            default:
+                return TimelineStatus.Pending;
+        }
+    };
+
     const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
-        const mapEuiStepStatusToTimelineStatus = (status: StepStatus) => {
-            switch (status) {
-                case StepStatus.SUCCESS:
-                case StepStatus.SKIPPED:
-                case StepStatus.COMPLETE:
-                    return TimelineStatus.Complete;
-                case StepStatus.FAILED:
-                    return TimelineStatus.Failed;
-                case StepStatus.RUNNING:
-                    return TimelineStatus.Running;
-                case StepStatus.SUSPEND:
-                    return TimelineStatus.Warning;
-                case StepStatus.PENDING:
-                default:
-                    return TimelineStatus.Pending;
-            }
-        };
         return {
             timelineStatus: mapEuiStepStatusToTimelineStatus(step.status),
-            // value,
             onClick: () => {
                 console.log(`Clicked on ${step.name} (${step.stepid})`);
             },
         };
     };
 
-    const timelineItems = process?.steps.map(mapStepToTimelineItem) ?? [];
+    const getMostAccurateTimelineStatus = (
+        statusPreviousStep: TimelineStatus,
+        statusCurrentStep: TimelineStatus,
+    ): TimelineStatus => {
+        return statusCurrentStep !== TimelineStatus.Pending
+            ? statusCurrentStep
+            : statusPreviousStep;
+    };
+
+    const timelineItems: TimelineItem[] =
+        process?.steps.reduce<TimelineItem[]>(
+            (acc: TimelineItem[], curr, index, arr) => {
+                const previousStep = acc.slice(-1)[0];
+
+                if (index > 0 && arr[index - 1].name === curr.name) {
+                    const allStepsExceptPrevious = acc.slice(0, -1);
+                    const updatedPreviousStep: TimelineItem = {
+                        ...previousStep,
+                        timelineStatus: getMostAccurateTimelineStatus(
+                            previousStep.timelineStatus,
+                            mapEuiStepStatusToTimelineStatus(curr.status),
+                        ),
+                        value:
+                            typeof previousStep.value === 'number'
+                                ? previousStep.value + 1
+                                : 2,
+                    };
+
+                    return [...allStepsExceptPrevious, updatedPreviousStep];
+                }
+
+                return [...acc, mapStepToTimelineItem(curr)];
+            },
+            [],
+        ) ?? [];
 
     const getCurrentStep = (
         steps: ProcessDetailStep[] = [],
