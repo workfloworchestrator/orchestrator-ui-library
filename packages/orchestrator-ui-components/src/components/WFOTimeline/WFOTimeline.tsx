@@ -10,9 +10,9 @@ import { useEuiScrollBar } from '@elastic/eui';
 export enum TimelineStatus {
     Complete = 'complete',
     Warning = 'warning',
-    Error = 'error',
-    Incomplete = 'incomplete',
-    InProgress = 'inProgress',
+    Failed = 'failed',
+    Pending = 'pending',
+    Running = 'running',
 }
 
 export type TimelineItem = {
@@ -43,11 +43,11 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
                 return 'complete';
             case TimelineStatus.Warning:
                 return 'warning';
-            case TimelineStatus.Error:
+            case TimelineStatus.Failed:
                 return 'danger';
-            case TimelineStatus.Incomplete:
+            case TimelineStatus.Pending:
                 return 'incomplete';
-            case TimelineStatus.InProgress:
+            case TimelineStatus.Running:
                 return 'loading';
         }
     };
@@ -67,11 +67,11 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
                 return getOptionalIconStyle(stepCompleteStyle, showIcon);
             case TimelineStatus.Warning:
                 return getOptionalIconStyle(stepWarningStyle, showIcon);
-            case TimelineStatus.Error:
+            case TimelineStatus.Failed:
                 return getOptionalIconStyle(stepErrorStyle, showIcon);
-            case TimelineStatus.Incomplete:
+            case TimelineStatus.Pending:
                 return getOptionalIconStyle(stepIncompleteStyle, showIcon);
-            case TimelineStatus.InProgress:
+            case TimelineStatus.Running:
             default:
                 return undefined;
         }

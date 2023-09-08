@@ -91,14 +91,14 @@ export const WFOProcessDetailPage = ({
                 case StepStatus.COMPLETE:
                     return TimelineStatus.Complete;
                 case StepStatus.FAILED:
-                    return TimelineStatus.Error;
+                    return TimelineStatus.Failed;
                 case StepStatus.RUNNING:
-                    return TimelineStatus.InProgress;
+                    return TimelineStatus.Running;
                 case StepStatus.SUSPEND:
                     return TimelineStatus.Warning;
                 case StepStatus.PENDING:
                 default:
-                    return TimelineStatus.Incomplete;
+                    return TimelineStatus.Pending;
             }
         };
         return {
