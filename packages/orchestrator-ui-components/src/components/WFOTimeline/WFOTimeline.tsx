@@ -9,17 +9,10 @@ import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
 import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
 import { getStyles } from './styles';
 import { SerializedStyles } from '@emotion/react';
-
-export enum TimelineStatus {
-    Complete = 'complete',
-    Warning = 'warning',
-    Failed = 'failed',
-    Pending = 'pending',
-    Running = 'running',
-}
+import { StepStatus } from '../../types';
 
 export type TimelineItem = {
-    timelineStatus: TimelineStatus;
+    processStepStatus: StepStatus;
     value?: number | 'icon';
     onClick: () => void;
 };
@@ -39,25 +32,28 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
         timelinePanelStyle,
     } = getStyles(theme);
 
-    const mapTimelineStatusToEuiStepStatus = (
-        timelineStatus: TimelineStatus,
+    const mapProcessStepStatusToEuiStepStatus = (
+        processStepStatus: StepStatus,
     ): EuiStepStatus => {
-        switch (timelineStatus) {
-            case TimelineStatus.Complete:
+        switch (processStepStatus) {
+            case StepStatus.SUCCESS:
+            case StepStatus.SKIPPED:
+            case StepStatus.COMPLETE:
                 return 'complete';
-            case TimelineStatus.Warning:
-                return 'warning';
-            case TimelineStatus.Failed:
+            case StepStatus.FAILED:
                 return 'danger';
-            case TimelineStatus.Pending:
-                return 'incomplete';
-            case TimelineStatus.Running:
+            case StepStatus.RUNNING:
                 return 'loading';
+            case StepStatus.SUSPEND:
+                return 'warning';
+            case StepStatus.PENDING:
+            default:
+                return 'incomplete';
         }
     };
 
-    const getStyleForTimelineStatus = (
-        timelineStatus: TimelineStatus,
+    const getStyleForProcessStepStatus = (
+        processStepStatus: StepStatus,
         showIcon: boolean,
     ) => {
         const getOptionalIconStyle = (
@@ -66,30 +62,33 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
         ): SerializedStyles | SerializedStyles[] =>
             showIcon ? style : [style, stepHideIconStyle];
 
-        switch (timelineStatus) {
-            case TimelineStatus.Complete:
+        switch (processStepStatus) {
+            case StepStatus.SUCCESS:
+            case StepStatus.SKIPPED:
+            case StepStatus.COMPLETE:
                 return getOptionalIconStyle(stepCompleteStyle, showIcon);
-            case TimelineStatus.Warning:
+            case StepStatus.SUSPEND:
                 return getOptionalIconStyle(stepWarningStyle, showIcon);
-            case TimelineStatus.Failed:
+            case StepStatus.FAILED:
                 return getOptionalIconStyle(stepErrorStyle, showIcon);
-            case TimelineStatus.Pending:
+            case StepStatus.PENDING:
                 return getOptionalIconStyle(stepIncompleteStyle, showIcon);
-            case TimelineStatus.Running:
+            case StepStatus.RUNNING:
             default:
                 return undefined;
         }
     };
 
     const horizontalSteps: EuiStepsHorizontalProps['steps'] = items.map(
-        ({ timelineStatus, value, onClick }): EuiStepHorizontalProps => {
-            const euiStatus = mapTimelineStatusToEuiStepStatus(timelineStatus);
+        ({ processStepStatus, value, onClick }): EuiStepHorizontalProps => {
+            const euiStepStatus =
+                mapProcessStepStatusToEuiStepStatus(processStepStatus);
 
             return {
-                status: typeof value === 'number' ? undefined : euiStatus,
+                status: typeof value === 'number' ? undefined : euiStepStatus,
                 step: typeof value === 'number' ? value : undefined,
-                css: getStyleForTimelineStatus(
-                    timelineStatus,
+                css: getStyleForProcessStepStatus(
+                    processStepStatus,
                     value === 'icon',
                 ),
                 onClick: () => onClick(),

@@ -16,12 +16,7 @@ import {
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import {
-    TimelineItem,
-    TimelineStatus,
-    WFOLoading,
-    WFOTimeline,
-} from '../../components';
+import { TimelineItem, WFOLoading, WFOTimeline } from '../../components';
 import {
     RenderDirection,
     WFOProcessListSubscriptionsCell,
@@ -83,27 +78,9 @@ export const WFOProcessDetailPage = ({
 
     const process = data?.processes.page[0];
 
-    const mapEuiStepStatusToTimelineStatus = (status: StepStatus) => {
-        switch (status) {
-            case StepStatus.SUCCESS:
-            case StepStatus.SKIPPED:
-            case StepStatus.COMPLETE:
-                return TimelineStatus.Complete;
-            case StepStatus.FAILED:
-                return TimelineStatus.Failed;
-            case StepStatus.RUNNING:
-                return TimelineStatus.Running;
-            case StepStatus.SUSPEND:
-                return TimelineStatus.Warning;
-            case StepStatus.PENDING:
-            default:
-                return TimelineStatus.Pending;
-        }
-    };
-
     const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
         return {
-            timelineStatus: mapEuiStepStatusToTimelineStatus(step.status),
+            processStepStatus: step.status,
             onClick: () => {
                 console.log(`Clicked on ${step.name} (${step.stepid})`);
             },
@@ -111,10 +88,10 @@ export const WFOProcessDetailPage = ({
     };
 
     const getMostAccurateTimelineStatus = (
-        statusPreviousStep: TimelineStatus,
-        statusCurrentStep: TimelineStatus,
-    ): TimelineStatus => {
-        return statusCurrentStep !== TimelineStatus.Pending
+        statusPreviousStep: StepStatus,
+        statusCurrentStep: StepStatus,
+    ): StepStatus => {
+        return statusCurrentStep !== StepStatus.PENDING
             ? statusCurrentStep
             : statusPreviousStep;
     };
@@ -128,9 +105,9 @@ export const WFOProcessDetailPage = ({
                     const allStepsExceptPrevious = acc.slice(0, -1);
                     const updatedPreviousStep: TimelineItem = {
                         ...previousStep,
-                        timelineStatus: getMostAccurateTimelineStatus(
-                            previousStep.timelineStatus,
-                            mapEuiStepStatusToTimelineStatus(curr.status),
+                        processStepStatus: getMostAccurateTimelineStatus(
+                            previousStep.processStepStatus,
+                            curr.status,
                         ),
                         value:
                             typeof previousStep.value === 'number'
