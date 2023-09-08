@@ -87,6 +87,8 @@ export const WFOProcessDetailPage = ({
         const mapEuiStepStatusToTimelineStatus = (status: StepStatus) => {
             switch (status) {
                 case StepStatus.SUCCESS:
+                case StepStatus.SKIPPED:
+                case StepStatus.COMPLETE:
                     return TimelineStatus.Complete;
                 case StepStatus.FAILED:
                     return TimelineStatus.Error;

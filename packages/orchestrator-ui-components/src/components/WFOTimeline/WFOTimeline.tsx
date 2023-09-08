@@ -26,14 +26,14 @@ export type WFOTimelineProps = {
 };
 
 export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const {
         stepWarningStyle,
         stepIncompleteStyle,
         stepCompleteStyle,
         stepErrorStyle,
         stepHideIconStyle,
-    } = getStyles(theme, toSecondaryColor);
+    } = getStyles(theme);
 
     const mapTimelineStatusToEuiStepStatus = (
         timelineStatus: TimelineStatus,

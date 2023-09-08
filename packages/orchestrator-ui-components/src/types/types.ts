@@ -171,6 +171,8 @@ export enum StepStatus {
     PENDING = 'pending',
     RUNNING = 'running',
     SUSPEND = 'suspend',
+    SKIPPED = 'skipped',
+    COMPLETE = 'complete',
 }
 
 export interface ProcessDetail {

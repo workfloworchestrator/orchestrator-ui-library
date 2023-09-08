@@ -2,24 +2,15 @@ import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 import { makeHighContrastColor } from '@elastic/eui';
 
-export const getStyles = (
-    theme: EuiThemeComputed,
-    toSecondaryColor: (color: string) => string,
-) => {
-    const getStepNumberStyle = (backgroundColor: string, textColor: string) => {
-        const secondaryBackgroundColor = toSecondaryColor(backgroundColor);
-        const secondaryTextColor = toSecondaryColor(textColor);
-
-        return css({
+export const getStyles = (theme: EuiThemeComputed) => {
+    const getStepNumberStyle = (backgroundColor: string, textColor: string) =>
+        css({
             '.euiStepNumber': {
-                backgroundColor: secondaryBackgroundColor,
-                borderColor: secondaryBackgroundColor,
-                color: makeHighContrastColor(secondaryTextColor)(
-                    secondaryBackgroundColor,
-                ),
+                backgroundColor: backgroundColor,
+                borderColor: backgroundColor,
+                color: makeHighContrastColor(textColor)(backgroundColor),
             },
         });
-    };
 
     const stepCompleteStyle = getStepNumberStyle(
         theme.colors.primary,
