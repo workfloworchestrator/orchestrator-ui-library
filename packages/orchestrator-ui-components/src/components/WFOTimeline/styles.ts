@@ -12,6 +12,13 @@ export const getStyles = (theme: EuiThemeComputed) => {
             },
         });
 
+    const timelinePanelStyle = css({
+        backgroundColor: theme.colors.body,
+        borderRadius: theme.border.radius.medium,
+        overflow: 'auto',
+        scrollbarWidth: 'auto',
+    });
+
     const stepCompleteStyle = getStepNumberStyle(
         theme.colors.primary,
         theme.colors.primaryText,
@@ -40,6 +47,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     return {
+        timelinePanelStyle,
         stepCompleteStyle,
         stepWarningStyle,
         stepErrorStyle,

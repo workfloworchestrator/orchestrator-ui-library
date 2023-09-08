@@ -1,11 +1,14 @@
 import { useOrchestratorTheme } from '../../hooks';
-import { EuiStepsHorizontal, EuiStepsHorizontalProps } from '@elastic/eui';
+import {
+    EuiStepsHorizontal,
+    EuiStepsHorizontalProps,
+    useEuiScrollBar,
+} from '@elastic/eui';
 import React, { FC } from 'react';
 import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
 import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
 import { getStyles } from './styles';
 import { SerializedStyles } from '@emotion/react';
-import { useEuiScrollBar } from '@elastic/eui';
 
 export enum TimelineStatus {
     Complete = 'complete',
@@ -33,6 +36,7 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
         stepCompleteStyle,
         stepErrorStyle,
         stepHideIconStyle,
+        timelinePanelStyle,
     } = getStyles(theme);
 
     const mapTimelineStatusToEuiStepStatus = (
@@ -94,17 +98,7 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ items }) => {
     );
 
     return (
-        <div
-            css={[
-                {
-                    backgroundColor: theme.colors.body,
-                    borderRadius: theme.border.radius.medium,
-                    overflow: 'auto',
-                    scrollbarWidth: 'auto',
-                },
-                useEuiScrollBar(),
-            ]}
-        >
+        <div css={[timelinePanelStyle, useEuiScrollBar()]}>
             <EuiStepsHorizontal steps={horizontalSteps} size={'s'} />
         </div>
     );
