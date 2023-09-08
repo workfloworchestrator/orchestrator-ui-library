@@ -7,7 +7,8 @@
     },
     "scripts": {
         "build": "tsup jest-base.config.js --format esm",
-        "dev": "yarn build -- --watch"
+        "dev": "yarn build -- --watch",
+        "reset": "rm -rf node_modules"
     },
     "main": "./dist/",
     "dependencies": {

@@ -10,7 +10,8 @@
         "build": "turbo run build",
         "packages:changeset": "changeset",
         "packages:publish": "turbo run build lint test && changeset publish",
-        "prepare": "husky install && turbo run build --filter=./packages/*"
+        "prepare": "husky install && turbo run build --filter=./packages/*",
+        "reset": "rm -rf node_modules"
     },
     "devDependencies": {
         "@changesets/cli": "^2.26.2",
