@@ -101,8 +101,6 @@ export const WFOProcessDetailPage = ({
         return steps[0] ? steps[0].name : '';
     };
 
-    console.log(process);
-
     return (
         <>
             <EuiFlexGroup>
