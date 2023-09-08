@@ -17,9 +17,9 @@ import UserInputForm from './UserInputForm';
 import hash from 'object-hash';
 import React, { useEffect, useState } from 'react';
 // import ApplicationContext from 'utils/ApplicationContext';
-import {FormNotCompleteResponse, InputForm} from '../../types/forms';
+import { FormNotCompleteResponse, InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
-import {apiClient, BaseApiClient} from "../../api";
+import { apiClient, BaseApiClient } from '../../api';
 
 interface Form {
     form: InputForm;
@@ -39,7 +39,6 @@ function stop(e: React.SyntheticEvent) {
         e.stopPropagation();
     }
 }
-
 
 function UserInputFormWizard({
     hasNext = false,
@@ -69,13 +68,20 @@ function UserInputFormWizard({
         newUserInputs.push(currentFormData);
 
         let result = validSubmit(newUserInputs);
-        return apiClient.catchErrorStatus<FormNotCompleteResponse>(result, 510, (json) => {
-            // Scroll to top when navigating to next screen of wizard
-            window.scrollTo(0, 0);
-            // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
-            setForms([...forms, { form: json.form, hasNext: json.hasNext }]);
-            setUserInputs(newUserInputs);
-        });
+        return apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            result,
+            510,
+            (json) => {
+                // Scroll to top when navigating to next screen of wizard
+                window.scrollTo(0, 0);
+                // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
+                setForms([
+                    ...forms,
+                    { form: json.form, hasNext: json.hasNext },
+                ]);
+                setUserInputs(newUserInputs);
+            },
+        );
     };
 
     const currentForm = forms[forms.length - 1];

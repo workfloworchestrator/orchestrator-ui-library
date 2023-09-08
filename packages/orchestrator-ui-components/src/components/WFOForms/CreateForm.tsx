@@ -16,9 +16,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, FormNotCompleteResponse } from '../../types/forms';
 import UserInputFormWizard from './UserInputFormWizard';
-import {apiClient, BaseApiClient} from '../../api';
+import { apiClient } from '../../api';
 
 interface IProps {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     preselectedInput?: any;
     formKey: string;
     handleSubmit: (userInputs: any) => void;
@@ -31,13 +32,10 @@ export default function CreateForm(props: IProps) {
 
     const submit = useCallback(
         (userInputs: {}[]) => {
-            return apiClient.cimStartForm(formKey, userInputs).then(
-                (form) => {
-                    console.log('Submit {formkey} =', formKey);
-                    handleSubmit(form);
-                },
-
-            );
+            return apiClient.cimStartForm(formKey, userInputs).then((form) => {
+                console.log('Submit {formkey} =', formKey);
+                handleSubmit(form);
+            });
         },
         [formKey, handleSubmit],
     );
