@@ -11,4 +11,4 @@ export * from './WFOSubscription';
 export * from './WFOTable';
 export * from './WFOLoading';
 export * from './WFOToastsList';
-export * from './forms';
+export * from './WFOForms';
