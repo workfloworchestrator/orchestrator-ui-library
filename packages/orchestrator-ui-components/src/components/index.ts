@@ -12,4 +12,4 @@ export * from './WFOTable';
 export * from './WFOTimeline';
 export * from './WFOLoading';
 export * from './WFOToastsList';
-export * from './forms';
+export * from './WFOForms';
