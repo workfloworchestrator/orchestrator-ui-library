@@ -351,6 +351,14 @@ function fillPreselection(form: JSONSchema6, query: string) {
     // }
     return form;
 }
+
+function nullifyEmptyStrings(data: object): object {
+    return Object.keys(data).reduce((acc, key) => {
+        acc[key] = data[key] === '' ? null : data[key];
+        return acc;
+    }, {});
+}
+
 function UserInputForm({
     stepUserInput,
     validSubmit,
@@ -517,9 +525,6 @@ function UserInputForm({
                         stepUserInput.title !== 'unknown' && (
                             <h3>{stepUserInput.title}</h3>
                         )}
-                    {/*<SubscriptionsContextProvider>*/}
-                    {/*
-                            // @ts-ignore */}
                     <AutoFieldProvider value={autoFieldFunction}>
                         <AutoForm
                             schema={bridge}
@@ -527,6 +532,14 @@ function UserInputForm({
                             showInlineError={true}
                             validate="onSubmit"
                             model={userInput}
+                            modelTransform={(mode, model) => {
+                                if (mode === 'submit' || mode === 'validate') {
+                                    // We will "nullify" empty strings so a user can reset optional email fields
+                                    return nullifyEmptyStrings(model);
+                                }
+                                // Otherwise, return unaltered model.
+                                return model;
+                            }}
                         >
                             <AutoFields omitFields={['buttons']} />
                             {/* Show top level validation info about backend validation */}
@@ -558,7 +571,6 @@ function UserInputForm({
                             {renderButtons(buttons)}
                         </AutoForm>
                     </AutoFieldProvider>
-                    {/*</SubscriptionsContextProvider>*/}
                 </section>
             </div>
         </EuiPanel>
