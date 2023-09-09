@@ -17,6 +17,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Form, FormNotCompleteResponse } from '../../types/forms';
 import UserInputFormWizard from './UserInputFormWizard';
 import { apiClient } from '../../api';
+import { EngineStatus, SubscriptionProcess } from '../../hooks';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useFormMutation } from '../../hooks/useForms';
 
 interface IProps {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -25,10 +28,54 @@ interface IProps {
     handleSubmit: (userInputs: any) => void;
 }
 
+const endpoint = 'http://localhost:8080/api/surf/forms';
+
 export default function CreateForm(props: IProps) {
     const { preselectedInput, formKey, handleSubmit } = props;
     const [form, setForm] = useState<Form>({});
     const { stepUserInput, hasNext } = form;
+
+    const queryClient = useQueryClient();
+    const setFormStatus = async (data: any) => {
+        const payload = data ?? [];
+        console.log('Using payload', payload);
+
+        const response = await fetch(`${endpoint}/${formKey}`, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return await response.json();
+    };
+
+    const { mutate, isLoading, error } = useMutation(
+        'formStatus',
+        setFormStatus,
+        {
+            onMutate: (data: any) => {
+                console.log('onMutate() data: ', data);
+                queryClient.setQueryData(['formStatus'], data); // Set loading state of the button
+            },
+            onSuccess: (data) => {
+                console.log('onSuccess() data: ', data);
+                setForm({
+                    stepUserInput: data.form,
+                    hasNext: data.hasNext ?? false,
+                });
+                queryClient.setQueryData(['formStatus'], data); // Set global status
+            },
+            onError: () => {
+                console.log('onError()');
+                alert('there was an error');
+            },
+            onSettled: () => {
+                // console.log("onSettled() flushing cache")
+                // queryClient.invalidateQueries('formStatus');
+            },
+        },
+    );
 
     const submit = useCallback(
         (userInputs: {}[]) => {
@@ -42,16 +89,17 @@ export default function CreateForm(props: IProps) {
 
     useEffect(() => {
         if (formKey) {
-            apiClient.catchErrorStatus<FormNotCompleteResponse>(
-                submit([]),
-                510,
-                (json) => {
-                    setForm({
-                        stepUserInput: json.form,
-                        hasNext: json.hasNext ?? false,
-                    });
-                },
-            );
+            mutate([]);
+            // apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            //     submit([]),
+            //     510,
+            //     (json) => {
+            //         setForm({
+            //             stepUserInput: json.form,
+            //             hasNext: json.hasNext ?? false,
+            //         });
+            //     },
+            // );
         }
     }, [formKey, submit, preselectedInput]);
 
