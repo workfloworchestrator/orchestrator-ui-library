@@ -31,11 +31,43 @@ export const getStyles = (theme: EuiThemeComputed) => {
         cursor: 'pointer',
     });
 
+    const stepStateIcon = {
+        height: '40px',
+        width: '40px',
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        borderRadius: '24px',
+    };
+
+    const stepStateSuccessIconStyle = css({
+        ...stepStateIcon,
+        backgroundColor: '#CCE3F4',
+    });
+
+    const stepStateSuspendIconStyle = css({
+        ...stepStateIcon,
+        backgroundColor: '#FFF3D0',
+    });
+
+    const stepStatePendingIconStyle = css({
+        ...stepStateIcon,
+        backgroundColor: '#DCE4EF',
+    });
+    const stepStateFailedIconStyle = css({
+        ...stepStateIcon,
+        backgroundColor: '#F2D4D2',
+    });
+
     return {
         stepSpacerStyle,
         stepListHeaderStyle,
         stepListContentStyle,
         stepListContentBoldTextStyle,
         stepListContentAnchorStyle,
+        stepStateSuccessIconStyle,
+        stepStateSuspendIconStyle,
+        stepStatePendingIconStyle,
+        stepStateFailedIconStyle,
     };
 };

@@ -1,14 +1,25 @@
 import React from 'react';
-import { EuiPanel } from '@elastic/eui';
+import { EuiFlexGroup, EuiPanel, EuiText } from '@elastic/eui';
 import type { Step } from '../../../types';
-
+import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 export interface WFOStepProps {
     step: Step;
 }
 
 export const WFOStep = ({ step }: WFOStepProps) => {
-    console.log(step);
-    const { name } = step;
+    const { name, executed, status } = step;
 
-    return <EuiPanel>{name}</EuiPanel>;
+    return (
+        <EuiPanel>
+            <EuiFlexGroup>
+                <WFOStepStatusIcon stepStatus={status} />
+                <EuiFlexGroup direction="column">
+                    <EuiText>{name}</EuiText>
+                    <EuiText>
+                        {status} - {executed}
+                    </EuiText>
+                </EuiFlexGroup>
+            </EuiFlexGroup>
+        </EuiPanel>
+    );
 };

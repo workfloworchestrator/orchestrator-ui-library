@@ -165,11 +165,18 @@ export type Process = {
     lastModified: string;
 };
 
+// From backend
 export enum StepStatus {
     SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending',
     RUNNING = 'running',
+    SKIPPED = 'skipped',
+    SUSPEND = 'suspend',
+    WAITING = 'waiting',
+    AWAITING_CALLBACK = 'awaiting_callback',
+    ABORT = 'abort',
+    COMPLETE = 'complete',
 }
 
 export interface ProcessDetail {
@@ -191,11 +198,14 @@ export interface ProcessDetail {
     };
     customer: string;
 }
+
+// From backend
 export enum ProcessStatus {
     CREATED = 'created',
     RUNNING = 'running',
     SUSPENDED = 'suspended',
     WAITING = 'waiting',
+    AWAITING_CALLBACK = 'awaiting_callback',
     ABORTED = 'aborted',
     FAILED = 'failed',
     RESUMED = 'resumed',

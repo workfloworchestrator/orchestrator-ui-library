@@ -78,8 +78,13 @@ export const WFOStepList = ({ steps }: WFOStepListProps) => {
             <>
                 {steps.map((step, index) => (
                     <>
-                        {index !== 0 && <div css={stepSpacerStyle}></div>}
-                        <WFOStep step={step} key={index} />
+                        {index !== 0 && (
+                            <div
+                                css={stepSpacerStyle}
+                                key={`space-${index}`}
+                            ></div>
+                        )}
+                        <WFOStep step={step} key={`step-${index}`} />
                     </>
                 ))}
             </>

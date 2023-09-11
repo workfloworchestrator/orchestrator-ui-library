@@ -26,17 +26,24 @@ export const stepList: Step[] = [
         state: stepState,
     },
     {
-        name: 'Pending step',
-        status: StepStatus.PENDING,
-        stepid: '3',
-        executed: '2023-09-04T09:00:10.000000+00:00',
-        state: stepState,
-    },
-    {
         name: 'Failed step',
         status: StepStatus.FAILED,
         stepid: '4',
         executed: '2023-09-04T09:01:00.000000+00:00',
+        state: stepState,
+    },
+    {
+        name: 'Suspended step',
+        status: StepStatus.SUSPEND,
+        stepid: '5',
+        executed: '2023-09-04T09:01:00.000000+00:00',
+        state: stepState,
+    },
+    {
+        name: 'Pending step',
+        status: StepStatus.PENDING,
+        stepid: '3',
+        executed: '2023-09-04T09:00:10.000000+00:00',
         state: stepState,
     },
 ];

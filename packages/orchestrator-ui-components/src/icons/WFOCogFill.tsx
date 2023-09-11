@@ -10,7 +10,7 @@ export const WFOCogFill: FC<WFOIconProps> = ({
         <svg
             width={width}
             height={height}
-            viewBox="0 0 24 24"
+            viewBox={`0 0 ${width} ${height}`}
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
         >
