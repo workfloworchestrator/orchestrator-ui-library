@@ -8,5 +8,10 @@ export * from './WFOMinusCircleOutline';
 export * from './WFOPlusCircleFill';
 export * from './WFOChevronDown';
 export * from './WFOArrowNarrowDown';
-export * from './WFOArrowNarrowUp';
 export * from './WFORefresh';
+export * from './WFOArrowNarrowUp';
+
+export * from './WFOPlayFill';
+export * from './WFOCode';
+export * from './WFOEyeFill';
+export * from './WFOCogFill';
