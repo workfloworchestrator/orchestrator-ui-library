@@ -9,6 +9,14 @@ export const getMostAccurateTimelineStatus = (
         ? statusCurrentStep
         : statusPreviousStep;
 
+const isFinalStepStatus = (status: StepStatus): boolean => {
+    return (
+        status === StepStatus.COMPLETE ||
+        status === StepStatus.SUCCESS ||
+        status === StepStatus.SKIPPED
+    );
+};
+
 const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
     return {
         processStepStatus: step.status,
@@ -24,7 +32,7 @@ const stepsShouldBeMerged = (
     previousStep: ProcessDetailStep,
     currentStep: ProcessDetailStep,
 ) =>
-    previousStep.status !== StepStatus.COMPLETE &&
+    !isFinalStepStatus(previousStep.status) &&
     previousStep.name === currentStep.name;
 
 export const mapProcessStepsToTimelineItems = (steps: ProcessDetailStep[]) =>

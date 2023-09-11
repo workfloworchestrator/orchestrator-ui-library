@@ -63,13 +63,31 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ timelineItems }) => {
         const euiStepStatus =
             mapProcessStepStatusToEuiStepStatus(processStepStatus);
 
+        // value can be 'icon', a number or undefined. It represents the content of the circle
+        // The underlying EUI component does not support empty steps, therefore status and step need to be set accordingly:
+        if (typeof value === 'number') {
+            return {
+                status: undefined,
+                step: value,
+                css: getStyleForProcessStepStatus(processStepStatus, false),
+                onClick: () => onClick(),
+            };
+        }
+
+        if (value === 'icon') {
+            return {
+                status: euiStepStatus,
+                step: undefined,
+                css: getStyleForProcessStepStatus(processStepStatus, true),
+                onClick: () => onClick(),
+            };
+        }
+
+        // value is undefined
         return {
-            status: typeof value === 'number' ? undefined : euiStepStatus,
-            step: typeof value === 'number' ? value : undefined,
-            css: getStyleForProcessStepStatus(
-                processStepStatus,
-                value === 'icon',
-            ),
+            status: euiStepStatus,
+            step: undefined,
+            css: getStyleForProcessStepStatus(processStepStatus, false),
             onClick: () => onClick(),
         };
     };
