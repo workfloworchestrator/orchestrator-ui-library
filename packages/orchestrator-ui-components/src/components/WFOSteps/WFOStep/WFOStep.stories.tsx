@@ -8,7 +8,5 @@ const Story: Meta<typeof WFOStep> = {
 export default Story;
 
 export const Default = {
-    args: {
-    },
+    args: {},
 };
-

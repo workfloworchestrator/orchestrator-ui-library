@@ -17,7 +17,7 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
                 status: StepStatus.RUNNING,
                 stepid: 'step id',
                 executed: 'executed',
-                state: ''
+                state: '',
             },
         ],
         subscriptions: {

@@ -59,6 +59,12 @@
             "active": "Active",
             "completed": "Completed"
         },
+        "steps": {
+            "steps": "Steps",
+            "expandAll": "Expand all",
+            "showDelta": "Show delta",
+            "viewOptions": "View options"
+        },
         "index": {
             "workflowName": "Workflow",
             "step": "Last step",

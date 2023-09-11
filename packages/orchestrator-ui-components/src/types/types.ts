@@ -209,7 +209,7 @@ export interface Step {
     status: StepStatus;
     stepid: string; // sic backend
     executed: string;
-    state: string
+    state: string;
 }
 
 export interface WorkflowDefinition {

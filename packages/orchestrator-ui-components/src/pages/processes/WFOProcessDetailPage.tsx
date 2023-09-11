@@ -10,6 +10,8 @@ import {
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
+import { stepList } from '../../components/WFOSteps/WFOStepList/WFOStepList.stories';
+
 import { Step, ProcessStatus } from '../../types';
 import {
     parseDateRelativeToToday,
@@ -23,6 +25,7 @@ import {
     WFOProcessListSubscriptionsCell,
     RenderDirection,
 } from './WFOProcessListSubscriptionsCell';
+import { WFOStepList } from '../../components/WFOSteps';
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -247,6 +250,8 @@ export const WFOProcessDetailPage = ({
                     </EuiFlexGroup>
                 )}
             </EuiPanel>
+
+            <WFOStepList steps={stepList} />
         </>
     );
 };
