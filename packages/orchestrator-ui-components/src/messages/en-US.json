@@ -62,6 +62,7 @@
         "steps": {
             "steps": "Steps",
             "expandAll": "Expand all",
+            "collapseAll": "Collapse all",
             "showDelta": "Show delta",
             "viewOptions": "View options",
             "duration": "duration"

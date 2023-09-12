@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
@@ -11,24 +11,22 @@ import { WFOChevronDown, WFOChevronUp } from '../../../icons';
 
 export interface WFOStepProps {
     step: Step;
-    forceDetailOpen: boolean;
+    stepIndex: number;
+    stepDetailIsOpen: boolean;
+    toggleStepDetailIsOpen: (index: number) => void;
 }
 
-export const WFOStep = ({ step, forceDetailOpen = false }: WFOStepProps) => {
-    const [detailIsOpen, setDetailIsOpen] = useState<boolean>(false);
+export const WFOStep = ({
+    step,
+    stepDetailIsOpen,
+    toggleStepDetailIsOpen,
+    stepIndex,
+}: WFOStepProps) => {
     const { name, executed, status } = step;
     const { theme } = useOrchestratorTheme();
     const { stepListContentBoldTextStyle, stepDurationStyle } =
         getStyles(theme);
     const t = useTranslations('processes.steps');
-
-    useEffect(() => {
-        if (forceDetailOpen) {
-            setDetailIsOpen(true);
-        }
-    }, [forceDetailOpen]);
-
-    const toggleDetailOpen = () => setDetailIsOpen((openState) => !openState);
 
     return (
         <EuiPanel>
@@ -43,7 +41,7 @@ export const WFOStep = ({ step, forceDetailOpen = false }: WFOStepProps) => {
                 <EuiFlexItem grow={0}>
                     <EuiText css={stepListContentBoldTextStyle}>{name}</EuiText>
                     <EuiText>
-                        {t(status)} - {formatDate(executed)}
+                        {status} - {formatDate(executed)}
                     </EuiText>
                 </EuiFlexItem>
 
@@ -62,10 +60,10 @@ export const WFOStep = ({ step, forceDetailOpen = false }: WFOStepProps) => {
                     </EuiFlexItem>
                     <EuiFlexItem
                         grow={0}
-                        css={{ marginRight: '8px' }}
-                        onClick={toggleDetailOpen}
+                        css={{ marginRight: '8px', cursor: 'pointer' }}
+                        onClick={() => toggleStepDetailIsOpen(stepIndex)}
                     >
-                        {(detailIsOpen && <WFOChevronUp />) || (
+                        {(stepDetailIsOpen && <WFOChevronUp />) || (
                             <WFOChevronDown />
                         )}
                     </EuiFlexItem>

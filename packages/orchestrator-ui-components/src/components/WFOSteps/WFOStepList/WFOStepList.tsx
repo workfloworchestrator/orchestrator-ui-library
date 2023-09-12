@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EuiFlexGroup, EuiButton, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
@@ -13,6 +13,31 @@ export interface WFOStepListProps {
 export const WFOStepList = ({ steps }: WFOStepListProps) => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('processes.steps');
+
+    const allDetailsClosedState = new Map(
+        steps.map((_, index) => [index, false]),
+    );
+    const allDetailsOpenedState = new Map(
+        steps.map((_, index) => [index, true]),
+    );
+
+    const [stepDetailStates, setStepDetailStates] = useState<
+        Map<number, boolean>
+    >(new Map(allDetailsClosedState));
+
+    const openAllDetails = () =>
+        setStepDetailStates(new Map(allDetailsOpenedState));
+
+    const toggleStepDetailIsOpen = (index: number) => {
+        if (stepDetailStates.has(index)) {
+            setStepDetailStates(
+                new Map(
+                    stepDetailStates.set(index, !stepDetailStates.get(index)),
+                ),
+            );
+        }
+    };
+
     const {
         stepSpacerStyle,
         stepListHeaderStyle,
@@ -30,7 +55,7 @@ export const WFOStepList = ({ steps }: WFOStepListProps) => {
                     </EuiText>
                     <EuiText
                         css={stepListContentAnchorStyle}
-                        onClick={() => alert('TODO: Implement expand all')}
+                        onClick={openAllDetails}
                     >
                         {t('expandAll')}
                     </EuiText>
@@ -79,7 +104,14 @@ export const WFOStepList = ({ steps }: WFOStepListProps) => {
                 {steps.map((step, index) => (
                     <div key={`step-${index}`}>
                         {index !== 0 && <div css={stepSpacerStyle} />}
-                        <WFOStep forceDetailOpen={false} step={step} />
+                        <WFOStep
+                            stepDetailIsOpen={
+                                stepDetailStates.get(index) || false
+                            }
+                            toggleStepDetailIsOpen={toggleStepDetailIsOpen}
+                            step={step}
+                            stepIndex={index}
+                        />
                     </div>
                 ))}
             </>
