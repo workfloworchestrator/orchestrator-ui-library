@@ -9,6 +9,24 @@ export const parseDate = (date: string | null | undefined): Date | null => {
     return new Date(date);
 };
 
+export const calculateTimeDifference = (from: string, to: string): string => {
+  const fromDate = parseDate(from)
+  const toDate = parseDate(to)
+  
+  if(!fromDate || !toDate) return 'missing paramater'
+
+  const timeDifference: number = (toDate.getTime() - fromDate.getTime()) / 1000
+  
+  if(timeDifference < 0 ) return 'negative difference'
+
+  const seconds = Math.floor(timeDifference)
+  const minutes = Math.floor(seconds/60)
+  const hours = Math.floor(minutes/60)
+  
+  return `${hours.toString().padStart(2,'0')}:${(minutes % 60).toString().padStart(2, '0')}:${(seconds % 60 % 3600).toString().padStart(2,'0')}`
+  
+}
+
 export const formatDate = (dateString: string | undefined) => {
     if (!dateString) return '';
 

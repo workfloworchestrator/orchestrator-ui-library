@@ -2,7 +2,10 @@ import {
     parseDate,
     parseDateToLocaleString,
     parseDateRelativeToToday,
+    calculateTimeDifference
 } from './date';
+
+const kingsDay2023TimeStamp =  1682589600000
 
 describe('date', () => {
     describe('parseDate()', () => {
@@ -53,7 +56,7 @@ describe('date', () => {
             expect(result).toEqual(time);
         });
         it('returns date and time when date is not today', () => {
-            const kingsDay = new Date(1682589600000);
+            const kingsDay = new Date(kingsDay2023TimeStamp);
             const date = kingsDay.toLocaleDateString('nl-NL');
             const time = kingsDay.toLocaleTimeString('nl-NL');
             const dateTime = `${date} ${time}`;
@@ -61,4 +64,44 @@ describe('date', () => {
             expect(result).toEqual(dateTime);
         });
     });
+    describe('calculateTimeDifference()', () => {
+      it('returns message with one of the dates missing', () => {
+                expect(calculateTimeDifference('', '')).toEqual('missing paramater');
+    });
+
+      it('returns appropriate string if the times are the same', () => {
+      const from = new Date(kingsDay2023TimeStamp).toLocaleDateString()
+      expect(calculateTimeDifference(from, from)).toEqual('00:00:00');
+  });
+
+    it('returns appropriate string if the timedifference is 1 second', () => {
+      const from = new Date(kingsDay2023TimeStamp).toLocaleString()
+      const to = new Date(kingsDay2023TimeStamp + 1000).toLocaleString()
+      expect(calculateTimeDifference(from, to)).toEqual('00:00:01');
+  });
+  it('returns appropriate string if the timedifference is 1 minute', () => {
+    const from = new Date(kingsDay2023TimeStamp).toLocaleString()
+    const to = new Date(kingsDay2023TimeStamp + 60000 + 1000).toLocaleString()
+    expect(calculateTimeDifference(from, to)).toEqual('00:01:01');
+});
+it('returns appropriate string if the timedifference is 1 hour', () => {
+  const from = new Date(kingsDay2023TimeStamp).toLocaleString()
+  const to = new Date(kingsDay2023TimeStamp + 3600000 + 60000 + 1000).toLocaleString()
+  expect(calculateTimeDifference(from, to)).toEqual('01:01:01');
+});
+
+
+it('returns appropriate string if the timedifference is 10 hour', () => {
+  const from = new Date(kingsDay2023TimeStamp).toLocaleString()
+  const to = new Date(kingsDay2023TimeStamp + 36000000 + 60000 + 1000).toLocaleString()
+  expect(calculateTimeDifference(from, to)).toEqual('10:01:01');
+});
+
+
+it('returns appropriate string with - if the timedifference is 1 hour', () => {
+  const from = new Date(kingsDay2023TimeStamp).toLocaleString()
+  const to = new Date(kingsDay2023TimeStamp + 3600000 + 60000 + 1000).toLocaleString()
+  expect(calculateTimeDifference(to, from)).toEqual('negative difference');
+});
+  });
 });
