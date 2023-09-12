@@ -5,6 +5,7 @@ import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { getTimelinePosition } from './timelineUtils';
 import { WFOTimelineStep } from './WFOTimelineStep';
+import { useEuiScrollBar } from '@elastic/eui';
 
 export enum TimelinePosition {
     PAST = 'past',
@@ -56,7 +57,7 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
     };
 
     return (
-        <div css={timelinePanelStyle}>
+        <div css={[timelinePanelStyle, useEuiScrollBar()]}>
             {timelineItems.map(mapTimelineItemToStep)}
         </div>
     );
