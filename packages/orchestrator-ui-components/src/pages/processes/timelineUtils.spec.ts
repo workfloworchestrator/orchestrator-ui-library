@@ -1,6 +1,34 @@
-import { mapProcessStepsToTimelineItems } from './timelineUtils';
+import {
+    getMostAccurateTimelineStatus,
+    mapProcessStepsToTimelineItems,
+} from './timelineUtils';
 import { ProcessDetailStep, StepStatus } from '../../types';
 
+describe('getMostAccurateTimelineStatus()', () => {
+    it('returns previous step when current step has status PENDING', () => {
+        const previousStepStatus = StepStatus.COMPLETE;
+        const currentStepStatus = StepStatus.PENDING;
+
+        const result = getMostAccurateTimelineStatus(
+            previousStepStatus,
+            currentStepStatus,
+        );
+
+        expect(result).toEqual(previousStepStatus);
+    });
+
+    it('returns the current step when current step has a status other than PENDING', () => {
+        const previousStepStatus = StepStatus.FAILED;
+        const currentStepStatus = StepStatus.COMPLETE;
+
+        const result = getMostAccurateTimelineStatus(
+            previousStepStatus,
+            currentStepStatus,
+        );
+
+        expect(result).toEqual(currentStepStatus);
+    });
+});
 describe('mapProcessStepsToTimelineItems()', () => {
     it('merges two steps with the same name given the first step is not a final status', () => {
         const steps: ProcessDetailStep[] = [
