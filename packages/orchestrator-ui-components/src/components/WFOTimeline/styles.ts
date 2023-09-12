@@ -7,9 +7,9 @@ import { makeHighContrastColor } from '@elastic/eui';
 export const getStyles = (theme: EuiThemeComputed) => {
     const emptyStepOuterDiameter = theme.base;
     const emptyStepInnerDiameter = theme.base / 2;
-
     const stepWithValueOuterDiameter = theme.base * 1.5;
     const stepWithValueInnerDiameter = theme.base;
+    const minimalLineLengthBetweenSteps = theme.base / 2;
 
     const getColorForStepStatus = (processStepStatus: StepStatus) => {
         switch (processStepStatus) {
@@ -17,7 +17,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
                 return theme.colors.warning;
             case StepStatus.FAILED:
                 return theme.colors.danger;
-
             case StepStatus.SUCCESS:
             case StepStatus.SKIPPED:
             case StepStatus.COMPLETE:
@@ -54,7 +53,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
             height: theme.border.width.thick,
             backgroundColor: color,
             flexGrow: 1,
-            minWidth: emptyStepOuterDiameter / 2,
+            minWidth: minimalLineLengthBetweenSteps,
         });
 
     const getStepLineStyle = (
@@ -62,7 +61,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         isFirstStep: boolean,
         isLastStep: boolean,
     ) => {
-        const getBeforeColor = (timelinePosition: TimelinePosition) => {
+        const getBeforeLineColor = (timelinePosition: TimelinePosition) => {
             switch (timelinePosition) {
                 case TimelinePosition.PAST:
                 case TimelinePosition.CURRENT:
@@ -73,7 +72,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
             }
         };
 
-        const getAfterColor = (timelinePosition: TimelinePosition) => {
+        const getAfterLineColor = (timelinePosition: TimelinePosition) => {
             switch (timelinePosition) {
                 case TimelinePosition.PAST:
                     return theme.colors.primary;
@@ -87,12 +86,16 @@ export const getStyles = (theme: EuiThemeComputed) => {
         return css([
             !isFirstStep && {
                 '::before': {
-                    ...getHorizontalLineStyle(getBeforeColor(timelinePosition)),
+                    ...getHorizontalLineStyle(
+                        getBeforeLineColor(timelinePosition),
+                    ),
                 },
             },
             !isLastStep && {
                 '::after': {
-                    ...getHorizontalLineStyle(getAfterColor(timelinePosition)),
+                    ...getHorizontalLineStyle(
+                        getAfterLineColor(timelinePosition),
+                    ),
                 },
             },
         ]);
