@@ -75,3 +75,24 @@ export const mapProcessStepsToTimelineItems = (steps: ProcessDetailStep[]) =>
         },
         [],
     );
+
+export const getIndexOfCurrentStep = (timelineItems: TimelineItem[]) => {
+    const reversedTimelineItems = [...timelineItems].reverse();
+    const reversedIndexOfCurrentStep = reversedTimelineItems.findIndex(
+        (timelineItem) => timelineItem.processStepStatus === StepStatus.RUNNING,
+    );
+
+    if (reversedIndexOfCurrentStep !== -1) {
+        return timelineItems.length - reversedIndexOfCurrentStep - 1;
+    }
+
+    const indexOfFirstPending = timelineItems.findIndex(
+        (timelineItem) => timelineItem.processStepStatus === StepStatus.PENDING,
+    );
+
+    if (indexOfFirstPending !== -1) {
+        return indexOfFirstPending - 1;
+    }
+
+    return timelineItems.length - 1;
+};

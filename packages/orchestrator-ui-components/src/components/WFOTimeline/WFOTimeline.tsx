@@ -1,11 +1,13 @@
 import { useOrchestratorTheme } from '../../hooks';
-import { EuiStepsHorizontal, useEuiScrollBar } from '@elastic/eui';
+import { EuiSpacer, EuiStepsHorizontal, useEuiScrollBar } from '@elastic/eui';
 import React, { FC } from 'react';
 import { EuiStepHorizontalProps } from '@elastic/eui/src/components/steps/step_horizontal';
 import { getStyles } from './styles';
 import { SerializedStyles } from '@emotion/react';
 import { StepStatus } from '../../types';
 import { mapProcessStepStatusToEuiStepStatus } from './mapProcessStepStatusToEuiStepStatus';
+import { WFOTimeline as WFOTimeline2 } from './WFOTimeline/WFOTimeline';
+import { getIndexOfCurrentStep } from '../../pages/processes/timelineUtils';
 
 export type TimelineItem = {
     processStepStatus: StepStatus;
@@ -92,12 +94,30 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({ timelineItems }) => {
         };
     };
 
+    // Todo Fix before opening PR
+    // return (
+    //     <div css={[timelinePanelStyle, useEuiScrollBar()]}>
+    //         <EuiStepsHorizontal
+    //             steps={timelineItems.map(mapTimelineItemToEuiStep)}
+    //             size={'s'}
+    //         />
+    //     </div>
+    // );
+
     return (
-        <div css={[timelinePanelStyle, useEuiScrollBar()]}>
-            <EuiStepsHorizontal
-                steps={timelineItems.map(mapTimelineItemToEuiStep)}
-                size={'s'}
+        <>
+            <div css={[timelinePanelStyle, useEuiScrollBar()]}>
+                <EuiStepsHorizontal
+                    steps={timelineItems.map(mapTimelineItemToEuiStep)}
+                    size={'s'}
+                />
+            </div>
+
+            <EuiSpacer size="m" />
+            <WFOTimeline2
+                timelineItems={timelineItems}
+                indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
             />
-        </div>
+        </>
     );
 };
