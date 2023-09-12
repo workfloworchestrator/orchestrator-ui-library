@@ -257,6 +257,9 @@ export const WFOProcessDetailPage = ({
             <WFOTimeline
                 timelineItems={timelineItems}
                 indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
+                // Todo: Implement onClick after step-cards are implemented
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/225
+                onStepClick={(timelineItem) => console.log(timelineItem)}
             />
         </>
     );

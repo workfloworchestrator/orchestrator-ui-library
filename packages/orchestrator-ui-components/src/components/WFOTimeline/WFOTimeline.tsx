@@ -13,18 +13,20 @@ export enum TimelinePosition {
 
 export type TimelineItem = {
     processStepStatus: StepStatus;
+    stepDetail?: string | ReactNode;
     value?: string | ReactNode;
-    onClick: () => void;
 };
 
 export type WFOTimelineProps = {
     timelineItems: TimelineItem[];
     indexOfCurrentStep?: number;
+    onStepClick: (timelineItem: TimelineItem) => void;
 };
 
 export const WFOTimeline: FC<WFOTimelineProps> = ({
     timelineItems,
     indexOfCurrentStep = 0,
+    onStepClick,
 }) => {
     const { theme } = useOrchestratorTheme();
     const {
@@ -38,23 +40,28 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
     const WFOStep = ({
         stepStatus,
         timelinePosition,
+        tooltipContent,
         isFirstStep = false,
         isLastStep = false,
         children,
+        onClick,
     }: {
         stepStatus: StepStatus;
         timelinePosition: TimelinePosition;
+        tooltipContent?: string | ReactNode;
         isFirstStep?: boolean;
         isLastStep?: boolean;
         children?: ReactNode;
+        onClick: () => void;
     }) => (
         <button
             css={[
                 stepStyle,
                 getStepLineStyle(timelinePosition, isFirstStep, isLastStep),
             ]}
+            onClick={() => onClick()}
         >
-            <EuiToolTip position="top" content="Here is some tooltip text">
+            <EuiToolTip position="top" content={tooltipContent}>
                 <div css={stepOuterCircleStyle(!!children)}>
                     <div css={getStepInnerCircleStyle(stepStatus, !!children)}>
                         {children}
@@ -82,10 +89,12 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
                     isFirstStep={index === 0}
                     isLastStep={index === array.length - 1}
                     stepStatus={item.processStepStatus}
+                    tooltipContent={item.stepDetail}
                     timelinePosition={getTimelinePosition(
                         index,
                         indexOfCurrentStep,
                     )}
+                    onClick={() => onStepClick(item)}
                 >
                     {item.value}
                 </WFOStep>

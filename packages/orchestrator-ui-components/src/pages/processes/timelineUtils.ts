@@ -17,14 +17,12 @@ const isFinalStepStatus = (status: StepStatus): boolean => {
     );
 };
 
-const mapStepToTimelineItem = (step: ProcessDetailStep): TimelineItem => {
+const mapStepToTimelineItem = (
+    processDetailStep: ProcessDetailStep,
+): TimelineItem => {
     return {
-        processStepStatus: step.status,
-        onClick: () => {
-            // Todo: Implement onClick after step-cards are implemented
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/225
-            console.log(`Clicked on ${step.name} (${step.stepid})`);
-        },
+        processStepStatus: processDetailStep.status,
+        stepDetail: processDetailStep.name,
     };
 };
 
