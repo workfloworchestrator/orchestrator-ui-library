@@ -28,7 +28,7 @@ export const WFOTimelineStep = ({
     const {
         stepStyle,
         getStepLineStyle,
-        stepOuterCircleStyle,
+        getStepOuterCircleStyle,
         getStepInnerCircleStyle,
     } = getStyles(theme);
 
@@ -41,7 +41,7 @@ export const WFOTimelineStep = ({
             onClick={() => onClick()}
         >
             <EuiToolTip position="top" content={tooltipContent}>
-                <div css={stepOuterCircleStyle(!!children)}>
+                <div css={getStepOuterCircleStyle(!!children)}>
                     <div css={getStepInnerCircleStyle(stepStatus, !!children)}>
                         {children}
                     </div>

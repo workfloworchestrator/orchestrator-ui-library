@@ -148,7 +148,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         timelinePanelStyle,
         stepStyle,
         getStepLineStyle,
-        stepOuterCircleStyle: getStepOuterCircleStyle,
+        getStepOuterCircleStyle,
         getStepInnerCircleStyle,
     };
 };
