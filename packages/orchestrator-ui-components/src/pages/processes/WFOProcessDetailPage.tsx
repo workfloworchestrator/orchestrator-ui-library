@@ -21,7 +21,10 @@ import {
     RenderDirection,
     WFOProcessListSubscriptionsCell,
 } from './WFOProcessListSubscriptionsCell';
-import { mapProcessStepsToTimelineItems } from './timelineUtils';
+import {
+    getIndexOfCurrentStep,
+    mapProcessStepsToTimelineItems,
+} from './timelineUtils';
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -250,8 +253,11 @@ export const WFOProcessDetailPage = ({
                 )}
             </EuiPanel>
 
-            <EuiSpacer />
-            <WFOTimeline timelineItems={timelineItems} />
+            <EuiSpacer size="s" />
+            <WFOTimeline
+                timelineItems={timelineItems}
+                indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
+            />
         </>
     );
 };
