@@ -3,7 +3,8 @@ import { StepStatus } from '../../types';
 import { ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
-import { EuiToolTip } from '@elastic/eui';
+import { getTimelinePosition } from './timelineUtils';
+import { WFOTimelineStep } from './WFOTimelineStep';
 
 export enum TimelinePosition {
     PAST = 'past',
@@ -29,76 +30,34 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
     onStepClick,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const {
-        timelinePanelStyle,
-        stepStyle,
-        getStepLineStyle,
-        stepOuterCircleStyle,
-        getStepInnerCircleStyle,
-    } = getStyles(theme);
+    const { timelinePanelStyle } = getStyles(theme);
 
-    const WFOStep = ({
-        stepStatus,
-        timelinePosition,
-        tooltipContent,
-        isFirstStep = false,
-        isLastStep = false,
-        children,
-        onClick,
-    }: {
-        stepStatus: StepStatus;
-        timelinePosition: TimelinePosition;
-        tooltipContent?: string | ReactNode;
-        isFirstStep?: boolean;
-        isLastStep?: boolean;
-        children?: ReactNode;
-        onClick: () => void;
-    }) => (
-        <button
-            css={[
-                stepStyle,
-                getStepLineStyle(timelinePosition, isFirstStep, isLastStep),
-            ]}
-            onClick={() => onClick()}
-        >
-            <EuiToolTip position="top" content={tooltipContent}>
-                <div css={stepOuterCircleStyle(!!children)}>
-                    <div css={getStepInnerCircleStyle(stepStatus, !!children)}>
-                        {children}
-                    </div>
-                </div>
-            </EuiToolTip>
-        </button>
-    );
-
-    const getTimelinePosition = (index: number, indexOfCurrentStep: number) => {
-        if (index === indexOfCurrentStep) {
-            return TimelinePosition.CURRENT;
-        }
-
-        return index < indexOfCurrentStep
-            ? TimelinePosition.PAST
-            : TimelinePosition.FUTURE;
+    const mapTimelineItemToStep = (
+        timelineItem: TimelineItem,
+        index: number,
+        allTimelineItems: TimelineItem[],
+    ) => {
+        return (
+            <WFOTimelineStep
+                key={index}
+                isFirstStep={index === 0}
+                isLastStep={index === allTimelineItems.length - 1}
+                stepStatus={timelineItem.processStepStatus}
+                tooltipContent={timelineItem.stepDetail}
+                timelinePosition={getTimelinePosition(
+                    index,
+                    indexOfCurrentStep,
+                )}
+                onClick={() => onStepClick(timelineItem)}
+            >
+                {timelineItem.value}
+            </WFOTimelineStep>
+        );
     };
 
     return (
         <div css={timelinePanelStyle}>
-            {timelineItems.map((item, index, array) => (
-                <WFOStep
-                    key={index}
-                    isFirstStep={index === 0}
-                    isLastStep={index === array.length - 1}
-                    stepStatus={item.processStepStatus}
-                    tooltipContent={item.stepDetail}
-                    timelinePosition={getTimelinePosition(
-                        index,
-                        indexOfCurrentStep,
-                    )}
-                    onClick={() => onStepClick(item)}
-                >
-                    {item.value}
-                </WFOStep>
-            ))}
+            {timelineItems.map(mapTimelineItemToStep)}
         </div>
     );
 };
