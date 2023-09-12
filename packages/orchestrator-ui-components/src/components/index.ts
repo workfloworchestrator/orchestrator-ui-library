@@ -9,5 +9,6 @@ export * from './WFOSettingsPage';
 export * from './WFOStartPage';
 export * from './WFOSubscription';
 export * from './WFOTable';
+export * from './WFOTimeline';
 export * from './WFOLoading';
 export * from './WFOToastsList';
