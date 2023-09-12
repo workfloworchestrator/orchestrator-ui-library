@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { FormNotCompleteResponse, InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
 import { apiClient, BaseApiClient } from '../../api';
+import HttpStatusCode from '../../types/status_codes';
 
 interface Form {
     form: InputForm;
@@ -64,24 +65,45 @@ function UserInputFormWizard({
     };
 
     const submit = (currentFormData: {}) => {
+        console.log('UserInputFormWizard submit data: ', currentFormData);
         let newUserInputs = userInputs.slice(0, forms.length - 1);
         newUserInputs.push(currentFormData);
 
         let result = validSubmit(newUserInputs);
-        return apiClient.catchErrorStatus<FormNotCompleteResponse>(
-            result,
-            510,
-            (json) => {
-                // Scroll to top when navigating to next screen of wizard
+
+        // debugger
+        return result.then((d) => {
+            alert(JSON.stringify(d));
+            if (d?.type === 'FormNotCompleteError') {
                 window.scrollTo(0, 0);
                 // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
-                setForms([
-                    ...forms,
-                    { form: json.form, hasNext: json.hasNext },
-                ]);
+                setForms([...forms, { form: d.form, hasNext: d.hasNext }]);
                 setUserInputs(newUserInputs);
-            },
-        );
+            }
+        });
+
+        //     .catch(e => {
+        //     debugger
+        //     if (e.response && e.response.status === 510) {
+        //     } else {
+        //         throw e;
+        //     }
+        // })
+
+        // return apiClient.catchErrorStatus<FormNotCompleteResponse>(
+        //     result,
+        //     HttpStatusCode.NOT_EXTENDED,
+        //     (json) => {
+        //         // Scroll to top when navigating to next screen of wizard
+        //         window.scrollTo(0, 0);
+        //         // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
+        //         setForms([
+        //             ...forms,
+        //             { form: json.form, hasNext: json.hasNext },
+        //         ]);
+        //         setUserInputs(newUserInputs);
+        //     },
+        // );
     };
 
     const currentForm = forms[forms.length - 1];

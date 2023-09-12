@@ -38,6 +38,7 @@ import { userInputFormStyling } from './UserInputFormStyling';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
 import AutoFields from './AutoFields';
 import { ValidationError } from '../../types/forms';
+import HttpStatusCode from '../../types/status_codes';
 
 interface IProps {
     router: NextRouter;
@@ -389,13 +390,20 @@ function UserInputForm({
 
             try {
                 await validSubmit(userInput);
+                // console.log("Test: ", test)
                 setProcessing(false);
                 return null;
             } catch (error) {
+                // debugger
                 setProcessing(false);
 
                 // @ts-ignore
-                if (error.response.status === 400) {
+                if (
+                    [
+                        HttpStatusCode.BAD_REQUEST,
+                        HttpStatusCode.UNPROCESSABLE_ENTITY,
+                    ].includes(error.response.status)
+                ) {
                     // @ts-ignore
                     const json = error.response.data;
                     setNrOfValidationErrors(json.validation_errors.length);
@@ -534,7 +542,7 @@ function UserInputForm({
                             model={userInput}
                             modelTransform={(mode, model) => {
                                 if (mode === 'submit' || mode === 'validate') {
-                                    // We will "nullify" empty strings so a user can reset optional email fields
+                                    // "nullify" empty strings so a user can reset optional string fields
                                     return nullifyEmptyStrings(model);
                                 }
                                 // Otherwise, return unaltered model.
@@ -567,7 +575,6 @@ function UserInputForm({
                                     </em>
                                 </section>
                             )}
-
                             {renderButtons(buttons)}
                         </AutoForm>
                     </AutoFieldProvider>
