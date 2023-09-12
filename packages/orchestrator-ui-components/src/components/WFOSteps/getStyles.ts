@@ -24,6 +24,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         fontSize: theme.size.base,
         fontWeight: theme.font.weight.bold,
     });
+
     const stepListContentAnchorStyle = css({
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.bold,
@@ -38,6 +39,12 @@ export const getStyles = (theme: EuiThemeComputed) => {
         display: 'flex',
         justifyContent: 'center',
         borderRadius: '24px',
+    };
+
+    const stepDurationStyle = {
+        fontSize: theme.size.m,
+        color: theme.colors.disabled,
+        fontWeight: theme.font.weight.semiBold,
     };
 
     const stepStateSuccessIconStyle = css({
@@ -69,5 +76,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepStateSuspendIconStyle,
         stepStatePendingIconStyle,
         stepStateFailedIconStyle,
+        stepDurationStyle,
     };
 };

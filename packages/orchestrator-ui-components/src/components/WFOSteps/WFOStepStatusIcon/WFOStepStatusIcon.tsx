@@ -62,7 +62,8 @@ export const WFOStepStatusIcon = ({ stepStatus }: WFOStepStatusIconProps) => {
 
             <div
                 css={{
-                    transform: 'translate(-38px, -6px)',
+                    transform: 'translate(-15px, -13px)',
+                    width: '16px',
                 }}
             >
                 <SubIcon theme={theme} stepStatus={stepStatus} />

@@ -63,7 +63,8 @@
             "steps": "Steps",
             "expandAll": "Expand all",
             "showDelta": "Show delta",
-            "viewOptions": "View options"
+            "viewOptions": "View options",
+            "duration": "duration"
         },
         "index": {
             "workflowName": "Workflow",

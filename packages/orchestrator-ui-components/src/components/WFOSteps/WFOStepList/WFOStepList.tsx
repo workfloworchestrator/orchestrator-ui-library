@@ -77,15 +77,10 @@ export const WFOStepList = ({ steps }: WFOStepListProps) => {
             </EuiFlexGroup>
             <>
                 {steps.map((step, index) => (
-                    <>
-                        {index !== 0 && (
-                            <div
-                                css={stepSpacerStyle}
-                                key={`space-${index}`}
-                            ></div>
-                        )}
-                        <WFOStep step={step} key={`step-${index}`} />
-                    </>
+                    <div key={`step-${index}`}>
+                        {index !== 0 && <div css={stepSpacerStyle} />}
+                        <WFOStep forceDetailOpen={false} step={step} />
+                    </div>
                 ))}
             </>
         </>

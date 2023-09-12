@@ -7,6 +7,7 @@ export * from './WFOIconProps';
 export * from './WFOMinusCircleOutline';
 export * from './WFOPlusCircleFill';
 export * from './WFOChevronDown';
+export * from './WFOChevronUp';
 export * from './WFOArrowNarrowDown';
 export * from './WFORefresh';
 export * from './WFOArrowNarrowUp';

@@ -9,6 +9,13 @@ export const parseDate = (date: string | null | undefined): Date | null => {
     return new Date(date);
 };
 
+export const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
+
+    const date = parseDate(dateString);
+    return parseDateToLocaleString(date);
+};
+
 export const parseDateToLocaleString = (value: Date | null) =>
     // Todo #95: Fix default locale (guess it via browser lang?)
     value?.toLocaleString(DUTCH_LOCALE) ?? '';
