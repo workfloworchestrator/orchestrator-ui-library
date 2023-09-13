@@ -15,10 +15,10 @@ import {
     ProductBlockDefinition,
     ProductDefinition,
     WorkflowDefinition,
-    Process,
 } from '../types';
 
 import { SubscriptionListItem } from '../components/WFOSubscriptionsList';
+import { ProcessListItem } from '../components/WFOProcessesList/WFOProcessList';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],
@@ -55,8 +55,8 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             return getTableConfig<T>(workflowColumns as (keyof T)[]);
 
         case ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY:
-            const activeProcessColumns: (keyof Process)[] = [
-                'product',
+            const activeProcessColumns: (keyof ProcessListItem)[] = [
+                'productName',
                 'customer',
                 'createdBy',
                 'assignee',
@@ -65,15 +65,15 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             return getTableConfig<T>(activeProcessColumns as (keyof T)[]);
 
         case COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY:
-            const completedProcessColumns: (keyof Process)[] = [
-                'step',
-                'status',
-                'product',
+            const completedProcessColumns: (keyof ProcessListItem)[] = [
+                'lastStep',
+                'lastStatus',
+                'productName',
                 'customer',
                 'createdBy',
                 'assignee',
                 'processId',
-                'started',
+                'startedAt',
             ];
             return getTableConfig<T>(completedProcessColumns as (keyof T)[]);
         case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY:

@@ -65,6 +65,7 @@
             "status": "Status",
             "product": "Product",
             "customer": "Klant",
+            "customerAbbreviation": "Klant afkorting",
             "subscriptions": "Subscriptions",
             "createdBy": "Gecreëerd door",
             "assignee": "Assignee",

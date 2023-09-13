@@ -21,16 +21,21 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
         ) {
             page {
                 workflowName
-                step
-                status
-                product
-                customer
+                lastStep
+                lastStatus
+                workflowTarget
+                product {
+                    name
+                }
+                customer {
+                    fullname
+                    shortcode
+                }
                 createdBy
                 assignee
                 processId
-                started
-                lastModified
-                workflowTarget
+                startedAt
+                lastModifiedAt
                 subscriptions {
                     page {
                         subscriptionId

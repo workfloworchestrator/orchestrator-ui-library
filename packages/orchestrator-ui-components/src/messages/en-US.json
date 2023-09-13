@@ -65,6 +65,7 @@
             "status": "Status",
             "product": "Product",
             "customer": "Customer",
+            "customerAbbreviation": "Customer abbreviation",
             "subscriptions": "Subscriptions",
             "createdBy": "Created By",
             "assignee": "Assignee",

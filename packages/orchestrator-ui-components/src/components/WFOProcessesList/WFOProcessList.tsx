@@ -20,21 +20,44 @@ import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processList
 import { WFOLoading } from '../WFOLoading';
 import { Pagination } from '@elastic/eui/src/components';
 import { FilterQuery } from '../WFOFilterTabs';
+import {
+    graphQLFilterMapper,
+    graphQLSortMapper,
+    mapGraphQlProcessListResultToProcessListItems,
+} from './processListObjectMappers';
+
+export type ProcessListItem = Pick<
+    Process,
+    | 'workflowName'
+    | 'lastStep'
+    | 'lastStatus'
+    | 'workflowTarget'
+    | 'createdBy'
+    | 'assignee'
+    | 'processId'
+    | 'startedAt'
+    | 'lastModifiedAt'
+    | 'subscriptions'
+> & {
+    productName?: string;
+    customer: string;
+    customerAbbreviation: string;
+};
 
 export type WFOProcessListProps = {
-    alwaysOnFilters?: FilterQuery<Process>[];
-    defaultHiddenColumns: TableColumnKeys<Process> | undefined;
+    alwaysOnFilters?: FilterQuery<ProcessListItem>[];
+    defaultHiddenColumns: TableColumnKeys<ProcessListItem> | undefined;
     localStorageKey: string;
-    dataDisplayParams: DataDisplayParams<Process>;
+    dataDisplayParams: DataDisplayParams<ProcessListItem>;
     setDataDisplayParam: <
-        DisplayParamKey extends keyof DataDisplayParams<Process>,
+        DisplayParamKey extends keyof DataDisplayParams<ProcessListItem>,
     >(
         prop: DisplayParamKey,
-        value: DataDisplayParams<Process>[DisplayParamKey],
+        value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
     ) => void;
     overrideDefaultTableColumns?: (
-        defaultTableColumns: WFOTableColumns<Process>,
-    ) => WFOTableColumns<Process>;
+        defaultTableColumns: WFOTableColumns<ProcessListItem>,
+    ) => WFOTableColumns<ProcessListItem>;
 };
 
 export const WFOProcessList: FC<WFOProcessListProps> = ({
@@ -47,7 +70,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
 }) => {
     const t = useTranslations('processes.index');
 
-    const defaultTableColumns: WFOTableColumns<Process> = {
+    const defaultTableColumns: WFOTableColumns<ProcessListItem> = {
         workflowName: {
             field: 'workflowName',
             name: t('workflowName'),
@@ -55,12 +78,12 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
                 <Link href={`/processes/${processId}`}>{value}</Link>
             ),
         },
-        step: {
-            field: 'step',
+        lastStep: {
+            field: 'lastStep',
             name: t('step'),
         },
-        status: {
-            field: 'status',
+        lastStatus: {
+            field: 'lastStatus',
             name: t('status'),
             render: (cellValue) => (
                 <WFOProcessStatusBadge processStatus={cellValue} />
@@ -70,13 +93,17 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             field: 'workflowTarget',
             name: t('workflowTarget'),
         },
-        product: {
-            field: 'product',
+        productName: {
+            field: 'productName',
             name: t('product'),
         },
         customer: {
             field: 'customer',
             name: t('customer'),
+        },
+        customerAbbreviation: {
+            field: 'customerAbbreviation',
+            name: t('customerAbbreviation'),
         },
         subscriptions: {
             field: 'subscriptions',
@@ -112,26 +139,27 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             render: (value) => <WFOFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
-        started: {
-            field: 'started',
+        startedAt: {
+            field: 'startedAt',
             name: t('started'),
         },
-        lastModified: {
-            field: 'lastModified',
+        lastModifiedAt: {
+            field: 'lastModifiedAt',
             name: t('lastModified'),
         },
     };
-    const tableColumns: WFOTableColumns<Process> = overrideDefaultTableColumns
-        ? overrideDefaultTableColumns(defaultTableColumns)
-        : defaultTableColumns;
+    const tableColumns: WFOTableColumns<ProcessListItem> =
+        overrideDefaultTableColumns
+            ? overrideDefaultTableColumns(defaultTableColumns)
+            : defaultTableColumns;
 
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: dataDisplayParams.sortBy,
-            filterBy: alwaysOnFilters,
+            sortBy: graphQLSortMapper(dataDisplayParams.sortBy),
+            filterBy: graphQLFilterMapper(alwaysOnFilters),
         },
         'processList',
         true,
@@ -148,14 +176,14 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
-    const dataSorting: WFODataSorting<Process> = {
+    const dataSorting: WFODataSorting<ProcessListItem> = {
         field: dataDisplayParams.sortBy?.field ?? 'lastModified',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     return (
         <WFOTableWithFilter
-            data={data.processes.page}
+            data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={tableColumns}
             dataSorting={dataSorting}
             pagination={pagination}
@@ -163,11 +191,13 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
-            onUpdateEsQueryString={getEsQueryStringHandler<Process>(
+            onUpdateEsQueryString={getEsQueryStringHandler<ProcessListItem>(
                 setDataDisplayParam,
             )}
-            onUpdatePage={getPageChangeHandler<Process>(setDataDisplayParam)}
-            onUpdateDataSort={getDataSortHandler<Process>(
+            onUpdatePage={getPageChangeHandler<ProcessListItem>(
+                setDataDisplayParam,
+            )}
+            onUpdateDataSort={getDataSortHandler<ProcessListItem>(
                 dataDisplayParams,
                 setDataDisplayParam,
             )}
