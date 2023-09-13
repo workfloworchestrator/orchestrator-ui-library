@@ -10,9 +10,7 @@ import {
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
-import { stepList } from '../../components/WFOSteps/WFOStepList/WFOStepList.stories';
-
-import { Step, ProcessStatus } from '../../types';
+import { ProcessStatus } from '../../types';
 import {
     parseDateRelativeToToday,
     getProductNamesFromProcess,
@@ -84,30 +82,12 @@ export const WFOProcessDetailPage = ({
 
     const process = data?.processes.page[0];
 
-    const getCurrentStep = (
-        steps: Step[] = [],
-        lastCompletedStepName: string = '',
-    ) => {
-        const lastCompletedStep = steps.find(
-            (step) => step.name === lastCompletedStepName,
-        );
-
-        if (lastCompletedStep) {
-            const currentStepIndex = steps.indexOf(lastCompletedStep);
-            return steps[currentStepIndex + 1]
-                ? steps[currentStepIndex + 1].name
-                : steps[currentStepIndex].name;
-        }
-
-        return steps[0] ? steps[0].name : '';
-    };
-
     return (
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <EuiPageHeader
-                        pageTitle={isFetching ? '...' : 'TODO: WORKFLOW NAME'}
+                        pageTitle={isFetching ? '...' : process?.workflowName}
                     />
                     <EuiSpacer />
                     <EuiText size="s">
@@ -176,82 +156,90 @@ export const WFOProcessDetailPage = ({
                 color="subdued"
                 element="div"
             >
-                {(isFetching && <WFOLoading />) || (
-                    <EuiFlexGroup direction="row" gutterSize="m">
-                        <ProcessHeaderValue
-                            translationKey="status"
-                            value={process?.status}
-                        />
-                        <ProcessHeaderValue
-                            translationKey="startedBy"
-                            value={process?.createdBy}
-                        />
-                        {process?.customer && (
+                {(isFetching && process === undefined && <WFOLoading />) ||
+                    (process !== undefined && (
+                        <EuiFlexGroup direction="row" gutterSize="m">
                             <ProcessHeaderValue
-                                translationKey="customer"
-                                value={process?.customer}
+                                translationKey="status"
+                                value={process.lastStatus}
                             />
-                        )}
-                        <ProcessHeaderValue
-                            translationKey="currentStep"
-                            value={getCurrentStep(
-                                process?.steps,
-                                process?.step,
+                            <ProcessHeaderValue
+                                translationKey="startedBy"
+                                value={process.createdBy}
+                            />
+                            {process.customer && (
+                                <ProcessHeaderValue
+                                    translationKey="customer"
+                                    value={process.customer?.fullname}
+                                />
                             )}
-                        />
-                        <ProcessHeaderValue
-                            translationKey="startedOn"
-                            value={parseDateRelativeToToday(process?.started)}
-                        />
-                        <ProcessHeaderValue
-                            translationKey="lastUpdate"
-                            value={parseDateRelativeToToday(
-                                process?.lastModified,
-                            )}
-                        />
+                            <ProcessHeaderValue
+                                translationKey="lastStep"
+                                value={process?.lastStep}
+                            />
+                            <ProcessHeaderValue
+                                translationKey="startedOn"
+                                value={parseDateRelativeToToday(
+                                    process?.startedAt,
+                                )}
+                            />
+                            <ProcessHeaderValue
+                                translationKey="lastUpdate"
+                                value={parseDateRelativeToToday(
+                                    process?.lastModifiedAt,
+                                )}
+                            />
 
-                        <EuiFlexGroup
-                            gutterSize="xs"
-                            direction="column"
-                            css={{
-                                flex: 1,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <EuiText size="xs">
-                                {t('relatedSubscriptions')}
-                            </EuiText>
-                            <EuiText
+                            <EuiFlexGroup
+                                gutterSize="xs"
+                                direction="column"
                                 css={{
                                     flex: 1,
-                                    whiteSpace: 'nowrap',
                                     overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    fontSize: theme.size.m,
                                 }}
                             >
-                                <WFOProcessListSubscriptionsCell
-                                    subscriptions={
-                                        (process &&
-                                            process?.subscriptions.page.map(
-                                                (subscription) => ({
-                                                    subscriptionId:
-                                                        subscription.subscriptionId,
-                                                    description:
-                                                        subscription.description,
-                                                }),
-                                            )) ||
-                                        []
-                                    }
-                                    renderDirection={RenderDirection.VERTICAL}
-                                />
-                            </EuiText>
+                                <EuiText size="xs">
+                                    {t('relatedSubscriptions')}
+                                </EuiText>
+                                <EuiText
+                                    css={{
+                                        flex: 1,
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        fontSize: theme.size.m,
+                                    }}
+                                >
+                                    <WFOProcessListSubscriptionsCell
+                                        subscriptions={
+                                            (process &&
+                                                process?.subscriptions.page.map(
+                                                    (subscription) => ({
+                                                        subscriptionId:
+                                                            subscription.subscriptionId,
+                                                        description:
+                                                            subscription.description,
+                                                    }),
+                                                )) ||
+                                            []
+                                        }
+                                        renderDirection={
+                                            RenderDirection.VERTICAL
+                                        }
+                                    />
+                                </EuiText>
+                            </EuiFlexGroup>
                         </EuiFlexGroup>
-                    </EuiFlexGroup>
-                )}
+                    ))}
             </EuiPanel>
 
-            <WFOStepList steps={stepList} />
+            {(isFetching && <WFOLoading />) ||
+                (process !== undefined && (
+                    <WFOStepList
+                        steps={process.steps}
+                        startedAt={process.startedAt}
+                    />
+                ))}
         </>
     );
 };

@@ -87,7 +87,7 @@
             "abort": "Abort",
             "status": "Status",
             "startedBy": "Started by",
-            "currentStep": "Current step",
+            "lastStep": "Last step",
             "startedOn": "Started on",
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",

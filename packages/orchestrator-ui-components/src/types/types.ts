@@ -181,12 +181,11 @@ export enum StepStatus {
 
 export interface ProcessDetail {
     processId: Process['processId'];
-    status: Process['status'];
+    lastStatus: Process['status'];
     createdBy: Process['createdBy'];
-    started: Process['started'];
+    startedAt: Process['started'];
     lastStep: string;
-    lastModified: Process['lastModified'];
-    step: string;
+    lastModifiedAt: Process['lastModified'];
     workflowName: string;
     steps: Step[];
     subscriptions: {
@@ -196,7 +195,9 @@ export interface ProcessDetail {
             subscriptionId: Subscription['subscriptionId'];
         }[];
     };
-    customer: string;
+    customer: {
+        fullname: string;
+    };
 }
 
 // From backend
@@ -217,7 +218,7 @@ export enum ProcessStatus {
 export interface Step {
     name: string;
     status: StepStatus;
-    stepid: string; // sic backend
+    stepId: string; // sic backend
     executed: string;
     state: string;
 }

@@ -8,12 +8,14 @@ import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 import { getStyles } from '../getStyles';
 import { formatDate } from '../../../utils';
 import { WFOChevronDown, WFOChevronUp } from '../../../icons';
+import { calculateTimeDifference } from '../../../utils';
 
 export interface WFOStepProps {
     step: Step;
     stepIndex: number;
     stepDetailIsOpen: boolean;
     toggleStepDetailIsOpen: (index: number) => void;
+    startedAt: string;
 }
 
 export const WFOStep = ({
@@ -21,6 +23,7 @@ export const WFOStep = ({
     stepDetailIsOpen,
     toggleStepDetailIsOpen,
     stepIndex,
+    startedAt,
 }: WFOStepProps) => {
     const { name, executed, status } = step;
     const { theme } = useOrchestratorTheme();
@@ -41,7 +44,7 @@ export const WFOStep = ({
                 <EuiFlexItem grow={0}>
                     <EuiText css={stepListContentBoldTextStyle}>{name}</EuiText>
                     <EuiText>
-                        {status} - {formatDate(executed)}
+                        {status} {executed && `- ${formatDate(executed)}`}
                     </EuiText>
                 </EuiFlexItem>
 
@@ -52,21 +55,35 @@ export const WFOStep = ({
                         justifyContent: 'flex-end',
                     }}
                 >
-                    <EuiFlexItem grow={0} css={{ alignItems: 'center' }}>
-                        <EuiText css={stepDurationStyle}>
-                            {t('duration')}
-                        </EuiText>
-                        <EuiText size="m">00:00:06</EuiText>
-                    </EuiFlexItem>
-                    <EuiFlexItem
-                        grow={0}
-                        css={{ marginRight: '8px', cursor: 'pointer' }}
-                        onClick={() => toggleStepDetailIsOpen(stepIndex)}
-                    >
-                        {(stepDetailIsOpen && <WFOChevronUp />) || (
-                            <WFOChevronDown />
-                        )}
-                    </EuiFlexItem>
+                    {step.executed && (
+                        <>
+                            <EuiFlexItem
+                                grow={0}
+                                css={{ alignItems: 'center' }}
+                            >
+                                <EuiText css={stepDurationStyle}>
+                                    {t('duration')}
+                                </EuiText>
+                                <EuiText size="m">
+                                    {calculateTimeDifference(
+                                        startedAt,
+                                        step.executed,
+                                    )}
+                                </EuiText>
+                            </EuiFlexItem>
+                            <EuiFlexItem
+                                grow={0}
+                                css={{ marginRight: '8px', cursor: 'pointer' }}
+                                onClick={() =>
+                                    toggleStepDetailIsOpen(stepIndex)
+                                }
+                            >
+                                {(stepDetailIsOpen && <WFOChevronUp />) || (
+                                    <WFOChevronDown />
+                                )}
+                            </EuiFlexItem>
+                        </>
+                    )}
                 </EuiFlexGroup>
             </EuiFlexGroup>
         </EuiPanel>

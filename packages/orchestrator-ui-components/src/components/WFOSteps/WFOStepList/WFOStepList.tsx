@@ -8,9 +8,10 @@ import { useOrchestratorTheme } from '../../../hooks';
 
 export interface WFOStepListProps {
     steps: Step[];
+    startedAt: string;
 }
 
-export const WFOStepList = ({ steps }: WFOStepListProps) => {
+export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('processes.steps');
 
@@ -101,19 +102,27 @@ export const WFOStepList = ({ steps }: WFOStepListProps) => {
                 </EuiFlexGroup>
             </EuiFlexGroup>
             <>
-                {steps.map((step, index) => (
-                    <div key={`step-${index}`}>
-                        {index !== 0 && <div css={stepSpacerStyle} />}
-                        <WFOStep
-                            stepDetailIsOpen={
-                                stepDetailStates.get(index) || false
-                            }
-                            toggleStepDetailIsOpen={toggleStepDetailIsOpen}
-                            step={step}
-                            stepIndex={index}
-                        />
-                    </div>
-                ))}
+                {steps.map((step, index) => {
+                    const stepComponent = (
+                        <div key={`step-${index}`}>
+                            {index !== 0 && <div css={stepSpacerStyle} />}
+                            <WFOStep
+                                stepDetailIsOpen={
+                                    stepDetailStates.get(index) || false
+                                }
+                                toggleStepDetailIsOpen={toggleStepDetailIsOpen}
+                                step={step}
+                                stepIndex={index}
+                                startedAt={startedAt}
+                            />
+                        </div>
+                    );
+
+                    if (index > 0) {
+                        startedAt = step.executed;
+                    }
+                    return stepComponent;
+                })}
             </>
         </>
     );
