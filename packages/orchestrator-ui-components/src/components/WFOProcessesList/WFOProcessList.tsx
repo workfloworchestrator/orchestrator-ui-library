@@ -40,6 +40,7 @@ export type ProcessListItem = Pick<
     | 'subscriptions'
 > & {
     productName?: string;
+    productTag?: string;
     customer: string;
     customerAbbreviation: string;
 };
@@ -92,6 +93,10 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         workflowTarget: {
             field: 'workflowTarget',
             name: t('workflowTarget'),
+        },
+        productTag: {
+            field: 'productTag',
+            name: t('productTag'),
         },
         productName: {
             field: 'productName',

@@ -159,6 +159,7 @@ export type Process = {
     workflowTarget: WorkflowTarget;
     product?: {
         name: string;
+        tag: string;
     };
     customer: {
         fullname: string;

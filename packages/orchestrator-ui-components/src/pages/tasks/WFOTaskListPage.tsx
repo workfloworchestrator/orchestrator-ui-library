@@ -39,7 +39,7 @@ export const WFOTaskListPage = () => {
         {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore waiting for fix in backend
-            field: 'istask',
+            field: 'isTask',
             value: 'true',
         },
         {
@@ -57,6 +57,7 @@ export const WFOTaskListPage = () => {
         lastStatus: defaultTableColumns.lastStatus,
         workflowName: defaultTableColumns.workflowName,
         workflowTarget: defaultTableColumns.workflowTarget,
+        productTag: defaultTableColumns.productTag,
         productName: defaultTableColumns.productName,
         customer: defaultTableColumns.customer,
         customerAbbreviation: defaultTableColumns.customerAbbreviation,

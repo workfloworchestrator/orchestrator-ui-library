@@ -72,7 +72,8 @@
             "processId": "PID",
             "started": "Gestart",
             "lastModified": "Aangepast op",
-            "workflowTarget": "Doel"
+            "workflowTarget": "Doel",
+            "productTag": "Tag"
         }
     },
     "subscriptions": {

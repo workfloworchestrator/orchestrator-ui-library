@@ -72,7 +72,8 @@
             "processId": "PID",
             "started": "Started",
             "lastModified": "Last Modified",
-            "workflowTarget": "Target"
+            "workflowTarget": "Target",
+            "productTag": "Tag"
         },
         "detail": {
             "retry": "Retry",

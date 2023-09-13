@@ -37,6 +37,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (
             lastModifiedAt,
             subscriptions,
             productName: product?.name,
+            productTag: product?.tag,
             customer: customer.fullname,
             customerAbbreviation: customer.shortcode,
         };
@@ -63,6 +64,14 @@ const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
             return 'customerShortcode' as keyof Process;
         case 'productName':
             return 'productName' as keyof Process;
+        case 'productTag':
+            return 'productTag' as keyof Process;
+
+        // Passing through all other fields, needed for "isTask"
+        // Todo: type of the sort and filter parameters should be string instead of keyof ...
+        // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+        default:
+            return field as keyof Process;
     }
 };
 

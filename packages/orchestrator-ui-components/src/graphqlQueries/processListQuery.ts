@@ -26,6 +26,7 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
                 workflowTarget
                 product {
                     name
+                    tag
                 }
                 customer {
                     fullname
