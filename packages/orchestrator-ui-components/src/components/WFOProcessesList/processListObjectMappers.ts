@@ -47,17 +47,6 @@ export const mapGraphQlProcessListResultToProcessListItems = (
 // Backend concatenates object name with the key, e.g. product.name becomes productName
 const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
     switch (field) {
-        case 'workflowName':
-        case 'lastStep':
-        case 'lastStatus':
-        case 'workflowTarget':
-        case 'createdBy':
-        case 'assignee':
-        case 'processId':
-        case 'startedAt':
-        case 'lastModifiedAt':
-        case 'subscriptions':
-            return field;
         case 'customer':
             return 'customerFullname' as keyof Process;
         case 'customerAbbreviation':
@@ -66,12 +55,8 @@ const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
             return 'productName' as keyof Process;
         case 'productTag':
             return 'productTag' as keyof Process;
-
-        // Passing through all other fields, needed for "isTask"
-        // Todo: type of the sort and filter parameters should be string instead of keyof ...
-        // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
         default:
-            return field as keyof Process;
+            return field;
     }
 };
 
