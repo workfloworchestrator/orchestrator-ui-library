@@ -174,8 +174,8 @@ export const WFOProcessDetailPage = ({
                                 value={process.lastStatus}
                             />
                             <ProcessHeaderValue
-                                translationKey="startedBy"
-                                value={process.createdBy}
+                                translationKey="lastStep"
+                                value={process?.lastStep}
                             />
                             {process.customer && (
                                 <ProcessHeaderValue
@@ -184,8 +184,8 @@ export const WFOProcessDetailPage = ({
                                 />
                             )}
                             <ProcessHeaderValue
-                                translationKey="lastStep"
-                                value={process?.lastStep}
+                                translationKey="startedBy"
+                                value={process.createdBy}
                             />
                             <ProcessHeaderValue
                                 translationKey="startedOn"
@@ -199,7 +199,6 @@ export const WFOProcessDetailPage = ({
                                     process?.lastModifiedAt,
                                 )}
                             />
-
                             <EuiFlexGroup
                                 gutterSize="xs"
                                 direction="column"
