@@ -65,13 +65,15 @@
             "status": "Status",
             "product": "Product",
             "customer": "Klant",
+            "customerAbbreviation": "Klant afkorting",
             "subscriptions": "Subscriptions",
             "createdBy": "Gecreëerd door",
             "assignee": "Assignee",
             "processId": "PID",
             "started": "Gestart",
             "lastModified": "Aangepast op",
-            "workflowTarget": "Doel"
+            "workflowTarget": "Doel",
+            "productTag": "Tag"
         }
     },
     "subscriptions": {

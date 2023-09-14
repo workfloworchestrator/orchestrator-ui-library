@@ -1,10 +1,9 @@
 import React from 'react';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-// "Circular dependency between "example-orchestrator-ui" and "orchestrator-ui-components" detected: example-orchestrator-ui" How can it be solved ?
 import {
-    WFOStatCards,
-    WFONewProcessPanel,
     WFOMultiListSection,
+    WFONewProcessPanel,
+    WFOStatCards,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {

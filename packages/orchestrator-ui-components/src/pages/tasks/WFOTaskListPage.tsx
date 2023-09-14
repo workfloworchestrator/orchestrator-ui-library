@@ -6,14 +6,17 @@ import {
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
     WFOTableColumns,
 } from '../../components';
-import { Process, SortOrder } from '../../types';
+import { SortOrder } from '../../types';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
 import { WFOPlusCircleFill, WFORefresh } from '../../icons';
-import { WFOProcessList } from '../../components/WFOProcessesList/WFOProcessList';
+import {
+    ProcessListItem,
+    WFOProcessList,
+} from '../../components/WFOProcessesList/WFOProcessList';
 
 export const WFOTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
@@ -24,53 +27,53 @@ export const WFOTaskListPage = () => {
             ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<Process>({
+        useDataDisplayParams<ProcessListItem>({
             pageSize: initialPageSize,
             sortBy: {
-                // Todo: waiting for fix in backend -- currently the sortBy field id's are not matching with the returned data
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/91
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                field: 'modified',
-                // field: 'lastModified',
+                field: 'lastModifiedAt',
                 order: SortOrder.DESC,
             },
         });
 
-    const alwaysOnFilters: FilterQuery<Process>[] = [
+    const alwaysOnFilters: FilterQuery<ProcessListItem>[] = [
         {
+            // Todo: isTask is not a key of Process
+            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore waiting for fix in backend
-            field: 'istask',
+            field: 'isTask',
             value: 'true',
         },
         {
-            field: 'status',
+            field: 'lastStatus',
             value: 'running-failed-api_unavailable-inconsistent_data',
         },
     ];
 
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
-        defaultTableColumns: WFOTableColumns<Process>,
-    ) => WFOTableColumns<Process> = (defaultTableColumns) => ({
+        defaultTableColumns: WFOTableColumns<ProcessListItem>,
+    ) => WFOTableColumns<ProcessListItem> = (defaultTableColumns) => ({
         assignee: defaultTableColumns.assignee,
-        step: defaultTableColumns.step,
-        status: defaultTableColumns.status,
+        lastStep: defaultTableColumns.lastStep,
+        lastStatus: defaultTableColumns.lastStatus,
         workflowName: defaultTableColumns.workflowName,
         workflowTarget: defaultTableColumns.workflowTarget,
-        product: defaultTableColumns.product,
+        productTag: defaultTableColumns.productTag,
+        productName: defaultTableColumns.productName,
         customer: defaultTableColumns.customer,
+        customerAbbreviation: defaultTableColumns.customerAbbreviation,
         subscriptions: defaultTableColumns.subscriptions,
         createdBy: defaultTableColumns.createdBy,
         processId: defaultTableColumns.processId,
-        started: defaultTableColumns.started,
-        lastModified: defaultTableColumns.lastModified,
+        startedAt: defaultTableColumns.startedAt,
+        lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const defaultHiddenColumns: TableColumnKeys<Process> = [
+    const defaultHiddenColumns: TableColumnKeys<ProcessListItem> = [
         'workflowTarget',
-        'product',
+        'productName',
         'customer',
         'createdBy',
         'processId',

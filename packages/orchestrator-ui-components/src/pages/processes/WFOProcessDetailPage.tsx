@@ -4,26 +4,32 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiPageHeader,
+    EuiPanel,
     EuiSpacer,
     EuiText,
-    EuiPanel,
 } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
 import { ProcessStatus } from '../../types';
 import {
-    parseDateRelativeToToday,
     getProductNamesFromProcess,
+    parseDateRelativeToToday,
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { WFOLoading } from '../../components';
+import { TimelineItem, WFOLoading, WFOTimeline } from '../../components';
 
 import {
-    WFOProcessListSubscriptionsCell,
     RenderDirection,
+    WFOProcessListSubscriptionsCell,
 } from './WFOProcessListSubscriptionsCell';
+
 import { WFOStepList } from '../../components/WFOSteps';
+
+import {
+    getIndexOfCurrentStep,
+    mapProcessStepsToTimelineItems,
+} from './timelineUtils';
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -81,6 +87,10 @@ export const WFOProcessDetailPage = ({
     );
 
     const process = data?.processes.page[0];
+
+    const timelineItems: TimelineItem[] = process?.steps
+        ? mapProcessStepsToTimelineItems(process.steps)
+        : [];
 
     return (
         <>
@@ -232,14 +242,21 @@ export const WFOProcessDetailPage = ({
                         </EuiFlexGroup>
                     ))}
             </EuiPanel>
-
+            <EuiSpacer size="s" />
+            <WFOTimeline
+                timelineItems={timelineItems}
+                indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
+                // Todo: Implement onClick after step-cards are implemented
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/225
+                onStepClick={(timelineItem) => console.log(timelineItem)}
+            />
             {(isFetching && <WFOLoading />) ||
                 (process !== undefined && (
                     <WFOStepList
                         steps={process.steps}
                         startedAt={process.startedAt}
                     />
-                ))}
+            ))}
         </>
     );
 };

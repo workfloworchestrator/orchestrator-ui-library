@@ -1,5 +1,5 @@
-import { Process } from '../../types';
 import { WFOFilterTab } from '../../components';
+import { ProcessListItem } from '../../components/WFOProcessesList/WFOProcessList';
 
 export enum WFOProcessListTabType {
     ACTIVE = 'ACTIVE',
@@ -8,14 +8,14 @@ export enum WFOProcessListTabType {
 
 export const defaultProcessListTabs: WFOFilterTab<
     WFOProcessListTabType,
-    Process
+    ProcessListItem
 >[] = [
     {
         id: WFOProcessListTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
-                field: 'status',
+                field: 'lastStatus',
                 value: 'created-running-suspended-waiting-failed-resumed',
             },
         ],
@@ -25,7 +25,7 @@ export const defaultProcessListTabs: WFOFilterTab<
         translationKey: 'completed',
         alwaysOnFilters: [
             {
-                field: 'status',
+                field: 'lastStatus',
                 value: 'completed',
             },
         ],

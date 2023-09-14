@@ -73,13 +73,15 @@
             "status": "Status",
             "product": "Product",
             "customer": "Customer",
+            "customerAbbreviation": "Customer abbreviation",
             "subscriptions": "Subscriptions",
             "createdBy": "Created By",
             "assignee": "Assignee",
             "processId": "PID",
             "started": "Started",
             "lastModified": "Last Modified",
-            "workflowTarget": "Target"
+            "workflowTarget": "Target",
+            "productTag": "Tag"
         },
         "detail": {
             "retry": "Retry",

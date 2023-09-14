@@ -145,24 +145,34 @@ export interface ProductDefinition {
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
 
-// Todo: Some props are not implemented in backend yet
-// https://github.com/workfloworchestrator/orchestrator-ui/issues/217
+export enum WorkflowTarget {
+    CREATE = 'create',
+    MODIFY = 'modify',
+    TERMINATE = 'terminate',
+    SYSTEM = 'system',
+}
+
 export type Process = {
     workflowName: string;
-    step: string;
-    status: ProcessStatus;
-    workflowTarget: string;
-    product: string;
-    customer: string;
-    // abbrev: string;
-    subscriptions: {
-        page: Pick<Subscription, 'subscriptionId' | 'description'>[];
+    lastStep: string;
+    lastStatus: ProcessStatus;
+    workflowTarget: WorkflowTarget;
+    product?: {
+        name: string;
+        tag: string;
+    };
+    customer: {
+        fullname: string;
+        shortcode: string;
     };
     createdBy: string;
     assignee: string;
     processId: string;
-    started: string;
-    lastModified: string;
+    startedAt: string;
+    lastModifiedAt: string;
+    subscriptions: {
+        page: Pick<Subscription, 'subscriptionId' | 'description'>[];
+    };
 };
 
 // From backend
@@ -181,11 +191,13 @@ export enum StepStatus {
 
 export interface ProcessDetail {
     processId: Process['processId'];
-    lastStatus: Process['status'];
+    lastStatus: Process['lastStatus'];
     createdBy: Process['createdBy'];
-    startedAt: Process['started'];
+    startedAt: Process['startedAt'];
     lastStep: string;
-    lastModifiedAt: Process['lastModified'];
+    lastModifiedAt: Process['lastModifiedAt'];
+    lastModified: Process['lastModifiedAt'];
+    step: string;
     workflowName: string;
     steps: Step[];
     subscriptions: {
