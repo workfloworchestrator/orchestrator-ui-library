@@ -34,8 +34,9 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
             );
             return tableConfig;
         }
+        // Adding toastMessage to the dependency array here will result in an infinite loop in code calling the useStoredTableConfig hook
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [localeStorageKey, tableConfig]); // Adding toastMessage to the dependancy array here will result in an infite loop in code calling the useStoredTabelConfig hook
+    }, [localeStorageKey, tableConfig]);
 
     return getStoredTableConfig;
 };

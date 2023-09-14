@@ -5,7 +5,7 @@ import {
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
 } from '../../components';
-import { Process, SortOrder } from '../../types';
+import { SortOrder } from '../../types';
 
 import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import type { StoredTableConfig } from '../../components';
@@ -16,7 +16,10 @@ import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import { WFOFilterTabs } from '../../components';
-import { WFOProcessList } from '../../components/WFOProcessesList/WFOProcessList';
+import {
+    ProcessListItem,
+    WFOProcessList,
+} from '../../components/WFOProcessesList/WFOProcessList';
 
 export const WFOProcessListPage = () => {
     const router = useRouter();
@@ -27,7 +30,7 @@ export const WFOProcessListPage = () => {
     );
 
     const [tableDefaults, setTableDefaults] =
-        useState<StoredTableConfig<Process>>();
+        useState<StoredTableConfig<ProcessListItem>>();
 
     const selectedProcessListTab = getProcessListTabTypeFromString(activeTab);
 
@@ -36,7 +39,8 @@ export const WFOProcessListPage = () => {
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
-    const getStoredTableConfig = useStoredTableConfig<Process>(localStorageKey);
+    const getStoredTableConfig =
+        useStoredTableConfig<ProcessListItem>(localStorageKey);
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -47,19 +51,14 @@ export const WFOProcessListPage = () => {
     }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<Process>({
+        useDataDisplayParams<ProcessListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
             // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
             // the query to wait for the values to be available
             // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
-                // Todo: waiting for fix in backend -- currently the sortBy field id's are not matching with the returned data
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/91
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                field: 'modified',
-                // field: 'lastModified',
+                field: 'lastModifiedAt',
                 order: SortOrder.DESC,
             },
         });
