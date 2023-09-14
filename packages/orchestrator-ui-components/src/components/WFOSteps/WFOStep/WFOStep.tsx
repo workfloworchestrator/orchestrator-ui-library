@@ -73,7 +73,10 @@ export const WFOStep = ({
                             </EuiFlexItem>
                             <EuiFlexItem
                                 grow={0}
-                                css={{ marginRight: '8px', cursor: 'pointer' }}
+                                css={{
+                                    marginRight: theme.base / 2,
+                                    cursor: 'pointer',
+                                }}
                                 onClick={() =>
                                     toggleStepDetailIsOpen(stepIndex)
                                 }
