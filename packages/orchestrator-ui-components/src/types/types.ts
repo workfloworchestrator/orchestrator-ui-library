@@ -196,8 +196,6 @@ export interface ProcessDetail {
     startedAt: Process['startedAt'];
     lastStep: string;
     lastModifiedAt: Process['lastModifiedAt'];
-    lastModified: Process['lastModifiedAt'];
-    step: string;
     workflowName: string;
     steps: Step[];
     subscriptions: {

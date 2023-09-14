@@ -1,4 +1,4 @@
-import { ProcessDetailStep, StepStatus } from '../../types';
+import { Step, StepStatus } from '../../types';
 import { TimelineItem } from '../../components';
 
 export const getMostAccurateTimelineStatus = (
@@ -17,23 +17,18 @@ const isFinalStepStatus = (status: StepStatus): boolean => {
     );
 };
 
-const mapStepToTimelineItem = (
-    processDetailStep: ProcessDetailStep,
-): TimelineItem => {
+const mapStepToTimelineItem = (processDetailStep: Step): TimelineItem => {
     return {
         processStepStatus: processDetailStep.status,
         stepDetail: processDetailStep.name,
     };
 };
 
-const stepsShouldBeMerged = (
-    previousStep: ProcessDetailStep,
-    currentStep: ProcessDetailStep,
-) =>
+const stepsShouldBeMerged = (previousStep: Step, currentStep: Step) =>
     !isFinalStepStatus(previousStep.status) &&
     previousStep.name === currentStep.name;
 
-export const mapProcessStepsToTimelineItems = (steps: ProcessDetailStep[]) =>
+export const mapProcessStepsToTimelineItems = (steps: Step[]) =>
     steps.reduce<TimelineItem[]>(
         (
             allTimelineItems: TimelineItem[],

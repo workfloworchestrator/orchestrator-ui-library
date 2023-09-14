@@ -256,7 +256,7 @@ export const WFOProcessDetailPage = ({
                         steps={process.steps}
                         startedAt={process.startedAt}
                     />
-            ))}
+                ))}
         </>
     );
 };
