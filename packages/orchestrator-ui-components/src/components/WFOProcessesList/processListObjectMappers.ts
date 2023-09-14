@@ -45,6 +45,8 @@ export const mapGraphQlProcessListResultToProcessListItems = (
 
 // Some fields are not a key of Process, however backend still supports them
 // Backend concatenates object name with the key, e.g. product.name becomes productName
+// Todo: typecast is needed until ticket is implemented:
+// https://github.com/workfloworchestrator/orchestrator-ui/issues/290
 const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
     switch (field) {
         case 'customer':
