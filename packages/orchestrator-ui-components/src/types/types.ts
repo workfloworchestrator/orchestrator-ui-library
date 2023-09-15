@@ -225,12 +225,16 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
+export interface State {
+    [index: string]: object;
+}
+
 export interface Step {
     name: string;
     status: StepStatus;
     stepId: string; // sic backend
     executed: string;
-    state: string;
+    state: State;
 }
 
 export interface WorkflowDefinition {

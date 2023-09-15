@@ -1,9 +1,15 @@
 import React from 'react';
-import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
+import {
+    EuiCodeBlock,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPanel,
+    EuiText,
+} from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import type { Step } from '../../../types';
+import type { State, Step } from '../../../types';
 import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 import { getStyles } from '../getStyles';
 import { formatDate } from '../../../utils';
@@ -12,6 +18,7 @@ import { calculateTimeDifference } from '../../../utils';
 
 export interface WFOStepProps {
     step: Step;
+    delta: State;
     stepIndex: number;
     stepDetailIsOpen: boolean;
     toggleStepDetailIsOpen: (index: number) => void;
@@ -20,6 +27,7 @@ export interface WFOStepProps {
 
 export const WFOStep = ({
     step,
+    delta,
     stepDetailIsOpen,
     toggleStepDetailIsOpen,
     stepIndex,
@@ -37,6 +45,7 @@ export const WFOStep = ({
                 css={{
                     gap: 0,
                     alignItems: 'center',
+                    marginBottom: 20,
                 }}
             >
                 <WFOStepStatusIcon stepStatus={status} />
@@ -89,6 +98,16 @@ export const WFOStep = ({
                     )}
                 </EuiFlexGroup>
             </EuiFlexGroup>
+            {stepDetailIsOpen && (
+                <EuiCodeBlock
+                    isCopyable={true}
+                    language={'json'}
+                    lineNumbers={true}
+                    overflowHeight={6000}
+                >
+                    {JSON.stringify(delta, null, 3)}
+                </EuiCodeBlock>
+            )}
         </EuiPanel>
     );
 };
