@@ -16,11 +16,8 @@
 import UserInputForm from './UserInputForm';
 import hash from 'object-hash';
 import React, { useEffect, useState } from 'react';
-// import ApplicationContext from 'utils/ApplicationContext';
-import { FormNotCompleteResponse, InputForm } from '../../types/forms';
+import { InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
-import { apiClient, BaseApiClient } from '../../api';
-import HttpStatusCode from '../../types/status_codes';
 
 interface Form {
     form: InputForm;
@@ -47,7 +44,6 @@ function UserInputFormWizard({
     validSubmit,
     cancel,
 }: IProps) {
-    // const { apiClient } = useContext(ApplicationContext);
     const router = useRouter();
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
@@ -66,10 +62,10 @@ function UserInputFormWizard({
 
     const submit = (currentFormData: {}) => {
         console.log('UserInputFormWizard submit data: ', currentFormData);
-        let newUserInputs = userInputs.slice(0, forms.length - 1);
+        const newUserInputs = userInputs.slice(0, forms.length - 1);
         newUserInputs.push(currentFormData);
 
-        let result = validSubmit(newUserInputs);
+        const result = validSubmit(newUserInputs);
 
         // debugger
         return result.then((d) => {

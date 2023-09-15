@@ -16,7 +16,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from '../../types/forms';
 import UserInputFormWizard from './UserInputFormWizard';
-import { apiClient } from '../../api';
 import { useMutation, useQueryClient } from 'react-query';
 
 interface IProps {
