@@ -76,7 +76,7 @@ function Select({
     }));
 
     const selectedValue = options.find(
-        (option: Option) => option.value === value,
+        (option: any) => option.value === value,
     );
 
     return (
