@@ -28,7 +28,7 @@ export { default as LongTextField } from './LongTextField';
 // export { default as NestField } from './NestField';
 export { default as NumField } from './NumField';
 // export { default as RadioField } from './RadioField';
-// export { default as SelectField } from './SelectField';
+export { default as SelectField } from './SelectField';
 // export { default as ListSelectField } from './ListSelectField';
 export { default as SubmitField } from './SubmitField';
 export { default as TextField } from './TextField';
