@@ -14,6 +14,7 @@ export interface WFOStepListProps {
 export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('processes.steps');
+    let stepStartTime = startedAt;
 
     const allDetailsClosedState = new Map(
         steps.map((_, index) => [index, false]),
@@ -113,13 +114,13 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                                 toggleStepDetailIsOpen={toggleStepDetailIsOpen}
                                 step={step}
                                 stepIndex={index}
-                                startedAt={startedAt}
+                                startedAt={stepStartTime}
                             />
                         </div>
                     );
 
                     if (index > 0) {
-                        startedAt = step.executed;
+                        stepStartTime = step.executed;
                     }
                     return stepComponent;
                 })}
