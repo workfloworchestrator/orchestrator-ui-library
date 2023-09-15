@@ -13,12 +13,12 @@ export const calculateTimeDifference = (from: string, to: string): string => {
     const fromDate = parseDate(from);
     const toDate = parseDate(to);
 
-    if (!fromDate || !toDate) return 'missing paramater';
+    if (!fromDate || !toDate) return '';
 
     const timeDifference: number =
         (toDate.getTime() - fromDate.getTime()) / 1000;
 
-    if (timeDifference < 0) return 'negative difference';
+    if (timeDifference < 0) return '';
 
     const seconds = Math.floor(timeDifference);
     const minutes = Math.floor(seconds / 60);

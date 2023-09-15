@@ -66,9 +66,7 @@ describe('date', () => {
     });
     describe('calculateTimeDifference()', () => {
         it('returns message with one of the dates missing', () => {
-            expect(calculateTimeDifference('', '')).toEqual(
-                'missing paramater',
-            );
+            expect(calculateTimeDifference('', '')).toEqual('');
         });
 
         it('returns appropriate string if the times are the same', () => {
@@ -109,9 +107,7 @@ describe('date', () => {
             const to = new Date(
                 kingsDay2023TimeStamp + 3600000 + 60000 + 1000,
             ).toLocaleString();
-            expect(calculateTimeDifference(to, from)).toEqual(
-                'negative difference',
-            );
+            expect(calculateTimeDifference(to, from)).toEqual('');
         });
     });
 });
