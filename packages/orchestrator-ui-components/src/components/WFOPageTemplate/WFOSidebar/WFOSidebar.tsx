@@ -7,14 +7,14 @@ import {
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
-    PATH_NEW_PROCESS,
+    PATH_NEW_SUBSCRIPTION,
     PATH_PROCESSES,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
-import { WFOButtonComboBox } from '../../WFOButtonComboBox/WFOButtonComboBox';
+import { WFONewSubscriptionButtonComboBox } from '../../WFOButtonComboBox/WFOButtonComboBox';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -35,7 +35,7 @@ export const WFOSidebar: FC = () => {
                                     >,
                                 ) => {
                                     e.preventDefault();
-                                    router.push(PATH_NEW_PROCESS);
+                                    router.push(PATH_NEW_SUBSCRIPTION);
                                 }}
                                 iconType="plus"
                                 fullWidth
@@ -44,7 +44,7 @@ export const WFOSidebar: FC = () => {
                             </EuiButton>
                             <EuiSpacer size="m" />
 
-                            <WFOButtonComboBox />
+                            <WFONewSubscriptionButtonComboBox />
                             <EuiSpacer size="m" />
                         </>
                     ),
