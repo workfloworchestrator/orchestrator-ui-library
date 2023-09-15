@@ -14,6 +14,7 @@ import {
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
+import { WFOButtonComboBox } from '../../WFOButtonComboBox/WFOButtonComboBox';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -41,6 +42,9 @@ export const WFOSidebar: FC = () => {
                             >
                                 New Process
                             </EuiButton>
+                            <EuiSpacer size="m" />
+
+                            <WFOButtonComboBox />
                             <EuiSpacer size="m" />
                         </>
                     ),
