@@ -175,26 +175,29 @@ export type Process = {
     };
 };
 
+// From backend
 export enum StepStatus {
     SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending',
     RUNNING = 'running',
-    SUSPEND = 'suspend',
     SKIPPED = 'skipped',
+    SUSPEND = 'suspend',
+    WAITING = 'waiting',
+    AWAITING_CALLBACK = 'awaiting_callback',
+    ABORT = 'abort',
     COMPLETE = 'complete',
 }
 
 export interface ProcessDetail {
     processId: Process['processId'];
-    status: Process['lastStatus'];
+    lastStatus: Process['lastStatus'];
     createdBy: Process['createdBy'];
-    started: Process['startedAt'];
+    startedAt: Process['startedAt'];
     lastStep: string;
-    lastModified: Process['lastModifiedAt'];
-    step: string;
+    lastModifiedAt: Process['lastModifiedAt'];
     workflowName: string;
-    steps: ProcessDetailStep[];
+    steps: Step[];
     subscriptions: {
         page: {
             product: Pick<ProductDefinition, 'name'>;
@@ -202,13 +205,18 @@ export interface ProcessDetail {
             subscriptionId: Subscription['subscriptionId'];
         }[];
     };
-    customer: string;
+    customer: {
+        fullname: string;
+    };
 }
+
+// From backend
 export enum ProcessStatus {
     CREATED = 'created',
     RUNNING = 'running',
     SUSPENDED = 'suspended',
     WAITING = 'waiting',
+    AWAITING_CALLBACK = 'awaiting_callback',
     ABORTED = 'aborted',
     FAILED = 'failed',
     RESUMED = 'resumed',
@@ -217,11 +225,12 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
-export interface ProcessDetailStep {
+export interface Step {
     name: string;
     status: StepStatus;
-    stepid: string; // sic backend
+    stepId: string; // sic backend
     executed: string;
+    state: string;
 }
 
 export interface WorkflowDefinition {

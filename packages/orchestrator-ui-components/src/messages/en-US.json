@@ -59,6 +59,14 @@
             "active": "Active",
             "completed": "Completed"
         },
+        "steps": {
+            "steps": "Steps",
+            "expandAll": "Expand all",
+            "collapseAll": "Collapse all",
+            "showDelta": "Show delta",
+            "viewOptions": "View options",
+            "duration": "duration"
+        },
         "index": {
             "workflowName": "Workflow",
             "step": "Last step",
@@ -81,7 +89,7 @@
             "abort": "Abort",
             "status": "Status",
             "startedBy": "Started by",
-            "currentStep": "Current step",
+            "lastStep": "Last step",
             "startedOn": "Started on",
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",

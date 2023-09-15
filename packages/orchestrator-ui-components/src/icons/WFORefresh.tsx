@@ -4,7 +4,7 @@ import { WFOIconProps } from './WFOIconProps';
 export const WFORefresh: FC<WFOIconProps> = ({
     width = 24,
     height = 24,
-    color,
+    color = '#000000',
 }) => {
     return (
         <svg

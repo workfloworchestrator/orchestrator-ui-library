@@ -5,18 +5,18 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
     return {
         processId: 'processId',
         createdBy: 'createdBy',
-        started: 'started',
-        status: ProcessStatus.CREATED,
+        startedAt: 'startedAt',
+        lastStatus: ProcessStatus.CREATED,
         lastStep: 'lastStep',
-        lastModified: 'lastModified',
-        step: 'step',
+        lastModifiedAt: 'lastModifiedAt',
         workflowName: 'workflowName',
         steps: [
             {
                 name: 'step name',
                 status: StepStatus.RUNNING,
-                stepid: 'step id',
+                stepId: 'step id',
                 executed: 'executed',
+                state: '',
             },
         ],
         subscriptions: {
@@ -28,7 +28,9 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
                 },
             ],
         },
-        customer: 'customer',
+        customer: {
+            fullname: 'customer',
+        },
         ...data,
     };
 };

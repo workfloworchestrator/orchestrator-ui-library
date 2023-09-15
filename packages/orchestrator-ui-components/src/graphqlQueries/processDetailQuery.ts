@@ -11,12 +11,22 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
         processes(filterBy: { value: $processId, field: "processId" }) {
             page {
                 processId
-                status
+                lastStatus
                 createdBy
-                started
-                lastModified
-                step
+                startedAt
+                lastModifiedAt
+                lastStep
                 workflowName
+                steps {
+                    name
+                    status
+                    stepId
+                    executed
+                    state
+                }
+                customer {
+                    fullname
+                }
                 subscriptions {
                     page {
                         product {
@@ -26,13 +36,6 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                         subscriptionId
                     }
                 }
-                steps {
-                    name
-                    status
-                    stepid
-                    executed
-                }
-                customer
             }
         }
     }

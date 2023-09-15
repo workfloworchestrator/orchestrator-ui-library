@@ -2,7 +2,7 @@ import {
     getMostAccurateTimelineStatus,
     mapProcessStepsToTimelineItems,
 } from './timelineUtils';
-import { ProcessDetailStep, StepStatus } from '../../types';
+import { Step, StepStatus } from '../../types';
 
 describe('getMostAccurateTimelineStatus()', () => {
     it('returns previous step when current step has status PENDING', () => {
@@ -31,15 +31,15 @@ describe('getMostAccurateTimelineStatus()', () => {
 });
 describe('mapProcessStepsToTimelineItems()', () => {
     it('merges two steps with the same name given the first step is not a final status', () => {
-        const steps: ProcessDetailStep[] = [
+        const steps: Step[] = [
             {
                 status: StepStatus.FAILED,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
             {
                 status: StepStatus.COMPLETE,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
         ];
 
         const result = mapProcessStepsToTimelineItems(steps);
@@ -50,19 +50,19 @@ describe('mapProcessStepsToTimelineItems()', () => {
     });
 
     it('merges three steps with the same name given none of the steps have a final status', () => {
-        const steps: ProcessDetailStep[] = [
+        const steps: Step[] = [
             {
                 status: StepStatus.FAILED,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
             {
                 status: StepStatus.FAILED,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
             {
                 status: StepStatus.FAILED,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
         ];
 
         const result = mapProcessStepsToTimelineItems(steps);
@@ -73,15 +73,15 @@ describe('mapProcessStepsToTimelineItems()', () => {
     });
 
     it('does not merge the two steps with the same name given the first step is a final status', () => {
-        const steps: ProcessDetailStep[] = [
+        const steps: Step[] = [
             {
                 status: StepStatus.SKIPPED,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
             {
                 status: StepStatus.COMPLETE,
                 name: 'testName',
-            } as ProcessDetailStep,
+            } as Step,
         ];
 
         const result = mapProcessStepsToTimelineItems(steps);
