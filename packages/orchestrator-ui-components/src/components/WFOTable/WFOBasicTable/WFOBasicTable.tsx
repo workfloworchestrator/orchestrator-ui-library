@@ -8,6 +8,7 @@ import {
     WFOTableControlColumnConfig,
     WFOTableDataColumnConfig,
 } from '../utils/columns';
+import { useOrchestratorTheme } from '../../../hooks';
 
 export type WFOBasicTableColumns<T> = {
     [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
@@ -40,20 +41,26 @@ export const WFOBasicTable = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
-}: WFOBasicTableProps<T>) => (
-    <EuiBasicTable
-        items={data}
-        columns={mapWFOTableColumnsToEuiColumns(
-            columns,
-            hiddenColumns,
-            dataSorting,
-            onDataSort,
-        )}
-        pagination={pagination}
-        onChange={onCriteriaChange}
-        loading={isLoading}
-    />
-);
+}: WFOBasicTableProps<T>) => {
+    const { theme } = useOrchestratorTheme();
+    return (
+        <EuiBasicTable
+            css={{
+                background: theme.colors.emptyShade,
+            }}
+            items={data}
+            columns={mapWFOTableColumnsToEuiColumns(
+                columns,
+                hiddenColumns,
+                dataSorting,
+                onDataSort,
+            )}
+            pagination={pagination}
+            onChange={onCriteriaChange}
+            loading={isLoading}
+        />
+    );
+};
 
 function mapWFOTableColumnsToEuiColumns<T>(
     tableColumns: WFOBasicTableColumns<T>,

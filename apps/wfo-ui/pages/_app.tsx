@@ -63,10 +63,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     return (
         <NoSSR>
             <TranslationsProvider>
-                <EuiProvider
-                    colorMode="light"
-                    modify={defaultOrchestratorTheme}
-                >
+                <EuiProvider colorMode="dark" modify={defaultOrchestratorTheme}>
                     <Head>
                         <title>Welcome to example-orchestrator-ui!</title>
                     </Head>

@@ -40,7 +40,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
                         css={{
-                            backgroundColor: theme.colors.body,
+                            backgroundColor: theme.colors.lightestShade,
                         }}
                     >
                         <WFOSidebar />

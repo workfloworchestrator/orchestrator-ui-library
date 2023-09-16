@@ -48,6 +48,7 @@ export const WFOSidebar: FC = () => {
                     id: '1',
                     items: [
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Start',
                             id: '2',
                             isSelected: router.pathname === PATH_START,
@@ -57,6 +58,7 @@ export const WFOSidebar: FC = () => {
                             },
                         },
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Processes',
                             id: '3',
                             isSelected: router.pathname === PATH_PROCESSES,
@@ -67,6 +69,7 @@ export const WFOSidebar: FC = () => {
                             },
                         },
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Subscriptions',
                             id: '4',
                             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
@@ -77,6 +80,7 @@ export const WFOSidebar: FC = () => {
                             },
                         },
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Metadata',
                             id: '5',
                             onClick: () => {
@@ -134,6 +138,7 @@ export const WFOSidebar: FC = () => {
                             ],
                         },
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Tasks',
                             isSelected: router.pathname === PATH_TASKS,
                             id: '6',
@@ -144,6 +149,7 @@ export const WFOSidebar: FC = () => {
                             href: PATH_TASKS,
                         },
                         {
+                            css: { color: '#eeeeee' },
                             name: 'Settings',
                             isSelected: router.pathname === PATH_SETTINGS,
                             id: '7',
