@@ -14,7 +14,7 @@ import {
     ToastsList,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import '@elastic/eui/dist/eui_theme_light.min.css';
+import '@elastic/eui/dist/eui_theme_dark.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
