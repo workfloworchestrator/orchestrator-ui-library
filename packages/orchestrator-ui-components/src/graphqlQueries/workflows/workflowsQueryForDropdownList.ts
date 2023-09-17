@@ -7,16 +7,16 @@ import {
     WorkflowDefinitionsResult,
 } from '../../types';
 
-export const GET_CREATE_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
+export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult<Pick<WorkflowDefinition, 'name' | 'description'>>,
-    GraphqlQueryVariables<Pick<WorkflowDefinition, 'name' | 'description'>>
+    GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
-    query CreateWorkflows($first: IntType!, $after: IntType!) {
-        workflows(
-            first: $first
-            after: $after
-            filterBy: { field: "target", value: "CREATE" }
-        ) {
+    query CreateWorkflows(
+        $first: IntType!
+        $after: IntType!
+        $filterBy: [GraphqlFilter!]
+    ) {
+        workflows(first: $first, after: $after, filterBy: $filterBy) {
             page {
                 name
                 description

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { EuiButton, EuiPopover, EuiSelectable } from '@elastic/eui';
+import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 
 export type ComboBoxOption = {
     itemID: string;
@@ -52,6 +52,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
                 {(list, search) => (
                     <>
                         {search}
+                        <EuiSpacer size="s" />
                         {list}
                     </>
                 )}
