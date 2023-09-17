@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
+import { getStyles } from './styles';
 
 export type ComboBoxOption = {
     itemID: string;
@@ -18,6 +19,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
     onOptionChange,
 }) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
+    const { popoverStyle, selectableStyle } = getStyles();
 
     const Button = (
         <EuiButton
@@ -31,17 +33,14 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
 
     return (
         <EuiPopover
-            css={{
-                inlineSize: '100%',
-                div: { inlineSize: '100%' },
-            }}
+            css={popoverStyle}
             initialFocus={`.euiSelectable .euiFieldSearch`}
             button={Button}
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
             <EuiSelectable
-                css={{ width: '300px' }}
+                css={selectableStyle}
                 searchable
                 options={options}
                 onChange={(_, __, changedOption) =>
