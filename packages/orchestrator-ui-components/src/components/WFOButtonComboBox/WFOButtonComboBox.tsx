@@ -2,68 +2,28 @@ import React, { FC, useState } from 'react';
 import { EuiButton, EuiPopover, EuiSelectable } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import { PATH_NEW_SUBSCRIPTION } from '../WFOPageTemplate';
-
-// GQL Query:
-// query CreateWorkflows {
-//   workflows(first: 1000, filterBy: {field: "target", value: "CREATE"}) {
-//     page {
-//       name
-//       target
-//       description
-//       workflowId
-//     }
-//     pageInfo {
-//       startCursor
-//       endCursor
-//       totalItems
-//     }
-//   }
-// }
+import { useQueryWithGraphql } from '../../hooks';
+import { GET_CREATE_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/createWorkflowsQuery';
 
 export const WFONewSubscriptionButtonComboBox = () => {
     const router = useRouter();
 
-    // Mocked data from backend
-    const mockedData = [
+    const { data } = useQueryWithGraphql(
+        GET_CREATE_WORKFLOWS_GRAPHQL_QUERY,
         {
-            name: 'modify_note',
-            target: 'MODIFY',
-            description: 'Modify Note',
-            workflowId: 'd37a232d-7c1a-4dcc-9712-a40d489500c0',
+            // Avoiding pagination by fetching an unrealistic amount of items
+            first: 1000,
+            after: 0,
         },
-        {
-            name: 'task_clean_up_tasks',
-            target: 'SYSTEM',
-            description: 'Clean up old tasks',
-            workflowId: '00e625f3-7110-45f8-9783-af39e52be29e',
-        },
-        {
-            name: 'task_resume_workflows',
-            target: 'SYSTEM',
-            description:
-                "Resume all workflows that are stuck on tasks with the status 'waiting'",
-            workflowId: 'eaa7686f-22ff-4ba2-a7f2-be8d6c70c8f0',
-        },
-        {
-            name: 'task_validate_products',
-            target: 'SYSTEM',
-            description: 'Validate products',
-            workflowId: '1a098c2d-6aee-4267-b038-ddd0a7c7d1b7',
-        },
-        {
-            name: 'create_core_link',
-            target: 'CREATE',
-            description: 'Create Core Link',
-            workflowId: '9d9657f8-786c-4ad3-8d00-f46f63f25923',
-        },
-    ];
+        'createWorkflows',
+        true,
+    );
 
-    const options: ComboBoxOption[] = mockedData.map(
-        ({ name, description }) => ({
+    const options: ComboBoxOption[] =
+        data?.workflows.page.map(({ name, description }) => ({
             itemID: name,
             label: description,
-        }),
-    );
+        })) ?? [];
 
     // Todo add translations
     return (
@@ -105,6 +65,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
         </EuiButton>
     );
 
+    // Todo: initialFocus does not work with multiple searchFields
     return (
         <EuiPopover
             css={{
