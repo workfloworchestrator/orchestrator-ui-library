@@ -29,14 +29,13 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
         </EuiButton>
     );
 
-    // Todo: initialFocus does not work with multiple searchFields
     return (
         <EuiPopover
             css={{
                 inlineSize: '100%',
                 div: { inlineSize: '100%' },
             }}
-            initialFocus={'.euiFieldSearch'}
+            initialFocus={`.euiSelectable .euiFieldSearch`}
             button={Button}
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
