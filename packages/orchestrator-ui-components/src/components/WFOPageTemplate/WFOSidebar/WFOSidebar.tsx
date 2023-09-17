@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
+import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import {
     PATH_METADATA,
@@ -7,14 +7,13 @@ import {
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
-    PATH_NEW_SUBSCRIPTION,
     PATH_PROCESSES,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
-import { WFONewSubscriptionButtonComboBox } from '../../WFOButtonComboBox/WFOButtonComboBox';
+import { WFONewSubscriptionButtonComboBox } from './WFONewSubscriptionButtonComboBox';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -27,23 +26,6 @@ export const WFOSidebar: FC = () => {
                 {
                     renderItem: () => (
                         <>
-                            <EuiButton
-                                onClick={(
-                                    e: React.MouseEvent<
-                                        HTMLButtonElement | HTMLElement,
-                                        MouseEvent
-                                    >,
-                                ) => {
-                                    e.preventDefault();
-                                    router.push(PATH_NEW_SUBSCRIPTION);
-                                }}
-                                iconType="plus"
-                                fullWidth
-                            >
-                                New Process
-                            </EuiButton>
-                            <EuiSpacer size="m" />
-
                             <WFONewSubscriptionButtonComboBox />
                             <EuiSpacer size="m" />
                         </>
