@@ -17,6 +17,9 @@ export const getStyles = (theme: EuiThemeComputed) => {
                 borderTopRightRadius: radius,
             },
         },
+        'tr.euiTableRow:hover': {
+            backgroundColor: theme.colors.lightestShade,
+        },
     });
 
     return {
