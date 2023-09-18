@@ -13,7 +13,7 @@ import {
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
-import { WFONewSubscriptionButtonComboBox } from './WFONewSubscriptionButtonComboBox';
+import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -26,7 +26,7 @@ export const WFOSidebar: FC = () => {
                 {
                     renderItem: () => (
                         <>
-                            <WFONewSubscriptionButtonComboBox />
+                            <WFOStartCreateWorkflowButtonComboBox />
                             <EuiSpacer size="m" />
                         </>
                     ),
