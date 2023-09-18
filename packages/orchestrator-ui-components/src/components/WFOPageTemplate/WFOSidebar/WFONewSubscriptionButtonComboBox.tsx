@@ -28,7 +28,7 @@ export const WFONewSubscriptionButtonComboBox = () => {
     const options: ComboBoxOption[] =
         data?.workflows.page.map(({ name, description }) => ({
             itemID: name,
-            label: description,
+            label: description ?? name,
         })) ?? [];
 
     return (

@@ -21,8 +21,8 @@ import { WFOLoading } from '../WFOLoading';
 import { Pagination } from '@elastic/eui/src/components';
 import { FilterQuery } from '../WFOFilterTabs';
 import {
-    graphQLFilterMapper,
-    graphQLSortMapper,
+    graphQlProcessFilterMapper,
+    graphQlProcessSortMapper,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
@@ -163,8 +163,8 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         {
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: graphQLSortMapper(dataDisplayParams.sortBy),
-            filterBy: graphQLFilterMapper(alwaysOnFilters),
+            sortBy: graphQlProcessSortMapper(dataDisplayParams.sortBy),
+            filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
         },
         'processList',
         true,
