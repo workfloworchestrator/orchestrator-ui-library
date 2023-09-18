@@ -21,7 +21,9 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
                 name
                 description
                 target
-                productTags
+                products {
+                    tag
+                }
                 createdAt
             }
             pageInfo {

@@ -235,9 +235,9 @@ export interface Step {
 
 export interface WorkflowDefinition {
     name: string;
-    description: string;
-    target: string;
-    productTags: string[];
+    description?: string;
+    target: WorkflowTarget;
+    products: Pick<ProductDefinition, 'tag'>[];
     createdAt: string;
 }
 
