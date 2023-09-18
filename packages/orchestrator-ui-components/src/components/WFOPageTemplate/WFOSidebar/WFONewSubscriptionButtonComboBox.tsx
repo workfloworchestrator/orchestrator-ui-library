@@ -19,9 +19,7 @@ export const WFONewSubscriptionButtonComboBox = () => {
             // Avoiding pagination by fetching an unrealistic amount of items
             first: 1000,
             after: 0,
-            // Todo: waiting for backend support
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/276
-            // filterBy: [{ field: 'target', value: 'CREATE' }],
+            filterBy: [{ field: 'target', value: 'CREATE' }],
         },
         'createWorkflows',
         true,
