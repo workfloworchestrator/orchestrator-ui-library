@@ -27,7 +27,6 @@ import {
     WFOMinusCircleOutline,
     WFOPlusCircleFill,
 } from '../../icons';
-import { parseDateToLocaleString } from '../../utils/date';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
@@ -35,6 +34,7 @@ import { WFOLoading } from '../WFOLoading';
 import { SortOrder } from '../../types';
 import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
+import { WFODateTime } from '../WFODateTime/WFODateTime';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -114,13 +114,15 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'startDate',
             name: t('startDate'),
             width: '150',
-            render: parseDateToLocaleString,
+            render: (value) => value && <WFODateTime dateTime={value} />,
+            renderDetails: (value) => value,
         },
         endDate: {
             field: 'endDate',
             name: t('endDate'),
             width: '150',
-            render: parseDateToLocaleString,
+            render: (value) => value && <WFODateTime dateTime={value} />,
+            renderDetails: (value) => value,
         },
         note: {
             field: 'note',

@@ -10,7 +10,7 @@ import {
     SubscriptionDetailBase,
     SubscriptionDetailResult,
 } from '../types';
-import { parseDate, parseDateToLocaleString } from '../utils/date';
+import { parseDate, parseDateTimeToLocaleString } from '../utils/date';
 
 // Todo: fixedInputs need to be implemented in backend
 // https://github.com/workfloworchestrator/orchestrator-core/issues/304
@@ -114,10 +114,10 @@ export function mapApiResponseToSubscriptionDetail(
         status: subscription.product.status,
         tag: subscription.product.tag ?? '',
         type: subscription.product.productType,
-        createdAt: parseDateToLocaleString(
+        createdAt: parseDateTimeToLocaleString(
             parseDate(subscription.product.createdAt) as Date,
         ),
-        endDate: parseDateToLocaleString(
+        endDate: parseDateTimeToLocaleString(
             parseDate(subscription.product.endDate ?? null),
         ),
     };
@@ -145,10 +145,10 @@ export function mapApiResponseToSubscriptionDetail(
         description: subscription.description,
         insync: subscription.insync,
         status: subscription.status,
-        startDate: parseDateToLocaleString(
+        startDate: parseDateTimeToLocaleString(
             parseDate(subscription.startDate ?? null),
         ),
-        endDate: parseDateToLocaleString(
+        endDate: parseDateTimeToLocaleString(
             parseDate(subscription.endDate ?? null),
         ),
         note: subscription?.note ?? '',

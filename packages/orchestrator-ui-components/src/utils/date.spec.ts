@@ -1,6 +1,6 @@
 import {
     parseDate,
-    parseDateToLocaleString,
+    parseDateTimeToLocaleString,
     parseDateRelativeToToday,
     calculateTimeDifference,
 } from './date';
@@ -29,16 +29,16 @@ describe('date', () => {
             expect(result).toBeInstanceOf(Date);
         });
     });
-    describe('parseDateToLocaleString()', () => {
+    describe('parseDateTimeToLocaleString()', () => {
         it('returns an empty string if the date is null', () => {
-            const result = parseDateToLocaleString(null);
+            const result = parseDateTimeToLocaleString(null);
             expect(result).toEqual('');
         });
 
         it('returns a date string if the date is a valid date string', () => {
             const testDate = new Date('2022-01-02');
 
-            const result = parseDateToLocaleString(testDate);
+            const result = parseDateTimeToLocaleString(testDate);
 
             expect(result).toContain('2-1-2022');
         });
@@ -52,7 +52,9 @@ describe('date', () => {
         it('returns only time when date is today', () => {
             const now = new Date();
             const time = now.toLocaleTimeString('nl-NL');
+
             const result = parseDateRelativeToToday(now.toLocaleString());
+
             expect(result).toEqual(time);
         });
         it('returns date and time when date is not today', () => {
@@ -60,7 +62,9 @@ describe('date', () => {
             const date = kingsDay.toLocaleDateString('nl-NL');
             const time = kingsDay.toLocaleTimeString('nl-NL');
             const dateTime = `${date} ${time}`;
+
             const result = parseDateRelativeToToday(kingsDay.toLocaleString());
+
             expect(result).toEqual(dateTime);
         });
     });

@@ -3,8 +3,8 @@ export type SubscriptionListItem = {
     description: string;
     status: string;
     insync: boolean;
-    startDate: Date | null;
-    endDate: Date | null;
+    startDate: string | null;
+    endDate: string | null;
     productName: string;
     tag: string | null;
     note: string | null;

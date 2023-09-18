@@ -19,7 +19,7 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import { parseDateToLocaleString } from '../../utils';
+import { parseDateTimeToLocaleString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 import type { StoredTableConfig } from '../../components';
@@ -137,12 +137,12 @@ export const WFOProductBlocksPage = () => {
         createdAt: {
             field: PRODUCT_BLOCK_FIELD_CREATED_AT,
             name: t('createdAt'),
-            render: parseDateToLocaleString,
+            render: parseDateTimeToLocaleString,
         },
         endDate: {
             field: PRODUCT_BLOCK_FIELD_END_DATE,
             name: t('endDate'),
-            render: parseDateToLocaleString,
+            render: parseDateTimeToLocaleString,
         },
     };
 
