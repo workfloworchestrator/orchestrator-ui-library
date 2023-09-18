@@ -9,7 +9,7 @@ const StartWorkflowPage = () => {
         ? workflowNameQueryParameter[0]
         : workflowNameQueryParameter;
 
-    return <h1>New subscription: {processName}</h1>;
+    return <h1>Start workflow: {processName}</h1>;
 };
 
 export default StartWorkflowPage;
