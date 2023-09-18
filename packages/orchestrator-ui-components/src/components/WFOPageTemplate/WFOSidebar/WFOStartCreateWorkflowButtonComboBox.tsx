@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQueryWithGraphql } from '../../../hooks';
 import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '../../../graphqlQueries/workflows/workflowsQueryForDropdownList';
-import { PATH_NEW_SUBSCRIPTION } from '../paths';
+import { PATH_START_WORKFLOW } from '../paths';
 import React from 'react';
 import {
     ComboBoxOption,
@@ -9,7 +9,7 @@ import {
 } from '../../WFOButtonComboBox/WFOButtonComboBox';
 import { useTranslations } from 'next-intl';
 
-export const WFONewSubscriptionButtonComboBox = () => {
+export const WFOStartCreateWorkflowButtonComboBox = () => {
     const router = useRouter();
     const t = useTranslations('common');
 
@@ -36,7 +36,7 @@ export const WFONewSubscriptionButtonComboBox = () => {
             buttonText={t('newSubscription')}
             options={options}
             onOptionChange={(selectedOption) =>
-                router.push(`${PATH_NEW_SUBSCRIPTION}/${selectedOption.itemID}`)
+                router.push(`${PATH_START_WORKFLOW}/${selectedOption.itemID}`)
             }
         />
     );
