@@ -5,7 +5,7 @@ import {
     GraphqlQueryVariables,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
-} from '../types';
+} from '../../types';
 
 export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult,

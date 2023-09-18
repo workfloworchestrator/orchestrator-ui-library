@@ -303,8 +303,8 @@ export interface ProcessesDetailResult {
     processes: GraphQlSinglePage<ProcessDetail>;
 }
 
-export interface WorkflowDefinitionsResult {
-    workflows: GraphQlResultPage<WorkflowDefinition>;
+export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
+    workflows: GraphQlResultPage<T>;
 }
 
 interface GraphQlResultPage<T> {

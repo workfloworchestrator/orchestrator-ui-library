@@ -6,7 +6,8 @@
         "addToFavorites": "Add to favorites",
         "product": "Product",
         "deselect": "Deselect",
-        "close": "Close"
+        "close": "Close",
+        "newSubscription": "New subscription"
     },
     "errors": {
         "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",

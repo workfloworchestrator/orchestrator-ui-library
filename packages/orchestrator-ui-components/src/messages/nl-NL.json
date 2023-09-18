@@ -6,7 +6,8 @@
         "addToFavorites": "Favoriet",
         "product": "Produkt",
         "deselect": "Deselecteer",
-        "close": "Sluiten"
+        "close": "Sluiten",
+        "newSubscription": "Nieuwe subscription"
     },
     "errors": {
         "retrieve_stored_settings": "TODO Translate: Something went wrong restoring your settings. Falling back to default settings",

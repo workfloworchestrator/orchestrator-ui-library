@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EuiButton, EuiSideNav, EuiSpacer } from '@elastic/eui';
+import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import {
     PATH_METADATA,
@@ -7,13 +7,13 @@ import {
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
-    PATH_NEW_PROCESS,
     PATH_PROCESSES,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
+import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
@@ -26,21 +26,7 @@ export const WFOSidebar: FC = () => {
                 {
                     renderItem: () => (
                         <>
-                            <EuiButton
-                                onClick={(
-                                    e: React.MouseEvent<
-                                        HTMLButtonElement | HTMLElement,
-                                        MouseEvent
-                                    >,
-                                ) => {
-                                    e.preventDefault();
-                                    router.push(PATH_NEW_PROCESS);
-                                }}
-                                iconType="plus"
-                                fullWidth
-                            >
-                                New Process
-                            </EuiButton>
+                            <WFOStartCreateWorkflowButtonComboBox />
                             <EuiSpacer size="m" />
                         </>
                     ),
