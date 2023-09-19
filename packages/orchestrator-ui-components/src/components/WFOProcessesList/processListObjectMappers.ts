@@ -62,7 +62,7 @@ const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
     }
 };
 
-export const graphQLSortMapper = ({
+export const graphQlProcessSortMapper = ({
     field,
     order,
 }: GraphQLSort<ProcessListItem>): GraphQLSort<Process> => ({
@@ -70,7 +70,7 @@ export const graphQLSortMapper = ({
     order,
 });
 
-export const graphQLFilterMapper = (
+export const graphQlProcessFilterMapper = (
     data?: GraphqlFilter<ProcessListItem>[],
 ): GraphqlFilter<Process>[] | undefined =>
     data?.map(({ field, value }) => ({

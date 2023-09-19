@@ -6,6 +6,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    WFOLoading,
     WFOProductBlockBadge,
 } from '../../components';
 import { WFOTableWithFilter } from '../../components';
@@ -20,137 +21,33 @@ import type { WorkflowDefinition } from '../../types';
 import { SortOrder } from '../../types';
 import { StoredTableConfig } from '../../components';
 
-import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
+import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useStoredTableConfig,
+} from '../../hooks';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
+import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
+import {
+    graphQlWorkflowListMapper,
+    mapWorkflowDefinitionToWorkflowListItem,
+} from './workflowListObjectMapper';
 
-const WORKFLOW_FIELD_NAME: keyof WorkflowDefinition = 'name';
-const WORKFLOW_FIELD_DESCRIPTION: keyof WorkflowDefinition = 'description';
-const WORKFLOW_FIELD_TARGET: keyof WorkflowDefinition = 'target';
-const WORKFLOW_FIELD_PRODUCT_TAGS: keyof WorkflowDefinition = 'productTags';
-const WORKFLOW_FIELD_CREATED_AT: keyof WorkflowDefinition = 'createdAt';
+export type WorkflowListItem = Pick<
+    WorkflowDefinition,
+    'name' | 'description' | 'target' | 'createdAt'
+> & {
+    productTags: string[];
+};
 
 export const WFOWorkflowsPage = () => {
-    //TODO: Delete when backend is implemented - see issue #219
-
-    const isFetching = false;
-    const data = {
-        workflows: {
-            page: [
-                {
-                    name: 'modify_note',
-                    target: 'MODIFY',
-                    description: 'Modify Note',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: [
-                        'Wireless',
-                        'SPNL',
-                        'Node',
-                        'IPP',
-                        'L2VPN',
-                        'SP',
-                        'LP',
-                        'L3VPN',
-                        'LR',
-                        'MSCNL',
-                        'MSC',
-                        'IPBGP',
-                        'IRBSP',
-                        'IPS',
-                        'AGGSP',
-                        'IPPG',
-                        'Corelink',
-                        'NSILP',
-                        'NSISTPNL',
-                        'DCC',
-                        'FW',
-                        'NSISTP',
-                        'IP_PREFIX',
-                        'AGGSPNL',
-                        'IPPP',
-                    ],
-                },
-                {
-                    name: 'task_clean_up_tasks',
-                    target: 'SYSTEM',
-                    description: 'Clean up old tasks',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: [],
-                },
-                {
-                    name: 'task_resume_workflows',
-                    target: 'SYSTEM',
-                    description:
-                        "Resume all workflows that are stuck on tasks with the status 'waiting'",
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: [],
-                },
-                {
-                    name: 'task_validate_products',
-                    target: 'SYSTEM',
-                    description: 'Validate products',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: [],
-                },
-                {
-                    name: 'create_core_link',
-                    target: 'CREATE',
-                    description: 'Create Core Link',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['Corelink'],
-                },
-                {
-                    name: 'create_node',
-                    target: 'CREATE',
-                    description: 'Create Node',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['Node'],
-                },
-                {
-                    name: 'create_ip_prefix',
-                    target: 'CREATE',
-                    description: 'Create IP Prefix',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['IP_PREFIX'],
-                },
-                {
-                    name: 'create_sn8_service_port',
-                    target: 'CREATE',
-                    description: 'Create SN8 Service Port',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['SP', 'SPNL'],
-                },
-                {
-                    name: 'modify_sn8_ip_bgp',
-                    target: 'MODIFY',
-                    description: 'Change a SN8 IP BGP subscription',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['IPBGP'],
-                },
-                {
-                    name: 'create_sn8_ip_bgp',
-                    target: 'CREATE',
-                    description: 'Create SN8 IP BGP',
-                    createdAt: '2022-11-30T15:35:36.057665+00:00',
-                    productTags: ['IPBGP'],
-                },
-            ],
-            pageInfo: {
-                endCursor: 9,
-                hasNextPage: true,
-                hasPreviousPage: false,
-                startCursor: 0,
-                totalItems: 10,
-            },
-        },
-    };
-
     const t = useTranslations('metadata.workflows');
 
     const [tableDefaults, setTableDefaults] =
-        useState<StoredTableConfig<WorkflowDefinition>>();
+        useState<StoredTableConfig<WorkflowListItem>>();
 
-    const getStoredTableConfig = useStoredTableConfig<WorkflowDefinition>(
+    const getStoredTableConfig = useStoredTableConfig<WorkflowListItem>(
         METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     );
 
@@ -163,36 +60,36 @@ export const WFOWorkflowsPage = () => {
     }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<WorkflowDefinition>({
+        useDataDisplayParams<WorkflowListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
             // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
             // the query to wait for the values to be available
             // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
-                field: WORKFLOW_FIELD_NAME,
+                field: 'name',
                 order: SortOrder.ASC,
             },
         });
 
-    const tableColumns: WFOTableColumns<WorkflowDefinition> = {
+    const tableColumns: WFOTableColumns<WorkflowListItem> = {
         name: {
-            field: WORKFLOW_FIELD_NAME,
+            field: 'name',
             name: t('name'),
             width: '200',
         },
         description: {
-            field: WORKFLOW_FIELD_DESCRIPTION,
+            field: 'description',
             name: t('description'),
             width: '300',
         },
         target: {
-            field: WORKFLOW_FIELD_TARGET,
+            field: 'target',
             name: t('target'),
             width: '90',
         },
         productTags: {
-            field: WORKFLOW_FIELD_PRODUCT_TAGS,
+            field: 'productTags',
             name: t('productTags'),
             render: (productTags) => (
                 <>
@@ -214,27 +111,29 @@ export const WFOWorkflowsPage = () => {
             ),
         },
         createdAt: {
-            field: WORKFLOW_FIELD_CREATED_AT,
+            field: 'createdAt',
             name: t('createdAt'),
             width: '110',
         },
     };
 
-    //TODO: uncomment when backend is done
+    const { data, isFetching } = useQueryWithGraphql(
+        GET_WORKFLOWS_GRAPHQL_QUERY,
+        {
+            first: dataDisplayParams.pageSize,
+            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
+            sortBy: graphQlWorkflowListMapper(dataDisplayParams.sortBy),
+        },
+        'workflows',
+        true,
+    );
 
-    // const { data, isFetching } = useQueryWithGraphql(
-    //     GET_WORKFLOWS_GRAPHQL_QUERY,
-    //     {
-    //         first: dataDisplayParams.pageSize,
-    //         after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-    //         sortBy: dataDisplayParams.sortBy,
-    //     },
-    //     'workflows',
-    //     true,
-    // );
+    if (!data) {
+        return <WFOLoading />;
+    }
 
-    const dataSorting: WFODataSorting<WorkflowDefinition> = {
-        field: dataDisplayParams.sortBy?.field ?? WORKFLOW_FIELD_NAME,
+    const dataSorting: WFODataSorting<WorkflowListItem> = {
+        field: dataDisplayParams.sortBy?.field ?? 'name',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
@@ -249,19 +148,19 @@ export const WFOWorkflowsPage = () => {
 
     return (
         <WFOMetadataPageLayout>
-            <WFOTableWithFilter<WorkflowDefinition>
-                data={data ? data.workflows.page : []}
+            <WFOTableWithFilter<WorkflowListItem>
+                data={mapWorkflowDefinitionToWorkflowListItem(data)}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<WorkflowDefinition>(
+                onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
                     dataDisplayParams,
                     setDataDisplayParam,
                 )}
-                onUpdatePage={getPageChangeHandler<WorkflowDefinition>(
+                onUpdatePage={getPageChangeHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdateEsQueryString={getEsQueryStringHandler<WorkflowDefinition>(
+                onUpdateEsQueryString={getEsQueryStringHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}

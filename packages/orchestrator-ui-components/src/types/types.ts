@@ -235,9 +235,9 @@ export interface Step {
 
 export interface WorkflowDefinition {
     name: string;
-    description: string;
-    target: string;
-    productTags: string[];
+    description?: string;
+    target: WorkflowTarget;
+    products: Pick<ProductDefinition, 'tag'>[];
     createdAt: string;
 }
 
@@ -303,8 +303,8 @@ export interface ProcessesDetailResult {
     processes: GraphQlSinglePage<ProcessDetail>;
 }
 
-export interface WorkflowDefinitionsResult {
-    workflows: GraphQlResultPage<WorkflowDefinition>;
+export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
+    workflows: GraphQlResultPage<T>;
 }
 
 interface GraphQlResultPage<T> {

@@ -5,24 +5,21 @@ import {
     GraphqlQueryVariables,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
-} from '../types';
+} from '../../types';
 
-export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
-    WorkflowDefinitionsResult,
+export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
+    WorkflowDefinitionsResult<Pick<WorkflowDefinition, 'name' | 'description'>>,
     GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
-    query MetadataWorkflows(
+    query CreateWorkflows(
         $first: IntType!
         $after: IntType!
-        $sortBy: [GraphqlSort!]
+        $filterBy: [GraphqlFilter!]
     ) {
-        workflows(first: $first, after: $after, sortBy: $sortBy) {
+        workflows(first: $first, after: $after, filterBy: $filterBy) {
             page {
                 name
                 description
-                target
-                productTags
-                createdAt
             }
             pageInfo {
                 endCursor
