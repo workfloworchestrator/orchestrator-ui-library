@@ -35,6 +35,7 @@ import { SortOrder } from '../../types';
 import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
 import { WFODateTime } from '../WFODateTime/WFODateTime';
+import { parseDateTimeToLocaleString } from '../../utils';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -114,15 +115,17 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'startDate',
             name: t('startDate'),
             width: '150',
-            render: (value) => value && <WFODateTime date={value} />,
-            // renderDetails: (value) => value, // todo verify if printing plain text is sufficient
+            render: (value) => <WFODateTime date={value} />,
+            renderDetails: parseDateTimeToLocaleString,
+            clipboardText: parseDateTimeToLocaleString,
         },
         endDate: {
             field: 'endDate',
             name: t('endDate'),
             width: '150',
-            render: (value) => value && <WFODateTime date={value} />,
-            // renderDetails: (value) => value,
+            render: (value) => <WFODateTime date={value} />,
+            renderDetails: parseDateTimeToLocaleString,
+            clipboardText: parseDateTimeToLocaleString,
         },
         note: {
             field: 'note',

@@ -46,14 +46,18 @@ export const parseDateToLocaleString = (value: Date | null) =>
 export const parseTimeToLocaleString = (value: Date | null) =>
     value?.toLocaleTimeString(getCurrentBrowserLocale()) ?? '';
 
+export const isToday = (date: Date) =>
+    date.toLocaleDateString() === new Date().toLocaleDateString();
+
 export const parseDateRelativeToToday = (
-    dateString: string | undefined,
+    date: Date | null,
     eitherDateOrTime: boolean = false,
 ) => {
-    if (!dateString) return '';
-    const date = parseDate(dateString);
+    if (!date) {
+        return '';
+    }
 
-    if (date?.toLocaleDateString() === new Date().toLocaleDateString()) {
+    if (isToday(date)) {
         return parseTimeToLocaleString(date);
     }
 
@@ -61,3 +65,8 @@ export const parseDateRelativeToToday = (
         ? parseDateToLocaleString(date)
         : parseDateTimeToLocaleString(date);
 };
+
+export const parseDateStringRelativeToToday = (
+    dateString: string | undefined,
+    eitherDateOrTime: boolean = false,
+) => parseDateRelativeToToday(parseDate(dateString), eitherDateOrTime);

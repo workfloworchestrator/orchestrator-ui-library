@@ -1,7 +1,7 @@
 import {
     parseDate,
     parseDateTimeToLocaleString,
-    parseDateRelativeToToday,
+    parseDateStringRelativeToToday,
     calculateTimeDifference,
 } from './date';
 
@@ -46,14 +46,14 @@ describe('date', () => {
 
     describe('parseDateRelativeToToday()', () => {
         it('returns an empty string if the date is null', () => {
-            const result = parseDateRelativeToToday(undefined);
+            const result = parseDateStringRelativeToToday(undefined);
             expect(result).toEqual('');
         });
         it('returns only time when date is today', () => {
             const now = new Date();
             const time = now.toLocaleTimeString('nl-NL');
 
-            const result = parseDateRelativeToToday(now.toLocaleString());
+            const result = parseDateStringRelativeToToday(now.toLocaleString());
 
             expect(result).toEqual(time);
         });
@@ -63,7 +63,9 @@ describe('date', () => {
             const time = kingsDay.toLocaleTimeString('nl-NL');
             const dateTime = `${date} ${time}`;
 
-            const result = parseDateRelativeToToday(kingsDay.toLocaleString());
+            const result = parseDateStringRelativeToToday(
+                kingsDay.toLocaleString(),
+            );
 
             expect(result).toEqual(dateTime);
         });

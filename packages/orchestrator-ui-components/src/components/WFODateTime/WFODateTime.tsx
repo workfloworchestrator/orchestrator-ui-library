@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import { parseDateTimeToLocaleString } from '../../utils';
+import {
+    parseDateRelativeToToday,
+    parseDateTimeToLocaleString,
+} from '../../utils';
 
 export type WFODateTimeProps = {
-    date: Date;
+    date: Date | null;
 };
 
-// title full date inclusing time: always!
-// content time OR date
 export const WFODateTime: FC<WFODateTimeProps> = ({ date }) => (
     <span title={parseDateTimeToLocaleString(date)}>
-        {parseDateTimeToLocaleString(date)}
+        {parseDateRelativeToToday(date, true)}
     </span>
 );
