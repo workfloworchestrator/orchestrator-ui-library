@@ -51,7 +51,7 @@ export const isToday = (date: Date) =>
 
 export const parseDateRelativeToToday = (
     date: Date | null,
-    eitherDateOrTime: boolean = false,
+    shortNotation: boolean = false,
 ) => {
     if (!date) {
         return '';
@@ -61,7 +61,7 @@ export const parseDateRelativeToToday = (
         return parseTimeToLocaleString(date);
     }
 
-    return eitherDateOrTime
+    return shortNotation
         ? parseDateToLocaleString(date)
         : parseDateTimeToLocaleString(date);
 };
