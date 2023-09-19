@@ -114,15 +114,15 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'startDate',
             name: t('startDate'),
             width: '150',
-            render: (value) => value && <WFODateTime dateTime={value} />,
-            renderDetails: (value) => value,
+            render: (value) => value && <WFODateTime date={value} />,
+            // renderDetails: (value) => value, // todo verify if printing plain text is sufficient
         },
         endDate: {
             field: 'endDate',
             name: t('endDate'),
             width: '150',
-            render: (value) => value && <WFODateTime dateTime={value} />,
-            renderDetails: (value) => value,
+            render: (value) => value && <WFODateTime date={value} />,
+            // renderDetails: (value) => value,
         },
         note: {
             field: 'note',

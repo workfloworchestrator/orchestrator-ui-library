@@ -1,3 +1,5 @@
+export const getCurrentBrowserLocale = () => window.navigator.language;
+
 export const parseDate = (date: string | null | undefined): Date | null => {
     if (date === null || date === undefined || date === '') {
         return null;
@@ -36,13 +38,13 @@ export const formatDate = (dateString: string | undefined) => {
 };
 
 export const parseDateTimeToLocaleString = (value: Date | null) =>
-    value?.toLocaleString(navigator.language) ?? '';
+    value?.toLocaleString(getCurrentBrowserLocale()) ?? '';
 
 export const parseDateToLocaleString = (value: Date | null) =>
-    value?.toLocaleDateString(navigator.language) ?? '';
+    value?.toLocaleDateString(getCurrentBrowserLocale()) ?? '';
 
 export const parseTimeToLocaleString = (value: Date | null) =>
-    value?.toLocaleTimeString(navigator.language) ?? '';
+    value?.toLocaleTimeString(getCurrentBrowserLocale()) ?? '';
 
 export const parseDateRelativeToToday = (
     dateString: string | undefined,
