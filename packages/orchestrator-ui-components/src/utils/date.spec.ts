@@ -148,7 +148,6 @@ describe('date', () => {
         });
     });
 
-    // Todo use a real date here
     describe('parseIsoString()', () => {
         it('returns the result of the function passed', () => {
             const dateToStringTestFunction = (testDate: Date | null) =>
