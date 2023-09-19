@@ -1,10 +1,11 @@
 import {
     parseDate,
-    parseDateTimeToLocaleString,
+    parseDateToLocaleDateTimeString,
     parseDateStringRelativeToToday,
     calculateTimeDifference,
     getCurrentBrowserLocale,
     parseDateRelativeToToday,
+    parseIsoString,
 } from './date';
 
 const kingsDay2023TimeStamp = 1682589600000;
@@ -36,14 +37,14 @@ describe('date', () => {
     });
     describe('parseDateTimeToLocaleString()', () => {
         it('returns an empty string if the date is null', () => {
-            const result = parseDateTimeToLocaleString(null);
+            const result = parseDateToLocaleDateTimeString(null);
             expect(result).toEqual('');
         });
 
         it('returns a date string if the date is a valid date string', () => {
             const testDate = new Date('2022-01-02');
 
-            const result = parseDateTimeToLocaleString(testDate);
+            const result = parseDateToLocaleDateTimeString(testDate);
 
             expect(result).toContain('1/2/2022');
         });
@@ -144,6 +145,21 @@ describe('date', () => {
                 kingsDay2023TimeStamp + 3600000 + 60000 + 1000,
             ).toISOString();
             expect(calculateTimeDifference(to, from)).toEqual('');
+        });
+    });
+
+    // Todo use a real date here
+    describe('parseIsoString()', () => {
+        it('returns the result of the function passed', () => {
+            const dateToStringTestFunction = (testDate: Date | null) =>
+                testDate?.toISOString().concat('-TEST') ?? 'empty-TEST';
+            const dateIsoString = kingsDay.toISOString();
+
+            const result = parseIsoString(dateToStringTestFunction)(
+                dateIsoString,
+            );
+
+            expect(result).toEqual(`${dateIsoString}-TEST`);
         });
     });
 });

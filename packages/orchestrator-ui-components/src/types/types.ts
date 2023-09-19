@@ -50,8 +50,8 @@ export interface ProductBlockDefinition {
     tag: string;
     description: string;
     status: string;
-    createdAt: Date | null;
-    endDate: Date | null;
+    createdAt: string;
+    endDate: string | null;
     resourceTypes: ResourceTypeDefinition[];
 }
 

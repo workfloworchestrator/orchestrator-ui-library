@@ -19,7 +19,7 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
-import { parseDateTimeToLocaleString } from '../../utils';
+import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
 import { SortOrder } from '../../types';
 import type { StoredTableConfig } from '../../components';
@@ -34,6 +34,7 @@ import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
+import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -137,12 +138,16 @@ export const WFOProductBlocksPage = () => {
         createdAt: {
             field: PRODUCT_BLOCK_FIELD_CREATED_AT,
             name: t('createdAt'),
-            render: parseDateTimeToLocaleString,
+            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
+            clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
         endDate: {
             field: PRODUCT_BLOCK_FIELD_END_DATE,
             name: t('endDate'),
-            render: parseDateTimeToLocaleString,
+            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
+            clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

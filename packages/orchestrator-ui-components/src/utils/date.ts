@@ -34,16 +34,21 @@ export const formatDate = (dateString: string | undefined) => {
     if (!dateString) return '';
 
     const date = parseDate(dateString);
-    return parseDateTimeToLocaleString(date);
+    return parseDateToLocaleDateTimeString(date);
 };
 
-export const parseDateTimeToLocaleString = (value: Date | null) =>
+export const parseIsoString =
+    (dateToStringParser: (date: Date | null) => string) =>
+    (date: string | null) =>
+        dateToStringParser(parseDate(date));
+
+export const parseDateToLocaleDateTimeString = (value: Date | null) =>
     value?.toLocaleString(getCurrentBrowserLocale()) ?? '';
 
-export const parseDateToLocaleString = (value: Date | null) =>
+export const parseDateToLocaleDateString = (value: Date | null) =>
     value?.toLocaleDateString(getCurrentBrowserLocale()) ?? '';
 
-export const parseTimeToLocaleString = (value: Date | null) =>
+export const parseDateToLocaleTimeString = (value: Date | null) =>
     value?.toLocaleTimeString(getCurrentBrowserLocale()) ?? '';
 
 export const isToday = (date: Date) =>
@@ -58,12 +63,12 @@ export const parseDateRelativeToToday = (
     }
 
     if (isToday(date)) {
-        return parseTimeToLocaleString(date);
+        return parseDateToLocaleTimeString(date);
     }
 
     return shortNotation
-        ? parseDateToLocaleString(date)
-        : parseDateTimeToLocaleString(date);
+        ? parseDateToLocaleDateString(date)
+        : parseDateToLocaleDateTimeString(date);
 };
 
 export const parseDateStringRelativeToToday = (
