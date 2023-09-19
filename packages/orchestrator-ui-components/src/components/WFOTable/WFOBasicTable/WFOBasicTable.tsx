@@ -9,6 +9,7 @@ import {
     WFOTableDataColumnConfig,
 } from '../utils/columns';
 import { useOrchestratorTheme } from '../../../hooks';
+import { getStyles } from './styles';
 
 export type WFOBasicTableColumns<T> = {
     [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
@@ -43,11 +44,11 @@ export const WFOBasicTable = <T,>({
     onDataSort,
 }: WFOBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
+    const { basicTableStyle } = getStyles(theme);
+
     return (
         <EuiBasicTable
-            css={{
-                background: theme.colors.emptyShade,
-            }}
+            css={basicTableStyle}
             items={data}
             columns={mapWFOTableColumnsToEuiColumns(
                 columns,

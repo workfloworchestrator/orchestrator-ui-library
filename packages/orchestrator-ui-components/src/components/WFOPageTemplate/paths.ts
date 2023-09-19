@@ -1,5 +1,5 @@
 export const PATH_START = '/';
-export const PATH_NEW_PROCESS = '/new-process';
+export const PATH_START_WORKFLOW = '/start-workflow';
 export const PATH_PROCESSES = '/processes';
 export const PATH_SUBSCRIPTIONS = '/subscriptions';
 export const PATH_METADATA = '/metadata';
