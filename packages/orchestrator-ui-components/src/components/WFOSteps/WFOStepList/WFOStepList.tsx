@@ -1,42 +1,16 @@
 import React, { useState } from 'react';
-import { EuiFlexGroup, EuiButton, EuiText } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { State, Step } from '../../../types';
-import { WFOStep } from '../WFOStep/WFOStep';
+import { Step } from '../../../types';
+import { WFOStep } from '../WFOStep';
 import { getStyles } from '../getStyles';
 import { useOrchestratorTheme } from '../../../hooks';
+import { stateDelta } from '../../../utils';
 
 export interface WFOStepListProps {
     steps: Step[];
     startedAt: string;
 }
-
-export const stateDelta = (prev: State, curr: State) => {
-    const prevOrEmpty = prev ?? {};
-    const prevKeys = Object.keys(prevOrEmpty);
-    const currKeys = Object.keys(curr);
-    const newKeys = currKeys.filter(
-        (key) =>
-            prevKeys.indexOf(key) === -1 ||
-            JSON.stringify(prevOrEmpty[key]) !== JSON.stringify(curr[key]),
-    );
-
-    const newState = newKeys.sort().reduce((acc: State, key) => {
-        if (
-            curr[key] === Object(curr[key]) &&
-            !Array.isArray(curr[key]) &&
-            prevOrEmpty[key]
-        ) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            acc[key] = stateDelta(prevOrEmpty[key], curr[key]);
-        } else {
-            acc[key] = curr[key];
-        }
-        return acc;
-    }, {});
-    return newState;
-};
 
 export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
     const { theme } = useOrchestratorTheme();
@@ -131,7 +105,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
             </EuiFlexGroup>
             <>
                 {steps.map((step, index) => {
-                    let prevState = {};
+                    let previousState = {};
                     let delta = {};
 
                     if (index > 0) {
@@ -139,16 +113,16 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                         //  V1 has a rather big case statement with businness logic here
                         if (steps[index].status === 'success') {
                             // Prepare a delta with the last successful step
-                            let prev_index = index - 1;
+                            let previousIndex = index - 1;
                             while (
-                                prev_index > 0 &&
-                                (steps[prev_index].status === 'failed' ||
-                                    steps[prev_index].status === 'waiting')
+                                previousIndex > 0 &&
+                                (steps[previousIndex].status === 'failed' ||
+                                    steps[previousIndex].status === 'waiting')
                             ) {
-                                prev_index--;
+                                previousIndex--;
                             }
-                            prevState = steps[prev_index].state;
-                            delta = stateDelta(prevState, step.state);
+                            previousState = steps[previousIndex].state;
+                            delta = stateDelta(previousState, step.state);
                         }
 
                         if (steps[index].status === 'waiting') {

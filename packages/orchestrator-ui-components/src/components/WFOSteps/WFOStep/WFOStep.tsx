@@ -9,7 +9,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import type { State, Step } from '../../../types';
+import type { StepState, Step } from '../../../types';
 import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 import { getStyles } from '../getStyles';
 import { formatDate } from '../../../utils';
@@ -18,7 +18,7 @@ import { calculateTimeDifference } from '../../../utils';
 
 export interface WFOStepProps {
     step: Step;
-    delta: State;
+    delta: StepState;
     stepIndex: number;
     stepDetailIsOpen: boolean;
     toggleStepDetailIsOpen: (index: number) => void;

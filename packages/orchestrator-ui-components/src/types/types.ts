@@ -225,8 +225,8 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
-export interface State {
-    [index: string]: object;
+export interface StepState {
+    [index: string]: object | boolean | string | number | [];
 }
 
 export interface Step {
@@ -234,7 +234,7 @@ export interface Step {
     status: StepStatus;
     stepId: string; // sic backend
     executed: string;
-    state: State;
+    state: StepState;
 }
 
 export interface WorkflowDefinition {
