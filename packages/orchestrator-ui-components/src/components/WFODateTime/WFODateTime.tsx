@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import {
+    parseDateOrTimeRelativeToToday,
     parseDateRelativeToToday,
     parseDateToLocaleDateTimeString,
 } from '../../utils';
@@ -13,7 +14,7 @@ export const WFODateTime: FC<WFODateTimeProps> = ({ dateOrIsoString }) => {
 
     return (
         <span title={parseDateToLocaleDateTimeString(date)}>
-            {parseDateRelativeToToday(date, true)}
+            {parseDateOrTimeRelativeToToday(date)}
         </span>
     );
 };

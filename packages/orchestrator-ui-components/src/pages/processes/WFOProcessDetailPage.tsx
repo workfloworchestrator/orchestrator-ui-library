@@ -13,7 +13,8 @@ import { useTranslations } from 'next-intl';
 import { ProcessStatus } from '../../types';
 import {
     getProductNamesFromProcess,
-    parseDateStringRelativeToToday,
+    parseDateRelativeToToday,
+    parseIsoString,
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
@@ -189,13 +190,13 @@ export const WFOProcessDetailPage = ({
                             />
                             <ProcessHeaderValue
                                 translationKey="startedOn"
-                                value={parseDateStringRelativeToToday(
+                                value={parseIsoString(parseDateRelativeToToday)(
                                     process?.startedAt,
                                 )}
                             />
                             <ProcessHeaderValue
                                 translationKey="lastUpdate"
-                                value={parseDateStringRelativeToToday(
+                                value={parseIsoString(parseDateRelativeToToday)(
                                     process?.lastModifiedAt,
                                 )}
                             />
