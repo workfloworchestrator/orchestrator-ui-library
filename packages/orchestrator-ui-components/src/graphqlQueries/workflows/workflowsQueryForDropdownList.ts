@@ -8,7 +8,9 @@ import {
 } from '../../types';
 
 export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
-    WorkflowDefinitionsResult<Pick<WorkflowDefinition, 'name' | 'description'>>,
+    WorkflowDefinitionsResult<
+        Pick<WorkflowDefinition, 'name' | 'description' | 'products'>
+    >,
     GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
     query CreateWorkflows(
@@ -20,6 +22,10 @@ export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
             page {
                 name
                 description
+                products {
+                    productId
+                    name
+                }
             }
             pageInfo {
                 endCursor
