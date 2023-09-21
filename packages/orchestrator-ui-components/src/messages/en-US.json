@@ -1,4 +1,11 @@
 {
+    "pydantic-forms": {
+        "user-input-form": {
+            "cancel": "Cancel",
+            "submit": "Submit",
+            "previous": "Previous"
+        }
+    },
     "main": {
         "title": "Welcome to example-orchestrator-ui!"
     },

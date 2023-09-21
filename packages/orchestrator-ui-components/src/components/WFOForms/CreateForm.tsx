@@ -12,34 +12,37 @@
  * limitations under the License.
  *
  */
-
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { Form } from '../../types/forms';
 import UserInputFormWizard from './UserInputFormWizard';
 import { useMutation, useQueryClient } from 'react-query';
+import { OrchestratorConfigContext } from '../../contexts';
 
-interface IProps {
+interface CreateFormProps {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     preselectedInput?: any;
     formKey: string;
     handleSubmit: (userInputs: any) => void;
 }
 
-const endpoint = 'http://localhost:8080/api/surf/forms';
+type MutationFunction = () => void;
 
-export default function CreateForm(props: IProps) {
-    const { preselectedInput, formKey, handleSubmit } = props;
+export default function CreateForm({
+    preselectedInput,
+    formKey,
+    handleSubmit,
+}: CreateFormProps) {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const [form, setForm] = useState<Form>({});
     const { stepUserInput, hasNext } = form;
+    const apiEndPoint = `${orchestratorApiBaseUrl}/${formKey}`;
 
     const queryClient = useQueryClient();
 
     const setFormStatus = async (data: any) => {
-        console.log('Received data', data);
         const payload = data ?? [];
-        console.log('Using payload', payload);
-
-        const response = await fetch(`${endpoint}/${formKey}`, {
+        console.log('calling setForStatus with ', data);
+        const response = await fetch(`${apiEndPoint}/${formKey}`, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {
@@ -54,13 +57,14 @@ export default function CreateForm(props: IProps) {
         setFormStatus,
         {
             onMutate: (data: any) => {
-                console.log('onMutate() data: ', data);
+                console.log('on mutate with', data);
                 // Todo: determine if we need a global accessible form state
                 queryClient.setQueryData(['formStatus'], data);
             },
-            onSuccess: (data) => {
-                console.log('onSuccess() data: ', data);
+            onSuccess: (data, query) => {
+                console.log('mutate success', data);
                 if (data.type === 'FormValidationError') {
+                    // Do we ever get the errors here? Or are they always in the wizard?
                     alert('Validation logic, not sure where to handle this');
                     // console.log(data)
                 } else {
@@ -73,32 +77,34 @@ export default function CreateForm(props: IProps) {
                 }
             },
             onError: () => {
-                console.log('onError()', error);
+                console.log('createForm useMutation onError()', error);
             },
             onSettled: () => {
-                console.log('onSettled() flushing cache');
+                console.log('createForm onSettled() flushing cache');
                 // queryClient.invalidateQueries("formStatus").then()
             },
         },
     );
 
-    // const submit = useCallback(
-    //     (userInputs: {}[]) => {
-    //         return mutate(userInputs)
-    //     },
-    //     [formKey, handleSubmit],
-    // );
-
     const submit = useCallback(
         (userInputs: {}[]) => {
-            return fetch(`${endpoint}/${formKey}`, {
+            return fetch(apiEndPoint, {
                 method: 'POST',
                 body: JSON.stringify(userInputs),
                 headers: {
                     // 'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-            }).then((r) => r.json()); // It might be better to do the json() call in UserInputForm or in the wizard
+            })
+                .then((r) => {
+                    console.log(`${endpoint}/${formKey}`, r);
+                    return r.json();
+                })
+                .catch(() => {
+                    console.log(
+                        'Catching fetch failure when calling' + apiEndPoint,
+                    );
+                }); // It might be better to do the json() call in UserInputForm or in the wizard
             // }).then(r=>r.json()).then((form) => {handleSubmit(form)})
 
             // OLD code
@@ -107,7 +113,7 @@ export default function CreateForm(props: IProps) {
             //     handleSubmit(form);
             // });
         },
-        [formKey, handleSubmit],
+        [formKey, apiEndPoint],
     );
 
     useEffect(() => {

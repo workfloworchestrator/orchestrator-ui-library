@@ -19,14 +19,18 @@ import React, { useEffect, useState } from 'react';
 import { InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
 
-interface Form {
+interface FormProps {
     form: InputForm;
     hasNext?: boolean;
 }
 
-interface IProps {
+interface UserInputFormWizardProps {
     stepUserInput: InputForm;
-    validSubmit: (form: {}[]) => Promise<void>;
+    validSubmit: (form: object[]) => Promise<{
+        type: string;
+        form: object;
+        hasNext: boolean;
+    }>;
     cancel: () => void;
     hasNext?: boolean;
 }
@@ -43,12 +47,12 @@ function UserInputFormWizard({
     stepUserInput,
     validSubmit,
     cancel,
-}: IProps) {
+}: UserInputFormWizardProps) {
     const router = useRouter();
-    const [forms, setForms] = useState<Form[]>([
+    const [forms, setForms] = useState<FormProps[]>([
         { form: stepUserInput, hasNext: hasNext },
     ]);
-    const [userInputs, setUserInputs] = useState<{}[]>([]);
+    const [userInputs, setUserInputs] = useState<object[]>([]);
 
     useEffect(() => {
         setForms([{ form: stepUserInput, hasNext: hasNext }]);
@@ -60,8 +64,7 @@ function UserInputFormWizard({
         setForms(forms.filter((item) => item !== current));
     };
 
-    const submit = (currentFormData: {}) => {
-        console.log('UserInputFormWizard submit data: ', currentFormData);
+    const submit = (currentFormData: object) => {
         const newUserInputs = userInputs.slice(0, forms.length - 1);
         newUserInputs.push(currentFormData);
 
@@ -69,37 +72,17 @@ function UserInputFormWizard({
 
         // debugger
         return result.then((d) => {
-            alert(JSON.stringify(d));
-            if (d?.type === 'FormNotCompleteError') {
+            if (
+                d &&
+                typeof d === 'object' &&
+                d.type === 'FormNotCompleteError'
+            ) {
                 window.scrollTo(0, 0);
                 // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
                 setForms([...forms, { form: d.form, hasNext: d.hasNext }]);
                 setUserInputs(newUserInputs);
             }
         });
-
-        //     .catch(e => {
-        //     debugger
-        //     if (e.response && e.response.status === 510) {
-        //     } else {
-        //         throw e;
-        //     }
-        // })
-
-        // return apiClient.catchErrorStatus<FormNotCompleteResponse>(
-        //     result,
-        //     HttpStatusCode.NOT_EXTENDED,
-        //     (json) => {
-        //         // Scroll to top when navigating to next screen of wizard
-        //         window.scrollTo(0, 0);
-        //         // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
-        //         setForms([
-        //             ...forms,
-        //             { form: json.form, hasNext: json.hasNext },
-        //         ]);
-        //         setUserInputs(newUserInputs);
-        //     },
-        // );
     };
 
     const currentForm = forms[forms.length - 1];
@@ -123,7 +106,6 @@ function UserInputFormWizard({
                 key={key}
                 router={router}
                 stepUserInput={currentForm.form}
-                // @ts-ignore
                 validSubmit={submit}
                 previous={previous}
                 hasNext={currentForm.hasNext}

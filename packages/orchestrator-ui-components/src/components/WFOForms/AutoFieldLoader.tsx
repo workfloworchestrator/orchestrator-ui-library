@@ -11,6 +11,7 @@ import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
 
 export function autoFieldFunction(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     props: GuaranteedProps<unknown> & Record<string, any>,
     uniforms: Context<unknown>,
 ) {

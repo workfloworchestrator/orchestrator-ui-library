@@ -75,9 +75,7 @@ function Select({
         value: value,
     }));
 
-    const selectedValue = options.find(
-        (option: any) => option.value === value,
-    );
+    const selectedValue = options.find((option: any) => option.value === value);
 
     return (
         <section {...filterDOMProps(props)}>

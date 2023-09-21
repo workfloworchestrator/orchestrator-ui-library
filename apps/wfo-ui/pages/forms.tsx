@@ -14,7 +14,7 @@ export function FormsPage() {
             <EuiHorizontalRule />
             <EuiSpacer />
             <CreateForm
-                formKey={'minimal_example_form'}
+                formKey={'surf/forms/minimal_example_form'}
                 handleSubmit={handleSubmit}
             />
             <EuiSpacer />

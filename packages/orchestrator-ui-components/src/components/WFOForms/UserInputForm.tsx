@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,9 +29,9 @@ import { useTranslations } from 'next-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import React, { useContext, useState } from 'react';
-import { NextRouter, withRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 
-import { filterDOMProps, joinName } from 'uniforms';
+import { ComponentDetector, filterDOMProps, joinName } from 'uniforms';
 import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
 import { AutoField, AutoForm } from 'uniforms-unstyled';
 
@@ -40,15 +41,19 @@ import AutoFields from './AutoFields';
 import { ValidationError } from '../../types/forms';
 import HttpStatusCode from '../../types/status_codes';
 
+type UserInputValue = string | number | object;
+
 interface IProps {
     router: NextRouter;
     stepUserInput: JSONSchema6;
-    validSubmit: (userInput: { [index: string]: any }) => Promise<void>;
+    validSubmit: (userInput: {
+        [index: string]: UserInputValue;
+    }) => Promise<void>;
     cancel: (e: React.MouseEvent<HTMLButtonElement>) => void;
     previous: (e: React.MouseEvent<HTMLButtonElement>) => void;
     hasNext?: boolean;
     hasPrev?: boolean;
-    userInput: {};
+    userInput: object;
 }
 
 interface Buttons {
@@ -86,7 +91,7 @@ filterDOMProps.register('examples');
 filterDOMProps.register('allOf');
 filterDOMProps.register('options');
 
-function resolveRef(reference: string, schema: Record<string, any>) {
+function resolveRef(reference: string, schema: Record<string, string>) {
     invariant(
         reference.startsWith('#'),
         'Reference is not an internal reference, and only such are allowed: "%s"',
@@ -96,20 +101,28 @@ function resolveRef(reference: string, schema: Record<string, any>) {
     const resolvedReference = reference
         .split('/')
         .filter((part) => part && part !== '#')
-        .reduce((definition, next) => definition[next], schema);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .reduce((definition: any, next: any) => {
+            if (definition && next && definition[next]) {
+                return definition[next];
+            }
+            return definition;
+        }, schema[0]);
 
     invariant(
         resolvedReference,
-        'Reference not found in schema: "%s"',
+        '123 Reference not found in schema: "%s"',
         reference,
     );
 
     return resolvedReference;
 }
+
 class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863
     getField(name: string) {
-        return joinName(null, name).reduce(
+        // joinName with first argument null returns array of escaped parts
+        const result = joinName(null, name).reduce(
             (definition, next, nextIndex, array) => {
                 const previous = joinName(array.slice(0, nextIndex));
                 const isRequired = get(
@@ -146,6 +159,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                         .filter((key) => definition[key])
                         .map((key) => {
                             // FIXME: Correct type for `definition`.
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const localDef = (definition[key] as any[]).map(
                                 (subSchema) =>
                                     subSchema.$ref
@@ -170,7 +184,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                 }
 
                 ['allOf', 'anyOf', 'oneOf'].forEach((key) => {
-                    if (definition[key]) {
+                    if (definition && definition[key]) {
                         // FIXME: Correct type for `definition`.
                         _definition[key] = (definition[key] as any[]).map(
                             (def) =>
@@ -182,6 +196,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                 });
 
                 // Naive computation of combined type, properties and required
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const combinedPartials: any[] = []
                     .concat(
                         _definition.allOf,
@@ -232,6 +247,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
             },
             this.schema,
         );
+        return result;
     }
 
     getProps(name: string) {
@@ -274,6 +290,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
         return props;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getInitialValue(name: string, props: Record<string, any> = {}): any {
         const {
             default: _default,
@@ -286,7 +303,6 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                 : get(this.schema.default, name),
             const: constValue = _const,
             type = _type,
-            // @ts-ignore
         } = this._compiledSchema[name];
 
         // use const if present
@@ -353,11 +369,18 @@ function fillPreselection(form: JSONSchema6, query: string) {
     return form;
 }
 
-function nullifyEmptyStrings(data: object): object {
-    return Object.keys(data).reduce((acc, key) => {
-        acc[key] = data[key] === '' ? null : data[key];
-        return acc;
-    }, {});
+function nullifyEmptyStrings(
+    data: Record<string, string>,
+): Record<string, string | null> {
+    return Object.keys(data).reduce(
+        (acc: Record<string, string | null>, key: string) => {
+            if (!acc[key]) {
+                acc[key] = (data && data[key]) === '' ? null : data[key];
+            }
+            return acc;
+        },
+        {},
+    );
 }
 
 function UserInputForm({
@@ -375,7 +398,7 @@ function UserInputForm({
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
     const [rootErrors, setRootErrors] = useState<string[]>([]);
 
-    const openDialog = (e: React.FormEvent) => {
+    const openDialog = () => {
         showConfirmDialog({
             question: '',
             confirmAction: () => {},
@@ -383,28 +406,30 @@ function UserInputForm({
             leavePage: true,
         });
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const submit = async (userInput: any = {}) => {
         if (!processing) {
             setProcessing(true);
 
             try {
                 await validSubmit(userInput);
-                // console.log("Test: ", test)
                 setProcessing(false);
                 return null;
-            } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
                 // debugger
                 setProcessing(false);
 
-                // @ts-ignore
                 if (
+                    error &&
+                    typeof error === 'object' &&
+                    Object.keys(error).includes('response') &&
+                    Array.isArray(error.response) &&
                     [
                         HttpStatusCode.BAD_REQUEST,
                         HttpStatusCode.UNPROCESSABLE_ENTITY,
                     ].includes(error.response.status)
                 ) {
-                    // @ts-ignore
                     const json = error.response.data;
                     setNrOfValidationErrors(json.validation_errors.length);
                     setRootErrors(
@@ -533,7 +558,9 @@ function UserInputForm({
                         stepUserInput.title !== 'unknown' && (
                             <h3>{stepUserInput.title}</h3>
                         )}
-                    <AutoFieldProvider value={autoFieldFunction}>
+                    <AutoFieldProvider
+                        value={autoFieldFunction as ComponentDetector}
+                    >
                         <AutoForm
                             schema={bridge}
                             onSubmit={submit}
@@ -567,8 +594,11 @@ function UserInputForm({
                             {rootErrors.length > 0 && (
                                 <section className="form-errors">
                                     <em className="error backend-validation-metadata">
-                                        {rootErrors.map((error) => (
-                                            <div className="euiFormErrorText euiFormRow__text">
+                                        {rootErrors.map((error, index) => (
+                                            <div
+                                                className="euiFormErrorText euiFormRow__text"
+                                                key={index}
+                                            >
                                                 {error}
                                             </div>
                                         ))}
