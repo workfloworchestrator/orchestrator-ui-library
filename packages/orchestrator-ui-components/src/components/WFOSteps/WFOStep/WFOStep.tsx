@@ -35,19 +35,18 @@ export const WFOStep = ({
 }: WFOStepProps) => {
     const { name, executed, status } = step;
     const { theme } = useOrchestratorTheme();
-    const { stepListContentBoldTextStyle, stepDurationStyle } =
-        getStyles(theme);
+    const {
+        stepContainerStyle,
+        stepListContentBoldTextStyle,
+        stepDurationStyle,
+        stepToggleExpandStyle,
+        stepRowStyle,
+    } = getStyles(theme);
     const t = useTranslations('processes.steps');
 
     return (
         <EuiPanel>
-            <EuiFlexGroup
-                css={{
-                    gap: 0,
-                    alignItems: 'center',
-                    marginBottom: 20,
-                }}
-            >
+            <EuiFlexGroup css={stepContainerStyle}>
                 <WFOStepStatusIcon stepStatus={status} />
 
                 <EuiFlexItem grow={0}>
@@ -57,13 +56,7 @@ export const WFOStep = ({
                     </EuiText>
                 </EuiFlexItem>
 
-                <EuiFlexGroup
-                    css={{
-                        flexGrow: 1,
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                    }}
-                >
+                <EuiFlexGroup css={stepRowStyle}>
                     {step.executed && (
                         <>
                             <EuiFlexItem
@@ -82,10 +75,7 @@ export const WFOStep = ({
                             </EuiFlexItem>
                             <EuiFlexItem
                                 grow={0}
-                                css={{
-                                    marginRight: theme.base / 2,
-                                    cursor: 'pointer',
-                                }}
+                                css={stepToggleExpandStyle}
                                 onClick={() =>
                                     toggleStepDetailIsOpen(stepIndex)
                                 }
