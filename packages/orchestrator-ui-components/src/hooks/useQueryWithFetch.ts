@@ -1,19 +1,18 @@
 import { useQuery } from 'react-query';
 import { Variables } from 'graphql-request/build/cjs/types';
-import { useSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import { useSessionWithToken } from './useSessionWithToken';
 
 export const useQueryWithFetch = <T, V extends Variables>(
     url: string,
     queryVars: V,
     queryKey: string,
 ) => {
-    const { data } = useSession();
+    const { session } = useSessionWithToken();
     let requestHeaders = {};
 
-    if (data) {
-        // not sure how to type this...
-        // @ts-ignore
-        const { accessToken } = data;
+    if (session) {
+        const { accessToken } = session;
 
         requestHeaders = {
             authorization: `Bearer ${accessToken}`,
@@ -27,6 +26,7 @@ export const useQueryWithFetch = <T, V extends Variables>(
         });
 
         if (response.status < 200 || response.status >= 300) {
+            console.log(response.status, response.body);
             if (response.status === 401 || response.status === 403) {
                 signOut();
             }

@@ -48,19 +48,19 @@ function CustomApp({
     const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     return (
-        <NoSSR>
-            <TranslationsProvider>
-                <EuiProvider
-                    colorMode="light"
-                    modify={defaultOrchestratorTheme}
-                >
-                    <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
-                        <Head>
-                            <title>Welcome to example-orchestrator-ui!</title>
-                        </Head>
-                        <main className="app">
-                            <SessionProvider session={pageProps.session}>
-                                <Auth>
+        <SessionProvider session={pageProps.session}>
+            <Auth>
+                <NoSSR>
+                    <TranslationsProvider>
+                        <EuiProvider
+                            colorMode="light"
+                            modify={defaultOrchestratorTheme}
+                        >
+                            <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
+                                <Head>
+                                    <title>Welcome to example-orchestrator-ui!</title>
+                                </Head>
+                                <main className="app">
                                     <OrchestratorConfigProvider
                                         initialOrchestratorConfig={orchestratorConfig}
                                     >
@@ -93,13 +93,13 @@ function CustomApp({
                                             />
                                         </QueryClientProvider>
                                     </OrchestratorConfigProvider>
-                                </Auth>
-                            </SessionProvider>
-                        </main>
-                    </ApiClientContextProvider>
-                </EuiProvider>
-            </TranslationsProvider>
-        </NoSSR>
+                                </main>
+                            </ApiClientContextProvider>
+                        </EuiProvider>
+                    </TranslationsProvider>
+                </NoSSR>
+            </Auth>
+        </SessionProvider>
     );
 }
 

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
-import { useSession } from 'next-auth/react';
 import { useQueryWithFetch } from './useQueryWithFetch';
+import { useSessionWithToken } from './useSessionWithToken';
 
 export type GlobalStatus = 'RUNNING' | 'PAUSED' | 'PAUSING';
 export interface EngineStatus {
@@ -27,12 +27,11 @@ export const useEngineStatusQuery = () => {
 export const useEngineStatusMutation = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
     const queryClient = useQueryClient();
-    const { data } = useSession();
+    const { session } = useSessionWithToken();
     let requestHeaders = {};
 
-    if (data) {
-        // @ts-ignore
-        const { accessToken } = data;
+    if (session) {
+        const { accessToken } = session;
 
         requestHeaders = {
             Authorization: `Bearer ${accessToken}`,

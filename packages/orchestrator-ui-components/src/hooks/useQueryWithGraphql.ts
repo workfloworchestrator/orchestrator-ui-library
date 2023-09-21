@@ -3,7 +3,7 @@ import { GraphQLClient } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { Variables } from 'graphql-request/build/cjs/types';
-import { useSession } from 'next-auth/react';
+import { useSessionWithToken } from './useSessionWithToken';
 
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
@@ -15,13 +15,11 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
-    const { data } = useSession();
+    const { session } = useSessionWithToken();
     let requestHeaders = {};
 
-    if (data) {
-        // not sure how to type this...
-        // @ts-ignore
-        const { accessToken } = data;
+    if (session) {
+        const { accessToken } = session;
 
         requestHeaders = {
             authorization: `Bearer ${accessToken}`,
