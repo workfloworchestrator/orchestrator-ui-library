@@ -30,18 +30,24 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
             .flatMap(({ name: workflowName, products }) =>
                 products.map(({ productId, name: productName }) => ({
                     label: productName,
-                    itemID: `${workflowName}?productId=${productId}`,
+                    itemID: `${workflowName}/${productId}`,
                 })),
             )
             .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
+
+    const handleOptionChange = (selectedProduct: ComboBoxOption) => {
+        const [workflowName, productId] = selectedProduct.itemID.split('/');
+        router.push({
+            pathname: `${PATH_START_WORKFLOW}/${workflowName}`,
+            query: { productId },
+        });
+    };
 
     return (
         <WFOButtonComboBox
             buttonText={t('newSubscription')}
             options={productList}
-            onOptionChange={(selectedProduct) =>
-                router.push(`${PATH_START_WORKFLOW}/${selectedProduct.itemID}`)
-            }
+            onOptionChange={handleOptionChange}
         />
     );
 };
