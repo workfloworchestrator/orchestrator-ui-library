@@ -14,6 +14,7 @@ import { ProcessStatus } from '../../types';
 import {
     getProductNamesFromProcess,
     parseDateRelativeToToday,
+    parseIsoString,
 } from '../../utils';
 import { useOrchestratorTheme, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
@@ -189,13 +190,13 @@ export const WFOProcessDetailPage = ({
                             />
                             <ProcessHeaderValue
                                 translationKey="startedOn"
-                                value={parseDateRelativeToToday(
+                                value={parseIsoString(parseDateRelativeToToday)(
                                     process?.startedAt,
                                 )}
                             />
                             <ProcessHeaderValue
                                 translationKey="lastUpdate"
-                                value={parseDateRelativeToToday(
+                                value={parseIsoString(parseDateRelativeToToday)(
                                     process?.lastModifiedAt,
                                 )}
                             />

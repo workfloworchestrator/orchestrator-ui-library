@@ -1,5 +1,4 @@
-// Todo #95: Fix default locale
-export const DUTCH_LOCALE = 'nl-NL';
+export const getCurrentBrowserLocale = () => window.navigator.language;
 
 export const parseDate = (date: string | null | undefined): Date | null => {
     if (date === null || date === undefined || date === '') {
@@ -35,23 +34,42 @@ export const formatDate = (dateString: string | undefined) => {
     if (!dateString) return '';
 
     const date = parseDate(dateString);
-    return parseDateToLocaleString(date);
+    return parseDateToLocaleDateTimeString(date);
 };
 
-export const parseDateToLocaleString = (value: Date | null) =>
-    // Todo #95: Fix default locale (guess it via browser lang?)
-    value?.toLocaleString(DUTCH_LOCALE) ?? '';
+export const parseIsoString =
+    (dateToStringParser: (date: Date | null) => string) =>
+    (date: string | null) =>
+        dateToStringParser(parseDate(date));
 
-export const parseTimeToLocaleString = (value: Date | null) =>
-    // Todo #95: Fix default locale (guess it via browser lang?)
-    value?.toLocaleTimeString(DUTCH_LOCALE) ?? '';
+export const parseDateToLocaleDateTimeString = (value: Date | null) =>
+    value?.toLocaleString(getCurrentBrowserLocale()) ?? '';
 
-export const parseDateRelativeToToday = (dateString: string | undefined) => {
-    if (!dateString) return '';
-    const date = parseDate(dateString);
-    if (date?.toLocaleDateString() === new Date().toLocaleDateString()) {
-        return parseTimeToLocaleString(date);
-    } else {
-        return parseDateToLocaleString(date);
+export const parseDateToLocaleDateString = (value: Date | null) =>
+    value?.toLocaleDateString(getCurrentBrowserLocale()) ?? '';
+
+export const parseDateToLocaleTimeString = (value: Date | null) =>
+    value?.toLocaleTimeString(getCurrentBrowserLocale()) ?? '';
+
+export const isToday = (date: Date) =>
+    date.toLocaleDateString() === new Date().toLocaleDateString();
+
+export const parseDateOrTimeRelativeToToday = (date: Date | null) => {
+    if (!date) {
+        return '';
     }
+
+    return isToday(date)
+        ? parseDateToLocaleTimeString(date)
+        : parseDateToLocaleDateString(date);
+};
+
+export const parseDateRelativeToToday = (date: Date | null) => {
+    if (!date) {
+        return '';
+    }
+
+    return isToday(date)
+        ? parseDateToLocaleTimeString(date)
+        : parseDateToLocaleDateTimeString(date);
 };

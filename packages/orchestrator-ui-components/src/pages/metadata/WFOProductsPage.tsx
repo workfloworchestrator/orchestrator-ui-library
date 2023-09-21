@@ -33,6 +33,8 @@ import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
 import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
 import { StoredTableConfig } from '../../components';
+import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
+import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -139,6 +141,9 @@ export const WFOProductsPage = () => {
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
             name: t('createdAt'),
+            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
+            clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

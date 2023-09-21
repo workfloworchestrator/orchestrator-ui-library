@@ -28,7 +28,7 @@ export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
             endDate: parseDate(endDate),
             status,
             subscriptionId,
-            note: note ?? null,
+            note,
         };
     });
 }
