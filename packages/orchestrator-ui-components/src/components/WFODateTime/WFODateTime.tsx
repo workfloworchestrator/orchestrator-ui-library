@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import {
     parseDateOrTimeRelativeToToday,
-    parseDateRelativeToToday,
     parseDateToLocaleDateTimeString,
 } from '../../utils';
 

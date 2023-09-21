@@ -1,17 +1,22 @@
 import {
     parseDate,
     parseDateToLocaleDateTimeString,
-    parseDateStringRelativeToToday,
     calculateTimeDifference,
     getCurrentBrowserLocale,
     parseDateRelativeToToday,
     parseIsoString,
+    parseDateOrTimeRelativeToToday,
 } from './date';
 
-const kingsDay2023TimeStamp = 1682589600000;
-const kingsDay = new Date(kingsDay2023TimeStamp);
-const kingsDayDate = kingsDay.toLocaleDateString(getCurrentBrowserLocale());
-const kingsDayTime = kingsDay.toLocaleTimeString(getCurrentBrowserLocale());
+const testDateIsoString = '2023-04-27T10:00:00.000Z';
+const testDate = new Date(testDateIsoString);
+const testDateEpoch = testDate.valueOf();
+const testDateDateString = testDate.toLocaleDateString(
+    getCurrentBrowserLocale(),
+);
+const testDateTimeString = testDate.toLocaleTimeString(
+    getCurrentBrowserLocale(),
+);
 
 describe('date', () => {
     describe('parseDate()', () => {
@@ -52,52 +57,47 @@ describe('date', () => {
 
     describe('parseDateRelativeToToday()', () => {
         it('returns an empty string if the date is null', () => {
-            const result = parseDateStringRelativeToToday(undefined);
+            const result = parseDateRelativeToToday(null);
             expect(result).toEqual('');
         });
         it('returns only time when date is today', () => {
             const now = new Date();
-            const time = now.toLocaleTimeString(getCurrentBrowserLocale());
 
-            const result = parseDateStringRelativeToToday(now.toISOString());
+            const result = parseDateRelativeToToday(now);
 
-            expect(result).toEqual(time);
+            const expectedResult = now.toLocaleTimeString(
+                getCurrentBrowserLocale(),
+            );
+            expect(result).toEqual(expectedResult);
         });
         it('returns date and time when date is not today', () => {
-            const kingsDayIsoString = kingsDay.toISOString();
+            const result = parseDateRelativeToToday(testDate);
 
-            const result = parseDateStringRelativeToToday(kingsDayIsoString);
-
-            const expectedDateTime = `${kingsDayDate}, ${kingsDayTime}`;
-            expect(result).toEqual(expectedDateTime);
-        });
-        it('returns date and time when date is not today', () => {
-            const result = parseDateRelativeToToday(kingsDay);
-
-            const expectedDateTime = `${kingsDayDate}, ${kingsDayTime}`;
+            const expectedDateTime = `${testDateDateString}, ${testDateTimeString}`;
             expect(result).toEqual(expectedDateTime);
         });
     });
 
-    describe('parseDateRelativeToToday()', () => {
+    describe('parseDateOrTimeRelativeToToday()', () => {
         it('returns time only when date is today', () => {
             const now = new Date();
-            const time = now.toLocaleTimeString(getCurrentBrowserLocale());
 
-            const result = parseDateRelativeToToday(now);
+            const result = parseDateOrTimeRelativeToToday(now);
 
-            expect(result).toEqual(time);
+            const expectedResult = now.toLocaleTimeString(
+                getCurrentBrowserLocale(),
+            );
+            expect(result).toEqual(expectedResult);
         });
-        it('returns date and time when date is not today', () => {
-            const result = parseDateRelativeToToday(kingsDay);
+        it('returns only the date when that date is not today', () => {
+            const result = parseDateOrTimeRelativeToToday(testDate);
 
-            const expectedDateTime = `${kingsDayDate}, ${kingsDayTime}`;
-            expect(result).toEqual(expectedDateTime);
+            expect(result).toEqual(testDateDateString);
         });
         it('returns date only when date is not today and requesting "short notation"', () => {
-            const result = parseDateRelativeToToday(kingsDay, true);
+            const result = parseDateOrTimeRelativeToToday(testDate);
 
-            expect(result).toEqual(kingsDayDate);
+            expect(result).toEqual(testDateDateString);
         });
     });
 
@@ -107,44 +107,72 @@ describe('date', () => {
         });
 
         it('returns appropriate string if the times are the same', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            expect(calculateTimeDifference(from, from)).toEqual('00:00:00');
+            expect(
+                calculateTimeDifference(testDateIsoString, testDateIsoString),
+            ).toEqual('00:00:00');
         });
 
         it('returns appropriate string if the timedifference is 1 second', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            const to = new Date(kingsDay2023TimeStamp + 1000).toISOString();
-            expect(calculateTimeDifference(from, to)).toEqual('00:00:01');
+            const laterTestDateIsoString = new Date(
+                testDateEpoch + 1000,
+            ).toISOString();
+
+            const result = calculateTimeDifference(
+                testDateIsoString,
+                laterTestDateIsoString,
+            );
+
+            expect(result).toEqual('00:00:01');
         });
         it('returns appropriate string if the timedifference is 1 minute', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            const to = new Date(
-                kingsDay2023TimeStamp + 60000 + 1000,
+            const laterTestDateIsoString = new Date(
+                testDateEpoch + 60000 + 1000,
             ).toISOString();
-            expect(calculateTimeDifference(from, to)).toEqual('00:01:01');
+
+            const result = calculateTimeDifference(
+                testDateIsoString,
+                laterTestDateIsoString,
+            );
+
+            expect(result).toEqual('00:01:01');
         });
         it('returns appropriate string if the timedifference is 1 hour', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            const to = new Date(
-                kingsDay2023TimeStamp + 3600000 + 60000 + 1000,
+            const laterTestDateIsoString = new Date(
+                testDateEpoch + 3600000 + 60000 + 1000,
             ).toISOString();
-            expect(calculateTimeDifference(from, to)).toEqual('01:01:01');
+
+            const result = calculateTimeDifference(
+                testDateIsoString,
+                laterTestDateIsoString,
+            );
+
+            expect(result).toEqual('01:01:01');
         });
 
         it('returns appropriate string if the timedifference is 10 hour', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            const to = new Date(
-                kingsDay2023TimeStamp + 36000000 + 60000 + 1000,
+            const laterTestDateIsoString = new Date(
+                testDateEpoch + 36000000 + 60000 + 1000,
             ).toISOString();
-            expect(calculateTimeDifference(from, to)).toEqual('10:01:01');
+
+            const result = calculateTimeDifference(
+                testDateIsoString,
+                laterTestDateIsoString,
+            );
+
+            expect(result).toEqual('10:01:01');
         });
 
-        it('returns appropriate string with - if the timedifference is 1 hour', () => {
-            const from = new Date(kingsDay2023TimeStamp).toISOString();
-            const to = new Date(
-                kingsDay2023TimeStamp + 3600000 + 60000 + 1000,
+        it('returns empty string when time difference is invalid', () => {
+            const laterDateIsoString = new Date(
+                testDateEpoch + 3600000 + 60000 + 1000,
             ).toISOString();
-            expect(calculateTimeDifference(to, from)).toEqual('');
+
+            const result = calculateTimeDifference(
+                laterDateIsoString,
+                testDateIsoString,
+            );
+
+            expect(result).toEqual('');
         });
     });
 
@@ -152,13 +180,12 @@ describe('date', () => {
         it('returns the result of the function passed', () => {
             const dateToStringTestFunction = (testDate: Date | null) =>
                 testDate?.toISOString().concat('-TEST') ?? 'empty-TEST';
-            const dateIsoString = kingsDay.toISOString();
 
             const result = parseIsoString(dateToStringTestFunction)(
-                dateIsoString,
+                testDateIsoString,
             );
 
-            expect(result).toEqual(`${dateIsoString}-TEST`);
+            expect(result).toEqual(`${testDateIsoString}-TEST`);
         });
     });
 });
