@@ -237,7 +237,7 @@ export interface WorkflowDefinition {
     name: string;
     description?: string;
     target: WorkflowTarget;
-    products: Pick<ProductDefinition, 'tag'>[];
+    products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
 }
 
