@@ -15,7 +15,7 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-const apiPath = 'http://localhost:8080/api/surf/forms';
+const apiPath = 'https://orchestrator.dev.automation.surf.net/api';
 
 // basic configuration for axios.
 // the 'Authorization' header is set in
