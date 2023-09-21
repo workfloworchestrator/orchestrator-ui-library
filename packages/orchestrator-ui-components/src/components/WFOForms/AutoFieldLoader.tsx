@@ -4,7 +4,9 @@ import {
     LabelField,
     LongTextField,
     NumField,
+    SelectField,
     TextField,
+    ProductField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -13,7 +15,7 @@ export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, any>,
     uniforms: Context<unknown>,
 ) {
-    const { fieldType, field } = props;
+    const { allowedValues, fieldType, field } = props;
     const { format } = field;
 
     switch (fieldType) {
@@ -29,6 +31,8 @@ export function autoFieldFunction(
             break;
         case String:
             switch (format) {
+                case "productId":
+                    return ProductField;
                 case 'long':
                     return LongTextField;
                 case 'label':
@@ -38,14 +42,18 @@ export function autoFieldFunction(
             }
             break;
     }
-
-    switch (fieldType) {
-        case Boolean:
-            return BoolField;
-        case Number:
-            return NumField;
-        case String:
-            return TextField;
+    if (allowedValues && format !== 'accept') {
+        return SelectField;
+    }
+    else {
+        switch (fieldType) {
+            case Boolean:
+                return BoolField;
+            case Number:
+                return NumField;
+            case String:
+                return TextField;
+        }
     }
 
     // Todo React upgrade: fix uniform types
