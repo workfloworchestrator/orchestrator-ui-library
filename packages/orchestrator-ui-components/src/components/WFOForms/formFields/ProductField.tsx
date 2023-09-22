@@ -13,13 +13,16 @@
  *
  */
 
-import SelectField, { SelectFieldProps } from "./SelectField";
+
 import get from "lodash/get";
 import React from "react";
 import { connectField, filterDOMProps } from "uniforms";
 import {useQuery} from "react-query";
+
 import {apiClient} from "../../../api";
-import {productById} from "../../../pages/processes/WFONewProcess";
+import SelectField, { SelectFieldProps } from "./SelectField";
+import { ProductDefinition } from '../../../types';
+
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,
@@ -38,22 +41,23 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
         apiClient.products,
     );
 
+    const productById = (id: string, products: ProductDefinition[]): ProductDefinition => {
+      return products.find((prod) => prod.productId === id)!;
+    }
+
     if (isLoading || error) return null
 
-    const products = productIds ? data.map((id) => productById(id.product_id, data)) : data;
-
-    console.log(products)
-
+    const products = productIds ? data?.map((id) => productById(id.productId, data)) : data;
 
     const productLabelLookup =
-        products.reduce<{ [index: string]: string }>(function (mapping, product) {
-            mapping[product.product_id] = product.name;
+        products?.reduce<{ [index: string]: string }>(function (mapping, product) {
+            mapping[product.productId] = product.name;
             return mapping;
         }, {}) ?? {};
 
     return (
         <SelectField
-            name=""
+            name={name}
             {...props}
             allowedValues={Object.keys(productLabelLookup)}
             transform={(uuid: string) => get(productLabelLookup, uuid, uuid)}

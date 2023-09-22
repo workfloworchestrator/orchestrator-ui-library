@@ -89,6 +89,7 @@ export class BaseApiClient {
 abstract class ApiClientInterface extends BaseApiClient {
     abstract cimStartForm: (formKey: string, userInputs: {}[]) => Promise<any>;
 }
+
 class ApiClient extends ApiClientInterface {
     startProcess = (workflow_name: string, process: {}[]): Promise<{ id: string }> => {
         return this.postPutJson("processes/" + workflow_name, process, "post", false, true);

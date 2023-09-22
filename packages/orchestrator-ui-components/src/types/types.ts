@@ -135,8 +135,6 @@ export interface ProcessFromRestApi {
 
 export interface ProductDefinition {
     productId: string;
-    // hack to re-use the types from REST/GraphQL
-    product_id: string;
     name: string;
     description: string;
     tag: string;
