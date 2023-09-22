@@ -14,14 +14,16 @@
  */
 
 import axiosInstance from './axios';
-import {ProductDefinition} from "../types";
+import { ProductDefinition } from '../types';
 
 export class BaseApiClient {
-    axiosFetch = <R = {}>(
+    axiosFetch = <R = object>(
         path: string,
         options = {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         headers = {},
         showErrorDialog = true,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         result = true,
     ): Promise<R> => {
         // preset the config with the relative URL and a GET type.
@@ -42,7 +44,7 @@ export class BaseApiClient {
     };
 
     catchErrorStatus = <T>(
-        promise: Promise<any>,
+        promise: Promise<unknown>,
         status: number,
         callback: (json: T) => void,
     ) => {
@@ -55,7 +57,7 @@ export class BaseApiClient {
         });
     };
 
-    fetchJson = <R = {}>(
+    fetchJson = <R = object>(
         path: string,
         options = {},
         headers = {},
@@ -65,13 +67,15 @@ export class BaseApiClient {
         return this.axiosFetch(path, options, headers, showErrorDialog, result);
     };
 
-    fetchJsonWithCustomErrorHandling = <R = {}>(path: string): Promise<R> => {
+    fetchJsonWithCustomErrorHandling = <R = object>(
+        path: string,
+    ): Promise<R> => {
         return this.fetchJson(path, {}, {}, false, true);
     };
 
-    postPutJson = <R = {}>(
+    postPutJson = <R = object>(
         path: string,
-        body: {},
+        body: object,
         method: string,
         showErrorDialog = true,
         result = true,
@@ -87,24 +91,42 @@ export class BaseApiClient {
 }
 
 abstract class ApiClientInterface extends BaseApiClient {
-    abstract cimStartForm: (formKey: string, userInputs: {}[]) => Promise<any>;
+    abstract cimStartForm: (
+        formKey: string,
+        userInputs: object[],
+    ) => Promise<object>;
 }
 
 class ApiClient extends ApiClientInterface {
-    startProcess = (workflow_name: string, process: {}[]): Promise<{ id: string }> => {
-        return this.postPutJson("processes/" + workflow_name, process, "post", false, true);
+    startProcess = (
+        workflow_name: string,
+        process: [],
+    ): Promise<{ id: string }> => {
+        return this.postPutJson(
+            'processes/' + workflow_name,
+            process,
+            'post',
+            false,
+            true,
+        );
     };
     products = (): Promise<ProductDefinition[]> => {
-        return this.fetchJson<ProductDefinition[]>("products/");
+        return this.fetchJson<ProductDefinition[]>('products/');
     };
     productById = (productId: string): Promise<ProductDefinition> => {
         return this.fetchJson(`products/${productId}`);
     };
     cimStartForm = (
         formKey: string,
-        userInputs: {}[],
+        userInputs: object[],
     ): Promise<{ id: string }> => {
-        return this.postPutJson(`surf/forms/${formKey}`, userInputs, 'post', false, true);
+        return this.postPutJson(
+            `surf/forms/${formKey}`,
+            userInputs,
+            'post',
+            false,
+            true,
+        );
     };
 }
 export const apiClient: ApiClient = new ApiClient();

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,33 +22,36 @@ import {
     EuiPanel,
 } from '@elastic/eui';
 // import { SubscriptionsContextProvider } from "components/subscriptionContext";
-import { autoFieldFunction } from './AutoFieldLoader';
+
 import invariant from 'invariant';
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import React, { useContext, useState } from 'react';
-import { NextRouter, withRouter } from 'next/router';
+import { NextRouter } from 'next/router';
+import axios from 'axios';
 
 import { filterDOMProps, joinName } from 'uniforms';
 import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
 import { AutoField, AutoForm } from 'uniforms-unstyled';
 
+import { autoFieldFunction } from './AutoFieldLoader';
 import { userInputFormStyling } from './UserInputFormStyling';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
 import AutoFields from './AutoFields';
 import { ValidationError } from '../../types/forms';
+import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 
 interface IProps {
     router: NextRouter;
     stepUserInput: JSONSchema6;
-    validSubmit: (userInput: { [index: string]: any }) => Promise<void>;
-    cancel: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    previous: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    validSubmit: (userInput: { [index: string]: unknown }) => Promise<void>;
+    cancel: ConfirmDialogActions['closeConfirmDialog'];
+    previous: ConfirmDialogActions['closeConfirmDialog'];
     hasNext?: boolean;
     hasPrev?: boolean;
-    userInput: {};
+    userInput: object;
 }
 
 interface Buttons {
@@ -283,10 +287,9 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
             default: defaultValue = _default !== undefined
                 ? _default
                 : get(this.schema.default, name),
-            const: constValue = _const,
-            type = _type,
-            // @ts-ignore
         } = this._compiledSchema[name];
+        const { const: constValue = _const, type = _type } =
+            this._compiledSchema[name];
 
         // use const if present
         if (defaultValue === undefined) defaultValue = constValue;
@@ -320,6 +323,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
 }
 
 function fillPreselection(form: JSONSchema6, query: string) {
+    console.log('fillpreselection query: ' + query);
     // const queryParams = getQueryParameters(query);
     //
     // if (form && form.properties) {
@@ -366,7 +370,7 @@ function UserInputForm({
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
     const [rootErrors, setRootErrors] = useState<string[]>([]);
 
-    const openDialog = (e: React.FormEvent) => {
+    const openDialog = () => {
         showConfirmDialog({
             question: '',
             confirmAction: () => {},
@@ -383,12 +387,13 @@ function UserInputForm({
                 await validSubmit(userInput);
                 setProcessing(false);
                 return null;
-            } catch (error) {
+            } catch (error: unknown) {
                 setProcessing(false);
 
-                // @ts-ignore
-                if (error.response.status === 400) {
-                    // @ts-ignore
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 400
+                ) {
                     const json = error.response.data;
                     setNrOfValidationErrors(json.validation_errors.length);
                     setRootErrors(
@@ -427,7 +432,7 @@ function UserInputForm({
     const onButtonClick = (
         e: React.MouseEvent<HTMLButtonElement>,
         question: string | undefined,
-        confirm: (e: React.MouseEvent<HTMLButtonElement>) => void,
+        confirm: ConfirmDialogActions['closeConfirmDialog'],
     ) => {
         if (!question) {
             return confirm(e);
@@ -546,8 +551,11 @@ function UserInputForm({
                             {rootErrors.length > 0 && (
                                 <section className="form-errors">
                                     <em className="error backend-validation-metadata">
-                                        {rootErrors.map((error) => (
-                                            <div className="euiFormErrorText euiFormRow__text">
+                                        {rootErrors.map((error, index) => (
+                                            <div
+                                                className="euiFormErrorText euiFormRow__text"
+                                                key={index}
+                                            >
                                                 {error}
                                             </div>
                                         ))}

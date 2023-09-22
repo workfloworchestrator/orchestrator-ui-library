@@ -21,6 +21,7 @@ export type ErrorFieldProps = FieldProps<null>;
 // onChange not used on purpose
 function Error({
     children,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onChange,
     error,
     errorMessage,

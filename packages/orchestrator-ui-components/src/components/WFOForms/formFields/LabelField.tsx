@@ -16,14 +16,14 @@ import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 import { FieldProps } from '../../../types/forms';
 
-export type LabelFieldProps = FieldProps<null, {}, null, HTMLDivElement>;
+export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 
 // onChange not used on purpose
 function Label({
     id,
-    name,
     value,
     label,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onChange,
     ...props
 }: LabelFieldProps) {

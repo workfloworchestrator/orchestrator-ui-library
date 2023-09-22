@@ -19,7 +19,7 @@ import { AutoField } from 'uniforms-unstyled';
 
 export type AutoFieldsProps = {
     autoField?: ComponentType<{ className: string; name: string }>;
-    element?: ComponentType<{}> | string;
+    element?: ComponentType<object> | string;
     fields?: string[];
     omitFields?: string[];
 };

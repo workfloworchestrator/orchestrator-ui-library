@@ -13,44 +13,50 @@
  *
  */
 
+import get from 'lodash/get';
+import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
+import { useQuery } from 'react-query';
 
-import get from "lodash/get";
-import React from "react";
-import { connectField, filterDOMProps } from "uniforms";
-import {useQuery} from "react-query";
-
-import {apiClient} from "../../../api";
-import SelectField, { SelectFieldProps } from "./SelectField";
+import { apiClient } from '../../../api';
+import SelectField, { SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';
-
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,
-    "placeholder" | "transform" | "allowedValues"
+    'placeholder' | 'transform' | 'allowedValues'
 >;
-declare module "uniforms" {
+declare module 'uniforms' {
     interface FilterDOMProps {
         productIds: never;
     }
 }
-filterDOMProps.register("productIds");
+filterDOMProps.register('productIds');
 
 function Product({ name, productIds, ...props }: ProductFieldProps) {
     const { isLoading, error, data } = useQuery(
-        ["products"],
+        ['products'],
         apiClient.products,
     );
 
-    const productById = (id: string, products: ProductDefinition[]): ProductDefinition => {
-      return products.find((prod) => prod.productId === id)!;
-    }
+    const productById = (
+        id: string,
+        products: ProductDefinition[],
+    ): ProductDefinition => {
+        return products.find((prod) => prod.productId === id)!;
+    };
 
-    if (isLoading || error) return null
+    if (isLoading || error) return null;
 
-    const products = productIds ? data?.map((id) => productById(id.productId, data)) : data;
+    const products = productIds
+        ? data?.map((id) => productById(id.productId, data))
+        : data;
 
     const productLabelLookup =
-        products?.reduce<{ [index: string]: string }>(function (mapping, product) {
+        products?.reduce<{ [index: string]: string }>(function (
+            mapping,
+            product,
+        ) {
             mapping[product.productId] = product.name;
             return mapping;
         }, {}) ?? {};

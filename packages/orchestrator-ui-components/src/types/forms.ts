@@ -26,7 +26,7 @@ export interface FormNotCompleteResponse {
 
 export type FieldProps<
     Value,
-    Extra = {},
+    Extra = object,
     InputElementType = HTMLInputElement,
     ElementType = HTMLDivElement,
 > = HTMLFieldProps<

@@ -19,7 +19,9 @@ import React, { useEffect, useState } from 'react';
 // import ApplicationContext from 'utils/ApplicationContext';
 import { FormNotCompleteResponse, InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
-import { apiClient, BaseApiClient } from '../../api';
+import { apiClient } from '../../api';
+
+import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 
 interface Form {
     form: InputForm;
@@ -28,7 +30,7 @@ interface Form {
 
 interface IProps {
     stepUserInput: InputForm;
-    validSubmit: (form: {}[]) => Promise<void>;
+    validSubmit: (form: object[]) => Promise<void>;
     cancel: () => void;
     hasNext?: boolean;
 }
@@ -51,23 +53,25 @@ function UserInputFormWizard({
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
     ]);
-    const [userInputs, setUserInputs] = useState<{}[]>([]);
+    const [userInputs, setUserInputs] = useState<object[]>([]);
 
     useEffect(() => {
         setForms([{ form: stepUserInput, hasNext: hasNext }]);
     }, [hasNext, stepUserInput]);
 
-    const previous = (e: React.MouseEvent<HTMLButtonElement>) => {
-        stop(e);
+    const previous: ConfirmDialogActions['closeConfirmDialog'] = (e) => {
+        if (e) {
+            stop(e);
+        }
         const current = forms.pop();
         setForms(forms.filter((item) => item !== current));
     };
 
-    const submit = (currentFormData: {}) => {
-        let newUserInputs = userInputs.slice(0, forms.length - 1);
+    const submit = (currentFormData: object) => {
+        const newUserInputs = userInputs.slice(0, forms.length - 1);
         newUserInputs.push(currentFormData);
 
-        let result = validSubmit(newUserInputs);
+        const result = validSubmit(newUserInputs);
         return apiClient.catchErrorStatus<FormNotCompleteResponse>(
             result,
             510,

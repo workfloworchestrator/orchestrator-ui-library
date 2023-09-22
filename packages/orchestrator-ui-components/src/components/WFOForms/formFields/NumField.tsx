@@ -27,12 +27,10 @@ export type NumFieldProps = FieldProps<
 function Num({
     disabled,
     id,
-    inputRef,
     label,
     description,
     max,
     min,
-    precision,
     name,
     onChange,
     placeholder,

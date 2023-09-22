@@ -1,10 +1,22 @@
+import React from 'react';
 import { createContext, useState } from 'react';
 import ConfirmationDialog from '../components/confirmationDialog/ConfirmationDialog';
 
+export interface ConfirmDialogActions {
+    showConfirmDialog: ShowConfirmDialogType;
+    closeConfirmDialog: (
+        e:
+            | React.KeyboardEvent<HTMLDivElement>
+            | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | undefined,
+        confirm?: boolean,
+    ) => void;
+}
+
 export interface ShowConfirmDialog {
     question: string;
-    confirmAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    cancelAction?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    confirmAction: ConfirmDialogActions['closeConfirmDialog'];
+    cancelAction?: ConfirmDialogActions['closeConfirmDialog'];
     leavePage?: boolean;
     isError?: boolean;
 }
@@ -17,11 +29,6 @@ export type ShowConfirmDialogType = ({
     isError,
 }: ShowConfirmDialog) => void;
 
-export interface ConfirmDialogActions {
-    showConfirmDialog: ShowConfirmDialogType;
-    closeConfirmDialog: () => void;
-}
-
 const ConfirmationDialogContext = createContext<ConfirmDialogActions>({
     showConfirmDialog: () => {},
     closeConfirmDialog: () => {},
@@ -30,14 +37,17 @@ const ConfirmationDialogContext = createContext<ConfirmDialogActions>({
 export const ConfirmationDialogProvider = ConfirmationDialogContext.Provider;
 export default ConfirmationDialogContext;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ConfirmationDialogContextWrapper({ children }: any) {
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-    const [state, setState] = useState({
+    const [state, setState] = useState<{
+        confirmationDialogQuestion: string;
+        confirmDialogAction: ConfirmDialogActions['closeConfirmDialog'];
+        leavePage: boolean;
+        isError: boolean;
+    }>({
         confirmationDialogQuestion: '',
-        confirmDialogAction: (
-            e: React.MouseEvent<HTMLButtonElement>,
-            cancelConfirm: boolean = false,
-        ) => {},
+        confirmDialogAction: () => {},
         leavePage: false,
         isError: false,
     });
@@ -56,10 +66,7 @@ export function ConfirmationDialogContextWrapper({ children }: any) {
             confirmationDialogQuestion: question,
             leavePage: !!leavePage,
             isError: !!isError,
-            confirmDialogAction: (
-                e: React.MouseEvent<HTMLButtonElement>,
-                cancelConfirm: boolean = false,
-            ) => {
+            confirmDialogAction: (e, cancelConfirm = false) => {
                 closeConfirmDialog();
 
                 if (!cancelConfirm) {

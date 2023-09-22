@@ -18,12 +18,15 @@ import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 import { FieldProps } from '../../../types/forms';
 
-export type LongTextFieldProps = FieldProps<string, {}, HTMLTextAreaElement>;
+export type LongTextFieldProps = FieldProps<
+    string,
+    object,
+    HTMLTextAreaElement
+>;
 
 function LongText({
     disabled,
     id,
-    inputRef,
     label,
     description,
     name,
@@ -32,7 +35,6 @@ function LongText({
     readOnly,
     value,
     error,
-    showInlineError,
     errorMessage,
     ...props
 }: LongTextFieldProps) {

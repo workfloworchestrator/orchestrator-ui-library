@@ -25,7 +25,6 @@ export type BoolFieldProps = FieldProps<boolean>;
 function Bool({
     disabled,
     id,
-    inputRef,
     className = '',
     label,
     description,

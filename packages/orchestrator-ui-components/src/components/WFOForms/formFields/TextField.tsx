@@ -23,7 +23,6 @@ function Text({
     autoComplete,
     disabled,
     id,
-    inputRef,
     label,
     description,
     name,

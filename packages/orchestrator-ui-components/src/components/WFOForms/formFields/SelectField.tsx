@@ -12,36 +12,32 @@
  * limitations under the License.
  *
  */
+import React from 'react';
 
 import { EuiFormRow, EuiSelect, EuiText } from '@elastic/eui';
-import React from 'react';
+import { connectField, filterDOMProps } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
-import {
-    connectField,
-    filterDOMProps,
-    joinName,
-    useField,
-    useForm,
-} from 'uniforms';
 export type SelectFieldProps = FieldProps<
     string | string[],
-    { allowedValues?: string[]; transform?(value: string): string }
+    {
+        allowedValues?: string[];
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        transform: (value: string) => string;
+    }
 >;
 
 function Select({
     allowedValues = [],
     disabled,
-    fieldType,
     id,
-    inputRef,
     label,
     description,
     name,
     onChange,
     placeholder,
     readOnly,
-    required,
     transform,
     value,
     error,
@@ -49,33 +45,39 @@ function Select({
     errorMessage,
     ...props
 }: SelectFieldProps) {
-    const nameArray = joinName(null, name);
+    /*
+  const nameArray = joinName(null, name);
+
     let parentName = joinName(nameArray.slice(0, -1));
 
     // We can't call useField conditionally so we call it for ourselves if there is no parent
+
     if (parentName === '') {
         parentName = name;
     }
+
     const parent = useField(parentName, {}, { absoluteName: true })[0];
     const { model } = useForm();
 
-    // if (parentName !== name) {
-    //     if (parent.fieldType === Array && (parent as ListFieldProps).uniqueItems) {
-    //         const allValues: string[] = get(model, parentName, []);
-    //         const chosenValues = allValues.filter(
-    //             (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
-    //         );
-    //
-    //         allowedValues = allowedValues.filter((value) => !chosenValues.includes(value));
-    //     }
-    // }
-    const options = allowedValues.map((value: any) => ({
+    if (parentName !== name) {
+         if (parent && parent.fieldType === Array && parent.uniqueItems) {
+             const allValues: string[] = get(model, parentName, []);
+             const chosenValues = allValues.filter(
+                 (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
+             );
+    
+             allowedValues = allowedValues.filter((value) => !chosenValues.includes(value));
+         }
+    }
+*/
+    const options = allowedValues.map((value: string) => ({
         label: transform ? transform(value) : value,
         text: transform ? transform(value) : value,
         value: value,
     }));
 
     const selectedValue = options.find(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (option: any) => option.value === value,
     );
 

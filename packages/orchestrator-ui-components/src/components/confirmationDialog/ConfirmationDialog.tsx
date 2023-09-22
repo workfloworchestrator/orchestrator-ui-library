@@ -28,8 +28,18 @@ import { confirmationDialogStyling } from './ConfirmationDialogStyling';
 
 interface IProps {
     isOpen?: boolean;
-    cancel: (e: any) => void;
-    confirm: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    cancel: (
+        e:
+            | React.KeyboardEvent<HTMLDivElement>
+            | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | undefined,
+    ) => void;
+    confirm: (
+        e:
+            | React.KeyboardEvent<HTMLDivElement>
+            | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | undefined,
+    ) => void;
     question?: string;
     leavePage?: boolean;
     isError?: boolean;

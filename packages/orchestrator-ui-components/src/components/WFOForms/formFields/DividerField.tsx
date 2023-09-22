@@ -18,10 +18,10 @@ import React from 'react';
 import { connectField } from 'uniforms';
 import { FieldProps } from '../../../types/forms';
 
-export type LabelFieldProps = FieldProps<null, {}, null, HTMLDivElement>;
+export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 
 function Divider({ id }: LabelFieldProps) {
-    return <EuiHorizontalRule style={{ marginTop: '-30px' }} />;
+    return <EuiHorizontalRule style={{ marginTop: '-30px' }} id={id} />;
 }
 
 export default connectField(Divider, { kind: 'leaf' });

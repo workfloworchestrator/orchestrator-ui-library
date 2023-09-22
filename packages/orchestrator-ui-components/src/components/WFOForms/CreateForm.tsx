@@ -31,7 +31,7 @@ export default function CreateForm(props: IProps) {
     const { stepUserInput, hasNext } = form;
 
     const submit = useCallback(
-        (userInputs: {}[]) => {
+        (userInputs: object[]) => {
             return apiClient.cimStartForm(formKey, userInputs).then((form) => {
                 console.log('Submit {formkey} =', formKey);
                 handleSubmit(form);

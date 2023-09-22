@@ -18,7 +18,7 @@ import { FieldProps } from '../../../types/forms';
 
 export type SubmitFieldProps = FieldProps<
     null,
-    {},
+    object,
     HTMLInputElement,
     HTMLInputElement
 >;
@@ -29,7 +29,6 @@ export default function SubmitField({
     inputRef,
     readOnly,
     value,
-    onChange,
     ...props
 }: SubmitFieldProps) {
     const { error, state } = useForm();
