@@ -12,9 +12,9 @@ export enum SubscriptionStatus {
 export type Subscription = {
     subscriptionId: string;
     description: string;
-    note?: string;
-    startDate: string;
-    endDate: string;
+    note: string | null;
+    startDate: string | null;
+    endDate: string | null;
     insync: boolean;
     status: SubscriptionStatus;
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;

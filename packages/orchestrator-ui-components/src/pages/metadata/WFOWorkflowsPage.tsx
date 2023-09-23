@@ -33,6 +33,8 @@ import {
     graphQlWorkflowListMapper,
     mapWorkflowDefinitionToWorkflowListItem,
 } from './workflowListObjectMapper';
+import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
+import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
@@ -114,6 +116,9 @@ export const WFOWorkflowsPage = () => {
             field: 'createdAt',
             name: t('createdAt'),
             width: '110',
+            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
+            clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

@@ -25,6 +25,8 @@ import {
     graphQlProcessSortMapper,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
+import { WFODateTime } from '../WFODateTime/WFODateTime';
+import { parseDateToLocaleDateTimeString } from '../../utils';
 
 export type ProcessListItem = Pick<
     Process,
@@ -35,10 +37,10 @@ export type ProcessListItem = Pick<
     | 'createdBy'
     | 'assignee'
     | 'processId'
-    | 'startedAt'
-    | 'lastModifiedAt'
     | 'subscriptions'
 > & {
+    startedAt: Date;
+    lastModifiedAt: Date;
     productName?: string;
     productTag?: string;
     customer: string;
@@ -147,10 +149,16 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         startedAt: {
             field: 'startedAt',
             name: t('started'),
+            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            renderDetails: parseDateToLocaleDateTimeString,
+            clipboardText: parseDateToLocaleDateTimeString,
         },
         lastModifiedAt: {
             field: 'lastModifiedAt',
             name: t('lastModified'),
+            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            renderDetails: parseDateToLocaleDateTimeString,
+            clipboardText: parseDateToLocaleDateTimeString,
         },
     };
     const tableColumns: WFOTableColumns<ProcessListItem> =
