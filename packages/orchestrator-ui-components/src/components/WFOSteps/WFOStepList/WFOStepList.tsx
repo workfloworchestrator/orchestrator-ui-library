@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EuiButton, EuiFlexGroup, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { Step } from '../../../types';
+import { Step, StepStatus } from '../../../types';
 import { WFOStep } from '../WFOStep';
 import { getStyles } from '../getStyles';
 import { useOrchestratorTheme } from '../../../hooks';
@@ -47,6 +47,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
         stepListContentStyle,
         stepListContentBoldTextStyle,
         stepListContentAnchorStyle,
+        stepListOptionsContainerStyle,
     } = getStyles(theme);
 
     return (
@@ -66,7 +67,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                 <EuiFlexGroup
                     justifyContent="flexEnd"
                     direction="row"
-                    css={{ flexGrow: 0 }}
+                    css={stepListOptionsContainerStyle}
                     gutterSize="s"
                 >
                     <EuiButton
@@ -109,15 +110,17 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                     let delta = {};
 
                     if (index > 0) {
-                        // Todo: decided if we want this here.
-                        //  V1 has a rather big case statement with businness logic here
-                        if (steps[index].status === 'success') {
+                        // Todo: decided if we want this here. A refactor would be nice, or move to global state.
+                        //  V1 has a rather big case statement with business logic here
+                        if (step.status === StepStatus.SUCCESS) {
                             // Prepare a delta with the last successful step
                             let previousIndex = index - 1;
                             while (
                                 previousIndex > 0 &&
-                                (steps[previousIndex].status === 'failed' ||
-                                    steps[previousIndex].status === 'waiting')
+                                (steps[previousIndex].status ===
+                                    StepStatus.FAILED ||
+                                    steps[previousIndex].status ===
+                                        StepStatus.WAITING)
                             ) {
                                 previousIndex--;
                             }
@@ -125,10 +128,27 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                             delta = stateDelta(previousState, step.state);
                         }
 
-                        if (steps[index].status === 'waiting') {
+                        // if (step.status === StepStatus.PENDING) {
+                        //     if (step.hasOwnProperty("form")) {
+                        //         Object.keys(step.form.properties as {})
+                        //             .sort()
+                        //             .reduce<{ [index: string]: any }>((acc, field) => {
+                        //                 acc[field] = "";
+                        //                 return acc;
+                        //             }, {});
+                        //     }
+                        // }
+
+                        if (
+                            step.status === StepStatus.WAITING ||
+                            step.status === StepStatus.FAILED
+                        ) {
                             // Pass complete state as a waiting step has separate state
                             delta = step.state;
                         }
+                    } else {
+                        // Todo: handle failed first step (seems to be special)
+                        delta = step.state;
                     }
 
                     const stepComponent = (

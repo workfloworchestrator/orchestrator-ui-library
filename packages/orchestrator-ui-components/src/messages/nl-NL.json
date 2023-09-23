@@ -1,6 +1,6 @@
 {
     "main": {
-        "title": "Welcome to example-orchestrator-ui!"
+        "title": "Voorbeeld Orchestrator UI"
     },
     "common": {
         "addToFavorites": "Favoriet",
@@ -16,7 +16,7 @@
     "metadata": {
         "tabs": {
             "products": "Producten",
-            "productBlocks": "Productblokken",
+            "productBlocks": "Product blocks",
             "resourceTypes": "Resource types",
             "workflows": "Workflows"
         },
@@ -44,7 +44,7 @@
         },
         "resourceTypes": {
             "type": "Type",
-            "description": "Description",
+            "description": "Beschrijving",
             "resourceId": "Resource ID"
         },
         "workflows": {
@@ -75,6 +75,27 @@
             "lastModified": "Aangepast op",
             "workflowTarget": "Doel",
             "productTag": "Tag"
+        },
+        "detail": {
+            "retry": "Probeer opnieuw",
+            "resume": "Ga verder",
+            "abort": "Stop",
+            "status": "Status",
+            "startedBy": "Gestart door",
+            "lastStep": "Laatste stap",
+            "startedOn": "Gestart op",
+            "lastUpdate": "Laatste update",
+            "relatedSubscriptions": "Gerelateerde subscriptions",
+            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscriptie} other {# subscriptions}}",
+            "customer": "Customer"
+        },
+        "steps": {
+            "steps": "Workflow stappen",
+            "showDelta": "Toon subscription verschil",
+            "viewOptions": "Scherm options",
+            "expandAll": "klap alles uit",
+            "collapseAll": "klap alles in",
+            "duration": "Looptijd"
         }
     },
     "subscriptions": {
@@ -100,9 +121,9 @@
                 "general": "Algemeen",
                 "serviceConfiguration": "Service configuratie",
                 "processes": "Processen",
-                "relatedSubscriptions": "Geralateerde subscriptions"
+                "relatedSubscriptions": "Geralateerde subscripties"
             },
-            "loadingStatus": "Loading status",
+            "loadingStatus": "Laden",
             "workflow": {
                 "create": "Create workflow",
                 "modify": "Modify workflow",

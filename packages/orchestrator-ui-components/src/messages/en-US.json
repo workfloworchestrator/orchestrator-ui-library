@@ -60,14 +60,6 @@
             "active": "Active",
             "completed": "Completed"
         },
-        "steps": {
-            "steps": "Steps",
-            "expandAll": "Expand all",
-            "collapseAll": "Collapse all",
-            "showDelta": "Show delta",
-            "viewOptions": "View options",
-            "duration": "duration"
-        },
         "index": {
             "workflowName": "Workflow",
             "step": "Last step",
@@ -96,6 +88,14 @@
             "relatedSubscriptions": "Related subscriptions",
             "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
             "customer": "Customer"
+        },
+        "steps": {
+            "steps": "Workflow steps",
+            "showDelta": "Show subscription delta",
+            "viewOptions": "View options",
+            "expandAll": "expand all",
+            "collapseAll": "collapse all",
+            "duration": "Looptijd"
         }
     },
     "subscriptions": {

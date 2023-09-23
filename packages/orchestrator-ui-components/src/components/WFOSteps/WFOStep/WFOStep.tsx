@@ -36,7 +36,8 @@ export const WFOStep = ({
     const { name, executed, status } = step;
     const { theme } = useOrchestratorTheme();
     const {
-        stepContainerStyle,
+        stepHeaderStyle,
+        stepHeaderRightStyle,
         stepListContentBoldTextStyle,
         stepDurationStyle,
         stepToggleExpandStyle,
@@ -46,7 +47,7 @@ export const WFOStep = ({
 
     return (
         <EuiPanel>
-            <EuiFlexGroup css={stepContainerStyle}>
+            <EuiFlexGroup css={stepHeaderStyle}>
                 <WFOStepStatusIcon stepStatus={status} />
 
                 <EuiFlexItem grow={0}>
@@ -59,10 +60,7 @@ export const WFOStep = ({
                 <EuiFlexGroup css={stepRowStyle}>
                     {step.executed && (
                         <>
-                            <EuiFlexItem
-                                grow={0}
-                                css={{ alignItems: 'center' }}
-                            >
+                            <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
                                 <EuiText css={stepDurationStyle}>
                                     {t('duration')}
                                 </EuiText>
