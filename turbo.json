@@ -10,6 +10,10 @@
         "ORCHESTRATOR_GRAPHQL_PATH",
         "NEXT_PUBLIC_ENVIRONMENT_NAME",
         "NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL",
+        "KEYCLOAK_ID",
+        "KEYCLOAK_SECRET",
+        "KEYCLOAK_ISSUER",
+        "AUTH_ACTIVE"
     ],
     "pipeline": {
         "build": {

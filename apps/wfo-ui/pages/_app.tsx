@@ -58,7 +58,9 @@ function CustomApp({
                         >
                             <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
                                 <Head>
-                                    <title>Welcome to example-orchestrator-ui!</title>
+                                    <title>
+                                        Welcome to example-orchestrator-ui!
+                                    </title>
                                 </Head>
                                 <main className="app">
                                     <OrchestratorConfigProvider

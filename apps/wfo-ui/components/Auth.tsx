@@ -6,7 +6,9 @@ interface AuthProps {
 }
 
 const Auth = ({ children }: AuthProps): JSX.Element => {
-    const { status } = useSession({ required: true });
+    const { status } = useSession({
+        required: !!process.env.AUTH_ACTIVE || true,
+    });
 
     if (status === 'loading') {
         return <></>;
