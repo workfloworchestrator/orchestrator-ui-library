@@ -46,7 +46,7 @@ import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider'
 interface IProps {
     router: NextRouter;
     stepUserInput: JSONSchema6;
-    validSubmit: (userInput: { [index: string]: unknown }) => Promise<void>;
+    validSubmit: (userInput: { [index: string]: unknown }) => Promise<unknown>;
     cancel: ConfirmDialogActions['closeConfirmDialog'];
     previous: ConfirmDialogActions['closeConfirmDialog'];
     hasNext?: boolean;

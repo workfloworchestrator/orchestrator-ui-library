@@ -4,13 +4,17 @@ import { WFOStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-component
 
 const StartWorkflowPage = () => {
     const router = useRouter();
-    const { workflowName: workflowNameQueryParameter } = router.query;
+    const { workflowName, productId } = router.query;
 
-    const workflowName = Array.isArray(workflowNameQueryParameter)
-        ? workflowNameQueryParameter[0]
-        : workflowNameQueryParameter;
-
-    return <WFOStartWorkflowPage workflowName={workflowName || ''} />;
+    if (workflowName && productId) {
+        return (
+            <WFOStartWorkflowPage
+                workflowName={workflowName as string}
+                productId={productId as string}
+            />
+        );
+    }
+    return <div>STOP: HAMMERTIME!</div>;
 };
 
 export default StartWorkflowPage;

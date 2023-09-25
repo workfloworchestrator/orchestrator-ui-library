@@ -28,9 +28,9 @@ interface Form {
     hasNext?: boolean;
 }
 
-interface IProps {
+interface UserInputFormWizardProps {
     stepUserInput: InputForm;
-    validSubmit: (form: object[]) => Promise<void>;
+    validSubmit: (processInput: object[]) => Promise<unknown>;
     cancel: () => void;
     hasNext?: boolean;
 }
@@ -47,8 +47,7 @@ function UserInputFormWizard({
     stepUserInput,
     validSubmit,
     cancel,
-}: IProps) {
-    // const { apiClient } = useContext(ApplicationContext);
+}: UserInputFormWizardProps) {
     const router = useRouter();
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
@@ -109,7 +108,6 @@ function UserInputFormWizard({
                 key={key}
                 router={router}
                 stepUserInput={currentForm.form}
-                // @ts-ignore
                 validSubmit={submit}
                 previous={previous}
                 hasNext={currentForm.hasNext}

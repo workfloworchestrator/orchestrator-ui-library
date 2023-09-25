@@ -18,7 +18,7 @@ import {
 } from './WFOProcessListSubscriptionsCell';
 import { useOrchestratorTheme } from '../../hooks';
 import { ProcessDetail, ProcessStatus } from '../../types';
-import { parseDateRelativeToToday } from '../../utils';
+import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
 
 interface ProcessHeaderValueProps {
@@ -173,15 +173,23 @@ export const WFOProcessDetail = ({
                             />
                             <ProcessHeaderValue
                                 translationKey="startedOn"
-                                value={parseDateRelativeToToday(
-                                    processDetail?.startedAt,
-                                )}
+                                value={
+                                    processDetail?.startedAt
+                                        ? parseIsoString(
+                                              parseDateRelativeToToday,
+                                          )(processDetail?.startedAt)
+                                        : ''
+                                }
                             />
                             <ProcessHeaderValue
                                 translationKey="lastUpdate"
-                                value={parseDateRelativeToToday(
-                                    processDetail?.lastModifiedAt,
-                                )}
+                                value={
+                                    processDetail?.lastModifiedAt
+                                        ? parseIsoString(
+                                              parseDateRelativeToToday,
+                                          )(processDetail?.lastModifiedAt)
+                                        : ''
+                                }
                             />
                             {process && processDetail.subscriptions && (
                                 <EuiFlexGroup

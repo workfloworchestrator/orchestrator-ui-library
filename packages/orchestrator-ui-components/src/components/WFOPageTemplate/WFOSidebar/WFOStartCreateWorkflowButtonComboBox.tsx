@@ -1,10 +1,12 @@
+import React from 'react';
 import { useRouter } from 'next/router';
+
 import { useQueryWithGraphql } from '../../../hooks';
 import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '../../../graphqlQueries/workflows/workflowsQueryForDropdownList';
 import { PATH_START_WORKFLOW } from '../paths';
-import React from 'react';
+
 import {
-    ComboBoxOption,
+    WorkflowComboBoxOption,
     WFOButtonComboBox,
 } from '../../WFOButtonComboBox/WFOButtonComboBox';
 import { useTranslations } from 'next-intl';
@@ -25,18 +27,19 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
         true,
     );
 
-    const productList: ComboBoxOption[] =
+    const productList: WorkflowComboBoxOption[] =
         data?.workflows.page
             .flatMap(({ name: workflowName, products }) =>
                 products.map(({ productId, name: productName }) => ({
                     label: productName,
-                    itemID: `${workflowName}/${productId}`,
+                    workflowName,
+                    productId,
                 })),
             )
             .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
 
-    const handleOptionChange = (selectedProduct: ComboBoxOption) => {
-        const [workflowName, productId] = selectedProduct.itemID.split('/');
+    const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
+        const { workflowName, productId } = selectedProduct;
         router.push({
             pathname: `${PATH_START_WORKFLOW}/${workflowName}`,
             query: { productId },

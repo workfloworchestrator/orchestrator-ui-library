@@ -75,14 +75,14 @@ export class BaseApiClient {
 
     postPutJson = <R = object>(
         path: string,
-        body: object,
+        processInput: object,
         method: string,
         showErrorDialog = true,
         result = true,
     ): Promise<R> => {
         return this.axiosFetch(
             path,
-            { method: method, data: body },
+            { method: method, data: processInput },
             {},
             showErrorDialog,
             result,
@@ -100,11 +100,11 @@ abstract class ApiClientInterface extends BaseApiClient {
 class ApiClient extends ApiClientInterface {
     startProcess = (
         workflow_name: string,
-        process: [],
-    ): Promise<{ id: string }> => {
-        return this.postPutJson(
+        processInput: object,
+    ): Promise<unknown> => {
+        return this.postPutJson<unknown>(
             'processes/' + workflow_name,
-            process,
+            processInput,
             'post',
             false,
             true,
