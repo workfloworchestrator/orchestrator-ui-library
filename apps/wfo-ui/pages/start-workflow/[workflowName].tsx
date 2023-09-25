@@ -1,15 +1,16 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { WFOStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
 
 const StartWorkflowPage = () => {
     const router = useRouter();
     const { workflowName: workflowNameQueryParameter } = router.query;
 
-    const processName = Array.isArray(workflowNameQueryParameter)
+    const workflowName = Array.isArray(workflowNameQueryParameter)
         ? workflowNameQueryParameter[0]
         : workflowNameQueryParameter;
 
-    return <h1>Start workflow: {processName}</h1>;
+    return <WFOStartWorkflowPage workflowName={workflowName || ''} />;
 };
 
 export default StartWorkflowPage;

@@ -9,9 +9,19 @@
         "close": "Close",
         "newSubscription": "New subscription"
     },
+    "workflow": {
+        "start_workflow_title": "Start workflow"
+    },
     "errors": {
         "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
         "retrieve_stored_settings_title": "Error retrieving settings"
+    },
+    "pydantic-forms": {
+        "user-input-form": {
+            "cancel": "Cancel",
+            "submit": "Submit",
+            "previous": "Previous"
+        }
     },
     "metadata": {
         "tabs": {
