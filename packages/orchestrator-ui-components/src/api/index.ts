@@ -16,6 +16,10 @@ import { AxiosInstance } from 'axios';
 import { getAxiosInstance } from './axios';
 import { ProductDefinition } from '../types';
 
+const FORMS_ENDPOINT = 'surf/forms/';
+const PROCESS_ENDPOINT = 'processes/';
+const PRODUCTS_ENDPOINT = 'products/';
+
 export class BaseApiClient {
     private _axiosInstance: AxiosInstance;
 
@@ -105,11 +109,11 @@ abstract class ApiClientInterface extends BaseApiClient {
 
 export class ApiClient extends ApiClientInterface {
     startProcess = (
-        workflow_name: string,
+        workflowName: string,
         processInput: object,
     ): Promise<unknown> => {
         return this.postPutJson<unknown>(
-            'processes/' + workflow_name,
+            `${PROCESS_ENDPOINT}${workflowName}`,
             processInput,
             'post',
             false,
@@ -117,17 +121,17 @@ export class ApiClient extends ApiClientInterface {
         );
     };
     products = (): Promise<ProductDefinition[]> => {
-        return this.fetchJson<ProductDefinition[]>('products/');
+        return this.fetchJson<ProductDefinition[]>(PRODUCTS_ENDPOINT);
     };
     productById = (productId: string): Promise<ProductDefinition> => {
-        return this.fetchJson(`products/${productId}`);
+        return this.fetchJson(`${PRODUCTS_ENDPOINT}${productId}`);
     };
     cimStartForm = (
         formKey: string,
         userInputs: object[],
     ): Promise<{ id: string }> => {
         return this.postPutJson(
-            `surf/forms/${formKey}`,
+            `${FORMS_ENDPOINT}${formKey}`,
             userInputs,
             'post',
             false,

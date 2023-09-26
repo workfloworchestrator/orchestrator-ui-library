@@ -21,7 +21,7 @@ import { useAxiosApiClient } from '../../hooks';
 
 interface IProps {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
-    preselectedInput?: any;
+    preselectedInput?: unknown;
     formKey: string;
     handleSubmit: (userInputs: any) => void;
 }
