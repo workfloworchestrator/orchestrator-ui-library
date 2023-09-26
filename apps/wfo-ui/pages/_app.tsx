@@ -11,6 +11,7 @@ import {
     OrchestratorConfigProvider,
     WFOPageTemplate,
     ToastsContextProvider,
+    ApiClientContextProvider,
     ToastsList,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -67,37 +68,44 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     colorMode="light"
                     modify={defaultOrchestratorTheme}
                 >
-                    <Head>
-                        <title>Welcome to example-orchestrator-ui!</title>
-                    </Head>
-                    <main className="app">
-                        <OrchestratorConfigProvider
-                            initialOrchestratorConfig={
-                                initialOrchestratorConfig
-                            }
-                        >
-                            <QueryClientProvider
-                                client={queryClient}
-                                contextSharing={true}
+                    <ApiClientContextProvider
+                        basePath={ORCHESTRATOR_API_BASE_URL}
+                    >
+                        <Head>
+                            <title>Welcome to example-orchestrator-ui!</title>
+                        </Head>
+                        <main className="app">
+                            <OrchestratorConfigProvider
+                                initialOrchestratorConfig={
+                                    initialOrchestratorConfig
+                                }
                             >
-                                <ToastsContextProvider>
-                                    <WFOPageTemplate getAppLogo={getAppLogo}>
-                                        <QueryParamProvider
-                                            adapter={NextAdapter}
-                                            options={{
-                                                removeDefaultsFromUrl: false,
-                                                enableBatching: true,
-                                            }}
+                                <QueryClientProvider
+                                    client={queryClient}
+                                    contextSharing={true}
+                                >
+                                    <ToastsContextProvider>
+                                        <WFOPageTemplate
+                                            getAppLogo={getAppLogo}
                                         >
-                                            <Component {...pageProps} />
-                                        </QueryParamProvider>
-                                    </WFOPageTemplate>
-                                    <ToastsList />
-                                </ToastsContextProvider>
-                                <ReactQueryDevtools initialIsOpen={false} />
-                            </QueryClientProvider>
-                        </OrchestratorConfigProvider>
-                    </main>
+                                            <QueryParamProvider
+                                                adapter={NextAdapter}
+                                                options={{
+                                                    removeDefaultsFromUrl:
+                                                        false,
+                                                    enableBatching: true,
+                                                }}
+                                            >
+                                                <Component {...pageProps} />
+                                            </QueryParamProvider>
+                                        </WFOPageTemplate>
+                                        <ToastsList />
+                                    </ToastsContextProvider>
+                                    <ReactQueryDevtools initialIsOpen={false} />
+                                </QueryClientProvider>
+                            </OrchestratorConfigProvider>
+                        </main>{' '}
+                    </ApiClientContextProvider>
                 </EuiProvider>
             </TranslationsProvider>
         </NoSSR>

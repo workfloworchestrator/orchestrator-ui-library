@@ -177,6 +177,7 @@ export type Process = {
 
 // From backend
 export enum StepStatus {
+    FORM = 'form', // Frontend only
     SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending',
@@ -212,6 +213,7 @@ export interface ProcessDetail {
 
 // From backend
 export enum ProcessStatus {
+    CREATE = 'create', // Frontend only
     CREATED = 'created',
     RUNNING = 'running',
     SUSPENDED = 'suspended',
