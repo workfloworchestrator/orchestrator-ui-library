@@ -138,7 +138,8 @@
                 "create": "Create workflow",
                 "modify": "Modify workflow",
                 "system": "System workflow",
-                "terminate": "Terminate workflow"
+                "terminate": "Terminate workflow",
+                "actions": "Actions"
             },
             "subscriptionDetails": "Subscription details",
             "fixedInputs": "Fixed inputs",
