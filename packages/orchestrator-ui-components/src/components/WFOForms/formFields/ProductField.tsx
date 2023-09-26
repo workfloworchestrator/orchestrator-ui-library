@@ -18,9 +18,9 @@ import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 import { useQuery } from 'react-query';
 
-import { apiClient } from '../../../api';
 import SelectField, { SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';
+import { useAxiosApiClient } from '../../../hooks/useAxiosApiClient';
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,
@@ -34,6 +34,7 @@ declare module 'uniforms' {
 filterDOMProps.register('productIds');
 
 function Product({ name, productIds, ...props }: ProductFieldProps) {
+    const apiClient = useAxiosApiClient();
     const { isLoading, error, data } = useQuery(
         ['products'],
         apiClient.products,

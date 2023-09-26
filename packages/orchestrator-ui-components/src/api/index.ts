@@ -12,11 +12,17 @@
  * limitations under the License.
  *
  */
-
-import axiosInstance from './axios';
+import { AxiosInstance } from 'axios';
+import { getAxiosInstance } from './axios';
 import { ProductDefinition } from '../types';
 
 export class BaseApiClient {
+    private _axiosInstance: AxiosInstance;
+
+    constructor(apiPath: string) {
+        this._axiosInstance = getAxiosInstance(apiPath);
+    }
+
     axiosFetch = <R = object>(
         path: string,
         options = {},
@@ -28,7 +34,7 @@ export class BaseApiClient {
     ): Promise<R> => {
         // preset the config with the relative URL and a GET type.
         // presets can be overridden with `options`.
-        return axiosInstance({ url: path, method: 'GET', ...options })
+        return this._axiosInstance({ url: path, method: 'GET', ...options })
             .then((res) => res.data)
             .catch((err) => {
                 if (showErrorDialog) {
@@ -97,7 +103,7 @@ abstract class ApiClientInterface extends BaseApiClient {
     ) => Promise<object>;
 }
 
-class ApiClient extends ApiClientInterface {
+export class ApiClient extends ApiClientInterface {
     startProcess = (
         workflow_name: string,
         processInput: object,
@@ -129,4 +135,7 @@ class ApiClient extends ApiClientInterface {
         );
     };
 }
-export const apiClient: ApiClient = new ApiClient();
+
+export function getApiClient(apiEndPoint: string) {
+    return new ApiClient(apiEndPoint);
+}

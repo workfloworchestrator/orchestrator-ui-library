@@ -5,10 +5,9 @@ import { redirect } from 'next/navigation';
 import { TimelineItem, WFOLoading } from '../../components';
 import { WFOProcessDetail } from '../processes/WFOProcessDetail';
 import { ProcessDetail, ProcessStatus, StepStatus } from '../../types';
-import { apiClient } from '../../api';
 import UserInputFormWizard from '../../components/WFOForms/UserInputFormWizard';
 import { FormNotCompleteResponse } from '../../types/forms';
-import { EngineStatus } from '../../hooks';
+import { EngineStatus, useAxiosApiClient } from '../../hooks';
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
@@ -24,6 +23,7 @@ export const WFOStartWorkflowPage = ({
     workflowName,
     productId,
 }: WFOStartWorkflowPageProps) => {
+    const apiClient = useAxiosApiClient();
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [form, setForm] = useState<UserInputForm>({});
     const { stepUserInput, hasNext } = form;
@@ -70,7 +70,7 @@ export const WFOStartWorkflowPage = ({
                 },
             );
         },
-        [workflowName, productId],
+        [workflowName, productId, apiClient],
     );
 
     useEffect(() => {
@@ -88,7 +88,7 @@ export const WFOStartWorkflowPage = ({
                 clientResultCallback,
             );
         }
-    }, [submit, workflowName]);
+    }, [submit, workflowName, apiClient]);
 
     const processDetail: Partial<ProcessDetail> = {
         lastStatus: ProcessStatus.CREATE,

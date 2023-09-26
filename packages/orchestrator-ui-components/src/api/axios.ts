@@ -15,22 +15,19 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-const apiPath = 'https://orchestrator.dev.automation.surf.net/api';
-
 // basic configuration for axios.
 // the 'Authorization' header is set in
 // index.ts:setUser
-const axiosConfig: AxiosRequestConfig = {
-    baseURL: apiPath,
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-    },
+export const getAxiosInstance = (apiPath: string) => {
+    const axiosRequestConfig: AxiosRequestConfig = {
+        baseURL: apiPath,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    };
+    return axios.create(axiosRequestConfig);
 };
-
-const axiosInstance = axios.create(axiosConfig);
-
-export default axiosInstance;
 
 // export function setUser(_user: User | null) {
 //     // @ts-ignore

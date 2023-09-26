@@ -19,8 +19,8 @@ import React, { useEffect, useState } from 'react';
 // import ApplicationContext from 'utils/ApplicationContext';
 import { FormNotCompleteResponse, InputForm } from '../../types/forms';
 import { useRouter } from 'next/router';
-import { apiClient } from '../../api';
 
+import { useAxiosApiClient } from '../../hooks/useAxiosApiClient';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 
 interface Form {
@@ -49,6 +49,7 @@ function UserInputFormWizard({
     cancel,
 }: UserInputFormWizardProps) {
     const router = useRouter();
+    const apiClient = useAxiosApiClient();
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
     ]);
