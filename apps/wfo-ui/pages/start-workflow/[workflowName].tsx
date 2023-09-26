@@ -5,18 +5,21 @@ import { ParsedUrlQuery } from 'querystring';
 
 interface StartWorkFlowPageQuery extends ParsedUrlQuery {
     workflowName: string;
-    productId: string;
+    productId?: string;
+    subscriptionId?: string;
 }
 
 const StartWorkflowPage = () => {
     const router = useRouter();
-    const { workflowName, productId } = router.query as StartWorkFlowPageQuery;
+    const { workflowName, productId, subscriptionId } =
+        router.query as StartWorkFlowPageQuery;
 
-    if (workflowName && productId) {
+    if (workflowName && (productId || subscriptionId)) {
         return (
             <WFOStartWorkflowPage
                 workflowName={workflowName}
                 productId={productId}
+                subscriptionId={subscriptionId}
             />
         );
     }
