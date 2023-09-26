@@ -11,7 +11,8 @@ import { EngineStatus, useAxiosApiClient } from '../../hooks';
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
-    productId: string;
+    productId?: string;
+    subscriptionId?: string;
 }
 
 export interface UserInputForm {
@@ -22,6 +23,7 @@ export interface UserInputForm {
 export const WFOStartWorkflowPage = ({
     workflowName,
     productId,
+    subscriptionId,
 }: WFOStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
     const [isFetching, setIsFetching] = useState<boolean>(true);
@@ -32,6 +34,9 @@ export const WFOStartWorkflowPage = ({
         (processInput: object[]) => {
             if (workflowName && productId) {
                 processInput.unshift({ product: productId });
+            }
+            if (workflowName && subscriptionId) {
+                processInput.unshift({ subscription_id: subscriptionId });
             }
 
             const startWorkflowPromise = apiClient
@@ -70,7 +75,7 @@ export const WFOStartWorkflowPage = ({
                 },
             );
         },
-        [workflowName, productId, apiClient],
+        [workflowName, productId, subscriptionId, apiClient],
     );
 
     useEffect(() => {
