@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { JSONSchema6 } from 'json-schema';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 import { TimelineItem, WFOLoading } from '../../components';
 import { WFOProcessDetail } from '../processes/WFOProcessDetail';
@@ -8,6 +8,7 @@ import { ProcessDetail, ProcessStatus, StepStatus } from '../../types';
 import UserInputFormWizard from '../../components/WFOForms/UserInputFormWizard';
 import { FormNotCompleteResponse } from '../../types/forms';
 import { EngineStatus, useAxiosApiClient } from '../../hooks';
+import { PATH_PROCESSES } from '../../components';
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
@@ -26,6 +27,7 @@ export const WFOStartWorkflowPage = ({
     subscriptionId,
 }: WFOStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
+    const router = useRouter();
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [form, setForm] = useState<UserInputForm>({});
     const { stepUserInput, hasNext } = form;
@@ -51,7 +53,7 @@ export const WFOStartWorkflowPage = ({
                                 'resolver successfullly!: ',
                                 process.id,
                             );
-                            redirect(`/processes/${process.id}`);
+                            router.push(`${PATH_PROCESSES}/${process.id}`);
                         }
                     },
                     // Reject handler
@@ -71,11 +73,11 @@ export const WFOStartWorkflowPage = ({
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
                     console.log('engine down!!!', json);
-                    redirect('/processes');
+                    router.push(PATH_PROCESSES);
                 },
             );
         },
-        [workflowName, productId, subscriptionId, apiClient],
+        [workflowName, productId, subscriptionId, apiClient, router],
     );
 
     useEffect(() => {
@@ -133,7 +135,7 @@ export const WFOStartWorkflowPage = ({
                 <UserInputFormWizard
                     stepUserInput={stepUserInput}
                     validSubmit={submit}
-                    cancel={() => redirect('/processes')}
+                    cancel={() => router.push(PATH_PROCESSES)}
                     hasNext={hasNext}
                 />
             )) || <WFOLoading />}
