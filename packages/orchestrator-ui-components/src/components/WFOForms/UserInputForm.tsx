@@ -20,7 +20,6 @@ import {
     EuiFlexGroup,
     EuiHorizontalRule,
 } from '@elastic/eui';
-// import { SubscriptionsContextProvider } from "components/subscriptionContext";
 
 import invariant from 'invariant';
 import { JSONSchema6 } from 'json-schema';
@@ -33,6 +32,7 @@ import axios from 'axios';
 
 import { filterDOMProps, joinName } from 'uniforms';
 import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
+
 import { AutoField, AutoForm } from 'uniforms-unstyled';
 
 import { autoFieldFunction } from './AutoFieldLoader';
@@ -41,6 +41,12 @@ import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider
 import AutoFields from './AutoFields';
 import { ValidationError } from '../../types/forms';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
+import { useOrchestratorTheme } from '../../hooks';
+
+type JSONSchemaFormProperty = JSONSchema6 & {
+    uniforms: any;
+    defaultValue: any;
+};
 
 interface IProps {
     router: NextRouter;
@@ -108,6 +114,7 @@ function resolveRef(reference: string, schema: Record<string, any>) {
 
     return resolvedReference;
 }
+
 class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863
     getField(name: string) {
@@ -321,41 +328,45 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
     }
 }
 
-function fillPreselection(form: JSONSchema6, query: string) {
-    console.log('fillpreselection query: ' + query);
-    // const queryParams = getQueryParameters(query);
-    //
-    // if (form && form.properties) {
-    //     Object.keys(queryParams).forEach((param) => {
-    //         if (form && form.properties && form.properties[param]) {
-    //             const organisatieInput = form.properties[param] as JSONSchemaFormProperty;
-    //             if (!organisatieInput.uniforms) {
-    //                 organisatieInput.uniforms = {};
-    //             }
-    //             organisatieInput.uniforms.disabled = true;
-    //             organisatieInput.default = queryParams[param];
-    //         }
-    //     });
-    //
-    //     // ipvany preselect
-    //     if (queryParams.prefix && queryParams.prefixlen) {
-    //         if (form && form.properties.ip_prefix) {
-    //             const ipPrefixInput = form.properties.ip_prefix as JSONSchemaFormProperty;
-    //             if (!ipPrefixInput.uniforms) {
-    //                 ipPrefixInput.uniforms = {};
-    //             }
-    //             ipPrefixInput.default = `${queryParams.prefix}/${queryParams.prefixlen}`;
-    //             ipPrefixInput.uniforms.prefixMin = parseInt(
-    //                 (queryParams.prefix_min as string) ?? (queryParams.prefixlen as string),
-    //                 10
-    //             );
-    //         }
-    //     }
-    // }
+function fillPreselection(form: JSONSchema6, router: NextRouter) {
+    const queryParams = router.query;
+
+    if (form && form.properties) {
+        Object.keys(queryParams).forEach((param) => {
+            if (form && form.properties && form.properties[param]) {
+                const organisatieInput = form.properties[
+                    param
+                ] as JSONSchemaFormProperty;
+                if (!organisatieInput.uniforms) {
+                    organisatieInput.uniforms = {};
+                }
+                organisatieInput.uniforms.disabled = true;
+                organisatieInput.default = queryParams[param];
+            }
+        });
+
+        // ipvany preselect
+        if (queryParams.prefix && queryParams.prefixlen) {
+            if (form && form.properties.ip_prefix) {
+                const ipPrefixInput = form.properties
+                    .ip_prefix as JSONSchemaFormProperty;
+                if (!ipPrefixInput.uniforms) {
+                    ipPrefixInput.uniforms = {};
+                }
+                ipPrefixInput.default = `${queryParams.prefix}/${queryParams.prefixlen}`;
+                ipPrefixInput.uniforms.prefixMin = parseInt(
+                    (queryParams.prefix_min as string) ??
+                        (queryParams.prefixlen as string),
+                    10,
+                );
+            }
+        }
+    }
     return form;
 }
 
 function UserInputForm({
+    router,
     stepUserInput,
     validSubmit,
     cancel,
@@ -364,7 +375,8 @@ function UserInputForm({
     hasPrev = false,
     userInput,
 }: IProps) {
-    const t = useTranslations('pydanticForms.user-input-form');
+    const t = useTranslations('pydanticForms.userInputForm');
+    const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const [processing, setProcessing] = useState<boolean>(false);
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
@@ -430,10 +442,15 @@ function UserInputForm({
     };
 
     const onButtonClick = (
-        e: React.MouseEvent<HTMLButtonElement>,
+        e:
+            | React.MouseEvent<HTMLButtonElement>
+            | React.MouseEvent<HTMLDivElement, MouseEvent>,
         question: string | undefined,
         confirm: ConfirmDialogActions['closeConfirmDialog'],
     ) => {
+        console.log(e, question, confirm);
+        alert('TODO: Implement on buttonClick cancel with confirm modal');
+        /*
         if (!question) {
             return confirm(e);
         }
@@ -444,6 +461,7 @@ function UserInputForm({
             cancelAction: () => {},
             leavePage: false,
         });
+        */
     };
 
     const renderButtons = (buttons: Buttons) => {
@@ -459,15 +477,21 @@ function UserInputForm({
                 {buttons.previous.text ?? t('previous')}
             </EuiButton>
         ) : (
-            <EuiButton
-                id="button-cancel-form-submit"
-                color={buttons.previous.color ?? 'warning'}
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            <div
+                onClick={(e) => {
                     onButtonClick(e, buttons.previous.dialog, openDialog);
+                }}
+                css={{
+                    cursor: 'pointer',
+                    color: theme.colors.link,
+                    fontWeight: theme.font.weight.bold,
+                    marginLeft: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
             >
                 {buttons.previous.text ?? t('cancelProcess')}
-            </EuiButton>
+            </div>
         );
 
         const nextButton = hasNext ? (
@@ -509,11 +533,12 @@ function UserInputForm({
     };
 
     //const prefilledForm = fillPreselection(stepUserInput, location.search);
-    const prefilledForm = fillPreselection(stepUserInput, '');
+    const prefilledForm = fillPreselection(stepUserInput, router);
     const bridge = new CustomTitleJSONSchemaBridge(prefilledForm, () => {});
     const AutoFieldProvider = AutoField.componentDetectorContext.Provider;
-    // @ts-ignore Get the Button config from the form default values, or default to empty config
-    const buttons: Buttons = stepUserInput.properties?.buttons?.default ?? {
+    // Get the Button config from the form default values, or default to empty config
+    // @ts-ignore
+    const buttons: Buttons = prefilledForm.properties?.buttons?.default ?? {
         previous: {},
         next: {},
     };
@@ -526,7 +551,6 @@ function UserInputForm({
                         stepUserInput.title !== 'unknown' && (
                             <h3>{stepUserInput.title}</h3>
                         )}
-                    {/*<SubscriptionsContextProvider>*/}
                     <AutoFieldProvider value={autoFieldFunction}>
                         <AutoForm
                             schema={bridge}
@@ -568,7 +592,6 @@ function UserInputForm({
                             {renderButtons(buttons)}
                         </AutoForm>
                     </AutoFieldProvider>
-                    {/*</SubscriptionsContextProvider>*/}
                 </section>
             </div>
         </div>
