@@ -1,14 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { JSONSchema6 } from 'json-schema';
 import { useRouter } from 'next/router';
+import {
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPanel,
+    EuiText,
+    EuiHorizontalRule,
+} from '@elastic/eui';
 
 import { TimelineItem, WFOLoading } from '../../components';
 import { WFOProcessDetail } from '../processes/WFOProcessDetail';
 import { ProcessDetail, ProcessStatus, StepStatus } from '../../types';
 import UserInputFormWizard from '../../components/WFOForms/UserInputFormWizard';
 import { FormNotCompleteResponse } from '../../types/forms';
-import { EngineStatus, useAxiosApiClient } from '../../hooks';
+import {
+    EngineStatus,
+    useAxiosApiClient,
+    useOrchestratorTheme,
+} from '../../hooks';
 import { PATH_PROCESSES } from '../../components';
+import { getStyles } from '../../components/WFOSteps/getStyles';
+import { WFOStepStatusIcon } from '../../components/WFOSteps/WFOStepStatusIcon';
+import { useTranslations } from 'next-intl';
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
@@ -27,10 +41,13 @@ export const WFOStartWorkflowPage = ({
     subscriptionId,
 }: WFOStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
+    const t = useTranslations('processes.steps');
     const router = useRouter();
+    const { theme } = useOrchestratorTheme();
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [form, setForm] = useState<UserInputForm>({});
     const { stepUserInput, hasNext } = form;
+    const { stepHeaderStyle, stepListContentBoldTextStyle } = getStyles(theme);
 
     const submit = useCallback(
         (processInput: object[]) => {
@@ -131,14 +148,27 @@ export const WFOStartWorkflowPage = ({
             processDetail={processDetail}
             timelineItems={fakeTimeLineItems}
         >
-            {(stepUserInput && (
-                <UserInputFormWizard
-                    stepUserInput={stepUserInput}
-                    validSubmit={submit}
-                    cancel={() => router.push(PATH_PROCESSES)}
-                    hasNext={hasNext}
-                />
-            )) || <WFOLoading />}
+            <EuiPanel css={{ marginTop: theme.base * 3 }}>
+                <EuiFlexGroup css={stepHeaderStyle}>
+                    <WFOStepStatusIcon stepStatus={StepStatus.FORM} />
+
+                    <EuiFlexItem grow={0}>
+                        <EuiText css={stepListContentBoldTextStyle}>
+                            {t('userInput')}
+                        </EuiText>
+                        <EuiText>{t('inProgress')}</EuiText>
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+                <EuiHorizontalRule />
+                {(stepUserInput && (
+                    <UserInputFormWizard
+                        stepUserInput={stepUserInput}
+                        validSubmit={submit}
+                        cancel={() => router.push(PATH_PROCESSES)}
+                        hasNext={hasNext}
+                    />
+                )) || <WFOLoading />}
+            </EuiPanel>
         </WFOProcessDetail>
     );
 };

@@ -18,8 +18,7 @@ import {
     EuiButtonColor,
     EuiButton,
     EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
+    EuiHorizontalRule,
 } from '@elastic/eui';
 // import { SubscriptionsContextProvider } from "components/subscriptionContext";
 
@@ -355,6 +354,7 @@ function fillPreselection(form: JSONSchema6, query: string) {
     // }
     return form;
 }
+
 function UserInputForm({
     stepUserInput,
     validSubmit,
@@ -364,7 +364,7 @@ function UserInputForm({
     hasPrev = false,
     userInput,
 }: IProps) {
-    const t = useTranslations('pydantic-forms.user-input-form');
+    const t = useTranslations('pydanticForms.user-input-form');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const [processing, setProcessing] = useState<boolean>(false);
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
@@ -459,17 +459,15 @@ function UserInputForm({
                 {buttons.previous.text ?? t('previous')}
             </EuiButton>
         ) : (
-            <EuiFlexItem>
-                <EuiButton
-                    id="button-cancel-form-submit"
-                    color={buttons.previous.color ?? 'warning'}
-                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        onButtonClick(e, buttons.previous.dialog, openDialog);
-                    }}
-                >
-                    {buttons.previous.text ?? t('cancel')}
-                </EuiButton>
-            </EuiFlexItem>
+            <EuiButton
+                id="button-cancel-form-submit"
+                color={buttons.previous.color ?? 'warning'}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    onButtonClick(e, buttons.previous.dialog, openDialog);
+                }}
+            >
+                {buttons.previous.text ?? t('cancelProcess')}
+            </EuiButton>
         );
 
         const nextButton = hasNext ? (
@@ -491,16 +489,22 @@ function UserInputForm({
                 color={buttons.next.color ?? 'primary'}
                 isLoading={processing}
                 type="submit"
+                iconType="play"
+                iconSide="right"
             >
-                {buttons.next.text ?? t('submit')}
+                {buttons.next.text ?? t('runProcess')}
             </EuiButton>
         );
 
         return (
-            <EuiFlexGroup className="buttons">
-                <EuiFlexItem>{prevButton}</EuiFlexItem>
-                <EuiFlexItem>{nextButton}</EuiFlexItem>
-            </EuiFlexGroup>
+            <>
+                <EuiHorizontalRule />
+
+                <EuiFlexGroup justifyContent="spaceBetween">
+                    {prevButton}
+                    {nextButton}
+                </EuiFlexGroup>
+            </>
         );
     };
 
@@ -515,7 +519,7 @@ function UserInputForm({
     };
 
     return (
-        <EuiPanel css={userInputFormStyling}>
+        <div css={userInputFormStyling}>
             <div className="user-input-form">
                 <section className="form-fieldset">
                     {stepUserInput.title &&
@@ -523,8 +527,6 @@ function UserInputForm({
                             <h3>{stepUserInput.title}</h3>
                         )}
                     {/*<SubscriptionsContextProvider>*/}
-                    {/*
-                            // @ts-ignore */}
                     <AutoFieldProvider value={autoFieldFunction}>
                         <AutoForm
                             schema={bridge}
@@ -569,7 +571,7 @@ function UserInputForm({
                     {/*</SubscriptionsContextProvider>*/}
                 </section>
             </div>
-        </EuiPanel>
+        </div>
     );
 }
 

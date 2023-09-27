@@ -1,6 +1,6 @@
 // Todo: theme with decent colors from theme (style was copied from v1)
 const PRIMARY_COLOR = '#0077cc';
-const LIGHT_PRIMARY_COLOR = '#520980';
+// const LIGHT_PRIMARY_COLOR = '#520980';
 
 import { css } from '@emotion/react';
 
@@ -61,10 +61,6 @@ export const userInputFormStyling = css`
                 margin-right: 10px;
             }
         }
-
-        .buttons {
-            width: fit-content;
-        }
     }
 
     /* EUI specific styling for the forms */
@@ -81,9 +77,5 @@ export const userInputFormStyling = css`
     .euiFormRow__label__large {
         font-size: +1.1em;
         margin-bottom: 0;
-    }
-
-    .euiHorizontalRule {
-        border-top: 2px solid ${LIGHT_PRIMARY_COLOR};
     }
 `;

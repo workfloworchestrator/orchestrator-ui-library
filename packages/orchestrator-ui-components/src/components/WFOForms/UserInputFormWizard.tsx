@@ -104,19 +104,17 @@ function UserInputFormWizard({
      * */
     const key = hash.sha1({ form: currentForm.form, length: forms.length });
     return (
-        <div>
-            <UserInputForm
-                key={key}
-                router={router}
-                stepUserInput={currentForm.form}
-                validSubmit={submit}
-                previous={previous}
-                hasNext={currentForm.hasNext}
-                hasPrev={forms.length > 1}
-                cancel={cancel}
-                userInput={currentUserInput}
-            />
-        </div>
+        <UserInputForm
+            key={key}
+            router={router}
+            stepUserInput={currentForm.form}
+            validSubmit={submit}
+            previous={previous}
+            hasNext={currentForm.hasNext}
+            hasPrev={forms.length > 1}
+            cancel={cancel}
+            userInput={currentUserInput}
+        />
     );
 }
 
