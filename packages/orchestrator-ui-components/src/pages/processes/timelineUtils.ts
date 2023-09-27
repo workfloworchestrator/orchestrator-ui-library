@@ -31,22 +31,25 @@ const stepsShouldBeMerged = (previousStep: Step, currentStep: Step) =>
 export const mapProcessStepsToTimelineItems = (steps: Step[]) =>
     steps.reduce<TimelineItem[]>(
         (
-            allTimelineItems: TimelineItem[],
+            previousTimelineItems: TimelineItem[],
             currentProcessDetailStep,
             index,
-            allProcessDetailSteps,
+            allSteps,
         ) => {
-            const previousTimelineItem = allTimelineItems.slice(-1)[0];
+            const previousTimelineItem = previousTimelineItems.slice(-1)[0];
 
             if (
                 index > 0 &&
                 stepsShouldBeMerged(
-                    allProcessDetailSteps[index - 1],
+                    allSteps[index - 1],
                     currentProcessDetailStep,
                 )
             ) {
-                const allStepsExceptPrevious = allTimelineItems.slice(0, -1);
-                const updatedPreviousStep: TimelineItem = {
+                const allTimelineItemsExceptLast = previousTimelineItems.slice(
+                    0,
+                    -1,
+                );
+                const updatedPreviousTimelineItem: TimelineItem = {
                     ...previousTimelineItem,
                     processStepStatus: getMostAccurateTimelineStatus(
                         previousTimelineItem.processStepStatus,
@@ -58,11 +61,14 @@ export const mapProcessStepsToTimelineItems = (steps: Step[]) =>
                             : 2,
                 };
 
-                return [...allStepsExceptPrevious, updatedPreviousStep];
+                return [
+                    ...allTimelineItemsExceptLast,
+                    updatedPreviousTimelineItem,
+                ];
             }
 
             return [
-                ...allTimelineItems,
+                ...previousTimelineItems,
                 mapStepToTimelineItem(currentProcessDetailStep),
             ];
         },
