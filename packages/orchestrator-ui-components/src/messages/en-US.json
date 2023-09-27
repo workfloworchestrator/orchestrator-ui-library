@@ -17,7 +17,7 @@
         "retrieve_stored_settings_title": "Error retrieving settings"
     },
     "pydanticForms": {
-        "user-input-form": {
+        "userInputForm": {
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
