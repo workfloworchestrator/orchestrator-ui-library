@@ -14,12 +14,25 @@ const StartWorkflowPage = () => {
     const { workflowName, productId, subscriptionId } =
         router.query as StartWorkFlowPageQuery;
 
-    if (workflowName && (productId || subscriptionId)) {
+    const getStartWorkFlowPayload = () => {
+        if (productId) {
+            return {
+                product: productId,
+            };
+        }
+
+        if (subscriptionId) {
+            return {
+                subscription_id: subscriptionId,
+            };
+        }
+    };
+    const startWorkflowPayload = getStartWorkFlowPayload();
+    if (startWorkflowPayload) {
         return (
             <WFOStartWorkflowPage
                 workflowName={workflowName}
-                productId={productId}
-                subscriptionId={subscriptionId}
+                startWorkflowPayload={startWorkflowPayload}
             />
         );
     }
