@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { EuiButton, EuiFlexGroup, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { Step, StepStatus } from '../../../types';
@@ -41,6 +41,28 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
             );
         }
     };
+
+    const testStepsWithRefs = steps.map((step, index) => {
+        return {
+            ...step,
+            ref: useRef<HTMLDivElement>(null),
+        };
+    });
+    console.log(testStepsWithRefs);
+    const testRenderedSteps = testStepsWithRefs.map((step, index) => {
+        return (
+            <WFOStep
+                key={index}
+                ref={step.ref}
+                stepDetailIsOpen={stepDetailStates.get(index) || false}
+                toggleStepDetailIsOpen={toggleStepDetailIsOpen}
+                step={step}
+                delta={{ delta: 'nothing' }}
+                stepIndex={index}
+                startedAt={stepStartTime}
+            />
+        );
+    });
 
     const {
         stepSpacerStyle,
@@ -108,7 +130,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                 </EuiFlexGroup>
             </EuiFlexGroup>
             <>
-                {steps.map((step, index) => {
+                {testStepsWithRefs.map((step, index) => {
                     let previousState = {};
                     let delta = {};
 
@@ -158,6 +180,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                         <div key={`step-${index}`}>
                             {index !== 0 && <div css={stepSpacerStyle} />}
                             <WFOStep
+                                ref={step.ref}
                                 stepDetailIsOpen={
                                     stepDetailStates.get(index) || false
                                 }
@@ -176,6 +199,15 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                     return stepComponent;
                 })}
             </>
+            {/*<h1>Some Test -- Dont forget to remove</h1>*/}
+            {/*<EuiButton*/}
+            {/*    onClick={() =>*/}
+            {/*        testStepsWithRefs[10].ref.current?.scrollIntoView({*/}
+            {/*            behavior: 'smooth',*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*></EuiButton>*/}
+            {/*<>{testRenderedSteps}</>*/}
         </>
     );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
@@ -38,9 +38,11 @@ export const WFOProcessDetailPage = ({
     type GroupedStep = {
         steps: Step[];
         // ref: React.RefObject<HTMLDivElement>;
+        // future: add details concerning the group e.g. for the tooltip content in timeline
     };
 
     // Todo move to utils -- currently in packages/orchestrator-ui-components/src/pages/processes/timelineUtils.ts
+    // isUnRetryableState
     const isFinalStepStatus = (status: StepStatus): boolean => {
         return (
             status === StepStatus.COMPLETE ||
@@ -114,6 +116,7 @@ export const WFOProcessDetailPage = ({
         >
             {(isFetching && <WFOLoading />) ||
                 (process !== undefined && (
+                    // Todo add a ref, to be able to scroll to a specific step
                     <WFOStepList
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,

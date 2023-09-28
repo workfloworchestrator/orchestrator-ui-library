@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import {
     EuiCodeBlock,
     EuiFlexGroup,
@@ -25,77 +25,90 @@ export interface WFOStepProps {
     startedAt: string;
 }
 
-export const WFOStep = ({
-    step,
-    delta,
-    stepDetailIsOpen,
-    toggleStepDetailIsOpen,
-    stepIndex,
-    startedAt,
-}: WFOStepProps) => {
-    const { name, executed, status } = step;
-    const { theme } = useOrchestratorTheme();
-    const {
-        stepHeaderStyle,
-        stepHeaderRightStyle,
-        stepListContentBoldTextStyle,
-        stepDurationStyle,
-        stepToggleExpandStyle,
-        stepRowStyle,
-    } = getStyles(theme);
-    const t = useTranslations('processes.steps');
+export const WFOStep = React.forwardRef(
+    (
+        {
+            step,
+            delta,
+            stepDetailIsOpen,
+            toggleStepDetailIsOpen,
+            stepIndex,
+            startedAt,
+        }: WFOStepProps,
+        ref: LegacyRef<HTMLDivElement>,
+    ) => {
+        const { name, executed, status } = step;
+        const { theme } = useOrchestratorTheme();
+        const {
+            stepHeaderStyle,
+            stepHeaderRightStyle,
+            stepListContentBoldTextStyle,
+            stepDurationStyle,
+            stepToggleExpandStyle,
+            stepRowStyle,
+        } = getStyles(theme);
+        const t = useTranslations('processes.steps');
 
-    return (
-        <EuiPanel>
-            <EuiFlexGroup css={stepHeaderStyle}>
-                <WFOStepStatusIcon stepStatus={status} />
+        return (
+            <div ref={ref}>
+                <EuiPanel>
+                    <EuiFlexGroup css={stepHeaderStyle}>
+                        <WFOStepStatusIcon stepStatus={status} />
 
-                <EuiFlexItem grow={0}>
-                    <EuiText css={stepListContentBoldTextStyle}>{name}</EuiText>
-                    <EuiText>
-                        {status} {executed && `- ${formatDate(executed)}`}
-                    </EuiText>
-                </EuiFlexItem>
+                        <EuiFlexItem grow={0}>
+                            <EuiText css={stepListContentBoldTextStyle}>
+                                {name}
+                            </EuiText>
+                            <EuiText>
+                                {status}{' '}
+                                {executed && `- ${formatDate(executed)}`}
+                            </EuiText>
+                        </EuiFlexItem>
 
-                <EuiFlexGroup css={stepRowStyle}>
-                    {step.executed && (
-                        <>
-                            <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
-                                <EuiText css={stepDurationStyle}>
-                                    {t('duration')}
-                                </EuiText>
-                                <EuiText size="m">
-                                    {calculateTimeDifference(
-                                        startedAt,
-                                        step.executed,
-                                    )}
-                                </EuiText>
-                            </EuiFlexItem>
-                            <EuiFlexItem
-                                grow={0}
-                                css={stepToggleExpandStyle}
-                                onClick={() =>
-                                    toggleStepDetailIsOpen(stepIndex)
-                                }
-                            >
-                                {(stepDetailIsOpen && <WFOChevronUp />) || (
-                                    <WFOChevronDown />
-                                )}
-                            </EuiFlexItem>
-                        </>
+                        <EuiFlexGroup css={stepRowStyle}>
+                            {step.executed && (
+                                <>
+                                    <EuiFlexItem
+                                        grow={0}
+                                        css={stepHeaderRightStyle}
+                                    >
+                                        <EuiText css={stepDurationStyle}>
+                                            {t('duration')}
+                                        </EuiText>
+                                        <EuiText size="m">
+                                            {calculateTimeDifference(
+                                                startedAt,
+                                                step.executed,
+                                            )}
+                                        </EuiText>
+                                    </EuiFlexItem>
+                                    <EuiFlexItem
+                                        grow={0}
+                                        css={stepToggleExpandStyle}
+                                        onClick={() =>
+                                            toggleStepDetailIsOpen(stepIndex)
+                                        }
+                                    >
+                                        {(stepDetailIsOpen && (
+                                            <WFOChevronUp />
+                                        )) || <WFOChevronDown />}
+                                    </EuiFlexItem>
+                                </>
+                            )}
+                        </EuiFlexGroup>
+                    </EuiFlexGroup>
+                    {stepDetailIsOpen && (
+                        <EuiCodeBlock
+                            isCopyable={true}
+                            language={'json'}
+                            lineNumbers={true}
+                            overflowHeight={6000}
+                        >
+                            {JSON.stringify(delta, null, 3)}
+                        </EuiCodeBlock>
                     )}
-                </EuiFlexGroup>
-            </EuiFlexGroup>
-            {stepDetailIsOpen && (
-                <EuiCodeBlock
-                    isCopyable={true}
-                    language={'json'}
-                    lineNumbers={true}
-                    overflowHeight={6000}
-                >
-                    {JSON.stringify(delta, null, 3)}
-                </EuiCodeBlock>
-            )}
-        </EuiPanel>
-    );
-};
+                </EuiPanel>
+            </div>
+        );
+    },
+);
