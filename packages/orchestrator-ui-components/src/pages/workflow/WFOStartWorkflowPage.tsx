@@ -49,17 +49,23 @@ export const WFOStartWorkflowPage = ({
     const { stepUserInput, hasNext } = form;
     const { stepHeaderStyle, stepListContentBoldTextStyle } = getStyles(theme);
 
+    const addParamsToProcessInput = (processInput: object[]): object[] => {
+        if (workflowName && productId) {
+            return [{ product: productId }, ...processInput];
+        } else if (workflowName && subscriptionId) {
+            return [{ subscription_id: subscriptionId }, ...processInput];
+        } else {
+            return processInput;
+        }
+        return processInput;
+    };
+
     const submit = useCallback(
         (processInput: object[]) => {
-            if (workflowName && productId) {
-                processInput.unshift({ product: productId });
-            }
-            if (workflowName && subscriptionId) {
-                processInput.unshift({ subscription_id: subscriptionId });
-            }
+            const input = addParamsToProcessInput(processInput);
 
             const startWorkflowPromise = apiClient
-                .startProcess(workflowName, processInput)
+                .startProcess(workflowName, input)
                 .then(
                     // Resolve handler
                     (result) => {
