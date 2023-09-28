@@ -20,6 +20,7 @@ import { useOrchestratorTheme } from '../../hooks';
 import { ProcessDetail, ProcessStatus } from '../../types';
 import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
+import { WFOPlayFill, WFORefresh, WFOXCircleFill } from '../../icons';
 
 interface ProcessHeaderValueProps {
     translationKey: string;
@@ -102,7 +103,15 @@ export const WFOProcessDetail = ({
                             e.preventDefault();
                             alert('TODO: Implement retry');
                         }}
-                        iconType="refresh"
+                        iconType={() => (
+                            <WFORefresh
+                                color={
+                                    buttonsAreDisabled
+                                        ? theme.colors.subduedText
+                                        : theme.colors.link
+                                }
+                            />
+                        )}
                         isDisabled={buttonsAreDisabled}
                     >
                         {t('retry')}
@@ -117,7 +126,15 @@ export const WFOProcessDetail = ({
                             e.preventDefault();
                             alert('TODO: Implement resume');
                         }}
-                        iconType="play"
+                        iconType={() => (
+                            <WFOPlayFill
+                                color={
+                                    buttonsAreDisabled
+                                        ? theme.colors.subduedText
+                                        : theme.colors.link
+                                }
+                            />
+                        )}
                         isDisabled={buttonsAreDisabled}
                     >
                         {t('resume')}
@@ -132,7 +149,15 @@ export const WFOProcessDetail = ({
                             e.preventDefault();
                             alert('TODO: Implement abort');
                         }}
-                        iconType="cross"
+                        iconType={() => (
+                            <WFOXCircleFill
+                                color={
+                                    buttonsAreDisabled
+                                        ? theme.colors.subduedText
+                                        : theme.colors.danger
+                                }
+                            />
+                        )}
                         color="danger"
                         isDisabled={buttonsAreDisabled}
                     >
