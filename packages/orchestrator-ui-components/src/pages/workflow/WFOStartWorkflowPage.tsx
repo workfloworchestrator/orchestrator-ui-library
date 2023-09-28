@@ -24,10 +24,20 @@ import { getStyles } from '../../components/WFOSteps/getStyles';
 import { WFOStepStatusIcon } from '../../components/WFOSteps/WFOStepStatusIcon';
 import { useTranslations } from 'next-intl';
 
+type StartCreateWorkflowPayload = {
+    product: string;
+};
+type StartModifyWorkflowPayload = {
+    subscription_id: string;
+};
+
+type StartWorkFlowPayload =
+    | StartCreateWorkflowPayload
+    | StartModifyWorkflowPayload;
+
 interface WFOStartWorkflowPageProps {
     workflowName: string;
-    productId?: string;
-    subscriptionId?: string;
+    startWorkflowPayload: StartWorkFlowPayload;
 }
 
 export interface UserInputForm {
@@ -37,8 +47,7 @@ export interface UserInputForm {
 
 export const WFOStartWorkflowPage = ({
     workflowName,
-    productId,
-    subscriptionId,
+    startWorkflowPayload,
 }: WFOStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
@@ -49,23 +58,13 @@ export const WFOStartWorkflowPage = ({
     const { stepUserInput, hasNext } = form;
     const { stepHeaderStyle, stepListContentBoldTextStyle } = getStyles(theme);
 
-    const addParamsToProcessInput = (processInput: object[]): object[] => {
-        if (workflowName && productId) {
-            return [{ product: productId }, ...processInput];
-        } else if (workflowName && subscriptionId) {
-            return [{ subscription_id: subscriptionId }, ...processInput];
-        } else {
-            return processInput;
-        }
-        return processInput;
-    };
-
     const submit = useCallback(
         (processInput: object[]) => {
-            const input = addParamsToProcessInput(processInput);
-
             const startWorkflowPromise = apiClient
-                .startProcess(workflowName, input)
+                .startProcess(workflowName, [
+                    startWorkflowPayload,
+                    ...processInput,
+                ])
                 .then(
                     // Resolve handler
                     (result) => {
@@ -100,7 +99,7 @@ export const WFOStartWorkflowPage = ({
                 },
             );
         },
-        [workflowName, productId, subscriptionId, apiClient, router],
+        [apiClient, workflowName, startWorkflowPayload, router],
     );
 
     useEffect(() => {
