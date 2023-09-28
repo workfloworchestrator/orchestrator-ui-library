@@ -42,6 +42,7 @@ import AutoFields from './AutoFields';
 import { ValidationError } from '../../types/forms';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 import { useOrchestratorTheme } from '../../hooks';
+import { WFOPlayFill } from '../../icons';
 
 type JSONSchemaFormProperty = JSONSchema6 & {
     uniforms: any;
@@ -513,7 +514,7 @@ function UserInputForm({
                 color={buttons.next.color ?? 'primary'}
                 isLoading={processing}
                 type="submit"
-                iconType="play"
+                iconType={() => <WFOPlayFill color="#FFF" />}
                 iconSide="right"
             >
                 {buttons.next.text ?? t('runProcess')}

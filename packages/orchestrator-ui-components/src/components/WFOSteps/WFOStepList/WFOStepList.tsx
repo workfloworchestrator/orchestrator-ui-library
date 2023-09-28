@@ -6,6 +6,7 @@ import { WFOStep } from '../WFOStep';
 import { getStyles } from '../getStyles';
 import { useOrchestratorTheme } from '../../../hooks';
 import { stateDelta } from '../../../utils';
+import { WFOCode, WFOEyeFill } from '../../../icons';
 
 export interface WFOStepListProps {
     steps: Step[];
@@ -82,7 +83,7 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                         }}
                         iconSide="right"
                         size="s"
-                        iconType="visVega"
+                        iconType={() => <WFOCode color={theme.colors.link} />}
                     >
                         {t('showDelta')}
                     </EuiButton>
@@ -96,7 +97,9 @@ export const WFOStepList = ({ steps = [], startedAt }: WFOStepListProps) => {
                             e.preventDefault();
                             alert('TODO: Implement View options');
                         }}
-                        iconType="eye"
+                        iconType={() => (
+                            <WFOEyeFill color={theme.colors.link} />
+                        )}
                         iconSide="right"
                         size="s"
                     >
