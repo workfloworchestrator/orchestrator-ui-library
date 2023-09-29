@@ -12,10 +12,6 @@ export type WFOStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
-type StepWithRef = Step & {
-    // ref: React.MutableRefObject<HTMLDivElement | null>;
-};
-
 export interface WFOStepListProps {
     steps: Step[];
     startedAt: string;
@@ -29,55 +25,18 @@ export const WFOStepList = React.forwardRef(
         const { theme } = useOrchestratorTheme();
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
-        function getMap() {
-            if (!stepReferences.current) {
-                // Initialize the Map on first usage.
-                stepReferences.current = new Map();
-            }
-            return stepReferences.current;
-        }
+        const getReferenceCallbackForStepId =
+            (stepId: string) => (node: HTMLDivElement | null) =>
+                node
+                    ? stepReferences.current.set(stepId, node)
+                    : stepReferences.current.delete(stepId);
 
-        const stepsWithRefs: StepWithRef[] = steps.map((step) => {
-            return {
-                ...step,
-                // Todo fis this: its not allowed!
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                // ref: useRef<HTMLDivElement>(null),
-                // ref: (node: RefCallback<any>)  => {
-                //     const map = getMap();
-                //     if (node) {
-                //         map.set(step.stepId, node);
-                //     } else {
-                //         map.delete(step.stepId);
-                //     }
-                // },
-            };
-        });
-
-        useImperativeHandle(
-            reference,
-            () => ({
-                // scrollToStep: (stepId: string) => {
-                //     const step: StepWithRef | undefined = stepsWithRefs.find(
-                //         (step) => step.stepId === stepId,
-                //     );
-                //     if (step?.ref) {
-                //         step.ref.current?.scrollIntoView({
-                //             behavior: 'smooth',
-                //         });
-                //     }
-                // },
-                scrollToStep: (stepId: string) => {
-                    const map = getMap();
-                    if (map.has(stepId)) {
-                        map.get(stepId)?.scrollIntoView({
-                            behavior: 'smooth',
-                        });
-                    }
-                },
-            }),
-            [],
-        );
+        useImperativeHandle(reference, () => ({
+            scrollToStep: (stepId: string) =>
+                stepReferences.current.get(stepId)?.scrollIntoView({
+                    behavior: 'smooth',
+                }),
+        }));
 
         const t = useTranslations('processes.steps');
         let stepStartTime = startedAt;
@@ -177,7 +136,7 @@ export const WFOStepList = React.forwardRef(
                     </EuiFlexGroup>
                 </EuiFlexGroup>
                 <>
-                    {stepsWithRefs.map((step, index) => {
+                    {steps.map((step, index) => {
                         let previousState = {};
                         let delta = {};
 
@@ -227,15 +186,9 @@ export const WFOStepList = React.forwardRef(
                             <div key={`step-${index}`}>
                                 {index !== 0 && <div css={stepSpacerStyle} />}
                                 <WFOStep
-                                    // ref={step.ref}
-                                    ref={(node) => {
-                                        const map = getMap();
-                                        if (node) {
-                                            map.set(step.stepId, node);
-                                        } else {
-                                            map.delete(step.stepId);
-                                        }
-                                    }}
+                                    ref={getReferenceCallbackForStepId(
+                                        step.stepId,
+                                    )}
                                     stepDetailIsOpen={
                                         stepDetailStates.get(index) || false
                                     }
