@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
@@ -6,9 +6,17 @@ import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { TimelineItem, WFOLoading } from '../../components';
 
 import { WFOProcessDetail } from './WFOProcessDetail';
-import { WFOStepList } from '../../components/WFOSteps';
+import { WFOStepList, WFOStepListRef } from '../../components/WFOSteps';
 
-import { mapProcessStepsToTimelineItems } from './timelineUtils';
+import {
+    convertStepsToGroupedSteps,
+    mapGroupedStepsToTimelineItems,
+} from './timelineUtils';
+import { Step } from '../../types';
+
+export type GroupedStep = {
+    steps: Step[];
+};
 
 interface WFOProcessDetailPageProps {
     processId: string;
@@ -17,6 +25,7 @@ interface WFOProcessDetailPageProps {
 export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
+    const stepListRef = useRef<WFOStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
@@ -27,13 +36,14 @@ export const WFOProcessDetailPage = ({
     );
 
     const process = data?.processes.page[0];
-
-    const timelineItems: TimelineItem[] = process?.steps
-        ? mapProcessStepsToTimelineItems(process.steps)
-        : [];
+    const steps = process?.steps ?? [];
 
     const productNames = getProductNamesFromProcess(process);
     const pageTitle = isFetching ? '...' : process?.workflowName || '';
+
+    const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
+    const timelineItems: TimelineItem[] =
+        mapGroupedStepsToTimelineItems(groupedSteps);
 
     return (
         <WFOProcessDetail
@@ -43,11 +53,17 @@ export const WFOProcessDetailPage = ({
             isFetching={isFetching}
             processDetail={process}
             timelineItems={timelineItems}
+            onTimelineItemClick={(id: string) =>
+                stepListRef.current?.scrollToStep(id)
+            }
         >
             {(isFetching && <WFOLoading />) ||
                 (process !== undefined && (
                     <WFOStepList
-                        steps={process.steps}
+                        ref={stepListRef}
+                        steps={groupedSteps.flatMap(
+                            (groupedStep) => groupedStep.steps,
+                        )}
                         startedAt={process.startedAt}
                     />
                 ))}

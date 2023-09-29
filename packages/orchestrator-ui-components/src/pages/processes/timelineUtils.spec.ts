@@ -1,8 +1,20 @@
 import {
+    convertStepsToGroupedSteps,
     getMostAccurateTimelineStatus,
-    mapProcessStepsToTimelineItems,
+    mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
 import { Step, StepStatus } from '../../types';
+import { GroupedStep } from './WFOProcessDetailPage';
+
+const baseStep: Step = {
+    executed: 'testExecuted',
+    name: 'tesName',
+    state: {
+        testKey: 'testValue',
+    },
+    status: StepStatus.SUCCESS,
+    stepId: 'testStepId',
+};
 
 describe('getMostAccurateTimelineStatus()', () => {
     it('returns previous step when current step has status PENDING', () => {
@@ -29,65 +41,128 @@ describe('getMostAccurateTimelineStatus()', () => {
         expect(result).toEqual(currentStepStatus);
     });
 });
-describe('mapProcessStepsToTimelineItems()', () => {
-    it('merges two steps with the same name given the first step is not a final status', () => {
-        const steps: Step[] = [
+
+describe('convertStepsToGroupedSteps()', () => {
+    it('returns steps grouped by name', () => {
+        // Given
+        const testSteps: Step[] = [
             {
+                ...baseStep,
+                name: 'testName1',
                 status: StepStatus.FAILED,
-                name: 'testName',
-            } as Step,
+            },
             {
-                status: StepStatus.COMPLETE,
-                name: 'testName',
-            } as Step,
+                ...baseStep,
+                name: 'testName1',
+                status: StepStatus.SUCCESS,
+            },
+            {
+                ...baseStep,
+                name: 'testName2',
+                status: StepStatus.PENDING,
+            },
         ];
 
-        const result = mapProcessStepsToTimelineItems(steps);
+        // When
+        const result = convertStepsToGroupedSteps(testSteps);
 
-        expect(result.length).toEqual(1);
-        expect(result[0].value).toEqual(2);
-        expect(result[0].processStepStatus).toEqual(StepStatus.COMPLETE);
-    });
-
-    it('merges three steps with the same name given none of the steps have a final status', () => {
-        const steps: Step[] = [
-            {
-                status: StepStatus.FAILED,
-                name: 'testName',
-            } as Step,
-            {
-                status: StepStatus.FAILED,
-                name: 'testName',
-            } as Step,
-            {
-                status: StepStatus.FAILED,
-                name: 'testName',
-            } as Step,
-        ];
-
-        const result = mapProcessStepsToTimelineItems(steps);
-
-        expect(result.length).toEqual(1);
-        expect(result[0].value).toEqual(3);
-        expect(result[0].processStepStatus).toEqual(StepStatus.FAILED);
-    });
-
-    it('does not merge the two steps with the same name given the first step is a final status', () => {
-        const steps: Step[] = [
-            {
-                status: StepStatus.SKIPPED,
-                name: 'testName',
-            } as Step,
-            {
-                status: StepStatus.COMPLETE,
-                name: 'testName',
-            } as Step,
-        ];
-
-        const result = mapProcessStepsToTimelineItems(steps);
-
+        // Then
         expect(result.length).toEqual(2);
-        expect(result[0].processStepStatus).toEqual(StepStatus.SKIPPED);
-        expect(result[1].processStepStatus).toEqual(StepStatus.COMPLETE);
+
+        const { steps: firstGroupedStepSteps } = result[0];
+        expect(firstGroupedStepSteps.length).toEqual(2);
+        expect(firstGroupedStepSteps[0].name).toEqual('testName1');
+        expect(firstGroupedStepSteps[0].status).toEqual(StepStatus.FAILED);
+        expect(firstGroupedStepSteps[1].name).toEqual('testName1');
+        expect(firstGroupedStepSteps[1].status).toEqual(StepStatus.SUCCESS);
+
+        const { steps: secondGroupedStepSteps } = result[1];
+        expect(secondGroupedStepSteps.length).toEqual(1);
+        expect(secondGroupedStepSteps[0].name).toEqual('testName2');
+        expect(secondGroupedStepSteps[0].status).toEqual(StepStatus.PENDING);
+    });
+    it('returns an empty array if there are no steps', () => {
+        const result = convertStepsToGroupedSteps([]);
+
+        expect(result.length).toEqual(0);
+    });
+});
+
+describe('getMostAccurateTimelineStatus()', () => {
+    it('returns previous step when current step has status PENDING', () => {
+        const statusPreviousStep: StepStatus = StepStatus.FAILED;
+        const statusCurrentStep: StepStatus = StepStatus.PENDING;
+
+        const result = getMostAccurateTimelineStatus(
+            statusPreviousStep,
+            statusCurrentStep,
+        );
+
+        expect(result).toEqual(statusPreviousStep);
+    });
+    it('returns the current step when current step has a status other than PENDING', () => {
+        const statusPreviousStep: StepStatus = StepStatus.FAILED;
+        const statusCurrentStep: StepStatus = StepStatus.SUCCESS;
+
+        const result = getMostAccurateTimelineStatus(
+            statusPreviousStep,
+            statusCurrentStep,
+        );
+
+        expect(result).toEqual(statusCurrentStep);
+    });
+});
+
+describe('mapGroupedStepsToTimelineItems()', () => {
+    it('maps a grouped-step with a single step to a timeline item', () => {
+        // Given
+        const groupedSteps: GroupedStep[] = [
+            {
+                steps: [baseStep],
+            },
+        ];
+
+        // When
+        const result = mapGroupedStepsToTimelineItems(groupedSteps);
+
+        // Then
+        expect(result.length).toEqual(1);
+
+        const { processStepStatus, stepDetail, id, value } = result[0];
+        expect(processStepStatus).toEqual(baseStep.status);
+        expect(stepDetail).toEqual(baseStep.name);
+        expect(id).toEqual(baseStep.stepId);
+        expect(value).toBeUndefined();
+    });
+
+    it('maps a grouped-step with a multiple steps to a single timeline item', () => {
+        // Given
+        const testStep1: Step = {
+            ...baseStep,
+            status: StepStatus.FAILED,
+            stepId: '111',
+        };
+        const testStep2: Step = {
+            ...baseStep,
+            status: StepStatus.SUCCESS,
+            stepId: '222',
+        };
+        const groupedSteps: GroupedStep[] = [
+            {
+                steps: [testStep1, testStep2],
+            },
+        ];
+
+        // When
+        const result = mapGroupedStepsToTimelineItems(groupedSteps);
+
+        // Then
+        expect(result.length).toEqual(1);
+
+        const { processStepStatus, stepDetail, id, value } = result[0];
+        expect(processStepStatus).toEqual(StepStatus.SUCCESS);
+        expect(stepDetail).toEqual(testStep2.name);
+        expect(id).toEqual(testStep2.stepId);
+        expect(value).toEqual(2);
     });
 });

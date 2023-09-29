@@ -1,5 +1,6 @@
 import { Step, StepStatus } from '../../types';
 import { TimelineItem } from '../../components';
+import { GroupedStep } from './WFOProcessDetailPage';
 
 export const getMostAccurateTimelineStatus = (
     statusPreviousStep: StepStatus,
@@ -9,7 +10,7 @@ export const getMostAccurateTimelineStatus = (
         ? statusCurrentStep
         : statusPreviousStep;
 
-const isFinalStepStatus = (status: StepStatus): boolean => {
+export const isNonRetryableState = (status: StepStatus): boolean => {
     return (
         status === StepStatus.COMPLETE ||
         status === StepStatus.SUCCESS ||
@@ -17,57 +18,75 @@ const isFinalStepStatus = (status: StepStatus): boolean => {
     );
 };
 
+const stepsShouldBeMerged = (previousStep: Step, currentStep: Step) =>
+    !isNonRetryableState(previousStep.status) &&
+    previousStep.name === currentStep.name;
+
+export const convertStepsToGroupedSteps = (steps: Step[]): GroupedStep[] =>
+    steps.reduce<GroupedStep[]>(
+        (previousGroupedSteps: GroupedStep[], currentStep, index, allSteps) => {
+            const previousGroupedStep = previousGroupedSteps.slice(-1)[0];
+
+            if (
+                index > 0 &&
+                stepsShouldBeMerged(allSteps[index - 1], currentStep)
+            ) {
+                const allGroupedStepsExceptLast = previousGroupedSteps.slice(
+                    0,
+                    -1,
+                );
+
+                const updatedLastGroupedStep: GroupedStep = {
+                    steps: [...previousGroupedStep.steps, currentStep],
+                };
+
+                return [...allGroupedStepsExceptLast, updatedLastGroupedStep];
+            }
+
+            return [
+                ...previousGroupedSteps,
+                {
+                    steps: [currentStep],
+                },
+            ];
+        },
+        [],
+    );
+
 const mapStepToTimelineItem = (processDetailStep: Step): TimelineItem => {
     return {
+        id: processDetailStep.stepId,
         processStepStatus: processDetailStep.status,
         stepDetail: processDetailStep.name,
     };
 };
 
-const stepsShouldBeMerged = (previousStep: Step, currentStep: Step) =>
-    !isFinalStepStatus(previousStep.status) &&
-    previousStep.name === currentStep.name;
+export const mapGroupedStepToTimelineItem = (
+    groupedStep: GroupedStep,
+): TimelineItem => {
+    if (groupedStep.steps.length === 1) {
+        return mapStepToTimelineItem(groupedStep.steps[0]);
+    }
 
-export const mapProcessStepsToTimelineItems = (steps: Step[]) =>
-    steps.reduce<TimelineItem[]>(
-        (
-            allTimelineItems: TimelineItem[],
-            currentProcessDetailStep,
-            index,
-            allProcessDetailSteps,
-        ) => {
-            const previousTimelineItem = allTimelineItems.slice(-1)[0];
-
-            if (
-                index > 0 &&
-                stepsShouldBeMerged(
-                    allProcessDetailSteps[index - 1],
-                    currentProcessDetailStep,
-                )
-            ) {
-                const allStepsExceptPrevious = allTimelineItems.slice(0, -1);
-                const updatedPreviousStep: TimelineItem = {
-                    ...previousTimelineItem,
-                    processStepStatus: getMostAccurateTimelineStatus(
-                        previousTimelineItem.processStepStatus,
-                        currentProcessDetailStep.status,
-                    ),
-                    value:
-                        typeof previousTimelineItem.value === 'number'
-                            ? previousTimelineItem.value + 1
-                            : 2,
-                };
-
-                return [...allStepsExceptPrevious, updatedPreviousStep];
-            }
-
-            return [
-                ...allTimelineItems,
-                mapStepToTimelineItem(currentProcessDetailStep),
-            ];
+    return groupedStep.steps.reduce<TimelineItem>(
+        (previousTimelineItem: TimelineItem, currentStep): TimelineItem => ({
+            ...previousTimelineItem,
+            id: currentStep.stepId ?? previousTimelineItem.id,
+            processStepStatus: getMostAccurateTimelineStatus(
+                previousTimelineItem.processStepStatus,
+                currentStep.status,
+            ),
+        }),
+        {
+            ...mapStepToTimelineItem(groupedStep.steps[0]),
+            value: groupedStep.steps.length,
         },
-        [],
     );
+};
+
+export const mapGroupedStepsToTimelineItems = (
+    groupedSteps: GroupedStep[],
+): TimelineItem[] => groupedSteps.map(mapGroupedStepToTimelineItem);
 
 export const getIndexOfCurrentStep = (timelineItems: TimelineItem[]) => {
     const reversedTimelineItems = [...timelineItems].reverse();

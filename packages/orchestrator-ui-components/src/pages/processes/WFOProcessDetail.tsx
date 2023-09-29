@@ -66,6 +66,7 @@ interface ProcessDetailProps {
     children: React.ReactNode;
     processDetail: Partial<ProcessDetail> | undefined;
     timelineItems: TimelineItem[];
+    onTimelineItemClick?: (id: string) => void;
 }
 
 export const WFOProcessDetail = ({
@@ -76,6 +77,7 @@ export const WFOProcessDetail = ({
     buttonsAreDisabled,
     timelineItems,
     isFetching,
+    onTimelineItemClick,
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
@@ -264,9 +266,11 @@ export const WFOProcessDetail = ({
             <WFOTimeline
                 timelineItems={timelineItems}
                 indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
-                // Todo: Implement onClick after step-cards are implemented
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/225
-                onStepClick={(timelineItem) => console.log(timelineItem)}
+                onStepClick={(timelineItem) =>
+                    onTimelineItemClick &&
+                    timelineItem.id &&
+                    onTimelineItemClick(timelineItem.id)
+                }
             />
             {children}
         </>
