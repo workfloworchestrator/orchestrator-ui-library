@@ -37,6 +37,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const stepListContentAnchorStyle = css({
+        marginTop: 2,
+        marginLeft: 0,
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.bold,
         color: theme.colors.link,
@@ -90,21 +92,28 @@ export const getStyles = (theme: EuiThemeComputed) => {
         alignItems: 'center',
     });
 
+    const stepEmailContainerStyle = css({
+        paddingLeft: 24,
+        width: 600,
+        marginTop: 0,
+    });
+
     return {
-        stepSpacerStyle,
-        stepHeaderStyle,
+        stepDurationStyle,
+        stepEmailContainerStyle,
         stepHeaderRightStyle,
-        stepRowStyle,
-        stepListHeaderStyle,
-        stepListContentStyle,
-        stepListContentBoldTextStyle,
+        stepHeaderStyle,
         stepListContentAnchorStyle,
+        stepListContentBoldTextStyle,
+        stepListContentStyle,
+        stepListHeaderStyle,
         stepListOptionsContainerStyle,
+        stepRowStyle,
+        stepSpacerStyle,
+        stepStateFailedIconStyle,
+        stepStatePendingIconStyle,
         stepStateSuccessIconStyle,
         stepStateSuspendIconStyle,
-        stepStatePendingIconStyle,
-        stepStateFailedIconStyle,
         stepToggleExpandStyle,
-        stepDurationStyle,
     };
 };

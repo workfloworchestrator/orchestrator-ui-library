@@ -40,6 +40,7 @@ export const WFOStep = React.forwardRef(
         const { name, executed, status } = step;
         const { theme } = useOrchestratorTheme();
         const {
+            stepEmailContainerStyle,
             stepHeaderStyle,
             stepHeaderRightStyle,
             stepListContentBoldTextStyle,
@@ -48,6 +49,7 @@ export const WFOStep = React.forwardRef(
             stepRowStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
+        const hasHtmlMail = step.state?.hasOwnProperty('confirmation_mail');
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -57,21 +59,27 @@ export const WFOStep = React.forwardRef(
                 <EuiText size="s">
                     <h4>To</h4>
                     <p>
-                        {value.to.map((v: { email: string; name: string }, i) => (
-                            <div key={`to-${i}`}>
-                                {v.name} &lt;
-                                <a href={`mailto: ${v.email}`}>{v.email}</a>&gt;
-                            </div>
-                        ))}
+                        {value.to.map(
+                            (v: { email: string; name: string }, i) => (
+                                <div key={`to-${i}`}>
+                                    {v.name} &lt;
+                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
+                                    &gt;
+                                </div>
+                            ),
+                        )}
                     </p>
                     <h4>CC</h4>
                     <p>
-                        {value.cc.map((v: { email: string; name: string }, i) => (
-                            <div key={`cc-${i}`}>
-                                {v.name} &lt;
-                                <a href={`mailto: ${v.email}`}>{v.email}</a>&gt;
-                            </div>
-                        ))}
+                        {value.cc.map(
+                            (v: { email: string; name: string }, i) => (
+                                <div key={`cc-${i}`}>
+                                    {v.name} &lt;
+                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
+                                    &gt;
+                                </div>
+                            ),
+                        )}
                     </p>
                     <h4>Subject</h4>
                     <p>{value.subject}</p>
@@ -132,25 +140,23 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen &&
-                        step.name !== 'Send confirmation email to customer' && (
-                            <EuiCodeBlock
-                                isCopyable={true}
-                                language={'json'}
-                                lineNumbers={true}
-                                overflowHeight={6000}
-                            >
-                                {JSON.stringify(delta, null, 3)}
-                            </EuiCodeBlock>
-                        )}
-                    {stepDetailIsOpen &&
-                        step.name === 'Send confirmation email to customer' && (
-                            <div style={{ width: 600 }}>
-                                {displayMailConfirmation(
-                                    step.state.confirmation_mail as EmailState,
-                                )}
-                            </div>
-                        )}
+                    {stepDetailIsOpen && !hasHtmlMail && (
+                        <EuiCodeBlock
+                            isCopyable={true}
+                            language={'json'}
+                            lineNumbers={true}
+                            overflowHeight={6000}
+                        >
+                            {JSON.stringify(delta, null, 4)}
+                        </EuiCodeBlock>
+                    )}
+                    {stepDetailIsOpen && hasHtmlMail && (
+                        <div css={stepEmailContainerStyle}>
+                            {displayMailConfirmation(
+                                step.state.confirmation_mail as EmailState,
+                            )}
+                        </div>
+                    )}
                 </EuiPanel>
             </div>
         );
