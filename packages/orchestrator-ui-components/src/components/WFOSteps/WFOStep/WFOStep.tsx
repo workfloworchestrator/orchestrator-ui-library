@@ -100,11 +100,11 @@ export const WFOStep = React.forwardRef(
                     {stepDetailIsOpen && (
                         <EuiCodeBlock
                             isCopyable={true}
-                            language={'json'}
+                            language="json"
                             lineNumbers={true}
                             overflowHeight={6000}
                         >
-                            {JSON.stringify(delta, null, 3)}
+                            {JSON.stringify(delta, null, 4)}
                         </EuiCodeBlock>
                     )}
                 </EuiPanel>
@@ -112,3 +112,5 @@ export const WFOStep = React.forwardRef(
         );
     },
 );
+
+WFOStep.displayName = 'WFOStep';

@@ -19,6 +19,7 @@ const isFinalStepStatus = (status: StepStatus): boolean => {
 
 const mapStepToTimelineItem = (processDetailStep: Step): TimelineItem => {
     return {
+        id: processDetailStep.stepId,
         processStepStatus: processDetailStep.status,
         stepDetail: processDetailStep.name,
     };
@@ -51,6 +52,9 @@ export const mapProcessStepsToTimelineItems = (steps: Step[]) =>
                 );
                 const updatedPreviousTimelineItem: TimelineItem = {
                     ...previousTimelineItem,
+                    id:
+                        currentProcessDetailStep.stepId ??
+                        previousTimelineItem.id,
                     processStepStatus: getMostAccurateTimelineStatus(
                         previousTimelineItem.processStepStatus,
                         currentProcessDetailStep.status,

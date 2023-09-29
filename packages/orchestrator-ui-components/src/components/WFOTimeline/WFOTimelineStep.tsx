@@ -12,7 +12,7 @@ export type WFOTimelineStepProps = {
     isFirstStep?: boolean;
     isLastStep?: boolean;
     children?: ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
 };
 
 export const WFOTimelineStep = ({
@@ -27,6 +27,8 @@ export const WFOTimelineStep = ({
     const { theme } = useOrchestratorTheme();
     const {
         stepStyle,
+        clickableStyle,
+        notClickableStyle,
         getStepLineStyle,
         getStepOuterCircleStyle,
         getStepInnerCircleStyle,
@@ -36,9 +38,10 @@ export const WFOTimelineStep = ({
         <button
             css={[
                 stepStyle,
+                onClick ? clickableStyle : notClickableStyle,
                 getStepLineStyle(timelinePosition, isFirstStep, isLastStep),
             ]}
-            onClick={() => onClick()}
+            onClick={() => onClick && onClick()}
         >
             <EuiToolTip position="top" content={tooltipContent}>
                 <div css={getStepOuterCircleStyle(!!children)}>

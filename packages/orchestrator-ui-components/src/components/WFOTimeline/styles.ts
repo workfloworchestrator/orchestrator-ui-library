@@ -144,9 +144,19 @@ export const getStyles = (theme: EuiThemeComputed) => {
         alignItems: 'center',
     });
 
+    const clickableStyle = css({
+        cursor: 'pointer',
+    });
+
+    const notClickableStyle = css({
+        cursor: 'auto',
+    });
+
     return {
         timelinePanelStyle,
         stepStyle,
+        clickableStyle,
+        notClickableStyle,
         getStepLineStyle,
         getStepOuterCircleStyle,
         getStepInnerCircleStyle,
