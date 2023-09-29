@@ -9,7 +9,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import type { StepState, Step } from '../../../types';
+import type { StepState, Step, EmailState } from '../../../types';
 import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 import { getStyles } from '../getStyles';
 import { formatDate } from '../../../utils';
@@ -48,6 +48,41 @@ export const WFOStep = React.forwardRef(
             stepRowStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
+
+        const displayMailConfirmation = (value: EmailState) => {
+            if (!value) {
+                return '';
+            }
+            return (
+                <EuiText size="s">
+                    <h4>To</h4>
+                    <p>
+                        {value.to.map((v: { email: string; name: string }, i) => (
+                            <div key={`to-${i}`}>
+                                {v.name} &lt;
+                                <a href={`mailto: ${v.email}`}>{v.email}</a>&gt;
+                            </div>
+                        ))}
+                    </p>
+                    <h4>CC</h4>
+                    <p>
+                        {value.cc.map((v: { email: string; name: string }, i) => (
+                            <div key={`cc-${i}`}>
+                                {v.name} &lt;
+                                <a href={`mailto: ${v.email}`}>{v.email}</a>&gt;
+                            </div>
+                        ))}
+                    </p>
+                    <h4>Subject</h4>
+                    <p>{value.subject}</p>
+                    <h4>Message</h4>
+                    <div
+                        className="emailMessage"
+                        dangerouslySetInnerHTML={{ __html: value.message }}
+                    ></div>
+                </EuiText>
+            );
+        };
 
         return (
             <div ref={ref}>
@@ -97,16 +132,25 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen && (
-                        <EuiCodeBlock
-                            isCopyable={true}
-                            language="json"
-                            lineNumbers={true}
-                            overflowHeight={6000}
-                        >
-                            {JSON.stringify(delta, null, 4)}
-                        </EuiCodeBlock>
-                    )}
+                    {stepDetailIsOpen &&
+                        step.name !== 'Send confirmation email to customer' && (
+                            <EuiCodeBlock
+                                isCopyable={true}
+                                language={'json'}
+                                lineNumbers={true}
+                                overflowHeight={6000}
+                            >
+                                {JSON.stringify(delta, null, 3)}
+                            </EuiCodeBlock>
+                        )}
+                    {stepDetailIsOpen &&
+                        step.name === 'Send confirmation email to customer' && (
+                            <div style={{ width: 600 }}>
+                                {displayMailConfirmation(
+                                    step.state.confirmation_mail as EmailState,
+                                )}
+                            </div>
+                        )}
                 </EuiPanel>
             </div>
         );

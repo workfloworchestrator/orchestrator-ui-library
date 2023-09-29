@@ -231,6 +231,18 @@ export interface StepState {
     [index: string]: object | boolean | string | number | [];
 }
 
+export interface EmailAddress {
+    name: string;
+    email: string;
+}
+
+export interface EmailState {
+    to: EmailAddress[];
+    cc: EmailAddress[];
+    message: string;
+    subject: string;
+}
+
 export interface Step {
     name: string;
     status: StepStatus;
