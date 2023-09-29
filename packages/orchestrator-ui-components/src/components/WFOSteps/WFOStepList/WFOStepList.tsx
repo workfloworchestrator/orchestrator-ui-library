@@ -13,7 +13,7 @@ export type WFOStepListRef = {
 };
 
 type StepWithRef = Step & {
-    ref: React.MutableRefObject<HTMLDivElement | null>;
+    // ref: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export interface WFOStepListProps {
@@ -27,31 +27,56 @@ export const WFOStepList = React.forwardRef(
         reference: Ref<WFOStepListRef>,
     ) => {
         const { theme } = useOrchestratorTheme();
+        const stepReferences = useRef(new Map<string, HTMLDivElement>());
+
+        function getMap() {
+            if (!stepReferences.current) {
+                // Initialize the Map on first usage.
+                stepReferences.current = new Map();
+            }
+            return stepReferences.current;
+        }
 
         const stepsWithRefs: StepWithRef[] = steps.map((step) => {
             return {
                 ...step,
                 // Todo fis this: its not allowed!
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                ref: useRef<HTMLDivElement>(null),
+                // ref: useRef<HTMLDivElement>(null),
+                // ref: (node: RefCallback<any>)  => {
+                //     const map = getMap();
+                //     if (node) {
+                //         map.set(step.stepId, node);
+                //     } else {
+                //         map.delete(step.stepId);
+                //     }
+                // },
             };
         });
 
         useImperativeHandle(
             reference,
             () => ({
+                // scrollToStep: (stepId: string) => {
+                //     const step: StepWithRef | undefined = stepsWithRefs.find(
+                //         (step) => step.stepId === stepId,
+                //     );
+                //     if (step?.ref) {
+                //         step.ref.current?.scrollIntoView({
+                //             behavior: 'smooth',
+                //         });
+                //     }
+                // },
                 scrollToStep: (stepId: string) => {
-                    const step: StepWithRef | undefined = stepsWithRefs.find(
-                        (step) => step.stepId === stepId,
-                    );
-                    if (step?.ref) {
-                        step.ref.current?.scrollIntoView({
+                    const map = getMap();
+                    if (map.has(stepId)) {
+                        map.get(stepId)?.scrollIntoView({
                             behavior: 'smooth',
                         });
                     }
                 },
             }),
-            [stepsWithRefs],
+            [],
         );
 
         const t = useTranslations('processes.steps');
@@ -202,7 +227,15 @@ export const WFOStepList = React.forwardRef(
                             <div key={`step-${index}`}>
                                 {index !== 0 && <div css={stepSpacerStyle} />}
                                 <WFOStep
-                                    ref={step.ref}
+                                    // ref={step.ref}
+                                    ref={(node) => {
+                                        const map = getMap();
+                                        if (node) {
+                                            map.set(step.stepId, node);
+                                        } else {
+                                            map.delete(step.stepId);
+                                        }
+                                    }}
                                     stepDetailIsOpen={
                                         stepDetailStates.get(index) || false
                                     }
