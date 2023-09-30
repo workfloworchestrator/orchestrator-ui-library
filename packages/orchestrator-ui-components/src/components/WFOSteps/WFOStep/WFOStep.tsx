@@ -23,6 +23,7 @@ export interface WFOStepProps {
     stepDetailIsOpen: boolean;
     toggleStepDetailIsOpen: (index: number) => void;
     startedAt: string;
+    showHiddenKeys: boolean;
 }
 
 export const WFOStep = React.forwardRef(
@@ -34,6 +35,7 @@ export const WFOStep = React.forwardRef(
             toggleStepDetailIsOpen,
             stepIndex,
             startedAt,
+            showHiddenKeys,
         }: WFOStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -49,7 +51,22 @@ export const WFOStep = React.forwardRef(
             stepRowStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
-        const hasHtmlMail = step.state?.hasOwnProperty('confirmation_mail');
+        const hasHtmlMail = delta?.hasOwnProperty('confirmation_mail');
+        const HIDDEN_KEYS = ['label_', 'divider_', '__', 'confirmation_mail'];
+
+        // Todo: refactor into something pure and beautiful
+        let filteredStepDelta = delta;
+        let filteredStepDeltaEmpty = false;
+        if (!showHiddenKeys) {
+            filteredStepDeltaEmpty = true;
+            filteredStepDelta = {};
+            for (const key in delta) {
+                if (!HIDDEN_KEYS.some((word) => key.startsWith(word))) {
+                    filteredStepDeltaEmpty = false;
+                    filteredStepDelta[key] = delta[key];
+                }
+            }
+        }
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -140,14 +157,14 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen && !hasHtmlMail && (
+                    {stepDetailIsOpen && !filteredStepDeltaEmpty && (
                         <EuiCodeBlock
                             isCopyable={true}
                             language={'json'}
                             lineNumbers={true}
                             overflowHeight={6000}
                         >
-                            {JSON.stringify(delta, null, 4)}
+                            {JSON.stringify(filteredStepDelta, null, 4)}
                         </EuiCodeBlock>
                     )}
                     {stepDetailIsOpen && hasHtmlMail && (
