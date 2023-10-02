@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ProductBlockBase, ResourceTypeBase, TreeBlock } from '../../types';
-import { WFOProductBlock } from './WFOProductBlock';
-import {
-    SubscriptionContext,
-    SubscriptionContextType,
-} from '../../contexts/SubscriptionContext';
-import { WFOTree } from '../WFOTree/WFOTree';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
-
 import {
     EuiButtonIcon,
     EuiCallOut,
@@ -18,37 +9,29 @@ import {
     EuiText,
 } from '@elastic/eui';
 
+import { TreeBlock } from '../../types';
+import { SubscriptionContext } from '../../contexts/SubscriptionContext';
+import { WFOTree } from '../WFOTree/WFOTree';
+import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 import { getTokenName } from '../../utils/getTokenName';
 import { WFOLoading } from '../WFOLoading';
+import {
+    getFieldFromProductBlockInstanceValues,
+    getProductBlockTitle,
+} from './utils';
+import { SubscriptionProductBlock } from './SubscriptionProductBlock';
 
-interface TreeBlockOptional extends ProductBlockBase {
-    icon?: string;
-    label?: string;
-    callback?: () => void;
-    children?: TreeBlock;
-}
+type NodeMap = { [key: number]: TreeBlock };
 
-type NodeMap = { [key: number]: TreeBlock | TreeBlockOptional };
-
-const MAX_LABEL_LENGTH = 45;
 const MAX_EXPAND_ALL = 100;
-
-function getProductBlockTitle(resourceType: ResourceTypeBase): string {
-    if (!resourceType.title) return resourceType.name;
-    return resourceType.title?.length > MAX_LABEL_LENGTH
-        ? `${resourceType.title.substring(0, MAX_LABEL_LENGTH)}...`
-        : resourceType.title;
-}
 
 export const WFOSubscriptionDetailTree = () => {
     const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [selectedTreeNode, setSelectedTreeNode] = useState(-1);
+    const [, setSelectedTreeNode] = useState(-1);
 
-    const { subscriptionData, loadingStatus } = React.useContext(
-        SubscriptionContext,
-    ) as SubscriptionContextType;
+    const { subscriptionData, loadingStatus } =
+        React.useContext(SubscriptionContext);
 
     const { selectedIds, collapseAll, expandAll, resetSelection } =
         React.useContext(TreeContext) as TreeContextType;
@@ -66,51 +49,58 @@ export const WFOSubscriptionDetailTree = () => {
     if (loadingStatus > 0) {
         const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
-        // loop over data
-        subscriptionData.productBlocks.forEach((productBlock) => {
-            const shallowCopy: TreeBlockOptional = { ...productBlock };
+        // TODO: Note, doesn't this code depend to much on the order of the productBlockInstances or is it ok because it's all by reference?
+        subscriptionData.productBlockInstances.forEach(
+            (productBlockInstance) => {
+                const shallowCopy: TreeBlock = {
+                    ...productBlockInstance,
+                    icon: '',
+                    label: '',
+                    callback: () => {},
+                    children: [],
+                };
 
-            // Each node will have children, so let's give it a "children" property
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            shallowCopy.children = [];
+                // Does this node have a parent?
+                if (shallowCopy.parent === null) {
+                    // Doesn't look like it, so this node is the root of the tree
+                    shallowCopy.label = getFieldFromProductBlockInstanceValues(
+                        shallowCopy.productBlockInstanceValues,
+                        'name',
+                    );
+                    shallowCopy.callback = () =>
+                        setSelectedTreeNode(shallowCopy.id);
 
-            // Add an entry for this node to the map so that any future children can lookup the parent
-            idToNodeMap[shallowCopy.id] = shallowCopy;
+                    tree = shallowCopy;
+                } else {
+                    // This node has a parent, so let's look it up using the id
+                    const parentNode = idToNodeMap[shallowCopy.parent];
+                    shallowCopy.label = getProductBlockTitle(
+                        shallowCopy.productBlockInstanceValues,
+                    );
+                    shallowCopy.callback = () =>
+                        setSelectedTreeNode(shallowCopy.id);
 
-            // Does this node have a parent?
-            if (shallowCopy.parent === null) {
-                // Doesn't look like it, so this node is the root of the tree
-                shallowCopy.label = shallowCopy.resourceTypes.name;
-                shallowCopy.callback = () =>
-                    setSelectedTreeNode(shallowCopy.id);
+                    if (
+                        !subscriptionData.productBlockInstances.find(
+                            (i) => i.parent === shallowCopy.id,
+                        )
+                    ) {
+                        shallowCopy.icon = getTokenName(shallowCopy.label);
+                    }
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                tree = shallowCopy as TreeBlock;
-            } else {
-                // This node has a parent, so let's look it up using the id
-                const parentNode = idToNodeMap[shallowCopy.parent];
-                shallowCopy.label = getProductBlockTitle(
-                    shallowCopy.resourceTypes,
-                );
-                shallowCopy.callback = () =>
-                    setSelectedTreeNode(shallowCopy.id);
-
-                if (
-                    !subscriptionData.productBlocks.find(
-                        (i) => i.parent === shallowCopy.id,
-                    )
-                ) {
-                    shallowCopy.icon = getTokenName(shallowCopy.label);
+                    // Let's add the current node as a child of the parent node.
+                    if (
+                        parentNode.children &&
+                        Array.isArray(parentNode.children)
+                    ) {
+                        parentNode.children.push(shallowCopy);
+                    }
                 }
 
-                // Let's add the current node as a child of the parent node.
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                parentNode.children?.push(shallowCopy);
-            }
-        });
+                // Add an entry for this node to the map so that any future children can lookup the parent
+                idToNodeMap[shallowCopy.id] = shallowCopy;
+            },
+        );
     }
 
     if (!tree) return null;
@@ -167,16 +157,19 @@ export const WFOSubscriptionDetailTree = () => {
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
-                        selectedIds
-                            .reverse()
-                            .map((id, index) =>
-                                WFOProductBlock(
-                                    subscriptionData.productBlocks[
-                                        selectedIds[index]
-                                    ].resourceTypes,
-                                    id,
-                                ),
-                            )}
+                        selectedIds.reverse().map((id, index) => {
+                            return (
+                                <SubscriptionProductBlock
+                                    key={index}
+                                    productBlockInstanceValues={
+                                        subscriptionData.productBlockInstances[
+                                            selectedIds[index]
+                                        ].productBlockInstanceValues
+                                    }
+                                    id={id}
+                                />
+                            );
+                        })}
                 </div>
             </EuiFlexItem>
         </EuiFlexGroup>

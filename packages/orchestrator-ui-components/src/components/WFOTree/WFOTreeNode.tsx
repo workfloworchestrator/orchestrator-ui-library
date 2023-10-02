@@ -12,7 +12,7 @@ import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 type Item = {
     id: number;
     icon: string;
-    label: string;
+    label: string | number;
 };
 
 type WFOTreeNodeProps = {
