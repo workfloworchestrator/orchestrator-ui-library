@@ -1,2 +1,2 @@
 export * from './WFOStep';
-export * from './WFOStepList';
+export * from './WFOWorkflowStepList';
