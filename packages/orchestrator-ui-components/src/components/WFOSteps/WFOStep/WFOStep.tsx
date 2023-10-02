@@ -9,7 +9,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import type { StepState, Step } from '../../../types';
+import type { StepState, Step, EmailState } from '../../../types';
 import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
 import { getStyles } from '../getStyles';
 import { formatDate } from '../../../utils';
@@ -23,6 +23,7 @@ export interface WFOStepProps {
     stepDetailIsOpen: boolean;
     toggleStepDetailIsOpen: (index: number) => void;
     startedAt: string;
+    showHiddenKeys: boolean;
 }
 
 export const WFOStep = React.forwardRef(
@@ -34,12 +35,14 @@ export const WFOStep = React.forwardRef(
             toggleStepDetailIsOpen,
             stepIndex,
             startedAt,
+            showHiddenKeys,
         }: WFOStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { name, executed, status } = step;
         const { theme } = useOrchestratorTheme();
         const {
+            stepEmailContainerStyle,
             stepHeaderStyle,
             stepHeaderRightStyle,
             stepListContentBoldTextStyle,
@@ -48,6 +51,63 @@ export const WFOStep = React.forwardRef(
             stepRowStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
+        const hasHtmlMail = delta?.hasOwnProperty('confirmation_mail');
+        const HIDDEN_KEYS = ['label_', 'divider_', '__', 'confirmation_mail'];
+
+        // Todo: refactor into something pure and beautiful
+        let filteredStepDelta = delta;
+        let filteredStepDeltaEmpty = false;
+        if (!showHiddenKeys) {
+            filteredStepDeltaEmpty = true;
+            filteredStepDelta = {};
+            for (const key in delta) {
+                if (!HIDDEN_KEYS.some((word) => key.startsWith(word))) {
+                    filteredStepDeltaEmpty = false;
+                    filteredStepDelta[key] = delta[key];
+                }
+            }
+        }
+
+        const displayMailConfirmation = (value: EmailState) => {
+            if (!value) {
+                return '';
+            }
+            return (
+                <EuiText size="s">
+                    <h4>To</h4>
+                    <p>
+                        {value.to.map(
+                            (v: { email: string; name: string }, i) => (
+                                <div key={`to-${i}`}>
+                                    {v.name} &lt;
+                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
+                                    &gt;
+                                </div>
+                            ),
+                        )}
+                    </p>
+                    <h4>CC</h4>
+                    <p>
+                        {value.cc.map(
+                            (v: { email: string; name: string }, i) => (
+                                <div key={`cc-${i}`}>
+                                    {v.name} &lt;
+                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
+                                    &gt;
+                                </div>
+                            ),
+                        )}
+                    </p>
+                    <h4>Subject</h4>
+                    <p>{value.subject}</p>
+                    <h4>Message</h4>
+                    <div
+                        className="emailMessage"
+                        dangerouslySetInnerHTML={{ __html: value.message }}
+                    ></div>
+                </EuiText>
+            );
+        };
 
         return (
             <div ref={ref}>
@@ -97,15 +157,22 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen && (
+                    {stepDetailIsOpen && !filteredStepDeltaEmpty && (
                         <EuiCodeBlock
                             isCopyable={true}
-                            language="json"
+                            language={'json'}
                             lineNumbers={true}
                             overflowHeight={6000}
                         >
-                            {JSON.stringify(delta, null, 4)}
+                            {JSON.stringify(filteredStepDelta, null, 4)}
                         </EuiCodeBlock>
+                    )}
+                    {stepDetailIsOpen && hasHtmlMail && (
+                        <div css={stepEmailContainerStyle}>
+                            {displayMailConfirmation(
+                                step.state.confirmation_mail as EmailState,
+                            )}
+                        </div>
                     )}
                 </EuiPanel>
             </div>
