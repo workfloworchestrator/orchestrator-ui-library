@@ -1,4 +1,4 @@
-import { ProductDefinition } from './types';
+import { ProductDefinition, FieldValue, ProductBlockInstance } from './types';
 
 export enum SubscriptionStatus {
     INITIAL = 'INITIAL',
@@ -24,20 +24,16 @@ export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;
     insync: boolean;
-    note?: string;
+    note: string;
+    fixedInputs: FieldValue[];
     product: Pick<
         ProductDefinition,
         'createdAt' | 'name' | 'status' | 'description' | 'tag' | 'productType'
     > & {
         endDate: string;
     };
-    endDate?: string;
-    startDate?: string;
+    endDate: string;
+    startDate: string;
     status: SubscriptionStatus;
-    productBlocks: {
-        id: number;
-        ownerSubscriptionId: string;
-        parent?: number;
-        resourceTypes: object;
-    }[];
+    productBlockInstances: ProductBlockInstance[];
 };

@@ -48,19 +48,10 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
     };
 
     // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
-    // const queryClient = useQueryClient();
-    // const prefetchedData = {
-    //     subscription: queryClient
-    //         .getQueryData<SubscriptionListQuery>('subscriptions')
-    //         ?.subscriptions.edges.find(
-    //             (d) => d.node.subscriptionId == subscriptionId,
-    //         ).node,
-    // };
 
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 
     const fetchSubscriptionOutline = async () => {
-        console.log('Fetch outline query results for ID: ', subscriptionId);
         return graphQLClient.request(
             getSubscriptionsDetailOutlineGraphQlQuery(),
             {
@@ -68,8 +59,8 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
             },
         );
     };
+
     const fetchSubscriptionComplete = async () => {
-        console.log('Fetch complete query results for ID: ', subscriptionId);
         return graphQLClient.request(
             getSubscriptionsDetailCompleteGraphQlQuery(),
             {
@@ -89,6 +80,7 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
                 ),
         },
     );
+
     const { data: dataComplete } = useQuery(
         ['subscription-complete', subscriptionId],
         fetchSubscriptionComplete,
@@ -102,7 +94,6 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
     );
 
     if (dataComplete && subscriptionData.subscriptionId === '') {
-        console.log('No data in context populating dataComplete from cache');
         setSubscriptionData(
             mapApiResponseToSubscriptionDetail(dataComplete, true),
             2,
@@ -112,7 +103,6 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
         data &&
         subscriptionData.subscriptionId === ''
     ) {
-        console.log('No data in context populating dataOutline from cache');
         setSubscriptionData(mapApiResponseToSubscriptionDetail(data, false), 1);
     }
 

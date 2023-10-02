@@ -1,4 +1,4 @@
-export function getTokenName(name: string): string {
+export function getTokenName(name: string | number): string {
     const icons: { [key: string]: string } = {
         Node: 'tokenNamespace',
         'IP BGP Service Settings': 'tokenEnumMember',

@@ -11,7 +11,7 @@ export type SubscriptionContextType = {
     ) => void;
 };
 
-const subscriptionDetailInit = {
+const subscriptionDetailInit: SubscriptionDetailBase = {
     subscriptionId: '',
     description: '',
     customerId: '',
@@ -26,7 +26,7 @@ const subscriptionDetailInit = {
         createdAt: '',
     },
     fixedInputs: {},
-    productBlocks: [],
+    productBlockInstances: [],
 };
 
 const InitialSubscriptionContext: SubscriptionContextType = {
@@ -52,7 +52,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
 
     const setSubscriptionData = (
         data: SubscriptionDetailBase,
-        loadingStatus: number,
+        loadingStatus: number, // 0 empty 1 outline 2 complete
     ) => {
         setInternalSubscriptionData(data);
         setLoadingStatus(loadingStatus);

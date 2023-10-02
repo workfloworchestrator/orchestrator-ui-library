@@ -6,7 +6,6 @@ import {
     ExternalServiceBase,
     GraphqlQueryVariables,
     ProductBase,
-    ProductBlockBase,
     SubscriptionDetailBase,
     SubscriptionDetailResult,
 } from '../types';
@@ -24,7 +23,7 @@ const GET_SUBSCRIPTION_DETAIL_OUTLINE = parse(gql`
             page {
                 subscriptionId
                 description
-                # fixedInputs
+                fixedInputs
                 insync
                 note
                 product {
@@ -39,11 +38,11 @@ const GET_SUBSCRIPTION_DETAIL_OUTLINE = parse(gql`
                 endDate
                 startDate
                 status
-                productBlocks {
+                productBlockInstances {
                     id
                     ownerSubscriptionId
                     parent
-                    resourceTypes
+                    productBlockInstanceValues
                 }
             }
         }
@@ -58,7 +57,7 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = parse(gql`
             page {
                 subscriptionId
                 description
-                # fixedInputs
+                fixedInputs
                 insync
                 note
                 product {
@@ -73,11 +72,11 @@ export const GET_SUBSCRIPTION_DETAIL_COMPLETE = parse(gql`
                 endDate
                 startDate
                 status
-                productBlocks {
+                productBlockInstances {
                     id
                     ownerSubscriptionId
                     parent
-                    resourceTypes
+                    productBlockInstanceValues
                 }
             }
         }
@@ -122,21 +121,6 @@ export function mapApiResponseToSubscriptionDetail(
         ),
     };
 
-    const productBlocks: ProductBlockBase[] = subscription.productBlocks.map(
-        (productBlock) => {
-            {
-                const productBlockBase: ProductBlockBase = {
-                    id: productBlock.id,
-                    ownerSubscriptionId: productBlock.ownerSubscriptionId,
-                    parent: productBlock.parent ?? null,
-                    // @ts-ignore
-                    resourceTypes: productBlock.resourceTypes,
-                };
-                return productBlockBase;
-            }
-        },
-    );
-
     const externalServices: ExternalServiceBase[] | undefined =
         externalServicesLoaded ? [] : undefined;
 
@@ -158,7 +142,7 @@ export function mapApiResponseToSubscriptionDetail(
         fixedInputs: {
             fixedInputKey: 'fixedInputValue',
         },
-        productBlocks: productBlocks,
+        productBlockInstances: subscription.productBlockInstances,
         externalServices,
     };
 }

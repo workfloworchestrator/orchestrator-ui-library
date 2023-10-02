@@ -6,7 +6,7 @@ import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
 import { WFOLoading } from '../WFOLoading';
 
 /** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
-const WFOCard = (processInfo: SubscriptionProcess) => (
+const Card = (processInfo: SubscriptionProcess) => (
     <div style={{ marginTop: 5 }}>
         <table width="100%" bgcolor={'#F1F5F9'}>
             <tr>
@@ -70,7 +70,7 @@ const RenderProcess = (processInfo: SubscriptionProcess) => (
         timelineAvatarAriaLabel={processInfo.process.workflow}
         timelineAvatar={<EuiAvatar name="C" />}
     >
-        {WFOCard(processInfo)}
+        {Card(processInfo)}
     </EuiComment>
 );
 

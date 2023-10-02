@@ -6,6 +6,11 @@ export type Nullable<T> = T | null;
 
 type GenericField = { [key: string]: number | string | boolean };
 
+export type FieldValue = {
+    field: string;
+    value: string | number;
+};
+
 export type EngineStatusValue = 'RUNNING' | 'PAUSING' | 'PAUSED';
 
 export type CustomerBase = {
@@ -31,11 +36,11 @@ export type ResourceTypeBase = {
     label?: string;
 } & GenericField;
 
-export type ProductBlockBase = {
+export type ProductBlockInstance = {
     id: number;
     ownerSubscriptionId: string;
     parent: Nullable<number>;
-    resourceTypes: ResourceTypeBase;
+    productBlockInstanceValues: FieldValue[];
 };
 
 export interface ResourceTypeDefinition {
@@ -91,14 +96,14 @@ export type SubscriptionDetailBase = {
     product: ProductBase;
     fixedInputs: FixedInputsBase;
     customer?: CustomerBase;
-    productBlocks: ProductBlockBase[];
+    productBlockInstances: ProductBlockInstance[];
 
     externalServices?: ExternalServiceBase[];
 };
 
-export interface TreeBlock extends ProductBlockBase {
+export interface TreeBlock extends ProductBlockInstance {
     icon: string;
-    label: string;
+    label: string | number;
     callback: () => void;
     children: TreeBlock[];
 }
