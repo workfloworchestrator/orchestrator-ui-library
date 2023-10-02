@@ -1,1 +1,1 @@
-export * from './WFOStepList';
+export * from './WFOWorkflowStepList';

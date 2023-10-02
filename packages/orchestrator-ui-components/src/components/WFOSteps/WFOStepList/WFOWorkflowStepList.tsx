@@ -17,19 +17,19 @@ import { useOrchestratorTheme } from '../../../hooks';
 import { stateDelta } from '../../../utils';
 import { WFOCode, WFOEyeFill } from '../../../icons';
 
-export type WFOStepListRef = {
+export type WFOWorkflowStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
-export interface WFOStepListProps {
+export interface WFOWorkflowStepListProps {
     steps: Step[];
     startedAt: string;
 }
 
-export const WFOStepList = React.forwardRef(
+export const WFOWorkflowStepList = React.forwardRef(
     (
-        { steps = [], startedAt }: WFOStepListProps,
-        reference: Ref<WFOStepListRef>,
+        { steps = [], startedAt }: WFOWorkflowStepListProps,
+        reference: Ref<WFOWorkflowStepListRef>,
     ) => {
         const { theme } = useOrchestratorTheme();
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
@@ -127,7 +127,9 @@ export const WFOStepList = React.forwardRef(
 
         return (
             <>
+                {/* Steps header with control buttons */}
                 <EuiFlexGroup css={stepListHeaderStyle}>
+                    {/* Left side: header and expand/collapse button */}
                     <EuiFlexGroup css={stepListContentStyle}>
                         <EuiText css={stepListContentBoldTextStyle}>
                             {t('steps')}
@@ -141,6 +143,8 @@ export const WFOStepList = React.forwardRef(
                                 : t('expandAll')}
                         </EuiText>
                     </EuiFlexGroup>
+
+                    {/* Right side: view options */}
                     <EuiFlexGroup
                         justifyContent="flexEnd"
                         direction="row"
@@ -200,7 +204,9 @@ export const WFOStepList = React.forwardRef(
                         </EuiPopover>
                     </EuiFlexGroup>
                 </EuiFlexGroup>
+                {/* RAW JSON DATA */}
                 {showRaw && renderRaw()}
+                {/* STEP LIST */}
                 {!showRaw && (
                     <>
                         {steps.map((step, index) => {
@@ -288,4 +294,4 @@ export const WFOStepList = React.forwardRef(
     },
 );
 
-WFOStepList.displayName = 'WFOStepList';
+WFOWorkflowStepList.displayName = 'WFOWorkflowStepList';

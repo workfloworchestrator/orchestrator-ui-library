@@ -6,7 +6,10 @@ import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { TimelineItem, WFOLoading } from '../../components';
 
 import { WFOProcessDetail } from './WFOProcessDetail';
-import { WFOStepList, WFOStepListRef } from '../../components/WFOSteps';
+import {
+    WFOWorkflowStepList,
+    WFOWorkflowStepListRef,
+} from '../../components/WFOSteps';
 
 import {
     convertStepsToGroupedSteps,
@@ -25,7 +28,7 @@ interface WFOProcessDetailPageProps {
 export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
-    const stepListRef = useRef<WFOStepListRef>(null);
+    const stepListRef = useRef<WFOWorkflowStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
@@ -59,7 +62,7 @@ export const WFOProcessDetailPage = ({
         >
             {(isFetching && <WFOLoading />) ||
                 (process !== undefined && (
-                    <WFOStepList
+                    <WFOWorkflowStepList
                         ref={stepListRef}
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
