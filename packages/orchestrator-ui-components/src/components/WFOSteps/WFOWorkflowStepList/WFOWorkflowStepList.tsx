@@ -95,7 +95,6 @@ export const WFOWorkflowStepList = React.forwardRef(
 
         return (
             <>
-                {/* Steps header with control buttons */}
                 <WFOStepListHeader
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
@@ -108,6 +107,10 @@ export const WFOWorkflowStepList = React.forwardRef(
                     onChangeShowRaw={setShowRaw}
                     onToggleAllDetailsIsOpen={toggleAllDetailsIsOpen}
                 />
+
+                {/* Todo rewrite code below as:*/}
+                {/* showRaw ? <WFORawComponent /> : <WFOStepList /> */}
+
                 {/* RAW JSON DATA */}
                 {showRaw && renderRaw()}
                 {/* STEP LIST */}
