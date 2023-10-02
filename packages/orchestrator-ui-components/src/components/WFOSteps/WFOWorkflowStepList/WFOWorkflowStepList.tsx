@@ -1,21 +1,12 @@
 import React, { Ref, useImperativeHandle, useRef, useState } from 'react';
-import {
-    EuiButton,
-    EuiCodeBlock,
-    EuiFlexGroup,
-    EuiForm,
-    EuiFormRow,
-    EuiPopover,
-    EuiSwitch,
-    EuiText,
-} from '@elastic/eui';
+import { EuiCodeBlock } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { Step, StepStatus } from '../../../types';
 import { WFOStep } from '../WFOStep';
 import { getStyles } from '../getStyles';
 import { useOrchestratorTheme } from '../../../hooks';
 import { stateDelta } from '../../../utils';
-import { WFOCode, WFOEyeFill } from '../../../icons';
+import { WFOStepListHeader } from './WFOStepListHeader';
 
 export type WFOWorkflowStepListRef = {
     scrollToStep: (stepId: string) => void;
@@ -35,7 +26,6 @@ export const WFOWorkflowStepList = React.forwardRef(
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
         const [showRaw, setShowRaw] = useState(false);
-        const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
 
         const getReferenceCallbackForStepId =
             (stepId: string) => (node: HTMLDivElement | null) =>
@@ -85,21 +75,6 @@ export const WFOWorkflowStepList = React.forwardRef(
             }
         };
 
-        const onViewOptionClick = () =>
-            setIsViewOptionOpen((isViewOptionOpen) => !isViewOptionOpen);
-        const closeViewOption = () => setIsViewOptionOpen(false);
-
-        const viewOptionButton = (
-            <EuiButton
-                onClick={onViewOptionClick}
-                iconType={() => <WFOEyeFill color={theme.colors.link} />}
-                iconSide="right"
-                size="s"
-            >
-                {t('viewOptions')}
-            </EuiButton>
-        );
-
         const renderRaw = () => {
             const json = JSON.stringify(steps, null, 4);
             return (
@@ -116,94 +91,23 @@ export const WFOWorkflowStepList = React.forwardRef(
             );
         };
 
-        const {
-            stepSpacerStyle,
-            stepListHeaderStyle,
-            stepListContentStyle,
-            stepListContentBoldTextStyle,
-            stepListContentAnchorStyle,
-            stepListOptionsContainerStyle,
-        } = getStyles(theme);
+        const { stepSpacerStyle } = getStyles(theme);
 
         return (
             <>
                 {/* Steps header with control buttons */}
-                <EuiFlexGroup css={stepListHeaderStyle}>
-                    {/* Left side: header and expand/collapse button */}
-                    <EuiFlexGroup css={stepListContentStyle}>
-                        <EuiText css={stepListContentBoldTextStyle}>
-                            {t('steps')}
-                        </EuiText>
-                        <EuiText
-                            css={stepListContentAnchorStyle}
-                            onClick={toggleAllDetailsIsOpen}
-                        >
-                            {Array.from(stepDetailStates).every((s) => s[1])
-                                ? t('collapseAll')
-                                : t('expandAll')}
-                        </EuiText>
-                    </EuiFlexGroup>
-
-                    {/* Right side: view options */}
-                    <EuiFlexGroup
-                        justifyContent="flexEnd"
-                        direction="row"
-                        css={stepListOptionsContainerStyle}
-                        gutterSize="s"
-                    >
-                        <EuiButton
-                            onClick={(
-                                e: React.MouseEvent<
-                                    HTMLButtonElement | HTMLElement,
-                                    MouseEvent
-                                >,
-                            ) => {
-                                e.preventDefault();
-                                alert('TODO: Implement Show delta');
-                            }}
-                            iconSide="right"
-                            size="s"
-                            iconType={() => (
-                                <WFOCode color={theme.colors.link} />
-                            )}
-                        >
-                            {t('showDelta')}
-                        </EuiButton>
-                        <EuiPopover
-                            button={viewOptionButton}
-                            isOpen={isViewOptionOpen}
-                            closePopover={closeViewOption}
-                            display="block"
-                        >
-                            <div>
-                                <EuiForm component="form">
-                                    <EuiFormRow>
-                                        <EuiSwitch
-                                            label="Hidden keys"
-                                            checked={showHiddenKeys}
-                                            onChange={(e) => {
-                                                setShowHiddenKeys(
-                                                    e.target.checked,
-                                                );
-                                                closeViewOption();
-                                            }}
-                                        />
-                                    </EuiFormRow>
-                                    <EuiFormRow>
-                                        <EuiSwitch
-                                            label="Raw JSON data"
-                                            checked={showRaw}
-                                            onChange={(e) => {
-                                                setShowRaw(e.target.checked);
-                                                closeViewOption();
-                                            }}
-                                        />
-                                    </EuiFormRow>
-                                </EuiForm>
-                            </div>
-                        </EuiPopover>
-                    </EuiFlexGroup>
-                </EuiFlexGroup>
+                <WFOStepListHeader
+                    showHiddenKeys={showHiddenKeys}
+                    showRaw={showRaw}
+                    allDetailToggleText={
+                        Array.from(stepDetailStates).every((s) => s[1])
+                            ? t('collapseAll')
+                            : t('expandAll')
+                    }
+                    onChangeShowHiddenKeys={setShowHiddenKeys}
+                    onChangeShowRaw={setShowRaw}
+                    onToggleAllDetailsIsOpen={toggleAllDetailsIsOpen}
+                />
                 {/* RAW JSON DATA */}
                 {showRaw && renderRaw()}
                 {/* STEP LIST */}
