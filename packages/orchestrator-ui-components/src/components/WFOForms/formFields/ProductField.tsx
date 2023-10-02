@@ -20,7 +20,7 @@ import { useQuery } from 'react-query';
 
 import SelectField, { SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';
-import { useAxiosApiClient } from '../../../hooks/useAxiosApiClient';
+import { useAxiosApiClient } from '../useAxiosApiClient';
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,

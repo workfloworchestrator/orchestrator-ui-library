@@ -19,14 +19,7 @@ import { FieldProps } from '../../../types/forms';
 export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 
 // onChange not used on purpose
-function Label({
-    id,
-    value,
-    label,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onChange,
-    ...props
-}: LabelFieldProps) {
+function Label({ id, value, label, ...props }: LabelFieldProps) {
     return (
         <section {...filterDOMProps(props)}>
             <label

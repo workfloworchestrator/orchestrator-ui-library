@@ -9,4 +9,3 @@ export const PATH_METADATA_RESOURCE_TYPES = '/metadata/resource-types';
 export const PATH_METADATA_WORKFLOWS = '/metadata/workflows';
 export const PATH_TASKS = '/tasks';
 export const PATH_SETTINGS = '/settings';
-export const PATH_FORMS = '/forms';

@@ -12,9 +12,8 @@
  * limitations under the License.
  *
  */
-
-import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import React from 'react';
+import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { boolFieldStyling } from './BoolFieldStyling';

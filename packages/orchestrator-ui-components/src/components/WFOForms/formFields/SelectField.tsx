@@ -45,31 +45,6 @@ function Select({
     errorMessage,
     ...props
 }: SelectFieldProps) {
-    /*
-  const nameArray = joinName(null, name);
-
-    let parentName = joinName(nameArray.slice(0, -1));
-
-    // We can't call useField conditionally so we call it for ourselves if there is no parent
-
-    if (parentName === '') {
-        parentName = name;
-    }
-
-    const parent = useField(parentName, {}, { absoluteName: true })[0];
-    const { model } = useForm();
-
-    if (parentName !== name) {
-         if (parent && parent.fieldType === Array && parent.uniqueItems) {
-             const allValues: string[] = get(model, parentName, []);
-             const chosenValues = allValues.filter(
-                 (_item, index) => index.toString() !== nameArray[nameArray.length - 1]
-             );
-    
-             allowedValues = allowedValues.filter((value) => !chosenValues.includes(value));
-         }
-    }
-*/
     const options = allowedValues.map((value: string) => ({
         label: transform ? transform(value) : value,
         text: transform ? transform(value) : value,
@@ -93,7 +68,6 @@ function Select({
             >
                 <EuiSelect
                     id={id}
-                    // inputId={`${id}.search`}
                     name={name}
                     onChange={(option) => {
                         if (!readOnly) {
@@ -109,48 +83,6 @@ function Select({
             </EuiFormRow>
         </section>
     );
-
-    // if (fieldType === Array) {
-    //     // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)
-    //     return (
-    //         <ListField name={name}>
-    //             <ListItemField name="$">
-    //                 <ListSelectField name="" transform={transform} allowedValues={allowedValues} />
-    //             </ListItemField>
-    //         </ListField>
-    //     );
-    // } else {
-    //     return (
-    //         <section {...filterDOMProps(props)}>
-    //             <EuiFormRow
-    //                 label={label}
-    //                 labelAppend={<EuiText size="m">{description}</EuiText>}
-    //                 error={showInlineError ? errorMessage : false}
-    //                 isInvalid={error}
-    //                 id={id}
-    //                 fullWidth
-    //             >
-    //                 <ReactSelect<Option, false>
-    //                     id={id}
-    //                     inputId={`${id}.search`}
-    //                     name={name}
-    //                     onChange={(option) => {
-    //                         if (!readOnly) {
-    //                             onChange(option?.value);
-    //                         }
-    //                     }}
-    //                     styles={customStyles}
-    //                     options={options}
-    //                     value={selectedValue}
-    //                     isSearchable={true}
-    //                     isClearable={true}
-    //                     placeholder={placeholder || intl.formatMessage({ id: "forms.widgets.select.placeholder" })}
-    //                     isDisabled={disabled || readOnly}
-    //                 />
-    //             </EuiFormRow>
-    //         </section>
-    //     );
-    // }
 }
 
 export default connectField(Select, { kind: 'leaf' });

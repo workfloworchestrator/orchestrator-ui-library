@@ -12,7 +12,6 @@ import {
     PATH_START,
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
-    PATH_FORMS,
 } from '../paths';
 import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
 
@@ -139,16 +138,6 @@ export const WFOSidebar: FC = () => {
                                 router.push(PATH_SETTINGS);
                             },
                             href: PATH_SETTINGS,
-                        },
-                        {
-                            name: 'Forms test',
-                            isSelected: router.pathname === PATH_FORMS,
-                            id: '8',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_FORMS);
-                            },
-                            href: PATH_FORMS,
                         },
                     ],
                 },
