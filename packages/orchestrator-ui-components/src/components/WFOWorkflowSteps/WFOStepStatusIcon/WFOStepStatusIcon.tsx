@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStyles } from '../getStyles';
+import { getStyles } from '../styles';
 import { EuiFlexItem } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
 import { StepStatus } from '../../../types';

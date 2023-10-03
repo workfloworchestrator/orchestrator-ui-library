@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useOrchestratorTheme } from '../../../hooks';
-import { getStyles } from '../getStyles';
+import { getStyles } from '../styles';
 import {
     EuiButton,
     EuiFlexGroup,

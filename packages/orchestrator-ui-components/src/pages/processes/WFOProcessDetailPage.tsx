@@ -6,7 +6,10 @@ import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { TimelineItem, WFOLoading } from '../../components';
 
 import { WFOProcessDetail } from './WFOProcessDetail';
-import { WFOStepListRef, WFOWorkflowStepList } from '../../components/WFOSteps';
+import {
+    WFOStepListRef,
+    WFOWorkflowStepList,
+} from '../../components/WFOWorkflowSteps';
 
 import {
     convertStepsToGroupedSteps,

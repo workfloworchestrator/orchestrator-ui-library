@@ -3,7 +3,7 @@ import { EuiCodeBlock } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { Step, StepStatus } from '../../../types';
 import { WFOStep } from '../WFOStep';
-import { getStyles } from '../getStyles';
+import { getStyles } from '../styles';
 import { useOrchestratorTheme } from '../../../hooks';
 import { stateDelta } from '../../../utils';
 import { WFOStepListHeader } from './WFOStepListHeader';

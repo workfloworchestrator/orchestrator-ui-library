@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { useOrchestratorTheme } from '../../../hooks';
 import type { StepState, Step, EmailState } from '../../../types';
 import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
-import { getStyles } from '../getStyles';
+import { getStyles } from '../styles';
 import { formatDate } from '../../../utils';
 import { WFOChevronDown, WFOChevronUp } from '../../../icons';
 import { calculateTimeDifference } from '../../../utils';

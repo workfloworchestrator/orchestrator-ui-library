@@ -16,8 +16,8 @@ import UserInputFormWizard from '../../components/WFOForms/UserInputFormWizard';
 import { FormNotCompleteResponse } from '../../types/forms';
 import { EngineStatus, useOrchestratorTheme } from '../../hooks';
 import { PATH_PROCESSES } from '../../components';
-import { getStyles } from '../../components/WFOSteps/getStyles';
-import { WFOStepStatusIcon } from '../../components/WFOSteps/WFOStepStatusIcon';
+import { getStyles } from '../../components/WFOWorkflowSteps/styles';
+import { WFOStepStatusIcon } from '../../components/WFOWorkflowSteps/WFOStepStatusIcon';
 import { useTranslations } from 'next-intl';
 
 import { useAxiosApiClient } from '../../components/WFOForms/useAxiosApiClient';
