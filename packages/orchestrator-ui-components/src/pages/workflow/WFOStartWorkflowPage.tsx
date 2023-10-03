@@ -51,7 +51,6 @@ export const WFOStartWorkflowPage = ({
     const t = useTranslations('processes.steps');
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
-    const [isFetching, setIsFetching] = useState<boolean>(true);
     const [form, setForm] = useState<UserInputForm>({});
     const { stepUserInput, hasNext } = form;
     const { stepHeaderStyle, stepListContentBoldTextStyle } = getStyles(theme);
@@ -80,13 +79,10 @@ export const WFOStartWorkflowPage = ({
                     (e) => {
                         throw e;
                     },
-                )
-                .finally(() => {
-                    setIsFetching(false);
-                });
+                );
 
             // Catch a 503: Service unavailable error indicating the engine is down. This rethrows other errors
-            // if its'  not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
+            // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
             return apiClient.catchErrorStatus<EngineStatus>(
                 startWorkflowPromise,
                 503,
@@ -147,7 +143,6 @@ export const WFOStartWorkflowPage = ({
             pageTitle={workflowName}
             productNames={''}
             buttonsAreDisabled={true}
-            isFetching={isFetching}
             processDetail={processDetail}
             timelineItems={fakeTimeLineItems}
         >

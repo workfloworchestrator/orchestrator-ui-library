@@ -29,5 +29,8 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         // @ts-ignore
         await graphQLClient.request(query, queryVars);
 
-    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql);
+    // todo : add prop
+    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql, {
+        refetchInterval: 3000,
+    });
 };

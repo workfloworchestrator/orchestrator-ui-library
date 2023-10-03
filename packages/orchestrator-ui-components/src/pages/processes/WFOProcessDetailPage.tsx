@@ -42,7 +42,7 @@ export const WFOProcessDetailPage = ({
     const steps = process?.steps ?? [];
 
     const productNames = getProductNamesFromProcess(process);
-    const pageTitle = isFetching ? '...' : process?.workflowName || '';
+    const pageTitle = process?.workflowName || '';
 
     const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
     const timelineItems: TimelineItem[] =
@@ -52,15 +52,14 @@ export const WFOProcessDetailPage = ({
         <WFOProcessDetail
             pageTitle={pageTitle}
             productNames={productNames}
-            buttonsAreDisabled={isFetching}
-            isFetching={isFetching}
+            buttonsAreDisabled={isFetching && !process}
             processDetail={process}
             timelineItems={timelineItems}
             onTimelineItemClick={(id: string) =>
                 stepListRef.current?.scrollToStep(id)
             }
         >
-            {(isFetching && <WFOLoading />) ||
+            {(isFetching && !process && <WFOLoading />) ||
                 (process !== undefined && (
                     <WFOWorkflowStepList
                         ref={stepListRef}
