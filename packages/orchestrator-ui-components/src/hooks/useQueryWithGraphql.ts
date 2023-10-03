@@ -10,6 +10,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
     queryKey: string,
+    refetchInterval?: number,
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
@@ -23,6 +24,6 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 
     // todo : add prop
     return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql, {
-        refetchInterval: 3000,
+        refetchInterval,
     });
 };
