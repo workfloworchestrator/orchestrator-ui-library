@@ -206,12 +206,9 @@ export const WFOWorkflowStepList = React.forwardRef(
                     onToggleAllDetailsIsOpen={toggleAllDetailsIsOpen}
                 />
 
-                {/* Todo rewrite code below as:*/}
-                {/* showRaw ? <WFORawComponent /> : <WFOStepList /> */}
-
-                {showRaw && <WFOStepsRawJson steps={steps} />}
-                {/* STEP LIST */}
-                {!showRaw && (
+                {showRaw ? (
+                    <WFOStepsRawJson steps={steps} />
+                ) : (
                     <WFOStepList
                         ref={reference}
                         steps={steps}
