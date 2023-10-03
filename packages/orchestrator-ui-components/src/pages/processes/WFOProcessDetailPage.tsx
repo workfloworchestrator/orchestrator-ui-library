@@ -7,9 +7,9 @@ import { TimelineItem, WFOLoading } from '../../components';
 
 import { WFOProcessDetail } from './WFOProcessDetail';
 import {
+    WFOStepListRef,
     WFOWorkflowStepList,
-    WFOWorkflowStepListRef,
-} from '../../components/WFOSteps';
+} from '../../components/WFOWorkflowSteps';
 
 import {
     convertStepsToGroupedSteps,
@@ -28,7 +28,7 @@ interface WFOProcessDetailPageProps {
 export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
-    const stepListRef = useRef<WFOWorkflowStepListRef>(null);
+    const stepListRef = useRef<WFOStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
