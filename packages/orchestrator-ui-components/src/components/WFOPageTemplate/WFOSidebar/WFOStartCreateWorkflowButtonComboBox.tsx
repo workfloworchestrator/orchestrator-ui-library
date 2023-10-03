@@ -32,14 +32,16 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
             .flatMap(({ name: workflowName, products }) =>
                 products.map(({ productId, name: productName }) => ({
                     label: productName,
-                    workflowName,
-                    productId,
+                    data: {
+                        workflowName,
+                        productId,
+                    },
                 })),
             )
             .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
 
     const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
-        const { workflowName, productId } = selectedProduct;
+        const { workflowName, productId } = selectedProduct.data;
         router.push({
             pathname: `${PATH_START_WORKFLOW}/${workflowName}`,
             query: { productId },

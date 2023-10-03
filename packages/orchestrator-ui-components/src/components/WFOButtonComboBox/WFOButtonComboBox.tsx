@@ -3,8 +3,10 @@ import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 import { getStyles } from './styles';
 
 export type WorkflowComboBoxOption = {
-    workflowName: string;
-    productId: string;
+    data: {
+        workflowName: string;
+        productId: string;
+    };
     label: string;
 };
 
@@ -40,7 +42,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
-            <EuiSelectable
+            <EuiSelectable<WorkflowComboBoxOption>
                 css={selectableStyle}
                 searchable
                 options={options}

@@ -175,9 +175,9 @@ export type Process = {
     };
 };
 
-// From backend
+// These step statusses match the ones in the backend
 export enum StepStatus {
-    FORM = 'form', // Frontend only
+    FORM = 'form', // Only this one is frontend only
     SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending',
