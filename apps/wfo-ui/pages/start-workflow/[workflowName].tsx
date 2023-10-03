@@ -1,15 +1,42 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { WFOStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { ParsedUrlQuery } from 'querystring';
+
+interface StartWorkFlowPageQuery extends ParsedUrlQuery {
+    workflowName: string;
+    productId?: string;
+    subscriptionId?: string;
+}
 
 const StartWorkflowPage = () => {
     const router = useRouter();
-    const { workflowName: workflowNameQueryParameter } = router.query;
+    const { workflowName, productId, subscriptionId } =
+        router.query as StartWorkFlowPageQuery;
 
-    const processName = Array.isArray(workflowNameQueryParameter)
-        ? workflowNameQueryParameter[0]
-        : workflowNameQueryParameter;
+    const getStartWorkFlowPayload = () => {
+        if (productId) {
+            return {
+                product: productId,
+            };
+        }
 
-    return <h1>Start workflow: {processName}</h1>;
+        if (subscriptionId) {
+            return {
+                subscription_id: subscriptionId,
+            };
+        }
+    };
+    const startWorkflowPayload = getStartWorkFlowPayload();
+    if (startWorkflowPayload) {
+        return (
+            <WFOStartWorkflowPage
+                workflowName={workflowName}
+                startWorkflowPayload={startWorkflowPayload}
+            />
+        );
+    }
+    return <div>Not enough arguments provided</div>;
 };
 
 export default StartWorkflowPage;

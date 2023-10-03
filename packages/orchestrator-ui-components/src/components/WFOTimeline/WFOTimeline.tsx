@@ -14,6 +14,7 @@ export enum TimelinePosition {
 }
 
 export type TimelineItem = {
+    id?: string;
     processStepStatus: StepStatus;
     stepDetail?: string | ReactNode;
     value?: string | ReactNode;
@@ -38,20 +39,22 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
         index: number,
         allTimelineItems: TimelineItem[],
     ) => {
+        const { id, stepDetail, processStepStatus, value } = timelineItem;
+
         return (
             <WFOTimelineStep
                 key={index}
                 isFirstStep={index === 0}
                 isLastStep={index === allTimelineItems.length - 1}
-                stepStatus={timelineItem.processStepStatus}
-                tooltipContent={timelineItem.stepDetail}
+                stepStatus={processStepStatus}
+                tooltipContent={stepDetail}
                 timelinePosition={getTimelinePosition(
                     index,
                     indexOfCurrentStep,
                 )}
-                onClick={() => onStepClick(timelineItem)}
+                onClick={id ? () => onStepClick(timelineItem) : undefined}
             >
-                {timelineItem.value}
+                {value}
             </WFOTimelineStep>
         );
     };

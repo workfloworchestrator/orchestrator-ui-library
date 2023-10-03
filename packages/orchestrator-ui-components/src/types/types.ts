@@ -175,8 +175,9 @@ export type Process = {
     };
 };
 
-// From backend
+// These step statusses match the ones in the backend
 export enum StepStatus {
+    FORM = 'form', // Only this one is frontend only
     SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending',
@@ -212,6 +213,7 @@ export interface ProcessDetail {
 
 // From backend
 export enum ProcessStatus {
+    CREATE = 'create', // Frontend only
     CREATED = 'created',
     RUNNING = 'running',
     SUSPENDED = 'suspended',
@@ -225,12 +227,28 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
+export interface StepState {
+    [index: string]: object | boolean | string | number | [];
+}
+
+export interface EmailAddress {
+    name: string;
+    email: string;
+}
+
+export interface EmailState {
+    to: EmailAddress[];
+    cc: EmailAddress[];
+    message: string;
+    subject: string;
+}
+
 export interface Step {
     name: string;
     status: StepStatus;
     stepId: string; // sic backend
     executed: string;
-    state: string;
+    state: StepState;
 }
 
 export interface WorkflowDefinition {

@@ -2,15 +2,18 @@ import React, { FC, useState } from 'react';
 import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 import { getStyles } from './styles';
 
-export type ComboBoxOption = {
-    itemID: string;
+export type WorkflowComboBoxOption = {
+    data: {
+        workflowName: string;
+        productId: string;
+    };
     label: string;
 };
 
 export type WFOButtonComboBoxProps = {
     buttonText: string;
-    options: ComboBoxOption[];
-    onOptionChange: (selectedOption: ComboBoxOption) => void;
+    options: WorkflowComboBoxOption[];
+    onOptionChange: (selectedOption: WorkflowComboBoxOption) => void;
 };
 
 export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
@@ -39,7 +42,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
-            <EuiSelectable
+            <EuiSelectable<WorkflowComboBoxOption>
                 css={selectableStyle}
                 searchable
                 options={options}

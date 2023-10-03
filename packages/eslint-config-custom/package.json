@@ -4,7 +4,8 @@
     "license": "MIT",
     "scripts": {
         "build": "tsup index.js --format esm",
-        "dev": "yarn build -- --watch"
+        "dev": "yarn build -- --watch",
+        "reset": "rm -rf node_modules"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "6.2.0",

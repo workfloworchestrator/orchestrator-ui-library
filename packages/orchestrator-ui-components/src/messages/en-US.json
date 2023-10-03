@@ -9,9 +9,21 @@
         "close": "Close",
         "newSubscription": "New subscription"
     },
+    "workflow": {
+        "start_workflow_title": "Start workflow"
+    },
     "errors": {
         "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
         "retrieve_stored_settings_title": "Error retrieving settings"
+    },
+    "pydanticForms": {
+        "userInputForm": {
+            "cancel": "Cancel",
+            "submit": "Submit",
+            "previous": "Previous",
+            "runProcess": "Run Process",
+            "cancelProcess": "Cancel Process"
+        }
     },
     "metadata": {
         "tabs": {
@@ -60,14 +72,6 @@
             "active": "Active",
             "completed": "Completed"
         },
-        "steps": {
-            "steps": "Steps",
-            "expandAll": "Expand all",
-            "collapseAll": "Collapse all",
-            "showDelta": "Show delta",
-            "viewOptions": "View options",
-            "duration": "duration"
-        },
         "index": {
             "workflowName": "Workflow",
             "step": "Last step",
@@ -96,6 +100,16 @@
             "relatedSubscriptions": "Related subscriptions",
             "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
             "customer": "Customer"
+        },
+        "steps": {
+            "steps": "Workflow steps",
+            "showDelta": "Show subscription delta",
+            "viewOptions": "View options",
+            "expandAll": "expand all",
+            "collapseAll": "collapse all",
+            "duration": "Looptijd",
+            "userInput": "User Input",
+            "inProgress": "In progress - Now"
         }
     },
     "subscriptions": {
@@ -128,7 +142,8 @@
                 "create": "Create workflow",
                 "modify": "Modify workflow",
                 "system": "System workflow",
-                "terminate": "Terminate workflow"
+                "terminate": "Terminate workflow",
+                "actions": "Actions"
             },
             "subscriptionDetails": "Subscription details",
             "fixedInputs": "Fixed inputs",
