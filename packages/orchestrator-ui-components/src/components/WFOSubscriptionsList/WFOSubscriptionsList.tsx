@@ -156,7 +156,6 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             filterBy: alwaysOnFilters,
         },
         'subscriptions',
-        true,
     );
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);

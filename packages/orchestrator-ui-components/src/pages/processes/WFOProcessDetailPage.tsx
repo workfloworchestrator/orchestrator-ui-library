@@ -35,7 +35,6 @@ export const WFOProcessDetailPage = ({
             processId,
         },
         'processDetail',
-        true,
     );
 
     const process = data?.processes.page[0];

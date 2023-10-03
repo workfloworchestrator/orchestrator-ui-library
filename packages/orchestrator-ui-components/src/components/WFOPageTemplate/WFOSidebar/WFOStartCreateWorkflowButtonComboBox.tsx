@@ -24,7 +24,6 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
             filterBy: [{ field: 'target', value: 'CREATE' }],
         },
         'createWorkflows',
-        true,
     );
 
     const productList: WorkflowComboBoxOption[] =

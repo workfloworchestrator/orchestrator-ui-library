@@ -155,7 +155,6 @@ export const WFOProductsPage = () => {
             sortBy: dataDisplayParams.sortBy,
         },
         'products',
-        true,
     );
 
     const totalItems = data?.products.pageInfo.totalItems;

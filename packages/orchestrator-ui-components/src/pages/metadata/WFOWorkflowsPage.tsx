@@ -130,7 +130,6 @@ export const WFOWorkflowsPage = () => {
             sortBy: graphQlWorkflowListMapper(dataDisplayParams.sortBy),
         },
         'workflows',
-        true,
     );
 
     if (!data) {

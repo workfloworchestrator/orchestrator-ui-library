@@ -95,7 +95,6 @@ export const WFOResourceTypesPage = () => {
             sortBy: dataDisplayParams.sortBy,
         },
         'resourceTypes',
-        true,
     );
 
     const dataSorting: WFODataSorting<ResourceTypeDefinition> = {

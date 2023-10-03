@@ -10,17 +10,9 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
     queryKey: string,
-    useCoreConnection = false,
 ) => {
-    const { graphqlEndpointPythia, graphqlEndpointCore } = useContext(
-        OrchestratorConfigContext,
-    );
-
-    const graphqlEndpoint = useCoreConnection
-        ? graphqlEndpointCore
-        : graphqlEndpointPythia;
-
-    const graphQLClient = new GraphQLClient(graphqlEndpoint);
+    const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
+    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 
     const fetchFromGraphql = async () =>
         // TS-Ignore because queryVars does not seem to be accepted by the client
