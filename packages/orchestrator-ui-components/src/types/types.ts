@@ -1,6 +1,6 @@
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
 
-import { Subscription, SubscriptionDetail } from './subscription';
+export type UnionOfInterfaceTypes<T> = T[keyof T];
 
 export type Nullable<T> = T | null;
 
@@ -11,22 +11,18 @@ export type FieldValue = {
     value: string | number;
 };
 
+export type KeyValue = {
+    key: string;
+    value: string | number | boolean | undefined;
+};
+
 export type EngineStatusValue = 'RUNNING' | 'PAUSING' | 'PAUSED';
 
-export type CustomerBase = {
-    name: string;
-    abbreviation?: string;
-} & GenericField;
-
-export type ProductBase = {
-    name: string;
-    description: string;
-    status: string;
-    tag: string;
-    type: string;
-    createdAt: string;
-    endDate?: string | null;
-} & GenericField;
+export type Customer = {
+    fullname: string;
+    identifier: string;
+    shortcode: string;
+};
 
 export type ResourceTypeBase = {
     name: string;
@@ -54,10 +50,17 @@ export interface ProductBlockDefinition {
     name: string;
     tag: string;
     description: string;
-    status: string;
+    status: ProductLifecycleStatus;
     createdAt: string;
     endDate: string | null;
     resourceTypes: ResourceTypeDefinition[];
+}
+
+export enum ProductLifecycleStatus {
+    ACTIVE = 'active',
+    PRE_PRODUCTION = 'pre production',
+    PHASE_OUT = 'phase out',
+    END_OF_LIFE = 'end of life',
 }
 
 export type FixedInputsBase = GenericField;
@@ -73,33 +76,6 @@ export interface FixedInputDefinition {
     description: string;
     required: boolean;
 }
-
-export type ExternalServiceBase = {
-    externalServiceKey: string;
-    externalServiceId: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    externalServiceData: any;
-} & GenericField;
-
-export type SubscriptionDetailBase = {
-    // Top level subscription fields
-    subscriptionId: string;
-    description: string;
-    customerId?: string | null;
-    insync: boolean;
-    status: string;
-    startDate?: string | null;
-    endDate?: string | null;
-    note?: string;
-
-    // Nested attributes
-    product: ProductBase;
-    fixedInputs: FixedInputsBase;
-    customer?: CustomerBase;
-    productBlockInstances: ProductBlockInstance[];
-
-    externalServices?: ExternalServiceBase[];
-};
 
 export interface TreeBlock extends ProductBlockInstance {
     icon: string;
@@ -145,7 +121,7 @@ export interface ProductDefinition {
     tag: string;
     createdAt: string;
     productType: string;
-    status: string;
+    status: ProductLifecycleStatus;
     productBlocks: Pick<ProductBlockDefinition, 'name'>[];
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
@@ -155,6 +131,7 @@ export enum WorkflowTarget {
     MODIFY = 'modify',
     TERMINATE = 'terminate',
     SYSTEM = 'system',
+    UPGRADE = 'upgrade',
 }
 
 export type Process = {
@@ -348,3 +325,62 @@ export enum Locale {
     enUS = 'en-Us',
     nlNL = 'nl-NL',
 }
+
+export enum SubscriptionStatus {
+    INITIAL = 'INITIAL',
+    ACTIVE = 'ACTIVE',
+    MIGRATING = 'MIGRATING',
+    DISABLED = 'DISABLED',
+    TERMINATED = 'TERMINATED',
+    PROVISIONING = 'PROVISIONING',
+}
+
+export type Subscription = {
+    subscriptionId: string;
+    description: string;
+    note: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    insync: boolean;
+    status: SubscriptionStatus;
+    product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
+};
+
+export type SubscriptionListItem = Pick<
+    Subscription,
+    'subscriptionId' | 'description' | 'status' | 'insync' | 'note'
+> & {
+    startDate: Date | null;
+    endDate: Date | null;
+    productName: string;
+    tag: string | null;
+};
+
+export type SubscriptionDetail = {
+    subscriptionId: string;
+    description: string;
+    insync: boolean;
+    note: string;
+    fixedInputs: FieldValue[];
+    product: Pick<
+        ProductDefinition,
+        'createdAt' | 'name' | 'status' | 'description' | 'tag' | 'productType'
+    > & {
+        endDate: string;
+    };
+    endDate: string;
+    startDate: string;
+    status: SubscriptionStatus;
+    productBlockInstances: ProductBlockInstance[];
+
+    customerId?: string | null;
+    customer?: Customer;
+    externalServices?: ExternalService[];
+};
+
+export type ExternalService = {
+    externalServiceKey: string;
+    externalServiceId: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    externalServiceData: any;
+};

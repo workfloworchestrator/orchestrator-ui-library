@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
-import { ProcessFromRestApi, ProductBase } from '../../types';
+import { ProcessFromRestApi, ProductDefinition } from '../../types';
 
 interface Subscription {
     name: string;
     subscription_id: string;
     description: string;
-    product: ProductBase;
+    product: ProductDefinition;
     product_id: string;
     status: string;
     insync: boolean;

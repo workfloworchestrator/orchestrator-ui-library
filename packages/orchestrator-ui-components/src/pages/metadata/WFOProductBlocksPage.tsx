@@ -8,10 +8,12 @@ import {
     METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import {
-    WFOSubscriptionStatusBadge,
     WFOProductBlockBadge,
+    WFOProductStatusBadge,
     WFOTableWithFilter,
 } from '../../components';
+import {} from '../../components/WFOBadges/WFOProductStatusBadge';
+
 import {
     getDataSortHandler,
     getPageChangeHandler,
@@ -107,11 +109,7 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => (
-                <WFOSubscriptionStatusBadge
-                    status={value.toLocaleLowerCase()}
-                />
-            ),
+            render: (value) => <WFOProductStatusBadge status={value} />,
         },
         resourceTypes: {
             field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,

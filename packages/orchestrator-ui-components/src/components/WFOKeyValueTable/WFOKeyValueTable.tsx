@@ -7,7 +7,7 @@ import { WFOValueCell } from './WFOValueCell';
 export type WFOKeyValueTableDataType = {
     key: string;
     value: ReactNode;
-    plainTextValue?: string;
+    textToCopy?: string;
 };
 
 export type WFOKeyValueTableProps = {
@@ -24,12 +24,12 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
 
     return (
         <div css={keyValueTable}>
-            {keyValues.map(({ key, value, plainTextValue }, rowNumber) => (
+            {keyValues.map(({ key, value, textToCopy }, rowNumber) => (
                 <Fragment key={key}>
                     <WFOKeyCell value={key} rowNumber={rowNumber} />
                     <WFOValueCell
                         value={value}
-                        plainTextValue={plainTextValue}
+                        textToCopy={textToCopy}
                         rowNumber={rowNumber}
                         enableCopyIcon={showCopyToClipboardIcon}
                     />

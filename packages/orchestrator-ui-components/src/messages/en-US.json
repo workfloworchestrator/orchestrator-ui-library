@@ -154,7 +154,21 @@
             "startedBy": "Started by",
             "startedAt": "Started at",
             "status": "Status",
-            "id": "ID"
+            "id": "ID",
+            "blockTitleSubscriptionDetails": "Subscription details",
+            "blockTitleFixedInputs": "Fixed Inputs",
+            "blockTitleProductInfo": "Product Info",
+            "subscriptionId": "Subscription ID",
+            "description": "Description",
+            "startDate": "Start date",
+            "insync": "In sync",
+            "customer": "Customer",
+            "customerUuid": "Customer UUID",
+            "name": "Name",
+            "productType": "Product type",
+            "tag": "Tag",
+            "created": "Created",
+            "endDate": "End date"
         }
     },
     "tasks": {

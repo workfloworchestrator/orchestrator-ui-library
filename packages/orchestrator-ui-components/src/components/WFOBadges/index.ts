@@ -6,3 +6,4 @@ export * from './WFOFailedTasksBadge';
 export * from './WFOEnvironmentBadge';
 export * from './WFOEngineStatusBadge';
 export * from './WFOHeaderBadge';
+export * from './WFOProductStatusBadge';

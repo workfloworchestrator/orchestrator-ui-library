@@ -1,110 +1,43 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
-    EuiBadge,
     EuiFlexGroup,
     EuiFlexItem,
     EuiTab,
     EuiTabs,
     EuiText,
 } from '@elastic/eui';
-import { useQuery } from 'react-query';
-import { GraphQLClient } from 'graphql-request';
-import { useTranslations } from 'next-intl';
+import { useQueryWithGraphql } from '../../hooks';
 
-import { OrchestratorConfigContext, SubscriptionContext } from '../../contexts';
-import {
-    GENERAL_TAB,
-    getColor,
-    PROCESSES_TAB,
-    SERVICE_CONFIGURATION_TAB,
-    tabs,
-} from './utils';
-import {
-    getSubscriptionsDetailCompleteGraphQlQuery,
-    getSubscriptionsDetailOutlineGraphQlQuery,
-    mapApiResponseToSubscriptionDetail,
-} from '../../graphqlQueries';
-import { WFOSubscriptionActions } from './WFOSubscriptionActions';
-import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
-import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
+import { SubscriptionTabIds, tabs } from './utils';
+
+import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
+import { WFOLoading } from '../WFOLoading';
+import { SubscriptionActions } from './SubscriptionActions';
+import { SubscriptionGeneral } from './SubscriptionGeneral';
+import { SubscriptionDetailTree } from './SubscriptionDetailTree';
 import { ProcessesTimeline } from './WFOProcessesTimeline';
 
 type WFOSubscriptionProps = {
     subscriptionId: string;
 };
 
-export const WFOSubscription: FC<WFOSubscriptionProps> = ({
-    subscriptionId,
-}) => {
+export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
-    const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
-    const { subscriptionData, setSubscriptionData, loadingStatus } =
-        React.useContext(SubscriptionContext);
+    const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
+        SubscriptionTabIds.GENERAL_TAB,
+    );
 
-    const [selectedTabId, setSelectedTabId] = useState(GENERAL_TAB);
+    const { data, isFetching } = useQueryWithGraphql(
+        GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
+        { subscriptionId },
+        `subscription-${subscriptionId}`,
+        true,
+    );
 
-    const onSelectedTabChanged = (id: string) => {
+    const onSelectedTabChanged = (id: SubscriptionTabIds) => {
         setSelectedTabId(id);
     };
-
-    // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
-
-    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
-
-    const fetchSubscriptionOutline = async () => {
-        return graphQLClient.request(
-            getSubscriptionsDetailOutlineGraphQlQuery(),
-            {
-                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
-            },
-        );
-    };
-
-    const fetchSubscriptionComplete = async () => {
-        return graphQLClient.request(
-            getSubscriptionsDetailCompleteGraphQlQuery(),
-            {
-                filterBy: [{ field: 'subscriptionId', value: subscriptionId }],
-            },
-        );
-    };
-
-    const { isLoading, data } = useQuery(
-        ['subscription-outline', subscriptionId],
-        fetchSubscriptionOutline,
-        {
-            onSuccess: (data) =>
-                setSubscriptionData(
-                    mapApiResponseToSubscriptionDetail(data, false),
-                    1,
-                ),
-        },
-    );
-
-    const { data: dataComplete } = useQuery(
-        ['subscription-complete', subscriptionId],
-        fetchSubscriptionComplete,
-        {
-            onSuccess: (data) =>
-                setSubscriptionData(
-                    mapApiResponseToSubscriptionDetail(data, true),
-                    2,
-                ),
-        },
-    );
-
-    if (dataComplete && subscriptionData.subscriptionId === '') {
-        setSubscriptionData(
-            mapApiResponseToSubscriptionDetail(dataComplete, true),
-            2,
-        );
-    } else if (
-        !dataComplete &&
-        data &&
-        subscriptionData.subscriptionId === ''
-    ) {
-        setSubscriptionData(mapApiResponseToSubscriptionDetail(data, false), 1);
-    }
 
     const renderTabs = () =>
         tabs.map((tab, index) => (
@@ -120,53 +53,57 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
             </EuiTab>
         ));
 
+    const subscriptionResult =
+        data && data.subscriptions && data.subscriptions.page;
+    const subscriptionDetail = subscriptionResult
+        ? subscriptionResult[0]
+        : null;
+
     return (
         <>
-            <EuiFlexGroup
-                style={{ marginBottom: 10 }}
-                justifyContent="spaceBetween"
-            >
-                <EuiFlexItem grow={true}>
-                    <EuiText>
-                        <h2>
-                            {isLoading
-                                ? ''
-                                : data?.subscriptions.page[0].description}
-                        </h2>
-                    </EuiText>
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiFlexGroup justifyContent="spaceBetween">
-                        <EuiFlexItem style={{ width: 140 }}>
-                            <span style={{ marginTop: 5 }}>
-                                {t('loadingStatus')}
-                                <EuiBadge
-                                    style={{ marginLeft: 4 }}
-                                    color={getColor(loadingStatus)}
-                                >
-                                    {loadingStatus}
-                                </EuiBadge>
-                            </span>
-                        </EuiFlexItem>
-                        <EuiFlexItem>
-                            <WFOSubscriptionActions
-                                subscriptionId={subscriptionId}
-                            />
-                        </EuiFlexItem>
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-            </EuiFlexGroup>
-            <>
-                <EuiTabs>{renderTabs()}</EuiTabs>
-            </>
+            {(isFetching && <WFOLoading />) ||
+                (subscriptionDetail && (
+                    <>
+                        <EuiFlexGroup
+                            style={{ marginBottom: 10 }}
+                            justifyContent="spaceBetween"
+                        >
+                            <EuiFlexItem grow={true}>
+                                <EuiText>
+                                    <h2>{subscriptionDetail.description}</h2>
+                                </EuiText>
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={false}>
+                                <SubscriptionActions
+                                    subscriptionId={subscriptionId}
+                                />
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+                        <>
+                            <EuiTabs>{renderTabs()}</EuiTabs>
+                        </>
 
-            {selectedTabId === GENERAL_TAB && <WFOSubscriptionGeneral />}
-            {selectedTabId === SERVICE_CONFIGURATION_TAB && (
-                <WFOSubscriptionDetailTree />
-            )}
-            {selectedTabId === PROCESSES_TAB && data && (
-                <ProcessesTimeline subscriptionId={subscriptionId} />
-            )}
+                        {selectedTabId === SubscriptionTabIds.GENERAL_TAB && (
+                            <SubscriptionGeneral
+                                subscriptionDetail={subscriptionDetail}
+                            />
+                        )}
+                        {selectedTabId ===
+                            SubscriptionTabIds.SERVICE_CONFIGURATION_TAB && (
+                            <SubscriptionDetailTree
+                                productBlockInstances={
+                                    subscriptionDetail.productBlockInstances
+                                }
+                            />
+                        )}
+                        {selectedTabId === SubscriptionTabIds.PROCESSES_TAB &&
+                            data && (
+                                <ProcessesTimeline
+                                    subscriptionId={subscriptionId}
+                                />
+                            )}
+                    </>
+                ))}
         </>
     );
 };

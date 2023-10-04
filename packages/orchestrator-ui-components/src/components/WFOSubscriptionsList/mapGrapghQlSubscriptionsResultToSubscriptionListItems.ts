@@ -1,5 +1,4 @@
-import { SubscriptionsResult } from '../../types';
-import { SubscriptionListItem } from './types';
+import { SubscriptionsResult, SubscriptionListItem } from '../../types';
 import { parseDate } from '../../utils';
 
 export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
@@ -20,15 +19,15 @@ export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
         const { name: productName, tag } = product;
 
         return {
+            subscriptionId,
             description,
+            status,
             insync,
-            productName,
-            tag,
             startDate: parseDate(startDate),
             endDate: parseDate(endDate),
-            status,
-            subscriptionId,
             note,
+            productName,
+            tag,
         };
     });
 }

@@ -6,11 +6,10 @@ import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import {
     defaultSubscriptionsTabs,
     getSubscriptionsTabTypeFromString,
-    SubscriptionListItem,
     WFOSubscriptionsList,
     WFOSubscriptionsTabType,
 } from '../../components/WFOSubscriptionsList';
-import { SortOrder } from '../../types';
+import { SortOrder, SubscriptionListItem } from '../../types';
 
 import { StoredTableConfig } from '../../components/WFOTable';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WFOTable';

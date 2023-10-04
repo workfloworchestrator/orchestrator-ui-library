@@ -15,9 +15,9 @@ import {
     ProductBlockDefinition,
     ProductDefinition,
     WorkflowDefinition,
+    SubscriptionListItem,
 } from '../types';
 
-import { SubscriptionListItem } from '../components/WFOSubscriptionsList';
 import { ProcessListItem } from '../components/WFOProcessesList/WFOProcessList';
 
 function getTableConfig<T>(

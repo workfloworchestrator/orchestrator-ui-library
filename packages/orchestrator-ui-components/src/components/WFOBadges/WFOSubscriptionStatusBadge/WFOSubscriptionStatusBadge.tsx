@@ -1,9 +1,10 @@
 import { WFOBadge } from '../WFOBadge';
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
+import { SubscriptionStatus } from '../../../types';
 
 export type WFOSubscriptionStatusBadgeProps = {
-    status: string;
+    status: SubscriptionStatus;
 };
 
 export const WFOSubscriptionStatusBadge: FC<
@@ -21,13 +22,13 @@ export const WFOSubscriptionStatusBadge: FC<
             successText,
         } = theme.colors;
 
-        switch (status.toLowerCase()) {
-            case 'active':
+        switch (status) {
+            case SubscriptionStatus.ACTIVE:
                 return {
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
                 };
-            case 'terminated':
+            case SubscriptionStatus.TERMINATED:
                 return {
                     badgeColor: lightShade,
                     textColor: darkestShade,

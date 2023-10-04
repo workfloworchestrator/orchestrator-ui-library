@@ -5,30 +5,32 @@ import { FieldValue } from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
 
-export const GENERAL_TAB = 'general-id';
-export const SERVICE_CONFIGURATION_TAB = 'service-configuration-id';
-export const PROCESSES_TAB = 'processes-id';
-export const RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id';
+export enum SubscriptionTabIds {
+    GENERAL_TAB = 'general-id',
+    SERVICE_CONFIGURATION_TAB = 'service-configuration-id',
+    PROCESSES_TAB = 'processes-id',
+    RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id',
+}
 
 export const tabs = [
     {
-        id: GENERAL_TAB,
+        id: SubscriptionTabIds.GENERAL_TAB,
         translationKey: 'tabs.general',
         prepend: <EuiIcon type="devToolsApp" />,
         append: <></>,
     },
     {
-        id: SERVICE_CONFIGURATION_TAB,
+        id: SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
         translationKey: 'tabs.serviceConfiguration',
         prepend: <EuiIcon type="submodule" />,
     },
     {
-        id: PROCESSES_TAB,
+        id: SubscriptionTabIds.PROCESSES_TAB,
         translationKey: 'tabs.processes',
         prepend: <EuiIcon type="indexRuntime" />,
     },
     {
-        id: RELATED_SUBSCRIPTIONS_TAB,
+        id: SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB,
         disabled: true,
         translationKey: 'tabs.relatedSubscriptions',
         prepend: <EuiIcon type="heatmap" />,
