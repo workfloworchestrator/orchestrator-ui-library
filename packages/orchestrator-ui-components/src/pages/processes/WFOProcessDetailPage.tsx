@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
@@ -16,8 +16,7 @@ import {
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
 import { Step } from '../../types';
-
-const processDetailRefetchInterval = 3000;
+import { OrchestratorConfigContext } from '../../contexts';
 
 export type GroupedStep = {
     steps: Step[];
@@ -30,6 +29,7 @@ interface WFOProcessDetailPageProps {
 export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
+    const { dataRefetchInterval } = useContext(OrchestratorConfigContext);
     const stepListRef = useRef<WFOStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
@@ -37,7 +37,7 @@ export const WFOProcessDetailPage = ({
             processId,
         },
         'processDetail',
-        processDetailRefetchInterval,
+        dataRefetchInterval.processDetail,
     );
 
     const process = data?.processes.page[0];

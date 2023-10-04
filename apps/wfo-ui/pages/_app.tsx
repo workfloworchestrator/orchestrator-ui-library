@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppProps } from 'next/app';
 
 import Head from 'next/head';
-import { useState } from 'react';
 import { EuiProvider } from '@elastic/eui';
 import {
+    ApiClientContextProvider,
     defaultOrchestratorTheme,
     Environment,
+    getNumberValueFromEnvironmentVariable,
     OrchestratorConfig,
     OrchestratorConfigProvider,
-    WFOPageTemplate,
     ToastsContextProvider,
-    ApiClientContextProvider,
     ToastsList,
+    WFOPageTemplate,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -20,10 +20,11 @@ import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
     ENGINE_STATUS_ENDPOINT,
-    ORCHESTRATOR_API_BASE_URL,
-    PROCESS_STATUS_COUNTS_ENDPOINT,
-    GRAPHQL_ENDPOINT_PYTHIA,
     GRAPHQL_ENDPOINT_CORE,
+    GRAPHQL_ENDPOINT_PYTHIA,
+    ORCHESTRATOR_API_BASE_URL,
+    PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
+    PROCESS_STATUS_COUNTS_ENDPOINT,
     SUBSCRIPTION_ACTIONS_ENDPOINT,
     SUBSCRIPTION_PROCESSES_ENDPOINT,
 } from '../constants';
@@ -56,6 +57,12 @@ const initialOrchestratorConfig: OrchestratorConfig = {
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
     subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
     subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
+    dataRefetchInterval: {
+        processDetail: getNumberValueFromEnvironmentVariable(
+            process.env.NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL,
+            PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
+        ),
+    },
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {

@@ -1,4 +1,5 @@
 export * from './date';
+export * from './environmentVariables';
 export * from './getStatusBadgeColor';
 export * from './getTypedFieldFromObject';
 export * from './uuid';

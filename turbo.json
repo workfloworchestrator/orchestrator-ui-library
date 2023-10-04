@@ -1,7 +1,10 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "globalDependencies": ["**/.env.*local"],
-    "globalEnv": ["NEXT_PUBLIC_ENVIRONMENT_NAME"],
+    "globalEnv": [
+        "NEXT_PUBLIC_ENVIRONMENT_NAME",
+        "NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL"
+    ],
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],
