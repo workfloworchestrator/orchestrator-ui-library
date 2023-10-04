@@ -17,6 +17,8 @@ import {
 } from './timelineUtils';
 import { Step } from '../../types';
 
+const processDetailRefetchInterval = 3000;
+
 export type GroupedStep = {
     steps: Step[];
 };
@@ -35,7 +37,7 @@ export const WFOProcessDetailPage = ({
             processId,
         },
         'processDetail',
-        3000,
+        processDetailRefetchInterval,
     );
 
     const process = data?.processes.page[0];
