@@ -16,7 +16,7 @@ import {
     WFOTableControlColumnConfig,
     WFOTableWithFilter,
 } from '../WFOTable';
-import { SubscriptionListItem } from './types';
+import { SubscriptionListItem } from '../../types';
 
 import { FilterQuery } from '../WFOFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
@@ -87,9 +87,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'status',
             name: t('status'),
             width: '110',
-            render: (value) => (
-                <WFOSubscriptionStatusBadge status={value.toLowerCase()} />
-            ),
+            render: (value) => <WFOSubscriptionStatusBadge status={value} />,
         },
         insync: {
             field: 'insync',

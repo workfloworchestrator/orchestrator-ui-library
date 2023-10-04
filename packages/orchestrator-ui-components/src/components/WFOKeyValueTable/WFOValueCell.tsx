@@ -6,14 +6,14 @@ import { WFOClipboardCopy } from '../../icons/WFOClipboardCopy';
 
 export type WFOValueCellProps = {
     value: ReactNode;
-    plainTextValue?: string;
+    textToCopy?: string;
     rowNumber: number;
     enableCopyIcon: boolean;
 };
 
 export const WFOValueCell: FC<WFOValueCellProps> = ({
     value,
-    plainTextValue,
+    textToCopy,
     rowNumber,
     enableCopyIcon,
 }) => {
@@ -25,14 +25,14 @@ export const WFOValueCell: FC<WFOValueCellProps> = ({
         getBackgroundColorStyleForRow,
     } = getStyles(theme);
 
-    const shouldRenderCopyColumn = enableCopyIcon && plainTextValue;
+    const shouldRenderCopyColumn = enableCopyIcon && textToCopy;
 
     return (
         <div css={[getBackgroundColorStyleForRow(rowNumber), valueColumnStyle]}>
             <div>{value}</div>
             <div css={clipboardIconStyle}>
                 {shouldRenderCopyColumn && (
-                    <EuiCopy textToCopy={plainTextValue}>
+                    <EuiCopy textToCopy={textToCopy}>
                         {(copy) => (
                             <div onClick={copy} css={clickable}>
                                 <WFOClipboardCopy

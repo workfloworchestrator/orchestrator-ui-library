@@ -9,7 +9,7 @@ import {
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 import {
-    WFOSubscriptionStatusBadge,
+    WFOProductStatusBadge,
     WFOProductBlockBadge,
     WFOTableWithFilter,
 } from '../../components';
@@ -106,11 +106,7 @@ export const WFOProductsPage = () => {
             field: PRODUCT_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => (
-                <WFOSubscriptionStatusBadge
-                    status={value.toLocaleLowerCase()}
-                />
-            ),
+            render: (value) => <WFOProductStatusBadge status={value} />,
         },
         productBlocks: {
             field: PRODUCT_FIELD_PRODUCT_BLOCKS,
