@@ -7,14 +7,15 @@
         "product": "Produkt",
         "deselect": "Deselecteer",
         "close": "Sluiten",
-        "newSubscription": "Nieuwe subscription"
+        "newSubscription": "Nieuwe subscription",
+        "newTask": "Nieuwe taak"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"
     },
     "errors": {
-        "retrieve_stored_settings": "TODO Translate: Something went wrong restoring your settings. Falling back to default settings",
-        "retrieve_stored_settings_title": "TODO Translate: Error retrieving settings"
+        "retrieve_stored_settings": "Er ging iets fout tijdens het laden van de instellingen. Hersteld naar standaard waardes",
+        "retrieve_stored_settings_title": "Fout tijdens het ophalen van instellingen."
     },
     "pydanticForms": {
         "userInputForm": {
@@ -185,8 +186,7 @@
     },
     "tasks": {
         "page": {
-            "rerunAll": "Alles opnieuw uitvoeren",
-            "newTask": "New task"
+            "rerunAll": "Alles opnieuw uitvoeren"
         }
     }
 }

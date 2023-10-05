@@ -29,6 +29,10 @@ type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
 
+type StartTaskWorkflow = {
+    subscription_id?: string;
+};
+
 type StartWorkFlowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;

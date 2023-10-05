@@ -17,6 +17,7 @@ import {
     ProcessListItem,
     WFOProcessList,
 } from '../../components/WFOProcessesList/WFOProcessList';
+import { WFOStartTaskButtonComboBox } from '../../components';
 
 export const WFOTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
@@ -91,14 +92,7 @@ export const WFOTaskListPage = () => {
                 >
                     {t('rerunAll')}
                 </EuiButton>
-                <EuiButton
-                    fill
-                    iconType={() => (
-                        <WFOPlusCircleFill color={theme.colors.emptyShade} />
-                    )}
-                >
-                    {t('newTask')}
-                </EuiButton>
+                <WFOStartTaskButtonComboBox />
             </WFOPageHeader>
             <EuiHorizontalRule />
 

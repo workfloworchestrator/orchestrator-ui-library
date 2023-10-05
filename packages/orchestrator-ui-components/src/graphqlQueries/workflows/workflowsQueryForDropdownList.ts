@@ -11,7 +11,7 @@ export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult<WorkflowDefinition>,
     GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
-    query CreateWorkflows(
+    query StartWorkflows(
         $first: IntType!
         $after: IntType!
         $filterBy: [GraphqlFilter!]
