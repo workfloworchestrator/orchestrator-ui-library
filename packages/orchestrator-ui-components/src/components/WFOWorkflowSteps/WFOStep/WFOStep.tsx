@@ -18,10 +18,9 @@ import { calculateTimeDifference } from '../../../utils';
 
 export interface WFOStepProps {
     step: Step;
-    delta: StepState;
-    stepIndex: number;
+    stepDelta: StepState;
     stepDetailIsOpen: boolean;
-    toggleStepDetailIsOpen: (index: number) => void;
+    onToggleStepDetail: () => void;
     startedAt: string;
     showHiddenKeys: boolean;
 }
@@ -30,10 +29,9 @@ export const WFOStep = React.forwardRef(
     (
         {
             step,
-            delta,
+            stepDelta,
             stepDetailIsOpen,
-            toggleStepDetailIsOpen,
-            stepIndex,
+            onToggleStepDetail,
             startedAt,
             showHiddenKeys,
         }: WFOStepProps,
@@ -51,22 +49,23 @@ export const WFOStep = React.forwardRef(
             stepRowStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
-        const hasHtmlMail = delta?.hasOwnProperty('confirmation_mail');
+        const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
         const HIDDEN_KEYS = ['label_', 'divider_', '__', 'confirmation_mail'];
 
-        // Todo: refactor into something pure and beautiful
-        let filteredStepDelta = delta;
-        let filteredStepDeltaEmpty = false;
-        if (!showHiddenKeys) {
-            filteredStepDeltaEmpty = true;
-            filteredStepDelta = {};
-            for (const key in delta) {
-                if (!HIDDEN_KEYS.some((word) => key.startsWith(word))) {
-                    filteredStepDeltaEmpty = false;
-                    filteredStepDelta[key] = delta[key];
-                }
-            }
-        }
+        const stepContent = showHiddenKeys
+            ? Object.entries(stepDelta)
+                  .filter(
+                      ([key]) =>
+                          !HIDDEN_KEYS.some((word) => key.startsWith(word)),
+                  )
+                  .reduce<StepState>(
+                      (previousValue, currentValue) => ({
+                          ...previousValue,
+                          [currentValue[0]]: currentValue[1],
+                      }),
+                      {},
+                  )
+            : { ...stepDelta };
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -145,9 +144,7 @@ export const WFOStep = React.forwardRef(
                                     <EuiFlexItem
                                         grow={0}
                                         css={stepToggleExpandStyle}
-                                        onClick={() =>
-                                            toggleStepDetailIsOpen(stepIndex)
-                                        }
+                                        onClick={() => onToggleStepDetail()}
                                     >
                                         {(stepDetailIsOpen && (
                                             <WFOChevronUp />
@@ -157,16 +154,17 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen && !filteredStepDeltaEmpty && (
-                        <EuiCodeBlock
-                            isCopyable={true}
-                            language={'json'}
-                            lineNumbers={true}
-                            overflowHeight={6000}
-                        >
-                            {JSON.stringify(filteredStepDelta, null, 4)}
-                        </EuiCodeBlock>
-                    )}
+                    {stepDetailIsOpen &&
+                        Object.keys(stepContent).length > 0 && (
+                            <EuiCodeBlock
+                                isCopyable={true}
+                                language={'json'}
+                                lineNumbers={true}
+                                overflowHeight={6000}
+                            >
+                                {JSON.stringify(stepContent, null, 4)}
+                            </EuiCodeBlock>
+                        )}
                     {stepDetailIsOpen && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(

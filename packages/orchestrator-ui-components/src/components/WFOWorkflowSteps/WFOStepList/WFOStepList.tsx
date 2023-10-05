@@ -104,10 +104,11 @@ export const WFOStepList = React.forwardRef(
                                 stepDetailIsOpen={
                                     stepDetailStates.get(index) || false
                                 }
-                                toggleStepDetailIsOpen={toggleStepDetailIsOpen}
+                                onToggleStepDetail={() =>
+                                    toggleStepDetailIsOpen(index)
+                                }
                                 step={step}
-                                delta={delta}
-                                stepIndex={index}
+                                stepDelta={delta}
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
                             />
