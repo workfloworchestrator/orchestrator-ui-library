@@ -146,24 +146,7 @@ export const WFOSubscription: FC<WFOSubscriptionProps> = ({
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <EuiFlexGroup justifyContent="spaceBetween">
-                        <EuiFlexItem style={{ width: 140 }}>
-                            <span style={{ marginTop: 5 }}>
-                                {t('loadingStatus')}
-                                <EuiBadge
-                                    style={{ marginLeft: 4 }}
-                                    color={getColor(loadingStatus)}
-                                >
-                                    {loadingStatus}
-                                </EuiBadge>
-                            </span>
-                        </EuiFlexItem>
-                        <EuiFlexItem>
-                            <WFOSubscriptionActions
-                                subscriptionId={subscriptionId}
-                            />
-                        </EuiFlexItem>
-                    </EuiFlexGroup>
+                    <WFOSubscriptionActions subscriptionId={subscriptionId} />
                 </EuiFlexItem>
             </EuiFlexGroup>
             <>
