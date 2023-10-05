@@ -159,7 +159,6 @@ export const WFOProductBlocksPage = () => {
             sortBy: dataDisplayParams.sortBy,
         },
         'productBlocks',
-        true,
     );
 
     const dataSorting: WFODataSorting<ProductBlockDefinition> = {

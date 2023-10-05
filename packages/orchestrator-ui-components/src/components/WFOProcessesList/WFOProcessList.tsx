@@ -175,7 +175,6 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
         },
         'processList',
-        true,
     );
 
     if (!data) {

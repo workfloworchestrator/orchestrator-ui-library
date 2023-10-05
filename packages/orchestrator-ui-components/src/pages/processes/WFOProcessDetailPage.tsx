@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
@@ -16,6 +16,7 @@ import {
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
 import { Step } from '../../types';
+import { OrchestratorConfigContext } from '../../contexts';
 
 export type GroupedStep = {
     steps: Step[];
@@ -28,6 +29,7 @@ interface WFOProcessDetailPageProps {
 export const WFOProcessDetailPage = ({
     processId,
 }: WFOProcessDetailPageProps) => {
+    const { dataRefetchInterval } = useContext(OrchestratorConfigContext);
     const stepListRef = useRef<WFOStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
@@ -35,14 +37,14 @@ export const WFOProcessDetailPage = ({
             processId,
         },
         'processDetail',
-        true,
+        dataRefetchInterval.processDetail,
     );
 
     const process = data?.processes.page[0];
     const steps = process?.steps ?? [];
 
     const productNames = getProductNamesFromProcess(process);
-    const pageTitle = isFetching ? '...' : process?.workflowName || '';
+    const pageTitle = process?.workflowName || '';
 
     const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
     const timelineItems: TimelineItem[] =
@@ -52,15 +54,14 @@ export const WFOProcessDetailPage = ({
         <WFOProcessDetail
             pageTitle={pageTitle}
             productNames={productNames}
-            buttonsAreDisabled={isFetching}
-            isFetching={isFetching}
+            buttonsAreDisabled={isFetching && !process}
             processDetail={process}
             timelineItems={timelineItems}
             onTimelineItemClick={(id: string) =>
                 stepListRef.current?.scrollToStep(id)
             }
         >
-            {(isFetching && <WFOLoading />) ||
+            {(isFetching && !process && <WFOLoading />) ||
                 (process !== undefined && (
                     <WFOWorkflowStepList
                         ref={stepListRef}

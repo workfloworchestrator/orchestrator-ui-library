@@ -14,6 +14,9 @@ export type OrchestratorConfig = {
     processStatusCountsEndpoint: string;
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
+    dataRefetchInterval: {
+        processDetail: number;
+    };
 };
 
 export const useOrchestratorConfig = (

@@ -62,7 +62,6 @@ interface ProcessDetailProps {
     pageTitle: string;
     productNames: string;
     buttonsAreDisabled: boolean;
-    isFetching: boolean;
     children: React.ReactNode;
     processDetail: Partial<ProcessDetail> | undefined;
     timelineItems: TimelineItem[];
@@ -76,7 +75,6 @@ export const WFOProcessDetail = ({
     productNames,
     buttonsAreDisabled,
     timelineItems,
-    isFetching,
     onTimelineItemClick,
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
@@ -175,9 +173,7 @@ export const WFOProcessDetail = ({
                 color="subdued"
                 element="div"
             >
-                {(isFetching && processDetail === undefined && (
-                    <WFOLoading />
-                )) ||
+                {(processDetail === undefined && <WFOLoading />) ||
                     (processDetail !== undefined && (
                         <EuiFlexGroup direction="row" gutterSize="m">
                             <ProcessHeaderValue
