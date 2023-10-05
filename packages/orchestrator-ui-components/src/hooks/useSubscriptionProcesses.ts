@@ -30,7 +30,7 @@ export const useSubscriptionProcesses = (subscriptionId: string) => {
     const { subscriptionProcessesEndpoint } = useContext(
         OrchestratorConfigContext,
     );
-    //https://orchestrator.dev.automation.surf.net/api/processes/process-subscriptions-by-subscription-id/d32ecaa5-4e36-448c-a594-0bb6a1b5faf8
+
     const fetchSubscriptionProcesses = async () => {
         const response = await fetch(
             `${subscriptionProcessesEndpoint}/${subscriptionId}`,
@@ -40,5 +40,6 @@ export const useSubscriptionProcesses = (subscriptionId: string) => {
         );
         return (await response.json()) as SubscriptionProcess[];
     };
+
     return useQuery('subscriptionProcesses', fetchSubscriptionProcesses);
 };
