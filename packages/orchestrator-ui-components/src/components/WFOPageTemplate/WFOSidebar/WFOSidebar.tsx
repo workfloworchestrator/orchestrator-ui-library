@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import {
@@ -17,11 +17,17 @@ import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowBu
 
 export const WFOSidebar: FC = () => {
     const router = useRouter();
+    const [isSideNavOpenOnMobile, setisSideNavOpenOnMobile] = useState(false);
+
+    const toggleOpenOnMobile = () => {
+        setisSideNavOpenOnMobile(!isSideNavOpenOnMobile);
+    };
 
     return (
         <EuiSideNav
-            mobileTitle="Nav Items"
-            isOpenOnMobile={false}
+            mobileTitle="Main menu"
+            toggleOpenOnMobile={() => toggleOpenOnMobile()}
+            isOpenOnMobile={isSideNavOpenOnMobile}
             items={[
                 {
                     renderItem: () => (
