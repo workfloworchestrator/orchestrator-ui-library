@@ -10,21 +10,21 @@
         "newSubscription": "Nieuwe subscription"
     },
     "workflow": {
-      "start_workflow_title": "Start workflow"
-  },    
+        "start_workflow_title": "Start workflow"
+    },
     "errors": {
         "retrieve_stored_settings": "TODO Translate: Something went wrong restoring your settings. Falling back to default settings",
         "retrieve_stored_settings_title": "TODO Translate: Error retrieving settings"
     },
     "pydanticForms": {
-      "userInputForm": {
-          "cancel": "Cancel",
-          "submit": "Submit",
-          "previous": "Terug",
-          "runProcess": "Run Process",
-          "cancelProcess": "Cancel Process"
-      }
-  },    
+        "userInputForm": {
+            "cancel": "Cancel",
+            "submit": "Submit",
+            "previous": "Terug",
+            "runProcess": "Run Process",
+            "cancelProcess": "Cancel Process"
+        }
+    },
     "metadata": {
         "tabs": {
             "products": "Producten",
@@ -107,7 +107,7 @@
             "viewOptions": "Scherm options",
             "expandAll": "klap alles uit",
             "collapseAll": "klap alles in",
-            "duration": "Looptijd",            
+            "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
             "inProgress": "In behandeling - Nu"
         }
@@ -142,7 +142,7 @@
                 "create": "Create workflow",
                 "modify": "Modify workflow",
                 "system": "System workflow",
-                "terminate": "Terminate workflow",                
+                "terminate": "Terminate workflow",
                 "actions": "Acties"
             },
             "subscriptionDetails": "Subscription detail",
