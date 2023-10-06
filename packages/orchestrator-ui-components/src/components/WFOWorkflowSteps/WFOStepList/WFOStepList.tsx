@@ -5,26 +5,31 @@ import { getStyles } from '../styles';
 import { stateDelta } from '../../../utils';
 import { WFOStep } from '../WFOStep';
 
+export type StepListItem = {
+    step: Step;
+    isExpanded: boolean;
+};
+
 export type WFOStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
 export type WFOStepListProps = {
-    steps: Step[];
-    stepDetailStates: Map<number, boolean>;
+    stepListItems: StepListItem[];
     showHiddenKeys: boolean;
     startedAt: string;
-    toggleStepDetailIsOpen: (index: number) => void;
+    toggleStepDetailIsOpen: (stepListItem: StepListItem) => void;
+    onExpandStepListItem: (stepListItem: StepListItem) => void;
 };
 
 export const WFOStepList = React.forwardRef(
     (
         {
-            steps,
-            stepDetailStates,
+            stepListItems,
             startedAt,
             toggleStepDetailIsOpen,
             showHiddenKeys,
+            onExpandStepListItem,
         }: WFOStepListProps,
         reference: Ref<WFOStepListRef>,
     ) => {
@@ -36,10 +41,17 @@ export const WFOStepList = React.forwardRef(
         let stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
-            scrollToStep: (stepId: string) =>
+            scrollToStep: (stepId: string) => {
                 stepReferences.current.get(stepId)?.scrollIntoView({
                     behavior: 'smooth',
-                }),
+                });
+                const foundStepListItem = stepListItems.find(
+                    (value) => value.step.stepId === stepId,
+                );
+                if (foundStepListItem) {
+                    onExpandStepListItem(foundStepListItem);
+                }
+            },
         }));
 
         const getReferenceCallbackForStepId =
@@ -50,32 +62,36 @@ export const WFOStepList = React.forwardRef(
 
         return (
             <>
-                {steps.map((step, index) => {
+                {stepListItems.map((stepListItem, index) => {
                     let previousState = {};
                     let delta = {};
 
                     if (index > 0) {
                         // Todo: decided if we want this here. A refactor would be nice, or move to global state.
                         //  V1 has a rather big case statement with business logic here
-                        if (step.status === StepStatus.SUCCESS) {
-                            // Prepare a delta with the last successful step
+                        if (stepListItem.step.status === StepStatus.SUCCESS) {
+                            // Prepare a delta with the last successful stepListItem
                             let previousIndex = index - 1;
                             while (
                                 previousIndex > 0 &&
-                                (steps[previousIndex].status ===
+                                (stepListItems[previousIndex].step.status ===
                                     StepStatus.FAILED ||
-                                    steps[previousIndex].status ===
+                                    stepListItems[previousIndex].step.status ===
                                         StepStatus.WAITING)
                             ) {
                                 previousIndex--;
                             }
-                            previousState = steps[previousIndex].state;
-                            delta = stateDelta(previousState, step.state);
+                            previousState =
+                                stepListItems[previousIndex].step.state;
+                            delta = stateDelta(
+                                previousState,
+                                stepListItem.step.state,
+                            );
                         }
 
-                        // if (step.status === StepStatus.PENDING) {
-                        //     if (step.hasOwnProperty("form")) {
-                        //         Object.keys(step.form.properties as {})
+                        // if (stepListItem.step.status === StepStatus.PENDING) {
+                        //     if (stepListItem.step.hasOwnProperty("form")) {
+                        //         Object.keys(stepListItem.step.form.properties as {})
                         //             .sort()
                         //             .reduce<{ [index: string]: any }>((acc, field) => {
                         //                 acc[field] = "";
@@ -85,29 +101,29 @@ export const WFOStepList = React.forwardRef(
                         // }
 
                         if (
-                            step.status === StepStatus.WAITING ||
-                            step.status === StepStatus.FAILED
+                            stepListItem.step.status === StepStatus.WAITING ||
+                            stepListItem.step.status === StepStatus.FAILED
                         ) {
-                            // Pass complete state as a waiting step has separate state
-                            delta = step.state;
+                            // Pass complete state as a waiting stepListItem has separate state
+                            delta = stepListItem.step.state;
                         }
                     } else {
                         // Todo: handle failed first step (seems to be special)
-                        delta = step.state;
+                        delta = stepListItem.step.state;
                     }
 
                     const stepComponent = (
                         <div key={`step-${index}`}>
                             {index !== 0 && <div css={stepSpacerStyle} />}
                             <WFOStep
-                                ref={getReferenceCallbackForStepId(step.stepId)}
-                                stepDetailIsOpen={
-                                    stepDetailStates.get(index) || false
-                                }
+                                ref={getReferenceCallbackForStepId(
+                                    stepListItem.step.stepId,
+                                )}
+                                stepDetailIsOpen={stepListItem.isExpanded}
                                 onToggleStepDetail={() =>
-                                    toggleStepDetailIsOpen(index)
+                                    toggleStepDetailIsOpen(stepListItem)
                                 }
-                                step={step}
+                                step={stepListItem.step}
                                 stepDelta={delta}
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
@@ -116,7 +132,7 @@ export const WFOStepList = React.forwardRef(
                     );
 
                     if (index > 0) {
-                        stepStartTime = step.executed;
+                        stepStartTime = stepListItem.step.executed;
                     }
                     return stepComponent;
                 })}

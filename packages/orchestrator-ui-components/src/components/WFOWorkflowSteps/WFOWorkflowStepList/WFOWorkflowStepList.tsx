@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
 import { WFOStepListHeader } from './WFOStepListHeader';
 import { WFOStepsRawJson } from '../WFOStepsRawJson';
-import { WFOStepList, WFOStepListRef } from '../WFOStepList';
+import { StepListItem, WFOStepList, WFOStepListRef } from '../WFOStepList';
 
 export interface WFOWorkflowStepListProps {
     steps: Step[];
@@ -20,36 +20,51 @@ export const WFOWorkflowStepList = React.forwardRef(
 
         const t = useTranslations('processes.steps');
 
-        const allDetailsClosedState = new Map(
-            steps.map((_, index) => [index, false]),
-        );
-        const allDetailsOpenedState = new Map(
-            steps.map((_, index) => [index, true]),
+        const initialStepListItems: StepListItem[] = steps.map((step) => ({
+            step,
+            isExpanded: false,
+        }));
+        const [stepListItems, setStepListItems] =
+            useState(initialStepListItems);
+
+        const allStepsAreExpanded = stepListItems.every(
+            (item) => item.isExpanded,
         );
 
-        const [stepDetailStates, setStepDetailStates] = useState<
-            Map<number, boolean>
-        >(new Map(allDetailsClosedState));
-
-        const toggleAllDetailsIsOpen = () => {
-            if (Array.from(stepDetailStates).every((s) => s[1])) {
-                setStepDetailStates(new Map(allDetailsClosedState));
-            } else {
-                setStepDetailStates(new Map(allDetailsOpenedState));
-            }
+        const setExpandedStateStepListItems = (isExpanded: boolean) => {
+            setStepListItems(
+                stepListItems.map((item) => ({
+                    ...item,
+                    isExpanded,
+                })),
+            );
         };
 
-        const toggleStepDetailIsOpen = (index: number) => {
-            if (stepDetailStates.has(index)) {
-                setStepDetailStates(
-                    new Map(
-                        stepDetailStates.set(
-                            index,
-                            !stepDetailStates.get(index),
-                        ),
-                    ),
-                );
-            }
+        const toggleExpandedStepListItem = (stepListItem: StepListItem) => {
+            setStepListItems(
+                stepListItems.map((item) =>
+                    item.step === stepListItem.step
+                        ? {
+                              ...item,
+                              isExpanded: !item.isExpanded,
+                          }
+                        : item,
+                ),
+            );
+        };
+
+        const expandStepListItem = (stepListItem: StepListItem) => {
+            setStepListItems(
+                stepListItems.map((item) => {
+                    if (item.step === stepListItem.step) {
+                        return {
+                            ...item,
+                            isExpanded: true,
+                        };
+                    }
+                    return item;
+                }),
+            );
         };
 
         return (
@@ -58,13 +73,13 @@ export const WFOWorkflowStepList = React.forwardRef(
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
                     allDetailToggleText={
-                        Array.from(stepDetailStates).every((s) => s[1])
-                            ? t('collapseAll')
-                            : t('expandAll')
+                        allStepsAreExpanded ? t('collapseAll') : t('expandAll')
                     }
                     onChangeShowHiddenKeys={setShowHiddenKeys}
                     onChangeShowRaw={setShowRaw}
-                    onToggleAllDetailsIsOpen={toggleAllDetailsIsOpen}
+                    onToggleAllDetailsIsOpen={() =>
+                        setExpandedStateStepListItems(!allStepsAreExpanded)
+                    }
                 />
 
                 {showRaw ? (
@@ -72,11 +87,11 @@ export const WFOWorkflowStepList = React.forwardRef(
                 ) : (
                     <WFOStepList
                         ref={reference}
-                        steps={steps}
-                        toggleStepDetailIsOpen={toggleStepDetailIsOpen}
-                        stepDetailStates={stepDetailStates}
+                        stepListItems={stepListItems}
+                        toggleStepDetailIsOpen={toggleExpandedStepListItem}
                         startedAt={startedAt}
                         showHiddenKeys={showHiddenKeys}
+                        onExpandStepListItem={expandStepListItem}
                     />
                 )}
             </>
