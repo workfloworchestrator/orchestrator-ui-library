@@ -40,7 +40,9 @@ export const WFOWorkflowStepList = React.forwardRef(
             );
         };
 
-        const toggleExpandedStepListItem = (stepListItem: StepListItem) => {
+        const handleToggleExpandedStepListItem = (
+            stepListItem: StepListItem,
+        ) => {
             setStepListItems(
                 stepListItems.map((item) =>
                     item.step === stepListItem.step
@@ -53,7 +55,7 @@ export const WFOWorkflowStepList = React.forwardRef(
             );
         };
 
-        const expandStepListItem = (stepListItem: StepListItem) => {
+        const handleExpandStepListItem = (stepListItem: StepListItem) => {
             setStepListItems(
                 stepListItems.map((item) => {
                     if (item.step === stepListItem.step) {
@@ -88,10 +90,12 @@ export const WFOWorkflowStepList = React.forwardRef(
                     <WFOStepList
                         ref={reference}
                         stepListItems={stepListItems}
-                        toggleStepDetailIsOpen={toggleExpandedStepListItem}
                         startedAt={startedAt}
                         showHiddenKeys={showHiddenKeys}
-                        onExpandStepListItem={expandStepListItem}
+                        onToggleExpandStepListItem={
+                            handleToggleExpandedStepListItem
+                        }
+                        onExpandStepListItem={handleExpandStepListItem}
                     />
                 )}
             </>

@@ -18,7 +18,7 @@ export type WFOStepListProps = {
     stepListItems: StepListItem[];
     showHiddenKeys: boolean;
     startedAt: string;
-    toggleStepDetailIsOpen: (stepListItem: StepListItem) => void;
+    onToggleExpandStepListItem: (stepListItem: StepListItem) => void;
     onExpandStepListItem: (stepListItem: StepListItem) => void;
 };
 
@@ -27,7 +27,7 @@ export const WFOStepList = React.forwardRef(
         {
             stepListItems,
             startedAt,
-            toggleStepDetailIsOpen,
+            onToggleExpandStepListItem,
             showHiddenKeys,
             onExpandStepListItem,
         }: WFOStepListProps,
@@ -121,7 +121,7 @@ export const WFOStepList = React.forwardRef(
                                 )}
                                 stepDetailIsOpen={stepListItem.isExpanded}
                                 onToggleStepDetail={() =>
-                                    toggleStepDetailIsOpen(stepListItem)
+                                    onToggleExpandStepListItem(stepListItem)
                                 }
                                 step={stepListItem.step}
                                 stepDelta={delta}
