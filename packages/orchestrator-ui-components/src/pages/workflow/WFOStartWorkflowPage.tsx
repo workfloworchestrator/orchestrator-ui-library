@@ -29,17 +29,13 @@ type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
 
-type StartTaskWorkflow = {
-    subscription_id?: string;
-};
-
 type StartWorkFlowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
-    startWorkflowPayload: StartWorkFlowPayload;
+    startWorkflowPayload?: StartWorkFlowPayload | undefined;
 }
 
 export interface UserInputForm {
@@ -62,10 +58,12 @@ export const WFOStartWorkflowPage = ({
     const submit = useCallback(
         (processInput: object[]) => {
             const startWorkflowPromise = apiClient
-                .startProcess(workflowName, [
-                    startWorkflowPayload,
-                    ...processInput,
-                ])
+                .startProcess(
+                    workflowName,
+                    startWorkflowPayload
+                        ? [startWorkflowPayload, ...processInput]
+                        : [...processInput],
+                )
                 .then(
                     // Resolve handler
                     (result) => {

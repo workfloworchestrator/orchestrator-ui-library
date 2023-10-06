@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl';
 import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
-import { WFOPlusCircleFill, WFORefresh } from '../../icons';
+import { WFORefresh } from '../../icons';
 import {
     ProcessListItem,
     WFOProcessList,

@@ -26,7 +26,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
     isProcess,
 }) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-    const { popoverStyle, selectableStyle } = getStyles();
+    const { selectableStyle } = getStyles();
     const { theme } = useOrchestratorTheme();
 
     const Button = (
@@ -48,7 +48,6 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
 
     return (
         <EuiPopover
-            css={popoverStyle}
             initialFocus={`.euiSelectable .euiFieldSearch`}
             button={Button}
             isOpen={isPopoverOpen}

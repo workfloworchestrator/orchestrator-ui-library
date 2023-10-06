@@ -19,11 +19,11 @@
     },
     "pydanticForms": {
         "userInputForm": {
-            "cancel": "Cancel",
-            "submit": "Submit",
-            "previous": "Terug",
-            "runProcess": "Run Process",
-            "cancelProcess": "Cancel Process"
+            "cancel": "Annuleren",
+            "submit": "Verstuur",
+            "previous": "Vorige",
+            "runProcess": "Start workflow",
+            "cancelProcess": "Annuleren"
         }
     },
     "metadata": {
