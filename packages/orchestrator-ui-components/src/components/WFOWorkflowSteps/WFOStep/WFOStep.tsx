@@ -15,6 +15,7 @@ import { getStyles } from '../styles';
 import { formatDate } from '../../../utils';
 import { WFOChevronDown, WFOChevronUp } from '../../../icons';
 import { calculateTimeDifference } from '../../../utils';
+import { getStepContent } from '../stepListUtils';
 
 export interface WFOStepProps {
     step: Step;
@@ -51,22 +52,8 @@ export const WFOStep = React.forwardRef(
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
         const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
-        const HIDDEN_KEYS = ['label_', 'divider_', '__', 'confirmation_mail'];
 
-        const stepContent = showHiddenKeys
-            ? Object.entries(stepDelta)
-                  .filter(
-                      ([key]) =>
-                          !HIDDEN_KEYS.some((word) => key.startsWith(word)),
-                  )
-                  .reduce<StepState>(
-                      (previousValue, currentValue) => ({
-                          ...previousValue,
-                          [currentValue[0]]: currentValue[1],
-                      }),
-                      {},
-                  )
-            : { ...stepDelta };
+        const stepContent = getStepContent(stepDelta, showHiddenKeys);
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {

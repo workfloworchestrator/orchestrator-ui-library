@@ -26,9 +26,9 @@ export const WFOStepList = React.forwardRef(
     (
         {
             stepListItems,
+            showHiddenKeys,
             startedAt,
             onToggleExpandStepListItem,
-            showHiddenKeys,
             onExpandStepListItem,
         }: WFOStepListProps,
         reference: Ref<WFOStepListRef>,
@@ -88,17 +88,6 @@ export const WFOStepList = React.forwardRef(
                                 stepListItem.step.state,
                             );
                         }
-
-                        // if (stepListItem.step.status === StepStatus.PENDING) {
-                        //     if (stepListItem.step.hasOwnProperty("form")) {
-                        //         Object.keys(stepListItem.step.form.properties as {})
-                        //             .sort()
-                        //             .reduce<{ [index: string]: any }>((acc, field) => {
-                        //                 acc[field] = "";
-                        //                 return acc;
-                        //             }, {});
-                        //     }
-                        // }
 
                         if (
                             stepListItem.step.status === StepStatus.WAITING ||
