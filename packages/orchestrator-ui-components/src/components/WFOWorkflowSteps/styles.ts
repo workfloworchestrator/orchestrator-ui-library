@@ -11,7 +11,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
     const stepHeaderStyle = css({
         gap: 0,
         alignItems: 'flex-start',
-        marginBottom: 10,
         cursor: 'pointer',
     });
 
@@ -99,6 +98,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const euiCodeBlockStyle = css({
+        marginTop: 10,
         borderRadius: theme.border.radius.medium,
     });
 
