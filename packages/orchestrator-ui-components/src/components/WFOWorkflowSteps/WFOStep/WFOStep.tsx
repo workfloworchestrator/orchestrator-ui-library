@@ -47,6 +47,7 @@ export const WFOStep = React.forwardRef(
             stepDurationStyle,
             stepToggleExpandStyle,
             stepRowStyle,
+            euiCodeBlockStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
         const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
@@ -111,7 +112,10 @@ export const WFOStep = React.forwardRef(
         return (
             <div ref={ref}>
                 <EuiPanel>
-                    <EuiFlexGroup css={stepHeaderStyle}>
+                    <EuiFlexGroup
+                        css={stepHeaderStyle}
+                        onClick={() => onToggleStepDetail()}
+                    >
                         <WFOStepStatusIcon stepStatus={status} />
 
                         <EuiFlexItem grow={0}>
@@ -144,7 +148,6 @@ export const WFOStep = React.forwardRef(
                                     <EuiFlexItem
                                         grow={0}
                                         css={stepToggleExpandStyle}
-                                        onClick={() => onToggleStepDetail()}
                                     >
                                         {(stepDetailIsOpen && (
                                             <WFOChevronUp />
@@ -157,6 +160,7 @@ export const WFOStep = React.forwardRef(
                     {stepDetailIsOpen &&
                         Object.keys(stepContent).length > 0 && (
                             <EuiCodeBlock
+                                css={euiCodeBlockStyle}
                                 isCopyable={true}
                                 language={'json'}
                                 lineNumbers={true}

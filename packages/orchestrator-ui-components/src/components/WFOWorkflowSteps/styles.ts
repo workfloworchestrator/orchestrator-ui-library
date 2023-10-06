@@ -12,6 +12,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         gap: 0,
         alignItems: 'flex-start',
         marginBottom: 10,
+        cursor: 'pointer',
     });
 
     const stepRowStyle = css({
@@ -66,7 +67,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     const stepToggleExpandStyle = css({
         marginRight: theme.base / 2,
-        cursor: 'pointer',
     });
 
     const stepStateSuccessIconStyle = css({
@@ -98,6 +98,10 @@ export const getStyles = (theme: EuiThemeComputed) => {
         marginTop: 0,
     });
 
+    const euiCodeBlockStyle = css({
+        borderRadius: theme.border.radius.medium,
+    });
+
     return {
         stepDurationStyle,
         stepEmailContainerStyle,
@@ -115,5 +119,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepStateSuccessIconStyle,
         stepStateSuspendIconStyle,
         stepToggleExpandStyle,
+        euiCodeBlockStyle,
     };
 };
