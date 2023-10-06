@@ -37,12 +37,6 @@ export const tabs = [
     },
 ];
 
-export function getColor(num: number) {
-    if (num === 1) return 'warning';
-    if (num === 2) return 'primary';
-    return 'danger';
-}
-
 export const getFieldFromProductBlockInstanceValues = (
     instanceValues: FieldValue[],
     field: string,
