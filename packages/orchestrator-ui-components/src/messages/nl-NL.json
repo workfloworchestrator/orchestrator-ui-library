@@ -9,10 +9,22 @@
         "close": "Sluiten",
         "newSubscription": "Nieuwe subscription"
     },
+    "workflow": {
+      "start_workflow_title": "Start workflow"
+  },    
     "errors": {
         "retrieve_stored_settings": "TODO Translate: Something went wrong restoring your settings. Falling back to default settings",
         "retrieve_stored_settings_title": "TODO Translate: Error retrieving settings"
     },
+    "pydanticForms": {
+      "userInputForm": {
+          "cancel": "Cancel",
+          "submit": "Submit",
+          "previous": "Terug",
+          "runProcess": "Run Process",
+          "cancelProcess": "Cancel Process"
+      }
+  },    
     "metadata": {
         "tabs": {
             "products": "Producten",
@@ -95,7 +107,9 @@
             "viewOptions": "Scherm options",
             "expandAll": "klap alles uit",
             "collapseAll": "klap alles in",
-            "duration": "Looptijd"
+            "duration": "Looptijd",            
+            "userInput": "Invoer gebruiker",
+            "inProgress": "In behandeling - Nu"
         }
     },
     "subscriptions": {
@@ -128,9 +142,10 @@
                 "create": "Create workflow",
                 "modify": "Modify workflow",
                 "system": "System workflow",
-                "terminate": "Terminate workflow"
+                "terminate": "Terminate workflow",                
+                "actions": "Acties"
             },
-            "subscriptionDetails": "Subscription details",
+            "subscriptionDetails": "Subscription detail",
             "fixedInputs": "Fixed inputs",
             "productInfo": "Product info",
             "noProductBlockSelected": "No product block selected",
@@ -139,7 +154,21 @@
             "startedBy": "Started by",
             "startedAt": "Started at",
             "status": "Status",
-            "id": "ID"
+            "id": "ID",
+            "blockTitleSubscriptionDetails": "Subscription details",
+            "blockTitleFixedInputs": "Fixed Inputs",
+            "blockTitleProductInfo": "Produkt Info",
+            "subscriptionId": "Subscription ID",
+            "description": "Beschrijving",
+            "startDate": "Start datum",
+            "insync": "In sync",
+            "customer": "Klant",
+            "customerUuid": "Klant UUID",
+            "name": "Naam",
+            "productType": "Produkt type",
+            "tag": "Tag",
+            "created": "Aangemaakt",
+            "endDate": "Eind datum"
         }
     },
     "tasks": {
