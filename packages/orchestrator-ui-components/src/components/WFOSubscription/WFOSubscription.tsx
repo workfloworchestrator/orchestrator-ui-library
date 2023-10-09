@@ -32,7 +32,6 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
         GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
         { subscriptionId },
         `subscription-${subscriptionId}`,
-        true,
     );
 
     const onSelectedTabChanged = (id: SubscriptionTabIds) => {
