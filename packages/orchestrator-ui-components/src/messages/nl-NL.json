@@ -179,7 +179,8 @@
             "productType": "Produkt type",
             "tag": "Tag",
             "created": "Aangemaakt",
-            "endDate": "Eind datum"
+            "endDate": "Eind datum",
+            "note": "Notitie"
         }
     },
     "tasks": {

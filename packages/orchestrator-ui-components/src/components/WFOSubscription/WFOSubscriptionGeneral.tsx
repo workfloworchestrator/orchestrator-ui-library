@@ -89,6 +89,10 @@ export const WFOSubscriptionGeneral = ({
                         ? `${subscriptionDetail.customer?.identifier}`
                         : '-',
             },
+            {
+                key: t('note'),
+                value: (subscriptionDetail && subscriptionDetail.note) || '-',
+            },
         ];
     };
 
