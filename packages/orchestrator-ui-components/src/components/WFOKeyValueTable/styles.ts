@@ -48,6 +48,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
     const valueCellStyle = css({
         fontWeight: theme.font.weight.regular,
         color: theme.colors.text,
+        display: 'flex',
+        alignItems: 'center',
     });
 
     const clipboardIconStyle = css({
