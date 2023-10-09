@@ -179,7 +179,8 @@
             "productType": "Product type",
             "tag": "Tag",
             "created": "Created",
-            "endDate": "End date"
+            "endDate": "End date",
+            "note": "Note"
         }
     },
     "tasks": {
