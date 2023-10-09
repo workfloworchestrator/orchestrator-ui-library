@@ -16,8 +16,7 @@ import {
     WFOTableControlColumnConfig,
     WFOTableWithFilter,
 } from '../WFOTable';
-import { SubscriptionListItem } from '../../types';
-
+import { SubscriptionListItem } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { FilterQuery } from '../WFOFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';

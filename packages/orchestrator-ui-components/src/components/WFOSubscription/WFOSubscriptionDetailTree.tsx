@@ -18,19 +18,19 @@ import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
 } from './utils';
-import { SubscriptionProductBlock } from './SubscriptionProductBlock';
+import { WFOSubscriptionProductBlock } from './WFOSubscriptionProductBlock';
 
 type NodeMap = { [key: number]: TreeBlock };
 
 const MAX_EXPAND_ALL = 100;
 
-interface SubscriptionDetailTreeProps {
+interface WFOSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
 }
 
-export const SubscriptionDetailTree = ({
+export const WFOSubscriptionDetailTree = ({
     productBlockInstances,
-}: SubscriptionDetailTreeProps) => {
+}: WFOSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
     const [, setSelectedTreeNode] = useState(-1);
@@ -151,7 +151,7 @@ export const SubscriptionDetailTree = ({
                     {selectedIds.length !== 0 &&
                         selectedIds.reverse().map((id, index) => {
                             return (
-                                <SubscriptionProductBlock
+                                <WFOSubscriptionProductBlock
                                     key={index}
                                     productBlockInstanceValues={
                                         productBlockInstances[

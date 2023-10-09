@@ -1,5 +1,15 @@
-import { SubscriptionsResult, SubscriptionListItem } from '../../types';
+import { SubscriptionsResult, Subscription } from '../../types';
 import { parseDate } from '../../utils';
+
+export type SubscriptionListItem = Pick<
+    Subscription,
+    'subscriptionId' | 'description' | 'status' | 'insync' | 'note'
+> & {
+    startDate: Date | null;
+    endDate: Date | null;
+    productName: string;
+    tag: string | null;
+};
 
 export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
     graphqlResponse: SubscriptionsResult,
