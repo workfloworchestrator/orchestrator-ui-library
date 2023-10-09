@@ -72,17 +72,16 @@ export const WFOStepList = React.forwardRef(
                         if (stepListItem.step.status === StepStatus.SUCCESS) {
                             // Prepare a delta with the last successful stepListItem
                             let previousIndex = index - 1;
+                            const previousStep =
+                                stepListItems[previousIndex].step;
                             while (
                                 previousIndex > 0 &&
-                                (stepListItems[previousIndex].step.status ===
-                                    StepStatus.FAILED ||
-                                    stepListItems[previousIndex].step.status ===
-                                        StepStatus.WAITING)
+                                (previousStep.status === StepStatus.FAILED ||
+                                    previousStep.status === StepStatus.WAITING)
                             ) {
                                 previousIndex--;
                             }
-                            previousState =
-                                stepListItems[previousIndex].step.state;
+                            previousState = previousStep.state;
                             delta = stateDelta(
                                 previousState,
                                 stepListItem.step.state,
