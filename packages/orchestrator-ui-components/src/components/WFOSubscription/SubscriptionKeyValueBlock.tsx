@@ -26,7 +26,7 @@ export const SubscriptionKeyValueBlock = ({
                         <EuiFlexItem>
                             <EuiText
                                 grow={false}
-                                css={{ fontWeight: theme.font.weight.medium }}
+                                css={{ fontWeight: theme.font.weight.semiBold }}
                             >
                                 {title}
                             </EuiText>
@@ -36,7 +36,7 @@ export const SubscriptionKeyValueBlock = ({
                     <EuiSpacer size={'m'}></EuiSpacer>
                     <WFOKeyValueTable
                         keyValues={keyValues}
-                        showCopyToClipboardIcon={false}
+                        showCopyToClipboardIcon={true}
                     />
                 </div>
             </div>
