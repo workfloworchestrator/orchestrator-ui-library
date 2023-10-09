@@ -138,12 +138,22 @@
                 "relatedSubscriptions": "Geralateerde subscripties"
             },
             "loadingStatus": "Laden",
-            "workflow": {
+            "actions": {
                 "create": "Create workflow",
                 "modify": "Modify workflow",
                 "system": "System workflow",
                 "terminate": "Terminate workflow",
-                "actions": "Acties"
+                "actions": "Acties",
+                "subscription": {
+                    "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
+                    "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions: {unterminated_in_use_by_subscriptions}",
+                    "no_modify_invalid_status": "This subscription can not be modified because of the status: {status}. Only subscriptions with status {usable_when} can be {action}.",
+                    "no_modify_workflow": "This subscription can not be modified as the product has no modify workflows.",
+                    "no_termination_workflow": "This subscription can not be terminated as the product has no termination workflows.",
+                    "no_validate_workflow": "This subscription can not be validated as the product has no validate workflows.",
+                    "not_in_sync": "This subscription can not be modified because it is not in sync. This means there is some error in the registration of the subscription or that it is being modified by another workflow.",
+                    "relations_not_in_sync": "This subscription can not be modified because some related subscriptions are not insync. Locked subscriptions: {locked_relations}"
+                }
             },
             "subscriptionDetails": "Subscription detail",
             "fixedInputs": "Fixed inputs",

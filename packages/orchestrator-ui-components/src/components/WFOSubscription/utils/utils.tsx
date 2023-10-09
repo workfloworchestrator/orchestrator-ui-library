@@ -1,6 +1,8 @@
 import React from 'react';
 import { EuiIcon } from '@elastic/eui';
+import { TranslationValues } from 'next-intl';
 
+import { SubscriptionAction } from '../../../hooks';
 import { FieldValue } from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
@@ -62,4 +64,18 @@ export const getProductBlockTitle = (
     return title && typeof title === 'string' && title.length > MAX_LABEL_LENGTH
         ? `${title.substring(0, MAX_LABEL_LENGTH)}...`
         : title;
+};
+
+export const flattenArrayProps = (
+    action: SubscriptionAction,
+): TranslationValues => {
+    const flatObject: TranslationValues = {};
+    for (const [key, value] of Object.entries(action)) {
+        if (Array.isArray(value)) {
+            flatObject[key] = value.join(', ');
+        } else {
+            flatObject[key] = value;
+        }
+    }
+    return action ? flatObject : {};
 };

@@ -17,7 +17,6 @@ export interface SubscriptionAction {
 interface SubscriptionActions {
     reason?: string;
     locked_relations?: string[];
-    create: SubscriptionAction[];
     modify: SubscriptionAction[];
     terminate: SubscriptionAction[];
     system: SubscriptionAction[];
@@ -27,7 +26,7 @@ export const useSubscriptionActions = (subscriptionId: string) => {
     const { subscriptionActionsEndpoint } = useContext(
         OrchestratorConfigContext,
     );
-    //https://orchestrator.dev.automation.surf.net/api/subscriptions/workflows/77466b50-951f-4362-a817-96ee66e63574
+
     const fetchSubscriptionActions = async () => {
         const response = await fetch(
             `${subscriptionActionsEndpoint}/${subscriptionId}`,
@@ -35,7 +34,8 @@ export const useSubscriptionActions = (subscriptionId: string) => {
                 method: 'GET',
             },
         );
-        return (await response.json()) as SubscriptionActions;
+        const actions = (await response.json()) as SubscriptionActions;
+        return actions;
     };
 
     return useQuery('subscriptionActions', fetchSubscriptionActions);
