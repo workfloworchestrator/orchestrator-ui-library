@@ -1,5 +1,6 @@
 import { WFOFilterTab } from '../../components';
-import { SubscriptionListItem } from '../../types';
+import { SubscriptionListItem } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
+
 export enum WFOSubscriptionsTabType {
     ACTIVE = 'ACTIVE',
     TERMINATED = 'TERMINATED',

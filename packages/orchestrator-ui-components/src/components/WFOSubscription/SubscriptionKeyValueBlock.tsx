@@ -12,7 +12,7 @@ import { useOrchestratorTheme } from '../../hooks';
 
 import { KeyValue, SubscriptionStatus } from '../../types';
 
-export const RenderField = (
+export const getRenderField = (
     key: string,
     value: unknown,
     theme: EuiThemeComputed,
@@ -55,7 +55,7 @@ export const SubscriptionKeyValueBlock = ({
     const subscriptionKeyValues: WFOKeyValueTableDataType[] = keyValues.map(
         (keyValue) => ({
             key: keyValue.key,
-            value: RenderField(keyValue.key, keyValue.value, theme),
+            value: getRenderField(keyValue.key, keyValue.value, theme),
         }),
     );
 

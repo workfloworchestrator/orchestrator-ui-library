@@ -6,13 +6,13 @@ import { useTranslations } from 'next-intl';
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
 import { SubscriptionDetail, KeyValue } from '../../types';
 
-interface SubscriptionGeneralProps {
+interface WFOSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
 }
 
-export const SubscriptionGeneral = ({
+export const WFOSubscriptionGeneral = ({
     subscriptionDetail,
-}: SubscriptionGeneralProps) => {
+}: WFOSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
 
     const getSubscriptionDetailBlockData = (): KeyValue[] => {

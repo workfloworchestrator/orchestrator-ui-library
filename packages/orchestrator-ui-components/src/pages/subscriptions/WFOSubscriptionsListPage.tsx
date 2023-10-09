@@ -9,8 +9,8 @@ import {
     WFOSubscriptionsList,
     WFOSubscriptionsTabType,
 } from '../../components/WFOSubscriptionsList';
-import { SortOrder, SubscriptionListItem } from '../../types';
-
+import { SortOrder } from '../../types';
+import { SubscriptionListItem } from '../../components/WFOSubscriptionsList';
 import { StoredTableConfig } from '../../components/WFOTable';
 import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WFOTable';
 import {

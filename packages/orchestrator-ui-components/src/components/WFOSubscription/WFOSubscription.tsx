@@ -13,9 +13,9 @@ import { SubscriptionTabIds, tabs } from './utils';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WFOLoading } from '../WFOLoading';
-import { SubscriptionActions } from './SubscriptionActions';
-import { SubscriptionGeneral } from './SubscriptionGeneral';
-import { SubscriptionDetailTree } from './SubscriptionDetailTree';
+import { WFOSubscriptionActions } from './WFOSubscriptionActions';
+import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
+import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
 import { ProcessesTimeline } from './WFOProcessesTimeline';
 
 type WFOSubscriptionProps = {
@@ -53,6 +53,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
             </EuiTab>
         ));
 
+    // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
     const subscriptionResult =
         data && data.subscriptions && data.subscriptions.page;
     const subscriptionDetail = subscriptionResult
@@ -74,7 +75,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                                 </EuiText>
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <SubscriptionActions
+                                <WFOSubscriptionActions
                                     subscriptionId={subscriptionId}
                                 />
                             </EuiFlexItem>
@@ -84,13 +85,13 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         </>
 
                         {selectedTabId === SubscriptionTabIds.GENERAL_TAB && (
-                            <SubscriptionGeneral
+                            <WFOSubscriptionGeneral
                                 subscriptionDetail={subscriptionDetail}
                             />
                         )}
                         {selectedTabId ===
                             SubscriptionTabIds.SERVICE_CONFIGURATION_TAB && (
-                            <SubscriptionDetailTree
+                            <WFOSubscriptionDetailTree
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }

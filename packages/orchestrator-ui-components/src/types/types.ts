@@ -346,16 +346,6 @@ export type Subscription = {
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
 };
 
-export type SubscriptionListItem = Pick<
-    Subscription,
-    'subscriptionId' | 'description' | 'status' | 'insync' | 'note'
-> & {
-    startDate: Date | null;
-    endDate: Date | null;
-    productName: string;
-    tag: string | null;
-};
-
 export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;
@@ -381,6 +371,5 @@ export type SubscriptionDetail = {
 export type ExternalService = {
     externalServiceKey: string;
     externalServiceId: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    externalServiceData: any;
+    externalServiceData: object;
 };

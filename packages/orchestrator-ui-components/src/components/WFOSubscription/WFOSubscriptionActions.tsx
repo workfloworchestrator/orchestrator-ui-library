@@ -32,11 +32,11 @@ const MenuBlock: FC<MenuBlockProps> = ({ title }) => (
     </EuiTitle>
 );
 
-export type SubscriptionActionsProps = {
+export type WFOSubscriptionActionsProps = {
     subscriptionId: string;
 };
 
-export const SubscriptionActions: FC<SubscriptionActionsProps> = ({
+export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
     const MenuItem: FC<MenuItemProps> = ({ icon, action, key }) => {
