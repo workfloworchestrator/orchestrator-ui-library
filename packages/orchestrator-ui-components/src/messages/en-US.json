@@ -156,6 +156,7 @@
                 }
             },
             "subscriptionDetails": "Subscription details",
+            "productName": "Product name",
             "fixedInputs": "Fixed inputs",
             "productInfo": "Product info",
             "noProductBlockSelected": "No product block selected",

@@ -3,8 +3,16 @@ import React from 'react';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
+import { WFOCheckmarkCircleFill, WFOMinusCircleOutline } from '../../icons';
+import {
+    WFOSubscriptionStatusBadge,
+    WFOProductStatusBadge,
+} from '../WFOBadges';
+
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
-import { SubscriptionDetail, KeyValue } from '../../types';
+import { SubscriptionDetail } from '../../types';
+import { WFOKeyValueTableDataType } from '../WFOKeyValueTable/WFOKeyValueTable';
+import { useOrchestratorTheme } from '../../hooks';
 
 interface WFOSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
@@ -14,13 +22,35 @@ export const WFOSubscriptionGeneral = ({
     subscriptionDetail,
 }: WFOSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { theme } = useOrchestratorTheme();
 
-    const getSubscriptionDetailBlockData = (): KeyValue[] => {
+    const getInSyncIcon = (value: boolean) => {
+        return value ? (
+            <WFOCheckmarkCircleFill
+                height={20}
+                width={20}
+                color={theme.colors.primary}
+            />
+        ) : (
+            <WFOMinusCircleOutline
+                height={20}
+                width={20}
+                color={theme.colors.mediumShade}
+            />
+        );
+    };
+
+    const getSubscriptionDetailBlockData = (): WFOKeyValueTableDataType[] => {
         return [
             {
                 key: t('subscriptionId'),
                 value: subscriptionDetail.subscriptionId,
             },
+            {
+                key: t('productName'),
+                value: subscriptionDetail.product.name,
+            },
+
             {
                 key: t('description'),
                 value: subscriptionDetail.description,
@@ -34,56 +64,70 @@ export const WFOSubscriptionGeneral = ({
                 value: subscriptionDetail.endDate,
             },
             {
+                key: t('status'),
+                value: (
+                    <WFOSubscriptionStatusBadge
+                        status={subscriptionDetail.status}
+                    />
+                ),
+            },
+            {
                 key: t('insync'),
-                value: subscriptionDetail.insync,
+                value: getInSyncIcon(subscriptionDetail.insync),
             },
             {
                 key: t('customer'),
-                value: `${subscriptionDetail.customer?.fullname}`,
+                value:
+                    subscriptionDetail && subscriptionDetail.customer
+                        ? `${subscriptionDetail.customer?.fullname}`
+                        : '-',
             },
             {
                 key: t('customerUuid'),
-                value: `${subscriptionDetail.customer?.identifier}`,
+                value:
+                    subscriptionDetail && subscriptionDetail.customer
+                        ? `${subscriptionDetail.customer?.identifier}`
+                        : '-',
             },
         ];
     };
 
-    const getFixedInputBlockData = (): KeyValue[] => {
+    const getFixedInputBlockData = (): WFOKeyValueTableDataType[] => {
         return subscriptionDetail.fixedInputs.map((fixedInput) => ({
             key: fixedInput.field,
             value: fixedInput.value,
         }));
     };
 
-    const getProductInfoBlockData = (): KeyValue[] => {
+    const getProductInfoBlockData = (): WFOKeyValueTableDataType[] => {
         const product = subscriptionDetail.product;
         return [
             {
-                key: t('name'),
+                key: 'name',
                 value: product.name,
             },
             {
-                key: t('description'),
+                key: 'description',
                 value: product.description,
             },
             {
-                key: t('productType'),
+                key: 'productType',
                 value: product.productType,
             },
             {
-                key: t('tag'),
+                key: 'tag',
                 value: product.tag,
             },
             {
-                key: t('status'),
-                value: product.status,
+                key: 'status',
+                value: <WFOProductStatusBadge status={product.status} />,
             },
             {
-                key: t('created'),
+                key: 'created',
                 value: product.createdAt,
             },
             {
-                key: t('endDate'),
+                key: 'endDate',
                 value: product.endDate,
             },
         ];

@@ -8,8 +8,10 @@ export const WFOSubscriptionDetailPage = () => {
     const { subscriptionId } = router.query;
 
     return (
-        <TreeProvider>
-            <WFOSubscription subscriptionId={subscriptionId as string} />
-        </TreeProvider>
+        (subscriptionId && (
+            <TreeProvider>
+                <WFOSubscription subscriptionId={subscriptionId as string} />
+            </TreeProvider>
+        )) || <></>
     );
 };
