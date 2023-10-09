@@ -9,7 +9,6 @@ export type OrchestratorConfig = {
     environmentName: Environment | string;
     orchestratorApiBaseUrl: string;
     engineStatusEndpoint: string;
-    graphqlEndpointPythia: string;
     graphqlEndpointCore: string;
     processStatusCountsEndpoint: string;
     subscriptionActionsEndpoint: string;
