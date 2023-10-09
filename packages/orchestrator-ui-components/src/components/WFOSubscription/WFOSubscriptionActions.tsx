@@ -133,7 +133,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
 
         const getIcon = () => {
             return action.reason ? (
-                <div css={{ display: 'flex', width: '32px' }}>
+                <div css={{ display: 'flex', width: theme.base * 2 }}>
                     <EuiAvatar
                         name={icon}
                         size="s"
@@ -152,7 +152,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                     </div>
                 </div>
             ) : (
-                <div css={{ width: '32px' }}>
+                <div css={{ width: theme.base * 2 }}>
                     <EuiAvatar name={icon} size="s" />
                 </div>
             );
