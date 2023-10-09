@@ -24,7 +24,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
 import { SessionProvider } from 'next-auth/react';
-import Auth from '../components/Auth';
+import { WFOAuth } from '@orchestrator-ui/orchestrator-ui-components';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
@@ -49,14 +49,16 @@ function CustomApp({
 
     return (
         <SessionProvider session={pageProps.session}>
-            <Auth>
+            <WFOAuth>
                 <NoSSR>
                     <TranslationsProvider>
                         <EuiProvider
                             colorMode="light"
                             modify={defaultOrchestratorTheme}
                         >
-                            <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
+                            <ApiClientContextProvider
+                                basePath={orchestratorApiBaseUrl}
+                            >
                                 <Head>
                                     <title>
                                         Welcome to example-orchestrator-ui!
@@ -64,7 +66,9 @@ function CustomApp({
                                 </Head>
                                 <main className="app">
                                     <OrchestratorConfigProvider
-                                        initialOrchestratorConfig={orchestratorConfig}
+                                        initialOrchestratorConfig={
+                                            orchestratorConfig
+                                        }
                                     >
                                         <QueryClientProvider
                                             client={queryClient}
@@ -100,7 +104,7 @@ function CustomApp({
                         </EuiProvider>
                     </TranslationsProvider>
                 </NoSSR>
-            </Auth>
+            </WFOAuth>
         </SessionProvider>
     );
 }

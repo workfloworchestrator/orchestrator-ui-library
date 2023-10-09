@@ -1,5 +1,4 @@
 import NextAuth, { AuthOptions, Session } from 'next-auth';
-import KeycloakProvider from 'next-auth/providers/keycloak';
 import { JWT } from 'next-auth/jwt';
 
 export type SessionToken = Session & {
@@ -8,12 +7,27 @@ export type SessionToken = Session & {
 
 export const authOptions: AuthOptions = {
     providers: [
-        KeycloakProvider({
-            clientId: process.env.KEYCLOAK_ID || '',
-            clientSecret: process.env.KEYCLOAK_SECRET || '',
-            issuer: process.env.KEYCLOAK_ISSUER || '',
-            version: '2.0',
-        }),
+        {
+            id: process.env.NEXTAUTH_ID || '',
+            name: process.env.NEXTAUTH_ID || '',
+            clientId: process.env.NEXTAUTH_CLIENT_ID || '',
+            clientSecret: process.env.NEXTAUTH_SECRET || '',
+            wellKnown: `${
+                process.env.NEXTAUTH_ISSUER || ''
+            }/.well-known/openid-configuration`,
+            type: 'oauth',
+            authorization: { params: { scope: 'openid' } },
+            checks: ['pkce'],
+            idToken: true,
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: profile.name ?? profile.preferred_username,
+                    email: profile.email,
+                    image: profile.picture,
+                };
+            },
+        },
     ],
     callbacks: {
         async jwt({ token, account }) {

@@ -9,15 +9,9 @@ export const useQueryWithFetch = <T, V extends Variables>(
     queryKey: string,
 ) => {
     const { session } = useSessionWithToken();
-    let requestHeaders = {};
-
-    if (session) {
-        const { accessToken } = session;
-
-        requestHeaders = {
-            authorization: `Bearer ${accessToken}`,
-        };
-    }
+    const requestHeaders = {
+        authorization: session ? `Bearer ${session.accessToken}` : '',
+    };
 
     const fetchData = async (): Promise<T> => {
         const response = await fetch(url, {

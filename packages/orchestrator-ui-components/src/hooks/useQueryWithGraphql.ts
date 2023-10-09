@@ -16,15 +16,9 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
     const { session } = useSessionWithToken();
-    let requestHeaders = {};
-
-    if (session) {
-        const { accessToken } = session;
-
-        requestHeaders = {
-            authorization: `Bearer ${accessToken}`,
-        };
-    }
+    const requestHeaders = {
+        authorization: session ? `Bearer ${session.accessToken}` : '',
+    };
 
     const fetchFromGraphql = async () =>
         // TS-Ignore because queryVars does not seem to be accepted by the client

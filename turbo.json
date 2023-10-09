@@ -10,9 +10,11 @@
         "ORCHESTRATOR_GRAPHQL_PATH",
         "NEXT_PUBLIC_ENVIRONMENT_NAME",
         "NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL",
-        "KEYCLOAK_ID",
-        "KEYCLOAK_SECRET",
-        "KEYCLOAK_ISSUER",
+        "NEXTAUTH_ID",
+        "NEXTAUTH_CLIENT_ID",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_ISSUER",
+        "NEXTAUTH_URL",
         "AUTH_ACTIVE"
     ],
     "pipeline": {
