@@ -40,7 +40,7 @@ export const WFOWorkflowStepList = React.forwardRef(
             );
         };
 
-        const handleToggleExpandedStepListItem = (
+        const toggleExpandedStateStepListItem = (
             stepListItem: StepListItem,
         ) => {
             setStepListItems(
@@ -93,9 +93,9 @@ export const WFOWorkflowStepList = React.forwardRef(
                         startedAt={startedAt}
                         showHiddenKeys={showHiddenKeys}
                         onToggleExpandStepListItem={
-                            handleToggleExpandedStepListItem
+                            toggleExpandedStateStepListItem
                         }
-                        onExpandStepListItem={handleExpandStepListItem}
+                        onTriggerExpandStepListItem={handleExpandStepListItem}
                     />
                 )}
             </>
