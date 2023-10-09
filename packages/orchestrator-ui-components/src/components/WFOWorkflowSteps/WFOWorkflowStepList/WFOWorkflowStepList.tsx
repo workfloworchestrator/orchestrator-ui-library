@@ -26,6 +26,17 @@ export const WFOWorkflowStepList = React.forwardRef(
         }));
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);
+        const updateStepListItem = (
+            stepListItemToUpdate: StepListItem,
+            updateFunction: (stepListItem: StepListItem) => StepListItem,
+        ) =>
+            setStepListItems(
+                stepListItems.map((stepListItem) =>
+                    stepListItem === stepListItemToUpdate
+                        ? updateFunction(stepListItem)
+                        : stepListItem,
+                ),
+            );
 
         const allStepsAreExpanded = stepListItems.every(
             (item) => item.isExpanded,
@@ -40,34 +51,17 @@ export const WFOWorkflowStepList = React.forwardRef(
             );
         };
 
-        const toggleExpandedStateStepListItem = (
-            stepListItem: StepListItem,
-        ) => {
-            setStepListItems(
-                stepListItems.map((item) =>
-                    item.step === stepListItem.step
-                        ? {
-                              ...item,
-                              isExpanded: !item.isExpanded,
-                          }
-                        : item,
-                ),
-            );
-        };
+        const toggleExpandedStateStepListItem = (stepListItem: StepListItem) =>
+            updateStepListItem(stepListItem, (item) => ({
+                ...item,
+                isExpanded: !item.isExpanded,
+            }));
 
-        const handleExpandStepListItem = (stepListItem: StepListItem) => {
-            setStepListItems(
-                stepListItems.map((item) => {
-                    if (item.step === stepListItem.step) {
-                        return {
-                            ...item,
-                            isExpanded: true,
-                        };
-                    }
-                    return item;
-                }),
-            );
-        };
+        const handleExpandStepListItem = (stepListItem: StepListItem) =>
+            updateStepListItem(stepListItem, (item) => ({
+                ...item,
+                isExpanded: true,
+            }));
 
         return (
             <>
