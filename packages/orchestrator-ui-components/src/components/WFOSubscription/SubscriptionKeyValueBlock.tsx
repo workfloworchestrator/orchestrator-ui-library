@@ -5,6 +5,7 @@ import {
     WFOKeyValueTable,
     WFOKeyValueTableDataType,
 } from '../WFOKeyValueTable/WFOKeyValueTable';
+import { useOrchestratorTheme } from '../../hooks';
 
 interface SubscriptionKeyValueBlockProps {
     title: string;
@@ -15,6 +16,7 @@ export const SubscriptionKeyValueBlock = ({
     title,
     keyValues,
 }: SubscriptionKeyValueBlockProps) => {
+    const { theme } = useOrchestratorTheme();
     return (
         <>
             <EuiSpacer size={'m'}></EuiSpacer>
@@ -22,13 +24,16 @@ export const SubscriptionKeyValueBlock = ({
                 <div style={{ marginTop: 5 }}>
                     <EuiFlexGroup justifyContent="spaceBetween">
                         <EuiFlexItem>
-                            <EuiText grow={false}>
-                                <h3>{title}</h3>
+                            <EuiText
+                                grow={false}
+                                css={{ fontWeight: theme.font.weight.medium }}
+                            >
+                                {title}
                             </EuiText>
                         </EuiFlexItem>
                     </EuiFlexGroup>
 
-                    <EuiSpacer size={'s'}></EuiSpacer>
+                    <EuiSpacer size={'m'}></EuiSpacer>
                     <WFOKeyValueTable
                         keyValues={keyValues}
                         showCopyToClipboardIcon={false}
