@@ -1,7 +1,9 @@
+import { SubscriptionAction } from '../../../hooks';
 import { FieldValue } from '../../../types';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
+    flattenArrayProps,
 } from './utils';
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
@@ -66,5 +68,35 @@ describe('getProductBlockTitle()', () => {
 
     it('returns empty string when there are no title or name fields', () => {
         expect(getProductBlockTitle(instanceValues)).toBe('');
+    });
+});
+
+describe('flattenArrayProps', () => {
+    it('should flatten an object with array values into a comma-separated string', () => {
+        const action: SubscriptionAction = {
+            name: 'action name',
+            description: 'action description',
+            usable_when: ['Status1', 'Status2', 'Status3'],
+        };
+
+        const result = flattenArrayProps(action);
+
+        expect(result).toEqual({
+            name: 'action name',
+            description: 'action description',
+            usable_when: 'Status1, Status2, Status3',
+        });
+    });
+
+    it('should handle an object with non-array values', () => {
+        const action: SubscriptionAction = {
+            name: 'action name',
+            description: 'action description',
+        };
+        const result = flattenArrayProps(action);
+        expect(result).toEqual({
+            name: 'action name',
+            description: 'action description',
+        });
     });
 });
