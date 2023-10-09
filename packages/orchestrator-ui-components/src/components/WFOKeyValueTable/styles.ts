@@ -41,7 +41,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const keyCellStyle = css({
-        fontWeight: theme.font.weight.semiBold,
+        fontWeight: theme.font.weight.medium,
         color: theme.colors.title,
     });
 
