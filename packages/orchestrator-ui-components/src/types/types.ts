@@ -366,6 +366,15 @@ export type SubscriptionDetail = {
     customerId?: string | null;
     customer?: Customer;
     externalServices?: ExternalService[];
+    inUseBySubscriptions: GraphQlSinglePage<RelatedSubscription>;
+};
+
+type RelatedSubscription = Pick<
+    Subscription,
+    'description' | 'status' | 'startDate' | 'insync'
+> & {
+    product: Pick<ProductDefinition, 'tag'>;
+    customer: Pick<Customer, 'fullname'>;
 };
 
 export type ExternalService = {

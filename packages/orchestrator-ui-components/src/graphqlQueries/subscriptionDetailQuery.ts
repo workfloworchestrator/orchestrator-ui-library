@@ -25,15 +25,37 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     description
                     tag
                     productType
+                    productId
                 }
                 endDate
                 startDate
                 status
+                customerId
+                customer {
+                    fullname
+                    identifier
+                    shortcode
+                }
                 productBlockInstances {
                     id
                     ownerSubscriptionId
                     parent
                     productBlockInstanceValues
+                    subscriptionInstanceId
+                }
+                inUseBySubscriptions {
+                    page {
+                        customer {
+                            fullname
+                        }
+                        description
+                        insync
+                        startDate
+                        status
+                        product {
+                            tag
+                        }
+                    }
                 }
             }
         }

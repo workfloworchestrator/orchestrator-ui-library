@@ -33,7 +33,6 @@ export const tabs = [
     },
     {
         id: SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB,
-        disabled: true,
         translationKey: 'tabs.relatedSubscriptions',
         prepend: <EuiIcon type="heatmap" />,
     },
