@@ -97,11 +97,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         marginTop: 0,
     });
 
-    const euiCodeBlockStyle = css({
-        marginTop: 10,
-        borderRadius: theme.border.radius.medium,
-    });
-
     return {
         stepDurationStyle,
         stepEmailContainerStyle,
@@ -119,6 +114,5 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepStateSuccessIconStyle,
         stepStateSuspendIconStyle,
         stepToggleExpandStyle,
-        euiCodeBlockStyle,
     };
 };
