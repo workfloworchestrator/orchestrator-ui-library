@@ -10,7 +10,7 @@ export const getStepContent = (
     stepDelta: StepState,
     showHiddenKeys: boolean,
 ): StepState => {
-    if (!showHiddenKeys) {
+    if (showHiddenKeys) {
         return stepDelta;
     }
 
