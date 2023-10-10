@@ -90,31 +90,31 @@ export const WFOSubscriptionGeneral = ({
         const product = subscriptionDetail.product;
         return [
             {
-                key: 'name',
+                key: t('name'),
                 value: product.name,
             },
             {
-                key: 'description',
+                key: t('description'),
                 value: product.description,
             },
             {
-                key: 'productType',
+                key: t('productType'),
                 value: product.productType,
             },
             {
-                key: 'tag',
+                key: t('tag'),
                 value: product.tag,
             },
             {
-                key: 'status',
+                key: t('status'),
                 value: <WFOProductStatusBadge status={product.status} />,
             },
             {
-                key: 'created',
+                key: t('created'),
                 value: product.createdAt,
             },
             {
-                key: 'endDate',
+                key: t('endDate'),
                 value: product.endDate,
             },
         ];
