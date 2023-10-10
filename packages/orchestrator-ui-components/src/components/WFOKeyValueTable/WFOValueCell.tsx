@@ -20,6 +20,7 @@ export const WFOValueCell: FC<WFOValueCellProps> = ({
     const { theme } = useOrchestratorTheme();
     const {
         valueColumnStyle,
+        valueCellStyle,
         clipboardIconStyle,
         clickable,
         getBackgroundColorStyleForRow,
@@ -29,7 +30,7 @@ export const WFOValueCell: FC<WFOValueCellProps> = ({
 
     return (
         <div css={[getBackgroundColorStyleForRow(rowNumber), valueColumnStyle]}>
-            <div>{value}</div>
+            <div css={valueCellStyle}>{value}</div>
             <div css={clipboardIconStyle}>
                 {shouldRenderCopyColumn && (
                     <EuiCopy textToCopy={textToCopy}>
