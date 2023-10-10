@@ -14,13 +14,13 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../hooks';
-
-import { TranslationValues } from 'next-intl';
+import { flattenArrayProps } from './utils';
 
 import {
     SubscriptionAction,
     useSubscriptionActions,
 } from '../../hooks/useSubscriptionActions';
+
 import { WFOXCircleFill } from '../../icons';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
@@ -78,18 +78,6 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
             );
         };
 
-        const flattenArrayProps = (): TranslationValues => {
-            const flatObject: TranslationValues = {};
-            for (const [key, value] of Object.entries(action)) {
-                if (Array.isArray(value)) {
-                    flatObject[key] = value.join(', ');
-                } else {
-                    flatObject[key] = value;
-                }
-            }
-            return action ? flatObject : {};
-        };
-
         const tooltipIt = (actionItem: ReactJSXElement) => {
             /** 
               Whether an action is disabled is indicated by it having a reason property. 
@@ -120,7 +108,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
             */
             if (!action.reason) return actionItem;
 
-            const tooltipContent = t(action.reason, flattenArrayProps());
+            const tooltipContent = t(action.reason, flattenArrayProps(action));
 
             return (
                 <div>
