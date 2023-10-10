@@ -27,9 +27,9 @@ export type WFOBasicTableProps<T> = {
         | WFOBasicTableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: WFODataSorting<T>;
-    pagination: Pagination;
+    pagination?: Pagination;
     isLoading?: boolean;
-    onCriteriaChange: (criteria: Criteria<T>) => void;
+    onCriteriaChange?: (criteria: Criteria<T>) => void;
     onDataSort?: (columnId: keyof T) => void;
 };
 

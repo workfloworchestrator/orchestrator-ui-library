@@ -30,7 +30,7 @@ export const calculateTimeDifference = (from: string, to: string): string => {
         .padStart(2, '0')}`;
 };
 
-export const formatDate = (dateString: string | undefined) => {
+export const formatDate = (dateString: string | undefined | null) => {
     if (!dateString) return '';
 
     const date = parseDate(dateString);
