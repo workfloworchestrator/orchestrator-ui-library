@@ -34,8 +34,7 @@ export const useSubscriptionActions = (subscriptionId: string) => {
                 method: 'GET',
             },
         );
-        const actions = (await response.json()) as SubscriptionActions;
-        return actions;
+        return (await response.json()) as SubscriptionActions;
     };
 
     return useQuery('subscriptionActions', fetchSubscriptionActions);

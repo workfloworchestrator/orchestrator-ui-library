@@ -21,11 +21,8 @@ import { FilterQuery } from '../WFOFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { WFOSubscriptionStatusBadge } from '../WFOBadges/WFOSubscriptionStatusBadge';
-import {
-    WFOCheckmarkCircleFill,
-    WFOMinusCircleOutline,
-    WFOPlusCircleFill,
-} from '../../icons';
+import { WFOPlusCircleFill } from '../../icons';
+import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
@@ -92,12 +89,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'insync',
             name: t('insync'),
             width: '110',
-            render: (value) =>
-                value ? (
-                    <WFOCheckmarkCircleFill color={theme.colors.primary} />
-                ) : (
-                    <WFOMinusCircleOutline color={theme.colors.mediumShade} />
-                ),
+            render: (value) => <WFOInsyncIcon inSync={value} />,
         },
         productName: {
             field: 'productName',
