@@ -4,17 +4,17 @@ import { EuiFlexGroup } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks';
 
 interface WFONoResultsProps {
-  text: string
-  icon: ReactNode
+    text: string;
+    icon: ReactNode;
 }
 
-export const WFONoResults = ({text, icon}: WFONoResultsProps) => {
-  const { theme } = useOrchestratorTheme()
-  const { panelStyle} = getStyles(theme)
+export const WFONoResults = ({ text, icon }: WFONoResultsProps) => {
+    const { theme } = useOrchestratorTheme();
+    const { panelStyle } = getStyles(theme);
 
-  return (
-      <EuiFlexGroup css={panelStyle}>
-        {icon} {text}
-      </EuiFlexGroup>
-  )
-}
+    return (
+        <EuiFlexGroup css={panelStyle}>
+            {icon} {text}
+        </EuiFlexGroup>
+    );
+};

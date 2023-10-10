@@ -369,9 +369,9 @@ export type SubscriptionDetail = {
     inUseBySubscriptions: GraphQlSinglePage<RelatedSubscription>;
 };
 
-type RelatedSubscription = Pick<
+export type RelatedSubscription = Pick<
     Subscription,
-    'description' | 'status' | 'startDate' | 'insync'
+    'subscriptionId' | 'description' | 'status' | 'startDate' | 'insync'
 > & {
     product: Pick<ProductDefinition, 'tag'>;
     customer: Pick<Customer, 'fullname'>;
