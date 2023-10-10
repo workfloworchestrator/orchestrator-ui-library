@@ -7,7 +7,7 @@ import { useOrchestratorTheme } from '../../hooks';
 export type WorkflowComboBoxOption = {
     data: {
         workflowName: string;
-        productId: string;
+        productId?: string;
     };
     label: string;
 };

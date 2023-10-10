@@ -25,26 +25,27 @@ export const WFOStartTaskButtonComboBox = () => {
         'taskWorkflows',
     );
 
-    const productList: WorkflowComboBoxOption[] = data?.workflows.page.map(
-        (w) => {
-            return {
-                label: w.description,
-                data: { workflowName: w.name, productId: '' },
-            };
-        },
-    ) as WorkflowComboBoxOption[];
+    const taskList: WorkflowComboBoxOption[] =
+        data?.workflows.page
+            .map((workflow) => {
+                return {
+                    label: workflow.description,
+                    data: { workflowName: workflow.name },
+                } as WorkflowComboBoxOption;
+            })
+            .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
+
     const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
         const { workflowName } = selectedProduct.data;
         router.push({
             pathname: `${PATH_START_WORKFLOW}/${workflowName}`,
-            // query: { },
         });
     };
 
     return (
         <WFOButtonComboBox
             buttonText={t('newTask')}
-            options={productList}
+            options={taskList}
             onOptionChange={handleOptionChange}
             isProcess={false}
         />

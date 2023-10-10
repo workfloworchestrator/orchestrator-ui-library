@@ -1,6 +1,7 @@
 {
     "main": {
-        "title": "Voorbeeld Orchestrator UI"
+        "title": "Voorbeeld Orchestrator UI",
+        "mobileTitle": "Hoofd menu"
     },
     "common": {
         "addToFavorites": "Favoriet",

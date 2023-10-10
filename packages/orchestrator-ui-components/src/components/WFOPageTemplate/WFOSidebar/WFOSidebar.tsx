@@ -1,6 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
+
 import {
     PATH_METADATA,
     PATH_METADATA_PRODUCT_BLOCKS,
@@ -16,17 +18,18 @@ import {
 import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
 
 export const WFOSidebar: FC = () => {
+    const t = useTranslations('main');
     const router = useRouter();
-    const [isSideNavOpenOnMobile, setisSideNavOpenOnMobile] = useState(false);
+    const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
 
-    const toggleOpenOnMobile = () => {
-        setisSideNavOpenOnMobile(!isSideNavOpenOnMobile);
-    };
+    const toggleMobile = useCallback(() => {
+        setIsSideNavOpenOnMobile((openState) => !openState);
+    }, [setIsSideNavOpenOnMobile]);
 
     return (
         <EuiSideNav
-            mobileTitle="Main menu"
-            toggleOpenOnMobile={() => toggleOpenOnMobile()}
+            mobileTitle={t('mobileTitle')}
+            toggleOpenOnMobile={toggleMobile}
             isOpenOnMobile={isSideNavOpenOnMobile}
             items={[
                 {

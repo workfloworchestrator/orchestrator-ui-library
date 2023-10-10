@@ -35,7 +35,7 @@ type StartWorkFlowPayload =
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
-    startWorkflowPayload?: StartWorkFlowPayload | undefined;
+    startWorkflowPayload?: StartWorkFlowPayload;
 }
 
 export interface UserInputForm {

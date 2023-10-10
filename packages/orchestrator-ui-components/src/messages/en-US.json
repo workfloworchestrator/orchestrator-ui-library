@@ -1,6 +1,7 @@
 {
     "main": {
-        "title": "Welcome to example-orchestrator-ui!"
+        "title": "Welcome to example-orchestrator-ui!",
+        "mobileTitle": "Main menu"
     },
     "common": {
         "addToFavorites": "Add to favorites",
