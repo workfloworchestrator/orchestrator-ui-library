@@ -28,7 +28,7 @@ export const WFOSubscriptionGeneral = ({
             {
                 key: t('subscriptionId'),
                 value: subscriptionDetail.subscriptionId,
-                textToCopy: subscriptionDetail.subscriptionId
+                textToCopy: subscriptionDetail.subscriptionId,
             },
             {
                 key: t('productName'),

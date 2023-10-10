@@ -16,6 +16,7 @@ import { WFOLoading } from '../WFOLoading';
 import { WFOSubscriptionActions } from './WFOSubscriptionActions';
 import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
 import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
+import { WFORelatedSubscriptions } from './WFORelatedSubscriptions';
 import { ProcessesTimeline } from './WFOProcessesTimeline';
 
 type WFOSubscriptionProps = {
@@ -44,7 +45,6 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                 key={index}
                 onClick={() => onSelectedTabChanged(tab.id)}
                 isSelected={tab.id === selectedTabId}
-                disabled={tab.disabled}
                 prepend={tab.prepend}
                 append={tab.append}
             >
@@ -100,6 +100,13 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                             data && (
                                 <ProcessesTimeline
                                     subscriptionId={subscriptionId}
+                                />
+                            )}
+                        {selectedTabId ===
+                            SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB &&
+                            data && (
+                                <WFORelatedSubscriptions
+                                    subscriptionDetail={subscriptionDetail}
                                 />
                             )}
                     </>
