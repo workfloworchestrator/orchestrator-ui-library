@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-
-
+import { getStyles } from './styles';
+import { EuiFlexGroup } from '@elastic/eui';
+import { useOrchestratorTheme } from '../../hooks';
 
 interface WFONoResultsProps {
   text: string
@@ -8,7 +9,12 @@ interface WFONoResultsProps {
 }
 
 export const WFONoResults = ({text, icon}: WFONoResultsProps) => {
+  const { theme, toSecondaryColor } = useOrchestratorTheme()
+  const { panelStyle} = getStyles(theme, toSecondaryColor)
+
   return (
-    <h1>Loading...</h1>
+      <EuiFlexGroup css={panelStyle}>
+        {icon} {text}
+      </EuiFlexGroup>
   )
 }
