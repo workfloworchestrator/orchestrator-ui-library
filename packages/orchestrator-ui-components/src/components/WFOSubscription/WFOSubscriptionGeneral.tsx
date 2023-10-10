@@ -3,7 +3,8 @@ import React from 'react';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
-import { WFOCheckmarkCircleFill, WFOMinusCircleOutline } from '../../icons';
+import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
+
 import {
     WFOSubscriptionStatusBadge,
     WFOProductStatusBadge,
@@ -12,7 +13,6 @@ import {
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
 import { SubscriptionDetail } from '../../types';
 import { WFOKeyValueTableDataType } from '../WFOKeyValueTable/WFOKeyValueTable';
-import { useOrchestratorTheme } from '../../hooks';
 
 interface WFOSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
@@ -22,23 +22,6 @@ export const WFOSubscriptionGeneral = ({
     subscriptionDetail,
 }: WFOSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
-    const { theme } = useOrchestratorTheme();
-
-    const getInSyncIcon = (value: boolean) => {
-        return value ? (
-            <WFOCheckmarkCircleFill
-                height={20}
-                width={20}
-                color={theme.colors.primary}
-            />
-        ) : (
-            <WFOMinusCircleOutline
-                height={20}
-                width={20}
-                color={theme.colors.mediumShade}
-            />
-        );
-    };
 
     const getSubscriptionDetailBlockData = (): WFOKeyValueTableDataType[] => {
         return [
@@ -73,7 +56,7 @@ export const WFOSubscriptionGeneral = ({
             },
             {
                 key: t('insync'),
-                value: getInSyncIcon(subscriptionDetail.insync),
+                value: <WFOInsyncIcon inSync={subscriptionDetail.insync} />,
             },
             {
                 key: t('customer'),
