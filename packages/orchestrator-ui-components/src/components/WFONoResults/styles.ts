@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import type { EuiThemeComputed } from '@elastic/eui';
 
-export const getStyles = (theme: EuiThemeComputed, toSecondaryColor: (color: string) => string) => {
+export const getStyles = (theme: EuiThemeComputed) => {
     const panelStyle = css({
         display: "flex",
         padding: theme.base * 2,
@@ -9,10 +9,11 @@ export const getStyles = (theme: EuiThemeComputed, toSecondaryColor: (color: str
         alignItems: "center",
         justifyContent: "center",
         gap: "8px",
-        backgroundColor: toSecondaryColor(theme.colors.primary),
+        backgroundColor: theme.colors.body,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.link,
-        fontFamily: theme.font.family
+        fontFamily: theme.font.family,
+        marginTop: theme.base * 2
       })
 
     return {

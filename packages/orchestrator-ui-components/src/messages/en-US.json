@@ -182,7 +182,8 @@
             "tag": "Tag",
             "created": "Created",
             "endDate": "End date",
-            "note": "Note"
+            "note": "Note",
+            "noRelatedSubscriptions": "No related subscriptions found"
         }
     },
     "tasks": {
