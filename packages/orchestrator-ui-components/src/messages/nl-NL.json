@@ -180,7 +180,8 @@
             "tag": "Tag",
             "created": "Aangemaakt",
             "endDate": "Eind datum",
-            "note": "Notitie"
+            "note": "Notitie",
+            "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden"
         }
     },
     "tasks": {

@@ -9,8 +9,8 @@ interface WFONoResultsProps {
 }
 
 export const WFONoResults = ({text, icon}: WFONoResultsProps) => {
-  const { theme, toSecondaryColor } = useOrchestratorTheme()
-  const { panelStyle} = getStyles(theme, toSecondaryColor)
+  const { theme } = useOrchestratorTheme()
+  const { panelStyle} = getStyles(theme)
 
   return (
       <EuiFlexGroup css={panelStyle}>
