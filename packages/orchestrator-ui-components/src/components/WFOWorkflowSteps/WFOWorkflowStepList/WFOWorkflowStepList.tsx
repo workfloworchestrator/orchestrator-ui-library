@@ -1,4 +1,4 @@
-import React, { Ref, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
 import { WFOStepListHeader } from './WFOStepListHeader';
@@ -24,8 +24,35 @@ export const WFOWorkflowStepList = React.forwardRef(
             step,
             isExpanded: false,
         }));
+
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);
+
+        useEffect(() => {
+            const currentExpandedStateByStepId = stepListItems.reduce<
+                Map<string, boolean>
+            >(
+                (previousValue, currentValue) =>
+                    previousValue.set(
+                        currentValue.step.stepId,
+                        currentValue.isExpanded,
+                    ),
+                new Map(),
+            );
+
+            const updatedStepListItems: StepListItem[] = steps.map((step) => {
+                const isCurrentlyExpanded = currentExpandedStateByStepId.get(
+                    step.stepId,
+                );
+                return {
+                    step,
+                    isExpanded: isCurrentlyExpanded ?? false,
+                };
+            });
+
+            setStepListItems(updatedStepListItems);
+        }, [steps]);
+
         const updateStepListItem = (
             stepListItemToUpdate: StepListItem,
             updateFunction: (stepListItem: StepListItem) => StepListItem,
