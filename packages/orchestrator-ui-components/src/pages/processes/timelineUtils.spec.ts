@@ -144,12 +144,17 @@ describe('mapGroupedStepsToTimelineItems()', () => {
         };
         const testStep2: Step = {
             ...baseStep,
-            status: StepStatus.SUCCESS,
+            status: StepStatus.FAILED,
             stepId: '222',
+        };
+        const testStep3: Step = {
+            ...baseStep,
+            status: StepStatus.SUCCESS,
+            stepId: '333',
         };
         const groupedSteps: GroupedStep[] = [
             {
-                steps: [testStep1, testStep2],
+                steps: [testStep1, testStep2, testStep3],
             },
         ];
 
@@ -161,8 +166,8 @@ describe('mapGroupedStepsToTimelineItems()', () => {
 
         const { processStepStatus, stepDetail, id, value } = result[0];
         expect(processStepStatus).toEqual(StepStatus.SUCCESS);
-        expect(stepDetail).toEqual(testStep2.name);
-        expect(id).toEqual(testStep2.stepId);
+        expect(stepDetail).toEqual(testStep3.name);
+        expect(id).toEqual(testStep3.stepId);
         expect(value).toEqual(2);
     });
 });
