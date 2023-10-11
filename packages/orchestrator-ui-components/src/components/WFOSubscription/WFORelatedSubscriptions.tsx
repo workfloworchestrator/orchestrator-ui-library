@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 import { RelatedSubscription, SubscriptionDetail } from '../../types';
@@ -37,6 +38,11 @@ export const WFORelatedSubscriptions = ({
         description: {
             field: 'description',
             name: t('description'),
+            render: (value, record) => (
+                <Link href={`/subscriptions/${record.subscriptionId}`}>
+                    {value}
+                </Link>
+            ),
         },
         status: {
             field: 'status',
@@ -47,7 +53,7 @@ export const WFORelatedSubscriptions = ({
         insync: {
             field: 'insync',
             name: t('insync'),
-            width: '50',
+            width: '60',
             render: () => 'X',
         },
         customer: {
