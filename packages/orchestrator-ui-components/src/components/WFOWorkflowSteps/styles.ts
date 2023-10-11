@@ -10,7 +10,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     const stepHeaderStyle = css({
         gap: 0,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         cursor: 'pointer',
     });
 

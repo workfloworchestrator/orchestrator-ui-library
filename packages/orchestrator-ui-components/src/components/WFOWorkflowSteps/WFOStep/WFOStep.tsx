@@ -48,6 +48,7 @@ export const WFOStep = React.forwardRef(
         const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
 
         const stepContent = getStepContent(stepDelta, showHiddenKeys);
+        const hasStepContent = Object.keys(stepContent).length > 0;
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -130,7 +131,7 @@ export const WFOStep = React.forwardRef(
                                         grow={0}
                                         css={stepToggleExpandStyle}
                                     >
-                                        {/* todo : and has content ... */}
+                                        {/* todo : Only show this when there is content */}
                                         {(stepDetailIsOpen && (
                                             <WFOChevronUp />
                                         )) || <WFOChevronDown />}
@@ -139,10 +140,9 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen &&
-                        Object.keys(stepContent).length > 0 && (
-                            <WFOJsonCodeBlock data={stepContent} />
-                        )}
+                    {hasStepContent && stepDetailIsOpen && (
+                        <WFOJsonCodeBlock data={stepContent} />
+                    )}
                     {stepDetailIsOpen && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(

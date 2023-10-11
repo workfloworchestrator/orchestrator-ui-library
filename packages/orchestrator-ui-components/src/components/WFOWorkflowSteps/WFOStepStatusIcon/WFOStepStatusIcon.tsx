@@ -83,7 +83,7 @@ export const WFOStepStatusIcon = ({ stepStatus }: WFOStepStatusIconProps) => {
     })();
 
     return (
-        <EuiFlexItem css={{ marginRight: '24px' }} grow={0}>
+        <EuiFlexItem css={{ flexDirection: 'row' }} grow={0}>
             <div css={stepStateStyle}>
                 <MainIcon color={mainIconColor} stepStatus={stepStatus} />
             </div>
@@ -91,7 +91,7 @@ export const WFOStepStatusIcon = ({ stepStatus }: WFOStepStatusIconProps) => {
             {hasSubIcon && (
                 <div
                     css={{
-                        transform: 'translate(25px, -46px)',
+                        transform: 'translate(-16px, -8px)',
                         width: `${theme.base}`,
                     }}
                 >
