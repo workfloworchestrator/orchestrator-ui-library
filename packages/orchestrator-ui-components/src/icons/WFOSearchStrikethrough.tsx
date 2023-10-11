@@ -17,9 +17,9 @@ export const WFOSearchStrikethrough: FC<WFOIconProps> = ({
         <g
             id="Symbols"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
         >
             <g id="icon/search-strikethrough" fill={color}>
                 <path
