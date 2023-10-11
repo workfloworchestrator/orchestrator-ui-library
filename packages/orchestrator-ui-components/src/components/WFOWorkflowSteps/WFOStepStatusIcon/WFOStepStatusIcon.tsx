@@ -4,18 +4,20 @@ import { EuiFlexItem } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
 import { StepStatus } from '../../../types';
 import { WFOCogFill } from '../../../icons/WFOCogFill';
-import { WFOCheckmarkCircleFill } from '../../../icons';
+import { WFOCheckmarkCircleFill, WFOPlayFill } from '../../../icons';
 import { WFOXCircleFill } from '../../../icons';
 import { WFOMinusCircleFill } from '../../../icons';
 import { WFOPencilAlt } from '../../../icons/WFOPencilAlt';
 
 export interface WFOStepStatusIconProps {
     stepStatus: StepStatus;
+    isStartStep?: boolean;
 }
 
 interface IconProps {
     stepStatus: StepStatus;
     color: string;
+    isStartStep?: boolean;
 }
 
 const SubIcon = ({ stepStatus, color = '' }: IconProps) => {
@@ -32,7 +34,11 @@ const SubIcon = ({ stepStatus, color = '' }: IconProps) => {
     }
 };
 
-const MainIcon = ({ stepStatus, color = '' }: IconProps) => {
+const MainIcon = ({ stepStatus, color = '', isStartStep }: IconProps) => {
+    if (isStartStep) {
+        return <WFOPlayFill color={color} />;
+    }
+
     switch (stepStatus) {
         case StepStatus.FORM:
             return <WFOPencilAlt color={color} />;
@@ -41,7 +47,10 @@ const MainIcon = ({ stepStatus, color = '' }: IconProps) => {
     }
 };
 
-export const WFOStepStatusIcon = ({ stepStatus }: WFOStepStatusIconProps) => {
+export const WFOStepStatusIcon = ({
+    stepStatus,
+    isStartStep = false,
+}: WFOStepStatusIconProps) => {
     const { theme } = useOrchestratorTheme();
 
     const {
@@ -85,7 +94,11 @@ export const WFOStepStatusIcon = ({ stepStatus }: WFOStepStatusIconProps) => {
     return (
         <EuiFlexItem css={{ flexDirection: 'row' }} grow={0}>
             <div css={stepStateStyle}>
-                <MainIcon color={mainIconColor} stepStatus={stepStatus} />
+                <MainIcon
+                    color={mainIconColor}
+                    stepStatus={stepStatus}
+                    isStartStep={isStartStep}
+                />
             </div>
 
             {hasSubIcon && (

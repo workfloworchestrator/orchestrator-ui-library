@@ -127,6 +127,7 @@ export const WFOStepList = React.forwardRef(
                                 stepDelta={delta}
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
+                                isStartStep={index === 0}
                             />
                         </div>
                     );

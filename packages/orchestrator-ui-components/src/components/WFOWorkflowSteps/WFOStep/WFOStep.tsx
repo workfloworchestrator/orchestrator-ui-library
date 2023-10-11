@@ -16,9 +16,10 @@ export interface WFOStepProps {
     step: Step;
     stepDelta: StepState;
     stepDetailIsOpen: boolean;
-    onToggleStepDetail: () => void;
     startedAt: string;
     showHiddenKeys: boolean;
+    onToggleStepDetail: () => void;
+    isStartStep?: boolean;
 }
 
 export const WFOStep = React.forwardRef(
@@ -30,6 +31,7 @@ export const WFOStep = React.forwardRef(
             onToggleStepDetail,
             startedAt,
             showHiddenKeys,
+            isStartStep = false,
         }: WFOStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -98,7 +100,10 @@ export const WFOStep = React.forwardRef(
                         css={stepHeaderStyle}
                         onClick={() => onToggleStepDetail()}
                     >
-                        <WFOStepStatusIcon stepStatus={status} />
+                        <WFOStepStatusIcon
+                            stepStatus={status}
+                            isStartStep={isStartStep}
+                        />
 
                         <EuiFlexItem grow={0}>
                             <EuiText css={stepListContentBoldTextStyle}>
