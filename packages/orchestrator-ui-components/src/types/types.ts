@@ -307,6 +307,14 @@ export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
     workflows: GraphQlResultPage<T>;
 }
 
+export interface RelatedSubscriptionsResult {
+    subscriptions: GraphQlSinglePage<
+        Pick<Subscription, 'subscriptionId'> & {
+            inUseBySubscriptions: GraphQlResultPage<RelatedSubscription>;
+        }
+    >;
+}
+
 interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
@@ -366,7 +374,6 @@ export type SubscriptionDetail = {
     customerId?: string | null;
     customer?: Customer;
     externalServices?: ExternalService[];
-    inUseBySubscriptions: GraphQlSinglePage<RelatedSubscription>;
 };
 
 export type RelatedSubscription = Pick<

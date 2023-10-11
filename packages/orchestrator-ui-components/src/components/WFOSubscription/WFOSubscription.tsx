@@ -106,7 +106,9 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                             SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB &&
                             data && (
                                 <WFORelatedSubscriptions
-                                    subscriptionDetail={subscriptionDetail}
+                                    subscriptionId={
+                                        subscriptionDetail.subscriptionId
+                                    }
                                 />
                             )}
                     </>
