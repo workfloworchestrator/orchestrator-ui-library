@@ -22,9 +22,6 @@ interface IconProps {
 
 const SubIcon = ({ stepStatus, color = '' }: IconProps) => {
     switch (stepStatus) {
-        case StepStatus.FORM:
-        case StepStatus.PENDING:
-            return <></>;
         case StepStatus.SUSPEND:
             return <WFOMinusCircleFill color={color} />;
         case StepStatus.FAILED:
@@ -101,16 +98,15 @@ export const WFOStepStatusIcon = ({
                 />
             </div>
 
-            {hasSubIcon && (
-                <div
-                    css={{
-                        transform: 'translate(-16px, -8px)',
-                        width: `${theme.base}`,
-                    }}
-                >
-                    <SubIcon color={subIconColor} stepStatus={stepStatus} />
-                </div>
-            )}
+            <div
+                css={{
+                    transform: 'translate(-16px, -8px)',
+                    width: `${theme.base}`,
+                    visibility: hasSubIcon ? 'visible' : 'hidden',
+                }}
+            >
+                <SubIcon color={subIconColor} stepStatus={stepStatus} />
+            </div>
         </EuiFlexItem>
     );
 };
