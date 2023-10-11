@@ -77,7 +77,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
         const typedColumnKey = colKey as keyof T;
         const column: WFOBasicTableColumns<T>[keyof T] =
             tableColumns[typedColumnKey];
-        const { name, render, width, description } = column;
+        const { name, render, width, description, sortable } = column;
 
         const sortDirection =
             dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
@@ -95,6 +95,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
                 <WFOTableHeaderCell
                     sortDirection={sortDirection}
                     onClick={handleClick}
+                    sortable={sortable}
                 >
                     {name}
                 </WFOTableHeaderCell>

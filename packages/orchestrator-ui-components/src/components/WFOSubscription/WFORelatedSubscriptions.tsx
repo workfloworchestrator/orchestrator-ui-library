@@ -95,6 +95,7 @@ export const WFORelatedSubscriptions = ({
             field: 'customer',
             name: t('customer'),
             render: (customer) => customer.fullname,
+            sortable: false,
         },
         product: {
             field: 'product',
