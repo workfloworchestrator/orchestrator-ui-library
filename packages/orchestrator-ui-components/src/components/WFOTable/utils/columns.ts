@@ -10,6 +10,7 @@ export type WFOTableDataColumnConfig<T, Property> =
     WFOEuiBasicTableColumn<T> & {
         field: Property;
         name: string;
+        sortable?: boolean;
     };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
