@@ -8,12 +8,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         marginLeft: '36px',
     });
 
-    const stepHeaderStyle = css({
-        gap: 0,
-        alignItems: 'center',
-        cursor: 'pointer',
-    });
-
     const stepRowStyle = css({
         flexGrow: 1,
         alignItems: 'center',
@@ -64,10 +58,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         fontWeight: theme.font.weight.semiBold,
     };
 
-    const stepToggleExpandStyle = css({
-        marginRight: theme.base / 2,
-    });
-
     const stepStateSuccessIconStyle = css({
         ...stepStateIcon,
         backgroundColor: '#CCE3F4',
@@ -97,11 +87,23 @@ export const getStyles = (theme: EuiThemeComputed) => {
         marginTop: 0,
     });
 
+    const getStepHeaderStyle = (isClickable: boolean) =>
+        css({
+            gap: 0,
+            alignItems: 'center',
+            cursor: isClickable ? 'pointer' : 'default',
+        });
+
+    const getStepToggleExpandStyle = (isVisible: boolean) =>
+        css({
+            marginRight: theme.base / 2,
+            visibility: isVisible ? 'visible' : 'hidden',
+        });
+
     return {
         stepDurationStyle,
         stepEmailContainerStyle,
         stepHeaderRightStyle,
-        stepHeaderStyle,
         stepListContentAnchorStyle,
         stepListContentBoldTextStyle,
         stepListContentStyle,
@@ -113,6 +115,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepStatePendingIconStyle,
         stepStateSuccessIconStyle,
         stepStateSuspendIconStyle,
-        stepToggleExpandStyle,
+        getStepHeaderStyle,
+        getStepToggleExpandStyle,
     };
 };

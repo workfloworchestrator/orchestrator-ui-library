@@ -39,12 +39,12 @@ export const WFOStep = React.forwardRef(
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
-            stepHeaderStyle,
+            getStepHeaderStyle,
             stepHeaderRightStyle,
             stepListContentBoldTextStyle,
             stepDurationStyle,
-            stepToggleExpandStyle,
             stepRowStyle,
+            getStepToggleExpandStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
         const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
@@ -97,8 +97,8 @@ export const WFOStep = React.forwardRef(
             <div ref={ref}>
                 <EuiPanel>
                     <EuiFlexGroup
-                        css={stepHeaderStyle}
-                        onClick={() => onToggleStepDetail()}
+                        css={getStepHeaderStyle(hasStepContent)}
+                        onClick={() => hasStepContent && onToggleStepDetail()}
                     >
                         <WFOStepStatusIcon
                             stepStatus={status}
@@ -134,9 +134,10 @@ export const WFOStep = React.forwardRef(
                                     </EuiFlexItem>
                                     <EuiFlexItem
                                         grow={0}
-                                        css={stepToggleExpandStyle}
+                                        css={getStepToggleExpandStyle(
+                                            hasStepContent,
+                                        )}
                                     >
-                                        {/* todo : Only show this when there is content */}
                                         {(stepDetailIsOpen && (
                                             <WFOChevronUp />
                                         )) || <WFOChevronDown />}

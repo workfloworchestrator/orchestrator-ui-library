@@ -53,7 +53,8 @@ export const WFOStartWorkflowPage = ({
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
     const { stepUserInput, hasNext } = form;
-    const { stepHeaderStyle, stepListContentBoldTextStyle } = getStyles(theme);
+    const { getStepHeaderStyle, stepListContentBoldTextStyle } =
+        getStyles(theme);
 
     const submit = useCallback(
         (processInput: object[]) => {
@@ -147,7 +148,7 @@ export const WFOStartWorkflowPage = ({
             timelineItems={fakeTimeLineItems}
         >
             <EuiPanel css={{ marginTop: theme.base * 3 }}>
-                <EuiFlexGroup css={stepHeaderStyle}>
+                <EuiFlexGroup css={getStepHeaderStyle(false)}>
                     <WFOStepStatusIcon stepStatus={StepStatus.FORM} />
 
                     <EuiFlexItem grow={0}>
