@@ -181,7 +181,8 @@
             "created": "Created",
             "endDate": "End date",
             "note": "Note",
-            "noRelatedSubscriptions": "No related subscriptions found"
+            "noRelatedSubscriptions": "No related subscriptions found",
+            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions"
         }
     },
     "tasks": {

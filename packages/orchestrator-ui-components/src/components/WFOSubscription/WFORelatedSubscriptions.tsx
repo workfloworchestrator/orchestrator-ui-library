@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { EuiSpacer } from '@elastic/eui';
-import { Criteria, Pagination } from '@elastic/eui';
+import { EuiSpacer, EuiSwitch, EuiFlexItem, EuiFlexGroup } from '@elastic/eui';
+import type { Criteria, Pagination } from '@elastic/eui';
 
 import { WFOSearchStrikethrough } from '../../icons';
 import {
@@ -38,6 +38,8 @@ interface WFORelatedSubscriptionsProps {
 export const WFORelatedSubscriptions = ({
     subscriptionId,
 }: WFORelatedSubscriptionsProps) => {
+    const [hideTerminatedSubscriptions, setHideTerminatedSubscriptions] =
+        useState<boolean>(true);
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
 
@@ -137,11 +139,27 @@ export const WFORelatedSubscriptions = ({
             onUpdatePage(criterion.page);
         }
     };
+
+    const toggleTerminatedSubscriptions = () => {
+        setHideTerminatedSubscriptions((currentValue) => !currentValue);
+    };
     return (
         (isFetching && <WFOLoading />) ||
         (relatedSubscriptions && relatedSubscriptions.length > 0 && (
             <>
-                <EuiSpacer size="l" />
+                <EuiSpacer size="xl" />
+                <EuiFlexGroup justifyContent="flexEnd">
+                    <EuiFlexItem grow={0}>
+                        <EuiSwitch
+                            showLabel={true}
+                            label={t('hideTerminatedRelatedSubscriptions')}
+                            type="button"
+                            checked={hideTerminatedSubscriptions}
+                            onChange={toggleTerminatedSubscriptions}
+                        />
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+                <EuiSpacer size="m" />
                 <WFOBasicTable<RelatedSubscription>
                     data={relatedSubscriptions}
                     columns={tableColumns}
