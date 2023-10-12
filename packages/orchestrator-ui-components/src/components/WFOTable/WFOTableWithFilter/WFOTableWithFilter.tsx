@@ -124,7 +124,7 @@ export const WFOTableWithFilter = <T,>({
 
     const rowDetailData: WFOKeyValueTableDataType[] | undefined =
         selectedDataForDetailModal &&
-        Object.entries(tableColumns).map(([key]) => {
+        Object.entries(tableColumns).map(([key]): WFOKeyValueTableDataType => {
             const dataField = getTypedFieldFromObject(key, tableColumns);
             if (dataField === null) {
                 return {
@@ -144,7 +144,7 @@ export const WFOTableWithFilter = <T,>({
                         render(dataValue, selectedDataForDetailModal)) ?? (
                         <>{dataValue}</>
                     ),
-                plainTextValue:
+                textToCopy:
                     clipboardText?.(dataValue, selectedDataForDetailModal) ??
                     (typeof dataValue === 'string' ? dataValue : undefined),
             };
