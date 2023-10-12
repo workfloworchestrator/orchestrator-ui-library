@@ -22,7 +22,7 @@ export const WFOSubscriptionStatusBadge: FC<
             successText,
         } = theme.colors;
 
-        switch (status) {
+        switch (status.toLowerCase()) {
             case SubscriptionStatus.ACTIVE:
                 return {
                     badgeColor: toSecondaryColor(success),
@@ -46,7 +46,7 @@ export const WFOSubscriptionStatusBadge: FC<
 
     return (
         <WFOBadge textColor={textColor} color={badgeColor}>
-            {status}
+            {status.toLowerCase()}
         </WFOBadge>
     );
 };

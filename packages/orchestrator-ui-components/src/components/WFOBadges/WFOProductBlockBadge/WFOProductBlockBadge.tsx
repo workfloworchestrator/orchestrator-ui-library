@@ -16,7 +16,7 @@ export const WFOProductBlockBadge: FC<WFOProductBlockBadgeProps> = ({
             textColor={theme.colors.link}
             color={toSecondaryColor(theme.colors.primary)}
         >
-            {children}
+            {children.toLowerCase()}
         </WFOBadge>
     );
 };

@@ -327,12 +327,12 @@ export enum Locale {
 }
 
 export enum SubscriptionStatus {
-    INITIAL = 'INITIAL',
-    ACTIVE = 'ACTIVE',
-    MIGRATING = 'MIGRATING',
-    DISABLED = 'DISABLED',
-    TERMINATED = 'TERMINATED',
-    PROVISIONING = 'PROVISIONING',
+    INITIAL = 'initial',
+    ACTIVE = 'active',
+    MIGRATING = 'migrating',
+    DISABLED = 'disabled',
+    TERMINATED = 'terminated',
+    PROVISIONING = 'provisioning',
 }
 
 export type Subscription = {
