@@ -11,7 +11,12 @@ import {
     useDataDisplayParams,
 } from '../../hooks';
 
-import { RelatedSubscription, SortOrder } from '../../types';
+import {
+    GraphqlFilter,
+    RelatedSubscription,
+    SortOrder,
+    SubscriptionStatus,
+} from '../../types';
 
 import { parseDateToLocaleDateString, parseDate } from '../../utils';
 
@@ -43,6 +48,11 @@ export const WFORelatedSubscriptions = ({
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
 
+    const terminatedSubscriptionsFilter: GraphqlFilter<RelatedSubscription> = {
+        field: 'status',
+        value: `${SubscriptionStatus.ACTIVE}-${SubscriptionStatus.DISABLED}-${SubscriptionStatus.INITIAL}-${SubscriptionStatus.MIGRATING}-${SubscriptionStatus.PROVISIONING}`,
+    };
+
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<RelatedSubscription>({
             pageSize: DEFAULT_PAGE_SIZE,
@@ -59,6 +69,9 @@ export const WFORelatedSubscriptions = ({
             after: dataDisplayParams.pageIndex,
             subscriptionId: subscriptionId,
             sortBy: dataDisplayParams.sortBy,
+            terminatedSubscriptionFilter: hideTerminatedSubscriptions
+                ? terminatedSubscriptionsFilter
+                : undefined,
         },
         'relatedSubscriptions',
     );
@@ -85,7 +98,7 @@ export const WFORelatedSubscriptions = ({
         status: {
             field: 'status',
             name: t('status'),
-            width: '100',
+            width: '130',
             render: (value) => <WFOSubscriptionStatusBadge status={value} />,
         },
         insync: {
@@ -143,6 +156,7 @@ export const WFORelatedSubscriptions = ({
     const toggleTerminatedSubscriptions = () => {
         setHideTerminatedSubscriptions((currentValue) => !currentValue);
     };
+
     return (
         (isFetching && <WFOLoading />) ||
         (relatedSubscriptions && relatedSubscriptions.length > 0 && (
