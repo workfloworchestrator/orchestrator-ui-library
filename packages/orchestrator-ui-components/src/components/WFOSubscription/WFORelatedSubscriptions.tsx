@@ -22,7 +22,6 @@ import { parseDateToLocaleDateString, parseDate } from '../../utils';
 
 import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
 
-import { WFOLoading } from '../WFOLoading';
 import { WFONoResults } from '../WFONoResults';
 import { WFOSubscriptionStatusBadge } from '../WFOBadges';
 import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
@@ -158,7 +157,7 @@ export const WFORelatedSubscriptions = ({
     };
 
     return (
-        (isFetching && <WFOLoading />) || (
+
             <>
                 <EuiSpacer size="xl" />
                 <EuiFlexGroup justifyContent="flexEnd">
@@ -173,7 +172,7 @@ export const WFORelatedSubscriptions = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
                 <EuiSpacer size="m" />
-                {(relatedSubscriptions && relatedSubscriptions.length > 0 && (
+                {(relatedSubscriptions && relatedSubscriptions.length > 0 && !isFetching && (
                     <>
                         <WFOBasicTable<RelatedSubscription>
                             data={relatedSubscriptions}
@@ -195,5 +194,5 @@ export const WFORelatedSubscriptions = ({
                 )}
             </>
         )
-    );
+
 };
