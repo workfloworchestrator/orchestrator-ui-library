@@ -6,18 +6,22 @@ import {
     GraphqlQueryVariables,
     RelatedSubscription,
     Subscription,
+    GraphqlFilter,
 } from '../types';
 
 export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<
     RelatedSubscriptionsResult,
     GraphqlQueryVariables<RelatedSubscription> &
-        Pick<Subscription, 'subscriptionId'>
+        Pick<Subscription, 'subscriptionId'> & {
+            terminatedSubscriptionFilter?: GraphqlFilter<RelatedSubscription>;
+        }
 > = parse(gql`
     query RelatedSubscriptions(
         $subscriptionId: String!
         $first: IntType!
         $after: IntType!
         $sortBy: [GraphqlSort!]
+        $terminatedSubscriptionFilter: [GraphqlFilter!]
     ) {
         subscriptions(
             filterBy: { value: $subscriptionId, field: "subscriptionId" }
@@ -28,6 +32,7 @@ export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<
                     first: $first
                     after: $after
                     sortBy: $sortBy
+                    filterBy: $terminatedSubscriptionFilter
                 ) {
                     page {
                         subscriptionId
