@@ -52,6 +52,7 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
             buttonText={t('newSubscription')}
             options={productList}
             onOptionChange={handleOptionChange}
+            isProcess
         />
     );
 };

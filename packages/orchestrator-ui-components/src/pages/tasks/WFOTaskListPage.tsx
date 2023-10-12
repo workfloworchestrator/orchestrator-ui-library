@@ -12,11 +12,12 @@ import { useTranslations } from 'next-intl';
 import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
-import { WFOPlusCircleFill, WFORefresh } from '../../icons';
+import { WFORefresh } from '../../icons';
 import {
     ProcessListItem,
     WFOProcessList,
 } from '../../components/WFOProcessesList/WFOProcessList';
+import { WFOStartTaskButtonComboBox } from '../../components';
 
 export const WFOTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
@@ -91,14 +92,7 @@ export const WFOTaskListPage = () => {
                 >
                     {t('rerunAll')}
                 </EuiButton>
-                <EuiButton
-                    fill
-                    iconType={() => (
-                        <WFOPlusCircleFill color={theme.colors.emptyShade} />
-                    )}
-                >
-                    {t('newTask')}
-                </EuiButton>
+                <WFOStartTaskButtonComboBox />
             </WFOPageHeader>
             <EuiHorizontalRule />
 

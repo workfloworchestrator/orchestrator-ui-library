@@ -1,13 +1,15 @@
 {
     "main": {
-        "title": "Welcome to example-orchestrator-ui!"
+        "title": "Welcome to example-orchestrator-ui!",
+        "mobileTitle": "Main menu"
     },
     "common": {
         "addToFavorites": "Add to favorites",
         "product": "Product",
         "deselect": "Deselect",
         "close": "Close",
-        "newSubscription": "New subscription"
+        "newSubscription": "New subscription",
+        "newTask": "New task"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"
@@ -185,8 +187,7 @@
     },
     "tasks": {
         "page": {
-            "rerunAll": "Rerun all",
-            "newTask": "New task"
+            "rerunAll": "Rerun all"
         }
     }
 }

@@ -26,9 +26,10 @@ const StartWorkflowPage = () => {
                 subscription_id: subscriptionId,
             };
         }
+        return undefined;
     };
     const startWorkflowPayload = getStartWorkFlowPayload();
-    if (startWorkflowPayload) {
+    if (workflowName) {
         return (
             <WFOStartWorkflowPage
                 workflowName={workflowName}
