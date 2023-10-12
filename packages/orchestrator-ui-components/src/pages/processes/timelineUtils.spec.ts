@@ -170,4 +170,30 @@ describe('mapGroupedStepsToTimelineItems()', () => {
         expect(id).toEqual(testStep3.stepId);
         expect(value).toEqual(2);
     });
+
+    it('returns an timeline item with value undefined if there are multiple non-failed steps', () => {
+        // Given
+        const testStep1: Step = {
+            ...baseStep,
+            status: StepStatus.PENDING,
+            stepId: '111',
+        };
+        const testStep2: Step = {
+            ...baseStep,
+            status: StepStatus.SUCCESS,
+            stepId: '222',
+        };
+        const groupedSteps: GroupedStep[] = [
+            {
+                steps: [testStep1, testStep2],
+            },
+        ];
+
+        // When
+        const result = mapGroupedStepsToTimelineItems(groupedSteps);
+
+        // Then
+        expect(result.length).toEqual(1);
+        expect(result[0].value).toBeUndefined();
+    });
 });

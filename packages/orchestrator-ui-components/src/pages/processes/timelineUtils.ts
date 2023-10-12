@@ -82,7 +82,7 @@ export const mapGroupedStepToTimelineItem = (
         }),
         {
             ...mapStepToTimelineItem(groupedStep.steps[0]),
-            value: groupedStep.steps.filter(isFailedStep).length,
+            value: groupedStep.steps.filter(isFailedStep).length || undefined,
         },
     );
 };
