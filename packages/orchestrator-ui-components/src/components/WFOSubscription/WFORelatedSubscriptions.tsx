@@ -158,8 +158,7 @@ export const WFORelatedSubscriptions = ({
     };
 
     return (
-        (isFetching && <WFOLoading />) ||
-        (relatedSubscriptions && relatedSubscriptions.length > 0 && (
+        (isFetching && <WFOLoading />) || (
             <>
                 <EuiSpacer size="xl" />
                 <EuiFlexGroup justifyContent="flexEnd">
@@ -174,21 +173,27 @@ export const WFORelatedSubscriptions = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
                 <EuiSpacer size="m" />
-                <WFOBasicTable<RelatedSubscription>
-                    data={relatedSubscriptions}
-                    columns={tableColumns}
-                    pagination={pagination}
-                    isLoading={isFetching}
-                    onDataSort={sortHandler}
-                    dataSorting={dataSorting}
-                    onCriteriaChange={onCriteriaChange}
-                />
+                {(relatedSubscriptions && relatedSubscriptions.length > 0 && (
+                    <>
+                        <WFOBasicTable<RelatedSubscription>
+                            data={relatedSubscriptions}
+                            columns={tableColumns}
+                            pagination={pagination}
+                            isLoading={isFetching}
+                            onDataSort={sortHandler}
+                            dataSorting={dataSorting}
+                            onCriteriaChange={onCriteriaChange}
+                        />
+                    </>
+                )) || (
+                    <WFONoResults
+                        text={t('noRelatedSubscriptions')}
+                        icon={
+                            <WFOSearchStrikethrough color={theme.colors.link} />
+                        }
+                    />
+                )}
             </>
-        )) || (
-            <WFONoResults
-                text={t('noRelatedSubscriptions')}
-                icon={<WFOSearchStrikethrough color={theme.colors.link} />}
-            />
         )
     );
 };
