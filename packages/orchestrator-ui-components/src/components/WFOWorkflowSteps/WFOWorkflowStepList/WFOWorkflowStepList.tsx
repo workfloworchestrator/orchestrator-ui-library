@@ -4,6 +4,7 @@ import { Step } from '../../../types';
 import { WFOStepListHeader } from './WFOStepListHeader';
 import { StepListItem, WFOStepList, WFOStepListRef } from '../WFOStepList';
 import { WFOJsonCodeBlock } from '../../WFOJsonCodeBlock/WFOJsonCodeBlock';
+import { updateStepListItems } from '../stepListUtils';
 
 export interface WFOWorkflowStepListProps {
     steps: Step[];
@@ -28,30 +29,13 @@ export const WFOWorkflowStepList = React.forwardRef(
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);
 
-        useEffect(() => {
-            const currentExpandedStateByStepId = stepListItems.reduce<
-                Map<string, boolean>
-            >(
-                (previousValue, currentValue) =>
-                    previousValue.set(
-                        currentValue.step.stepId,
-                        currentValue.isExpanded,
-                    ),
-                new Map(),
-            );
-
-            const updatedStepListItems: StepListItem[] = steps.map((step) => {
-                const isCurrentlyExpanded = currentExpandedStateByStepId.get(
-                    step.stepId,
-                );
-                return {
-                    step,
-                    isExpanded: isCurrentlyExpanded ?? false,
-                };
-            });
-
-            setStepListItems(updatedStepListItems);
-        }, [steps]);
+        useEffect(
+            () =>
+                setStepListItems((previousStepListItems) =>
+                    updateStepListItems(previousStepListItems, steps),
+                ),
+            [steps],
+        );
 
         const updateStepListItem = (
             stepListItemToUpdate: StepListItem,
