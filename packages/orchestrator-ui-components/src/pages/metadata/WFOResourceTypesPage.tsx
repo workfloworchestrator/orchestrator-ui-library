@@ -6,6 +6,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    WFOProductBlockBadge,
 } from '../../components';
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 import { WFOTableWithFilter } from '../../components';
@@ -79,6 +80,7 @@ export const WFOResourceTypesPage = () => {
             field: RESOURCE_TYPE_FIELD_TYPE,
             name: t('type'),
             width: '200',
+            render: (value) => <WFOProductBlockBadge>{value}</WFOProductBlockBadge>
         },
         description: {
             field: RESOURCE_TYPE_FIELD_DESCRIPTION,
