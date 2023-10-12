@@ -66,7 +66,7 @@ export const WFORelatedSubscriptions = ({
         GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY,
         {
             first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex,
+            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             subscriptionId: subscriptionId,
             sortBy: dataDisplayParams.sortBy,
             terminatedSubscriptionFilter: hideTerminatedSubscriptions
