@@ -56,6 +56,7 @@ export const WFORelatedSubscriptions = ({
             first: dataDisplayParams.pageSize,
             after: dataDisplayParams.pageIndex,
             subscriptionId: subscriptionId,
+            sortBy: dataDisplayParams.sortBy,
         },
         'relatedSubscriptions',
     );

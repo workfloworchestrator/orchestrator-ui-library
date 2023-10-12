@@ -17,13 +17,18 @@ export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<
         $subscriptionId: String!
         $first: IntType!
         $after: IntType!
+        $sortBy: [GraphqlSort!]
     ) {
         subscriptions(
             filterBy: { value: $subscriptionId, field: "subscriptionId" }
         ) {
             page {
                 subscriptionId
-                inUseBySubscriptions(first: $first, after: $after) {
+                inUseBySubscriptions(
+                    first: $first
+                    after: $after
+                    sortBy: $sortBy
+                ) {
                     page {
                         subscriptionId
                         customer {
