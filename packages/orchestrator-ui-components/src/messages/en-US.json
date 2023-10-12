@@ -50,16 +50,16 @@
             "name": "Name",
             "description": "Description",
             "tag": "Tag",
-            "status": "status",
+            "status": "Status",
             "resourceTypes": "Resource types",
             "createdAt": "Created",
             "endDate": "End date",
             "parentIds": "Parents"
         },
         "resourceTypes": {
-            "type": "Type",
+            "type": "Resource type",
             "description": "Description",
-            "resourceId": "Resource ID"
+            "resourceId": "Resource Id"
         },
         "workflows": {
             "name": "Name",
