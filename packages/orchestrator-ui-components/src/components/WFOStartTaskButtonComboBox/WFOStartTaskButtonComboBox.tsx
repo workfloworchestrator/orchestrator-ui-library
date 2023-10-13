@@ -25,15 +25,12 @@ export const WFOStartTaskButtonComboBox = () => {
         'taskWorkflows',
     );
 
-    const taskList: WorkflowComboBoxOption[] =
-        data?.workflows.page
-            .map((workflow) => {
-                return {
-                    label: workflow.description,
-                    data: { workflowName: workflow.name },
-                } as WorkflowComboBoxOption;
-            })
-            .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
+    const taskList: WorkflowComboBoxOption[] = (data?.workflows.page || [])
+        .map(({ name, description }) => ({
+            label: description ?? '',
+            data: { workflowName: name },
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
 
     const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
         const { workflowName } = selectedProduct.data;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
@@ -22,9 +22,9 @@ export const WFOSidebar: FC = () => {
     const router = useRouter();
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
 
-    const toggleMobile = useCallback(() => {
+    const toggleMobile = () => {
         setIsSideNavOpenOnMobile((openState) => !openState);
-    }, [setIsSideNavOpenOnMobile]);
+    };
 
     return (
         <EuiSideNav
