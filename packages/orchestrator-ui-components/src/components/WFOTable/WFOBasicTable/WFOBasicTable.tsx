@@ -95,7 +95,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
                 <WFOTableHeaderCell
                     sortDirection={sortDirection}
                     onClick={handleClick}
-                    sortable={sortable}
+                    isSortable={sortable}
                 >
                     {name}
                 </WFOTableHeaderCell>

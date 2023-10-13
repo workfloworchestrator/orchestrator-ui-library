@@ -8,7 +8,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
+        gap: theme.base / 2,
         backgroundColor: theme.colors.body,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.link,
