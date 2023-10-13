@@ -9,12 +9,12 @@ describe('getStepContent()', () => {
         confirmation_mail: 'testConfirmationMail',
     };
 
-    it('returns the same object as the input if showHiddenKeys is false', () => {
+    it('returns the same object as the input if showHiddenKeys is true', () => {
         const result = getStepContent(testStepState, true);
 
         expect(result).toEqual(testStepState);
     });
-    it('returns an object without hidden keys if showHiddenKeys is true', () => {
+    it('returns an object without hidden keys if showHiddenKeys is false', () => {
         const result = getStepContent(testStepState, false);
 
         expect(Object.keys(result).length).toEqual(2);
