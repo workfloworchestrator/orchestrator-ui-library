@@ -172,7 +172,14 @@ export const WFORelatedSubscriptions = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
                 <EuiSpacer size="m" />
-                {(relatedSubscriptions && relatedSubscriptions.length > 0 && !isFetching && (
+                {(
+                  (relatedSubscriptions && relatedSubscriptions.length > 0) && 
+                  (
+                    !isFetching || 
+                    // This situation represents the situation where the hideRelatedsubscriptions is being toggled
+                    // in which case we don't want to show the loadingState because it makes the page flicker
+                    (!hideTerminatedSubscriptions && relatedSubscriptions.length > 0)
+                  ) && (
                     <>
                         <WFOBasicTable<RelatedSubscription>
                             data={relatedSubscriptions}
