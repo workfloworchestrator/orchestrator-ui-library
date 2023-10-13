@@ -6,7 +6,7 @@ import { WFOSortDirectionIcon } from './WFOSortDirectionIcon';
 export type WFOTableHeaderCellProps = {
     sortDirection?: SortOrder;
     onClick?: () => void;
-    sortable?: boolean;
+    isSortable?: boolean;
     children: ReactNode;
 };
 
@@ -14,18 +14,18 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
     sortDirection,
     children,
     onClick,
-    sortable = true,
+    isSortable = true,
 }) => (
     <div
         css={{
             display: 'flex',
             alignItems: 'center',
-            cursor: sortable ? 'pointer' : 'not-allowed',
+            cursor: isSortable ? 'pointer' : 'not-allowed',
         }}
-        onClick={sortable ? onClick : undefined}
+        onClick={isSortable ? onClick : undefined}
     >
         <div>{children}</div>
-        {sortable && sortDirection ? (
+        {isSortable && sortDirection ? (
             <WFOSortDirectionIcon sortDirection={sortDirection} />
         ) : null}
     </div>
