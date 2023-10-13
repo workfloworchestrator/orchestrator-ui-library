@@ -144,6 +144,42 @@ describe('mapGroupedStepsToTimelineItems()', () => {
         };
         const testStep2: Step = {
             ...baseStep,
+            status: StepStatus.FAILED,
+            stepId: '222',
+        };
+        const testStep3: Step = {
+            ...baseStep,
+            status: StepStatus.SUCCESS,
+            stepId: '333',
+        };
+        const groupedSteps: GroupedStep[] = [
+            {
+                steps: [testStep1, testStep2, testStep3],
+            },
+        ];
+
+        // When
+        const result = mapGroupedStepsToTimelineItems(groupedSteps);
+
+        // Then
+        expect(result.length).toEqual(1);
+
+        const { processStepStatus, stepDetail, id, value } = result[0];
+        expect(processStepStatus).toEqual(StepStatus.SUCCESS);
+        expect(stepDetail).toEqual(testStep3.name);
+        expect(id).toEqual(testStep3.stepId);
+        expect(value).toEqual(2);
+    });
+
+    it('returns an timeline item with value undefined if there are multiple non-failed steps', () => {
+        // Given
+        const testStep1: Step = {
+            ...baseStep,
+            status: StepStatus.PENDING,
+            stepId: '111',
+        };
+        const testStep2: Step = {
+            ...baseStep,
             status: StepStatus.SUCCESS,
             stepId: '222',
         };
@@ -158,11 +194,6 @@ describe('mapGroupedStepsToTimelineItems()', () => {
 
         // Then
         expect(result.length).toEqual(1);
-
-        const { processStepStatus, stepDetail, id, value } = result[0];
-        expect(processStepStatus).toEqual(StepStatus.SUCCESS);
-        expect(stepDetail).toEqual(testStep2.name);
-        expect(id).toEqual(testStep2.stepId);
-        expect(value).toEqual(2);
+        expect(result[0].value).toBeUndefined();
     });
 });

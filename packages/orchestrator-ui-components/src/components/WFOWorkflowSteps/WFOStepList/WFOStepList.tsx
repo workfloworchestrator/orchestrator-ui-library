@@ -41,15 +41,27 @@ export const WFOStepList = React.forwardRef(
         let stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
-            scrollToStep: (stepId: string) => {
-                stepReferences.current.get(stepId)?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                const foundStepListItem = stepListItems.find(
-                    (value) => value.step.stepId === stepId,
-                );
-                if (foundStepListItem) {
-                    onTriggerExpandStepListItem(foundStepListItem);
+            scrollToStep: async (stepId: string) => {
+                // Applied a promise construction to wait for the browser to expand the step before scrolling
+                try {
+                    await new Promise((resolve, reject) => {
+                        const foundStepListItem = stepListItems.find(
+                            (value) => value.step.stepId === stepId,
+                        );
+
+                        if (!foundStepListItem) {
+                            return reject(undefined);
+                        }
+
+                        return resolve(
+                            onTriggerExpandStepListItem(foundStepListItem),
+                        );
+                    });
+                    stepReferences.current.get(stepId)?.scrollIntoView({
+                        behavior: 'smooth',
+                    });
+                } catch {
+                    console.log('Error scrolling to step with stepId ', stepId);
                 }
             },
         }));
@@ -115,6 +127,7 @@ export const WFOStepList = React.forwardRef(
                                 stepDelta={delta}
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
+                                isStartStep={index === 0}
                             />
                         </div>
                     );

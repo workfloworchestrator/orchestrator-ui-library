@@ -1,11 +1,5 @@
 import React, { LegacyRef } from 'react';
-import {
-    EuiCodeBlock,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
@@ -16,14 +10,16 @@ import { formatDate } from '../../../utils';
 import { WFOChevronDown, WFOChevronUp } from '../../../icons';
 import { calculateTimeDifference } from '../../../utils';
 import { getStepContent } from '../stepListUtils';
+import { WFOJsonCodeBlock } from '../../WFOJsonCodeBlock/WFOJsonCodeBlock';
 
 export interface WFOStepProps {
     step: Step;
     stepDelta: StepState;
     stepDetailIsOpen: boolean;
-    onToggleStepDetail: () => void;
     startedAt: string;
     showHiddenKeys: boolean;
+    onToggleStepDetail: () => void;
+    isStartStep?: boolean;
 }
 
 export const WFOStep = React.forwardRef(
@@ -35,6 +31,7 @@ export const WFOStep = React.forwardRef(
             onToggleStepDetail,
             startedAt,
             showHiddenKeys,
+            isStartStep = false,
         }: WFOStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -42,18 +39,18 @@ export const WFOStep = React.forwardRef(
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
-            stepHeaderStyle,
+            getStepHeaderStyle,
             stepHeaderRightStyle,
             stepListContentBoldTextStyle,
             stepDurationStyle,
-            stepToggleExpandStyle,
             stepRowStyle,
-            euiCodeBlockStyle,
+            getStepToggleExpandStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
         const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
 
         const stepContent = getStepContent(stepDelta, showHiddenKeys);
+        const hasStepContent = Object.keys(stepContent).length > 0;
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -100,10 +97,13 @@ export const WFOStep = React.forwardRef(
             <div ref={ref}>
                 <EuiPanel>
                     <EuiFlexGroup
-                        css={stepHeaderStyle}
-                        onClick={() => onToggleStepDetail()}
+                        css={getStepHeaderStyle(hasStepContent)}
+                        onClick={() => hasStepContent && onToggleStepDetail()}
                     >
-                        <WFOStepStatusIcon stepStatus={status} />
+                        <WFOStepStatusIcon
+                            stepStatus={status}
+                            isStartStep={isStartStep}
+                        />
 
                         <EuiFlexItem grow={0}>
                             <EuiText css={stepListContentBoldTextStyle}>
@@ -134,7 +134,9 @@ export const WFOStep = React.forwardRef(
                                     </EuiFlexItem>
                                     <EuiFlexItem
                                         grow={0}
-                                        css={stepToggleExpandStyle}
+                                        css={getStepToggleExpandStyle(
+                                            hasStepContent,
+                                        )}
                                     >
                                         {(stepDetailIsOpen && (
                                             <WFOChevronUp />
@@ -144,18 +146,9 @@ export const WFOStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {stepDetailIsOpen &&
-                        Object.keys(stepContent).length > 0 && (
-                            <EuiCodeBlock
-                                css={euiCodeBlockStyle}
-                                isCopyable={true}
-                                language={'json'}
-                                lineNumbers={true}
-                                overflowHeight={6000}
-                            >
-                                {JSON.stringify(stepContent, null, 4)}
-                            </EuiCodeBlock>
-                        )}
+                    {hasStepContent && stepDetailIsOpen && (
+                        <WFOJsonCodeBlock data={stepContent} />
+                    )}
                     {stepDetailIsOpen && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(

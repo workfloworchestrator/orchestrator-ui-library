@@ -18,6 +18,9 @@ export const isNonRetryableState = (status: StepStatus): boolean => {
     );
 };
 
+export const isFailedStep = (step: Step): boolean =>
+    step.status === StepStatus.FAILED;
+
 const stepsShouldBeMerged = (previousStep: Step, currentStep: Step) =>
     !isNonRetryableState(previousStep.status) &&
     previousStep.name === currentStep.name;
@@ -79,7 +82,7 @@ export const mapGroupedStepToTimelineItem = (
         }),
         {
             ...mapStepToTimelineItem(groupedStep.steps[0]),
-            value: groupedStep.steps.length,
+            value: groupedStep.steps.filter(isFailedStep).length || undefined,
         },
     );
 };

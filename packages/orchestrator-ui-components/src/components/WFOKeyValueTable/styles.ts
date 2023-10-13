@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
 export const getStyles = (theme: EuiThemeComputed) => {
@@ -29,7 +29,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         borderBottomLeftRadius: radius,
     });
 
-    const valueColumnStyle: SerializedStyles = css({
+    const valueColumnStyle = css({
         padding: padding,
         borderTopRightRadius: radius,
         borderBottomRightRadius: radius,
@@ -57,7 +57,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         paddingBottom: 0,
     });
 
-    const clickable: SerializedStyles = css({
+    const clickable = css({
         marginLeft: clipboardIconMargin,
         cursor: 'pointer',
     });

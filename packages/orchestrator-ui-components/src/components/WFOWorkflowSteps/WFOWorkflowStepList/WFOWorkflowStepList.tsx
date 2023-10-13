@@ -1,9 +1,10 @@
-import React, { Ref, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
 import { WFOStepListHeader } from './WFOStepListHeader';
-import { WFOStepsRawJson } from '../WFOStepsRawJson';
 import { StepListItem, WFOStepList, WFOStepListRef } from '../WFOStepList';
+import { WFOJsonCodeBlock } from '../../WFOJsonCodeBlock/WFOJsonCodeBlock';
+import { updateStepListItems } from '../stepListUtils';
 
 export interface WFOWorkflowStepListProps {
     steps: Step[];
@@ -24,8 +25,18 @@ export const WFOWorkflowStepList = React.forwardRef(
             step,
             isExpanded: false,
         }));
+
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);
+
+        useEffect(
+            () =>
+                setStepListItems((previousStepListItems) =>
+                    updateStepListItems(previousStepListItems, steps),
+                ),
+            [steps],
+        );
+
         const updateStepListItem = (
             stepListItemToUpdate: StepListItem,
             updateFunction: (stepListItem: StepListItem) => StepListItem,
@@ -79,7 +90,7 @@ export const WFOWorkflowStepList = React.forwardRef(
                 />
 
                 {showRaw ? (
-                    <WFOStepsRawJson steps={steps} />
+                    <WFOJsonCodeBlock data={steps} />
                 ) : (
                     <WFOStepList
                         ref={reference}
