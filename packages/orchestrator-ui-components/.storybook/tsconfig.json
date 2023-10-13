@@ -1,0 +1,22 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "jsxImportSource": "@emotion/react"
+    },
+    "exclude": [
+        "../**/*.spec.ts",
+        "../**/*.spec.js",
+        "../**/*.spec.tsx",
+        "../**/*.spec.jsx"
+    ],
+    "include": [
+        "../src/**/*.stories.ts",
+        "../src/**/*.stories.js",
+        "../src/**/*.stories.jsx",
+        "../src/**/*.stories.tsx",
+        "../src/**/*.stories.mdx",
+        "*.js",
+        "*.tsx"
+    ]
+}
