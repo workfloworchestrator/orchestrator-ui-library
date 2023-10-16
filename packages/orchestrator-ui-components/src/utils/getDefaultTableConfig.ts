@@ -14,6 +14,7 @@ import type { StoredTableConfig } from '../components';
 import {
     ProductBlockDefinition,
     ProductDefinition,
+    ResourceTypeDefinition,
     WorkflowDefinition,
 } from '../types';
 
@@ -41,6 +42,12 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
                 'createdAt',
             ];
             return getTableConfig<T>(productBlockColumns as (keyof T)[]);
+
+        case METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY:
+            const resourceTypeColumns: (keyof ResourceTypeDefinition)[] = [
+                'resourceTypeId',
+            ];
+            return getTableConfig<T>(resourceTypeColumns as (keyof T)[]);
 
         case METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY:
             const productColumns: (keyof ProductDefinition)[] = [
@@ -82,7 +89,6 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
                 'productName',
             ];
             return getTableConfig<T>(subscriptionColumns as (keyof T)[]);
-        case METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY:
         default:
             return getTableConfig();
     }
