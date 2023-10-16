@@ -36,9 +36,9 @@
         },
         "products": {
             "id": "ID",
-            "name": "Naam",
-            "description": "Beschrijving",
-            "tag": "Tag",
+            "name": "Product",
+            "description": "Product beschrijving",
+            "tag": "Product tag",
             "productType": "Type",
             "status": "Status",
             "productBlocks": "Product blocks",
@@ -47,8 +47,8 @@
         },
         "productBlocks": {
             "id": "ID",
-            "name": "Naam",
-            "description": "Beschrijving",
+            "name": "Product block",
+            "description": "Product block beschrijving",
             "tag": "Tag",
             "status": "Status",
             "resourceTypes": "Resource types",
@@ -57,15 +57,15 @@
             "parentIds": "Parents"
         },
         "resourceTypes": {
-            "type": "Type",
-            "description": "Beschrijving",
-            "resourceId": "Resource ID"
+            "type": "Resource type",
+            "description": "Resource type beschrijving",
+            "resourceId": "Resource Id"
         },
         "workflows": {
-            "name": "Naam",
-            "description": "Beschrijving",
+            "name": "Workflow",
+            "description": "Workflow beschrijving",
             "target": "Target",
-            "productTags": "Product Tags",
+            "productTags": "Product tags",
             "createdAt": "Aangemaakt"
         }
     },

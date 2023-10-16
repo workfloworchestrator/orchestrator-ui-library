@@ -36,9 +36,9 @@
         },
         "products": {
             "id": "ID",
-            "name": "Name",
-            "description": "Description",
-            "tag": "Tag",
+            "name": "Product",
+            "tag": "Product tag",
+            "description": "Product description",
             "productType": "Type",
             "status": "Status",
             "productBlocks": "Product blocks",
@@ -47,8 +47,8 @@
         },
         "productBlocks": {
             "id": "ID",
-            "name": "Name",
-            "description": "Description",
+            "name": "Product block",
+            "description": "Product block description",
             "tag": "Tag",
             "status": "Status",
             "resourceTypes": "Resource types",
@@ -58,14 +58,14 @@
         },
         "resourceTypes": {
             "type": "Resource type",
-            "description": "Description",
+            "description": "Resource type description",
             "resourceId": "Resource Id"
         },
         "workflows": {
-            "name": "Name",
-            "description": "Description",
+            "name": "Workflow",
+            "description": "Workflow description",
             "target": "Target",
-            "productTags": "Product Tags",
+            "productTags": "Product tags",
             "createdAt": "Created"
         }
     },
@@ -169,7 +169,7 @@
             "status": "Status",
             "id": "ID",
             "blockTitleSubscriptionDetails": "Subscription details",
-            "blockTitleFixedInputs": "Fixed Inputs",
+            "blockTitleFixedInputs": "Fixed inputs",
             "blockTitleProductInfo": "Product Info",
             "subscriptionId": "Subscription ID",
             "description": "Description",
