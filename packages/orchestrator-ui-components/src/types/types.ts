@@ -67,7 +67,7 @@ export enum BadgeType {
     WORKFLOW = 'workflow',
     FIXEDINPUT = 'fixedinput',
     RESOURCETYPE = 'resourcetype',
-    RODUCTBLOCK = 'productblock',
+    PRODUCTBLOCK = 'productblock',
     TAG = 'tag',
     PRODUCTTAG = 'producttag',
 }

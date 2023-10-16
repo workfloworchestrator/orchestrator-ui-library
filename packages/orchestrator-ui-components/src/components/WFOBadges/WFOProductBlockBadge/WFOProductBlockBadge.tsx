@@ -35,7 +35,7 @@ export function WFOProductBlockBadge({
                     textColor: successText,
                 };
             case BadgeType.PRODUCTTAG:
-            case BadgeType.RODUCTBLOCK:
+            case BadgeType.PRODUCTBLOCK:
                 return {
                     badgeColor: toSecondaryColor(primary),
                     textColor: primaryText,

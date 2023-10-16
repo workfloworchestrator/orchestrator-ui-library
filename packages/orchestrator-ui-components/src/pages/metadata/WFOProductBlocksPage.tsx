@@ -95,7 +95,7 @@ export const WFOProductBlocksPage = () => {
             name: t('name'),
             width: '200',
             render: (name) => (
-                <WFOProductBlockBadge badgeType={BadgeType.RODUCTBLOCK}>
+                <WFOProductBlockBadge badgeType={BadgeType.PRODUCTBLOCK}>
                     {name}
                 </WFOProductBlockBadge>
             ),
