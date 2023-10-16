@@ -68,7 +68,7 @@ export enum BadgeType {
     FIXEDINPUT = 'fixedinput',
     RESOURCETYPE = 'resourcetype',
     PRODUCTBLOCK = 'productblock',
-    TAG = 'tag',
+    PRODUCTBLOCKTAG = 'productblocktag',
     PRODUCTTAG = 'producttag',
 }
 
