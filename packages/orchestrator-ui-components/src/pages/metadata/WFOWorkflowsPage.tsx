@@ -80,9 +80,9 @@ export const WFOWorkflowsPage = () => {
             name: t('name'),
             width: '200',
             render: (name) => (
-                    <WFOProductBlockBadge badgeType={BadgeType.WORKFLOW}>
-                        {name}
-                    </WFOProductBlockBadge>
+                <WFOProductBlockBadge badgeType={BadgeType.WORKFLOW}>
+                    {name}
+                </WFOProductBlockBadge>
             ),
         },
         description: {
@@ -101,7 +101,10 @@ export const WFOWorkflowsPage = () => {
             render: (productTags) => (
                 <>
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge key={index} badgeType={BadgeType.PRODUCTTAG}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.PRODUCTTAG}
+                        >
                             {productTag}
                         </WFOProductBlockBadge>
                     ))}
@@ -110,7 +113,10 @@ export const WFOWorkflowsPage = () => {
             renderDetails: (productTags) => (
                 <EuiBadgeGroup gutterSize="s">
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge key={index} badgeType={BadgeType.PRODUCTTAG}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.PRODUCTTAG}
+                        >
                             {productTag}
                         </WFOProductBlockBadge>
                     ))}

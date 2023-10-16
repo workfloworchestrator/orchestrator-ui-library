@@ -9,13 +9,23 @@ export type WFOProductBlockBadgeProps = {
 };
 
 export function WFOProductBlockBadge({
-    children, badgeType,
+    children,
+    badgeType,
 }: WFOProductBlockBadgeProps) {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const getBadgeColorFromType = (badgeType: BadgeType) => {
         const {
-            danger, dangerText, lightShade, primary, primaryText, success, successText, text, warning, warningText,
+            danger,
+            dangerText,
+            lightShade,
+            primary,
+            primaryText,
+            success,
+            successText,
+            text,
+            warning,
+            warningText,
         } = theme.colors;
 
         switch (badgeType) {

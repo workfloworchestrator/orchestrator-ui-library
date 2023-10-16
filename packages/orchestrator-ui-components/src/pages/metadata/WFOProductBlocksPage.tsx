@@ -95,9 +95,9 @@ export const WFOProductBlocksPage = () => {
             name: t('name'),
             width: '200',
             render: (name) => (
-                    <WFOProductBlockBadge badgeType={BadgeType.RODUCTBLOCK}>
-                        {name}
-                    </WFOProductBlockBadge>
+                <WFOProductBlockBadge badgeType={BadgeType.RODUCTBLOCK}>
+                    {name}
+                </WFOProductBlockBadge>
             ),
         },
         tag: {
@@ -114,7 +114,7 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => <WFOProductStatusBadge status={value}/>,
+            render: (value) => <WFOProductStatusBadge status={value} />,
         },
         resourceTypes: {
             field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,
@@ -122,7 +122,10 @@ export const WFOProductBlocksPage = () => {
             render: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index} badgeType={BadgeType.RESOURCETYPE}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.RESOURCETYPE}
+                        >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}
@@ -131,7 +134,10 @@ export const WFOProductBlocksPage = () => {
             renderDetails: (resourceTypes) => (
                 <EuiBadgeGroup gutterSize="s">
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index} badgeType={BadgeType.RESOURCETYPE}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.RESOURCETYPE}
+                        >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}
