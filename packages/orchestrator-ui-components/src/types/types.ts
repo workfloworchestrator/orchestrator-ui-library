@@ -63,6 +63,15 @@ export enum ProductLifecycleStatus {
     END_OF_LIFE = 'end of life',
 }
 
+export enum BadgeType {
+    WORKFLOW = 'workflow',
+    FIXEDINPUT = 'fixedinput',
+    RESOURCETYPE = 'resourcetype',
+    RODUCTBLOCK = 'productblock',
+    TAG = 'tag',
+    PRODUCTTAG = 'producttag',
+}
+
 export type FixedInputsBase = GenericField;
 
 export interface FixedInputDefinition {

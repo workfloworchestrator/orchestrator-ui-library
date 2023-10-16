@@ -18,7 +18,7 @@ import {
 import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import type { WorkflowDefinition } from '../../types';
-import { SortOrder } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import { StoredTableConfig } from '../../components';
 
 import {
@@ -79,6 +79,11 @@ export const WFOWorkflowsPage = () => {
             field: 'name',
             name: t('name'),
             width: '200',
+            render: (name) => (
+                    <WFOProductBlockBadge badgeType={BadgeType.WORKFLOW}>
+                        {name}
+                    </WFOProductBlockBadge>
+            ),
         },
         description: {
             field: 'description',
@@ -96,7 +101,7 @@ export const WFOWorkflowsPage = () => {
             render: (productTags) => (
                 <>
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.PRODUCTTAG}>
                             {productTag}
                         </WFOProductBlockBadge>
                     ))}
@@ -105,7 +110,7 @@ export const WFOWorkflowsPage = () => {
             renderDetails: (productTags) => (
                 <EuiBadgeGroup gutterSize="s">
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.PRODUCTTAG}>
                             {productTag}
                         </WFOProductBlockBadge>
                     ))}

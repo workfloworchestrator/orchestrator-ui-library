@@ -17,7 +17,7 @@ import {
 } from '../../components';
 
 import type { ResourceTypeDefinition } from '../../types';
-import { SortOrder } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import type { StoredTableConfig } from '../../components';
 import {
     useDataDisplayParams,
@@ -80,7 +80,7 @@ export const WFOResourceTypesPage = () => {
             field: RESOURCE_TYPE_FIELD_TYPE,
             name: t('type'),
             width: '200',
-            render: (value) => <WFOProductBlockBadge>{value}</WFOProductBlockBadge>
+            render: (value) => <WFOProductBlockBadge badgeType={BadgeType.RESOURCETYPE}>{value}</WFOProductBlockBadge>
         },
         description: {
             field: RESOURCE_TYPE_FIELD_DESCRIPTION,

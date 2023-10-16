@@ -23,7 +23,7 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
-import { SortOrder } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import type { StoredTableConfig } from '../../components';
 import {
     useDataDisplayParams,
@@ -94,22 +94,27 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_NAME,
             name: t('name'),
             width: '200',
+            render: (name) => (
+                    <WFOProductBlockBadge badgeType={BadgeType.RODUCTBLOCK}>
+                        {name}
+                    </WFOProductBlockBadge>
+            ),
+        },
+        tag: {
+            field: PRODUCT_BLOCK_FIELD_TAG,
+            name: t('tag'),
+            width: '180',
         },
         description: {
             field: PRODUCT_BLOCK_FIELD_DESCRIPTION,
             name: t('description'),
             width: '400',
         },
-        tag: {
-            field: PRODUCT_BLOCK_FIELD_TAG,
-            name: t('tag'),
-            width: '90',
-        },
         status: {
             field: PRODUCT_BLOCK_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => <WFOProductStatusBadge status={value} />,
+            render: (value) => <WFOProductStatusBadge status={value}/>,
         },
         resourceTypes: {
             field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,
@@ -117,7 +122,7 @@ export const WFOProductBlocksPage = () => {
             render: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.RESOURCETYPE}>
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}
@@ -126,7 +131,7 @@ export const WFOProductBlocksPage = () => {
             renderDetails: (resourceTypes) => (
                 <EuiBadgeGroup gutterSize="s">
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.RESOURCETYPE}>
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}

@@ -20,7 +20,7 @@ import {
 } from '../../components';
 
 import type { ProductDefinition } from '../../types';
-import { SortOrder } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 
 import {
     useDataDisplayParams,
@@ -89,14 +89,16 @@ export const WFOProductsPage = () => {
             name: t('name'),
             width: '200',
         },
+        tag: {
+            field: PRODUCT_FIELD_TAG,
+            name: t('tag'),
+            width: '120',
+            render: (value) => <WFOProductBlockBadge badgeType={BadgeType.PRODUCTTAG}>{value}</WFOProductBlockBadge>
+        },
         description: {
             field: PRODUCT_FIELD_DESCRIPTION,
             name: t('description'),
             width: '400',
-        },
-        tag: {
-            field: PRODUCT_FIELD_TAG,
-            name: t('tag'),
         },
         productType: {
             field: PRODUCT_FIELD_PRODUCT_TYPE,
@@ -108,27 +110,27 @@ export const WFOProductsPage = () => {
             width: '90',
             render: (value) => <WFOProductStatusBadge status={value} />,
         },
-        productBlocks: {
-            field: PRODUCT_FIELD_PRODUCT_BLOCKS,
-            name: t('productBlocks'),
-            render: (productBlocks) => (
-                <>
-                    {productBlocks.map((block, index) => (
-                        <WFOProductBlockBadge key={index}>
-                            {block.name}
-                        </WFOProductBlockBadge>
-                    ))}
-                </>
-            ),
-        },
         fixedInputs: {
             field: PRODUCT_FIELD_FIXED_INPUTS,
             name: t('fixedInputs'),
             render: (fixedInputs) => (
                 <>
                     {fixedInputs.map((fixedInput, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.FIXEDINPUT}>
                             {`${fixedInput.name}: ${fixedInput.value}`}
+                        </WFOProductBlockBadge>
+                    ))}
+                </>
+            ),
+        },
+        productBlocks: {
+            field: PRODUCT_FIELD_PRODUCT_BLOCKS,
+            name: t('productBlocks'),
+            render: (productBlocks) => (
+                <>
+                    {productBlocks.map((block, index) => (
+                        <WFOProductBlockBadge key={index} badgeType={BadgeType.PRODUCTTAG}>
+                            {block.name}
                         </WFOProductBlockBadge>
                     ))}
                 </>
