@@ -34,7 +34,7 @@ export function WFOProductBlockBadge({
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
                 };
-            case BadgeType.PRODUCTTAG:
+            case BadgeType.PRODUCTBLOCKTAG:
             case BadgeType.PRODUCTBLOCK:
                 return {
                     badgeColor: toSecondaryColor(primary),
@@ -50,7 +50,7 @@ export function WFOProductBlockBadge({
                     badgeColor: toSecondaryColor(warning),
                     textColor: warningText,
                 };
-            case BadgeType.PRODUCTBLOCKTAG:
+            case BadgeType.PRODUCTTAG:
             default:
                 return {
                     badgeColor: lightShade,

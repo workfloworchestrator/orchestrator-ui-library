@@ -138,7 +138,7 @@ export const WFOProductsPage = () => {
                     {productBlocks.map((block, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.PRODUCTTAG}
+                            badgeType={BadgeType.PRODUCTBLOCK}
                         >
                             {block.name}
                         </WFOProductBlockBadge>
