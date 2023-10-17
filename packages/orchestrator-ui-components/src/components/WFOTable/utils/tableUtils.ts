@@ -1,10 +1,8 @@
 import type { Criteria } from '@elastic/eui';
 import { SortOrder } from '../../../types';
 
-import type {
-    DataDisplayReturnValues,
-    DataDisplayParams,
-} from '../../../hooks';
+import type { DataDisplayReturnValues } from '../../../hooks';
+import { WFODataSorting } from './columns';
 
 export const determinePageIndex = (pageIndex: number, pageSize: number) =>
     Math.floor(pageIndex / pageSize);
@@ -25,29 +23,12 @@ export const determineNewSortOrder = <T>(
 
 export const getDataSortHandler =
     <Type>(
-        dataDisplayParams: DataDisplayParams<Type>,
         setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
     ) =>
-    (newSortField: keyof Type) => {
-        const newOrder = (() => {
-            if (
-                dataDisplayParams.sortBy &&
-                dataDisplayParams.sortBy.order &&
-                dataDisplayParams.sortBy.field
-            ) {
-                return determineNewSortOrder<Type>(
-                    dataDisplayParams.sortBy.field,
-                    dataDisplayParams.sortBy.order,
-                    newSortField,
-                );
-            }
-
-            return SortOrder.ASC;
-        })();
-
+    ({ field, sortOrder }: WFODataSorting<Type>) => {
         setDataDisplayParam('sortBy', {
-            field: newSortField,
-            order: newOrder,
+            field: field,
+            order: sortOrder,
         });
     };
 

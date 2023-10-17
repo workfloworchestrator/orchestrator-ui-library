@@ -30,7 +30,7 @@ export type WFOBasicTableProps<T> = {
     pagination?: Pagination;
     isLoading?: boolean;
     onCriteriaChange?: (criteria: Criteria<T>) => void;
-    onDataSort?: (columnId: keyof T) => void;
+    onUpdateDataSorting?: (updatedDataSorting: WFODataSorting<T>) => void;
 };
 
 export const WFOBasicTable = <T,>({
@@ -41,7 +41,7 @@ export const WFOBasicTable = <T,>({
     pagination,
     isLoading,
     onCriteriaChange,
-    onDataSort,
+    onUpdateDataSorting,
 }: WFOBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle } = getStyles(theme);
@@ -54,7 +54,7 @@ export const WFOBasicTable = <T,>({
                 columns,
                 hiddenColumns,
                 dataSorting,
-                onDataSort,
+                onUpdateDataSorting,
             )}
             pagination={pagination}
             onChange={onCriteriaChange}
@@ -67,7 +67,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
     tableColumns: WFOBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: WFODataSorting<T>,
-    onDataSort?: (columnId: keyof T) => void,
+    onDataSort?: (updatedDataSorting: WFODataSorting<T>) => void,
 ): EuiBasicTableColumn<T>[] {
     function isVisibleColumn(columnKey: string) {
         return !hiddenColumns?.includes(columnKey as keyof T);
@@ -79,10 +79,10 @@ function mapWFOTableColumnsToEuiColumns<T>(
             tableColumns[typedColumnKey];
         const { name, render, width, description, sortable } = column;
 
-        const sortDirection =
+        const sortOrder =
             dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
 
-        const handleClick = () => onDataSort?.(typedColumnKey);
+        // Todo introduce a handleSetSortOrder...
 
         // Not spreading the column object here as it might contain additional props.
         // EUI does not handle extra props well.
@@ -93,8 +93,10 @@ function mapWFOTableColumnsToEuiColumns<T>(
             field: typedColumnKey,
             name: name && (
                 <WFOTableHeaderCell
-                    sortDirection={sortDirection}
-                    onClick={handleClick}
+                    sortOrder={sortOrder}
+                    onSetSortOrder={(sortOrder) =>
+                        onDataSort?.({ field: typedColumnKey, sortOrder })
+                    }
                     isSortable={sortable}
                 >
                     {name}

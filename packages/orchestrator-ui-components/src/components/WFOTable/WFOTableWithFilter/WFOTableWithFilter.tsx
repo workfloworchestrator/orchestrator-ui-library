@@ -53,7 +53,7 @@ export type WFOTableWithFilterProps<T> = {
     detailModalTitle?: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
-    onUpdateDataSort: (newSortColumnId: keyof T) => void;
+    onUpdateDataSort: (dataSorting: WFODataSorting<T>) => void;
 };
 
 export const WFOTableWithFilter = <T,>({
@@ -201,7 +201,7 @@ export const WFOTableWithFilter = <T,>({
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
-                onDataSort={onUpdateDataSort}
+                onUpdateDataSorting={onUpdateDataSort}
                 pagination={pagination}
                 isLoading={isLoading}
                 onCriteriaChange={onCriteriaChange}

@@ -210,7 +210,6 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
                 setDataDisplayParam,
             )}
             onUpdateDataSort={getDataSortHandler<ProcessListItem>(
-                dataDisplayParams,
                 setDataDisplayParam,
             )}
         />

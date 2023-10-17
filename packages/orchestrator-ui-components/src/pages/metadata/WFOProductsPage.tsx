@@ -175,7 +175,6 @@ export const WFOProductsPage = () => {
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductDefinition>(
-                    dataDisplayParams,
                     setDataDisplayParam,
                 )}
                 onUpdatePage={getPageChangeHandler<ProductDefinition>(

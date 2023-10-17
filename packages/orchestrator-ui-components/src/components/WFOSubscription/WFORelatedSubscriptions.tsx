@@ -127,11 +127,6 @@ export const WFORelatedSubscriptions = ({
         },
     };
 
-    const sortHandler = getDataSortHandler<RelatedSubscription>(
-        dataDisplayParams,
-        setDataDisplayParam,
-    );
-
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
@@ -147,11 +142,8 @@ export const WFORelatedSubscriptions = ({
     const onUpdatePage =
         getPageChangeHandler<RelatedSubscription>(setDataDisplayParam);
 
-    const onCriteriaChange = (criterion: Criteria<RelatedSubscription>) => {
-        if (criterion.page) {
-            onUpdatePage(criterion.page);
-        }
-    };
+    const handleCriteriaChange = (criterion: Criteria<RelatedSubscription>) =>
+        criterion.page && onUpdatePage(criterion.page);
 
     const toggleTerminatedSubscriptions = () => {
         setHideTerminatedSubscriptions((currentValue) => !currentValue);
@@ -180,9 +172,11 @@ export const WFORelatedSubscriptions = ({
                             columns={tableColumns}
                             pagination={pagination}
                             isLoading={isFetching}
-                            onDataSort={sortHandler}
+                            onUpdateDataSorting={getDataSortHandler(
+                                setDataDisplayParam,
+                            )}
                             dataSorting={dataSorting}
-                            onCriteriaChange={onCriteriaChange}
+                            onCriteriaChange={handleCriteriaChange}
                         />
                     </>
                 )) || (
