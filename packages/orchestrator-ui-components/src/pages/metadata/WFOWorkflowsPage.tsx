@@ -103,7 +103,7 @@ export const WFOWorkflowsPage = () => {
                     {productTags?.map((productTag, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.PRODUCTTAG}
+                            badgeType={BadgeType.PRODUCT_TAG}
                         >
                             {productTag}
                         </WFOProductBlockBadge>
@@ -115,7 +115,7 @@ export const WFOWorkflowsPage = () => {
                     {productTags?.map((productTag, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.PRODUCTTAG}
+                            badgeType={BadgeType.PRODUCT_TAG}
                         >
                             {productTag}
                         </WFOProductBlockBadge>

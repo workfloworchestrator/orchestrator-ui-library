@@ -3,7 +3,7 @@ import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-    METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
@@ -34,7 +34,7 @@ function getTableConfig<T>(
 
 export const getDefaultTableConfig = <T>(storageKey: string) => {
     switch (storageKey) {
-        case METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY:
+        case METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY:
             const productBlockColumns: (keyof ProductBlockDefinition)[] = [
                 'productBlockId',
                 'status',

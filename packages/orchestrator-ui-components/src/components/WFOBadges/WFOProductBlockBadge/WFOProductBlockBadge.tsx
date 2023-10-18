@@ -29,13 +29,13 @@ export function WFOProductBlockBadge({
         } = theme.colors;
 
         switch (badgeType) {
-            case BadgeType.RESOURCETYPE:
+            case BadgeType.RESOURCE_TYPE:
                 return {
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
                 };
-            case BadgeType.PRODUCTBLOCKTAG:
-            case BadgeType.PRODUCTBLOCK:
+            case BadgeType.PRODUCT_BLOCK_TAG:
+            case BadgeType.PRODUCT_BLOCK:
                 return {
                     badgeColor: toSecondaryColor(primary),
                     textColor: primaryText,
@@ -45,12 +45,12 @@ export function WFOProductBlockBadge({
                     badgeColor: toSecondaryColor(danger),
                     textColor: dangerText,
                 };
-            case BadgeType.FIXEDINPUT:
+            case BadgeType.FIXED_INPUT:
                 return {
                     badgeColor: toSecondaryColor(warning),
                     textColor: warningText,
                 };
-            case BadgeType.PRODUCTTAG:
+            case BadgeType.PRODUCT_TAG:
             default:
                 return {
                     badgeColor: lightShade,

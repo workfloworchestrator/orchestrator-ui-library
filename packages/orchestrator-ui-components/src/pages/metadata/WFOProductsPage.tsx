@@ -94,7 +94,7 @@ export const WFOProductsPage = () => {
             name: t('tag'),
             width: '120',
             render: (value) => (
-                <WFOProductBlockBadge badgeType={BadgeType.PRODUCTTAG}>
+                <WFOProductBlockBadge badgeType={BadgeType.PRODUCT_TAG}>
                     {value}
                 </WFOProductBlockBadge>
             ),
@@ -122,7 +122,7 @@ export const WFOProductsPage = () => {
                     {fixedInputs.map((fixedInput, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.FIXEDINPUT}
+                            badgeType={BadgeType.FIXED_INPUT}
                         >
                             {`${fixedInput.name}: ${fixedInput.value}`}
                         </WFOProductBlockBadge>
@@ -138,7 +138,7 @@ export const WFOProductsPage = () => {
                     {productBlocks.map((block, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.PRODUCTBLOCK}
+                            badgeType={BadgeType.PRODUCT_BLOCK}
                         >
                             {block.name}
                         </WFOProductBlockBadge>

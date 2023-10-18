@@ -5,7 +5,7 @@ import type { Pagination } from '@elastic/eui/src/components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
-    METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import {
     WFOProductBlockBadge,
@@ -58,7 +58,7 @@ export const WFOProductBlocksPage = () => {
         useState<StoredTableConfig<ProductBlockDefinition>>();
 
     const getStoredTableConfig = useStoredTableConfig<ProductBlockDefinition>(
-        METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+        METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     );
 
     useEffect(() => {
@@ -95,7 +95,7 @@ export const WFOProductBlocksPage = () => {
             name: t('name'),
             width: '200',
             render: (name) => (
-                <WFOProductBlockBadge badgeType={BadgeType.PRODUCTBLOCK}>
+                <WFOProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
                     {name}
                 </WFOProductBlockBadge>
             ),
@@ -124,7 +124,7 @@ export const WFOProductBlocksPage = () => {
                     {resourceTypes.map((resourceType, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.RESOURCETYPE}
+                            badgeType={BadgeType.RESOURCE_TYPE}
                         >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
@@ -136,7 +136,7 @@ export const WFOProductBlocksPage = () => {
                     {resourceTypes.map((resourceType, index) => (
                         <WFOProductBlockBadge
                             key={index}
-                            badgeType={BadgeType.RESOURCETYPE}
+                            badgeType={BadgeType.RESOURCE_TYPE}
                         >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
@@ -204,7 +204,9 @@ export const WFOProductBlocksPage = () => {
                 pagination={pagination}
                 isLoading={isFetching}
                 esQueryString={dataDisplayParams.esQueryString}
-                localStorageKey={METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={
+                    METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
+                }
             />
         </WFOMetadataPageLayout>
     );

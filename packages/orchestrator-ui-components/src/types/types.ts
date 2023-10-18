@@ -65,11 +65,11 @@ export enum ProductLifecycleStatus {
 
 export enum BadgeType {
     WORKFLOW = 'workflow',
-    FIXEDINPUT = 'fixedinput',
-    RESOURCETYPE = 'resourcetype',
-    PRODUCTBLOCK = 'productblock',
-    PRODUCTBLOCKTAG = 'productblocktag',
-    PRODUCTTAG = 'producttag',
+    FIXED_INPUT = 'fixed_input',
+    RESOURCE_TYPE = 'resource_type',
+    PRODUCT_BLOCK = 'product_block',
+    PRODUCT_BLOCK_TAG = 'product_block_tag',
+    PRODUCT_TAG = 'product_tag',
 }
 
 export type FixedInputsBase = GenericField;

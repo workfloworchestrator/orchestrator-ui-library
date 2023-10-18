@@ -81,7 +81,7 @@ export const WFOResourceTypesPage = () => {
             name: t('type'),
             width: '200',
             render: (value) => (
-                <WFOProductBlockBadge badgeType={BadgeType.RESOURCETYPE}>
+                <WFOProductBlockBadge badgeType={BadgeType.RESOURCE_TYPE}>
                     {value}
                 </WFOProductBlockBadge>
             ),
