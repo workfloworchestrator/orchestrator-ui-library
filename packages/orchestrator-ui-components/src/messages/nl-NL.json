@@ -10,7 +10,8 @@
         "close": "Sluiten",
         "newSubscription": "Nieuwe subscription",
         "newTask": "Nieuwe taak",
-        "search": "Zoeken"
+        "search": "Zoeken",
+        "noFailedTasks": "Geen gefaalde taken!"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"

@@ -8,6 +8,7 @@ import {
     useProcessStatusCountsQuery,
 } from '../../../hooks/useProcessStatusCountsQuery';
 import { WfoCheckmarkCircleFill } from '../../../icons';
+import { useTranslations } from 'next-intl';
 
 type TaskCountsSummary = {
     failed: number;
@@ -33,36 +34,11 @@ const getTaskCountsSummary = (
 };
 
 export const WfoFailedTasksBadge = () => {
+    const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
-    // <<<<<<< HEAD:packages/orchestrator-ui-components/src/components/WfoBadges/WfoFailedTasksBadge/WfoFailedTasksBadge.tsx
-    //     return (
-    //         <EuiToolTip
-    //             position="bottom"
-    //             content={
-    //                 <>
-    //                     <div>Failed: {taskCountsSummary.failed}</div>
-    //                     <div>
-    //                         Inconsistent data: {taskCountsSummary.inconsistentData}
-    //                     </div>
-    //                     <div>
-    //                         API unavailable: {taskCountsSummary.apiUnavailable}
-    //                     </div>
-    //                 </>
-    //             }
-    //         >
-    //             <WfoHeaderBadge
-    //                 color={theme.colors.emptyShade}
-    //                 textColor={theme.colors.shadow}
-    //                 iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
-    //             >
-    //                 {taskCountsSummary.total}
-    //             </WfoHeaderBadge>
-    //         </EuiToolTip>
-    //     );
-    // =======
     if (taskCountsSummary.total != 0) {
         return (
             <EuiToolTip
@@ -97,7 +73,7 @@ export const WfoFailedTasksBadge = () => {
                 position="bottom"
                 content={
                     <>
-                        <div>No failed tasks!</div>
+                        <div>{t('noFailedTasks')}</div>
                     </>
                 }
             >
