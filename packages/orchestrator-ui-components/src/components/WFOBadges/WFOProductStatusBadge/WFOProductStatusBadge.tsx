@@ -22,7 +22,7 @@ export const WFOProductStatusBadge: FC<WFOProductStatusBadgeProps> = ({
             successText,
         } = theme.colors;
 
-        switch (status) {
+        switch (status.toLowerCase()) {
             case ProductLifecycleStatus.ACTIVE:
                 return {
                     badgeColor: toSecondaryColor(success),
@@ -46,7 +46,7 @@ export const WFOProductStatusBadge: FC<WFOProductStatusBadgeProps> = ({
 
     return (
         <WFOBadge textColor={textColor} color={badgeColor}>
-            {status}
+            {status.toLowerCase()}
         </WFOBadge>
     );
 };

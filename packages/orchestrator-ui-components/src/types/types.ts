@@ -63,6 +63,15 @@ export enum ProductLifecycleStatus {
     END_OF_LIFE = 'end of life',
 }
 
+export enum BadgeType {
+    WORKFLOW = 'workflow',
+    FIXED_INPUT = 'fixed_input',
+    RESOURCE_TYPE = 'resource_type',
+    PRODUCT_BLOCK = 'product_block',
+    PRODUCT_BLOCK_TAG = 'product_block_tag',
+    PRODUCT_TAG = 'product_tag',
+}
+
 export type FixedInputsBase = GenericField;
 
 export interface FixedInputDefinition {
@@ -335,12 +344,12 @@ export enum Locale {
 }
 
 export enum SubscriptionStatus {
-    INITIAL = 'INITIAL',
-    ACTIVE = 'ACTIVE',
-    MIGRATING = 'MIGRATING',
-    DISABLED = 'DISABLED',
-    TERMINATED = 'TERMINATED',
-    PROVISIONING = 'PROVISIONING',
+    INITIAL = 'initial',
+    ACTIVE = 'active',
+    MIGRATING = 'migrating',
+    DISABLED = 'disabled',
+    TERMINATED = 'terminated',
+    PROVISIONING = 'provisioning',
 }
 
 export type Subscription = {

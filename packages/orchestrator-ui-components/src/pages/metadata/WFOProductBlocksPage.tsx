@@ -5,7 +5,7 @@ import type { Pagination } from '@elastic/eui/src/components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
-    METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import {
     WFOProductBlockBadge,
@@ -23,7 +23,7 @@ import type { WFOTableColumns, WFODataSorting } from '../../components';
 
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
-import { SortOrder } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import type { StoredTableConfig } from '../../components';
 import {
     useDataDisplayParams,
@@ -58,7 +58,7 @@ export const WFOProductBlocksPage = () => {
         useState<StoredTableConfig<ProductBlockDefinition>>();
 
     const getStoredTableConfig = useStoredTableConfig<ProductBlockDefinition>(
-        METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY,
+        METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     );
 
     useEffect(() => {
@@ -94,16 +94,21 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_NAME,
             name: t('name'),
             width: '200',
+            render: (name) => (
+                <WFOProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
+                    {name}
+                </WFOProductBlockBadge>
+            ),
+        },
+        tag: {
+            field: PRODUCT_BLOCK_FIELD_TAG,
+            name: t('tag'),
+            width: '180',
         },
         description: {
             field: PRODUCT_BLOCK_FIELD_DESCRIPTION,
             name: t('description'),
             width: '400',
-        },
-        tag: {
-            field: PRODUCT_BLOCK_FIELD_TAG,
-            name: t('tag'),
-            width: '90',
         },
         status: {
             field: PRODUCT_BLOCK_FIELD_STATUS,
@@ -117,7 +122,10 @@ export const WFOProductBlocksPage = () => {
             render: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.RESOURCE_TYPE}
+                        >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}
@@ -126,7 +134,10 @@ export const WFOProductBlocksPage = () => {
             renderDetails: (resourceTypes) => (
                 <EuiBadgeGroup gutterSize="s">
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge key={index}>
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.RESOURCE_TYPE}
+                        >
                             {resourceType.resourceType}
                         </WFOProductBlockBadge>
                     ))}
@@ -193,7 +204,9 @@ export const WFOProductBlocksPage = () => {
                 pagination={pagination}
                 isLoading={isFetching}
                 esQueryString={dataDisplayParams.esQueryString}
-                localStorageKey={METADATA_PRODUCTBLOCKS_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={
+                    METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
+                }
             />
         </WFOMetadataPageLayout>
     );
