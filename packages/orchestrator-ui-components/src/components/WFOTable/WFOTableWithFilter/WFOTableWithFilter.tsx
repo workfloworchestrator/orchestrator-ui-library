@@ -205,6 +205,16 @@ export const WFOTableWithFilter = <T,>({
                 pagination={pagination}
                 isLoading={isLoading}
                 onCriteriaChange={onCriteriaChange}
+                onDataSearch={({ field, searchText }) => {
+                    // Todo improve this
+                    onUpdateEsQueryString(
+                        esQueryString
+                            ? esQueryString +
+                                  ' AND ' +
+                                  `${field.toString()}:"${searchText}"`
+                            : `${field.toString()}:"${searchText}"`,
+                    );
+                }}
             />
 
             {showSettingsModal && (

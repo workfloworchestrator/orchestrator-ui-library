@@ -44,6 +44,11 @@ export type WFODataSorting<T> = {
     sortOrder: SortOrder;
 };
 
+export type WFODataSearch<T> = {
+    field: keyof T;
+    searchText: string;
+};
+
 export const getSortDirectionFromString = (
     sortOrder?: string,
 ): SortOrder | undefined => {

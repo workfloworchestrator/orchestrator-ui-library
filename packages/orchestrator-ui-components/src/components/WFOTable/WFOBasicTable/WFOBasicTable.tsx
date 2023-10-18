@@ -3,7 +3,11 @@ import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { WFOTableHeaderCell } from './WFOTableHeaderCell';
 
-import type { WFODataSorting, TableColumnKeys } from '../utils/columns';
+import type {
+    WFODataSorting,
+    TableColumnKeys,
+    WFODataSearch,
+} from '../utils/columns';
 import {
     WFOTableControlColumnConfig,
     WFOTableDataColumnConfig,
@@ -31,6 +35,7 @@ export type WFOBasicTableProps<T> = {
     isLoading?: boolean;
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WFODataSorting<T>) => void;
+    onDataSearch?: (updatedDataSearch: WFODataSearch<T>) => void;
 };
 
 export const WFOBasicTable = <T,>({
@@ -42,6 +47,7 @@ export const WFOBasicTable = <T,>({
     isLoading,
     onCriteriaChange,
     onUpdateDataSorting,
+    onDataSearch,
 }: WFOBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle } = getStyles(theme);
@@ -55,6 +61,7 @@ export const WFOBasicTable = <T,>({
                 hiddenColumns,
                 dataSorting,
                 onUpdateDataSorting,
+                onDataSearch,
             )}
             pagination={pagination}
             onChange={onCriteriaChange}
@@ -68,6 +75,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
     hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: WFODataSorting<T>,
     onDataSort?: (updatedDataSorting: WFODataSorting<T>) => void,
+    onDataSearch?: (updatedDataSearch: WFODataSearch<T>) => void,
 ): EuiBasicTableColumn<T>[] {
     function isVisibleColumn(columnKey: string) {
         return !hiddenColumns?.includes(columnKey as keyof T);
@@ -99,12 +107,9 @@ function mapWFOTableColumnsToEuiColumns<T>(
                     onSetSortOrder={(sortOrder) =>
                         onDataSort?.({ field: typedColumnKey, sortOrder })
                     }
-                    onSearch={(searchText) => {
-                        // Todo: Get the key-value to the advanced search bar
-                        console.log(
-                            `${typedColumnKey.toString()}:"${searchText}"`,
-                        );
-                    }}
+                    onSearch={(searchText) =>
+                        onDataSearch?.({ field: typedColumnKey, searchText })
+                    }
                 >
                     {name}
                 </WFOTableHeaderCell>
