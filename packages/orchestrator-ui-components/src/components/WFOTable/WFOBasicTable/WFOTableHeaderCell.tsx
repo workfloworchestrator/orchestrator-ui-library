@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { SortOrder } from '../../../types';
 import { WFOSortDirectionIcon } from './WFOSortDirectionIcon';
@@ -13,18 +13,21 @@ import { useOrchestratorTheme } from '../../../hooks';
 import { WFOSortButtons } from '../WFOSortButtons';
 
 export type WFOTableHeaderCellProps = {
+    fieldName: string;
     sortOrder?: SortOrder;
-    onSetSortOrder?: (updatedSortOrder: SortOrder) => void;
     isSortable?: boolean;
-    children: ReactNode;
+    onSetSortOrder?: (updatedSortOrder: SortOrder) => void;
+    onSearch?: (searchText: string) => void;
+    children: string;
 };
 
-// Todo add dropdown logic here
 export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
+    fieldName,
     sortOrder,
     children,
     isSortable = true,
     onSetSortOrder,
+    onSearch,
 }) => {
     const { theme } = useOrchestratorTheme();
     const smallContextMenuPopoverId = useGeneratedHtmlId({
@@ -42,8 +45,15 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         }
     };
 
+    const handleSearch = (searchText: string) => {
+        if (onSearch) {
+            onSearch(searchText);
+            closePopover();
+        }
+    };
+
     const PopoverButton = () => (
-        <button onClick={handleButtonClick}>
+        <button onClick={handleButtonClick} disabled={!isSortable}>
             <div
                 css={{
                     display: 'flex',
@@ -63,6 +73,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
 
     return (
         <EuiPopover
+            initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
             id={smallContextMenuPopoverId}
             button={<PopoverButton />}
             isOpen={isPopoverOpen}
@@ -82,7 +93,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
                     size="xs"
                     css={{ fontWeight: theme.font.weight.medium }}
                 >
-                    TODO: Column name
+                    {children}
                 </EuiText>
                 <WFOSortButtons
                     sortOrder={sortOrder}
@@ -92,9 +103,9 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
             <EuiHorizontalRule margin="none" />
             <div css={{ margin: 12 }}>
                 <EuiFieldSearch
+                    className={fieldName}
                     placeholder="Search"
-                    // value={value}
-                    // onChange={(e) => onChange(e)}
+                    onSearch={handleSearch}
                     isClearable={false}
                 />
             </div>

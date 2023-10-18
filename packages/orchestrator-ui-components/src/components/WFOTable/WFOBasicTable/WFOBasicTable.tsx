@@ -93,11 +93,18 @@ function mapWFOTableColumnsToEuiColumns<T>(
             field: typedColumnKey,
             name: name && (
                 <WFOTableHeaderCell
+                    fieldName={typedColumnKey.toString()}
                     sortOrder={sortOrder}
+                    isSortable={sortable}
                     onSetSortOrder={(sortOrder) =>
                         onDataSort?.({ field: typedColumnKey, sortOrder })
                     }
-                    isSortable={sortable}
+                    onSearch={(searchText) => {
+                        // Todo: Get the key-value to the advanced search bar
+                        console.log(
+                            `${typedColumnKey.toString()}:"${searchText}"`,
+                        );
+                    }}
                 >
                     {name}
                 </WFOTableHeaderCell>
