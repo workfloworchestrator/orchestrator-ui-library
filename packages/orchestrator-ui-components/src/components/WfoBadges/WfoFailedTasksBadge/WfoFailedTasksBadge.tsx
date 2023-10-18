@@ -7,6 +7,7 @@ import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '../../../hooks/useProcessStatusCountsQuery';
+import { WfoCheckmarkCircleFill } from '../../../icons';
 
 type TaskCountsSummary = {
     failed: number;
@@ -36,28 +37,80 @@ export const WfoFailedTasksBadge = () => {
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
-    return (
-        <EuiToolTip
-            position="bottom"
-            content={
-                <>
-                    <div>Failed: {taskCountsSummary.failed}</div>
-                    <div>
-                        Inconsistent data: {taskCountsSummary.inconsistentData}
-                    </div>
-                    <div>
-                        API unavailable: {taskCountsSummary.apiUnavailable}
-                    </div>
-                </>
-            }
-        >
-            <WfoHeaderBadge
-                color={theme.colors.emptyShade}
-                textColor={theme.colors.shadow}
-                iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
+    // <<<<<<< HEAD:packages/orchestrator-ui-components/src/components/WfoBadges/WfoFailedTasksBadge/WfoFailedTasksBadge.tsx
+    //     return (
+    //         <EuiToolTip
+    //             position="bottom"
+    //             content={
+    //                 <>
+    //                     <div>Failed: {taskCountsSummary.failed}</div>
+    //                     <div>
+    //                         Inconsistent data: {taskCountsSummary.inconsistentData}
+    //                     </div>
+    //                     <div>
+    //                         API unavailable: {taskCountsSummary.apiUnavailable}
+    //                     </div>
+    //                 </>
+    //             }
+    //         >
+    //             <WfoHeaderBadge
+    //                 color={theme.colors.emptyShade}
+    //                 textColor={theme.colors.shadow}
+    //                 iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
+    //             >
+    //                 {taskCountsSummary.total}
+    //             </WfoHeaderBadge>
+    //         </EuiToolTip>
+    //     );
+    // =======
+    if (taskCountsSummary.total != 0) {
+        return (
+            <EuiToolTip
+                position="bottom"
+                content={
+                    <>
+                        <div>Failed: {taskCountsSummary.failed}</div>
+                        <div>
+                            Inconsistent data:{' '}
+                            {taskCountsSummary.inconsistentData}
+                        </div>
+                        <div>
+                            API unavailable: {taskCountsSummary.apiUnavailable}
+                        </div>
+                    </>
+                }
             >
-                {taskCountsSummary.total}
-            </WfoHeaderBadge>
-        </EuiToolTip>
-    );
+                <WfoHeaderBadge
+                    color={theme.colors.emptyShade}
+                    textColor={theme.colors.shadow}
+                    iconType={() => (
+                        <WfoXCircleFill color={theme.colors.danger} />
+                    )}
+                >
+                    {taskCountsSummary.total}
+                </WfoHeaderBadge>
+            </EuiToolTip>
+        );
+    } else {
+        return (
+            <EuiToolTip
+                position="bottom"
+                content={
+                    <>
+                        <div>No failed tasks!</div>
+                    </>
+                }
+            >
+                <WfoHeaderBadge
+                    color={theme.colors.emptyShade}
+                    textColor={theme.colors.shadow}
+                    iconType={() => (
+                        <WfoCheckmarkCircleFill color={theme.colors.success} />
+                    )}
+                >
+                    {taskCountsSummary.total}
+                </WfoHeaderBadge>
+            </EuiToolTip>
+        );
+    }
 };
