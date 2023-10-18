@@ -54,6 +54,9 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         </button>
     );
 
+    const ascIconIsActive = !!onSetSortOrder && sortOrder !== SortOrder.ASC;
+    const descIconIsActive = !!onSetSortOrder && sortOrder !== SortOrder.DESC;
+
     return (
         <EuiPopover
             id={smallContextMenuPopoverId}
@@ -79,28 +82,38 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
                 </EuiText>
                 <div css={{ display: 'flex', alignItems: 'center' }}>
                     <button
-                        css={{ display: 'flex', alignItems: 'center' }}
+                        css={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: ascIconIsActive ? 'pointer' : 'not-allowed',
+                        }}
                         onClick={() =>
-                            onSetSortOrder && onSetSortOrder(SortOrder.ASC)
+                            ascIconIsActive && onSetSortOrder(SortOrder.ASC)
                         }
                     >
                         <WFOSortAsc
                             color={
-                                sortOrder === SortOrder.ASC
+                                ascIconIsActive
                                     ? theme.colors.title
                                     : theme.colors.lightShade
                             }
                         />
                     </button>
                     <button
-                        css={{ display: 'flex', alignItems: 'center' }}
+                        css={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: descIconIsActive
+                                ? 'pointer'
+                                : 'not-allowed',
+                        }}
                         onClick={() =>
-                            onSetSortOrder && onSetSortOrder(SortOrder.DESC)
+                            descIconIsActive && onSetSortOrder(SortOrder.DESC)
                         }
                     >
                         <WFOSortDesc
                             color={
-                                sortOrder === SortOrder.DESC
+                                descIconIsActive
                                     ? theme.colors.title
                                     : theme.colors.lightShade
                             }

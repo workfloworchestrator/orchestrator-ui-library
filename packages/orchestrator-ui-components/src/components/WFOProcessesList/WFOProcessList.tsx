@@ -194,7 +194,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
     };
 
     return (
-        <WFOTableWithFilter
+        <WFOTableWithFilter<ProcessListItem>
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={tableColumns}
             dataSorting={dataSorting}
@@ -203,15 +203,9 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
-            onUpdateEsQueryString={getEsQueryStringHandler<ProcessListItem>(
-                setDataDisplayParam,
-            )}
-            onUpdatePage={getPageChangeHandler<ProcessListItem>(
-                setDataDisplayParam,
-            )}
-            onUpdateDataSort={getDataSortHandler<ProcessListItem>(
-                setDataDisplayParam,
-            )}
+            onUpdateEsQueryString={getEsQueryStringHandler(setDataDisplayParam)}
+            onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
+            onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
         />
     );
 };
