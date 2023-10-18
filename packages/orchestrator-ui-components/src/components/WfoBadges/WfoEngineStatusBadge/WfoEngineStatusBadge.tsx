@@ -12,7 +12,7 @@ export const WfoEngineStatusBadge = () => {
         ? `Engine is ${engineStatus.global_status}`
         : 'Engine status is unavailable';
 
-    // if (engineStatus === engineStatus?.global) {
+    // if (data: engineStatus === "RUNNING") {
     //     const engineColor = theme.colors.success
     // } else {
     //     const engineColor = theme.colors.danger
