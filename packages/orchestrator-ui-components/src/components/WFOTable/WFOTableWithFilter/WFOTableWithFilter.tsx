@@ -206,7 +206,9 @@ export const WFOTableWithFilter = <T,>({
                 isLoading={isLoading}
                 onCriteriaChange={onCriteriaChange}
                 onDataSearch={({ field, searchText }) => {
-                    // Todo improve this
+                    // Todo: This is not the final implementation. Need to decide to use esquery in the frontend.
+                    // In that case, string concatenation is not the best solution
+                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/81
                     onUpdateEsQueryString(
                         esQueryString
                             ? esQueryString +
