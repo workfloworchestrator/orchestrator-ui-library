@@ -9,8 +9,8 @@ import {
     EuiText,
     useGeneratedHtmlId,
 } from '@elastic/eui';
-import { WFOSortAsc, WFOSortDesc } from '../../../icons';
 import { useOrchestratorTheme } from '../../../hooks';
+import { WFOSortButtons } from '../WFOSortButtons';
 
 export type WFOTableHeaderCellProps = {
     sortOrder?: SortOrder;
@@ -33,7 +33,14 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
 
     const [isPopoverOpen, setPopover] = useState(false);
     const handleButtonClick = () => setPopover(!isPopoverOpen);
-    const handleClosePopover = () => setPopover(false);
+    const closePopover = () => setPopover(false);
+
+    const handleChangeSortOrder = (updatedSortOrder: SortOrder) => {
+        if (onSetSortOrder) {
+            onSetSortOrder(updatedSortOrder);
+            closePopover();
+        }
+    };
 
     const PopoverButton = () => (
         <button onClick={handleButtonClick}>
@@ -54,15 +61,12 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         </button>
     );
 
-    const ascIconIsActive = !!onSetSortOrder && sortOrder !== SortOrder.ASC;
-    const descIconIsActive = !!onSetSortOrder && sortOrder !== SortOrder.DESC;
-
     return (
         <EuiPopover
             id={smallContextMenuPopoverId}
             button={<PopoverButton />}
             isOpen={isPopoverOpen}
-            closePopover={handleClosePopover}
+            closePopover={closePopover}
             panelPaddingSize="none"
             anchorPosition="downLeft"
         >
@@ -78,48 +82,12 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
                     size="xs"
                     css={{ fontWeight: theme.font.weight.medium }}
                 >
-                    Title and controls
+                    TODO: Column name
                 </EuiText>
-                <div css={{ display: 'flex', alignItems: 'center' }}>
-                    <button
-                        css={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: ascIconIsActive ? 'pointer' : 'not-allowed',
-                        }}
-                        onClick={() =>
-                            ascIconIsActive && onSetSortOrder(SortOrder.ASC)
-                        }
-                    >
-                        <WFOSortAsc
-                            color={
-                                ascIconIsActive
-                                    ? theme.colors.title
-                                    : theme.colors.lightShade
-                            }
-                        />
-                    </button>
-                    <button
-                        css={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: descIconIsActive
-                                ? 'pointer'
-                                : 'not-allowed',
-                        }}
-                        onClick={() =>
-                            descIconIsActive && onSetSortOrder(SortOrder.DESC)
-                        }
-                    >
-                        <WFOSortDesc
-                            color={
-                                descIconIsActive
-                                    ? theme.colors.title
-                                    : theme.colors.lightShade
-                            }
-                        />
-                    </button>
-                </div>
+                <WFOSortButtons
+                    sortOrder={sortOrder}
+                    onChangeSortOrder={handleChangeSortOrder}
+                />
             </div>
             <EuiHorizontalRule margin="none" />
             <div css={{ margin: 12 }}>
@@ -133,24 +101,3 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         </EuiPopover>
     );
 };
-
-// export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
-//     sortDirection,
-//     children,
-//     onClick,
-//     isSortable = true,
-// }) => (
-//     <div
-//         css={{
-//             display: 'flex',
-//             alignItems: 'center',
-//             cursor: isSortable ? 'pointer' : 'not-allowed',
-//         }}
-//         onClick={isSortable ? onClick : undefined}
-//     >
-//         <div>{children}</div>
-//         {isSortable && sortDirection ? (
-//             <WFOSortDirectionIcon sortDirection={sortDirection} />
-//         ) : null}
-//     </div>
-// );
