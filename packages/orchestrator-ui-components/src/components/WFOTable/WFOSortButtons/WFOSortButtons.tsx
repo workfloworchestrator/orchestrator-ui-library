@@ -2,6 +2,7 @@ import { SortOrder } from '../../../types';
 import React, { FC } from 'react';
 import { WFOSortButton } from './WFOSortButton';
 import { WFOSortAsc, WFOSortDesc } from '../../../icons';
+import { getStyles } from './styles';
 
 export type WFOSortButtonsProps = {
     sortOrder?: SortOrder;
@@ -12,8 +13,10 @@ export const WFOSortButtons: FC<WFOSortButtonsProps> = ({
     sortOrder,
     onChangeSortOrder,
 }) => {
+    const { sortButtonsContainerStyle } = getStyles();
+
     return (
-        <div css={{ display: 'flex', alignItems: 'center' }}>
+        <div css={sortButtonsContainerStyle}>
             <WFOSortButton
                 WFOIconComponent={WFOSortAsc}
                 isActive={sortOrder !== SortOrder.ASC}
