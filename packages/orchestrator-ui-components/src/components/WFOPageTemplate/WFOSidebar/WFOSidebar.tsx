@@ -10,6 +10,7 @@ import {
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
     PATH_PROCESSES,
+    PATH_SERVICE_TICKETS,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
@@ -147,6 +148,13 @@ export const WFOSidebar: FC = () => {
                                 router.push(PATH_SETTINGS);
                             },
                             href: PATH_SETTINGS,
+                        },
+                        {
+                            name: 'Service tickets',
+                            id: '8',
+                            onClick: () => {
+                                router.push(PATH_SERVICE_TICKETS);
+                            },
                         },
                     ],
                 },
