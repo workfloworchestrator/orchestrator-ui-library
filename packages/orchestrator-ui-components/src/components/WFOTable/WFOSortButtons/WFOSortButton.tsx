@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { WFOIconProps } from '../../../icons';
 import { useOrchestratorTheme } from '../../../hooks';
+import { getStyles } from './styles';
 
 export type WFOSortButtonProps = {
     WFOIconComponent: FC<WFOIconProps>;
@@ -14,14 +15,11 @@ export const WFOSortButton: FC<WFOSortButtonProps> = ({
     onClick,
 }) => {
     const { theme } = useOrchestratorTheme();
+    const { getSortButtonStyle } = getStyles();
 
     return (
         <button
-            css={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: isActive ? 'pointer' : 'not-allowed',
-            }}
+            css={getSortButtonStyle(isActive)}
             onClick={() => isActive && onClick?.()}
         >
             <WFOIconComponent

@@ -90,8 +90,6 @@ function mapWFOTableColumnsToEuiColumns<T>(
         const sortOrder =
             dataSorting?.field === colKey ? dataSorting.sortOrder : undefined;
 
-        // Todo introduce a handleSetSortOrder...
-
         // Not spreading the column object here as it might contain additional props.
         // EUI does not handle extra props well.
         return {
