@@ -60,7 +60,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         }
     };
 
-    const HeaderCellContentButton = () => (
+    const WfoHeaderCellContentButton = () => (
         <button onClick={handleButtonClick} disabled={!isSortable}>
             <div css={getHeaderCellButtonStyle(isSortable)}>
                 <div css={headerCellContentStyle}>{children}</div>
@@ -71,7 +71,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         </button>
     );
 
-    const PopoverHeader = () => (
+    const WfoPopoverHeader = () => (
         <div css={headerCellPopoverHeaderStyle}>
             <EuiText size="xs" css={headerCellPopoverHeaderTitleStyle}>
                 {children}
@@ -83,7 +83,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         </div>
     );
 
-    const PopoverContent = () => (
+    const WfoPopoverContent = () => (
         <div css={headerCellPopoverContentStyle}>
             <EuiFieldSearch
                 className={fieldName}
@@ -98,15 +98,15 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         <EuiPopover
             initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
             id={smallContextMenuPopoverId}
-            button={<HeaderCellContentButton />}
+            button={<WfoHeaderCellContentButton />}
             isOpen={isPopoverOpen}
             closePopover={closePopover}
             panelPaddingSize="none"
             anchorPosition="downLeft"
         >
-            <PopoverHeader />
+            <WfoPopoverHeader />
             <EuiHorizontalRule margin="none" />
-            <PopoverContent />
+            <WfoPopoverContent />
         </EuiPopover>
     );
 };
