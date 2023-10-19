@@ -99,7 +99,9 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         {selectedTabId === SubscriptionTabIds.PROCESSES_TAB &&
                             data && (
                                 <ProcessesTimeline
-                                    subscriptionId={subscriptionId}
+                                    subscriptionDetailProcesses={
+                                        subscriptionDetail.processes.page
+                                    }
                                 />
                             )}
                         {selectedTabId ===

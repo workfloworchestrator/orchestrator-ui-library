@@ -157,29 +157,27 @@ export const WFORelatedSubscriptions = ({
     };
 
     return (
-
-            <>
-                <EuiSpacer size="xl" />
-                <EuiFlexGroup justifyContent="flexEnd">
-                    <EuiFlexItem grow={0}>
-                        <EuiSwitch
-                            showLabel={true}
-                            label={t('hideTerminatedRelatedSubscriptions')}
-                            type="button"
-                            checked={hideTerminatedSubscriptions}
-                            onChange={toggleTerminatedSubscriptions}
-                        />
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer size="m" />
-                {(
-                  (relatedSubscriptions && relatedSubscriptions.length > 0) && 
-                  (
-                    !isFetching || 
+        <>
+            <EuiSpacer size="xl" />
+            <EuiFlexGroup justifyContent="flexEnd">
+                <EuiFlexItem grow={0}>
+                    <EuiSwitch
+                        showLabel={true}
+                        label={t('hideTerminatedRelatedSubscriptions')}
+                        type="button"
+                        checked={hideTerminatedSubscriptions}
+                        onChange={toggleTerminatedSubscriptions}
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiSpacer size="m" />
+            {(relatedSubscriptions &&
+                relatedSubscriptions.length > 0 &&
+                (!isFetching ||
                     // This situation represents the situation where the hideRelatedsubscriptions is being toggled
                     // in which case we don't want to show the loadingState because it makes the page flicker
-                    (!hideTerminatedSubscriptions && relatedSubscriptions.length > 0)
-                  ) && (
+                    (!hideTerminatedSubscriptions &&
+                        relatedSubscriptions.length > 0)) && (
                     <>
                         <WFOBasicTable<RelatedSubscription>
                             data={relatedSubscriptions}
@@ -192,14 +190,11 @@ export const WFORelatedSubscriptions = ({
                         />
                     </>
                 )) || (
-                    <WFONoResults
-                        text={t('noRelatedSubscriptions')}
-                        icon={
-                            <WFOSearchStrikethrough color={theme.colors.link} />
-                        }
-                    />
-                )}
-            </>
-        )
-
+                <WFONoResults
+                    text={t('noRelatedSubscriptions')}
+                    icon={<WFOSearchStrikethrough color={theme.colors.link} />}
+                />
+            )}
+        </>
+    );
 };

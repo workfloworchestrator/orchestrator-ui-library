@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { EuiAvatar, EuiComment, EuiCommentList, EuiSpacer } from '@elastic/eui';
 
 import { WFOProcessStatusBadge } from '../WFOBadges';
-import { SubscriptionProcess, useSubscriptionProcesses } from '../../hooks';
+import { SubscriptionDetailProcess } from '../../types';
 import { WFOLoading } from '../WFOLoading';
+import { PATH_PROCESSES } from '../WFOPageTemplate';
+import { parseDateToLocaleDateTimeString, parseDate } from '../../utils';
 
-/** TODO: Adding a useTranslations hook here leads to an hooks error. https://github.com/workfloworchestrator/orchestrator-ui/issues/177 */
-const Card = (processInfo: SubscriptionProcess) => (
+const Card = (subscriptionDetailProcess: SubscriptionDetailProcess) => (
     <div style={{ marginTop: 5 }}>
         <table width="100%" bgcolor={'#F1F5F9'}>
             <tr>
@@ -22,9 +23,9 @@ const Card = (processInfo: SubscriptionProcess) => (
                 </td>
                 <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
                     <a
-                        href={`https://orchestrator.dev.automation.surf.net/processes/${processInfo.process.pid}`}
+                        href={`${PATH_PROCESSES}/${subscriptionDetailProcess.processId}`}
                     >
-                        {processInfo.pid}
+                        {subscriptionDetailProcess.processId}
                     </a>
                 </td>
             </tr>
@@ -37,7 +38,7 @@ const Card = (processInfo: SubscriptionProcess) => (
                 </td>
                 <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
                     <WFOProcessStatusBadge
-                        processStatus={processInfo.process.last_status}
+                        processStatus={subscriptionDetailProcess.lastStatus}
                     />
                 </td>
             </tr>
@@ -49,7 +50,9 @@ const Card = (processInfo: SubscriptionProcess) => (
                     <b>Started at</b>
                 </td>
                 <td style={{ padding: 10, borderBottom: 'solid 1px #ddd' }}>
-                    2-11-2021 13:47:43 - Duration: 00:00:024
+                    {parseDateToLocaleDateTimeString(
+                        parseDate(subscriptionDetailProcess.startedAt),
+                    )}
                 </td>
             </tr>
             <tr>
@@ -57,41 +60,43 @@ const Card = (processInfo: SubscriptionProcess) => (
                     <b>Started by</b>
                 </td>
                 <td style={{ padding: 10 }}>
-                    {processInfo.process.created_by}
+                    {subscriptionDetailProcess.createdBy}
                 </td>
             </tr>
         </table>
     </div>
 );
 
-const RenderProcess = (processInfo: SubscriptionProcess) => (
+const RenderProcess = (
+    subscriptionDetailProcess: SubscriptionDetailProcess,
+) => (
     <EuiComment
-        username={processInfo.workflow_target ?? ''}
-        timelineAvatarAriaLabel={processInfo.process.workflow}
+        username={subscriptionDetailProcess.workflowTarget ?? ''}
+        timelineAvatarAriaLabel={subscriptionDetailProcess.workflowName}
         timelineAvatar={<EuiAvatar name="C" />}
     >
-        {Card(processInfo)}
+        {Card(subscriptionDetailProcess)}
     </EuiComment>
 );
 
-export type ProcessesTimelineProps = {
-    subscriptionId: string;
+type ProcessesTimelineProps = {
+    subscriptionDetailProcesses: SubscriptionDetailProcess[];
 };
 
-export const ProcessesTimeline: FC<ProcessesTimelineProps> = ({
-    subscriptionId,
-}) => {
-    const { data: subscriptionProcesses } =
-        useSubscriptionProcesses(subscriptionId);
-
+export const ProcessesTimeline = ({
+    subscriptionDetailProcesses,
+}: ProcessesTimelineProps) => {
     return (
         <>
             <EuiSpacer size={'m'} />
-            {!subscriptionProcesses && <WFOLoading />}
+            {!subscriptionDetailProcesses && <WFOLoading />}
             <EuiCommentList aria-label="Processes">
-                {subscriptionProcesses && (
+                {subscriptionDetailProcesses && (
                     <EuiCommentList aria-label="Processes">
-                        {subscriptionProcesses.map((i) => RenderProcess(i))}
+                        {subscriptionDetailProcesses.map(
+                            (subscriptionDetailProcess) =>
+                                RenderProcess(subscriptionDetailProcess),
+                        )}
                     </EuiCommentList>
                 )}
             </EuiCommentList>
