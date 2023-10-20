@@ -51,7 +51,6 @@ export const WfoSubscriptionDetailTree = ({
 
     const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
-    // TODO: Note, doesn't this code depend to much on the order of the productBlockInstances or is it ok because it's all by reference?
     productBlockInstances.forEach((productBlockInstance) => {
         const shallowCopy: TreeBlock = {
             ...productBlockInstance,

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 export type TreeContextType = {
+    ids: string[];
+    addId: (id: string) => void;
     selectedIds: number[];
     expandedIds: number[];
     toggleSelectedId: (id: number) => void;
@@ -18,6 +20,7 @@ export type TreeProviderProps = {
 };
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
+    const [ids, setIds] = React.useState<string[]>([]);
     const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
     const [expandedIds, setExpandedIds] = React.useState<number[]>([0]);
 
@@ -58,9 +61,17 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
         setSelectedIds([]);
     };
 
+    const addId = (id: string) => {
+        const newIds = ids;
+        newIds.push(id);
+        setIds(newIds);
+    };
+
     return (
         <TreeContext.Provider
             value={{
+                ids,
+                addId,
                 selectedIds,
                 expandedIds,
                 toggleSelectedId,
