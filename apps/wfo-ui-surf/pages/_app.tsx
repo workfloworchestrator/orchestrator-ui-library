@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppProps } from 'next/app';
 
 import Head from 'next/head';
-import { EuiProvider } from '@elastic/eui';
+import { EuiProvider, EuiSideNavItemType } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
@@ -34,6 +34,9 @@ import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
+import { useRouter } from 'next/router';
+
+const PATH_SURF = '/surf';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -64,7 +67,23 @@ const initialOrchestratorConfig: OrchestratorConfig = {
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
+    const router = useRouter();
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
+
+    const getMenuItems = (
+        defaultMenuItems: EuiSideNavItemType<object>[],
+    ): EuiSideNavItemType<object>[] => [
+        ...defaultMenuItems,
+        {
+            name: 'Surf',
+            isSelected: router.pathname === PATH_SURF,
+            id: '8',
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_SURF);
+            },
+        },
+    ];
 
     return (
         <NoSSR>
@@ -92,6 +111,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     <ToastsContextProvider>
                                         <WFOPageTemplate
                                             getAppLogo={getAppLogo}
+                                            overrideMenuItems={getMenuItems}
                                         >
                                             <QueryParamProvider
                                                 adapter={NextAdapter}
