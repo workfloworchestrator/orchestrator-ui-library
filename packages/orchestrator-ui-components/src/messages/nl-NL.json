@@ -9,7 +9,8 @@
         "deselect": "Deselecteer",
         "close": "Sluiten",
         "newSubscription": "Nieuwe subscription",
-        "newTask": "Nieuwe taak"
+        "newTask": "Nieuwe taak",
+        "search": "Zoeken"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"

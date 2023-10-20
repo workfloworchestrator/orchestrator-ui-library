@@ -12,6 +12,7 @@ import {
 import { useWithOrchestratorTheme } from '../../../hooks';
 import { WFOSortButtons } from '../WFOSortButtons';
 import { getStyles } from './styles';
+import { useTranslations } from 'next-intl';
 
 export type WFOTableHeaderCellProps = {
     fieldName: string;
@@ -35,6 +36,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         headerCellPopoverContentStyle,
         getHeaderCellButtonStyle,
     } = useWithOrchestratorTheme(getStyles);
+    const t = useTranslations('common');
 
     const isSortable = !!onSetSortOrder;
     const isFilterable = !!onSearch;
@@ -87,7 +89,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         <div css={headerCellPopoverContentStyle}>
             <EuiFieldSearch
                 className={fieldName}
-                placeholder="Search"
+                placeholder={t('search')}
                 onSearch={handleSearch}
                 isClearable={false}
             />
