@@ -16,7 +16,6 @@ import { getStyles } from './styles';
 export type WFOTableHeaderCellProps = {
     fieldName: string;
     sortOrder?: SortOrder;
-    isSortable?: boolean;
     onSetSortOrder?: (updatedSortOrder: SortOrder) => void;
     onSearch?: (searchText: string) => void;
     children: string;
@@ -26,7 +25,6 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
     fieldName,
     sortOrder,
     children,
-    isSortable = true,
     onSetSortOrder,
     onSearch,
 }) => {
@@ -38,6 +36,10 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
         getHeaderCellButtonStyle,
     } = useWithOrchestratorTheme(getStyles);
 
+    const isSortable = !!onSetSortOrder;
+    const isFilterable = !!onSearch;
+    const shouldShowPopover = isSortable || isFilterable;
+
     const smallContextMenuPopoverId = useGeneratedHtmlId({
         prefix: 'smallContextMenuPopover',
     });
@@ -47,22 +49,18 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
     const closePopover = () => setPopover(false);
 
     const handleChangeSortOrder = (updatedSortOrder: SortOrder) => {
-        if (onSetSortOrder) {
-            onSetSortOrder(updatedSortOrder);
-            closePopover();
-        }
+        onSetSortOrder?.(updatedSortOrder);
+        closePopover();
     };
 
     const handleSearch = (searchText: string) => {
-        if (onSearch) {
-            onSearch(searchText);
-            closePopover();
-        }
+        onSearch?.(searchText);
+        closePopover();
     };
 
     const WfoHeaderCellContentButton = () => (
-        <button onClick={handleButtonClick} disabled={!isSortable}>
-            <div css={getHeaderCellButtonStyle(isSortable)}>
+        <button onClick={handleButtonClick} disabled={!shouldShowPopover}>
+            <div css={getHeaderCellButtonStyle(shouldShowPopover)}>
                 <div css={headerCellContentStyle}>{children}</div>
                 {sortOrder && (
                     <WFOSortDirectionIcon sortDirection={sortOrder} />
@@ -76,10 +74,12 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
             <EuiText size="xs" css={headerCellPopoverHeaderTitleStyle}>
                 {children}
             </EuiText>
-            <WFOSortButtons
-                sortOrder={sortOrder}
-                onChangeSortOrder={handleChangeSortOrder}
-            />
+            {isSortable && (
+                <WFOSortButtons
+                    sortOrder={sortOrder}
+                    onChangeSortOrder={handleChangeSortOrder}
+                />
+            )}
         </div>
     );
 
@@ -105,8 +105,12 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
             anchorPosition="downLeft"
         >
             <WfoPopoverHeader />
-            <EuiHorizontalRule margin="none" />
-            <WfoPopoverContent />
+            {isFilterable && (
+                <>
+                    <EuiHorizontalRule margin="none" />
+                    <WfoPopoverContent />
+                </>
+            )}
         </EuiPopover>
     );
 };

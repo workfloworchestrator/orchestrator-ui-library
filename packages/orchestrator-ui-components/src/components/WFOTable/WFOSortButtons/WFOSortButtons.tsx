@@ -6,7 +6,7 @@ import { getStyles } from './styles';
 
 export type WFOSortButtonsProps = {
     sortOrder?: SortOrder;
-    onChangeSortOrder?: (updatedSortOrder: SortOrder) => void;
+    onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
 };
 
 export const WFOSortButtons: FC<WFOSortButtonsProps> = ({
@@ -20,12 +20,12 @@ export const WFOSortButtons: FC<WFOSortButtonsProps> = ({
             <WFOSortButton
                 WFOIconComponent={WFOSortAsc}
                 isActive={sortOrder !== SortOrder.ASC}
-                onClick={() => onChangeSortOrder?.(SortOrder.ASC)}
+                onClick={() => onChangeSortOrder(SortOrder.ASC)}
             />
             <WFOSortButton
                 WFOIconComponent={WFOSortDesc}
                 isActive={sortOrder !== SortOrder.DESC}
-                onClick={() => onChangeSortOrder?.(SortOrder.DESC)}
+                onClick={() => onChangeSortOrder(SortOrder.DESC)}
             />
         </div>
     );
