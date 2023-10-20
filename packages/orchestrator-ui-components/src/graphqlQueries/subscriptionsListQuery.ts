@@ -40,6 +40,7 @@ export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
                 hasPreviousPage
                 hasNextPage
                 endCursor
+                sortFields
             }
         }
     }

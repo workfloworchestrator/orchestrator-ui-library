@@ -282,6 +282,7 @@ export type GraphQLPageInfo = {
     startCursor?: number;
     totalItems?: number;
     endCursor?: number;
+    sortFields: string[];
 };
 
 export interface SubscriptionsResult {

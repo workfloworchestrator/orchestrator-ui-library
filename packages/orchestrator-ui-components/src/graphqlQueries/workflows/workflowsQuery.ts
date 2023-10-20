@@ -32,6 +32,7 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
                 hasPreviousPage
                 startCursor
                 totalItems
+                sortFields
             }
         }
     }

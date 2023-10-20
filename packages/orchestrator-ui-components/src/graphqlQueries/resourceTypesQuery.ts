@@ -29,6 +29,7 @@ export const GET_RESOURCE_TYPES_GRAPHQL_QUERY: TypedDocumentNode<
                 hasPreviousPage
                 startCursor
                 totalItems
+                sortFields
             }
         }
     }

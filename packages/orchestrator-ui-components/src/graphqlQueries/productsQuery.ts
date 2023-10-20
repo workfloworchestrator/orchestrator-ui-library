@@ -40,6 +40,7 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
                 hasPreviousPage
                 startCursor
                 totalItems
+                sortFields
             }
         }
     }
