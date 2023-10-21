@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     EuiButtonIcon,
@@ -28,6 +28,24 @@ interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
 }
 
+function getNodeDepth(node: TreeBlock, idToNodeMap: NodeMap): number {
+    if (node.parent === null) {
+        // This is the root node, so its depth is 0.
+        return 0;
+    } else {
+        // Find the parent node.
+        const parent = idToNodeMap[node.parent];
+
+        if (parent) {
+            // Recursively calculate the parent's depth and add 1.
+            return getNodeDepth(parent, idToNodeMap) + 1;
+        } else {
+            // Parent not found, something might be wrong with the tree structure.
+            throw new Error(`Parent node for ${node.id} not found.`);
+        }
+    }
+}
+
 export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
 }: WfoSubscriptionDetailTreeProps) => {
@@ -42,12 +60,13 @@ export const WfoSubscriptionDetailTree = ({
         if (expandAllActive) {
             collapseAll();
         } else {
-            expandAll(MAX_EXPAND_ALL);
+            expandAll();
         }
         setExpandAllActive(!expandAllActive);
     };
 
     let tree: TreeBlock | null = null;
+    const depthList: number[] = [];
 
     const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
@@ -68,10 +87,11 @@ export const WfoSubscriptionDetailTree = ({
                 'name',
             );
             shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
-
+            depthList.push(0); // First id is on root
             tree = shallowCopy;
         } else {
             // This node has a parent, so let's look it up using the id
+            depthList.push(getNodeDepth(shallowCopy, idToNodeMap));
             const parentNode = idToNodeMap[shallowCopy.parent];
             shallowCopy.label = getProductBlockTitle(
                 shallowCopy.productBlockInstanceValues,
@@ -127,7 +147,9 @@ export const WfoSubscriptionDetailTree = ({
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
                         {!tree && <WfoLoading />}
-                        {tree && <WfoTree data={[tree]} />}
+                        {tree && (
+                            <WfoTree data={[tree]} depthList={depthList} />
+                        )}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 export type TreeContextType = {
-    ids: string[];
-    addId: (id: string) => void;
+    setDepths: (depths: number[]) => void;
     selectedIds: number[];
     expandedIds: number[];
     toggleSelectedId: (id: number) => void;
     toggleExpandedId: (id: number) => void;
-    expandAll: (treeLength: number) => void;
+    expandNode: (id: number) => void;
+    expandAll: () => void;
     collapseAll: () => void;
     resetSelection: () => void;
 };
@@ -20,7 +20,7 @@ export type TreeProviderProps = {
 };
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
-    const [ids, setIds] = React.useState<string[]>([]);
+    const [depths, setDepths] = React.useState<number[]>([]);
     const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
     const [expandedIds, setExpandedIds] = React.useState<number[]>([0]);
 
@@ -48,34 +48,41 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
         }
     };
 
-    const expandAll = (treeLength: number) => {
-        const newExpandedIds = Array.from(Array(treeLength).keys());
+    const expandAll = () => {
+        const newExpandedIds = Array.from(Array(depths.length).keys());
         setExpandedIds(newExpandedIds);
     };
 
     const collapseAll = () => {
+        console.log(depths);
         setExpandedIds([0]);
+    };
+
+    const expandNode = (itemIndex: number) => {
+        const initialDepth = depths[itemIndex];
+        const expandedNodeIds = [0];
+        for (let i = itemIndex; i < depths.length; i++) {
+            if (i === itemIndex) expandedNodeIds.push(i);
+            else if (depths[i] > initialDepth) expandedNodeIds.push(i);
+            else if (depths[i] <= initialDepth) break;
+        }
+        console.log('Expanded nodes', expandedNodeIds);
+        setExpandedIds(expandedIds.concat(expandedNodeIds));
     };
 
     const resetSelection = () => {
         setSelectedIds([]);
     };
 
-    const addId = (id: string) => {
-        const newIds = ids;
-        newIds.push(id);
-        setIds(newIds);
-    };
-
     return (
         <TreeContext.Provider
             value={{
-                ids,
-                addId,
+                setDepths,
                 selectedIds,
                 expandedIds,
                 toggleSelectedId,
                 toggleExpandedId,
+                expandNode,
                 expandAll,
                 collapseAll,
                 resetSelection,

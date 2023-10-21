@@ -27,8 +27,13 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     level,
 }) => {
     const t = useTranslations('common');
-    const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
-        React.useContext(TreeContext) as TreeContextType;
+    const {
+        expandedIds,
+        toggleExpandedId,
+        expandNode,
+        selectedIds,
+        toggleSelectedId,
+    } = React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
     const selected = selectedIds.includes(item.id);
 
@@ -47,7 +52,11 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                     {hasChildren ? (
                         <EuiIcon
                             type={expandIcon}
-                            onClick={() => toggleExpandedId(item.id)}
+                            onClick={() =>
+                                expanded
+                                    ? toggleExpandedId(item.id)
+                                    : expandNode(item.id)
+                            }
                         />
                     ) : (
                         <EuiToken iconType={item.icon} />
