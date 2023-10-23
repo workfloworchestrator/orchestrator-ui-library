@@ -1,7 +1,7 @@
 import { stateDelta } from './state';
 
 describe('stateDelta()', () => {
-    it("Doesn't crash on an comparision of two empty states", () => {
+    it("Doesn't crash on an comparison of two empty states", () => {
         const result = stateDelta({}, {});
         expect(result).toEqual({});
     });
