@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "license": "MIT",
     "scripts": {
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "build": "tsup src/index.ts --format esm --dts --tsconfig tsconfig.build.json",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
