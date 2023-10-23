@@ -112,6 +112,7 @@ export const WFORelatedSubscriptions = ({
             name: t('customer'),
             render: (customer) => customer.fullname,
             sortable: false,
+            filterable: false,
         },
         product: {
             field: 'product',
@@ -126,11 +127,6 @@ export const WFORelatedSubscriptions = ({
             render: (value) => parseDateToLocaleDateString(parseDate(value)),
         },
     };
-
-    const sortHandler = getDataSortHandler<RelatedSubscription>(
-        dataDisplayParams,
-        setDataDisplayParam,
-    );
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -147,11 +143,8 @@ export const WFORelatedSubscriptions = ({
     const onUpdatePage =
         getPageChangeHandler<RelatedSubscription>(setDataDisplayParam);
 
-    const onCriteriaChange = (criterion: Criteria<RelatedSubscription>) => {
-        if (criterion.page) {
-            onUpdatePage(criterion.page);
-        }
-    };
+    const handleCriteriaChange = (criterion: Criteria<RelatedSubscription>) =>
+        criterion.page && onUpdatePage(criterion.page);
 
     const toggleTerminatedSubscriptions = () => {
         setHideTerminatedSubscriptions((currentValue) => !currentValue);
@@ -180,9 +173,11 @@ export const WFORelatedSubscriptions = ({
                             columns={tableColumns}
                             pagination={pagination}
                             isLoading={isFetching}
-                            onDataSort={sortHandler}
+                            onUpdateDataSorting={getDataSortHandler(
+                                setDataDisplayParam,
+                            )}
                             dataSorting={dataSorting}
-                            onCriteriaChange={onCriteriaChange}
+                            onCriteriaChange={handleCriteriaChange}
                         />
                     </>
                 )) || (

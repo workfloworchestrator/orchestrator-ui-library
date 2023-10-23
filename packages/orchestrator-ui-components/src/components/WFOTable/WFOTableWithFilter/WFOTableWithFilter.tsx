@@ -53,7 +53,7 @@ export type WFOTableWithFilterProps<T> = {
     detailModalTitle?: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
-    onUpdateDataSort: (newSortColumnId: keyof T) => void;
+    onUpdateDataSort: (dataSorting: WFODataSorting<T>) => void;
 };
 
 export const WFOTableWithFilter = <T,>({
@@ -201,10 +201,22 @@ export const WFOTableWithFilter = <T,>({
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}
                 dataSorting={dataSorting}
-                onDataSort={onUpdateDataSort}
+                onUpdateDataSorting={onUpdateDataSort}
                 pagination={pagination}
                 isLoading={isLoading}
                 onCriteriaChange={onCriteriaChange}
+                onDataSearch={({ field, searchText }) => {
+                    // Todo: This is not the final implementation. Need to decide to use esquery in the frontend.
+                    // In that case, string concatenation is not the best solution
+                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/81
+                    onUpdateEsQueryString(
+                        esQueryString
+                            ? esQueryString +
+                                  ' AND ' +
+                                  `${field.toString()}:"${searchText}"`
+                            : `${field.toString()}:"${searchText}"`,
+                    );
+                }}
             />
 
             {showSettingsModal && (

@@ -9,7 +9,8 @@
         "deselect": "Deselect",
         "close": "Close",
         "newSubscription": "New subscription",
-        "newTask": "New task"
+        "newTask": "New task",
+        "search": "Search"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"

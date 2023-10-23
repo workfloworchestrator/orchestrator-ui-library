@@ -169,7 +169,6 @@ export const WFOWorkflowsPage = () => {
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
-                    dataDisplayParams,
                     setDataDisplayParam,
                 )}
                 onUpdatePage={getPageChangeHandler<WorkflowListItem>(

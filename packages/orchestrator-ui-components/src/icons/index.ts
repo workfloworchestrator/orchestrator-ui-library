@@ -13,6 +13,8 @@ export * from './WFORefresh';
 export * from './WFOArrowNarrowUp';
 export * from './WFOMinusCircleFill';
 export * from './WFOSearchStrikethrough';
+export * from './WFOSortAsc';
+export * from './WFOSortDesc';
 export * from './WFOPlayFill';
 export * from './WFOCode';
 export * from './WFOEyeFill';

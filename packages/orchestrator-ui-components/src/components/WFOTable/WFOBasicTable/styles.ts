@@ -22,7 +22,38 @@ export const getStyles = (theme: EuiThemeComputed) => {
         },
     });
 
+    const headerCellContentStyle = css({
+        fontWeight: theme.font.weight.semiBold,
+    });
+
+    const headerCellPopoverHeaderStyle = css({
+        margin: theme.size.m,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    });
+
+    const headerCellPopoverHeaderTitleStyle = css({
+        fontWeight: theme.font.weight.medium,
+    });
+
+    const headerCellPopoverContentStyle = css({
+        margin: theme.size.m,
+    });
+
+    const getHeaderCellButtonStyle = (isSortable: boolean) =>
+        css({
+            display: 'flex',
+            alignItems: 'center',
+            cursor: isSortable ? 'pointer' : 'not-allowed',
+        });
+
     return {
         basicTableStyle,
+        headerCellContentStyle,
+        headerCellPopoverHeaderStyle,
+        headerCellPopoverHeaderTitleStyle,
+        headerCellPopoverContentStyle,
+        getHeaderCellButtonStyle,
     };
 };

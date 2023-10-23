@@ -125,7 +125,6 @@ export const WFOResourceTypesPage = () => {
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(
-                    dataDisplayParams,
                     setDataDisplayParam,
                 )}
                 onUpdatePage={getPageChangeHandler<ResourceTypeDefinition>(

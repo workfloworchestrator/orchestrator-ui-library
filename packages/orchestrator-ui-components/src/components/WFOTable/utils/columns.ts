@@ -11,6 +11,7 @@ export type WFOTableDataColumnConfig<T, Property> =
         field: Property;
         name: string;
         sortable?: boolean;
+        filterable?: boolean;
     };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
@@ -42,6 +43,11 @@ export type TableColumnKeys<T> = Array<keyof T>;
 export type WFODataSorting<T> = {
     field: keyof T;
     sortOrder: SortOrder;
+};
+
+export type WFODataSearch<T> = {
+    field: keyof T;
+    searchText: string;
 };
 
 export const getSortDirectionFromString = (

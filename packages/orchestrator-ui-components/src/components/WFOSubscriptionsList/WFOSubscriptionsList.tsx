@@ -188,7 +188,6 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
-                dataDisplayParams,
                 setDataDisplayParam,
             )}
         />

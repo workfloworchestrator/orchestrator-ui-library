@@ -1,6 +1,19 @@
 import { EuiThemeModifications } from '@elastic/eui';
 
 export const defaultOrchestratorTheme: EuiThemeModifications = {
+    base: 16,
+    size: {
+        base: '16px',
+        xxs: '2px',
+        xs: '4px',
+        s: '8px',
+        m: '12px',
+        l: '24px',
+        xl: '32px',
+        xxl: '40px',
+        xxxl: '48px',
+        xxxxl: '64px',
+    },
     colors: {
         DARK: {},
         LIGHT: {
