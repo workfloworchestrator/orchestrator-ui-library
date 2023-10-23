@@ -35,6 +35,7 @@ import {
 } from './workflowListObjectMapper';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
+import { withSortableValues } from '../../components/WFOTable/utils/withSortableValues';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
@@ -152,7 +153,7 @@ export const WfoWorkflowsPage = () => {
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const totalItems = data?.workflows.pageInfo.totalItems;
+    const { totalItems, sortFields } = data.workflows.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -165,7 +166,7 @@ export const WfoWorkflowsPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
                 data={mapWorkflowDefinitionToWorkflowListItem(data)}
-                tableColumns={tableColumns}
+                tableColumns={withSortableValues(tableColumns, sortFields)}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
