@@ -213,7 +213,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                                 (action, index) => (
                                     <MenuItem
                                         key={`t_${index}`}
-                                        icon={'Terminate'}
+                                        icon={'T'}
                                         action={action}
                                         index={index}
                                     />

@@ -10,18 +10,46 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     const headerCellStyle = css({
         ...contentCellStyle,
+        paddingLeft: 0,
         width: '250px',
-        fontWeight: theme.font.weight.bold,
+        fontWeight: theme.font.weight.medium,
+    });
+
+    const emptyCellStyle = css({
+        width: theme.base,
     });
 
     const tableStyle = css({
         backgroundColor: theme.colors.lightestShade,
         width: '100%',
+        borderRadius: theme.border.radius.medium,
+    });
+    const timeLineStyle = css({
+        paddingLeft: theme.base / 2,
+    });
+    const workflowTargetStyle = css({ fontWeight: theme.font.weight.bold });
+
+    const lastContentCellStyle = css({
+        ...contentCellStyle,
+        border: 0,
+    });
+
+    const lastHeaderCellStyle = css({
+        padding: theme.base,
+        paddingLeft: 0,
+        width: '250px',
+        fontWeight: theme.font.weight.medium,
+        border: 0,
     });
 
     return {
         contentCellStyle,
         headerCellStyle,
         tableStyle,
+        timeLineStyle,
+        workflowTargetStyle,
+        emptyCellStyle,
+        lastContentCellStyle,
+        lastHeaderCellStyle,
     };
 };
