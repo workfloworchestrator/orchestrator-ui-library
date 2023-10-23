@@ -48,7 +48,7 @@ export const WFOServiceTicketsListPage = () => {
             },
         });
 
-    const [activeTab, setActiveTab] = useQueryParam(
+    const [activeTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WFOSubscriptionsTabType.ACTIVE),
     );
@@ -62,13 +62,6 @@ export const WFOServiceTicketsListPage = () => {
         router.replace('/subscriptions');
         return null;
     }
-
-    const handleChangeSubscriptionsTab = (
-        updatedSubscriptionsTab: WFOSubscriptionsTabType,
-    ) => {
-        setActiveTab(updatedSubscriptionsTab);
-        setDataDisplayParam('pageIndex', 0);
-    };
 
     const alwaysOnFilters = defaultSubscriptionsTabs.find(
         ({ id }) => id === selectedSubscriptionsTab,
