@@ -36,6 +36,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
     return (
         <div style={{ marginTop: 5 }}>
             <table css={tableStyle}>
+              <tbody>
                 <tr>
                     <td css={emptyCellStyle}></td>
                     <td css={headerCellStyle}>{t('id')}</td>
@@ -76,6 +77,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
                     </td>
                     <td css={emptyCellStyle}></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     );
