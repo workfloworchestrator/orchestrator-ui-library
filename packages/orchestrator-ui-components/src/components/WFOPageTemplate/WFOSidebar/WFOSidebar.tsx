@@ -16,8 +16,15 @@ import {
     PATH_TASKS,
 } from '../paths';
 import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
+import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
-export const WFOSidebar: FC = () => {
+export type WFOSidebarProps = {
+    overrideMenuItems?: (
+        defaultMenuItems: EuiSideNavItemType<object>[],
+    ) => EuiSideNavItemType<object>[];
+};
+
+export const WFOSidebar: FC<WFOSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
@@ -26,131 +33,127 @@ export const WFOSidebar: FC = () => {
         setIsSideNavOpenOnMobile((openState) => !openState);
     };
 
+    const defaultMenuItems: EuiSideNavItemType<object>[] = [
+        {
+            name: 'Start',
+            id: '2',
+            isSelected: router.pathname === PATH_START,
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_START);
+            },
+        },
+        {
+            name: 'Processes',
+            id: '3',
+            isSelected: router.pathname === PATH_PROCESSES,
+            href: PATH_PROCESSES,
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_PROCESSES);
+            },
+        },
+        {
+            name: 'Subscriptions',
+            id: '4',
+            isSelected: router.pathname === PATH_SUBSCRIPTIONS,
+            href: PATH_SUBSCRIPTIONS,
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_SUBSCRIPTIONS);
+            },
+        },
+        {
+            name: 'Metadata',
+            id: '5',
+            onClick: () => {
+                router.push(PATH_METADATA);
+            },
+            items: [
+                {
+                    name: 'Products',
+                    id: '5.1',
+                    isSelected: router.pathname === PATH_METADATA_PRODUCTS,
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push(PATH_METADATA_PRODUCTS);
+                    },
+                },
+                {
+                    name: 'Productblocks',
+                    id: '5.2',
+                    isSelected:
+                        router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push(PATH_METADATA_PRODUCT_BLOCKS);
+                    },
+                },
+                {
+                    name: 'Resource types',
+                    id: '5.3',
+                    isSelected:
+                        router.pathname === PATH_METADATA_RESOURCE_TYPES,
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push(PATH_METADATA_RESOURCE_TYPES);
+                    },
+                },
+                {
+                    name: 'Workflows',
+                    id: '5.4',
+                    isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push(PATH_METADATA_WORKFLOWS);
+                    },
+                },
+            ],
+        },
+        {
+            name: 'Tasks',
+            isSelected: router.pathname === PATH_TASKS,
+            id: '6',
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_TASKS);
+            },
+            href: PATH_TASKS,
+        },
+        {
+            name: 'Settings',
+            isSelected: router.pathname === PATH_SETTINGS,
+            id: '7',
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_SETTINGS);
+            },
+            href: PATH_SETTINGS,
+        },
+    ];
+
+    const defaultMenu: EuiSideNavItemType<object>[] = [
+        {
+            renderItem: () => (
+                <>
+                    <WFOStartCreateWorkflowButtonComboBox />
+                    <EuiSpacer size="m" />
+                </>
+            ),
+            name: 'Menu',
+            id: '1',
+            items: overrideMenuItems
+                ? overrideMenuItems(defaultMenuItems)
+                : defaultMenuItems,
+        },
+    ];
+
     return (
         <EuiSideNav
             mobileTitle={t('mobileTitle')}
             toggleOpenOnMobile={toggleMobile}
             isOpenOnMobile={isSideNavOpenOnMobile}
-            items={[
-                {
-                    renderItem: () => (
-                        <>
-                            <WFOStartCreateWorkflowButtonComboBox />
-                            <EuiSpacer size="m" />
-                        </>
-                    ),
-                    name: 'Menu',
-                    id: '1',
-                    items: [
-                        {
-                            name: 'Start',
-                            id: '2',
-                            isSelected: router.pathname === PATH_START,
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_START);
-                            },
-                        },
-                        {
-                            name: 'Processes',
-                            id: '3',
-                            isSelected: router.pathname === PATH_PROCESSES,
-                            href: PATH_PROCESSES,
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_PROCESSES);
-                            },
-                        },
-                        {
-                            name: 'Subscriptions',
-                            id: '4',
-                            isSelected: router.pathname === PATH_SUBSCRIPTIONS,
-                            href: PATH_SUBSCRIPTIONS,
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_SUBSCRIPTIONS);
-                            },
-                        },
-                        {
-                            name: 'Metadata',
-                            id: '5',
-                            onClick: () => {
-                                router.push(PATH_METADATA);
-                            },
-                            items: [
-                                {
-                                    name: 'Products',
-                                    id: '5.1',
-                                    isSelected:
-                                        router.pathname ===
-                                        PATH_METADATA_PRODUCTS,
-                                    onClick: (e) => {
-                                        e.preventDefault();
-                                        router.push(PATH_METADATA_PRODUCTS);
-                                    },
-                                },
-                                {
-                                    name: 'Productblocks',
-                                    id: '5.2',
-                                    isSelected:
-                                        router.pathname ===
-                                        PATH_METADATA_PRODUCT_BLOCKS,
-                                    onClick: (e) => {
-                                        e.preventDefault();
-                                        router.push(
-                                            PATH_METADATA_PRODUCT_BLOCKS,
-                                        );
-                                    },
-                                },
-                                {
-                                    name: 'Resource types',
-                                    id: '5.3',
-                                    isSelected:
-                                        router.pathname ===
-                                        PATH_METADATA_RESOURCE_TYPES,
-                                    onClick: (e) => {
-                                        e.preventDefault();
-                                        router.push(
-                                            PATH_METADATA_RESOURCE_TYPES,
-                                        );
-                                    },
-                                },
-                                {
-                                    name: 'Workflows',
-                                    id: '5.4',
-                                    isSelected:
-                                        router.pathname ===
-                                        PATH_METADATA_WORKFLOWS,
-                                    onClick: (e) => {
-                                        e.preventDefault();
-                                        router.push(PATH_METADATA_WORKFLOWS);
-                                    },
-                                },
-                            ],
-                        },
-                        {
-                            name: 'Tasks',
-                            isSelected: router.pathname === PATH_TASKS,
-                            id: '6',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_TASKS);
-                            },
-                            href: PATH_TASKS,
-                        },
-                        {
-                            name: 'Settings',
-                            isSelected: router.pathname === PATH_SETTINGS,
-                            id: '7',
-                            onClick: (e) => {
-                                e.preventDefault();
-                                router.push(PATH_SETTINGS);
-                            },
-                            href: PATH_SETTINGS,
-                        },
-                    ],
-                },
-            ]}
+            items={defaultMenu}
         />
     );
 };

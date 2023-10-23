@@ -4,15 +4,20 @@ import { WFOPageHeader } from '../WFOPageHeader';
 import { WFOSidebar } from '../WFOSidebar';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WFOBreadcrumbs } from '../WFOBreadcrumbs';
+import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 export interface WFOPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
+    overrideMenuItems?: (
+        defaultMenuItems: EuiSideNavItemType<object>[],
+    ) => EuiSideNavItemType<object>[];
     children: ReactNode;
 }
 
 export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
     children,
     getAppLogo,
+    overrideMenuItems,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
@@ -43,7 +48,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
                             backgroundColor: theme.colors.body,
                         }}
                     >
-                        <WFOSidebar />
+                        <WFOSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
