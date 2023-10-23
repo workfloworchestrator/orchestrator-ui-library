@@ -1,5 +1,4 @@
-import React from 'react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EuiFlexItem, Pagination } from '@elastic/eui';
@@ -16,7 +15,6 @@ import {
     WfoTableControlColumnConfig,
     WfoTableWithFilter,
 } from '../WfoTable';
-import { SubscriptionListItem } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { FilterQuery } from '../WfoFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
@@ -28,10 +26,14 @@ import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscript
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
 import { WfoLoading } from '../WfoLoading';
 import { SortOrder } from '../../types';
-import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
+import {
+    mapGrapghQlSubscriptionsResultToSubscriptionListItems,
+    SubscriptionListItem,
+} from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
+import { withSortableValues } from '../WfoTable/utils/withSortableValues';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -161,7 +163,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
-    const { totalItems } = data.subscriptions.pageInfo;
+    const { totalItems, sortFields } = data.subscriptions.pageInfo;
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
@@ -176,7 +178,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
-            tableColumns={tableColumns}
+            tableColumns={withSortableValues(tableColumns, sortFields)}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
