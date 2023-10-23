@@ -15,6 +15,7 @@ import {
     getTypedFieldFromObject,
     parseDateToLocaleDateTimeString,
     SortOrder,
+    SubscriptionStatus,
     TableColumnKeys,
     useOrchestratorTheme,
     useQueryWithGraphql,
@@ -66,9 +67,8 @@ export const WFOServiceTicketsList: FC<WFOSubscriptionsListProps> = ({
             field: 'subscriptionId',
             name: t('id'),
             width: '100',
-            // render: (value) => <WFOFirstPartUUID UUID={value} />,
             render: () => <EuiText> Hello </EuiText>,
-            renderDetails: (value) => value,
+            renderDetails: (value: string) => value,
         },
         description: {
             field: 'description',
@@ -84,7 +84,9 @@ export const WFOServiceTicketsList: FC<WFOSubscriptionsListProps> = ({
             field: 'status',
             name: t('status'),
             width: '110',
-            render: (value) => <WFOSubscriptionStatusBadge status={value} />,
+            render: (value: SubscriptionStatus) => (
+                <WFOSubscriptionStatusBadge status={value} />
+            ),
         },
         insync: {
             field: 'insync',

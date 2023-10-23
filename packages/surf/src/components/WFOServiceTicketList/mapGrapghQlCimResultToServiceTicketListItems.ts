@@ -17,30 +17,32 @@ export type SubscriptionListItem = Pick<
 export function mapGrapghQlCimResultToServiceTicketListItems(
     graphqlResponse: SubscriptionsResult,
 ): SubscriptionListItem[] {
-    return graphqlResponse.subscriptions.page.map((subscription) => {
-        const {
-            description,
-            insync,
-            product,
-            startDate,
-            endDate,
-            status,
-            subscriptionId,
-            note,
-        } = subscription;
+    return graphqlResponse.subscriptions.page.map(
+        (subscription: Subscription) => {
+            const {
+                description,
+                insync,
+                product,
+                startDate,
+                endDate,
+                status,
+                subscriptionId,
+                note,
+            } = subscription;
 
-        const { name: productName, tag } = product;
+            const { name: productName, tag } = product;
 
-        return {
-            subscriptionId,
-            description,
-            status,
-            insync,
-            startDate: parseDate(startDate),
-            endDate: parseDate(endDate),
-            note,
-            productName,
-            tag,
-        };
-    });
+            return {
+                subscriptionId,
+                description,
+                status,
+                insync,
+                startDate: parseDate(startDate),
+                endDate: parseDate(endDate),
+                note,
+                productName,
+                tag,
+            };
+        },
+    );
 }

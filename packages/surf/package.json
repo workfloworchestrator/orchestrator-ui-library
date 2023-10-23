@@ -13,6 +13,7 @@
         "reset": "rm -rf node_modules"
     },
     "dependencies": {
+        "@orchestrator-ui/orchestrator-ui-components": "*",
         "@graphql-typed-document-node/core": "3.2.0",
         "axios": "^0.24.0",
         "invariant": "^2.2.4",
