@@ -43,7 +43,7 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     productBlockInstanceValues
                     subscriptionInstanceId
                 }
-                processes {
+                processes(sortBy: { field: "startedAt", order: ASC }) {
                     page {
                         processId
                         lastStatus
