@@ -184,7 +184,13 @@
             "endDate": "End date",
             "note": "Note",
             "noRelatedSubscriptions": "No related subscriptions found",
-            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions"
+            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions",
+            "processDetail": {
+                "id": "ID",
+                "status": "Status",
+                "startedAt": "Started at",
+                "startedBy": "Started by"
+            }
         }
     },
     "tasks": {

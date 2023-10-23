@@ -17,7 +17,7 @@ import { WFOSubscriptionActions } from './WFOSubscriptionActions';
 import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
 import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
 import { WFORelatedSubscriptions } from './WFORelatedSubscriptions';
-import { ProcessesTimeline } from './WFOProcessesTimeline';
+import { WfoProcessesTimeline } from './WfoProcessesTimeline';
 
 type WFOSubscriptionProps = {
     subscriptionId: string;
@@ -26,7 +26,7 @@ type WFOSubscriptionProps = {
 export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
     const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
-        SubscriptionTabIds.GENERAL_TAB,
+        SubscriptionTabIds.PROCESSES_TAB,
     );
 
     const { data, isFetching } = useQueryWithGraphql(
@@ -98,7 +98,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         )}
                         {selectedTabId === SubscriptionTabIds.PROCESSES_TAB &&
                             data && (
-                                <ProcessesTimeline
+                                <WfoProcessesTimeline
                                     subscriptionDetailProcesses={
                                         subscriptionDetail.processes.page
                                     }

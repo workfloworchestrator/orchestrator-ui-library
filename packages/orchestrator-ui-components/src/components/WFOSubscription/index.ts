@@ -1,5 +1,5 @@
 export * from './utils';
-export * from './WFOProcessesTimeline';
+export * from './WfoProcessesTimeline';
 export * from './WFOSubscriptionProductBlock';
 export * from './WFOSubscriptionActions';
 export * from './SubscriptionKeyValueBlock';

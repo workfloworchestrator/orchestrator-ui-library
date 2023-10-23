@@ -183,7 +183,14 @@
             "created": "Aangemaakt",
             "endDate": "Eind datum",
             "note": "Notitie",
-            "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden"
+            "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden",
+            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions",
+            "processDetail": {
+                "id": "ID",
+                "status": "Status",
+                "startedAt": "Started at",
+                "startedBy": "Started by"
+            }
         }
     },
     "tasks": {
