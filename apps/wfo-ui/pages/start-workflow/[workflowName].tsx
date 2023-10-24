@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { WFOStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
 import { ParsedUrlQuery } from 'querystring';
 
-interface StartWorkFlowPageQuery extends ParsedUrlQuery {
+interface StartWorkflowPageQuery extends ParsedUrlQuery {
     workflowName: string;
     productId?: string;
     subscriptionId?: string;
@@ -12,9 +12,9 @@ interface StartWorkFlowPageQuery extends ParsedUrlQuery {
 const StartWorkflowPage = () => {
     const router = useRouter();
     const { workflowName, productId, subscriptionId } =
-        router.query as StartWorkFlowPageQuery;
+        router.query as StartWorkflowPageQuery;
 
-    const getStartWorkFlowPayload = () => {
+    const getStartWorkflowPayload = () => {
         if (productId) {
             return {
                 product: productId,
@@ -28,7 +28,7 @@ const StartWorkflowPage = () => {
         }
         return undefined;
     };
-    const startWorkflowPayload = getStartWorkFlowPayload();
+    const startWorkflowPayload = getStartWorkflowPayload();
     if (workflowName) {
         return (
             <WFOStartWorkflowPage

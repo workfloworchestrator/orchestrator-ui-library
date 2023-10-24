@@ -80,7 +80,7 @@ export const WFOSidebar: FC<WFOSidebarProps> = ({ overrideMenuItems }) => {
                     },
                 },
                 {
-                    name: 'Productblocks',
+                    name: 'Product blocks',
                     id: '5.2',
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
