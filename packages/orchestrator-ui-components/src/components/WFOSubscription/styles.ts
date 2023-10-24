@@ -11,7 +11,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     const headerCellStyle = css({
         ...contentCellStyle,
         paddingLeft: 0,
-        width: '250px',
+        width: theme.base * 16,
         fontWeight: theme.font.weight.medium,
     });
 
@@ -23,7 +23,9 @@ export const getStyles = (theme: EuiThemeComputed) => {
         backgroundColor: theme.colors.lightestShade,
         width: '100%',
         borderRadius: theme.border.radius.medium,
+        marginTop: theme.base / 2,
     });
+
     const timeLineStyle = css({
         paddingLeft: theme.base / 2,
     });

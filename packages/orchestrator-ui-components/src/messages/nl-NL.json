@@ -185,7 +185,7 @@
             "endDate": "Eind datum",
             "note": "Notitie",
             "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden",
-            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions",
+            "hideTerminatedRelatedSubscriptions": "Verberg terminated related subscriptions",
             "processDetail": {
                 "id": "ID",
                 "status": "Status",

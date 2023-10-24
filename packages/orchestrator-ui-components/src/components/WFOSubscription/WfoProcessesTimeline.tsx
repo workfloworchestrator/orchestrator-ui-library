@@ -35,7 +35,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
     } = useWithOrchestratorTheme(getStyles);
 
     return (
-        <div style={{ marginTop: 5 }}>
+        <>
             <table css={tableStyle}>
                 <tbody>
                     <tr>
@@ -82,7 +82,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </>
     );
 };
 
