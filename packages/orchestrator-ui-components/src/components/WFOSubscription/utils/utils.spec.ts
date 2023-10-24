@@ -1,9 +1,12 @@
 import { SubscriptionAction } from '../../../hooks';
-import { FieldValue } from '../../../types';
+import { FieldValue, WorkflowTarget } from '../../../types';
+import { EuiThemeComputed } from '@elastic/eui';
+
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
     flattenArrayProps,
+    getWorkflowTargetColor,
 } from './utils';
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
@@ -98,5 +101,59 @@ describe('flattenArrayProps', () => {
             name: 'action name',
             description: 'action description',
         });
+    });
+});
+
+describe('getWorkflowTargetColor', () => {
+    it('should return primaryText color for CREATE and MODIFY', () => {
+        const theme = {
+            colors: {
+                primaryText: 'primaryTextColor',
+            },
+        } as EuiThemeComputed;
+
+        expect(getWorkflowTargetColor(WorkflowTarget.CREATE, theme)).toBe(
+            'primaryTextColor',
+        );
+        expect(getWorkflowTargetColor(WorkflowTarget.MODIFY, theme)).toBe(
+            'primaryTextColor',
+        );
+    });
+
+    it('should return warning color for SYSTEM', () => {
+        const theme = {
+            colors: {
+                warning: 'warningColor',
+            },
+        } as EuiThemeComputed;
+
+        expect(getWorkflowTargetColor(WorkflowTarget.SYSTEM, theme)).toBe(
+            'warningColor',
+        );
+    });
+
+    it('should return danger color for TERMINATE', () => {
+        const theme = {
+            colors: {
+                danger: 'dangerColor',
+            },
+        } as EuiThemeComputed;
+
+        expect(getWorkflowTargetColor(WorkflowTarget.TERMINATE, theme)).toBe(
+            'dangerColor',
+        );
+    });
+
+    it('should return body color for unknown targets', () => {
+        const theme = {
+            colors: {
+                body: 'bodyColor',
+            },
+        } as EuiThemeComputed;
+
+        // Test with an unknown target
+        expect(
+            getWorkflowTargetColor('UNKNOWN_TARGET' as WorkflowTarget, theme),
+        ).toBe('bodyColor');
     });
 });
