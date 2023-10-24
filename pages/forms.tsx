@@ -1,6 +1,6 @@
 import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import React from 'react';
-import CreateForm from '@orchestrator-ui/orchestrator-ui-components/src/components/WFOForms/CreateForm';
+import CreateForm from '@orchestrator-ui/orchestrator-ui-components/src/components/WfoForms/CreateForm';
 
 export function FormsPage() {
     /* eslint-disable  @typescript-eslint/no-explicit-any */

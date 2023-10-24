@@ -1,8 +1,8 @@
 import React from 'react';
-import { WFOTaskListPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoTaskListPage } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function TasksPage() {
-    return <WFOTaskListPage />;
+    return <WfoTaskListPage />;
 }
 
 export default TasksPage;
