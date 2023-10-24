@@ -1,5 +1,4 @@
-export * from './WFOGeneralPage';
-export * from './WFONotificationLog';
+export * from './WFOServiceTicketsActive';
+export * from './WFOServiceTicketsComplete';
 export * from './WFOSentEmailsPage';
 export * from './WFOServiceTicketsPageLayout';
-export * from './WFOServiceTicketsListPage';

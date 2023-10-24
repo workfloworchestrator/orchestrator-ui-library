@@ -10,7 +10,6 @@ import {
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
     PATH_PROCESSES,
-    PATH_SERVICE_TICKETS,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
@@ -153,8 +152,35 @@ export const WFOSidebar: FC = () => {
                             name: 'Service tickets',
                             id: '8',
                             onClick: () => {
-                                router.push(PATH_SERVICE_TICKETS);
+                                // Note: Using a string literal instead of const, otherwise I'll need to add the surf package to orchestrator-ui-components. Maybe here we use an ENV var ?
+                                router.push('/service-tickets/active');
                             },
+                            items: [
+                                {
+                                    name: 'Active',
+                                    id: '8.1',
+                                    isSelected:
+                                        router.pathname ===
+                                        '/service-tickets/active',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        router.push('/service-tickets/active');
+                                    },
+                                },
+                                {
+                                    name: 'Completed',
+                                    id: '8.2',
+                                    isSelected:
+                                        router.pathname ===
+                                        '/service-tickets/completed',
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        router.push(
+                                            '/service-tickets/completed',
+                                        );
+                                    },
+                                },
+                            ],
                         },
                     ],
                 },

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { WFOServiceTicketsPageLayout } from './WFOServiceTicketsPageLayout';
 
-export const WFOGeneralPage = () => {
+export const WFOServiceTicketsComplete = () => {
     return (
         <WFOServiceTicketsPageLayout>
-            <h1>GENERAL PAGE</h1>
+            <h1>Complete</h1>
         </WFOServiceTicketsPageLayout>
     );
 };

@@ -18,18 +18,13 @@ export interface MetaDataTab {
 const metaDataTabs: MetaDataTab[] = [
     {
         id: 1,
-        translationKey: 'general',
-        path: '/service-tickets/general',
+        translationKey: 'active',
+        path: '/service-tickets/active',
     },
     {
         id: 2,
-        translationKey: 'notificationLog',
-        path: '/service-tickets/notification-log',
-    },
-    {
-        id: 3,
-        translationKey: 'sentEmails',
-        path: '/service-tickets/sent-emails',
+        translationKey: 'completed',
+        path: '/service-tickets/completed',
     },
 ];
 
