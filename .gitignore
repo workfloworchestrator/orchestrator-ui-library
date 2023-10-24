@@ -40,3 +40,8 @@ yarn-error.log*
 # IDE
 .idea
 .vscode
+
+# yarn 
+.yarnrc.yml
+.yarnrc
+.yarn

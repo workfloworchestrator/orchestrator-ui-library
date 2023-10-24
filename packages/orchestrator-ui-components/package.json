@@ -18,10 +18,10 @@
         "invariant": "^2.2.4",
         "moment": "2.29.4",
         "object-hash": "^2.1.1",
-        "use-query-params": "2.2.1",
         "uniforms": "^3.8.1",
         "uniforms-bridge-json-schema": "^3.8.1",
-        "uniforms-unstyled": "^3.8.1"
+        "uniforms-unstyled": "^3.8.1",
+        "use-query-params": "2.2.1"
     },
     "peerDependencies": {
         "@elastic/eui": "^88.1.0",

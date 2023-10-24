@@ -22,7 +22,7 @@
         "turbo": "^1.10.14"
     },
     "name": "orchestrator-core-ui",
-    "packageManager": "yarn@1.22.19",
+    "packageManager": "yarn@4.0.0",
     "workspaces": [
         "apps/*",
         "packages/*"
