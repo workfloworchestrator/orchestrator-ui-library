@@ -14,7 +14,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../hooks';
-import { flattenArrayProps } from './utils';
+import { flattenArrayProps, getWorkflowTargetColor } from './utils';
 
 import {
     SubscriptionAction,
@@ -23,12 +23,14 @@ import {
 
 import { WFOXCircleFill } from '../../icons';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import { WorkflowTarget } from '../../types';
 
 type MenuItemProps = {
     key: string;
     icon: string;
     action: SubscriptionAction;
     index: number;
+    target: WorkflowTarget;
 };
 
 type MenuBlockProps = {
@@ -62,7 +64,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
         setPopover(false);
     };
 
-    const MenuItem: FC<MenuItemProps> = ({ icon, action }) => {
+    const MenuItem: FC<MenuItemProps> = ({ icon, action, target }) => {
         // Change icon to include x if there's a reason
         // Add tooltip with reason
         const linkIt = (actionItem: ReactJSXElement) => {
@@ -141,7 +143,11 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                 </div>
             ) : (
                 <div css={{ width: theme.base * 2 }}>
-                    <EuiAvatar name={icon} size="s" />
+                    <EuiAvatar
+                        name={icon}
+                        size="s"
+                        color={getWorkflowTargetColor(target, theme)}
+                    />
                 </div>
             );
         };
@@ -187,6 +193,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                                     icon={'M'}
                                     action={action}
                                     index={index}
+                                    target={WorkflowTarget.MODIFY}
                                 />
                             ))}
                         </>
@@ -201,6 +208,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                                     icon={'System'}
                                     action={action}
                                     index={index}
+                                    target={WorkflowTarget.SYSTEM}
                                 />
                             ))}
                         </>
@@ -216,6 +224,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                                         icon={'Terminate'}
                                         action={action}
                                         index={index}
+                                        target={WorkflowTarget.TERMINATE}
                                     />
                                 ),
                             )}

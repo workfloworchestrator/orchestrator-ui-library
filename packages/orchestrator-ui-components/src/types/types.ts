@@ -383,7 +383,19 @@ export type SubscriptionDetail = {
     customerId?: string | null;
     customer?: Customer;
     externalServices?: ExternalService[];
+
+    processes: GraphQlSinglePage<SubscriptionDetailProcess>;
 };
+
+export type SubscriptionDetailProcess = Pick<
+    Process,
+    | 'processId'
+    | 'lastStatus'
+    | 'startedAt'
+    | 'createdBy'
+    | 'workflowTarget'
+    | 'workflowName'
+>;
 
 export type RelatedSubscription = Pick<
     Subscription,

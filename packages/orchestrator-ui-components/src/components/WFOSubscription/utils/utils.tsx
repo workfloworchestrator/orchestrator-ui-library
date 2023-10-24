@@ -1,9 +1,9 @@
 import React from 'react';
-import { EuiIcon } from '@elastic/eui';
+import { EuiIcon, EuiThemeComputed } from '@elastic/eui';
 import { TranslationValues } from 'next-intl';
 
 import { SubscriptionAction } from '../../../hooks';
-import { FieldValue } from '../../../types';
+import { FieldValue, WorkflowTarget } from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
 
@@ -77,4 +77,23 @@ export const flattenArrayProps = (
         }
     }
     return action ? flatObject : {};
+};
+
+export const getWorkflowTargetColor = (
+    workflowTarget: WorkflowTarget,
+    theme: EuiThemeComputed,
+) => {
+    // Data returned from graphql can't always be depended on to be lowercase
+    switch (workflowTarget.toLocaleLowerCase()) {
+        case WorkflowTarget.CREATE:
+        case WorkflowTarget.MODIFY:
+            return theme.colors.primaryText;
+        case WorkflowTarget.SYSTEM:
+            return theme.colors.warning;
+
+        case WorkflowTarget.TERMINATE:
+            return theme.colors.danger;
+    }
+
+    return theme.colors.body;
 };

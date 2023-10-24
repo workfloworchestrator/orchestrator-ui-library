@@ -22,7 +22,6 @@ import { parseDateToLocaleDateString, parseDate } from '../../utils';
 
 import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
 
-import { WFOLoading } from '../WFOLoading';
 import { WFONoResults } from '../WFONoResults';
 import { WFOSubscriptionStatusBadge } from '../WFOBadges';
 import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
@@ -151,22 +150,27 @@ export const WFORelatedSubscriptions = ({
     };
 
     return (
-        (isFetching && <WFOLoading />) || (
-            <>
-                <EuiSpacer size="xl" />
-                <EuiFlexGroup justifyContent="flexEnd">
-                    <EuiFlexItem grow={0}>
-                        <EuiSwitch
-                            showLabel={true}
-                            label={t('hideTerminatedRelatedSubscriptions')}
-                            type="button"
-                            checked={hideTerminatedSubscriptions}
-                            onChange={toggleTerminatedSubscriptions}
-                        />
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer size="m" />
-                {(relatedSubscriptions && relatedSubscriptions.length > 0 && (
+        <>
+            <EuiSpacer size="xl" />
+            <EuiFlexGroup justifyContent="flexEnd">
+                <EuiFlexItem grow={0}>
+                    <EuiSwitch
+                        showLabel={true}
+                        label={t('hideTerminatedRelatedSubscriptions')}
+                        type="button"
+                        checked={hideTerminatedSubscriptions}
+                        onChange={toggleTerminatedSubscriptions}
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiSpacer size="m" />
+            {(relatedSubscriptions &&
+                relatedSubscriptions.length > 0 &&
+                (!isFetching ||
+                    // This situation represents the situation where the hideRelatedsubscriptions is being toggled
+                    // in which case we don't want to show the loadingState because it makes the page flicker
+                    (!hideTerminatedSubscriptions &&
+                        relatedSubscriptions.length > 0)) && (
                     <>
                         <WFOBasicTable<RelatedSubscription>
                             data={relatedSubscriptions}
@@ -181,14 +185,11 @@ export const WFORelatedSubscriptions = ({
                         />
                     </>
                 )) || (
-                    <WFONoResults
-                        text={t('noRelatedSubscriptions')}
-                        icon={
-                            <WFOSearchStrikethrough color={theme.colors.link} />
-                        }
-                    />
-                )}
-            </>
-        )
+                <WFONoResults
+                    text={t('noRelatedSubscriptions')}
+                    icon={<WFOSearchStrikethrough color={theme.colors.link} />}
+                />
+            )}
+        </>
     );
 };

@@ -17,7 +17,7 @@ import { WFOSubscriptionActions } from './WFOSubscriptionActions';
 import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
 import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
 import { WFORelatedSubscriptions } from './WFORelatedSubscriptions';
-import { ProcessesTimeline } from './WFOProcessesTimeline';
+import { WfoProcessesTimeline } from './WfoProcessesTimeline';
 
 type WFOSubscriptionProps = {
     subscriptionId: string;
@@ -98,8 +98,10 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         )}
                         {selectedTabId === SubscriptionTabIds.PROCESSES_TAB &&
                             data && (
-                                <ProcessesTimeline
-                                    subscriptionId={subscriptionId}
+                                <WfoProcessesTimeline
+                                    subscriptionDetailProcesses={
+                                        subscriptionDetail.processes.page
+                                    }
                                 />
                             )}
                         {selectedTabId ===

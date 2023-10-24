@@ -53,4 +53,7 @@ export const defaultOrchestratorTheme: EuiThemeModifications = {
             bold: 700,
         },
     },
+    border: {
+        thin: 'solid 1px #ddd',
+    },
 };

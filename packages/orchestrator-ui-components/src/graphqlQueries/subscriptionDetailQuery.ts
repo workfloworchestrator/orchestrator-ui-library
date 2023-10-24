@@ -43,19 +43,14 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     productBlockInstanceValues
                     subscriptionInstanceId
                 }
-                inUseBySubscriptions {
+                processes(sortBy: { field: "startedAt", order: ASC }) {
                     page {
-                        subscriptionId
-                        customer {
-                            fullname
-                        }
-                        description
-                        insync
-                        startDate
-                        status
-                        product {
-                            tag
-                        }
+                        processId
+                        lastStatus
+                        startedAt
+                        createdBy
+                        workflowTarget
+                        workflowName
                     }
                 }
             }
