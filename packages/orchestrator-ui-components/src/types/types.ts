@@ -54,6 +54,7 @@ export interface ProductBlockDefinition {
     createdAt: string;
     endDate: string | null;
     resourceTypes: ResourceTypeDefinition[];
+    dependsOn: ProductBlockDefinition[];
 }
 
 export enum ProductLifecycleStatus {

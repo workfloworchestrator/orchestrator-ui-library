@@ -50,6 +50,8 @@ const PRODUCT_BLOCK_FIELD_CREATED_AT: keyof ProductBlockDefinition =
 const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition = 'endDate';
 const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
+const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
+    'dependsOn';
 
 export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
@@ -103,7 +105,7 @@ export const WfoProductBlocksPage = () => {
         tag: {
             field: PRODUCT_BLOCK_FIELD_TAG,
             name: t('tag'),
-            width: '180',
+            width: '140',
         },
         description: {
             field: PRODUCT_BLOCK_FIELD_DESCRIPTION,
@@ -115,6 +117,22 @@ export const WfoProductBlocksPage = () => {
             name: t('status'),
             width: '90',
             render: (value) => <WfoProductStatusBadge status={value} />,
+        },
+        dependsOn: {
+            field: PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS,
+            name: t('dependsOn'),
+            render: (dependsOn) => (
+                <>
+                    {dependsOn.map((productBlock, index) => (
+                        <WFOProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.PRODUCT_BLOCK}
+                        >
+                            {productBlock.name}
+                        </WFOProductBlockBadge>
+                    ))}
+                </>
+            ),
         },
         resourceTypes: {
             field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,
