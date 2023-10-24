@@ -29,13 +29,13 @@ type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
 
-type StartWorkFlowPayload =
+type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
 interface WFOStartWorkflowPageProps {
     workflowName: string;
-    startWorkflowPayload?: StartWorkFlowPayload;
+    startWorkflowPayload?: StartWorkflowPayload;
 }
 
 export interface UserInputForm {
