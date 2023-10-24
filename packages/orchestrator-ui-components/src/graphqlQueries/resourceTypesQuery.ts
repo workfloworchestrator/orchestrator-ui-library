@@ -30,6 +30,7 @@ export const GET_RESOURCE_TYPES_GRAPHQL_QUERY: TypedDocumentNode<
                 startCursor
                 totalItems
                 sortFields
+                filterFields
             }
         }
     }

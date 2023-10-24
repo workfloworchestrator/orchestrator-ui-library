@@ -41,6 +41,7 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
                 startCursor
                 totalItems
                 sortFields
+                filterFields
             }
         }
     }

@@ -32,6 +32,7 @@ export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<
                 startCursor
                 totalItems
                 sortFields
+                filterFields
             }
         }
     }

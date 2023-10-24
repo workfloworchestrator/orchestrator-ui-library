@@ -33,6 +33,7 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
                 startCursor
                 totalItems
                 sortFields
+                filterFields
             }
         }
     }

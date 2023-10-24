@@ -30,7 +30,7 @@ import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { withSortableValues } from '../../components/WfoTable/utils/withSortableValues';
+import { withSortableAndFilterableValues } from '../../components/WfoTable/utils/withSortableAndFilterableValues';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -114,7 +114,8 @@ export const WfoResourceTypesPage = () => {
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields } = data.resourceTypes.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data.resourceTypes.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -127,7 +128,11 @@ export const WfoResourceTypesPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
                 data={data ? data.resourceTypes.page : []}
-                tableColumns={withSortableValues(tableColumns, sortFields)}
+                tableColumns={withSortableAndFilterableValues(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(

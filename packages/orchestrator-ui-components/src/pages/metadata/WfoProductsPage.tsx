@@ -36,7 +36,7 @@ import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { StoredTableConfig } from '../../components';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
-import { withSortableValues } from '../../components/WFOTable/utils/withSortableValues';
+import { withSortableAndFilterableValues } from '../../components/WFOTable/utils/withSortableAndFilterableValues';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -171,7 +171,7 @@ export const WfoProductsPage = () => {
         return <WFOLoading />;
     }
 
-    const { totalItems, sortFields } = data.products.pageInfo;
+    const { totalItems, sortFields, filterFields } = data.products.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -189,7 +189,11 @@ export const WfoProductsPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
                 data={data ? data.products.page : []}
-                tableColumns={withSortableValues(tableColumns, sortFields)}
+                tableColumns={withSortableAndFilterableValues(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductDefinition>(

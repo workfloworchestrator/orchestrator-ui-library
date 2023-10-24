@@ -33,7 +33,7 @@ import {
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
-import { withSortableValues } from '../WfoTable/utils/withSortableValues';
+import { withSortableAndFilterableValues } from '../WfoTable/utils/withSortableAndFilterableValues';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -163,7 +163,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
-    const { totalItems, sortFields } = data.subscriptions.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data.subscriptions.pageInfo;
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
@@ -178,7 +179,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
-            tableColumns={withSortableValues(tableColumns, sortFields)}
+            tableColumns={withSortableAndFilterableValues(
+                tableColumns,
+                sortFields,
+                filterFields,
+            )}
             leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}

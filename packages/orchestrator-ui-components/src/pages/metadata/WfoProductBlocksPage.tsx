@@ -38,7 +38,7 @@ import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { withSortableValues } from '../../components/WfoTable/utils/withSortableValues';
+import { withSortableAndFilterableValues } from '../../components/WfoTable/utils/withSortableAndFilterableValues';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -181,7 +181,8 @@ export const WfoProductBlocksPage = () => {
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields } = data.productBlocks.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data.productBlocks.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -194,7 +195,11 @@ export const WfoProductBlocksPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
                 data={data.productBlocks.page}
-                tableColumns={withSortableValues(tableColumns, sortFields)}
+                tableColumns={withSortableAndFilterableValues(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(
