@@ -1,8 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "dev": "turbo run dev --filter=./apps/wfo-ui",
-        "dev:surf": "turbo run dev --filter=./apps/wfo-ui-surf",
+        "dev": "turbo run dev --filter=wfo-ui...",
+        "dev:surf": "turbo run dev --filter=wfo-ui-surf...",
         "dev:all": "turbo run dev",
         "test": "turbo run test",
         "tsc": "turbo run tsc",
