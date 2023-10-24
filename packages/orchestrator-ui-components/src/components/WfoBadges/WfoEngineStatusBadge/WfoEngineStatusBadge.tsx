@@ -12,45 +12,23 @@ export const WfoEngineStatusBadge = () => {
         ? `Engine is ${engineStatus.global_status}`
         : 'Engine status is unavailable';
 
-    // if (data: engineStatus === "RUNNING") {
+    // if (engineStatus?.global_status === "RUNNING") {
     //     const engineColor = theme.colors.success
     // } else {
     //     const engineColor = theme.colors.danger
     // }
-    //
-    // return (
-    //     <WfoHeaderBadge
-    //         color={theme.colors.emptyShade}
-    //         textColor={theme.colors.shadow}
-    //         iconType={() => <WFOStatusDotIcon color={engineColor} />}
-    //     >
-    //         {engineStatusText}
-    //     </WfoHeaderBadge>
-    // );
+    const engineColor =
+        engineStatus?.global_status === 'RUNNING'
+            ? theme.colors.success
+            : theme.colors.danger;
 
-    if (engineStatus?.global_status == 'RUNNING') {
-        return (
-            <WfoHeaderBadge
-                color={theme.colors.emptyShade}
-                textColor={theme.colors.shadow}
-                iconType={() => (
-                    <WfoStatusDotIcon color={theme.colors.success} />
-                )}
-            >
-                {engineStatusText}
-            </WfoHeaderBadge>
-        );
-    } else {
-        return (
-            <WfoHeaderBadge
-                color={theme.colors.emptyShade}
-                textColor={theme.colors.shadow}
-                iconType={() => (
-                    <WfoStatusDotIcon color={theme.colors.danger} />
-                )}
-            >
-                {engineStatusText}
-            </WfoHeaderBadge>
-        );
-    }
+    return (
+        <WfoHeaderBadge
+            color={theme.colors.emptyShade}
+            textColor={theme.colors.shadow}
+            iconType={() => <WfoStatusDotIcon color={engineColor} />}
+        >
+            {engineStatusText}
+        </WfoHeaderBadge>
+    );
 };
