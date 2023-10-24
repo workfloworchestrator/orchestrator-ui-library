@@ -47,20 +47,11 @@ export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
-    const [expandAllActive, setExpandAllActive] = useState(false);
     const [, setSelectedTreeNode] = useState(-1);
 
-    const { selectedIds, collapseAll, expandAll, resetSelection } =
-        React.useContext(TreeContext) as TreeContextType;
-
-    const toggleExpandAll = () => {
-        if (expandAllActive) {
-            collapseAll();
-        } else {
-            expandAll();
-        }
-        setExpandAllActive(!expandAllActive);
-    };
+    const { selectedIds, resetSelection } = React.useContext(
+        TreeContext,
+    ) as TreeContextType;
 
     let tree: TreeBlock | null = null;
     const depthList: number[] = [];
@@ -123,14 +114,6 @@ export const WfoSubscriptionDetailTree = ({
                                 <EuiText>
                                     <h3>{t('productBlocks')}</h3>
                                 </EuiText>
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiButtonIcon
-                                    iconType={
-                                        expandAllActive ? 'minimize' : 'expand'
-                                    }
-                                    onClick={toggleExpandAll}
-                                />
                             </EuiFlexItem>
                             <EuiFlexItem grow={true}>
                                 {selectedIds.length > 0 && (
