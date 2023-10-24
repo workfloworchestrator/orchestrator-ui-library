@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOCheckmarkCircleFill } from './WFOCheckmarkCircleFill';
+import { WfoCheckmarkCircleFill } from './WfoCheckmarkCircleFill';
 
-const Story: Meta<typeof WFOCheckmarkCircleFill> = {
-    component: WFOCheckmarkCircleFill,
-    title: 'Icons/WFOCheckmarkCircleFill',
+const Story: Meta<typeof WfoCheckmarkCircleFill> = {
+    component: WfoCheckmarkCircleFill,
+    title: 'Icons/WfoCheckmarkCircleFill',
 };
 export default Story;
 

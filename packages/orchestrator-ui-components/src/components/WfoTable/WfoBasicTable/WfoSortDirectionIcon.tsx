@@ -1,25 +1,25 @@
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
-import { WFOArrowNarrowDown, WFOArrowNarrowUp } from '../../../icons';
+import { WfoArrowNarrowDown, WfoArrowNarrowUp } from '../../../icons';
 import { SortOrder } from '../../../types';
 
-export type WFOSortDirectionIconProps = {
+export type WfoSortDirectionIconProps = {
     sortDirection: SortOrder;
 };
 
-export const WFOSortDirectionIcon: FC<WFOSortDirectionIconProps> = ({
+export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
     sortDirection,
 }) => {
     const { theme } = useOrchestratorTheme();
 
     return sortDirection === SortOrder.ASC ? (
-        <WFOArrowNarrowUp
+        <WfoArrowNarrowUp
             color={theme.colors.subduedText}
             height={24}
             width={24}
         />
     ) : (
-        <WFOArrowNarrowDown
+        <WfoArrowNarrowDown
             color={theme.colors.subduedText}
             height={24}
             width={24}

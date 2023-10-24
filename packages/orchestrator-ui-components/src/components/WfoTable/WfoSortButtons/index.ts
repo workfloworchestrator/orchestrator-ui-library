@@ -1,2 +1,2 @@
-export * from './WFOSortButton';
-export * from './WFOSortButtons';
+export * from './WfoSortButton';
+export * from './WfoSortButtons';

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WFOHeaderBadge } from '../WFOHeaderBadge';
+import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { useEngineStatusQuery } from '../../../hooks/useEngineStatusQuery';
-import { WFOStatusDotIcon } from '../../../icons/WFOStatusDotIcon';
+import { WfoStatusDotIcon } from '../../../icons/WfoStatusDotIcon';
 
-export const WFOEngineStatusBadge = () => {
+export const WfoEngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
     const { data: engineStatus } = useEngineStatusQuery();
 
@@ -13,12 +13,12 @@ export const WFOEngineStatusBadge = () => {
         : 'Engine status is unavailable';
 
     return (
-        <WFOHeaderBadge
+        <WfoHeaderBadge
             color={theme.colors.emptyShade}
             textColor={theme.colors.shadow}
-            iconType={() => <WFOStatusDotIcon color={theme.colors.success} />}
+            iconType={() => <WfoStatusDotIcon color={theme.colors.success} />}
         >
             {engineStatusText}
-        </WFOHeaderBadge>
+        </WfoHeaderBadge>
     );
 };

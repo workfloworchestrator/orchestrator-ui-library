@@ -1,3 +1,3 @@
-export * from './WFOBasicTable';
-export * from './WFOSortDirectionIcon';
-export * from './WFOTableHeaderCell';
+export * from './WfoBasicTable';
+export * from './WfoSortDirectionIcon';
+export * from './WfoTableHeaderCell';

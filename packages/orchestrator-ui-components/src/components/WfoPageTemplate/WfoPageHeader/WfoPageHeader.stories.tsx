@@ -1,11 +1,11 @@
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import type { Meta } from '@storybook/react';
 import React, { ReactElement } from 'react';
-import { WFOPageHeader } from './WFOPageHeader';
+import { WfoPageHeader } from './WfoPageHeader';
 
-const Story: Meta<typeof WFOPageHeader> = {
-    component: WFOPageHeader,
-    title: 'PageTemplate/WFOPageHeader',
+const Story: Meta<typeof WfoPageHeader> = {
+    component: WfoPageHeader,
+    title: 'PageTemplate/WfoPageHeader',
 };
 export default Story;
 

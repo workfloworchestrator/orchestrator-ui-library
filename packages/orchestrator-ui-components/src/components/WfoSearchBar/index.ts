@@ -1,1 +1,1 @@
-export * from './WFOSearchField';
+export * from './WfoSearchField';

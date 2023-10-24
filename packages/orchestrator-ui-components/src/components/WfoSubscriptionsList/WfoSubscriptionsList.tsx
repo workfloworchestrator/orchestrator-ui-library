@@ -11,31 +11,31 @@ import {
     getPageChangeHandler,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
     TableColumnKeys,
-    WFODataSorting,
-    WFOTableColumns,
-    WFOTableControlColumnConfig,
-    WFOTableWithFilter,
-} from '../WFOTable';
+    WfoDataSorting,
+    WfoTableColumns,
+    WfoTableControlColumnConfig,
+    WfoTableWithFilter,
+} from '../WfoTable';
 import { SubscriptionListItem } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
-import { FilterQuery } from '../WFOFilterTabs';
+import { FilterQuery } from '../WfoFilterTabs';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { WFOSubscriptionStatusBadge } from '../WFOBadges/WFOSubscriptionStatusBadge';
-import { WFOPlusCircleFill } from '../../icons';
-import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
+import { WfoSubscriptionStatusBadge } from '../WfoBadges/WfoSubscriptionStatusBadge';
+import { WfoPlusCircleFill } from '../../icons';
+import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
 import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
-import { WFOLoading } from '../WFOLoading';
+import { WfoLoading } from '../WfoLoading';
 import { SortOrder } from '../../types';
 import { mapGrapghQlSubscriptionsResultToSubscriptionListItems } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
-import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
-import { WFODateTime } from '../WFODateTime/WFODateTime';
+import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
+import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
-export type WFOSubscriptionsListProps = {
+export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
     dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
     setDataDisplayParam: <
@@ -47,7 +47,7 @@ export type WFOSubscriptionsListProps = {
     hiddenColumns: TableColumnKeys<SubscriptionListItem> | undefined;
 };
 
-export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
+export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     alwaysOnFilters,
     dataDisplayParams,
     setDataDisplayParam,
@@ -61,12 +61,12 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
 
     const { theme } = useOrchestratorTheme();
 
-    const tableColumns: WFOTableColumns<SubscriptionListItem> = {
+    const tableColumns: WfoTableColumns<SubscriptionListItem> = {
         subscriptionId: {
             field: 'subscriptionId',
             name: t('id'),
             width: '100',
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         description: {
@@ -83,13 +83,13 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'status',
             name: t('status'),
             width: '110',
-            render: (value) => <WFOSubscriptionStatusBadge status={value} />,
+            render: (value) => <WfoSubscriptionStatusBadge status={value} />,
         },
         insync: {
             field: 'insync',
             name: t('insync'),
             width: '110',
-            render: (value) => <WFOInsyncIcon inSync={value} />,
+            render: (value) => <WfoInsyncIcon inSync={value} />,
         },
         productName: {
             field: 'productName',
@@ -104,7 +104,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'startDate',
             name: t('startDate'),
             width: '150',
-            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            render: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
@@ -112,7 +112,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
             field: 'endDate',
             name: t('endDate'),
             width: '150',
-            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            render: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
@@ -122,14 +122,14 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
         },
     };
 
-    const leadingControlColumns: WFOTableControlColumnConfig<SubscriptionListItem> =
+    const leadingControlColumns: WfoTableControlColumnConfig<SubscriptionListItem> =
         {
             inlineSubscriptionDetails: {
                 field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
                 width: '40',
                 render: () => (
                     <EuiFlexItem>
-                        <WFOPlusCircleFill color={theme.colors.mediumShade} />
+                        <WfoPlusCircleFill color={theme.colors.mediumShade} />
                     </EuiFlexItem>
                 ),
             },
@@ -154,10 +154,10 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
     }
 
     if (!data) {
-        return <WFOLoading />;
+        return <WfoLoading />;
     }
 
-    const dataSorting: WFODataSorting<SubscriptionListItem> = {
+    const dataSorting: WfoDataSorting<SubscriptionListItem> = {
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -170,7 +170,7 @@ export const WFOSubscriptionsList: FC<WFOSubscriptionsListProps> = ({
     };
 
     return (
-        <WFOTableWithFilter<SubscriptionListItem>
+        <WfoTableWithFilter<SubscriptionListItem>
             esQueryString={dataDisplayParams.esQueryString}
             onUpdateEsQueryString={getEsQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,

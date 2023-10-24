@@ -1,14 +1,14 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { WFOHeaderBadge } from './WFOHeaderBadge';
+import { WfoHeaderBadge } from './WfoHeaderBadge';
 
-const Story: Meta<typeof WFOHeaderBadge> = {
+const Story: Meta<typeof WfoHeaderBadge> = {
     component: (args) => (
         <div style={{ display: 'flex' }}>
-            <WFOHeaderBadge {...args} />
+            <WfoHeaderBadge {...args} />
         </div>
     ),
-    title: 'Badges/WFOHeaderBadge',
+    title: 'Badges/WfoHeaderBadge',
 };
 export default Story;
 

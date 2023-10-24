@@ -1,9 +1,9 @@
 import React from 'react';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import {
-    WFOMultiListSection,
-    WFONewProcessPanel,
-    WFOStatCards,
+    WfoMultiListSection,
+    WfoNewProcessPanel,
+    WfoStatCards,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
@@ -11,11 +11,11 @@ export function Index() {
         <>
             <EuiPageHeader pageTitle="Goodmorning Hans" />
             <EuiSpacer />
-            <WFONewProcessPanel />
+            <WfoNewProcessPanel />
             <EuiSpacer />
-            <WFOStatCards />
+            <WfoStatCards />
             <EuiSpacer />
-            <WFOMultiListSection />
+            <WfoMultiListSection />
         </>
     );
 }

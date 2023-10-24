@@ -15,13 +15,13 @@ type Item = {
     label: string | number;
 };
 
-type WFOTreeNodeProps = {
+type WfoTreeNodeProps = {
     item: Item;
     hasChildren: boolean;
     level: number;
 };
 
-export const WFOTreeNode: FC<WFOTreeNodeProps> = ({
+export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     item,
     hasChildren,
     level,

@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { EuiBadgeProps } from '@elastic/eui';
-import { WFOBadge } from '../WFOBadge/WFOBadge';
+import { WfoBadge } from '../WfoBadge/WfoBadge';
 import { TextColor } from '@elastic/eui/src/components/text/text_color';
 
 export type HeaderBadgeProps = EuiBadgeProps & {
@@ -8,7 +8,7 @@ export type HeaderBadgeProps = EuiBadgeProps & {
     children: ReactNode;
 };
 
-export const WFOHeaderBadge: FC<HeaderBadgeProps> = ({
+export const WfoHeaderBadge: FC<HeaderBadgeProps> = ({
     children,
     ...restProps
 }) => {
@@ -24,8 +24,8 @@ export const WFOHeaderBadge: FC<HeaderBadgeProps> = ({
           };
 
     return (
-        <WFOBadge {...restProps} css={css}>
+        <WfoBadge {...restProps} css={css}>
             {children}
-        </WFOBadge>
+        </WfoBadge>
     );
 };

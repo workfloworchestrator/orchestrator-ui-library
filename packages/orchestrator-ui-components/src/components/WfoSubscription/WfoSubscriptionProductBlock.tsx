@@ -13,15 +13,15 @@ import { TreeContext, TreeContextType } from '../../contexts';
 import { FieldValue } from '../../types';
 import { getProductBlockTitle } from './utils';
 
-interface WFOSubscriptionProductBlockProps {
+interface WfoSubscriptionProductBlockProps {
     productBlockInstanceValues: FieldValue[];
     id: number;
 }
 
-export const WFOSubscriptionProductBlock = ({
+export const WfoSubscriptionProductBlock = ({
     productBlockInstanceValues,
     id,
-}: WFOSubscriptionProductBlockProps) => {
+}: WfoSubscriptionProductBlockProps) => {
     const { toggleSelectedId } = React.useContext(
         TreeContext,
     ) as TreeContextType;

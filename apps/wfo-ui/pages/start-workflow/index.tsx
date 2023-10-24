@@ -6,14 +6,14 @@ import {
     EuiFlexItem,
     EuiButton,
 } from '@elastic/eui';
-import { WFONewProcessPanel } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoNewProcessPanel } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function NewProcess() {
     return (
         <>
             <EuiPageHeader pageTitle="Create new process" />
             <EuiSpacer />
-            <WFONewProcessPanel />
+            <WfoNewProcessPanel />
             <EuiSpacer />
             <EuiFlexGroup>
                 <EuiFlexItem grow={false}>

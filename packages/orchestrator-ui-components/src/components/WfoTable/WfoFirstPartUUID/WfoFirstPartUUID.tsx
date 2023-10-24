@@ -1,10 +1,10 @@
 import { getFirstUuidPart } from '../../../utils';
 import React, { FC } from 'react';
 
-export type WFOFirstUUIDPartProps = {
+export type WfoFirstUUIDPartProps = {
     UUID: string;
 };
 
-export const WFOFirstPartUUID: FC<WFOFirstUUIDPartProps> = ({ UUID }) => (
+export const WfoFirstPartUUID: FC<WfoFirstUUIDPartProps> = ({ UUID }) => (
     <span title={UUID}>{getFirstUuidPart(UUID)}</span>
 );

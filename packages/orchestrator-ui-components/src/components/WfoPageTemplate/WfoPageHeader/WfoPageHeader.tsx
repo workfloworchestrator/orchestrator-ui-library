@@ -8,19 +8,19 @@ import {
     EuiHeaderSectionItem,
 } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WFOFailedTasksBadge } from '../../WFOBadges/WFOFailedTasksBadge';
-import { WFOEngineStatusBadge } from '../../WFOBadges/WFOEngineStatusBadge';
-import { WFOEnvironmentBadge } from '../../WFOBadges/WFOEnvironmentBadge';
-import { WFOLogoutIcon } from '../../../icons/WFOLogoutIcon';
+import { WfoFailedTasksBadge } from '../../WfoBadges/WfoFailedTasksBadge';
+import { WfoEngineStatusBadge } from '../../WfoBadges/WfoEngineStatusBadge';
+import { WfoEnvironmentBadge } from '../../WfoBadges/WfoEnvironmentBadge';
+import { WfoLogoutIcon } from '../../../icons/WfoLogoutIcon';
 
-export interface WFOPageHeaderProps {
+export interface WfoPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
     getAppLogo: (navigationHeight: number) => ReactElement;
     handleLogoutClick: () => void;
 }
 
-export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
+export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
     handleLogoutClick,
@@ -40,22 +40,22 @@ export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
                     />
                 </EuiHeaderSectionItem>
                 <EuiHeaderSectionItem>
-                    <WFOEnvironmentBadge />
+                    <WfoEnvironmentBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
-                        <WFOEngineStatusBadge />
-                        <WFOFailedTasksBadge />
+                        <WfoEngineStatusBadge />
+                        <WfoFailedTasksBadge />
                     </EuiBadgeGroup>
 
                     <EuiButtonIcon
                         aria-label="Logout"
                         display="empty"
                         iconType={() => (
-                            <WFOLogoutIcon color={theme.colors.emptyShade} />
+                            <WfoLogoutIcon color={theme.colors.emptyShade} />
                         )}
                         css={{ width: 48, height: 48 }}
                         color="ghost"

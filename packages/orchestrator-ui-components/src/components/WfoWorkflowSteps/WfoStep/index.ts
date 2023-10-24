@@ -1,1 +1,1 @@
-export * from './WFOStep';
+export * from './WfoStep';

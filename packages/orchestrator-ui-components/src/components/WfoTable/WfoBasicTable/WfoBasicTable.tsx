@@ -1,45 +1,45 @@
 import React, { ReactNode } from 'react';
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
-import { WFOTableHeaderCell } from './WFOTableHeaderCell';
+import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 
 import type {
-    WFODataSorting,
+    WfoDataSorting,
     TableColumnKeys,
-    WFODataSearch,
+    WfoDataSearch,
 } from '../utils/columns';
 import {
-    WFOTableControlColumnConfig,
-    WFOTableDataColumnConfig,
+    WfoTableControlColumnConfig,
+    WfoTableDataColumnConfig,
 } from '../utils/columns';
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './styles';
 import { SortOrder } from '../../../types';
 
-export type WFOBasicTableColumns<T> = {
-    [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
+export type WfoBasicTableColumns<T> = {
+    [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
         render?: (cellValue: T[Property], row: T) => ReactNode;
     };
 };
 
-export type WFOBasicTableColumnsWithControlColumns<T> =
-    WFOBasicTableColumns<T> & WFOTableControlColumnConfig<T>;
+export type WfoBasicTableColumnsWithControlColumns<T> =
+    WfoBasicTableColumns<T> & WfoTableControlColumnConfig<T>;
 
-export type WFOBasicTableProps<T> = {
+export type WfoBasicTableProps<T> = {
     data: T[];
     columns:
-        | WFOBasicTableColumnsWithControlColumns<T>
-        | WFOBasicTableColumns<T>;
+        | WfoBasicTableColumnsWithControlColumns<T>
+        | WfoBasicTableColumns<T>;
     hiddenColumns?: TableColumnKeys<T>;
-    dataSorting?: WFODataSorting<T>;
+    dataSorting?: WfoDataSorting<T>;
     pagination?: Pagination;
     isLoading?: boolean;
     onCriteriaChange?: (criteria: Criteria<T>) => void;
-    onUpdateDataSorting?: (updatedDataSorting: WFODataSorting<T>) => void;
-    onDataSearch?: (updatedDataSearch: WFODataSearch<T>) => void;
+    onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
+    onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
 };
 
-export const WFOBasicTable = <T,>({
+export const WfoBasicTable = <T,>({
     data,
     columns,
     hiddenColumns,
@@ -49,7 +49,7 @@ export const WFOBasicTable = <T,>({
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
-}: WFOBasicTableProps<T>) => {
+}: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle } = getStyles(theme);
 
@@ -57,7 +57,7 @@ export const WFOBasicTable = <T,>({
         <EuiBasicTable
             css={basicTableStyle}
             items={data}
-            columns={mapWFOTableColumnsToEuiColumns(
+            columns={mapWfoTableColumnsToEuiColumns(
                 columns,
                 hiddenColumns,
                 dataSorting,
@@ -71,12 +71,12 @@ export const WFOBasicTable = <T,>({
     );
 };
 
-function mapWFOTableColumnsToEuiColumns<T>(
-    tableColumns: WFOBasicTableColumns<T>,
+function mapWfoTableColumnsToEuiColumns<T>(
+    tableColumns: WfoBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
-    dataSorting?: WFODataSorting<T>,
-    onDataSort?: (updatedDataSorting: WFODataSorting<T>) => void,
-    onDataSearch?: (updatedDataSearch: WFODataSearch<T>) => void,
+    dataSorting?: WfoDataSorting<T>,
+    onDataSort?: (updatedDataSorting: WfoDataSorting<T>) => void,
+    onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void,
 ): EuiBasicTableColumn<T>[] {
     function isVisibleColumn(columnKey: string) {
         return !hiddenColumns?.includes(columnKey as keyof T);
@@ -84,7 +84,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
 
     function mapColumnKeyToEuiColumn(colKey: string): EuiBasicTableColumn<T> {
         const typedColumnKey = colKey as keyof T;
-        const column: WFOBasicTableColumns<T>[keyof T] =
+        const column: WfoBasicTableColumns<T>[keyof T] =
             tableColumns[typedColumnKey];
         const { name, render, width, description, sortable, filterable } =
             column;
@@ -116,7 +116,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
             description,
             field: typedColumnKey,
             name: name && (
-                <WFOTableHeaderCell
+                <WfoTableHeaderCell
                     fieldName={typedColumnKey.toString()}
                     sortOrder={sortOrder}
                     onSetSortOrder={
@@ -125,7 +125,7 @@ function mapWFOTableColumnsToEuiColumns<T>(
                     onSearch={isFilterable ? handleOnSearch : undefined}
                 >
                     {name}
-                </WFOTableHeaderCell>
+                </WfoTableHeaderCell>
             ),
             truncateText: true,
             textOnly: true,

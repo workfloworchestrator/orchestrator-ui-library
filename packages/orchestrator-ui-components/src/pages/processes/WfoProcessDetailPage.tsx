@@ -3,13 +3,13 @@ import React, { useContext, useRef } from 'react';
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { TimelineItem, WFOLoading } from '../../components';
+import { TimelineItem, WfoLoading } from '../../components';
 
-import { WFOProcessDetail } from './WFOProcessDetail';
+import { WfoProcessDetail } from './WfoProcessDetail';
 import {
-    WFOStepListRef,
-    WFOWorkflowStepList,
-} from '../../components/WFOWorkflowSteps';
+    WfoStepListRef,
+    WfoWorkflowStepList,
+} from '../../components/WfoWorkflowSteps';
 
 import {
     convertStepsToGroupedSteps,
@@ -22,15 +22,15 @@ export type GroupedStep = {
     steps: Step[];
 };
 
-interface WFOProcessDetailPageProps {
+interface WfoProcessDetailPageProps {
     processId: string;
 }
 
-export const WFOProcessDetailPage = ({
+export const WfoProcessDetailPage = ({
     processId,
-}: WFOProcessDetailPageProps) => {
+}: WfoProcessDetailPageProps) => {
     const { dataRefetchInterval } = useContext(OrchestratorConfigContext);
-    const stepListRef = useRef<WFOStepListRef>(null);
+    const stepListRef = useRef<WfoStepListRef>(null);
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
@@ -51,7 +51,7 @@ export const WFOProcessDetailPage = ({
         mapGroupedStepsToTimelineItems(groupedSteps);
 
     return (
-        <WFOProcessDetail
+        <WfoProcessDetail
             pageTitle={pageTitle}
             productNames={productNames}
             buttonsAreDisabled={isFetching && !process}
@@ -61,9 +61,9 @@ export const WFOProcessDetailPage = ({
                 stepListRef.current?.scrollToStep(id)
             }
         >
-            {(isFetching && !process && <WFOLoading />) ||
+            {(isFetching && !process && <WfoLoading />) ||
                 (process !== undefined && (
-                    <WFOWorkflowStepList
+                    <WfoWorkflowStepList
                         ref={stepListRef}
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
@@ -71,6 +71,6 @@ export const WFOProcessDetailPage = ({
                         startedAt={process.startedAt}
                     />
                 ))}
-        </WFOProcessDetail>
+        </WfoProcessDetail>
     );
 };

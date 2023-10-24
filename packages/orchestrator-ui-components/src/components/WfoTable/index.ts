@@ -1,7 +1,7 @@
-export * from './WFODataGridTable/WFODataGridTable';
-export * from './WFODataGridTable/WFOdataGridColumns';
+export * from './WfoDataGridTable/WfoDataGridTable';
+export * from './WfoDataGridTable/WfodataGridColumns';
 
-export * from './WFOTableSettingsModal';
+export * from './WfoTableSettingsModal';
 
 export * from './utils/columns';
 export * from './utils/constants';
@@ -9,7 +9,7 @@ export * from './utils/constants';
 export * from './utils/tableConfigPersistence';
 export * from './utils/tableUtils';
 
-export * from './WFOBasicTable';
-export * from './WFOTableWithFilter';
+export * from './WfoBasicTable';
+export * from './WfoTableWithFilter';
 
-export * from './WFOSortButtons';
+export * from './WfoSortButtons';

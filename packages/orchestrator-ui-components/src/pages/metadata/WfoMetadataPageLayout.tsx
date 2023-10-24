@@ -38,7 +38,7 @@ const metaDataTabs: MetaDataTab[] = [
     },
 ];
 
-export const WFOMetadataPageLayout = ({
+export const WfoMetadataPageLayout = ({
     children,
     tabs = metaDataTabs,
 }: MetadataLayoutProps) => {

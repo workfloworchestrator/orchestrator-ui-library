@@ -6,10 +6,10 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-    WFOProductBlockBadge,
+    WfoProductBlockBadge,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
-import { WFOTableWithFilter } from '../../components';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
+import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
     getPageChangeHandler,
@@ -27,8 +27,8 @@ import {
 
 import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
-import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
-import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -37,7 +37,7 @@ export const RESOURCE_TYPE_FIELD_TYPE: keyof ResourceTypeDefinition =
 export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
     'description';
 
-export const WFOResourceTypesPage = () => {
+export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
 
     const [tableDefaults, setTableDefaults] =
@@ -68,12 +68,12 @@ export const WFOResourceTypesPage = () => {
             },
         });
 
-    const tableColumns: WFOTableColumns<ResourceTypeDefinition> = {
+    const tableColumns: WfoTableColumns<ResourceTypeDefinition> = {
         resourceTypeId: {
             field: RESOURCE_TYPE_FIELD_ID,
             name: t('resourceId'),
             width: '90',
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         resourceType: {
@@ -81,9 +81,9 @@ export const WFOResourceTypesPage = () => {
             name: t('type'),
             width: '200',
             render: (value) => (
-                <WFOProductBlockBadge badgeType={BadgeType.RESOURCE_TYPE}>
+                <WfoProductBlockBadge badgeType={BadgeType.RESOURCE_TYPE}>
                     {value}
-                </WFOProductBlockBadge>
+                </WfoProductBlockBadge>
             ),
         },
         description: {
@@ -103,7 +103,7 @@ export const WFOResourceTypesPage = () => {
         'resourceTypes',
     );
 
-    const dataSorting: WFODataSorting<ResourceTypeDefinition> = {
+    const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -118,8 +118,8 @@ export const WFOResourceTypesPage = () => {
     };
 
     return (
-        <WFOMetadataPageLayout>
-            <WFOTableWithFilter<ResourceTypeDefinition>
+        <WfoMetadataPageLayout>
+            <WfoTableWithFilter<ResourceTypeDefinition>
                 data={data ? data.resourceTypes.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
@@ -140,6 +140,6 @@ export const WFOResourceTypesPage = () => {
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }
             />
-        </WFOMetadataPageLayout>
+        </WfoMetadataPageLayout>
     );
 };

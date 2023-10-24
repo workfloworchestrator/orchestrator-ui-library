@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { EuiSpacer, EuiSwitch, EuiFlexItem, EuiFlexGroup } from '@elastic/eui';
 import type { Criteria, Pagination } from '@elastic/eui';
 
-import { WFOSearchStrikethrough } from '../../icons';
+import { WfoSearchStrikethrough } from '../../icons';
 import {
     useOrchestratorTheme,
     useQueryWithGraphql,
@@ -22,26 +22,26 @@ import { parseDateToLocaleDateString, parseDate } from '../../utils';
 
 import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
 
-import { WFONoResults } from '../WFONoResults';
-import { WFOSubscriptionStatusBadge } from '../WFOBadges';
-import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
+import { WfoNoResults } from '../WfoNoResults';
+import { WfoSubscriptionStatusBadge } from '../WfoBadges';
+import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 
-import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
+import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import {
-    WFOTableColumns,
+    WfoTableColumns,
     getDataSortHandler,
     getPageChangeHandler,
-} from '../WFOTable';
-import { WFOBasicTable, WFODataSorting } from '../WFOTable';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../WFOTable';
+} from '../WfoTable';
+import { WfoBasicTable, WfoDataSorting } from '../WfoTable';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../WfoTable';
 
-interface WFORelatedSubscriptionsProps {
+interface WfoRelatedSubscriptionsProps {
     subscriptionId: string;
 }
 
-export const WFORelatedSubscriptions = ({
+export const WfoRelatedSubscriptions = ({
     subscriptionId,
-}: WFORelatedSubscriptionsProps) => {
+}: WfoRelatedSubscriptionsProps) => {
     const [hideTerminatedSubscriptions, setHideTerminatedSubscriptions] =
         useState<boolean>(true);
     const t = useTranslations('subscriptions.detail');
@@ -78,12 +78,12 @@ export const WFORelatedSubscriptions = ({
         data?.subscriptions.page[0].inUseBySubscriptions.page;
     const relatedSubscriptionsPageInfo =
         data?.subscriptions.page[0].inUseBySubscriptions.pageInfo;
-    const tableColumns: WFOTableColumns<RelatedSubscription> = {
+    const tableColumns: WfoTableColumns<RelatedSubscription> = {
         subscriptionId: {
             field: 'subscriptionId',
             name: t('id'),
             width: '100',
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
         },
         description: {
             field: 'description',
@@ -98,13 +98,13 @@ export const WFORelatedSubscriptions = ({
             field: 'status',
             name: t('status'),
             width: '130',
-            render: (value) => <WFOSubscriptionStatusBadge status={value} />,
+            render: (value) => <WfoSubscriptionStatusBadge status={value} />,
         },
         insync: {
             field: 'insync',
             name: t('insync'),
             width: '60',
-            render: (value) => <WFOInsyncIcon inSync={value} />,
+            render: (value) => <WfoInsyncIcon inSync={value} />,
         },
         customer: {
             field: 'customer',
@@ -134,7 +134,7 @@ export const WFORelatedSubscriptions = ({
         totalItemCount: relatedSubscriptionsPageInfo?.totalItems ?? 0,
     };
 
-    const dataSorting: WFODataSorting<RelatedSubscription> = {
+    const dataSorting: WfoDataSorting<RelatedSubscription> = {
         field: dataDisplayParams.sortBy?.field,
         sortOrder: dataDisplayParams.sortBy?.order,
     };
@@ -172,7 +172,7 @@ export const WFORelatedSubscriptions = ({
                     (!hideTerminatedSubscriptions &&
                         relatedSubscriptions.length > 0)) && (
                     <>
-                        <WFOBasicTable<RelatedSubscription>
+                        <WfoBasicTable<RelatedSubscription>
                             data={relatedSubscriptions}
                             columns={tableColumns}
                             pagination={pagination}
@@ -185,9 +185,9 @@ export const WFORelatedSubscriptions = ({
                         />
                     </>
                 )) || (
-                <WFONoResults
+                <WfoNoResults
                     text={t('noRelatedSubscriptions')}
-                    icon={<WFOSearchStrikethrough color={theme.colors.link} />}
+                    icon={<WfoSearchStrikethrough color={theme.colors.link} />}
                 />
             )}
         </>

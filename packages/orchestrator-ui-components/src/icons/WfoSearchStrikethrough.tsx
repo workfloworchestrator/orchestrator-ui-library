@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { WFOIconProps } from './WFOIconProps';
+import { WfoIconProps } from './WfoIconProps';
 
-export const WFOSearchStrikethrough: FC<WFOIconProps> = ({
+export const WfoSearchStrikethrough: FC<WfoIconProps> = ({
     width = 24,
     height = 24,
     color = '#0067AC',

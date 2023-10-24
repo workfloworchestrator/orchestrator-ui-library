@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import { WFOMultiListSection } from './WFOMultiListSection';
+import { WfoMultiListSection } from './WfoMultiListSection';
 
 const subscriptionsList = [
     {
@@ -62,9 +62,9 @@ const processesList = [
     },
 ];
 
-const Story: Meta<typeof WFOMultiListSection> = {
-    component: WFOMultiListSection,
-    title: 'StartPage/WFOMultiListSection',
+const Story: Meta<typeof WfoMultiListSection> = {
+    component: WfoMultiListSection,
+    title: 'StartPage/WfoMultiListSection',
     parameters: {
         mockData: [
             {

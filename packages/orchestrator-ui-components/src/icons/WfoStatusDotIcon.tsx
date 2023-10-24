@@ -1,8 +1,8 @@
 import React from 'react';
 import { FC } from 'react';
-import { WFOIconProps } from './WFOIconProps';
+import { WfoIconProps } from './WfoIconProps';
 
-export const WFOStatusDotIcon: FC<WFOIconProps> = ({
+export const WfoStatusDotIcon: FC<WfoIconProps> = ({
     width = 24,
     height = 24,
     color = '#000000',

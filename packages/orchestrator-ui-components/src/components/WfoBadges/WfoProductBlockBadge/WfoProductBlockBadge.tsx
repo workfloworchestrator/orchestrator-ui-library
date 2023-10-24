@@ -1,17 +1,17 @@
-import { WFOBadge } from '../WFOBadge';
+import { WfoBadge } from '../WfoBadge';
 import React from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 import { BadgeType } from '../../../types';
 
-export type WFOProductBlockBadgeProps = {
+export type WfoProductBlockBadgeProps = {
     children: string;
     badgeType: BadgeType;
 };
 
-export function WFOProductBlockBadge({
+export function WfoProductBlockBadge({
     children,
     badgeType,
-}: WFOProductBlockBadgeProps) {
+}: WfoProductBlockBadgeProps) {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const getBadgeColorFromType = (badgeType: BadgeType) => {
@@ -62,8 +62,8 @@ export function WFOProductBlockBadge({
     const { badgeColor, textColor } = getBadgeColorFromType(badgeType);
 
     return (
-        <WFOBadge textColor={textColor} color={badgeColor}>
+        <WfoBadge textColor={textColor} color={badgeColor}>
             {children}
-        </WFOBadge>
+        </WfoBadge>
     );
 }

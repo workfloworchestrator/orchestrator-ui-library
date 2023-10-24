@@ -10,4 +10,4 @@
 
 ### Patch Changes
 
-- 0cef169: Splitted WFO in separate packages
+- 0cef169: Splitted Wfo in separate packages

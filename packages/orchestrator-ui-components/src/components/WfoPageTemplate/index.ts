@@ -1,4 +1,4 @@
-export * from './WFOPageHeader';
-export * from './WFOPageTemplate';
-export * from './WFOSidebar';
+export * from './WfoPageHeader';
+export * from './WfoPageTemplate';
+export * from './WfoSidebar';
 export * from './paths';

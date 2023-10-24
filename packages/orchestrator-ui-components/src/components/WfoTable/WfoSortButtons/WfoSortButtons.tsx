@@ -1,15 +1,15 @@
 import { SortOrder } from '../../../types';
 import React, { FC } from 'react';
-import { WFOSortButton } from './WFOSortButton';
-import { WFOSortAsc, WFOSortDesc } from '../../../icons';
+import { WfoSortButton } from './WfoSortButton';
+import { WfoSortAsc, WfoSortDesc } from '../../../icons';
 import { getStyles } from './styles';
 
-export type WFOSortButtonsProps = {
+export type WfoSortButtonsProps = {
     sortOrder?: SortOrder;
     onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
 };
 
-export const WFOSortButtons: FC<WFOSortButtonsProps> = ({
+export const WfoSortButtons: FC<WfoSortButtonsProps> = ({
     sortOrder,
     onChangeSortOrder,
 }) => {
@@ -17,13 +17,13 @@ export const WFOSortButtons: FC<WFOSortButtonsProps> = ({
 
     return (
         <div css={sortButtonsContainerStyle}>
-            <WFOSortButton
-                WFOIconComponent={WFOSortAsc}
+            <WfoSortButton
+                WfoIconComponent={WfoSortAsc}
                 isActive={sortOrder !== SortOrder.ASC}
                 onClick={() => onChangeSortOrder(SortOrder.ASC)}
             />
-            <WFOSortButton
-                WFOIconComponent={WFOSortDesc}
+            <WfoSortButton
+                WfoIconComponent={WfoSortDesc}
                 isActive={sortOrder !== SortOrder.DESC}
                 onClick={() => onChangeSortOrder(SortOrder.DESC)}
             />

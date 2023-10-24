@@ -1,21 +1,21 @@
 import React, { FC, Fragment, ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
-import { WFOKeyCell } from './WFOKeyCell';
-import { WFOValueCell } from './WFOValueCell';
+import { WfoKeyCell } from './WfoKeyCell';
+import { WfoValueCell } from './WfoValueCell';
 
-export type WFOKeyValueTableDataType = {
+export type WfoKeyValueTableDataType = {
     key: string;
     value: ReactNode;
     textToCopy?: string;
 };
 
-export type WFOKeyValueTableProps = {
-    keyValues: WFOKeyValueTableDataType[];
+export type WfoKeyValueTableProps = {
+    keyValues: WfoKeyValueTableDataType[];
     showCopyToClipboardIcon?: boolean;
 };
 
-export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
+export const WfoKeyValueTable: FC<WfoKeyValueTableProps> = ({
     keyValues,
     showCopyToClipboardIcon = false,
 }) => {
@@ -26,8 +26,8 @@ export const WFOKeyValueTable: FC<WFOKeyValueTableProps> = ({
         <div css={keyValueTable}>
             {keyValues.map(({ key, value, textToCopy }, rowNumber) => (
                 <Fragment key={key}>
-                    <WFOKeyCell value={key} rowNumber={rowNumber} />
-                    <WFOValueCell
+                    <WfoKeyCell value={key} rowNumber={rowNumber} />
+                    <WfoValueCell
                         value={value}
                         textToCopy={textToCopy}
                         rowNumber={rowNumber}

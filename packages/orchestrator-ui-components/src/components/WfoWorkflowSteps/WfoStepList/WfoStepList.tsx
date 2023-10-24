@@ -3,18 +3,18 @@ import { Step, StepStatus } from '../../../types';
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from '../styles';
 import { stateDelta } from '../../../utils';
-import { WFOStep } from '../WFOStep';
+import { WfoStep } from '../WfoStep';
 
 export type StepListItem = {
     step: Step;
     isExpanded: boolean;
 };
 
-export type WFOStepListRef = {
+export type WfoStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
-export type WFOStepListProps = {
+export type WfoStepListProps = {
     stepListItems: StepListItem[];
     showHiddenKeys: boolean;
     startedAt: string;
@@ -22,7 +22,7 @@ export type WFOStepListProps = {
     onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
 };
 
-export const WFOStepList = React.forwardRef(
+export const WfoStepList = React.forwardRef(
     (
         {
             stepListItems,
@@ -30,8 +30,8 @@ export const WFOStepList = React.forwardRef(
             startedAt,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
-        }: WFOStepListProps,
-        reference: Ref<WFOStepListRef>,
+        }: WfoStepListProps,
+        reference: Ref<WfoStepListRef>,
     ) => {
         const { theme } = useOrchestratorTheme();
         const { stepSpacerStyle } = getStyles(theme);
@@ -115,7 +115,7 @@ export const WFOStepList = React.forwardRef(
                     const stepComponent = (
                         <div key={`step-${index}`}>
                             {index !== 0 && <div css={stepSpacerStyle} />}
-                            <WFOStep
+                            <WfoStep
                                 ref={getReferenceCallbackForStepId(
                                     stepListItem.step.stepId,
                                 )}
@@ -141,4 +141,4 @@ export const WFOStepList = React.forwardRef(
         );
     },
 );
-WFOStepList.displayName = 'WFOStepList';
+WfoStepList.displayName = 'WfoStepList';

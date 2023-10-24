@@ -5,19 +5,19 @@ import {
     EuiSearchBarOnChangeArgs,
 } from '@elastic/eui';
 
-export type WFOSearchFieldProps = {
+export type WfoSearchFieldProps = {
     __filterQuery?: string; // Deprecated Pythia related way of passing querystring
     __setFilterQuery?: (updatedFilterQuery: string) => void; // Deprecated Pythia related way of setting querystring
     esQueryString?: string;
     onUpdateEsQueryString?: (esQueryString: string) => void;
 };
 
-export const WFOSearchField = ({
+export const WfoSearchField = ({
     __filterQuery,
     __setFilterQuery,
     esQueryString,
     onUpdateEsQueryString,
-}: WFOSearchFieldProps) => {
+}: WfoSearchFieldProps) => {
     const queryString = __filterQuery || esQueryString;
     const queryIsValid = true; // Query validation turned of for now until ESQueries can be sent to the backend
 

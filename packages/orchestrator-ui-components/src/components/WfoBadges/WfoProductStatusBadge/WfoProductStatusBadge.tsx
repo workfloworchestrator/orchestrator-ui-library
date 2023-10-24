@@ -1,13 +1,13 @@
-import { WFOBadge } from '../WFOBadge';
+import { WfoBadge } from '../WfoBadge';
 import React, { FC } from 'react';
 import { useOrchestratorTheme } from '../../../hooks';
 import { ProductLifecycleStatus } from '../../../types';
 
-export type WFOProductStatusBadgeProps = {
+export type WfoProductStatusBadgeProps = {
     status: ProductLifecycleStatus;
 };
 
-export const WFOProductStatusBadge: FC<WFOProductStatusBadgeProps> = ({
+export const WfoProductStatusBadge: FC<WfoProductStatusBadgeProps> = ({
     status,
 }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
@@ -45,8 +45,8 @@ export const WFOProductStatusBadge: FC<WFOProductStatusBadgeProps> = ({
     const { badgeColor, textColor } = getBadgeColorFromStatus(status);
 
     return (
-        <WFOBadge textColor={textColor} color={badgeColor}>
+        <WfoBadge textColor={textColor} color={badgeColor}>
             {status.toLowerCase()}
-        </WFOBadge>
+        </WfoBadge>
     );
 };

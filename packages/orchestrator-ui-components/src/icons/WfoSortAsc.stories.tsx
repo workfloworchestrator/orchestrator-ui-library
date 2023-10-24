@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOSortAsc } from './WFOSortAsc';
+import { WfoSortAsc } from './WfoSortAsc';
 
-const Story: Meta<typeof WFOSortAsc> = {
-    component: WFOSortAsc,
-    title: 'Icons/WFOSortAsc',
+const Story: Meta<typeof WfoSortAsc> = {
+    component: WfoSortAsc,
+    title: 'Icons/WfoSortAsc',
 };
 export default Story;
 

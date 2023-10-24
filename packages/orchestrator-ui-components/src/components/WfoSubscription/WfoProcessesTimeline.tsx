@@ -9,10 +9,10 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
-import { WFOProcessStatusBadge } from '../WFOBadges';
+import { WfoProcessStatusBadge } from '../WfoBadges';
 import { SubscriptionDetailProcess } from '../../types';
-import { WFOLoading } from '../WFOLoading';
-import { PATH_PROCESSES } from '../WFOPageTemplate';
+import { WfoLoading } from '../WfoLoading';
+import { PATH_PROCESSES } from '../WfoPageTemplate';
 import { parseDateToLocaleDateTimeString, parseDate } from '../../utils';
 import { upperCaseFirstChar } from '../../utils';
 import { getWorkflowTargetColor } from './utils';
@@ -54,7 +54,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
                         <td css={emptyCellStyle}></td>
                         <td css={headerCellStyle}>{t('status')}</td>
                         <td css={contentCellStyle}>
-                            <WFOProcessStatusBadge
+                            <WfoProcessStatusBadge
                                 processStatus={
                                     subscriptionDetailProcess.lastStatus
                                 }
@@ -135,7 +135,7 @@ export const WfoProcessesTimeline = ({
     return (
         <>
             <EuiSpacer size={'m'} />
-            {!subscriptionDetailProcesses && <WFOLoading />}
+            {!subscriptionDetailProcesses && <WfoLoading />}
             <EuiCommentList aria-label="Processes">
                 {subscriptionDetailProcesses && (
                     <EuiCommentList aria-label="Processes">

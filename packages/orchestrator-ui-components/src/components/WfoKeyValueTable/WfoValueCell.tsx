@@ -2,16 +2,16 @@ import React, { FC, ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { EuiCopy } from '@elastic/eui';
-import { WFOClipboardCopy } from '../../icons/WFOClipboardCopy';
+import { WfoClipboardCopy } from '../../icons/WfoClipboardCopy';
 
-export type WFOValueCellProps = {
+export type WfoValueCellProps = {
     value: ReactNode;
     textToCopy?: string;
     rowNumber: number;
     enableCopyIcon: boolean;
 };
 
-export const WFOValueCell: FC<WFOValueCellProps> = ({
+export const WfoValueCell: FC<WfoValueCellProps> = ({
     value,
     textToCopy,
     rowNumber,
@@ -36,7 +36,7 @@ export const WFOValueCell: FC<WFOValueCellProps> = ({
                     <EuiCopy textToCopy={textToCopy}>
                         {(copy) => (
                             <div onClick={copy} css={clickable}>
-                                <WFOClipboardCopy
+                                <WfoClipboardCopy
                                     width={16}
                                     height={16}
                                     color={theme.colors.mediumShade}

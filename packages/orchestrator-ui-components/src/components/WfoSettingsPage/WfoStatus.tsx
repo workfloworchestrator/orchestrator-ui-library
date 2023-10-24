@@ -6,15 +6,15 @@ import {
     EuiText,
 } from '@elastic/eui';
 import React, { FC } from 'react';
-import { WFOStatusDotIcon } from '../../icons';
+import { WfoStatusDotIcon } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 import { EngineStatusValue } from '../../types';
 
-export type WFOStatusProps = {
+export type WfoStatusProps = {
     engineStatus?: EngineStatusValue;
 };
 
-export const WFOStatus: FC<WFOStatusProps> = ({ engineStatus }) => {
+export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
     const { theme } = useOrchestratorTheme();
     const isRunning = engineStatus === 'RUNNING';
 
@@ -47,7 +47,7 @@ export const WFOStatus: FC<WFOStatusProps> = ({ engineStatus }) => {
                 <EuiFlexItem grow={false}>
                     <EuiFlexGroup gutterSize="xs">
                         <EuiFlexItem>
-                            <WFOStatusDotIcon
+                            <WfoStatusDotIcon
                                 color={
                                     isRunning
                                         ? theme.colors.success

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import WFOListStartPage from './WFOListStartPage';
+import WfoListStartPage from './WfoListStartPage';
 
 const subscriptionsList = [
     {
@@ -63,13 +63,13 @@ const processesList = [
     },
 ];
 
-const Story: Meta<typeof WFOListStartPage> = {
+const Story: Meta<typeof WfoListStartPage> = {
     component: (args) => (
         <div style={{ width: '250px' }}>
-            <WFOListStartPage {...args} />
+            <WfoListStartPage {...args} />
         </div>
     ),
-    title: 'StartPage/WFOListStartPage',
+    title: 'StartPage/WfoListStartPage',
 };
 export default Story;
 

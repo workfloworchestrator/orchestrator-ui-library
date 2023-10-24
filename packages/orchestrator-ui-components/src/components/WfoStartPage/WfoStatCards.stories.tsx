@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOStatCards } from './WFOStatCards';
+import { WfoStatCards } from './WfoStatCards';
 
-const Story: Meta<typeof WFOStatCards> = {
-    component: WFOStatCards,
-    title: 'StartPage/WFOStatCards',
+const Story: Meta<typeof WfoStatCards> = {
+    component: WfoStatCards,
+    title: 'StartPage/WfoStatCards',
 };
 export default Story;
 

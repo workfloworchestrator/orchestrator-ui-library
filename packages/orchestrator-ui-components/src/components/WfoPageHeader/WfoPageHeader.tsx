@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiPageHeader } from '@elastic/eui';
 
-export type WFOPageHeaderProps = {
+export type WfoPageHeaderProps = {
     pageTitle: string;
     children?: ReactNode;
 };
 
-export const WFOPageHeader: FC<WFOPageHeaderProps> = ({
+export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     pageTitle,
     children,
 }) => (

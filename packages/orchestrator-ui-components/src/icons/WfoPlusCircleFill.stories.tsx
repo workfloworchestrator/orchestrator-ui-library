@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOPlusCircleFill } from './WFOPlusCircleFill';
+import { WfoPlusCircleFill } from './WfoPlusCircleFill';
 
-const Story: Meta<typeof WFOPlusCircleFill> = {
-    component: WFOPlusCircleFill,
-    title: 'Icons/WFOPlusCircleFill',
+const Story: Meta<typeof WfoPlusCircleFill> = {
+    component: WfoPlusCircleFill,
+    title: 'Icons/WfoPlusCircleFill',
 };
 export default Story;
 

@@ -1,12 +1,12 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 import { EuiPageTemplate } from '@elastic/eui';
-import { WFOPageHeader } from '../WFOPageHeader';
-import { WFOSidebar } from '../WFOSidebar';
+import { WfoPageHeader } from '../WfoPageHeader';
+import { WfoSidebar } from '../WfoSidebar';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WFOBreadcrumbs } from '../WFOBreadcrumbs';
+import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
-export interface WFOPageTemplateProps {
+export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
@@ -14,7 +14,7 @@ export interface WFOPageTemplateProps {
     children: ReactNode;
 }
 
-export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
+export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     children,
     getAppLogo,
     overrideMenuItems,
@@ -26,7 +26,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
 
     return (
         <>
-            <WFOPageHeader
+            <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
                 handleLogoutClick={() =>
@@ -48,7 +48,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
                             backgroundColor: theme.colors.body,
                         }}
                     >
-                        <WFOSidebar overrideMenuItems={overrideMenuItems} />
+                        <WfoSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
                 )}
                 <EuiPageTemplate.Section
@@ -56,7 +56,7 @@ export const WFOPageTemplate: FC<WFOPageTemplateProps> = ({
                         backgroundColor: theme.colors.emptyShade,
                     }}
                 >
-                    <WFOBreadcrumbs />
+                    <WfoBreadcrumbs />
                     {children}
                 </EuiPageTemplate.Section>
             </EuiPageTemplate>

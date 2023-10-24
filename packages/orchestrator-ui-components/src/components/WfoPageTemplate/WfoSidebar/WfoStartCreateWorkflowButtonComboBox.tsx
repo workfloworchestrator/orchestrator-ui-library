@@ -7,11 +7,11 @@ import { PATH_START_WORKFLOW } from '../paths';
 
 import {
     WorkflowComboBoxOption,
-    WFOButtonComboBox,
-} from '../../WFOButtonComboBox/WFOButtonComboBox';
+    WfoButtonComboBox,
+} from '../../WfoButtonComboBox/WfoButtonComboBox';
 import { useTranslations } from 'next-intl';
 
-export const WFOStartCreateWorkflowButtonComboBox = () => {
+export const WfoStartCreateWorkflowButtonComboBox = () => {
     const router = useRouter();
     const t = useTranslations('common');
 
@@ -48,7 +48,7 @@ export const WFOStartCreateWorkflowButtonComboBox = () => {
     };
 
     return (
-        <WFOButtonComboBox
+        <WfoButtonComboBox
             buttonText={t('newSubscription')}
             options={productList}
             onOptionChange={handleOptionChange}

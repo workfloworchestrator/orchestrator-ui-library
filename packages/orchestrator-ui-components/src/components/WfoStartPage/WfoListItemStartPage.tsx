@@ -17,12 +17,12 @@ interface Subscription {
     note: string;
 }
 
-export interface WFOListItemStartPageProps {
+export interface WfoListItemStartPageProps {
     item: Subscription | ProcessFromRestApi;
     type: string;
 }
 
-export const WFOListItemStartPage: FC<WFOListItemStartPageProps> = ({
+export const WfoListItemStartPage: FC<WfoListItemStartPageProps> = ({
     item,
     type,
 }) => {
@@ -89,4 +89,4 @@ export const WFOListItemStartPage: FC<WFOListItemStartPageProps> = ({
         </a>
     );
 };
-export default WFOListItemStartPage;
+export default WfoListItemStartPage;

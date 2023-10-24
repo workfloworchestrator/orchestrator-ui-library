@@ -1,2 +1,2 @@
-export * from './WFOSubscriptionDetailPage';
-export * from './WFOSubscriptionsListPage';
+export * from './WfoSubscriptionDetailPage';
+export * from './WfoSubscriptionsListPage';

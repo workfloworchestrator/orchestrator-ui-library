@@ -3,27 +3,27 @@ import React from 'react';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
-import { WFOInsyncIcon } from '../WFOInsyncIcon/WFOInsyncIcon';
+import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 
 import {
-    WFOSubscriptionStatusBadge,
-    WFOProductStatusBadge,
-} from '../WFOBadges';
+    WfoSubscriptionStatusBadge,
+    WfoProductStatusBadge,
+} from '../WfoBadges';
 
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
 import { SubscriptionDetail } from '../../types';
-import { WFOKeyValueTableDataType } from '../WFOKeyValueTable/WFOKeyValueTable';
+import { WfoKeyValueTableDataType } from '../WfoKeyValueTable/WfoKeyValueTable';
 
-interface WFOSubscriptionGeneralProps {
+interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
 }
 
-export const WFOSubscriptionGeneral = ({
+export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
-}: WFOSubscriptionGeneralProps) => {
+}: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
 
-    const getSubscriptionDetailBlockData = (): WFOKeyValueTableDataType[] => {
+    const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
         return [
             {
                 key: t('subscriptionId'),
@@ -50,14 +50,14 @@ export const WFOSubscriptionGeneral = ({
             {
                 key: t('status'),
                 value: (
-                    <WFOSubscriptionStatusBadge
+                    <WfoSubscriptionStatusBadge
                         status={subscriptionDetail.status}
                     />
                 ),
             },
             {
                 key: t('insync'),
-                value: <WFOInsyncIcon inSync={subscriptionDetail.insync} />,
+                value: <WfoInsyncIcon inSync={subscriptionDetail.insync} />,
             },
             {
                 key: t('customer'),
@@ -80,14 +80,14 @@ export const WFOSubscriptionGeneral = ({
         ];
     };
 
-    const getFixedInputBlockData = (): WFOKeyValueTableDataType[] => {
+    const getFixedInputBlockData = (): WfoKeyValueTableDataType[] => {
         return subscriptionDetail.fixedInputs.map((fixedInput) => ({
             key: fixedInput.field,
             value: fixedInput.value,
         }));
     };
 
-    const getProductInfoBlockData = (): WFOKeyValueTableDataType[] => {
+    const getProductInfoBlockData = (): WfoKeyValueTableDataType[] => {
         const product = subscriptionDetail.product;
         return [
             {
@@ -108,7 +108,7 @@ export const WFOSubscriptionGeneral = ({
             },
             {
                 key: t('status'),
-                value: <WFOProductStatusBadge status={product.status} />,
+                value: <WfoProductStatusBadge status={product.status} />,
             },
             {
                 key: t('created'),

@@ -1,14 +1,14 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { WFOSidebar } from './WFOSidebar';
+import { WfoSidebar } from './WfoSidebar';
 
-const Story: Meta<typeof WFOSidebar> = {
+const Story: Meta<typeof WfoSidebar> = {
     component: (args) => (
         <div style={{ width: '250px', backgroundColor: '#F1F5F9' }}>
-            <WFOSidebar {...args} />
+            <WfoSidebar {...args} />
         </div>
     ),
-    title: 'PageTemplate/WFOSidebar',
+    title: 'PageTemplate/WfoSidebar',
 };
 export default Story;
 

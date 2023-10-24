@@ -7,15 +7,15 @@ import {
 import { useRef, useState } from 'react';
 import {
     mapColumnSortToEuiDataGridSorting,
-    WFOControlColumn,
+    WfoControlColumn,
     getInitialColumnOrder,
-    WFODataGridTableColumns,
-} from './WFOdataGridColumns';
+    WfoDataGridTableColumns,
+} from './WfodataGridColumns';
 import {
     EuiDataGridControlColumn,
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { WFODataSorting, TableColumnKeys } from '../utils/columns';
+import { WfoDataSorting, TableColumnKeys } from '../utils/columns';
 import { DEFAULT_PAGE_SIZE } from '../utils/constants';
 
 // Total height of grid button bar, table header and pagination bar
@@ -36,19 +36,19 @@ export type Pagination = EuiDataGridPaginationProps & {
     totalRecords: number;
 };
 
-export type WFODataGridTableProps<T> = {
+export type WfoDataGridTableProps<T> = {
     data: T[];
     pagination: Pagination;
-    columns: WFODataGridTableColumns<T>;
-    leadingControlColumns?: WFOControlColumn<T>[];
-    trailingControlColumns?: WFOControlColumn<T>[];
+    columns: WfoDataGridTableColumns<T>;
+    leadingControlColumns?: WfoControlColumn<T>[];
+    trailingControlColumns?: WfoControlColumn<T>[];
     initialColumnOrder: TableColumnKeys<T>;
-    dataSorting?: WFODataSorting<T>;
+    dataSorting?: WfoDataSorting<T>;
     handleRowClick?: (row: T) => void;
-    updateDataSorting?: (updatedDataSorting: WFODataSorting<T>) => void;
+    updateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
 };
 
-export const WFODataGridTable = <T,>({
+export const WfoDataGridTable = <T,>({
     data,
     pagination,
     columns,
@@ -58,7 +58,7 @@ export const WFODataGridTable = <T,>({
     dataSorting,
     handleRowClick,
     updateDataSorting,
-}: WFODataGridTableProps<T>) => {
+}: WfoDataGridTableProps<T>) => {
     const initialColumnOrderRef = useRef(
         getInitialColumnOrder(columns, initialColumnOrder),
     );
@@ -98,7 +98,7 @@ export const WFODataGridTable = <T,>({
     };
 
     const mapControlColumnToEuiDataGridControlColumn: (
-        controlColumn: WFOControlColumn<T>,
+        controlColumn: WfoControlColumn<T>,
     ) => EuiDataGridControlColumn = ({ id, width, rowCellRender }) => ({
         id,
         width,

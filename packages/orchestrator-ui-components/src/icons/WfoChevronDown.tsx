@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { WFOIconProps } from './WFOIconProps';
+import { WfoIconProps } from './WfoIconProps';
 
-export const WFOChevronDown: FC<WFOIconProps> = ({
+export const WfoChevronDown: FC<WfoIconProps> = ({
     width = 24,
     height = 24,
     color = '#000000',

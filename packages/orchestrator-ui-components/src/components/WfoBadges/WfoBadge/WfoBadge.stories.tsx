@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOBadge } from './WFOBadge';
+import { WfoBadge } from './WfoBadge';
 
-const Story: Meta<typeof WFOBadge> = {
-    component: WFOBadge,
-    title: 'Badges/WFOBadge',
+const Story: Meta<typeof WfoBadge> = {
+    component: WfoBadge,
+    title: 'Badges/WfoBadge',
 };
 export default Story;
 

@@ -7,25 +7,25 @@ export type FilterQuery<DataType> = {
     value: string;
 };
 
-export type WFOFilterTab<TabType, DataType> = {
+export type WfoFilterTab<TabType, DataType> = {
     id: TabType;
     translationKey: string;
     alwaysOnFilters?: FilterQuery<DataType>[];
 };
 
-export type WFOFilterTabsProps<TabType, DataType> = {
-    tabs: WFOFilterTab<TabType, DataType>[];
+export type WfoFilterTabsProps<TabType, DataType> = {
+    tabs: WfoFilterTab<TabType, DataType>[];
     selectedTab: TabType;
     translationNamespace: string;
     onChangeTab: (updatedTab: TabType) => void;
 };
 
-export const WFOFilterTabs = <TabType extends string, DataType>({
+export const WfoFilterTabs = <TabType extends string, DataType>({
     tabs,
     selectedTab,
     translationNamespace,
     onChangeTab,
-}: WFOFilterTabsProps<TabType, DataType>) => {
+}: WfoFilterTabsProps<TabType, DataType>) => {
     const t = useTranslations(translationNamespace);
     return (
         <EuiTabs>

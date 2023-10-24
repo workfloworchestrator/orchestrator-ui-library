@@ -3,12 +3,12 @@ import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { EuiText } from '@elastic/eui';
 
-export type WFOKeyCellProps = {
+export type WfoKeyCellProps = {
     value: string;
     rowNumber: number;
 };
 
-export const WFOKeyCell: FC<WFOKeyCellProps> = ({ value, rowNumber }) => {
+export const WfoKeyCell: FC<WfoKeyCellProps> = ({ value, rowNumber }) => {
     const { theme } = useOrchestratorTheme();
     const { keyColumnStyle, keyCellStyle, getBackgroundColorStyleForRow } =
         getStyles(theme);

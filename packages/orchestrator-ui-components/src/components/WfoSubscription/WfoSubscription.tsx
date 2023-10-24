@@ -12,18 +12,18 @@ import { useQueryWithGraphql } from '../../hooks';
 import { SubscriptionTabIds, tabs } from './utils';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { WFOLoading } from '../WFOLoading';
-import { WFOSubscriptionActions } from './WFOSubscriptionActions';
-import { WFOSubscriptionGeneral } from './WFOSubscriptionGeneral';
-import { WFOSubscriptionDetailTree } from './WFOSubscriptionDetailTree';
-import { WFORelatedSubscriptions } from './WFORelatedSubscriptions';
+import { WfoLoading } from '../WfoLoading';
+import { WfoSubscriptionActions } from './WfoSubscriptionActions';
+import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
+import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
+import { WfoRelatedSubscriptions } from './WfoRelatedSubscriptions';
 import { WfoProcessesTimeline } from './WfoProcessesTimeline';
 
-type WFOSubscriptionProps = {
+type WfoSubscriptionProps = {
     subscriptionId: string;
 };
 
-export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
+export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
     const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
         SubscriptionTabIds.GENERAL_TAB,
@@ -61,7 +61,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
 
     return (
         <>
-            {(isFetching && <WFOLoading />) ||
+            {(isFetching && <WfoLoading />) ||
                 (subscriptionDetail && (
                     <>
                         <EuiFlexGroup
@@ -74,7 +74,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                                 </EuiText>
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <WFOSubscriptionActions
+                                <WfoSubscriptionActions
                                     subscriptionId={subscriptionId}
                                 />
                             </EuiFlexItem>
@@ -84,13 +84,13 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         </>
 
                         {selectedTabId === SubscriptionTabIds.GENERAL_TAB && (
-                            <WFOSubscriptionGeneral
+                            <WfoSubscriptionGeneral
                                 subscriptionDetail={subscriptionDetail}
                             />
                         )}
                         {selectedTabId ===
                             SubscriptionTabIds.SERVICE_CONFIGURATION_TAB && (
-                            <WFOSubscriptionDetailTree
+                            <WfoSubscriptionDetailTree
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }
@@ -107,7 +107,7 @@ export const WFOSubscription = ({ subscriptionId }: WFOSubscriptionProps) => {
                         {selectedTabId ===
                             SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB &&
                             data && (
-                                <WFORelatedSubscriptions
+                                <WfoRelatedSubscriptions
                                     subscriptionId={
                                         subscriptionDetail.subscriptionId
                                     }

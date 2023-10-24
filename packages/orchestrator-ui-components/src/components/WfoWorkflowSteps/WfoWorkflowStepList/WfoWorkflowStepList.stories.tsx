@@ -1,10 +1,10 @@
 import type { Meta } from '@storybook/react';
-import { WFOWorkflowStepList } from './WFOWorkflowStepList';
+import { WfoWorkflowStepList } from './WfoWorkflowStepList';
 import { StepStatus, Step } from '../../../types';
 
-const Story: Meta<typeof WFOWorkflowStepList> = {
-    component: WFOWorkflowStepList,
-    title: 'Steps/WFOWorkflowStepList',
+const Story: Meta<typeof WfoWorkflowStepList> = {
+    component: WfoWorkflowStepList,
+    title: 'Steps/WfoWorkflowStepList',
 };
 export default Story;
 

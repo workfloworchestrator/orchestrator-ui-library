@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { WFOProcessDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoProcessDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
 
 const ProcessDetailPage = () => {
     const router = useRouter();
@@ -9,7 +9,7 @@ const ProcessDetailPage = () => {
     return (
         <>
             {(processId && typeof processId === 'string' && (
-                <WFOProcessDetailPage processId={processId} />
+                <WfoProcessDetailPage processId={processId} />
             )) || <div>Invalid processID</div>}
         </>
     );

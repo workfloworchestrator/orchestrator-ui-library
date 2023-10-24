@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOCode } from './WFOCode';
+import { WfoCode } from './WfoCode';
 
-const Story: Meta<typeof WFOCode> = {
-    component: WFOCode,
-    title: 'Icons/WFOCode',
+const Story: Meta<typeof WfoCode> = {
+    component: WfoCode,
+    title: 'Icons/WfoCode',
 };
 export default Story;
 

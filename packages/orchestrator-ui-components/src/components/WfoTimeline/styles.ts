@@ -1,7 +1,7 @@
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 import { StepStatus } from '../../types';
-import { TimelinePosition } from './WFOTimeline';
+import { TimelinePosition } from './WfoTimeline';
 import { makeHighContrastColor } from '@elastic/eui';
 
 export const getStyles = (theme: EuiThemeComputed) => {

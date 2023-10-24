@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOInsyncIcon } from './WFOInsyncIcon';
+import { WfoInsyncIcon } from './WfoInsyncIcon';
 
-const Story: Meta<typeof WFOInsyncIcon> = {
-    component: WFOInsyncIcon,
-    title: 'WFOInsyncIcon',
+const Story: Meta<typeof WfoInsyncIcon> = {
+    component: WfoInsyncIcon,
+    title: 'WfoInsyncIcon',
 };
 export default Story;
 

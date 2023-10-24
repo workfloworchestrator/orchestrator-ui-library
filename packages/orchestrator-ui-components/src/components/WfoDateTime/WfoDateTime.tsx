@@ -4,11 +4,11 @@ import {
     parseDateToLocaleDateTimeString,
 } from '../../utils';
 
-export type WFODateTimeProps = {
+export type WfoDateTimeProps = {
     dateOrIsoString: Date | string | null;
 };
 
-export const WFODateTime: FC<WFODateTimeProps> = ({ dateOrIsoString }) => {
+export const WfoDateTime: FC<WfoDateTimeProps> = ({ dateOrIsoString }) => {
     const date = getDate(dateOrIsoString);
 
     return (

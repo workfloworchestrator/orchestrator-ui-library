@@ -9,18 +9,18 @@ import {
     EuiHorizontalRule,
 } from '@elastic/eui';
 
-import { TimelineItem, WFOLoading } from '../../components';
-import { WFOProcessDetail } from '../processes/WFOProcessDetail';
+import { TimelineItem, WfoLoading } from '../../components';
+import { WfoProcessDetail } from '../processes/WfoProcessDetail';
 import { ProcessDetail, ProcessStatus, StepStatus } from '../../types';
-import UserInputFormWizard from '../../components/WFOForms/UserInputFormWizard';
+import UserInputFormWizard from '../../components/WfoForms/UserInputFormWizard';
 import { FormNotCompleteResponse } from '../../types/forms';
 import { EngineStatus, useOrchestratorTheme } from '../../hooks';
 import { PATH_PROCESSES } from '../../components';
-import { getStyles } from '../../components/WFOWorkflowSteps/styles';
-import { WFOStepStatusIcon } from '../../components/WFOWorkflowSteps/WFOStepStatusIcon';
+import { getStyles } from '../../components/WfoWorkflowSteps/styles';
+import { WfoStepStatusIcon } from '../../components/WfoWorkflowSteps/WfoStepStatusIcon';
 import { useTranslations } from 'next-intl';
 
-import { useAxiosApiClient } from '../../components/WFOForms/useAxiosApiClient';
+import { useAxiosApiClient } from '../../components/WfoForms/useAxiosApiClient';
 
 type StartCreateWorkflowPayload = {
     product: string;
@@ -33,7 +33,7 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
-interface WFOStartWorkflowPageProps {
+interface WfoStartWorkflowPageProps {
     workflowName: string;
     startWorkflowPayload?: StartWorkflowPayload;
 }
@@ -43,10 +43,10 @@ export interface UserInputForm {
     hasNext?: boolean;
 }
 
-export const WFOStartWorkflowPage = ({
+export const WfoStartWorkflowPage = ({
     workflowName,
     startWorkflowPayload,
-}: WFOStartWorkflowPageProps) => {
+}: WfoStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
     const router = useRouter();
@@ -142,7 +142,7 @@ export const WFOStartWorkflowPage = ({
     ];
 
     return (
-        <WFOProcessDetail
+        <WfoProcessDetail
             pageTitle={workflowName}
             productNames={''}
             buttonsAreDisabled={true}
@@ -151,7 +151,7 @@ export const WFOStartWorkflowPage = ({
         >
             <EuiPanel css={{ marginTop: theme.base * 3 }}>
                 <EuiFlexGroup css={getStepHeaderStyle(false)}>
-                    <WFOStepStatusIcon stepStatus={StepStatus.FORM} />
+                    <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
 
                     <EuiFlexItem grow={0}>
                         <EuiText css={stepListContentBoldTextStyle}>
@@ -168,8 +168,8 @@ export const WFOStartWorkflowPage = ({
                         cancel={() => router.push(PATH_PROCESSES)}
                         hasNext={hasNext}
                     />
-                )) || <WFOLoading />}
+                )) || <WfoLoading />}
             </EuiPanel>
-        </WFOProcessDetail>
+        </WfoProcessDetail>
     );
 };

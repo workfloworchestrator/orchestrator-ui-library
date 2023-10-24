@@ -3,7 +3,7 @@ import {
     WorkflowDefinition,
     WorkflowDefinitionsResult,
 } from '../../types';
-import { WorkflowListItem } from './WFOWorkflowsPage';
+import { WorkflowListItem } from './WfoWorkflowsPage';
 
 export const mapWorkflowDefinitionToWorkflowListItem = (
     workflowDefinitionResult: WorkflowDefinitionsResult,

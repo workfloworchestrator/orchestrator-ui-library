@@ -1,1 +1,1 @@
-export * from './WFOLoading';
+export * from './WfoLoading';

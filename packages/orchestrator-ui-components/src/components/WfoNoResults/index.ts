@@ -1,1 +1,1 @@
-export * from './WFONoResults';
+export * from './WfoNoResults';

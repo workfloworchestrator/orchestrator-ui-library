@@ -1,20 +1,20 @@
 import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
-import { WFOStepListHeader } from './WFOStepListHeader';
-import { StepListItem, WFOStepList, WFOStepListRef } from '../WFOStepList';
-import { WFOJsonCodeBlock } from '../../WFOJsonCodeBlock/WFOJsonCodeBlock';
+import { WfoStepListHeader } from './WfoStepListHeader';
+import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
+import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
 import { updateStepListItems } from '../stepListUtils';
 
-export interface WFOWorkflowStepListProps {
+export interface WfoWorkflowStepListProps {
     steps: Step[];
     startedAt: string;
 }
 
-export const WFOWorkflowStepList = React.forwardRef(
+export const WfoWorkflowStepList = React.forwardRef(
     (
-        { steps = [], startedAt }: WFOWorkflowStepListProps,
-        reference: Ref<WFOStepListRef>,
+        { steps = [], startedAt }: WfoWorkflowStepListProps,
+        reference: Ref<WfoStepListRef>,
     ) => {
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
         const [showRaw, setShowRaw] = useState(false);
@@ -76,7 +76,7 @@ export const WFOWorkflowStepList = React.forwardRef(
 
         return (
             <>
-                <WFOStepListHeader
+                <WfoStepListHeader
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
                     allDetailToggleText={
@@ -90,9 +90,9 @@ export const WFOWorkflowStepList = React.forwardRef(
                 />
 
                 {showRaw ? (
-                    <WFOJsonCodeBlock data={steps} />
+                    <WfoJsonCodeBlock data={steps} />
                 ) : (
-                    <WFOStepList
+                    <WfoStepList
                         ref={reference}
                         stepListItems={stepListItems}
                         startedAt={startedAt}
@@ -108,4 +108,4 @@ export const WFOWorkflowStepList = React.forwardRef(
     },
 );
 
-WFOWorkflowStepList.displayName = 'WFOWorkflowStepList';
+WfoWorkflowStepList.displayName = 'WfoWorkflowStepList';

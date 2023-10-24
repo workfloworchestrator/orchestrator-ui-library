@@ -1,1 +1,1 @@
-export * from './WFOBreadcrumbs';
+export * from './WfoBreadcrumbs';

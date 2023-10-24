@@ -3,12 +3,12 @@ import { getStyles } from './styles';
 import { EuiFlexGroup } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../hooks';
 
-interface WFONoResultsProps {
+interface WfoNoResultsProps {
     text: string;
     icon: ReactNode;
 }
 
-export const WFONoResults = ({ text, icon }: WFONoResultsProps) => {
+export const WfoNoResults = ({ text, icon }: WfoNoResultsProps) => {
     const { theme } = useOrchestratorTheme();
     const { panelStyle } = getStyles(theme);
 

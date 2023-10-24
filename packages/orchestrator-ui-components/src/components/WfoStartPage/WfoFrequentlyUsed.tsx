@@ -1,11 +1,11 @@
 import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import React, { FC } from 'react';
 
-export interface WFOFrequentlyUsedProps {
+export interface WfoFrequentlyUsedProps {
     values: string[];
 }
 
-export const WFOFrequentlyUsed: FC<WFOFrequentlyUsedProps> = ({ values }) => (
+export const WfoFrequentlyUsed: FC<WfoFrequentlyUsedProps> = ({ values }) => (
     <EuiFlexGroup wrap gutterSize="m">
         {values.map((value, index) => (
             <EuiFlexItem key={index} grow={false}>

@@ -13,20 +13,20 @@ import type { StoredTableConfig } from '../../components';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import { defaultProcessListTabs, WFOProcessListTabType } from './tabConfig';
+import { defaultProcessListTabs, WfoProcessListTabType } from './tabConfig';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
-import { WFOFilterTabs } from '../../components';
+import { WfoFilterTabs } from '../../components';
 import {
     ProcessListItem,
-    WFOProcessList,
-} from '../../components/WFOProcessesList/WFOProcessList';
+    WfoProcessList,
+} from '../../components/WfoProcessesList/WfoProcessList';
 
-export const WFOProcessListPage = () => {
+export const WfoProcessListPage = () => {
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WFOProcessListTabType.ACTIVE),
+        withDefault(StringParam, WfoProcessListTabType.ACTIVE),
     );
 
     const [tableDefaults, setTableDefaults] =
@@ -35,7 +35,7 @@ export const WFOProcessListPage = () => {
     const selectedProcessListTab = getProcessListTabTypeFromString(activeTab);
 
     const localStorageKey =
-        selectedProcessListTab === WFOProcessListTabType.ACTIVE
+        selectedProcessListTab === WfoProcessListTabType.ACTIVE
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
@@ -64,7 +64,7 @@ export const WFOProcessListPage = () => {
         });
 
     const handleChangeProcessListTab = (
-        updatedProcessListTab: WFOProcessListTabType,
+        updatedProcessListTab: WfoProcessListTabType,
     ) => {
         setActiveTab(updatedProcessListTab);
         setDataDisplayParam('pageIndex', 0);
@@ -86,7 +86,7 @@ export const WFOProcessListPage = () => {
             <EuiPageHeader pageTitle="Processes" />
             <EuiSpacer size="m" />
 
-            <WFOFilterTabs
+            <WfoFilterTabs
                 tabs={defaultProcessListTabs}
                 translationNamespace="processes.tabs"
                 selectedTab={selectedProcessListTab}
@@ -94,7 +94,7 @@ export const WFOProcessListPage = () => {
             />
             <EuiSpacer size="xxl" />
 
-            <WFOProcessList
+            <WfoProcessList
                 alwaysOnFilters={alwaysOnFilters}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={localStorageKey}

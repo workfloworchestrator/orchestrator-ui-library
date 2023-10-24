@@ -1,6 +1,6 @@
 import { Step, StepStatus } from '../../types';
 import { TimelineItem } from '../../components';
-import { GroupedStep } from './WFOProcessDetailPage';
+import { GroupedStep } from './WfoProcessDetailPage';
 
 export const getMostAccurateTimelineStatus = (
     statusPreviousStep: StepStatus,

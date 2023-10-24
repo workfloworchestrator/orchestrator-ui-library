@@ -2,12 +2,12 @@ import { EuiButton } from '@elastic/eui';
 import React, { FC } from 'react';
 import { EngineStatusValue } from '../../types';
 
-interface WFOEngineStatusButtonProps {
+interface WfoEngineStatusButtonProps {
     engineStatus?: EngineStatusValue;
     changeEngineStatus: () => void;
 }
 
-export const WFOEngineStatusButton: FC<WFOEngineStatusButtonProps> = ({
+export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
     engineStatus,
     changeEngineStatus,
 }) => {

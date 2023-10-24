@@ -1,14 +1,14 @@
 import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 import React, { FC } from 'react';
-import { WFOEngineStatusButton } from './WFOEngineStatusButton';
+import { WfoEngineStatusButton } from './WfoEngineStatusButton';
 import { EngineStatusValue } from '../../types';
 
-export type WFOModifySettingsProps = {
+export type WfoModifySettingsProps = {
     engineStatus?: EngineStatusValue;
     changeEngineStatus: () => void;
 };
 
-export const WFOModifySettings: FC<WFOModifySettingsProps> = ({
+export const WfoModifySettings: FC<WfoModifySettingsProps> = ({
     engineStatus,
     changeEngineStatus,
 }) => (
@@ -23,7 +23,7 @@ export const WFOModifySettings: FC<WFOModifySettingsProps> = ({
             <p>Stop or start workflows through this menu</p>
         </EuiText>
         <EuiSpacer size="m"></EuiSpacer>
-        <WFOEngineStatusButton
+        <WfoEngineStatusButton
             engineStatus={engineStatus}
             changeEngineStatus={changeEngineStatus}
         />

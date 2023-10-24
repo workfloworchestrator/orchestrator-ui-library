@@ -1,5 +1,5 @@
 import { Step, StepState } from '../../types';
-import { StepListItem } from './WFOStepList';
+import { StepListItem } from './WfoStepList';
 
 export const STEP_STATE_HIDDEN_KEYS = [
     'label_',
