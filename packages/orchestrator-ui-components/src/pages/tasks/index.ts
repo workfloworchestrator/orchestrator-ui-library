@@ -1,1 +1,1 @@
-export * from './WFOTaskListPage';
+export * from './WfoTaskListPage';

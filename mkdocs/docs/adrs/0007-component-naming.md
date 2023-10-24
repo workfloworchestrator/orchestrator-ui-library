@@ -17,7 +17,7 @@ TwoWord components will be named like so
 -- Workflow
 
 All components in the Wfo package are named with the Wfo prefix.
--- This changes WFO where ever it's used to Wfo to align with abbr. rules used in the backend
+-- This changes Wfo where ever it's used to Wfo to align with abbr. rules used in the backend
 -- Even components that are not exported are renamed. This has advantages including always showing up with the Wfo prefix in devtools and when searching for components in the code
 
 

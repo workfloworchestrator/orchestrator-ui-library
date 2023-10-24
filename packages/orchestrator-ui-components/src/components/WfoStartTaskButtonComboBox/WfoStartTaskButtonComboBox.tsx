@@ -6,11 +6,11 @@ import { useQueryWithGraphql } from '../../hooks';
 import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQueryForDropdownList';
 import {
     WorkflowComboBoxOption,
-    WFOButtonComboBox,
-} from '../WFOButtonComboBox/WFOButtonComboBox';
-import { PATH_START_WORKFLOW } from '../WFOPageTemplate';
+    WfoButtonComboBox,
+} from '../WfoButtonComboBox/WfoButtonComboBox';
+import { PATH_START_WORKFLOW } from '../WfoPageTemplate';
 
-export const WFOStartTaskButtonComboBox = () => {
+export const WfoStartTaskButtonComboBox = () => {
     const router = useRouter();
     const t = useTranslations('common');
 
@@ -40,7 +40,7 @@ export const WFOStartTaskButtonComboBox = () => {
     };
 
     return (
-        <WFOButtonComboBox
+        <WfoButtonComboBox
             buttonText={t('newTask')}
             options={taskList}
             onOptionChange={handleOptionChange}

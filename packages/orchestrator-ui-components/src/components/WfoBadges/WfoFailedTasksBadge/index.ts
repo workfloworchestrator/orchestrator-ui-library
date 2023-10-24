@@ -1,1 +1,1 @@
-export * from './WFOFailedTasksBadge';
+export * from './WfoFailedTasksBadge';

@@ -1,1 +1,1 @@
-export * from './WFOTimeline';
+export * from './WfoTimeline';

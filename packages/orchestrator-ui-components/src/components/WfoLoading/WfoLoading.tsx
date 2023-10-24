@@ -1,2 +1,2 @@
 import React from 'react';
-export const WFOLoading = () => <h1>Loading...</h1>;
+export const WfoLoading = () => <h1>Loading...</h1>;

@@ -4,10 +4,10 @@ import { SortOrder } from '../../../types';
 
 // Todo need to Pick a few more props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 // https://github.com/workfloworchestrator/orchestrator-ui/issues/130
-export type WFOEuiBasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
+export type WfoEuiBasicTableColumn<T> = Omit<EuiBasicTableColumn<T>, 'render'>;
 
-export type WFOTableDataColumnConfig<T, Property> =
-    WFOEuiBasicTableColumn<T> & {
+export type WfoTableDataColumnConfig<T, Property> =
+    WfoEuiBasicTableColumn<T> & {
         field: Property;
         name: string;
         sortable?: boolean;
@@ -15,23 +15,23 @@ export type WFOTableDataColumnConfig<T, Property> =
     };
 
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
-export type WFOTableColumnsWithExtraNonDataFields<T> = WFOTableColumns<T> & {
+export type WfoTableColumnsWithExtraNonDataFields<T> = WfoTableColumns<T> & {
     [key: string]: EuiBasicTableColumn<T> & {
         field: string;
         name?: string;
     };
 };
 
-export type WFOTableColumns<T> = {
-    [Property in keyof T]: WFOTableDataColumnConfig<T, Property> & {
+export type WfoTableColumns<T> = {
+    [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
         render?: (cellValue: T[Property], row: T) => ReactNode;
         renderDetails?: (cellValue: T[Property], row: T) => ReactNode;
         clipboardText?: (cellValue: T[Property], row: T) => string;
     };
 };
 
-export type WFOTableControlColumnConfig<T> = {
-    [key: string]: WFOEuiBasicTableColumn<T> & {
+export type WfoTableControlColumnConfig<T> = {
+    [key: string]: WfoEuiBasicTableColumn<T> & {
         field: string;
         name?: string;
         render: (cellValue: never, row: T) => ReactNode;
@@ -40,12 +40,12 @@ export type WFOTableControlColumnConfig<T> = {
 
 export type TableColumnKeys<T> = Array<keyof T>;
 
-export type WFODataSorting<T> = {
+export type WfoDataSorting<T> = {
     field: keyof T;
     sortOrder: SortOrder;
 };
 
-export type WFODataSearch<T> = {
+export type WfoDataSearch<T> = {
     field: keyof T;
     searchText: string;
 };

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import { SortOrder } from '../../../types';
-import { WFOSortDirectionIcon } from './WFOSortDirectionIcon';
+import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
 import {
     EuiFieldSearch,
     EuiHorizontalRule,
@@ -10,11 +10,11 @@ import {
     useGeneratedHtmlId,
 } from '@elastic/eui';
 import { useWithOrchestratorTheme } from '../../../hooks';
-import { WFOSortButtons } from '../WFOSortButtons';
+import { WfoSortButtons } from '../WfoSortButtons';
 import { getStyles } from './styles';
 import { useTranslations } from 'next-intl';
 
-export type WFOTableHeaderCellProps = {
+export type WfoTableHeaderCellProps = {
     fieldName: string;
     sortOrder?: SortOrder;
     onSetSortOrder?: (updatedSortOrder: SortOrder) => void;
@@ -22,7 +22,7 @@ export type WFOTableHeaderCellProps = {
     children: string;
 };
 
-export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
+export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     fieldName,
     sortOrder,
     children,
@@ -65,7 +65,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
             <div css={getHeaderCellButtonStyle(shouldShowPopover)}>
                 <div css={headerCellContentStyle}>{children}</div>
                 {sortOrder && (
-                    <WFOSortDirectionIcon sortDirection={sortOrder} />
+                    <WfoSortDirectionIcon sortDirection={sortOrder} />
                 )}
             </div>
         </button>
@@ -77,7 +77,7 @@ export const WFOTableHeaderCell: FC<WFOTableHeaderCellProps> = ({
                 {children}
             </EuiText>
             {isSortable && (
-                <WFOSortButtons
+                <WfoSortButtons
                     sortOrder={sortOrder}
                     onChangeSortOrder={handleChangeSortOrder}
                 />

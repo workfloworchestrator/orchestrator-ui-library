@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 import { EuiListGroup } from '@elastic/eui';
 
-import { WFOTreeNode } from './WFOTreeNode';
+import { WfoTreeNode } from './WfoTreeNode';
 import { TreeBlock } from '../../types';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 
-type WFOTreeBranchProps = {
+type WfoTreeBranchProps = {
     item: TreeBlock;
     level: number;
 };
 
-export const WFOTreeBranch: FC<WFOTreeBranchProps> = ({ item, level }) => {
+export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
     const { expandedIds } = React.useContext(TreeContext) as TreeContextType;
     const selected = expandedIds.includes(item.id);
 
@@ -21,7 +21,7 @@ export const WFOTreeBranch: FC<WFOTreeBranchProps> = ({ item, level }) => {
             const newLevel = level + 1;
 
             return item.children.map((child) => (
-                <WFOTreeBranch key={child.id} item={child} level={newLevel} />
+                <WfoTreeBranch key={child.id} item={child} level={newLevel} />
             ));
         }
 
@@ -31,7 +31,7 @@ export const WFOTreeBranch: FC<WFOTreeBranchProps> = ({ item, level }) => {
     return (
         <>
             <EuiListGroup flush={true} color="primary" maxWidth={455}>
-                <WFOTreeNode
+                <WfoTreeNode
                     item={item}
                     hasChildren={hasChildren}
                     level={level}

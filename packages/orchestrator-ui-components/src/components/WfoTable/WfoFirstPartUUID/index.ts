@@ -1,1 +1,1 @@
-export * from './WFOFirstPartUUID';
+export * from './WfoFirstPartUUID';

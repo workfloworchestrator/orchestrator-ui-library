@@ -7,7 +7,7 @@ import {
     EuiSpacer,
     EuiSwitch,
 } from '@elastic/eui';
-import { WFOSettingsModal } from '../../WFOSettingsModal';
+import { WfoSettingsModal } from '../../WfoSettingsModal';
 
 export type ColumnConfig<T> = {
     field: keyof T;
@@ -58,7 +58,7 @@ export const TableSettingsModal = <T,>({
     };
 
     return (
-        <WFOSettingsModal
+        <WfoSettingsModal
             title="Table settings"
             onClose={onClose}
             onResetToDefaults={onResetToDefaults}
@@ -109,6 +109,6 @@ export const TableSettingsModal = <T,>({
                     />
                 </EuiFormRow>
             </EuiForm>
-        </WFOSettingsModal>
+        </WfoSettingsModal>
     );
 };

@@ -10,14 +10,14 @@ export enum RenderDirection {
     VERTICAL = 'VERTICAL',
 }
 
-export type WFOProcessesListSubscriptionsCellProps = {
+export type WfoProcessesListSubscriptionsCellProps = {
     subscriptions: Pick<Subscription, 'subscriptionId' | 'description'>[];
     numberOfSubscriptionsToRender?: number | typeof RENDER_ALL;
     renderDirection?: RenderDirection;
 };
 
-export const WFOProcessListSubscriptionsCell: FC<
-    WFOProcessesListSubscriptionsCellProps
+export const WfoProcessListSubscriptionsCell: FC<
+    WfoProcessesListSubscriptionsCellProps
 > = ({
     subscriptions,
     numberOfSubscriptionsToRender = RENDER_ALL,

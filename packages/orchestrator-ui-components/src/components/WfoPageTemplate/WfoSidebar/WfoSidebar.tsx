@@ -15,16 +15,16 @@ import {
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
-import { WFOStartCreateWorkflowButtonComboBox } from './WFOStartCreateWorkflowButtonComboBox';
+import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
-export type WFOSidebarProps = {
+export type WfoSidebarProps = {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
 };
 
-export const WFOSidebar: FC<WFOSidebarProps> = ({ overrideMenuItems }) => {
+export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
@@ -136,7 +136,7 @@ export const WFOSidebar: FC<WFOSidebarProps> = ({ overrideMenuItems }) => {
         {
             renderItem: () => (
                 <>
-                    <WFOStartCreateWorkflowButtonComboBox />
+                    <WfoStartCreateWorkflowButtonComboBox />
                     <EuiSpacer size="m" />
                 </>
             ),

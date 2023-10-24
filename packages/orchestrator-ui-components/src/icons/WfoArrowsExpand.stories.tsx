@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOArrowsExpand } from './WFOArrowsExpand';
+import { WfoArrowsExpand } from './WfoArrowsExpand';
 
-const Story: Meta<typeof WFOArrowsExpand> = {
-    component: WFOArrowsExpand,
-    title: 'Icons/WFOArrowsExpand',
+const Story: Meta<typeof WfoArrowsExpand> = {
+    component: WfoArrowsExpand,
+    title: 'Icons/WfoArrowsExpand',
 };
 export default Story;
 

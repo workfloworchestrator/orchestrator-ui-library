@@ -4,7 +4,7 @@ import {
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
 import { Step, StepStatus } from '../../types';
-import { GroupedStep } from './WFOProcessDetailPage';
+import { GroupedStep } from './WfoProcessDetailPage';
 
 const baseStep: Step = {
     executed: 'testExecuted',

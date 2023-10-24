@@ -1,4 +1,4 @@
-import { TimelinePosition } from './WFOTimeline';
+import { TimelinePosition } from './WfoTimeline';
 
 export const getTimelinePosition = (
     index: number,

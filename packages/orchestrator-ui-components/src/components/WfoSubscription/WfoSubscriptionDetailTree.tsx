@@ -10,27 +10,27 @@ import {
 } from '@elastic/eui';
 
 import { ProductBlockInstance, TreeBlock } from '../../types';
-import { WFOTree } from '../WFOTree/WFOTree';
+import { WfoTree } from '../WfoTree/WfoTree';
 import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
 import { getTokenName } from '../../utils/getTokenName';
-import { WFOLoading } from '../WFOLoading';
+import { WfoLoading } from '../WfoLoading';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
 } from './utils';
-import { WFOSubscriptionProductBlock } from './WFOSubscriptionProductBlock';
+import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
 
 type NodeMap = { [key: number]: TreeBlock };
 
 const MAX_EXPAND_ALL = 100;
 
-interface WFOSubscriptionDetailTreeProps {
+interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
 }
 
-export const WFOSubscriptionDetailTree = ({
+export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
-}: WFOSubscriptionDetailTreeProps) => {
+}: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
     const [expandAllActive, setExpandAllActive] = useState(false);
     const [, setSelectedTreeNode] = useState(-1);
@@ -127,8 +127,8 @@ export const WFOSubscriptionDetailTree = ({
                         </EuiFlexGroup>
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
-                        {!tree && <WFOLoading />}
-                        {tree && <WFOTree data={[tree]} />}
+                        {!tree && <WfoLoading />}
+                        {tree && <WfoTree data={[tree]} />}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>
@@ -151,7 +151,7 @@ export const WFOSubscriptionDetailTree = ({
                     {selectedIds.length !== 0 &&
                         selectedIds.reverse().map((id, index) => {
                             return (
-                                <WFOSubscriptionProductBlock
+                                <WfoSubscriptionProductBlock
                                     key={index}
                                     productBlockInstanceValues={
                                         productBlockInstances[

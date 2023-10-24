@@ -1,1 +1,1 @@
-export * from './WFOProductStatusBadge';
+export * from './WfoProductStatusBadge';

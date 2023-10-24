@@ -4,15 +4,15 @@ import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
 import type { StepState, Step, EmailState } from '../../../types';
-import { WFOStepStatusIcon } from '../WFOStepStatusIcon';
+import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import { getStyles } from '../styles';
 import { formatDate } from '../../../utils';
-import { WFOChevronDown, WFOChevronUp } from '../../../icons';
+import { WfoChevronDown, WfoChevronUp } from '../../../icons';
 import { calculateTimeDifference } from '../../../utils';
 import { getStepContent } from '../stepListUtils';
-import { WFOJsonCodeBlock } from '../../WFOJsonCodeBlock/WFOJsonCodeBlock';
+import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
 
-export interface WFOStepProps {
+export interface WfoStepProps {
     step: Step;
     stepDelta: StepState;
     stepDetailIsOpen: boolean;
@@ -22,7 +22,7 @@ export interface WFOStepProps {
     isStartStep?: boolean;
 }
 
-export const WFOStep = React.forwardRef(
+export const WfoStep = React.forwardRef(
     (
         {
             step,
@@ -32,7 +32,7 @@ export const WFOStep = React.forwardRef(
             startedAt,
             showHiddenKeys,
             isStartStep = false,
-        }: WFOStepProps,
+        }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { name, executed, status } = step;
@@ -100,7 +100,7 @@ export const WFOStep = React.forwardRef(
                         css={getStepHeaderStyle(hasStepContent)}
                         onClick={() => hasStepContent && onToggleStepDetail()}
                     >
-                        <WFOStepStatusIcon
+                        <WfoStepStatusIcon
                             stepStatus={status}
                             isStartStep={isStartStep}
                         />
@@ -139,15 +139,15 @@ export const WFOStep = React.forwardRef(
                                         )}
                                     >
                                         {(stepDetailIsOpen && (
-                                            <WFOChevronUp />
-                                        )) || <WFOChevronDown />}
+                                            <WfoChevronUp />
+                                        )) || <WfoChevronDown />}
                                     </EuiFlexItem>
                                 </>
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
                     {hasStepContent && stepDetailIsOpen && (
-                        <WFOJsonCodeBlock data={stepContent} />
+                        <WfoJsonCodeBlock data={stepContent} />
                     )}
                     {stepDetailIsOpen && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
@@ -162,4 +162,4 @@ export const WFOStep = React.forwardRef(
     },
 );
 
-WFOStep.displayName = 'WFOStep';
+WfoStep.displayName = 'WfoStep';

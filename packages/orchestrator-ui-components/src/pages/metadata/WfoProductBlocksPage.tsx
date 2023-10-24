@@ -8,18 +8,18 @@ import {
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
 import {
-    WFOProductBlockBadge,
-    WFOProductStatusBadge,
-    WFOTableWithFilter,
+    WfoProductBlockBadge,
+    WfoProductStatusBadge,
+    WfoTableWithFilter,
 } from '../../components';
-import {} from '../../components/WFOBadges/WFOProductStatusBadge';
+import {} from '../../components/WfoBadges/WfoProductStatusBadge';
 
 import {
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
 
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import type { ProductBlockDefinition } from '../../types';
@@ -33,10 +33,10 @@ import {
 
 import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
-import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
-import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
-import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -51,7 +51,7 @@ const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition = 'endDate';
 const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
 
-export const WFOProductBlocksPage = () => {
+export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
 
     const [tableDefaults, setTableDefaults] =
@@ -82,12 +82,12 @@ export const WFOProductBlocksPage = () => {
             },
         });
 
-    const tableColumns: WFOTableColumns<ProductBlockDefinition> = {
+    const tableColumns: WfoTableColumns<ProductBlockDefinition> = {
         productBlockId: {
             field: PRODUCT_BLOCK_FIELD_ID,
             name: t('id'),
             width: '90',
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {
@@ -95,9 +95,9 @@ export const WFOProductBlocksPage = () => {
             name: t('name'),
             width: '200',
             render: (name) => (
-                <WFOProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
+                <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
                     {name}
-                </WFOProductBlockBadge>
+                </WfoProductBlockBadge>
             ),
         },
         tag: {
@@ -114,7 +114,7 @@ export const WFOProductBlocksPage = () => {
             field: PRODUCT_BLOCK_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => <WFOProductStatusBadge status={value} />,
+            render: (value) => <WfoProductStatusBadge status={value} />,
         },
         resourceTypes: {
             field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,
@@ -122,24 +122,24 @@ export const WFOProductBlocksPage = () => {
             render: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.RESOURCE_TYPE}
                         >
                             {resourceType.resourceType}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </>
             ),
             renderDetails: (resourceTypes) => (
                 <EuiBadgeGroup gutterSize="s">
                     {resourceTypes.map((resourceType, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.RESOURCE_TYPE}
                         >
                             {resourceType.resourceType}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </EuiBadgeGroup>
             ),
@@ -147,14 +147,14 @@ export const WFOProductBlocksPage = () => {
         createdAt: {
             field: PRODUCT_BLOCK_FIELD_CREATED_AT,
             name: t('createdAt'),
-            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            render: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
         endDate: {
             field: PRODUCT_BLOCK_FIELD_END_DATE,
             name: t('endDate'),
-            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            render: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
@@ -170,7 +170,7 @@ export const WFOProductBlocksPage = () => {
         'productBlocks',
     );
 
-    const dataSorting: WFODataSorting<ProductBlockDefinition> = {
+    const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -185,8 +185,8 @@ export const WFOProductBlocksPage = () => {
     };
 
     return (
-        <WFOMetadataPageLayout>
-            <WFOTableWithFilter<ProductBlockDefinition>
+        <WfoMetadataPageLayout>
+            <WfoTableWithFilter<ProductBlockDefinition>
                 data={data ? data.productBlocks.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
@@ -207,6 +207,6 @@ export const WFOProductBlocksPage = () => {
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
                 }
             />
-        </WFOMetadataPageLayout>
+        </WfoMetadataPageLayout>
     );
 };

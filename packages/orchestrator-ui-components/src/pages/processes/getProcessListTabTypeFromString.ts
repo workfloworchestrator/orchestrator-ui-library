@@ -1,17 +1,17 @@
-import { WFOProcessListTabType } from './tabConfig';
+import { WfoProcessListTabType } from './tabConfig';
 
 export const getProcessListTabTypeFromString = (
     tabId?: string,
-): WFOProcessListTabType | undefined => {
+): WfoProcessListTabType | undefined => {
     if (!tabId) {
         return undefined;
     }
 
     switch (tabId.toUpperCase()) {
-        case WFOProcessListTabType.ACTIVE.toString():
-            return WFOProcessListTabType.ACTIVE;
-        case WFOProcessListTabType.COMPLETED.toString():
-            return WFOProcessListTabType.COMPLETED;
+        case WfoProcessListTabType.ACTIVE.toString():
+            return WfoProcessListTabType.ACTIVE;
+        case WfoProcessListTabType.COMPLETED.toString():
+            return WfoProcessListTabType.COMPLETED;
 
         default:
             return undefined;

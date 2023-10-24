@@ -21,7 +21,7 @@ import {
     useSubscriptionActions,
 } from '../../hooks/useSubscriptionActions';
 
-import { WFOXCircleFill } from '../../icons';
+import { WfoXCircleFill } from '../../icons';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { WorkflowTarget } from '../../types';
 
@@ -42,11 +42,11 @@ const MenuBlock: FC<MenuBlockProps> = ({ title }) => (
     </EuiTitle>
 );
 
-export type WFOSubscriptionActionsProps = {
+export type WfoSubscriptionActionsProps = {
     subscriptionId: string;
 };
 
-export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
+export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     subscriptionId,
 }) => {
     const { theme } = useOrchestratorTheme();
@@ -134,7 +134,7 @@ export const WFOSubscriptionActions: FC<WFOSubscriptionActionsProps> = ({
                             transform: 'translate(-11px, -8px);',
                         }}
                     >
-                        <WFOXCircleFill
+                        <WfoXCircleFill
                             width={20}
                             height={20}
                             color={theme.colors.danger}

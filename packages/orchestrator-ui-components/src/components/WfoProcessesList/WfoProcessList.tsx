@@ -6,26 +6,26 @@ import {
     getEsQueryStringHandler,
     getPageChangeHandler,
     TableColumnKeys,
-    WFODataSorting,
-    WFOTableColumns,
-    WFOTableWithFilter,
-} from '../WFOTable';
+    WfoDataSorting,
+    WfoTableColumns,
+    WfoTableWithFilter,
+} from '../WfoTable';
 import { Process, SortOrder } from '../../types';
-import { WFOProcessStatusBadge } from '../WFOBadges';
-import { WFOProcessListSubscriptionsCell } from '../../pages';
-import { WFOFirstPartUUID } from '../WFOTable/WFOFirstPartUUID';
+import { WfoProcessStatusBadge } from '../WfoBadges';
+import { WfoProcessListSubscriptionsCell } from '../../pages';
+import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { useTranslations } from 'next-intl';
 import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
-import { WFOLoading } from '../WFOLoading';
+import { WfoLoading } from '../WfoLoading';
 import { Pagination } from '@elastic/eui/src/components';
-import { FilterQuery } from '../WFOFilterTabs';
+import { FilterQuery } from '../WfoFilterTabs';
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
-import { WFODateTime } from '../WFODateTime/WFODateTime';
+import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
 
 export type ProcessListItem = Pick<
@@ -47,7 +47,7 @@ export type ProcessListItem = Pick<
     customerAbbreviation: string;
 };
 
-export type WFOProcessListProps = {
+export type WfoProcessListProps = {
     alwaysOnFilters?: FilterQuery<ProcessListItem>[];
     defaultHiddenColumns: TableColumnKeys<ProcessListItem> | undefined;
     localStorageKey: string;
@@ -59,11 +59,11 @@ export type WFOProcessListProps = {
         value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
     ) => void;
     overrideDefaultTableColumns?: (
-        defaultTableColumns: WFOTableColumns<ProcessListItem>,
-    ) => WFOTableColumns<ProcessListItem>;
+        defaultTableColumns: WfoTableColumns<ProcessListItem>,
+    ) => WfoTableColumns<ProcessListItem>;
 };
 
-export const WFOProcessList: FC<WFOProcessListProps> = ({
+export const WfoProcessList: FC<WfoProcessListProps> = ({
     alwaysOnFilters,
     defaultHiddenColumns = [],
     localStorageKey,
@@ -73,7 +73,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
 }) => {
     const t = useTranslations('processes.index');
 
-    const defaultTableColumns: WFOTableColumns<ProcessListItem> = {
+    const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
             field: 'workflowName',
             name: t('workflowName'),
@@ -90,7 +90,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             name: t('status'),
             width: '100',
             render: (cellValue) => (
-                <WFOProcessStatusBadge processStatus={cellValue} />
+                <WfoProcessStatusBadge processStatus={cellValue} />
             ),
         },
         workflowTarget: {
@@ -120,13 +120,13 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             name: t('subscriptions'),
             width: '400',
             render: ({ page: subscriptions }) => (
-                <WFOProcessListSubscriptionsCell
+                <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                     numberOfSubscriptionsToRender={1}
                 />
             ),
             renderDetails: ({ page: subscriptions }) => (
-                <WFOProcessListSubscriptionsCell
+                <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                 />
             ),
@@ -146,14 +146,14 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         processId: {
             field: 'processId',
             name: t('processId'),
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         startedAt: {
             field: 'startedAt',
             name: t('started'),
             width: '100',
-            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            render: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
@@ -161,12 +161,12 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
             field: 'lastModifiedAt',
             name: t('lastModified'),
             width: '100',
-            render: (value) => <WFODateTime dateOrIsoString={value} />,
+            render: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
     };
-    const tableColumns: WFOTableColumns<ProcessListItem> =
+    const tableColumns: WfoTableColumns<ProcessListItem> =
         overrideDefaultTableColumns
             ? overrideDefaultTableColumns(defaultTableColumns)
             : defaultTableColumns;
@@ -183,7 +183,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
     );
 
     if (!data) {
-        return <WFOLoading />;
+        return <WfoLoading />;
     }
     const { totalItems } = data.processes.pageInfo;
 
@@ -193,13 +193,13 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
-    const dataSorting: WFODataSorting<ProcessListItem> = {
+    const dataSorting: WfoDataSorting<ProcessListItem> = {
         field: dataDisplayParams.sortBy?.field ?? 'lastModified',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     return (
-        <WFOTableWithFilter<ProcessListItem>
+        <WfoTableWithFilter<ProcessListItem>
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={tableColumns}
             dataSorting={dataSorting}

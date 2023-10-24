@@ -1,11 +1,11 @@
 import { StepStatus } from '../../types';
 import React, { ReactNode } from 'react';
 import { EuiToolTip } from '@elastic/eui';
-import { TimelinePosition } from './WFOTimeline';
+import { TimelinePosition } from './WfoTimeline';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 
-export type WFOTimelineStepProps = {
+export type WfoTimelineStepProps = {
     stepStatus: StepStatus;
     timelinePosition: TimelinePosition;
     tooltipContent?: string | ReactNode;
@@ -15,7 +15,7 @@ export type WFOTimelineStepProps = {
     onClick?: () => void;
 };
 
-export const WFOTimelineStep = ({
+export const WfoTimelineStep = ({
     stepStatus,
     timelinePosition,
     tooltipContent,
@@ -23,7 +23,7 @@ export const WFOTimelineStep = ({
     isLastStep = false,
     children,
     onClick,
-}: WFOTimelineStepProps) => {
+}: WfoTimelineStepProps) => {
     const { theme } = useOrchestratorTheme();
     const {
         stepStyle,

@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOPlayFill } from './WFOPlayFill';
+import { WfoPlayFill } from './WfoPlayFill';
 
-const Story: Meta<typeof WFOPlayFill> = {
-    component: WFOPlayFill,
-    title: 'Icons/WFOPlayFill',
+const Story: Meta<typeof WfoPlayFill> = {
+    component: WfoPlayFill,
+    title: 'Icons/WfoPlayFill',
 };
 export default Story;
 

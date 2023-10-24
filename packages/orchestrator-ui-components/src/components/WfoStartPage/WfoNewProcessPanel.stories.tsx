@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFONewProcessPanel } from './WFONewProcessPanel';
+import { WfoNewProcessPanel } from './WfoNewProcessPanel';
 
-const Story: Meta<typeof WFONewProcessPanel> = {
-    component: WFONewProcessPanel,
-    title: 'StartPage/WFONewProcessPanel',
+const Story: Meta<typeof WfoNewProcessPanel> = {
+    component: WfoNewProcessPanel,
+    title: 'StartPage/WfoNewProcessPanel',
 };
 export default Story;
 

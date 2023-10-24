@@ -4,22 +4,22 @@ import {
     getTableConfigFromLocalStorage,
     TableColumnKeys,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
-    WFOTableColumns,
+    WfoTableColumns,
 } from '../../components';
 import { SortOrder } from '../../types';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
-import { WFOPageHeader } from '../../components/WFOPageHeader/WFOPageHeader';
-import { WFORefresh } from '../../icons';
+import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
+import { WfoRefresh } from '../../icons';
 import {
     ProcessListItem,
-    WFOProcessList,
-} from '../../components/WFOProcessesList/WFOProcessList';
-import { WFOStartTaskButtonComboBox } from '../../components';
+    WfoProcessList,
+} from '../../components/WfoProcessesList/WfoProcessList';
+import { WfoStartTaskButtonComboBox } from '../../components';
 
-export const WFOTaskListPage = () => {
+export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
 
@@ -54,9 +54,9 @@ export const WFOTaskListPage = () => {
 
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
-        defaultTableColumns: WFOTableColumns<ProcessListItem>,
-    ) => WFOTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-        workflowName: defaultTableColumns.workflowName,
+        defaultTableColumns: WfoTableColumns<ProcessListItem>,
+    ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
+        workflowName: defaultTableColumns.workflowName,      
         lastStep: defaultTableColumns.lastStep,
         lastStatus: defaultTableColumns.lastStatus,
         workflowTarget: defaultTableColumns.workflowTarget,
@@ -84,21 +84,21 @@ export const WFOTaskListPage = () => {
         <>
             <EuiSpacer />
 
-            <WFOPageHeader pageTitle="Tasks">
+            <WfoPageHeader pageTitle="Tasks">
                 <EuiButton
                     iconType={() => (
-                        <WFORefresh color={theme.colors.primaryText} />
+                        <WfoRefresh color={theme.colors.primaryText} />
                     )}
                 >
                     {t('rerunAll')}
                 </EuiButton>
-                <WFOStartTaskButtonComboBox />
-            </WFOPageHeader>
+                <WfoStartTaskButtonComboBox />
+            </WfoPageHeader>
             <EuiHorizontalRule />
 
             <EuiSpacer size="xxl" />
 
-            <WFOProcessList
+            <WfoProcessList
                 defaultHiddenColumns={defaultHiddenColumns}
                 localStorageKey={TASK_LIST_TABLE_LOCAL_STORAGE_KEY}
                 dataDisplayParams={dataDisplayParams}

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { useOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { getTimelinePosition } from './timelineUtils';
-import { WFOTimelineStep } from './WFOTimelineStep';
+import { WfoTimelineStep } from './WfoTimelineStep';
 import { useEuiScrollBar } from '@elastic/eui';
 
 export enum TimelinePosition {
@@ -20,13 +20,13 @@ export type TimelineItem = {
     value?: string | ReactNode;
 };
 
-export type WFOTimelineProps = {
+export type WfoTimelineProps = {
     timelineItems: TimelineItem[];
     indexOfCurrentStep?: number;
     onStepClick: (timelineItem: TimelineItem) => void;
 };
 
-export const WFOTimeline: FC<WFOTimelineProps> = ({
+export const WfoTimeline: FC<WfoTimelineProps> = ({
     timelineItems,
     indexOfCurrentStep = 0,
     onStepClick,
@@ -42,7 +42,7 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
         const { id, stepDetail, processStepStatus, value } = timelineItem;
 
         return (
-            <WFOTimelineStep
+            <WfoTimelineStep
                 key={index}
                 isFirstStep={index === 0}
                 isLastStep={index === allTimelineItems.length - 1}
@@ -55,7 +55,7 @@ export const WFOTimeline: FC<WFOTimelineProps> = ({
                 onClick={id ? () => onStepClick(timelineItem) : undefined}
             >
                 {value}
-            </WFOTimelineStep>
+            </WfoTimelineStep>
         );
     };
 

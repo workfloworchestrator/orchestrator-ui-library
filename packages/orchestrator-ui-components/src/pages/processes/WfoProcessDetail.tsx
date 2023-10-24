@@ -11,16 +11,16 @@ import {
 
 import { useTranslations } from 'next-intl';
 
-import { TimelineItem, WFOLoading, WFOTimeline } from '../../components';
+import { TimelineItem, WfoLoading, WfoTimeline } from '../../components';
 import {
-    WFOProcessListSubscriptionsCell,
+    WfoProcessListSubscriptionsCell,
     RenderDirection,
-} from './WFOProcessListSubscriptionsCell';
+} from './WfoProcessListSubscriptionsCell';
 import { useOrchestratorTheme } from '../../hooks';
 import { ProcessDetail, ProcessStatus } from '../../types';
 import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
-import { WFOPlayFill, WFORefresh, WFOXCircleFill } from '../../icons';
+import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
 
 interface ProcessHeaderValueProps {
     translationKey: string;
@@ -68,7 +68,7 @@ interface ProcessDetailProps {
     onTimelineItemClick?: (id: string) => void;
 }
 
-export const WFOProcessDetail = ({
+export const WfoProcessDetail = ({
     children,
     processDetail,
     pageTitle,
@@ -104,7 +104,7 @@ export const WFOProcessDetail = ({
                             alert('TODO: Implement retry');
                         }}
                         iconType={() => (
-                            <WFORefresh
+                            <WfoRefresh
                                 color={
                                     buttonsAreDisabled
                                         ? theme.colors.subduedText
@@ -127,7 +127,7 @@ export const WFOProcessDetail = ({
                             alert('TODO: Implement resume');
                         }}
                         iconType={() => (
-                            <WFOPlayFill
+                            <WfoPlayFill
                                 color={
                                     buttonsAreDisabled
                                         ? theme.colors.subduedText
@@ -150,7 +150,7 @@ export const WFOProcessDetail = ({
                             alert('TODO: Implement abort');
                         }}
                         iconType={() => (
-                            <WFOXCircleFill
+                            <WfoXCircleFill
                                 color={
                                     buttonsAreDisabled
                                         ? theme.colors.subduedText
@@ -173,7 +173,7 @@ export const WFOProcessDetail = ({
                 color="subdued"
                 element="div"
             >
-                {(processDetail === undefined && <WFOLoading />) ||
+                {(processDetail === undefined && <WfoLoading />) ||
                     (processDetail !== undefined && (
                         <EuiFlexGroup direction="row" gutterSize="m">
                             <ProcessHeaderValue
@@ -235,7 +235,7 @@ export const WFOProcessDetail = ({
                                             fontSize: theme.size.m,
                                         }}
                                     >
-                                        <WFOProcessListSubscriptionsCell
+                                        <WfoProcessListSubscriptionsCell
                                             subscriptions={
                                                 (process &&
                                                     processDetail?.subscriptions?.page.map(
@@ -259,7 +259,7 @@ export const WFOProcessDetail = ({
                     ))}
             </EuiPanel>
             <EuiSpacer size="s" />
-            <WFOTimeline
+            <WfoTimeline
                 timelineItems={timelineItems}
                 indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
                 onStepClick={(timelineItem) =>

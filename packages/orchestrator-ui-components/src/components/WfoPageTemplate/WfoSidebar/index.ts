@@ -1,1 +1,1 @@
-export * from './WFOSidebar';
+export * from './WfoSidebar';

@@ -1,1 +1,1 @@
-export * from './WFOStepStatusIcon';
+export * from './WfoStepStatusIcon';

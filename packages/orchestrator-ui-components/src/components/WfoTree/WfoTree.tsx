@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 
-import { WFOTreeBranch } from './WFOTreeBranch';
+import { WfoTreeBranch } from './WfoTreeBranch';
 import { TreeBlock } from '../../types';
 
-type WFOTreeProps = {
+type WfoTreeProps = {
     data: TreeBlock[];
 };
 
-export const WFOTree: FC<WFOTreeProps> = ({ data }) => (
+export const WfoTree: FC<WfoTreeProps> = ({ data }) => (
     <div style={{ width: '500px' }}>
         {data.map((item) => (
-            <WFOTreeBranch key={item.id} item={item} level={0} />
+            <WfoTreeBranch key={item.id} item={item} level={0} />
         ))}
     </div>
 );

@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOFrequentlyUsed } from './WFOFrequentlyUsed';
+import { WfoFrequentlyUsed } from './WfoFrequentlyUsed';
 
-const Story: Meta<typeof WFOFrequentlyUsed> = {
-    component: WFOFrequentlyUsed,
-    title: 'StartPage/WFOFrequentlyUsed',
+const Story: Meta<typeof WfoFrequentlyUsed> = {
+    component: WfoFrequentlyUsed,
+    title: 'StartPage/WfoFrequentlyUsed',
     tags: ['autodocs'],
 };
 export default Story;

@@ -1,1 +1,1 @@
-export * from './WFOPageHeader';
+export * from './WfoPageHeader';

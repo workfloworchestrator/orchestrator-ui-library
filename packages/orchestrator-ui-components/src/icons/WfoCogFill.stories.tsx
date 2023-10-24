@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOCogFill } from './WFOCogFill';
+import { WfoCogFill } from './WfoCogFill';
 
-const Story: Meta<typeof WFOCogFill> = {
-    component: WFOCogFill,
-    title: 'Icons/WFOCogFill',
+const Story: Meta<typeof WfoCogFill> = {
+    component: WfoCogFill,
+    title: 'Icons/WfoCogFill',
 };
 export default Story;
 

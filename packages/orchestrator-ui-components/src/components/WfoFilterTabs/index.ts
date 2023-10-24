@@ -1,1 +1,1 @@
-export * from './WFOFilterTabs';
+export * from './WfoFilterTabs';

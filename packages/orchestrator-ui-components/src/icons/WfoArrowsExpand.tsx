@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { WFOIconProps } from './WFOIconProps';
+import { WfoIconProps } from './WfoIconProps';
 
-export const WFOArrowsExpand: FC<WFOIconProps> = ({
+export const WfoArrowsExpand: FC<WfoIconProps> = ({
     width = 16,
     height = 20,
     color = '#000000',

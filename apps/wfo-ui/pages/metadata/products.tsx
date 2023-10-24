@@ -1,6 +1,6 @@
 import React from 'react';
-import { WFOProductsPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoProductsPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-export const ProductsPage = () => <WFOProductsPage />;
+export const ProductsPage = () => <WfoProductsPage />;
 
 export default ProductsPage;

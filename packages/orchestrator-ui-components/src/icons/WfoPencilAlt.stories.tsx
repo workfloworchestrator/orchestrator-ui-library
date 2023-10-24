@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOPencilAlt } from './WFOPencilAlt';
+import { WfoPencilAlt } from './WfoPencilAlt';
 
-const Story: Meta<typeof WFOPencilAlt> = {
-    component: WFOPencilAlt,
-    title: 'Icons/WFOPencilAlt',
+const Story: Meta<typeof WfoPencilAlt> = {
+    component: WfoPencilAlt,
+    title: 'Icons/WfoPencilAlt',
 };
 export default Story;
 

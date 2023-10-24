@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOChevronDown } from './WFOChevronDown';
+import { WfoChevronDown } from './WfoChevronDown';
 
-const Story: Meta<typeof WFOChevronDown> = {
-    component: WFOChevronDown,
-    title: 'Icons/WFOChevronDown',
+const Story: Meta<typeof WfoChevronDown> = {
+    component: WfoChevronDown,
+    title: 'Icons/WfoChevronDown',
 };
 export default Story;
 

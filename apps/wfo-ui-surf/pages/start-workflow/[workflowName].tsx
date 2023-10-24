@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { WFOStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
 import { ParsedUrlQuery } from 'querystring';
 
 interface StartWorkflowPageQuery extends ParsedUrlQuery {
@@ -31,7 +31,7 @@ const StartWorkflowPage = () => {
     const startWorkflowPayload = getStartWorkflowPayload();
     if (workflowName) {
         return (
-            <WFOStartWorkflowPage
+            <WfoStartWorkflowPage
                 workflowName={workflowName}
                 startWorkflowPayload={startWorkflowPayload}
             />

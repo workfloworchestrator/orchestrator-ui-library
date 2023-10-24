@@ -18,9 +18,9 @@ import {
     WorkflowDefinition,
 } from '../types';
 
-import { SubscriptionListItem } from '../components/WFOSubscriptionsList';
+import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
 
-import { ProcessListItem } from '../components/WFOProcessesList/WFOProcessList';
+import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],

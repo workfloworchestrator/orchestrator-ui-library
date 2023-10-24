@@ -6,20 +6,20 @@ import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import {
     defaultSubscriptionsTabs,
     getSubscriptionsTabTypeFromString,
-    WFOSubscriptionsList,
-    WFOSubscriptionsTabType,
-} from '../../components/WFOSubscriptionsList';
+    WfoSubscriptionsList,
+    WfoSubscriptionsTabType,
+} from '../../components/WfoSubscriptionsList';
 import { SortOrder } from '../../types';
-import { SubscriptionListItem } from '../../components/WFOSubscriptionsList';
-import { StoredTableConfig } from '../../components/WFOTable';
-import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WFOTable';
+import { SubscriptionListItem } from '../../components/WfoSubscriptionsList';
+import { StoredTableConfig } from '../../components/WfoTable';
+import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WfoTable';
 import {
     DEFAULT_PAGE_SIZE,
     getSortDirectionFromString,
-} from '../../components/WFOTable';
-import { WFOFilterTabs } from '../../components';
+} from '../../components/WfoTable';
+import { WfoFilterTabs } from '../../components';
 
-export const WFOSubscriptionsListPage = () => {
+export const WfoSubscriptionsListPage = () => {
     const router = useRouter();
 
     const [tableDefaults, setTableDefaults] =
@@ -52,7 +52,7 @@ export const WFOSubscriptionsListPage = () => {
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WFOSubscriptionsTabType.ACTIVE),
+        withDefault(StringParam, WfoSubscriptionsTabType.ACTIVE),
     );
 
     const sortOrder = getSortDirectionFromString(
@@ -66,7 +66,7 @@ export const WFOSubscriptionsListPage = () => {
     }
 
     const handleChangeSubscriptionsTab = (
-        updatedSubscriptionsTab: WFOSubscriptionsTabType,
+        updatedSubscriptionsTab: WfoSubscriptionsTabType,
     ) => {
         setActiveTab(updatedSubscriptionsTab);
         setDataDisplayParam('pageIndex', 0);
@@ -83,7 +83,7 @@ export const WFOSubscriptionsListPage = () => {
             <EuiPageHeader pageTitle="Subscriptions" />
             <EuiSpacer size="m" />
 
-            <WFOFilterTabs
+            <WfoFilterTabs
                 tabs={defaultSubscriptionsTabs}
                 selectedTab={selectedSubscriptionsTab}
                 translationNamespace="subscriptions.tabs"
@@ -91,7 +91,7 @@ export const WFOSubscriptionsListPage = () => {
             />
             <EuiSpacer size="xxl" />
 
-            <WFOSubscriptionsList
+            <WfoSubscriptionsList
                 hiddenColumns={tableDefaults?.hiddenColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}

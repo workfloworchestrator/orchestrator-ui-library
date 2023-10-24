@@ -12,7 +12,7 @@ import {
     OrchestratorConfigProvider,
     ToastsContextProvider,
     ToastsList,
-    WFOPageTemplate,
+    WfoPageTemplate,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -109,7 +109,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                     contextSharing={true}
                                 >
                                     <ToastsContextProvider>
-                                        <WFOPageTemplate
+                                        <WfoPageTemplate
                                             getAppLogo={getAppLogo}
                                             overrideMenuItems={getMenuItems}
                                         >
@@ -123,7 +123,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                                             >
                                                 <Component {...pageProps} />
                                             </QueryParamProvider>
-                                        </WFOPageTemplate>
+                                        </WfoPageTemplate>
                                         <ToastsList />
                                     </ToastsContextProvider>
                                     <ReactQueryDevtools initialIsOpen={false} />

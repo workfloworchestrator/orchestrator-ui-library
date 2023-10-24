@@ -1,6 +1,6 @@
 import React from 'react';
-import { WFOResourceTypesPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoResourceTypesPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-export const ResourceTypesPage = () => <WFOResourceTypesPage />;
+export const ResourceTypesPage = () => <WfoResourceTypesPage />;
 
 export default ResourceTypesPage;

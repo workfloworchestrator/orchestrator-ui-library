@@ -11,9 +11,9 @@ import {
     EuiSwitch,
     EuiText,
 } from '@elastic/eui';
-import { WFOCode, WFOEyeFill } from '../../../icons';
+import { WfoCode, WfoEyeFill } from '../../../icons';
 
-export type WFOStepListHeaderProps = {
+export type WfoStepListHeaderProps = {
     showHiddenKeys: boolean;
     showRaw: boolean;
     allDetailToggleText: string;
@@ -22,7 +22,7 @@ export type WFOStepListHeaderProps = {
     onToggleAllDetailsIsOpen: () => void;
 };
 
-export const WFOStepListHeader: FC<WFOStepListHeaderProps> = ({
+export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     showHiddenKeys,
     showRaw,
     onChangeShowHiddenKeys,
@@ -49,7 +49,7 @@ export const WFOStepListHeader: FC<WFOStepListHeaderProps> = ({
     const viewOptionButton = (
         <EuiButton
             onClick={onViewOptionClick}
-            iconType={() => <WFOEyeFill color={theme.colors.link} />}
+            iconType={() => <WfoEyeFill color={theme.colors.link} />}
             iconSide="right"
             size="s"
         >
@@ -93,7 +93,7 @@ export const WFOStepListHeader: FC<WFOStepListHeaderProps> = ({
                     }}
                     iconSide="right"
                     size="s"
-                    iconType={() => <WFOCode color={theme.colors.link} />}
+                    iconType={() => <WfoCode color={theme.colors.link} />}
                 >
                     {t('showDelta')}
                 </EuiButton>

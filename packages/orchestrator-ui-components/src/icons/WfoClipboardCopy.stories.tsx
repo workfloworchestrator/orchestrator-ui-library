@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOClipboardCopy } from './WFOClipboardCopy';
+import { WfoClipboardCopy } from './WfoClipboardCopy';
 
-const Story: Meta<typeof WFOClipboardCopy> = {
-    component: WFOClipboardCopy,
-    title: 'Icons/WFOClipboardCopy',
+const Story: Meta<typeof WfoClipboardCopy> = {
+    component: WfoClipboardCopy,
+    title: 'Icons/WfoClipboardCopy',
 };
 export default Story;
 

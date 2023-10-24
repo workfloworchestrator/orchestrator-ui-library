@@ -1,3 +1,3 @@
-export * from './WFOKeyCell';
-export * from './WFOValueCell';
-export * from './WFOKeyValueTable';
+export * from './WfoKeyCell';
+export * from './WfoValueCell';
+export * from './WfoKeyValueTable';

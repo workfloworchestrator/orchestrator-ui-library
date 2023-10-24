@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 import { getStyles } from './styles';
-import { WFOPlusCircleFill } from '../../icons';
+import { WfoPlusCircleFill } from '../../icons';
 import { useOrchestratorTheme } from '../../hooks';
 
 export type WorkflowComboBoxOption = {
@@ -12,14 +12,14 @@ export type WorkflowComboBoxOption = {
     label: string;
 };
 
-export type WFOButtonComboBoxProps = {
+export type WfoButtonComboBoxProps = {
     buttonText: string;
     options: WorkflowComboBoxOption[];
     onOptionChange: (selectedOption: WorkflowComboBoxOption) => void;
     isProcess: boolean;
 };
 
-export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
+export const WfoButtonComboBox: FC<WfoButtonComboBoxProps> = ({
     buttonText,
     options,
     onOptionChange,
@@ -36,7 +36,7 @@ export const WFOButtonComboBox: FC<WFOButtonComboBoxProps> = ({
                 isProcess
                     ? 'plus'
                     : () => (
-                          <WFOPlusCircleFill color={theme.colors.emptyShade} />
+                          <WfoPlusCircleFill color={theme.colors.emptyShade} />
                       )
             }
             fullWidth={isProcess}

@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOEyeFill } from './WFOEyeFill';
+import { WfoEyeFill } from './WfoEyeFill';
 
-const Story: Meta<typeof WFOEyeFill> = {
-    component: WFOEyeFill,
-    title: 'Icons/WFOEyeFill',
+const Story: Meta<typeof WfoEyeFill> = {
+    component: WfoEyeFill,
+    title: 'Icons/WfoEyeFill',
 };
 export default Story;
 

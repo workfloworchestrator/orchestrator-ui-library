@@ -1,1 +1,1 @@
-export * from './WFOTableSettingsModal';
+export * from './WfoTableSettingsModal';

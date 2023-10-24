@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFOLogoutIcon } from './WFOLogoutIcon';
+import { WfoLogoutIcon } from './WfoLogoutIcon';
 
-const Story: Meta<typeof WFOLogoutIcon> = {
-    component: WFOLogoutIcon,
-    title: 'Icons/WFOLogoutIcon',
+const Story: Meta<typeof WfoLogoutIcon> = {
+    component: WfoLogoutIcon,
+    title: 'Icons/WfoLogoutIcon',
 };
 export default Story;
 

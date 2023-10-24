@@ -3,13 +3,13 @@ import { getStyles } from '../styles';
 import { EuiFlexItem } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
 import { StepStatus } from '../../../types';
-import { WFOCogFill } from '../../../icons/WFOCogFill';
-import { WFOCheckmarkCircleFill, WFOPlayFill } from '../../../icons';
-import { WFOXCircleFill } from '../../../icons';
-import { WFOMinusCircleFill } from '../../../icons';
-import { WFOPencilAlt } from '../../../icons/WFOPencilAlt';
+import { WfoCogFill } from '../../../icons/WfoCogFill';
+import { WfoCheckmarkCircleFill, WfoPlayFill } from '../../../icons';
+import { WfoXCircleFill } from '../../../icons';
+import { WfoMinusCircleFill } from '../../../icons';
+import { WfoPencilAlt } from '../../../icons/WfoPencilAlt';
 
-export interface WFOStepStatusIconProps {
+export interface WfoStepStatusIconProps {
     stepStatus: StepStatus;
     isStartStep?: boolean;
 }
@@ -23,31 +23,31 @@ interface IconProps {
 const SubIcon = ({ stepStatus, color = '' }: IconProps) => {
     switch (stepStatus) {
         case StepStatus.SUSPEND:
-            return <WFOMinusCircleFill color={color} />;
+            return <WfoMinusCircleFill color={color} />;
         case StepStatus.FAILED:
-            return <WFOXCircleFill color={color} />;
+            return <WfoXCircleFill color={color} />;
         default:
-            return <WFOCheckmarkCircleFill color={color} />;
+            return <WfoCheckmarkCircleFill color={color} />;
     }
 };
 
 const MainIcon = ({ stepStatus, color = '', isStartStep }: IconProps) => {
     if (isStartStep) {
-        return <WFOPlayFill color={color} />;
+        return <WfoPlayFill color={color} />;
     }
 
     switch (stepStatus) {
         case StepStatus.FORM:
-            return <WFOPencilAlt color={color} />;
+            return <WfoPencilAlt color={color} />;
         default:
-            return <WFOCogFill color={color} width={16} height={16} />;
+            return <WfoCogFill color={color} width={16} height={16} />;
     }
 };
 
-export const WFOStepStatusIcon = ({
+export const WfoStepStatusIcon = ({
     stepStatus,
     isStartStep = false,
-}: WFOStepStatusIconProps) => {
+}: WfoStepStatusIconProps) => {
     const { theme } = useOrchestratorTheme();
 
     const {

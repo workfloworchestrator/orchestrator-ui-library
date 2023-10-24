@@ -2,14 +2,14 @@ import React from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import {
-    WFOKeyValueTable,
-    WFOKeyValueTableDataType,
-} from '../WFOKeyValueTable/WFOKeyValueTable';
+    WfoKeyValueTable,
+    WfoKeyValueTableDataType,
+} from '../WfoKeyValueTable/WfoKeyValueTable';
 import { useOrchestratorTheme } from '../../hooks';
 
 interface SubscriptionKeyValueBlockProps {
     title: string;
-    keyValues: WFOKeyValueTableDataType[];
+    keyValues: WfoKeyValueTableDataType[];
 }
 
 export const SubscriptionKeyValueBlock = ({
@@ -34,7 +34,7 @@ export const SubscriptionKeyValueBlock = ({
                     </EuiFlexGroup>
 
                     <EuiSpacer size={'m'}></EuiSpacer>
-                    <WFOKeyValueTable
+                    <WfoKeyValueTable
                         keyValues={keyValues}
                         showCopyToClipboardIcon={true}
                     />

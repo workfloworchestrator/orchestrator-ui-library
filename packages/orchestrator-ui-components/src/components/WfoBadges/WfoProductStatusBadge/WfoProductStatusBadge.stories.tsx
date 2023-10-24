@@ -1,10 +1,10 @@
 import type { Meta } from '@storybook/react';
-import { WFOProductStatusBadge } from './WFOProductStatusBadge';
+import { WfoProductStatusBadge } from './WfoProductStatusBadge';
 import { ProductLifecycleStatus } from '../../../types';
 
-const Story: Meta<typeof WFOProductStatusBadge> = {
-    component: WFOProductStatusBadge,
-    title: 'Badges/WFOProductStatusBadge',
+const Story: Meta<typeof WfoProductStatusBadge> = {
+    component: WfoProductStatusBadge,
+    title: 'Badges/WfoProductStatusBadge',
 };
 export default Story;
 

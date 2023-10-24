@@ -1,1 +1,1 @@
-export * from './WFOPageTemplate';
+export * from './WfoPageTemplate';

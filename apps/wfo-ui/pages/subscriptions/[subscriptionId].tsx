@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { WFOSubscriptionDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoSubscriptionDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-const SubscriptionDetailPage = () => <WFOSubscriptionDetailPage />;
+const SubscriptionDetailPage = () => <WfoSubscriptionDetailPage />;
 
 export default SubscriptionDetailPage;

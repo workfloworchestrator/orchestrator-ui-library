@@ -8,43 +8,43 @@ import {
     Pagination,
 } from '@elastic/eui';
 import {
-    WFODataSorting,
+    WfoDataSorting,
     TableColumnKeys,
-    WFOTableColumns,
-    WFOTableControlColumnConfig,
-    WFOTableDataColumnConfig,
+    WfoTableColumns,
+    WfoTableControlColumnConfig,
+    WfoTableDataColumnConfig,
 } from '../utils/columns';
 import {
     ColumnConfig,
     TableConfig,
     TableSettingsModal,
-} from '../WFOTableSettingsModal';
-import { WFOSearchField } from '../../WFOSearchBar';
+} from '../WfoTableSettingsModal';
+import { WfoSearchField } from '../../WfoSearchBar';
 import {
-    WFOBasicTable,
-    WFOBasicTableColumnsWithControlColumns,
-} from '../WFOBasicTable';
+    WfoBasicTable,
+    WfoBasicTableColumnsWithControlColumns,
+} from '../WfoBasicTable';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
-import { WFOInformationModal } from '../../WFOSettingsModal';
+import { WfoInformationModal } from '../../WfoSettingsModal';
 import {
-    WFOKeyValueTable,
-    WFOKeyValueTableDataType,
-} from '../../WFOKeyValueTable/WFOKeyValueTable';
+    WfoKeyValueTable,
+    WfoKeyValueTableDataType,
+} from '../../WfoKeyValueTable/WfoKeyValueTable';
 import { getTypedFieldFromObject } from '../../../utils';
-import { WFOArrowsExpand } from '../../../icons';
+import { WfoArrowsExpand } from '../../../icons';
 import { useOrchestratorTheme } from '../../../hooks';
 
-export type WFOTableWithFilterProps<T> = {
+export type WfoTableWithFilterProps<T> = {
     data: T[];
-    tableColumns: WFOTableColumns<T>;
-    leadingControlColumns?: WFOTableControlColumnConfig<T>;
-    trailingControlColumns?: WFOTableControlColumnConfig<T>;
+    tableColumns: WfoTableColumns<T>;
+    leadingControlColumns?: WfoTableControlColumnConfig<T>;
+    trailingControlColumns?: WfoTableControlColumnConfig<T>;
     defaultHiddenColumns?: TableColumnKeys<T>;
-    dataSorting: WFODataSorting<T>;
+    dataSorting: WfoDataSorting<T>;
     pagination: Pagination;
     esQueryString?: string;
     isLoading: boolean;
@@ -53,10 +53,10 @@ export type WFOTableWithFilterProps<T> = {
     detailModalTitle?: string;
     onUpdateEsQueryString: (esQueryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
-    onUpdateDataSort: (dataSorting: WFODataSorting<T>) => void;
+    onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
 };
 
-export const WFOTableWithFilter = <T,>({
+export const WfoTableWithFilter = <T,>({
     data,
     tableColumns,
     leadingControlColumns,
@@ -72,7 +72,7 @@ export const WFOTableWithFilter = <T,>({
     onUpdateEsQueryString,
     onUpdatePage,
     onUpdateDataSort,
-}: WFOTableWithFilterProps<T>) => {
+}: WfoTableWithFilterProps<T>) => {
     const { theme } = useOrchestratorTheme();
 
     const defaultPageSize = pagination.pageSize;
@@ -88,7 +88,7 @@ export const WFOTableWithFilter = <T,>({
         }
     }, [defaultHiddenColumns]);
 
-    const detailsIconColumn: WFOTableControlColumnConfig<T> = {
+    const detailsIconColumn: WfoTableControlColumnConfig<T> = {
         viewDetails: {
             field: 'viewDetails',
             width: '36px',
@@ -97,13 +97,13 @@ export const WFOTableWithFilter = <T,>({
                     css={{ cursor: 'pointer' }}
                     onClick={() => setSelectedDataForDetailModal(row)}
                 >
-                    <WFOArrowsExpand color={theme.colors.mediumShade} />
+                    <WfoArrowsExpand color={theme.colors.mediumShade} />
                 </EuiFlexItem>
             ),
         },
     };
 
-    const tableColumnsWithControlColumns: WFOBasicTableColumnsWithControlColumns<T> =
+    const tableColumnsWithControlColumns: WfoBasicTableColumnsWithControlColumns<T> =
         {
             ...leadingControlColumns,
             ...tableColumns,
@@ -112,7 +112,7 @@ export const WFOTableWithFilter = <T,>({
         };
 
     const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
-        WFOTableDataColumnConfig<T, keyof T>
+        WfoTableDataColumnConfig<T, keyof T>
     >(tableColumns).map((keyValuePair) => {
         const { field, name } = keyValuePair[1];
         return {
@@ -122,9 +122,9 @@ export const WFOTableWithFilter = <T,>({
         };
     });
 
-    const rowDetailData: WFOKeyValueTableDataType[] | undefined =
+    const rowDetailData: WfoKeyValueTableDataType[] | undefined =
         selectedDataForDetailModal &&
-        Object.entries(tableColumns).map(([key]): WFOKeyValueTableDataType => {
+        Object.entries(tableColumns).map(([key]): WfoKeyValueTableDataType => {
             const dataField = getTypedFieldFromObject(key, tableColumns);
             if (dataField === null) {
                 return {
@@ -186,7 +186,7 @@ export const WFOTableWithFilter = <T,>({
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
-                    <WFOSearchField
+                    <WfoSearchField
                         esQueryString={esQueryString}
                         onUpdateEsQueryString={onUpdateEsQueryString}
                     />
@@ -196,7 +196,7 @@ export const WFOTableWithFilter = <T,>({
                 </EuiButton>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            <WFOBasicTable
+            <WfoBasicTable
                 data={data}
                 columns={tableColumnsWithControlColumns}
                 hiddenColumns={hiddenColumns}
@@ -236,15 +236,15 @@ export const WFOTableWithFilter = <T,>({
             )}
 
             {rowDetailData && (
-                <WFOInformationModal
+                <WfoInformationModal
                     title={detailModalTitle}
                     onClose={() => setSelectedDataForDetailModal(undefined)}
                 >
-                    <WFOKeyValueTable
+                    <WfoKeyValueTable
                         keyValues={rowDetailData}
                         showCopyToClipboardIcon
                     />
-                </WFOInformationModal>
+                </WfoInformationModal>
             )}
         </>
     );

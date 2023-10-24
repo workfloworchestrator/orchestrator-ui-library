@@ -6,9 +6,9 @@ import {
     EuiText,
     EuiTextColor,
 } from '@elastic/eui';
-import { WFOFrequentlyUsed } from './WFOFrequentlyUsed';
+import { WfoFrequentlyUsed } from './WfoFrequentlyUsed';
 
-export const WFONewProcessPanel: FC = () => {
+export const WfoNewProcessPanel: FC = () => {
     const [value, setValue] = useState('');
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
@@ -37,7 +37,7 @@ export const WFONewProcessPanel: FC = () => {
             <EuiSpacer size="m" />
             <EuiTextColor color="subdued">Frequently used:</EuiTextColor>
             <EuiSpacer size="s" />
-            <WFOFrequentlyUsed values={frequentlyUsedValues} />
+            <WfoFrequentlyUsed values={frequentlyUsedValues} />
         </EuiPanel>
     );
 };

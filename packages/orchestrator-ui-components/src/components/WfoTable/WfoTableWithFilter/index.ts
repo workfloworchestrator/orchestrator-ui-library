@@ -1,1 +1,1 @@
-export * from './WFOTableWithFilter';
+export * from './WfoTableWithFilter';

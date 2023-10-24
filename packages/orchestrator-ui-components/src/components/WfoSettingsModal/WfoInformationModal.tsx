@@ -9,13 +9,13 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-export type WFOInformationModalProps = {
+export type WfoInformationModalProps = {
     title: string;
     onClose: () => void;
     children: ReactNode;
 };
 
-export const WFOInformationModal: FC<WFOInformationModalProps> = ({
+export const WfoInformationModal: FC<WfoInformationModalProps> = ({
     title,
     onClose,
     children,

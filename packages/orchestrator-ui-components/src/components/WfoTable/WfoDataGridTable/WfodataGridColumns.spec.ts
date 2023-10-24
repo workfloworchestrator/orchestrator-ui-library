@@ -1,9 +1,9 @@
 import {
     getInitialColumnOrder,
     mapColumnSortToEuiDataGridSorting,
-    WFODataGridTableColumns,
-} from './WFOdataGridColumns';
-import { WFODataSorting } from '../utils/columns';
+    WfoDataGridTableColumns,
+} from './WfodataGridColumns';
+import { WfoDataSorting } from '../utils/columns';
 import { SortOrder } from '../../../types';
 
 interface TestColumn {
@@ -12,7 +12,7 @@ interface TestColumn {
     date: string;
 }
 
-const columns: WFODataGridTableColumns<TestColumn> = {
+const columns: WfoDataGridTableColumns<TestColumn> = {
     id: {
         displayAsText: 'id',
         initialWidth: 100,
@@ -94,11 +94,11 @@ describe('dataGridColumns', () => {
 
     describe('columnSortToEuiDataGridSorting', () => {
         it('should return sort dict with columns and onsort', () => {
-            const sortBy: WFODataSorting<TestColumn> = {
+            const sortBy: WfoDataSorting<TestColumn> = {
                 field: 'id',
                 sortOrder: SortOrder.ASC,
             };
-            const onSort = (dataSorting: WFODataSorting<TestColumn>) => {
+            const onSort = (dataSorting: WfoDataSorting<TestColumn>) => {
                 sortBy.field = dataSorting.field;
                 sortBy.sortOrder = dataSorting.sortOrder;
             };

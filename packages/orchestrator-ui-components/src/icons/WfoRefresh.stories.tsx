@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { WFORefresh } from './WFORefresh';
+import { WfoRefresh } from './WfoRefresh';
 
-const Story: Meta<typeof WFORefresh> = {
-    component: WFORefresh,
-    title: 'Icons/WFORefresh',
+const Story: Meta<typeof WfoRefresh> = {
+    component: WfoRefresh,
+    title: 'Icons/WfoRefresh',
 };
 export default Story;
 

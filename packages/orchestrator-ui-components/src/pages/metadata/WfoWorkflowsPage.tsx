@@ -6,16 +6,16 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    WFOLoading,
-    WFOProductBlockBadge,
+    WfoLoading,
+    WfoProductBlockBadge,
 } from '../../components';
-import { WFOTableWithFilter } from '../../components';
+import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
 
 import type { WorkflowDefinition } from '../../types';
 import { BadgeType, SortOrder } from '../../types';
@@ -26,14 +26,14 @@ import {
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
-import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
 import {
     graphQlWorkflowListMapper,
     mapWorkflowDefinitionToWorkflowListItem,
 } from './workflowListObjectMapper';
-import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
 
 export type WorkflowListItem = Pick<
@@ -43,7 +43,7 @@ export type WorkflowListItem = Pick<
     productTags: string[];
 };
 
-export const WFOWorkflowsPage = () => {
+export const WfoWorkflowsPage = () => {
     const t = useTranslations('metadata.workflows');
 
     const [tableDefaults, setTableDefaults] =
@@ -74,15 +74,15 @@ export const WFOWorkflowsPage = () => {
             },
         });
 
-    const tableColumns: WFOTableColumns<WorkflowListItem> = {
+    const tableColumns: WfoTableColumns<WorkflowListItem> = {
         name: {
             field: 'name',
             name: t('name'),
             width: '200',
             render: (name) => (
-                <WFOProductBlockBadge badgeType={BadgeType.WORKFLOW}>
+                <WfoProductBlockBadge badgeType={BadgeType.WORKFLOW}>
                     {name}
-                </WFOProductBlockBadge>
+                </WfoProductBlockBadge>
             ),
         },
         description: {
@@ -101,24 +101,24 @@ export const WFOWorkflowsPage = () => {
             render: (productTags) => (
                 <>
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.PRODUCT_TAG}
                         >
                             {productTag}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </>
             ),
             renderDetails: (productTags) => (
                 <EuiBadgeGroup gutterSize="s">
                     {productTags?.map((productTag, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.PRODUCT_TAG}
                         >
                             {productTag}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </EuiBadgeGroup>
             ),
@@ -127,7 +127,7 @@ export const WFOWorkflowsPage = () => {
             field: 'createdAt',
             name: t('createdAt'),
             width: '110',
-            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            render: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
@@ -144,10 +144,10 @@ export const WFOWorkflowsPage = () => {
     );
 
     if (!data) {
-        return <WFOLoading />;
+        return <WfoLoading />;
     }
 
-    const dataSorting: WFODataSorting<WorkflowListItem> = {
+    const dataSorting: WfoDataSorting<WorkflowListItem> = {
         field: dataDisplayParams.sortBy?.field ?? 'name',
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
@@ -162,8 +162,8 @@ export const WFOWorkflowsPage = () => {
     };
 
     return (
-        <WFOMetadataPageLayout>
-            <WFOTableWithFilter<WorkflowListItem>
+        <WfoMetadataPageLayout>
+            <WfoTableWithFilter<WorkflowListItem>
                 data={mapWorkflowDefinitionToWorkflowListItem(data)}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
@@ -182,6 +182,6 @@ export const WFOWorkflowsPage = () => {
                 esQueryString={dataDisplayParams.esQueryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />
-        </WFOMetadataPageLayout>
+        </WfoMetadataPageLayout>
     );
 };

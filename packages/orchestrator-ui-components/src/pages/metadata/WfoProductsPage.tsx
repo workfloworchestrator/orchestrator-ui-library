@@ -7,11 +7,11 @@ import {
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
 } from '../../components';
-import type { WFOTableColumns, WFODataSorting } from '../../components';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import {
-    WFOProductStatusBadge,
-    WFOProductBlockBadge,
-    WFOTableWithFilter,
+    WfoProductStatusBadge,
+    WfoProductBlockBadge,
+    WfoTableWithFilter,
 } from '../../components';
 import {
     getDataSortHandler,
@@ -30,10 +30,10 @@ import {
 
 import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 
-import { WFOMetadataPageLayout } from './WFOMetadataPageLayout';
-import { WFOFirstPartUUID } from '../../components/WFOTable/WFOFirstPartUUID';
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { StoredTableConfig } from '../../components';
-import { WFODateTime } from '../../components/WFODateTime/WFODateTime';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
@@ -46,7 +46,7 @@ const PRODUCT_FIELD_PRODUCT_BLOCKS: keyof ProductDefinition = 'productBlocks';
 const PRODUCT_FIELD_FIXED_INPUTS: keyof ProductDefinition = 'fixedInputs';
 const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 
-export const WFOProductsPage = () => {
+export const WfoProductsPage = () => {
     const t = useTranslations('metadata.products');
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProductDefinition>>();
@@ -76,12 +76,12 @@ export const WFOProductsPage = () => {
             },
         });
 
-    const tableColumns: WFOTableColumns<ProductDefinition> = {
+    const tableColumns: WfoTableColumns<ProductDefinition> = {
         productId: {
             field: PRODUCT_FIELD_PRODUCT_ID,
             name: t('id'),
             width: '90',
-            render: (value) => <WFOFirstPartUUID UUID={value} />,
+            render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {
@@ -94,9 +94,9 @@ export const WFOProductsPage = () => {
             name: t('tag'),
             width: '120',
             render: (value) => (
-                <WFOProductBlockBadge badgeType={BadgeType.PRODUCT_TAG}>
+                <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_TAG}>
                     {value}
-                </WFOProductBlockBadge>
+                </WfoProductBlockBadge>
             ),
         },
         description: {
@@ -112,7 +112,7 @@ export const WFOProductsPage = () => {
             field: PRODUCT_FIELD_STATUS,
             name: t('status'),
             width: '90',
-            render: (value) => <WFOProductStatusBadge status={value} />,
+            render: (value) => <WfoProductStatusBadge status={value} />,
         },
         fixedInputs: {
             field: PRODUCT_FIELD_FIXED_INPUTS,
@@ -120,12 +120,12 @@ export const WFOProductsPage = () => {
             render: (fixedInputs) => (
                 <>
                     {fixedInputs.map((fixedInput, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.FIXED_INPUT}
                         >
                             {`${fixedInput.name}: ${fixedInput.value}`}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </>
             ),
@@ -136,12 +136,12 @@ export const WFOProductsPage = () => {
             render: (productBlocks) => (
                 <>
                     {productBlocks.map((block, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.PRODUCT_BLOCK}
                         >
                             {block.name}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </>
             ),
@@ -149,7 +149,7 @@ export const WFOProductsPage = () => {
         createdAt: {
             field: PRODUCT_FIELD_CREATED_AT,
             name: t('createdAt'),
-            render: (date) => <WFODateTime dateOrIsoString={date} />,
+            render: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
@@ -174,14 +174,14 @@ export const WFOProductsPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
-    const dataSorting: WFODataSorting<ProductDefinition> = {
+    const dataSorting: WfoDataSorting<ProductDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
     return (
-        <WFOMetadataPageLayout>
-            <WFOTableWithFilter<ProductDefinition>
+        <WfoMetadataPageLayout>
+            <WfoTableWithFilter<ProductDefinition>
                 data={data ? data.products.page : []}
                 tableColumns={tableColumns}
                 dataSorting={dataSorting}
@@ -200,6 +200,6 @@ export const WFOProductsPage = () => {
                 esQueryString={dataDisplayParams.esQueryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
             />
-        </WFOMetadataPageLayout>
+        </WfoMetadataPageLayout>
     );
 };
