@@ -12,9 +12,9 @@ type WfoTreeProps = {
 export const WfoTree: FC<WfoTreeProps> = ({ data, depthList }) => {
     const { setDepths } = React.useContext(TreeContext) as TreeContextType;
 
-    // setDepths(depthList)
     useEffect(() => {
         setDepths(depthList);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setDepths, TreeContext]);
 
     return (

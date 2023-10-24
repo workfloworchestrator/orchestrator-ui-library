@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     EuiButtonIcon,
@@ -21,8 +21,6 @@ import {
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
 
 type NodeMap = { [key: number]: TreeBlock };
-
-const MAX_EXPAND_ALL = 100;
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];

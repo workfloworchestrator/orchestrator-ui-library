@@ -29,7 +29,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     const t = useTranslations('common');
     const {
         expandedIds,
-        toggleExpandedId,
+        collapseNode,
         expandNode,
         selectedIds,
         toggleSelectedId,
@@ -54,7 +54,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                             type={expandIcon}
                             onClick={() =>
                                 expanded
-                                    ? toggleExpandedId(item.id)
+                                    ? collapseNode(item.id)
                                     : expandNode(item.id)
                             }
                         />

@@ -8,6 +8,7 @@ export type TreeContextType = {
     toggleSelectedId: (id: number) => void;
     toggleExpandedId: (id: number) => void;
     expandNode: (id: number) => void;
+    collapseNode: (id: number) => void;
     expandAll: () => void;
     collapseAll: () => void;
     resetSelection: () => void;
@@ -54,20 +55,37 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
     };
 
     const collapseAll = () => {
-        console.log(depths);
         setExpandedIds([0]);
     };
 
     const expandNode = (itemIndex: number) => {
         const initialDepth = depths[itemIndex];
-        const expandedNodeIds = [0];
-        for (let i = itemIndex; i < depths.length; i++) {
-            if (i === itemIndex) expandedNodeIds.push(i);
-            else if (depths[i] > initialDepth) expandedNodeIds.push(i);
-            else if (depths[i] <= initialDepth) break;
-        }
-        console.log('Expanded nodes', expandedNodeIds);
-        setExpandedIds(expandedIds.concat(expandedNodeIds));
+        const expandedNodeIds = depths
+            .map((depth, i) => {
+                if (
+                    i === itemIndex ||
+                    (i > itemIndex && depth > initialDepth)
+                ) {
+                    return i;
+                }
+                return -1;
+            })
+            .filter((nodeId) => nodeId !== -1);
+        setExpandedIds((prevExpandedIds) => [
+            ...prevExpandedIds,
+            ...expandedNodeIds,
+        ]);
+    };
+
+    const collapseNode = (itemIndex: number) => {
+        const initialDepth = depths[itemIndex];
+        const collapsedNodeIds = depths
+            .slice(itemIndex)
+            .map((depth, i) => (depth >= initialDepth ? i + itemIndex : -1))
+            .filter((nodeId) => nodeId !== -1);
+        setExpandedIds((prevExpandedIds) =>
+            prevExpandedIds.filter((id) => !collapsedNodeIds.includes(id)),
+        );
     };
 
     const resetSelection = () => {
@@ -83,6 +101,7 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 toggleSelectedId,
                 toggleExpandedId,
                 expandNode,
+                collapseNode,
                 expandAll,
                 collapseAll,
                 resetSelection,
