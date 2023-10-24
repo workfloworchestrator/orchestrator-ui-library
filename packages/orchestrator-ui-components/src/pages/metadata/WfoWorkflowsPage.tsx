@@ -35,7 +35,7 @@ import {
 } from './workflowListObjectMapper';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
-import { withSortableAndFilterableValues } from '../../components/WFOTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WFOTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
@@ -166,7 +166,7 @@ export const WfoWorkflowsPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
                 data={mapWorkflowDefinitionToWorkflowListItem(data)}
-                tableColumns={withSortableAndFilterableValues(
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,

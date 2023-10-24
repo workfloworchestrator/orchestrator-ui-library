@@ -30,7 +30,7 @@ import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { withSortableAndFilterableValues } from '../../components/WfoTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -128,7 +128,7 @@ export const WfoResourceTypesPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
                 data={data ? data.resourceTypes.page : []}
-                tableColumns={withSortableAndFilterableValues(
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,

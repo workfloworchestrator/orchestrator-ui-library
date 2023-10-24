@@ -27,7 +27,7 @@ import {
 } from './processListObjectMappers';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
-import { withSortableAndFilterableValues } from '../WFOTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WFOTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export type ProcessListItem = Pick<
     Process,
@@ -202,7 +202,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             data={mapGraphQlProcessListResultToProcessListItems(data)}
-            tableColumns={withSortableAndFilterableValues(
+            tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
                 filterFields,

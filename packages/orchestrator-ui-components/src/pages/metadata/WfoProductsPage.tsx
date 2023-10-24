@@ -36,7 +36,7 @@ import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { StoredTableConfig } from '../../components';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
-import { withSortableAndFilterableValues } from '../../components/WFOTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WFOTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -189,7 +189,7 @@ export const WfoProductsPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
                 data={data ? data.products.page : []}
-                tableColumns={withSortableAndFilterableValues(
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,

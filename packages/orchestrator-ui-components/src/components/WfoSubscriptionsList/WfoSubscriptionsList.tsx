@@ -33,7 +33,7 @@ import {
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
-import { withSortableAndFilterableValues } from '../WfoTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
@@ -179,7 +179,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
-            tableColumns={withSortableAndFilterableValues(
+            tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
                 filterFields,

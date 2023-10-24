@@ -38,7 +38,7 @@ import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { withSortableAndFilterableValues } from '../../components/WfoTable/utils/withSortableAndFilterableValues';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -195,7 +195,7 @@ export const WfoProductBlocksPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
                 data={data.productBlocks.page}
-                tableColumns={withSortableAndFilterableValues(
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,
