@@ -1,6 +1,6 @@
 ## Adding or overriding translations
 
-The standard Wfo component library has translations included, they can be found in messages folder of the @orchestrator-ui/orchestrator-ui-components library. The translations that are provided in this folder (Wfo-ui/translations) are merged into these standard translations, this allows for adding to and overriding of the standard translations with the custom ones provided.
+The standard Wfo component library has translations included, they can be found in messages folder of the @orchestrator-ui/orchestrator-ui-components library. The translations that are provided in this folder (wfo-ui/translations) are merged into these standard translations, this allows for adding to and overriding of the standard translations with the custom ones provided.
 Overriding happens on a per key basis
 
 _example_
