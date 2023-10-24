@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 6c4cb21: Added translation setup and next-inl configuration. Translation strings are now available when using the useTranslations hook. For more on how to add translations refer to apps/Wfo-ui/translations/README.md
+- 6c4cb21: Added translation setup and next-inl configuration. Translation strings are now available when using the useTranslations hook. For more on how to add translations refer to apps/wfo-ui/translations/README.md
 
 ## 0.0.3
 
@@ -16,7 +16,7 @@
 
 ### Patch Changes
 
-- 0cef169: Splitted Wfo in separate packages
+- 0cef169: Splitted WFO in separate packages
 
 ## 0.0.1
 
