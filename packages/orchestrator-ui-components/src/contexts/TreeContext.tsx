@@ -79,10 +79,12 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
 
     const collapseNode = (itemIndex: number) => {
         const initialDepth = depths[itemIndex];
-        const collapsedNodeIds = depths
-            .slice(itemIndex)
-            .map((depth, i) => (depth >= initialDepth ? i + itemIndex : -1))
-            .filter((nodeId) => nodeId !== -1);
+        const collapsedNodeIds: number[] = [];
+        for (let i = itemIndex; i < depths.length; i++) {
+            if (i === itemIndex) collapsedNodeIds.push(i);
+            else if (depths[i] > initialDepth) collapsedNodeIds.push(i);
+            else if (depths[i] <= initialDepth) break;
+        }
         setExpandedIds((prevExpandedIds) =>
             prevExpandedIds.filter((id) => !collapsedNodeIds.includes(id)),
         );

@@ -7,7 +7,8 @@ import {
     EuiIcon,
     EuiListGroupItem,
 } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { TreeContext, TreeContextType } from '../../contexts';
+import { getStyles } from './styles';
 
 type Item = {
     id: number;
@@ -26,6 +27,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     hasChildren,
     level,
 }) => {
+    const { expandIconContainer, treeContainer } = getStyles();
     const t = useTranslations('common');
     const {
         expandedIds,
@@ -45,13 +47,12 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     return (
         <div style={{ paddingLeft: `${level * 16}px` }}>
             <EuiFlexGroup>
-                <EuiFlexItem
-                    grow={false}
-                    style={{ width: 0, marginTop: 8, marginRight: -8 }}
-                >
+                <EuiFlexItem grow={false} css={treeContainer}>
                     {hasChildren ? (
                         <EuiIcon
                             type={expandIcon}
+                            css={expandIconContainer}
+                            cursor={'hand'}
                             onClick={() =>
                                 expanded
                                     ? collapseNode(item.id)
