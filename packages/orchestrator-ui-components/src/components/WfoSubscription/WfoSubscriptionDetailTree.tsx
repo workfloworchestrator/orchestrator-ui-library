@@ -33,7 +33,6 @@ function getNodeDepth(node: TreeBlock, idToNodeMap: NodeMap): number {
     } else {
         // Find the parent node.
         const parent = idToNodeMap[node.parent];
-
         if (parent) {
             // Recursively calculate the parent's depth and add 1.
             return getNodeDepth(parent, idToNodeMap) + 1;
