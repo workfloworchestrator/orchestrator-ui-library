@@ -123,8 +123,6 @@ export const WfoResourceTypesPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
-    // todo: this page is different from the others
-
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
