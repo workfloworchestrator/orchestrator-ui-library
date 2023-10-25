@@ -88,6 +88,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         lastStatus: {
             field: 'lastStatus',
             name: t('status'),
+            width: '100',
             render: (cellValue) => (
                 <WFOProcessStatusBadge processStatus={cellValue} />
             ),
@@ -95,10 +96,12 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         workflowTarget: {
             field: 'workflowTarget',
             name: t('workflowTarget'),
+            width: '100',
         },
         productTag: {
             field: 'productTag',
             name: t('productTag'),
+            width: '100',
         },
         productName: {
             field: 'productName',
@@ -149,6 +152,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         startedAt: {
             field: 'startedAt',
             name: t('started'),
+            width: '100',
             render: (value) => <WFODateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
@@ -156,6 +160,7 @@ export const WFOProcessList: FC<WFOProcessListProps> = ({
         lastModifiedAt: {
             field: 'lastModifiedAt',
             name: t('lastModified'),
+            width: '100',
             render: (value) => <WFODateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,

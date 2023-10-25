@@ -56,10 +56,9 @@ export const WFOTaskListPage = () => {
     const handleOverrideTableColumns: (
         defaultTableColumns: WFOTableColumns<ProcessListItem>,
     ) => WFOTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-        assignee: defaultTableColumns.assignee,
+        workflowName: defaultTableColumns.workflowName,
         lastStep: defaultTableColumns.lastStep,
         lastStatus: defaultTableColumns.lastStatus,
-        workflowName: defaultTableColumns.workflowName,
         workflowTarget: defaultTableColumns.workflowTarget,
         productTag: defaultTableColumns.productTag,
         productName: defaultTableColumns.productName,
@@ -67,16 +66,17 @@ export const WFOTaskListPage = () => {
         customerAbbreviation: defaultTableColumns.customerAbbreviation,
         subscriptions: defaultTableColumns.subscriptions,
         createdBy: defaultTableColumns.createdBy,
+        assignee: defaultTableColumns.assignee,
         processId: defaultTableColumns.processId,
         startedAt: defaultTableColumns.startedAt,
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
     const defaultHiddenColumns: TableColumnKeys<ProcessListItem> = [
+        'assignee',
         'workflowTarget',
         'productName',
         'customer',
-        'createdBy',
         'processId',
     ];
 
