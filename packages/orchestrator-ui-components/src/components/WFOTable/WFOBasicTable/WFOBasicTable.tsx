@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
+import {EuiBasicTable, EuiBasicTableColumn, EuiTableSortingType, Pagination} from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { WFOTableHeaderCell } from './WFOTableHeaderCell';
 
@@ -31,6 +31,8 @@ export type WFOBasicTableProps<T> = {
     isLoading?: boolean;
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onDataSort?: (columnId: keyof T) => void;
+    sorting?: EuiTableSortingType<T>
+    color?: boolean
 };
 
 export const WFOBasicTable = <T,>({
@@ -42,13 +44,17 @@ export const WFOBasicTable = <T,>({
     isLoading,
     onCriteriaChange,
     onDataSort,
+    sorting,
+    color=false,
 }: WFOBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle } = getStyles(theme);
+    const { basicTableStyle, basicTableWithColorColumn } = getStyles(theme);
+    const style = basicTableWithColorColumn
+    console.log("style", style)
 
     return (
         <EuiBasicTable
-            css={basicTableStyle}
+            css={style}
             items={data}
             columns={mapWFOTableColumnsToEuiColumns(
                 columns,
@@ -56,6 +62,7 @@ export const WFOBasicTable = <T,>({
                 dataSorting,
                 onDataSort,
             )}
+            sorting={sorting}
             pagination={pagination}
             onChange={onCriteriaChange}
             loading={isLoading}

@@ -1,4 +1,5 @@
 /** CIM */
+import {Subscription} from "@orchestrator-ui/orchestrator-ui-components";
 
 export interface CreateServiceTicketPayload {
     ims_pw_id: string;
@@ -46,7 +47,8 @@ export enum ServiceTicketTransition {
     CLEANING = 'cleaning',
 }
 
-export interface ServiceTicketDefinition {
+export type ServiceTicketDefinition = {
+    color?: string;
     jira_ticket_id: string;
     opened_by: string;
     process_state: ServiceTicketProcessState;
@@ -146,11 +148,11 @@ export interface Email {
 export interface EmailLog {
     entry_time: string;
     log_type: string;
-    emails: any;
+    // emails: any;
 }
 
 export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
-    transitioning_state: any;
+    // transitioning_state: any;
     end_date: string;
     last_update_time: string;
     type: ServiceTicketType;

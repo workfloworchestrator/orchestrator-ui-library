@@ -33,7 +33,7 @@ export const WFOServiceTicketsPageLayout = ({
     tabs = metaDataTabs,
 }: MetadataLayoutProps) => {
     const router = useRouter();
-    const t = useTranslations('cim.tabs');
+    const t = useTranslations('cim.serviceTickets.tabs');
     const currentPath = router.pathname;
 
     return (

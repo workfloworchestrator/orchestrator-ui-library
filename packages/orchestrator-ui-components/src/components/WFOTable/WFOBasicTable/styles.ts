@@ -8,6 +8,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         '.euiTableCellContent__text': {
             display: 'flex',
         },
+
         thead: {
             backgroundColor: theme.colors.lightShade,
             'tr>:first-child': {
@@ -22,7 +23,21 @@ export const getStyles = (theme: EuiThemeComputed) => {
         },
     });
 
+    const basicTableWithColorColumn = css({
+        '.euiTableCellContent:first-child': {
+            padding: 0,
+        },
+        '.euiTableRowCell:first-child': {
+            padding: 0
+        },
+        '.euiTableHeaderCell': {
+            paddingLeft: 8,
+        },
+        ...basicTableStyle
+    })
+
     return {
         basicTableStyle,
+        basicTableWithColorColumn
     };
 };

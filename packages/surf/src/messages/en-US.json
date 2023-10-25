@@ -1,7 +1,17 @@
 {
     "cim": {
         "serviceTickets": {
-            "startDate": "Start time"
+            "jiraTicketId": "Jira ticket",
+            "titleNl": "Title",
+            "processState": "State",
+            "startDate": "Start time",
+            "openedBy": "Opened by",
+            "createDate": "Created on",
+            "lastUpdateTime": "Updated on",
+            "tabs": {
+                "active": "Active",
+                "completed": "Completed"
+            }
         }
     }
 }
