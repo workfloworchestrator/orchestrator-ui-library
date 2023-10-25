@@ -124,12 +124,12 @@ export const WfoProductBlocksPage = () => {
             render: (dependsOn) => (
                 <>
                     {dependsOn.map((productBlock, index) => (
-                        <WFOProductBlockBadge
+                        <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.PRODUCT_BLOCK}
                         >
                             {productBlock.name}
-                        </WFOProductBlockBadge>
+                        </WfoProductBlockBadge>
                     ))}
                 </>
             ),
