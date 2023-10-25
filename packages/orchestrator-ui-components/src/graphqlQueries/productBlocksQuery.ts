@@ -28,6 +28,15 @@ export const GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY: TypedDocumentNode<
                     resourceType
                     resourceTypeId
                 }
+                dependsOn {
+                    productBlockId
+                    name
+                    tag
+                    description
+                    status
+                    createdAt
+                    endDate
+                }
             }
             pageInfo {
                 endCursor

@@ -53,6 +53,7 @@
             "tag": "Tag",
             "status": "Status",
             "resourceTypes": "Resource types",
+            "subtendingProductBlocks": "Subtending product blocks",
             "createdAt": "Created",
             "endDate": "End date",
             "parentIds": "Parents"
