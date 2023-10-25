@@ -50,6 +50,8 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
                 startCursor
                 totalItems
                 endCursor
+                sortFields
+                filterFields
             }
         }
     }

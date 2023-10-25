@@ -6,6 +6,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
+    WfoLoading,
 } from '../../components';
 import {
     WfoProductBlockBadge,
@@ -37,6 +38,7 @@ import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { EuiBadgeGroup } from '@elastic/eui';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
@@ -170,12 +172,17 @@ export const WfoProductBlocksPage = () => {
         'productBlocks',
     );
 
+    if (!data) {
+        return <WfoLoading />;
+    }
+
     const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const totalItems = data?.productBlocks.pageInfo.totalItems;
+    const { totalItems, sortFields, filterFields } =
+        data.productBlocks.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -187,8 +194,12 @@ export const WfoProductBlocksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
-                data={data ? data.productBlocks.page : []}
-                tableColumns={tableColumns}
+                data={data.productBlocks.page}
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(

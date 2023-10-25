@@ -279,9 +279,11 @@ export type GraphqlQueryVariables<Type> = {
 export type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor?: number;
-    totalItems?: number;
-    endCursor?: number;
+    startCursor: number | null;
+    totalItems: number | null;
+    endCursor: number | null;
+    sortFields: string[];
+    filterFields: string[];
 };
 
 export interface SubscriptionsResult {

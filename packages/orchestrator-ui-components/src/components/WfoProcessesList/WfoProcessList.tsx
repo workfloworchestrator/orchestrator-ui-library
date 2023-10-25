@@ -27,6 +27,7 @@ import {
 } from './processListObjectMappers';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export type ProcessListItem = Pick<
     Process,
@@ -185,7 +186,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
     if (!data) {
         return <WfoLoading />;
     }
-    const { totalItems } = data.processes.pageInfo;
+    const { totalItems, sortFields, filterFields } = data.processes.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -201,7 +202,11 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             data={mapGraphQlProcessListResultToProcessListItems(data)}
-            tableColumns={tableColumns}
+            tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                tableColumns,
+                sortFields,
+                filterFields,
+            )}
             dataSorting={dataSorting}
             pagination={pagination}
             isLoading={isFetching}

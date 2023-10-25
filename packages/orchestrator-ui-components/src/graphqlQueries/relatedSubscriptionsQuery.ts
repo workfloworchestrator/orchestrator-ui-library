@@ -53,6 +53,8 @@ export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<
                         hasPreviousPage
                         startCursor
                         totalItems
+                        sortFields
+                        filterFields
                     }
                 }
             }

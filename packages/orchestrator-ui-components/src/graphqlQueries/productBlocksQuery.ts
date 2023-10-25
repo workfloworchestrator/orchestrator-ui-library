@@ -35,6 +35,8 @@ export const GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY: TypedDocumentNode<
                 hasPreviousPage
                 startCursor
                 totalItems
+                sortFields
+                filterFields
             }
         }
     }

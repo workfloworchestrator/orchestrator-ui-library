@@ -6,6 +6,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
+    WfoLoading,
 } from '../../components';
 import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import {
@@ -35,6 +36,7 @@ import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { StoredTableConfig } from '../../components';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
@@ -165,7 +167,11 @@ export const WfoProductsPage = () => {
         'products',
     );
 
-    const totalItems = data?.products.pageInfo.totalItems;
+    if (!data) {
+        return <WfoLoading />;
+    }
+
+    const { totalItems, sortFields, filterFields } = data.products.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -183,7 +189,11 @@ export const WfoProductsPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
                 data={data ? data.products.page : []}
-                tableColumns={tableColumns}
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ProductDefinition>(

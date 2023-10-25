@@ -6,6 +6,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
 import type { WfoTableColumns, WfoDataSorting } from '../../components';
@@ -29,6 +30,7 @@ import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';
@@ -103,12 +105,17 @@ export const WfoResourceTypesPage = () => {
         'resourceTypes',
     );
 
+    if (!data) {
+        return <WfoLoading />;
+    }
+
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: dataDisplayParams.sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
 
-    const totalItems = data?.resourceTypes.pageInfo.totalItems;
+    const { totalItems, sortFields, filterFields } =
+        data.resourceTypes.pageInfo;
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
@@ -121,7 +128,11 @@ export const WfoResourceTypesPage = () => {
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
                 data={data ? data.resourceTypes.page : []}
-                tableColumns={tableColumns}
+                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                    tableColumns,
+                    sortFields,
+                    filterFields,
+                )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(
