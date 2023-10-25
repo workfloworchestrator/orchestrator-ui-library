@@ -56,7 +56,7 @@ export const WfoTaskListPage = () => {
     const handleOverrideTableColumns: (
         defaultTableColumns: WfoTableColumns<ProcessListItem>,
     ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-        workflowName: defaultTableColumns.workflowName,      
+        workflowName: defaultTableColumns.workflowName,
         lastStep: defaultTableColumns.lastStep,
         lastStatus: defaultTableColumns.lastStatus,
         workflowTarget: defaultTableColumns.workflowTarget,
