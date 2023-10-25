@@ -27,7 +27,7 @@ import {
 } from './processListObjectMappers';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WFOTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export type ProcessListItem = Pick<
     Process,

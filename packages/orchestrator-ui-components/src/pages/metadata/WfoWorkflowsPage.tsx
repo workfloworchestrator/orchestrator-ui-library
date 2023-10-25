@@ -35,7 +35,7 @@ import {
 } from './workflowListObjectMapper';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WFOTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
