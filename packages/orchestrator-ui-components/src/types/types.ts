@@ -241,6 +241,7 @@ export interface Step {
     stepId: string; // sic backend
     executed: string;
     state: StepState;
+    stateDelta: StepState;
 }
 
 export interface WorkflowDefinition {

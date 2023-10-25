@@ -23,6 +23,7 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     stepId
                     executed
                     state
+                    stateDelta
                 }
                 customer {
                     fullname
