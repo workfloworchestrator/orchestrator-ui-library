@@ -10,8 +10,8 @@
         "close": "Close",
         "newSubscription": "New subscription",
         "newTask": "New task",
-        "search": "Search",
-        "noFailedTasks": "No failed tasks!"
+        "noFailedTasks": "No failed tasks!",
+        "search": "Search"
     },
     "workflow": {
         "start_workflow_title": "Start workflow"
