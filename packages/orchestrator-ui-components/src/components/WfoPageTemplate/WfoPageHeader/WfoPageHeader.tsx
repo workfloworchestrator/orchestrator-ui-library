@@ -49,7 +49,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     aria-label="Logout"
                     display="empty"
                     iconType={() => (
-                        <WFOLogoutIcon color={theme.colors.emptyShade} />
+                        <WfoLogoutIcon color={theme.colors.emptyShade} />
                     )}
                     css={{ width: 48, height: 48, marginLeft: 10 }}
                     color="ghost"

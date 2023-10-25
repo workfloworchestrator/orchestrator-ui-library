@@ -12,6 +12,7 @@ import {
     ToastsContextProvider,
     ToastsList,
     WfoPageTemplate,
+    WfoAuth,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -24,7 +25,6 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
 import { SessionProvider } from 'next-auth/react';
-import { WFOAuth } from '@orchestrator-ui/orchestrator-ui-components';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
@@ -49,7 +49,7 @@ function CustomApp({
 
     return (
         <SessionProvider session={pageProps.session}>
-            <WFOAuth>
+            <WfoAuth>
                 <NoSSR>
                     <TranslationsProvider>
                         <EuiProvider
@@ -104,7 +104,7 @@ function CustomApp({
                         </EuiProvider>
                     </TranslationsProvider>
                 </NoSSR>
-            </WFOAuth>
+            </WfoAuth>
         </SessionProvider>
     );
 }
