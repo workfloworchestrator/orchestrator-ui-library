@@ -64,12 +64,14 @@ export const WFOStepListHeader: FC<WFOStepListHeaderProps> = ({
                 <EuiText css={stepListContentBoldTextStyle}>
                     {t('steps')}
                 </EuiText>
-                <EuiText
-                    css={stepListContentAnchorStyle}
-                    onClick={onToggleAllDetailsIsOpen}
-                >
-                    {allDetailToggleText}
-                </EuiText>
+                {!showRaw && (
+                    <EuiText
+                        css={stepListContentAnchorStyle}
+                        onClick={onToggleAllDetailsIsOpen}
+                    >
+                        {allDetailToggleText}
+                    </EuiText>
+                )}
             </EuiFlexGroup>
 
             {/* Right side: view options */}
