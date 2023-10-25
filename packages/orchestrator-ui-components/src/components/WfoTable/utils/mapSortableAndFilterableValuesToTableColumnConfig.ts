@@ -8,15 +8,13 @@ export function mapSortableAndFilterableValuesToTableColumnConfig<T>(
     const tableConfigValues =
         Object.values<WfoTableDataColumnConfig<T, keyof T>>(tableColumnConfig);
 
-    const updatedTableConfigValues = tableConfigValues.map((value) => ({
-        ...value,
-        sortable: sortableFieldNames.includes(value.field.toString()),
-        filterable: filterableFieldNames.includes(value.field.toString()),
-    }));
-
-    const updatedTableConfigEntries = updatedTableConfigValues.map((value) => [
+    const updatedTableConfigEntries = tableConfigValues.map((value) => [
         value.field,
-        value,
+        {
+            ...value,
+            sortable: sortableFieldNames.includes(value.field.toString()),
+            filterable: filterableFieldNames.includes(value.field.toString()),
+        },
     ]);
 
     return Object.fromEntries(updatedTableConfigEntries);
