@@ -7,6 +7,8 @@ import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '../../../hooks/useProcessStatusCountsQuery';
+import { WfoCheckmarkCircleFill } from '../../../icons';
+import { useTranslations } from 'next-intl';
 
 type TaskCountsSummary = {
     failed: number;
@@ -32,32 +34,59 @@ const getTaskCountsSummary = (
 };
 
 export const WfoFailedTasksBadge = () => {
+    const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
-    return (
-        <EuiToolTip
-            position="bottom"
-            content={
-                <>
-                    <div>Failed: {taskCountsSummary.failed}</div>
-                    <div>
-                        Inconsistent data: {taskCountsSummary.inconsistentData}
-                    </div>
-                    <div>
-                        API unavailable: {taskCountsSummary.apiUnavailable}
-                    </div>
-                </>
-            }
-        >
-            <WfoHeaderBadge
-                color={theme.colors.emptyShade}
-                textColor={theme.colors.shadow}
-                iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
+    if (taskCountsSummary.total != 0) {
+        return (
+            <EuiToolTip
+                position="bottom"
+                content={
+                    <>
+                        <div>Failed: {taskCountsSummary.failed}</div>
+                        <div>
+                            Inconsistent data:{' '}
+                            {taskCountsSummary.inconsistentData}
+                        </div>
+                        <div>
+                            API unavailable: {taskCountsSummary.apiUnavailable}
+                        </div>
+                    </>
+                }
             >
-                {taskCountsSummary.total}
-            </WfoHeaderBadge>
-        </EuiToolTip>
-    );
+                <WfoHeaderBadge
+                    color={theme.colors.emptyShade}
+                    textColor={theme.colors.shadow}
+                    iconType={() => (
+                        <WfoXCircleFill color={theme.colors.danger} />
+                    )}
+                >
+                    {taskCountsSummary.total}
+                </WfoHeaderBadge>
+            </EuiToolTip>
+        );
+    } else {
+        return (
+            <EuiToolTip
+                position="bottom"
+                content={
+                    <>
+                        <div>{t('noFailedTasks')}</div>
+                    </>
+                }
+            >
+                <WfoHeaderBadge
+                    color={theme.colors.emptyShade}
+                    textColor={theme.colors.shadow}
+                    iconType={() => (
+                        <WfoCheckmarkCircleFill color={theme.colors.success} />
+                    )}
+                >
+                    {taskCountsSummary.total}
+                </WfoHeaderBadge>
+            </EuiToolTip>
+        );
+    }
 };

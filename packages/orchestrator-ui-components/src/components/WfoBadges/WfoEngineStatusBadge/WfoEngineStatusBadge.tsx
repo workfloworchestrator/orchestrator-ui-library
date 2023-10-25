@@ -12,11 +12,16 @@ export const WfoEngineStatusBadge = () => {
         ? `Engine is ${engineStatus.global_status}`
         : 'Engine status is unavailable';
 
+    const engineColor =
+        engineStatus?.global_status === 'RUNNING'
+            ? theme.colors.success
+            : theme.colors.danger;
+
     return (
         <WfoHeaderBadge
             color={theme.colors.emptyShade}
             textColor={theme.colors.shadow}
-            iconType={() => <WfoStatusDotIcon color={theme.colors.success} />}
+            iconType={() => <WfoStatusDotIcon color={engineColor} />}
         >
             {engineStatusText}
         </WfoHeaderBadge>
