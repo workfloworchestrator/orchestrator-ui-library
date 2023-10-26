@@ -54,7 +54,7 @@
             "tag": "Tag",
             "status": "Status",
             "resourceTypes": "Resource types",
-            "subtendingProductBlocks": "Onderliggende product blocks",
+            "dependingProductBlocks": "Onderliggende product blocks",
             "createdAt": "Aangemaakt",
             "endDate": "Eind datum",
             "parentIds": "Parents"
