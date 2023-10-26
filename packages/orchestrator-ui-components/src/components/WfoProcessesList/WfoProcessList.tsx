@@ -201,6 +201,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
 
     return (
         <WfoTableWithFilter<ProcessListItem>
+            esQueryString={dataDisplayParams.esQueryString}
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
