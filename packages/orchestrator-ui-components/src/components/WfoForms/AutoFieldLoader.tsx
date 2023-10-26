@@ -7,6 +7,7 @@ import {
     SelectField,
     TextField,
     ProductField,
+    SubscriptionSummaryField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -39,6 +40,8 @@ export function autoFieldFunction(
                     return LabelField;
                 case 'divider':
                     return DividerField;
+                case 'subscription':
+                    return SubscriptionSummaryField;
             }
             break;
     }
@@ -55,6 +58,5 @@ export function autoFieldFunction(
         }
     }
 
-    // Todo React upgrade: fix uniform types
     return AutoField.defaultComponentDetector(props, uniforms);
 }
