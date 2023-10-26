@@ -60,3 +60,5 @@ export const getSortDirectionFromString = (
             return undefined;
     }
 };
+
+export const WFO_TABLE_COLOR_FIELD = 'color';

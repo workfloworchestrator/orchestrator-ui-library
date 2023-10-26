@@ -2,7 +2,6 @@ import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { ItemsList } from '../types';
-import { Variables } from 'graphql-request/build/cjs/types';
 
 async function getFavouriteSubscriptions(apiUrl: string) {
     const response = await fetch(apiUrl + '/subscriptions/?range=10%2C15');
@@ -90,9 +89,8 @@ export const useCacheNames = () => {
     );
 };
 
-export const useQueryWithRest = <V extends Variables>(
+export const useQueryWithRest = (
     endpoint: string,
-    queryVars: V,
     queryKey: string,
     refetchInterval?: number,
 ) => {
@@ -103,7 +101,7 @@ export const useQueryWithRest = <V extends Variables>(
         return await response.json();
     };
 
-    return useQuery([queryKey, ...Object.values(queryVars)], fetchFromApi, {
+    return useQuery([queryKey], fetchFromApi, {
         refetchInterval,
     });
 };

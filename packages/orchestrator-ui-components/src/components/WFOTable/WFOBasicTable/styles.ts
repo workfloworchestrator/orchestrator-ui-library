@@ -8,7 +8,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         '.euiTableCellContent__text': {
             display: 'flex',
         },
-
         thead: {
             backgroundColor: theme.colors.lightShade,
             'tr>:first-child': {
@@ -23,21 +22,28 @@ export const getStyles = (theme: EuiThemeComputed) => {
         },
     });
 
-    const basicTableWithColorColumn = css({
-        '.euiTableCellContent:first-child': {
-            padding: 0,
+    const basicTableWithColorColumn = css(
+        {
+            '.euiTableHeaderCell': {
+                paddingBlock: 8,
+                paddingLeft: 8,
+            },
+            '.euiTableCellContent:first-child': {
+                padding: 0,
+                border: 0,
+            },
+            '.euiTableRowCell:first-child': {
+                padding: 0,
+            },
+            '.euiTableSortIcon': {
+                display: 'none',
+            },
         },
-        '.euiTableRowCell:first-child': {
-            padding: 0
-        },
-        '.euiTableHeaderCell': {
-            paddingLeft: 8,
-        },
-        ...basicTableStyle
-    })
+        basicTableStyle,
+    );
 
     return {
         basicTableStyle,
-        basicTableWithColorColumn
+        basicTableWithColorColumn,
     };
 };

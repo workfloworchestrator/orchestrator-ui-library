@@ -1,5 +1,4 @@
 /** CIM */
-import {Subscription} from "@orchestrator-ui/orchestrator-ui-components";
 
 export interface CreateServiceTicketPayload {
     ims_pw_id: string;
@@ -56,7 +55,7 @@ export type ServiceTicketDefinition = {
     create_date: string;
     last_update_time: string;
     title_nl: string;
-}
+};
 
 export enum ServiceTicketLogType {
     OPEN = 'open',
