@@ -45,4 +45,4 @@ export const SubmitField = ({
             {...filterDOMProps(props)}
         />
     );
-}
+};

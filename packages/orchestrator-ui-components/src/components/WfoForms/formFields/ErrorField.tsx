@@ -32,4 +32,7 @@ function Error({
     );
 }
 
-export const ErrorField = connectField(Error, { initialValue: false, kind: 'leaf' });
+export const ErrorField = connectField(Error, {
+    initialValue: false,
+    kind: 'leaf',
+});
