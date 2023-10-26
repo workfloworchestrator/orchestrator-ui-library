@@ -30,4 +30,4 @@ export const ErrorsField = (props: ErrorsFieldProps) => {
             </ul>
         </div>
     );
-}
+};
