@@ -9,9 +9,9 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { ProductBlockInstance, TreeBlock } from '../../types';
-import { WfoTree } from '../WfoTree/WfoTree';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
+import { WfoTree } from '../WfoTree';
+import { TreeContext, TreeContextType } from '../../contexts';
 import { getTokenName } from '../../utils/getTokenName';
 import { WfoLoading } from '../WfoLoading';
 import {
@@ -19,28 +19,10 @@ import {
     getProductBlockTitle,
 } from './utils';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
-
-type NodeMap = { [key: number]: TreeBlock };
+import { getWfoTreeNodeDepth } from '../WfoTree';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
-}
-
-function getNodeDepth(node: TreeBlock, idToNodeMap: NodeMap): number {
-    if (node.parent === null) {
-        // This is the root node, so its depth is 0.
-        return 0;
-    } else {
-        // Find the parent node.
-        const parent = idToNodeMap[node.parent];
-        if (parent) {
-            // Recursively calculate the parent's depth and add 1.
-            return getNodeDepth(parent, idToNodeMap) + 1;
-        } else {
-            // Parent not found, something might be wrong with the tree structure.
-            throw new Error(`Parent node for ${node.id} not found.`);
-        }
-    }
 }
 
 export const WfoSubscriptionDetailTree = ({
@@ -56,7 +38,7 @@ export const WfoSubscriptionDetailTree = ({
     let tree: TreeBlock | null = null;
     const depthList: number[] = [];
 
-    const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
+    const idToNodeMap: WfoTreeNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
     productBlockInstances.forEach((productBlockInstance) => {
         const shallowCopy: TreeBlock = {
@@ -79,7 +61,7 @@ export const WfoSubscriptionDetailTree = ({
             tree = shallowCopy;
         } else {
             // This node has a parent, so let's look it up using the id
-            depthList.push(getNodeDepth(shallowCopy, idToNodeMap));
+            depthList.push(getWfoTreeNodeDepth(shallowCopy, idToNodeMap));
             const parentNode = idToNodeMap[shallowCopy.parent];
             shallowCopy.label = getProductBlockTitle(
                 shallowCopy.productBlockInstanceValues,
