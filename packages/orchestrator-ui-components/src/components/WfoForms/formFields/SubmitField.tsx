@@ -24,13 +24,13 @@ export type SubmitFieldProps = FieldProps<
 >;
 
 // onChange not used on purpose
-export default function SubmitField({
+export const SubmitField = ({
     disabled,
     inputRef,
     readOnly,
     value,
     ...props
-}: SubmitFieldProps) {
+}: SubmitFieldProps) => {
     const { error, state } = useForm();
 
     return (

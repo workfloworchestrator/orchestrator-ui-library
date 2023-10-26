@@ -69,4 +69,4 @@ function Num({
     );
 }
 
-export default connectField(Num, { kind: 'leaf' });
+export const NumField = connectField(Num, { kind: 'leaf' });

@@ -17,7 +17,7 @@ import { filterDOMProps, useForm } from 'uniforms';
 
 export type ErrorsFieldProps = HTMLProps<HTMLDivElement>;
 
-export default function ErrorsField(props: ErrorsFieldProps) {
+export const ErrorsField = (props: ErrorsFieldProps) => {
     const { error, schema } = useForm();
     return !error && !props.children ? null : (
         <div {...filterDOMProps(props)}>

@@ -66,4 +66,4 @@ function Bool({
     );
 }
 
-export default connectField(Bool, { kind: 'leaf' });
+export const BoolField = connectField(Bool, { kind: 'leaf' });

@@ -7,9 +7,11 @@ import {
     SelectField,
     TextField,
     ProductField,
+    SubscriptionSummaryField
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
+
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -38,7 +40,7 @@ export function autoFieldFunction(
                 case 'label':
                     return LabelField;
                 case 'divider':
-                    return DividerField;
+                    return DividerField;                
             }
             break;
     }
