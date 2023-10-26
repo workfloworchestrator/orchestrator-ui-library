@@ -15,7 +15,7 @@ export const WfoEngineStatusBadge = () => {
     const engineColor =
         engineStatus?.global_status === 'RUNNING'
             ? theme.colors.success
-            : theme.colors.danger;
+            : theme.colors.warning;
 
     return (
         <WfoHeaderBadge

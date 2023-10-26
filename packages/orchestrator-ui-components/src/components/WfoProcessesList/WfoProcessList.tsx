@@ -89,7 +89,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
         lastStatus: {
             field: 'lastStatus',
             name: t('status'),
-            width: '100',
+            width: '150',
             render: (cellValue) => (
                 <WfoProcessStatusBadge processStatus={cellValue} />
             ),
