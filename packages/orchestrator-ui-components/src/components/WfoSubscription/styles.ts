@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const contentCellStyle = {
-        padding: theme.base,
+        padding: (theme.base / 4) * 3,
         borderBottom: theme.border.thin,
     };
 
