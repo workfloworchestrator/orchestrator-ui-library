@@ -9,6 +9,7 @@ import {
 } from '@elastic/eui';
 import { TreeContext, TreeContextType } from '../../contexts';
 import { getStyles } from './styles';
+import { useOrchestratorTheme } from '../../hooks';
 
 type Item = {
     id: number;
@@ -27,7 +28,8 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     hasChildren,
     level,
 }) => {
-    const { expandIconContainer, treeContainer } = getStyles();
+    const { theme } = useOrchestratorTheme();
+    const { expandIconContainer, treeContainer } = getStyles(theme);
     const t = useTranslations('common');
     const {
         expandedIds,
@@ -45,7 +47,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     }
 
     return (
-        <div style={{ paddingLeft: `${level * 16}px` }}>
+        <div style={{ paddingLeft: `${level * parseInt(theme.size.m)}px` }}>
             <EuiFlexGroup>
                 <EuiFlexItem grow={false} css={treeContainer}>
                     {hasChildren ? (
