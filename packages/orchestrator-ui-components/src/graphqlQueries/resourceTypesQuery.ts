@@ -22,6 +22,14 @@ export const GET_RESOURCE_TYPES_GRAPHQL_QUERY: TypedDocumentNode<
                 resourceTypeId
                 resourceType
                 description
+                productBlocks {
+                    description
+                    name
+                    productBlockId
+                    status
+                    createdAt
+                    endDate
+                }
             }
             pageInfo {
                 endCursor

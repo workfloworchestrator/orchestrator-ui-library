@@ -43,6 +43,7 @@ export interface ResourceTypeDefinition {
     description: string;
     resourceType: string;
     resourceTypeId: string;
+    productBlocks: ProductBlockDefinition[];
 }
 
 export interface ProductBlockDefinition {

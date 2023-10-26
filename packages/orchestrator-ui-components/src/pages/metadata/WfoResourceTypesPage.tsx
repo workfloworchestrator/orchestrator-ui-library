@@ -27,7 +27,7 @@ import {
 } from '../../hooks';
 
 import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
-
+import { EuiBadgeGroup } from '@elastic/eui';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
@@ -38,6 +38,8 @@ export const RESOURCE_TYPE_FIELD_TYPE: keyof ResourceTypeDefinition =
     'resourceType';
 export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
     'description';
+export const RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS: keyof ResourceTypeDefinition =
+    'productBlocks';
 
 export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
@@ -91,7 +93,34 @@ export const WfoResourceTypesPage = () => {
         description: {
             field: RESOURCE_TYPE_FIELD_DESCRIPTION,
             name: t('description'),
-            width: '400',
+        },
+        productBlocks: {
+            field: RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS,
+            name: t('usedInProductBlocks'),
+            render: (productBlocks) => (
+                <>
+                    {productBlocks.map((productBlock, index) => (
+                        <WfoProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.PRODUCT_BLOCK}
+                        >
+                            {productBlock.name}
+                        </WfoProductBlockBadge>
+                    ))}
+                </>
+            ),
+            renderDetails: (productBlocks) => (
+                <EuiBadgeGroup gutterSize="s">
+                    {productBlocks.map((productBlock, index) => (
+                        <WfoProductBlockBadge
+                            key={index}
+                            badgeType={BadgeType.PRODUCT_BLOCK}
+                        >
+                            {productBlock.name}
+                        </WfoProductBlockBadge>
+                    ))}
+                </EuiBadgeGroup>
+            ),
         },
     };
 
