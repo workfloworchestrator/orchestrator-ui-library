@@ -122,7 +122,7 @@ export const WfoProductBlocksPage = () => {
         },
         dependsOn: {
             field: PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS,
-            name: t('subtendingProductBlocks'),
+            name: t('dependingProductBlocks'),
             render: (dependsOn) => (
                 <>
                     {dependsOn.map((productBlock, index) => (
