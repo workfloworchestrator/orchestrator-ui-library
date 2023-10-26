@@ -24,6 +24,9 @@ type WfoSubscriptionProps = {
 };
 
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
+  console.log('id: ' + subscriptionId)
+  return (<div>SUBSCRIPTION DETAIL</div>)
+  /*
     const t = useTranslations('subscriptions.detail');
     const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
         SubscriptionTabIds.GENERAL_TAB,
@@ -117,4 +120,5 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                 ))}
         </>
     );
+    */
 };

@@ -63,4 +63,4 @@ function LongText({
     );
 }
 
-export default connectField(LongText, { kind: 'leaf' });
+export const LongTextField = connectField(LongText, { kind: 'leaf' });

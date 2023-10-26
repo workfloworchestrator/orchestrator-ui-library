@@ -34,4 +34,4 @@ function Label({ id, value, label, ...props }: LabelFieldProps) {
     );
 }
 
-export default connectField(Label, { kind: 'leaf' });
+export const LabelField = connectField(Label, { kind: 'leaf' });

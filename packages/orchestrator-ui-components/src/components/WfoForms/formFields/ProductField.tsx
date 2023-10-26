@@ -18,7 +18,7 @@ import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 import { useQuery } from 'react-query';
 
-import SelectField, { SelectFieldProps } from './SelectField';
+import { SelectField, SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';
 import { useAxiosApiClient } from '../useAxiosApiClient';
 
@@ -73,4 +73,4 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
     );
 }
 
-export default connectField(Product);
+export const ProductField = connectField(Product);
