@@ -3,7 +3,7 @@ import { EuiListGroup } from '@elastic/eui';
 
 import { WfoTreeNode } from './WfoTreeNode';
 import { TreeBlock } from '../../types';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { TreeContext, TreeContextType } from '../../contexts';
 
 type WfoTreeBranchProps = {
     item: TreeBlock;

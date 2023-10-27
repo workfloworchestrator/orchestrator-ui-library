@@ -9,9 +9,9 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { ProductBlockInstance, TreeBlock } from '../../types';
-import { WfoTree } from '../WfoTree/WfoTree';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
+import { WfoTree } from '../WfoTree';
+import { TreeContext, TreeContextType } from '../../contexts';
 import { getTokenName } from '../../utils/getTokenName';
 import { WfoLoading } from '../WfoLoading';
 import {
@@ -19,10 +19,7 @@ import {
     getProductBlockTitle,
 } from './utils';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
-
-type NodeMap = { [key: number]: TreeBlock };
-
-const MAX_EXPAND_ALL = 100;
+import { getWfoTreeNodeDepth } from '../WfoTree';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
@@ -32,26 +29,17 @@ export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
-    const [expandAllActive, setExpandAllActive] = useState(false);
     const [, setSelectedTreeNode] = useState(-1);
 
-    const { selectedIds, collapseAll, expandAll, resetSelection } =
-        React.useContext(TreeContext) as TreeContextType;
-
-    const toggleExpandAll = () => {
-        if (expandAllActive) {
-            collapseAll();
-        } else {
-            expandAll(MAX_EXPAND_ALL);
-        }
-        setExpandAllActive(!expandAllActive);
-    };
+    const { selectedIds, resetSelection } = React.useContext(
+        TreeContext,
+    ) as TreeContextType;
 
     let tree: TreeBlock | null = null;
+    const depthList: number[] = [];
 
-    const idToNodeMap: NodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
+    const idToNodeMap: WfoTreeNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
-    // TODO: Note, doesn't this code depend to much on the order of the productBlockInstances or is it ok because it's all by reference?
     productBlockInstances.forEach((productBlockInstance) => {
         const shallowCopy: TreeBlock = {
             ...productBlockInstance,
@@ -69,10 +57,11 @@ export const WfoSubscriptionDetailTree = ({
                 'name',
             );
             shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
-
+            depthList.push(0); // First id is on root
             tree = shallowCopy;
         } else {
             // This node has a parent, so let's look it up using the id
+            depthList.push(getWfoTreeNodeDepth(shallowCopy, idToNodeMap));
             const parentNode = idToNodeMap[shallowCopy.parent];
             shallowCopy.label = getProductBlockTitle(
                 shallowCopy.productBlockInstanceValues,
@@ -108,14 +97,6 @@ export const WfoSubscriptionDetailTree = ({
                                     <h3>{t('productBlocks')}</h3>
                                 </EuiText>
                             </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiButtonIcon
-                                    iconType={
-                                        expandAllActive ? 'minimize' : 'expand'
-                                    }
-                                    onClick={toggleExpandAll}
-                                />
-                            </EuiFlexItem>
                             <EuiFlexItem grow={true}>
                                 {selectedIds.length > 0 && (
                                     <EuiButtonIcon
@@ -128,7 +109,9 @@ export const WfoSubscriptionDetailTree = ({
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
                         {!tree && <WfoLoading />}
-                        {tree && <WfoTree data={[tree]} />}
+                        {tree && (
+                            <WfoTree data={[tree]} depthList={depthList} />
+                        )}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>

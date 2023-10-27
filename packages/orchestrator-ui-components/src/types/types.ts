@@ -414,3 +414,5 @@ export type ExternalService = {
     externalServiceId: string;
     externalServiceData: object;
 };
+
+export type WfoTreeNodeMap = { [key: number]: TreeBlock };

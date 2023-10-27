@@ -7,7 +7,9 @@ import {
     EuiIcon,
     EuiListGroupItem,
 } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts/TreeContext';
+import { TreeContext, TreeContextType } from '../../contexts';
+import { getStyles } from './styles';
+import { useOrchestratorTheme } from '../../hooks';
 
 type Item = {
     id: number;
@@ -26,9 +28,16 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     hasChildren,
     level,
 }) => {
+    const { theme } = useOrchestratorTheme();
+    const { expandIconContainer, treeContainer } = getStyles(theme);
     const t = useTranslations('common');
-    const { expandedIds, toggleExpandedId, selectedIds, toggleSelectedId } =
-        React.useContext(TreeContext) as TreeContextType;
+    const {
+        expandedIds,
+        collapseNode,
+        expandNode,
+        selectedIds,
+        toggleSelectedId,
+    } = React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
     const selected = selectedIds.includes(item.id);
 
@@ -38,16 +47,19 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     }
 
     return (
-        <div style={{ paddingLeft: `${level * 16}px` }}>
+        <div style={{ paddingLeft: `${level * parseInt(theme.size.m)}px` }}>
             <EuiFlexGroup>
-                <EuiFlexItem
-                    grow={false}
-                    style={{ width: 0, marginTop: 8, marginRight: -8 }}
-                >
+                <EuiFlexItem grow={false} css={treeContainer}>
                     {hasChildren ? (
                         <EuiIcon
                             type={expandIcon}
-                            onClick={() => toggleExpandedId(item.id)}
+                            css={expandIconContainer}
+                            cursor={'hand'}
+                            onClick={() =>
+                                expanded
+                                    ? collapseNode(item.id)
+                                    : expandNode(item.id)
+                            }
                         />
                     ) : (
                         <EuiToken iconType={item.icon} />
