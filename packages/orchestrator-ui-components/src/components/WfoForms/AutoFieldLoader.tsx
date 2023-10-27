@@ -4,6 +4,7 @@ import {
     LabelField,
     LongTextField,
     NumField,
+    RadioField,
     SelectField,
     TextField,
     ProductField,
@@ -16,7 +17,7 @@ export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
     uniforms: Context<Record<string, unknown>>,
 ) {
-    const { allowedValues, fieldType, field } = props;
+    const { allowedValues, checkboxes, fieldType, field } = props;
     const { format } = field;
 
     switch (fieldType) {
@@ -46,7 +47,7 @@ export function autoFieldFunction(
             break;
     }
     if (allowedValues && format !== 'accept') {
-        return SelectField;
+        return checkboxes && fieldType !== Array ? RadioField : SelectField;
     } else {
         switch (fieldType) {
             case Boolean:

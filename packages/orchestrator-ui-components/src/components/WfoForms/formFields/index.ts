@@ -6,6 +6,7 @@ export * from './LabelField';
 export * from './LongTextField';
 export * from './NumField';
 export * from './ProductField';
+export * from './RadioField';
 export * from './SelectField';
 export * from './SubmitField';
 export * from './SubscriptionSummaryField';
