@@ -1,13 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
+import { ORCHESTRATOR_API_BASE_URL } from 'wfo-ui/constants';
 
 interface ApiContext {
     apiClient: ApiClient;
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient('https://orchestrator.dev.automation.surf.net/api'),
+    apiClient: getApiClient(ORCHESTRATOR_API_BASE_URL),
 });
 
 export type ApiClientContextProviderProps = {

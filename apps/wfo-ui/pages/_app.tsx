@@ -46,15 +46,30 @@ const queryClientConfig: QueryClientConfig = {
     },
 };
 
+const orchestratorApiBaseUrl =
+    process.env.NEXT_PUBLIC_ORCHESTRATOR_API_HOST &&
+    process.env.NEXT_PUBLIC_ORCHESTRATOR_API_PATH
+        ? `${process.env.NEXT_PUBLIC_ORCHESTRATOR_API_HOST}${process.env.NEXT_PUBLIC_ORCHESTRATOR_API_PATH}`
+        : ORCHESTRATOR_API_BASE_URL;
+
+const orchestratorGraphqlBaseUrl =
+    process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_HOST &&
+    process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_PATH
+        ? `${process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_HOST}${process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_PATH}`
+        : GRAPHQL_ENDPOINT_CORE;
+
 const initialOrchestratorConfig: OrchestratorConfig = {
-    orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
-    engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
-    processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
-    graphqlEndpointCore: GRAPHQL_ENDPOINT_CORE,
+    orchestratorApiBaseUrl,
+    engineStatusEndpoint: orchestratorApiBaseUrl + ENGINE_STATUS_ENDPOINT,
+    processStatusCountsEndpoint:
+        orchestratorApiBaseUrl + PROCESS_STATUS_COUNTS_ENDPOINT,
+    graphqlEndpointCore: orchestratorGraphqlBaseUrl,
     environmentName:
         process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
-    subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
-    subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
+    subscriptionActionsEndpoint:
+        orchestratorApiBaseUrl + SUBSCRIPTION_ACTIONS_ENDPOINT,
+    subscriptionProcessesEndpoint:
+        orchestratorApiBaseUrl + SUBSCRIPTION_PROCESSES_ENDPOINT,
     dataRefetchInterval: {
         processDetail: getNumberValueFromEnvironmentVariable(
             process.env.NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL,
@@ -73,9 +88,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     colorMode="light"
                     modify={defaultOrchestratorTheme}
                 >
-                    <ApiClientContextProvider
-                        basePath={ORCHESTRATOR_API_BASE_URL}
-                    >
+                    <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
                         <Head>
                             <title>Welcome to example-orchestrator-ui!</title>
                         </Head>
