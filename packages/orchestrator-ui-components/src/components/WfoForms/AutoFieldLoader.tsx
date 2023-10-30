@@ -11,7 +11,10 @@ import {
     ProductField,
     SubscriptionSummaryField,
     DateField,
+<<<<<<< HEAD
     TimestampField,
+=======
+>>>>>>> a6e1e26 (337: Add DateField)
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
