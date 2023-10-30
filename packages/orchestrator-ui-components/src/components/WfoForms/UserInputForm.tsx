@@ -44,7 +44,7 @@ import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider'
 import { useOrchestratorTheme } from '../../hooks';
 import { WfoPlayFill } from '../../icons';
 
-type JSONSchemaFormProperty = JSONSchema6 & {
+type UniformJSONSchemaProperty = JSONSchema6 & {
     uniforms: any;
     defaultValue: any;
 };
@@ -335,14 +335,14 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
     if (form && form.properties) {
         Object.keys(queryParams).forEach((param) => {
             if (form && form.properties && form.properties[param]) {
-                const organisatieInput = form.properties[
+                const organisationInput = form.properties[
                     param
-                ] as JSONSchemaFormProperty;
-                if (!organisatieInput.uniforms) {
-                    organisatieInput.uniforms = {};
+                ] as UniformJSONSchemaProperty;
+                if (!organisationInput.uniforms) {
+                    organisationInput.uniforms = {};
                 }
-                organisatieInput.uniforms.disabled = true;
-                organisatieInput.default = queryParams[param];
+                organisationInput.uniforms.disabled = true;
+                organisationInput.default = queryParams[param];
             }
         });
 
@@ -350,7 +350,7 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
         if (queryParams.prefix && queryParams.prefixlen) {
             if (form && form.properties.ip_prefix) {
                 const ipPrefixInput = form.properties
-                    .ip_prefix as JSONSchemaFormProperty;
+                    .ip_prefix as UniformJSONSchemaProperty;
                 if (!ipPrefixInput.uniforms) {
                     ipPrefixInput.uniforms = {};
                 }
@@ -539,13 +539,16 @@ function UserInputForm({
     const prefilledForm = fillPreselection(stepUserInput, router);
     const bridge = new CustomTitleJSONSchemaBridge(prefilledForm, () => {});
     const AutoFieldProvider = AutoField.componentDetectorContext.Provider;
+
     // Get the Button config from the form default values, or default to empty config
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const buttons: Buttons = prefilledForm.properties?.buttons?.default ?? {
+    const buttonsFromSchema = (prefilledForm.properties?.buttons &&
+        prefilledForm.properties?.buttons !== true &&
+        prefilledForm.properties?.buttons.default) || {
         previous: {},
         next: {},
     };
+
+    const buttons: Buttons = buttonsFromSchema as unknown as Buttons;
 
     return (
         <div css={userInputFormStyling}>
