@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
-import { ORCHESTRATOR_API_BASE_URL } from 'wfo-ui/constants';
+import { ORCHESTRATOR_API_BASE_URL } from 'wfo-ui/configuration';
 
 interface ApiContext {
     apiClient: ApiClient;
