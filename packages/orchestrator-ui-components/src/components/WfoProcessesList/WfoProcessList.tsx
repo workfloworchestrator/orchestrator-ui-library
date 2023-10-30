@@ -28,6 +28,7 @@ import {
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { parseDateToLocaleDateTimeString } from '../../utils';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
 
 export type ProcessListItem = Pick<
     Process,
@@ -98,6 +99,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
             field: 'workflowTarget',
             name: t('workflowTarget'),
             width: '100',
+            render: (target) => <WfoWorkflowTargetBadge target={target} />,
         },
         productTag: {
             field: 'productTag',

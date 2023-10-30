@@ -12,7 +12,7 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
 }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const getBadgeColorFromTarget = (target: string) => {
+    const getBadgeColorFromTarget = (_target: string) => {
         const {
             primary,
             danger,
@@ -24,14 +24,21 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
             warningText,
         } = theme.colors;
 
-        switch (target.toLowerCase()) {
+        // default colour if target is not set, waiting for workfloworchestrator fix to make TARGET mandatory
+        // if (_target?.length === 0) {
+        //     return {
+        //         badgeColor: toSecondaryColor(primary),
+        //         textColor: primaryText,
+        //     };
+        // }
+
+        switch (_target?.toLowerCase()) {
             case WorkflowTarget.CREATE:
                 return {
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
                 };
             case WorkflowTarget.MODIFY:
-            case WorkflowTarget.UPGRADE:
                 return {
                     badgeColor: toSecondaryColor(primary),
                     textColor: primaryText,
@@ -56,9 +63,11 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
 
     const { badgeColor, textColor } = getBadgeColorFromTarget(target);
 
-    return (
-        <WfoBadge textColor={textColor} color={badgeColor}>
-            {target.toLowerCase()}
-        </WfoBadge>
-    );
+    if (target !== null) {
+        return (
+            <WfoBadge textColor={textColor} color={badgeColor}>
+                {target?.toLowerCase()}
+            </WfoBadge>
+        );
+    }
 };

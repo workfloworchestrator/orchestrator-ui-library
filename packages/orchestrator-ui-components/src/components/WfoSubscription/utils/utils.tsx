@@ -88,7 +88,6 @@ export const getWorkflowTargetColor = (
         case WorkflowTarget.CREATE:
             return theme.colors.successText;
         case WorkflowTarget.MODIFY:
-        case WorkflowTarget.UPGRADE:
             return theme.colors.primaryText;
         case WorkflowTarget.SYSTEM:
             return theme.colors.warning;

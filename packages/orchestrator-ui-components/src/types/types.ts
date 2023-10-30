@@ -142,7 +142,6 @@ export enum WorkflowTarget {
     MODIFY = 'modify',
     TERMINATE = 'terminate',
     SYSTEM = 'system',
-    UPGRADE = 'upgrade',
 }
 
 export type Process = {
