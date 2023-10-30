@@ -1,15 +1,18 @@
 import {
     DEFAULT_PAGE_SIZE,
     FilterQuery,
-    getTableConfigFromLocalStorage,
-    TableColumnKeys,
+    StoredTableConfig,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
     WfoTableColumns,
 } from '../../components';
 import { SortOrder } from '../../types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useDataDisplayParams, useOrchestratorTheme } from '../../hooks';
+import {
+    useDataDisplayParams,
+    useOrchestratorTheme,
+    useStoredTableConfig,
+} from '../../hooks';
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
 import { WfoRefresh } from '../../icons';
@@ -23,13 +26,24 @@ export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
 
-    const initialPageSize =
-        getTableConfigFromLocalStorage(TASK_LIST_TABLE_LOCAL_STORAGE_KEY)
-            ?.selectedPageSize ?? DEFAULT_PAGE_SIZE;
+    const [tableDefaults, setTableDefaults] =
+        useState<StoredTableConfig<ProcessListItem>>();
+
+    const getStoredTableConfig = useStoredTableConfig<ProcessListItem>(
+        TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
+    );
+
+    useEffect(() => {
+        const storedConfig = getStoredTableConfig();
+
+        if (storedConfig) {
+            setTableDefaults(storedConfig);
+        }
+    }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProcessListItem>({
-            pageSize: initialPageSize,
+            pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: 'lastModifiedAt',
                 order: SortOrder.DESC,
@@ -72,14 +86,6 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const defaultHiddenColumns: TableColumnKeys<ProcessListItem> = [
-        'assignee',
-        'workflowTarget',
-        'productName',
-        'customer',
-        'processId',
-    ];
-
     return (
         <>
             <EuiSpacer />
@@ -99,7 +105,7 @@ export const WfoTaskListPage = () => {
             <EuiSpacer size="xxl" />
 
             <WfoProcessList
-                defaultHiddenColumns={defaultHiddenColumns}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={TASK_LIST_TABLE_LOCAL_STORAGE_KEY}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}

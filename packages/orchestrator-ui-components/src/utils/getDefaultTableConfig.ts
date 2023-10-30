@@ -7,6 +7,7 @@ import {
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+    TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../components';
 
 import type { StoredTableConfig } from '../components';
@@ -84,6 +85,15 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
                 'startedAt',
             ];
             return getTableConfig<T>(completedProcessColumns as (keyof T)[]);
+        case TASK_LIST_TABLE_LOCAL_STORAGE_KEY:
+            const taskColumns: (keyof ProcessListItem)[] = [
+                'assignee',
+                'workflowTarget',
+                'productName',
+                'customer',
+                'processId',
+            ];
+            return getTableConfig<T>(taskColumns as (keyof T)[]);
         case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY:
             const subscriptionColumns: (keyof SubscriptionListItem)[] = [
                 'productName',
