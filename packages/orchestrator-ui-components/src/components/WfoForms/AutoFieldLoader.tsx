@@ -11,6 +11,7 @@ import {
     ProductField,
     SubscriptionSummaryField,
     DateField,
+    TimestampField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -36,7 +37,7 @@ export function autoFieldFunction(
                 case 'imsNodeId':
                     return NumField;
                 case 'timestamp':
-                    return NumField;
+                    return TimestampField;
             }
             break;
         case String:
