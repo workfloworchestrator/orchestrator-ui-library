@@ -2,6 +2,7 @@ import {
     BoolField,
     DividerField,
     LabelField,
+    ListField,
     LongTextField,
     NumField,
     RadioField,
@@ -50,6 +51,8 @@ export function autoFieldFunction(
         return checkboxes && fieldType !== Array ? RadioField : SelectField;
     } else {
         switch (fieldType) {
+            case Array:
+                return ListField;
             case Boolean:
                 return BoolField;
             case Number:

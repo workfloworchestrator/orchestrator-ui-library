@@ -540,6 +540,7 @@ function UserInputForm({
     const bridge = new CustomTitleJSONSchemaBridge(prefilledForm, () => {});
     const AutoFieldProvider = AutoField.componentDetectorContext.Provider;
     // Get the Button config from the form default values, or default to empty config
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const buttons: Buttons = prefilledForm.properties?.buttons?.default ?? {
         previous: {},
