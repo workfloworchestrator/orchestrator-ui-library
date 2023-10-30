@@ -55,12 +55,11 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
 
     const { badgeColor, textColor } = getBadgeColorFromTarget(target);
 
-    if (target !== null) {
-        return (
-            <WfoBadge textColor={textColor} color={badgeColor}>
-                {target?.toLowerCase()}
-            </WfoBadge>
-        );
-    }
-    return null;
+    if (!target) return null;
+
+    return (
+        <WfoBadge textColor={textColor} color={badgeColor}>
+            {target?.toLowerCase()}
+        </WfoBadge>
+    );
 };
