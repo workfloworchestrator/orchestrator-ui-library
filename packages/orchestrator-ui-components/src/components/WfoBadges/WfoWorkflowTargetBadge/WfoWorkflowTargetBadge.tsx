@@ -24,14 +24,6 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
             warningText,
         } = theme.colors;
 
-        // default colour if target is not set, waiting for workfloworchestrator fix to make TARGET mandatory
-        // if (_target?.length === 0) {
-        //     return {
-        //         badgeColor: toSecondaryColor(primary),
-        //         textColor: primaryText,
-        //     };
-        // }
-
         switch (_target?.toLowerCase()) {
             case WorkflowTarget.CREATE:
                 return {
@@ -70,4 +62,5 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
             </WfoBadge>
         );
     }
+    return null;
 };
