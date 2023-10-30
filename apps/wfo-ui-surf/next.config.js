@@ -6,5 +6,8 @@ module.exports = {
         locales: ['en-US', 'nl-NL'],
         defaultLocale: 'en-US',
     },
-    transpilePackages: ['@orchestrator-ui/orchestrator-ui-components'],
+    transpilePackages: [
+        '@orchestrator-ui/orchestrator-ui-components',
+        '@orchestrator-ui/surf',
+    ],
 };

@@ -88,3 +88,20 @@ export const useCacheNames = () => {
         getCacheNames(orchestratorApiBaseUrl),
     );
 };
+
+export const useQueryWithRest = (
+    endpoint: string,
+    queryKey: string,
+    refetchInterval?: number,
+) => {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+
+    const fetchFromApi = async () => {
+        const response = await fetch(orchestratorApiBaseUrl + endpoint);
+        return await response.json();
+    };
+
+    return useQuery([queryKey], fetchFromApi, {
+        refetchInterval,
+    });
+};

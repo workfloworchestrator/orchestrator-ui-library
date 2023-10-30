@@ -48,8 +48,29 @@ export const getStyles = (theme: EuiThemeComputed) => {
             cursor: isSortable ? 'pointer' : 'not-allowed',
         });
 
+    const basicTableWithColorColumn = css(
+        {
+            '.euiTableHeaderCell': {
+                paddingBlock: 8,
+                paddingLeft: 8,
+            },
+            '.euiTableCellContent:first-child': {
+                padding: 0,
+                border: 0,
+            },
+            '.euiTableRowCell:first-child': {
+                padding: 0,
+            },
+            '.euiTableSortIcon': {
+                display: 'none',
+            },
+        },
+        basicTableStyle,
+    );
+
     return {
         basicTableStyle,
+        basicTableWithColorColumn,
         headerCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,

@@ -130,6 +130,35 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             },
             href: PATH_SETTINGS,
         },
+        {
+            name: 'Service tickets',
+            id: '8',
+            onClick: () => {
+                // Note: Using a string literal instead of const, otherwise I'll need to add the surf package to orchestrator-ui-components. Maybe here we use an ENV var ?
+                router.push('/service-tickets/active');
+            },
+            items: [
+                {
+                    name: 'Active',
+                    id: '8.1',
+                    isSelected: router.pathname === '/service-tickets/active',
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push('/service-tickets/active');
+                    },
+                },
+                {
+                    name: 'Completed',
+                    id: '8.2',
+                    isSelected:
+                        router.pathname === '/service-tickets/completed',
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push('/service-tickets/completed');
+                    },
+                },
+            ],
+        },
     ];
 
     const defaultMenu: EuiSideNavItemType<object>[] = [

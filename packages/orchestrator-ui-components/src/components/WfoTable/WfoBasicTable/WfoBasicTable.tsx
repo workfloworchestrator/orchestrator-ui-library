@@ -9,12 +9,14 @@ import type {
     WfoDataSearch,
 } from '../utils/columns';
 import {
+    WFO_TABLE_COLOR_FIELD,
     WfoTableControlColumnConfig,
     WfoTableDataColumnConfig,
 } from '../utils/columns';
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './styles';
 import { SortOrder } from '../../../types';
+import { EuiTableSortingType } from '@elastic/eui/src/components/basic_table/table_types';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
@@ -37,6 +39,8 @@ export type WfoBasicTableProps<T> = {
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
+    sorting?: EuiTableSortingType<T>;
+    color?: boolean;
 };
 
 export const WfoBasicTable = <T,>({
@@ -49,13 +53,17 @@ export const WfoBasicTable = <T,>({
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
+    sorting,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle } = getStyles(theme);
+    const { basicTableStyle, basicTableWithColorColumn } = getStyles(theme);
+    const styles = columns.hasOwnProperty(WFO_TABLE_COLOR_FIELD)
+        ? basicTableWithColorColumn
+        : basicTableStyle;
 
     return (
         <EuiBasicTable
-            css={basicTableStyle}
+            css={styles}
             items={data}
             columns={mapWfoTableColumnsToEuiColumns(
                 columns,
@@ -64,6 +72,7 @@ export const WfoBasicTable = <T,>({
                 onUpdateDataSorting,
                 onDataSearch,
             )}
+            sorting={sorting}
             pagination={pagination}
             onChange={onCriteriaChange}
             loading={isLoading}
