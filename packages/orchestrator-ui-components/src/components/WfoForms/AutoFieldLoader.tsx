@@ -10,6 +10,7 @@ import {
     TextField,
     ProductField,
     SubscriptionSummaryField,
+    DateField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -22,6 +23,11 @@ export function autoFieldFunction(
     const { allowedValues, checkboxes, fieldType, field } = props;
     const { format } = field;
 
+    /* 
+      Note, uniforms adds the fieldType property with one of the primitive types (Number, String..) based on the value of "type" in 
+      node_modules/uniforms-bridge-json-schema/src/JSONSchemaBridge.ts. The only exception being dateFields where it matches on the
+      "format" field being "date-time" to populate fieldType with a Date constructor
+    */
     switch (fieldType) {
         case Number:
             switch (format) {
@@ -62,6 +68,9 @@ export function autoFieldFunction(
                 return NestField;
             case String:
                 return TextField;
+            case Date:
+                // See the note at line above about how Date fields are matched on the "format" field instead of "type" like other fields
+                return DateField;
         }
     }
 

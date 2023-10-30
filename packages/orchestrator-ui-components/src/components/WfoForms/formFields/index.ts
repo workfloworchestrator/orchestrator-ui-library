@@ -14,3 +14,4 @@ export * from './SelectField';
 export * from './SubmitField';
 export * from './SubscriptionSummaryField';
 export * from './TextField';
+export * from './DateField';
