@@ -1,5 +1,5 @@
 import { WfoFilterTab } from '@orchestrator-ui/orchestrator-ui-components';
-import { SubscriptionListItem } from './mapGrapghQlCimResultToServiceTicketListItems';
+import { ServiceTicketDefinition } from '../../types';
 
 export enum WfoSubscriptionsTabType {
     ACTIVE = 'ACTIVE',
@@ -10,14 +10,14 @@ export enum WfoSubscriptionsTabType {
 
 export const defaultSubscriptionsTabs: WfoFilterTab<
     WfoSubscriptionsTabType,
-    SubscriptionListItem
+    ServiceTicketDefinition
 >[] = [
     {
         id: WfoSubscriptionsTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
-                field: 'status',
+                field: 'process_state',
                 value: 'active',
             },
         ],
@@ -27,7 +27,7 @@ export const defaultSubscriptionsTabs: WfoFilterTab<
         translationKey: 'terminated',
         alwaysOnFilters: [
             {
-                field: 'status',
+                field: 'process_state',
                 value: 'terminated',
             },
         ],
@@ -37,7 +37,7 @@ export const defaultSubscriptionsTabs: WfoFilterTab<
         translationKey: 'transient',
         alwaysOnFilters: [
             {
-                field: 'status',
+                field: 'process_state',
                 value: 'initial-provisioning-migrating',
             },
         ],

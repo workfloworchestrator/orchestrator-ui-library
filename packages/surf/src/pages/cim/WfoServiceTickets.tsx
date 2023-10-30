@@ -25,7 +25,6 @@ import {
     WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants';
-import { WfoServiceTicketsPageLayout } from './WfoServiceTicketsPageLayout';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';
@@ -44,7 +43,7 @@ const SERVICE_TICKET_FIELD_LAST_UPDATE: keyof ServiceTicketDefinition =
 const { NEW, OPEN, OPEN_RELATED, OPEN_ACCEPTED, UPDATED, ABORTED, CLOSED } =
     ServiceTicketProcessState;
 
-export const WfoServiceTicketsActive = () => {
+export const WfoServiceTickets = () => {
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [dataSorting, setDataSorting] = useState<
@@ -225,16 +224,14 @@ export const WfoServiceTicketsActive = () => {
     };
 
     return (
-        <WfoServiceTicketsPageLayout>
-            <WfoBasicTable
-                data={pageOfItems}
-                isLoading={isFetching}
-                columns={tableColumns}
-                pagination={pagination}
-                sorting={sorting}
-                onCriteriaChange={onCriteriaChange}
-                dataSorting={dataSorting}
-            />
-        </WfoServiceTicketsPageLayout>
+        <WfoBasicTable
+            data={pageOfItems}
+            isLoading={isFetching}
+            columns={tableColumns}
+            pagination={pagination}
+            sorting={sorting}
+            onCriteriaChange={onCriteriaChange}
+            dataSorting={dataSorting}
+        />
     );
 };

@@ -1,4 +1,5 @@
 /** CIM */
+import { Process } from '@orchestrator-ui/orchestrator-ui-components';
 
 export interface CreateServiceTicketPayload {
     ims_pw_id: string;
@@ -55,6 +56,25 @@ export type ServiceTicketDefinition = {
     create_date: string;
     last_update_time: string;
     title_nl: string;
+};
+
+export type ServiceTicketListItem = Pick<
+    Process,
+    | 'workflowName'
+    | 'lastStep'
+    | 'lastStatus'
+    | 'workflowTarget'
+    | 'createdBy'
+    | 'assignee'
+    | 'processId'
+    | 'subscriptions'
+> & {
+    startedAt: Date;
+    lastModifiedAt: Date;
+    productName?: string;
+    productTag?: string;
+    customer: string;
+    customerAbbreviation: string;
 };
 
 export enum ServiceTicketLogType {
