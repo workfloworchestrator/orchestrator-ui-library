@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EuiAccordion } from '@elastic/eui';
 
 import {
@@ -9,7 +9,6 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts';
 import { FieldValue } from '../../types';
 import { getProductBlockTitle } from './utils';
 
@@ -18,13 +17,16 @@ interface WfoSubscriptionProductBlockProps {
     id: number;
 }
 
+export const ALWAYS_HIDDEN_KEYS = ['title', 'name', 'label'];
+export const HIDDEN_KEYS = [
+    'name', // Todo: remove this, it's only here to test
+    // 'subscription_instance_id',
+    // 'owner_subscription_id',
+];
 export const WfoSubscriptionProductBlock = ({
     productBlockInstanceValues,
-    id,
 }: WfoSubscriptionProductBlockProps) => {
-    const { toggleSelectedId } = React.useContext(
-        TreeContext,
-    ) as TreeContextType;
+    const [showAllKeys, setShowAllKeys] = useState(false);
 
     const isLastCell = (index: number): number => {
         return index === productBlockInstanceValues.length - 1 ? 0 : 1;
@@ -50,7 +52,7 @@ export const WfoSubscriptionProductBlock = ({
                                 aria-label="Close"
                                 size={'m'}
                                 iconType={'cross'}
-                                onClick={() => toggleSelectedId(id)}
+                                onClick={() => setShowAllKeys(!showAllKeys)}
                             />
                         </EuiFlexItem>
                     </EuiFlexGroup>
@@ -65,8 +67,14 @@ export const WfoSubscriptionProductBlock = ({
                                 borderRadius: 8,
                             }}
                         >
-                            {productBlockInstanceValues.map(
-                                (productBlockInstanceValue, index) =>
+                            {productBlockInstanceValues
+                                .filter(
+                                    (productBlockInstanceValue) =>
+                                        !HIDDEN_KEYS.includes(
+                                            productBlockInstanceValue.field,
+                                        ) || showAllKeys,
+                                )
+                                .map((productBlockInstanceValue, index) =>
                                     !productBlockInstanceValue.field.startsWith(
                                         'ims_ci',
                                     ) ? (
@@ -141,7 +149,7 @@ export const WfoSubscriptionProductBlock = ({
                                             </td>
                                         </tr>
                                     ),
-                            )}
+                                )}
                         </table>
                     }
                 </div>

@@ -80,7 +80,7 @@ export const WfoSubscriptionDetailTree = ({
             }
         }
 
-        // Add an entry for this node to the map so that any future children can lookup the parent
+        // Add an entry for this node to the map so that any future children can look up the parent
         idToNodeMap[shallowCopy.id] = shallowCopy;
     });
 
@@ -132,7 +132,7 @@ export const WfoSubscriptionDetailTree = ({
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
-                        selectedIds.reverse().map((id, index) => {
+                        selectedIds.map((id, index) => {
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}

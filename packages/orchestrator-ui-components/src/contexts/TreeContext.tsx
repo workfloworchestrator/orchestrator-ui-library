@@ -27,31 +27,30 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
 
     const toggleSelectedId = (id: number) => {
         if (selectedIds.includes(id)) {
-            const newSelectedIds = selectedIds.filter(
-                (selectedId) => selectedId !== id,
+            setSelectedIds((prevSelectedIds) =>
+                prevSelectedIds
+                    .filter((selectedId) => selectedId !== id)
+                    .sort((a, b) => a - b),
             );
-            setSelectedIds(newSelectedIds);
         } else {
-            const newSelectedIds = [...selectedIds, id];
-            setSelectedIds(newSelectedIds);
+            setSelectedIds((prevSelectedIds) =>
+                [...prevSelectedIds, id].sort((a, b) => a - b),
+            );
         }
     };
 
     const toggleExpandedId = (id: number) => {
         if (expandedIds.includes(id)) {
-            const newExpandedIds = expandedIds.filter(
-                (expandedId) => expandedId !== id,
+            setExpandedIds((prevExpandedIds) =>
+                prevExpandedIds.filter((expandedId) => expandedId !== id),
             );
-            setExpandedIds(newExpandedIds);
         } else {
-            const newExpandedIds = [...expandedIds, id];
-            setExpandedIds(newExpandedIds);
+            setExpandedIds((prevExpandedIds) => [...prevExpandedIds, id]);
         }
     };
 
     const expandAll = () => {
-        const newExpandedIds = Array.from(Array(depths.length).keys());
-        setExpandedIds(newExpandedIds);
+        setExpandedIds(Array.from(Array(depths.length).keys()));
     };
 
     const collapseAll = () => {
