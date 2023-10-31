@@ -89,7 +89,7 @@ function List({
                                           // @ts-ignore
                                           name: child.props.name?.replace(
                                               '$',
-                                              '' + itemIndex,
+                                              itemIndex.toString(),
                                           ),
                                           outerList: hasListAsChild,
                                           ...itemProps,
