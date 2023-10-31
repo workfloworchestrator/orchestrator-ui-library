@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import {
     DEFAULT_PAGE_SIZE,
@@ -17,8 +17,8 @@ import {
 import { useRouter } from 'next/router';
 import { getServiceTicketListTabTypeFromString } from './getServiceTicketListTabTypeFromString';
 import { defaultServiceTicketsListTabs } from './tabConfig';
-import { EuiSpacer, EuiPageHeader } from '@elastic/eui';
-import { WfoServiceTickets } from './WfoServiceTickets';
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { WfoServiceTicketsList } from './WfoServiceTicketsList';
 
 export const WfoServiceTicketListPage = () => {
     const router = useRouter();
@@ -75,7 +75,7 @@ export const WfoServiceTicketListPage = () => {
     )?.alwaysOnFilters;
 
     if (!selectedServiceTicketListTab) {
-        router.replace('/processes');
+        router.replace('/service-tickets');
         return null;
     }
 
@@ -83,7 +83,7 @@ export const WfoServiceTicketListPage = () => {
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle="Processes" />
+            <EuiPageHeader pageTitle="Service Tickets" />
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
@@ -94,12 +94,12 @@ export const WfoServiceTicketListPage = () => {
             />
             <EuiSpacer size="xxl" />
 
-            <WfoServiceTickets
-            alwaysOnFilters={alwaysOnFilters}
-            defaultHiddenColumns={tableDefaults?.hiddenColumns}
-            localStorageKey={localStorageKey}
-            dataDisplayParams={dataDisplayParams}
-            setDataDisplayParam={setDataDisplayParam}
+            <WfoServiceTicketsList
+                alwaysOnFilters={alwaysOnFilters}
+                defaultHiddenColumns={tableDefaults?.hiddenColumns}
+                localStorageKey={localStorageKey}
+                dataDisplayParams={dataDisplayParams}
+                setDataDisplayParam={setDataDisplayParam}
             />
         </>
     );

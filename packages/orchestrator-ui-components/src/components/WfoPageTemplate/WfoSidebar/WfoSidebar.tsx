@@ -10,6 +10,7 @@ import {
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
     PATH_PROCESSES,
+    PATH_SERVICE_TICKETS,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
@@ -131,33 +132,14 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             href: PATH_SETTINGS,
         },
         {
-            name: 'Service tickets',
+            name: 'Service Tickets',
             id: '8',
-            onClick: () => {
-                // Note: Using a string literal instead of const, otherwise I'll need to add the surf package to orchestrator-ui-components. Maybe here we use an ENV var ?
-                router.push('/service-tickets/active');
+            isSelected: router.pathname === PATH_SERVICE_TICKETS,
+            href: PATH_SERVICE_TICKETS,
+            onClick: (e) => {
+                e.preventDefault();
+                router.push(PATH_SERVICE_TICKETS);
             },
-            items: [
-                {
-                    name: 'Active',
-                    id: '8.1',
-                    isSelected: router.pathname === '/service-tickets/active',
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push('/service-tickets/active');
-                    },
-                },
-                {
-                    name: 'Completed',
-                    id: '8.2',
-                    isSelected:
-                        router.pathname === '/service-tickets/completed',
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push('/service-tickets/completed');
-                    },
-                },
-            ],
         },
     ];
 

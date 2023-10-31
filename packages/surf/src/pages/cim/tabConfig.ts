@@ -2,7 +2,10 @@ import {
     WfoFilterTab,
     WfoProcessListTabType,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { ServiceTicketDefinition } from '../../types';
+import {
+    ServiceTicketDefinition,
+    ServiceTicketProcessState,
+} from '../../types';
 export const defaultServiceTicketsListTabs: WfoFilterTab<
     WfoProcessListTabType,
     ServiceTicketDefinition
@@ -12,17 +15,24 @@ export const defaultServiceTicketsListTabs: WfoFilterTab<
         translationKey: 'active',
         alwaysOnFilters: [
             {
-                // Todo: isTask is not a key of Process
-                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore waiting for fix in backend
-                field: 'isTask',
-                value: 'false',
+                field: 'process_state',
+                value: ServiceTicketProcessState.OPEN,
             },
             {
                 field: 'process_state',
-                value: 'created-running-suspended-waiting-failed-resumed',
+                value: ServiceTicketProcessState.OPEN_ACCEPTED,
+            },
+            {
+                field: 'process_state',
+                value: ServiceTicketProcessState.UPDATED,
+            },
+            {
+                field: 'process_state',
+                value: ServiceTicketProcessState.NEW,
+            },
+            {
+                field: 'process_state',
+                value: ServiceTicketProcessState.OPEN_RELATED,
             },
         ],
     },
@@ -31,17 +41,12 @@ export const defaultServiceTicketsListTabs: WfoFilterTab<
         translationKey: 'completed',
         alwaysOnFilters: [
             {
-                // Todo: isTask is not a key of Process
-                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore waiting for fix in backend
-                field: 'isTask',
-                value: 'false',
+                field: 'process_state',
+                value: ServiceTicketProcessState.CLOSED,
             },
             {
                 field: 'process_state',
-                value: 'completed',
+                value: ServiceTicketProcessState.ABORTED,
             },
         ],
     },

@@ -1,2 +1,2 @@
-export * from './WfoServiceTickets';
+export * from './WfoServiceTicketsList';
 export * from './WfoServiceTicketListPage';

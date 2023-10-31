@@ -1,6 +1,6 @@
 import React from 'react';
-import { WfoServiceTickets } from '@orchestrator-ui/surf';
+import { WfoServiceTicketListPage } from '@orchestrator-ui/surf';
 
-export const ServiceTicketsCompletePage = () => <WfoServiceTickets />;
+export const ServiceTicketsCompletePage = () => <WfoServiceTicketListPage />;
 
 export default ServiceTicketsCompletePage;

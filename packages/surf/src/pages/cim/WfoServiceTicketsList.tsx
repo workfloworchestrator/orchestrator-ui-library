@@ -12,10 +12,13 @@ import {
 } from '../../types';
 import { useTranslations } from 'next-intl';
 import {
+    DataDisplayParams,
+    FilterQuery,
     getSortDirectionFromString,
     parseDateToLocaleDateTimeString,
     parseIsoString,
     SortOrder,
+    TableColumnKeys,
     useOrchestratorTheme,
     useQueryWithRest,
     WFO_TABLE_COLOR_FIELD,
@@ -43,7 +46,31 @@ const SERVICE_TICKET_FIELD_LAST_UPDATE: keyof ServiceTicketDefinition =
 const { NEW, OPEN, OPEN_RELATED, OPEN_ACCEPTED, UPDATED, ABORTED, CLOSED } =
     ServiceTicketProcessState;
 
-export const WfoServiceTickets = () => {
+export type WfoServiceTicketsListProps = {
+    alwaysOnFilters?: FilterQuery<ServiceTicketDefinition>[];
+    defaultHiddenColumns: TableColumnKeys<ServiceTicketDefinition> | undefined;
+    localStorageKey: string;
+    dataDisplayParams: DataDisplayParams<ServiceTicketDefinition>;
+    setDataDisplayParam: <
+        DisplayParamKey extends
+            keyof DataDisplayParams<ServiceTicketDefinition>,
+    >(
+        prop: DisplayParamKey,
+        value: DataDisplayParams<ServiceTicketDefinition>[DisplayParamKey],
+    ) => void;
+    overrideDefaultTableColumns?: (
+        defaultTableColumns: WfoTableColumns<ServiceTicketDefinition>,
+    ) => WfoTableColumns<ServiceTicketDefinition>;
+};
+
+export const WfoServiceTicketsList = ({
+    alwaysOnFilters,
+    defaultHiddenColumns = [],
+    localStorageKey,
+    dataDisplayParams,
+    setDataDisplayParam,
+    overrideDefaultTableColumns,
+}: WfoServiceTicketsListProps) => {
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [dataSorting, setDataSorting] = useState<
@@ -52,10 +79,12 @@ export const WfoServiceTickets = () => {
         field: SERVICE_TICKET_FIELD_LAST_UPDATE,
         sortOrder: SortOrder.DESC,
     });
+
     const t = useTranslations('cim.serviceTickets');
     const { data, isFetching } = useQueryWithRest(
         CIM_TICKETS_ENDPOINT,
         'serviceTickets',
+        alwaysOnFilters,
     );
     const { theme } = useOrchestratorTheme();
 
