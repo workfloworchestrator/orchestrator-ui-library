@@ -105,16 +105,25 @@ describe('flattenArrayProps', () => {
 });
 
 describe('getWorkflowTargetColor', () => {
-    it('should return primaryText color for CREATE and MODIFY', () => {
+    it('should return successText color for CREATE', () => {
+        const theme = {
+            colors: {
+                successText: 'successTextColor',
+            },
+        } as EuiThemeComputed;
+
+        expect(getWorkflowTargetColor(WorkflowTarget.CREATE, theme)).toBe(
+            'successTextColor',
+        );
+    });
+
+    it('should return primaryText color for MODIFY', () => {
         const theme = {
             colors: {
                 primaryText: 'primaryTextColor',
             },
         } as EuiThemeComputed;
 
-        expect(getWorkflowTargetColor(WorkflowTarget.CREATE, theme)).toBe(
-            'primaryTextColor',
-        );
         expect(getWorkflowTargetColor(WorkflowTarget.MODIFY, theme)).toBe(
             'primaryTextColor',
         );
