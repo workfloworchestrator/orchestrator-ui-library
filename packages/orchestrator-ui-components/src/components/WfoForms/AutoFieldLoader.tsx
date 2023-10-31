@@ -11,10 +11,8 @@ import {
     ProductField,
     SubscriptionSummaryField,
     DateField,
-<<<<<<< HEAD
     TimestampField,
-=======
->>>>>>> a6e1e26 (337: Add DateField)
+    OrganisationField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -55,6 +53,8 @@ export function autoFieldFunction(
                     return DividerField;
                 case 'subscription':
                     return SubscriptionSummaryField;
+                case 'organisationId':
+                    return OrganisationField;
             }
             break;
     }

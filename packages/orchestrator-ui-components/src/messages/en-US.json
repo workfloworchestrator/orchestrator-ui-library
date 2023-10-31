@@ -206,5 +206,12 @@
         "page": {
             "rerunAll": "Rerun all"
         }
+    },
+    "forms": {
+        "widgets": {
+            "organisation": {
+                "placeholder": "Org placeholder"
+            }
+        }
     }
 }
