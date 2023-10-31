@@ -11,6 +11,7 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
     target,
 }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
+    if (!target) return null;
 
     const getBadgeColorFromTarget = (_target: string) => {
         const {
@@ -54,8 +55,6 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
     };
 
     const { badgeColor, textColor } = getBadgeColorFromTarget(target);
-
-    if (!target) return null;
 
     return (
         <WfoBadge textColor={textColor} color={badgeColor}>
