@@ -315,6 +315,10 @@ export interface ProcessesDetailResult {
     processes: GraphQlSinglePage<ProcessDetail>;
 }
 
+export interface CustomersResult {
+    customers: GraphQlSinglePage<Customer>;
+}
+
 export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
     workflows: GraphQlResultPage<T>;
 }
