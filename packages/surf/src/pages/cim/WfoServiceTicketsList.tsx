@@ -65,11 +65,6 @@ export type WfoServiceTicketsListProps = {
 
 export const WfoServiceTicketsList = ({
     alwaysOnFilters,
-    defaultHiddenColumns = [],
-    localStorageKey,
-    dataDisplayParams,
-    setDataDisplayParam,
-    overrideDefaultTableColumns,
 }: WfoServiceTicketsListProps) => {
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(5);
