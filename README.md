@@ -24,7 +24,7 @@ setup auth with keycloak in docker.
         -   first page: fill in a name for `ClientID`. (`.env.example` default is `orchestrator-client`)
         -   second page: enable `Client authentication` and `Authorization`.
         -   third page: fill in `Valid redirect URIs` with `{FRONTEND_URL}/callback` and `Web Origins` with the base frontend url. (eg `http://localhost:3000/callback`)
-    -   go to the client details and go to tab `Credentials` and copy the Client secret and pase it into your env file. (`KEYCLOAK_SECRET`)
+    -   go to the client details and go to tab `Credentials` and copy the Client secret and paste it into your env file. (`NEXTAUTH_CLIENT_SECRET`)
     -   run the app with `turbo dev`.
 -   keycloak backend setup:
     -   Create another client in the same realm.
