@@ -26,8 +26,7 @@ import NoSSR from 'react-no-ssr';
 import { useRouter } from 'next/router';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
-
-const PATH_SURF = '/surf';
+import { PATH_SERVICE_TICKETS } from '../constants-surf';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -54,12 +53,13 @@ function CustomApp({
     ): EuiSideNavItemType<object>[] => [
         ...defaultMenuItems,
         {
-            name: 'Surf',
-            isSelected: router.pathname === PATH_SURF,
+            name: 'Service Tickets',
             id: '8',
+            isSelected: router.pathname === PATH_SERVICE_TICKETS,
+            href: PATH_SERVICE_TICKETS,
             onClick: (e) => {
                 e.preventDefault();
-                router.push(PATH_SURF);
+                router.push(PATH_SERVICE_TICKETS);
             },
         },
     ];

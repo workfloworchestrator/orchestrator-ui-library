@@ -10,7 +10,6 @@ import {
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
     PATH_PROCESSES,
-    PATH_SERVICE_TICKETS,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
@@ -130,16 +129,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 router.push(PATH_SETTINGS);
             },
             href: PATH_SETTINGS,
-        },
-        {
-            name: 'Service Tickets',
-            id: '8',
-            isSelected: router.pathname === PATH_SERVICE_TICKETS,
-            href: PATH_SERVICE_TICKETS,
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_SERVICE_TICKETS);
-            },
         },
     ];
 
