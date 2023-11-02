@@ -29,3 +29,8 @@ export type FieldProps<
         description?: string;
     } & Extra
 >;
+
+export interface ContactPerson {
+    name: string;
+    email: string;
+}
