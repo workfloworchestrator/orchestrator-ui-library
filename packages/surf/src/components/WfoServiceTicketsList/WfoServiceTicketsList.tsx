@@ -22,6 +22,7 @@ import {
     useOrchestratorTheme,
     useQueryWithRest,
     WFO_TABLE_COLOR_FIELD,
+    WfoBadge,
     WfoBasicTable,
     WfoDataSorting,
     WfoDateTime,
@@ -81,20 +82,35 @@ export const WfoServiceTicketsList = ({
         'serviceTickets',
         alwaysOnFilters,
     );
-    const { theme } = useOrchestratorTheme();
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const mapStateToColor = (state: ServiceTicketProcessState) => {
         switch (state) {
             case OPEN || NEW:
-                return theme.colors.success;
+                return {
+                    backgroundColor: theme.colors.success,
+                    textColor: theme.colors.successText,
+                };
             case OPEN_ACCEPTED || OPEN_RELATED:
-                return theme.colors.warning;
+                return {
+                    backgroundColor: theme.colors.warning,
+                    textColor: theme.colors.warningText,
+                };
             case UPDATED:
-                return theme.colors.primary;
+                return {
+                    backgroundColor: theme.colors.primary,
+                    textColor: theme.colors.primaryText,
+                };
             case CLOSED || ABORTED:
-                return theme.colors.lightShade;
+                return {
+                    backgroundColor: theme.colors.lightShade,
+                    textColor: theme.colors.text,
+                };
             default:
-                return theme.colors.emptyShade;
+                return {
+                    backgroundColor: theme.colors.lightShade,
+                    textColor: theme.colors.text,
+                };
         }
     };
 
@@ -108,7 +124,8 @@ export const WfoServiceTicketsList = ({
                     style={{
                         paddingInline: 4,
                         paddingBlock: 25,
-                        backgroundColor: mapStateToColor(object.process_state),
+                        backgroundColor: mapStateToColor(object.process_state)
+                            .backgroundColor,
                     }}
                 />
             ),
@@ -135,6 +152,16 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_PROCESS_STATE,
             name: t('processState'),
             width: '120',
+            render: (value, object) => (
+                <WfoBadge
+                    textColor={mapStateToColor(object.process_state).textColor}
+                    color={toSecondaryColor(
+                        mapStateToColor(object.process_state).backgroundColor,
+                    )}
+                >
+                    {value}
+                </WfoBadge>
+            ),
         },
         opened_by: {
             field: SERVICE_TICKET_FIELD_OPENED_BY,

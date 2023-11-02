@@ -15,10 +15,10 @@ import {
     COMPLETED_TICKETS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../constants';
 import { useRouter } from 'next/router';
-import { getServiceTicketListTabTypeFromString } from './getServiceTicketListTabTypeFromString';
+import { getServiceTicketListTabTypeFromString } from '../../components/WfoServiceTicketsList/getServiceTicketListTabTypeFromString';
 import { defaultServiceTicketsListTabs } from './tabConfig';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import { WfoServiceTicketsList } from './WfoServiceTicketsList';
+import { WfoServiceTicketsList } from '../../components';
 
 export const WfoServiceTicketListPage = () => {
     const router = useRouter();
