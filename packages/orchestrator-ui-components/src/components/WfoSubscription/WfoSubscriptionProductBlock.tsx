@@ -11,8 +11,12 @@ import {
 } from '@elastic/eui';
 import { FieldValue } from '../../types';
 import { getProductBlockTitle } from './utils';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
+import { getStyles } from './styles';
 
 interface WfoSubscriptionProductBlockProps {
+    ownerSubscriptionId: string;
+    subscriptionInstanceId: string;
     productBlockInstanceValues: FieldValue[];
     id: number;
 }
@@ -24,18 +28,27 @@ export const HIDDEN_KEYS = [
     // 'owner_subscription_id',
 ];
 export const WfoSubscriptionProductBlock = ({
+    ownerSubscriptionId,
+    subscriptionInstanceId,
     productBlockInstanceValues,
 }: WfoSubscriptionProductBlockProps) => {
+    const { productBlockPanelStyle } = useWithOrchestratorTheme(getStyles);
+
     const [showAllKeys, setShowAllKeys] = useState(false);
 
     const isLastCell = (index: number): number => {
         return index === productBlockInstanceValues.length - 1 ? 0 : 1;
     };
+    console.log(productBlockInstanceValues);
 
     return (
         <>
             <EuiSpacer size={'m'}></EuiSpacer>
-            <EuiPanel>
+            <EuiPanel
+                color="transparent"
+                hasShadow={false}
+                css={productBlockPanelStyle}
+            >
                 <div style={{ marginTop: 5 }}>
                     <EuiFlexGroup justifyContent="spaceBetween">
                         <EuiFlexItem>
@@ -45,6 +58,9 @@ export const WfoSubscriptionProductBlock = ({
                                         productBlockInstanceValues,
                                     )}
                                 </h3>
+                            </EuiText>
+                            <EuiText>
+                                Instance ID: {subscriptionInstanceId}
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
@@ -61,11 +77,8 @@ export const WfoSubscriptionProductBlock = ({
                     {
                         <table
                             width="100%"
-                            bgcolor={'#F1F5F9'}
-                            style={{
-                                borderCollapse: 'separate',
-                                borderRadius: 8,
-                            }}
+                            // bgcolor={theme.colors.lightestShade}
+                            // style={tableStyle}
                         >
                             {productBlockInstanceValues
                                 .filter(

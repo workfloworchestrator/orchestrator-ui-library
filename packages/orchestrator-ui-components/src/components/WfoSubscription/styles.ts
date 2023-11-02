@@ -44,6 +44,10 @@ export const getStyles = (theme: EuiThemeComputed) => {
         border: 0,
     });
 
+    const productBlockPanelStyle = css({
+        backgroundColor: theme.colors.lightestShade,
+    });
+
     return {
         contentCellStyle,
         headerCellStyle,
@@ -53,5 +57,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         emptyCellStyle,
         lastContentCellStyle,
         lastHeaderCellStyle,
+        productBlockPanelStyle,
     };
 };

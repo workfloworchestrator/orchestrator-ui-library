@@ -35,6 +35,7 @@ export type ResourceTypeBase = {
 export type ProductBlockInstance = {
     id: number;
     ownerSubscriptionId: string;
+    subscriptionInstanceId: string;
     parent: Nullable<number>;
     productBlockInstanceValues: FieldValue[];
 };

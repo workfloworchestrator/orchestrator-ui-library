@@ -133,13 +133,17 @@ export const WfoSubscriptionDetailTree = ({
                     )}
                     {selectedIds.length !== 0 &&
                         selectedIds.map((id, index) => {
+                            const block =
+                                productBlockInstances[selectedIds[index]];
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}
+                                    o
+                                    subscriptionInstanceId={
+                                        block.subscriptionInstanceId
+                                    }
                                     productBlockInstanceValues={
-                                        productBlockInstances[
-                                            selectedIds[index]
-                                        ].productBlockInstanceValues
+                                        block.productBlockInstanceValues
                                     }
                                     id={id}
                                 />

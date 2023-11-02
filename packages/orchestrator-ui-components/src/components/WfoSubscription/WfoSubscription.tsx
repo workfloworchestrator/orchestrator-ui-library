@@ -26,7 +26,8 @@ type WfoSubscriptionProps = {
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
     const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
-        SubscriptionTabIds.GENERAL_TAB,
+        // SubscriptionTabIds.GENERAL_TAB,
+        SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
     );
 
     const { data, isFetching } = useQueryWithGraphql(
@@ -52,7 +53,6 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
             </EuiTab>
         ));
 
-    // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
     const subscriptionResult =
         data && data.subscriptions && data.subscriptions.page;
     const subscriptionDetail = subscriptionResult
