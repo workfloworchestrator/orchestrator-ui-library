@@ -16,7 +16,7 @@ setup auth with keycloak in docker.
 -   copy env: `cp .env.example .env`
 -   change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
 -   run `docker compose up` to start keycloak.
--   log into keycloak.
+-   log into keycloak at http://localhost:8080
 -   keycloak setup
     -   follow the [keycloak docs](https://www.keycloak.org/getting-started/getting-started-docker#_secure_the_first_application) till `Create a User` to create a new realm and at least one user.
     -   after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `KEYCLOAK_ISSUER`.
