@@ -39,13 +39,12 @@ export const listFieldStyling = css`
             display: flex;
             align-items: center;
             align-self: baseline;
-            margin-left: 5px;
-            margin-right: 5px;
+            margin: 5px;
             margin-bottom: 30px;
             cursor: pointer;
 
             &[id$='0.remove'] {
-                margin-top: 0;
+                margin-top: 15px;
             }
 
             label {
@@ -59,7 +58,7 @@ export const listFieldStyling = css`
         }
 
         div.del-item {
-            margin-top: 0;
+            margin-top: 13px;
         }
 
         div.add-item {
