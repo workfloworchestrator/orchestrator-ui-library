@@ -1,9 +1,5 @@
 import { css } from '@emotion/react';
 
-const SUCCESS = '#00bfb3';
-const DANGER = '#bd271e';
-const LIGHT_GREY_COLOR = '#eff2f3';
-
 export const listFieldStyling = css`
     .list-field {
         ul {
@@ -52,24 +48,10 @@ export const listFieldStyling = css`
                 margin-top: 0;
             }
 
-            i.fa-plus {
-                color: ${SUCCESS};
-                font-size: 30px;
-            }
-
-            i.fa-minus {
-                color: ${DANGER};
-                font-size: 30px;
-            }
-
             label {
                 display: block;
                 margin-left: 5px;
                 cursor: pointer;
-            }
-            i.disabled {
-                cursor: not-allowed;
-                color: ${LIGHT_GREY_COLOR};
             }
         }
         .nest-field + div.del-item[id$='0.remove'] {

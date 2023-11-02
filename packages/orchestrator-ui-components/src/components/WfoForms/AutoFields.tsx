@@ -27,6 +27,7 @@ export type AutoFieldsProps = {
 export default function AutoFields({
     autoField = AutoField,
     element = 'section',
+    fields,
     omitFields = [],
     ...props
 }: AutoFieldsProps) {
@@ -35,8 +36,7 @@ export default function AutoFields({
     return createElement(
         element,
         { ...props },
-        schema
-            .getSubfields()
+        (fields ?? schema.getSubfields())
             .filter((field) => !omitFields.includes(field))
             .map((field) =>
                 createElement(autoField, {

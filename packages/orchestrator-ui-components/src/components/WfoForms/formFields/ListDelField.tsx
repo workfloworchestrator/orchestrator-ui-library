@@ -17,7 +17,6 @@ import React from 'react';
 // import { FormattedMessage } from "react-intl"; // todo replace with translations from V2 project
 import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 import { FieldProps } from './types';
-import { WfoMinusCircleFill } from '../../../icons';
 import { EuiIcon } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
 
@@ -72,13 +71,13 @@ function ListDel({
             tabIndex={0}
         >
             <EuiIcon
-                type={() => (
-                    <WfoMinusCircleFill
-                        height={40}
-                        width={40}
-                        color={theme.colors.danger}
-                    />
-                )}
+                type="minus"
+                size="xxl"
+                color={
+                    !limitNotReached || disabled
+                        ? theme.colors.disabled
+                        : theme.colors.danger
+                }
             />
             <label>
                 {outerList && (
