@@ -17,3 +17,4 @@ export * from './TextField';
 export * from './DateField';
 export * from './TimestampField';
 export * from './OrganisationField';
+export * from './ContactPersonNameField';

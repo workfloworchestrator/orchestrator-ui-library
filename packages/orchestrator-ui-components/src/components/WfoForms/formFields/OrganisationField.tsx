@@ -52,4 +52,4 @@ function Organisation({ ...props }: OrganisationFieldProps) {
     );
 }
 
-export const OrganisationField = connectField(Organisation);
+export const OrganisationField = connectField(Organisation, { kind: 'leaf' });

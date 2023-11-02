@@ -211,6 +211,9 @@
         "widgets": {
             "organisation": {
                 "placeholder": "Org placeholder"
+            },
+            "contactPersonName": {
+                "placeholder": "Name placeholder"
             }
         }
     }

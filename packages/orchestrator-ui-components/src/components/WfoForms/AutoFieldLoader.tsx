@@ -13,6 +13,7 @@ import {
     DateField,
     TimestampField,
     OrganisationField,
+    ContactPersonNameField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -55,6 +56,8 @@ export function autoFieldFunction(
                     return SubscriptionSummaryField;
                 case 'organisationId':
                     return OrganisationField;
+                case 'contactPersonName': // Surf specific
+                    return ContactPersonNameField;
             }
             break;
     }
