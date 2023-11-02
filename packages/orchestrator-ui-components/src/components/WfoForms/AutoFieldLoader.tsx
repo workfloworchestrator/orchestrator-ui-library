@@ -13,6 +13,7 @@ import {
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
+import { NestField } from './formFields/NestField';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -57,6 +58,8 @@ export function autoFieldFunction(
                 return BoolField;
             case Number:
                 return NumField;
+            case Object:
+                return NestField;
             case String:
                 return TextField;
         }

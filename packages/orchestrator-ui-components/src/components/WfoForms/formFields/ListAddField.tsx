@@ -19,7 +19,6 @@ import React from 'react';
 import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 import { FieldProps } from './types';
 import { EuiIcon } from '@elastic/eui';
-import { WfoPlusCircleFill } from '../../../icons';
 import { useOrchestratorTheme } from '../../../hooks';
 
 export type ListAddFieldProps = FieldProps<
@@ -65,8 +64,6 @@ function ListAdd({
         }
     }
 
-    console.log('Rendering ListAddField', outerList);
-
     return (
         <div
             className="add-item"
@@ -77,13 +74,13 @@ function ListAdd({
             tabIndex={0}
         >
             <EuiIcon
-                type={() => (
-                    <WfoPlusCircleFill
-                        height={40}
-                        width={40}
-                        color={theme.colors.success}
-                    />
-                )}
+                type="plus"
+                size="xxl"
+                color={
+                    !limitNotReached || disabled
+                        ? theme.colors.disabled
+                        : theme.colors.success
+                }
             />
             <label>
                 {outerList && (
