@@ -115,7 +115,7 @@
             "collapseAll": "klap alles in",
             "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
-            "inProgress": "In behandeling - Nu"
+            "submitFormLabel": "Vul de inputvelden en verstuur het formulier om de workflow te starten"
         }
     },
     "subscriptions": {

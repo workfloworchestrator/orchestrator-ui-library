@@ -115,7 +115,7 @@
             "collapseAll": "collapse all",
             "duration": "Looptijd",
             "userInput": "User Input",
-            "inProgress": "In progress - Now"
+            "submitFormLabel": "Please complete and submit the form below to start the workflow"
         }
     },
     "subscriptions": {
