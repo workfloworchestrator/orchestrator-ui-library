@@ -36,6 +36,7 @@ import {
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTargetBadge';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
@@ -95,6 +96,7 @@ export const WfoWorkflowsPage = () => {
             field: 'target',
             name: t('target'),
             width: '90',
+            render: (target) => <WfoWorkflowTargetBadge target={target} />,
         },
         productTags: {
             field: 'productTags',
