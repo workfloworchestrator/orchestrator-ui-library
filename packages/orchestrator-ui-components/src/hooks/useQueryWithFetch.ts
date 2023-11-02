@@ -20,7 +20,7 @@ export const useQueryWithFetch = <T, V extends Variables>(
         });
 
         if (response.status < 200 || response.status >= 300) {
-            console.log(response.status, response.body);
+            console.error(response.status, response.body);
             if (response.status === 401 || response.status === 403) {
                 signOut();
             }
