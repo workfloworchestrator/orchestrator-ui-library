@@ -6,6 +6,7 @@ import { EuiProvider } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
+    getInitialOrchestratorConfig,
     OrchestratorConfig,
     OrchestratorConfigProvider,
     ToastsContextProvider,
@@ -16,7 +17,6 @@ import {
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { getInitialOrchestratorConfig } from '../configuration';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
 import { QueryClientConfig } from 'react-query/types/core/types';
