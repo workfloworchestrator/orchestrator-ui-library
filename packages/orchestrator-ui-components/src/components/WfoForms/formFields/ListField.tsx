@@ -37,8 +37,7 @@ filterDOMProps.register('uniqueItems');
 filterDOMProps.register('outerList');
 
 export type ListFieldProps = FieldProps<
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    any[],
+    unknown[],
     { initialCount?: number; itemProps?: object; uniqueItems?: boolean },
     null,
     HTMLUListElement

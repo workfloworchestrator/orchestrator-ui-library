@@ -26,8 +26,7 @@ import { FieldProps } from './types';
 
 export type NestFieldProps = FieldProps<
     null,
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    { fields?: any[]; itemProps?: object }
+    { fields?: unknown[]; itemProps?: object }
 >;
 
 declare module 'uniforms' {
