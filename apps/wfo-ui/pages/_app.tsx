@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { AppProps } from 'next/app';
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 
 import Head from 'next/head';
 import { EuiProvider } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
+    OrchestratorConfig,
     OrchestratorConfigProvider,
     ToastsContextProvider,
     ToastsList,
@@ -15,16 +16,15 @@ import {
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import {
-    initialOrchestratorConfig,
-    orchestratorApiBaseUrl,
-} from '../configuration';
+import { getInitialOrchestratorConfig } from '../configuration';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
+
+type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -37,8 +37,13 @@ const queryClientConfig: QueryClientConfig = {
     },
 };
 
-function CustomApp({ Component, pageProps }: AppProps) {
+function CustomApp({
+    Component,
+    pageProps,
+    orchestratorConfig,
+}: AppProps & AppOwnProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
+    const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     return (
         <NoSSR>
@@ -53,9 +58,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                         </Head>
                         <main className="app">
                             <OrchestratorConfigProvider
-                                initialOrchestratorConfig={
-                                    initialOrchestratorConfig
-                                }
+                                initialOrchestratorConfig={orchestratorConfig}
                             >
                                 <QueryClientProvider
                                     client={queryClient}
@@ -88,5 +91,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
         </NoSSR>
     );
 }
+
+CustomApp.getInitialProps = async (
+    context: AppContext,
+): Promise<AppOwnProps & AppInitialProps> => {
+    const ctx = await App.getInitialProps(context);
+
+    return { ...ctx, orchestratorConfig: getInitialOrchestratorConfig() };
+};
 
 export default CustomApp;

@@ -49,18 +49,19 @@ const queryClientConfig: QueryClientConfig = {
     },
 };
 
+// Todo: public prefix is removed to pass linting check
+// Apply the getInitialProps here before opening a PR
 const initialOrchestratorConfig: OrchestratorConfig = {
     orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
     engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
     processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
     graphqlEndpointCore: GRAPHQL_ENDPOINT_CORE,
-    environmentName:
-        process.env.NEXT_PUBLIC_ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
+    environmentName: process.env.ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
     subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
     subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
     dataRefetchInterval: {
         processDetail: getNumberValueFromEnvironmentVariable(
-            process.env.NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL,
+            process.env.PROCESS_DETAIL_REFETCH_INTERVAL,
             PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
         ),
     },

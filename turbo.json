@@ -2,12 +2,12 @@
     "$schema": "https://turbo.build/schema.json",
     "globalDependencies": ["**/.env.*local"],
     "globalEnv": [
-        "NEXT_PUBLIC_ENVIRONMENT_NAME",
-        "NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL",
-        "NEXT_PUBLIC_ORCHESTRATOR_API_HOST",
-        "NEXT_PUBLIC_ORCHESTRATOR_API_PATH",
-        "NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_HOST",
-        "NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_PATH"
+        "ENVIRONMENT_NAME",
+        "PROCESS_DETAIL_REFETCH_INTERVAL",
+        "ORCHESTRATOR_API_HOST",
+        "ORCHESTRATOR_API_PATH",
+        "ORCHESTRATOR_GRAPHQL_HOST",
+        "ORCHESTRATOR_GRAPHQL_PATH"
     ],
     "pipeline": {
         "build": {
