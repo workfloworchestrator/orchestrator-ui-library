@@ -1,5 +1,6 @@
 export * from './api';
 export * from './components';
+export * from './configuration';
 export * from './icons';
 export * from './theme';
 export * from './utils';
