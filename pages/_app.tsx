@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { AppProps } from 'next/app';
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 
 import Head from 'next/head';
 import { EuiProvider, EuiSideNavItemType } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
-    Environment,
-    getNumberValueFromEnvironmentVariable,
+    getInitialOrchestratorConfig,
     OrchestratorConfig,
     OrchestratorConfigProvider,
     ToastsContextProvider,
@@ -18,23 +17,15 @@ import {
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import {
-    ENGINE_STATUS_ENDPOINT,
-    GRAPHQL_ENDPOINT_CORE,
-    ORCHESTRATOR_API_BASE_URL,
-    PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
-    PROCESS_STATUS_COUNTS_ENDPOINT,
-    SUBSCRIPTION_ACTIONS_ENDPOINT,
-    SUBSCRIPTION_PROCESSES_ENDPOINT,
-} from '../constants';
 import { NextAdapter } from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
-import * as process from 'process';
 import { QueryClientConfig } from 'react-query/types/core/types';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
 import { useRouter } from 'next/router';
+
+type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
 const PATH_SURF = '/surf';
 
@@ -49,27 +40,14 @@ const queryClientConfig: QueryClientConfig = {
     },
 };
 
-// Todo: public prefix is removed to pass linting check
-// Apply the getInitialProps here before opening a PR
-const initialOrchestratorConfig: OrchestratorConfig = {
-    orchestratorApiBaseUrl: ORCHESTRATOR_API_BASE_URL,
-    engineStatusEndpoint: ENGINE_STATUS_ENDPOINT,
-    processStatusCountsEndpoint: PROCESS_STATUS_COUNTS_ENDPOINT,
-    graphqlEndpointCore: GRAPHQL_ENDPOINT_CORE,
-    environmentName: process.env.ENVIRONMENT_NAME ?? Environment.DEVELOPMENT,
-    subscriptionActionsEndpoint: SUBSCRIPTION_ACTIONS_ENDPOINT,
-    subscriptionProcessesEndpoint: SUBSCRIPTION_PROCESSES_ENDPOINT,
-    dataRefetchInterval: {
-        processDetail: getNumberValueFromEnvironmentVariable(
-            process.env.PROCESS_DETAIL_REFETCH_INTERVAL,
-            PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
-        ),
-    },
-};
-
-function CustomApp({ Component, pageProps }: AppProps) {
+function CustomApp({
+    Component,
+    pageProps,
+    orchestratorConfig,
+}: AppProps & AppOwnProps) {
     const router = useRouter();
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
+    const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     const getMenuItems = (
         defaultMenuItems: EuiSideNavItemType<object>[],
@@ -93,17 +71,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
                     colorMode="light"
                     modify={defaultOrchestratorTheme}
                 >
-                    <ApiClientContextProvider
-                        basePath={ORCHESTRATOR_API_BASE_URL}
-                    >
+                    <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
                         <Head>
                             <title>Welcome to example-orchestrator-ui!</title>
                         </Head>
                         <main className="app">
                             <OrchestratorConfigProvider
-                                initialOrchestratorConfig={
-                                    initialOrchestratorConfig
-                                }
+                                initialOrchestratorConfig={orchestratorConfig}
                             >
                                 <QueryClientProvider
                                     client={queryClient}
@@ -137,5 +111,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
         </NoSSR>
     );
 }
+
+CustomApp.getInitialProps = async (
+    context: AppContext,
+): Promise<AppOwnProps & AppInitialProps> => {
+    const ctx = await App.getInitialProps(context);
+
+    return { ...ctx, orchestratorConfig: getInitialOrchestratorConfig() };
+};
 
 export default CustomApp;
