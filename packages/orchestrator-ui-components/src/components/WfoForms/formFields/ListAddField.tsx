@@ -15,11 +15,11 @@
 
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
-// import { FormattedMessage } from "react-intl"; // todo replace with translations from V2 project
 import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 import { FieldProps } from './types';
-import { EuiIcon } from '@elastic/eui';
+import { EuiIcon, EuiText } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
+import { useTranslations } from 'next-intl';
 
 export type ListAddFieldProps = FieldProps<
     string,
@@ -37,6 +37,7 @@ function ListAdd({
     ...props
 }: ListAddFieldProps) {
     const { theme } = useOrchestratorTheme();
+    const t = useTranslations('pydanticForms.fields');
 
     const nameParts = joinName(null, name);
     const parentName = joinName(nameParts.slice(0, -1));
@@ -83,10 +84,7 @@ function ListAdd({
                 }
             />
             <label>
-                {outerList && (
-                    // <FormattedMessage id={`forms.fields.${parentName}_add`} />
-                    <div>Todo: ListAddField-Message</div>
-                )}
+                {outerList && <EuiText>{t(`${parentName}_add`)}</EuiText>}
             </label>
         </div>
     );

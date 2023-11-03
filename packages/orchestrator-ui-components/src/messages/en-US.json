@@ -27,6 +27,10 @@
             "previous": "Previous",
             "runProcess": "Run Process",
             "cancelProcess": "Cancel Process"
+        },
+        "fields": {
+            "esi_service_ports_add": "Add Endpoint",
+            "esi_service_ports_del": "Delete Endpoint"
         }
     },
     "metadata": {

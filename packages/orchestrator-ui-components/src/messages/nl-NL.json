@@ -27,6 +27,10 @@
             "previous": "Vorige",
             "runProcess": "Start workflow",
             "cancelProcess": "Annuleren"
+        },
+        "fields": {
+            "esi_service_ports_add": "Endpoint Toevoegen",
+            "esi_service_ports_del": "Endpoint Verwijderen"
         }
     },
     "metadata": {

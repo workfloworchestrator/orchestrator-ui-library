@@ -14,11 +14,11 @@
  */
 
 import React from 'react';
-// import { FormattedMessage } from "react-intl"; // todo replace with translations from V2 project
 import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 import { FieldProps } from './types';
-import { EuiIcon } from '@elastic/eui';
+import { EuiIcon, EuiText } from '@elastic/eui';
 import { useOrchestratorTheme } from '../../../hooks';
+import { useTranslations } from 'next-intl';
 
 export type ListDelFieldProps = FieldProps<
     null,
@@ -35,6 +35,7 @@ function ListDel({
     ...props
 }: ListDelFieldProps) {
     const { theme } = useOrchestratorTheme();
+    const t = useTranslations('pydanticForms.fields');
 
     const nameParts = joinName(null, name);
     const nameIndex = +nameParts[nameParts.length - 1];
@@ -80,10 +81,7 @@ function ListDel({
                 }
             />
             <label>
-                {outerList && (
-                    // <FormattedMessage id={`forms.fields.${parentName}_del`} />
-                    <h1>Todo: ListDelField-Message</h1>
-                )}
+                {outerList && <EuiText>{t(`${parentName}_del`)}</EuiText>}
             </label>
         </div>
     );
