@@ -48,20 +48,25 @@ export const getStyles = (theme: EuiThemeComputed) => {
             cursor: isSortable ? 'pointer' : 'not-allowed',
         });
 
-    const basicTableWithColorColumn = css(
+    const basicTableWithStatusColorColumn = css(
         {
-            '.euiTableHeaderCell': {
+            '.wfoBasicTable thead td': {
                 paddingBlock: 8,
                 paddingLeft: 8,
             },
-            '.euiTableCellContent:first-child': {
+            '.wfoBasicTable thead th': {
+                paddingBlock: 8,
+                paddingLeft: 8,
+            },
+            '.wfoBasicTable thead th button span:first-child': {
                 padding: 0,
                 border: 0,
             },
-            '.euiTableRowCell:first-child': {
+            '.wfoBasicTable tbody tr td div:first-child': {
                 padding: 0,
+                border: 0,
             },
-            '.euiTableSortIcon': {
+            '.wfoBasicTable thead svg:not(.wfoArrowNarrowIcon)': {
                 display: 'none',
             },
         },
@@ -70,7 +75,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     return {
         basicTableStyle,
-        basicTableWithColorColumn,
+        basicTableWithStatusColorColumn,
         headerCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,

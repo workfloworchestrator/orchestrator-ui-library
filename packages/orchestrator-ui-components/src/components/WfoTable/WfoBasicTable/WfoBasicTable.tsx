@@ -1,5 +1,10 @@
 import React, { ReactNode } from 'react';
-import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
+import {
+    EuiBasicTable,
+    EuiBasicTableColumn,
+    EuiFlexItem,
+    Pagination,
+} from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 
@@ -9,7 +14,7 @@ import type {
     WfoDataSearch,
 } from '../utils/columns';
 import {
-    WFO_TABLE_COLOR_FIELD,
+    WFO_STATUS_COLOR_FIELD,
     WfoTableControlColumnConfig,
     WfoTableDataColumnConfig,
 } from '../utils/columns';
@@ -40,7 +45,7 @@ export type WfoBasicTableProps<T> = {
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
     sorting?: EuiTableSortingType<T>;
-    color?: boolean;
+    hasStatusColorColumn?: boolean;
 };
 
 export const WfoBasicTable = <T,>({
@@ -56,27 +61,30 @@ export const WfoBasicTable = <T,>({
     sorting,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle, basicTableWithColorColumn } = getStyles(theme);
-    const styles = columns.hasOwnProperty(WFO_TABLE_COLOR_FIELD)
-        ? basicTableWithColorColumn
+    const { basicTableStyle, basicTableWithStatusColorColumn } =
+        getStyles(theme);
+    const styles = columns.hasOwnProperty(WFO_STATUS_COLOR_FIELD)
+        ? basicTableWithStatusColorColumn
         : basicTableStyle;
 
     return (
-        <EuiBasicTable
-            css={styles}
-            items={data}
-            columns={mapWfoTableColumnsToEuiColumns(
-                columns,
-                hiddenColumns,
-                dataSorting,
-                onUpdateDataSorting,
-                onDataSearch,
-            )}
-            sorting={sorting}
-            pagination={pagination}
-            onChange={onCriteriaChange}
-            loading={isLoading}
-        />
+        <EuiFlexItem css={styles}>
+            <EuiBasicTable
+                className={'wfoBasicTable'}
+                items={data}
+                columns={mapWfoTableColumnsToEuiColumns(
+                    columns,
+                    hiddenColumns,
+                    dataSorting,
+                    onUpdateDataSorting,
+                    onDataSearch,
+                )}
+                sorting={sorting}
+                pagination={pagination}
+                onChange={onCriteriaChange}
+                loading={isLoading}
+            />
+        </EuiFlexItem>
     );
 };
 

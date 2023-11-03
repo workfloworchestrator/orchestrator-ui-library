@@ -11,7 +11,9 @@
             "tabs": {
                 "active": "Active",
                 "completed": "Completed"
-            }
+            },
+            "newServiceTicket": "New Service Ticket",
+            "serviceTicketPageTitle": "Service Tickets"
         }
     }
 }

@@ -100,7 +100,7 @@ const filterDataByCriteria = <Type>(
     });
 };
 
-export const useQueryWithRest = <Type>(
+export const useFilterQueryWithRest = <Type>(
     endpoint: string,
     queryKey: string,
     filters?: GraphqlFilter<Type>[],

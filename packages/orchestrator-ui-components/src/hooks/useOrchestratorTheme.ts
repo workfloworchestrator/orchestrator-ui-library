@@ -8,9 +8,12 @@ export const useOrchestratorTheme = () => {
 
     const toSecondaryColor = (color: string) => tint(color, 0.8);
 
+    const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
+
     return {
         theme: euiTheme,
         multiplyByBaseUnit,
         toSecondaryColor,
+        toStatusColorFieldColor,
     };
 };

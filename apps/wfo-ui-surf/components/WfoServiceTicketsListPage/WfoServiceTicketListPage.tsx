@@ -17,11 +17,19 @@ import {
 import { useRouter } from 'next/router';
 import { getServiceTicketListTabTypeFromString } from '../WfoServiceTicketsList/getServiceTicketListTabTypeFromString';
 import { defaultServiceTicketsListTabs } from './tabConfig';
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPageHeader,
+    EuiSpacer,
+} from '@elastic/eui';
 import { WfoServiceTicketsList } from '../WfoServiceTicketsList';
+import { useTranslations } from 'next-intl';
 
 export const WfoServiceTicketListPage = () => {
     const router = useRouter();
+    const t = useTranslations('cim.serviceTickets');
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
@@ -82,8 +90,20 @@ export const WfoServiceTicketListPage = () => {
     return (
         <>
             <EuiSpacer />
-
-            <EuiPageHeader pageTitle="Service Tickets" />
+            <EuiFlexGroup>
+                <EuiFlexItem>
+                    <EuiPageHeader pageTitle={t('serviceTicketPageTitle')} />
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButton
+                        style={{ paddingInline: '1vw' }}
+                        fill
+                        iconType="plusInCircleFilled"
+                    >
+                        {t('newServiceTicket')}
+                    </EuiButton>
+                </EuiFlexItem>
+            </EuiFlexGroup>
             <EuiSpacer size="m" />
 
             <WfoFilterTabs

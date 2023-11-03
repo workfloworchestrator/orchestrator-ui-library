@@ -19,16 +19,17 @@ import {
     parseIsoString,
     SortOrder,
     TableColumnKeys,
-    useOrchestratorTheme,
-    useQueryWithRest,
-    WFO_TABLE_COLOR_FIELD,
-    WfoBadge,
+    useFilterQueryWithRest,
     WfoBasicTable,
     WfoDataSorting,
     WfoDateTime,
     WfoTableColumns,
+    STATUS_COLOR_FIELD_COLUMN_PROPS,
+    WfoStatusColorField,
+    WfoTableColorColumnConfig,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
+import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';
@@ -77,59 +78,28 @@ export const WfoServiceTicketsList = ({
     });
 
     const t = useTranslations('cim.serviceTickets');
-    const { data, isFetching } = useQueryWithRest(
+    const { data, isFetching } = useFilterQueryWithRest(
         CIM_TICKETS_ENDPOINT,
         'serviceTickets',
         alwaysOnFilters,
     );
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const mapStateToColor = (state: ServiceTicketProcessState) => {
-        switch (state) {
-            case OPEN || NEW:
-                return {
-                    backgroundColor: theme.colors.success,
-                    textColor: theme.colors.successText,
-                };
-            case OPEN_ACCEPTED || OPEN_RELATED:
-                return {
-                    backgroundColor: theme.colors.warning,
-                    textColor: theme.colors.warningText,
-                };
-            case UPDATED:
-                return {
-                    backgroundColor: theme.colors.primary,
-                    textColor: theme.colors.primaryText,
-                };
-            case CLOSED || ABORTED:
-                return {
-                    backgroundColor: theme.colors.lightShade,
-                    textColor: theme.colors.text,
-                };
-            default:
-                return {
-                    backgroundColor: theme.colors.lightShade,
-                    textColor: theme.colors.text,
-                };
-        }
+    const serviceTicketColorMappings = {
+        success: [OPEN, NEW],
+        warning: [OPEN_ACCEPTED, OPEN_RELATED],
+        primary: [UPDATED],
+        lightShade: [CLOSED, ABORTED],
     };
 
     const tableColumns: WfoTableColumns<ServiceTicketDefinition> = {
-        color: {
-            field: WFO_TABLE_COLOR_FIELD,
-            name: '',
-            width: '1',
+        status_color_field: {
+            ...(STATUS_COLOR_FIELD_COLUMN_PROPS as WfoTableColorColumnConfig<ServiceTicketDefinition>),
             render: (value, object) => (
-                <EuiFlexItem
-                    style={{
-                        paddingInline: 4,
-                        paddingBlock: 25,
-                        backgroundColor: mapStateToColor(object.process_state)
-                            .backgroundColor,
-                    }}
+                <WfoStatusColorField
+                    colorMappings={serviceTicketColorMappings}
+                    state={object.process_state}
                 />
             ),
-            sortable: true,
         },
         jira_ticket_id: {
             field: SERVICE_TICKET_FIELD_JIRA_ID,
@@ -153,14 +123,9 @@ export const WfoServiceTicketsList = ({
             name: t('processState'),
             width: '120',
             render: (value, object) => (
-                <WfoBadge
-                    textColor={mapStateToColor(object.process_state).textColor}
-                    color={toSecondaryColor(
-                        mapStateToColor(object.process_state).backgroundColor,
-                    )}
-                >
-                    {value}
-                </WfoBadge>
+                <WfoServiceTicketStatusBadge
+                    serviceTicketState={object.process_state}
+                />
             ),
         },
         opened_by: {

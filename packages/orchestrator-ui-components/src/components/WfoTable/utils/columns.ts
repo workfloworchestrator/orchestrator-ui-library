@@ -14,6 +14,12 @@ export type WfoTableDataColumnConfig<T, Property> =
         filterable?: boolean;
     };
 
+export const WFO_STATUS_COLOR_FIELD = 'status_color_field';
+export type WfoTableColorColumnConfig<T> = WfoTableDataColumnConfig<
+    T,
+    typeof WFO_STATUS_COLOR_FIELD
+>;
+
 // Todo need to Pick a few props from EuiBasicTableColumn to prevent none-functioning props (truncateText)
 export type WfoTableColumnsWithExtraNonDataFields<T> = WfoTableColumns<T> & {
     [key: string]: EuiBasicTableColumn<T> & {
@@ -66,5 +72,3 @@ export const getSortDirectionFromString = (
             return undefined;
     }
 };
-
-export const WFO_TABLE_COLOR_FIELD = 'color';
