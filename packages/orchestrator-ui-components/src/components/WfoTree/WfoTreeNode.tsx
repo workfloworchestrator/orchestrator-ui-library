@@ -69,7 +69,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                     {selected ? (
                         <EuiListGroupItem
                             onClick={() => toggleSelectedId(item.id)}
-                            label={`${item.id} ${item.label}`}
+                            label={item.label}
                             isActive={selected}
                             color={'primary'}
                             extraAction={{
@@ -84,7 +84,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                     ) : (
                         <EuiListGroupItem
                             onClick={() => toggleSelectedId(item.id)}
-                            label={`${item.id} ${item.label}`}
+                            label={item.label}
                             isActive={selected}
                         />
                     )}

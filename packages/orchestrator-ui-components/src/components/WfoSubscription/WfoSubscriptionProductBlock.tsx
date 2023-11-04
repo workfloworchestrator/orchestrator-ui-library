@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { EuiAccordion } from '@elastic/eui';
 
 import {
-    EuiButtonIcon,
+    EuiButtonEmpty,
+    EuiIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
@@ -13,6 +13,8 @@ import { FieldValue } from '../../types';
 import { getProductBlockTitle } from './utils';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
+import { camelToHuman } from '../../utils';
+import { useTranslations } from 'next-intl';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
@@ -21,25 +23,23 @@ interface WfoSubscriptionProductBlockProps {
     id: number;
 }
 
-export const ALWAYS_HIDDEN_KEYS = ['title', 'name', 'label'];
-export const HIDDEN_KEYS = [
-    'name', // Todo: remove this, it's only here to test
-    // 'subscription_instance_id',
-    // 'owner_subscription_id',
-];
+export const HIDDEN_KEYS = ['title', 'name', 'label'];
+
 export const WfoSubscriptionProductBlock = ({
     ownerSubscriptionId,
     subscriptionInstanceId,
     productBlockInstanceValues,
 }: WfoSubscriptionProductBlockProps) => {
+    const t = useTranslations('subscriptions.detail');
+    const { theme } = useOrchestratorTheme();
     const { productBlockPanelStyle } = useWithOrchestratorTheme(getStyles);
 
-    const [showAllKeys, setShowAllKeys] = useState(false);
+    const [hideDetails, setHideDetails] = useState(true);
 
-    const isLastCell = (index: number): number => {
-        return index === productBlockInstanceValues.length - 1 ? 0 : 1;
+    const getBorderThickness = (index: number): number => {
+        if (!hideDetails) return 0;
+        return index === 0 ? 1 : 0;
     };
-    console.log(productBlockInstanceValues);
 
     return (
         <>
@@ -49,123 +49,126 @@ export const WfoSubscriptionProductBlock = ({
                 hasShadow={false}
                 css={productBlockPanelStyle}
             >
-                <div style={{ marginTop: 5 }}>
-                    <EuiFlexGroup justifyContent="spaceBetween">
-                        <EuiFlexItem>
-                            <EuiText grow={false}>
-                                <h3>
-                                    {getProductBlockTitle(
-                                        productBlockInstanceValues,
-                                    )}
-                                </h3>
-                            </EuiText>
-                            <EuiText>
-                                Instance ID: {subscriptionInstanceId}
-                            </EuiText>
-                        </EuiFlexItem>
-                        <EuiFlexItem grow={false}>
-                            <EuiButtonIcon
-                                aria-label="Close"
-                                size={'m'}
-                                iconType={'cross'}
-                                onClick={() => setShowAllKeys(!showAllKeys)}
-                            />
-                        </EuiFlexItem>
-                    </EuiFlexGroup>
-
-                    <EuiSpacer size={'xs'}></EuiSpacer>
-                    {
-                        <table
-                            width="100%"
-                            // bgcolor={theme.colors.lightestShade}
-                            // style={tableStyle}
+                <EuiFlexGroup>
+                    <EuiFlexItem grow={false}>
+                        <div
+                            style={{
+                                width: 45,
+                                height: 45,
+                                backgroundColor: 'rgb(193,221,241,1)',
+                                paddingTop: 13,
+                                paddingLeft: 15,
+                                borderRadius: 7,
+                            }}
                         >
-                            {productBlockInstanceValues
-                                .filter(
-                                    (productBlockInstanceValue) =>
-                                        !HIDDEN_KEYS.includes(
-                                            productBlockInstanceValue.field,
-                                        ) || showAllKeys,
-                                )
-                                .map((productBlockInstanceValue, index) =>
-                                    !productBlockInstanceValue.field.startsWith(
-                                        'ims_ci',
-                                    ) ? (
-                                        <tr key={index}>
-                                            <td
-                                                valign={'top'}
-                                                style={{
-                                                    width: 250,
-                                                    padding: 10,
-                                                    borderBottom: `solid ${isLastCell(
-                                                        index,
-                                                    )}px #ddd`,
-                                                }}
-                                            >
-                                                <b>
-                                                    {
-                                                        productBlockInstanceValue.field
-                                                    }
-                                                </b>
-                                            </td>
-                                            <td
-                                                style={{
-                                                    padding: 10,
-                                                    borderBottom: `solid ${isLastCell(
-                                                        index,
-                                                    )}px #ddd`,
-                                                }}
-                                            >
-                                                {
-                                                    productBlockInstanceValue.value
-                                                }
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        <tr key={index}>
-                                            <td
-                                                colSpan={3}
-                                                style={{
-                                                    padding: 10,
-                                                    borderBottom: `solid ${isLastCell(
-                                                        index,
-                                                    )}px #ddd`,
-                                                }}
-                                            >
-                                                <EuiAccordion
-                                                    id={
-                                                        productBlockInstanceValue.field
-                                                    }
-                                                    arrowDisplay="left"
-                                                    buttonContent={
-                                                        <div>
-                                                            <td
-                                                                valign={'top'}
-                                                                style={{
-                                                                    width: 222,
-                                                                }}
-                                                            >
-                                                                <b>
-                                                                    {
-                                                                        productBlockInstanceValue.field
-                                                                    }
-                                                                </b>
-                                                            </td>
-                                                            <td>
-                                                                {
-                                                                    productBlockInstanceValue.value
-                                                                }
-                                                            </td>
-                                                        </div>
-                                                    }
-                                                ></EuiAccordion>
-                                            </td>
-                                        </tr>
-                                    ),
+                            <EuiIcon
+                                type="filebeatApp"
+                                color={theme.colors.primary}
+                            />
+                        </div>
+                    </EuiFlexItem>
+                    <EuiFlexItem>
+                        <EuiText grow={true}>
+                            <h3>
+                                {getProductBlockTitle(
+                                    productBlockInstanceValues,
                                 )}
-                        </table>
-                    }
-                </div>
+                            </h3>
+                        </EuiText>
+                        <EuiText>Instance ID: {subscriptionInstanceId}</EuiText>
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        <EuiButtonEmpty
+                            aria-label={
+                                hideDetails
+                                    ? t('showDetails')
+                                    : t('hideDetails')
+                            }
+                            size={'m'}
+                            onClick={() => setHideDetails(!hideDetails)}
+                        >
+                            {hideDetails ? t('showDetails') : t('hideDetails')}
+                        </EuiButtonEmpty>
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+
+                <EuiSpacer size={'m'}></EuiSpacer>
+                {
+                    <table width="100%">
+                        {!hideDetails && (
+                            <tr key={-1}>
+                                <td
+                                    valign={'top'}
+                                    style={{
+                                        width: 250,
+                                        paddingLeft: 0,
+                                        paddingTop: 10,
+                                        paddingBottom: 10,
+                                        borderTop: `solid 1px #ddd`,
+                                        borderBottom: `solid 1px #ddd`,
+                                    }}
+                                >
+                                    <b>Owner subscription ID</b>
+                                </td>
+                                <td
+                                    style={{
+                                        paddingLeft: 0,
+                                        paddingTop: 10,
+                                        paddingBottom: 10,
+                                        borderTop: `solid 1px #ddd`,
+                                        borderBottom: `solid 1px #ddd`,
+                                    }}
+                                >
+                                    {ownerSubscriptionId}
+                                </td>
+                            </tr>
+                        )}
+
+                        {productBlockInstanceValues
+                            .filter(
+                                (productBlockInstanceValue) =>
+                                    !HIDDEN_KEYS.includes(
+                                        productBlockInstanceValue.field,
+                                    ),
+                            )
+                            .map((productBlockInstanceValue, index) => (
+                                <tr key={index}>
+                                    <td
+                                        valign={'top'}
+                                        style={{
+                                            width: 250,
+                                            paddingLeft: 0,
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            borderTop: `solid ${getBorderThickness(
+                                                index,
+                                            )}px #ddd`,
+                                            borderBottom: `solid 1px #ddd`,
+                                        }}
+                                    >
+                                        <b>
+                                            {camelToHuman(
+                                                productBlockInstanceValue.field,
+                                            )}
+                                        </b>
+                                    </td>
+                                    <td
+                                        style={{
+                                            paddingLeft: 0,
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            borderTop: `solid ${getBorderThickness(
+                                                index,
+                                            )}px #ddd`,
+                                            borderBottom: `solid 1px #ddd`,
+                                        }}
+                                    >
+                                        {productBlockInstanceValue.value}
+                                    </td>
+                                </tr>
+                            ))}
+                    </table>
+                }
             </EuiPanel>
         </>
     );

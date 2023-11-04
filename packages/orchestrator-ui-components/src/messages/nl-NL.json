@@ -189,6 +189,8 @@
                     "no_modify_subscription_in_use_by_others": "This subscription can not be modified because it is in use by one or more other subscriptions: {unterminated_parents}"
                 }
             },
+            "showDetails": "Toon details",
+            "hideDetails": "Verberg details",
             "subscriptionDetails": "Subscription detail",
             "productName": "Produkt",
             "fixedInputs": "Fixed inputs",

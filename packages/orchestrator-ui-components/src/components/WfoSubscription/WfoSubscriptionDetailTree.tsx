@@ -138,7 +138,9 @@ export const WfoSubscriptionDetailTree = ({
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}
-                                    o
+                                    ownerSubscriptionId={
+                                        block.ownerSubscriptionId
+                                    }
                                     subscriptionInstanceId={
                                         block.subscriptionInstanceId
                                     }
