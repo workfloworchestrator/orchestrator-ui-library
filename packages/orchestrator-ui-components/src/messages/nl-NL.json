@@ -43,6 +43,9 @@
                 "nodes_loading": "Nodes laden",
                 "select_node": "Selecteer node",
                 "no_nodes_placeholder": "Geen nodes"
+            },
+            "locationCode": {
+                "placeholder": "Location placeholder"
             }
         }
     },
