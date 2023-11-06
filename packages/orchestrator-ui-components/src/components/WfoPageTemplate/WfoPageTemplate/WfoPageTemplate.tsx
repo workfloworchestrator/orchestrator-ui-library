@@ -31,7 +31,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
                 handleSideMenuClick={() =>
-                    setIsSideMenuVisible(!isSideMenuVisible)
+                    setIsSideMenuVisible((prevState) => !prevState)
                 }
                 handleLogoutClick={signOut}
             />

@@ -1,9 +1,6 @@
-import NextAuth, { AuthOptions, Session } from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
+import { SessionToken } from '@orchestrator-ui/orchestrator-ui-components';
 import { JWT } from 'next-auth/jwt';
-
-export type SessionToken = Session & {
-    accessToken?: unknown;
-};
 
 const token_endpoint_auth_method = process.env.NEXTAUTH_CLIENT_SECRET
     ? 'client_secret_basic'
@@ -52,7 +49,9 @@ export const authOptions: AuthOptions = {
             token: JWT;
         }) {
             // Send properties to the client, like an access_token from a provider.
-            session.accessToken = token.accessToken;
+            session.accessToken = token.accessToken
+                ? String(token.accessToken)
+                : '';
             return session;
         },
     },

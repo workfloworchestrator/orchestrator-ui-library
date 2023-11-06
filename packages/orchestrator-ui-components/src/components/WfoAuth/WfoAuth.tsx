@@ -1,5 +1,6 @@
 import React, { JSX } from 'react';
 import { useSession } from 'next-auth/react';
+import { WfoLoading } from '../WfoLoading';
 
 interface AuthProps {
     children: JSX.Element;
@@ -11,7 +12,7 @@ export const WfoAuth = ({ children }: AuthProps): JSX.Element => {
     });
 
     if (status === 'loading') {
-        return <></>;
+        return <WfoLoading />;
     }
     return children;
 };

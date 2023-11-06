@@ -9,3 +9,4 @@ export * from './useDataDisplayParams';
 export * from './useToastMessage';
 export * from './useStoredTableConfig';
 export * from './useWithOrchestratorTheme';
+export * from './useSessionWithToken';
