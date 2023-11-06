@@ -56,7 +56,7 @@ function ImsNodeId({
     ...props
 }: ImsNodeIdFieldProps) {
     const axiosApiClient = useAxiosApiClient();
-    const t = useTranslations('forms');
+    const t = useTranslations('pydanticForms');
     const [loading, setIsLoading] = useState(true);
     const [nodes, setNodes] = useState<ImsNode[]>([]);
 

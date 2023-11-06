@@ -31,6 +31,19 @@
         "fields": {
             "esi_service_ports_add": "Add Endpoint",
             "esi_service_ports_del": "Delete Endpoint"
+        },
+        "widgets": {
+            "organisation": {
+                "placeholder": "Org placeholder"
+            },
+            "contactPersonName": {
+                "placeholder": "Name placeholder"
+            },
+            "node_select": {
+                "nodes_loading": "Nodes loading",
+                "select_node": "Select node",
+                "no_nodes_placeholder": "No nodes"
+            }
         }
     },
     "metadata": {
@@ -205,21 +218,6 @@
     "tasks": {
         "page": {
             "rerunAll": "Rerun all"
-        }
-    },
-    "forms": {
-        "widgets": {
-            "organisation": {
-                "placeholder": "Org placeholder"
-            },
-            "contactPersonName": {
-                "placeholder": "Name placeholder"
-            },
-            "node_select": {
-                "nodes_loading": "Nodes loading",
-                "select_node": "Select node",
-                "no_nodes_placeholder": "No nodes"
-            }
         }
     }
 }
