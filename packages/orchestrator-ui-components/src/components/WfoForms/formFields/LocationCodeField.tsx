@@ -17,6 +17,7 @@ import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { SelectField, SelectFieldProps } from './SelectField';
+import { useAxiosApiClient } from '../useAxiosApiClient';
 
 export type LocationCodeFieldProps = { locationCodes?: string[] } & Omit<
     SelectFieldProps,
@@ -33,13 +34,24 @@ filterDOMProps.register('locationCodes');
 
 function LocationCode({ locationCodes, ...props }: LocationCodeFieldProps) {
     const t = useTranslations('pydanticForms');
-    const [codes, setCodes] = useState(locationCodes);
+    const [codes, setCodes] = useState<string[]>(locationCodes ?? []);
+    const axiosApiClient = useAxiosApiClient();
 
     useEffect(() => {
-        if (!codes) {
-            setCodes(['a', 'b']);
-        }
-    }, [codes]);
+        axiosApiClient
+            .axiosFetch<string[]>('surf/crm/location_codes', {}, {}, false)
+            .then((result) => {
+                if (result) {
+                    setCodes(result);
+                }
+            })
+            .catch((error) => {
+                if (error) {
+                    console.error(error);
+                }
+                setCodes([]);
+            });
+    }, [axiosApiClient, codes]);
 
     return (
         <SelectField
