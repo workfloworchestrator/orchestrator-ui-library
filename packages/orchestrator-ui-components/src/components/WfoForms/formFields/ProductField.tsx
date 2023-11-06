@@ -13,8 +13,8 @@
  *
  */
 
-import get from 'lodash/get';
 import React from 'react';
+import get from 'lodash/get';
 import { connectField, filterDOMProps } from 'uniforms';
 import { useQuery } from 'react-query';
 
