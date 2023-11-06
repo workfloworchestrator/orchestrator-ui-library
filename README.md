@@ -13,15 +13,14 @@ turbo dev
 
 setup auth with keycloak in docker.
 
--   copy env: `cp .env.example .env`
--   change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
--   change NextAuth variables to your own values.
+-   copy apps env: `cp apps/wfo-ui/.env.example apps/wfo-ui/.env`.
+    -   change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
     -   `NEXTAUTH_SECRET`: is NextAuth internal for JWT encryption and easily created with command `openssl rand -base64 32`.
     -   `NEXTAUTH_URL`: should be the base url to the auth page: `${FRONTEND_URL}/api/auth`.
     -   `NEXTAUTH_ID`: name of the provider which is shown in the `Sign in with {NEXTAUTH_ID}`, default is `keycloak`.
 -   run `docker compose up -d` to start keycloak.
 -   log into keycloak at http://localhost:8085
--   keycloak setup:
+-   keycloak setup (use the `apps/{folder}` env):
     -   follow the [keycloak docs](https://www.keycloak.org/getting-started/getting-started-docker#_secure_the_first_application) to create a new realm and at least one user.
     -   after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `KEYCLOAK_ISSUER`.
     -   Create a client.
