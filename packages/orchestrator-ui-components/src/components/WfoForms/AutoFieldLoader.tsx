@@ -15,6 +15,7 @@ import {
     OrganisationField,
     ContactPersonNameField,
     ImsNodeIdField,
+    LocationCodeField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -64,6 +65,8 @@ export function autoFieldFunction(
                     return SubscriptionSummaryField;
                 case 'organisationId':
                     return OrganisationField;
+                case 'locationCode':
+                    return LocationCodeField;
                 case 'contactPersonName': // Surf specific
                     return ContactPersonNameField;
             }

@@ -47,6 +47,9 @@
                 "nodes_loading": "Nodes loading",
                 "select_node": "Select node",
                 "no_nodes_placeholder": "No nodes"
+            },
+            "locationCode": {
+                "placeholder": "Location placeholder"
             }
         }
     },
