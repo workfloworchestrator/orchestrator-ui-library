@@ -14,6 +14,7 @@ import {
     TimestampField,
     OrganisationField,
     ContactPersonNameField,
+    ImsNodeIdField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -35,12 +36,12 @@ export function autoFieldFunction(
     switch (fieldType) {
         case Number:
             switch (format) {
-                case 'imsPortId':
+                case 'imsPortId': // Surf specific
                     return NumField;
-                case 'imsNodeId':
-                    return NumField;
+                case 'imsNodeId': // Surf specific
+                    return ImsNodeIdField;
                 case 'timestamp':
-                    return TimestampField;
+                    return TimestampField; // Surf specific
             }
             break;
         case Object:

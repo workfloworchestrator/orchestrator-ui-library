@@ -68,7 +68,7 @@ function ContactPersonName({
     organisationKey,
     ...props
 }: ContactPersonNameFieldProps) {
-    const apiClient = useAxiosApiClient();
+    const axiosApiClient = useAxiosApiClient();
     const t = useTranslations('forms');
     const { model, onChange: formOnChange, schema } = useForm();
 
@@ -126,7 +126,7 @@ function ContactPersonName({
 
     useEffect(() => {
         if (organisationIdValue) {
-            apiClient
+            axiosApiClient
                 .axiosFetch<ContactPerson[]>(
                     `/surf/crm/contacts/${organisationIdValue}`,
                     {},
@@ -142,7 +142,7 @@ function ContactPersonName({
                     setContactPersons([]);
                 });
         }
-    }, [organisationIdValue, apiClient]);
+    }, [organisationIdValue, axiosApiClient]);
 
     useEffect(() => {
         // Set focus to the last name component to be created

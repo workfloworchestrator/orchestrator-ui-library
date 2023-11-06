@@ -210,5 +210,20 @@
         "page": {
             "rerunAll": "Alles opnieuw uitvoeren"
         }
+    },
+    "forms": {
+        "widgets": {
+            "organisation": {
+                "placeholder": "Org placeholder"
+            },
+            "contactPersonName": {
+                "placeholder": "Name placeholder"
+            },
+            "node_select": {
+                "nodes_loading": "Nodes loading",
+                "select_node": "Select node",
+                "no_nodes_placeholder": "No nodes"
+            }
+        }
     }
 }
