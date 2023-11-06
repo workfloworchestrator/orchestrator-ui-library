@@ -75,10 +75,6 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
 }) => {
     const t = useTranslations('processes.index');
 
-    console.log('alwaysOnFilters', alwaysOnFilters);
-    console.log('defaultHiddenColumns', defaultHiddenColumns);
-    console.log('setDataDisplayParam', setDataDisplayParam);
-
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
             field: 'workflowName',

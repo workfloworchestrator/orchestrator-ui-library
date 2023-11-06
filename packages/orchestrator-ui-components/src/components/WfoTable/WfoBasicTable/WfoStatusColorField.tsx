@@ -39,8 +39,8 @@ export const WfoStatusColorField = ({
     return (
         <EuiFlexItem
             style={{
-                paddingInline: 4,
-                paddingBlock: 25,
+                paddingInline: theme.base / 4,
+                paddingBlock: theme.base + 8,
                 backgroundColor: toStatusColorFieldColor(theme.colors[color]),
             }}
         />

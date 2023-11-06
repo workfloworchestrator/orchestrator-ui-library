@@ -172,11 +172,9 @@ export interface Email {
 export interface EmailLog {
     entry_time: string;
     log_type: string;
-    // emails: any;
 }
 
 export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
-    // transitioning_state: any;
     end_date: string;
     last_update_time: string;
     type: ServiceTicketType;
