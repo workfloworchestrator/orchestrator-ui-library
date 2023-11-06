@@ -17,6 +17,7 @@ import React from 'react';
 import get from 'lodash/get';
 import { connectField, filterDOMProps } from 'uniforms';
 import { useQuery } from 'react-query';
+import { useTranslations } from 'next-intl';
 
 import { SelectField, SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';
@@ -35,6 +36,7 @@ filterDOMProps.register('productIds');
 
 function Product({ name, productIds, ...props }: ProductFieldProps) {
     const apiClient = useAxiosApiClient();
+    const t = useTranslations('pydanticForms');
     const { isLoading, error, data } = useQuery(
         ['products'],
         apiClient.products,
@@ -68,7 +70,7 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
             {...props}
             allowedValues={Object.keys(productLabelLookup)}
             transform={(uuid: string) => get(productLabelLookup, uuid, uuid)}
-            placeholder="Choos product"
+            placeholder={t('widgets.product.placeholder')}
         />
     );
 }

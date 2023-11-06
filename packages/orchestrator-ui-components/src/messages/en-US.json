@@ -46,6 +46,9 @@
             },
             "locationCode": {
                 "placeholder": "Location placeholder"
+            },
+            "product": {
+                "placeholder": "Choose product"
             }
         }
     },
