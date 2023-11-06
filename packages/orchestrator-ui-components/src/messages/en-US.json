@@ -29,6 +29,10 @@
             "cancelProcess": "Cancel Process"
         },
         "fields": {
+            "bfd": {
+                "description": "Bidirectional Forwarding Detection",
+                "title": "BFD"
+            },
             "esi_service_ports_add": "Add Endpoint",
             "esi_service_ports_del": "Delete Endpoint"
         }

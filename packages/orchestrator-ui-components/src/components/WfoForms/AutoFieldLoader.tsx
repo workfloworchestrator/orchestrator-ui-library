@@ -18,6 +18,7 @@ import {
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
 import { NestField } from './formFields/NestField';
+import { OptGroupField } from './formFields/OptGroupField';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -40,6 +41,12 @@ export function autoFieldFunction(
                     return NumField;
                 case 'timestamp':
                     return TimestampField;
+            }
+            break;
+        case Object:
+            switch (format) {
+                case 'optGroup':
+                    return OptGroupField;
             }
             break;
         case String:
