@@ -69,7 +69,7 @@ function ContactPersonName({
     ...props
 }: ContactPersonNameFieldProps) {
     const axiosApiClient = useAxiosApiClient();
-    const t = useTranslations('forms');
+    const t = useTranslations('pydanticForms');
     const { model, onChange: formOnChange, schema } = useForm();
 
     const contactsPersonFieldNameArray = joinName(null, name).slice(0, -1);

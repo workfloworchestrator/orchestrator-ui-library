@@ -25,7 +25,7 @@ export type OrganisationFieldProps = Omit<
 >;
 
 function Organisation({ ...props }: OrganisationFieldProps) {
-    const t = useTranslations('forms');
+    const t = useTranslations('pydanticForms');
 
     const { data, isFetched } = useQueryWithGraphql(
         GET_CUSTOMER_GRAPHQL_QUERY,

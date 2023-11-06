@@ -35,6 +35,19 @@
             },
             "esi_service_ports_add": "Endpoint Toevoegen",
             "esi_service_ports_del": "Endpoint Verwijderen"
+        },
+        "widgets": {
+            "organisation": {
+                "placeholder": "Org placeholder"
+            },
+            "contactPersonName": {
+                "placeholder": "Naam placeholder"
+            },
+            "node_select": {
+                "nodes_loading": "Nodes laden",
+                "select_node": "Selecteer node",
+                "no_nodes_placeholder": "Geen nodes"
+            }
         }
     },
     "metadata": {
@@ -209,21 +222,6 @@
     "tasks": {
         "page": {
             "rerunAll": "Alles opnieuw uitvoeren"
-        }
-    },
-    "forms": {
-        "widgets": {
-            "organisation": {
-                "placeholder": "Org placeholder"
-            },
-            "contactPersonName": {
-                "placeholder": "Name placeholder"
-            },
-            "node_select": {
-                "nodes_loading": "Nodes loading",
-                "select_node": "Select node",
-                "no_nodes_placeholder": "No nodes"
-            }
         }
     }
 }
