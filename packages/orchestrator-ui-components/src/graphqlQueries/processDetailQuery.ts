@@ -22,7 +22,6 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     status
                     stepId
                     executed
-                    state
                     stateDelta
                 }
                 customer {

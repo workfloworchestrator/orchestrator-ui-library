@@ -2,18 +2,26 @@ import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Step } from '../../../types';
 import { WfoStepListHeader } from './WfoStepListHeader';
+import { WfoLoading } from '../../WfoLoading';
 import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
 import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
 import { updateStepListItems } from '../stepListUtils';
+import { useRawProcessDetails } from '../../../hooks';
 
 export interface WfoWorkflowStepListProps {
     steps: Step[];
     startedAt: string;
+    processId: string;
 }
+
+export const WfoProcessRawData = ({ processId }: { processId: string }) => {
+    const { data, isFetching } = useRawProcessDetails(processId);
+    return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data} />;
+};
 
 export const WfoWorkflowStepList = React.forwardRef(
     (
-        { steps = [], startedAt }: WfoWorkflowStepListProps,
+        { steps = [], startedAt, processId }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
@@ -90,7 +98,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                 />
 
                 {showRaw ? (
-                    <WfoJsonCodeBlock data={steps} />
+                    <WfoProcessRawData processId={processId} />
                 ) : (
                     <WfoStepList
                         ref={reference}

@@ -2,7 +2,6 @@ import React, { Ref, useImperativeHandle, useRef } from 'react';
 import { Step } from '../../../types';
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from '../styles';
-import { stateDelta } from '../../../utils';
 import { WfoStep } from '../WfoStep';
 
 export type StepListItem = {
