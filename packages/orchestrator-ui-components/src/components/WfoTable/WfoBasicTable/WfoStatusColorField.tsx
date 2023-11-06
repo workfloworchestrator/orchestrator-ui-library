@@ -9,6 +9,10 @@ export type WfoStatusColorFieldProps = {
     state: string;
 };
 
+/*
+    Can we have all the definitions (ServiceTicketDefinition, ProductBlockDefinition ...)
+    extend from a base type? (ex. Definition)
+*/
 export const STATUS_COLOR_FIELD_COLUMN_PROPS = {
     field: WFO_STATUS_COLOR_FIELD,
     name: '',

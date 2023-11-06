@@ -1,17 +1,17 @@
-import { WfoProcessListTabType } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoServiceTicketListTabType } from '../../types';
 
 export const getServiceTicketListTabTypeFromString = (
     tabId?: string,
-): WfoProcessListTabType | undefined => {
+): WfoServiceTicketListTabType | undefined => {
     if (!tabId) {
         return undefined;
     }
 
     switch (tabId.toUpperCase()) {
-        case WfoProcessListTabType.ACTIVE.toString():
-            return WfoProcessListTabType.ACTIVE;
-        case WfoProcessListTabType.COMPLETED.toString():
-            return WfoProcessListTabType.COMPLETED;
+        case WfoServiceTicketListTabType.ACTIVE.toString():
+            return WfoServiceTicketListTabType.ACTIVE;
+        case WfoServiceTicketListTabType.COMPLETED.toString():
+            return WfoServiceTicketListTabType.COMPLETED;
 
         default:
             return undefined;

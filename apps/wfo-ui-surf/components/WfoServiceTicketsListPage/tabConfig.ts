@@ -1,17 +1,15 @@
-import {
-    WfoFilterTab,
-    WfoProcessListTabType,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoFilterTab } from '@orchestrator-ui/orchestrator-ui-components';
 import {
     ServiceTicketDefinition,
     ServiceTicketProcessState,
+    WfoServiceTicketListTabType,
 } from '../../types';
 export const defaultServiceTicketsListTabs: WfoFilterTab<
-    WfoProcessListTabType,
+    WfoServiceTicketListTabType,
     ServiceTicketDefinition
 >[] = [
     {
-        id: WfoProcessListTabType.ACTIVE,
+        id: WfoServiceTicketListTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
@@ -37,7 +35,7 @@ export const defaultServiceTicketsListTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoProcessListTabType.COMPLETED,
+        id: WfoServiceTicketListTabType.COMPLETED,
         translationKey: 'completed',
         alwaysOnFilters: [
             {

@@ -18,15 +18,15 @@ import {
     parseDateToLocaleDateTimeString,
     parseIsoString,
     SortOrder,
+    STATUS_COLOR_FIELD_COLUMN_PROPS,
     TableColumnKeys,
     useFilterQueryWithRest,
     WfoBasicTable,
     WfoDataSorting,
     WfoDateTime,
-    WfoTableColumns,
-    STATUS_COLOR_FIELD_COLUMN_PROPS,
     WfoStatusColorField,
     WfoTableColorColumnConfig,
+    WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';

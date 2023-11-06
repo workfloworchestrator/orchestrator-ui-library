@@ -7,9 +7,11 @@ import {
     useDataDisplayParams,
     useStoredTableConfig,
     WfoFilterTabs,
-    WfoProcessListTabType,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { ServiceTicketDefinition } from '../../types';
+import {
+    ServiceTicketDefinition,
+    WfoServiceTicketListTabType,
+} from '../../types';
 import {
     ACTIVE_TICKETS_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_TICKETS_TABLE_LOCAL_STORAGE_KEY,
@@ -33,7 +35,7 @@ export const WfoServiceTicketListPage = () => {
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoProcessListTabType.ACTIVE),
+        withDefault(StringParam, WfoServiceTicketListTabType.ACTIVE),
     );
 
     const [tableDefaults, setTableDefaults] =
@@ -43,7 +45,7 @@ export const WfoServiceTicketListPage = () => {
         getServiceTicketListTabTypeFromString(activeTab);
 
     const localStorageKey =
-        selectedServiceTicketListTab === WfoProcessListTabType.ACTIVE
+        selectedServiceTicketListTab === WfoServiceTicketListTabType.ACTIVE
             ? ACTIVE_TICKETS_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_TICKETS_TABLE_LOCAL_STORAGE_KEY;
 
@@ -72,7 +74,7 @@ export const WfoServiceTicketListPage = () => {
         });
 
     const handleChangeServiceTicketListTab = (
-        updatedServiceTicketListTab: WfoProcessListTabType,
+        updatedServiceTicketListTab: WfoServiceTicketListTabType,
     ) => {
         setActiveTab(updatedServiceTicketListTab);
         setDataDisplayParam('pageIndex', 0);
@@ -108,7 +110,7 @@ export const WfoServiceTicketListPage = () => {
 
             <WfoFilterTabs
                 tabs={defaultServiceTicketsListTabs}
-                translationNamespace="processes.tabs"
+                translationNamespace="cim.serviceTickets.tabs"
                 selectedTab={selectedServiceTicketListTab}
                 onChangeTab={handleChangeServiceTicketListTab}
             />

@@ -1,6 +1,11 @@
 /** CIM */
 import { Process } from '@orchestrator-ui/orchestrator-ui-components';
 
+export enum WfoServiceTicketListTabType {
+    ACTIVE = 'ACTIVE',
+    COMPLETED = 'COMPLETED',
+}
+
 export interface CreateServiceTicketPayload {
     ims_pw_id: string;
     jira_ticket_id: string;

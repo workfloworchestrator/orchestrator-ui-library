@@ -37,12 +37,14 @@ export const WfoServiceTicketStatusBadge: FC<WfoProcessStatusBadgeProps> = ({
         } = ServiceTicketProcessState;
 
         switch (serviceTicketState) {
-            case OPEN || NEW:
+            case OPEN:
+            case NEW:
                 return {
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
                 };
-            case OPEN_ACCEPTED || OPEN_RELATED:
+            case OPEN_ACCEPTED:
+            case OPEN_RELATED:
                 return {
                     badgeColor: toSecondaryColor(warning),
                     textColor: warningText,
@@ -52,7 +54,8 @@ export const WfoServiceTicketStatusBadge: FC<WfoProcessStatusBadgeProps> = ({
                     badgeColor: toSecondaryColor(primary),
                     textColor: primaryText,
                 };
-            case CLOSED || ABORTED:
+            case CLOSED:
+            case ABORTED:
                 return {
                     badgeColor: toSecondaryColor(lightShade),
                     textColor: text,
