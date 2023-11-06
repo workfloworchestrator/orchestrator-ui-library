@@ -28,6 +28,7 @@ import {
 
 import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
 import { FieldProps, ContactPerson } from './types';
+import { useAxiosApiClient } from '../useAxiosApiClient';
 
 export function stop(e: React.SyntheticEvent) {
     if (e !== undefined && e !== null) {
@@ -67,6 +68,7 @@ function ContactPersonName({
     organisationKey,
     ...props
 }: ContactPersonNameFieldProps) {
+    const apiClient = useAxiosApiClient();
     const t = useTranslations('forms');
     const { model, onChange: formOnChange, schema } = useForm();
 
@@ -98,6 +100,7 @@ function ContactPersonName({
     } catch {
         organisationInitialValue = '';
     }
+
     const organisationIdValue =
         organisationId ||
         contactsField.field.organisationId ||
@@ -123,12 +126,24 @@ function ContactPersonName({
 
     useEffect(() => {
         if (organisationIdValue) {
-            setContactPersons([
-                { name: 'Ruben', email: 'ruben@ruben.nl' },
-                { name: 'Ricardo', email: 'ricardo@ricardo.nl' },
-            ]);
+            apiClient
+                .axiosFetch<ContactPerson[]>(
+                    `/surf/crm/contacts/${organisationIdValue}`,
+                    {},
+                    {},
+                    false,
+                )
+                .then((result) => {
+                    console.log('fetched contacts');
+                    if (result) {
+                        setContactPersons(result);
+                    }
+                })
+                .catch(() => {
+                    setContactPersons([]);
+                });
         }
-    }, [organisationIdValue]);
+    }, [organisationIdValue, apiClient]);
 
     useEffect(() => {
         // Set focus to the last name component to be created
