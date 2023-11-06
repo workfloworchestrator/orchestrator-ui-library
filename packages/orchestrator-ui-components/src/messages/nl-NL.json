@@ -50,6 +50,9 @@
             },
             "locationCode": {
                 "placeholder": "Location placeholder"
+            },
+            "product": {
+                "placeholder": "Kies product"
             }
         }
     },
