@@ -34,3 +34,9 @@ export interface ContactPerson {
     name: string;
     email: string;
 }
+
+export interface ImsNode {
+    id: number;
+    name: string;
+    status: string;
+}

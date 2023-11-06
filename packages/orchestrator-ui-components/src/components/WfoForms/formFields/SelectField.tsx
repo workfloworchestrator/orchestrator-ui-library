@@ -85,4 +85,4 @@ function Select({
     );
 }
 
-export const SelectField = connectField(Select, { kind: 'leaf' });
+export const SelectField = connectField(Select);
