@@ -19,7 +19,6 @@ import { FieldProps } from './types';
 import moment, { Moment } from 'moment-timezone';
 
 export function utcTimestampToLocalMoment(utc_timestamp: number) {
-    console.log(utc_timestamp);
     // Convert UTC timestamp to localized Moment object
     return moment
         .unix(utc_timestamp)
