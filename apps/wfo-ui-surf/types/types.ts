@@ -124,7 +124,6 @@ export interface ServiceTicketBackgroundJobCount {
 export interface ServiceTicketContact {
     name: string;
     email: string;
-    // Todo: add phone?
 }
 
 export interface ServiceTicketRelatedCustomer {
