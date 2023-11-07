@@ -2,8 +2,9 @@ import process from 'process';
 import { Environment, OrchestratorConfig } from '../hooks';
 import { getNumberValueFromEnvironmentVariable } from '../utils';
 
-export const GRAPHQL_ENDPOINT_CORE = 'http://localhost:8080/api/graphql';
-export const ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
+export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
+    'http://localhost:8080/api/graphql';
+export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
 
 export const ENGINE_STATUS_ENDPOINT = '/settings/status';
 export const PROCESS_STATUS_COUNTS_ENDPOINT = '/processes/status-counts';
@@ -18,12 +19,12 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
         process.env.ORCHESTRATOR_GRAPHQL_HOST &&
         process.env.ORCHESTRATOR_GRAPHQL_PATH
             ? `${process.env.ORCHESTRATOR_GRAPHQL_HOST}${process.env.ORCHESTRATOR_GRAPHQL_PATH}`
-            : GRAPHQL_ENDPOINT_CORE;
+            : DEFAULT_GRAPHQL_CORE_ENDPOINT;
 
     const orchestratorApiBaseUrl =
         process.env.ORCHESTRATOR_API_HOST && process.env.ORCHESTRATOR_API_PATH
             ? `${process.env.ORCHESTRATOR_API_HOST}${process.env.ORCHESTRATOR_API_PATH}`
-            : ORCHESTRATOR_API_BASE_URL;
+            : DEFAULT_ORCHESTRATOR_API_BASE_URL;
 
     return {
         orchestratorApiBaseUrl,
