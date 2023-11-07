@@ -29,12 +29,10 @@ import {
 import type { EuiThemeComputed } from '@elastic/eui';
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
+import { ListSelectField } from './ListSelectField';
 
 import { FieldProps, Option } from './types';
 import { useOrchestratorTheme } from '../../../hooks';
-
-// Avoid circular deps
-// import { default as ListSelectField } from "lib/uniforms-surfnet/src/ListSelectField";
 
 export type SelectFieldProps = FieldProps<
     string | string[],
@@ -91,14 +89,12 @@ function Select({
     disabled,
     fieldType,
     id,
-    inputRef,
     label,
     description,
     name,
     onChange,
     placeholder,
     readOnly,
-    required,
     transform,
     value,
     error,
@@ -149,18 +145,18 @@ function Select({
         getReactSelectInnerComponentStyles(theme);
 
     if (fieldType === Array) {
-        console.log('Selectfield type is array');
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)
-        return <div>Fieldtype array</div>;
-        /*
         return (
             <ListField name={name}>
                 <ListItemField name="$">
-                    <ListSelectField name="" transform={transform} allowedValues={allowedValues} />
+                    <ListSelectField
+                        name=""
+                        transform={transform}
+                        allowedValues={allowedValues}
+                    />
                 </ListItemField>
             </ListField>
         );
-        */
     } else {
         return (
             <section {...filterDOMProps(props)}>
