@@ -134,7 +134,6 @@ function ContactPersonName({
                     false,
                 )
                 .then((result) => {
-                    console.log('fetched contacts');
                     if (result) {
                         setContactPersons(result);
                     }
