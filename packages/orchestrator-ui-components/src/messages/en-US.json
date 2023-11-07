@@ -53,6 +53,9 @@
             },
             "product": {
                 "placeholder": "Choose product"
+            },
+            "select": {
+                "placeholder": "Select Placeholder"
             }
         }
     },

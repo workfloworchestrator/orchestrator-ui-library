@@ -53,6 +53,9 @@
             },
             "product": {
                 "placeholder": "Kies product"
+            },
+            "select": {
+                "placeholder": "Placeholder"
             }
         }
     },
