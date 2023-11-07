@@ -26,8 +26,7 @@ type WfoSubscriptionProps = {
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
     const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
-        // SubscriptionTabIds.GENERAL_TAB,
-        SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
+        SubscriptionTabIds.GENERAL_TAB,
     );
 
     const { data, isFetching } = useQueryWithGraphql(

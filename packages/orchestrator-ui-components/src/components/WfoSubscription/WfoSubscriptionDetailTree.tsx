@@ -147,6 +147,7 @@ export const WfoSubscriptionDetailTree = ({
                                     productBlockInstanceValues={
                                         block.productBlockInstanceValues
                                     }
+                                    inUseByRelations={block.inUseByRelations}
                                     id={id}
                                 />
                             );

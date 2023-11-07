@@ -8,7 +8,7 @@ type GenericField = { [key: string]: number | string | boolean };
 
 export type FieldValue = {
     field: string;
-    value: string | number;
+    value: string | number | boolean;
 };
 
 export type KeyValue = {
@@ -32,12 +32,18 @@ export type ResourceTypeBase = {
     label?: string;
 } & GenericField;
 
+export type InUseByRelation = {
+    subscription_instance_id: string;
+    subscription_id: string;
+};
+
 export type ProductBlockInstance = {
     id: number;
     ownerSubscriptionId: string;
     subscriptionInstanceId: string;
     parent: Nullable<number>;
     productBlockInstanceValues: FieldValue[];
+    inUseByRelations: InUseByRelation[];
 };
 
 export interface ResourceTypeDefinition {
@@ -91,7 +97,7 @@ export interface FixedInputDefinition {
 
 export interface TreeBlock extends ProductBlockInstance {
     icon: string;
-    label: string | number;
+    label: string | number | boolean;
     callback: () => void;
     children: TreeBlock[];
 }

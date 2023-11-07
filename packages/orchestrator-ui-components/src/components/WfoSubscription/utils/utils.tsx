@@ -41,7 +41,7 @@ export const tabs = [
 export const getFieldFromProductBlockInstanceValues = (
     instanceValues: FieldValue[],
     field: string,
-): string | number => {
+): string | number | boolean => {
     const nameValue = instanceValues.find(
         (instanceValue) => instanceValue.field === field,
     );
@@ -50,7 +50,7 @@ export const getFieldFromProductBlockInstanceValues = (
 
 export const getProductBlockTitle = (
     instanceValues: FieldValue[],
-): string | number => {
+): string | number | boolean => {
     const title = getFieldFromProductBlockInstanceValues(
         instanceValues,
         'title',

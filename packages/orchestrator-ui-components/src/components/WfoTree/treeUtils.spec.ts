@@ -12,6 +12,7 @@ describe('getWfoTreeNodeDepth', () => {
         label: 'Root',
         callback: jest.fn(),
         productBlockInstanceValues: [field],
+        inUseByRelations: [],
         children: [
             {
                 id: 2,
@@ -22,6 +23,7 @@ describe('getWfoTreeNodeDepth', () => {
                 label: 'File 1',
                 callback: jest.fn(),
                 productBlockInstanceValues: [field],
+                inUseByRelations: [],
                 children: [],
             },
             {
@@ -33,6 +35,7 @@ describe('getWfoTreeNodeDepth', () => {
                 label: 'File 2',
                 callback: jest.fn(),
                 productBlockInstanceValues: [field],
+                inUseByRelations: [],
                 children: [
                     {
                         id: 4,
@@ -43,6 +46,7 @@ describe('getWfoTreeNodeDepth', () => {
                         label: 'File 2.1',
                         callback: jest.fn(),
                         productBlockInstanceValues: [field],
+                        inUseByRelations: [],
                         children: [],
                     },
                 ],
@@ -85,6 +89,7 @@ describe('getWfoTreeNodeDepth', () => {
             label: 'Invalid Node',
             callback: jest.fn(),
             productBlockInstanceValues: [field],
+            inUseByRelations: [],
             children: [],
         };
 

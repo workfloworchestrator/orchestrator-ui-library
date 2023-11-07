@@ -8,18 +8,23 @@ import {
     EuiPanel,
     EuiSpacer,
     EuiText,
+    EuiBadge,
+    EuiCodeBlock,
 } from '@elastic/eui';
-import { FieldValue } from '../../types';
+import { FieldValue, InUseByRelation } from '../../types';
 import { getProductBlockTitle } from './utils';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
 import { getStyles } from './styles';
 import { camelToHuman } from '../../utils';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { PATH_SUBSCRIPTIONS } from '../WfoPageTemplate';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
     subscriptionInstanceId: string;
     productBlockInstanceValues: FieldValue[];
+    inUseByRelations: InUseByRelation[];
     id: number;
 }
 
@@ -29,16 +34,27 @@ export const WfoSubscriptionProductBlock = ({
     ownerSubscriptionId,
     subscriptionInstanceId,
     productBlockInstanceValues,
+    inUseByRelations,
 }: WfoSubscriptionProductBlockProps) => {
+    const router = useRouter();
+    const subscriptionId = router.query['subscriptionId'];
+
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
-    const { productBlockPanelStyle } = useWithOrchestratorTheme(getStyles);
+    const {
+        productBlockIconStyle,
+        productBlockPanelStyle,
+        productBlockLeftColStyle,
+        productBlockFirstLeftColStyle,
+        productBlockRightColStyle,
+        productBlockFirstRightColStyle,
+    } = useWithOrchestratorTheme(getStyles);
 
     const [hideDetails, setHideDetails] = useState(true);
 
-    const getBorderThickness = (index: number): number => {
-        if (!hideDetails) return 0;
-        return index === 0 ? 1 : 0;
+    const isFirstBlock = (index: number): boolean => {
+        if (!hideDetails) return false;
+        return index === 0;
     };
 
     return (
@@ -51,16 +67,7 @@ export const WfoSubscriptionProductBlock = ({
             >
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>
-                        <div
-                            style={{
-                                width: 45,
-                                height: 45,
-                                backgroundColor: 'rgb(193,221,241,1)',
-                                paddingTop: 13,
-                                paddingLeft: 15,
-                                borderRadius: 7,
-                            }}
-                        >
+                        <div css={productBlockIconStyle}>
                             <EuiIcon
                                 type="filebeatApp"
                                 color={theme.colors.primary}
@@ -96,32 +103,54 @@ export const WfoSubscriptionProductBlock = ({
                 {
                     <table width="100%">
                         {!hideDetails && (
-                            <tr key={-1}>
-                                <td
-                                    valign={'top'}
-                                    style={{
-                                        width: 250,
-                                        paddingLeft: 0,
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
-                                        borderTop: `solid 1px #ddd`,
-                                        borderBottom: `solid 1px #ddd`,
-                                    }}
-                                >
-                                    <b>Owner subscription ID</b>
-                                </td>
-                                <td
-                                    style={{
-                                        paddingLeft: 0,
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
-                                        borderTop: `solid 1px #ddd`,
-                                        borderBottom: `solid 1px #ddd`,
-                                    }}
-                                >
-                                    {ownerSubscriptionId}
-                                </td>
-                            </tr>
+                            <>
+                                <tr key={-2}>
+                                    <td
+                                        valign={'top'}
+                                        css={productBlockFirstLeftColStyle}
+                                    >
+                                        <b>{t('ownerSubscriptionId')}</b>
+                                    </td>
+                                    <td
+                                        valign={'top'}
+                                        css={productBlockFirstRightColStyle}
+                                    >
+                                        {subscriptionId ===
+                                        ownerSubscriptionId ? (
+                                            <>
+                                                {subscriptionId}
+                                                <EuiBadge>{t('self')}</EuiBadge>
+                                            </>
+                                        ) : (
+                                            <a
+                                                href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                            >
+                                                {ownerSubscriptionId}
+                                            </a>
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr key={-1}>
+                                    <td
+                                        valign={'top'}
+                                        css={productBlockLeftColStyle}
+                                    >
+                                        <b>{t('inUseByRelations')}</b>
+                                    </td>
+                                    <td
+                                        valign={'top'}
+                                        css={productBlockRightColStyle}
+                                    >
+                                        <EuiCodeBlock language="json">
+                                            {JSON.stringify(
+                                                inUseByRelations,
+                                                null,
+                                                4,
+                                            )}
+                                        </EuiCodeBlock>
+                                    </td>
+                                </tr>
+                            </>
                         )}
 
                         {productBlockInstanceValues
@@ -135,16 +164,11 @@ export const WfoSubscriptionProductBlock = ({
                                 <tr key={index}>
                                     <td
                                         valign={'top'}
-                                        style={{
-                                            width: 250,
-                                            paddingLeft: 0,
-                                            paddingTop: 10,
-                                            paddingBottom: 10,
-                                            borderTop: `solid ${getBorderThickness(
-                                                index,
-                                            )}px #ddd`,
-                                            borderBottom: `solid 1px #ddd`,
-                                        }}
+                                        css={
+                                            isFirstBlock(index)
+                                                ? productBlockFirstLeftColStyle
+                                                : productBlockLeftColStyle
+                                        }
                                     >
                                         <b>
                                             {camelToHuman(
@@ -153,17 +177,21 @@ export const WfoSubscriptionProductBlock = ({
                                         </b>
                                     </td>
                                     <td
-                                        style={{
-                                            paddingLeft: 0,
-                                            paddingTop: 10,
-                                            paddingBottom: 10,
-                                            borderTop: `solid ${getBorderThickness(
-                                                index,
-                                            )}px #ddd`,
-                                            borderBottom: `solid 1px #ddd`,
-                                        }}
+                                        valign={'top'}
+                                        css={
+                                            isFirstBlock(index)
+                                                ? productBlockFirstRightColStyle
+                                                : productBlockRightColStyle
+                                        }
                                     >
-                                        {productBlockInstanceValue.value}
+                                        {typeof productBlockInstanceValue.value ===
+                                        'boolean' ? (
+                                            <EuiBadge>
+                                                {productBlockInstanceValue.value.toString()}
+                                            </EuiBadge>
+                                        ) : (
+                                            productBlockInstanceValue.value
+                                        )}
                                     </td>
                                 </tr>
                             ))}
