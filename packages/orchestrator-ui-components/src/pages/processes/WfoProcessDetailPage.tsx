@@ -15,7 +15,7 @@ import {
     convertStepsToGroupedSteps,
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
-import { Step } from '../../types';
+import { Step, ProcessDoneStatuses } from '../../types';
 import { OrchestratorConfigContext } from '../../contexts';
 
 export type GroupedStep = {
@@ -44,8 +44,10 @@ export const WfoProcessDetailPage = ({
     );
 
     useEffect(() => {
-        const lastStatus = data?.processes.page[0].lastStatus || '';
-        const isInProgress = !['COMPLETED', 'FAILED'].includes(lastStatus);
+        const lastStatus = data?.processes.page[0].lastStatus;
+        const isInProgress = !(
+            lastStatus && ProcessDoneStatuses.includes(lastStatus)
+        );
         setFetchInterval(
             isInProgress ? dataRefetchInterval.processDetail : undefined,
         );

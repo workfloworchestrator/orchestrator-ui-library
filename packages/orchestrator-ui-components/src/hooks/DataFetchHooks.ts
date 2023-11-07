@@ -60,10 +60,11 @@ export const useRecentProcesses = () => {
 export const useRawProcessDetails = (processId: string) => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const url = `${orchestratorApiBaseUrl}/processes/${processId}`;
-    return useQueryWithFetch<
-        ProcessFromRestApi[],
-        Record<string, never>
-    >(url, {}, 'RawProcessDetails');
+    return useQueryWithFetch<object, Record<string, never>>(
+        url,
+        {},
+        'RawProcessDetails',
+    );
 };
 
 export const useCacheNames = () => {

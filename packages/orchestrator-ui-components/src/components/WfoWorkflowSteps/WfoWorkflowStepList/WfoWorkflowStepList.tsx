@@ -16,7 +16,7 @@ export interface WfoWorkflowStepListProps {
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
     const { data, isFetching } = useRawProcessDetails(processId);
-    return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data} />;
+    return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data || {}} />;
 };
 
 export const WfoWorkflowStepList = React.forwardRef(

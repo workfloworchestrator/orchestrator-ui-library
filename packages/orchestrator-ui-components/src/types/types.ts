@@ -219,6 +219,11 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
+export const ProcessDoneStatuses = [
+    ProcessStatus.COMPLETED,
+    ProcessStatus.ABORTED,
+];
+
 export interface StepState {
     [index: string]: object | boolean | string | number | [];
 }
