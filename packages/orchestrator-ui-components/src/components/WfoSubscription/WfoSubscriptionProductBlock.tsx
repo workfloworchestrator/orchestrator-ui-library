@@ -82,7 +82,9 @@ export const WfoSubscriptionProductBlock = ({
                                 )}
                             </h3>
                         </EuiText>
-                        <EuiText>Instance ID: {subscriptionInstanceId}</EuiText>
+                        <EuiText>{`${t(
+                            'subscriptionInstanceId',
+                        )}: ${subscriptionInstanceId}`}</EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
                         <EuiButtonEmpty
