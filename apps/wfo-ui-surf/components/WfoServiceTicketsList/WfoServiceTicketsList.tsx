@@ -18,18 +18,17 @@ import {
     parseDateToLocaleDateTimeString,
     parseIsoString,
     SortOrder,
-    STATUS_COLOR_FIELD_COLUMN_PROPS,
     TableColumnKeys,
     useFilterQueryWithRest,
+    useOrchestratorTheme,
     WfoBasicTable,
     WfoDataSorting,
     WfoDateTime,
-    WfoStatusColorField,
-    WfoTableColorColumnConfig,
     WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
+import { ColorMappings, getColorForState } from '../../utils/getColorForState';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';
@@ -68,6 +67,7 @@ export type WfoServiceTicketsListProps = {
 export const WfoServiceTicketsList = ({
     alwaysOnFilters,
 }: WfoServiceTicketsListProps) => {
+    const { theme } = useOrchestratorTheme();
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [dataSorting, setDataSorting] = useState<
@@ -84,23 +84,14 @@ export const WfoServiceTicketsList = ({
         alwaysOnFilters,
     );
 
-    const serviceTicketColorMappings = {
-        success: [OPEN, NEW],
-        warning: [OPEN_ACCEPTED, OPEN_RELATED],
-        primary: [UPDATED],
-        lightShade: [CLOSED, ABORTED],
+    const serviceTicketColorMappings: ColorMappings = {
+        [theme.colors.success]: [OPEN, NEW],
+        [theme.colors.warning]: [OPEN_ACCEPTED, OPEN_RELATED],
+        [theme.colors.primary]: [UPDATED],
+        [theme.colors.lightShade]: [CLOSED, ABORTED],
     };
 
     const tableColumns: WfoTableColumns<ServiceTicketDefinition> = {
-        status_color_field: {
-            ...(STATUS_COLOR_FIELD_COLUMN_PROPS as WfoTableColorColumnConfig<ServiceTicketDefinition>),
-            render: (value, object) => (
-                <WfoStatusColorField
-                    colorMappings={serviceTicketColorMappings}
-                    state={object.process_state}
-                />
-            ),
-        },
         jira_ticket_id: {
             field: SERVICE_TICKET_FIELD_JIRA_ID,
             name: t('jiraTicketId'),
@@ -248,6 +239,9 @@ export const WfoServiceTicketsList = ({
             sorting={sorting}
             onCriteriaChange={onCriteriaChange}
             dataSorting={dataSorting}
+            getStatusColorForRow={(row) =>
+                getColorForState(serviceTicketColorMappings, row.process_state)
+            }
         />
     );
 };

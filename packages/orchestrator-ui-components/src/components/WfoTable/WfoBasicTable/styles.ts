@@ -22,6 +22,19 @@ export const getStyles = (theme: EuiThemeComputed) => {
         },
     });
 
+    const getStatusColumnStyle = (columnNumber: number) =>
+        css({
+            [`tbody tr td:nth-child(${columnNumber}) .euiTableCellContent`]: {
+                padding: 0,
+                '.euiTableCellContent__text': {
+                    flex: 1,
+                    '> *': {
+                        paddingBlock: theme.base * 1.25,
+                    },
+                },
+            },
+        });
+
     const headerCellContentStyle = css({
         fontWeight: theme.font.weight.semiBold,
     });
@@ -48,38 +61,13 @@ export const getStyles = (theme: EuiThemeComputed) => {
             cursor: isSortable ? 'pointer' : 'not-allowed',
         });
 
-    const basicTableWithStatusColorColumn = css(
-        {
-            '.wfoBasicTable thead td': {
-                paddingBlock: 8,
-                paddingLeft: 8,
-            },
-            '.wfoBasicTable thead th': {
-                paddingBlock: 8,
-                paddingLeft: 8,
-            },
-            '.wfoBasicTable thead th button span:first-child': {
-                padding: 0,
-                border: 0,
-            },
-            '.wfoBasicTable tbody tr td div:first-child': {
-                padding: 0,
-                border: 0,
-            },
-            '.wfoBasicTable thead svg:not(.wfoArrowNarrowIcon)': {
-                display: 'none',
-            },
-        },
-        basicTableStyle,
-    );
-
     return {
         basicTableStyle,
-        basicTableWithStatusColorColumn,
         headerCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
         getHeaderCellButtonStyle,
+        getStatusColumnStyle,
     };
 };

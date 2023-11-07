@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import {
     EuiBasicTable,
     EuiBasicTableColumn,
-    EuiFlexItem,
     Pagination,
+    tint,
 } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
@@ -45,7 +45,7 @@ export type WfoBasicTableProps<T> = {
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
     sorting?: EuiTableSortingType<T>;
-    hasStatusColorColumn?: boolean;
+    getStatusColorForRow?: (row: T) => string;
 };
 
 export const WfoBasicTable = <T,>({
@@ -59,32 +59,62 @@ export const WfoBasicTable = <T,>({
     onUpdateDataSorting,
     onDataSearch,
     sorting,
+    getStatusColorForRow,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle, basicTableWithStatusColorColumn } =
-        getStyles(theme);
-    const styles = columns.hasOwnProperty(WFO_STATUS_COLOR_FIELD)
-        ? basicTableWithStatusColorColumn
-        : basicTableStyle;
+    const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
+
+    const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
+
+    const test: WfoTableControlColumnConfig<T> = {
+        status_color_field: {
+            field: WFO_STATUS_COLOR_FIELD,
+            name: '',
+            width: '8',
+            render: (_, row) => {
+                const color = getStatusColorForRow?.(row);
+                return (
+                    <>
+                        {color ? (
+                            <div
+                                css={{
+                                    backgroundColor:
+                                        toStatusColorFieldColor(color),
+                                    height: '100%',
+                                    width: '100%',
+                                }}
+                            ></div>
+                        ) : null}
+                    </>
+                    // <WfoStatusColorField
+                    //     colorMappings={serviceTicketColorMappings}
+                    //     state={object.process_state}
+                    // />
+                );
+            },
+        },
+    };
+
+    const newColumns:
+        | WfoBasicTableColumnsWithControlColumns<T>
+        | WfoBasicTableColumns<T> = { ...test, ...columns };
 
     return (
-        <EuiFlexItem css={styles}>
-            <EuiBasicTable
-                className={'wfoBasicTable'}
-                items={data}
-                columns={mapWfoTableColumnsToEuiColumns(
-                    columns,
-                    hiddenColumns,
-                    dataSorting,
-                    onUpdateDataSorting,
-                    onDataSearch,
-                )}
-                sorting={sorting}
-                pagination={pagination}
-                onChange={onCriteriaChange}
-                loading={isLoading}
-            />
-        </EuiFlexItem>
+        <EuiBasicTable
+            css={[basicTableStyle, getStatusColumnStyle(1)]}
+            items={data}
+            columns={mapWfoTableColumnsToEuiColumns(
+                newColumns,
+                hiddenColumns,
+                dataSorting,
+                onUpdateDataSorting,
+                onDataSearch,
+            )}
+            sorting={sorting}
+            pagination={pagination}
+            onChange={onCriteriaChange}
+            loading={isLoading}
+        />
     );
 };
 
