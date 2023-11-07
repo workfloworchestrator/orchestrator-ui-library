@@ -6,6 +6,7 @@ export * from './LabelField';
 export * from './ListAddField';
 export * from './ListDelField';
 export * from './ListField';
+export * from './ListSelectField';
 export * from './LongTextField';
 export * from './NumField';
 export * from './ProductField';
