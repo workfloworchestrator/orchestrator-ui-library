@@ -1,14 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
+import { DEFAULT_ORCHESTRATOR_API_BASE_URL } from '../configuration';
 
 interface ApiContext {
     apiClient: ApiClient;
 }
 
-// Todo replace this magic string when configuration.ts is moved to package
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient('http://localhost:8080/api'),
+    apiClient: getApiClient(DEFAULT_ORCHESTRATOR_API_BASE_URL),
 });
 
 export type ApiClientContextProviderProps = {
