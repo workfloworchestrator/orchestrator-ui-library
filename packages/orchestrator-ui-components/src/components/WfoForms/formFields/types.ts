@@ -40,3 +40,8 @@ export interface ImsNode {
     name: string;
     status: string;
 }
+
+export interface Option<Value = string> {
+    value: Value;
+    label: string;
+}
