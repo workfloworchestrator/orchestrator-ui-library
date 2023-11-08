@@ -1,4 +1,5 @@
 import {
+    AcceptField,
     BoolField,
     DividerField,
     LabelField,
@@ -30,8 +31,8 @@ export function autoFieldFunction(
     const { allowedValues, checkboxes, fieldType, field } = props;
     const { format } = field;
 
-    /* 
-      Note, uniforms adds the fieldType property with one of the primitive types (Number, String..) based on the value of "type" in 
+    /*
+      Note, uniforms adds the fieldType property with one of the primitive types (Number, String..) based on the value of "type" in
       node_modules/uniforms-bridge-json-schema/src/JSONSchemaBridge.ts. The only exception being dateFields where it matches on the
       "format" field being "date-time" to populate fieldType with a Date constructor
     */
@@ -72,6 +73,8 @@ export function autoFieldFunction(
                     return ContactPersonNameField;
                 case 'vlan': // Surf specific
                     return VlanField;
+                case 'accept':
+                    return AcceptField;
             }
             break;
     }
