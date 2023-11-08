@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Criteria, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { Criteria } from '@elastic/eui';
 import {
     ServiceTicketDefinition,
     ServiceTicketProcessState,
@@ -24,6 +24,7 @@ import {
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 import { ColorMappings, getColorForState } from '../../utils/getColorForState';
+import Link from 'next/link';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';
@@ -77,7 +78,7 @@ export const WfoServiceTicketsList = ({
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
             CIM_TICKETS_ENDPOINT,
-            'serviceTickets',
+            ['serviceTickets'],
             alwaysOnFilters,
         );
 
@@ -93,10 +94,8 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_JIRA_ID,
             name: t('jiraTicketId'),
             width: '100',
-            render: (value) => (
-                <EuiFlexGroup>
-                    <EuiFlexItem>{value}</EuiFlexItem>
-                </EuiFlexGroup>
+            render: (value, object) => (
+                <Link href={`/service-tickets/${object._id}`}>{value}</Link>
             ),
             sortable: true,
         },
@@ -188,26 +187,28 @@ export const WfoServiceTicketsList = ({
         };
     };
 
-    const sortedData = data?.sort((a, b) => {
-        const aValue = a[dataSorting.field];
-        const bValue = b[dataSorting.field];
-        if (aValue === bValue) {
-            return 0;
-        }
-        if (aValue === null || aValue === undefined) {
-            return 1;
-        }
-        if (bValue === null || bValue === undefined) {
-            return -1;
-        }
-        return aValue > bValue
-            ? dataSorting.sortOrder === SortOrder.ASC
-                ? 1
-                : -1
-            : dataSorting.sortOrder === SortOrder.ASC
-            ? -1
-            : 1;
-    });
+    const sortedData = data?.sort(
+        (a: ServiceTicketDefinition, b: ServiceTicketDefinition) => {
+            const aValue = a[dataSorting.field];
+            const bValue = b[dataSorting.field];
+            if (aValue === bValue) {
+                return 0;
+            }
+            if (aValue === null || aValue === undefined) {
+                return 1;
+            }
+            if (bValue === null || bValue === undefined) {
+                return -1;
+            }
+            return aValue > bValue
+                ? dataSorting.sortOrder === SortOrder.ASC
+                    ? 1
+                    : -1
+                : dataSorting.sortOrder === SortOrder.ASC
+                ? -1
+                : 1;
+        },
+    );
 
     const { pageOfItems, totalItemCount } = paginateServiceTickets(
         sortedData ? sortedData : [],

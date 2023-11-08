@@ -53,6 +53,7 @@ export enum ServiceTicketTransition {
 }
 
 export type ServiceTicketDefinition = {
+    _id?: string;
     statusColorField?: string;
     jira_ticket_id: string;
     opened_by: string;

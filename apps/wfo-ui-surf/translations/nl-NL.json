@@ -13,7 +13,14 @@
                 "completed": "Completed"
             },
             "newServiceTicket": "New Service Ticket",
-            "serviceTicketPageTitle": "Service Tickets"
+            "serviceTicketPageTitle": "Service Tickets",
+            "detail": {
+                "tabs": {
+                    "general": "General",
+                    "notificationLog": "Notification Log",
+                    "sentEmails": "Sent Emails"
+                }
+            }
         }
     }
 }
