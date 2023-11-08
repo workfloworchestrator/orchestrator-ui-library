@@ -11,14 +11,12 @@ import {
     FilterQuery,
     getSortDirectionFromString,
     parseDateToLocaleDateTimeString,
-    parseIsoString,
     SortOrder,
     TableColumnKeys,
     useFilterQueryWithRest,
     useOrchestratorTheme,
     WfoBasicTable,
     WfoDataSorting,
-    WfoDateTime,
     WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
@@ -123,16 +121,16 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_START_DATE,
             name: t('startDate'),
             width: '150',
-            render: (date) => <WfoDateTime dateOrIsoString={date} />,
-            renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
-            clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
+            render: (date) => (
+                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
+            ),
         },
         create_date: {
             field: SERVICE_TICKET_FIELD_CREATE_DATE,
             name: t('createDate'),
             width: '150',
             render: (date: string) => (
-                <span>{new Date(date).toLocaleDateString()}</span>
+                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
             ),
         },
         last_update_time: {
@@ -140,7 +138,7 @@ export const WfoServiceTicketsList = ({
             name: t('lastUpdateTime'),
             width: '150',
             render: (date: string) => (
-                <span>{new Date(date).toLocaleString()}</span>
+                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
             ),
         },
     };

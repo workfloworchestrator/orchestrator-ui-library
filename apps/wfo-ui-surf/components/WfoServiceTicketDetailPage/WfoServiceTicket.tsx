@@ -13,7 +13,8 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import { ServiceTicketTabIds, tabs } from './utils';
-import { ServiceTicketDefinition } from '../../types';
+import { ServiceTicketWithDetails } from '../../types';
+import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
@@ -29,7 +30,7 @@ export const WfoServiceTicket = ({
     );
 
     const { data, isFetching } =
-        useFilterQueryWithRest<ServiceTicketDefinition>(
+        useFilterQueryWithRest<ServiceTicketWithDetails>(
             CIM_TICKETS_ENDPOINT + '/' + serviceTicketId,
             ['serviceTickets', serviceTicketId],
         );
@@ -62,20 +63,18 @@ export const WfoServiceTicket = ({
                         >
                             <EuiFlexItem grow={true}>
                                 <EuiText>
-                                    <h2>{data.jira_ticket_id}</h2>
-                                    {/*<h2>tosadadasds</h2>*/}
-                                </EuiText>
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiText>
-                                    <h2>{data.process_state}</h2>
-                                    {/*<h2>fdfdfdf</h2>*/}
+                                    <h2>{data.title_nl}</h2>
                                 </EuiText>
                             </EuiFlexItem>
                         </EuiFlexGroup>
                         <>
                             <EuiTabs>{renderTabs()}</EuiTabs>
                         </>
+                        {selectedTabId === ServiceTicketTabIds.GENERAL_TAB && (
+                            <WfoServiceTicketGeneral
+                                serviceTicketGeneral={data}
+                            />
+                        )}
                     </>
                 ))}
         </>

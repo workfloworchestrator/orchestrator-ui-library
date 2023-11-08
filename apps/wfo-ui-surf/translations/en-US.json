@@ -18,7 +18,24 @@
                 "tabs": {
                     "general": "General",
                     "notificationLog": "Notification Log",
-                    "sentEmails": "Sent Emails"
+                    "sentEmails": "Sent e-mails"
+                },
+                "tabDetails": {
+                    "general": {
+                        "title": "Service ticket details",
+                        "serviceTicketId": "Service Ticket ID",
+                        "serviceTicketTitle": "Title",
+                        "jiraTicketId": "Jira ticket",
+                        "imsPlannedWork": "IMS Planned work",
+                        "titleNl": "Title",
+                        "processState": "State",
+                        "startDate": "Start time",
+                        "endDate": "End time",
+                        "openedBy": "Opened by",
+                        "createDate": "Created on",
+                        "lastUpdateTime": "Updated on",
+                        "type": "Type"
+                    }
                 }
             }
         }

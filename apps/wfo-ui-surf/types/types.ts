@@ -175,6 +175,7 @@ export interface EmailLog {
 }
 
 export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
+    ims_pw_id: string;
     end_date: string;
     last_update_time: string;
     type: ServiceTicketType;
