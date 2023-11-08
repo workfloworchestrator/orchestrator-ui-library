@@ -1,1 +1,19 @@
-{}
+{
+    "cim": {
+        "serviceTickets": {
+            "jiraTicketId": "Jira ticket",
+            "titleNl": "Title",
+            "processState": "State",
+            "startDate": "Start time",
+            "openedBy": "Opened by",
+            "createDate": "Created on",
+            "lastUpdateTime": "Updated on",
+            "tabs": {
+                "active": "Active",
+                "completed": "Completed"
+            },
+            "newServiceTicket": "New Service Ticket",
+            "serviceTicketPageTitle": "Service Tickets"
+        }
+    }
+}
