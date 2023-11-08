@@ -20,6 +20,6 @@
         "esbuild": "^0.14.10",
         "esbuild-jest": "^0.5.0",
         "jest": "^27.4.7",
-        "jest-watch-typeahead": "^1.0.0"
+        "jest-watch-typeahead": "^2.2.2"
     }
 }
