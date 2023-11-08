@@ -9,12 +9,14 @@ import type {
     WfoDataSearch,
 } from '../utils/columns';
 import {
+    WFO_STATUS_COLOR_FIELD,
     WfoTableControlColumnConfig,
     WfoTableDataColumnConfig,
 } from '../utils/columns';
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './styles';
 import { SortOrder } from '../../../types';
+import { WfoStatusColorField } from './WfoStatusColorField';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
@@ -37,6 +39,7 @@ export type WfoBasicTableProps<T> = {
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
+    getStatusColorForRow?: (row: T) => string;
 };
 
 export const WfoBasicTable = <T,>({
@@ -49,16 +52,41 @@ export const WfoBasicTable = <T,>({
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
+    getStatusColorForRow,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle } = getStyles(theme);
+    const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
+
+    const statusColorColumn: WfoTableControlColumnConfig<T> = {
+        statusColorField: {
+            field: WFO_STATUS_COLOR_FIELD,
+            name: '',
+            width: theme.size.xs,
+            render: (_, row) =>
+                getStatusColorForRow ? (
+                    <WfoStatusColorField color={getStatusColorForRow(row)} />
+                ) : (
+                    <></>
+                ),
+        },
+    };
+
+    const allTableColumns:
+        | WfoBasicTableColumnsWithControlColumns<T>
+        | WfoBasicTableColumns<T> = getStatusColorForRow
+        ? { ...statusColorColumn, ...columns }
+        : { ...columns };
+
+    const tableStyling = getStatusColorForRow
+        ? [basicTableStyle, getStatusColumnStyle(1)]
+        : basicTableStyle;
 
     return (
         <EuiBasicTable
-            css={basicTableStyle}
+            css={tableStyling}
             items={data}
             columns={mapWfoTableColumnsToEuiColumns(
-                columns,
+                allTableColumns,
                 hiddenColumns,
                 dataSorting,
                 onUpdateDataSorting,

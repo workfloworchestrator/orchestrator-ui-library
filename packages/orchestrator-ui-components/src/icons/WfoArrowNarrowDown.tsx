@@ -12,6 +12,7 @@ export const WfoArrowNarrowDown: FC<WfoIconProps> = ({
         viewBox="0 0 16 20"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
+        className="wfoArrowNarrowIcon"
     >
         <title>icon/arrow-narrow-down</title>
         <g

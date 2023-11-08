@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
-import { ItemsList } from '../types';
+import { GraphqlFilter, ItemsList } from '../types';
 
 async function getFavouriteSubscriptions(apiUrl: string) {
     const response = await fetch(apiUrl + '/subscriptions/?range=10%2C15');
@@ -86,5 +86,39 @@ export const useCacheNames = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     return useQuery(['cacheNames'], () =>
         getCacheNames(orchestratorApiBaseUrl),
+    );
+};
+
+const filterDataByCriteria = <Type>(
+    data: Type[],
+    filterCriteria: GraphqlFilter<Type>[],
+): Type[] => {
+    return data.filter((item) => {
+        return filterCriteria.some((filter) => {
+            return item[filter.field] === filter.value;
+        });
+    });
+};
+
+export const useFilterQueryWithRest = <Type>(
+    endpoint: string,
+    queryKey: string,
+    filters?: GraphqlFilter<Type>[],
+    refetchInterval?: number,
+) => {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+
+    const fetchFromApi = async () => {
+        const response = await fetch(orchestratorApiBaseUrl + endpoint);
+        const data = (await response.json()) as Type[];
+        return filters ? filterDataByCriteria(data, filters) : data;
+    };
+
+    return useQuery<Type[]>(
+        filters ? [queryKey, { filters }] : [queryKey],
+        fetchFromApi,
+        {
+            refetchInterval,
+        },
     );
 };

@@ -22,6 +22,19 @@ export const getStyles = (theme: EuiThemeComputed) => {
         },
     });
 
+    const getStatusColumnStyle = (columnNumber: number) =>
+        css({
+            [`tbody tr td:nth-child(${columnNumber}) .euiTableCellContent`]: {
+                padding: 0,
+                '.euiTableCellContent__text': {
+                    flex: 1,
+                    '> *': {
+                        paddingBlock: theme.base * 1.25,
+                    },
+                },
+            },
+        });
+
     const headerCellContentStyle = css({
         fontWeight: theme.font.weight.semiBold,
     });
@@ -55,5 +68,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
         getHeaderCellButtonStyle,
+        getStatusColumnStyle,
     };
 };
