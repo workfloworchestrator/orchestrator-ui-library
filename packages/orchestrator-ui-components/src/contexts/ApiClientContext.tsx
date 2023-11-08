@@ -1,14 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
-import { DEFAULT_ORCHESTRATOR_API_BASE_URL } from '../configuration';
 
 interface ApiContext {
     apiClient: ApiClient;
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient(DEFAULT_ORCHESTRATOR_API_BASE_URL),
+    apiClient: getApiClient('https://orchestrator.dev.automation.surf.net/api'),
 });
 
 export type ApiClientContextProviderProps = {
