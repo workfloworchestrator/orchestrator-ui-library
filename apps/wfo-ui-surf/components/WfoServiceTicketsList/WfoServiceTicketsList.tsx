@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Comparators,
-    Criteria,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiTableSortingType,
-} from '@elastic/eui';
+import { Criteria, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import {
     ServiceTicketDefinition,
     ServiceTicketProcessState,
@@ -13,6 +7,7 @@ import {
 import { useTranslations } from 'next-intl';
 import {
     DataDisplayParams,
+    DEFAULT_PAGE_SIZES,
     FilterQuery,
     getSortDirectionFromString,
     parseDateToLocaleDateTimeString,
@@ -78,11 +73,13 @@ export const WfoServiceTicketsList = ({
     });
 
     const t = useTranslations('cim.serviceTickets');
-    const { data, isFetching } = useFilterQueryWithRest(
-        CIM_TICKETS_ENDPOINT,
-        'serviceTickets',
-        alwaysOnFilters,
-    );
+
+    const { data, isFetching } =
+        useFilterQueryWithRest<ServiceTicketDefinition>(
+            CIM_TICKETS_ENDPOINT,
+            'serviceTickets',
+            alwaysOnFilters,
+        );
 
     const serviceTicketColorMappings: ColorMappings = {
         [theme.colors.success]: [OPEN, NEW],
@@ -96,7 +93,6 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_JIRA_ID,
             name: t('jiraTicketId'),
             width: '100',
-            //Todo: Fix styling and add color according to State
             render: (value) => (
                 <EuiFlexGroup>
                     <EuiFlexItem>{value}</EuiFlexItem>
@@ -171,33 +167,17 @@ export const WfoServiceTicketsList = ({
         }
     };
 
-    // Manually handle sorting and pagination of data
-    const findServiceTickets = (
+    const paginateServiceTickets = (
         serviceTickets: ServiceTicketDefinition[],
         pageIndex: number,
         pageSize: number,
-        sortField: keyof ServiceTicketDefinition,
-        sortDirection: 'asc' | 'desc',
     ) => {
-        let items;
-        if (sortField) {
-            items = serviceTickets
-                .slice(0)
-                .sort(
-                    Comparators.property(
-                        sortField,
-                        Comparators.default(sortDirection),
-                    ),
-                );
-        } else {
-            items = serviceTickets;
-        }
         let pageOfItems;
         if (!pageIndex && !pageSize) {
-            pageOfItems = items;
+            pageOfItems = serviceTickets;
         } else {
             const startIndex = pageIndex * pageSize;
-            pageOfItems = items.slice(
+            pageOfItems = serviceTickets.slice(
                 startIndex,
                 Math.min(startIndex + pageSize, serviceTickets.length),
             );
@@ -208,40 +188,54 @@ export const WfoServiceTicketsList = ({
         };
     };
 
-    const { pageOfItems, totalItemCount } = findServiceTickets(
-        data ? data : [],
+    const sortedData = data?.sort((a, b) => {
+        const aValue = a[dataSorting.field];
+        const bValue = b[dataSorting.field];
+        if (aValue === bValue) {
+            return 0;
+        }
+        if (aValue === null || aValue === undefined) {
+            return 1;
+        }
+        if (bValue === null || bValue === undefined) {
+            return -1;
+        }
+        return aValue > bValue
+            ? dataSorting.sortOrder === SortOrder.ASC
+                ? 1
+                : -1
+            : dataSorting.sortOrder === SortOrder.ASC
+            ? -1
+            : 1;
+    });
+
+    const { pageOfItems, totalItemCount } = paginateServiceTickets(
+        sortedData ? sortedData : [],
         pageIndex,
         pageSize,
-        dataSorting.field,
-        dataSorting.sortOrder.toLowerCase() as 'asc' | 'desc',
     );
+
     const pagination = {
         pageIndex: pageIndex,
         pageSize: pageSize,
         totalItemCount: totalItemCount,
-        pageSizeOptions: [5, 10, 20],
-    };
-    const sorting: EuiTableSortingType<ServiceTicketDefinition> = {
-        sort: {
-            field: dataSorting.field,
-            direction: dataSorting.sortOrder.toLowerCase() as 'asc' | 'desc',
-        },
-        enableAllColumns: true,
-        readOnly: false,
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
     };
 
     return (
         <WfoBasicTable
-            data={pageOfItems}
+            data={pageOfItems ? pageOfItems : []}
             isLoading={isFetching}
             columns={tableColumns}
             pagination={pagination}
-            sorting={sorting}
             onCriteriaChange={onCriteriaChange}
             dataSorting={dataSorting}
             getStatusColorForRow={(row) =>
                 getColorForState(serviceTicketColorMappings, row.process_state)
             }
+            onUpdateDataSorting={(currentSort) => {
+                setDataSorting(currentSort);
+            }}
         />
     );
 };

@@ -1,10 +1,5 @@
 import React, { ReactNode } from 'react';
-import {
-    EuiBasicTable,
-    EuiBasicTableColumn,
-    Pagination,
-    tint,
-} from '@elastic/eui';
+import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 
@@ -21,7 +16,7 @@ import {
 import { useOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './styles';
 import { SortOrder } from '../../../types';
-import { EuiTableSortingType } from '@elastic/eui/src/components/basic_table/table_types';
+import { WfoStatusColorField } from './WfoStatusColorField';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
@@ -44,7 +39,6 @@ export type WfoBasicTableProps<T> = {
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
-    sorting?: EuiTableSortingType<T>;
     getStatusColorForRow?: (row: T) => string;
 };
 
@@ -58,59 +52,46 @@ export const WfoBasicTable = <T,>({
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
-    sorting,
     getStatusColorForRow,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
 
-    const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
-
-    const test: WfoTableControlColumnConfig<T> = {
-        status_color_field: {
+    const statusColorColumn: WfoTableControlColumnConfig<T> = {
+        statusColorField: {
             field: WFO_STATUS_COLOR_FIELD,
             name: '',
-            width: '8',
-            render: (_, row) => {
-                const color = getStatusColorForRow?.(row);
-                return (
-                    <>
-                        {color ? (
-                            <div
-                                css={{
-                                    backgroundColor:
-                                        toStatusColorFieldColor(color),
-                                    height: '100%',
-                                    width: '100%',
-                                }}
-                            ></div>
-                        ) : null}
-                    </>
-                    // <WfoStatusColorField
-                    //     colorMappings={serviceTicketColorMappings}
-                    //     state={object.process_state}
-                    // />
-                );
-            },
+            width: theme.size.xs,
+            render: (_, row) =>
+                getStatusColorForRow ? (
+                    <WfoStatusColorField color={getStatusColorForRow(row)} />
+                ) : (
+                    <></>
+                ),
         },
     };
 
-    const newColumns:
+    const allTableColumns:
         | WfoBasicTableColumnsWithControlColumns<T>
-        | WfoBasicTableColumns<T> = { ...test, ...columns };
+        | WfoBasicTableColumns<T> = getStatusColorForRow
+        ? { ...statusColorColumn, ...columns }
+        : { ...columns };
+
+    const tableStyling = getStatusColorForRow
+        ? [basicTableStyle, getStatusColumnStyle(1)]
+        : basicTableStyle;
 
     return (
         <EuiBasicTable
-            css={[basicTableStyle, getStatusColumnStyle(1)]}
+            css={tableStyling}
             items={data}
             columns={mapWfoTableColumnsToEuiColumns(
-                newColumns,
+                allTableColumns,
                 hiddenColumns,
                 dataSorting,
                 onUpdateDataSorting,
                 onDataSearch,
             )}
-            sorting={sorting}
             pagination={pagination}
             onChange={onCriteriaChange}
             loading={isLoading}

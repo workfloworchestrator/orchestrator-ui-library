@@ -110,11 +110,11 @@ export const useFilterQueryWithRest = <Type>(
 
     const fetchFromApi = async () => {
         const response = await fetch(orchestratorApiBaseUrl + endpoint);
-        const data = await response.json();
+        const data = (await response.json()) as Type[];
         return filters ? filterDataByCriteria(data, filters) : data;
     };
 
-    return useQuery(
+    return useQuery<Type[]>(
         filters ? [queryKey, { filters }] : [queryKey],
         fetchFromApi,
         {
