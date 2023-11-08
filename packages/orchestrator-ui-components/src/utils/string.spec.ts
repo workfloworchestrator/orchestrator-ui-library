@@ -1,4 +1,4 @@
-import { removeSuffix, upperCaseFirstChar } from './strings';
+import { camelToHuman, removeSuffix, upperCaseFirstChar } from './strings';
 
 describe('upperCaseFirstChar()', () => {
     it("Doesn't crash on an empty string but returns empty string", () => {
@@ -43,5 +43,28 @@ describe('removeSuffix()', () => {
     it('Works ok for strings without splitChar', () => {
         const result = removeSuffix('a=b');
         expect(result).toEqual('a=b');
+    });
+});
+
+describe('camelToHuman()', () => {
+    it("Doesn't crash on an empty string but returns empty string", () => {
+        const result = camelToHuman('');
+        expect(result).toEqual('');
+    });
+    it('Works ok for lowercase strings with length 1', () => {
+        const result = camelToHuman('a');
+        expect(result).toEqual('A');
+    });
+    it('Works ok for uppercase strings with length 1', () => {
+        const result = camelToHuman('A');
+        expect(result).toEqual('A');
+    });
+    it('Works ok for strings starting with an lowercase char', () => {
+        const result = camelToHuman('aQuickBrownFox');
+        expect(result).toEqual('A Quick Brown Fox');
+    });
+    it('Works ok for strings starting with an uppercase char', () => {
+        const result = camelToHuman('AQuickBrownFox');
+        expect(result).toEqual('A Quick Brown Fox');
     });
 });

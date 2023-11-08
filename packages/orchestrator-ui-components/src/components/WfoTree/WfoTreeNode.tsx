@@ -14,7 +14,7 @@ import { useOrchestratorTheme } from '../../hooks';
 type Item = {
     id: number;
     icon: string;
-    label: string | number;
+    label: string | number | boolean;
 };
 
 type WfoTreeNodeProps = {

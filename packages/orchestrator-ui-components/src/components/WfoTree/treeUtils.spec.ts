@@ -6,39 +6,47 @@ describe('getWfoTreeNodeDepth', () => {
     const sampleTree: TreeBlock = {
         id: 1,
         ownerSubscriptionId: 'subscription-1',
+        subscriptionInstanceId: 'subscription-1',
         parent: null,
         icon: 'folder',
         label: 'Root',
         callback: jest.fn(),
         productBlockInstanceValues: [field],
+        inUseByRelations: [],
         children: [
             {
                 id: 2,
                 ownerSubscriptionId: 'subscription-2',
+                subscriptionInstanceId: 'subscription-2',
                 parent: 1,
                 icon: 'file',
                 label: 'File 1',
                 callback: jest.fn(),
                 productBlockInstanceValues: [field],
+                inUseByRelations: [],
                 children: [],
             },
             {
                 id: 3,
                 ownerSubscriptionId: 'subscription-3',
+                subscriptionInstanceId: 'subscription-3',
                 parent: 1,
                 icon: 'file',
                 label: 'File 2',
                 callback: jest.fn(),
                 productBlockInstanceValues: [field],
+                inUseByRelations: [],
                 children: [
                     {
                         id: 4,
                         ownerSubscriptionId: 'subscription-4',
+                        subscriptionInstanceId: 'subscription-4',
                         parent: 3,
                         icon: 'file',
                         label: 'File 2.1',
                         callback: jest.fn(),
                         productBlockInstanceValues: [field],
+                        inUseByRelations: [],
                         children: [],
                     },
                 ],
@@ -75,11 +83,13 @@ describe('getWfoTreeNodeDepth', () => {
         const invalidNode = {
             id: 1,
             ownerSubscriptionId: 'subscription-1',
+            subscriptionInstanceId: 'subscription-1',
             parent: 99, // Parent ID that does not exist
             icon: 'file',
             label: 'Invalid Node',
             callback: jest.fn(),
             productBlockInstanceValues: [field],
+            inUseByRelations: [],
             children: [],
         };
 

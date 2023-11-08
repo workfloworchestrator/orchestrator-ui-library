@@ -52,7 +52,6 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
             </EuiTab>
         ));
 
-    // Todo #97: Find out if pre fetch can be used again. The shape of table cache seems to have changed
     const subscriptionResult =
         data && data.subscriptions && data.subscriptions.page;
     const subscriptionDetail = subscriptionResult

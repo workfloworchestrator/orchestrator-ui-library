@@ -80,7 +80,7 @@ export const WfoSubscriptionDetailTree = ({
             }
         }
 
-        // Add an entry for this node to the map so that any future children can lookup the parent
+        // Add an entry for this node to the map so that any future children can look up the parent
         idToNodeMap[shallowCopy.id] = shallowCopy;
     });
 
@@ -132,15 +132,22 @@ export const WfoSubscriptionDetailTree = ({
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
-                        selectedIds.reverse().map((id, index) => {
+                        selectedIds.map((id, index) => {
+                            const block =
+                                productBlockInstances[selectedIds[index]];
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}
-                                    productBlockInstanceValues={
-                                        productBlockInstances[
-                                            selectedIds[index]
-                                        ].productBlockInstanceValues
+                                    ownerSubscriptionId={
+                                        block.ownerSubscriptionId
                                     }
+                                    subscriptionInstanceId={
+                                        block.subscriptionInstanceId
+                                    }
+                                    productBlockInstanceValues={
+                                        block.productBlockInstanceValues
+                                    }
+                                    inUseByRelations={block.inUseByRelations}
                                     id={id}
                                 />
                             );

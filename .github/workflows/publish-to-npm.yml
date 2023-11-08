@@ -3,7 +3,7 @@ on:
     workflow_dispatch:
     push:
         branches:
-            - "main"
+            - 'main'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -23,11 +23,11 @@ jobs:
                   key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
             - name: Create .npmrc file with the NPM token
               run: |
-                cat << EOF > "$HOME/.npmrc"
-                  //registry.npmjs.org/:_authToken=$NPM_TOKEN
-                EOF
+                  cat << EOF > "$HOME/.npmrc"
+                    //registry.npmjs.org/:_authToken=$NPM_TOKEN
+                  EOF
               env:
-                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Installing dependencies
               run: yarn install --frozen-lockfile
             - name: Create Release Pull Request or Publish

@@ -42,6 +42,7 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     parent
                     productBlockInstanceValues
                     subscriptionInstanceId
+                    inUseByRelations
                 }
                 processes(sortBy: { field: "startedAt", order: ASC }) {
                     page {
