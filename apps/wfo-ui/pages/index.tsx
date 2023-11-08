@@ -5,11 +5,14 @@ import {
     WfoNewProcessPanel,
     WfoStatCards,
 } from '@orchestrator-ui/orchestrator-ui-components';
+import { useSession } from 'next-auth/react';
 
 export function Index() {
+    const { data: session } = useSession();
+    const username = session?.user?.name || '';
     return (
         <>
-            <EuiPageHeader pageTitle="Goodmorning Hans" />
+            <EuiPageHeader pageTitle={`Goodmorning ${username}`} />
             <EuiSpacer />
             <WfoNewProcessPanel />
             <EuiSpacer />

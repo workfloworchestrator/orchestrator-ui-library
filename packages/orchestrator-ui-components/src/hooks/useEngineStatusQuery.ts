@@ -1,6 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useContext } from 'react';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+import { useQueryWithFetch } from './useQueryWithFetch';
+import { useSessionWithToken } from './useSessionWithToken';
 
 export type GlobalStatus = 'RUNNING' | 'PAUSED' | 'PAUSING';
 export interface EngineStatus {
@@ -15,20 +17,26 @@ interface EngineStatusPayload {
 
 export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
-
-    const fetchEngineStatus = async () => {
-        const response = await fetch(engineStatusEndpoint, {
-            method: 'GET',
-        });
-        return (await response.json()) as EngineStatus;
-    };
-
-    return useQuery('engineStatus', fetchEngineStatus);
+    return useQueryWithFetch<EngineStatus, Record<string, never>>(
+        engineStatusEndpoint,
+        {},
+        'engineStatus',
+    );
 };
 
 export const useEngineStatusMutation = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
     const queryClient = useQueryClient();
+    const { session } = useSessionWithToken();
+    let requestHeaders = {};
+
+    if (session) {
+        const { accessToken } = session;
+
+        requestHeaders = {
+            Authorization: `Bearer ${accessToken}`,
+        };
+    }
 
     const setEngineStatus = async (data: EngineStatusPayload) => {
         const response = await fetch(engineStatusEndpoint, {
@@ -36,6 +44,7 @@ export const useEngineStatusMutation = () => {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                ...requestHeaders,
             },
         });
         return (await response.json()) as EngineStatus;

@@ -15,3 +15,4 @@ export * from './WfoToastsList';
 export * from './WfoForms';
 export * from './WfoStartTaskButtonComboBox';
 export * from './WfoDateTime';
+export * from './WfoAuth';

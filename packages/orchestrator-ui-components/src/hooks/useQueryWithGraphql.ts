@@ -3,6 +3,7 @@ import { GraphQLClient } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { Variables } from 'graphql-request/build/cjs/types';
+import { useSessionWithToken } from './useSessionWithToken';
 
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
@@ -14,13 +15,17 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
+    const { session } = useSessionWithToken();
+    const requestHeaders = {
+        authorization: session ? `Bearer ${session.accessToken}` : '',
+    };
 
     const fetchFromGraphql = async () =>
         // TS-Ignore because queryVars does not seem to be accepted by the client
         // The props in this useQueryWithGraphql-hook ensures queryVars is indeed related to the query
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        await graphQLClient.request(query, queryVars);
+        await graphQLClient.request(query, queryVars, requestHeaders);
 
     return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql, {
         refetchInterval,

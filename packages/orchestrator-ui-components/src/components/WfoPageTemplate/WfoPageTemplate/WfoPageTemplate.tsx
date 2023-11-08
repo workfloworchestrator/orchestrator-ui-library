@@ -5,6 +5,7 @@ import { WfoSidebar } from '../WfoSidebar';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
+import { signOut } from 'next-auth/react';
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -29,9 +30,10 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
-                handleLogoutClick={() =>
-                    setIsSideMenuVisible(!isSideMenuVisible)
+                handleSideMenuClick={() =>
+                    setIsSideMenuVisible((prevState) => !prevState)
                 }
+                handleLogoutClick={signOut}
             />
 
             {/* Sidebar and content area */}

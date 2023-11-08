@@ -12,6 +12,7 @@ import {
     ToastsContextProvider,
     ToastsList,
     WfoPageTemplate,
+    WfoAuth,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -24,6 +25,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
 import { useRouter } from 'next/router';
+import { SessionProvider } from 'next-auth/react';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 import { PATH_SERVICE_TICKETS } from '../constants-surf';
@@ -65,50 +67,67 @@ function CustomApp({
     ];
 
     return (
-        <NoSSR>
-            <TranslationsProvider>
-                <EuiProvider
-                    colorMode="light"
-                    modify={defaultOrchestratorTheme}
-                >
-                    <ApiClientContextProvider basePath={orchestratorApiBaseUrl}>
-                        <Head>
-                            <title>Welcome to example-orchestrator-ui!</title>
-                        </Head>
-                        <main className="app">
-                            <OrchestratorConfigProvider
-                                initialOrchestratorConfig={orchestratorConfig}
+        <SessionProvider session={pageProps.session}>
+            <WfoAuth>
+                <NoSSR>
+                    <TranslationsProvider>
+                        <EuiProvider
+                            colorMode="light"
+                            modify={defaultOrchestratorTheme}
+                        >
+                            <ApiClientContextProvider
+                                basePath={orchestratorApiBaseUrl}
                             >
-                                <QueryClientProvider
-                                    client={queryClient}
-                                    contextSharing={true}
-                                >
-                                    <ToastsContextProvider>
-                                        <WfoPageTemplate
-                                            getAppLogo={getAppLogo}
-                                            overrideMenuItems={getMenuItems}
+                                <Head>
+                                    <title>
+                                        Welcome to example-orchestrator-ui!
+                                    </title>
+                                </Head>
+                                <main className="app">
+                                    <OrchestratorConfigProvider
+                                        initialOrchestratorConfig={
+                                            orchestratorConfig
+                                        }
+                                    >
+                                        <QueryClientProvider
+                                            client={queryClient}
+                                            contextSharing={true}
                                         >
-                                            <QueryParamProvider
-                                                adapter={NextAdapter}
-                                                options={{
-                                                    removeDefaultsFromUrl:
-                                                        false,
-                                                    enableBatching: true,
-                                                }}
-                                            >
-                                                <Component {...pageProps} />
-                                            </QueryParamProvider>
-                                        </WfoPageTemplate>
-                                        <ToastsList />
-                                    </ToastsContextProvider>
-                                    <ReactQueryDevtools initialIsOpen={false} />
-                                </QueryClientProvider>
-                            </OrchestratorConfigProvider>
-                        </main>{' '}
-                    </ApiClientContextProvider>
-                </EuiProvider>
-            </TranslationsProvider>
-        </NoSSR>
+                                            <ToastsContextProvider>
+                                                <WfoPageTemplate
+                                                    getAppLogo={getAppLogo}
+                                                    overrideMenuItems={
+                                                        getMenuItems
+                                                    }
+                                                >
+                                                    <QueryParamProvider
+                                                        adapter={NextAdapter}
+                                                        options={{
+                                                            removeDefaultsFromUrl:
+                                                                false,
+                                                            enableBatching:
+                                                                true,
+                                                        }}
+                                                    >
+                                                        <Component
+                                                            {...pageProps}
+                                                        />
+                                                    </QueryParamProvider>
+                                                </WfoPageTemplate>
+                                                <ToastsList />
+                                            </ToastsContextProvider>
+                                            <ReactQueryDevtools
+                                                initialIsOpen={false}
+                                            />
+                                        </QueryClientProvider>
+                                    </OrchestratorConfigProvider>
+                                </main>
+                            </ApiClientContextProvider>
+                        </EuiProvider>
+                    </TranslationsProvider>
+                </NoSSR>
+            </WfoAuth>
+        </SessionProvider>
     );
 }
 
