@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 
 import { getProductNamesFromProcess } from '../../utils';
 import { useQueryWithGraphql } from '../../hooks';
@@ -15,7 +15,7 @@ import {
     convertStepsToGroupedSteps,
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
-import { Step } from '../../types';
+import { Step, ProcessDoneStatuses } from '../../types';
 import { OrchestratorConfigContext } from '../../contexts';
 
 export type GroupedStep = {
@@ -31,14 +31,27 @@ export const WfoProcessDetailPage = ({
 }: WfoProcessDetailPageProps) => {
     const { dataRefetchInterval } = useContext(OrchestratorConfigContext);
     const stepListRef = useRef<WfoStepListRef>(null);
+    const [fetchInterval, setFetchInterval] = useState<number | undefined>(
+        dataRefetchInterval.processDetail,
+    );
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
             processId,
         },
         'processDetail',
-        dataRefetchInterval.processDetail,
+        fetchInterval,
     );
+
+    useEffect(() => {
+        const lastStatus = data?.processes.page[0].lastStatus;
+        const isInProgress = !(
+            lastStatus && ProcessDoneStatuses.includes(lastStatus)
+        );
+        setFetchInterval(
+            isInProgress ? dataRefetchInterval.processDetail : undefined,
+        );
+    }, [data, dataRefetchInterval.processDetail]);
 
     const process = data?.processes.page[0];
     const steps = process?.steps ?? [];
@@ -65,6 +78,7 @@ export const WfoProcessDetailPage = ({
                 (process !== undefined && (
                     <WfoWorkflowStepList
                         ref={stepListRef}
+                        processId={process.processId}
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
                         )}

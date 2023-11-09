@@ -17,6 +17,7 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
                 stepId: 'step id',
                 executed: 'executed',
                 state: {},
+                stateDelta: {},
             },
         ],
         subscriptions: {

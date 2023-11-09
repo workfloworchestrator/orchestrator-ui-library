@@ -226,6 +226,11 @@ export enum ProcessStatus {
     COMPLETED = 'completed',
 }
 
+export const ProcessDoneStatuses = [
+    ProcessStatus.COMPLETED,
+    ProcessStatus.ABORTED,
+];
+
 export interface StepState {
     [index: string]: object | boolean | string | number | [];
 }
@@ -248,6 +253,7 @@ export interface Step {
     stepId: string; // sic backend
     executed: string;
     state: StepState;
+    stateDelta: StepState;
 }
 
 export interface WorkflowDefinition {

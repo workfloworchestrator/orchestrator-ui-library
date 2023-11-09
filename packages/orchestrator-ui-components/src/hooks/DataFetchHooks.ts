@@ -57,6 +57,16 @@ export const useRecentProcesses = () => {
     return isLoading ? initialData : { ...initialData, items: data || [] };
 };
 
+export const useRawProcessDetails = (processId: string) => {
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const url = `${orchestratorApiBaseUrl}/processes/${processId}`;
+    return useQueryWithFetch<object, Record<string, never>>(
+        url,
+        {},
+        'RawProcessDetails',
+    );
+};
+
 export const useCacheNames = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const url = `${orchestratorApiBaseUrl}/settings/cache-names`;

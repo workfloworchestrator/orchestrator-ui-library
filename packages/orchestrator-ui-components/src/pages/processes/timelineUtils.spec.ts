@@ -12,6 +12,9 @@ const baseStep: Step = {
     state: {
         testKey: 'testValue',
     },
+    stateDelta: {
+        testKey: 'testValue',
+    },
     status: StepStatus.SUCCESS,
     stepId: 'testStepId',
 };
