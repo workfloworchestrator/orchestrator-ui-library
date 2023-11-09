@@ -48,7 +48,7 @@ function CustomApp({
 }: AppProps & AppOwnProps) {
     const router = useRouter();
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-    const { orchestratorApiBaseUrl } = orchestratorConfig;
+    const { orchestratorApiBaseUrl, authActive } = orchestratorConfig;
 
     const getMenuItems = (
         defaultMenuItems: EuiSideNavItemType<object>[],
@@ -68,7 +68,7 @@ function CustomApp({
 
     return (
         <SessionProvider session={pageProps.session}>
-            <WfoAuth>
+            <WfoAuth isActive={authActive}>
                 <NoSSR>
                     <TranslationsProvider>
                         <EuiProvider

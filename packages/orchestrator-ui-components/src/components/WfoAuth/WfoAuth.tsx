@@ -3,12 +3,14 @@ import { useSession } from 'next-auth/react';
 import { WfoLoading } from '../WfoLoading';
 
 interface AuthProps {
+    isActive: boolean;
     children: JSX.Element;
 }
 
-export const WfoAuth = ({ children }: AuthProps): JSX.Element => {
+export const WfoAuth = ({ isActive, children }: AuthProps): JSX.Element => {
+    console.log(isActive);
     const { status } = useSession({
-        required: !!process.env.AUTH_ACTIVE || true,
+        required: isActive,
     });
 
     if (status === 'loading') {

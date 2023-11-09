@@ -16,6 +16,7 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     dataRefetchInterval: {
         processDetail: 0,
     },
+    authActive: true,
 });
 
 export type OrchestratorConfigProviderProps = {

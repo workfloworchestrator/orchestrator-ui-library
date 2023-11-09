@@ -16,6 +16,7 @@ export type OrchestratorConfig = {
     dataRefetchInterval: {
         processDetail: number;
     };
+    authActive: boolean;
 };
 
 export const useOrchestratorConfig = (

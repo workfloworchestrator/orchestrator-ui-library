@@ -45,11 +45,11 @@ function CustomApp({
     orchestratorConfig,
 }: AppProps & AppOwnProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-    const { orchestratorApiBaseUrl } = orchestratorConfig;
+    const { orchestratorApiBaseUrl, authActive } = orchestratorConfig;
 
     return (
         <SessionProvider session={pageProps.session}>
-            <WfoAuth>
+            <WfoAuth isActive={authActive}>
                 <NoSSR>
                     <TranslationsProvider>
                         <EuiProvider
