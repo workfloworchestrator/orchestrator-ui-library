@@ -36,6 +36,10 @@
                         "lastUpdateTime": "Updated on",
                         "type": "Type"
                     }
+                },
+                "buttons": {
+                    "abort": "Abort",
+                    "sendNewEmail": "Send new e-mail"
                 }
             }
         }
