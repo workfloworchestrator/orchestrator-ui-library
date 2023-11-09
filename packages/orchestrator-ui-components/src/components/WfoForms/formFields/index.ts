@@ -21,3 +21,6 @@ export * from './OrganisationField';
 export * from './ContactPersonNameField';
 export * from './ImsNodeIdField';
 export * from './LocationCodeField';
+export * from './VlanField';
+export * from './NestField';
+export * from './OptGroupField';

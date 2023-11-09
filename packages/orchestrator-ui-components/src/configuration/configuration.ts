@@ -2,9 +2,14 @@ import process from 'process';
 import { Environment, OrchestratorConfig } from '../hooks';
 import { getNumberValueFromEnvironmentVariable } from '../utils';
 
+// export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
+//    'http://localhost:8080/api/graphql';
+// export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
+
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
-    'http://localhost:8080/api/graphql';
-export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
+    'https://orchestrator.dev.automation.surf.net/api/graphql';
+export const DEFAULT_ORCHESTRATOR_API_BASE_URL =
+    'https://orchestrator.dev.automation.surf.net/api';
 
 export const ENGINE_STATUS_ENDPOINT = '/settings/status';
 export const PROCESS_STATUS_COUNTS_ENDPOINT = '/processes/status-counts';

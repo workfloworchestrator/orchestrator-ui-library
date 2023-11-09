@@ -12,16 +12,16 @@
  * limitations under the License.
  *
  */
-
+import React from 'react';
 import {
     EuiDescribedFormGroup,
     EuiFlexGroup,
     EuiFlexItem,
     EuiText,
 } from '@elastic/eui';
-import React from 'react';
 import { connectField, filterDOMProps, joinName } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
+
 import { FieldProps } from './types';
 
 export type NestFieldProps = FieldProps<
@@ -32,9 +32,11 @@ export type NestFieldProps = FieldProps<
 declare module 'uniforms' {
     interface FilterDOMProps {
         properties: never;
+        wrap: never;
+        ref: never;
     }
 }
-filterDOMProps.register('properties');
+filterDOMProps.register('properties', 'wrap');
 
 function Nest({
     children,
@@ -53,7 +55,6 @@ function Nest({
 
     if (isInList) {
         return (
-            // @ts-ignore
             <EuiFlexGroup
                 {...filterDOMProps(props)}
                 className={`${className} nest-field`}
