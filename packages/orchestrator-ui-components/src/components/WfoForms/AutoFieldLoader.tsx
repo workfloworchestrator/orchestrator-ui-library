@@ -16,11 +16,12 @@ import {
     ContactPersonNameField,
     ImsNodeIdField,
     LocationCodeField,
+    VlanField,
+    NestField,
+    OptGroupField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
-import { NestField } from './formFields/NestField';
-import { OptGroupField } from './formFields/OptGroupField';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -69,9 +70,12 @@ export function autoFieldFunction(
                     return LocationCodeField;
                 case 'contactPersonName': // Surf specific
                     return ContactPersonNameField;
+                case 'vlan': // Surf specific
+                    return VlanField;
             }
             break;
     }
+
     if (allowedValues && format !== 'accept') {
         return checkboxes && fieldType !== Array ? RadioField : SelectField;
     } else {

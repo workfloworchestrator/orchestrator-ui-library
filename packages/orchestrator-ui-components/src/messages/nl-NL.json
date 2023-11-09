@@ -56,6 +56,20 @@
             },
             "select": {
                 "placeholder": "Placeholder"
+            },
+            "vlan": {
+                "vlansInUseError": "VLAN range {vlans} is al in gebruik door geslecteerde service port",
+                "vlansInUse": "VLAN ranges in gebruik bij deze service port: {vlans}",
+                "missingInIms": "Service port niet gevonden in IMS. De poort is mogelijk verwijder of in initial state.",
+                "nsiVlansAvailable": "Beschikbare NSI VLAN ranges voor deze service port: {vlans}",
+                "nsiNoPortsAvailable": "Deze service port heeft (nog) geen beschikbare NSI reserved VLANs.",
+                "allPortsAvailable": "Deze service port heeft (nog) geen VLANs in gebruik.",
+                "placeholder": "Voer een geldige VLAN range in...",
+                "placeholderNoServicePort": "Selecteer eerst een Service Port...",
+                "invalidVlan": "Invalid VLAN - Voer een range of geldige [2-4094] VLAN integers in, bijvoorbeeld: '2, 5-6, 1048-1052'",
+                "untaggedPortInUse": "Deze service port is al in gebruik en kan niet worden gekozen",
+                "taggedOnly": "VLAN is alleen relevant SN7, MSP of SN8 SP in tagged mode, niet voor link_member of untagged ports.",
+                "loadingIms": "VLAN informatie aan het laden uit IMS"
             }
         }
     },

@@ -45,3 +45,11 @@ export interface Option<Value = string> {
     value: Value;
     label: string;
 }
+
+export interface ServicePort {
+    subscription_id?: string;
+    vlan?: string;
+    bandwidth?: number;
+    nonremovable?: boolean;
+    modifiable?: boolean;
+}

@@ -11,14 +11,16 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
     queryKey: string,
-    refetchInterval?: number,
+    refetchInterval: number | false = false,
+    enabled: boolean = true,
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
-    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
     const { session } = useSessionWithToken();
     const requestHeaders = {
         authorization: session ? `Bearer ${session.accessToken}` : '',
     };
+
+    const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 
     const fetchFromGraphql = async () =>
         // TS-Ignore because queryVars does not seem to be accepted by the client
@@ -29,5 +31,6 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 
     return useQuery([queryKey, ...Object.values(queryVars)], fetchFromGraphql, {
         refetchInterval,
+        enabled,
     });
 };
