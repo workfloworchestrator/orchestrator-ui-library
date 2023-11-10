@@ -8,10 +8,13 @@ interface AuthProps {
 }
 
 export const WfoAuth = ({ children }: AuthProps): JSX.Element => {
-    const { authActive } = useContext(OrchestratorConfigContext);
+    // const { authActive } = useContext(OrchestratorConfigContext);
+    const orchestratorConfig = useContext(OrchestratorConfigContext);
     const { status } = useSession({
-        required: authActive,
+        required: orchestratorConfig.authActive,
     });
+
+    console.log('WfoAuth', { orchestratorConfig });
 
     if (status === 'loading') {
         return <WfoLoading />;
