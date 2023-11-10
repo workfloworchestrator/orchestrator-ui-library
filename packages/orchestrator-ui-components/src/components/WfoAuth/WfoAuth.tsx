@@ -1,16 +1,16 @@
-import React, { JSX } from 'react';
+import React, { JSX, useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import { WfoLoading } from '../WfoLoading';
+import { OrchestratorConfigContext } from '../../contexts';
 
 interface AuthProps {
-    isActive: boolean;
     children: JSX.Element;
 }
 
-export const WfoAuth = ({ isActive, children }: AuthProps): JSX.Element => {
-    console.log(isActive);
+export const WfoAuth = ({ children }: AuthProps): JSX.Element => {
+    const { authActive } = useContext(OrchestratorConfigContext);
     const { status } = useSession({
-        required: isActive,
+        required: authActive,
     });
 
     if (status === 'loading') {
