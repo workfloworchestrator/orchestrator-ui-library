@@ -26,15 +26,6 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
             ? `${process.env.ORCHESTRATOR_API_HOST}${process.env.ORCHESTRATOR_API_PATH}`
             : DEFAULT_ORCHESTRATOR_API_BASE_URL;
 
-    const authActiveEnvVar = process.env.AUTH_ACTIVE;
-    const authActive = authActiveEnvVar?.toLowerCase() != 'false';
-
-    console.log('getInitialOrchestratorConfig', {
-        authActiveEnvVar,
-        authActive,
-        processEnv: process.env,
-    });
-
     return {
         orchestratorApiBaseUrl,
         engineStatusEndpoint: orchestratorApiBaseUrl + ENGINE_STATUS_ENDPOINT,
@@ -53,7 +44,6 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
                 PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
             ),
         },
-        // authActive: process.env.AUTH_ACTIVE?.toLowerCase() != 'false',
-        authActive,
+        authActive: process.env.AUTH_ACTIVE?.toLowerCase() != 'false',
     };
 };

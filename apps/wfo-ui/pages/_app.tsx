@@ -112,12 +112,10 @@ CustomApp.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
     const ctx = await App.getInitialProps(context);
 
-    const toreturn = {
+    return {
         ...ctx,
         orchestratorConfig: getInitialOrchestratorConfig(),
     };
-    console.log('CustomApp.getInitialProps', toreturn);
-    return toreturn;
 };
 
 export default CustomApp;
