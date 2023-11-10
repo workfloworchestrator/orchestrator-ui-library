@@ -116,7 +116,7 @@ CustomApp.getInitialProps = async (
         ...ctx,
         orchestratorConfig: getInitialOrchestratorConfig(),
     };
-    console.log(toreturn);
+    console.log('CustomApp.getInitialProps', toreturn);
     return toreturn;
 };
 
