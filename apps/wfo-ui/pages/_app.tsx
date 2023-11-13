@@ -48,28 +48,26 @@ function CustomApp({
     const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     return (
-        <SessionProvider session={pageProps.session}>
-            <WfoAuth>
-                <NoSSR>
-                    <TranslationsProvider>
-                        <EuiProvider
-                            colorMode="light"
-                            modify={defaultOrchestratorTheme}
-                        >
-                            <ApiClientContextProvider
-                                basePath={orchestratorApiBaseUrl}
+        <OrchestratorConfigProvider
+            initialOrchestratorConfig={orchestratorConfig}
+        >
+            <SessionProvider session={pageProps.session}>
+                <WfoAuth>
+                    <NoSSR>
+                        <TranslationsProvider>
+                            <EuiProvider
+                                colorMode="light"
+                                modify={defaultOrchestratorTheme}
                             >
-                                <Head>
-                                    <title>
-                                        Welcome to example-orchestrator-ui!
-                                    </title>
-                                </Head>
-                                <main className="app">
-                                    <OrchestratorConfigProvider
-                                        initialOrchestratorConfig={
-                                            orchestratorConfig
-                                        }
-                                    >
+                                <ApiClientContextProvider
+                                    basePath={orchestratorApiBaseUrl}
+                                >
+                                    <Head>
+                                        <title>
+                                            Welcome to example-orchestrator-ui!
+                                        </title>
+                                    </Head>
+                                    <main className="app">
                                         <QueryClientProvider
                                             client={queryClient}
                                             contextSharing={true}
@@ -98,14 +96,14 @@ function CustomApp({
                                                 initialIsOpen={false}
                                             />
                                         </QueryClientProvider>
-                                    </OrchestratorConfigProvider>
-                                </main>
-                            </ApiClientContextProvider>
-                        </EuiProvider>
-                    </TranslationsProvider>
-                </NoSSR>
-            </WfoAuth>
-        </SessionProvider>
+                                    </main>
+                                </ApiClientContextProvider>
+                            </EuiProvider>
+                        </TranslationsProvider>
+                    </NoSSR>
+                </WfoAuth>
+            </SessionProvider>
+        </OrchestratorConfigProvider>
     );
 }
 
@@ -114,7 +112,10 @@ CustomApp.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
     const ctx = await App.getInitialProps(context);
 
-    return { ...ctx, orchestratorConfig: getInitialOrchestratorConfig() };
+    return {
+        ...ctx,
+        orchestratorConfig: getInitialOrchestratorConfig(),
+    };
 };
 
 export default CustomApp;
