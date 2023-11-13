@@ -45,7 +45,6 @@ function CustomApp({
     orchestratorConfig,
 }: AppProps & AppOwnProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-    const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     return (
         <OrchestratorConfigProvider
@@ -59,9 +58,7 @@ function CustomApp({
                                 colorMode="light"
                                 modify={defaultOrchestratorTheme}
                             >
-                                <ApiClientContextProvider
-                                    basePath={orchestratorApiBaseUrl}
-                                >
+                                <ApiClientContextProvider>
                                     <Head>
                                         <title>
                                             Welcome to example-orchestrator-ui!
