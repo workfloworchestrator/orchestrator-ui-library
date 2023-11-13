@@ -48,7 +48,6 @@ function CustomApp({
 }: AppProps & AppOwnProps) {
     const router = useRouter();
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-    const { orchestratorApiBaseUrl } = orchestratorConfig;
 
     const getMenuItems = (
         defaultMenuItems: EuiSideNavItemType<object>[],
@@ -78,9 +77,7 @@ function CustomApp({
                                 colorMode="light"
                                 modify={defaultOrchestratorTheme}
                             >
-                                <ApiClientContextProvider
-                                    basePath={orchestratorApiBaseUrl}
-                                >
+                                <ApiClientContextProvider>
                                     <Head>
                                         <title>
                                             Welcome to example-orchestrator-ui!
