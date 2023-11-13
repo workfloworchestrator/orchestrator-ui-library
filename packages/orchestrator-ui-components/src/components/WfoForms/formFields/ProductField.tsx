@@ -60,7 +60,8 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
         ) {
             mapping[product.productId] = product.name;
             return mapping;
-        }, {}) ?? {};
+        },
+        {}) ?? {};
 
     return (
         <SelectField

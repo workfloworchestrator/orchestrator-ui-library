@@ -1,8 +1,6 @@
-export const GRAPHQL_ENDPOINT_CORE =
-    'https://orchestrator.dev.automation.surf.net/api/graphql';
+export const GRAPHQL_ENDPOINT_CORE = `${process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_HOST}${process.env.NEXT_PUBLIC_ORCHESTRATOR_GRAPHQL_PATH}`;
 
-export const ORCHESTRATOR_API_BASE_URL =
-    'https://orchestrator.dev.automation.surf.net/api';
+export const ORCHESTRATOR_API_BASE_URL = `${process.env.NEXT_PUBLIC_ORCHESTRATOR_API_HOST}${process.env.NEXT_PUBLIC_ORCHESTRATOR_API_PATH}`;
 
 export const ENGINE_STATUS_ENDPOINT = `${ORCHESTRATOR_API_BASE_URL}/settings/status`;
 export const PROCESS_STATUS_COUNTS_ENDPOINT = `${ORCHESTRATOR_API_BASE_URL}/processes/status-counts`;

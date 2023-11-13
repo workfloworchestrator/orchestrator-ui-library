@@ -7,7 +7,7 @@ interface ApiContext {
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient('https://orchestrator.dev.automation.surf.net/api'),
+    apiClient: getApiClient(),
 });
 
 export type ApiClientContextProviderProps = {

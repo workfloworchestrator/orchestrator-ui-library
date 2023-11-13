@@ -140,6 +140,6 @@ export class ApiClient extends ApiClientInterface {
     };
 }
 
-export function getApiClient(apiEndPoint: string) {
+export function getApiClient(apiEndPoint: string = '') {
     return new ApiClient(apiEndPoint);
 }
