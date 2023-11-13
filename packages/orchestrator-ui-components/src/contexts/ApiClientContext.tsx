@@ -1,32 +1,26 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
+import { OrchestratorConfigContext } from './OrchestratorConfigContext';
+import { DEFAULT_ORCHESTRATOR_API_BASE_URL } from '../configuration';
 
 interface ApiContext {
     apiClient: ApiClient;
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient('https://orchestrator.dev.automation.surf.net/api'),
+    apiClient: getApiClient(DEFAULT_ORCHESTRATOR_API_BASE_URL),
 });
 
 export type ApiClientContextProviderProps = {
-    basePath: string;
     children: ReactNode;
 };
 
 export const ApiClientContextProvider = ({
-    basePath,
     children,
 }: ApiClientContextProviderProps) => {
-    const [apiPath, setApiPath] = useState<string>(basePath);
-    const apiClient = getApiClient(apiPath);
-
-    useEffect(() => {
-        if (basePath) {
-            setApiPath(basePath);
-        }
-    }, [basePath]);
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const apiClient = getApiClient(orchestratorApiBaseUrl);
 
     return (
         <ApiClientContext.Provider value={{ apiClient: apiClient }}>
