@@ -4,6 +4,7 @@ import { WfoHeaderBadge } from '../WfoHeaderBadge/WfoHeaderBadge';
 import { OrchestratorConfigContext } from '../../../contexts/OrchestratorConfigContext';
 import { Environment } from '../../../hooks/useOrchestratorConfig';
 
+// Do it like that for default sending level
 export const WfoEnvironmentBadge = () => {
     const { environmentName } = useContext(OrchestratorConfigContext);
     const { theme, toSecondaryColor } = useOrchestratorTheme();

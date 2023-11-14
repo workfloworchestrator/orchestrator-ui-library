@@ -7,21 +7,30 @@ import {
     EuiTab,
     EuiTabs,
     EuiText,
-    EuiButtonGroup,
-    EuiPopover,
 } from '@elastic/eui';
 import {
     useFilterQueryWithRest,
+    WfoDropdownButton,
     WfoLoading,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import { ServiceTicketTabIds, tabs } from './utils';
-import { ServiceTicketWithDetails } from '../../types';
+import {
+    ServiceTicketProcessState,
+    ServiceTicketWithDetails,
+} from '../../types';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
+import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
 };
+
+const abortEnabledValues: ServiceTicketProcessState[] = [
+    ServiceTicketProcessState.OPEN_RELATED,
+    ServiceTicketProcessState.OPEN_ACCEPTED,
+    ServiceTicketProcessState.OPEN,
+];
 
 export const WfoServiceTicket = ({
     serviceTicketId,
@@ -55,71 +64,6 @@ export const WfoServiceTicket = ({
             </EuiTab>
         ));
 
-    //TODO: Move this to a separate component
-    const sendEmailButtonValues = [
-        {
-            id: 'id_1',
-            label: `${t('buttons.sendNewEmail')}`,
-            iconType: 'documentEdit',
-        },
-        {
-            id: 'id_2',
-            label: '',
-            iconType: 'arrowDown',
-        },
-    ];
-
-    const WfoDropdownButton = () => {
-        const [isPopoverOpen, setPopoverOpen] = useState(false);
-
-        const onButtonClick = () => {
-            setPopoverOpen(!isPopoverOpen);
-        };
-
-        const closePopover = () => {
-            setPopoverOpen(false);
-        };
-
-        return (
-            <EuiPopover
-                ownFocus
-                button={
-                    <EuiButtonGroup
-                        type={'multi'}
-                        idToSelectedMap={{
-                            [sendEmailButtonValues[0].id]: true,
-                            [sendEmailButtonValues[1].id]: true,
-                        }}
-                        color={'primary'}
-                        buttonSize={'m'}
-                        legend={'Buttons'}
-                        options={sendEmailButtonValues}
-                        onChange={onButtonClick}
-                    />
-                }
-                isOpen={isPopoverOpen}
-                closePopover={closePopover}
-                anchorPosition="downRight"
-            >
-                <div style={{ width: '300px' }}>
-                    {/* Dropdown content goes here */}
-                    <EuiText>
-                        <p>Dropdown content goes here.</p>
-                    </EuiText>
-                    <EuiText>
-                        <p>Dropdown content goes here.</p>
-                    </EuiText>
-                    <EuiText>
-                        <p>Dropdown content goes here.</p>
-                    </EuiText>
-                    <EuiText>
-                        <p>Dropdown content goes here.</p>
-                    </EuiText>
-                </div>
-            </EuiPopover>
-        );
-    };
-
     return (
         <>
             {(isFetching && <WfoLoading />) ||
@@ -140,13 +84,23 @@ export const WfoServiceTicket = ({
                                         <EuiButton
                                             iconType="error"
                                             color="danger"
+                                            isDisabled={
+                                                !abortEnabledValues.includes(
+                                                    data.process_state,
+                                                )
+                                            }
                                         >
                                             {t('buttons.abort')}
                                         </EuiButton>
                                     </EuiFlexItem>
                                     <EuiFlexItem grow={false}>
-                                        {/*<EuiButton fill iconType="documentEdit" color="primary" > {t("buttons.sendNewEmail")}</EuiButton>*/}
-                                        <WfoDropdownButton></WfoDropdownButton>
+                                        <WfoDropdownButton
+                                            label={t('buttons.sendNewEmail')}
+                                        >
+                                            <ServiceTicketDropdownItems
+                                                serviceTicket={data}
+                                            />
+                                        </WfoDropdownButton>
                                     </EuiFlexItem>
                                 </EuiFlexGroup>
                             </EuiFlexItem>

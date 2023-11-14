@@ -39,7 +39,11 @@
                 },
                 "buttons": {
                     "abort": "Abort",
-                    "sendNewEmail": "Send new e-mail"
+                    "sendNewEmail": "Send new e-mail",
+                    "sendOpenEmail": "Send OPEN e-mail",
+                    "sendUpdateEmail": "Send UPDATE e-mail",
+                    "sendOpenCloseEmail": "Send OPEN & CLOSE e-mail",
+                    "sendCloseEmail": "Send CLOSE e-mail"
                 }
             }
         }
