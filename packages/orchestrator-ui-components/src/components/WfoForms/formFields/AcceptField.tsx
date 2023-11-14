@@ -15,12 +15,11 @@
 
 import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 import React, { useReducer } from 'react';
-// Todo add translation
-// import { FormattedMessage } from "react-intl";
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { acceptFieldStyling } from './AcceptFieldStyling';
 import { FieldProps } from './types';
+import { useTranslations } from 'next-intl';
 
 type AcceptItemType =
     | 'info'
@@ -64,13 +63,14 @@ function Accept({
     className = '',
     name,
     onChange,
-    value,
     error,
     showInlineError,
     errorMessage,
     data,
     ...props
 }: AcceptFieldProps) {
+    const t = useTranslations('pydanticForms.fields');
+
     const legacy = !data;
     const i18nBaseKey = data ? `forms.fields.${name}_accept` : 'forms.fields';
 
@@ -80,7 +80,7 @@ function Accept({
         [name, 'checkbox', {}],
     ];
 
-    let [state, dispatch] = useReducer(
+    const [state, dispatch] = useReducer(
         (state: AcceptState, action: Action) => {
             if (action.type === 'skip') {
                 state.skip = action.value;
@@ -123,14 +123,8 @@ function Accept({
                 {...filterDOMProps(props)}
                 className={`${className} accept-field`}
             >
-                {data.map((entry: any[], index: number) => {
-                    const label = (
-                        <div>Todo Translation here</div>
-                        // <FormattedMessage
-                        //     id={`${i18nBaseKey}.${entry[0]}`}
-                        //     values={entry[2]}
-                        // />
-                    );
+                {data.map((entry, index) => {
+                    const label = t(`${i18nBaseKey}.${entry[0]}`, entry[2]);
                     switch (entry[1]) {
                         case 'label':
                             return (
