@@ -6,7 +6,6 @@ import { EuiProvider } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
-    getInitialOrchestratorConfig,
     OrchestratorConfig,
     OrchestratorConfigProvider,
     ToastsContextProvider,
@@ -25,6 +24,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { TranslationsProvider } from '../translations/translationsProvider';
 import NoSSR from 'react-no-ssr';
 import { SessionProvider } from 'next-auth/react';
+import { getInitialOrchestratorConfig } from '../configuration';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 

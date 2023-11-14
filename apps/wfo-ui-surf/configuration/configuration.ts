@@ -1,6 +1,9 @@
 import process from 'process';
-import { Environment, OrchestratorConfig } from '../hooks';
-import { getNumberValueFromEnvironmentVariable } from '../utils';
+import {
+    Environment,
+    OrchestratorConfig,
+    getNumberValueFromEnvironmentVariable,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 // export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
 //    'http://localhost:8080/api/graphql';

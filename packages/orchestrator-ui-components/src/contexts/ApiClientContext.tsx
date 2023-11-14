@@ -2,14 +2,13 @@ import React, { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
 import { OrchestratorConfigContext } from './OrchestratorConfigContext';
-import { DEFAULT_ORCHESTRATOR_API_BASE_URL } from '../configuration';
 
 interface ApiContext {
     apiClient: ApiClient;
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient(DEFAULT_ORCHESTRATOR_API_BASE_URL),
+    apiClient: getApiClient('http://localhost:8080/api'),
 });
 
 export type ApiClientContextProviderProps = {

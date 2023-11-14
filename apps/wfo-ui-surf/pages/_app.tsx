@@ -6,7 +6,6 @@ import { EuiProvider, EuiSideNavItemType } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     defaultOrchestratorTheme,
-    getInitialOrchestratorConfig,
     OrchestratorConfig,
     OrchestratorConfigProvider,
     ToastsContextProvider,
@@ -29,6 +28,7 @@ import { SessionProvider } from 'next-auth/react';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 import { PATH_SERVICE_TICKETS } from '../constants-surf';
+import { getInitialOrchestratorConfig } from '../configuration';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
