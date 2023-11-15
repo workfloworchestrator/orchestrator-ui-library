@@ -1,38 +1,34 @@
 import { ProductBlockInstance, SubscriptionDetail } from '../../../types';
 
-export enum PortMode {
-    TAGGED = 'tagged',
-    UNTAGGED = 'untagged',
-    LINK_MEMBER = 'link_member',
-}
+import { ProductTag, PortMode } from './types';
 
-export enum ProductTag {
-    MSC = 'MSC',
-    MSCNL = 'MSCNL',
-    IRBSP = 'IRBSP',
-}
+// NOTE: There might potentially (?) be more productBlockInstances with portMod but we get the last one here
+export const getPortMode = (
+    productBlockInstances: ProductBlockInstance[],
+): PortMode | undefined => {
+    const portMode = productBlockInstances.reduce(
+        (portMode: PortMode | undefined, productBlockInstance) => {
+            const portModeField =
+                productBlockInstance.productBlockInstanceValues.find(
+                    (productBlockInstanceValue) =>
+                        productBlockInstanceValue.field === 'portMode',
+                );
+            if (portModeField) {
+                return portModeField.value as PortMode;
+            }
+            return portMode;
+        },
+        undefined,
+    );
 
-export const subscriptionHasPortModeInstanceValue = (
+    return portMode;
+};
+
+export const subscriptionHasTaggedPortModeInstanceValue = (
     subscriptionDetail: SubscriptionDetail,
 ): boolean => {
-    const hasTaggedPortModeInstanceValue =
-        subscriptionDetail.productBlockInstances.reduce(
-            (
-                hasTaggedPortMode: boolean,
-                productBlock: ProductBlockInstance,
-            ) => {
-                return (
-                    hasTaggedPortMode ||
-                    !!productBlock.productBlockInstanceValues.find(
-                        ({ field, value }) =>
-                            field === 'portMode' && value === 'tagged',
-                    )
-                );
-            },
-            false,
-        );
-
-    return hasTaggedPortModeInstanceValue;
+    const portMode = getPortMode(subscriptionDetail.productBlockInstances);
+    return portMode && portMode === PortMode.TAGGED ? true : false;
 };
 
 export const subscriptionHasTaggedProduct = (

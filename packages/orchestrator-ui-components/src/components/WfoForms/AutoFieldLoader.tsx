@@ -20,6 +20,7 @@ import {
     VlanField,
     NestField,
     OptGroupField,
+    SubscriptionField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -55,6 +56,8 @@ export function autoFieldFunction(
             break;
         case String:
             switch (format) {
+                case 'subscriptionId':
+                    return SubscriptionField;
                 case 'productId':
                     return ProductField;
                 case 'long':

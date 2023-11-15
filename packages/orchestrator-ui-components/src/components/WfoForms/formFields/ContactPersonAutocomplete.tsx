@@ -14,8 +14,9 @@
  */
 import React, { useEffect, useRef } from 'react';
 import { EuiFlexItem } from '@elastic/eui';
-import { isDate } from 'moment';
 import scrollIntoView from 'scroll-into-view';
+
+import { isEmpty } from './utils';
 import { ContactPerson } from './types';
 import { getStyles } from './ContactPersonAutocompleteStyles';
 import { useWithOrchestratorTheme } from '../../../hooks';
@@ -28,24 +29,7 @@ interface ContactPersonAutocompleteProps {
     suggestions: ContactPerson[];
 }
 
-const isEmpty = (obj: unknown) => {
-    if (obj === undefined || obj === null) {
-        return true;
-    }
-    if (isDate(obj)) {
-        return false;
-    }
-    if (Array.isArray(obj)) {
-        return obj.length === 0;
-    }
-    if (typeof obj === 'string') {
-        return obj.trim().length === 0;
-    }
-    if (typeof obj === 'object') {
-        return Object.keys(obj).length === 0;
-    }
-    return false;
-};
+
 
 export const ContactPersonAutocomplete = ({
     query,
