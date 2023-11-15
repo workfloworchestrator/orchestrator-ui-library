@@ -24,7 +24,7 @@ interface IProps {
     handleSubmit: (userInputs: any) => void;
 }
 
-export default function CreateForm(props: IProps) {
+export function CreateForm(props: IProps) {
     const { preselectedInput, formKey, handleSubmit } = props;
     const [form, setForm] = useState<Form>({});
     const { stepUserInput, hasNext } = form;
