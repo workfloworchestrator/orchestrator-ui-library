@@ -17,6 +17,8 @@ const testProductBlockInstances: ProductBlockInstance[] = [
         ownerSubscriptionId: 'ProductBlockInstanceId 1',
         parent: 0,
         productBlockInstanceValues: [],
+        inUseByRelations: [],
+        subscriptionInstanceId: 'testId',
     },
 ];
 
@@ -70,6 +72,8 @@ describe('formField utils', () => {
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         productBlockInstanceValues: [],
+                        inUseByRelations: [],
+                        subscriptionInstanceId: 'testId',
                     },
                 ],
             };
@@ -86,6 +90,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
+                        inUseByRelations: [],
+                        subscriptionInstanceId: 'testId',
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -111,6 +117,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
+                        inUseByRelations: [],
+                        subscriptionInstanceId: 'testId',
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -136,6 +144,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
+                        inUseByRelations: [],
+                        subscriptionInstanceId: 'testId',
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',

@@ -22,7 +22,7 @@ import { FieldProps, ServicePort } from './types';
 
 import { useAxiosApiClient } from '../useAxiosApiClient';
 
-import { useIsTaggedPort } from './utils';
+import { useIsTaggedPort } from '../../../hooks/surf/useIsTaggedPort';
 
 function inValidVlan(vlan: string) {
     const value = vlan || '0';

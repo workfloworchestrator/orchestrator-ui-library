@@ -1,10 +1,9 @@
-import React from 'react';
-import { EuiIcon, EuiThemeComputed } from '@elastic/eui';
+import { EuiThemeComputed } from '@elastic/eui';
 import { TranslationValues } from 'next-intl';
 
 import { SubscriptionAction } from '../../../hooks';
-import { FieldValue, WorkflowTarget } from '../../../types';
-
+import type { FieldValue } from '../../../types';
+import { WorkflowTarget } from '../../../types';
 const MAX_LABEL_LENGTH = 45;
 
 export enum SubscriptionTabIds {
@@ -13,30 +12,6 @@ export enum SubscriptionTabIds {
     PROCESSES_TAB = 'processes-id',
     RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id',
 }
-
-export const tabs = [
-    {
-        id: SubscriptionTabIds.GENERAL_TAB,
-        translationKey: 'tabs.general',
-        prepend: <EuiIcon type="devToolsApp" />,
-        append: <></>,
-    },
-    {
-        id: SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
-        translationKey: 'tabs.serviceConfiguration',
-        prepend: <EuiIcon type="submodule" />,
-    },
-    {
-        id: SubscriptionTabIds.PROCESSES_TAB,
-        translationKey: 'tabs.processes',
-        prepend: <EuiIcon type="indexRuntime" />,
-    },
-    {
-        id: SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB,
-        translationKey: 'tabs.relatedSubscriptions',
-        prepend: <EuiIcon type="heatmap" />,
-    },
-];
 
 export const getFieldFromProductBlockInstanceValues = (
     instanceValues: FieldValue[],
