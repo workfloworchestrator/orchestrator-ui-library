@@ -6,10 +6,11 @@ import {
     EuiTab,
     EuiTabs,
     EuiText,
+    EuiIcon,
 } from '@elastic/eui';
 import { useQueryWithGraphql } from '../../hooks';
 
-import { SubscriptionTabIds, tabs } from './utils';
+import { SubscriptionTabIds } from './utils';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { WfoLoading } from '../WfoLoading';
@@ -22,6 +23,30 @@ import { WfoProcessesTimeline } from './WfoProcessesTimeline';
 type WfoSubscriptionProps = {
     subscriptionId: string;
 };
+
+const tabs = [
+    {
+        id: SubscriptionTabIds.GENERAL_TAB,
+        translationKey: 'tabs.general',
+        prepend: <EuiIcon type="devToolsApp" />,
+        append: <></>,
+    },
+    {
+        id: SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
+        translationKey: 'tabs.serviceConfiguration',
+        prepend: <EuiIcon type="submodule" />,
+    },
+    {
+        id: SubscriptionTabIds.PROCESSES_TAB,
+        translationKey: 'tabs.processes',
+        prepend: <EuiIcon type="indexRuntime" />,
+    },
+    {
+        id: SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB,
+        translationKey: 'tabs.relatedSubscriptions',
+        prepend: <EuiIcon type="heatmap" />,
+    },
+];
 
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
