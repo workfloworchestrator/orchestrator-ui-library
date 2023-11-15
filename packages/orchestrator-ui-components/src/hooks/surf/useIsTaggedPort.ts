@@ -1,7 +1,7 @@
 import { useQueryWithGraphql } from '../useQueryWithGraphql';
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
-    subscriptionHasPortModeInstanceValue,
+    subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
 } from '../../components/WfoForms/formFields/utils';
 export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
@@ -20,7 +20,7 @@ export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
     // - The subscriptions product tag is MSC, MSCNL or IRBSP: subscriptionHasTaggedProduct
 
     const portIsTagged = subscriptionDetail
-        ? subscriptionHasPortModeInstanceValue(subscriptionDetail) ||
+        ? subscriptionHasTaggedPortModeInstanceValue(subscriptionDetail) ||
           subscriptionHasTaggedProduct(subscriptionDetail)
         : false;
 
