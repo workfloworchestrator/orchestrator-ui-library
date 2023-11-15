@@ -39,20 +39,20 @@ export type FieldProps<
 >;
 
 export interface FavoriteSubscriptionStorage {
-  subscription_id: string;
-  customName: string;
+    subscription_id: string;
+    customName: string;
 }
 
 export interface ServicePortFilterItem {
-  subscription_id: string;
-  port_name: string;
-  ims_circuit_id: number;
-  description: string;
-  nso_service_id: string;
-  port_speed: number;
-  port_mode: string;
-  start_date: number;
-  status: string;
-  product_name: string;
-  product_tag: string;
+    subscription_id: string;
+    port_name: string;
+    ims_circuit_id: number;
+    description: string;
+    nso_service_id: string;
+    port_speed: number;
+    port_mode: string;
+    start_date: number;
+    status: string;
+    product_name: string;
+    product_tag: string;
 }

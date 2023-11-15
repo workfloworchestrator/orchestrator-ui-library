@@ -1,8 +1,4 @@
 import React from 'react';
-export const ServicePortSelectorModal = () =>  {
-
-        return (
-            <div>Modal</div>
-        );
-
-}
+export const ServicePortSelectorModal = () => {
+    return <div>Modal</div>;
+};

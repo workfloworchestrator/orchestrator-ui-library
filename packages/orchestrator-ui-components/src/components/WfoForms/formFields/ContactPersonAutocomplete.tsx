@@ -29,8 +29,6 @@ interface ContactPersonAutocompleteProps {
     suggestions: ContactPerson[];
 }
 
-
-
 export const ContactPersonAutocomplete = ({
     query,
     selectedItem,
