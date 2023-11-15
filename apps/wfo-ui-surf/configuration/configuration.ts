@@ -5,14 +5,9 @@ import {
     getNumberValueFromEnvironmentVariable,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-// export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
-//    'http://localhost:8080/api/graphql';
-// export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
-
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
-    'https://orchestrator.dev.automation.surf.net/api/graphql';
-export const DEFAULT_ORCHESTRATOR_API_BASE_URL =
-    'https://orchestrator.dev.automation.surf.net/api';
+    'http://localhost:8080/api/graphql';
+export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
 
 export const ENGINE_STATUS_ENDPOINT = '/settings/status';
 export const PROCESS_STATUS_COUNTS_ENDPOINT = '/processes/status-counts';
