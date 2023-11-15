@@ -53,3 +53,20 @@ export interface ServicePort {
     nonremovable?: boolean;
     modifiable?: boolean;
 }
+
+
+export enum PortMode {
+  TAGGED = 'tagged',
+  UNTAGGED = 'untagged',
+  LINK_MEMBER = 'link_member',
+}
+
+export enum ProductTag {
+  MSC = 'MSC',
+  MSCNL = 'MSCNL',
+  IRBSP = 'IRBSP',
+  SP = 'SP', 
+  SPNL = 'SPNL', 
+  AGGSP = 'AGGSP',
+  AGGSPNL = 'AGGSPNL'
+}

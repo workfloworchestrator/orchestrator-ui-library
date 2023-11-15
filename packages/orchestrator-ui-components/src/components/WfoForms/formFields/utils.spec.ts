@@ -6,10 +6,10 @@ import {
     WorkflowTarget,
 } from '../../../types';
 import {
-    subscriptionHasPortModeInstanceValue,
+    subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
 } from './utils';
-import { ProductTag } from './utils';
+import { ProductTag } from './types';
 
 const testProductBlockInstances: ProductBlockInstance[] = [
     {
@@ -17,8 +17,8 @@ const testProductBlockInstances: ProductBlockInstance[] = [
         ownerSubscriptionId: 'ProductBlockInstanceId 1',
         parent: 0,
         productBlockInstanceValues: [],
-        inUseByRelations: [],
         subscriptionInstanceId: 'testId',
+        inUseByRelations: [],
     },
 ];
 
@@ -29,6 +29,7 @@ const testSubscriptionDetail: SubscriptionDetail = {
     note: 'test note',
     fixedInputs: [],
     product: {
+        productId: 'testId',
         createdAt: '999-09-09',
         name: 'Test product name',
         status: ProductLifecycleStatus.ACTIVE,
@@ -58,7 +59,7 @@ const testSubscriptionDetail: SubscriptionDetail = {
 describe('formField utils', () => {
     describe('subscriptionHasPortModeInstanceValue()', () => {
         it('returns false if the subscriptionDetail has no productBlockInstances', () => {
-            const result = subscriptionHasPortModeInstanceValue(
+            const result = subscriptionHasTaggedPortModeInstanceValue(
                 testSubscriptionDetail,
             );
             expect(result).toEqual(false);
@@ -72,13 +73,13 @@ describe('formField utils', () => {
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         productBlockInstanceValues: [],
-                        inUseByRelations: [],
                         subscriptionInstanceId: 'testId',
+                        inUseByRelations: [],
                     },
                 ],
             };
             const result =
-                subscriptionHasPortModeInstanceValue(subscriptionDetail);
+                subscriptionHasTaggedPortModeInstanceValue(subscriptionDetail);
             expect(result).toEqual(false);
         });
 
@@ -90,8 +91,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
-                        inUseByRelations: [],
                         subscriptionInstanceId: 'testId',
+                        inUseByRelations: [],
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -106,7 +107,7 @@ describe('formField utils', () => {
                 ],
             };
             const result =
-                subscriptionHasPortModeInstanceValue(subscriptionDetail);
+                subscriptionHasTaggedPortModeInstanceValue(subscriptionDetail);
             expect(result).toEqual(false);
         });
         it('returns false if the subscriptionDetail has no productBlockInstances with productBlockInstanceValues with portMode and value not tagged', () => {
@@ -117,8 +118,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
-                        inUseByRelations: [],
                         subscriptionInstanceId: 'testId',
+                        inUseByRelations: [],
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -133,10 +134,10 @@ describe('formField utils', () => {
                 ],
             };
             const result =
-                subscriptionHasPortModeInstanceValue(subscriptionDetail);
+                subscriptionHasTaggedPortModeInstanceValue(subscriptionDetail);
             expect(result).toEqual(false);
         });
-        it('returns true if the subscriptionDetail has no productBlockInstances with productBlockInstanceValues with portMode and value = tagged', () => {
+        it('returns true if the subscriptionDetail has productBlockInstances with productBlockInstanceValues with field portMode and value = tagged', () => {
             const subscriptionDetail: SubscriptionDetail = {
                 ...testSubscriptionDetail,
                 productBlockInstances: [
@@ -144,8 +145,8 @@ describe('formField utils', () => {
                         id: 1,
                         ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
-                        inUseByRelations: [],
                         subscriptionInstanceId: 'testId',
+                        inUseByRelations: [],
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -160,7 +161,7 @@ describe('formField utils', () => {
                 ],
             };
             const result =
-                subscriptionHasPortModeInstanceValue(subscriptionDetail);
+                subscriptionHasTaggedPortModeInstanceValue(subscriptionDetail);
             expect(result).toEqual(true);
         });
     });

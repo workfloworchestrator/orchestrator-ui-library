@@ -391,7 +391,7 @@ export type SubscriptionDetail = {
     fixedInputs: FieldValue[];
     product: Pick<
         ProductDefinition,
-        'createdAt' | 'name' | 'status' | 'description' | 'tag' | 'productType'
+        'createdAt' | 'name' | 'status' | 'description' | 'tag' | 'productType' | 'productId'
     > & {
         endDate: string;
     };
