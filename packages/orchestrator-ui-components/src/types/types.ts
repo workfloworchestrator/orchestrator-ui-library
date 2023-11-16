@@ -304,6 +304,10 @@ export interface SubscriptionsResult {
     subscriptions: GraphQlResultPage<Subscription>;
 }
 
+export interface SubscriptionDropdownOptionsResult {
+    subscriptions: GraphQlSinglePage<SubscriptionDropdownOption>;
+}
+
 export interface SubscriptionDetailResult {
     subscriptions: GraphQlResultPage<SubscriptionDetail>;
 }
@@ -381,6 +385,16 @@ export type Subscription = {
     insync: boolean;
     status: SubscriptionStatus;
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
+    productBlockInstances: ProductBlockInstance[];
+};
+
+export type SubscriptionDropdownOption = {
+    description: Subscription['description'];
+    subscriptionId: Subscription['subscriptionId'];
+    product: Pick<ProductDefinition, 'tag' | 'productId'>;
+    customer: Pick<Customer, 'fullname' | 'identifier'>;
+    productBlockInstances: ProductBlockInstance[];
+    fixedInputs: FieldValue[];
 };
 
 export type SubscriptionDetail = {
@@ -411,6 +425,7 @@ export type SubscriptionDetail = {
     externalServices?: ExternalService[];
 
     processes: GraphQlSinglePage<SubscriptionDetailProcess>;
+    tag: string;
 };
 
 export type SubscriptionDetailProcess = Pick<
