@@ -140,13 +140,10 @@ function SubscriptionFieldDefinition({
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
     // const { theme }  = useOrchestratorTheme()
-    const [subscriptions, setSubscriptions] = useState<
-        SubscriptionDropdownOption[]
-    >([]);
-    const { refetch } = useGetSubscriptionDropdownOptions(
+
+    const { refetch, subscriptions } = useGetSubscriptionDropdownOptions(
         tags,
         statuses,
-        setSubscriptions,
     );
 
     const nameArray = joinName(null, name);
@@ -156,16 +153,15 @@ function SubscriptionFieldDefinition({
     if (parentName === '') {
         parentName = name;
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const parent = useField(parentName, {}, { absoluteName: true })[0];
-    console.log(parent);
 
     const { model, schema } = useForm();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const closeModal = () => setIsModalVisible(false);
     const showModal = () => setIsModalVisible(true);
-
-    const clearSubscriptions = () => setSubscriptions([]);
 
     const bandWithFromField = bandwidthKey
         ? get(model, bandwidthKey!) || schema.getInitialValue(bandwidthKey, {})
@@ -217,7 +213,7 @@ function SubscriptionFieldDefinition({
     // Filter by product, needed because getSubscriptions might return more than we want
 
     const getSubscriptionOptions = (): Option[] => {
-        const filteredSubscriptions = subscriptions.filter((subscription) => {
+        const filteredSubscriptions = subscriptions?.filter((subscription) => {
             // NOTE: useBandWith, productIds and tags need to be checked in this order as per the V1 logic
 
             // If a bandwidth filter is supplied it needs to be applied to the subscription product
@@ -311,14 +307,15 @@ function SubscriptionFieldDefinition({
             return true;
         });
 
-        return filteredSubscriptions.map((subscription) => ({
-            label: makeLabel(subscription),
-            value: subscription.subscriptionId,
-        }));
+        return filteredSubscriptions
+            ? filteredSubscriptions.map((subscription) => ({
+                  label: makeLabel(subscription),
+                  value: subscription.subscriptionId,
+              }))
+            : [];
     };
 
     const options = getSubscriptionOptions();
-
     const selectedValue = options.find(
         (option: Option) => option.value === value,
     );
@@ -360,7 +357,6 @@ function SubscriptionFieldDefinition({
                                     iconType="refresh"
                                     iconSize="l"
                                     onClick={() => {
-                                        clearSubscriptions();
                                         refetch();
                                     }}
                                 />
