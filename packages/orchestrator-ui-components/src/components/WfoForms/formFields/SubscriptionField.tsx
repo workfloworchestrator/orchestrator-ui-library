@@ -12,15 +12,13 @@
  * limitations under the License.
  *
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { css } from '@emotion/react';
 import {
     EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiFormRow,
-    EuiModal,
-    EuiOverlayMask,
     EuiText,
 } from '@elastic/eui';
 import get from 'lodash/get';
@@ -35,13 +33,12 @@ import {
 } from 'uniforms';
 
 // import { getReactSelectTheme } from 'stylesheets/emotion/utils';
+// import { useOrchestratorTheme } from '../../../hooks';
 
-// import { ServicePortSelectorModal } from '../../WfoModals/WfoServicePortSelectorModal';
 import { FieldProps, Option, PortMode, ProductTag } from './types';
 import { getPortMode } from './utils';
 import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '../../../types';
-// import { useOrchestratorTheme } from '../../../hooks';
 
 const subscriptionFieldStyling = css`
     .subscription-field {
@@ -59,7 +56,7 @@ const subscriptionFieldStyling = css`
         }
     }
 
-    // Setup sensible margins for port selectors without a reload and port modal
+    // Setup sensible margins for port selectors
     .subscription-field-disabled {
         > div {
             display: flex;
@@ -159,10 +156,6 @@ function SubscriptionFieldDefinition({
 
     const { model, schema } = useForm();
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const closeModal = () => setIsModalVisible(false);
-    const showModal = () => setIsModalVisible(true);
-
     const bandWithFromField = bandwidthKey
         ? get(model, bandwidthKey!) || schema.getInitialValue(bandwidthKey, {})
         : undefined;
@@ -211,7 +204,6 @@ function SubscriptionFieldDefinition({
     };
 
     // Filter by product, needed because getSubscriptions might return more than we want
-
     const getSubscriptionOptions = (): Option[] => {
         const filteredSubscriptions = subscriptions?.filter((subscription) => {
             // NOTE: useBandWith, productIds and tags need to be checked in this order as per the V1 logic
@@ -319,12 +311,7 @@ function SubscriptionFieldDefinition({
     const selectedValue = options.find(
         (option: Option) => option.value === value,
     );
-    /*
-    const selectSubscriptionFromModal = (subscription: SubscriptionDetail) => {
-        onChange(subscription);
-        closeModal();
-    };
-*/
+
     // const customStyles = getReactSelectTheme(theme);
 
     return (
@@ -360,28 +347,7 @@ function SubscriptionFieldDefinition({
                                         refetch();
                                     }}
                                 />
-                                {tags?.includes(ProductTag.SP) && (
-                                    <EuiButtonIcon
-                                        className="show-service-port-modal-icon-button"
-                                        id={`filter-icon-${id}`}
-                                        aria-label={`service-port-modal-${name}`}
-                                        onClick={showModal}
-                                        iconType="filter"
-                                        iconSize="l"
-                                    />
-                                )}
                             </EuiFlexGroup>
-                        )}
-
-                        {isModalVisible && (
-                            <EuiOverlayMask>
-                                <EuiModal
-                                    onClose={closeModal}
-                                    initialFocus="[id=modalNodeSelector]"
-                                >
-                                    <div>TODO: Serviceport modal</div>
-                                </EuiModal>
-                            </EuiOverlayMask>
                         )}
                         <ReactSelect<Option, false>
                             id={id}
@@ -409,11 +375,3 @@ function SubscriptionFieldDefinition({
 export const SubscriptionField = connectField(SubscriptionFieldDefinition, {
     kind: 'leaf',
 });
-
-//  <ServicePortSelectorModal
-//      selectedTabId="nodeFilter"
-//      handleSelect={
-//          selectSubscriptionFromModal
-//      }
-//      subscriptions={subscriptionsFiltered}
-//  />
