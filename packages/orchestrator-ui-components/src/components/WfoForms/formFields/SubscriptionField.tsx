@@ -39,8 +39,8 @@ import {
 // import { ServicePortSelectorModal } from '../../WfoModals/WfoServicePortSelectorModal';
 import { FieldProps, Option, PortMode, ProductTag } from './types';
 import { getPortMode } from './utils';
-import { useGetSubscriptions } from '../../../hooks/surf/useGetSubscriptions';
-import { Subscription } from '../../../types';
+import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
+import { SubscriptionDropdownOption } from '../../../types';
 // import { useOrchestratorTheme } from '../../../hooks';
 
 const subscriptionFieldStyling = css`
@@ -140,8 +140,10 @@ function SubscriptionFieldDefinition({
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
     // const { theme }  = useOrchestratorTheme()
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-    const { refetch } = useGetSubscriptions(
+    const [subscriptions, setSubscriptions] = useState<
+        SubscriptionDropdownOption[]
+    >([]);
+    const { refetch } = useGetSubscriptionDropdownOptions(
         tags,
         statuses,
         setSubscriptions,
@@ -163,7 +165,7 @@ function SubscriptionFieldDefinition({
     const closeModal = () => setIsModalVisible(false);
     const showModal = () => setIsModalVisible(true);
 
-    const clearSubscriptions = () => updateSubscriptions([]);
+    const clearSubscriptions = () => setSubscriptions([]);
 
     const bandWithFromField = bandwidthKey
         ? get(model, bandwidthKey!) || schema.getInitialValue(bandwidthKey, {})
@@ -176,7 +178,7 @@ function SubscriptionFieldDefinition({
         ? get(model, organisationKey, 'nonExistingOrgToFilterEverything')
         : organisationId;
 
-    const makeLabel = (subscription: Subscription) => {
+    const makeLabel = (subscription: SubscriptionDropdownOption) => {
         const description =
             subscription.description ||
             t('widgets.subscription.missingDescription');
