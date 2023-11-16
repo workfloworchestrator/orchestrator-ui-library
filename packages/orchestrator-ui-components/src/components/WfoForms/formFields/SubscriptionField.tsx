@@ -38,8 +38,9 @@ import {
 
 // import { ServicePortSelectorModal } from '../../WfoModals/WfoServicePortSelectorModal';
 import { FieldProps, Option, PortMode, ProductTag } from './types';
-import { Subscription, SubscriptionDetail } from '../../../types';
 import { getPortMode } from './utils';
+import { useGetSubscriptions } from '../../../hooks/surf/useGetSubscriptions';
+import { Subscription } from '../../../types';
 // import { useOrchestratorTheme } from '../../../hooks';
 
 const subscriptionFieldStyling = css`
@@ -134,11 +135,17 @@ function SubscriptionFieldDefinition({
     bandwidth,
     bandwidthKey,
     tags,
-    // statuses,
+    statuses,
     ...props
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
     // const { theme }  = useOrchestratorTheme()
+    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+    const { refetch } = useGetSubscriptions(
+        tags,
+        statuses,
+        setSubscriptions,
+    );
 
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
@@ -149,18 +156,15 @@ function SubscriptionFieldDefinition({
     }
     const parent = useField(parentName, {}, { absoluteName: true })[0];
     console.log(parent);
+
     const { model, schema } = useForm();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const closeModal = () => setIsModalVisible(false);
     const showModal = () => setIsModalVisible(true);
 
-    const [subscriptions, updateSubscriptions] = useState<SubscriptionDetail[]>(
-        [],
-    );
-    console.log(updateSubscriptions);
-    const [loading, setLoading] = useState<boolean>(false);
-    console.log(loading);
+    const clearSubscriptions = () => updateSubscriptions([]);
+
     const bandWithFromField = bandwidthKey
         ? get(model, bandwidthKey!) || schema.getInitialValue(bandwidthKey, {})
         : undefined;
@@ -172,7 +176,7 @@ function SubscriptionFieldDefinition({
         ? get(model, organisationKey, 'nonExistingOrgToFilterEverything')
         : organisationId;
 
-    const makeLabel = (subscription: SubscriptionDetail) => {
+    const makeLabel = (subscription: Subscription) => {
         const description =
             subscription.description ||
             t('widgets.subscription.missingDescription');
@@ -208,13 +212,6 @@ function SubscriptionFieldDefinition({
         }
     };
 
-    /*
-    useEffect(() => {
-        getSubscriptions(apiClient, customApiClient, tags, statuses).then(
-            (result) => updateSubscriptions(result),
-        );
-    }, [getSubscriptions, tags, statuses, apiClient, customApiClient]);
-*/
     // Filter by product, needed because getSubscriptions might return more than we want
 
     const getSubscriptionOptions = (): Option[] => {
@@ -361,19 +358,8 @@ function SubscriptionFieldDefinition({
                                     iconType="refresh"
                                     iconSize="l"
                                     onClick={() => {
-                                        setLoading(true);
-                                        /*
                                         clearSubscriptions();
-                                        getSubscriptions(
-                                            apiClient,
-                                            customApiClient,
-                                            tags,
-                                            statuses,
-                                        ).then((result) => {
-                                            updateSubscriptions(result);
-                                            setLoading(false);
-                                        });
-                                        */
+                                        refetch();
                                     }}
                                 />
                                 {tags?.includes(ProductTag.SP) && (
