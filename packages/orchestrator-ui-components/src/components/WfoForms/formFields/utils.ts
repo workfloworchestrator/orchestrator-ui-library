@@ -7,7 +7,7 @@ import { isDate } from 'moment';
 export const getPortMode = (
     productBlockInstances: ProductBlockInstance[],
 ): PortMode | undefined => {
-    const portMode = productBlockInstances.reduce(
+    const portMode = productBlockInstances?.reduce(
         (portMode: PortMode | undefined, productBlockInstance) => {
             const portModeField =
                 productBlockInstance.productBlockInstanceValues.find(

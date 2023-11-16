@@ -11,18 +11,25 @@ export const GET_SUBSCRIPTION_DROPDOWN_OPTIONS_GRAPHQL_QUERY = parse(gql`
     query SubscriptionDropdownOptions($filterBy: [GraphqlFilter!]) {
         subscriptions(filterBy: $filterBy) {
             page {
-                note
-                startDate
-                endDate
                 description
-                insync
-                status
                 subscriptionId
                 product {
-                    name
                     tag
-                    productType
+                    productId
                 }
+                customer {
+                    fullname
+                    identifier
+                }
+                productBlockInstances {
+                    id
+                    ownerSubscriptionId
+                    parent
+                    productBlockInstanceValues
+                    subscriptionInstanceId
+                    inUseByRelations
+                }
+                fixedInputs
             }
         }
     }
