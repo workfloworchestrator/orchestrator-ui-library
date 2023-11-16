@@ -29,7 +29,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     level,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { expandIconContainer, treeContainer } = getStyles(theme);
+    const { expandIconContainerStyle, treeContainerStyle } = getStyles(theme);
     const t = useTranslations('common');
     const {
         expandedIds,
@@ -49,11 +49,11 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     return (
         <div style={{ paddingLeft: `${level * parseInt(theme.size.m)}px` }}>
             <EuiFlexGroup>
-                <EuiFlexItem grow={false} css={treeContainer}>
+                <EuiFlexItem grow={false} css={treeContainerStyle}>
                     {hasChildren ? (
                         <EuiIcon
                             type={expandIcon}
-                            css={expandIconContainer}
+                            css={expandIconContainerStyle}
                             cursor={'hand'}
                             onClick={() =>
                                 expanded

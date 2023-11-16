@@ -8,7 +8,8 @@ interface ApiContext {
 }
 
 export const ApiClientContext = createContext<ApiContext>({
-    apiClient: getApiClient(''),
+    //apiClient: getApiClient(''),
+    apiClient: getApiClient('http://localhost:8080/api'),
 });
 
 export type ApiClientContextProviderProps = {
