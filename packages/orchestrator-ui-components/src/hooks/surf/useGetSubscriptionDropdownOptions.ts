@@ -1,11 +1,11 @@
 import { GraphqlFilter, SubscriptionDropdownOption } from '../../types';
 import { useQueryWithGraphql } from '../useQueryWithGraphql';
 import { getSubscriptionDropdownOptionsGraphQlQuery } from '../../graphqlQueries';
+import { isError } from 'react-query';
 
 export const useGetSubscriptionDropdownOptions = (
     tags: string[] = [],
     statuses: string[] = [],
-    setSubscriptions: (subscriptions: SubscriptionDropdownOption[]) => void,
 ) => {
     // The way the graphql filterBy clause on the backend handled multiple AND values is by joining them with -
     const tagValue = tags.join('-');
@@ -27,19 +27,20 @@ export const useGetSubscriptionDropdownOptions = (
         });
     }
 
-    const { data, isFetching, isFetched, refetch } = useQueryWithGraphql(
+    const { data, isFetching, refetch } = useQueryWithGraphql(
         getSubscriptionDropdownOptionsGraphQlQuery(),
         {
-            first: 1000,
-            after: 0,
             filterBy: filters,
         },
-        'subscriptionField',
+        'subscriptionOptions',
     );
 
-    if (isFetched && data && data.subscriptions.page) {
-        setSubscriptions(data.subscriptions.page);
-    }
+    const subscriptions = (() => {
+        if (!isFetching && !isError(data) && data && data.subscriptions.page) {
+            return data.subscriptions.page;
+        }
+        return [];
+    })();
 
-    return { isFetching, refetch };
+    return { isFetching, refetch, subscriptions };
 };
