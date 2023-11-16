@@ -395,6 +395,8 @@ export type SubscriptionDropdownOption = {
     customer: Pick<Customer, 'fullname' | 'identifier'>;
     productBlockInstances: ProductBlockInstance[];
     fixedInputs: FieldValue[];
+    tag: string;
+    status: SubscriptionStatus;
 };
 
 export type SubscriptionDetail = {
@@ -425,7 +427,6 @@ export type SubscriptionDetail = {
     externalServices?: ExternalService[];
 
     processes: GraphQlSinglePage<SubscriptionDetailProcess>;
-    tag: string;
 };
 
 export type SubscriptionDetailProcess = Pick<
