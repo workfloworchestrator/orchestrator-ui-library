@@ -1,18 +1,18 @@
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
 export const getStyles = (theme: EuiThemeComputed) => {
-    const expandIconContainer = {
+    const expandIconContainerStyle = {
         cursor: 'pointer',
     };
 
-    const treeContainer = {
+    const treeContainerStyle = {
         width: 0,
         marginTop: theme.size.s,
         marginRight: `-${theme.size.s}`,
     };
 
     return {
-        expandIconContainer,
-        treeContainer,
+        expandIconContainerStyle: expandIconContainerStyle,
+        treeContainerStyle: treeContainerStyle,
     };
 };

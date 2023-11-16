@@ -17,9 +17,10 @@ import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 import React, { useReducer } from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { acceptFieldStyling } from './AcceptFieldStyling';
 import { FieldProps } from './types';
 import { useTranslations } from 'next-intl';
+import { useOrchestratorTheme } from '../../../hooks';
+import { getStyles } from './AcceptFieldStyling';
 
 type AcceptItemType =
     | 'info'
@@ -70,6 +71,8 @@ function Accept({
     ...props
 }: AcceptFieldProps) {
     const t = useTranslations('pydanticForms.fields');
+    const { theme } = useOrchestratorTheme();
+    const { acceptFieldStyle } = getStyles(theme);
 
     const legacy = !data;
     const i18nBaseKey = data ? `forms.fields.${name}_accept` : 'forms.fields';
@@ -118,10 +121,10 @@ function Accept({
     );
 
     return (
-        <EuiFlexItem css={acceptFieldStyling}>
+        <EuiFlexItem css={acceptFieldStyle}>
             <section
                 {...filterDOMProps(props)}
-                className={`${className} accept-field`}
+                className={`${className} acceptField`}
             >
                 {data.map((entry, index) => {
                     const label = t(`${i18nBaseKey}.${entry[0]}`, entry[2]);

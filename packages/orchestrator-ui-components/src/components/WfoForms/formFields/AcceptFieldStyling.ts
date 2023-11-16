@@ -1,28 +1,29 @@
 import { css } from '@emotion/react';
+import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
-// import { DANGER, SUCCESS } from "../../../stylesheets/emotion/colors";
+export const getStyles = (theme: EuiThemeComputed) => {
+    const acceptFieldStyle = css({
+        acceptField: {
+            'label.warning': {
+                color: theme.colors.danger,
+            },
+            '.skip': {
+                color: theme.colors.success,
+                fontStyle: 'italic',
+            },
 
-// Todo fix colors
-export const acceptFieldStyling = css`
-    .accept-field {
-        label.warning {
-            //color: DANGER;
-            color: red;
-        }
+            // Don't touch the margin + padding: they also control if the user can click on the checkbox instead of label
+            '.level_2': {
+                marginLeft: '24px',
+                padding: 0,
+                label: {
+                    marginTop: 0,
+                },
+            },
+        },
+    });
 
-        .skip {
-            // color: SUCCESS;
-            color: green;
-            font-style: italic;
-        }
-
-        // Don't touch the margin + padding: they also control if the user can click on the checkbox instead of label
-        .level_2 {
-            margin-left: 24px;
-            padding: 0;
-            label {
-                margin-top: 0;
-            }
-        }
-    }
-`;
+    return {
+        acceptFieldStyle: acceptFieldStyle,
+    };
+};
