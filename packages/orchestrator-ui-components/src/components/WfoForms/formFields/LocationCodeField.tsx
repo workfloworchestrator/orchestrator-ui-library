@@ -51,7 +51,7 @@ function LocationCode({ locationCodes, ...props }: LocationCodeFieldProps) {
                 }
                 setCodes([]);
             });
-    }, [axiosApiClient, codes]);
+    }, [axiosApiClient]);
 
     return (
         <SelectField
