@@ -3,7 +3,7 @@ import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const acceptFieldStyle = css({
-        acceptField: {
+        '.acceptField': {
             'label.warning': {
                 color: theme.colors.danger,
             },
