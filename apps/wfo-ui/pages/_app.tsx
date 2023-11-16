@@ -12,6 +12,7 @@ import {
     ToastsList,
     WfoPageTemplate,
     WfoAuth,
+    ConfirmationDialogContextWrapper,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import '@elastic/eui/dist/eui_theme_light.min.css';
@@ -70,24 +71,28 @@ function CustomApp({
                                             contextSharing={true}
                                         >
                                             <ToastsContextProvider>
-                                                <WfoPageTemplate
-                                                    getAppLogo={getAppLogo}
-                                                >
-                                                    <QueryParamProvider
-                                                        adapter={NextAdapter}
-                                                        options={{
-                                                            removeDefaultsFromUrl:
-                                                                false,
-                                                            enableBatching:
-                                                                true,
-                                                        }}
+                                                <ConfirmationDialogContextWrapper>
+                                                    <WfoPageTemplate
+                                                        getAppLogo={getAppLogo}
                                                     >
-                                                        <Component
-                                                            {...pageProps}
-                                                        />
-                                                    </QueryParamProvider>
-                                                </WfoPageTemplate>
-                                                <ToastsList />
+                                                        <QueryParamProvider
+                                                            adapter={
+                                                                NextAdapter
+                                                            }
+                                                            options={{
+                                                                removeDefaultsFromUrl:
+                                                                    false,
+                                                                enableBatching:
+                                                                    true,
+                                                            }}
+                                                        >
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        </QueryParamProvider>
+                                                    </WfoPageTemplate>
+                                                    <ToastsList />
+                                                </ConfirmationDialogContextWrapper>
                                             </ToastsContextProvider>
                                             <ReactQueryDevtools
                                                 initialIsOpen={false}
