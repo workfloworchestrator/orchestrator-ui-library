@@ -45,7 +45,10 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     showConfirmDialog({
                         question:
                             'Are you sure you want to close the side menu?',
-                        confirmAction: () => console.log('confirm'),
+                        confirmAction: () => {
+                            console.log('confirm');
+                            setIsSideMenuVisible((prevState) => !prevState);
+                        },
                         cancelAction: () => console.log('cancel'),
                     })
                 }
