@@ -71,7 +71,10 @@
                 "taggedOnly": "VLAN is alleen relevant SN7, MSP of SN8 SP in tagged mode, niet voor link_member of untagged ports.",
                 "loadingIms": "VLAN informatie aan het laden uit IMS"
             },
-            "subscription": { "placeholder": "Choose a subscription" }
+            "subscription": {
+                "placeholder": "Kies een subscription",
+                "loading": "Subscriptions ophalen..."
+            }
         }
     },
     "metadata": {

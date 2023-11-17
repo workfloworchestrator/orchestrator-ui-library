@@ -12,14 +12,15 @@ export const getReactSelectInnerComponentStyles = (theme: EuiThemeComputed) => {
             color: state.isSelected
                 ? theme.colors.primaryText
                 : theme.colors.text,
-            cursor: state.isDisabled ? 'not-allowed' : 'default',
         }),
-        control: (baseStyles: object) => ({
-            ...baseStyles,
-            backgroundColor: theme.colors.lightestShade,
-            color: theme.colors.text,
-            border: theme.border.thin,
-        }),
+        control: (baseStyles: object) => {
+            return {
+                ...baseStyles,
+                backgroundColor: theme.colors.lightestShade,
+                color: theme.colors.text,
+                border: theme.border.thin,
+            };
+        },
         input: (baseStyles: object) => ({
             ...baseStyles,
             color: theme.colors.text,
