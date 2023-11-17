@@ -92,8 +92,8 @@ export default function ConfirmationDialog({
                     <EuiModalFooter>
                         <EuiButton
                             onClick={cancel}
-                            color="warning"
                             id="dialog-cancel"
+                            fill={false}
                         >
                             {leavePage ? t('leave') : t('cancel')}
                         </EuiButton>
