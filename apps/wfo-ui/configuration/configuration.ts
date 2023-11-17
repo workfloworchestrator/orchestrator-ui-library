@@ -47,6 +47,6 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
                 PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
             ),
         },
-        authActive: process.env.AUTH_ACTIVE?.toLowerCase() != 'false',
+        authActive: false,
     };
 };
