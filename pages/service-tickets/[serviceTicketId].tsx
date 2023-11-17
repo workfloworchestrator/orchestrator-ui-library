@@ -1,5 +1,5 @@
 import React from 'react';
-import { WfoServiceTicketListPage } from '../../components/WfoServiceTicketsListPage';
-export const ServiceTicketsCompletePage = () => <WfoServiceTicketListPage />;
+import { WfoServiceTicketDetailPage } from '../../components/WfoServiceTicketDetailPage/WfoServiceTicketDetailPage';
+export const ServiceTicketDetailPage = () => <WfoServiceTicketDetailPage />;
 
-export default ServiceTicketsCompletePage;
+export default ServiceTicketDetailPage;
