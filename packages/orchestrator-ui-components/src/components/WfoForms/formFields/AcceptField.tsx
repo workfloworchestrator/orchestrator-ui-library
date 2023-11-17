@@ -19,7 +19,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { FieldProps } from './types';
 import { useTranslations } from 'next-intl';
-import { useOrchestratorTheme } from '../../../hooks';
+import { useWithOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './AcceptFieldStyling';
 
 type AcceptItemType =
@@ -70,9 +70,8 @@ function Accept({
     data,
     ...props
 }: AcceptFieldProps) {
-    const t = useTranslations('pydanticForms.fields');
-    const { theme } = useOrchestratorTheme();
-    const { acceptFieldStyle } = getStyles(theme);
+    const t = useTranslations('pydanticForms.widgets');
+    const { acceptFieldStyle } = useWithOrchestratorTheme(getStyles);
 
     const legacy = !data;
     const i18nBaseKey = data ? `forms.fields.${name}_accept` : 'forms.fields';
