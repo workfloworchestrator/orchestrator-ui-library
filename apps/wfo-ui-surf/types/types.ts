@@ -1,5 +1,6 @@
 /** CIM */
 import { Process } from '@orchestrator-ui/orchestrator-ui-components';
+import { ReactNode } from 'react';
 
 export enum WfoServiceTicketListTabType {
     ACTIVE = 'ACTIVE',
@@ -100,10 +101,10 @@ export interface ServiceTicketLog {
 }
 
 export enum ServiceTicketImpactedObjectImpact {
-    DOWN = 'down',
     NO_IMPACT = 'no_impact',
     REDUCED_REDUNDANCY = 'reduced_redundancy',
     RESILIENCE_LOSS = 'resilience_loss',
+    DOWN = 'down',
 }
 
 export interface ServiceTicketImpactedIMSCircuit {
@@ -208,4 +209,17 @@ export interface ImpactedObject {
 export enum Locale {
     enUS = 'en-Us',
     nlNL = 'nl-NL',
+}
+
+export enum ServiceTicketTabIds {
+    GENERAL_TAB = 'general-id',
+    NOTIFICATION_LOG = 'notification-log-id',
+    SENT_EMAILS = 'sent-emails-id',
+}
+
+export interface ServiceTicketDetailPageTab {
+    id: ServiceTicketTabIds;
+    translationKey: string;
+    prepend?: ReactNode;
+    append?: ReactNode;
 }
