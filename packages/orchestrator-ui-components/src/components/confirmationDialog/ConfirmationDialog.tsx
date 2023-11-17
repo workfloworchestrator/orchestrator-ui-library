@@ -25,6 +25,7 @@ import {
 import React from 'react';
 
 import { confirmationDialogStyling } from './ConfirmationDialogStyling';
+import { useTranslations } from 'next-intl';
 
 interface IProps {
     isOpen?: boolean;
@@ -53,14 +54,15 @@ export default function ConfirmationDialog({
     leavePage = false,
     isError = false,
 }: IProps) {
+    const t = useTranslations('confirmationDialog');
     const modalContent = (
         <div>
             {leavePage ? (
                 <section
                     className={`dialog-content ${isError ? ' error' : ''}`}
                 >
-                    <h2>Leave</h2>
-                    <p>Leave paragraph</p>
+                    <h2>{t('leavePage')}</h2>
+                    <p>{t('leavePageSub')}</p>
                 </section>
             ) : (
                 <section className="dialog-content">
@@ -82,9 +84,7 @@ export default function ConfirmationDialog({
                     initialFocus="[name=popfirst]"
                 >
                     <EuiModalHeader>
-                        <EuiModalHeaderTitle>
-                            Translated title
-                        </EuiModalHeaderTitle>
+                        <EuiModalHeaderTitle>{t('title')}</EuiModalHeaderTitle>
                     </EuiModalHeader>
 
                     <EuiModalBody>{modalContent}</EuiModalBody>
@@ -95,25 +95,11 @@ export default function ConfirmationDialog({
                             color="warning"
                             id="dialog-cancel"
                         >
-                            {/*<FormattedMessage*/}
-                            {/*    id={*/}
-                            {/*        leavePage*/}
-                            {/*            ? 'confirmation_dialog.leave'*/}
-                            {/*            : 'confirmation_dialog.cancel'*/}
-                            {/*    }*/}
-                            {/*/>*/}
-                            leave
+                            {leavePage ? t('leave') : t('cancel')}
                         </EuiButton>
 
                         <EuiButton onClick={confirm} fill id="dialog-confirm">
-                            {/*<FormattedMessage*/}
-                            {/*    id={*/}
-                            {/*        leavePage*/}
-                            {/*            ? 'confirmation_dialog.stay'*/}
-                            {/*            : 'confirmation_dialog.confirm'*/}
-                            {/*    }*/}
-                            {/*/>*/}
-                            stay
+                            {leavePage ? t('stay') : t('confirm')}
                         </EuiButton>
                     </EuiModalFooter>
                 </EuiModal>

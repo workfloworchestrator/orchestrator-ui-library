@@ -13,6 +13,15 @@
         "noFailedTasks": "Geen gefaalde taken!",
         "search": "Zoeken"
     },
+    "confirmationDialog": {
+        "title": "Graag bevestigen",
+        "confirm": "Bevestigen",
+        "cancel": "Annuleren",
+        "leavePage": "Wil je deze pagina verlaten?",
+        "leavePageSub": "Veranderingen die je hebt gemaakt worden niet opgeslagen.",
+        "stay": "Blijven",
+        "leave": "Verlaten"
+    },
     "workflow": {
         "start_workflow_title": "Start workflow"
     },
