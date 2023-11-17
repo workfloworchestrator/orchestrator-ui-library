@@ -13,6 +13,8 @@
  *
  */
 
+import React from 'react';
+
 import {
     EuiButton,
     EuiModal,
@@ -22,7 +24,6 @@ import {
     EuiModalHeaderTitle,
     EuiOverlayMask,
 } from '@elastic/eui';
-import React from 'react';
 
 import { confirmationDialogStyling } from './ConfirmationDialogStyling';
 

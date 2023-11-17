@@ -1,8 +1,8 @@
 import { AbstractIntlMessages } from 'next-intl';
 
-import { Locale } from '../types';
-import nlNL from './nl-NL.json';
 import enUS from './en-US.json';
+import nlNL from './nl-NL.json';
+import { Locale } from '../types';
 
 export type TranslationMessagesMap = Map<Locale, AbstractIntlMessages>;
 

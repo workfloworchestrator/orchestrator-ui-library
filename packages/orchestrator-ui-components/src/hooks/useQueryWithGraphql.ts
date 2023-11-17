@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import { GraphQLClient } from 'graphql-request';
-import { useQuery } from 'react-query';
-import { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { Variables } from 'graphql-request/build/cjs/types';
-import { useSessionWithToken } from './useSessionWithToken';
 
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import { GraphQLClient } from 'graphql-request';
+import { Variables } from 'graphql-request/build/cjs/types';
+import { useQuery } from 'react-query';
+
+import { useSessionWithToken } from './useSessionWithToken';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
 export const useQueryWithGraphql = <U, V extends Variables>(

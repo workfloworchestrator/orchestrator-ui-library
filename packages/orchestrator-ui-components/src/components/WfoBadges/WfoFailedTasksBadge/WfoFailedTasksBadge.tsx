@@ -1,14 +1,16 @@
 import React from 'react';
+
 import { EuiToolTip } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
+
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoHeaderBadge } from '../WfoHeaderBadge';
-import { WfoXCircleFill } from '../../../icons/WfoXCircleFill';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '../../../hooks/useProcessStatusCountsQuery';
 import { WfoCheckmarkCircleFill } from '../../../icons';
-import { useTranslations } from 'next-intl';
+import { WfoXCircleFill } from '../../../icons/WfoXCircleFill';
+import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 type TaskCountsSummary = {
     failed: number;

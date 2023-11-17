@@ -1,5 +1,7 @@
-import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 import React, { FC } from 'react';
+
+import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
+
 import { WfoEngineStatusButton } from './WfoEngineStatusButton';
 import { EngineStatusValue } from '../../types';
 

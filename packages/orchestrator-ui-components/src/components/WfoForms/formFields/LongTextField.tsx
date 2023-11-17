@@ -13,9 +13,11 @@
  *
  */
 
-import { EuiFormRow, EuiText, EuiTextArea } from '@elastic/eui';
 import React from 'react';
+
+import { EuiFormRow, EuiText, EuiTextArea } from '@elastic/eui';
 import { connectField, filterDOMProps } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 export type LongTextFieldProps = FieldProps<

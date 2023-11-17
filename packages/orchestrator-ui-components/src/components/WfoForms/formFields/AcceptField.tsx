@@ -13,14 +13,15 @@
  *
  */
 
-import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 import React, { useReducer } from 'react';
+
+import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { FieldProps } from './types';
-import { useTranslations } from 'next-intl';
-import { useWithOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './AcceptFieldStyling';
+import { FieldProps } from './types';
+import { useWithOrchestratorTheme } from '../../../hooks';
 
 type AcceptItemType =
     | 'info'

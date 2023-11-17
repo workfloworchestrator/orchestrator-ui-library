@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import type { Pagination } from '@elastic/eui/src/components';
 
+import { EuiBadgeGroup } from '@elastic/eui';
+import type { Pagination } from '@elastic/eui/src/components';
+import { useTranslations } from 'next-intl';
+
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
@@ -9,28 +12,24 @@ import {
     WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
-import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-
-import type { ResourceTypeDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import type { StoredTableConfig } from '../../components';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
-
-import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { EuiBadgeGroup } from '@elastic/eui';
-import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { BadgeType, SortOrder } from '../../types';
+import type { ResourceTypeDefinition } from '../../types';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
     'resourceTypeId';

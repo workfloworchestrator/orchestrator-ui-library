@@ -13,6 +13,7 @@
  *
  */
 import { AxiosInstance } from 'axios';
+
 import { getAxiosInstance } from './axios';
 import { ProductDefinition } from '../types';
 

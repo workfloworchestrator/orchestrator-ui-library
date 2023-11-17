@@ -1,6 +1,7 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
-import { Step } from '../../../types';
+
 import { useOrchestratorTheme } from '../../../hooks';
+import { Step } from '../../../types';
 import { getStyles } from '../styles';
 import { WfoStep } from '../WfoStep';
 

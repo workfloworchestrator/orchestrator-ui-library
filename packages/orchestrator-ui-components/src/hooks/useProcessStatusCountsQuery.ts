@@ -1,7 +1,8 @@
 import { useContext } from 'react';
+
+import { useQueryWithFetch } from './useQueryWithFetch';
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { ProcessStatus } from '../types';
-import { useQueryWithFetch } from './useQueryWithFetch';
 
 export type ProcessStatusCounts = {
     process_counts: Record<ProcessStatus, number>;

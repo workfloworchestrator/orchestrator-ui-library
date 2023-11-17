@@ -13,7 +13,9 @@
  *
  */
 import React from 'react';
+
 import { connectField, filterDOMProps } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;

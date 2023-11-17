@@ -1,5 +1,7 @@
 import React from 'react';
+
 import type { Meta } from '@storybook/react';
+
 import WfoListItemStartPage from './WfoListItemStartPage';
 
 const Story: Meta<typeof WfoListItemStartPage> = {

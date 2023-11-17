@@ -1,5 +1,3 @@
-import { SubscriptionAction } from '../../../hooks';
-import { FieldValue, WorkflowTarget } from '../../../types';
 import { EuiThemeComputed } from '@elastic/eui';
 
 import {
@@ -8,6 +6,9 @@ import {
     flattenArrayProps,
     getWorkflowTargetColor,
 } from './utils';
+import { SubscriptionAction } from '../../../hooks';
+import { FieldValue, WorkflowTarget } from '../../../types';
+
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
     const instanceValues: FieldValue[] = [

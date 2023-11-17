@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoInsyncIcon } from './WfoInsyncIcon';
 
 const Story: Meta<typeof WfoInsyncIcon> = {

@@ -1,12 +1,13 @@
-import { EuiDataGridColumn } from '@elastic/eui';
 import { ReactNode } from 'react';
+
+import { EuiDataGridColumn } from '@elastic/eui';
 import {
     EuiDataGridControlColumn,
     EuiDataGridSorting,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
 
-import { WfoDataSorting, TableColumnKeys } from '../utils/columns';
 import { SortOrder } from '../../../types';
+import { WfoDataSorting, TableColumnKeys } from '../utils/columns';
 
 export type WfoDataGridTableColumns<T> = {
     [Property in keyof T]: Omit<EuiDataGridColumn, 'id'> & {

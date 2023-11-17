@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
-import { getStyles } from './styles';
+
 import { EuiText } from '@elastic/eui';
+
+import { getStyles } from './styles';
+import { useOrchestratorTheme } from '../../hooks';
 
 export type WfoKeyCellProps = {
     value: string;

@@ -14,35 +14,33 @@
  *
  */
 
+import React, { useContext, useState } from 'react';
+
 import {
     EuiButtonColor,
     EuiButton,
     EuiFlexGroup,
     EuiHorizontalRule,
 } from '@elastic/eui';
-
+import axios from 'axios';
 import invariant from 'invariant';
 import { JSONSchema6 } from 'json-schema';
-import { useTranslations } from 'next-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import React, { useContext, useState } from 'react';
 import { NextRouter } from 'next/router';
-import axios from 'axios';
-
+import { useTranslations } from 'next-intl';
 import { filterDOMProps, joinName } from 'uniforms';
 import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
-
 import { AutoField, AutoForm } from 'uniforms-unstyled';
 
 import { autoFieldFunction } from './AutoFieldLoader';
+import AutoFields from './AutoFields';
 import { userInputFormStyling } from './UserInputFormStyling';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import AutoFields from './AutoFields';
-import { ValidationError } from '../../types/forms';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 import { useOrchestratorTheme } from '../../hooks';
 import { WfoPlayFill } from '../../icons';
+import { ValidationError } from '../../types/forms';
 
 type UniformJSONSchemaProperty = JSONSchema6 & {
     uniforms: any;

@@ -1,5 +1,6 @@
-import { getFirstUuidPart } from '../../../utils';
 import React, { FC } from 'react';
+
+import { getFirstUuidPart } from '../../../utils';
 
 export type WfoFirstUUIDPartProps = {
     UUID: string;

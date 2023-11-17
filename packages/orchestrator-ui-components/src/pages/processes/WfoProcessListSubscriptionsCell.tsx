@@ -1,8 +1,10 @@
 import React from 'react';
-import { Subscription } from '../../types';
-import Link from 'next/link';
 import { FC } from 'react';
+
 import { EuiFlexGroup } from '@elastic/eui';
+import Link from 'next/link';
+
+import { Subscription } from '../../types';
 
 export const RENDER_ALL = 'RENDER_ALL';
 export enum RenderDirection {

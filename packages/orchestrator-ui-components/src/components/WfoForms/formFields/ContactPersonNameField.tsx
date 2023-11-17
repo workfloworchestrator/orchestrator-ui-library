@@ -13,10 +13,11 @@
  *
  */
 
+import React, { Ref, useEffect, useState } from 'react';
+
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 import { isFunction } from 'lodash';
 import get from 'lodash/get';
-import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     connectField,

@@ -1,5 +1,7 @@
-import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import React, { FunctionComponent } from 'react';
+
+import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
+
 import { WfoFlushSettings } from './WfoFlushSettings';
 import { WfoModifySettings } from './WfoModifySettings';
 import { WfoStatus } from './WfoStatus';

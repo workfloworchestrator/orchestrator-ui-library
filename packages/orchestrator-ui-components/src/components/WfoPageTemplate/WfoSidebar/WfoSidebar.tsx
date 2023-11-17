@@ -1,8 +1,11 @@
 import React, { FC, useState } from 'react';
+
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
+import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 
+import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 import {
     PATH_METADATA,
     PATH_METADATA_PRODUCT_BLOCKS,
@@ -15,8 +18,6 @@ import {
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
 } from '../paths';
-import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
-import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 export type WfoSidebarProps = {
     overrideMenuItems?: (

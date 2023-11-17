@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react';
 
-import { SortOrder } from '../../../types';
-import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
 import {
     EuiFieldSearch,
     EuiHorizontalRule,
@@ -9,10 +7,14 @@ import {
     EuiText,
     useGeneratedHtmlId,
 } from '@elastic/eui';
-import { useWithOrchestratorTheme } from '../../../hooks';
-import { WfoSortButtons } from '../WfoSortButtons';
-import { getStyles } from './styles';
 import { useTranslations } from 'next-intl';
+
+import { getStyles } from './styles';
+import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
+import { useWithOrchestratorTheme } from '../../../hooks';
+import { SortOrder } from '../../../types';
+import { WfoSortButtons } from '../WfoSortButtons';
+
 
 export type WfoTableHeaderCellProps = {
     fieldName: string;

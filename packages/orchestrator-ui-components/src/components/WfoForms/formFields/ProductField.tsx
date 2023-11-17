@@ -14,10 +14,11 @@
  */
 
 import React from 'react';
+
 import get from 'lodash/get';
-import { connectField, filterDOMProps } from 'uniforms';
-import { useQuery } from 'react-query';
 import { useTranslations } from 'next-intl';
+import { useQuery } from 'react-query';
+import { connectField, filterDOMProps } from 'uniforms';
 
 import { SelectField, SelectFieldProps } from './SelectField';
 import { ProductDefinition } from '../../../types';

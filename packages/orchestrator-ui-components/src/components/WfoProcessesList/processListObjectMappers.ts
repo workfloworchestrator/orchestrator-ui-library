@@ -1,10 +1,10 @@
+import { ProcessListItem } from './WfoProcessList';
 import {
     GraphqlFilter,
     GraphQLSort,
     Process,
     ProcessesResult,
 } from '../../types';
-import { ProcessListItem } from './WfoProcessList';
 
 export const mapGraphQlProcessListResultToProcessListItems = (
     processesResult: ProcessesResult,

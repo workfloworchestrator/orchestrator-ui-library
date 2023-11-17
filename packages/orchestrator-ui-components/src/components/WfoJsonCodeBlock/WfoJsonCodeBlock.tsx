@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
+
 import { EuiCodeBlock } from '@elastic/eui';
-import { useWithOrchestratorTheme } from '../../hooks';
+
 import { getStyles } from './styles';
+import { useWithOrchestratorTheme } from '../../hooks';
 
 export type WfoJsonCodeBlockProps = {
     data: object;

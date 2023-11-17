@@ -13,16 +13,15 @@
  *
  */
 import React, { useEffect, useState } from 'react';
+
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 
 import { FieldProps, ServicePort } from './types';
-
-import { useAxiosApiClient } from '../useAxiosApiClient';
-
 import { useIsTaggedPort } from '../../../hooks/surf/useIsTaggedPort';
+import { useAxiosApiClient } from '../useAxiosApiClient';
 
 function inValidVlan(vlan: string) {
     const value = vlan || '0';

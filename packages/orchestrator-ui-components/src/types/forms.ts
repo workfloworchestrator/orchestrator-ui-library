@@ -1,5 +1,6 @@
-import { JSONSchema6 } from 'json-schema';
 import { Ref } from 'react';
+
+import { JSONSchema6 } from 'json-schema';
 import { HTMLFieldProps } from 'uniforms';
 
 export interface ValidationError {

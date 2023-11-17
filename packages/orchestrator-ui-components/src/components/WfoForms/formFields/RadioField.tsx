@@ -13,10 +13,12 @@
  *
  */
 
+import React from 'react';
+
 import { EuiFormRow, EuiRadio, EuiText } from '@elastic/eui';
 import { omit } from 'lodash';
-import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 const base64 =

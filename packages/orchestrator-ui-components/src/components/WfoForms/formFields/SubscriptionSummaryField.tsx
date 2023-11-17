@@ -13,13 +13,13 @@
  *
  */
 import React from 'react';
-import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useQueryWithGraphql } from '../../../hooks';
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../../graphqlQueries';
+import { EuiFormRow, EuiText } from '@elastic/eui';
+import { connectField, filterDOMProps } from 'uniforms';
 
 import { FieldProps } from './types';
-import { connectField, filterDOMProps } from 'uniforms';
+import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../../graphqlQueries';
+import { useQueryWithGraphql } from '../../../hooks';
 import { WfoLoading } from '../../WfoLoading';
 import { WfoSubscriptionGeneral } from '../../WfoSubscription';
 export type SubscriptionSummaryFieldProps = FieldProps<string>;

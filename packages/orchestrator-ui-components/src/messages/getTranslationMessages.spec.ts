@@ -1,7 +1,7 @@
-import { getTranslationMessages } from './getTranslationMessages';
-import { Locale } from '../types';
 import enUS from './en-US.json';
+import { getTranslationMessages } from './getTranslationMessages';
 import nlNL from './nl-NL.json';
+import { Locale } from '../types';
 
 describe('getTransalationMessages', () => {
     it('Returns nl-NL translation when nl-NL locale is requested', () => {

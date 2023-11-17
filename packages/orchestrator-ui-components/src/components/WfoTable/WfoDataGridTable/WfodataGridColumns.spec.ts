@@ -3,8 +3,8 @@ import {
     mapColumnSortToEuiDataGridSorting,
     WfoDataGridTableColumns,
 } from './WfodataGridColumns';
-import { WfoDataSorting } from '../utils/columns';
 import { SortOrder } from '../../../types';
+import { WfoDataSorting } from '../utils/columns';
 
 interface TestColumn {
     id: string;

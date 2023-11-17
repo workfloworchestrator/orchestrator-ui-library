@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useTranslations } from 'next-intl';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
@@ -7,8 +7,10 @@ import {
     EuiIcon,
     EuiListGroupItem,
 } from '@elastic/eui';
-import { TreeContext, TreeContextType } from '../../contexts';
+import { useTranslations } from 'next-intl';
+
 import { getStyles } from './styles';
+import { TreeContext, TreeContextType } from '../../contexts';
 import { useOrchestratorTheme } from '../../hooks';
 
 type Item = {

@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
-import { StepStatus } from '../../types';
 import { ReactNode } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
+
+import { useEuiScrollBar } from '@elastic/eui';
+
 import { getStyles } from './styles';
 import { getTimelinePosition } from './timelineUtils';
 import { WfoTimelineStep } from './WfoTimelineStep';
-import { useEuiScrollBar } from '@elastic/eui';
+import { useOrchestratorTheme } from '../../hooks';
+import { StepStatus } from '../../types';
 
 export enum TimelinePosition {
     PAST = 'past',

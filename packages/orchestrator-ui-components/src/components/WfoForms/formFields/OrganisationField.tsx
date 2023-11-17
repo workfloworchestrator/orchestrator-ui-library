@@ -13,11 +13,13 @@
  *
  */
 import React from 'react';
-import { SelectField, SelectFieldProps } from './SelectField';
+
 import { useTranslations } from 'next-intl';
 import { connectField } from 'uniforms';
-import { useQueryWithGraphql } from '../../../hooks';
+
+import { SelectField, SelectFieldProps } from './SelectField';
 import { GET_CUSTOMER_GRAPHQL_QUERY } from '../../../graphqlQueries';
+import { useQueryWithGraphql } from '../../../hooks';
 
 export type OrganisationFieldProps = Omit<
     SelectFieldProps,

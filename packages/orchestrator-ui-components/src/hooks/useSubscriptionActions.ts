@@ -1,5 +1,7 @@
-import { useQuery } from 'react-query';
 import { useContext } from 'react';
+
+import { useQuery } from 'react-query';
+
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 
 export interface SubscriptionAction {

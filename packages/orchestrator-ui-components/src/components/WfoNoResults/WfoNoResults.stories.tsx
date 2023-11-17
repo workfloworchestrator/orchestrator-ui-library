@@ -1,7 +1,9 @@
 import React from 'react';
+
 import type { Meta } from '@storybook/react';
-import { WfoNoResults } from './WfoNoResults';
+
 import { WfoSearchStrikethrough } from './../../icons';
+import { WfoNoResults } from './WfoNoResults';
 
 const Story: Meta<typeof WfoNoResults> = {
     component: WfoNoResults,

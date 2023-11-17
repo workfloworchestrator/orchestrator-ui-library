@@ -1,11 +1,14 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
+
 import { EuiPageTemplate } from '@elastic/eui';
-import { WfoPageHeader } from '../WfoPageHeader';
-import { WfoSidebar } from '../WfoSidebar';
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 import { signOut } from 'next-auth/react';
+
+import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
+import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
+import { WfoPageHeader } from '../WfoPageHeader';
+import { WfoSidebar } from '../WfoSidebar';
+
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;

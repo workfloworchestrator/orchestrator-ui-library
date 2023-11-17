@@ -14,8 +14,10 @@
  */
 
 import React, { ReactNode } from 'react';
+
 import { connectField } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
+
 import { ListDelField } from './ListDelField';
 
 export type ListItemFieldProps = {

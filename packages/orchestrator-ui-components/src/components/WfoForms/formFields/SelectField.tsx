@@ -15,6 +15,7 @@
 import React from 'react';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
+import type { EuiThemeComputed } from '@elastic/eui';
 import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import ReactSelect from 'react-select';
@@ -26,11 +27,9 @@ import {
     useForm,
 } from 'uniforms';
 
-import type { EuiThemeComputed } from '@elastic/eui';
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
 import { ListSelectField } from './ListSelectField';
-
 import { FieldProps, Option } from './types';
 import { useOrchestratorTheme } from '../../../hooks';
 

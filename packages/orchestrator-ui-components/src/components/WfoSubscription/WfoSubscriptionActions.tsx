@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import Link from 'next/link';
 
 import {
     EuiButton,
@@ -11,18 +10,17 @@ import {
     EuiPopover,
     EuiToolTip,
 } from '@elastic/eui';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-import { useOrchestratorTheme } from '../../hooks';
 import { flattenArrayProps, getWorkflowTargetColor } from './utils';
-
+import { useOrchestratorTheme } from '../../hooks';
 import {
     SubscriptionAction,
     useSubscriptionActions,
 } from '../../hooks/useSubscriptionActions';
-
 import { WfoXCircleFill } from '../../icons';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { WorkflowTarget } from '../../types';
 
 type MenuItemProps = {

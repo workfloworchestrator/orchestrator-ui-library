@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoCheckmarkCircleFill } from './WfoCheckmarkCircleFill';
 
 const Story: Meta<typeof WfoCheckmarkCircleFill> = {

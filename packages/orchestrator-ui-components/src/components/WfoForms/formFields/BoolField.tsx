@@ -13,6 +13,7 @@
  *
  */
 import React from 'react';
+
 import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import { connectField, filterDOMProps } from 'uniforms';
 

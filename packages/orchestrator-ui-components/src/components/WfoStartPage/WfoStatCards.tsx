@@ -1,4 +1,5 @@
 import React, { useState, FC } from 'react';
+
 import {
     EuiAvatar,
     EuiFlexGroup,
@@ -6,6 +7,7 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
+
 import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { TotalStat } from '../../types';
 

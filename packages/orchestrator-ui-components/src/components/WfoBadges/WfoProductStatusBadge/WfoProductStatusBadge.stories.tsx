@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoProductStatusBadge } from './WfoProductStatusBadge';
 import { ProductLifecycleStatus } from '../../../types';
 

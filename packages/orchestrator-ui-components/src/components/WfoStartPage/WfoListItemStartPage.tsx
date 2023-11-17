@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
+
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 import moment from 'moment';
+
 import { ProcessFromRestApi, ProductDefinition } from '../../types';
 
 interface Subscription {

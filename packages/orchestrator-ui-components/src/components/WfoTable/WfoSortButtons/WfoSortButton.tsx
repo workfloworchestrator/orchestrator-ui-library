@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { WfoIconProps } from '../../../icons';
-import { useOrchestratorTheme } from '../../../hooks';
+
 import { getStyles } from './styles';
+import { useOrchestratorTheme } from '../../../hooks';
+import { WfoIconProps } from '../../../icons';
 
 export type WfoSortButtonProps = {
     WfoIconComponent: FC<WfoIconProps>;

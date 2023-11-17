@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { useOrchestratorTheme } from '../../../hooks';
-import { getStyles } from '../styles';
+
 import {
     EuiButton,
     EuiFlexGroup,
@@ -11,7 +9,11 @@ import {
     EuiSwitch,
     EuiText,
 } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
+
+import { useOrchestratorTheme } from '../../../hooks';
 import { WfoCode, WfoEyeFill } from '../../../icons';
+import { getStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
     showHiddenKeys: boolean;

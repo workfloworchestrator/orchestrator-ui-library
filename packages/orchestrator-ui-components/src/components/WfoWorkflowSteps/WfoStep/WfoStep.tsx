@@ -1,16 +1,17 @@
 import React, { LegacyRef } from 'react';
+
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import type { StepState, Step, EmailState } from '../../../types';
-import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
-import { getStyles } from '../styles';
-import { formatDate } from '../../../utils';
 import { WfoChevronDown, WfoChevronUp } from '../../../icons';
+import type { StepState, Step, EmailState } from '../../../types';
+import { formatDate } from '../../../utils';
 import { calculateTimeDifference } from '../../../utils';
-import { getStepContent } from '../stepListUtils';
 import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
+import { getStepContent } from '../stepListUtils';
+import { getStyles } from '../styles';
+import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 
 export interface WfoStepProps {
     step: Step;

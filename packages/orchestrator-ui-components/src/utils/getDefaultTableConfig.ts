@@ -9,19 +9,15 @@ import {
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../components';
-
 import type { StoredTableConfig } from '../components';
-
+import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
+import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
 import {
     ProductBlockDefinition,
     ProductDefinition,
     ResourceTypeDefinition,
     WorkflowDefinition,
 } from '../types';
-
-import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
-
-import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],

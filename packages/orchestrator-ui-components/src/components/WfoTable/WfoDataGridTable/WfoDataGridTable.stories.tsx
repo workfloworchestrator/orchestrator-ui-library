@@ -1,8 +1,10 @@
-import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { WfoDataSorting } from '../utils/columns';
-import { SortOrder } from '../../../types';
+
+import type { Meta } from '@storybook/react';
+
 import { WfoDataGridTable } from './WfoDataGridTable';
+import { SortOrder } from '../../../types';
+import { WfoDataSorting } from '../utils/columns';
 
 const extractedArr = (arr, start, howMany) =>
     arr.filter((_, index) => index >= start && index < howMany + start);

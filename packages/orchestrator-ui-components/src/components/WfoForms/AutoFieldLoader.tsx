@@ -1,3 +1,6 @@
+import { Context, GuaranteedProps } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
+
 import {
     AcceptField,
     BoolField,
@@ -21,8 +24,6 @@ import {
     NestField,
     OptGroupField,
 } from './formFields';
-import { Context, GuaranteedProps } from 'uniforms';
-import { AutoField } from 'uniforms-unstyled';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,

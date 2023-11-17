@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import type { Pagination } from '@elastic/eui/src/components';
 
+import type { Pagination } from '@elastic/eui/src/components';
+import { useTranslations } from 'next-intl';
+
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
+import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     WfoLoading,
 } from '../../components';
-import type { WfoTableColumns, WfoDataSorting } from '../../components';
 import {
     WfoProductStatusBadge,
     WfoProductBlockBadge,
@@ -19,24 +21,19 @@ import {
     getPageChangeHandler,
     getEsQueryStringHandler,
 } from '../../components';
-
-import type { ProductDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
-
+import { StoredTableConfig } from '../../components';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
-
-import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
-
-import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { StoredTableConfig } from '../../components';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import type { ProductDefinition } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';

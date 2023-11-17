@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
 import { useRouter } from 'next/router';
+
 import { isUuid4, removeSuffix, upperCaseFirstChar } from '../../../utils';
 
 export const WfoBreadcrumbs = () => {

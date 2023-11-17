@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoSearchStrikethrough } from './WfoSearchStrikethrough';
 
 const Story: Meta<typeof WfoSearchStrikethrough> = {

@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+
 import {
     EuiButton,
     EuiFlexItem,
@@ -6,6 +7,7 @@ import {
     EuiPanel,
     EuiSpacer,
 } from '@elastic/eui';
+
 import { WfoListItemStartPage } from './WfoListItemStartPage';
 import { ItemsList } from '../../types';
 

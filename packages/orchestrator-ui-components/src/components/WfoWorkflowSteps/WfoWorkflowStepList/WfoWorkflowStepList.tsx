@@ -1,12 +1,14 @@
 import React, { Ref, useEffect, useState } from 'react';
+
 import { useTranslations } from 'next-intl';
-import { Step } from '../../../types';
+
 import { WfoStepListHeader } from './WfoStepListHeader';
-import { WfoLoading } from '../../WfoLoading';
-import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
-import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
-import { updateStepListItems } from '../stepListUtils';
 import { useRawProcessDetails } from '../../../hooks';
+import { Step } from '../../../types';
+import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
+import { WfoLoading } from '../../WfoLoading';
+import { updateStepListItems } from '../stepListUtils';
+import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
 
 export interface WfoWorkflowStepListProps {
     steps: Step[];

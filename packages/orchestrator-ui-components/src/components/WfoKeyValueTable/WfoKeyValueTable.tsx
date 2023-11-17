@@ -1,8 +1,9 @@
 import React, { FC, Fragment, ReactNode } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
+
 import { getStyles } from './styles';
 import { WfoKeyCell } from './WfoKeyCell';
 import { WfoValueCell } from './WfoValueCell';
+import { useOrchestratorTheme } from '../../hooks';
 
 export type WfoKeyValueTableDataType = {
     key: string;

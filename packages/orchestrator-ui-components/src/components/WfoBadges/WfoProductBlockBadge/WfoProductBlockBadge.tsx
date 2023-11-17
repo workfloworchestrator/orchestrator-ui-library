@@ -1,7 +1,8 @@
-import { WfoBadge } from '../WfoBadge';
 import React from 'react';
+
 import { useOrchestratorTheme } from '../../../hooks';
 import { BadgeType } from '../../../types';
+import { WfoBadge } from '../WfoBadge';
 
 export type WfoProductBlockBadgeProps = {
     children: string;

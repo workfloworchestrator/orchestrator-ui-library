@@ -3,8 +3,8 @@ import {
     getMostAccurateTimelineStatus,
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
-import { Step, StepStatus } from '../../types';
 import { GroupedStep } from './WfoProcessDetailPage';
+import { Step, StepStatus } from '../../types';
 
 const baseStep: Step = {
     executed: 'testExecuted',

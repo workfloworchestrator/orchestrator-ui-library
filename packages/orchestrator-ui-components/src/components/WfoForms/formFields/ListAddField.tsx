@@ -13,13 +13,16 @@
  *
  */
 
-import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
-import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
-import { FieldProps } from './types';
+
 import { EuiIcon, EuiText } from '@elastic/eui';
-import { useOrchestratorTheme } from '../../../hooks';
+import cloneDeep from 'lodash/cloneDeep';
 import { useTranslations } from 'next-intl';
+import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
+
+import { FieldProps } from './types';
+import { useOrchestratorTheme } from '../../../hooks';
+
 
 export type ListAddFieldProps = FieldProps<
     string,

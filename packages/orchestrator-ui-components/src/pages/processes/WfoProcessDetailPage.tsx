@@ -1,22 +1,20 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 
-import { getProductNamesFromProcess } from '../../utils';
-import { useQueryWithGraphql } from '../../hooks';
-import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { TimelineItem, WfoLoading } from '../../components';
-
-import { WfoProcessDetail } from './WfoProcessDetail';
-import {
-    WfoStepListRef,
-    WfoWorkflowStepList,
-} from '../../components/WfoWorkflowSteps';
-
 import {
     convertStepsToGroupedSteps,
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
-import { Step, ProcessDoneStatuses } from '../../types';
+import { WfoProcessDetail } from './WfoProcessDetail';
+import { TimelineItem, WfoLoading } from '../../components';
+import {
+    WfoStepListRef,
+    WfoWorkflowStepList,
+} from '../../components/WfoWorkflowSteps';
 import { OrchestratorConfigContext } from '../../contexts';
+import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
+import { useQueryWithGraphql } from '../../hooks';
+import { Step, ProcessDoneStatuses } from '../../types';
+import { getProductNamesFromProcess } from '../../utils';
 
 export type GroupedStep = {
     steps: Step[];

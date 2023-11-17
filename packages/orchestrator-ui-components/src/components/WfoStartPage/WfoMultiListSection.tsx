@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+
 import { EuiFlexGroup } from '@elastic/eui';
+
 import WfoListStartPage from './WfoListStartPage';
 import {
     useFavouriteSubscriptions,

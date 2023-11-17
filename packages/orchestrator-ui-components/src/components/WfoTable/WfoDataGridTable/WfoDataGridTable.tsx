@@ -1,20 +1,22 @@
 import React from 'react';
+import { useRef, useState } from 'react';
+
 import {
     EuiDataGrid,
     EuiDataGridCellValueElementProps,
     EuiDataGridStyle,
 } from '@elastic/eui';
-import { useRef, useState } from 'react';
+import {
+    EuiDataGridControlColumn,
+    EuiDataGridPaginationProps,
+} from '@elastic/eui/src/components/datagrid/data_grid_types';
+
 import {
     mapColumnSortToEuiDataGridSorting,
     WfoControlColumn,
     getInitialColumnOrder,
     WfoDataGridTableColumns,
 } from './WfodataGridColumns';
-import {
-    EuiDataGridControlColumn,
-    EuiDataGridPaginationProps,
-} from '@elastic/eui/src/components/datagrid/data_grid_types';
 import { WfoDataSorting, TableColumnKeys } from '../utils/columns';
 import { DEFAULT_PAGE_SIZE } from '../utils/constants';
 

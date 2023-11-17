@@ -13,11 +13,13 @@
  *
  */
 import React, { useEffect, useRef } from 'react';
+
 import { EuiFlexItem } from '@elastic/eui';
 import { isDate } from 'moment';
 import scrollIntoView from 'scroll-into-view';
-import { ContactPerson } from './types';
+
 import { getStyles } from './ContactPersonAutocompleteStyles';
+import { ContactPerson } from './types';
 import { useWithOrchestratorTheme } from '../../../hooks';
 
 interface ContactPersonAutocompleteProps {

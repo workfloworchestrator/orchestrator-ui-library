@@ -13,15 +13,16 @@
  *
  */
 
+import React, { Children, cloneElement, isValidElement } from 'react';
+
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import range from 'lodash/range';
-import React, { Children, cloneElement, isValidElement } from 'react';
 import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
-import { ListAddField } from './ListAddField';
 
+import { ListAddField } from './ListAddField';
 import { listFieldStyling } from './listFieldStyling';
-import { FieldProps } from './types';
 import { ListItemField } from './ListItemField';
+import { FieldProps } from './types';
 
 declare module 'uniforms' {
     interface FilterDOMProps {

@@ -13,14 +13,15 @@
  *
  */
 
-import UserInputForm from './UserInputForm';
-import hash from 'object-hash';
 import React, { useEffect, useState } from 'react';
-import { FormNotCompleteResponse, InputForm } from '../../types/forms';
+
 import { useRouter } from 'next/router';
+import hash from 'object-hash';
 
 import { useAxiosApiClient } from './useAxiosApiClient';
+import UserInputForm from './UserInputForm';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
+import { FormNotCompleteResponse, InputForm } from '../../types/forms';
 
 interface Form {
     form: InputForm;

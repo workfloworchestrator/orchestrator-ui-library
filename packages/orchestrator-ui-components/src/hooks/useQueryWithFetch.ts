@@ -1,6 +1,7 @@
-import { useQuery } from 'react-query';
 import { Variables } from 'graphql-request/build/cjs/types';
 import { signOut } from 'next-auth/react';
+import { useQuery } from 'react-query';
+
 import { useSessionWithToken } from './useSessionWithToken';
 
 export const useQueryWithFetch = <T, V extends Variables>(

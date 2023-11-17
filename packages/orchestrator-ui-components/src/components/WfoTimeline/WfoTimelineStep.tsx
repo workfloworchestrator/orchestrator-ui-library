@@ -1,9 +1,11 @@
-import { StepStatus } from '../../types';
 import React, { ReactNode } from 'react';
+
 import { EuiToolTip } from '@elastic/eui';
+
+import { getStyles } from './styles';
 import { TimelinePosition } from './WfoTimeline';
 import { useOrchestratorTheme } from '../../hooks';
-import { getStyles } from './styles';
+import { StepStatus } from '../../types';
 
 export type WfoTimelineStepProps = {
     stepStatus: StepStatus;

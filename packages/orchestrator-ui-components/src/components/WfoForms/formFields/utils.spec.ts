@@ -1,3 +1,8 @@
+import {
+    subscriptionHasPortModeInstanceValue,
+    subscriptionHasTaggedProduct,
+} from './utils';
+import { ProductTag } from './utils';
 import type { ProductBlockInstance, SubscriptionDetail } from '../../../types';
 import {
     ProcessStatus,
@@ -5,11 +10,6 @@ import {
     SubscriptionStatus,
     WorkflowTarget,
 } from '../../../types';
-import {
-    subscriptionHasPortModeInstanceValue,
-    subscriptionHasTaggedProduct,
-} from './utils';
-import { ProductTag } from './utils';
 
 const testProductBlockInstances: ProductBlockInstance[] = [
     {

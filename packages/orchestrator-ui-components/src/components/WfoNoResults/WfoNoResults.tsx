@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
-import { getStyles } from './styles';
+
 import { EuiFlexGroup } from '@elastic/eui';
+
+import { getStyles } from './styles';
 import { useOrchestratorTheme } from '../../hooks';
 
 interface WfoNoResultsProps {

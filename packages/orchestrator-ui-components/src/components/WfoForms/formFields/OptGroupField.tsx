@@ -13,8 +13,9 @@
  *
  */
 
-import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from '@elastic/eui';
 import React from 'react';
+
+import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps, useField } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';

@@ -1,9 +1,9 @@
+import { WorkflowListItem } from './WfoWorkflowsPage';
 import {
     GraphQLSort,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
 } from '../../types';
-import { WorkflowListItem } from './WfoWorkflowsPage';
 
 export const mapWorkflowDefinitionToWorkflowListItem = (
     workflowDefinitionResult: WorkflowDefinitionsResult,

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import type { Meta } from '@storybook/react';
+
 import { WfoSidebar } from './WfoSidebar';
 
 const Story: Meta<typeof WfoSidebar> = {

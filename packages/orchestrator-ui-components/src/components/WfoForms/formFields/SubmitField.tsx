@@ -13,7 +13,9 @@
  *
  */
 import React from 'react';
+
 import { filterDOMProps, useForm } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 export type SubmitFieldProps = FieldProps<
