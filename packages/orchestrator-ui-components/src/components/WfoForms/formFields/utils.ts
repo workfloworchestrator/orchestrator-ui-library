@@ -1,5 +1,5 @@
 import { ProductBlockInstance, SubscriptionDetail } from '../../../types';
-import { ProductTag, PortMode } from './types';
+import { ProductTag, PortMode } from './surf/types';
 
 import { isDate } from 'moment';
 

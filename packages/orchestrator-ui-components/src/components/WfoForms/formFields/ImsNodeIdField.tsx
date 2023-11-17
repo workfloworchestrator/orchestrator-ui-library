@@ -18,7 +18,7 @@ import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { ImsNode } from './types';
+import { ImsNode } from './surf/types';
 import { SelectField, SelectFieldProps } from './SelectField';
 import { useAxiosApiClient } from '../useAxiosApiClient';
 
