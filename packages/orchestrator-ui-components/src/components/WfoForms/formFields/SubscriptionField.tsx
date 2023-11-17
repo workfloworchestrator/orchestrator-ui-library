@@ -151,7 +151,6 @@ function SubscriptionFieldDefinition({
         parentName = name;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const parent = useField(parentName, {}, { absoluteName: true })[0];
 
     const { model, schema } = useForm();
@@ -277,25 +276,24 @@ function SubscriptionFieldDefinition({
                 return false;
             }
 
-            /*
-        if (parentName !== name) {
-          if (
-              parent.fieldType === Array &&
-              parent.uniqueItems
-          ) {
-              const allValues: string[] = get(model, parentName, []);
-              const chosenValues = allValues.filter(
-                  (_item, index) =>
-                      index.toString() !== nameArray[nameArray.length - 1],
-              );
-              if(!chosenValues.includes(subscription.subscriptionId)) {
-                return false
-              }
-          }
-      
-      
-        }
-*/
+            if (parentName !== name) {
+                if (
+                    parent.fieldType === Array &&
+                    // @ts-ignore
+                    parent.uniqueItems
+                ) {
+                    const allValues: string[] = get(model, parentName, []);
+                    const chosenValues = allValues.filter(
+                        (_item, index) =>
+                            index.toString() !==
+                            nameArray[nameArray.length - 1],
+                    );
+                    if (!chosenValues.includes(subscription.subscriptionId)) {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         });
 
