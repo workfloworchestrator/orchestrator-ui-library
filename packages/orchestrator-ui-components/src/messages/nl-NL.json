@@ -74,6 +74,9 @@
             "subscription": {
                 "placeholder": "Kies een subscription",
                 "loading": "Subscriptions ophalen..."
+            },
+            "ipvAnyNetworkField": {
+                "manuallySelectedPrefix": "Handmatig prefix selecteren"
             }
         }
     },

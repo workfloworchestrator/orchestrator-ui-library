@@ -74,6 +74,9 @@
             "subscription": {
                 "placeholder": "Choose a subscription",
                 "loading": "Loading subscriptions..."
+            },
+            "ipvAnyNetworkField": {
+                "manuallySelectedPrefix": "Manually selected prefix"
             }
         }
     },

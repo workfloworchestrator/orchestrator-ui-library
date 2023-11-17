@@ -27,3 +27,16 @@ export interface ImsNode {
     name: string;
     status: string;
 }
+
+export interface IpBlock {
+    id: number;
+    prefix: string;
+    ip_network: string;
+    description: string;
+    state: number;
+    parent: number;
+    version: number;
+    parent_ipam_id: number;
+    is_subnet: boolean;
+    state_repr: string;
+}

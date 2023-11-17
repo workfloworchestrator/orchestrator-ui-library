@@ -21,6 +21,7 @@ import {
     NestField,
     OptGroupField,
     SubscriptionField,
+    IPvAnyNetworkField,
 } from './formFields';
 import { Context, GuaranteedProps } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
@@ -78,6 +79,8 @@ export function autoFieldFunction(
                     return VlanField;
                 case 'accept':
                     return AcceptField;
+                case 'ipvanynetwork': // Surf specific
+                    return IPvAnyNetworkField;
             }
             break;
     }
