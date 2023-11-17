@@ -26,63 +26,18 @@ import {
     useForm,
 } from 'uniforms';
 
-import type { EuiThemeComputed } from '@elastic/eui';
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
 import { ListSelectField } from './ListSelectField';
 
 import { FieldProps, Option } from './types';
 import { useOrchestratorTheme } from '../../../hooks';
+import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
 
 export type SelectFieldProps = FieldProps<
     string | string[],
     { allowedValues?: string[]; transform?(value: string): string }
 >;
-
-export const getReactSelectInnerComponentStyles = (theme: EuiThemeComputed) => {
-    const reactSelectInnerComponentStyles = {
-        option: (
-            baseStyles: object,
-            state: { isSelected: boolean; isDisabled: boolean },
-        ) => ({
-            ...baseStyles,
-            borderBottom: theme.border.thin,
-            backgroundColor: theme.colors.lightestShade,
-            color: state.isSelected
-                ? theme.colors.primaryText
-                : theme.colors.text,
-            cursor: state.isDisabled ? 'not-allowed' : 'default',
-        }),
-        control: (baseStyles: object) => ({
-            ...baseStyles,
-            backgroundColor: theme.colors.lightestShade,
-            color: theme.colors.text,
-            border: theme.border.thin,
-        }),
-        input: (baseStyles: object) => ({
-            ...baseStyles,
-            color: theme.colors.text,
-        }),
-        singleValue: (baseStyles: object, state: { isDisabled: boolean }) => {
-            const opacity = state.isDisabled ? 0.3 : 1;
-            const transition = 'opacity 300ms';
-            return {
-                ...baseStyles,
-                opacity,
-                transition,
-                color: theme.colors.text,
-            };
-        },
-        menu: (baseStyles: object) => ({
-            ...baseStyles,
-            backgroundColor: theme.colors.lightestShade,
-        }),
-    };
-
-    return {
-        reactSelectInnerComponentStyles,
-    };
-};
 
 function Select({
     allowedValues = [],
@@ -104,6 +59,7 @@ function Select({
 }: SelectFieldProps) {
     const t = useTranslations('pydanticForms');
     const { theme } = useOrchestratorTheme();
+
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
 
@@ -141,7 +97,7 @@ function Select({
     );
 
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const { reactSelectInnerComponentStyles } =
+    const reactSelectInnerComponentStyles =
         getReactSelectInnerComponentStyles(theme);
 
     if (fieldType === Array) {
