@@ -4,8 +4,7 @@ import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { ServiceTicketWithDetails } from '../../types';
 import {
-    parseDate,
-    parseDateToLocaleDateTimeString,
+    formatDate,
     SubscriptionKeyValueBlock,
     WfoKeyValueTableDataType,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -41,15 +40,11 @@ export const WfoServiceTicketGeneral = ({
             },
             {
                 key: t('startDate'),
-                value: parseDateToLocaleDateTimeString(
-                    parseDate(serviceTicketGeneral.start_date),
-                ),
+                value: formatDate(serviceTicketGeneral.last_update_time),
             },
             {
                 key: t('endDate'),
-                value: parseDateToLocaleDateTimeString(
-                    parseDate(serviceTicketGeneral.end_date),
-                ),
+                value: formatDate(serviceTicketGeneral.last_update_time),
             },
             {
                 key: t('openedBy'),
@@ -57,13 +52,11 @@ export const WfoServiceTicketGeneral = ({
             },
             {
                 key: t('createDate'),
-                value: parseDateToLocaleDateTimeString(
-                    parseDate(serviceTicketGeneral.create_date),
-                ),
+                value: formatDate(serviceTicketGeneral.create_date),
             },
             {
                 key: t('lastUpdateTime'),
-                value: serviceTicketGeneral.last_update_time,
+                value: formatDate(serviceTicketGeneral.last_update_time),
             },
             {
                 key: t('processState'),

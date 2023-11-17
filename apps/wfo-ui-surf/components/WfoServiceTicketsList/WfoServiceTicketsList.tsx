@@ -9,9 +9,8 @@ import {
     DataDisplayParams,
     DEFAULT_PAGE_SIZES,
     FilterQuery,
+    formatDate,
     getSortDirectionFromString,
-    parseDate,
-    parseDateToLocaleDateTimeString,
     SortOrder,
     TableColumnKeys,
     useFilterQueryWithRest,
@@ -122,25 +121,19 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_START_DATE,
             name: t('startDate'),
             width: '150',
-            render: (date) => (
-                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
-            ),
+            render: (date) => formatDate(date),
         },
         create_date: {
             field: SERVICE_TICKET_FIELD_CREATE_DATE,
             name: t('createDate'),
             width: '150',
-            render: (date: string) => (
-                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
-            ),
+            render: (date: string) => formatDate(date),
         },
         last_update_time: {
             field: SERVICE_TICKET_FIELD_LAST_UPDATE,
             name: t('lastUpdateTime'),
             width: '150',
-            render: (date: string) => (
-                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
-            ),
+            render: (date: string) => formatDate(date),
         },
     };
 
