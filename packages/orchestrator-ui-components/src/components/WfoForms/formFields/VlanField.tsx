@@ -18,8 +18,8 @@ import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 
-import { FieldProps, ServicePort } from './types';
-
+import { FieldProps } from './types';
+import { ServicePort } from './surf/types';
 import { useAxiosApiClient } from '../useAxiosApiClient';
 
 import { useIsTaggedPort } from '../../../hooks/surf/useIsTaggedPort';
