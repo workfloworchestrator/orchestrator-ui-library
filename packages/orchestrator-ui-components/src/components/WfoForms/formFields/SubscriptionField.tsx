@@ -32,13 +32,12 @@ import {
     useForm,
 } from 'uniforms';
 
-// import { getReactSelectTheme } from 'stylesheets/emotion/utils';
-// import { useOrchestratorTheme } from '../../../hooks';
-
+import { useOrchestratorTheme } from '../../../hooks';
 import { FieldProps, Option, PortMode, ProductTag } from './types';
 import { getPortMode } from './utils';
 import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '../../../types';
+import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
 
 const subscriptionFieldStyling = css`
     .subscription-field {
@@ -136,7 +135,10 @@ function SubscriptionFieldDefinition({
     ...props
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
-    // const { theme }  = useOrchestratorTheme()
+    const { theme } = useOrchestratorTheme();
+    // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
+    const reactSelectInnerComponentStyles =
+        getReactSelectInnerComponentStyles(theme);
 
     const { refetch, subscriptions } = useGetSubscriptionDropdownOptions(
         tags,
@@ -312,8 +314,6 @@ function SubscriptionFieldDefinition({
         (option: Option) => option.value === value,
     );
 
-    // const customStyles = getReactSelectTheme(theme);
-
     return (
         <EuiFlexItem css={subscriptionFieldStyling} grow={1}>
             <section
@@ -362,7 +362,7 @@ function SubscriptionFieldDefinition({
                             isClearable={false}
                             placeholder={t('widgets.subscription.placeholder')}
                             isDisabled={disabled || readOnly}
-                            // styles={customStyles}
+                            styles={reactSelectInnerComponentStyles}
                             className="subscription-field-select"
                         />
                     </div>
