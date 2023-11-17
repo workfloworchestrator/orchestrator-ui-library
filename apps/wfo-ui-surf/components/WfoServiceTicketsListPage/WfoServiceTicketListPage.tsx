@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPageHeader,
+    EuiSpacer,
+} from '@elastic/eui';
 import {
     DEFAULT_PAGE_SIZE,
     SortOrder,
@@ -8,26 +15,22 @@ import {
     useStoredTableConfig,
     WfoFilterTabs,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import {
-    ServiceTicketDefinition,
-    WfoServiceTicketListTabType,
-} from '../../types';
+import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+
+import { defaultServiceTicketsListTabs } from './tabConfig';
 import {
     ACTIVE_TICKETS_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_TICKETS_TABLE_LOCAL_STORAGE_KEY,
 } from '../../constants-surf';
-import { useRouter } from 'next/router';
-import { getServiceTicketListTabTypeFromString } from '../WfoServiceTicketsList/getServiceTicketListTabTypeFromString';
-import { defaultServiceTicketsListTabs } from './tabConfig';
 import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPageHeader,
-    EuiSpacer,
-} from '@elastic/eui';
+    ServiceTicketDefinition,
+    WfoServiceTicketListTabType,
+} from '../../types';
 import { WfoServiceTicketsList } from '../WfoServiceTicketsList';
-import { useTranslations } from 'next-intl';
+import { getServiceTicketListTabTypeFromString } from '../WfoServiceTicketsList/getServiceTicketListTabTypeFromString';
+
 
 export const WfoServiceTicketListPage = () => {
     const router = useRouter();

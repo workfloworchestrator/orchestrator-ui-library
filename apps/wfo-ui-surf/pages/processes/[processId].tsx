@@ -1,6 +1,7 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+
 import { WfoProcessDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { useRouter } from 'next/router';
 
 const ProcessDetailPage = () => {
     const router = useRouter();

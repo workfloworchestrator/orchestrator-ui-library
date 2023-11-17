@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import {
     EuiButton,
     EuiFlexGroup,
@@ -14,14 +14,16 @@ import {
     WfoDropdownButton,
     WfoLoading,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
+import { useTranslations } from 'next-intl';
+
 import { ServiceTicketTabIds } from './utils';
+import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
+import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
+import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import {
     ServiceTicketProcessState,
     ServiceTicketWithDetails,
 } from '../../types';
-import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
-import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;

@@ -1,9 +1,11 @@
-import { ServiceTicketProcessState } from '../../types';
 import React, { FC } from 'react';
+
 import {
     useOrchestratorTheme,
     WfoBadge,
 } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { ServiceTicketProcessState } from '../../types';
 
 export type WfoProcessStatusBadgeProps = {
     serviceTicketState: ServiceTicketProcessState;

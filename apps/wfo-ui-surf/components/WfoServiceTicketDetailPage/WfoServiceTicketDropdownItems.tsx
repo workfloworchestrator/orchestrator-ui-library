@@ -1,13 +1,15 @@
+import React from 'react';
+
+import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
+
 import {
     ServiceTicketProcessState,
     ServiceTicketType,
     ServiceTicketWithDetails,
 } from '../../types';
-import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
-import React from 'react';
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 
 interface ServiceTicketDropdownItemsProps {
     serviceTicket: ServiceTicketWithDetails;

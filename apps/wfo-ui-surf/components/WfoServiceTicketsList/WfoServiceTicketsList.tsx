@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
+
 import { Criteria } from '@elastic/eui';
-import {
-    ServiceTicketDefinition,
-    ServiceTicketProcessState,
-} from '../../types';
-import { useTranslations } from 'next-intl';
 import {
     DataDisplayParams,
     DEFAULT_PAGE_SIZES,
@@ -19,10 +15,17 @@ import {
     WfoDataSorting,
     WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
-import { ColorMappings, getColorForState } from '../../utils/getColorForState';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+
+import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
+import {
+    ServiceTicketDefinition,
+    ServiceTicketProcessState,
+} from '../../types';
+import { ColorMappings, getColorForState } from '../../utils/getColorForState';
+import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
+
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';
