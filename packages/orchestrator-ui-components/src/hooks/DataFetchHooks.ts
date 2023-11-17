@@ -90,7 +90,7 @@ const filterDataByCriteria = <Type>(
 
 export const useFilterQueryWithRest = <Type>(
     endpoint: string,
-    queryKey: string,
+    queryKey: string[],
     filters?: GraphqlFilter<Type>[],
     refetchInterval?: number,
 ) => {
@@ -98,12 +98,12 @@ export const useFilterQueryWithRest = <Type>(
 
     const fetchFromApi = async () => {
         const response = await fetch(orchestratorApiBaseUrl + endpoint);
-        const data = (await response.json()) as Type[];
+        const data = await response.json();
         return filters ? filterDataByCriteria(data, filters) : data;
     };
 
-    return useQuery<Type[]>(
-        filters ? [queryKey, { filters }] : [queryKey],
+    return useQuery(
+        filters ? [...queryKey, { filters }] : [...queryKey],
         fetchFromApi,
         {
             refetchInterval,

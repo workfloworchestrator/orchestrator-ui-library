@@ -53,6 +53,7 @@ export enum ServiceTicketTransition {
 }
 
 export type ServiceTicketDefinition = {
+    _id?: string;
     statusColorField?: string;
     jira_ticket_id: string;
     opened_by: string;
@@ -174,6 +175,7 @@ export interface EmailLog {
 }
 
 export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
+    ims_pw_id: string;
     end_date: string;
     last_update_time: string;
     type: ServiceTicketType;
