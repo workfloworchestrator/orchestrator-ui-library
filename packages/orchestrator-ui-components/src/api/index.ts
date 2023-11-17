@@ -138,6 +138,12 @@ export class ApiClient extends ApiClientInterface {
             true,
         );
     };
+    prefix_filters = (): Promise<IpPrefix[]> => {
+        return this.fetchJson("surf/ipam/prefix_filters");
+    };
+    ip_blocks = (parentPrefix: number): Promise<IpBlock[]> => {
+        return this.fetchJson("surf/ipam/ip_blocks/" + parentPrefix);
+    };
 }
 
 export function getApiClient(apiEndPoint: string) {
