@@ -13,15 +13,15 @@
  *
  */
 
-import { EuiFlexItem } from "@elastic/eui";
-import { range } from "lodash";
-import React from "react";
-import ReactSelect, { SingleValue } from "react-select";
-import { getReactSelectTheme } from "stylesheets/emotion/utils";
-import ApplicationContext from "utils/ApplicationContext";
-import { Option } from "utils/types";
+import { EuiFlexItem } from '@elastic/eui';
+import { range } from 'lodash';
+import React from 'react';
+import ReactSelect, { SingleValue } from 'react-select';
+import { getReactSelectTheme } from 'stylesheets/emotion/utils';
+import ApplicationContext from 'utils/ApplicationContext';
+import { Option } from 'utils/types';
 
-import { splitPrefixStyling } from "./SplitPrefixStyling";
+import { splitPrefixStyling } from './SplitPrefixStyling';
 
 interface IProps {
     id: string;
@@ -46,20 +46,35 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
         desiredPrefixlen: 0,
     };
 
-    fetchFreePrefixes(subnet: string, prefixlen: number, desiredPrefixlen: number) {
-        this.context.customApiClient.free_subnets(subnet, prefixlen, desiredPrefixlen).then((result: string[]) => {
-            let subnets = result.filter((x) => parseInt(x.split("/")[1], 10) === desiredPrefixlen);
-            this.setState({
-                subnets: subnets,
-                desiredPrefixlen: desiredPrefixlen,
-                loading: false,
+    fetchFreePrefixes(
+        subnet: string,
+        prefixlen: number,
+        desiredPrefixlen: number,
+    ) {
+        this.context.customApiClient
+            .free_subnets(subnet, prefixlen, desiredPrefixlen)
+            .then((result: string[]) => {
+                let subnets = result.filter(
+                    (x) => parseInt(x.split('/')[1], 10) === desiredPrefixlen,
+                );
+                this.setState({
+                    subnets: subnets,
+                    desiredPrefixlen: desiredPrefixlen,
+                    loading: false,
+                });
             });
-        });
     }
 
     componentDidUpdate(prevProps: IProps) {
-        if (this.props.subnet !== prevProps.subnet || this.props.prefixlen !== prevProps.prefixlen) {
-            this.fetchFreePrefixes(this.props.subnet, this.props.prefixlen, this.props.prefixMin);
+        if (
+            this.props.subnet !== prevProps.subnet ||
+            this.props.prefixlen !== prevProps.prefixlen
+        ) {
+            this.fetchFreePrefixes(
+                this.props.subnet,
+                this.props.prefixlen,
+                this.props.prefixMin,
+            );
         }
     }
 
@@ -79,20 +94,33 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
     };
 
     selectSubnet = (e: SingleValue<Option>) => {
-        this.props.onChange(e?.value ?? "");
+        this.props.onChange(e?.value ?? '');
     };
 
     render() {
-        const { id, name, subnet, prefixlen, prefixMin, selectedSubnet } = this.props;
-        const version = subnet.indexOf(":") === -1 ? 4 : 6;
+        const { id, name, subnet, prefixlen, prefixMin, selectedSubnet } =
+            this.props;
+        const version = subnet.indexOf(':') === -1 ? 4 : 6;
         const max_for_version = version === 4 ? 32 : 64;
         const { desiredPrefixlen } = this.state;
-        const prefixlengths = range(max_for_version - prefixMin + 1).map((x) => prefixMin + x);
-        const length_options: Option<number>[] = prefixlengths.map((pl) => ({ value: pl, label: pl.toString() }));
-        const length_value = length_options.find((option) => option.value === desiredPrefixlen);
+        const prefixlengths = range(max_for_version - prefixMin + 1).map(
+            (x) => prefixMin + x,
+        );
+        const length_options: Option<number>[] = prefixlengths.map((pl) => ({
+            value: pl,
+            label: pl.toString(),
+        }));
+        const length_value = length_options.find(
+            (option) => option.value === desiredPrefixlen,
+        );
 
-        const prefix_options = this.state.subnets.map((sn) => ({ label: sn, value: sn }));
-        const prefix_value = prefix_options.find((option) => option.value === selectedSubnet);
+        const prefix_options = this.state.subnets.map((sn) => ({
+            label: sn,
+            value: sn,
+        }));
+        const prefix_value = prefix_options.find(
+            (option) => option.value === selectedSubnet,
+        );
         const customStyles = getReactSelectTheme(this.context.theme);
 
         return (

@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from '@emotion/core';
 
-const DARK_GREY_COLOR = "#333333"
-const LIGHTER_GREY_COLOR = "#999999"
-const LIGHT_GOLD_COLOR = "#fca456"
-const LIGHT_PRIMARY_COLOR = "#0da3f5"
-const LIGHT_SUCCESS_COLOR = "#68ff1d"
+const DARK_GREY_COLOR = '#333333';
+const LIGHTER_GREY_COLOR = '#999999';
+const LIGHT_GOLD_COLOR = '#fca456';
+const LIGHT_PRIMARY_COLOR = '#0da3f5';
+const LIGHT_SUCCESS_COLOR = '#68ff1d';
 
 function shadeColor(color: string, percent: number) {
     let R = parseInt(color.substring(1, 3), 16);
@@ -19,13 +19,15 @@ function shadeColor(color: string, percent: number) {
     G = G < 255 ? G : 255;
     B = B < 255 ? B : 255;
 
-    const RR = R.toString(16).length === 1 ? "0" + R.toString(16) : R.toString(16);
-    const GG = G.toString(16).length === 1 ? "0" + G.toString(16) : G.toString(16);
-    const BB = B.toString(16).length === 1 ? "0" + B.toString(16) : B.toString(16);
+    const RR =
+        R.toString(16).length === 1 ? '0' + R.toString(16) : R.toString(16);
+    const GG =
+        G.toString(16).length === 1 ? '0' + G.toString(16) : G.toString(16);
+    const BB =
+        B.toString(16).length === 1 ? '0' + B.toString(16) : B.toString(16);
 
-    return "#" + RR + GG + BB;
+    return '#' + RR + GG + BB;
 }
-
 
 export const ipPrefixTableStyling = css`
     table.ip-blocks {
