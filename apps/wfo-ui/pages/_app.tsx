@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 
-import Head from 'next/head';
 import { EuiProvider } from '@elastic/eui';
 import {
     ApiClientContextProvider,
@@ -13,18 +11,20 @@ import {
     WfoPageTemplate,
     WfoAuth,
 } from '@orchestrator-ui/orchestrator-ui-components';
-
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
+import Head from 'next/head';
 import '@elastic/eui/dist/eui_theme_light.min.css';
-import { getAppLogo } from '../components/AppLogo/AppLogo';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { NextAdapter } from 'next-query-params';
-import { QueryParamProvider } from 'use-query-params';
-import { QueryClientConfig } from 'react-query/types/core/types';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { TranslationsProvider } from '../translations/translationsProvider';
-import NoSSR from 'react-no-ssr';
 import { SessionProvider } from 'next-auth/react';
+import { NextAdapter } from 'next-query-params';
+import NoSSR from 'react-no-ssr';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClientConfig } from 'react-query/types/core/types';
+import { QueryParamProvider } from 'use-query-params';
+
+import { getAppLogo } from '../components/AppLogo/AppLogo';
 import { getInitialOrchestratorConfig } from '../configuration';
+import { TranslationsProvider } from '../translations/translationsProvider';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
