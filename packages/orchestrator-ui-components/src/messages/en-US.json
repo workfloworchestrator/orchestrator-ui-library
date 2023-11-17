@@ -13,6 +13,15 @@
         "noFailedTasks": "No failed tasks!",
         "search": "Search"
     },
+    "confirmationDialog": {
+        "title": "Please confirm",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "leavePage": "Do you really want to leave this page?",
+        "leavePageSub": "Changes that you made will not be saved.",
+        "stay": "Stay",
+        "leave": "Leave"
+    },
     "workflow": {
         "start_workflow_title": "Start workflow"
     },
