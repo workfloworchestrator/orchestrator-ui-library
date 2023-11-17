@@ -4,6 +4,7 @@ import {
     OrchestratorConfig,
     getNumberValueFromEnvironmentVariable,
 } from '@orchestrator-ui/orchestrator-ui-components';
+import { SurfConfig } from '../contexts/surfConfigContext';
 
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
     'http://localhost:8080/api/graphql';
@@ -50,5 +51,17 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
             ),
         },
         authActive: process.env.AUTH_ACTIVE?.toLowerCase() != 'false',
+    };
+};
+
+const SURF_CIM_DEFAULT_SENDING_LEVEL = 'resilience_loss';
+
+export const getInitialSurfConfig = (): SurfConfig => {
+    const cimDefaultSendingLevel = process.env.SURF_CIM_DEFAULT_SENDING_LEVEL
+        ? process.env.SURF_CIM_DEFAULT_SENDING_LEVEL
+        : SURF_CIM_DEFAULT_SENDING_LEVEL;
+
+    return {
+        cimDefaultSendingLevel,
     };
 };

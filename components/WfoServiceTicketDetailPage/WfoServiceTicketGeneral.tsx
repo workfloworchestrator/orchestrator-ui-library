@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
-import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
+import {
+    EuiFlexGrid,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiSpacer,
+    EuiText,
+    EuiButtonIcon,
+} from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { ServiceTicketWithDetails } from '../../types';
 import {
     formatDate,
     SubscriptionKeyValueBlock,
+    useOrchestratorTheme,
+    WfoBadge,
+    WfoBasicTable,
+    WfoInformationModal,
     WfoKeyValueTableDataType,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
+import { SurfConfigContext } from '../../contexts/surfConfigContext';
+import { WfoSubscriptionImpactTable } from './WfoSubscriptionImpactTable';
+import { WfoStatistic } from '@orchestrator-ui/orchestrator-ui-components';
 
 interface WfoSubscriptionGeneralProps {
     serviceTicketGeneral: ServiceTicketWithDetails;
@@ -18,6 +32,10 @@ export const WfoServiceTicketGeneral = ({
     serviceTicketGeneral,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('cim.serviceTickets.detail.tabDetails.general');
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
+    const [defaultSendingLevelModalIsOpen, setDefaultSendingLevelModalIsOpen] =
+        useState(false);
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
         return [
@@ -70,15 +88,78 @@ export const WfoServiceTicketGeneral = ({
     };
 
     return (
-        <EuiFlexGrid direction={'row'}>
-            <>
-                <EuiFlexItem>
-                    <SubscriptionKeyValueBlock
-                        title={t('title')}
-                        keyValues={getSubscriptionDetailBlockData()}
+        <>
+            <EuiFlexGrid direction={'row'}>
+                <>
+                    <EuiFlexItem>
+                        <SubscriptionKeyValueBlock
+                            title={t('title')}
+                            keyValues={getSubscriptionDetailBlockData()}
+                        />
+                    </EuiFlexItem>
+                </>
+            </EuiFlexGrid>
+            <EuiSpacer />
+            <EuiFlexGroup gutterSize={'xs'}>
+                <EuiFlexItem
+                    grow={false}
+                    style={{ paddingRight: theme.size.xxl }}
+                >
+                    <EuiText
+                        grow={false}
+                        css={{ fontWeight: theme.font.weight.semiBold }}
+                    >
+                        {t('defaultSendingLevel')}
+                    </EuiText>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <WfoBadge
+                        textColor={theme.colors.warningText}
+                        color={toSecondaryColor(theme.colors.warning)}
+                    >
+                        <EuiText>
+                            <b>{cimDefaultSendingLevel}</b>
+                        </EuiText>
+                    </WfoBadge>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        onClick={() => setDefaultSendingLevelModalIsOpen(true)}
+                        iconSize={'l'}
+                        iconType={'iInCircle'}
+                        style={{ marginTop: theme.size.xxs }}
                     />
                 </EuiFlexItem>
-            </>
-        </EuiFlexGrid>
+            </EuiFlexGroup>
+            {defaultSendingLevelModalIsOpen && (
+                <WfoInformationModal
+                    title={t('defaultSendingLevelModalTitle')}
+                    onClose={() => setDefaultSendingLevelModalIsOpen(false)}
+                >
+                    <EuiText>
+                        <p>{t('defaultSendingLevelModalText')}</p>
+                    </EuiText>
+                </WfoInformationModal>
+            )}
+            <EuiSpacer size={'xxl'} />
+            <EuiFlexGroup gutterSize={'s'}>
+                <EuiFlexItem grow={false}>
+                    <WfoStatistic color={theme.colors.primaryText} />
+                </EuiFlexItem>
+                <EuiFlexItem
+                    grow={false}
+                    style={{ paddingRight: theme.size.xxl }}
+                >
+                    <EuiText
+                        grow={false}
+                        css={{ fontWeight: theme.font.weight.semiBold }}
+                    >
+                        {t('impactOnSubscriptions')}
+                    </EuiText>
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiSpacer size={'m'} />
+            <WfoSubscriptionImpactTable />
+        </>
     );
 };
