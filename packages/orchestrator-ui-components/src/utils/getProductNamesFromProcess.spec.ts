@@ -10,6 +10,7 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
         lastStep: 'lastStep',
         lastModifiedAt: 'lastModifiedAt',
         workflowName: 'workflowName',
+        isTask: false,
         steps: [
             {
                 name: 'step name',

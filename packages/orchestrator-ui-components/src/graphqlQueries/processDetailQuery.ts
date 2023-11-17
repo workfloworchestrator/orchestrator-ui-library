@@ -17,6 +17,7 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                 lastModifiedAt
                 lastStep
                 workflowName
+                isTask
                 steps {
                     name
                     status

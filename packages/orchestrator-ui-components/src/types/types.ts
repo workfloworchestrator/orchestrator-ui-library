@@ -197,6 +197,7 @@ export interface ProcessDetail {
     lastStep: string;
     lastModifiedAt: Process['lastModifiedAt'];
     workflowName: string;
+    isTask: boolean;
     steps: Step[];
     subscriptions: {
         page: {
