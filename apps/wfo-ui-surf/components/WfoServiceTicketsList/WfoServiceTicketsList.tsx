@@ -10,6 +10,7 @@ import {
     DEFAULT_PAGE_SIZES,
     FilterQuery,
     getSortDirectionFromString,
+    parseDate,
     parseDateToLocaleDateTimeString,
     SortOrder,
     TableColumnKeys,
@@ -122,7 +123,7 @@ export const WfoServiceTicketsList = ({
             name: t('startDate'),
             width: '150',
             render: (date) => (
-                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
+                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
             ),
         },
         create_date: {
@@ -130,7 +131,7 @@ export const WfoServiceTicketsList = ({
             name: t('createDate'),
             width: '150',
             render: (date: string) => (
-                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
+                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
             ),
         },
         last_update_time: {
@@ -138,7 +139,7 @@ export const WfoServiceTicketsList = ({
             name: t('lastUpdateTime'),
             width: '150',
             render: (date: string) => (
-                <span>{parseDateToLocaleDateTimeString(new Date(date))}</span>
+                <span>{parseDateToLocaleDateTimeString(parseDate(date))}</span>
             ),
         },
     };

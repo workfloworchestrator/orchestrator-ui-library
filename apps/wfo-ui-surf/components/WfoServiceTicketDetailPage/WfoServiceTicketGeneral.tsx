@@ -4,6 +4,7 @@ import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 import { ServiceTicketWithDetails } from '../../types';
 import {
+    parseDate,
     parseDateToLocaleDateTimeString,
     SubscriptionKeyValueBlock,
     WfoKeyValueTableDataType,
@@ -41,13 +42,13 @@ export const WfoServiceTicketGeneral = ({
             {
                 key: t('startDate'),
                 value: parseDateToLocaleDateTimeString(
-                    new Date(serviceTicketGeneral.start_date),
+                    parseDate(serviceTicketGeneral.start_date),
                 ),
             },
             {
                 key: t('endDate'),
                 value: parseDateToLocaleDateTimeString(
-                    new Date(serviceTicketGeneral.end_date),
+                    parseDate(serviceTicketGeneral.end_date),
                 ),
             },
             {
@@ -57,7 +58,7 @@ export const WfoServiceTicketGeneral = ({
             {
                 key: t('createDate'),
                 value: parseDateToLocaleDateTimeString(
-                    new Date(serviceTicketGeneral.create_date),
+                    parseDate(serviceTicketGeneral.create_date),
                 ),
             },
             {

@@ -1,8 +1,6 @@
 import React from 'react';
 import { EuiIcon } from '@elastic/eui';
 
-// const MAX_LABEL_LENGTH = 45;
-
 export enum ServiceTicketTabIds {
     GENERAL_TAB = 'general-id',
     NOTIFICATION_LOG = 'notification-log-id',
