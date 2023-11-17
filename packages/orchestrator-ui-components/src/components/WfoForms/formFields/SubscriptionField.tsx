@@ -13,7 +13,7 @@
  *
  */
 import React from 'react';
-import { css } from '@emotion/react';
+
 import {
     EuiButtonIcon,
     EuiFlexGroup,
@@ -33,43 +33,13 @@ import {
 } from 'uniforms';
 
 import { useOrchestratorTheme } from '../../../hooks';
-import { FieldProps, Option, PortMode, ProductTag } from './types';
+import { FieldProps, Option } from './types';
+import { PortMode, ProductTag } from './surf/types';
 import { getPortMode } from './utils';
 import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '../../../types';
 import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
-
-const subscriptionFieldStyling = css`
-    .subscription-field {
-        > div {
-            display: flex;
-
-            .subscription-field-select {
-                width: 100%;
-                margin-left: 5px;
-            }
-        }
-
-        .euiFormRow > .euiFormRow__fieldWrapper > div {
-            display: flex;
-        }
-    }
-
-    // Setup sensible margins for port selectors
-    .subscription-field-disabled {
-        > div {
-            display: flex;
-            .subscription-field-select {
-                margin-left: 0px;
-                margin-top: 5px;
-            }
-        }
-    }
-
-    .reload-subscriptions-icon-button {
-        margin-left: -7px;
-    }
-`;
+import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
 
 declare module 'uniforms' {
     interface FilterDOMProps {
