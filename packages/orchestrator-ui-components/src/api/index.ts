@@ -15,6 +15,10 @@
 import { AxiosInstance } from 'axios';
 import { getAxiosInstance } from './axios';
 import { ProductDefinition } from '../types';
+import {
+    IpBlock,
+    IpPrefix,
+} from '../components/WfoForms/formFields/surf/types';
 
 const FORMS_ENDPOINT = 'surf/forms/';
 const PROCESS_ENDPOINT = 'processes/';
@@ -143,6 +147,20 @@ export class ApiClient extends ApiClientInterface {
     };
     ip_blocks = (parentPrefix: number): Promise<IpBlock[]> => {
         return this.fetchJson('surf/ipam/ip_blocks/' + parentPrefix);
+    };
+    free_subnets = (
+        subnet: string,
+        netmask: number,
+        prefixlen: number,
+    ): Promise<string[]> => {
+        return this.fetchJson(
+            'surf/ipam/free_subnets/' +
+                subnet +
+                '/' +
+                netmask +
+                '/' +
+                prefixlen,
+        );
     };
 }
 

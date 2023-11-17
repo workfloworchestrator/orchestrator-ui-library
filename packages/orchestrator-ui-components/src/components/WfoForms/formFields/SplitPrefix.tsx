@@ -17,11 +17,10 @@ import { EuiFlexItem } from '@elastic/eui';
 import { range } from 'lodash';
 import React from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
-import { getReactSelectTheme } from 'stylesheets/emotion/utils';
-import ApplicationContext from 'utils/ApplicationContext';
-import { Option } from 'utils/types';
 
 import { splitPrefixStyling } from './SplitPrefixStyling';
+import { ApiClientContext } from '../../../contexts';
+import { Option } from './types';
 
 interface IProps {
     id: string;
@@ -39,8 +38,8 @@ interface IState {
 }
 
 export default class SplitPrefix extends React.PureComponent<IProps> {
-    static contextType = ApplicationContext;
-    context!: React.ContextType<typeof ApplicationContext>;
+    static contextType = ApiClientContext;
+    context!: React.ContextType<typeof ApiClientContext>;
     state: IState = {
         subnets: [],
         desiredPrefixlen: 0,
@@ -51,10 +50,10 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
         prefixlen: number,
         desiredPrefixlen: number,
     ) {
-        this.context.customApiClient
+        this.context.apiClient
             .free_subnets(subnet, prefixlen, desiredPrefixlen)
             .then((result: string[]) => {
-                let subnets = result.filter(
+                const subnets = result.filter(
                     (x) => parseInt(x.split('/')[1], 10) === desiredPrefixlen,
                 );
                 this.setState({
@@ -121,7 +120,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
         const prefix_value = prefix_options.find(
             (option) => option.value === selectedSubnet,
         );
-        const customStyles = getReactSelectTheme(this.context.theme);
+        // const customStyles = getReactSelectTheme(this.context.theme);
 
         return (
             <EuiFlexItem css={splitPrefixStyling}>
@@ -132,7 +131,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
                     <div>Desired netmask of the new subnet:</div>
                     <ReactSelect
                         id={`${id}.desired-netmask`}
-                        styles={customStyles}
+                        // styles={customStyles}
                         inputId={`${id}.desired-netmask.search`}
                         name={`${name}.desired-netmask`}
                         onChange={this.changePrefixLength}
@@ -144,7 +143,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
                             <div>Desired prefix:</div>
                             <ReactSelect
                                 id={`${id}.desired-prefix`}
-                                styles={customStyles}
+                                // styles={customStyles}
                                 inputId={`${id}.desired-prefix.search`}
                                 name={`${name}.desired-prefix`}
                                 options={prefix_options}

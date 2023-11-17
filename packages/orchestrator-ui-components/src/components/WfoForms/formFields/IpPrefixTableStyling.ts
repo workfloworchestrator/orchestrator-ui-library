@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 const DARK_GREY_COLOR = '#333333';
 const LIGHTER_GREY_COLOR = '#999999';

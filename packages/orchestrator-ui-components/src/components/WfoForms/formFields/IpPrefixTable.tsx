@@ -28,12 +28,13 @@ import {
 } from '@elastic/eui';
 import React from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
-import { getReactSelectTheme } from 'stylesheets/emotion/utils';
-import { ipamStates } from 'utils/Lookups';
+// import { getReactSelectTheme } from 'stylesheets/emotion/utils';
 
 import { ipPrefixTableStyling } from './IpPrefixTableStyling';
 import { ApiClientContext } from '../../../contexts';
-import { IpBlock, IpPrefix, Option, prop, SortOption } from './types';
+import { Option, prop } from './types';
+import { IpBlock, IpPrefix, SortOption } from './surf/types';
+import { ipamStates } from './surf/utils';
 
 type SortKeys = 'id' | 'prefix' | 'description' | 'state_repr';
 
@@ -84,24 +85,25 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
     };
 
     componentDidMount() {
-        this.context.customApiClient
-            .prefix_filters()
-            .then((result: IpPrefix[]) => {
-                let { filter } = this.state;
-                filter.prefix = result[0];
-                this.setState({
-                    filteredPrefixes: result,
-                    filter: filter,
-                    filteredIpBlocks: this.filterAndSortBlocks(),
-                });
+        this.context.apiClient.prefix_filters().then((result: IpPrefix[]) => {
+            const { filter } = this.state;
+            filter.prefix = result[0];
+            this.setState({
+                filteredPrefixes: result,
+                filter: filter,
+                filteredIpBlocks: this.filterAndSortBlocks(),
             });
-        this.context.customApiClient.ip_blocks(1).then((result: IpBlock[]) => {
+        });
+        this.context.apiClient.ip_blocks(1).then((result: IpBlock[]) => {
             this.setState({ ipBlocks: result, loading: false });
         });
     }
 
     sort = (name: SortKeys) => (e: React.SyntheticEvent) => {
-        stop(e);
+        if (e !== undefined && e !== null) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         const sorted = { ...this.state.sorted };
 
         sorted.descending = sorted.name === name ? !sorted.descending : false;
@@ -160,7 +162,7 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
     filterParentPrefix = (e: SingleValue<Option>) => {
         this.setState({ loading: true });
         const parentPrefix = parseInt(e!.value, 10);
-        let { filter, filteredPrefixes } = this.state;
+        const { filter, filteredPrefixes } = this.state;
         let the_prefix: IpPrefix | undefined = undefined;
         filteredPrefixes.forEach(
             (prefix) =>
@@ -168,7 +170,7 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
                     prefix['id'] === parentPrefix ? prefix : the_prefix),
         );
         filter.prefix = the_prefix;
-        this.context.customApiClient
+        this.context.apiClient
             .ip_blocks(parentPrefix)
             .then((result: IpBlock[]) => {
                 this.setState({
@@ -294,7 +296,7 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
                 </EuiButton>
             );
         }
-        const customStyles = getReactSelectTheme(this.context.theme);
+        // const customStyles = getReactSelectTheme(this.context.theme);
 
         return (
             <EuiFlexItem css={ipPrefixTableStyling}>
@@ -423,7 +425,7 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
                             <span>
                                 <ReactSelect
                                     id={`${id}.root-filter`}
-                                    styles={customStyles}
+                                    // styles={customStyles}
                                     inputId={`${id}.root-filter.search`}
                                     name={`${name}.root-filter`}
                                     options={options}
