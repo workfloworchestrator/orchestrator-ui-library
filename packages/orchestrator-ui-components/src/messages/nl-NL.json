@@ -151,6 +151,8 @@
             "retry": "Probeer opnieuw",
             "resume": "Ga verder",
             "abort": "Stop",
+            "delete": "Verwijder",
+            "deleteQuestion": "Weet je zeker dat je de workflow {workflowName} wilt verwijderen?",
             "status": "Status",
             "startedBy": "Gestart door",
             "lastStep": "Laatste stap",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     EuiButton,
     EuiFlexGroup,
@@ -21,6 +21,7 @@ import { ProcessDetail, ProcessStatus } from '../../types';
 import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
 import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
+import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
 
 interface ProcessHeaderValueProps {
     translationKey: string;
@@ -79,6 +80,8 @@ export const WfoProcessDetail = ({
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+
     return (
         <>
             <EuiFlexGroup>
@@ -163,6 +166,40 @@ export const WfoProcessDetail = ({
                     >
                         {t('abort')}
                     </EuiButton>
+                    {processDetail?.isTask === true && (
+                        <EuiButton
+                            onClick={(
+                                e: React.MouseEvent<
+                                    HTMLButtonElement | HTMLElement,
+                                    MouseEvent
+                                >,
+                            ) => {
+                                e.preventDefault();
+                                showConfirmDialog({
+                                    question: t('deleteQuestion', {
+                                        workflowName:
+                                            processDetail?.workflowName,
+                                    }),
+                                    confirmAction: () => {
+                                        alert('TODO: Implement abort');
+                                    },
+                                });
+                            }}
+                            iconType={() => (
+                                <WfoXCircleFill
+                                    color={
+                                        buttonsAreDisabled
+                                            ? theme.colors.subduedText
+                                            : theme.colors.danger
+                                    }
+                                />
+                            )}
+                            color="danger"
+                            isDisabled={buttonsAreDisabled}
+                        >
+                            {t('delete')}
+                        </EuiButton>
+                    )}
                 </EuiFlexGroup>
             </EuiFlexGroup>
             <EuiSpacer />
