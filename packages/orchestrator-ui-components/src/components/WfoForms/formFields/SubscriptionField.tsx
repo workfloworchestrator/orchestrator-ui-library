@@ -140,10 +140,8 @@ function SubscriptionFieldDefinition({
     const reactSelectInnerComponentStyles =
         getReactSelectInnerComponentStyles(theme);
 
-    const { refetch, subscriptions } = useGetSubscriptionDropdownOptions(
-        tags,
-        statuses,
-    );
+    const { refetch, subscriptions, isFetching } =
+        useGetSubscriptionDropdownOptions(tags, statuses);
 
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
@@ -314,6 +312,8 @@ function SubscriptionFieldDefinition({
         (option: Option) => option.value === value,
     );
 
+    const isDisabled = disabled || readOnly || isFetching;
+
     return (
         <EuiFlexItem css={subscriptionFieldStyling} grow={1}>
             <section
@@ -343,8 +343,9 @@ function SubscriptionFieldDefinition({
                                     aria-label={`reload-${label}`}
                                     iconType="refresh"
                                     iconSize="l"
+                                    disabled={isDisabled}
                                     onClick={() => {
-                                        refetch();
+                                        !isDisabled ? refetch() : null;
                                     }}
                                 />
                             </EuiFlexGroup>
@@ -357,11 +358,15 @@ function SubscriptionFieldDefinition({
                                 onChange(option?.value);
                             }}
                             options={options}
-                            value={selectedValue}
+                            value={isDisabled ? null : selectedValue}
                             isSearchable={true}
                             isClearable={false}
-                            placeholder={t('widgets.subscription.placeholder')}
-                            isDisabled={disabled || readOnly}
+                            placeholder={
+                                isFetching
+                                    ? t('widgets.subscription.loading')
+                                    : t('widgets.subscription.placeholder')
+                            }
+                            isDisabled={isDisabled}
                             styles={reactSelectInnerComponentStyles}
                             className="subscription-field-select"
                         />
