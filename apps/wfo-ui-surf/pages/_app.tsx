@@ -27,9 +27,16 @@ import NoSSR from 'react-no-ssr';
 import { useRouter } from 'next/router';
 import { SessionProvider } from 'next-auth/react';
 
-type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
+type AppOwnProps = {
+    orchestratorConfig: OrchestratorConfig;
+    surfConfig: SurfConfig;
+};
 import { PATH_SERVICE_TICKETS } from '../constants-surf';
-import { getInitialOrchestratorConfig } from '../configuration';
+import {
+    getInitialOrchestratorConfig,
+    getInitialSurfConfig,
+} from '../configuration';
+import { SurfConfig, SurfConfigProvider } from '../contexts/surfConfigContext';
 
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
@@ -46,6 +53,7 @@ function CustomApp({
     Component,
     pageProps,
     orchestratorConfig,
+    surfConfig,
 }: AppProps & AppOwnProps) {
     const router = useRouter();
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
@@ -70,63 +78,65 @@ function CustomApp({
         <OrchestratorConfigProvider
             initialOrchestratorConfig={orchestratorConfig}
         >
-            <SessionProvider session={pageProps.session}>
-                <WfoAuth>
-                    <NoSSR>
-                        <TranslationsProvider>
-                            <EuiProvider
-                                colorMode="light"
-                                modify={defaultOrchestratorTheme}
-                            >
-                                <ApiClientContextProvider>
-                                    <Head>
-                                        <title>
-                                            Welcome to example-orchestrator-ui!
-                                        </title>
-                                    </Head>
-                                    <main className="app">
-                                        <QueryClientProvider
-                                            client={queryClient}
-                                            contextSharing={true}
-                                        >
-                                            <ToastsContextProvider>
-                                                <ConfirmationDialogContextWrapper>
-                                                    <WfoPageTemplate
-                                                        getAppLogo={getAppLogo}
-                                                        overrideMenuItems={
-                                                            getMenuItems
-                                                        }
-                                                    >
-                                                        <QueryParamProvider
-                                                            adapter={
-                                                                NextAdapter
+            <SurfConfigProvider initialOrchestratorConfig={surfConfig}>
+                <SessionProvider session={pageProps.session}>
+                    <WfoAuth>
+                        <NoSSR>
+                            <TranslationsProvider>
+                                <EuiProvider
+                                    colorMode="light"
+                                    modify={defaultOrchestratorTheme}
+                                >
+                                    <ApiClientContextProvider>
+                                        <Head>
+                                            <title>
+                                                Welcome to example-orchestrator-ui!
+                                            </title>
+                                        </Head>
+                                        <main className="app">
+                                            <QueryClientProvider
+                                                client={queryClient}
+                                                contextSharing={true}
+                                            >
+                                                <ToastsContextProvider>
+                                                    <ConfirmationDialogContextWrapper>
+                                                        <WfoPageTemplate
+                                                            getAppLogo={getAppLogo}
+                                                            overrideMenuItems={
+                                                                getMenuItems
                                                             }
-                                                            options={{
-                                                                removeDefaultsFromUrl:
-                                                                    false,
-                                                                enableBatching:
-                                                                    true,
-                                                            }}
                                                         >
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        </QueryParamProvider>
-                                                    </WfoPageTemplate>
-                                                    <ToastsList />
-                                                </ConfirmationDialogContextWrapper>
-                                            </ToastsContextProvider>
-                                            <ReactQueryDevtools
-                                                initialIsOpen={false}
-                                            />
-                                        </QueryClientProvider>
-                                    </main>
-                                </ApiClientContextProvider>
-                            </EuiProvider>
-                        </TranslationsProvider>
-                    </NoSSR>
-                </WfoAuth>
-            </SessionProvider>
+                                                            <QueryParamProvider
+                                                                adapter={
+                                                                    NextAdapter
+                                                                }
+                                                                options={{
+                                                                    removeDefaultsFromUrl:
+                                                                        false,
+                                                                    enableBatching:
+                                                                        true,
+                                                                }}
+                                                            >
+                                                                <Component
+                                                                    {...pageProps}
+                                                                />
+                                                            </QueryParamProvider>
+                                                        </WfoPageTemplate>
+                                                        <ToastsList />
+                                                    </ConfirmationDialogContextWrapper>
+                                                </ToastsContextProvider>
+                                                <ReactQueryDevtools
+                                                    initialIsOpen={false}
+                                                />
+                                            </QueryClientProvider>
+                                        </main>
+                                    </ApiClientContextProvider>
+                                </EuiProvider>
+                            </TranslationsProvider>
+                        </NoSSR>
+                    </WfoAuth>
+                </SessionProvider>
+            </SurfConfigProvider>
         </OrchestratorConfigProvider>
     );
 }
@@ -135,8 +145,11 @@ CustomApp.getInitialProps = async (
     context: AppContext,
 ): Promise<AppOwnProps & AppInitialProps> => {
     const ctx = await App.getInitialProps(context);
-
-    return { ...ctx, orchestratorConfig: getInitialOrchestratorConfig() };
+    return {
+        ...ctx,
+        orchestratorConfig: getInitialOrchestratorConfig(),
+        surfConfig: getInitialSurfConfig(),
+    };
 };
 
 export default CustomApp;

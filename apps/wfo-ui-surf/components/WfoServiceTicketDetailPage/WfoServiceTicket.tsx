@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     EuiButton,
@@ -15,13 +15,15 @@ import {
     WfoLoading,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import { ServiceTicketTabIds } from './utils';
 import {
+    ServiceTicketDetailPageTab,
     ServiceTicketProcessState,
+    ServiceTicketTabIds,
     ServiceTicketWithDetails,
 } from '../../types';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
+import { SurfConfigContext } from '../../contexts/surfConfigContext';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
@@ -60,6 +62,7 @@ export const WfoServiceTicket = ({
     const [selectedTabId, setSelectedTabId] = useState<ServiceTicketTabIds>(
         ServiceTicketTabIds.GENERAL_TAB,
     );
+    const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketWithDetails>(
@@ -71,18 +74,27 @@ export const WfoServiceTicket = ({
         setSelectedTabId(id);
     };
 
-    const renderTabs = () =>
-        tabs.map((tab, index) => (
-            <EuiTab
-                key={index}
-                onClick={() => onSelectedTabChanged(tab.id)}
-                isSelected={tab.id === selectedTabId}
-                prepend={tab.prepend}
-                append={tab.append}
-            >
-                {t(tab.translationKey)}
-            </EuiTab>
-        ));
+    const WfoDetailPageTabs = ({
+        tabs,
+    }: {
+        tabs: ServiceTicketDetailPageTab[];
+    }) => {
+        return (
+            <EuiTabs>
+                {tabs.map((tab, index) => (
+                    <EuiTab
+                        key={index}
+                        onClick={() => onSelectedTabChanged(tab.id)}
+                        isSelected={tab.id === selectedTabId}
+                        prepend={tab.prepend}
+                        append={tab.append}
+                    >
+                        {t(tab.translationKey)}
+                    </EuiTab>
+                ))}
+            </EuiTabs>
+        );
+    };
 
     return (
         <>
@@ -125,9 +137,7 @@ export const WfoServiceTicket = ({
                                 </EuiFlexGroup>
                             </EuiFlexItem>
                         </EuiFlexGroup>
-                        <>
-                            <EuiTabs>{renderTabs()}</EuiTabs>
-                        </>
+                        <WfoDetailPageTabs tabs={tabs} />
                         {selectedTabId === ServiceTicketTabIds.GENERAL_TAB && (
                             <WfoServiceTicketGeneral
                                 serviceTicketGeneral={data}
