@@ -4,6 +4,7 @@ import {
     EuiButton,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiIcon,
     EuiTab,
     EuiTabs,
     EuiText,
@@ -14,7 +15,7 @@ import {
     WfoLoading,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import { ServiceTicketTabIds, tabs } from './utils';
+import { ServiceTicketTabIds } from './utils';
 import {
     ServiceTicketProcessState,
     ServiceTicketWithDetails,
@@ -30,6 +31,25 @@ const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN_RELATED,
     ServiceTicketProcessState.OPEN_ACCEPTED,
     ServiceTicketProcessState.OPEN,
+];
+
+const tabs = [
+    {
+        id: ServiceTicketTabIds.GENERAL_TAB,
+        translationKey: 'tabs.general',
+        prepend: <EuiIcon type="devToolsApp" />,
+        append: <></>,
+    },
+    {
+        id: ServiceTicketTabIds.NOTIFICATION_LOG,
+        translationKey: 'tabs.notificationLog',
+        prepend: <EuiIcon type="bell" />,
+    },
+    {
+        id: ServiceTicketTabIds.SENT_EMAILS,
+        translationKey: 'tabs.sentEmails',
+        prepend: <EuiIcon type="email" />,
+    },
 ];
 
 export const WfoServiceTicket = ({
@@ -70,7 +90,7 @@ export const WfoServiceTicket = ({
                 (data && (
                     <>
                         <EuiFlexGroup
-                            style={{ marginBottom: 10 }}
+                            css={{ marginBottom: 10 }}
                             justifyContent="spaceBetween"
                         >
                             <EuiFlexItem grow={true}>

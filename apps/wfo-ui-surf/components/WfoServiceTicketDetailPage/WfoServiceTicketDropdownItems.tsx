@@ -30,7 +30,7 @@ export const ServiceTicketDropdownItems = ({
             direction={'column'}
             alignItems={'flexStart'}
             gutterSize={'none'}
-            style={{ paddingRight: theme.size.xxxxl }}
+            css={{ paddingRight: theme.size.xxxxl }}
         >
             <EuiFlexItem>
                 <EuiButtonEmpty
