@@ -13,8 +13,8 @@ import { useTranslations } from 'next-intl';
 
 import { TimelineItem, WfoLoading, WfoTimeline } from '../../components';
 import {
-    WfoProcessListSubscriptionsCell,
     RenderDirection,
+    WfoProcessListSubscriptionsCell,
 } from './WfoProcessListSubscriptionsCell';
 import { useOrchestratorTheme } from '../../hooks';
 import { ProcessDetail, ProcessStatus } from '../../types';
@@ -166,7 +166,7 @@ export const WfoProcessDetail = ({
                     >
                         {t('abort')}
                     </EuiButton>
-                    {processDetail?.isTask === true && (
+                    {processDetail && processDetail.isTask === true && (
                         <EuiButton
                             onClick={(
                                 e: React.MouseEvent<
@@ -195,7 +195,11 @@ export const WfoProcessDetail = ({
                                 />
                             )}
                             color="danger"
-                            isDisabled={buttonsAreDisabled}
+                            isDisabled={
+                                buttonsAreDisabled &&
+                                processDetail.lastStatus !==
+                                    ProcessStatus.RUNNING
+                            }
                         >
                             {t('delete')}
                         </EuiButton>
