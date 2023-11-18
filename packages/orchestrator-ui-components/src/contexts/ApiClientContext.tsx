@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { ApiClient, getApiClient } from '../api';
 import { OrchestratorConfigContext } from './OrchestratorConfigContext';
 
-interface ApiContext {
+export interface ApiContext {
     apiClient: ApiClient;
 }
 
