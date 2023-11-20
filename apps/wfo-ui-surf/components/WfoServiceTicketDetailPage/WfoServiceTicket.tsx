@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     EuiButton,
@@ -23,7 +23,6 @@ import {
 } from '../../types';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
@@ -62,7 +61,6 @@ export const WfoServiceTicket = ({
     const [selectedTabId, setSelectedTabId] = useState<ServiceTicketTabIds>(
         ServiceTicketTabIds.GENERAL_TAB,
     );
-    const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketWithDetails>(

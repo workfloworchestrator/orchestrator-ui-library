@@ -15,7 +15,6 @@ import {
     SubscriptionKeyValueBlock,
     useOrchestratorTheme,
     WfoBadge,
-    WfoBasicTable,
     WfoInformationModal,
     WfoKeyValueTableDataType,
 } from '@orchestrator-ui/orchestrator-ui-components';
