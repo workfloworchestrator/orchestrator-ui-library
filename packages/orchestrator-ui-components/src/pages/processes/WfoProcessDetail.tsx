@@ -11,7 +11,12 @@ import {
 
 import { useTranslations } from 'next-intl';
 
-import { TimelineItem, WfoLoading, WfoTimeline } from '../../components';
+import {
+    PATH_TASKS,
+    TimelineItem,
+    WfoLoading,
+    WfoTimeline,
+} from '../../components';
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
@@ -22,6 +27,8 @@ import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
 import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
+import { useDeleteProcess } from '../../hooks/ProcessesHooks/useDeleteProcess';
+import { useRouter } from 'next/router';
 
 interface ProcessHeaderValueProps {
     translationKey: string;
@@ -81,6 +88,8 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+    const { mutate } = useDeleteProcess();
+    const router = useRouter();
 
     return (
         <>
@@ -181,7 +190,9 @@ export const WfoProcessDetail = ({
                                             processDetail?.workflowName,
                                     }),
                                     confirmAction: () => {
-                                        alert('TODO: Implement abort');
+                                        processDetail.processId &&
+                                            mutate(processDetail.processId);
+                                        router.push(PATH_TASKS);
                                     },
                                 });
                             }}
