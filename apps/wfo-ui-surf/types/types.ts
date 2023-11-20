@@ -135,6 +135,7 @@ export interface ServiceTicketRelatedCustomer {
 }
 
 export interface ServiceTicketImpactedObject {
+    expander: string;
     impact_override: ServiceTicketImpactedObjectImpact;
     subscription_id: string | null;
     product_type: string;
