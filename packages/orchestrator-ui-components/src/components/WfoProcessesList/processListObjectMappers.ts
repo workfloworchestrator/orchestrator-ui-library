@@ -1,6 +1,6 @@
 import {
-    GraphqlFilter,
     GraphQLSort,
+    GraphqlFilter,
     Process,
     ProcessesResult,
 } from '../../types';

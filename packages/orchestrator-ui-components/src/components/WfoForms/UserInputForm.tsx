@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 /*
  * Copyright 2019-2023 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,36 +14,34 @@
  * limitations under the License.
  *
  */
+import React, { useContext, useState } from 'react';
+
+import axios from 'axios';
+import invariant from 'invariant';
+import { JSONSchema6 } from 'json-schema';
+import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
+import { useTranslations } from 'next-intl';
+import { NextRouter } from 'next/router';
+import { filterDOMProps, joinName } from 'uniforms';
+import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
+import { AutoField, AutoForm } from 'uniforms-unstyled';
 
 import {
-    EuiButtonColor,
     EuiButton,
+    EuiButtonColor,
     EuiFlexGroup,
     EuiHorizontalRule,
 } from '@elastic/eui';
 
-import invariant from 'invariant';
-import { JSONSchema6 } from 'json-schema';
-import { useTranslations } from 'next-intl';
-import cloneDeep from 'lodash/cloneDeep';
-import get from 'lodash/get';
-import React, { useContext, useState } from 'react';
-import { NextRouter } from 'next/router';
-import axios from 'axios';
-
-import { filterDOMProps, joinName } from 'uniforms';
-import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
-
-import { AutoField, AutoForm } from 'uniforms-unstyled';
-
-import { autoFieldFunction } from './AutoFieldLoader';
-import { userInputFormStyling } from './UserInputFormStyling';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import AutoFields from './AutoFields';
-import { ValidationError } from '../../types/forms';
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
 import { useOrchestratorTheme } from '../../hooks';
 import { WfoPlayFill } from '../../icons';
+import { ValidationError } from '../../types/forms';
+import { autoFieldFunction } from './AutoFieldLoader';
+import AutoFields from './AutoFields';
+import { userInputFormStyling } from './UserInputFormStyling';
 
 type UniformJSONSchemaProperty = JSONSchema6 & {
     uniforms: any;

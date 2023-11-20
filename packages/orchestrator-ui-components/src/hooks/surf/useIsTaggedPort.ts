@@ -1,9 +1,10 @@
-import { useQueryWithGraphql } from '../useQueryWithGraphql';
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
 } from '../../components/WfoForms/formFields/utils';
+import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
+import { useQueryWithGraphql } from '../useQueryWithGraphql';
+
 export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
     const { data, isFetched } = useQueryWithGraphql(
         GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,

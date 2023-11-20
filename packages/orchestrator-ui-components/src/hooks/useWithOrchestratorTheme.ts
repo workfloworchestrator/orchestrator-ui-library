@@ -1,4 +1,5 @@
 import { EuiThemeComputed } from '@elastic/eui';
+
 import { useOrchestratorTheme } from './useOrchestratorTheme';
 
 export function useWithOrchestratorTheme<T>(

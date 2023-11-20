@@ -1,5 +1,6 @@
-import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import React from 'react';
+
+import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import { CreateForm } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function FormsPage() {

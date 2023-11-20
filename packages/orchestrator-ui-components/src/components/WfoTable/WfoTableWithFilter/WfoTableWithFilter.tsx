@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import {
     Criteria,
     EuiButton,
@@ -7,36 +8,37 @@ import {
     EuiSpacer,
     Pagination,
 } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '../../../hooks';
+import { WfoArrowsExpand } from '../../../icons';
+import { getTypedFieldFromObject } from '../../../utils';
 import {
-    WfoDataSorting,
-    TableColumnKeys,
-    WfoTableColumns,
-    WfoTableControlColumnConfig,
-    WfoTableDataColumnConfig,
-} from '../utils/columns';
+    WfoKeyValueTable,
+    WfoKeyValueTableDataType,
+} from '../../WfoKeyValueTable/WfoKeyValueTable';
+import { WfoSearchField } from '../../WfoSearchBar';
+import { WfoInformationModal } from '../../WfoSettingsModal';
+import {
+    WfoBasicTable,
+    WfoBasicTableColumnsWithControlColumns,
+} from '../WfoBasicTable';
 import {
     ColumnConfig,
     TableConfig,
     TableSettingsModal,
 } from '../WfoTableSettingsModal';
-import { WfoSearchField } from '../../WfoSearchBar';
 import {
-    WfoBasicTable,
-    WfoBasicTableColumnsWithControlColumns,
-} from '../WfoBasicTable';
+    TableColumnKeys,
+    WfoDataSorting,
+    WfoTableColumns,
+    WfoTableControlColumnConfig,
+    WfoTableDataColumnConfig,
+} from '../utils/columns';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../utils/constants';
 import {
     clearTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
-import { WfoInformationModal } from '../../WfoSettingsModal';
-import {
-    WfoKeyValueTable,
-    WfoKeyValueTableDataType,
-} from '../../WfoKeyValueTable/WfoKeyValueTable';
-import { getTypedFieldFromObject } from '../../../utils';
-import { WfoArrowsExpand } from '../../../icons';
-import { useOrchestratorTheme } from '../../../hooks';
 
 export type WfoTableWithFilterProps<T> = {
     data: T[];

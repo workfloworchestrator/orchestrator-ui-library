@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
-import { ServiceTicketWithDetails } from '../../types';
+
+import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import {
-    formatDate,
     SubscriptionKeyValueBlock,
     WfoKeyValueTableDataType,
+    formatDate,
 } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { ServiceTicketWithDetails } from '../../types';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 
 interface WfoSubscriptionGeneralProps {

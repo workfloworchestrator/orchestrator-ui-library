@@ -1,7 +1,7 @@
 import {
+    StoredTableConfig,
     getTableConfigFromLocalStorage,
     isValidLocalStorageTableConfig,
-    StoredTableConfig,
 } from './tableConfigPersistence';
 
 // Note: for some testcases a typecast is needed on the testObject to bypass TSC errors

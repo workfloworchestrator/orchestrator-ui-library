@@ -1,5 +1,6 @@
-import { gql } from 'graphql-request';
 import { parse } from 'graphql';
+import { gql } from 'graphql-request';
+
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 import type { ProductBlockDefinition } from '../types';

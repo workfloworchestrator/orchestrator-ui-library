@@ -1,6 +1,7 @@
 import React from 'react';
-import { WfoCheckmarkCircleFill, WfoMinusCircleOutline } from '../../icons';
+
 import { useOrchestratorTheme } from '../../hooks';
+import { WfoCheckmarkCircleFill, WfoMinusCircleOutline } from '../../icons';
 
 interface WfoInsyncIconProps {
     inSync: boolean;

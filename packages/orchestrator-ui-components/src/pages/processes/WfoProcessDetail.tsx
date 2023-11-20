@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
 import {
     EuiButton,
     EuiFlexGroup,
@@ -9,18 +12,16 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useTranslations } from 'next-intl';
-
 import { TimelineItem, WfoLoading, WfoTimeline } from '../../components';
-import {
-    WfoProcessListSubscriptionsCell,
-    RenderDirection,
-} from './WfoProcessListSubscriptionsCell';
 import { useOrchestratorTheme } from '../../hooks';
+import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
 import { ProcessDetail, ProcessStatus } from '../../types';
 import { parseDateRelativeToToday, parseIsoString } from '../../utils';
+import {
+    RenderDirection,
+    WfoProcessListSubscriptionsCell,
+} from './WfoProcessListSubscriptionsCell';
 import { getIndexOfCurrentStep } from './timelineUtils';
-import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
 
 interface ProcessHeaderValueProps {
     translationKey: string;

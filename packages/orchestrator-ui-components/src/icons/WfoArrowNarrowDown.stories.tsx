@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoArrowNarrowDown } from './WfoArrowNarrowDown';
 
 const Story: Meta<typeof WfoArrowNarrowDown> = {

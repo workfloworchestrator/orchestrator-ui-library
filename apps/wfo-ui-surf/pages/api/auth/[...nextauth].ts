@@ -1,7 +1,8 @@
 import NextAuth, { AuthOptions } from 'next-auth';
-import { OAuthConfig } from 'next-auth/providers';
-import { SessionToken } from '@orchestrator-ui/orchestrator-ui-components';
 import { JWT } from 'next-auth/jwt';
+import { OAuthConfig } from 'next-auth/providers';
+
+import { SessionToken } from '@orchestrator-ui/orchestrator-ui-components';
 
 const token_endpoint_auth_method = process.env.NEXTAUTH_CLIENT_SECRET
     ? 'client_secret_basic'

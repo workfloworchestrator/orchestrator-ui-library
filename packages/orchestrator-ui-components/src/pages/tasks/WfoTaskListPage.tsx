@@ -1,3 +1,9 @@
+import React, { useEffect, useState } from 'react';
+
+import { useTranslations } from 'next-intl';
+
+import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
+
 import {
     DEFAULT_PAGE_SIZE,
     FilterQuery,
@@ -5,22 +11,19 @@ import {
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
     WfoTableColumns,
 } from '../../components';
-import { SortOrder } from '../../types';
-import React, { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { WfoStartTaskButtonComboBox } from '../../components';
+import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
+import {
+    ProcessListItem,
+    WfoProcessList,
+} from '../../components/WfoProcessesList/WfoProcessList';
 import {
     useDataDisplayParams,
     useOrchestratorTheme,
     useStoredTableConfig,
 } from '../../hooks';
-import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
-import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
 import { WfoRefresh } from '../../icons';
-import {
-    ProcessListItem,
-    WfoProcessList,
-} from '../../components/WfoProcessesList/WfoProcessList';
-import { WfoStartTaskButtonComboBox } from '../../components';
+import { SortOrder } from '../../types';
 
 export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();

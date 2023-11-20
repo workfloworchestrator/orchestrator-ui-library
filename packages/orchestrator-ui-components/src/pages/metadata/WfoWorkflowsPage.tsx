@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import { useTranslations } from 'next-intl';
+
+import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
@@ -12,31 +15,28 @@ import {
 import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
-    getPageChangeHandler,
     getEsQueryStringHandler,
+    getPageChangeHandler,
 } from '../../components';
-import type { WfoTableColumns, WfoDataSorting } from '../../components';
-
-import type { WorkflowDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
+import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import { StoredTableConfig } from '../../components';
-
+import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTargetBadge';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
+import type { WorkflowDefinition } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
+import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
-import { EuiBadgeGroup } from '@elastic/eui';
-import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
 import {
     graphQlWorkflowListMapper,
     mapWorkflowDefinitionToWorkflowListItem,
 } from './workflowListObjectMapper';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { parseIsoString, parseDateToLocaleDateTimeString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTargetBadge';
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,

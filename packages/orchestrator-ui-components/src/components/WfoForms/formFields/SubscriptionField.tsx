@@ -13,16 +13,9 @@
  *
  */
 import React from 'react';
-
-import {
-    EuiButtonIcon,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiFormRow,
-    EuiText,
-} from '@elastic/eui';
-import get from 'lodash/get';
 import ReactSelect from 'react-select';
+
+import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
 import {
     connectField,
@@ -32,14 +25,22 @@ import {
     useForm,
 } from 'uniforms';
 
+import {
+    EuiButtonIcon,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiFormRow,
+    EuiText,
+} from '@elastic/eui';
+
 import { useOrchestratorTheme } from '../../../hooks';
-import { FieldProps, Option } from './types';
-import { PortMode, ProductTag } from './surf/types';
-import { getPortMode } from './utils';
 import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '../../../types';
-import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
+import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
+import { PortMode, ProductTag } from './surf/types';
+import { FieldProps, Option } from './types';
+import { getPortMode } from './utils';
 
 declare module 'uniforms' {
     interface FilterDOMProps {

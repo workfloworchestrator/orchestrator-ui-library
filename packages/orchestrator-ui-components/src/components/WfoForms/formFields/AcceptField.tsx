@@ -12,15 +12,16 @@
  * limitations under the License.
  *
  */
-
-import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 import React, { useReducer } from 'react';
+
+import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { FieldProps } from './types';
-import { useTranslations } from 'next-intl';
+import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
+
 import { useWithOrchestratorTheme } from '../../../hooks';
 import { getStyles } from './AcceptFieldStyling';
+import { FieldProps } from './types';
 
 type AcceptItemType =
     | 'info'

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import type { Meta } from '@storybook/react';
+
 import { WfoHeaderBadge } from './WfoHeaderBadge';
 
 const Story: Meta<typeof WfoHeaderBadge> = {

@@ -1,5 +1,7 @@
 import React from 'react';
-import { ColorPalette, ColorItem } from '@storybook/blocks';
+
+import { ColorItem, ColorPalette } from '@storybook/blocks';
+
 import { useOrchestratorTheme } from '../hooks';
 
 export const Colors = () => {

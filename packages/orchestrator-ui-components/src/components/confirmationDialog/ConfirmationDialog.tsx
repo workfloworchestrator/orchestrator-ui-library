@@ -12,6 +12,7 @@
  * limitations under the License.
  *
  */
+import React from 'react';
 
 import {
     EuiButton,
@@ -22,7 +23,6 @@ import {
     EuiModalHeaderTitle,
     EuiOverlayMask,
 } from '@elastic/eui';
-import React from 'react';
 
 import { confirmationDialogStyling } from './ConfirmationDialogStyling';
 

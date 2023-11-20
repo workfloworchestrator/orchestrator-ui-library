@@ -12,7 +12,6 @@
  * limitations under the License.
  *
  */
-
 import axios, { AxiosRequestConfig } from 'axios';
 
 // basic configuration for axios.

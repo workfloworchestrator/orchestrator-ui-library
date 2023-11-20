@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from 'react';
-import type { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 import type { ReactElement, ReactNode, Reducer } from 'react';
+
+import type { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 
 export enum ToastTypes {
     ERROR = 'ERROR',

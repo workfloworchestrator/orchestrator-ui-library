@@ -1,9 +1,11 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { TranslationValues } from 'next-intl';
+
+import { EuiThemeComputed } from '@elastic/eui';
 
 import { SubscriptionAction } from '../../../hooks';
 import type { FieldValue } from '../../../types';
 import { WorkflowTarget } from '../../../types';
+
 const MAX_LABEL_LENGTH = 45;
 
 export enum SubscriptionTabIds {

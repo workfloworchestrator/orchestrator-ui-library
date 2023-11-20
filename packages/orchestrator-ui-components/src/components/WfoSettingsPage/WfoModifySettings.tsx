@@ -1,7 +1,9 @@
-import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 import React, { FC } from 'react';
-import { WfoEngineStatusButton } from './WfoEngineStatusButton';
+
+import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
+
 import { EngineStatusValue } from '../../types';
+import { WfoEngineStatusButton } from './WfoEngineStatusButton';
 
 export type WfoModifySettingsProps = {
     engineStatus?: EngineStatusValue;

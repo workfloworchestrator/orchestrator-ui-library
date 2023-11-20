@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
-import { ToastContext } from '../../contexts';
-import type { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
+
 import { EuiGlobalToastList } from '@elastic/eui';
+import type { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
+
+import { ToastContext } from '../../contexts';
 
 export const ToastsList = () => {
     const toastContext = useContext(ToastContext);

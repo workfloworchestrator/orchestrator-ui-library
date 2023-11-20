@@ -1,5 +1,7 @@
-import { EuiBasicTableColumn } from '@elastic/eui';
 import { ReactNode } from 'react';
+
+import { EuiBasicTableColumn } from '@elastic/eui';
+
 import { SortOrder } from '../../../types';
 
 // Todo need to Pick a few more props from EuiBasicTableColumn to prevent none-functioning props (truncateText)

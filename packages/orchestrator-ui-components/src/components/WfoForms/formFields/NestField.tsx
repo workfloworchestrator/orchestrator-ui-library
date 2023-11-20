@@ -13,14 +13,16 @@
  *
  */
 import React from 'react';
+
+import { connectField, filterDOMProps, joinName } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
+
 import {
     EuiDescribedFormGroup,
     EuiFlexGroup,
     EuiFlexItem,
     EuiText,
 } from '@elastic/eui';
-import { connectField, filterDOMProps, joinName } from 'uniforms';
-import { AutoField } from 'uniforms-unstyled';
 
 import { FieldProps } from './types';
 

@@ -12,10 +12,12 @@
  * limitations under the License.
  *
  */
+import React from 'react';
+
+import { connectField } from 'uniforms';
 
 import { EuiHorizontalRule } from '@elastic/eui';
-import React from 'react';
-import { connectField } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 export type DividerFieldProps = FieldProps<null, object, null, HTMLDivElement>;

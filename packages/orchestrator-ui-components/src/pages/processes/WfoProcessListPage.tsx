@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/router';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+
+import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
 } from '../../components';
-import { SortOrder } from '../../types';
-
-import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import type { StoredTableConfig } from '../../components';
-
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { useRouter } from 'next/router';
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import { defaultProcessListTabs, WfoProcessListTabType } from './tabConfig';
-import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import { WfoFilterTabs } from '../../components';
 import {
     ProcessListItem,
     WfoProcessList,
 } from '../../components/WfoProcessesList/WfoProcessList';
+import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
+import { SortOrder } from '../../types';
+import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
+import { WfoProcessListTabType, defaultProcessListTabs } from './tabConfig';
 
 export const WfoProcessListPage = () => {
     const router = useRouter();

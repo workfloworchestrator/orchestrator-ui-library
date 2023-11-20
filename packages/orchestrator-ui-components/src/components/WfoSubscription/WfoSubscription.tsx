@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
+
 import { useTranslations } from 'next-intl';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
+    EuiIcon,
     EuiTab,
     EuiTabs,
     EuiText,
-    EuiIcon,
 } from '@elastic/eui';
-import { useQueryWithGraphql } from '../../hooks';
-
-import { SubscriptionTabIds } from './utils';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
+import { useQueryWithGraphql } from '../../hooks';
 import { WfoLoading } from '../WfoLoading';
-import { WfoSubscriptionActions } from './WfoSubscriptionActions';
-import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
-import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
-import { WfoRelatedSubscriptions } from './WfoRelatedSubscriptions';
 import { WfoProcessesTimeline } from './WfoProcessesTimeline';
+import { WfoRelatedSubscriptions } from './WfoRelatedSubscriptions';
+import { WfoSubscriptionActions } from './WfoSubscriptionActions';
+import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
+import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
+import { SubscriptionTabIds } from './utils';
 
 type WfoSubscriptionProps = {
     subscriptionId: string;

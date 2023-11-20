@@ -1,34 +1,37 @@
 import React, { FC } from 'react';
+
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+
+import { Pagination } from '@elastic/eui/src/components';
+
+import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
+import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
+import { WfoProcessListSubscriptionsCell } from '../../pages';
+import { Process, SortOrder } from '../../types';
+import { parseDateToLocaleDateTimeString } from '../../utils';
+import { WfoProcessStatusBadge } from '../WfoBadges';
+import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
+import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
+import { FilterQuery } from '../WfoFilterTabs';
+import { WfoLoading } from '../WfoLoading';
 import {
     DEFAULT_PAGE_SIZES,
-    getDataSortHandler,
-    getEsQueryStringHandler,
-    getPageChangeHandler,
     TableColumnKeys,
     WfoDataSorting,
     WfoTableColumns,
     WfoTableWithFilter,
+    getDataSortHandler,
+    getEsQueryStringHandler,
+    getPageChangeHandler,
 } from '../WfoTable';
-import { Process, SortOrder } from '../../types';
-import { WfoProcessStatusBadge } from '../WfoBadges';
-import { WfoProcessListSubscriptionsCell } from '../../pages';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import { useTranslations } from 'next-intl';
-import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
-import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
-import { WfoLoading } from '../WfoLoading';
-import { Pagination } from '@elastic/eui/src/components';
-import { FilterQuery } from '../WfoFilterTabs';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
-import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
-import { parseDateToLocaleDateTimeString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
 
 export type ProcessListItem = Pick<
     Process,

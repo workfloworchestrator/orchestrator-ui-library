@@ -1,11 +1,11 @@
-import { SubscriptionAction } from '../../../hooks';
-import { FieldValue, WorkflowTarget } from '../../../types';
 import { EuiThemeComputed } from '@elastic/eui';
 
+import { SubscriptionAction } from '../../../hooks';
+import { FieldValue, WorkflowTarget } from '../../../types';
 import {
+    flattenArrayProps,
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
-    flattenArrayProps,
     getWorkflowTargetColor,
 } from './utils';
 

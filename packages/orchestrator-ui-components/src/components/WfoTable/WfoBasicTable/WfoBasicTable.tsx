@@ -1,22 +1,23 @@
 import React, { ReactNode } from 'react';
+
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
-import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 
+import { useOrchestratorTheme } from '../../../hooks';
+import { SortOrder } from '../../../types';
 import type {
-    WfoDataSorting,
     TableColumnKeys,
     WfoDataSearch,
+    WfoDataSorting,
 } from '../utils/columns';
 import {
     WFO_STATUS_COLOR_FIELD,
     WfoTableControlColumnConfig,
     WfoTableDataColumnConfig,
 } from '../utils/columns';
-import { useOrchestratorTheme } from '../../../hooks';
-import { getStyles } from './styles';
-import { SortOrder } from '../../../types';
 import { WfoStatusColorField } from './WfoStatusColorField';
+import { WfoTableHeaderCell } from './WfoTableHeaderCell';
+import { getStyles } from './styles';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {

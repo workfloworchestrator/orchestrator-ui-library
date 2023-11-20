@@ -1,8 +1,9 @@
 import { useContext } from 'react';
+import { useQuery } from 'react-query';
+
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
 import { GraphqlFilter, ItemsList, ProcessFromRestApi } from '../types';
 import { useQueryWithFetch } from './useQueryWithFetch';
-import { useQuery } from 'react-query';
 
 export type CacheNames = { [key: string]: string };
 

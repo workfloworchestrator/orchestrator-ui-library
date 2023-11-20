@@ -1,14 +1,15 @@
 import React from 'react';
-import { NextIntlProvider } from 'next-intl';
 import type { ReactNode } from 'react';
+
+import { merge } from 'lodash';
+import { NextIntlProvider } from 'next-intl';
+import { useRouter } from 'next/router';
+
 import {
     Locale,
     getTranslationMessages,
 } from '@orchestrator-ui/orchestrator-ui-components';
-
 import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components';
-import { useRouter } from 'next/router';
-import { merge } from 'lodash';
 
 import enUS from './en-US.json';
 import nlNL from './nl-NL.json';

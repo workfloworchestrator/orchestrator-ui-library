@@ -1,22 +1,24 @@
 import React from 'react';
+import { useRef, useState } from 'react';
+
 import {
     EuiDataGrid,
     EuiDataGridCellValueElementProps,
     EuiDataGridStyle,
 } from '@elastic/eui';
-import { useRef, useState } from 'react';
-import {
-    mapColumnSortToEuiDataGridSorting,
-    WfoControlColumn,
-    getInitialColumnOrder,
-    WfoDataGridTableColumns,
-} from './WfodataGridColumns';
 import {
     EuiDataGridControlColumn,
     EuiDataGridPaginationProps,
 } from '@elastic/eui/src/components/datagrid/data_grid_types';
-import { WfoDataSorting, TableColumnKeys } from '../utils/columns';
+
+import { TableColumnKeys, WfoDataSorting } from '../utils/columns';
 import { DEFAULT_PAGE_SIZE } from '../utils/constants';
+import {
+    WfoControlColumn,
+    WfoDataGridTableColumns,
+    getInitialColumnOrder,
+    mapColumnSortToEuiDataGridSorting,
+} from './WfodataGridColumns';
 
 // Total height of grid button bar, table header and pagination bar
 const EUI_DATA_GRID_HEIGHT_OFFSET = 103;

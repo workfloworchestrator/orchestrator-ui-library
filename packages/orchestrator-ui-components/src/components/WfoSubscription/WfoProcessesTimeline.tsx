@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
 import {
     EuiAvatar,
     EuiComment,
@@ -6,18 +9,16 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { useTranslations } from 'next-intl';
 
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
-import { WfoProcessStatusBadge } from '../WfoBadges';
 import { SubscriptionDetailProcess } from '../../types';
+import { parseDate, parseDateToLocaleDateTimeString } from '../../utils';
+import { upperCaseFirstChar } from '../../utils';
+import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoLoading } from '../WfoLoading';
 import { PATH_PROCESSES } from '../WfoPageTemplate';
-import { parseDateToLocaleDateTimeString, parseDate } from '../../utils';
-import { upperCaseFirstChar } from '../../utils';
-import { getWorkflowTargetColor } from './utils';
-
 import { getStyles } from './styles';
+import { getWorkflowTargetColor } from './utils';
 
 interface WfoProcessCardProps {
     subscriptionDetailProcess: SubscriptionDetailProcess;

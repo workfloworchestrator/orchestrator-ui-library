@@ -1,18 +1,17 @@
 import React from 'react';
 
-import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
 
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
+import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
-import {
-    WfoSubscriptionStatusBadge,
-    WfoProductStatusBadge,
-} from '../WfoBadges';
-
-import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
 import { SubscriptionDetail } from '../../types';
+import {
+    WfoProductStatusBadge,
+    WfoSubscriptionStatusBadge,
+} from '../WfoBadges';
+import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { WfoKeyValueTableDataType } from '../WfoKeyValueTable/WfoKeyValueTable';
+import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
 
 interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;

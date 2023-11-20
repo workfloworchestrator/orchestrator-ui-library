@@ -12,15 +12,15 @@
  * limitations under the License.
  *
  */
-
-import UserInputForm from './UserInputForm';
-import hash from 'object-hash';
 import React, { useEffect, useState } from 'react';
-import { FormNotCompleteResponse, InputForm } from '../../types/forms';
-import { useRouter } from 'next/router';
 
-import { useAxiosApiClient } from './useAxiosApiClient';
+import { useRouter } from 'next/router';
+import hash from 'object-hash';
+
 import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
+import { FormNotCompleteResponse, InputForm } from '../../types/forms';
+import UserInputForm from './UserInputForm';
+import { useAxiosApiClient } from './useAxiosApiClient';
 
 interface Form {
     form: InputForm;

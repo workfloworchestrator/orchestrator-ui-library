@@ -1,10 +1,11 @@
 import React from 'react';
+
 import {
-    EuiPageHeader,
-    EuiSpacer,
+    EuiButton,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiButton,
+    EuiPageHeader,
+    EuiSpacer,
 } from '@elastic/eui';
 import { WfoNewProcessPanel } from '@orchestrator-ui/orchestrator-ui-components';
 
