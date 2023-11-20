@@ -6,11 +6,12 @@ import {
 } from '../hooks/useOrchestratorConfig';
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
-    engineStatusEndpoint: '',
     environmentName: '',
+    engineStatusEndpoint: '',
     graphqlEndpointCore: '',
     orchestratorApiBaseUrl: '',
     processStatusCountsEndpoint: '',
+    processesEndpoint: '',
     subscriptionActionsEndpoint: '',
     subscriptionProcessesEndpoint: '',
     dataRefetchInterval: {

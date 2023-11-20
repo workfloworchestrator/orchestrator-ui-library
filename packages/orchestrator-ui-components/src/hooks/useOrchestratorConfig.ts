@@ -8,9 +8,10 @@ export enum Environment {
 export type OrchestratorConfig = {
     environmentName: Environment | string;
     orchestratorApiBaseUrl: string;
-    engineStatusEndpoint: string;
     graphqlEndpointCore: string;
+    engineStatusEndpoint: string;
     processStatusCountsEndpoint: string;
+    processesEndpoint: string;
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
     dataRefetchInterval: {
