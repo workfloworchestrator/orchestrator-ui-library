@@ -1,1 +1,1 @@
-export * from './ConfirmationDialog';
+export * from './WfoConfirmationDialog';
