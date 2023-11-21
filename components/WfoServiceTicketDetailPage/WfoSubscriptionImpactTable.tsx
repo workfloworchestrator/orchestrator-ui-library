@@ -2,30 +2,30 @@ import {
     useOrchestratorTheme,
     WfoBadge,
     WfoBasicTable,
+    WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
 import React, { ReactNode, useState } from 'react';
+import { EuiButtonIcon, EuiDescriptionList, EuiText } from '@elastic/eui';
 import {
-    EuiButtonIcon,
-    EuiScreenReaderOnly,
-    EuiText,
-    EuiDescriptionList,
-} from '@elastic/eui';
-import { ServiceTicketImpactedObject } from '../../types';
+    ServiceTicketImpactedObject,
+    ServiceTicketImpactedObjectColumns,
+    ServiceTicketWithDetails,
+} from '../../types';
 import { useTranslations } from 'next-intl';
 import { useQueryClient } from 'react-query';
 import Link from 'next/link';
 
-const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObject =
+const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObjectColumns =
     'subscription_id';
-const SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS: keyof ServiceTicketImpactedObject =
+const SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS: keyof ServiceTicketImpactedObjectColumns =
     'subscription_description';
-const SUBSCRIPTION_IMPACT_FIELD_AFFECTED_CUSTOMERS: keyof ServiceTicketImpactedObject =
-    'related_customers';
-const SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS: keyof ServiceTicketImpactedObject =
-    'related_customers';
-const SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT: keyof ServiceTicketImpactedObject =
-    'ims_circuits';
-const SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE: keyof ServiceTicketImpactedObject =
+const SUBSCRIPTION_IMPACT_FIELD_AFFECTED_CUSTOMERS: keyof ServiceTicketImpactedObjectColumns =
+    'affectedCustomers';
+const SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS: keyof ServiceTicketImpactedObjectColumns =
+    'informCustomers';
+const SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT: keyof ServiceTicketImpactedObjectColumns =
+    'imsCalculatedImpact';
+const SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE: keyof ServiceTicketImpactedObjectColumns =
     'impact_override';
 
 export const WfoSubscriptionImpactTable = () => {
@@ -33,7 +33,7 @@ export const WfoSubscriptionImpactTable = () => {
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
     const queryClient = useQueryClient();
-    const data = queryClient.getQueryData([
+    const data = queryClient.getQueryData<ServiceTicketWithDetails>([
         'serviceTickets',
         'ca5eab65-761a-4235-aac8-048ff1aa0171',
     ]);
@@ -42,20 +42,7 @@ export const WfoSubscriptionImpactTable = () => {
         Record<string, ReactNode>
     >({});
 
-    const calculateAffectedCustomers = (
-        object: ServiceTicketImpactedObject,
-    ) => {
-        return object.related_customers.length + 1;
-    };
-
-    const renderImsCircuitsImpact = (object: ServiceTicketImpactedObject) => {
-        const ims_circuits = object.ims_circuits;
-        return ims_circuits
-            ? ims_circuits[ims_circuits.length - 1].impact
-            : 'null';
-    };
-
-    const toggleDetails = (object: ServiceTicketImpactedObject) => {
+    const toggleDetails = (object: ServiceTicketImpactedObjectColumns) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
         const id = object.subscription_id ? object.subscription_id : '0';
         console.log(itemIdToExpandedRowMapValues, 'toggleDetails');
@@ -85,140 +72,133 @@ export const WfoSubscriptionImpactTable = () => {
         setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
     };
 
-    const impactTableColumns = {
-        expander: {
-            field: SUBSCRIPTION_IMPACT_FIELD_ID,
-            width: '20',
-            isExpander: true,
-            name: (
-                <EuiScreenReaderOnly>
-                    <span>Expand rows</span>
-                </EuiScreenReaderOnly>
-            ),
-            render: (
-                value: keyof ServiceTicketImpactedObject,
-                object: ServiceTicketImpactedObject,
-            ) => {
-                const itemIdToExpandedRowMapValues = {
-                    ...itemIdToExpandedRowMap,
-                };
-                console.log('OBJECT', object);
-                console.log(
-                    itemIdToExpandedRowMapValues,
-                    'itemIdToExpandedRowMapValues',
-                );
-                return object ? (
-                    <EuiButtonIcon
-                        onClick={() => toggleDetails(object)}
-                        aria-label={
-                            itemIdToExpandedRowMapValues[value]
-                                ? 'Collapse'
-                                : 'Expand'
-                        }
-                        iconType={
-                            itemIdToExpandedRowMapValues[value]
-                                ? 'arrowDown'
-                                : 'arrowRight'
-                        }
-                    />
-                ) : (
-                    <EuiText>null</EuiText>
-                );
+    const impactTableColumns: WfoTableColumns<ServiceTicketImpactedObjectColumns> =
+        {
+            subscription_id: {
+                field: SUBSCRIPTION_IMPACT_FIELD_ID,
+                width: '20',
+                name: '',
+                render: (value, object) => {
+                    const itemIdToExpandedRowMapValues = {
+                        ...itemIdToExpandedRowMap,
+                    };
+                    console.log('OBJECT', object);
+                    console.log(
+                        itemIdToExpandedRowMapValues,
+                        'itemIdToExpandedRowMapValues',
+                    );
+                    return value ? (
+                        <EuiButtonIcon
+                            onClick={() => toggleDetails(object)}
+                            aria-label={
+                                itemIdToExpandedRowMapValues[value]
+                                    ? 'Collapse'
+                                    : 'Expand'
+                            }
+                            iconType={
+                                itemIdToExpandedRowMapValues[value]
+                                    ? 'arrowDown'
+                                    : 'arrowRight'
+                            }
+                        />
+                    ) : (
+                        <EuiButtonIcon disabled iconType="arrowRight" />
+                    );
+                },
             },
-        },
-        subscription_description: {
-            field: SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS,
-            name: t('subscriptionTitle'),
-            width: '200',
-            render: (
-                value: keyof ServiceTicketImpactedObject,
-                object: ServiceTicketImpactedObject,
-            ) => (
-                <Link href={`/subscriptions/${object.subscription_id}`}>
-                    {value}
-                </Link>
-            ),
-            sortable: true,
-        },
-        affectedCustomers: {
-            field: SUBSCRIPTION_IMPACT_FIELD_AFFECTED_CUSTOMERS,
-            name: t('affectedCustomers'),
-            width: '75',
-            render: (
-                _: keyof ServiceTicketImpactedObject,
-                object: ServiceTicketImpactedObject,
-            ) => (
-                <WfoBadge
-                    textColor={theme.colors.text}
-                    color={theme.colors.lightShade}
-                >
-                    {calculateAffectedCustomers(object)}
-                </WfoBadge>
-            ),
-            sortable: true,
-        },
-        informCustomers: {
-            field: SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS,
-            name: t('informCustomers'),
-            width: '50',
-            render: () => (
-                <WfoBadge
-                    textColor={theme.colors.text}
-                    color={theme.colors.lightShade}
-                >
-                    4
-                </WfoBadge>
-            ),
-            sortable: true,
-        },
-        imsCalculatedImpact: {
-            field: SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT,
-            name: t('imsCalculatedImpact'),
-            width: '100',
-            render: (
-                _: keyof ServiceTicketImpactedObject,
-                object: ServiceTicketImpactedObject,
-            ) => (
-                <WfoBadge
-                    textColor={theme.colors.successText}
-                    color={toSecondaryColor(theme.colors.success)}
-                >
-                    {renderImsCircuitsImpact(object)}
-                </WfoBadge>
-            ),
-            sortable: true,
-        },
-        nocManualImpactOverride: {
-            field: SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE,
-            name: t('nocManualOverride'),
-            width: '100',
-            render: (
-                _: keyof ServiceTicketImpactedObject,
-                object: ServiceTicketImpactedObject,
-            ) => {
-                return object.impact_override ? (
+            subscription_description: {
+                field: SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS,
+                name: t('subscriptionTitle'),
+                width: '200',
+                render: (value, object) => (
+                    <Link href={`/subscriptions/${object.subscription_id}`}>
+                        {value}
+                    </Link>
+                ),
+                sortable: true,
+            },
+            affectedCustomers: {
+                field: SUBSCRIPTION_IMPACT_FIELD_AFFECTED_CUSTOMERS,
+                name: t('affectedCustomers'),
+                width: '75',
+                render: (value) => (
+                    <WfoBadge
+                        textColor={theme.colors.text}
+                        color={theme.colors.lightShade}
+                    >
+                        {value}
+                    </WfoBadge>
+                ),
+                sortable: true,
+            },
+            informCustomers: {
+                field: SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS,
+                name: t('informCustomers'),
+                width: '75',
+                render: () => (
+                    <WfoBadge
+                        textColor={theme.colors.text}
+                        color={theme.colors.lightShade}
+                    >
+                        4
+                    </WfoBadge>
+                ),
+                sortable: true,
+            },
+            imsCalculatedImpact: {
+                field: SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT,
+                name: t('imsCalculatedImpact'),
+                width: '75',
+                render: (value) => (
                     <WfoBadge
                         textColor={theme.colors.successText}
                         color={toSecondaryColor(theme.colors.success)}
                     >
-                        {object.impact_override}
+                        {value}
                     </WfoBadge>
-                ) : (
-                    <EuiText>-</EuiText>
-                );
+                ),
+                sortable: true,
             },
-            sortable: true,
-        },
+            impact_override: {
+                field: SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE,
+                name: t('nocManualOverride'),
+                width: '75',
+                render: (value) => {
+                    return value ? (
+                        <WfoBadge
+                            textColor={theme.colors.successText}
+                            color={toSecondaryColor(theme.colors.success)}
+                        >
+                            {value}
+                        </WfoBadge>
+                    ) : (
+                        <EuiText>-</EuiText>
+                    );
+                },
+                sortable: true,
+            },
+        };
+
+    const mapDataToTable = (
+        input: ServiceTicketImpactedObject[],
+    ): ServiceTicketImpactedObjectColumns[] => {
+        return input.map((object) => ({
+            subscription_id: object.subscription_id,
+            subscription_description: object.subscription_description,
+            affectedCustomers: object.related_customers.length + 1,
+            informCustomers: 4,
+            imsCalculatedImpact:
+                object.ims_circuits[object.ims_circuits.length - 1].impact ??
+                '',
+            impact_override: object.impact_override,
+        }));
     };
 
     return (
         <WfoBasicTable
-            // @ts-expect-error - data is not null
-            data={data ? data.impacted_objects : []}
-            // @ts-expect-error - type is still not specified
+            data={data ? mapDataToTable(data.impacted_objects) : []}
             columns={impactTableColumns}
             isExpandable={true}
-            tableLayout="auto"
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             itemId="subscription_id"
         />

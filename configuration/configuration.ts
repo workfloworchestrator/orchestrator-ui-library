@@ -57,9 +57,9 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
 const SURF_CIM_DEFAULT_SENDING_LEVEL = 'resilience_loss';
 
 export const getInitialSurfConfig = (): SurfConfig => {
-    const cimDefaultSendingLevel = process.env.SURF_CIM_DEFAULT_SENDING_LEVEL
-        ? process.env.SURF_CIM_DEFAULT_SENDING_LEVEL
-        : SURF_CIM_DEFAULT_SENDING_LEVEL;
+    const cimDefaultSendingLevel =
+        process.env.SURF_CIM_DEFAULT_SENDING_LEVEL ??
+        SURF_CIM_DEFAULT_SENDING_LEVEL;
 
     return {
         cimDefaultSendingLevel,
