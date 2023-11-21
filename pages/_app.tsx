@@ -90,7 +90,8 @@ function CustomApp({
                                     <ApiClientContextProvider>
                                         <Head>
                                             <title>
-                                                Welcome to example-orchestrator-ui!
+                                                Welcome to
+                                                example-orchestrator-ui!
                                             </title>
                                         </Head>
                                         <main className="app">
@@ -101,7 +102,9 @@ function CustomApp({
                                                 <ToastsContextProvider>
                                                     <ConfirmationDialogContextWrapper>
                                                         <WfoPageTemplate
-                                                            getAppLogo={getAppLogo}
+                                                            getAppLogo={
+                                                                getAppLogo
+                                                            }
                                                             overrideMenuItems={
                                                                 getMenuItems
                                                             }
