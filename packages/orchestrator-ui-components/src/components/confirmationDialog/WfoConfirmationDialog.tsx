@@ -46,7 +46,7 @@ interface IProps {
     isError?: boolean;
 }
 
-export default function ConfirmationDialog({
+export default function WfoConfirmationDialog({
     isOpen = false,
     cancel,
     confirm,

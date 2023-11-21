@@ -1,6 +1,6 @@
 import React from 'react';
 import { createContext, useState } from 'react';
-import ConfirmationDialog from '../components/confirmationDialog/ConfirmationDialog';
+import WfoConfirmationDialog from '../components/confirmationDialog/WfoConfirmationDialog';
 
 export interface ConfirmDialogActions {
     showConfirmDialog: ShowConfirmDialogType;
@@ -84,7 +84,7 @@ export function ConfirmationDialogContextWrapper({ children }: any) {
         <ConfirmationDialogProvider
             value={{ showConfirmDialog, closeConfirmDialog }}
         >
-            <ConfirmationDialog
+            <WfoConfirmationDialog
                 isOpen={confirmationDialogOpen}
                 cancel={(e) => state.confirmDialogAction(e, true)}
                 confirm={state.confirmDialogAction}
