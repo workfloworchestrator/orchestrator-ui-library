@@ -152,7 +152,7 @@
             "resume": "Resume",
             "abort": "Abort",
             "delete": "Delete",
-            "deleteQuestion": "Are you sure you want to delete {workflowName}?",
+            "deleteQuestion": "Are you sure you want to delete the task {workflowName}?",
             "status": "Status",
             "startedBy": "Started by",
             "lastStep": "Last step",
