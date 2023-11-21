@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
+
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+
 import { Criteria } from '@elastic/eui';
+import {
+    DEFAULT_PAGE_SIZES,
+    DataDisplayParams,
+    FilterQuery,
+    SortOrder,
+    TableColumnKeys,
+    WfoBasicTable,
+    WfoDataSorting,
+    WfoTableColumns,
+    formatDate,
+    getSortDirectionFromString,
+    useFilterQueryWithRest,
+    useOrchestratorTheme,
+} from '@orchestrator-ui/orchestrator-ui-components';
+
+import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import {
     ServiceTicketDefinition,
     ServiceTicketProcessState,
 } from '../../types';
-import { useTranslations } from 'next-intl';
-import {
-    DataDisplayParams,
-    DEFAULT_PAGE_SIZES,
-    FilterQuery,
-    formatDate,
-    getSortDirectionFromString,
-    SortOrder,
-    TableColumnKeys,
-    useFilterQueryWithRest,
-    useOrchestratorTheme,
-    WfoBasicTable,
-    WfoDataSorting,
-    WfoTableColumns,
-} from '@orchestrator-ui/orchestrator-ui-components';
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 import { ColorMappings, getColorForState } from '../../utils/getColorForState';
-import Link from 'next/link';
+import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
     'jira_ticket_id';

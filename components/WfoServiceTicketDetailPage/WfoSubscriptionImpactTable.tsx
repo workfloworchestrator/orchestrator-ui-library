@@ -1,19 +1,22 @@
+import React, { ReactNode, useState } from 'react';
+import { useQueryClient } from 'react-query';
+
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+
+import { EuiButtonIcon, EuiDescriptionList, EuiText } from '@elastic/eui';
 import {
-    useOrchestratorTheme,
     WfoBadge,
     WfoBasicTable,
     WfoTableColumns,
+    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React, { ReactNode, useState } from 'react';
-import { EuiButtonIcon, EuiDescriptionList, EuiText } from '@elastic/eui';
+
 import {
     ServiceTicketImpactedObject,
     ServiceTicketImpactedObjectColumns,
     ServiceTicketWithDetails,
 } from '../../types';
-import { useTranslations } from 'next-intl';
-import { useQueryClient } from 'react-query';
-import Link from 'next/link';
 
 const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObjectColumns =
     'subscription_id';
