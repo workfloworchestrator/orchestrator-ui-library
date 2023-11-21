@@ -15,8 +15,10 @@
 import { AxiosInstance } from 'axios';
 
 import {
+    ImsPort,
     IpBlock,
     IpPrefix,
+    Subscription,
 } from '../components/WfoForms/formFields/surf/types';
 import { ProductDefinition } from '../types';
 import { getAxiosInstance } from './axios';
@@ -159,6 +161,48 @@ export class ApiClient extends ApiClientInterface {
                 '/' +
                 prefixlen,
         );
+    };
+    getFreePortsByNodeSubscriptionIdAndSpeed = (
+        nodeSubscriptionId: string,
+        interfaceSpeed: number,
+        mode: string,
+    ): Promise<ImsPort[]> => {
+        return this.fetchJson(
+            `surf/ims/free_ports/${nodeSubscriptionId}/${interfaceSpeed}/${mode}`,
+        );
+    };
+
+    // legacy : for imsPort seletec
+    subscriptions = (
+        tagList: string[] = [],
+        statusList: string[] = [],
+        productList: string[] = [],
+    ): Promise<Subscription[]> => {
+        const statusFilter = `statuses,${encodeURIComponent(
+            statusList.join('-'),
+        )}`;
+        const tagsFilter = `tags,${encodeURIComponent(tagList.join('-'))}`;
+        const productsFilter = `products,${encodeURIComponent(
+            productList.join('-'),
+        )}`;
+
+        const params = new URLSearchParams();
+        const filters = [];
+        if (tagList.length) filters.push(tagsFilter);
+        if (statusList.length) filters.push(statusFilter);
+        if (productList.length) filters.push(productsFilter);
+
+        if (filters.length) params.set('filter', filters.join(','));
+
+        return this.fetchJson(
+            `subscriptions/${filters.length ? '?' : ''}${params.toString()}`,
+        );
+    };
+
+    nodeSubscriptions = (
+        statusList: string[] = [],
+    ): Promise<Subscription[]> => {
+        return this.subscriptions(['Node'], statusList);
     };
 }
 

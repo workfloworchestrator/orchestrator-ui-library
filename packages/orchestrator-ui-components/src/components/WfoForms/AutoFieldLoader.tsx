@@ -26,6 +26,7 @@ import {
     TimestampField,
     VlanField,
 } from './formFields';
+import ImsPortIdField from './formFields/ImsPortIdField';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -43,7 +44,7 @@ export function autoFieldFunction(
         case Number:
             switch (format) {
                 case 'imsPortId': // Surf specific
-                    return NumField;
+                    return ImsPortIdField;
                 case 'imsNodeId': // Surf specific
                     return ImsNodeIdField;
                 case 'timestamp':

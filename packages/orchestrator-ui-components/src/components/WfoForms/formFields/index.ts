@@ -21,6 +21,7 @@ export * from './TimestampField';
 export * from './OrganisationField';
 export * from './ContactPersonNameField';
 export * from './ImsNodeIdField';
+export * from './ImsPortIdField';
 export * from './LocationCodeField';
 export * from './VlanField';
 export * from './NestField';
