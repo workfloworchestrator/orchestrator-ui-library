@@ -28,9 +28,8 @@ import {
 } from '@elastic/eui';
 import React from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
-// import { getReactSelectTheme } from 'stylesheets/emotion/utils';
 
-import { ipPrefixTableStyling } from './IpPrefixTableStyling';
+import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
 import { ApiClientContext } from '../../../contexts';
 import { Option, prop } from './types';
 import { IpBlock, IpPrefix, SortOption } from './surf/types';
@@ -58,7 +57,7 @@ interface IState {
     selectionDone: boolean;
 }
 
-export default class IPPrefixTable extends React.PureComponent<IProps> {
+export default class IpPrefixTableField extends React.PureComponent<IProps> {
     static contextType = ApiClientContext;
     context!: React.ContextType<typeof ApiClientContext>;
     state: IState = {
@@ -296,10 +295,11 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
                 </EuiButton>
             );
         }
+        // Todo 482: re-implement when this component is refactored to function based
         // const customStyles = getReactSelectTheme(this.context.theme);
 
         return (
-            <EuiFlexItem css={ipPrefixTableStyling}>
+            <EuiFlexItem css={ipPrefixTableFieldStyling}>
                 <div>
                     <EuiFlexGroup
                         gutterSize="s"
@@ -425,6 +425,7 @@ export default class IPPrefixTable extends React.PureComponent<IProps> {
                             <span>
                                 <ReactSelect
                                     id={`${id}.root-filter`}
+                                    // Todo 482: re-implement when this component is refactored to function based
                                     // styles={customStyles}
                                     inputId={`${id}.root-filter.search`}
                                     name={`${name}.root-filter`}

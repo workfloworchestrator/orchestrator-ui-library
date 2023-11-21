@@ -20,7 +20,7 @@ import { useTranslations } from 'next-intl';
 
 import { FieldProps } from './types';
 import { IpBlock } from './surf/types';
-import IPPrefixTable from './IpPrefixTable';
+import IpPrefixTableField from './IpPrefixTableField';
 import SplitPrefix from './SplitPrefix';
 
 export type IPvAnyNetworkFieldProps = FieldProps<
@@ -28,7 +28,7 @@ export type IPvAnyNetworkFieldProps = FieldProps<
     { prefixMin?: number }
 >;
 
-function IPvAnyNetwork({
+function IpNetwork({
     id,
     label,
     description,
@@ -67,7 +67,7 @@ function IPvAnyNetwork({
                 <section className="ipblock-selector">
                     <div id={id}>
                         {!prefixMin && (
-                            <IPPrefixTable
+                            <IpPrefixTableField
                                 id={id}
                                 name={name}
                                 onChange={(prefix: IpBlock) => {
@@ -124,4 +124,4 @@ function IPvAnyNetwork({
     );
 }
 
-export const IPvAnyNetworkField = connectField(IPvAnyNetwork, { kind: 'leaf' });
+export const IpNetworkField = connectField(IpNetwork, { kind: 'leaf' });

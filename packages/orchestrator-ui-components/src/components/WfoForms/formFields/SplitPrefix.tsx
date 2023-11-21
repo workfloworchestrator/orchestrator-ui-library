@@ -120,6 +120,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
         const prefix_value = prefix_options.find(
             (option) => option.value === selectedSubnet,
         );
+        // Todo 482: re-implement when this component is refactored to function based
         // const customStyles = getReactSelectTheme(this.context.theme);
 
         return (
@@ -131,6 +132,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
                     <div>Desired netmask of the new subnet:</div>
                     <ReactSelect
                         id={`${id}.desired-netmask`}
+                        // Todo 482: re-implement when this component is refactored to function based
                         // styles={customStyles}
                         inputId={`${id}.desired-netmask.search`}
                         name={`${name}.desired-netmask`}
@@ -143,6 +145,7 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
                             <div>Desired prefix:</div>
                             <ReactSelect
                                 id={`${id}.desired-prefix`}
+                                // Todo 482: re-implement when this component is refactored to function based
                                 // styles={customStyles}
                                 inputId={`${id}.desired-prefix.search`}
                                 name={`${name}.desired-prefix`}

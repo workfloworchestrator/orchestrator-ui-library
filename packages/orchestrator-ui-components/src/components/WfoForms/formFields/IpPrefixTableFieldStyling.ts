@@ -29,7 +29,7 @@ function shadeColor(color: string, percent: number) {
     return '#' + RR + GG + BB;
 }
 
-export const ipPrefixTableStyling = css`
+export const ipPrefixTableFieldStyling = css`
     table.ip-blocks {
         word-break: break-all;
         margin-bottom: 20px;
