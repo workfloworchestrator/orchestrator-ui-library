@@ -135,7 +135,6 @@ export interface ServiceTicketRelatedCustomer {
 }
 
 export interface ServiceTicketImpactedObject {
-    expander: string;
     impact_override: ServiceTicketImpactedObjectImpact;
     subscription_id: string | null;
     product_type: string;
@@ -147,6 +146,15 @@ export interface ServiceTicketImpactedObject {
     owner_customer_contacts: ServiceTicketContact[];
     related_customers: ServiceTicketRelatedCustomer[];
 }
+
+export type ServiceTicketImpactedObjectColumns = Pick<
+    ServiceTicketImpactedObject,
+    'subscription_id' | 'subscription_description' | 'impact_override'
+> & {
+    affectedCustomers: number; //think about 0 or null
+    informCustomers: number;
+    imsCalculatedImpact: ServiceTicketImpactedObjectImpact;
+};
 
 export enum ServiceTicketType {
     PLANNED_WORK = 'planned work',

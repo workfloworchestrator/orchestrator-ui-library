@@ -40,6 +40,9 @@ export type WfoBasicTableProps<T> = {
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
     getStatusColorForRow?: (row: T) => string;
+    isExpandable?: boolean;
+    itemIdToExpandedRowMap?: Record<string, ReactNode>;
+    itemId?: string;
 };
 
 export const WfoBasicTable = <T,>({
@@ -53,6 +56,9 @@ export const WfoBasicTable = <T,>({
     onUpdateDataSorting,
     onDataSearch,
     getStatusColorForRow,
+    isExpandable,
+    itemIdToExpandedRowMap,
+    itemId,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
@@ -95,6 +101,11 @@ export const WfoBasicTable = <T,>({
             pagination={pagination}
             onChange={onCriteriaChange}
             loading={isLoading}
+            {...(isExpandable && {
+                isExpandable,
+                itemIdToExpandedRowMap,
+                itemId,
+            })}
         />
     );
 };
