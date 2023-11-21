@@ -1,7 +1,8 @@
-import { WfoBadge } from '../WfoBadge';
 import React, { FC } from 'react';
+
 import { useOrchestratorTheme } from '../../../hooks';
 import { WorkflowTarget } from '../../../types';
+import { WfoBadge } from '../WfoBadge';
 
 export type WfoWorkflowTargetBadgeProps = {
     target: WorkflowTarget;

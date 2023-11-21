@@ -1,15 +1,18 @@
 import React, { FC } from 'react';
+
 import { useTranslations } from 'next-intl';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
-    EuiToken,
     EuiIcon,
     EuiListGroupItem,
+    EuiToken,
 } from '@elastic/eui';
+
 import { TreeContext, TreeContextType } from '../../contexts';
-import { getStyles } from './styles';
 import { useOrchestratorTheme } from '../../hooks';
+import { getStyles } from './styles';
 
 type Item = {
     id: number;

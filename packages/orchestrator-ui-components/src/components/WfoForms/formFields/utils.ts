@@ -1,7 +1,7 @@
-import { ProductBlockInstance, SubscriptionDetail } from '../../../types';
-import { ProductTag, PortMode } from './surf/types';
-
 import { isDate } from 'moment';
+
+import { ProductBlockInstance, SubscriptionDetail } from '../../../types';
+import { PortMode, ProductTag } from './surf/types';
 
 // NOTE: There might potentially (?) be more productBlockInstances with portMod but we get the last one here
 export const getPortMode = (

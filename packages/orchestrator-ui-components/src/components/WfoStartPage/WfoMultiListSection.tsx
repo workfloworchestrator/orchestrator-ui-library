@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
+
 import { EuiFlexGroup } from '@elastic/eui';
-import WfoListStartPage from './WfoListStartPage';
+
 import {
     useFavouriteSubscriptions,
     useProcessesAttention,
     useRecentProcesses,
 } from '../../hooks/DataFetchHooks';
+import WfoListStartPage from './WfoListStartPage';
 
 export const WfoMultiListSection: FC = () => {
     const favouriteSubscriptionsList = useFavouriteSubscriptions();

@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoCode } from './WfoCode';
 
 const Story: Meta<typeof WfoCode> = {

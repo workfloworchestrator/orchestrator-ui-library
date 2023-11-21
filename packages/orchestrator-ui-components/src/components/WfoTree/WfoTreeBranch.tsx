@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
+
 import { EuiListGroup } from '@elastic/eui';
 
-import { WfoTreeNode } from './WfoTreeNode';
-import { TreeBlock } from '../../types';
 import { TreeContext, TreeContextType } from '../../contexts';
+import { TreeBlock } from '../../types';
+import { WfoTreeNode } from './WfoTreeNode';
 
 type WfoTreeBranchProps = {
     item: TreeBlock;

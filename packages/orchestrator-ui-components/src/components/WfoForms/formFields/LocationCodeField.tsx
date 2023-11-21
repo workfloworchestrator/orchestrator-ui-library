@@ -13,11 +13,12 @@
  *
  */
 import React, { useEffect, useState } from 'react';
+
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { SelectField, SelectFieldProps } from './SelectField';
 import { useAxiosApiClient } from '../useAxiosApiClient';
+import { SelectField, SelectFieldProps } from './SelectField';
 
 export type LocationCodeFieldProps = { locationCodes?: string[] } & Omit<
     SelectFieldProps,

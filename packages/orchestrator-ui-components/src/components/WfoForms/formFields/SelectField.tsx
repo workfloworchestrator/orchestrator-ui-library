@@ -13,11 +13,10 @@
  *
  */
 import React from 'react';
+import ReactSelect from 'react-select';
 
-import { EuiFormRow, EuiText } from '@elastic/eui';
 import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
-import ReactSelect from 'react-select';
 import {
     connectField,
     filterDOMProps,
@@ -26,13 +25,14 @@ import {
     useForm,
 } from 'uniforms';
 
+import { EuiFormRow, EuiText } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '../../../hooks';
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
 import { ListSelectField } from './ListSelectField';
-
-import { FieldProps, Option } from './types';
-import { useOrchestratorTheme } from '../../../hooks';
 import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
+import { FieldProps, Option } from './types';
 
 export type SelectFieldProps = FieldProps<
     string | string[],

@@ -1,13 +1,15 @@
 import React from 'react';
-import { getStyles } from '../styles';
+
 import { EuiFlexItem } from '@elastic/eui';
+
 import { useOrchestratorTheme } from '../../../hooks';
-import { StepStatus } from '../../../types';
-import { WfoCogFill } from '../../../icons/WfoCogFill';
 import { WfoCheckmarkCircleFill, WfoPlayFill } from '../../../icons';
 import { WfoXCircleFill } from '../../../icons';
 import { WfoMinusCircleFill } from '../../../icons';
+import { WfoCogFill } from '../../../icons/WfoCogFill';
 import { WfoPencilAlt } from '../../../icons/WfoPencilAlt';
+import { StepStatus } from '../../../types';
+import { getStyles } from '../styles';
 
 export interface WfoStepStatusIconProps {
     stepStatus: StepStatus;

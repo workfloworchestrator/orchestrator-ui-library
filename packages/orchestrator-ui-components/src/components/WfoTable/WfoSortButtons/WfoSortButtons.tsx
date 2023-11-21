@@ -1,7 +1,8 @@
-import { SortOrder } from '../../../types';
 import React, { FC } from 'react';
-import { WfoSortButton } from './WfoSortButton';
+
 import { WfoSortAsc, WfoSortDesc } from '../../../icons';
+import { SortOrder } from '../../../types';
+import { WfoSortButton } from './WfoSortButton';
 import { getStyles } from './styles';
 
 export type WfoSortButtonsProps = {

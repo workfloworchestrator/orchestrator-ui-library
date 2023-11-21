@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoMinusCircleOutline } from './WfoMinusCircleOutline';
 
 const Story: Meta<typeof WfoMinusCircleOutline> = {

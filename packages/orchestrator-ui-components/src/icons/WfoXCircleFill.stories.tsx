@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoXCircleFill } from './WfoXCircleFill';
 
 const Story: Meta<typeof WfoXCircleFill> = {

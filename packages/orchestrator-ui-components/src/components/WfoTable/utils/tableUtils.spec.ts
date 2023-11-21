@@ -1,5 +1,5 @@
-import { determinePageIndex, determineNewSortOrder } from './tableUtils';
 import { SortOrder } from '../../../types';
+import { determineNewSortOrder, determinePageIndex } from './tableUtils';
 
 describe('tableUtils', () => {
     describe('determinePageIndex()', () => {

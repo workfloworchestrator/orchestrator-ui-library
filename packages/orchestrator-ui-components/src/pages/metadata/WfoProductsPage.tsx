@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import { useTranslations } from 'next-intl';
+
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
@@ -8,35 +10,31 @@ import {
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     WfoLoading,
 } from '../../components';
-import type { WfoTableColumns, WfoDataSorting } from '../../components';
+import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import {
-    WfoProductStatusBadge,
     WfoProductBlockBadge,
+    WfoProductStatusBadge,
     WfoTableWithFilter,
 } from '../../components';
 import {
     getDataSortHandler,
-    getPageChangeHandler,
     getEsQueryStringHandler,
+    getPageChangeHandler,
 } from '../../components';
-
-import type { ProductDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
-
+import { StoredTableConfig } from '../../components';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
-
-import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
-
-import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { StoredTableConfig } from '../../components';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import type { ProductDefinition } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
 import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
 const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';

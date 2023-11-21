@@ -13,11 +13,13 @@
  *
  */
 import React from 'react';
-import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
+
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { boolFieldStyling } from './BoolFieldStyling';
+import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
+
 import { FieldProps } from '../../../types/forms';
+import { boolFieldStyling } from './BoolFieldStyling';
 
 export type BoolFieldProps = FieldProps<boolean>;
 

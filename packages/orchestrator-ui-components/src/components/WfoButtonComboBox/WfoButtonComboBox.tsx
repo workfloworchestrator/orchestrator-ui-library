@@ -1,8 +1,10 @@
 import React, { FC, useState } from 'react';
+
 import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
-import { getStyles } from './styles';
-import { WfoPlusCircleFill } from '../../icons';
+
 import { useOrchestratorTheme } from '../../hooks';
+import { WfoPlusCircleFill } from '../../icons';
+import { getStyles } from './styles';
 
 export type WorkflowComboBoxOption = {
     data: {

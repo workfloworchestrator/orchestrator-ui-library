@@ -1,7 +1,7 @@
 import type { Criteria } from '@elastic/eui';
-import { SortOrder } from '../../../types';
 
 import type { DataDisplayReturnValues } from '../../../hooks';
+import { SortOrder } from '../../../types';
 import { WfoDataSorting } from './columns';
 
 export const determinePageIndex = (pageIndex: number, pageSize: number) =>

@@ -1,27 +1,29 @@
 import React, { useContext, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
+    EuiButtonIcon,
     EuiFlexGrid,
     EuiFlexGroup,
     EuiFlexItem,
     EuiSpacer,
     EuiText,
-    EuiButtonIcon,
 } from '@elastic/eui';
-import { useTranslations } from 'next-intl';
-import { ServiceTicketWithDetails } from '../../types';
 import {
-    formatDate,
     SubscriptionKeyValueBlock,
-    useOrchestratorTheme,
     WfoBadge,
     WfoInformationModal,
     WfoKeyValueTableDataType,
+    formatDate,
+    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
-import { WfoSubscriptionImpactTable } from './WfoSubscriptionImpactTable';
 import { WfoStatistic } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { SurfConfigContext } from '../../contexts/surfConfigContext';
+import { ServiceTicketWithDetails } from '../../types';
+import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
+import { WfoSubscriptionImpactTable } from './WfoSubscriptionImpactTable';
 
 interface WfoSubscriptionGeneralProps {
     serviceTicketGeneral: ServiceTicketWithDetails;

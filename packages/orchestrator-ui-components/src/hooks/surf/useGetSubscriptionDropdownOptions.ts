@@ -1,7 +1,8 @@
+import { isError } from 'react-query';
+
+import { getSubscriptionDropdownOptionsGraphQlQuery } from '../../graphqlQueries';
 import { GraphqlFilter, SubscriptionDropdownOption } from '../../types';
 import { useQueryWithGraphql } from '../useQueryWithGraphql';
-import { getSubscriptionDropdownOptionsGraphQlQuery } from '../../graphqlQueries';
-import { isError } from 'react-query';
 
 export const useGetSubscriptionDropdownOptions = (
     tags: string[] = [],

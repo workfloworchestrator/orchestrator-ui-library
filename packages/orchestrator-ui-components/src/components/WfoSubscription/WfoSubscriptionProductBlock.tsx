@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+
 import {
+    EuiBadge,
     EuiButtonEmpty,
-    EuiIcon,
+    EuiCodeBlock,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiIcon,
     EuiPanel,
     EuiSpacer,
     EuiText,
-    EuiBadge,
-    EuiCodeBlock,
 } from '@elastic/eui';
-import { FieldValue, InUseByRelation } from '../../types';
-import { getProductBlockTitle } from './utils';
+
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
-import { getStyles } from './styles';
+import { FieldValue, InUseByRelation } from '../../types';
 import { camelToHuman } from '../../utils';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 import { PATH_SUBSCRIPTIONS } from '../WfoPageTemplate';
+import { getStyles } from './styles';
+import { getProductBlockTitle } from './utils';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;

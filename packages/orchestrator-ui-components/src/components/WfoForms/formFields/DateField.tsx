@@ -13,8 +13,10 @@
  *
  */
 import React from 'react';
-import { FieldProps } from './types';
+
 import { connectField, filterDOMProps } from 'uniforms';
+
+import { FieldProps } from './types';
 
 const DateConstructor = (typeof global === 'object' ? global : window).Date;
 const dateFormat = (value?: Date) => {

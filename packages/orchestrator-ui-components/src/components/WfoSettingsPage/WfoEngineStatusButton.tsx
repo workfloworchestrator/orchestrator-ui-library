@@ -1,5 +1,7 @@
-import { EuiButton } from '@elastic/eui';
 import React, { FC } from 'react';
+
+import { EuiButton } from '@elastic/eui';
+
 import { EngineStatusValue } from '../../types';
 
 interface WfoEngineStatusButtonProps {

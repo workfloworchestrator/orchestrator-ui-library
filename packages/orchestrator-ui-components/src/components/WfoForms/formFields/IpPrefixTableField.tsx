@@ -12,6 +12,8 @@
  * limitations under the License.
  *
  */
+import React from 'react';
+import ReactSelect, { SingleValue } from 'react-select';
 
 import {
     EuiBadge,
@@ -26,14 +28,12 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
-import React from 'react';
-import ReactSelect, { SingleValue } from 'react-select';
 
-import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
 import { ApiClientContext } from '../../../contexts';
-import { Option, prop } from './types';
+import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
 import { IpBlock, IpPrefix, SortOption } from './surf/types';
 import { ipamStates } from './surf/utils';
+import { Option, prop } from './types';
 
 type SortKeys = 'id' | 'prefix' | 'description' | 'state_repr';
 

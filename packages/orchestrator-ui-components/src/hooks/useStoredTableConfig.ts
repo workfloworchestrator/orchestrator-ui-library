@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from 'react';
-import type { StoredTableConfig } from '../components';
-import { getTableConfigFromLocalStorage } from '../components';
-import { useToastMessage } from './useToastMessage';
+
 import { useTranslations } from 'next-intl';
 
-import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
+import type { StoredTableConfig } from '../components';
+import { getTableConfigFromLocalStorage } from '../components';
 import { ToastTypes } from '../contexts';
+import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
+import { useToastMessage } from './useToastMessage';
 
 export const useStoredTableConfig = <T>(localeStorageKey: string) => {
     const toastMessage = useToastMessage();

@@ -1,4 +1,8 @@
 import React, { useContext } from 'react';
+
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+
 import {
     EuiButton,
     EuiFlexGroup,
@@ -9,26 +13,23 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useTranslations } from 'next-intl';
-
 import {
     PATH_TASKS,
     TimelineItem,
     WfoLoading,
     WfoTimeline,
 } from '../../components';
+import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
+import { useOrchestratorTheme } from '../../hooks';
+import { useDeleteProcess } from '../../hooks/ProcessesHooks/useDeleteProcess';
+import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
+import { ProcessDetail, ProcessStatus } from '../../types';
+import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
 } from './WfoProcessListSubscriptionsCell';
-import { useOrchestratorTheme } from '../../hooks';
-import { ProcessDetail, ProcessStatus } from '../../types';
-import { parseDateRelativeToToday, parseIsoString } from '../../utils';
 import { getIndexOfCurrentStep } from './timelineUtils';
-import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
-import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import { useDeleteProcess } from '../../hooks/ProcessesHooks/useDeleteProcess';
-import { useRouter } from 'next/router';
 
 interface ProcessHeaderValueProps {
     translationKey: string;

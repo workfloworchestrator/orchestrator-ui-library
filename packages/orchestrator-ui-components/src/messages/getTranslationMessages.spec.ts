@@ -1,6 +1,6 @@
-import { getTranslationMessages } from './getTranslationMessages';
 import { Locale } from '../types';
 import enUS from './en-US.json';
+import { getTranslationMessages } from './getTranslationMessages';
 import nlNL from './nl-NL.json';
 
 describe('getTransalationMessages', () => {

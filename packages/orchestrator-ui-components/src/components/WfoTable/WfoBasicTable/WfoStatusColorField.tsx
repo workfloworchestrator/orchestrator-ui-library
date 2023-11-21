@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { EuiFlexItem, tint } from '@elastic/eui';
 
 export type WfoStatusColorFieldProps = {

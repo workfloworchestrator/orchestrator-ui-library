@@ -1,10 +1,10 @@
+import { Step, StepStatus } from '../../types';
+import { GroupedStep } from './WfoProcessDetailPage';
 import {
     convertStepsToGroupedSteps,
     getMostAccurateTimelineStatus,
     mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
-import { Step, StepStatus } from '../../types';
-import { GroupedStep } from './WfoProcessDetailPage';
 
 const baseStep: Step = {
     executed: 'testExecuted',

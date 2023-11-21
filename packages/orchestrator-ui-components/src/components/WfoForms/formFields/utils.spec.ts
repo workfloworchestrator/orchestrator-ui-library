@@ -5,11 +5,11 @@ import {
     SubscriptionStatus,
     WorkflowTarget,
 } from '../../../types';
+import { ProductTag } from './surf/types';
 import {
     subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
 } from './utils';
-import { ProductTag } from './surf/types';
 
 const testProductBlockInstances: ProductBlockInstance[] = [
     {

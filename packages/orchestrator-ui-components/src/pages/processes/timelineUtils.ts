@@ -1,5 +1,5 @@
-import { Step, StepStatus } from '../../types';
 import { TimelineItem } from '../../components';
+import { Step, StepStatus } from '../../types';
 import { GroupedStep } from './WfoProcessDetailPage';
 
 export const getMostAccurateTimelineStatus = (

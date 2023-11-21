@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from 'react';
 
-import { WfoTreeBranch } from './WfoTreeBranch';
-import { TreeBlock } from '../../types';
 import { TreeContext, TreeContextType } from '../../contexts';
+import { TreeBlock } from '../../types';
+import { WfoTreeBranch } from './WfoTreeBranch';
 
 type WfoTreeProps = {
     data: TreeBlock[];

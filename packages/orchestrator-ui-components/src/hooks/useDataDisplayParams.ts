@@ -6,8 +6,8 @@ import {
     withDefault,
 } from 'use-query-params';
 
-import { GraphQLSort } from '../types';
 import { DEFAULT_PAGE_SIZE } from '../components';
+import { GraphQLSort } from '../types';
 
 export type DataDisplayParams<Type> = {
     pageSize: number;

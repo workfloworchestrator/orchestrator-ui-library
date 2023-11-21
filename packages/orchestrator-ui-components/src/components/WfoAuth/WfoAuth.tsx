@@ -1,7 +1,9 @@
 import React, { JSX, useContext } from 'react';
+
 import { useSession } from 'next-auth/react';
-import { WfoLoading } from '../WfoLoading';
+
 import { OrchestratorConfigContext } from '../../contexts';
+import { WfoLoading } from '../WfoLoading';
 
 interface AuthProps {
     children: JSX.Element;

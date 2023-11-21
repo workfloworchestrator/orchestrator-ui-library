@@ -1,8 +1,9 @@
 import React from 'react';
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoHeaderBadge } from '../WfoHeaderBadge';
+
 import { useEngineStatusQuery } from '../../../hooks/useEngineStatusQuery';
+import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoStatusDotIcon } from '../../../icons/WfoStatusDotIcon';
+import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 export const WfoEngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();

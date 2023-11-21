@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoMultiListSection } from './WfoMultiListSection';
 
 const subscriptionsList = [

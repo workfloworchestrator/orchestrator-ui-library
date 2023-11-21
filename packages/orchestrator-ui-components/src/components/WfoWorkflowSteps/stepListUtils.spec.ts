@@ -1,5 +1,5 @@
-import { getStepContent } from './stepListUtils';
 import { StepState } from '../../types';
+import { getStepContent } from './stepListUtils';
 
 describe('getStepContent()', () => {
     const testStepState: StepState = {

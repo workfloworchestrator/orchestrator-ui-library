@@ -1,6 +1,7 @@
 /** CIM */
-import { Process } from '@orchestrator-ui/orchestrator-ui-components';
 import { ReactNode } from 'react';
+
+import { Process } from '@orchestrator-ui/orchestrator-ui-components';
 
 export enum WfoServiceTicketListTabType {
     ACTIVE = 'ACTIVE',

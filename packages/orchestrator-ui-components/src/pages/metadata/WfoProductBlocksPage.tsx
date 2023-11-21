@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import { useTranslations } from 'next-intl';
+
+import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
@@ -13,32 +16,27 @@ import {
     WfoProductStatusBadge,
     WfoTableWithFilter,
 } from '../../components';
-import {} from '../../components/WfoBadges/WfoProductStatusBadge';
-
 import {
     getDataSortHandler,
-    getPageChangeHandler,
     getEsQueryStringHandler,
+    getPageChangeHandler,
 } from '../../components';
-import type { WfoTableColumns, WfoDataSorting } from '../../components';
-
-import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
-import type { ProductBlockDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
+import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import type { StoredTableConfig } from '../../components';
+import '../../components/WfoBadges/WfoProductStatusBadge';
+import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
+import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
 } from '../../hooks';
-
-import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
-
+import type { ProductBlockDefinition } from '../../types';
+import { BadgeType, SortOrder } from '../../types';
+import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
-import { EuiBadgeGroup } from '@elastic/eui';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';

@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoLogoutIcon } from './WfoLogoutIcon';
 
 const Story: Meta<typeof WfoLogoutIcon> = {

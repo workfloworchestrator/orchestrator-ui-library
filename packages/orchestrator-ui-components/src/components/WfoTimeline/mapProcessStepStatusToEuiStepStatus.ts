@@ -1,5 +1,6 @@
-import { StepStatus } from '../../types';
 import { EuiStepStatus } from '@elastic/eui/src/components/steps/step_number';
+
+import { StepStatus } from '../../types';
 
 export const mapProcessStepStatusToEuiStepStatus = (
     processStepStatus: StepStatus,

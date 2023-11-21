@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoStatusDotIcon } from './WfoStatusDotIcon';
 
 const Story: Meta<typeof WfoStatusDotIcon> = {

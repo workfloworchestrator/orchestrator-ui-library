@@ -1,29 +1,28 @@
 import React, { FC, useState } from 'react';
+
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import {
+    EuiAvatar,
     EuiButton,
     EuiContextMenuItem,
     EuiContextMenuPanel,
     EuiPanel,
-    EuiAvatar,
-    EuiTitle,
     EuiPopover,
+    EuiTitle,
     EuiToolTip,
 } from '@elastic/eui';
-import { useTranslations } from 'next-intl';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { useOrchestratorTheme } from '../../hooks';
-import { flattenArrayProps, getWorkflowTargetColor } from './utils';
-
 import {
     SubscriptionAction,
     useSubscriptionActions,
 } from '../../hooks/useSubscriptionActions';
-
 import { WfoXCircleFill } from '../../icons';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { WorkflowTarget } from '../../types';
+import { flattenArrayProps, getWorkflowTargetColor } from './utils';
 
 type MenuItemProps = {
     key: string;

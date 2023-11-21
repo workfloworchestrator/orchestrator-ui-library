@@ -1,9 +1,11 @@
-import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import React, { FunctionComponent } from 'react';
+
+import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
+
+import { useEngineStatusMutation, useEngineStatusQuery } from '../../hooks';
 import { WfoFlushSettings } from './WfoFlushSettings';
 import { WfoModifySettings } from './WfoModifySettings';
 import { WfoStatus } from './WfoStatus';
-import { useEngineStatusMutation, useEngineStatusQuery } from '../../hooks';
 
 export const WfoSettings: FunctionComponent = () => {
     const { data: engineStatus } = useEngineStatusQuery();

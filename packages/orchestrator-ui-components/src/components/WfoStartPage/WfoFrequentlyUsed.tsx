@@ -1,5 +1,6 @@
-import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import React, { FC } from 'react';
+
+import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 export interface WfoFrequentlyUsedProps {
     values: string[];

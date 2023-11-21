@@ -14,14 +14,15 @@
  */
 import React, { useState } from 'react';
 
-import { connectField, filterDOMProps } from 'uniforms';
-import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
 import { useTranslations } from 'next-intl';
+import { connectField, filterDOMProps } from 'uniforms';
 
-import { FieldProps } from './types';
-import { IpBlock } from './surf/types';
+import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
+
 import IpPrefixTableField from './IpPrefixTableField';
 import SplitPrefix from './SplitPrefix';
+import { IpBlock } from './surf/types';
+import { FieldProps } from './types';
 
 export type IPvAnyNetworkFieldProps = FieldProps<
     string,

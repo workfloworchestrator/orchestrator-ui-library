@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { useTranslations } from 'next-intl';
+
 import {
     EuiButtonIcon,
     EuiCallOut,
@@ -9,17 +11,17 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
-import { WfoTree } from '../WfoTree';
 import { TreeContext, TreeContextType } from '../../contexts';
+import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
 import { getTokenName } from '../../utils/getTokenName';
 import { WfoLoading } from '../WfoLoading';
+import { WfoTree } from '../WfoTree';
+import { getWfoTreeNodeDepth } from '../WfoTree';
+import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
 } from './utils';
-import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
-import { getWfoTreeNodeDepth } from '../WfoTree';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
