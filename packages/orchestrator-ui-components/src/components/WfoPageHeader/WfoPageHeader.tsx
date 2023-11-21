@@ -1,4 +1,5 @@
 import React, { FC, ReactNode } from 'react';
+
 import { EuiFlexGroup, EuiFlexItem, EuiPageHeader } from '@elastic/eui';
 
 export type WfoPageHeaderProps = {

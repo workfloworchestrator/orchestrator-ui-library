@@ -12,9 +12,12 @@
  * limitations under the License.
  *
  */
-import { EuiFieldNumber, EuiFormRow, EuiText } from '@elastic/eui';
 import React from 'react';
+
 import { connectField, filterDOMProps } from 'uniforms';
+
+import { EuiFieldNumber, EuiFormRow, EuiText } from '@elastic/eui';
+
 import { FieldProps } from '../../../types/forms';
 
 export type NumFieldProps = FieldProps<

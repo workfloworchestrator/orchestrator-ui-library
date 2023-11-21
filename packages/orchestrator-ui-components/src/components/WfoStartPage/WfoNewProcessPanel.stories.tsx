@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoNewProcessPanel } from './WfoNewProcessPanel';
 
 const Story: Meta<typeof WfoNewProcessPanel> = {

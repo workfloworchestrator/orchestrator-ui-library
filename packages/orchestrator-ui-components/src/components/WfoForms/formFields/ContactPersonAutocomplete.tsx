@@ -13,13 +13,15 @@
  *
  */
 import React, { useEffect, useRef } from 'react';
-import { EuiFlexItem } from '@elastic/eui';
+
 import scrollIntoView from 'scroll-into-view';
 
-import { isEmpty } from './utils';
-import { ContactPerson } from './types';
-import { getStyles } from './ContactPersonAutocompleteStyles';
+import { EuiFlexItem } from '@elastic/eui';
+
 import { useWithOrchestratorTheme } from '../../../hooks';
+import { getStyles } from './ContactPersonAutocompleteStyles';
+import { ContactPerson } from './types';
+import { isEmpty } from './utils';
 
 interface ContactPersonAutocompleteProps {
     query: string;

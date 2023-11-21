@@ -12,16 +12,16 @@
  * limitations under the License.
  *
  */
-
 import React from 'react';
-import get from 'lodash/get';
-import { connectField, filterDOMProps } from 'uniforms';
 import { useQuery } from 'react-query';
-import { useTranslations } from 'next-intl';
 
-import { SelectField, SelectFieldProps } from './SelectField';
+import get from 'lodash/get';
+import { useTranslations } from 'next-intl';
+import { connectField, filterDOMProps } from 'uniforms';
+
 import { ProductDefinition } from '../../../types';
 import { useAxiosApiClient } from '../useAxiosApiClient';
+import { SelectField, SelectFieldProps } from './SelectField';
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,

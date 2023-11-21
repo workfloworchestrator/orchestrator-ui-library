@@ -1,7 +1,9 @@
-import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
-import { WfoDataSorting } from '../utils/columns';
+
+import type { Meta } from '@storybook/react';
+
 import { SortOrder } from '../../../types';
+import { WfoDataSorting } from '../utils/columns';
 import { WfoDataGridTable } from './WfoDataGridTable';
 
 const extractedArr = (arr, start, howMany) =>

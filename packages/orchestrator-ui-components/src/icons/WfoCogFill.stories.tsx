@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoCogFill } from './WfoCogFill';
 
 const Story: Meta<typeof WfoCogFill> = {

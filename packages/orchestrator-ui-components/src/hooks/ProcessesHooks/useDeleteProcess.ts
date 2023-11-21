@@ -1,8 +1,10 @@
 import { useContext } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+
+import { signOut } from 'next-auth/react';
+
 import { OrchestratorConfigContext } from '../../contexts';
 import { useSessionWithToken } from '../useSessionWithToken';
-import { signOut } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
 
 export const useDeleteProcess = () => {
     const { processesEndpoint } = useContext(OrchestratorConfigContext);

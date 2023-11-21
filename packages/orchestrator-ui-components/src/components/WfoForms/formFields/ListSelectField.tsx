@@ -18,12 +18,12 @@ after the upgrade to react-script 5.0. The original SelectField would import its
 that seems to be impossible with the new webpack.
  */
 import React from 'react';
+
 import { get } from 'lodash';
 import { connectField, joinName, useField, useForm } from 'uniforms';
 
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
-
 // Avoid circular deps
 import { SelectField } from './SelectField';
 import { FieldProps } from './types';

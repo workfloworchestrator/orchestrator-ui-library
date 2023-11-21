@@ -12,11 +12,10 @@
  * limitations under the License.
  *
  */
+import React, { Ref, useEffect, useState } from 'react';
 
-import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 import { isFunction } from 'lodash';
 import get from 'lodash/get';
-import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     connectField,
@@ -26,9 +25,11 @@ import {
     useForm,
 } from 'uniforms';
 
-import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
-import { FieldProps, ContactPerson } from './types';
+import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
+
 import { useAxiosApiClient } from '../useAxiosApiClient';
+import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
+import { ContactPerson, FieldProps } from './types';
 
 export function stop(e: React.SyntheticEvent) {
     if (e !== undefined && e !== null) {

@@ -1,10 +1,10 @@
+import { SortOrder } from '../../../types';
+import { WfoDataSorting } from '../utils/columns';
 import {
+    WfoDataGridTableColumns,
     getInitialColumnOrder,
     mapColumnSortToEuiDataGridSorting,
-    WfoDataGridTableColumns,
 } from './WfodataGridColumns';
-import { WfoDataSorting } from '../utils/columns';
-import { SortOrder } from '../../../types';
 
 interface TestColumn {
     id: string;

@@ -1,30 +1,31 @@
+import { Context, GuaranteedProps } from 'uniforms';
+import { AutoField } from 'uniforms-unstyled';
+
 import {
     AcceptField,
     BoolField,
+    ContactPersonNameField,
+    DateField,
     DividerField,
+    ImsNodeIdField,
+    IpNetworkField,
     LabelField,
     ListField,
+    LocationCodeField,
     LongTextField,
+    NestField,
     NumField,
+    OptGroupField,
+    OrganisationField,
+    ProductField,
     RadioField,
     SelectField,
-    TextField,
-    ProductField,
-    SubscriptionSummaryField,
-    DateField,
-    TimestampField,
-    OrganisationField,
-    ContactPersonNameField,
-    ImsNodeIdField,
-    LocationCodeField,
-    VlanField,
-    NestField,
-    OptGroupField,
     SubscriptionField,
-    IpNetworkField,
+    SubscriptionSummaryField,
+    TextField,
+    TimestampField,
+    VlanField,
 } from './formFields';
-import { Context, GuaranteedProps } from 'uniforms';
-import { AutoField } from 'uniforms-unstyled';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,

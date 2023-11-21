@@ -12,6 +12,9 @@
  * limitations under the License.
  *
  */
+import React from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import {
     EuiButton,
@@ -22,10 +25,8 @@ import {
     EuiModalHeaderTitle,
     EuiOverlayMask,
 } from '@elastic/eui';
-import React from 'react';
 
 import { confirmationDialogStyling } from './ConfirmationDialogStyling';
-import { useTranslations } from 'next-intl';
 
 interface IProps {
     isOpen?: boolean;

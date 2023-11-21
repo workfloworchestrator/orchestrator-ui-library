@@ -1,5 +1,5 @@
-import { mapSortableAndFilterableValuesToTableColumnConfig } from './mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoTableColumns } from './columns';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from './mapSortableAndFilterableValuesToTableColumnConfig';
 
 type TestObject = {
     name: string;

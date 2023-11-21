@@ -12,13 +12,15 @@
  * limitations under the License.
  *
  */
-
 import React from 'react';
-import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
-import { FieldProps } from './types';
-import { EuiIcon, EuiText } from '@elastic/eui';
-import { useOrchestratorTheme } from '../../../hooks';
+
 import { useTranslations } from 'next-intl';
+import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
+
+import { EuiIcon, EuiText } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '../../../hooks';
+import { FieldProps } from './types';
 
 export type ListDelFieldProps = FieldProps<
     null,

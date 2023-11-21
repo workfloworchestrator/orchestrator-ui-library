@@ -1,6 +1,8 @@
 import React from 'react';
-import { EuiTab, EuiTabs } from '@elastic/eui';
+
 import { useTranslations } from 'next-intl';
+
+import { EuiTab, EuiTabs } from '@elastic/eui';
 
 export type FilterQuery<DataType> = {
     field: keyof DataType;

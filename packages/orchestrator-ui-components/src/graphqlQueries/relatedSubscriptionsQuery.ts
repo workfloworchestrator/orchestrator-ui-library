@@ -1,12 +1,14 @@
 import { parse } from 'graphql';
 import { gql } from 'graphql-request';
+
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+
 import {
-    RelatedSubscriptionsResult,
+    GraphqlFilter,
     GraphqlQueryVariables,
     RelatedSubscription,
+    RelatedSubscriptionsResult,
     Subscription,
-    GraphqlFilter,
 } from '../types';
 
 export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<

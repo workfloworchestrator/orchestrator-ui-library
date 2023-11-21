@@ -1,11 +1,12 @@
 import React from 'react';
+
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
+import { useOrchestratorTheme } from '../../hooks';
 import {
     WfoKeyValueTable,
     WfoKeyValueTableDataType,
 } from '../WfoKeyValueTable/WfoKeyValueTable';
-import { useOrchestratorTheme } from '../../hooks';
 
 interface SubscriptionKeyValueBlockProps {
     title: string;

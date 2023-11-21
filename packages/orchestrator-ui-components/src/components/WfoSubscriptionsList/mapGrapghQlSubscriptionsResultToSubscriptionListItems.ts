@@ -1,4 +1,4 @@
-import { SubscriptionsResult, Subscription } from '../../types';
+import { Subscription, SubscriptionsResult } from '../../types';
 import { parseDate } from '../../utils';
 
 export type SubscriptionListItem = Pick<

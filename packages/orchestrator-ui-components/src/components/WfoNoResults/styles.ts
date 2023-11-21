@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
 import type { EuiThemeComputed } from '@elastic/eui';
+import { css } from '@emotion/react';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const panelStyle = css({

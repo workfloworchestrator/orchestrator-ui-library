@@ -1,5 +1,5 @@
+import { ProcessDetail, ProcessStatus, StepStatus } from '../types';
 import { getProductNamesFromProcess } from './getProductNamesFromProcess';
-import { ProcessDetail, StepStatus, ProcessStatus } from '../types';
 
 const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
     return {

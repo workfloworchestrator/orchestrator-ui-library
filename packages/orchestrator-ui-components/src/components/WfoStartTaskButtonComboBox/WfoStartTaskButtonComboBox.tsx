@@ -1,12 +1,13 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 
 import { useTranslations } from 'next-intl';
-import { useQueryWithGraphql } from '../../hooks';
+import { useRouter } from 'next/router';
+
 import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQueryForDropdownList';
+import { useQueryWithGraphql } from '../../hooks';
 import {
-    WorkflowComboBoxOption,
     WfoButtonComboBox,
+    WorkflowComboBoxOption,
 } from '../WfoButtonComboBox/WfoButtonComboBox';
 import { PATH_START_WORKFLOW } from '../WfoPageTemplate';
 

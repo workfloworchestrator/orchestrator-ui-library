@@ -12,16 +12,17 @@
  * limitations under the License.
  *
  */
+import React, { Children, cloneElement, isValidElement } from 'react';
+
+import range from 'lodash/range';
+import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
-import range from 'lodash/range';
-import React, { Children, cloneElement, isValidElement } from 'react';
-import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
-import { ListAddField } from './ListAddField';
 
+import { ListAddField } from './ListAddField';
+import { ListItemField } from './ListItemField';
 import { listFieldStyling } from './listFieldStyling';
 import { FieldProps } from './types';
-import { ListItemField } from './ListItemField';
 
 declare module 'uniforms' {
     interface FilterDOMProps {

@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+
 import { WfoClipboardCopy } from './WfoClipboardCopy';
 
 const Story: Meta<typeof WfoClipboardCopy> = {

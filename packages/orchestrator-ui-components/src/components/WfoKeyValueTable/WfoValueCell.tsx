@@ -1,8 +1,10 @@
 import React, { FC, ReactNode } from 'react';
-import { useOrchestratorTheme } from '../../hooks';
-import { getStyles } from './styles';
+
 import { EuiCopy } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '../../hooks';
 import { WfoClipboardCopy } from '../../icons/WfoClipboardCopy';
+import { getStyles } from './styles';
 
 export type WfoValueCellProps = {
     value: ReactNode;

@@ -1,4 +1,5 @@
 import React, { FC, ReactElement } from 'react';
+
 import {
     EuiBadgeGroup,
     EuiButtonIcon,
@@ -7,11 +8,12 @@ import {
     EuiHeaderSection,
     EuiHeaderSectionItem,
 } from '@elastic/eui';
+
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoFailedTasksBadge } from '../../WfoBadges/WfoFailedTasksBadge';
+import { WfoLogoutIcon } from '../../../icons/WfoLogoutIcon';
 import { WfoEngineStatusBadge } from '../../WfoBadges/WfoEngineStatusBadge';
 import { WfoEnvironmentBadge } from '../../WfoBadges/WfoEnvironmentBadge';
-import { WfoLogoutIcon } from '../../../icons/WfoLogoutIcon';
+import { WfoFailedTasksBadge } from '../../WfoBadges/WfoFailedTasksBadge';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!

@@ -1,7 +1,8 @@
-import { WfoBadge } from '../WfoBadge';
 import React, { FC } from 'react';
+
 import { useOrchestratorTheme } from '../../../hooks';
 import { ProductLifecycleStatus } from '../../../types';
+import { WfoBadge } from '../WfoBadge';
 
 export type WfoProductStatusBadgeProps = {
     status: ProductLifecycleStatus;

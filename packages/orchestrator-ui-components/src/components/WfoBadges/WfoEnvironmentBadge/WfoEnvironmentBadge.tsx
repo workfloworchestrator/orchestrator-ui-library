@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoHeaderBadge } from '../WfoHeaderBadge/WfoHeaderBadge';
+
 import { OrchestratorConfigContext } from '../../../contexts/OrchestratorConfigContext';
 import { Environment } from '../../../hooks/useOrchestratorConfig';
+import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
+import { WfoHeaderBadge } from '../WfoHeaderBadge/WfoHeaderBadge';
 
 export const WfoEnvironmentBadge = () => {
     const { environmentName } = useContext(OrchestratorConfigContext);

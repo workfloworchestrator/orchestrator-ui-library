@@ -12,14 +12,15 @@
  * limitations under the License.
  *
  */
-
-import { EuiFlexItem } from '@elastic/eui';
-import { range } from 'lodash';
 import React from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
 
-import { splitPrefixStyling } from './SplitPrefixStyling';
+import { range } from 'lodash';
+
+import { EuiFlexItem } from '@elastic/eui';
+
 import { ApiClientContext } from '../../../contexts';
+import { splitPrefixStyling } from './SplitPrefixStyling';
 import { Option } from './types';
 
 interface IProps {

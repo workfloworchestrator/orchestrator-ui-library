@@ -13,12 +13,13 @@
  *
  */
 import { AxiosInstance } from 'axios';
-import { getAxiosInstance } from './axios';
-import { ProductDefinition } from '../types';
+
 import {
     IpBlock,
     IpPrefix,
 } from '../components/WfoForms/formFields/surf/types';
+import { ProductDefinition } from '../types';
+import { getAxiosInstance } from './axios';
 
 const FORMS_ENDPOINT = 'surf/forms/';
 const PROCESS_ENDPOINT = 'processes/';

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { WfoIconProps } from './WfoIconProps';
 
 export const WfoStatistic: FC<WfoIconProps> = ({

@@ -1,27 +1,23 @@
 import {
-    DEFAULT_PAGE_SIZE,
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
-    METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    DEFAULT_PAGE_SIZE,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../components';
-
 import type { StoredTableConfig } from '../components';
-
+import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
+import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
 import {
     ProductBlockDefinition,
     ProductDefinition,
     ResourceTypeDefinition,
     WorkflowDefinition,
 } from '../types';
-
-import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
-
-import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],

@@ -1,10 +1,11 @@
+import React from 'react';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiPageHeader,
     EuiSpacer,
 } from '@elastic/eui';
-import React from 'react';
 
 export const WfoServiceTicketNewEmailPage = () => {
     return (

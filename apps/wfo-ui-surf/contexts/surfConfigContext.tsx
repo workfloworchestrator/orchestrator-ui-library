@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createContext, FC, ReactNode } from 'react';
+import { FC, ReactNode, createContext } from 'react';
 
 export const useSurfConfig = (initialSurfConfig: SurfConfig) => {
     const [surfConfig] = useState(initialSurfConfig);

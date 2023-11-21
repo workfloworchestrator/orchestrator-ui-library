@@ -12,11 +12,13 @@
  * limitations under the License.
  *
  */
+import React from 'react';
+
+import { omit } from 'lodash';
+import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFormRow, EuiRadio, EuiText } from '@elastic/eui';
-import { omit } from 'lodash';
-import React from 'react';
-import { connectField, filterDOMProps } from 'uniforms';
+
 import { FieldProps } from '../../../types/forms';
 
 const base64 =

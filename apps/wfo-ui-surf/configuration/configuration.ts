@@ -1,9 +1,11 @@
 import process from 'process';
+
 import {
     Environment,
     OrchestratorConfig,
     getNumberValueFromEnvironmentVariable,
 } from '@orchestrator-ui/orchestrator-ui-components';
+
 import { SurfConfig } from '../contexts/surfConfigContext';
 
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =

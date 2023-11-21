@@ -1,39 +1,42 @@
 import React, { FC } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { EuiFlexItem, Pagination } from '@elastic/eui';
+
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import { EuiFlexItem, Pagination } from '@elastic/eui';
+
+import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
+import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
+import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
+import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
+import { WfoPlusCircleFill } from '../../icons';
+import { SortOrder } from '../../types';
+import { parseDateToLocaleDateTimeString } from '../../utils';
+import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
+import { WfoSubscriptionStatusBadge } from '../WfoBadges/WfoSubscriptionStatusBadge';
+import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
+import { FilterQuery } from '../WfoFilterTabs';
+import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
+import { WfoLoading } from '../WfoLoading';
 import {
     DEFAULT_PAGE_SIZES,
-    getDataSortHandler,
-    getEsQueryStringHandler,
-    getPageChangeHandler,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
     TableColumnKeys,
     WfoDataSorting,
     WfoTableColumns,
     WfoTableControlColumnConfig,
     WfoTableWithFilter,
+    getDataSortHandler,
+    getEsQueryStringHandler,
+    getPageChangeHandler,
 } from '../WfoTable';
-import { FilterQuery } from '../WfoFilterTabs';
-import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
-import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { WfoSubscriptionStatusBadge } from '../WfoBadges/WfoSubscriptionStatusBadge';
-import { WfoPlusCircleFill } from '../../icons';
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
-import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
-import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
-import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
-import { WfoLoading } from '../WfoLoading';
-import { SortOrder } from '../../types';
-import {
-    mapGrapghQlSubscriptionsResultToSubscriptionListItems,
-    SubscriptionListItem,
-} from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
-import { parseDateToLocaleDateTimeString } from '../../utils';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import {
+    SubscriptionListItem,
+    mapGrapghQlSubscriptionsResultToSubscriptionListItems,
+} from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
 
 const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 

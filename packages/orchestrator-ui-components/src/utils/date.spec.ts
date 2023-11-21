@@ -1,11 +1,11 @@
 import {
-    parseDate,
-    parseDateToLocaleDateTimeString,
     calculateTimeDifference,
     getCurrentBrowserLocale,
-    parseDateRelativeToToday,
-    parseIsoString,
+    parseDate,
     parseDateOrTimeRelativeToToday,
+    parseDateRelativeToToday,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
 } from './date';
 
 const testDateIsoString = '2023-04-27T10:00:00.000Z';

@@ -1,16 +1,18 @@
+import React, { FunctionComponent, useContext, useState } from 'react';
+
 import {
     EuiButton,
-    EuiSpacer,
-    EuiPanel,
-    EuiText,
     EuiComboBox,
+    EuiPanel,
+    EuiSpacer,
+    EuiText,
 } from '@elastic/eui';
-import React, { FunctionComponent, useContext, useState } from 'react';
-import { useCacheNames } from '../../hooks/DataFetchHooks';
-import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
-import { useToastMessage } from '../../hooks';
+
 import { ToastTypes } from '../../contexts';
+import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
+import { useToastMessage } from '../../hooks';
+import { useCacheNames } from '../../hooks/DataFetchHooks';
 
 const clearCache = async (apiUrl: string, settingName: string) => {
     const response = await fetch(apiUrl + `/settings/cache/${settingName}`, {

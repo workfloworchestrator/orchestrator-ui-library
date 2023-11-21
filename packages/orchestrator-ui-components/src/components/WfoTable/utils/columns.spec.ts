@@ -1,5 +1,5 @@
-import { getSortDirectionFromString } from './columns';
 import { SortOrder } from '../../../types';
+import { getSortDirectionFromString } from './columns';
 
 describe('columns', () => {
     describe('getSortOrderFromString', () => {

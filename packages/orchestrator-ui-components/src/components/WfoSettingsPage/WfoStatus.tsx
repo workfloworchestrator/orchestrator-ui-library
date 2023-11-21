@@ -1,13 +1,15 @@
+import React, { FC } from 'react';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
-    EuiSpacer,
     EuiPanel,
+    EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import React, { FC } from 'react';
-import { WfoStatusDotIcon } from '../../icons';
+
 import { useOrchestratorTheme } from '../../hooks';
+import { WfoStatusDotIcon } from '../../icons';
 import { EngineStatusValue } from '../../types';
 
 export type WfoStatusProps = {

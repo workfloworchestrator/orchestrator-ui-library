@@ -1,9 +1,11 @@
 import { WfoFilterTab } from '@orchestrator-ui/orchestrator-ui-components';
+
 import {
     ServiceTicketDefinition,
     ServiceTicketProcessState,
     WfoServiceTicketListTabType,
 } from '../../types';
+
 export const defaultServiceTicketsListTabs: WfoFilterTab<
     WfoServiceTicketListTabType,
     ServiceTicketDefinition

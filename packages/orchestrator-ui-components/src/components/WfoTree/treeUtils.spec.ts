@@ -1,5 +1,5 @@
-import { getWfoTreeNodeDepth } from './treeUtils';
 import { FieldValue, TreeBlock } from '../../types';
+import { getWfoTreeNodeDepth } from './treeUtils';
 
 describe('getWfoTreeNodeDepth', () => {
     const field: FieldValue = { field: 'test', value: 'test' };

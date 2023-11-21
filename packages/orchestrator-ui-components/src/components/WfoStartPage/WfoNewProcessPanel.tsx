@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+
 import {
     EuiFieldSearch,
     EuiPanel,
@@ -6,6 +7,7 @@ import {
     EuiText,
     EuiTextColor,
 } from '@elastic/eui';
+
 import { WfoFrequentlyUsed } from './WfoFrequentlyUsed';
 
 export const WfoNewProcessPanel: FC = () => {

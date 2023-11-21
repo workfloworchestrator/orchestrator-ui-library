@@ -1,5 +1,5 @@
-import { useSession, UseSessionOptions } from 'next-auth/react';
 import { Session } from 'next-auth';
+import { UseSessionOptions, useSession } from 'next-auth/react';
 
 export type SessionToken = Session & {
     accessToken?: string;

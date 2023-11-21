@@ -1,32 +1,28 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
+
 import { useTranslations } from 'next-intl';
-import { EuiSpacer, EuiSwitch, EuiFlexItem, EuiFlexGroup } from '@elastic/eui';
+import Link from 'next/link';
+
+import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch } from '@elastic/eui';
 import type { Criteria, Pagination } from '@elastic/eui';
 
-import { WfoSearchStrikethrough } from '../../icons';
+import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
 import {
+    useDataDisplayParams,
     useOrchestratorTheme,
     useQueryWithGraphql,
-    useDataDisplayParams,
 } from '../../hooks';
-
+import { WfoSearchStrikethrough } from '../../icons';
 import {
     GraphqlFilter,
     RelatedSubscription,
     SortOrder,
     SubscriptionStatus,
 } from '../../types';
-
-import { parseDateToLocaleDateString, parseDate } from '../../utils';
-
-import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
-
-import { WfoNoResults } from '../WfoNoResults';
+import { parseDate, parseDateToLocaleDateString } from '../../utils';
 import { WfoSubscriptionStatusBadge } from '../WfoBadges';
 import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
-
-import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
+import { WfoNoResults } from '../WfoNoResults';
 import {
     WfoTableColumns,
     getDataSortHandler,
@@ -34,6 +30,7 @@ import {
 } from '../WfoTable';
 import { WfoBasicTable, WfoDataSorting } from '../WfoTable';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../WfoTable';
+import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 
 interface WfoRelatedSubscriptionsProps {
     subscriptionId: string;

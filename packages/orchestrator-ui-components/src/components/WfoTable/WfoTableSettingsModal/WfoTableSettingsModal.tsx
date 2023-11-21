@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
     EuiForm,
     EuiFormRow,
@@ -7,6 +8,7 @@ import {
     EuiSpacer,
     EuiSwitch,
 } from '@elastic/eui';
+
 import { WfoSettingsModal } from '../../WfoSettingsModal';
 
 export type ColumnConfig<T> = {

@@ -12,12 +12,13 @@
  * limitations under the License.
  *
  */
-
-import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from '@elastic/eui';
 import React from 'react';
+
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps, useField } from 'uniforms';
 import { AutoField } from 'uniforms-unstyled';
+
+import { EuiDescribedFormGroup, EuiFlexItem, EuiFormRow } from '@elastic/eui';
 
 import { BoolField } from './BoolField';
 import { FieldProps } from './types';
