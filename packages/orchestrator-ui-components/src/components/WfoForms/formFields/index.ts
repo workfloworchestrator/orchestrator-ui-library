@@ -26,3 +26,4 @@ export * from './VlanField';
 export * from './NestField';
 export * from './OptGroupField';
 export * from './SubscriptionField';
+export * from './IpNetworkField';
