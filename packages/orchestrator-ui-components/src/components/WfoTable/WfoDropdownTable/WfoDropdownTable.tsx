@@ -1,17 +1,18 @@
 import React from 'react';
+
 import { EuiBasicTable, EuiBasicTableColumn } from '@elastic/eui';
 
-import type {
-    WfoDataSorting,
-    TableColumnKeys,
-    WfoDataSearch,
-} from '../utils/columns';
 import { SortOrder } from '../../../types';
 import {
     WfoBasicTableColumns,
     WfoBasicTableProps,
     WfoTableHeaderCell,
 } from '../WfoBasicTable';
+import type {
+    TableColumnKeys,
+    WfoDataSearch,
+    WfoDataSorting,
+} from '../utils/columns';
 
 export const WfoDropdownTable = <T,>({
     data,

@@ -1,16 +1,19 @@
+import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
+import { EuiText } from '@elastic/eui';
+import { css } from '@emotion/react';
 import {
     WfoDropdownTable,
     WfoTableColumns,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import React from 'react';
-import { EuiText } from '@elastic/eui';
+
 import {
     ServiceTicketImpactedObjectColumns,
     ServiceTicketImpactedObjectImpact,
     SubscriptionImpactCustomerTableColumns,
 } from '../../types';
-import { useTranslations } from 'next-intl';
-import { css } from '@emotion/react';
 
 interface WfoSubscriptionImpactCustomerTableProps {
     impactedObject: ServiceTicketImpactedObjectColumns;

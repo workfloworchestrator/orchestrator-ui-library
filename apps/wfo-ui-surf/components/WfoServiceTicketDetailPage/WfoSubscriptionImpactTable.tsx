@@ -1,12 +1,10 @@
 import React, { ReactNode, useState } from 'react';
-import { useQueryClient } from 'react-query';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiButtonIcon, EuiDescriptionList, EuiText } from '@elastic/eui';
+import { EuiButtonIcon, EuiText } from '@elastic/eui';
 import {
-    useOrchestratorTheme,
     WfoBadge,
     WfoBasicTable,
     WfoTableColumns,
@@ -18,9 +16,6 @@ import {
     ServiceTicketImpactedObjectColumns,
     ServiceTicketWithDetails,
 } from '../../types';
-import { useTranslations } from 'next-intl';
-import { useQueryClient } from 'react-query';
-import Link from 'next/link';
 import { WfoSubscriptionImpactCustomerTable } from './WfoSubscriptionImpactCustomerTable';
 
 const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObjectColumns =
