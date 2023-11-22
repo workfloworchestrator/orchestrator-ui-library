@@ -93,7 +93,7 @@ export const WfoProcessDetail = ({
     const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
 
-    const shouldBeDisabled = (
+    const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
         status?: string,
     ): boolean =>
@@ -103,16 +103,18 @@ export const WfoProcessDetail = ({
                   .includes(status)
             : false;
 
+    const retryButtonIsDisabled =
+        buttonsAreDisabled ||
+        !listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus);
     const abortButtonIsDisabled =
         buttonsAreDisabled ||
-        shouldBeDisabled(
+        listIncludesStatus(
             [ProcessStatus.COMPLETED, ProcessStatus.ABORTED],
             processDetail?.lastStatus,
         );
-
     const deleteButtonIsDisabled =
         buttonsAreDisabled ||
-        shouldBeDisabled([ProcessStatus.RUNNING], processDetail?.lastStatus);
+        listIncludesStatus([ProcessStatus.RUNNING], processDetail?.lastStatus);
 
     return (
         <>
@@ -151,13 +153,13 @@ export const WfoProcessDetail = ({
                         iconType={() => (
                             <WfoRefresh
                                 color={
-                                    buttonsAreDisabled
+                                    retryButtonIsDisabled
                                         ? theme.colors.subduedText
                                         : theme.colors.link
                                 }
                             />
                         )}
-                        isDisabled={buttonsAreDisabled}
+                        isDisabled={retryButtonIsDisabled}
                     >
                         {t('retry')}
                     </EuiButton>
