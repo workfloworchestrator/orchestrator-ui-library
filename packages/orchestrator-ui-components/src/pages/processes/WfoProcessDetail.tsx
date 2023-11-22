@@ -92,6 +92,10 @@ export const WfoProcessDetail = ({
     const { mutate } = useDeleteProcess();
     const router = useRouter();
 
+    const abortButtonIsDisabled =
+        buttonsAreDisabled ||
+        processDetail?.lastStatus?.toLowerCase() === ProcessStatus.COMPLETED;
+
     return (
         <>
             <EuiFlexGroup>
@@ -165,14 +169,14 @@ export const WfoProcessDetail = ({
                         iconType={() => (
                             <WfoXCircleFill
                                 color={
-                                    buttonsAreDisabled
+                                    abortButtonIsDisabled
                                         ? theme.colors.subduedText
                                         : theme.colors.danger
                                 }
                             />
                         )}
                         color="danger"
-                        isDisabled={buttonsAreDisabled}
+                        isDisabled={abortButtonIsDisabled}
                     >
                         {t('abort')}
                     </EuiButton>
