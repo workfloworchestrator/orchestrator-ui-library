@@ -92,13 +92,26 @@ export const WfoProcessDetail = ({
     const { mutate } = useDeleteProcess();
     const router = useRouter();
 
+    const shouldBeDisabled = (
+        processStatusesForDisabledState: ProcessStatus[],
+        status?: string,
+    ): boolean =>
+        status
+            ? processStatusesForDisabledState
+                  .map((stat) => stat.toUpperCase())
+                  .includes(status)
+            : false;
+
     const abortButtonIsDisabled =
         buttonsAreDisabled ||
-        processDetail?.lastStatus?.toLowerCase() === ProcessStatus.COMPLETED;
+        shouldBeDisabled(
+            [ProcessStatus.COMPLETED, ProcessStatus.ABORTED],
+            processDetail?.lastStatus,
+        );
 
     const deleteButtonIsDisabled =
         buttonsAreDisabled ||
-        processDetail?.lastStatus?.toLowerCase() === ProcessStatus.RUNNING;
+        shouldBeDisabled([ProcessStatus.RUNNING], processDetail?.lastStatus);
 
     return (
         <>
