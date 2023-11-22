@@ -46,14 +46,18 @@ export const WfoSubscriptionImpactTable = ({
         Record<string, ReactNode>
     >({});
 
-    const toggleDetails = (object: ServiceTicketImpactedObjectColumns) => {
+    const toggleDetails = (id: string) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
-        const id = object.subscription_id ? object.subscription_id : '0';
+        // const id = object.subscription_id ? object.subscription_id : '0';
+        const impactedObject: ServiceTicketImpactedObject =
+            serviceTicketDetail.impacted_objects.find(
+                (o) => o.subscription_id === id,
+            );
 
         if (itemIdToExpandedRowMapValues[id]) {
             delete itemIdToExpandedRowMapValues[id];
         } else {
-            const { subscription_description } = object;
+            const { subscription_description } = impactedObject;
 
             const color = subscription_description ? 'success' : 'danger';
             const label = subscription_description ? 'Online' : 'Offline';
@@ -69,7 +73,7 @@ export const WfoSubscriptionImpactTable = ({
             ];
             itemIdToExpandedRowMapValues[id] = (
                 <WfoSubscriptionImpactCustomerTable
-                    impactedObject={object}
+                    impactedObject={impactedObject}
                 ></WfoSubscriptionImpactCustomerTable>
             );
         }
@@ -88,7 +92,7 @@ export const WfoSubscriptionImpactTable = ({
                     };
                     return value ? (
                         <EuiButtonIcon
-                            onClick={() => toggleDetails(object)}
+                            onClick={() => toggleDetails(value)}
                             aria-label={
                                 itemIdToExpandedRowMapValues[value]
                                     ? 'Collapse'

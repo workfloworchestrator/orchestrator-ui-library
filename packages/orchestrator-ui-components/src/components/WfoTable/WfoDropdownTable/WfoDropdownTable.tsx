@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { EuiBasicTable, EuiBasicTableColumn } from '@elastic/eui';
+import { css } from '@emotion/react';
 
+import { useOrchestratorTheme } from '../../../hooks';
 import { SortOrder } from '../../../types';
 import {
     WfoBasicTableColumns,
@@ -14,6 +16,18 @@ import type {
     WfoDataSorting,
 } from '../utils/columns';
 
+const dropDownTableStyle = css({
+    thead: {
+        backgroundColor: 'transparent',
+        'tr>:first-child': {
+            borderTopLeftRadius: 0,
+        },
+        'tr>:last-child': {
+            borderTopRightRadius: 0,
+        },
+    },
+});
+
 export const WfoDropdownTable = <T,>({
     data,
     columns,
@@ -23,6 +37,7 @@ export const WfoDropdownTable = <T,>({
 
     return (
         <EuiBasicTable
+            css={dropDownTableStyle}
             items={data}
             columns={mapWfoTableColumnsToEuiColumns(allTableColumns)}
             loading={isLoading}

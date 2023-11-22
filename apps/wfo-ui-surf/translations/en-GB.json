@@ -52,7 +52,7 @@
                             "contacts": "Contacts",
                             "acceptedImpact": "Accepted impact",
                             "minl": "Minimal impact notification level",
-                            "effectiveSendingLevel": "Effective sending level",
+                            "sendingLevel": "Sending level",
                             "informCustomer": "Inform customer"
                         }
                     }

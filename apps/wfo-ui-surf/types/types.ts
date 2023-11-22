@@ -157,13 +157,20 @@ export type ServiceTicketImpactedObjectColumns = Pick<
     imsCalculatedImpact: ServiceTicketImpactedObjectImpact;
 };
 
+export enum ServiceTicketCustomerRelation {
+    OWNER = 'owner',
+    RELATED = 'related',
+    PORT_RELATED = 'port related',
+    GRANTED_PERMISSION = 'granted permission',
+}
+
 export type SubscriptionImpactCustomerTableColumns = {
-    customer: ServiceTicketCustomer;
-    relation: 'owner' | 'related';
-    contacts: ServiceTicketContact[];
+    customer: string;
+    relation: ServiceTicketCustomerRelation;
+    contacts: number;
     acceptedImpact: ServiceTicketImpactedObjectImpact;
-    minl: ServiceTicketImpactedObjectImpact;
-    sendingLevel: ServiceTicketImpactedObjectImpact;
+    minl: ServiceTicketImpactedObjectImpact | '';
+    sendingLevel: string;
     informCustomer: boolean;
 };
 
@@ -237,4 +244,20 @@ export interface ServiceTicketDetailPageTab {
     translationKey: string;
     prepend?: ReactNode;
     append?: ReactNode;
+}
+
+export enum ServiceTicketApiImpactLevel {
+    NO_IMPACT = 'No Impact',
+    REDUCED_REDUNDANCY = 'Reduced Redundancy',
+    RESILIENCE_LOSS = 'Lost Resiliency',
+    DOWN = 'Downtime',
+}
+
+export interface MinimalImpactNotificationLevel {
+    created_at: number;
+    customer_id: string;
+    id: string;
+    impact: ServiceTicketApiImpactLevel;
+    last_modified: number;
+    subscription_id: string;
 }

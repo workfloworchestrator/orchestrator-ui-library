@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
+import { SerializedStyles } from '@emotion/react';
 
 import { useOrchestratorTheme } from '../../../hooks';
 import { SortOrder } from '../../../types';
@@ -44,6 +45,7 @@ export type WfoBasicTableProps<T> = {
     isExpandable?: boolean;
     itemIdToExpandedRowMap?: Record<string, ReactNode>;
     itemId?: string;
+    customTableStyle?: SerializedStyles;
 };
 
 export const WfoBasicTable = <T,>({
@@ -60,6 +62,7 @@ export const WfoBasicTable = <T,>({
     isExpandable,
     itemIdToExpandedRowMap,
     itemId,
+    customTableStyle,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
@@ -84,9 +87,11 @@ export const WfoBasicTable = <T,>({
         ? { ...statusColorColumn, ...columns }
         : { ...columns };
 
-    const tableStyling = getStatusColorForRow
-        ? [basicTableStyle, getStatusColumnStyle(1)]
-        : basicTableStyle;
+    // const tableStyling = getStatusColorForRow
+    //     ? [basicTableStyle, getStatusColumnStyle(1)]
+    //     : basicTableStyle;
+
+    const tableStyling = customTableStyle ?? basicTableStyle;
 
     return (
         <EuiBasicTable
