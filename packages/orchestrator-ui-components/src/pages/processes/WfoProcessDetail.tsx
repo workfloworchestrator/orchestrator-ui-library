@@ -131,13 +131,7 @@ export const WfoProcessDetail = ({
                     gutterSize="s"
                 >
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
+                        onClick={() =>
                             showConfirmDialog({
                                 question: t('retryQuestion', {
                                     workflowName: processDetail?.workflowName,
@@ -148,8 +142,8 @@ export const WfoProcessDetail = ({
                                             processDetail.processId,
                                         );
                                 },
-                            });
-                        }}
+                            })
+                        }
                         iconType={() => (
                             <WfoRefresh
                                 color={
@@ -164,15 +158,7 @@ export const WfoProcessDetail = ({
                         {t('retry')}
                     </EuiButton>
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
-                            alert('TODO: Implement resume');
-                        }}
+                        onClick={() => alert('TODO: Implement resume')}
                         iconType={() => (
                             <WfoPlayFill
                                 color={
@@ -187,13 +173,7 @@ export const WfoProcessDetail = ({
                         {t('resume')}
                     </EuiButton>
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
+                        onClick={() =>
                             showConfirmDialog({
                                 question: t('abortQuestion', {
                                     workflowName: processDetail?.workflowName,
@@ -209,8 +189,8 @@ export const WfoProcessDetail = ({
                                             : PATH_PROCESSES,
                                     );
                                 },
-                            });
-                        }}
+                            })
+                        }
                         iconType={() => (
                             <WfoXCircleFill
                                 color={
@@ -227,13 +207,7 @@ export const WfoProcessDetail = ({
                     </EuiButton>
                     {processDetail && processDetail.isTask === true && (
                         <EuiButton
-                            onClick={(
-                                e: React.MouseEvent<
-                                    HTMLButtonElement | HTMLElement,
-                                    MouseEvent
-                                >,
-                            ) => {
-                                e.preventDefault();
+                            onClick={() =>
                                 showConfirmDialog({
                                     question: t('deleteQuestion', {
                                         workflowName:
@@ -246,8 +220,8 @@ export const WfoProcessDetail = ({
                                             );
                                         router.push(PATH_TASKS);
                                     },
-                                });
-                            }}
+                                })
+                            }
                             iconType={() => (
                                 <WfoXCircleFill
                                     color={

@@ -266,7 +266,8 @@
     },
     "tasks": {
         "page": {
-            "rerunAll": "Rerun all"
+            "rerunAll": "Rerun all",
+            "rerunAllQuestion": "Are you sure you want to rerun all failed tasks?"
         }
     }
 }
