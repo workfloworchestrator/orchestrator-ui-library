@@ -22,7 +22,7 @@ import {
 } from '../../components';
 import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
 import { useOrchestratorTheme } from '../../hooks';
-import { useDeleteProcess } from '../../hooks/ProcessesHooks/useDeleteProcess';
+import { useMutateProcess } from '../../hooks/ProcessesHooks/useMutateProcess';
 import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
 import { ProcessDetail, ProcessStatus } from '../../types';
 import { parseDateRelativeToToday, parseIsoString } from '../../utils';
@@ -90,7 +90,7 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { mutate } = useDeleteProcess();
+    const { deleteProcess, abortProcess } = useMutateProcess();
     const router = useRouter();
 
     const shouldBeDisabled = (
@@ -187,7 +187,10 @@ export const WfoProcessDetail = ({
                                     workflowName: processDetail?.workflowName,
                                 }),
                                 confirmAction: () => {
-                                    alert('TODO: Implement abort');
+                                    processDetail?.processId &&
+                                        abortProcess.mutate(
+                                            processDetail.processId,
+                                        );
                                     router.push(
                                         processDetail?.isTask
                                             ? PATH_TASKS
@@ -226,7 +229,9 @@ export const WfoProcessDetail = ({
                                     }),
                                     confirmAction: () => {
                                         processDetail.processId &&
-                                            mutate(processDetail.processId);
+                                            deleteProcess.mutate(
+                                                processDetail.processId,
+                                            );
                                         router.push(PATH_TASKS);
                                     },
                                 });
