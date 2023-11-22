@@ -14,6 +14,7 @@ import {
 } from '@elastic/eui';
 
 import {
+    PATH_PROCESSES,
     PATH_TASKS,
     TimelineItem,
     WfoLoading,
@@ -181,7 +182,19 @@ export const WfoProcessDetail = ({
                             >,
                         ) => {
                             e.preventDefault();
-                            alert('TODO: Implement abort');
+                            showConfirmDialog({
+                                question: t('abortQuestion', {
+                                    workflowName: processDetail?.workflowName,
+                                }),
+                                confirmAction: () => {
+                                    alert('TODO: Implement abort');
+                                    router.push(
+                                        processDetail?.isTask
+                                            ? PATH_TASKS
+                                            : PATH_PROCESSES,
+                                    );
+                                },
+                            });
                         }}
                         iconType={() => (
                             <WfoXCircleFill
