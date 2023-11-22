@@ -45,6 +45,15 @@
                             "informCustomers": "Inform Customers",
                             "imsCalculatedImpact": "IMS Calculated Impact",
                             "nocManualOverride": "NOC Manual Impact Override"
+                        },
+                        "subscriptionImpactCustomerTable": {
+                            "customers": "Customers",
+                            "relation": "Relation",
+                            "contacts": "Contacts",
+                            "acceptedImpact": "Accepted impact",
+                            "minl": "Minimal impact notification level",
+                            "effectiveSendingLevel": "Effective sending level",
+                            "informCustomer": "Inform customer"
                         }
                     }
                 },

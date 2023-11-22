@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import { EuiButtonIcon, EuiDescriptionList, EuiText } from '@elastic/eui';
 import {
+    useOrchestratorTheme,
     WfoBadge,
     WfoBasicTable,
     WfoTableColumns,
@@ -17,6 +18,10 @@ import {
     ServiceTicketImpactedObjectColumns,
     ServiceTicketWithDetails,
 } from '../../types';
+import { useTranslations } from 'next-intl';
+import { useQueryClient } from 'react-query';
+import Link from 'next/link';
+import { WfoSubscriptionImpactCustomerTable } from './WfoSubscriptionImpactCustomerTable';
 
 const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObjectColumns =
     'subscription_id';
@@ -31,15 +36,16 @@ const SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT: keyof ServiceTicketImpact
 const SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE: keyof ServiceTicketImpactedObjectColumns =
     'impact_override';
 
-export const WfoSubscriptionImpactTable = () => {
+interface WfoSubscriptionImpactTableProps {
+    serviceTicketDetail: ServiceTicketWithDetails;
+}
+
+export const WfoSubscriptionImpactTable = ({
+    serviceTicketDetail,
+}: WfoSubscriptionImpactTableProps) => {
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
-    const queryClient = useQueryClient();
-    const data = queryClient.getQueryData<ServiceTicketWithDetails>([
-        'serviceTickets',
-        'ca5eab65-761a-4235-aac8-048ff1aa0171',
-    ]);
     const { theme, toSecondaryColor } = useOrchestratorTheme();
     const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
         Record<string, ReactNode>
@@ -67,7 +73,9 @@ export const WfoSubscriptionImpactTable = () => {
                 },
             ];
             itemIdToExpandedRowMapValues[id] = (
-                <EuiDescriptionList listItems={listItems} />
+                <WfoSubscriptionImpactCustomerTable
+                    impactedObject={object}
+                ></WfoSubscriptionImpactCustomerTable>
             );
         }
         setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
@@ -192,7 +200,11 @@ export const WfoSubscriptionImpactTable = () => {
 
     return (
         <WfoBasicTable
-            data={data ? mapDataToTable(data.impacted_objects) : []}
+            data={
+                serviceTicketDetail
+                    ? mapDataToTable(serviceTicketDetail.impacted_objects)
+                    : []
+            }
             columns={impactTableColumns}
             isExpandable={true}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}

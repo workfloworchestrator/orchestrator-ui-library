@@ -18,6 +18,9 @@ import {
 import { WfoStatusColorField } from './WfoStatusColorField';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 import { getStyles } from './styles';
+import { SortOrder } from '../../../types';
+import { WfoStatusColorField } from './WfoStatusColorField';
+import { SerializedStyles } from '@emotion/react';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
@@ -111,6 +114,7 @@ export const WfoBasicTable = <T,>({
     );
 };
 
+//can we move this outside so it can be reusable for other tables?
 function mapWfoTableColumnsToEuiColumns<T>(
     tableColumns: WfoBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,

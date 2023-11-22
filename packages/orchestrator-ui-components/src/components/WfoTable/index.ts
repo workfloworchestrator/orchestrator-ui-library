@@ -11,5 +11,6 @@ export * from './utils/tableUtils';
 
 export * from './WfoBasicTable';
 export * from './WfoTableWithFilter';
+export * from './WfoDropdownTable';
 
 export * from './WfoSortButtons';

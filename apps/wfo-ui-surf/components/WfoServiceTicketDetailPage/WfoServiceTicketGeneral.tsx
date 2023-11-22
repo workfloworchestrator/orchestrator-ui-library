@@ -160,7 +160,9 @@ export const WfoServiceTicketGeneral = ({
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size={'m'} />
-            <WfoSubscriptionImpactTable />
+            <WfoSubscriptionImpactTable
+                serviceTicketDetail={serviceTicketGeneral}
+            />
         </>
     );
 };

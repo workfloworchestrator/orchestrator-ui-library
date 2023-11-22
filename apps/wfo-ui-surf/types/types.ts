@@ -157,6 +157,16 @@ export type ServiceTicketImpactedObjectColumns = Pick<
     imsCalculatedImpact: ServiceTicketImpactedObjectImpact;
 };
 
+export type SubscriptionImpactCustomerTableColumns = {
+    customer: ServiceTicketCustomer;
+    relation: 'owner' | 'related';
+    contacts: ServiceTicketContact[];
+    acceptedImpact: ServiceTicketImpactedObjectImpact;
+    minl: ServiceTicketImpactedObjectImpact;
+    sendingLevel: ServiceTicketImpactedObjectImpact;
+    informCustomer: boolean;
+};
+
 export enum ServiceTicketType {
     PLANNED_WORK = 'planned work',
     INCIDENT = 'incident',
