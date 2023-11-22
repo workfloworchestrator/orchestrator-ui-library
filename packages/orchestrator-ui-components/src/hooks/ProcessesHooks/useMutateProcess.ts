@@ -11,19 +11,28 @@ export const useMutateProcess = () => {
     const { session } = useSessionWithToken();
     const queryClient = useQueryClient();
 
-    const requestHeaders = {
+    const genericRequestHeaders = {
         authorization: session ? `Bearer ${session.accessToken}` : '',
     };
 
+    const retryProcessServiceCall = async (id: string) =>
+        await fetch(`${processesEndpoint}/${id}/resume`, {
+            method: 'PUT',
+            headers: {
+                ...genericRequestHeaders,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        });
     const deleteProcessServiceCall = async (id: string) =>
         await fetch(`${processesEndpoint}/${id}`, {
             method: 'DELETE',
-            headers: requestHeaders,
+            headers: genericRequestHeaders,
         });
     const abortProcessServiceCall = async (id: string) =>
         await fetch(`${processesEndpoint}/${id}/abort`, {
             method: 'PUT',
-            headers: requestHeaders,
+            headers: genericRequestHeaders,
         });
 
     const mutateProcess = (serviceCall: (id: string) => Promise<Response>) => {
@@ -40,6 +49,11 @@ export const useMutateProcess = () => {
     };
 
     return {
+        retryProcess: useMutation(mutateProcess(retryProcessServiceCall), {
+            onSuccess: () => {
+                queryClient.invalidateQueries('processList');
+            },
+        }),
         abortProcess: useMutation(mutateProcess(abortProcessServiceCall), {
             onSuccess: () => {
                 queryClient.invalidateQueries('processList');

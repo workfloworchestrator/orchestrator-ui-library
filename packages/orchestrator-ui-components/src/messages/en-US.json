@@ -158,6 +158,7 @@
             "delete": "Delete",
             "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
             "abortQuestion": "Are you sure you want to abort the {workflowName} task?",
+            "retryQuestion": "Are you sure you want to retry the {workflowName} task?",
             "status": "Status",
             "startedBy": "Started by",
             "lastStep": "Last step",
