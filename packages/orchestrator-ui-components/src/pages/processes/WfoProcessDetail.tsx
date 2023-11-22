@@ -208,8 +208,8 @@ export const WfoProcessDetail = ({
                             )}
                             color="danger"
                             isDisabled={
-                                buttonsAreDisabled &&
-                                processDetail.lastStatus !==
+                                buttonsAreDisabled ||
+                                processDetail.lastStatus ===
                                     ProcessStatus.RUNNING
                             }
                         >
