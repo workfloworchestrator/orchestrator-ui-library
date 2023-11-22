@@ -90,7 +90,7 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { deleteProcess, abortProcess } = useMutateProcess();
+    const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
 
     const shouldBeDisabled = (
@@ -136,7 +136,17 @@ export const WfoProcessDetail = ({
                             >,
                         ) => {
                             e.preventDefault();
-                            alert('TODO: Implement retry');
+                            showConfirmDialog({
+                                question: t('retryQuestion', {
+                                    workflowName: processDetail?.workflowName,
+                                }),
+                                confirmAction: () => {
+                                    processDetail?.processId &&
+                                        retryProcess.mutate(
+                                            processDetail.processId,
+                                        );
+                                },
+                            });
                         }}
                         iconType={() => (
                             <WfoRefresh
