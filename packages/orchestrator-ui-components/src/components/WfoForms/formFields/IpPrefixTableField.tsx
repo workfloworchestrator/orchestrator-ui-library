@@ -123,7 +123,7 @@ export default class IpPrefixTableField extends React.PureComponent<IProps> {
                     ? aVal.toLowerCase().localeCompare(bVal.toLowerCase())
                     : (aVal as number) - (bVal as number);
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
             return 0;
         };
