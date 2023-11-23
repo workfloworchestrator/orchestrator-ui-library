@@ -8,7 +8,7 @@ import {
     EuiTextColor,
 } from '@elastic/eui';
 
-import { WfoFrequentlyUsed } from './WfoFrequentlyUsed';
+import { WfoFrequentlyUsed } from '@/components';
 
 export const WfoNewProcessPanel: FC = () => {
     const [value, setValue] = useState('');
