@@ -72,6 +72,7 @@ export const WfoStartWorkflowPage = ({
                         const process = result as { id: string };
                         // TODO: Use toast hook to display success message
                         if (process.id) {
+                            // eslint-disable-next-line no-console
                             console.log(
                                 'resolver successfullly!: ',
                                 process.id,
@@ -92,7 +93,7 @@ export const WfoStartWorkflowPage = ({
                 503,
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
-                    console.log('engine down!!!', json);
+                    console.error('engine down!!!', json);
                     router.push(PATH_PROCESSES);
                 },
             );

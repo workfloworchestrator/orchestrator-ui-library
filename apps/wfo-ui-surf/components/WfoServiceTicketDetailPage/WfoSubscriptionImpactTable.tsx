@@ -48,8 +48,6 @@ export const WfoSubscriptionImpactTable = () => {
     const toggleDetails = (object: ServiceTicketImpactedObjectColumns) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
         const id = object.subscription_id ? object.subscription_id : '0';
-        console.log(itemIdToExpandedRowMapValues, 'toggleDetails');
-        console.log(object, 'object');
 
         if (itemIdToExpandedRowMapValues[id]) {
             delete itemIdToExpandedRowMapValues[id];
@@ -85,11 +83,6 @@ export const WfoSubscriptionImpactTable = () => {
                     const itemIdToExpandedRowMapValues = {
                         ...itemIdToExpandedRowMap,
                     };
-                    console.log('OBJECT', object);
-                    console.log(
-                        itemIdToExpandedRowMapValues,
-                        'itemIdToExpandedRowMapValues',
-                    );
                     return value ? (
                         <EuiButtonIcon
                             onClick={() => toggleDetails(object)}

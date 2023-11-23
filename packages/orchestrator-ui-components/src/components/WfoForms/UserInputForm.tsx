@@ -448,6 +448,7 @@ function UserInputForm({
         question: string | undefined,
         confirm: ConfirmDialogActions['closeConfirmDialog'],
     ) => {
+        // eslint-disable-next-line no-console
         console.log(e, question, confirm);
         alert('TODO: Implement on buttonClick cancel with confirm modal');
         // https://github.com/workfloworchestrator/orchestrator-ui/issues/325
