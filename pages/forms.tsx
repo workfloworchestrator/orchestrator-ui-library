@@ -6,6 +6,7 @@ import { CreateForm } from '@orchestrator-ui/orchestrator-ui-components';
 export function FormsPage() {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     const handleSubmit = (userInputs: any) => {
+        // eslint-disable-next-line no-console
         console.log('Submitted: ', userInputs);
     };
 
