@@ -17,6 +17,7 @@ import {
     ServiceTicketWithDetails,
 } from '../../types';
 import { WfoSubscriptionImpactCustomerTable } from './WfoSubscriptionImpactCustomerTable';
+import { getImsCalculatedImpact } from './utils';
 
 const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ServiceTicketImpactedObjectColumns =
     'subscription_id';
@@ -46,35 +47,19 @@ export const WfoSubscriptionImpactTable = ({
         Record<string, ReactNode>
     >({});
 
-    const toggleDetails = (id: string) => {
+    const toggleDetails = (subscription_id: string) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
-        // const id = object.subscription_id ? object.subscription_id : '0';
-        const impactedObject: ServiceTicketImpactedObject =
-            serviceTicketDetail.impacted_objects.find(
-                (o) => o.subscription_id === id,
-            );
+        const impactedObject = serviceTicketDetail.impacted_objects.find(
+            (o) => o.subscription_id === subscription_id,
+        );
 
-        if (itemIdToExpandedRowMapValues[id]) {
-            delete itemIdToExpandedRowMapValues[id];
-        } else {
-            const { subscription_description } = impactedObject;
-
-            const color = subscription_description ? 'success' : 'danger';
-            const label = subscription_description ? 'Online' : 'Offline';
-            const listItems = [
-                {
-                    title: 'Location',
-                    description: subscription_description,
-                },
-                {
-                    title: 'Online',
-                    description: <EuiText color={color}>{label}</EuiText>,
-                },
-            ];
-            itemIdToExpandedRowMapValues[id] = (
+        if (itemIdToExpandedRowMapValues[subscription_id]) {
+            delete itemIdToExpandedRowMapValues[subscription_id];
+        } else if (impactedObject) {
+            itemIdToExpandedRowMapValues[subscription_id] = (
                 <WfoSubscriptionImpactCustomerTable
                     impactedObject={impactedObject}
-                ></WfoSubscriptionImpactCustomerTable>
+                />
             );
         }
         setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
@@ -138,12 +123,12 @@ export const WfoSubscriptionImpactTable = ({
                 field: SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS,
                 name: t('informCustomers'),
                 width: '75',
-                render: () => (
+                render: (value) => (
                     <WfoBadge
                         textColor={theme.colors.text}
                         color={theme.colors.lightShade}
                     >
-                        4
+                        {value}
                     </WfoBadge>
                 ),
                 sortable: true,
@@ -182,26 +167,28 @@ export const WfoSubscriptionImpactTable = ({
             },
         };
 
-    const mapDataToTable = (
+    const mapImpactedObjectsToTableColumns = (
         input: ServiceTicketImpactedObject[],
     ): ServiceTicketImpactedObjectColumns[] => {
-        return input.map((object) => ({
-            subscription_id: object.subscription_id,
-            subscription_description: object.subscription_description,
-            affectedCustomers: object.related_customers.length + 1,
-            informCustomers: 4,
-            imsCalculatedImpact:
-                object.ims_circuits[object.ims_circuits.length - 1].impact ??
-                '',
-            impact_override: object.impact_override,
-        }));
+        return input
+            .filter((object) => object.subscription_id !== null)
+            .map((object) => ({
+                subscription_id: object.subscription_id,
+                subscription_description: object.subscription_description,
+                affectedCustomers: object.related_customers.length + 1,
+                informCustomers: '-',
+                imsCalculatedImpact: getImsCalculatedImpact(object),
+                impact_override: object.impact_override,
+            }));
     };
 
     return (
         <WfoBasicTable
             data={
                 serviceTicketDetail
-                    ? mapDataToTable(serviceTicketDetail.impacted_objects)
+                    ? mapImpactedObjectsToTableColumns(
+                          serviceTicketDetail.impacted_objects,
+                      )
                     : []
             }
             columns={impactTableColumns}

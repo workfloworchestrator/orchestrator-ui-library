@@ -26,16 +26,11 @@ import {
 } from '../../types';
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
+import { abortEnabledValues } from './utils';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
 };
-
-const abortEnabledValues: ServiceTicketProcessState[] = [
-    ServiceTicketProcessState.OPEN_RELATED,
-    ServiceTicketProcessState.OPEN_ACCEPTED,
-    ServiceTicketProcessState.OPEN,
-];
 
 const tabs = [
     {

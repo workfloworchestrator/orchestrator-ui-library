@@ -87,11 +87,11 @@ export const WfoBasicTable = <T,>({
         ? { ...statusColorColumn, ...columns }
         : { ...columns };
 
-    // const tableStyling = getStatusColorForRow
-    //     ? [basicTableStyle, getStatusColumnStyle(1)]
-    //     : basicTableStyle;
+    const tableStyling = getStatusColorForRow
+        ? [basicTableStyle, getStatusColumnStyle(1)]
+        : basicTableStyle;
 
-    const tableStyling = customTableStyle ?? basicTableStyle;
+    // const tableStyling = customTableStyle ?? basicTableStyle;
 
     return (
         <EuiBasicTable

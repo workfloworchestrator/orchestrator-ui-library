@@ -153,7 +153,7 @@ export type ServiceTicketImpactedObjectColumns = Pick<
     'subscription_id' | 'subscription_description' | 'impact_override'
 > & {
     affectedCustomers: number; //think about 0 or null
-    informCustomers: number;
+    informCustomers: string;
     imsCalculatedImpact: ServiceTicketImpactedObjectImpact;
 };
 
