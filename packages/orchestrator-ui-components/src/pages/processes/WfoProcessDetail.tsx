@@ -116,6 +116,8 @@ export const WfoProcessDetail = ({
         buttonsAreDisabled ||
         listIncludesStatus([ProcessStatus.RUNNING], processDetail?.lastStatus);
 
+    const processIsTask = processDetail?.isTask === true;
+
     return (
         <>
             <EuiFlexGroup>
@@ -175,16 +177,22 @@ export const WfoProcessDetail = ({
                     <EuiButton
                         onClick={() =>
                             showConfirmDialog({
-                                question: t('abortQuestion', {
-                                    workflowName: processDetail?.workflowName,
-                                }),
+                                question: t(
+                                    processIsTask
+                                        ? 'abortTaskQuestion'
+                                        : 'abortWorkflowQuestion',
+                                    {
+                                        workflowName:
+                                            processDetail?.workflowName,
+                                    },
+                                ),
                                 confirmAction: () => {
                                     processDetail?.processId &&
                                         abortProcess.mutate(
                                             processDetail.processId,
                                         );
                                     router.push(
-                                        processDetail?.isTask
+                                        processIsTask
                                             ? PATH_TASKS
                                             : PATH_PROCESSES,
                                     );
@@ -205,7 +213,7 @@ export const WfoProcessDetail = ({
                     >
                         {t('abort')}
                     </EuiButton>
-                    {processDetail && processDetail.isTask === true && (
+                    {processDetail && processIsTask && (
                         <EuiButton
                             onClick={() =>
                                 showConfirmDialog({
