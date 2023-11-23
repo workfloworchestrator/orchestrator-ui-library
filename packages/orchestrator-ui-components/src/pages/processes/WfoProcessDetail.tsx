@@ -135,9 +135,15 @@ export const WfoProcessDetail = ({
                     <EuiButton
                         onClick={() =>
                             showConfirmDialog({
-                                question: t('retryQuestion', {
-                                    workflowName: processDetail?.workflowName,
-                                }),
+                                question: t(
+                                    processIsTask
+                                        ? 'retryTaskQuestion'
+                                        : 'retryWorkflowQuestion',
+                                    {
+                                        workflowName:
+                                            processDetail?.workflowName,
+                                    },
+                                ),
                                 confirmAction: () => {
                                     processDetail?.processId &&
                                         retryProcess.mutate(
