@@ -25,14 +25,14 @@ import {
     defaultOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { getAppLogo } from '../components/AppLogo/AppLogo';
+import { getAppLogo } from '@/components/AppLogo/AppLogo';
 import {
     getInitialOrchestratorConfig,
     getInitialSurfConfig,
-} from '../configuration';
-import { PATH_SERVICE_TICKETS } from '../constants-surf';
-import { SurfConfig, SurfConfigProvider } from '../contexts/surfConfigContext';
-import { TranslationsProvider } from '../translations/translationsProvider';
+} from '@/configuration';
+import { PATH_SERVICE_TICKETS } from '@/constants-surf';
+import { SurfConfig, SurfConfigProvider } from '@/contexts/surfConfigContext';
+import { TranslationsProvider } from '@/translations/translationsProvider';
 
 type AppOwnProps = {
     orchestratorConfig: OrchestratorConfig;

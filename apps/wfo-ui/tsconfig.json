@@ -1,6 +1,10 @@
 {
     "extends": "@orchestrator-ui/tsconfig/nextjs.json",
     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        },
         "plugins": [
             {
                 "name": "next"
