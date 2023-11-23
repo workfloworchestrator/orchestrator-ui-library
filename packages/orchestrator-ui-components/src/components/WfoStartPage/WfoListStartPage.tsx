@@ -8,7 +8,8 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-import { ItemsList } from '../../types';
+import { ItemsList } from '@/types';
+
 import { WfoListItemStartPage } from './WfoListItemStartPage';
 
 interface WfoListStartPage {

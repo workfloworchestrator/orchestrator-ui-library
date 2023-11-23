@@ -3,7 +3,11 @@
     "compilerOptions": {
         "strictNullChecks": true,
         "rootDir": "./src",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx"],
     "exclude": [

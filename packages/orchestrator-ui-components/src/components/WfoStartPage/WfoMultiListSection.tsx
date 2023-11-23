@@ -6,7 +6,8 @@ import {
     useFavouriteSubscriptions,
     useProcessesAttention,
     useRecentProcesses,
-} from '../../hooks/DataFetchHooks';
+} from '@/hooks';
+
 import WfoListStartPage from './WfoListStartPage';
 
 export const WfoMultiListSection: FC = () => {
