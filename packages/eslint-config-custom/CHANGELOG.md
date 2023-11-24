@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.0.6
+
+### Patch Changes
+
+- ce48846: Updates linting rules to ban all console statements except console.error()
+
 ## 0.0.5
 
 ### Patch Changes
