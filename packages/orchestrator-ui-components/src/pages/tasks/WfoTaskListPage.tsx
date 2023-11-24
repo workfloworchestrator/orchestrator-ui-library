@@ -9,23 +9,23 @@ import {
     FilterQuery,
     StoredTableConfig,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
+    WfoStartTaskButtonComboBox,
     WfoTableColumns,
-} from '../../components';
-import { WfoStartTaskButtonComboBox } from '../../components';
-import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
+} from '@/components';
+import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
     WfoProcessList,
-} from '../../components/WfoProcessesList/WfoProcessList';
-import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
+} from '@/components/WfoProcessesList/WfoProcessList';
+import { ConfirmationDialogContext } from '@/contexts';
 import {
     useDataDisplayParams,
     useMutateProcesses,
     useOrchestratorTheme,
     useStoredTableConfig,
-} from '../../hooks';
-import { WfoRefresh } from '../../icons';
-import { SortOrder } from '../../types';
+} from '@/hooks';
+import { WfoRefresh } from '@/icons';
+import { SortOrder } from '@/types';
 
 export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();

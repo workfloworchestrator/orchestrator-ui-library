@@ -34,11 +34,11 @@ import {
     EuiHorizontalRule,
 } from '@elastic/eui';
 
-import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
-import { useOrchestratorTheme } from '../../hooks';
-import { WfoPlayFill } from '../../icons';
-import { ValidationError } from '../../types/forms';
+import { ConfirmDialogActions, ConfirmationDialogContext } from '@/contexts';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoPlayFill } from '@/icons';
+import { ValidationError } from '@/types/forms';
+
 import { autoFieldFunction } from './AutoFieldLoader';
 import AutoFields from './AutoFields';
 import { userInputFormStyling } from './UserInputFormStyling';
@@ -448,12 +448,6 @@ function UserInputForm({
         question: string | undefined,
         confirm: ConfirmDialogActions['closeConfirmDialog'],
     ) => {
-        // eslint-disable-next-line no-console
-        console.log(e, question, confirm);
-        alert('TODO: Implement on buttonClick cancel with confirm modal');
-        // https://github.com/workfloworchestrator/orchestrator-ui/issues/325
-
-        /*
         if (!question) {
             return confirm(e);
         }
@@ -464,7 +458,6 @@ function UserInputForm({
             cancelAction: () => {},
             leavePage: false,
         });
-        */
     };
 
     const renderButtons = (buttons: Buttons) => {
