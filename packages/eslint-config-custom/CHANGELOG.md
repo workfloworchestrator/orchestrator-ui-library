@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.0.7
+
+### Patch Changes
+
+- 39c896a: Moves all devDependencies into the dependencies section
+
 ## 0.0.6
 
 ### Patch Changes
