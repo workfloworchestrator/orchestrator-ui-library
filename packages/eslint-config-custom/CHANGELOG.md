@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.0.5
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
 ## 0.0.4
 
 ### Patch Changes

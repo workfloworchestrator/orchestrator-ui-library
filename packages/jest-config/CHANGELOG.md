@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 0.0.4
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
 ## 0.0.3
 
 ### Patch Changes
