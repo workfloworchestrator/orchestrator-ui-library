@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.7
+
+### Patch Changes
+
+- ce48846: Updates linting rules to ban all console statements except console.error()
+
 ## 0.2.6
 
 ### Patch Changes
