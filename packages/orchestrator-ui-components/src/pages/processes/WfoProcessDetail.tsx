@@ -19,13 +19,14 @@ import {
     TimelineItem,
     WfoLoading,
     WfoTimeline,
-} from '../../components';
-import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import { useOrchestratorTheme } from '../../hooks';
-import { useMutateProcess } from '../../hooks/ProcessesHooks/useMutateProcess';
-import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
-import { ProcessDetail, ProcessStatus } from '../../types';
-import { parseDateRelativeToToday, parseIsoString } from '../../utils';
+} from '@/components';
+import { ConfirmationDialogContext } from '@/contexts';
+import { useOrchestratorTheme } from '@/hooks';
+import { useMutateProcess } from '@/hooks';
+import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '@/icons';
+import { ProcessDetail, ProcessStatus } from '@/types';
+import { parseDateRelativeToToday, parseIsoString } from '@/utils';
+
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
