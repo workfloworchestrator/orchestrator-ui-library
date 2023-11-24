@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.6
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
 ## 0.2.5
 
 ### Patch Changes
