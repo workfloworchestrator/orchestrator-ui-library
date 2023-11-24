@@ -9,6 +9,7 @@ export interface ConfirmDialogActions {
         e:
             | React.KeyboardEvent<HTMLDivElement>
             | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | React.MouseEvent<HTMLDivElement, MouseEvent>
             | undefined,
         confirm?: boolean,
     ) => void;
@@ -30,13 +31,12 @@ export type ShowConfirmDialogType = ({
     isError,
 }: ShowConfirmDialog) => void;
 
-const ConfirmationDialogContext = createContext<ConfirmDialogActions>({
+export const ConfirmationDialogContext = createContext<ConfirmDialogActions>({
     showConfirmDialog: () => {},
     closeConfirmDialog: () => {},
 });
 
 export const ConfirmationDialogProvider = ConfirmationDialogContext.Provider;
-export default ConfirmationDialogContext;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ConfirmationDialogContextWrapper({ children }: any) {
