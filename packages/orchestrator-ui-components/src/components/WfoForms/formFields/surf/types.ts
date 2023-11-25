@@ -1,6 +1,6 @@
 import { ProductDefinition } from '../../../../types';
 
-export interface Subscription {
+export interface NodeSubscription {
     name: string;
     subscription_id: string;
     description: string;

@@ -96,6 +96,13 @@
             "subscription": {
                 "placeholder": "Choose a subscription",
                 "loading": "Loading subscriptions..."
+            },
+            "nodePort": {
+                "loadingNodes": "Loading Node subscriptions...",
+                "loadingPorts": "Loading IMS ports...",
+                "selectNode": "Select node",
+                "selectPort": "Select port",
+                "selectNodeFirst": "Select a node first"
             }
         }
     },

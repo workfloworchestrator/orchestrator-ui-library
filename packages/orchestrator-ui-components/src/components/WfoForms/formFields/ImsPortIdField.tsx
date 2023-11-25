@@ -16,14 +16,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
 
 import { useTranslations } from 'next-intl';
-// import { getReactSelectTheme } from "stylesheets/emotion/utils";
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
+import { useOrchestratorTheme } from '@/hooks';
+
 import { useAxiosApiClient } from '../useAxiosApiClient';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
-import { ImsNode, ImsPort, Subscription } from './surf/types';
+import { ImsNode, ImsPort, NodeSubscription } from './surf/types';
 import { FieldProps, Option } from './types';
 
 export type ImsPortFieldProps = FieldProps<
@@ -36,7 +38,7 @@ export type ImsPortFieldProps = FieldProps<
     }
 >;
 
-function nodeToOptionCorelink(node: Subscription): Option {
+function nodeToOptionCorelink(node: NodeSubscription): Option {
     return {
         value: node.subscription_id,
         label: `${node.subscription_id.substring(0, 8)} ${
@@ -80,7 +82,12 @@ function ImsPortId({
 }: ImsPortFieldProps) {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
-    const [nodes, setNodes] = useState<ImsNode[] | Subscription[]>([]);
+    const { theme } = useOrchestratorTheme();
+    // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
+    const reactSelectInnerComponentStyles =
+        getReactSelectInnerComponentStyles(theme);
+
+    const [nodes, setNodes] = useState<ImsNode[] | NodeSubscription[]>([]);
     const [nodeId, setNodeId] = useState<number | string | undefined>(
         nodeSubscriptionId,
     );
@@ -138,16 +145,16 @@ function ImsPortId({
         }
     }, [onChangeNodes, nodeStatuses, nodeSubscriptionId, apiClient]);
     const nodesPlaceholder = loading
-        ? t('widgets.nodePort.loading')
-        : t('forms.widgets.nodePort.selectNode');
+        ? t('widgets.nodePort.loadingNodes')
+        : t('widgets.nodePort.selectNode');
 
     const portPlaceholder = loading
-        ? t('forms.widgets.nodePort.loading')
+        ? t('widgets.nodePort.loadingPorts')
         : nodeId
-        ? t('forms.widgets.nodePort.selectPort')
-        : t('forms.widgets.nodePort.selectNodeFirst');
+        ? t('widgets.nodePort.selectPort')
+        : t('widgets.nodePort.selectNodeFirst');
 
-    const node_options: Option[] = (nodes as Subscription[]).map(
+    const node_options: Option[] = (nodes as NodeSubscription[]).map(
         nodeToOptionCorelink,
     );
 
@@ -163,8 +170,6 @@ function ImsPortId({
         }))
         .sort((x, y) => x.label.localeCompare(y.label));
     const port_value = port_options.find((option) => option.value === value);
-
-    // const customStyles = getReactSelectTheme(theme);
 
     return (
         <EuiFlexItem css={imsPortIdFieldStyling}>
@@ -198,7 +203,7 @@ function ImsPortId({
                                         !!nodeSubscriptionId ||
                                         nodes.length === 0
                                     }
-                                    // styles={customStyles}
+                                    styles={reactSelectInnerComponentStyles}
                                 />
                             </EuiFormRow>
                         </div>
@@ -219,7 +224,7 @@ function ImsPortId({
                                         readOnly ||
                                         ports.length === 0
                                     }
-                                    // styles={customStyles}
+                                    styles={reactSelectInnerComponentStyles}
                                 />
                             </EuiFormRow>
                         </div>

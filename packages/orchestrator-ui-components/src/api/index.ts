@@ -18,7 +18,7 @@ import {
     ImsPort,
     IpBlock,
     IpPrefix,
-    Subscription,
+    NodeSubscription,
 } from '../components/WfoForms/formFields/surf/types';
 import { ProductDefinition } from '../types';
 import { getAxiosInstance } from './axios';
@@ -172,12 +172,12 @@ export class ApiClient extends ApiClientInterface {
         );
     };
 
-    // legacy : for imsPort seletec
+    // legacy : for imsPort selector
     subscriptions = (
         tagList: string[] = [],
         statusList: string[] = [],
         productList: string[] = [],
-    ): Promise<Subscription[]> => {
+    ): Promise<NodeSubscription[]> => {
         const statusFilter = `statuses,${encodeURIComponent(
             statusList.join('-'),
         )}`;
@@ -201,7 +201,7 @@ export class ApiClient extends ApiClientInterface {
 
     nodeSubscriptions = (
         statusList: string[] = [],
-    ): Promise<Subscription[]> => {
+    ): Promise<NodeSubscription[]> => {
         return this.subscriptions(['Node'], statusList);
     };
 }
