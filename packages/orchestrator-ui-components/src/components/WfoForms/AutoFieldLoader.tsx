@@ -8,6 +8,7 @@ import {
     DateField,
     DividerField,
     ImsNodeIdField,
+    ImsPortIdField,
     IpNetworkField,
     LabelField,
     ListField,
@@ -22,11 +23,11 @@ import {
     SelectField,
     SubscriptionField,
     SubscriptionSummaryField,
+    SummaryField,
     TextField,
     TimestampField,
     VlanField,
 } from './formFields';
-import ImsPortIdField from './formFields/ImsPortIdField';
 
 export function autoFieldFunction(
     props: GuaranteedProps<unknown> & Record<string, unknown>,
@@ -69,6 +70,8 @@ export function autoFieldFunction(
                     return LabelField;
                 case 'divider':
                     return DividerField;
+                case 'summary':
+                    return SummaryField;
                 case 'subscription':
                     return SubscriptionSummaryField;
                 case 'organisationId':

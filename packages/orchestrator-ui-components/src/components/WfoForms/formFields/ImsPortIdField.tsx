@@ -235,4 +235,4 @@ function ImsPortId({
     );
 }
 
-export default connectField(ImsPortId, { kind: 'leaf' });
+export const ImsPortIdField = connectField(ImsPortId, { kind: 'leaf' });
