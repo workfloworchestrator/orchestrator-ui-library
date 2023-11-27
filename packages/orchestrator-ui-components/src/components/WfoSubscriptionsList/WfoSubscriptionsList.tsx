@@ -4,13 +4,11 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { EuiFlexItem, Pagination } from '@elastic/eui';
+import { Pagination } from '@elastic/eui';
 
 import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
 import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
-import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
 import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
-import { WfoPlusCircleFill } from '../../icons';
 import { SortOrder } from '../../types';
 import { parseDateToLocaleDateTimeString } from '../../utils';
 import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
@@ -25,7 +23,6 @@ import {
     TableColumnKeys,
     WfoDataSorting,
     WfoTableColumns,
-    WfoTableControlColumnConfig,
     WfoTableWithFilter,
     getDataSortHandler,
     getEsQueryStringHandler,
@@ -37,8 +34,6 @@ import {
     SubscriptionListItem,
     mapGrapghQlSubscriptionsResultToSubscriptionListItems,
 } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
-
-const FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS = 'inlineSubscriptionDetails';
 
 export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
@@ -63,8 +58,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const router = useRouter();
     const t = useTranslations('subscriptions.index');
-
-    const { theme } = useOrchestratorTheme();
 
     const tableColumns: WfoTableColumns<SubscriptionListItem> = {
         subscriptionId: {
@@ -127,19 +120,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         },
     };
 
-    const leadingControlColumns: WfoTableControlColumnConfig<SubscriptionListItem> =
-        {
-            inlineSubscriptionDetails: {
-                field: FIELD_NAME_INLINE_SUBSCRIPTION_DETAILS,
-                width: '40',
-                render: () => (
-                    <EuiFlexItem>
-                        <WfoPlusCircleFill color={theme.colors.mediumShade} />
-                    </EuiFlexItem>
-                ),
-            },
-        };
-
     const { sortBy } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
@@ -187,7 +167,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 sortFields,
                 filterFields,
             )}
-            leadingControlColumns={leadingControlColumns}
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
