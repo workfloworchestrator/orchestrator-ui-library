@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { signOut } from 'next-auth/react';
 
-import { OrchestratorConfigContext } from '../../contexts';
-import { useSessionWithToken } from '../useSessionWithToken';
+import { OrchestratorConfigContext } from '@/contexts';
+import { useSessionWithToken } from '@/hooks/index';
 
 export const useMutateProcess = () => {
     const { processesEndpoint } = useContext(OrchestratorConfigContext);
@@ -15,15 +15,24 @@ export const useMutateProcess = () => {
         authorization: session ? `Bearer ${session.accessToken}` : '',
     };
 
+    const retryProcessRequestInit: RequestInit = {
+        method: 'PUT',
+        headers: {
+            ...genericRequestHeaders,
+            'Content-Type': 'application/json',
+        },
+        body: '{}',
+    };
+
+    const retryAllProcessesServiceCall = async () =>
+        await fetch(`${processesEndpoint}/resume-all`, retryProcessRequestInit);
+
     const retryProcessServiceCall = async (id: string) =>
-        await fetch(`${processesEndpoint}/${id}/resume`, {
-            method: 'PUT',
-            headers: {
-                ...genericRequestHeaders,
-                'Content-Type': 'application/json',
-            },
-            body: '{}',
-        });
+        await fetch(
+            `${processesEndpoint}/${id}/resume`,
+            retryProcessRequestInit,
+        );
+
     const deleteProcessServiceCall = async (id: string) =>
         await fetch(`${processesEndpoint}/${id}`, {
             method: 'DELETE',
@@ -35,8 +44,20 @@ export const useMutateProcess = () => {
             headers: genericRequestHeaders,
         });
 
-    const mutateProcess = (serviceCall: (id: string) => Promise<Response>) => {
-        return async (id: string) => {
+    const mutateProcesses =
+        (serviceCall: () => Promise<Response>) => async () => {
+            const response = await serviceCall();
+
+            if (response.status < 200 || response.status >= 300) {
+                console.error(response.status, response.body);
+                if (response.status === 401 || response.status === 403) {
+                    signOut();
+                }
+            }
+        };
+    const mutateProcess =
+        (serviceCall: (id: string) => Promise<Response>) =>
+        async (id: string) => {
             const response = await serviceCall(id);
 
             if (response.status < 200 || response.status >= 300) {
@@ -46,9 +67,16 @@ export const useMutateProcess = () => {
                 }
             }
         };
-    };
 
     return {
+        retryAllProcesses: useMutation(
+            mutateProcesses(retryAllProcessesServiceCall),
+            {
+                onSuccess: () => {
+                    queryClient.invalidateQueries('processList');
+                },
+            },
+        ),
         retryProcess: useMutation(mutateProcess(retryProcessServiceCall), {
             onSuccess: () => {
                 queryClient.invalidateQueries('processList');

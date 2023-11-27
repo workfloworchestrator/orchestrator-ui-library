@@ -20,7 +20,7 @@ import {
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useDataDisplayParams,
-    useMutateProcesses,
+    useMutateProcess,
     useOrchestratorTheme,
     useStoredTableConfig,
 } from '@/hooks';
@@ -31,7 +31,7 @@ export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { retryAllProcesses } = useMutateProcesses();
+    const { retryAllProcesses } = useMutateProcess();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
