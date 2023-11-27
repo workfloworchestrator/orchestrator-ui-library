@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     EuiFlexGroup,
     EuiFlexItem,
@@ -19,6 +21,7 @@ export type WfoStatusProps = {
 export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
     const { theme } = useOrchestratorTheme();
     const isRunning = engineStatus === 'RUNNING';
+    const t = useTranslations(`settings.page`);
 
     return (
         <EuiPanel
@@ -28,9 +31,9 @@ export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
             style={{ width: '50%' }}
         >
             <EuiFlexGroup>
-                <EuiFlexItem grow={false} style={{ minWidth: 140 }}>
+                <EuiFlexItem grow={false} style={{ minWidth: 208 }}>
                     <EuiText size="s">
-                        <h4>Running processes</h4>
+                        <h4>{t('runningProcesses')}</h4>
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
@@ -41,9 +44,9 @@ export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
             </EuiFlexGroup>
             <EuiSpacer size="m" />
             <EuiFlexGroup>
-                <EuiFlexItem grow={false} style={{ minWidth: 132 }}>
+                <EuiFlexItem grow={false} style={{ minWidth: 200 }}>
                     <EuiText size="s">
-                        <h4>Engine status</h4>
+                        <h4>{t('engineStatus')}</h4>
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>

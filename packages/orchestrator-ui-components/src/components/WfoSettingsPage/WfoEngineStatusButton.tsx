@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiButton } from '@elastic/eui';
 
 import { EngineStatusValue } from '../../types';
@@ -13,6 +15,7 @@ export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
     engineStatus,
     changeEngineStatus,
 }) => {
+    const t = useTranslations(`settings.page`);
     if (!engineStatus) {
         return (
             <EuiButton isLoading fill>
@@ -27,7 +30,7 @@ export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
             fill
             iconType="pause"
         >
-            Pause the engine
+            {t('pauseEngine')}
         </EuiButton>
     ) : (
         <EuiButton
@@ -36,7 +39,7 @@ export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
             fill
             iconType="play"
         >
-            Start the engine
+            {t('startEngine')}
         </EuiButton>
     );
 };

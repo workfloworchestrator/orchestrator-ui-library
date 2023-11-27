@@ -1,15 +1,16 @@
 {
     "main": {
         "title": "Voorbeeld Orchestrator UI",
-        "mobileTitle": "Hoofd menu"
+        "welcome": "Welkom",
+        "mobileTitle": "Hoofdmenu"
     },
     "common": {
-        "addToFavorites": "Favoriet",
         "product": "Produkt",
         "deselect": "Deselecteer",
         "close": "Sluiten",
+        "editColumns": "Wijzig kolommen",
         "newSubscription": "Nieuwe subscription",
-        "newTask": "Nieuwe taak",
+        "newTask": "Nieuwe task",
         "noFailedTasks": "Geen gefaalde taken!",
         "search": "Zoeken"
     },
@@ -39,11 +40,11 @@
         },
         "fields": {
             "bfd": {
-                "description": "Bidirectional Forwarding Detection",
+                "description": "Bidirectional forwarding detection",
                 "title": "BFD"
             },
-            "esi_service_ports_add": "Endpoint Toevoegen",
-            "esi_service_ports_del": "Endpoint Verwijderen"
+            "esi_service_ports_add": "Endpoint toevoegen",
+            "esi_service_ports_del": "Endpoint verwijderen"
         },
         "widgets": {
             "organisation": {
@@ -113,13 +114,13 @@
             "resourceTypes": "Resource types",
             "dependingProductBlocks": "Onderliggende product blocks",
             "createdAt": "Aangemaakt",
-            "endDate": "Eind datum",
+            "endDate": "Einddatum",
             "parentIds": "Parents"
         },
         "resourceTypes": {
             "type": "Resource type",
             "description": "Resource type beschrijving",
-            "resourceId": "Resource Id",
+            "resourceId": "Resource ID",
             "usedInProductBlocks": "Gebruikt in product blocks"
         },
         "workflows": {
@@ -141,14 +142,14 @@
             "status": "Status",
             "product": "Product",
             "customer": "Klant",
-            "customerAbbreviation": "Klant afkorting",
+            "customerAbbreviation": "Klantafkorting",
             "subscriptions": "Subscriptions",
             "createdBy": "Gecreëerd door",
             "assignee": "Assignee",
-            "processId": "PID",
+            "processId": "Proces ID",
             "started": "Gestart",
             "lastModified": "Aangepast op",
-            "workflowTarget": "Doel",
+            "workflowTarget": "Target",
             "productTag": "Tag"
         },
         "detail": {
@@ -156,7 +157,7 @@
             "resume": "Ga verder",
             "abort": "Stop",
             "delete": "Verwijder",
-            "deleteQuestion": "Weet je zeker dat je de taak {workflowName} wilt verwijderen?",
+            "deleteQuestion": "Weet je zeker dat je de task {workflowName} wilt verwijderen?",
             "status": "Status",
             "startedBy": "Gestart door",
             "lastStep": "Laatste stap",
@@ -168,39 +169,40 @@
         },
         "steps": {
             "steps": "Workflow stappen",
-            "showDelta": "Toon subscription verschil",
-            "viewOptions": "Scherm options",
+            "showDelta": "toon subscription delta",
+            "viewOptions": "opties",
             "expandAll": "klap alles uit",
             "collapseAll": "klap alles in",
             "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
-            "submitFormLabel": "Vul de inputvelden en verstuur het formulier om de workflow te starten"
+            "submitTaskFormLabel": "Verstuur het formulier om de workflow te starten",
+            "submitWorkflowFormLabel": "Verstuur het formulier om de task te starten"
         }
     },
     "subscriptions": {
         "tabs": {
             "active": "Actief",
-            "terminated": "Beeindigd",
-            "transient": "Tijdelijk",
+            "terminated": "Beëindigd",
+            "transient": "In progress",
             "all": "Alles"
         },
         "index": {
             "id": "ID",
             "description": "Beschrijving",
             "status": "Status",
-            "insync": "In Sync",
+            "insync": "In sync",
             "product": "Produkt",
             "tag": "Tag",
-            "startDate": "Start datum",
-            "endDate": "Eind Datum",
-            "note": "Notitite"
+            "startDate": "Startdatum",
+            "endDate": "Einddatum",
+            "note": "Notitie"
         },
         "detail": {
             "tabs": {
                 "general": "Algemeen",
                 "serviceConfiguration": "Service configuratie",
                 "processes": "Processen",
-                "relatedSubscriptions": "Geralateerde subscripties"
+                "relatedSubscriptions": "Gerelateerde subscriptions"
             },
             "loadingStatus": "Laden",
             "actions": {
@@ -238,22 +240,22 @@
             "status": "Status",
             "id": "ID",
             "blockTitleSubscriptionDetails": "Subscription details",
-            "blockTitleFixedInputs": "Fixed Inputs",
-            "blockTitleProductInfo": "Produkt Info",
+            "blockTitleFixedInputs": "Fixed inputs",
+            "blockTitleProductInfo": "Produktinfo",
             "subscriptionId": "Subscription ID",
             "description": "Beschrijving",
-            "startDate": "Start datum",
+            "startDate": "Startdatum",
             "insync": "In sync",
             "customer": "Klant",
             "customerUuid": "Klant UUID",
             "name": "Naam",
-            "productType": "Produkt type",
+            "productType": "Produkttype",
             "tag": "Tag",
             "created": "Aangemaakt",
-            "endDate": "Eind datum",
+            "endDate": "Einddatum",
             "note": "Notitie",
             "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden",
-            "hideTerminatedRelatedSubscriptions": "Verberg terminated related subscriptions",
+            "hideTerminatedRelatedSubscriptions": "Verberg beëindigde subscriptions",
             "processDetail": {
                 "id": "ID",
                 "status": "Status",
@@ -265,6 +267,18 @@
     "tasks": {
         "page": {
             "rerunAll": "Alles opnieuw uitvoeren"
+        }
+    },
+    "settings": {
+        "page": {
+            "engineStatus": "Workflow engine status",
+            "flushButton": "Flush",
+            "flushCacheSettingsTitle": "Flush cache instellingen",
+            "modifyEngine": "Wijzig engine status",
+            "pauseEngine": "Pauseer  workflow engine",
+            "runningProcesses": "Lopende processen",
+            "selectSettings": "Kies cache",
+            "startEngine": "Start workflow engine"
         }
     }
 }

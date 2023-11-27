@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     EuiButton,
     EuiComboBox,
@@ -23,6 +25,7 @@ const clearCache = async (apiUrl: string, settingName: string) => {
 
 export const WfoFlushSettings: FunctionComponent = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const t = useTranslations(`settings.page`);
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
     );
@@ -68,12 +71,12 @@ export const WfoFlushSettings: FunctionComponent = () => {
             style={{ width: '50%' }}
         >
             <EuiText size="s">
-                <h4>Flush Settings</h4>
+                <h4>{t('flushCacheSettingsTitle')}</h4>
             </EuiText>
             <EuiSpacer size="m" />
             <EuiComboBox
                 aria-label="Flush settings"
-                placeholder="Select settings"
+                placeholder={t('selectSettings')}
                 singleSelection={{ asPlainText: true }}
                 options={options}
                 selectedOptions={selectedOptions}
@@ -82,7 +85,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
             />
             <EuiSpacer size="m" />
             <EuiButton onClick={flushCache} iconType="refresh">
-                Flush
+                {t('flushButton')}
             </EuiButton>
         </EuiPanel>
     );
