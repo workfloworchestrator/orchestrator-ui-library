@@ -12,7 +12,7 @@ const ProcessDetailPage = () => {
         <>
             {(processId && typeof processId === 'string' && (
                 <WfoProcessDetailPage processId={processId} />
-            )) || <div>Invalid processID</div>}
+            )) || <div>Invalid processId</div>}
         </>
     );
 };
