@@ -22,7 +22,7 @@ export const useMutateProcesses = () => {
                 ...genericRequestHeaders,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({}),
+            body: '{}',
         });
 
     const mutateProcesses = (serviceCall: () => Promise<Response>) => {

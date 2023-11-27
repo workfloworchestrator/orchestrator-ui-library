@@ -269,7 +269,7 @@
     "tasks": {
         "page": {
             "rerunAll": "Alles opnieuw uitvoeren",
-            "rerunAllQuestion": "Weet u zeker dat u alle gefaalde workflows opnieuw wilt uitvoeren?"
+            "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt uitvoeren?"
         }
     }
 }
