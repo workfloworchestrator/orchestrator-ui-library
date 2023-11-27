@@ -3,13 +3,14 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '../../../graphqlQueries/workflows/workflowsQueryForDropdownList';
-import { useQueryWithGraphql } from '../../../hooks';
+import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '@/graphqlQueries/workflows/workflowsQueryForDropdownList';
+import { useQueryWithGraphql } from '@/hooks';
+
 import {
     WfoButtonComboBox,
     WorkflowComboBoxOption,
 } from '../../WfoButtonComboBox/WfoButtonComboBox';
-import { PATH_START_WORKFLOW } from '../paths';
+import { PATH_START_NEW_PROCESS } from '../paths';
 
 export const WfoStartCreateWorkflowButtonComboBox = () => {
     const router = useRouter();
@@ -42,7 +43,7 @@ export const WfoStartCreateWorkflowButtonComboBox = () => {
     const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
         const { workflowName, productId } = selectedProduct.data;
         router.push({
-            pathname: `${PATH_START_WORKFLOW}/${workflowName}`,
+            pathname: `${PATH_START_NEW_PROCESS}/${workflowName}`,
             query: { productId },
         });
     };

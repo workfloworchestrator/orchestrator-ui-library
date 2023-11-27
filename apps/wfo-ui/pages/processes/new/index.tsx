@@ -9,7 +9,7 @@ import {
 } from '@elastic/eui';
 import { WfoNewProcessPanel } from '@orchestrator-ui/orchestrator-ui-components';
 
-export function NewProcess() {
+const StartProcessPage = () => {
     return (
         <>
             <EuiPageHeader pageTitle="Create new process" />
@@ -23,6 +23,6 @@ export function NewProcess() {
             </EuiFlexGroup>
         </>
     );
-}
+};
 
-export default NewProcess;
+export default StartProcessPage;

@@ -12,15 +12,16 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { TimelineItem, WfoLoading } from '../../components';
-import { PATH_PROCESSES } from '../../components';
+import { PATH_TASKS, TimelineItem, WfoLoading } from '@/components';
+import { PATH_PROCESSES } from '@/components';
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
+import { getStyles } from '@/components/WfoWorkflowSteps/styles';
+import { EngineStatus, useOrchestratorTheme } from '@/hooks';
+import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
+import { FormNotCompleteResponse } from '@/types/forms';
+
 import UserInputFormWizard from '../../components/WfoForms/UserInputFormWizard';
-import { useAxiosApiClient } from '../../components/WfoForms/useAxiosApiClient';
-import { WfoStepStatusIcon } from '../../components/WfoWorkflowSteps/WfoStepStatusIcon';
-import { getStyles } from '../../components/WfoWorkflowSteps/styles';
-import { EngineStatus, useOrchestratorTheme } from '../../hooks';
-import { ProcessDetail, ProcessStatus, StepStatus } from '../../types';
-import { FormNotCompleteResponse } from '../../types/forms';
 import { WfoProcessDetail } from '../processes/WfoProcessDetail';
 
 type StartCreateWorkflowPayload = {
@@ -36,6 +37,7 @@ type StartWorkflowPayload =
 
 interface WfoStartWorkflowPageProps {
     workflowName: string;
+    isTask?: boolean;
     startWorkflowPayload?: StartWorkflowPayload;
 }
 
@@ -46,6 +48,7 @@ export interface UserInputForm {
 
 export const WfoStartWorkflowPage = ({
     workflowName,
+    isTask = false,
     startWorkflowPayload,
 }: WfoStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
@@ -77,7 +80,10 @@ export const WfoStartWorkflowPage = ({
                                 'resolver successfullly!: ',
                                 process.id,
                             );
-                            router.push(`${PATH_PROCESSES}/${process.id}`);
+                            const basePath = isTask
+                                ? PATH_TASKS
+                                : PATH_PROCESSES;
+                            router.push(`${basePath}/${process.id}`);
                         }
                     },
                     // Reject handler
@@ -167,7 +173,9 @@ export const WfoStartWorkflowPage = ({
                     <UserInputFormWizard
                         stepUserInput={stepUserInput}
                         validSubmit={submit}
-                        cancel={() => router.push(PATH_PROCESSES)}
+                        cancel={() =>
+                            router.push(isTask ? PATH_TASKS : PATH_PROCESSES)
+                        }
                         hasNext={hasNext}
                     />
                 )) || <WfoLoading />}
