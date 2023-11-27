@@ -5,15 +5,16 @@ import { ParsedUrlQuery } from 'querystring';
 
 import { WfoStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
 
+// todo this type is now duplocated with StartWorkflowPage -- fix this
 interface StartWorkflowPageQuery extends ParsedUrlQuery {
-    workflowName: string;
+    processName: string; // except this one
     productId?: string;
     subscriptionId?: string;
 }
 
-const StartWorkflowPage = () => {
+const StartProcessPage = () => {
     const router = useRouter();
-    const { workflowName, productId, subscriptionId } =
+    const { processName, productId, subscriptionId } =
         router.query as StartWorkflowPageQuery;
 
     const getStartWorkflowPayload = () => {
@@ -31,10 +32,11 @@ const StartWorkflowPage = () => {
         return undefined;
     };
     const startWorkflowPayload = getStartWorkflowPayload();
-    if (workflowName) {
+    if (processName) {
         return (
             <WfoStartWorkflowPage
-                workflowName={workflowName}
+                isTask={false}
+                workflowName={processName}
                 startWorkflowPayload={startWorkflowPayload}
             />
         );
@@ -42,4 +44,4 @@ const StartWorkflowPage = () => {
     return <div>Not enough arguments provided</div>;
 };
 
-export default StartWorkflowPage;
+export default StartProcessPage;
