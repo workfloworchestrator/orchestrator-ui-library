@@ -22,7 +22,7 @@ export const useMutateProcess = () => {
                 ...genericRequestHeaders,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({}),
+            body: '{}',
         });
     const deleteProcessServiceCall = async (id: string) =>
         await fetch(`${processesEndpoint}/${id}`, {
