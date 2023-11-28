@@ -38,7 +38,7 @@ function OptGroup({
     className = '',
     ...props
 }: OptGroupFieldProps) {
-    const t = useTranslations('pydanticForms.fields');
+    const t = useTranslations('pydanticForms.backendTranslations');
     const enabled = useField('enabled', {})[0].value;
 
     return (

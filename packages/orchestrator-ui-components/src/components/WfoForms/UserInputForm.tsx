@@ -27,7 +27,6 @@ import { filterDOMProps, joinName } from 'uniforms';
 import { JSONSchemaBridge } from 'uniforms-bridge-json-schema';
 import { AutoField, AutoForm } from 'uniforms-unstyled';
 
-
 import {
     EuiButton,
     EuiButtonColor,
@@ -117,11 +116,11 @@ function resolveRef(reference: string, schema: Record<string, any>) {
 }
 
 class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
-  t: any;
+    t: any;
 
     constructor(schema: JSONSchema6, validator: any, t: any) {
-      super(schema, validator);
-      this.t = t
+        super(schema, validator);
+        this.t = t;
     }
 
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863
@@ -255,9 +254,9 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
         const props = super.getProps(name);
 
         // not translated labels for now
-        const translationKey = name.replace(/\.\d+(.\d+)*/, "_fields"); // This is evaluates to name or name_fields
+        const translationKey = name.replace(/\.\d+(.\d+)*/, '_fields'); // This is evaluates to name or name_fields
         const nextIntlKey = `pydanticForms.backendTranslations.${translationKey}`;
-        const translatedKey = this.t(nextIntlKey)
+        const translatedKey = this.t(nextIntlKey);
         let label = translatedKey !== nextIntlKey ? translatedKey : props.label;
 
         // Mark required inputs. Might be delegated to the form components itself in the future.
@@ -272,9 +271,12 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
 
         props.label = label;
 
-        const descriptionTranslationKey = `pydanticForms.backendTranslations.${translationKey}_info`
-        const translatedDescription = this.t(descriptionTranslationKey)
-        props.description = translatedDescription !== descriptionTranslationKey ? translatedDescription : " " // Default must contain a space as not to be Falsy
+        const descriptionTranslationKey = `pydanticForms.backendTranslations.${translationKey}_info`;
+        const translatedDescription = this.t(descriptionTranslationKey);
+        props.description =
+            translatedDescription !== descriptionTranslationKey
+                ? translatedDescription
+                : ' '; // Default must contain a space as not to be Falsy
 
         props.id = `input-${name}`;
 
@@ -538,7 +540,11 @@ function UserInputForm({
 
     //const prefilledForm = fillPreselection(stepUserInput, location.search);
     const prefilledForm = fillPreselection(stepUserInput, router);
-    const bridge = new CustomTitleJSONSchemaBridge(prefilledForm, () => {}, useTranslations());
+    const bridge = new CustomTitleJSONSchemaBridge(
+        prefilledForm,
+        () => {},
+        useTranslations(),
+    );
     const AutoFieldProvider = AutoField.componentDetectorContext.Provider;
 
     // Get the Button config from the form default values, or default to empty config
@@ -572,13 +578,10 @@ function UserInputForm({
                             {nrOfValidationErrors > 0 && (
                                 <section className="form-errors">
                                     <em className="error backend-validation-metadata">
-                                        {t(
-                                            'inputFieldsHaveValidationErrors',
-                                            {
-                                                nrOfValidationErrors:
-                                                    nrOfValidationErrors,
-                                            },
-                                        )}
+                                        {t('inputFieldsHaveValidationErrors', {
+                                            nrOfValidationErrors:
+                                                nrOfValidationErrors,
+                                        })}
                                     </em>
                                 </section>
                             )}

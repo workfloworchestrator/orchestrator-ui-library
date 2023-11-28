@@ -55,12 +55,12 @@ function CustomApp({
             <SessionProvider session={pageProps.session}>
                 <WfoAuth>
                     <NoSSR>
-                        <TranslationsProvider>
-                            <EuiProvider
-                                colorMode="light"
-                                modify={defaultOrchestratorTheme}
-                            >
-                                <ApiClientContextProvider>
+                        <EuiProvider
+                            colorMode="light"
+                            modify={defaultOrchestratorTheme}
+                        >
+                            <ApiClientContextProvider>
+                                <TranslationsProvider>
                                     <Head>
                                         <title>
                                             Welcome to example-orchestrator-ui!
@@ -100,9 +100,9 @@ function CustomApp({
                                             />
                                         </QueryClientProvider>
                                     </main>
-                                </ApiClientContextProvider>
-                            </EuiProvider>
-                        </TranslationsProvider>
+                                </TranslationsProvider>
+                            </ApiClientContextProvider>
+                        </EuiProvider>
                     </NoSSR>
                 </WfoAuth>
             </SessionProvider>
