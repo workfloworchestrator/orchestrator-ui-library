@@ -9,7 +9,6 @@ import {
     Locale,
     useGetTranslationMessages,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components';
 
 import enUS from './en-US.json';
 import nlNL from './nl-NL.json';
@@ -24,20 +23,15 @@ export const TranslationsProvider = ({
     const { locale } = useRouter();
 
     const standardMessages = useGetTranslationMessages(locale);
-    console.log('standardMessages', standardMessages);
-    const customMessageMap: TranslationMessagesMap = new Map([
-        [Locale.enUS, enUS],
-        [Locale.nlNL, nlNL],
-    ]);
 
     const getCustomMessages = () => {
         switch (locale) {
             case Locale.enUS:
-                return customMessageMap.get(Locale.enUS);
+                return enUS;
             case Locale.nlNL:
-                return customMessageMap.get(Locale.nlNL);
+                return nlNL;
             default:
-                return customMessageMap.get(Locale.enUS);
+                return enUS;
         }
     };
 

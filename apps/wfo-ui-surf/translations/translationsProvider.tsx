@@ -7,9 +7,8 @@ import { useRouter } from 'next/router';
 
 import {
     Locale,
-    getTranslationMessages,
+    useGetTranslationMessages,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import type { TranslationMessagesMap } from '@orchestrator-ui/orchestrator-ui-components';
 
 import enUS from './en-US.json';
 import nlNL from './nl-NL.json';
@@ -23,14 +22,20 @@ export const TranslationsProvider = ({
 }: TranslationsProviderProps) => {
     const { locale } = useRouter();
 
-    const standardMessages = getTranslationMessages(locale);
-    const customMessageMap: TranslationMessagesMap = new Map([
-        [Locale.enUS, enUS],
-        [Locale.nlNL, nlNL],
-    ]);
-    const customMessages = getTranslationMessages(locale, customMessageMap);
+    const standardMessages = useGetTranslationMessages(locale);
 
-    const messages = merge(standardMessages, customMessages);
+    const getCustomMessages = () => {
+        switch (locale) {
+            case Locale.enUS:
+                return enUS;
+            case Locale.nlNL:
+                return nlNL;
+            default:
+                return enUS;
+        }
+    };
+
+    const messages = merge(standardMessages, getCustomMessages());
 
     return <NextIntlProvider messages={messages}>{children}</NextIntlProvider>;
 };
