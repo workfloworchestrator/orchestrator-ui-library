@@ -178,20 +178,20 @@ export class ApiClient extends ApiClientInterface {
         statusList: string[] = [],
         productList: string[] = [],
     ): Promise<NodeSubscription[]> => {
-        const statusFilter = `statuses,${encodeURIComponent(
-            statusList.join('-'),
-        )}`;
-        const tagsFilter = `tags,${encodeURIComponent(tagList.join('-'))}`;
-        const productsFilter = `products,${encodeURIComponent(
-            productList.join('-'),
-        )}`;
+        const filters = [];
+
+        if (tagList.length)
+            filters.push(`tags,${encodeURIComponent(tagList.join('-'))}`);
+        if (statusList.length)
+            filters.push(
+                `statuses,${encodeURIComponent(statusList.join('-'))}`,
+            );
+        if (productList.length)
+            filters.push(
+                `products,${encodeURIComponent(productList.join('-'))}`,
+            );
 
         const params = new URLSearchParams();
-        const filters = [];
-        if (tagList.length) filters.push(tagsFilter);
-        if (statusList.length) filters.push(statusFilter);
-        if (productList.length) filters.push(productsFilter);
-
         if (filters.length) params.set('filter', filters.join(','));
 
         return this.fetchJson(

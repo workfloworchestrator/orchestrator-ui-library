@@ -200,8 +200,8 @@ export const WfoServiceTicketsList = ({
                     ? 1
                     : -1
                 : dataSorting.sortOrder === SortOrder.ASC
-                  ? -1
-                  : 1;
+                ? -1
+                : 1;
         },
     );
 
