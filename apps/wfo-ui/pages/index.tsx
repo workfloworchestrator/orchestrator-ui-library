@@ -12,7 +12,7 @@ import {
 
 export function Index() {
     const { data: session } = useSession();
-    const t = useTranslations(`main`);
+    const t = useTranslations('main');
     const username = session?.user?.name || '';
     return (
         <>

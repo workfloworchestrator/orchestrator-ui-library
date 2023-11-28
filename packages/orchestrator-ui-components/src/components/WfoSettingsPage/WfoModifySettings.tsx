@@ -16,7 +16,7 @@ export const WfoModifySettings: FC<WfoModifySettingsProps> = ({
     engineStatus,
     changeEngineStatus,
 }) => {
-    const t = useTranslations(`settings.page`);
+    const t = useTranslations('settings.page');
     return (
         <EuiPanel
             hasShadow={false}

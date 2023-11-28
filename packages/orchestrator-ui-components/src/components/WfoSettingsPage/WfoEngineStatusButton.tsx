@@ -15,7 +15,7 @@ export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
     engineStatus,
     changeEngineStatus,
 }) => {
-    const t = useTranslations(`settings.page`);
+    const t = useTranslations('settings.page');
     if (!engineStatus) {
         return (
             <EuiButton isLoading fill>

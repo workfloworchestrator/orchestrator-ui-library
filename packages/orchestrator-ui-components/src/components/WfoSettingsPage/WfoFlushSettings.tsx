@@ -25,7 +25,7 @@ const clearCache = async (apiUrl: string, settingName: string) => {
 
 export const WfoFlushSettings: FunctionComponent = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const t = useTranslations(`settings.page`);
+    const t = useTranslations('settings.page');
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
     );

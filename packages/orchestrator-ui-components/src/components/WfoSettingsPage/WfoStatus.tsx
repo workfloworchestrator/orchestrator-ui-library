@@ -21,7 +21,7 @@ export type WfoStatusProps = {
 export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
     const { theme } = useOrchestratorTheme();
     const isRunning = engineStatus === 'RUNNING';
-    const t = useTranslations(`settings.page`);
+    const t = useTranslations('settings.page');
 
     return (
         <EuiPanel
