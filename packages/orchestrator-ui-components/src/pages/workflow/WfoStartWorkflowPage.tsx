@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
 
 import {
     EuiFlexGroup,
@@ -35,10 +36,14 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
+interface StartWorkflowPageQuery extends ParsedUrlQuery {
+    productId?: string;
+    subscriptionId?: string;
+}
+
 interface WfoStartWorkflowPageProps {
     workflowName: string;
     isTask?: boolean;
-    startWorkflowPayload?: StartWorkflowPayload;
 }
 
 export interface UserInputForm {
@@ -46,16 +51,40 @@ export interface UserInputForm {
     hasNext?: boolean;
 }
 
+const getInitialWorkflowPayload = ({
+    productId,
+    subscriptionId,
+}: StartWorkflowPageQuery): StartWorkflowPayload | undefined => {
+    if (productId) {
+        return {
+            product: productId,
+        };
+    }
+    if (subscriptionId) {
+        return {
+            subscription_id: subscriptionId,
+        };
+    }
+    return undefined;
+};
+
 export const WfoStartWorkflowPage = ({
     workflowName,
     isTask = false,
-    startWorkflowPayload,
 }: WfoStartWorkflowPageProps) => {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
+    const { productId, subscriptionId } =
+        router.query as StartWorkflowPageQuery;
+
+    const startWorkflowPayload = useMemo(
+        () => getInitialWorkflowPayload({ productId, subscriptionId }),
+        [productId, subscriptionId],
+    );
+
     const { stepUserInput, hasNext } = form;
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
@@ -104,7 +133,7 @@ export const WfoStartWorkflowPage = ({
                 },
             );
         },
-        [apiClient, workflowName, startWorkflowPayload, router],
+        [apiClient, workflowName, startWorkflowPayload, isTask, router],
     );
 
     useEffect(() => {
