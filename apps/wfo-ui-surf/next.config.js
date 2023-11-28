@@ -3,8 +3,8 @@ module.exports = {
     i18n: {
         // These are all the locales you want to support in
         // your application
-        locales: ['en-US', 'nl-NL'],
-        defaultLocale: 'en-US',
+        locales: ['en-GB', 'nl-NL'],
+        defaultLocale: 'en-GB',
     },
     transpilePackages: ['@orchestrator-ui/orchestrator-ui-components'],
 };
