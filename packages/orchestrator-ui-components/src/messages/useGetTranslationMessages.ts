@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { AbstractIntlMessages } from 'next-intl';
 
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
-
+import { useAxiosApiClient } from '../components/WfoForms/useAxiosApiClient';
 import { Locale } from '../types';
 import enUS from './en-US.json';
 import nlNL from './nl-NL.json';
@@ -20,13 +19,13 @@ export const useGetTranslationMessages = (locale: string | undefined) => {
         // Temporary fix: Mapping en-US to en-GB locale
         const backendLocale =
             locale === Locale.enUS.toString() ? 'en-GB' : locale;
-        let backendMessages;
+
         apiClient
             .axiosFetch<{ forms: { fields: Record<string, string> } }>(
                 `translations/${backendLocale}`,
             )
             .then((response) => {
-                backendMessages = response.forms.fields;
+                const backendMessages = response.forms.fields;
                 setBackendMessages(backendMessages);
             })
             .catch((error) => {
