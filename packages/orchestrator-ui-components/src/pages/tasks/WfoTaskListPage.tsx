@@ -98,23 +98,19 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const handleRerunAllButtonClick = async () => {
-        const isEngineRunning = await isEngineRunningNow();
-        if (!isEngineRunning) {
-            toastMessage.addToast(
-                ToastTypes.ERROR,
-                tErrors('notAllowedWhenEngineIsNotRunningMessage'),
-                tErrors('notAllowedWhenEngineIsNotRunningTitle'),
-            );
-        } else {
-            showConfirmDialog({
-                question: t('rerunAllQuestion'),
-                confirmAction: () => {
-                    retryAllProcesses.mutate();
-                },
-            });
-        }
-    };
+    const handleRerunAllButtonClick = async () =>
+        (await isEngineRunningNow())
+            ? showConfirmDialog({
+                  question: t('rerunAllQuestion'),
+                  confirmAction: () => {
+                      retryAllProcesses.mutate();
+                  },
+              })
+            : toastMessage.addToast(
+                  ToastTypes.ERROR,
+                  tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+                  tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+              );
 
     return (
         <>
