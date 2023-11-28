@@ -80,20 +80,20 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         };
 
         const tooltipIt = (actionItem: ReactJSXElement) => {
-            /** 
-              Whether an action is disabled is indicated by it having a reason property. 
+            /**
+              Whether an action is disabled is indicated by it having a reason property.
               The value of the reason property is as a translation key that should
               be part of the local translations under subscription.details.workflow.disableReasons
               Some of these reasons may contain dynamic values. The values are passed as extra keys next to
               the reason key. The complete reason object is passed to the translate function to make this work.
-              An extra variable passed in might be of type array, before passing it in arrays are flattened to , 
+              An extra variable passed in might be of type array, before passing it in arrays are flattened to ,
               concatenated strings.
-              
+
               Example action item response for an action that is disabled
               const reason = {
                 name: "...",
                 description: "...",
-                reason: "random_reason_translation_key" => 
+                reason: "random_reason_translation_key" =>
                   this maps to a key in subscription.details.workflow.disableReasons containing
                   ".... {randomVar1} .... {randomVar2}  "
                 randomVar: [
@@ -200,7 +200,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
                     {subscriptionActions && subscriptionActions.system && (
                         <>
-                            <MenuBlock title={t('system')}></MenuBlock>
+                            <MenuBlock title={t('tasks')}></MenuBlock>
                             {subscriptionActions.system.map((action, index) => (
                                 <MenuItem
                                     key={`s_${index}`}

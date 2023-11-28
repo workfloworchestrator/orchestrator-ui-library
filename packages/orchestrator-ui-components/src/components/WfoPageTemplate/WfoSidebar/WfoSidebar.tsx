@@ -37,7 +37,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
 
     const defaultMenuItems: EuiSideNavItemType<object>[] = [
         {
-            name: 'Start',
+            name: t('start'),
             id: '2',
             isSelected: router.pathname === PATH_START,
             onClick: (e) => {
@@ -46,7 +46,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             },
         },
         {
-            name: 'Processes',
+            name: t('workflows'),
             id: '3',
             isSelected: router.pathname === PATH_PROCESSES,
             href: PATH_PROCESSES,
@@ -56,7 +56,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             },
         },
         {
-            name: 'Subscriptions',
+            name: t('subscriptions'),
             id: '4',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
             href: PATH_SUBSCRIPTIONS,
@@ -66,14 +66,14 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             },
         },
         {
-            name: 'Metadata',
+            name: t('metadata'),
             id: '5',
             onClick: () => {
                 router.push(PATH_METADATA);
             },
             items: [
                 {
-                    name: 'Products',
+                    name: t('metadataProducts'),
                     id: '5.1',
                     isSelected: router.pathname === PATH_METADATA_PRODUCTS,
                     onClick: (e) => {
@@ -82,7 +82,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     },
                 },
                 {
-                    name: 'Product blocks',
+                    name: t('metadataProductblocks'),
                     id: '5.2',
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
@@ -92,7 +92,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     },
                 },
                 {
-                    name: 'Resource types',
+                    name: t('metadataResourceTypes'),
                     id: '5.3',
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
@@ -102,7 +102,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     },
                 },
                 {
-                    name: 'Workflows',
+                    name: t('metadataWorkflows'),
                     id: '5.4',
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
                     onClick: (e) => {
@@ -113,7 +113,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             ],
         },
         {
-            name: 'Tasks',
+            name: t('tasks'),
             isSelected: router.pathname === PATH_TASKS,
             id: '6',
             onClick: (e) => {
@@ -123,7 +123,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             href: PATH_TASKS,
         },
         {
-            name: 'Settings',
+            name: t('settings'),
             isSelected: router.pathname === PATH_SETTINGS,
             id: '7',
             onClick: (e) => {

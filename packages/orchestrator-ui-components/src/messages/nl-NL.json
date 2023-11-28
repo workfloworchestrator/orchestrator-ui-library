@@ -1,8 +1,18 @@
 {
     "main": {
+        "metadata": "Metadata",
+        "metadataProducts": "Products",
+        "metadataProductblocks": "Product blocks",
+        "metadataResourceTypes": "Resource types",
+        "metadataWorkflows": "Workflows",
+        "mobileTitle": "Hoofdmenu",
+        "settings": "Settings",
+        "start": "Start",
+        "subscriptions": "Subscriptions",
+        "tasks": "Taken",
         "title": "Voorbeeld Orchestrator UI",
         "welcome": "Welkom",
-        "mobileTitle": "Hoofdmenu"
+        "workflows": "Workflows"
     },
     "common": {
         "product": "Produkt",
@@ -35,7 +45,9 @@
             "cancel": "Annuleren",
             "submit": "Verstuur",
             "previous": "Vorige",
-            "runProcess": "Start workflow",
+            "runProcess": "Start",
+            "runTask": "Start taak",
+            "runWorkflow": "Start workflow",
             "cancelProcess": "Annuleren"
         },
         "fields": {
@@ -138,7 +150,7 @@
         },
         "index": {
             "workflowName": "Workflow naam",
-            "step": "Laatste stap",
+            "step": "Huidige stap",
             "status": "Status",
             "product": "Product",
             "customer": "Klant",
@@ -150,7 +162,7 @@
             "started": "Gestart",
             "lastModified": "Aangepast op",
             "workflowTarget": "Target",
-            "productTag": "Tag"
+            "productTag": "Product tag"
         },
         "detail": {
             "retry": "Probeer opnieuw",
@@ -160,7 +172,7 @@
             "deleteQuestion": "Weet je zeker dat je de task {workflowName} wilt verwijderen?",
             "status": "Status",
             "startedBy": "Gestart door",
-            "lastStep": "Laatste stap",
+            "lastStep": "Huidige stap",
             "startedOn": "Gestart op",
             "lastUpdate": "Laatste update",
             "relatedSubscriptions": "Gerelateerde subscriptions",
@@ -169,14 +181,15 @@
         },
         "steps": {
             "steps": "Workflow stappen",
-            "showDelta": "toon subscription delta",
-            "viewOptions": "opties",
+            "showDelta": "Toon subscription delta",
+            "viewOptions": "Opties",
             "expandAll": "klap alles uit",
             "collapseAll": "klap alles in",
             "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
-            "submitTaskFormLabel": "Verstuur het formulier om de workflow te starten",
-            "submitWorkflowFormLabel": "Verstuur het formulier om de task te starten"
+            "submitFormLabel": "Please submit the form to start this task/workflow",
+            "submitTaskFormLabel": "Verstuur het formulier om deze workflow te starten",
+            "submitWorkflowFormLabel": "Verstuur het formulier om deze task te starten"
         }
     },
     "subscriptions": {
@@ -201,14 +214,14 @@
             "tabs": {
                 "general": "Algemeen",
                 "serviceConfiguration": "Service configuratie",
-                "processes": "Processen",
+                "workflows": "Workflows",
                 "relatedSubscriptions": "Gerelateerde subscriptions"
             },
             "loadingStatus": "Laden",
             "actions": {
                 "create": "Create workflow",
                 "modify": "Modify workflow",
-                "system": "System workflow",
+                "tasks": "Taken",
                 "terminate": "Terminate workflow",
                 "actions": "Acties",
                 "subscription": {

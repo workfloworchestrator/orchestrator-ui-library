@@ -1,8 +1,18 @@
 {
     "main": {
+        "metadata": "Metadata",
+        "metadataProducts": "Products",
+        "metadataProductblocks": "Product blocks",
+        "metadataResourceTypes": "Resource types",
+        "metadataWorkflows": "Workflows",
+        "mobileTitle": "Main menu",
+        "settings": "Settings",
+        "start": "Start",
+        "subscriptions": "Subscriptions",
+        "tasks": "Tasks",
         "title": "Welcome to example-orchestrator-ui!",
         "welcome": "Welcome",
-        "mobileTitle": "Main menu"
+        "workflows": "Workflows"
     },
     "common": {
         "product": "Product",
@@ -35,8 +45,10 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
-            "runProcess": "Run process",
-            "cancelProcess": "Cancel process"
+            "runProcess": "Start",
+            "runTask": "Start task",
+            "runWorkflow": "start workflow",
+            "cancelProcess": "Cancel"
         },
         "fields": {
             "bfd": {
@@ -138,7 +150,7 @@
         },
         "index": {
             "workflowName": "Workflow",
-            "step": "Last step",
+            "step": "Current step",
             "status": "Status",
             "product": "Product",
             "customer": "Customer",
@@ -146,11 +158,11 @@
             "subscriptions": "Subscriptions",
             "createdBy": "Created by",
             "assignee": "Assignee",
-            "processId": "PID",
+            "processId": "Process ID",
             "started": "Started",
             "lastModified": "Last modified",
             "workflowTarget": "Target",
-            "productTag": "Tag"
+            "productTag": "Product tag"
         },
         "detail": {
             "retry": "Retry",
@@ -160,7 +172,7 @@
             "deleteQuestion": "Are you sure you want to delete the task {workflowName}?",
             "status": "Status",
             "startedBy": "Started by",
-            "lastStep": "Last step",
+            "lastStep": "Current step",
             "startedOn": "Started on",
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",
@@ -169,14 +181,15 @@
         },
         "steps": {
             "steps": "Workflow steps",
-            "showDelta": "show subscription delta",
-            "viewOptions": "options",
-            "expandAll": "expand all",
+            "showDelta": "Show subscription delta",
+            "viewOptions": "Options",
+            "expandAll": "Expand all",
             "collapseAll": "collapse all",
             "duration": "Duration",
             "userInput": "User input",
-            "submitTaskFormLabel": "Please submit the form to start the task",
-            "submitWorkflowFormLabel": "Please submit the form to start the workflow"
+            "submitFormLabel": "Please submit the form to start this task/workflow",
+            "submitTaskFormLabel": "Please submit the form to start this task",
+            "submitWorkflowFormLabel": "Please submit the form to start this workflow"
         }
     },
     "subscriptions": {
@@ -201,14 +214,14 @@
             "tabs": {
                 "general": "General",
                 "serviceConfiguration": "Service configuration",
-                "processes": "Processes",
+                "workflows": "Workflows",
                 "relatedSubscriptions": "Related subscriptions"
             },
             "loadingStatus": "Loading status",
             "actions": {
                 "create": "Create workflow",
                 "modify": "Modify workflow",
-                "system": "System workflow",
+                "tasks": "Tasks",
                 "terminate": "Terminate workflow",
                 "actions": "Actions",
                 "subscription": {
