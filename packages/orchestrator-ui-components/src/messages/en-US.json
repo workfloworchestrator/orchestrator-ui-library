@@ -1,13 +1,24 @@
 {
     "main": {
+        "metadata": "Metadata",
+        "metadataProducts": "Products",
+        "metadataProductblocks": "Product blocks",
+        "metadataResourceTypes": "Resource types",
+        "metadataWorkflows": "Workflows",
+        "mobileTitle": "Main menu",
+        "settings": "Settings",
+        "start": "Start",
+        "subscriptions": "Subscriptions",
+        "tasks": "Tasks",
         "title": "Welcome to example-orchestrator-ui!",
-        "mobileTitle": "Main menu"
+        "welcome": "Welcome",
+        "workflows": "Workflows"
     },
     "common": {
-        "addToFavorites": "Add to favorites",
         "product": "Product",
         "deselect": "Deselect",
         "close": "Close",
+        "editColumns": "Edit columns",
         "newSubscription": "New subscription",
         "newTask": "New task",
         "noFailedTasks": "No failed tasks!",
@@ -34,16 +45,18 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
-            "runProcess": "Run Process",
-            "cancelProcess": "Cancel Process"
+            "runProcess": "Start",
+            "runTask": "Start task",
+            "runWorkflow": "start workflow",
+            "cancelProcess": "Cancel"
         },
         "fields": {
             "bfd": {
-                "description": "Bidirectional Forwarding Detection",
+                "description": "Bidirectional forwarding detection",
                 "title": "BFD"
             },
-            "esi_service_ports_add": "Add Endpoint",
-            "esi_service_ports_del": "Delete Endpoint"
+            "esi_service_ports_add": "Add endpoint",
+            "esi_service_ports_del": "Delete endpoint"
         },
         "widgets": {
             "organisation": {
@@ -119,7 +132,7 @@
         "resourceTypes": {
             "type": "Resource type",
             "description": "Resource type description",
-            "resourceId": "Resource Id",
+            "resourceId": "Resource ID",
             "usedInProductBlocks": "Used in product blocks"
         },
         "workflows": {
@@ -137,19 +150,19 @@
         },
         "index": {
             "workflowName": "Workflow",
-            "step": "Last step",
+            "step": "Current step",
             "status": "Status",
             "product": "Product",
             "customer": "Customer",
             "customerAbbreviation": "Customer abbreviation",
             "subscriptions": "Subscriptions",
-            "createdBy": "Created By",
+            "createdBy": "Created by",
             "assignee": "Assignee",
-            "processId": "PID",
+            "processId": "Process ID",
             "started": "Started",
-            "lastModified": "Last Modified",
+            "lastModified": "Last modified",
             "workflowTarget": "Target",
-            "productTag": "Tag"
+            "productTag": "Product tag"
         },
         "detail": {
             "retry": "Retry",
@@ -163,7 +176,7 @@
             "retryWorkflowQuestion": "Are you sure you want to retry the {workflowName} workflow?",
             "status": "Status",
             "startedBy": "Started by",
-            "lastStep": "Last step",
+            "lastStep": "Current step",
             "startedOn": "Started on",
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",
@@ -173,12 +186,14 @@
         "steps": {
             "steps": "Workflow steps",
             "showDelta": "Show subscription delta",
-            "viewOptions": "View options",
-            "expandAll": "expand all",
+            "viewOptions": "Options",
+            "expandAll": "Expand all",
             "collapseAll": "collapse all",
-            "duration": "Looptijd",
-            "userInput": "User Input",
-            "submitFormLabel": "Please complete and submit the form below to start the workflow"
+            "duration": "Duration",
+            "userInput": "User input",
+            "submitFormLabel": "Please submit the form to start this task/workflow",
+            "submitTaskFormLabel": "Please submit the form to start this task",
+            "submitWorkflowFormLabel": "Please submit the form to start this workflow"
         }
     },
     "subscriptions": {
@@ -195,22 +210,22 @@
             "insync": "In Sync",
             "product": "Product",
             "tag": "Tag",
-            "startDate": "Start Date",
-            "endDate": "End Date",
+            "startDate": "Start date",
+            "endDate": "End date",
             "note": "Note"
         },
         "detail": {
             "tabs": {
                 "general": "General",
                 "serviceConfiguration": "Service configuration",
-                "processes": "Processes",
+                "workflows": "Workflows",
                 "relatedSubscriptions": "Related subscriptions"
             },
             "loadingStatus": "Loading status",
             "actions": {
                 "create": "Create workflow",
                 "modify": "Modify workflow",
-                "system": "System workflow",
+                "tasks": "Tasks",
                 "terminate": "Terminate workflow",
                 "actions": "Actions",
                 "subscription": {
@@ -257,7 +272,7 @@
             "endDate": "End date",
             "note": "Note",
             "noRelatedSubscriptions": "No related subscriptions found",
-            "hideTerminatedRelatedSubscriptions": "Hide terminated related subscriptions",
+            "hideTerminatedRelatedSubscriptions": "Hide terminated subscriptions",
             "processDetail": {
                 "id": "ID",
                 "status": "Status",
@@ -270,6 +285,18 @@
         "page": {
             "rerunAll": "Rerun all",
             "rerunAllQuestion": "Are you sure you want to rerun all failed tasks?"
+        }
+    },
+    "settings": {
+        "page": {
+            "flushButton": "Flush",
+            "flushCacheSettingsTitle": "Flush cache settings",
+            "engineStatus": "Workflow engine status",
+            "modifyEngine": "Modify the engine settings",
+            "pauseEngine": "Pause workflow engine",
+            "runningProcesses": "Running processes",
+            "selectSettings": "Select cache",
+            "startEngine": "Start workflow engine"
         }
     }
 }

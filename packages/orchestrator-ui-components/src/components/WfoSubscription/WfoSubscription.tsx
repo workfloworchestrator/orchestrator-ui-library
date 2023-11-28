@@ -39,7 +39,7 @@ const tabs = [
     },
     {
         id: SubscriptionTabIds.PROCESSES_TAB,
-        translationKey: 'tabs.processes',
+        translationKey: 'tabs.workflows',
         prepend: <EuiIcon type="indexRuntime" />,
     },
     {

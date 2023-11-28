@@ -202,7 +202,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
                     {subscriptionActions && subscriptionActions.system && (
                         <>
-                            <MenuBlock title={t('system')}></MenuBlock>
+                            <MenuBlock title={t('tasks')}></MenuBlock>
                             {subscriptionActions.system.map((action, index) => (
                                 <MenuItem
                                     key={`s_${index}`}

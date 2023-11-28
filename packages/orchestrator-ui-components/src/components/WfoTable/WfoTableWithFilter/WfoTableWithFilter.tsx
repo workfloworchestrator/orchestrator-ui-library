@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     Criteria,
     EuiButton,
@@ -83,6 +85,7 @@ export const WfoTableWithFilter = <T,>({
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
         useState<T | undefined>(undefined);
+    const t = useTranslations('common');
 
     useEffect(() => {
         if (defaultHiddenColumns) {
@@ -194,7 +197,7 @@ export const WfoTableWithFilter = <T,>({
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
-                    Edit columns
+                    {t('editColumns')}
                 </EuiButton>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
