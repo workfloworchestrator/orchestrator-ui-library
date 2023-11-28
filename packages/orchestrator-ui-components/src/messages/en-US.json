@@ -45,18 +45,9 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
-            "runProcess": "Start",
-            "runTask": "Start task",
-            "runWorkflow": "start workflow",
-            "cancelProcess": "Cancel"
-        },
-        "fields": {
-            "bfd": {
-                "description": "Bidirectional forwarding detection",
-                "title": "BFD"
-            },
-            "esi_service_ports_add": "Add endpoint",
-            "esi_service_ports_del": "Delete endpoint"
+            "runProcess": "Run Process",
+            "cancelProcess": "Cancel Process",
+            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
         },
         "widgets": {
             "organisation": {
