@@ -10,7 +10,7 @@ import {
     useGetTranslationMessages,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import enUS from './en-US.json';
+import enGB from './en-GB.json';
 import nlNL from './nl-NL.json';
 
 interface TranslationsProviderProps {
@@ -26,12 +26,12 @@ export const TranslationsProvider = ({
 
     const getCustomMessages = () => {
         switch (locale) {
-            case Locale.enUS:
-                return enUS;
+            case Locale.enGB:
+                return enGB;
             case Locale.nlNL:
                 return nlNL;
             default:
-                return enUS;
+                return enGB;
         }
     };
 

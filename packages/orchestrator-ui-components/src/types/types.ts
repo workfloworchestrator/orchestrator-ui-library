@@ -364,7 +364,7 @@ export interface CacheOption {
 }
 
 export enum Locale {
-    enUS = 'en-US',
+    enGB = 'en-GB',
     nlNL = 'nl-NL',
 }
 

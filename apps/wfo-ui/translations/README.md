@@ -4,7 +4,7 @@ The standard Wfo component library has translations included, they can be found 
 Overriding happens on a per key basis
 
 _example_
-The standard library in en-US.json provides
+The standard library in en-GB.json provides
 
 ```
 {
@@ -17,7 +17,7 @@ The standard library in en-US.json provides
 }
 ```
 
-A file in this folder with the same locale 'en-US.json' provides
+A file in this folder with the same locale 'en-GB.json' provides
 
 ```
 {
