@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
     EuiAvatar,
@@ -16,10 +17,13 @@ import {
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_PROCESS } from '@/components';
+import { ToastTypes } from '@/contexts';
 import {
     SubscriptionAction,
+    useEngineStatusQuery,
     useOrchestratorTheme,
     useSubscriptionActions,
+    useToastMessage,
 } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
 import { WorkflowTarget } from '@/types';
@@ -52,10 +56,14 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
 
+    const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);
+    const tErrors = useTranslations('errors');
+    const { isEngineRunningNow } = useEngineStatusQuery();
+    const toastMessage = useToastMessage();
 
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
@@ -69,13 +77,27 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         // Change icon to include x if there's a reason
         // Add tooltip with reason
         const linkIt = (actionItem: ReactJSXElement) => {
+            const url = {
+                pathname: `${PATH_START_NEW_PROCESS}/${action.name}`,
+                query: { subscriptionId: subscriptionId },
+            };
+
+            const handleLinkClick = async (e: React.MouseEvent) => {
+                e.preventDefault();
+                const isEngineRunning = await isEngineRunningNow();
+                if (!isEngineRunning) {
+                    return toastMessage.addToast(
+                        ToastTypes.ERROR,
+                        tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+                        tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+                    );
+                }
+
+                router.push(url);
+            };
+
             return (
-                <Link
-                    href={{
-                        pathname: `${PATH_START_NEW_PROCESS}/${action.name}`,
-                        query: { subscriptionId: subscriptionId },
-                    }}
-                >
+                <Link href={url} onClick={handleLinkClick}>
                     {actionItem}
                 </Link>
             );

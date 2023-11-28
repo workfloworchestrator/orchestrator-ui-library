@@ -4,8 +4,13 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import { PATH_START_NEW_TASK } from '@/components';
+import { ToastTypes } from '@/contexts';
 import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '@/graphqlQueries/workflows/workflowsQueryForDropdownList';
-import { useQueryWithGraphql } from '@/hooks';
+import {
+    useEngineStatusQuery,
+    useQueryWithGraphql,
+    useToastMessage,
+} from '@/hooks';
 
 import {
     WfoButtonComboBox,
@@ -15,6 +20,9 @@ import {
 export const WfoStartTaskButtonComboBox = () => {
     const router = useRouter();
     const t = useTranslations('common');
+    const tErrors = useTranslations('errors');
+    const { isEngineRunningNow } = useEngineStatusQuery();
+    const toastMessage = useToastMessage();
 
     const { data } = useQueryWithGraphql(
         GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY,
@@ -34,7 +42,19 @@ export const WfoStartTaskButtonComboBox = () => {
         }))
         .sort((a, b) => a.label.localeCompare(b.label));
 
-    const handleOptionChange = (selectedProduct: WorkflowComboBoxOption) => {
+    const handleOptionChange = async (
+        selectedProduct: WorkflowComboBoxOption,
+    ) => {
+        const isEngineRunning = await isEngineRunningNow();
+
+        if (!isEngineRunning) {
+            return toastMessage.addToast(
+                ToastTypes.ERROR,
+                tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+                tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+            );
+        }
+
         const { workflowName } = selectedProduct.data;
         router.push({
             pathname: `${PATH_START_NEW_TASK}/${workflowName}`,
