@@ -66,7 +66,7 @@
                 "placeholder": "Naam placeholder"
             },
             "node_select": {
-                "nodes_loading": "Nodes laden",
+                "nodes_loading": "Nodes laden...",
                 "select_node": "Selecteer node",
                 "no_nodes_placeholder": "Geen nodes"
             },
@@ -91,11 +91,18 @@
                 "invalidVlan": "Invalid VLAN - Voer een range of geldige [2-4094] VLAN integers in, bijvoorbeeld: '2, 5-6, 1048-1052'",
                 "untaggedPortInUse": "Deze service port is al in gebruik en kan niet worden gekozen",
                 "taggedOnly": "VLAN is alleen relevant SN7, MSP of SN8 SP in tagged mode, niet voor link_member of untagged ports.",
-                "loadingIms": "VLAN informatie aan het laden uit IMS"
+                "loadingIms": "VLAN informatie aan het laden uit IMS..."
             },
             "subscription": {
                 "placeholder": "Kies een subscription",
                 "loading": "Subscriptions ophalen..."
+            },
+            "nodePort": {
+                "loadingNodes": "Node subscriptions laden...",
+                "loadingPorts": "IMS poorten laden...",
+                "selectNode": "Selecteer node",
+                "selectPort": "Selecteer poort",
+                "selectNodeFirst": "Selecteer eerst een node"
             }
         }
     },

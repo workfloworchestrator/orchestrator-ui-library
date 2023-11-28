@@ -1,3 +1,19 @@
+import { ProductDefinition } from '../../../../types';
+
+export interface NodeSubscription {
+    name: string;
+    subscription_id: string;
+    description: string;
+    product: ProductDefinition;
+    product_id: string;
+    status: string;
+    insync: boolean;
+    customer_id: string;
+    start_date: number;
+    end_date: number;
+    note: string;
+}
+
 export interface ServicePort {
     subscription_id?: string;
     vlan?: string;
@@ -20,6 +36,16 @@ export enum ProductTag {
     SPNL = 'SPNL',
     AGGSP = 'AGGSP',
     AGGSPNL = 'AGGSPNL',
+}
+
+export interface ImsPort {
+    id: number;
+    line_name: string;
+    node: string;
+    port: string;
+    iface_type: string;
+    patchposition: string;
+    status: string;
 }
 
 export interface ImsNode {

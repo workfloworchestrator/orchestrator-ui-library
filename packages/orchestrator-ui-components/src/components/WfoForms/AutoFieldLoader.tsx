@@ -8,6 +8,7 @@ import {
     DateField,
     DividerField,
     ImsNodeIdField,
+    ImsPortIdField,
     IpNetworkField,
     LabelField,
     ListField,
@@ -22,6 +23,7 @@ import {
     SelectField,
     SubscriptionField,
     SubscriptionSummaryField,
+    SummaryField,
     TextField,
     TimestampField,
     VlanField,
@@ -43,7 +45,7 @@ export function autoFieldFunction(
         case Number:
             switch (format) {
                 case 'imsPortId': // Surf specific
-                    return NumField;
+                    return ImsPortIdField;
                 case 'imsNodeId': // Surf specific
                     return ImsNodeIdField;
                 case 'timestamp':
@@ -68,6 +70,8 @@ export function autoFieldFunction(
                     return LabelField;
                 case 'divider':
                     return DividerField;
+                case 'summary':
+                    return SummaryField;
                 case 'subscription':
                     return SubscriptionSummaryField;
                 case 'organisationId':
