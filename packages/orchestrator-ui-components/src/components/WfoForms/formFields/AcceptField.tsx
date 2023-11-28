@@ -71,11 +71,11 @@ function Accept({
     data,
     ...props
 }: AcceptFieldProps) {
-    const t = useTranslations('pydanticForms.widgets');
+    const t = useTranslations('pydanticForms.backendTranslations');
     const { acceptFieldStyle } = useWithOrchestratorTheme(getStyles);
 
     const legacy = !data;
-    const i18nBaseKey = data ? `forms.fields.${name}_accept` : 'forms.fields';
+    const i18nBaseKey = `${name}_accept`;
 
     data = data ?? [
         [name, 'label', {}],
@@ -128,6 +128,7 @@ function Accept({
             >
                 {data.map((entry, index) => {
                     const label = t(`${i18nBaseKey}.${entry[0]}`, entry[2]);
+
                     switch (entry[1]) {
                         case 'label':
                             return (
@@ -170,7 +171,7 @@ function Accept({
                                     key={index}
                                     className="euiFormLabel euiFormRow__label warning"
                                 >
-                                    {label}
+                                    {label}: <br />
                                 </label>
                             );
                         case 'skip':
