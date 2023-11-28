@@ -85,7 +85,7 @@ export const WfoTableWithFilter = <T,>({
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
         useState<T | undefined>(undefined);
-    const t = useTranslations(`common`);
+    const t = useTranslations('common');
 
     useEffect(() => {
         if (defaultHiddenColumns) {
