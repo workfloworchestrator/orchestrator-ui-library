@@ -20,8 +20,12 @@ import {
     WfoLoading,
     WfoTimeline,
 } from '@/components';
-import { ConfirmationDialogContext } from '@/contexts';
-import { useOrchestratorTheme } from '@/hooks';
+import { ConfirmationDialogContext, ToastTypes } from '@/contexts';
+import {
+    useEngineStatusQuery,
+    useOrchestratorTheme,
+    useToastMessage,
+} from '@/hooks';
 import { useMutateProcess } from '@/hooks';
 import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '@/icons';
 import { ProcessDetail, ProcessStatus } from '@/types';
@@ -89,10 +93,13 @@ export const WfoProcessDetail = ({
     onTimelineItemClick,
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
+    const tErrors = useTranslations('errors');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
+    const { isEngineRunningNow } = useEngineStatusQuery();
+    const toastMessage = useToastMessage();
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -119,6 +126,58 @@ export const WfoProcessDetail = ({
 
     const processIsTask = processDetail?.isTask === true;
 
+    const handleActionButtonClick = (action: () => void) => async () =>
+        (await isEngineRunningNow())
+            ? action()
+            : toastMessage.addToast(
+                  ToastTypes.ERROR,
+                  tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+                  tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+              );
+
+    const retryAction = () =>
+        showConfirmDialog({
+            question: t(
+                processIsTask ? 'retryTaskQuestion' : 'retryWorkflowQuestion',
+                {
+                    workflowName: processDetail?.workflowName,
+                },
+            ),
+            confirmAction: () => {
+                processDetail?.processId &&
+                    retryProcess.mutate(processDetail.processId);
+            },
+        });
+
+    const resumeAction = () => alert('TODO: Implement resume');
+
+    const abortAction = () =>
+        showConfirmDialog({
+            question: t(
+                processIsTask ? 'abortTaskQuestion' : 'abortWorkflowQuestion',
+                {
+                    workflowName: processDetail?.workflowName,
+                },
+            ),
+            confirmAction: () => {
+                processDetail?.processId &&
+                    abortProcess.mutate(processDetail.processId);
+                router.push(processIsTask ? PATH_TASKS : PATH_PROCESSES);
+            },
+        });
+
+    const deleteAction = () =>
+        showConfirmDialog({
+            question: t('deleteQuestion', {
+                workflowName: processDetail?.workflowName,
+            }),
+            confirmAction: () => {
+                processDetail?.processId &&
+                    deleteProcess.mutate(processDetail.processId);
+                router.push(PATH_TASKS);
+            },
+        });
+
     return (
         <>
             <EuiFlexGroup>
@@ -134,25 +193,7 @@ export const WfoProcessDetail = ({
                     gutterSize="s"
                 >
                     <EuiButton
-                        onClick={() =>
-                            showConfirmDialog({
-                                question: t(
-                                    processIsTask
-                                        ? 'retryTaskQuestion'
-                                        : 'retryWorkflowQuestion',
-                                    {
-                                        workflowName:
-                                            processDetail?.workflowName,
-                                    },
-                                ),
-                                confirmAction: () => {
-                                    processDetail?.processId &&
-                                        retryProcess.mutate(
-                                            processDetail.processId,
-                                        );
-                                },
-                            })
-                        }
+                        onClick={handleActionButtonClick(retryAction)}
                         iconType={() => (
                             <WfoRefresh
                                 color={
@@ -167,7 +208,7 @@ export const WfoProcessDetail = ({
                         {t('retry')}
                     </EuiButton>
                     <EuiButton
-                        onClick={() => alert('TODO: Implement resume')}
+                        onClick={handleActionButtonClick(resumeAction)}
                         iconType={() => (
                             <WfoPlayFill
                                 color={
@@ -182,30 +223,7 @@ export const WfoProcessDetail = ({
                         {t('resume')}
                     </EuiButton>
                     <EuiButton
-                        onClick={() =>
-                            showConfirmDialog({
-                                question: t(
-                                    processIsTask
-                                        ? 'abortTaskQuestion'
-                                        : 'abortWorkflowQuestion',
-                                    {
-                                        workflowName:
-                                            processDetail?.workflowName,
-                                    },
-                                ),
-                                confirmAction: () => {
-                                    processDetail?.processId &&
-                                        abortProcess.mutate(
-                                            processDetail.processId,
-                                        );
-                                    router.push(
-                                        processIsTask
-                                            ? PATH_TASKS
-                                            : PATH_PROCESSES,
-                                    );
-                                },
-                            })
-                        }
+                        onClick={handleActionButtonClick(abortAction)}
                         iconType={() => (
                             <WfoXCircleFill
                                 color={
@@ -222,21 +240,7 @@ export const WfoProcessDetail = ({
                     </EuiButton>
                     {processDetail && processIsTask && (
                         <EuiButton
-                            onClick={() =>
-                                showConfirmDialog({
-                                    question: t('deleteQuestion', {
-                                        workflowName:
-                                            processDetail?.workflowName,
-                                    }),
-                                    confirmAction: () => {
-                                        processDetail.processId &&
-                                            deleteProcess.mutate(
-                                                processDetail.processId,
-                                            );
-                                        router.push(PATH_TASKS);
-                                    },
-                                })
-                            }
+                            onClick={handleActionButtonClick(deleteAction)}
                             iconType={() => (
                                 <WfoXCircleFill
                                     color={
