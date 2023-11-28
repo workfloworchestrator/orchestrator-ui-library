@@ -1,16 +1,16 @@
-import { useContext } from 'react';
+import { defaultOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
 import {
-    MinimalImpactNotificationLevel,
-    ServiceTicketApiImpactLevel,
-    ServiceTicketCustomerRelation,
-    ServiceTicketImpactedObject,
-    ServiceTicketImpactedObjectColumns,
-    ServiceTicketImpactedObjectImpact,
+    ImpactLevel,
+    ImpactLevelFromApi,
+    ImpactedCustomerRelation,
+    ImpactedCustomersTableColumns,
+    ImpactedObject,
+    MinlObjectFromApi,
     ServiceTicketProcessState,
-    SubscriptionImpactCustomerTableColumns,
+    ServiceTicketWithDetails,
 } from '../../types';
+import { ColorMappings } from '../../utils/getColorForState';
 
 export const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN_RELATED,
@@ -19,48 +19,44 @@ export const abortEnabledValues: ServiceTicketProcessState[] = [
 ];
 
 const impactedObjectPriority = [
-    ServiceTicketImpactedObjectImpact.NO_IMPACT,
-    ServiceTicketImpactedObjectImpact.REDUCED_REDUNDANCY,
-    ServiceTicketImpactedObjectImpact.RESILIENCE_LOSS,
-    ServiceTicketImpactedObjectImpact.DOWN,
+    ImpactLevel.NO_IMPACT,
+    ImpactLevel.REDUCED_REDUNDANCY,
+    ImpactLevel.RESILIENCE_LOSS,
+    ImpactLevel.DOWN,
 ];
 
-export const getImpactedObjectPriority = (
-    impact: ServiceTicketImpactedObjectImpact,
-) => {
+export const getImpactedObjectPriority = (impact: ImpactLevel) => {
     return impactedObjectPriority.indexOf(impact);
 };
 
-export const mapApiImpactLevelToUi = (
-    apiImpactLevel?: ServiceTicketApiImpactLevel,
+export const convertApiToUiImpactLevel = (
+    apiImpactLevel?: ImpactLevelFromApi,
 ) => {
     switch (apiImpactLevel) {
-        case ServiceTicketApiImpactLevel.NO_IMPACT:
-            return ServiceTicketImpactedObjectImpact.NO_IMPACT;
-        case ServiceTicketApiImpactLevel.REDUCED_REDUNDANCY:
-            return ServiceTicketImpactedObjectImpact.REDUCED_REDUNDANCY;
-        case ServiceTicketApiImpactLevel.RESILIENCE_LOSS:
-            return ServiceTicketImpactedObjectImpact.RESILIENCE_LOSS;
-        case ServiceTicketApiImpactLevel.DOWN:
-            return ServiceTicketImpactedObjectImpact.DOWN;
+        case ImpactLevelFromApi.NO_IMPACT:
+            return ImpactLevel.NO_IMPACT;
+        case ImpactLevelFromApi.REDUCED_REDUNDANCY:
+            return ImpactLevel.REDUCED_REDUNDANCY;
+        case ImpactLevelFromApi.RESILIENCE_LOSS:
+            return ImpactLevel.RESILIENCE_LOSS;
+        case ImpactLevelFromApi.DOWN:
+            return ImpactLevel.DOWN;
         default:
-            return '';
+            return null;
     }
 };
 
-export const getMinlValueForUi = (
+export const getMinlForCustomer = (
     customerId: string,
-    minl: MinimalImpactNotificationLevel[],
+    apiMinl: MinlObjectFromApi[],
 ) => {
-    const impact: ServiceTicketApiImpactLevel | undefined = minl.find(
-        (m) => m.customer_id === customerId,
-    )?.impact;
-    return mapApiImpactLevelToUi(impact);
+    const impact = apiMinl.find((m) => m.customer_id === customerId)?.impact;
+    return convertApiToUiImpactLevel(impact);
 };
 
 export const calculateInformCustomer = (
-    sendingLevel: ServiceTicketImpactedObjectImpact,
-    acceptedImpact: ServiceTicketImpactedObjectImpact,
+    sendingLevel: ImpactLevel,
+    acceptedImpact: ImpactLevel,
 ) => {
     return (
         getImpactedObjectPriority(acceptedImpact) >=
@@ -69,39 +65,33 @@ export const calculateInformCustomer = (
 };
 
 export const calculateSendingLevel = (
-    acceptedImpact: ServiceTicketImpactedObjectImpact,
-    minl: ServiceTicketImpactedObjectImpact,
-    defaultSendingLevel: ServiceTicketImpactedObjectImpact,
+    acceptedImpactLevel: ImpactLevel,
+    minimalImpactLevel: ImpactLevel | null,
+    defaultSendingLevel: ImpactLevel,
 ) => {
-    if (minl) {
-        return getImpactedObjectPriority(acceptedImpact) >=
-            getImpactedObjectPriority(minl)
-            ? acceptedImpact
-            : minl;
-    }
-    return defaultSendingLevel;
+    return minimalImpactLevel ? minimalImpactLevel : defaultSendingLevel;
 };
 
-export const getImsCalculatedImpact = (object: ServiceTicketImpactedObject) => {
+export const getImsCalculatedImpact = (object: ImpactedObject) => {
     return object.ims_circuits[object.ims_circuits.length - 1].impact;
 };
 
-export const mapImpactedObjectToCustomerTableColumns = (
-    impactedObject: ServiceTicketImpactedObject,
-    minlObjectFromApi: MinimalImpactNotificationLevel,
-    cimDefaultSendingLevel: ServiceTicketImpactedObjectImpact,
+export const mapImpactedObjectToImpactedCustomersColumns = (
+    impactedObject: ImpactedObject,
+    minlObjectFromApi: MinlObjectFromApi[],
+    cimDefaultSendingLevel: ImpactLevel,
 ) => {
-    const customerTableColumns: SubscriptionImpactCustomerTableColumns[] = [];
+    const customerTableColumns: ImpactedCustomersTableColumns[] = [];
 
     const allCustomers = [
         {
             customer: impactedObject.owner_customer,
-            relation: ServiceTicketCustomerRelation.OWNER,
+            relation: ImpactedCustomerRelation.OWNER,
             contacts: impactedObject.owner_customer_contacts,
         },
         ...impactedObject.related_customers.map((object) => ({
             customer: object.customer,
-            relation: ServiceTicketCustomerRelation.RELATED,
+            relation: ImpactedCustomerRelation.RELATED,
             contacts: object.contacts,
         })),
     ];
@@ -110,8 +100,7 @@ export const mapImpactedObjectToCustomerTableColumns = (
         const acceptedImpact =
             impactedObject.impact_override ??
             getImsCalculatedImpact(impactedObject);
-
-        const customerMinl = getMinlValueForUi(
+        const customerMinl = getMinlForCustomer(
             object.customer.customer_id,
             minlObjectFromApi,
         );

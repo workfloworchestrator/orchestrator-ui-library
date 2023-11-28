@@ -8,7 +8,7 @@ export type ColorMappings = {
 
 export const getColorForState = (
     colorMappings: ColorMappings,
-    state: ServiceTicketProcessState,
+    state: string,
 ): string => {
     for (const [colorName, states] of Object.entries(colorMappings)) {
         if (states.includes(state)) {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FC, ReactNode, createContext } from 'react';
 
+import { ImpactLevel } from '../types';
+
 export const useSurfConfig = (initialSurfConfig: SurfConfig) => {
     const [surfConfig] = useState(initialSurfConfig);
     return {
@@ -9,11 +11,11 @@ export const useSurfConfig = (initialSurfConfig: SurfConfig) => {
 };
 
 export type SurfConfig = {
-    cimDefaultSendingLevel: string;
+    cimDefaultSendingLevel: ImpactLevel;
 };
 
 export const SurfConfigContext = createContext<SurfConfig>({
-    cimDefaultSendingLevel: '',
+    cimDefaultSendingLevel: ImpactLevel.NO_IMPACT,
 });
 
 export type SuftConfigProviderProps = {

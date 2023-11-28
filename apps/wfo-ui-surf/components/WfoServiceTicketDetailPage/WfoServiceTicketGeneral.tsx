@@ -22,8 +22,9 @@ import { WfoStatistic } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { SurfConfigContext } from '../../contexts/surfConfigContext';
 import { ServiceTicketWithDetails } from '../../types';
+import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
-import { WfoSubscriptionImpactTable } from './WfoSubscriptionImpactTable';
+import { WfoImpactTable } from './WfoImpactTable';
 
 interface WfoSubscriptionGeneralProps {
     serviceTicketGeneral: ServiceTicketWithDetails;
@@ -114,14 +115,10 @@ export const WfoServiceTicketGeneral = ({
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <WfoBadge
-                        textColor={theme.colors.warningText}
-                        color={toSecondaryColor(theme.colors.warning)}
-                    >
-                        <EuiText>
-                            <b>{cimDefaultSendingLevel}</b>
-                        </EuiText>
-                    </WfoBadge>
+                    <WfoImpactLevelBadge
+                        impactedObjectImpact={cimDefaultSendingLevel}
+                        size={'m'}
+                    />
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
@@ -160,9 +157,7 @@ export const WfoServiceTicketGeneral = ({
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size={'m'} />
-            <WfoSubscriptionImpactTable
-                serviceTicketDetail={serviceTicketGeneral}
-            />
+            <WfoImpactTable serviceTicketDetail={serviceTicketGeneral} />
         </>
     );
 };

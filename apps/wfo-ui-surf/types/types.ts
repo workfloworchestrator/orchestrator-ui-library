@@ -101,21 +101,28 @@ export interface ServiceTicketLog {
     completed: boolean;
 }
 
-export enum ServiceTicketImpactedObjectImpact {
+export enum ImpactLevel {
     NO_IMPACT = 'no_impact',
     REDUCED_REDUNDANCY = 'reduced_redundancy',
     RESILIENCE_LOSS = 'resilience_loss',
     DOWN = 'down',
 }
 
+export enum ImpactLevelFromApi {
+    NO_IMPACT = 'No Impact',
+    REDUCED_REDUNDANCY = 'Reduced Redundancy',
+    RESILIENCE_LOSS = 'Lost Resiliency',
+    DOWN = 'Downtime',
+}
+
 export interface ServiceTicketImpactedIMSCircuit {
     ims_circuit_id: number;
     ims_circuit_name: string;
-    impact: ServiceTicketImpactedObjectImpact;
+    impact: ImpactLevel;
     extra_information?: string;
 }
 
-export interface ServiceTicketCustomer {
+export interface ImpactedCustomer {
     customer_id: string;
     customer_name: string;
     customer_abbrev: string;
@@ -124,53 +131,54 @@ export interface ServiceTicketBackgroundJobCount {
     number_of_active_jobs: number;
 }
 
-export interface ServiceTicketContact {
+export interface ImpactedCustomerContact {
     name: string;
     email: string;
 }
 
-export interface ServiceTicketRelatedCustomer {
-    customer: ServiceTicketCustomer;
+export interface ImpactedRelatedCustomer {
+    customer: ImpactedCustomer;
     customer_subscription_description?: string;
-    contacts: ServiceTicketContact[];
+    contacts: ImpactedCustomerContact[];
 }
 
-export interface ServiceTicketImpactedObject {
-    impact_override: ServiceTicketImpactedObjectImpact;
+export interface ImpactedObject {
+    impact_override: ImpactLevel;
     subscription_id: string | null;
     product_type: string;
     logged_by: string;
     ims_circuits: ServiceTicketImpactedIMSCircuit[];
-    owner_customer: ServiceTicketCustomer;
+    owner_customer: ImpactedCustomer;
     subscription_description: string;
     owner_customer_description?: string;
-    owner_customer_contacts: ServiceTicketContact[];
-    related_customers: ServiceTicketRelatedCustomer[];
+    owner_customer_contacts: ImpactedCustomerContact[];
+    related_customers: ImpactedRelatedCustomer[];
 }
 
-export type ServiceTicketImpactedObjectColumns = Pick<
-    ServiceTicketImpactedObject,
+export type ImpactTableColumns = Pick<
+    ImpactedObject,
     'subscription_id' | 'subscription_description' | 'impact_override'
 > & {
     affectedCustomers: number; //think about 0 or null
     informCustomers: string;
-    imsCalculatedImpact: ServiceTicketImpactedObjectImpact;
+    imsCalculatedImpact: ImpactLevel;
+    setImpactOverride: boolean;
 };
 
-export enum ServiceTicketCustomerRelation {
+export enum ImpactedCustomerRelation {
     OWNER = 'owner',
     RELATED = 'related',
     PORT_RELATED = 'port related',
     GRANTED_PERMISSION = 'granted permission',
 }
 
-export type SubscriptionImpactCustomerTableColumns = {
+export type ImpactedCustomersTableColumns = {
     customer: string;
-    relation: ServiceTicketCustomerRelation;
+    relation: ImpactedCustomerRelation;
     contacts: number;
-    acceptedImpact: ServiceTicketImpactedObjectImpact;
-    minl: ServiceTicketImpactedObjectImpact | '';
-    sendingLevel: string;
+    acceptedImpact: ImpactLevel;
+    minl: ImpactLevel | null;
+    sendingLevel: ImpactLevel;
     informCustomer: boolean;
 };
 
@@ -189,11 +197,11 @@ export interface BackgroundJobLog {
 }
 
 export interface Email {
-    customer: ServiceTicketCustomer;
+    customer: ImpactedCustomer;
     message: string;
-    to: ServiceTicketContact[];
-    cc: ServiceTicketContact[];
-    bcc: ServiceTicketContact[];
+    to: ImpactedCustomerContact[];
+    cc: ImpactedCustomerContact[];
+    bcc: ImpactedCustomerContact[];
     language: string;
 }
 
@@ -208,29 +216,21 @@ export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
     last_update_time: string;
     type: ServiceTicketType;
     logs: ServiceTicketLog[];
-    impacted_objects: ServiceTicketImpactedObject[];
+    impacted_objects: ImpactedObject[];
     background_logs: BackgroundJobLog[];
     email_logs: EmailLog[];
 }
 
 export interface ImsInfo {
-    impact: ServiceTicketImpactedObjectImpact;
+    impact: ImpactLevel;
     ims_circuit_id: number;
     ims_circuit_name: string;
     extra_information?: string;
 }
 
-export interface ImpactedObject {
-    id: string;
-    customer: string;
-    impact: ServiceTicketImpactedObjectImpact;
-    type: string;
-    subscription: string;
-    impact_override?: ServiceTicketImpactedObjectImpact;
-    subscription_id: string | null;
-    ims_info: ImsInfo[];
-    owner_customer_contacts: ServiceTicketContact[];
-    related_customers: ServiceTicketRelatedCustomer[];
+export enum Locale {
+    enUS = 'en-Us',
+    nlNL = 'nl-NL',
 }
 
 export enum ServiceTicketTabIds {
@@ -246,18 +246,16 @@ export interface ServiceTicketDetailPageTab {
     append?: ReactNode;
 }
 
-export enum ServiceTicketApiImpactLevel {
-    NO_IMPACT = 'No Impact',
-    REDUCED_REDUNDANCY = 'Reduced Redundancy',
-    RESILIENCE_LOSS = 'Lost Resiliency',
-    DOWN = 'Downtime',
-}
-
-export interface MinimalImpactNotificationLevel {
+export interface MinlObjectFromApi {
     created_at: number;
     customer_id: string;
     id: string;
-    impact: ServiceTicketApiImpactLevel;
+    impact: ImpactLevelFromApi;
     last_modified: number;
     subscription_id: string;
 }
+
+export type ImpactedObjectWithIndex = {
+    item: ImpactTableColumns;
+    index: number;
+};

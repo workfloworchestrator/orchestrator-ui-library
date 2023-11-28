@@ -7,10 +7,12 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { SurfConfig } from '../contexts/surfConfigContext';
+import { ImpactLevel } from '../types';
 
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
     'http://localhost:8080/api/graphql';
 export const DEFAULT_ORCHESTRATOR_API_BASE_URL = 'http://localhost:8080/api';
+export const DEFAULT_ORCHESTRATOR_CIM_BASE_URL = 'http://localhost:8080/cim';
 
 export const ENGINE_STATUS_ENDPOINT = '/settings/status';
 export const PROCESS_STATUS_COUNTS_ENDPOINT = '/processes/status-counts';
@@ -56,11 +58,11 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
     };
 };
 
-const SURF_CIM_DEFAULT_SENDING_LEVEL = 'resilience_loss';
+const SURF_CIM_DEFAULT_SENDING_LEVEL = ImpactLevel.NO_IMPACT;
 
 export const getInitialSurfConfig = (): SurfConfig => {
     const cimDefaultSendingLevel =
-        process.env.SURF_CIM_DEFAULT_SENDING_LEVEL ??
+        (process.env.SURF_CIM_DEFAULT_SENDING_LEVEL as ImpactLevel) ??
         SURF_CIM_DEFAULT_SENDING_LEVEL;
 
     return {

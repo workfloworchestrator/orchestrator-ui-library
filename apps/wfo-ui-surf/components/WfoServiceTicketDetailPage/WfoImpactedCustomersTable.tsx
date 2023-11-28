@@ -5,8 +5,10 @@ import { useTranslations } from 'next-intl';
 import { EuiIcon, EuiText } from '@elastic/eui';
 import {
     WfoBadge,
+    WfoCheckmarkCircleFill,
     WfoDropdownTable,
     WfoTableColumns,
+    WfoXCircleFill,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -14,21 +16,22 @@ import {
 import { MINL_BY_SUBSCRIPTION_ENDPOINT } from '../../constants-surf';
 import { SurfConfigContext } from '../../contexts/surfConfigContext';
 import {
-    ServiceTicketCustomerRelation,
+    ImpactedCustomerRelation,
+    ImpactedCustomersTableColumns,
+    ImpactedObject,
     ServiceTicketDefinition,
-    ServiceTicketImpactedObject,
-    SubscriptionImpactCustomerTableColumns,
 } from '../../types';
+import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import {
     calculateInformCustomer,
     calculateSendingLevel,
     getImsCalculatedImpact,
-    getMinlValueForUi,
-    mapImpactedObjectToCustomerTableColumns,
+    getMinlForCustomer,
+    mapImpactedObjectToImpactedCustomersColumns,
 } from './utils';
 
-interface WfoSubscriptionImpactCustomerTableProps {
-    impactedObject: ServiceTicketImpactedObject;
+interface WfoImpactedCustomersTableProps {
+    impactedObject: ImpactedObject;
 }
 
 // const defaultTableStyle = css({
@@ -37,9 +40,9 @@ interface WfoSubscriptionImpactCustomerTableProps {
 //     },
 // });
 
-export const WfoSubscriptionImpactCustomerTable = ({
+export const WfoImpactedCustomersTable = ({
     impactedObject,
-}: WfoSubscriptionImpactCustomerTableProps) => {
+}: WfoImpactedCustomersTableProps) => {
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
     );
@@ -52,13 +55,14 @@ export const WfoSubscriptionImpactCustomerTable = ({
             ['minl', impactedObject.subscription_id ?? ''],
         );
 
-    const impactCustomerTableColumns: WfoTableColumns<SubscriptionImpactCustomerTableColumns> =
+    const impactedCustomersTableColumns: WfoTableColumns<ImpactedCustomersTableColumns> =
         {
             customer: {
                 name: t('customers'),
                 field: 'customer',
+                width: '250',
                 render: (customer) => (
-                    <EuiText>
+                    <EuiText size={'s'}>
                         <b>{customer}</b>
                     </EuiText>
                 ),
@@ -66,6 +70,11 @@ export const WfoSubscriptionImpactCustomerTable = ({
             relation: {
                 field: 'relation',
                 name: t('relation'),
+                render: (value) => (
+                    <WfoBadge textColor={theme.colors.darkestShade}>
+                        {value}
+                    </WfoBadge>
+                ),
             },
             contacts: {
                 field: 'contacts',
@@ -75,49 +84,42 @@ export const WfoSubscriptionImpactCustomerTable = ({
                 field: 'acceptedImpact',
                 name: t('acceptedImpact'),
                 render: (value) => (
-                    <WfoBadge
-                        textColor={theme.colors.warningText}
-                        color={toSecondaryColor(theme.colors.warning)}
-                    >
-                        {value}
-                    </WfoBadge>
+                    <WfoImpactLevelBadge impactedObjectImpact={value} />
                 ),
             },
             minl: {
                 field: 'minl',
                 name: t('minl'),
+                width: '250',
                 render: (value) =>
                     value && (
-                        <WfoBadge
-                            textColor={theme.colors.warningText}
-                            color={toSecondaryColor(theme.colors.warning)}
-                        >
-                            {value}
-                        </WfoBadge>
+                        <WfoImpactLevelBadge impactedObjectImpact={value} />
                     ),
             },
             sendingLevel: {
                 field: 'sendingLevel',
                 name: t('sendingLevel'),
                 render: (value) => (
-                    <WfoBadge
-                        textColor={theme.colors.warningText}
-                        color={toSecondaryColor(theme.colors.warning)}
-                    >
-                        {value}
-                    </WfoBadge>
+                    <WfoImpactLevelBadge impactedObjectImpact={value} />
                 ),
             },
             informCustomer: {
                 field: 'informCustomer',
                 name: t('informCustomer'),
-                render: (value) => (
-                    <EuiIcon
-                        type={value ? 'check' : 'cross'}
-                        color={value ? 'success' : 'danger'}
-                        size="l"
-                    />
-                ),
+                render: (value) =>
+                    value ? (
+                        <WfoCheckmarkCircleFill
+                            width={30}
+                            height={30}
+                            color={theme.colors.success}
+                        />
+                    ) : (
+                        <WfoXCircleFill
+                            width={30}
+                            height={30}
+                            color={theme.colors.danger}
+                        />
+                    ),
             },
         };
 
@@ -125,7 +127,7 @@ export const WfoSubscriptionImpactCustomerTable = ({
         <WfoDropdownTable
             data={
                 impactedObject && minlObjectFromApi
-                    ? mapImpactedObjectToCustomerTableColumns(
+                    ? mapImpactedObjectToImpactedCustomersColumns(
                           impactedObject,
                           minlObjectFromApi,
                           cimDefaultSendingLevel,
@@ -133,7 +135,7 @@ export const WfoSubscriptionImpactCustomerTable = ({
                     : []
             }
             isLoading={isFetching}
-            columns={impactCustomerTableColumns}
+            columns={impactedCustomersTableColumns}
         />
     );
 };
