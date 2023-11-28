@@ -4,7 +4,7 @@ import { AbstractIntlMessages } from 'next-intl';
 
 import { useAxiosApiClient } from '../components/WfoForms/useAxiosApiClient';
 import { Locale } from '../types';
-import enUS from './en-US.json';
+import enGB from './en-GB.json';
 import nlNL from './nl-NL.json';
 
 export type TranslationMessagesMap = Map<Locale, AbstractIntlMessages>;
@@ -16,13 +16,9 @@ export const useGetTranslationMessages = (locale: string | undefined) => {
     >({});
 
     useEffect(() => {
-        // Temporary fix: Mapping en-US to en-GB locale
-        const backendLocale =
-            locale === Locale.enUS.toString() ? 'en-GB' : locale;
-
         apiClient
             .axiosFetch<{ forms: { fields: Record<string, string> } }>(
-                `translations/${backendLocale}`,
+                `translations/${locale}`,
             )
             .then((response) => {
                 const backendMessages = response.forms.fields;
@@ -36,13 +32,13 @@ export const useGetTranslationMessages = (locale: string | undefined) => {
 
     const getLocalMessages = () => {
         switch (locale) {
-            case Locale.enUS:
-                return enUS;
+            case Locale.enGB:
+                return enGB;
             case Locale.nlNL:
                 return nlNL;
 
             default:
-                return enUS;
+                return enGB;
         }
     };
 

@@ -216,11 +216,6 @@ export interface ImpactedObject {
     related_customers: ServiceTicketRelatedCustomer[];
 }
 
-export enum Locale {
-    enUS = 'en-Us',
-    nlNL = 'nl-NL',
-}
-
 export enum ServiceTicketTabIds {
     GENERAL_TAB = 'general-id',
     NOTIFICATION_LOG = 'notification-log-id',
