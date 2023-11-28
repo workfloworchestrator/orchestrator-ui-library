@@ -17,12 +17,14 @@ import {
     ProcessListItem,
     WfoProcessList,
 } from '@/components/WfoProcessesList/WfoProcessList';
-import { ConfirmationDialogContext } from '@/contexts';
+import { ConfirmationDialogContext, ToastTypes } from '@/contexts';
 import {
     useDataDisplayParams,
+    useEngineStatusQuery,
     useMutateProcess,
     useOrchestratorTheme,
     useStoredTableConfig,
+    useToastMessage,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
 import { SortOrder } from '@/types';
@@ -30,8 +32,11 @@ import { SortOrder } from '@/types';
 export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
+    const tErrors = useTranslations('errors');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const { retryAllProcesses } = useMutateProcess();
+    const { isEngineRunningNow } = useEngineStatusQuery();
+    const toastMessage = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
@@ -93,20 +98,31 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
+    const handleRerunAllButtonClick = async () => {
+        const isEngineRunning = await isEngineRunningNow();
+        if (!isEngineRunning) {
+            toastMessage.addToast(
+                ToastTypes.ERROR,
+                tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+                tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+            );
+        } else {
+            showConfirmDialog({
+                question: t('rerunAllQuestion'),
+                confirmAction: () => {
+                    retryAllProcesses.mutate();
+                },
+            });
+        }
+    };
+
     return (
         <>
             <EuiSpacer />
 
             <WfoPageHeader pageTitle="Tasks">
                 <EuiButton
-                    onClick={() =>
-                        showConfirmDialog({
-                            question: t('rerunAllQuestion'),
-                            confirmAction: () => {
-                                retryAllProcesses.mutate();
-                            },
-                        })
-                    }
+                    onClick={handleRerunAllButtonClick}
                     iconType={() => (
                         <WfoRefresh color={theme.colors.primaryText} />
                     )}

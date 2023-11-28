@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+import { OrchestratorConfigContext } from '@/contexts';
+
 import { useQueryWithFetch } from './useQueryWithFetch';
 import { useSessionWithToken } from './useSessionWithToken';
 
@@ -18,11 +19,18 @@ interface EngineStatusPayload {
 
 export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
-    return useQueryWithFetch<EngineStatus, Record<string, never>>(
-        engineStatusEndpoint,
-        {},
-        'engineStatus',
-    );
+    const useQueryResult = useQueryWithFetch<
+        EngineStatus,
+        Record<string, never>
+    >(engineStatusEndpoint, {}, 'engineStatus');
+
+    return {
+        ...useQueryResult,
+        isEngineRunningNow: async () => {
+            const result = await useQueryResult.refetch();
+            return result.data?.global_status === 'RUNNING';
+        },
+    };
 };
 
 export const useEngineStatusMutation = () => {
