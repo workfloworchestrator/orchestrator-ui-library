@@ -19,16 +19,16 @@ describe('useGetTranslationMessages', () => {
         expect(translation).toEqual(nlNL);
     });
 
-    it('Returns en-US translation when en-GB locale is requested', () => {
+    it('Returns en-GB translation when en-GB locale is requested', () => {
         const translation = useGetTranslationMessages(Locale.enGB);
         expect(translation).toEqual(enGB);
     });
 
-    it('Returns en-US translation when no locale is requested', () => {
+    it('Returns en-GB translation when no locale is requested', () => {
         const translation = useGetTranslationMessages(undefined);
         expect(translation).toEqual(enGB);
     });
-    it('Returns en-US translation unknown locale is requested', () => {
+    it('Returns en-GB translation unknown locale is requested', () => {
         const translation = useGetTranslationMessages('UNKNOWN-LOCALE');
         expect(translation).toEqual(enGB);
     });

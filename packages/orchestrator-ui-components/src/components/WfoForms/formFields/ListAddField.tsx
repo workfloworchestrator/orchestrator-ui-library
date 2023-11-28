@@ -39,7 +39,7 @@ function ListAdd({
     ...props
 }: ListAddFieldProps) {
     const { theme } = useOrchestratorTheme();
-    const t = useTranslations('pydanticForms.fields');
+    const t = useTranslations('pydanticForms.backendTranslations');
 
     const nameParts = joinName(null, name);
     const parentName = joinName(nameParts.slice(0, -1));
