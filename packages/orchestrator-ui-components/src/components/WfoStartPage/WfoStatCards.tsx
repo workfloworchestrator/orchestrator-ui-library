@@ -8,8 +8,8 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks/useOrchestratorTheme';
-import { TotalStat } from '../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { TotalStat } from '@/types';
 
 const totalStats: TotalStat[] = [
     {

@@ -14,17 +14,19 @@ import {
 } from '@elastic/eui';
 
 import {
+    PATH_PROCESSES,
     PATH_TASKS,
     TimelineItem,
     WfoLoading,
     WfoTimeline,
-} from '../../components';
-import ConfirmationDialogContext from '../../contexts/ConfirmationDialogProvider';
-import { useOrchestratorTheme } from '../../hooks';
-import { useDeleteProcess } from '../../hooks/ProcessesHooks/useDeleteProcess';
-import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '../../icons';
-import { ProcessDetail, ProcessStatus } from '../../types';
-import { parseDateRelativeToToday, parseIsoString } from '../../utils';
+} from '@/components';
+import { ConfirmationDialogContext } from '@/contexts';
+import { useOrchestratorTheme } from '@/hooks';
+import { useMutateProcess } from '@/hooks';
+import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '@/icons';
+import { ProcessDetail, ProcessStatus } from '@/types';
+import { parseDateRelativeToToday, parseIsoString } from '@/utils';
+
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
@@ -89,8 +91,33 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { mutate } = useDeleteProcess();
+    const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
+
+    const listIncludesStatus = (
+        processStatusesForDisabledState: ProcessStatus[],
+        status?: string,
+    ): boolean =>
+        status
+            ? processStatusesForDisabledState
+                  .map((stat) => stat.toUpperCase())
+                  .includes(status)
+            : false;
+
+    const retryButtonIsDisabled =
+        buttonsAreDisabled ||
+        !listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus);
+    const abortButtonIsDisabled =
+        buttonsAreDisabled ||
+        listIncludesStatus(
+            [ProcessStatus.COMPLETED, ProcessStatus.ABORTED],
+            processDetail?.lastStatus,
+        );
+    const deleteButtonIsDisabled =
+        buttonsAreDisabled ||
+        listIncludesStatus([ProcessStatus.RUNNING], processDetail?.lastStatus);
+
+    const processIsTask = processDetail?.isTask === true;
 
     return (
         <>
@@ -107,38 +134,40 @@ export const WfoProcessDetail = ({
                     gutterSize="s"
                 >
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
-                            alert('TODO: Implement retry');
-                        }}
+                        onClick={() =>
+                            showConfirmDialog({
+                                question: t(
+                                    processIsTask
+                                        ? 'retryTaskQuestion'
+                                        : 'retryWorkflowQuestion',
+                                    {
+                                        workflowName:
+                                            processDetail?.workflowName,
+                                    },
+                                ),
+                                confirmAction: () => {
+                                    processDetail?.processId &&
+                                        retryProcess.mutate(
+                                            processDetail.processId,
+                                        );
+                                },
+                            })
+                        }
                         iconType={() => (
                             <WfoRefresh
                                 color={
-                                    buttonsAreDisabled
+                                    retryButtonIsDisabled
                                         ? theme.colors.subduedText
                                         : theme.colors.link
                                 }
                             />
                         )}
-                        isDisabled={buttonsAreDisabled}
+                        isDisabled={retryButtonIsDisabled}
                     >
                         {t('retry')}
                     </EuiButton>
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
-                            alert('TODO: Implement resume');
-                        }}
+                        onClick={() => alert('TODO: Implement resume')}
                         iconType={() => (
                             <WfoPlayFill
                                 color={
@@ -153,38 +182,47 @@ export const WfoProcessDetail = ({
                         {t('resume')}
                     </EuiButton>
                     <EuiButton
-                        onClick={(
-                            e: React.MouseEvent<
-                                HTMLButtonElement | HTMLElement,
-                                MouseEvent
-                            >,
-                        ) => {
-                            e.preventDefault();
-                            alert('TODO: Implement abort');
-                        }}
+                        onClick={() =>
+                            showConfirmDialog({
+                                question: t(
+                                    processIsTask
+                                        ? 'abortTaskQuestion'
+                                        : 'abortWorkflowQuestion',
+                                    {
+                                        workflowName:
+                                            processDetail?.workflowName,
+                                    },
+                                ),
+                                confirmAction: () => {
+                                    processDetail?.processId &&
+                                        abortProcess.mutate(
+                                            processDetail.processId,
+                                        );
+                                    router.push(
+                                        processIsTask
+                                            ? PATH_TASKS
+                                            : PATH_PROCESSES,
+                                    );
+                                },
+                            })
+                        }
                         iconType={() => (
                             <WfoXCircleFill
                                 color={
-                                    buttonsAreDisabled
+                                    abortButtonIsDisabled
                                         ? theme.colors.subduedText
                                         : theme.colors.danger
                                 }
                             />
                         )}
                         color="danger"
-                        isDisabled={buttonsAreDisabled}
+                        isDisabled={abortButtonIsDisabled}
                     >
                         {t('abort')}
                     </EuiButton>
-                    {processDetail && processDetail.isTask === true && (
+                    {processDetail && processIsTask && (
                         <EuiButton
-                            onClick={(
-                                e: React.MouseEvent<
-                                    HTMLButtonElement | HTMLElement,
-                                    MouseEvent
-                                >,
-                            ) => {
-                                e.preventDefault();
+                            onClick={() =>
                                 showConfirmDialog({
                                     question: t('deleteQuestion', {
                                         workflowName:
@@ -192,26 +230,24 @@ export const WfoProcessDetail = ({
                                     }),
                                     confirmAction: () => {
                                         processDetail.processId &&
-                                            mutate(processDetail.processId);
+                                            deleteProcess.mutate(
+                                                processDetail.processId,
+                                            );
                                         router.push(PATH_TASKS);
                                     },
-                                });
-                            }}
+                                })
+                            }
                             iconType={() => (
                                 <WfoXCircleFill
                                     color={
-                                        buttonsAreDisabled
+                                        deleteButtonIsDisabled
                                             ? theme.colors.subduedText
                                             : theme.colors.danger
                                     }
                                 />
                             )}
                             color="danger"
-                            isDisabled={
-                                buttonsAreDisabled ||
-                                processDetail.lastStatus ===
-                                    ProcessStatus.RUNNING
-                            }
+                            isDisabled={deleteButtonIsDisabled}
                         >
                             {t('delete')}
                         </EuiButton>

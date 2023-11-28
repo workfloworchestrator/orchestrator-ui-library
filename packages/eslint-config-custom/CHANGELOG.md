@@ -1,5 +1,29 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.0.7
+
+### Patch Changes
+
+- 39c896a: Moves all devDependencies into the dependencies section
+
+## 0.0.6
+
+### Patch Changes
+
+- ce48846: Updates linting rules to ban all console statements except console.error()
+
+## 0.0.5
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
+## 0.0.4
+
+### Patch Changes
+
+- 6d680f6: Test release before adding absolute imports (issue 414)
+
 ## 0.0.3
 
 ### Patch Changes

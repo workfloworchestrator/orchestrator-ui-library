@@ -24,9 +24,9 @@ import {
     defaultOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { getAppLogo } from '../components/AppLogo/AppLogo';
-import { getInitialOrchestratorConfig } from '../configuration';
-import { TranslationsProvider } from '../translations/translationsProvider';
+import { getAppLogo } from '@/components/AppLogo/AppLogo';
+import { getInitialOrchestratorConfig } from '@/configuration';
+import { TranslationsProvider } from '@/translations/translationsProvider';
 
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 

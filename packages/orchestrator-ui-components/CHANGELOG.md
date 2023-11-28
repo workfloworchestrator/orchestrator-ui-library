@@ -1,5 +1,23 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.2.7
+
+### Patch Changes
+
+- ce48846: Updates linting rules to ban all console statements except console.error()
+
+## 0.2.6
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
+## 0.2.5
+
+### Patch Changes
+
+- 6d680f6: Test release before adding absolute imports (issue 414)
+
 ## 0.2.4
 
 ### Patch Changes

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 
-import { ProcessFromRestApi, ProductDefinition } from '../../types';
+import { ProcessFromRestApi, ProductDefinition } from '@/types';
 
 interface Subscription {
     name: string;

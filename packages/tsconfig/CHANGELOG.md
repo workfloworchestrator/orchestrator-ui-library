@@ -1,5 +1,17 @@
 # @orchestrator-ui/tsconfig
 
+## 0.1.2
+
+### Patch Changes
+
+- 6597ac1: Test release after adding absolute imports (issue 414)
+
+## 0.1.1
+
+### Patch Changes
+
+- 6d680f6: Test release before adding absolute imports (issue 414)
+
 ## 0.1.0
 
 ### Minor Changes

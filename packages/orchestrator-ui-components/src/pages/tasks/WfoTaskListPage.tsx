@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -9,25 +9,29 @@ import {
     FilterQuery,
     StoredTableConfig,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
+    WfoStartTaskButtonComboBox,
     WfoTableColumns,
-} from '../../components';
-import { WfoStartTaskButtonComboBox } from '../../components';
-import { WfoPageHeader } from '../../components/WfoPageHeader/WfoPageHeader';
+} from '@/components';
+import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
     WfoProcessList,
-} from '../../components/WfoProcessesList/WfoProcessList';
+} from '@/components/WfoProcessesList/WfoProcessList';
+import { ConfirmationDialogContext } from '@/contexts';
 import {
     useDataDisplayParams,
+    useMutateProcess,
     useOrchestratorTheme,
     useStoredTableConfig,
-} from '../../hooks';
-import { WfoRefresh } from '../../icons';
-import { SortOrder } from '../../types';
+} from '@/hooks';
+import { WfoRefresh } from '@/icons';
+import { SortOrder } from '@/types';
 
 export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+    const { retryAllProcesses } = useMutateProcess();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
@@ -95,6 +99,14 @@ export const WfoTaskListPage = () => {
 
             <WfoPageHeader pageTitle="Tasks">
                 <EuiButton
+                    onClick={() =>
+                        showConfirmDialog({
+                            question: t('rerunAllQuestion'),
+                            confirmAction: () => {
+                                retryAllProcesses.mutate();
+                            },
+                        })
+                    }
                     iconType={() => (
                         <WfoRefresh color={theme.colors.primaryText} />
                     )}

@@ -1,5 +1,6 @@
 export * from './useQueryWithGraphql';
 export * from './useEngineStatusQuery';
+export * from './useMutateProcess';
 export * from './useOrchestratorConfig';
 export * from './useOrchestratorTheme';
 export * from './useProcessStatusCountsQuery';

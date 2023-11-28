@@ -61,7 +61,10 @@ export const WfoStepList = React.forwardRef(
                         behavior: 'smooth',
                     });
                 } catch {
-                    console.log('Error scrolling to step with stepId ', stepId);
+                    console.error(
+                        'Error scrolling to step with stepId ',
+                        stepId,
+                    );
                 }
             },
         }));
