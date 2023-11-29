@@ -6,17 +6,17 @@ import { useRouter } from 'next/router';
 
 import { Pagination } from '@elastic/eui';
 
-import { getSubscriptionsListGraphQlQuery } from '../../graphqlQueries/subscriptionsListQuery';
-import { DataDisplayParams } from '../../hooks/useDataDisplayParams';
-import { useQueryWithGraphql } from '../../hooks/useQueryWithGraphql';
-import { SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString } from '../../utils';
-import { getTypedFieldFromObject } from '../../utils/getTypedFieldFromObject';
-import { WfoSubscriptionStatusBadge } from '../WfoBadges/WfoSubscriptionStatusBadge';
-import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
-import { FilterQuery } from '../WfoFilterTabs';
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
-import { WfoLoading } from '../WfoLoading';
+import { WfoSubscriptionStatusBadge } from '@/components';
+import { FilterQuery, WfoDateTime, WfoLoading } from '@/components';
+import { WfoInsyncIcon } from '@/components/WfoInsyncIcon';
+import { getSubscriptionsListGraphQlQuery } from '@/graphqlQueries';
+import { DataDisplayParams, useQueryWithGraphql } from '@/hooks';
+import { SortOrder } from '@/types';
+import {
+    getTypedFieldFromObject,
+    parseDateToLocaleDateTimeString,
+} from '@/utils';
+
 import {
     DEFAULT_PAGE_SIZES,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
@@ -120,7 +120,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         },
     };
 
-    const { sortBy } = dataDisplayParams;
+    const { sortBy, esQueryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
@@ -128,6 +128,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy,
             filterBy: alwaysOnFilters,
+            query: esQueryString || undefined,
         },
         'subscriptions',
     );

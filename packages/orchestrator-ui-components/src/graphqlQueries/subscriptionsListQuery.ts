@@ -7,20 +7,22 @@ import {
     GraphqlQueryVariables,
     Subscription,
     SubscriptionsResult,
-} from '../types';
+} from '@/types';
 
 export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
     query SubscriptionsList(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
         $filterBy: [GraphqlFilter!]
+        $query: String
     ) {
         subscriptions(
             first: $first
             after: $after
             sortBy: $sortBy
             filterBy: $filterBy
+            query: $query
         ) {
             page {
                 note

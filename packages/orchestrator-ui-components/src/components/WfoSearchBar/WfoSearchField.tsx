@@ -26,9 +26,6 @@ export const WfoSearchField = ({
         if (__setFilterQuery) {
             __setFilterQuery(queryText);
         } else {
-            alert(
-                'Passing an ES query string to the backend still needs to be implemented',
-            );
             if (onUpdateEsQueryString) {
                 onUpdateEsQueryString(queryText);
             }
