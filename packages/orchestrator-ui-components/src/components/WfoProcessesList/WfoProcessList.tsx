@@ -177,13 +177,15 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
             ? overrideDefaultTableColumns(defaultTableColumns)
             : defaultTableColumns;
 
+    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: graphQlProcessSortMapper(dataDisplayParams.sortBy),
+            first: pageSize,
+            after: pageIndex * pageSize,
+            sortBy: graphQlProcessSortMapper(sortBy),
             filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+            query: esQueryString,
         },
         'processList',
     );
@@ -194,19 +196,19 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
     const { totalItems, sortFields, filterFields } = data.processes.pageInfo;
 
     const pagination: Pagination = {
-        pageSize: dataDisplayParams.pageSize,
-        pageIndex: dataDisplayParams.pageIndex,
+        pageSize: pageSize,
+        pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
     const dataSorting: WfoDataSorting<ProcessListItem> = {
-        field: dataDisplayParams.sortBy?.field ?? 'lastModified',
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
+        field: sortBy?.field ?? 'lastModified',
+        sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
     return (
         <WfoTableWithFilter<ProcessListItem>
-            esQueryString={dataDisplayParams.esQueryString}
+            esQueryString={esQueryString}
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,

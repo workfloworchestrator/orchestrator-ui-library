@@ -136,12 +136,14 @@ export const WfoWorkflowsPage = () => {
         },
     };
 
+    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_WORKFLOWS_GRAPHQL_QUERY,
         {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: graphQlWorkflowListMapper(dataDisplayParams.sortBy),
+            first: pageSize,
+            after: pageIndex * pageSize,
+            sortBy: graphQlWorkflowListMapper(sortBy),
+            query: esQueryString,
         },
         'workflows',
     );
@@ -151,15 +153,15 @@ export const WfoWorkflowsPage = () => {
     }
 
     const dataSorting: WfoDataSorting<WorkflowListItem> = {
-        field: dataDisplayParams.sortBy?.field ?? 'name',
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
+        field: sortBy?.field ?? 'name',
+        sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
     const { totalItems, sortFields, filterFields } = data.workflows.pageInfo;
 
     const pagination: Pagination = {
-        pageSize: dataDisplayParams.pageSize,
-        pageIndex: dataDisplayParams.pageIndex,
+        pageSize: pageSize,
+        pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
@@ -186,7 +188,7 @@ export const WfoWorkflowsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={dataDisplayParams.esQueryString}
+                esQueryString={esQueryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>

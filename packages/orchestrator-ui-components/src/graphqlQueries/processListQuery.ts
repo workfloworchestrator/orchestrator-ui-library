@@ -3,23 +3,25 @@ import { gql } from 'graphql-request';
 
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-import { GraphqlQueryVariables, Process, ProcessesResult } from '../types';
+import { GraphqlQueryVariables, Process, ProcessesResult } from '@/types';
 
 export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
     ProcessesResult,
     GraphqlQueryVariables<Process>
 > = parse(gql`
     query ProcessList(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
         $filterBy: [GraphqlFilter!]
+        $query: String
     ) {
         processes(
             first: $first
             after: $after
             sortBy: $sortBy
             filterBy: $filterBy
+            query: $query
         ) {
             page {
                 workflowName

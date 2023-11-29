@@ -3,19 +3,25 @@ import { gql } from 'graphql-request';
 
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-import type { ProductBlockDefinition } from '../types';
-import { GraphqlQueryVariables, ProductBlockDefinitionsResult } from '../types';
+import type { ProductBlockDefinition } from '@/types';
+import { GraphqlQueryVariables, ProductBlockDefinitionsResult } from '@/types';
 
 export const GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY: TypedDocumentNode<
     ProductBlockDefinitionsResult,
     GraphqlQueryVariables<ProductBlockDefinition>
 > = parse(gql`
     query MetadataProductBlocks(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
+        $query: String
     ) {
-        productBlocks(first: $first, after: $after, sortBy: $sortBy) {
+        productBlocks(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            query: $query
+        ) {
             page {
                 productBlockId
                 name

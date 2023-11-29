@@ -4,36 +4,33 @@ import { useTranslations } from 'next-intl';
 
 import type { Pagination } from '@elastic/eui/src/components';
 
+import type { WfoDataSorting, WfoTableColumns } from '@/components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
+    StoredTableConfig,
+    WfoDateTime,
     WfoLoading,
-} from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import {
     WfoProductBlockBadge,
     WfoProductStatusBadge,
     WfoTableWithFilter,
-} from '../../components';
-import {
     getDataSortHandler,
     getEsQueryStringHandler,
     getPageChangeHandler,
-} from '../../components';
-import { StoredTableConfig } from '../../components';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_PRODUCTS_GRAPHQL_QUERY } from '../../graphqlQueries';
+} from '@/components';
+import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { GET_PRODUCTS_GRAPHQL_QUERY } from '@/graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useStoredTableConfig,
-} from '../../hooks';
-import type { ProductDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
+} from '@/hooks';
+import type { ProductDefinition } from '@/types';
+import { BadgeType, SortOrder } from '@/types';
+import { parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
+
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
 const PRODUCT_FIELD_PRODUCT_ID: keyof ProductDefinition = 'productId';
@@ -155,12 +152,14 @@ export const WfoProductsPage = () => {
         },
     };
 
+    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: dataDisplayParams.sortBy,
+            first: pageSize,
+            after: pageIndex * pageSize,
+            sortBy: sortBy,
+            query: esQueryString || undefined,
         },
         'products',
     );
@@ -172,15 +171,15 @@ export const WfoProductsPage = () => {
     const { totalItems, sortFields, filterFields } = data.products.pageInfo;
 
     const pagination: Pagination = {
-        pageSize: dataDisplayParams.pageSize,
-        pageIndex: dataDisplayParams.pageIndex,
+        pageSize: pageSize,
+        pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
 
     const dataSorting: WfoDataSorting<ProductDefinition> = {
-        field: dataDisplayParams.sortBy?.field ?? PRODUCT_FIELD_NAME,
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
+        field: sortBy?.field ?? PRODUCT_FIELD_NAME,
+        sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
     return (
@@ -205,7 +204,7 @@ export const WfoProductsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={dataDisplayParams.esQueryString}
+                esQueryString={esQueryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>

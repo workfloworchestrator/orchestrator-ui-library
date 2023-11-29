@@ -124,12 +124,14 @@ export const WfoResourceTypesPage = () => {
         },
     };
 
+    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_RESOURCE_TYPES_GRAPHQL_QUERY,
         {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy: dataDisplayParams.sortBy,
+            first: pageSize,
+            after: pageIndex * pageSize,
+            sortBy: sortBy,
+            query: esQueryString,
         },
         'resourceTypes',
     );
@@ -139,16 +141,16 @@ export const WfoResourceTypesPage = () => {
     }
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
-        field: dataDisplayParams.sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
-        sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
+        field: sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
+        sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
     const { totalItems, sortFields, filterFields } =
         data.resourceTypes.pageInfo;
 
     const pagination: Pagination = {
-        pageSize: dataDisplayParams.pageSize,
-        pageIndex: dataDisplayParams.pageIndex,
+        pageSize: pageSize,
+        pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
@@ -175,7 +177,7 @@ export const WfoResourceTypesPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={dataDisplayParams.esQueryString}
+                esQueryString={esQueryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }
