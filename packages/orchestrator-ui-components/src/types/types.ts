@@ -289,6 +289,7 @@ export type GraphqlQueryVariables<Type> = {
     after?: number;
     sortBy?: GraphQLSort<Type>;
     filterBy?: GraphqlFilter<Type>[];
+    query?: string;
 };
 
 export type GraphQLPageInfo = {
