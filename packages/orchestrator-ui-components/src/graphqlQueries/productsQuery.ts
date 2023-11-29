@@ -14,11 +14,12 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
     GraphqlQueryVariables<ProductDefinition>
 > = parse(gql`
     query MetadataProducts(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
+        $query: String
     ) {
-        products(first: $first, after: $after, sortBy: $sortBy) {
+        products(first: $first, after: $after, sortBy: $sortBy, query: $query) {
             page {
                 productId
                 name

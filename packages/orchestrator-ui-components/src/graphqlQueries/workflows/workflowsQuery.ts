@@ -7,18 +7,24 @@ import {
     GraphqlQueryVariables,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
-} from '../../types';
+} from '@/types';
 
 export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult,
     GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
     query MetadataWorkflows(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
+        $query: String
     ) {
-        workflows(first: $first, after: $after, sortBy: $sortBy) {
+        workflows(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            query: $query
+        ) {
             page {
                 name
                 description

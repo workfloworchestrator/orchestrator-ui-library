@@ -7,18 +7,24 @@ import type {
     GraphqlQueryVariables,
     ResourceTypeDefinition,
     ResourceTypeDefinitionsResult,
-} from '../types';
+} from '@/types';
 
 export const GET_RESOURCE_TYPES_GRAPHQL_QUERY: TypedDocumentNode<
     ResourceTypeDefinitionsResult,
     GraphqlQueryVariables<ResourceTypeDefinition>
 > = parse(gql`
     query MetadataResourceTypes(
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
+        $query: String
     ) {
-        resourceTypes(first: $first, after: $after, sortBy: $sortBy) {
+        resourceTypes(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            query: $query
+        ) {
             page {
                 resourceTypeId
                 resourceType
