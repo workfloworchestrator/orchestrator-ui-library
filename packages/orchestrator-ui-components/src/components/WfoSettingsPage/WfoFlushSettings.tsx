@@ -36,15 +36,13 @@ export const WfoFlushSettings: FunctionComponent = () => {
     };
     const { data } = useCacheNames();
 
-    let options: EuiComboBoxOptionOption[];
-    if (data && Object.entries(data).length > 0) {
-        options = Object.entries(data).map(([key, value]) => ({
-            key: key,
-            label: value,
-        }));
-    } else {
-        options = [{ label: 'Loading...' }];
-    }
+    const options: EuiComboBoxOptionOption[] =
+        data && Object.entries(data).length > 0
+            ? Object.entries(data).map(([key, value]) => ({
+                  key,
+                  label: value,
+              }))
+            : [{ key: 'loading', label: 'Loading...' }];
 
     const flushCache = async () => {
         if (selectedOptions.length < 1) {

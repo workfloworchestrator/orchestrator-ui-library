@@ -74,7 +74,7 @@ export const useCacheNames = () => {
     return useQueryWithFetch<CacheNames, Record<string, never>>(
         url,
         {},
-        'recentProcesses',
+        'cacheNames',
     );
 };
 
