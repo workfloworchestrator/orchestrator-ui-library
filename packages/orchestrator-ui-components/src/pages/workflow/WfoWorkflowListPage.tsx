@@ -17,24 +17,24 @@ import { ProcessListItem, WfoFilterTabs, WfoProcessList } from '@/components';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 
-import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
-import { WfoProcessListTabType, defaultProcessListTabs } from './tabConfig';
+import { getWorkflowListTabTypeFromString } from './getWorkflowListTabTypeFromString';
+import { WfoWorkflowListTabType, defaultWorkflowListTabs } from './tabConfig';
 
 export const WfoWorkflowListPage = () => {
     const router = useRouter();
     const t = useTranslations('workflows.index');
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoProcessListTabType.ACTIVE),
+        withDefault(StringParam, WfoWorkflowListTabType.ACTIVE),
     );
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
 
-    const selectedProcessListTab = getProcessListTabTypeFromString(activeTab);
+    const selectedProcessListTab = getWorkflowListTabTypeFromString(activeTab);
 
     const localStorageKey =
-        selectedProcessListTab === WfoProcessListTabType.ACTIVE
+        selectedProcessListTab === WfoWorkflowListTabType.ACTIVE
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
@@ -63,13 +63,13 @@ export const WfoWorkflowListPage = () => {
         });
 
     const handleChangeProcessListTab = (
-        updatedProcessListTab: WfoProcessListTabType,
+        updatedProcessListTab: WfoWorkflowListTabType,
     ) => {
         setActiveTab(updatedProcessListTab);
         setDataDisplayParam('pageIndex', 0);
     };
 
-    const alwaysOnFilters = defaultProcessListTabs.find(
+    const alwaysOnFilters = defaultWorkflowListTabs.find(
         ({ id }) => id === selectedProcessListTab,
     )?.alwaysOnFilters;
 
@@ -86,7 +86,7 @@ export const WfoWorkflowListPage = () => {
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
-                tabs={defaultProcessListTabs}
+                tabs={defaultWorkflowListTabs}
                 translationNamespace="workflows.tabs"
                 selectedTab={selectedProcessListTab}
                 onChangeTab={handleChangeProcessListTab}
