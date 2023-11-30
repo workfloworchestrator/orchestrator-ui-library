@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
 
@@ -12,6 +13,7 @@ import {
     WfoStartTaskButtonComboBox,
     WfoTableColumns,
 } from '@/components';
+import { PATH_TASKS } from '@/components';
 import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
@@ -79,7 +81,13 @@ export const WfoTaskListPage = () => {
     const handleOverrideTableColumns: (
         defaultTableColumns: WfoTableColumns<ProcessListItem>,
     ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-        workflowName: defaultTableColumns.workflowName,
+        workflowName: {
+            field: 'workflowName',
+            name: t('taskName'),
+            render: (value, { processId }) => (
+                <Link href={`/${PATH_TASKS}/${processId}`}>{value}</Link>
+            ),
+        },
         lastStep: defaultTableColumns.lastStep,
         lastStatus: defaultTableColumns.lastStatus,
         workflowTarget: defaultTableColumns.workflowTarget,
