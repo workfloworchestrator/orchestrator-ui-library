@@ -17,13 +17,11 @@ import {
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_PROCESS } from '@/components';
-import { ToastTypes } from '@/contexts';
 import {
     SubscriptionAction,
-    useEngineStatusQuery,
+    useCheckEngineStatus,
     useOrchestratorTheme,
     useSubscriptionActions,
-    useToastMessage,
 } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
 import { WorkflowTarget } from '@/types';
@@ -61,9 +59,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     const [isPopoverOpen, setPopover] = useState(false);
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);
-    const tErrors = useTranslations('errors');
-    const { isEngineRunningNow } = useEngineStatusQuery();
-    const toastMessage = useToastMessage();
+    const { isEngineRunningNow } = useCheckEngineStatus();
 
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
@@ -84,16 +80,9 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
             const handleLinkClick = async (e: React.MouseEvent) => {
                 e.preventDefault();
-                const isEngineRunning = await isEngineRunningNow();
-                if (!isEngineRunning) {
-                    return toastMessage.addToast(
-                        ToastTypes.ERROR,
-                        tErrors('notAllowedWhenEngineIsNotRunningMessage'),
-                        tErrors('notAllowedWhenEngineIsNotRunningTitle'),
-                    );
+                if (await isEngineRunningNow()) {
+                    router.push(url);
                 }
-
-                router.push(url);
             };
 
             return (
