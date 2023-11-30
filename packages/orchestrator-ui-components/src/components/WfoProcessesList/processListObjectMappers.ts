@@ -2,12 +2,12 @@ import {
     GraphQLSort,
     GraphqlFilter,
     Process,
-    ProcessesResult,
+    ProcessListResult,
 } from '../../types';
 import { ProcessListItem } from './WfoProcessList';
 
 export const mapGraphQlProcessListResultToProcessListItems = (
-    processesResult: ProcessesResult,
+    processesResult: ProcessListResult,
 ): ProcessListItem[] =>
     processesResult.processes.page.map((process) => {
         const {
@@ -23,6 +23,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (
             subscriptions,
             product,
             customer,
+            isTask,
         } = process;
 
         return {
@@ -33,6 +34,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (
             createdBy,
             assignee,
             processId,
+            isTask,
             startedAt: new Date(startedAt),
             lastModifiedAt: new Date(lastModifiedAt),
             subscriptions,

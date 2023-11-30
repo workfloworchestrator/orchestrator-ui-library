@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -68,14 +68,14 @@ export type WfoProcessListProps = {
     ) => WfoTableColumns<ProcessListItem>;
 };
 
-export const WfoProcessList: FC<WfoProcessListProps> = ({
+export const WfoProcessList = ({
     alwaysOnFilters,
     defaultHiddenColumns = [],
     localStorageKey,
     dataDisplayParams,
     setDataDisplayParam,
     overrideDefaultTableColumns,
-}) => {
+}: WfoProcessListProps) => {
     const t = useTranslations('processes.index');
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
@@ -172,6 +172,7 @@ export const WfoProcessList: FC<WfoProcessListProps> = ({
             clipboardText: parseDateToLocaleDateTimeString,
         },
     };
+
     const tableColumns: WfoTableColumns<ProcessListItem> =
         overrideDefaultTableColumns
             ? overrideDefaultTableColumns(defaultTableColumns)

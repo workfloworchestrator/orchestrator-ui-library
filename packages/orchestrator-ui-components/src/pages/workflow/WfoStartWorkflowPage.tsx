@@ -14,7 +14,7 @@ import {
 } from '@elastic/eui';
 
 import { PATH_TASKS, TimelineItem, WfoLoading } from '@/components';
-import { PATH_PROCESSES } from '@/components';
+import { PATH_WORKFLOWS } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
@@ -111,7 +111,7 @@ export const WfoStartWorkflowPage = ({
                             );
                             const basePath = isTask
                                 ? PATH_TASKS
-                                : PATH_PROCESSES;
+                                : PATH_WORKFLOWS;
                             router.push(`${basePath}/${process.id}`);
                         }
                     },
@@ -129,7 +129,7 @@ export const WfoStartWorkflowPage = ({
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
                     console.error('engine down!!!', json);
-                    router.push(PATH_PROCESSES);
+                    router.push(PATH_WORKFLOWS);
                 },
             );
         },
@@ -203,7 +203,7 @@ export const WfoStartWorkflowPage = ({
                         stepUserInput={stepUserInput}
                         validSubmit={submit}
                         cancel={() =>
-                            router.push(isTask ? PATH_TASKS : PATH_PROCESSES)
+                            router.push(isTask ? PATH_TASKS : PATH_WORKFLOWS)
                         }
                         hasNext={hasNext}
                     />

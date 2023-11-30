@@ -169,6 +169,7 @@ export type Process = {
     processId: string;
     startedAt: string;
     lastModifiedAt: string;
+    isTask: boolean;
     subscriptions: {
         page: Pick<Subscription, 'subscriptionId' | 'description'>[];
     };
@@ -326,7 +327,7 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
-export interface ProcessesResult {
+export interface ProcessListResult {
     processes: GraphQlResultPage<Process>;
 }
 

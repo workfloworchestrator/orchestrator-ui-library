@@ -16,7 +16,7 @@ import { parseDate, parseDateToLocaleDateTimeString } from '../../utils';
 import { upperCaseFirstChar } from '../../utils';
 import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoLoading } from '../WfoLoading';
-import { PATH_PROCESSES } from '../WfoPageTemplate';
+import { PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { getStyles } from './styles';
 import { getWorkflowTargetColor } from './utils';
 
@@ -44,7 +44,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
                         <td css={headerCellStyle}>{t('id')}</td>
                         <td css={contentCellStyle}>
                             <a
-                                href={`${PATH_PROCESSES}/${subscriptionDetailProcess.processId}`}
+                                href={`${PATH_WORKFLOWS}/${subscriptionDetailProcess.processId}`}
                             >
                                 {subscriptionDetailProcess.processId}
                             </a>

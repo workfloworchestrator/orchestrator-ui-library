@@ -10,7 +10,7 @@ import {
     WfoButtonComboBox,
     WorkflowComboBoxOption,
 } from '../../WfoButtonComboBox/WfoButtonComboBox';
-import { PATH_START_NEW_PROCESS } from '../paths';
+import { PATH_START_NEW_WORKFLOW } from '../paths';
 
 export const WfoStartCreateWorkflowButtonComboBox = () => {
     const router = useRouter();
@@ -47,7 +47,7 @@ export const WfoStartCreateWorkflowButtonComboBox = () => {
         if (await isEngineRunningNow()) {
             const { workflowName, productId } = selectedProduct.data;
             router.push({
-                pathname: `${PATH_START_NEW_PROCESS}/${workflowName}`,
+                pathname: `${PATH_START_NEW_WORKFLOW}/${workflowName}`,
                 query: { productId },
             });
         }
