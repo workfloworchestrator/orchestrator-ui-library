@@ -60,17 +60,18 @@ function CustomApp({
                             modify={defaultOrchestratorTheme}
                         >
                             <ApiClientContextProvider>
-                                <TranslationsProvider>
-                                    <Head>
-                                        <title>
-                                            Welcome to example-orchestrator-ui!
-                                        </title>
-                                    </Head>
-                                    <main className="app">
-                                        <QueryClientProvider
-                                            client={queryClient}
-                                            contextSharing={true}
-                                        >
+                                <QueryClientProvider
+                                    client={queryClient}
+                                    contextSharing={true}
+                                >
+                                    <TranslationsProvider>
+                                        <Head>
+                                            <title>
+                                                Welcome to
+                                                example-orchestrator-ui!
+                                            </title>
+                                        </Head>
+                                        <main className="app">
                                             <ToastsContextProvider>
                                                 <ConfirmationDialogContextWrapper>
                                                     <WfoPageTemplate
@@ -98,9 +99,9 @@ function CustomApp({
                                             <ReactQueryDevtools
                                                 initialIsOpen={false}
                                             />
-                                        </QueryClientProvider>
-                                    </main>
-                                </TranslationsProvider>
+                                        </main>
+                                    </TranslationsProvider>
+                                </QueryClientProvider>
                             </ApiClientContextProvider>
                         </EuiProvider>
                     </NoSSR>
