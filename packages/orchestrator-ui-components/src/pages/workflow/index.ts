@@ -1,1 +1,1 @@
-export * from './WfoStartWorkflowPage';
+export * from './WfoWorkflowListPage';

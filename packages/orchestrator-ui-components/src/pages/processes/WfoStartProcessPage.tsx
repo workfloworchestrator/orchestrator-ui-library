@@ -23,7 +23,7 @@ import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
 
 import UserInputFormWizard from '../../components/WfoForms/UserInputFormWizard';
-import { WfoProcessDetail } from '../processes/WfoProcessDetail';
+import { WfoProcessDetail } from './WfoProcessDetail';
 
 type StartCreateWorkflowPayload = {
     product: string;
@@ -36,12 +36,12 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
-interface StartWorkflowPageQuery extends ParsedUrlQuery {
+interface StartProcessPageQuery extends ParsedUrlQuery {
     productId?: string;
     subscriptionId?: string;
 }
 
-interface WfoStartWorkflowPageProps {
+interface WfoStartProcessPageProps {
     workflowName: string;
     isTask?: boolean;
 }
@@ -54,7 +54,7 @@ export interface UserInputForm {
 const getInitialWorkflowPayload = ({
     productId,
     subscriptionId,
-}: StartWorkflowPageQuery): StartWorkflowPayload | undefined => {
+}: StartProcessPageQuery): StartWorkflowPayload | undefined => {
     if (productId) {
         return {
             product: productId,
@@ -68,17 +68,16 @@ const getInitialWorkflowPayload = ({
     return undefined;
 };
 
-export const WfoStartWorkflowPage = ({
+export const WfoStartProcessPage = ({
     workflowName,
     isTask = false,
-}: WfoStartWorkflowPageProps) => {
+}: WfoStartProcessPageProps) => {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
-    const { productId, subscriptionId } =
-        router.query as StartWorkflowPageQuery;
+    const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
     const startWorkflowPayload = useMemo(
         () => getInitialWorkflowPayload({ productId, subscriptionId }),

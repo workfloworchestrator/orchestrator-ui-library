@@ -1,17 +1,17 @@
 import { WfoFilterTab } from '../../components';
 import { ProcessListItem } from '../../components/WfoProcessList/WfoProcessList';
 
-export enum WfoProcessListTabType {
+export enum WfoWorkflowListTabType {
     ACTIVE = 'ACTIVE',
     COMPLETED = 'COMPLETED',
 }
 
-export const defaultProcessListTabs: WfoFilterTab<
-    WfoProcessListTabType,
+export const defaultWorkflowListTabs: WfoFilterTab<
+    WfoWorkflowListTabType,
     ProcessListItem
 >[] = [
     {
-        id: WfoProcessListTabType.ACTIVE,
+        id: WfoWorkflowListTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
@@ -30,7 +30,7 @@ export const defaultProcessListTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoProcessListTabType.COMPLETED,
+        id: WfoWorkflowListTabType.COMPLETED,
         translationKey: 'completed',
         alwaysOnFilters: [
             {
