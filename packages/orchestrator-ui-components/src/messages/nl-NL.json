@@ -207,7 +207,7 @@
         "tabs": {
             "active": "Actief",
             "terminated": "Beëindigd",
-            "transient": "In progress",
+            "transient": "In uitvoering",
             "all": "Alles"
         },
         "index": {
