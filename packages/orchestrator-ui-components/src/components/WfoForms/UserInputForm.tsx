@@ -496,7 +496,7 @@ function UserInputForm({
                     alignItems: 'center',
                 }}
             >
-                {buttons.previous.text ?? t('cancelProcess')}
+                {buttons.previous.text ?? t('cancel')}
             </div>
         );
 
@@ -522,7 +522,7 @@ function UserInputForm({
                 iconType={() => <WfoPlayFill color="#FFF" />}
                 iconSide="right"
             >
-                {buttons.next.text ?? t('runProcess')}
+                {buttons.next.text ?? t('start')}
             </EuiButton>
         );
 

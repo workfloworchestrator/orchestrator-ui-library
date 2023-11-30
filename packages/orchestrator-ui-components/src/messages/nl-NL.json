@@ -47,9 +47,17 @@
             "cancel": "Annuleren",
             "submit": "Verstuur",
             "previous": "Vorige",
-            "runProcess": "Start workflow",
-            "cancelProcess": "Annuleer Process",
-            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) heeft validatie errors"
+            "start": "Start",
+            "startTask": "Start task",
+            "startWorkflow": "Start workflow"
+        },
+        "fields": {
+            "bfd": {
+                "description": "Bidirectional forwarding detection",
+                "title": "BFD"
+            },
+            "esi_service_ports_add": "Endpoint toevoegen",
+            "esi_service_ports_del": "Endpoint verwijderen"
         },
         "widgets": {
             "organisation": {

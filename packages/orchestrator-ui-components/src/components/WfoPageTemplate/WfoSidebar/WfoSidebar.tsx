@@ -12,11 +12,11 @@ import {
     PATH_METADATA_PRODUCT_BLOCKS,
     PATH_METADATA_RESOURCE_TYPES,
     PATH_METADATA_WORKFLOWS,
-    PATH_PROCESSES,
     PATH_SETTINGS,
     PATH_START,
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
+    PATH_WORKFLOWS,
 } from '../paths';
 import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 
@@ -48,11 +48,11 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             name: t('workflows'),
             id: '3',
-            isSelected: router.pathname === PATH_PROCESSES,
-            href: PATH_PROCESSES,
+            isSelected: router.pathname === PATH_WORKFLOWS,
+            href: PATH_WORKFLOWS,
             onClick: (e) => {
                 e.preventDefault();
-                router.push(PATH_PROCESSES);
+                router.push(PATH_WORKFLOWS);
             },
         },
         {

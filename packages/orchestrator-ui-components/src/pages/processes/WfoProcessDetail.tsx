@@ -14,8 +14,8 @@ import {
 } from '@elastic/eui';
 
 import {
-    PATH_PROCESSES,
     PATH_TASKS,
+    PATH_WORKFLOWS,
     TimelineItem,
     WfoLoading,
     WfoTimeline,
@@ -156,7 +156,7 @@ export const WfoProcessDetail = ({
             confirmAction: () => {
                 processDetail?.processId &&
                     abortProcess.mutate(processDetail.processId);
-                router.push(processIsTask ? PATH_TASKS : PATH_PROCESSES);
+                router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
             },
         });
 

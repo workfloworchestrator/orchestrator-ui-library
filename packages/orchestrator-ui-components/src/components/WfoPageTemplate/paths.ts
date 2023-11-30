@@ -1,7 +1,7 @@
 export const PATH_START = '/';
-export const PATH_START_NEW_PROCESS = '/processes/new';
+export const PATH_START_NEW_WORKFLOW = '/workflows/new';
 export const PATH_START_NEW_TASK = '/tasks/new';
-export const PATH_PROCESSES = '/processes';
+export const PATH_WORKFLOWS = '/workflows';
 export const PATH_SUBSCRIPTIONS = '/subscriptions';
 export const PATH_METADATA = '/metadata';
 export const PATH_METADATA_PRODUCTS = '/metadata/products';

@@ -3,10 +3,10 @@ import { gql } from 'graphql-request';
 
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-import { GraphqlQueryVariables, Process, ProcessesResult } from '@/types';
+import { GraphqlQueryVariables, Process, ProcessListResult } from '@/types';
 
 export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
-    ProcessesResult,
+    ProcessListResult,
     GraphqlQueryVariables<Process>
 > = parse(gql`
     query ProcessList(
@@ -39,6 +39,7 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
                 processId
                 startedAt
                 lastModifiedAt
+                isTask
                 subscriptions {
                     page {
                         subscriptionId

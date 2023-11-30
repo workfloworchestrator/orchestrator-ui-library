@@ -4,17 +4,17 @@ import { useRouter } from 'next/router';
 
 import { WfoProcessDetailPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-const ProcessDetailPage = () => {
+const WorkflowDetailPage = () => {
     const router = useRouter();
-    const { processId } = router.query;
+    const { workflowId } = router.query;
 
     return (
         <>
-            {(processId && typeof processId === 'string' && (
-                <WfoProcessDetailPage processId={processId} />
-            )) || <div>Invalid processId</div>}
+            {(workflowId && typeof workflowId === 'string' && (
+                <WfoProcessDetailPage processId={workflowId} />
+            )) || <div>Invalid workflowId</div>}
         </>
     );
 };
 
-export default ProcessDetailPage;
+export default WorkflowDetailPage;
