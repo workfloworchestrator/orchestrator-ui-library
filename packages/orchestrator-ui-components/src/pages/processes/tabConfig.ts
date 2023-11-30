@@ -1,5 +1,5 @@
 import { WfoFilterTab } from '../../components';
-import { ProcessListItem } from '../../components/WfoProcessesList/WfoProcessList';
+import { ProcessListItem } from '../../components/WfoProcessList/WfoProcessList';
 
 export enum WfoProcessListTabType {
     ACTIVE = 'ACTIVE',

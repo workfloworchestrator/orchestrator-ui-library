@@ -10,7 +10,7 @@ import {
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
 } from '../components';
 import type { StoredTableConfig } from '../components';
-import { ProcessListItem } from '../components/WfoProcessesList/WfoProcessList';
+import { ProcessListItem } from '../components/WfoProcessList/WfoProcessList';
 import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
 import {
     ProductBlockDefinition,
