@@ -20,6 +20,9 @@ import { WfoSubscriptionActions } from './WfoSubscriptionActions';
 import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
 import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
 import { SubscriptionTabIds } from './utils';
+import {Diff, Hunk} from "react-diff-view";
+import WfoDiffViewer from "@/components/WfoDiffViewer/WfoDiffViewer";
+
 
 type WfoSubscriptionProps = {
     subscriptionId: string;
@@ -98,6 +101,10 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                     <h2>{subscriptionDetail.description}</h2>
                                 </EuiText>
                             </EuiFlexItem>
+                            <EuiFlexItem>
+
+
+                            </EuiFlexItem>
                             <EuiFlexItem grow={false}>
                                 <WfoSubscriptionActions
                                     subscriptionId={subscriptionId}
@@ -109,9 +116,15 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                         </>
 
                         {selectedTabId === SubscriptionTabIds.GENERAL_TAB && (
-                            <WfoSubscriptionGeneral
-                                subscriptionDetail={subscriptionDetail}
-                            />
+                            <>
+                                <Diff viewType="split" hunks={[]} diffType="add">
+                                    {(hunks) => hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)}
+                                </Diff>
+                                <WfoDiffViewer/>
+                                <WfoSubscriptionGeneral
+                                    subscriptionDetail={subscriptionDetail}
+                                />
+                            </>
                         )}
                         {selectedTabId ===
                             SubscriptionTabIds.SERVICE_CONFIGURATION_TAB && (
