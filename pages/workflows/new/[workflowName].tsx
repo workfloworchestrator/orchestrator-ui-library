@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-import { WfoStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoStartProcessPage } from '@orchestrator-ui/orchestrator-ui-components';
 
 const StartWorkflowPage = () => {
     const router = useRouter();
@@ -10,7 +10,7 @@ const StartWorkflowPage = () => {
 
     if (workflowName && typeof workflowName === 'string') {
         return (
-            <WfoStartWorkflowPage isTask={false} workflowName={workflowName} />
+            <WfoStartProcessPage isTask={false} workflowName={workflowName} />
         );
     }
 
