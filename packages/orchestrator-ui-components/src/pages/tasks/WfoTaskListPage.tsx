@@ -16,7 +16,7 @@ import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
     WfoProcessList,
-} from '@/components/WfoProcessesList/WfoProcessList';
+} from '@/components/WfoProcessList/WfoProcessList';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,

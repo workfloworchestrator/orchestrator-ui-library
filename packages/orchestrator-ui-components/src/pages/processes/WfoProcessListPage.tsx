@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
@@ -9,21 +10,19 @@ import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
-} from '../../components';
-import type { StoredTableConfig } from '../../components';
-import { WfoFilterTabs } from '../../components';
-import {
-    ProcessListItem,
-    WfoProcessList,
-} from '../../components/WfoProcessesList/WfoProcessList';
-import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
-import { SortOrder } from '../../types';
+    PATH_WORKFLOWS,
+} from '@/components';
+import type { StoredTableConfig } from '@/components';
+import { ProcessListItem, WfoFilterTabs, WfoProcessList } from '@/components';
+import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
+import { SortOrder } from '@/types';
+
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import { WfoProcessListTabType, defaultProcessListTabs } from './tabConfig';
 
 export const WfoProcessListPage = () => {
     const router = useRouter();
-
+    const t = useTranslations('workflows.index');
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WfoProcessListTabType.ACTIVE),
@@ -75,7 +74,7 @@ export const WfoProcessListPage = () => {
     )?.alwaysOnFilters;
 
     if (!selectedProcessListTab) {
-        router.replace('/processes');
+        router.replace(PATH_WORKFLOWS);
         return null;
     }
 
@@ -83,12 +82,12 @@ export const WfoProcessListPage = () => {
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle="Processes" />
+            <EuiPageHeader pageTitle={t('title')} />
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
                 tabs={defaultProcessListTabs}
-                translationNamespace="processes.tabs"
+                translationNamespace="workflows.tabs"
                 selectedTab={selectedProcessListTab}
                 onChangeTab={handleChangeProcessListTab}
             />

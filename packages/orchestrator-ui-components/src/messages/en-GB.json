@@ -152,10 +152,6 @@
         }
     },
     "processes": {
-        "tabs": {
-            "active": "Active",
-            "completed": "Completed"
-        },
         "index": {
             "workflowName": "Workflow",
             "step": "Current step",
@@ -202,6 +198,15 @@
             "submitFormLabel": "Please submit the form to start this task/workflow",
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow"
+        }
+    },
+    "workflows": {
+        "tabs": {
+            "active": "Active",
+            "completed": "Completed"
+        },
+        "index": {
+            "title": "Workflows"
         }
     },
     "subscriptions": {

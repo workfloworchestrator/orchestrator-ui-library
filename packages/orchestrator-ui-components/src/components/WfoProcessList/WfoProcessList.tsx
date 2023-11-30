@@ -15,6 +15,7 @@ import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { FilterQuery } from '../WfoFilterTabs';
 import { WfoLoading } from '../WfoLoading';
+import { PATH_WORKFLOWS } from '../WfoPageTemplate';
 import {
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
@@ -83,7 +84,7 @@ export const WfoProcessList = ({
             field: 'workflowName',
             name: t('workflowName'),
             render: (value, { processId }) => (
-                <Link href={`/processes/${processId}`}>{value}</Link>
+                <Link href={`/${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
             ),
         },
         lastStep: {

@@ -51,14 +51,6 @@
             "startTask": "Start task",
             "startWorkflow": "Start workflow"
         },
-        "fields": {
-            "bfd": {
-                "description": "Bidirectional forwarding detection",
-                "title": "BFD"
-            },
-            "esi_service_ports_add": "Endpoint toevoegen",
-            "esi_service_ports_del": "Endpoint verwijderen"
-        },
         "widgets": {
             "organisation": {
                 "placeholder": "Org placeholder"
@@ -151,12 +143,13 @@
             "createdAt": "Aangemaakt"
         }
     },
-    "processes": {
+    "workflows": {
         "tabs": {
             "active": "Actief",
             "completed": "Voltooid"
         },
         "index": {
+            "title": "Workflows",
             "workflowName": "Workflow naam",
             "step": "Huidige stap",
             "status": "Status",
