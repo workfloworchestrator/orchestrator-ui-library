@@ -17,3 +17,4 @@ export * from './WfoStartTaskButtonComboBox';
 export * from './WfoDateTime';
 export * from './WfoAuth';
 export * from './WfoDropdownButton';
+export * from './WfoDiffViewer';
