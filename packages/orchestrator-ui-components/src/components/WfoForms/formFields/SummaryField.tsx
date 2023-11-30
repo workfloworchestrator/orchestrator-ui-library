@@ -45,7 +45,7 @@ function Summary({
 
     const { headers, labels, columns } = data;
 
-    const extra_columns_data = columns.filter((_, index) => index !== 0);
+    const extraColumnsData = columns.filter((_, index) => index !== 0);
 
     const rows = columns[0].map((row, index) => (
         <tr key={index}>
@@ -60,17 +60,17 @@ function Summary({
                     row
                 )}
             </td>
-            {extra_columns_data &&
-                extra_columns_data.map((_, idx) => (
+            {extraColumnsData &&
+                extraColumnsData.map((_, idx) => (
                     <td className={`value`} key={idx}>
-                        {extra_columns_data[idx][index]}
+                        {extraColumnsData[idx][index]}
                     </td>
                 ))}
         </tr>
     ));
 
-    const table_header =
-        headers.length === 0 ? null : (
+    const tableHeader =
+        !headers || headers.length === 0 ? null : (
             <tr>
                 {labels && <th />}
                 {headers.map((header, idx) => (
@@ -90,7 +90,7 @@ function Summary({
                 >
                     <section className="table-summary">
                         <table id={`${id}-table`}>
-                            <thead>{table_header}</thead>
+                            <thead>{tableHeader}</thead>
                             <tbody>{rows}</tbody>
                         </table>
                     </section>
