@@ -123,6 +123,11 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
         this.t = t;
     }
 
+    translationKeyExists(key: string): boolean {
+        const translation = this.t(key);
+        return translation !== key ? true : false;
+    }
+
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863
     getField(name: string) {
         return joinName(null, name).reduce(
@@ -256,8 +261,9 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
         // not translated labels for now
         const translationKey = name.replace(/\.\d+(.\d+)*/, '_fields'); // This is evaluates to name or name_fields
         const nextIntlKey = `pydanticForms.backendTranslations.${translationKey}`;
-        const translatedKey = this.t(nextIntlKey);
-        let label = translatedKey !== nextIntlKey ? translatedKey : props.label;
+        let label = this.translationKeyExists(nextIntlKey)
+            ? this.t(nextIntlKey)
+            : props.label;
 
         // Mark required inputs. Might be delegated to the form components itself in the future.
         if (
@@ -272,11 +278,9 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
         props.label = label;
 
         const descriptionTranslationKey = `pydanticForms.backendTranslations.${translationKey}_info`;
-        const translatedDescription = this.t(descriptionTranslationKey);
-        props.description =
-            translatedDescription !== descriptionTranslationKey
-                ? translatedDescription
-                : ' '; // Default must contain a space as not to be Falsy
+        props.description = this.translationKeyExists(descriptionTranslationKey)
+            ? this.t(descriptionTranslationKey)
+            : ' ';
 
         props.id = `input-${name}`;
 
