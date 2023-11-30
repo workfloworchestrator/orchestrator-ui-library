@@ -20,7 +20,7 @@ import { SortOrder } from '@/types';
 import { getProcessListTabTypeFromString } from './getProcessListTabTypeFromString';
 import { WfoProcessListTabType, defaultProcessListTabs } from './tabConfig';
 
-export const WfoProcessListPage = () => {
+export const WfoWorkflowListPage = () => {
     const router = useRouter();
     const t = useTranslations('workflows.index');
     const [activeTab, setActiveTab] = useQueryParam(
