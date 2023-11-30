@@ -4,17 +4,17 @@ import { useRouter } from 'next/router';
 
 import { WfoStartWorkflowPage } from '@orchestrator-ui/orchestrator-ui-components';
 
-const StartProcessPage = () => {
+const StartWorkflowPage = () => {
     const router = useRouter();
-    const { processName } = router.query;
+    const { workflowName } = router.query;
 
-    if (processName && typeof processName === 'string') {
+    if (workflowName && typeof workflowName === 'string') {
         return (
-            <WfoStartWorkflowPage isTask={false} workflowName={processName} />
+            <WfoStartWorkflowPage isTask={false} workflowName={workflowName} />
         );
     }
 
     return <div>Invalid arguments provided</div>;
 };
 
-export default StartProcessPage;
+export default StartWorkflowPage;
