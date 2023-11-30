@@ -20,13 +20,12 @@ import {
     WfoLoading,
     WfoTimeline,
 } from '@/components';
-import { ConfirmationDialogContext, ToastTypes } from '@/contexts';
+import { ConfirmationDialogContext } from '@/contexts';
 import {
-    useEngineStatusQuery,
+    useCheckEngineStatus,
+    useMutateProcess,
     useOrchestratorTheme,
-    useToastMessage,
 } from '@/hooks';
-import { useMutateProcess } from '@/hooks';
 import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '@/icons';
 import { ProcessDetail, ProcessStatus } from '@/types';
 import { parseDateRelativeToToday, parseIsoString } from '@/utils';
@@ -93,13 +92,11 @@ export const WfoProcessDetail = ({
     onTimelineItemClick,
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
-    const tErrors = useTranslations('errors');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
-    const { isEngineRunningNow } = useEngineStatusQuery();
-    const toastMessage = useToastMessage();
+    const { isEngineRunningNow } = useCheckEngineStatus();
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -126,14 +123,11 @@ export const WfoProcessDetail = ({
 
     const processIsTask = processDetail?.isTask === true;
 
-    const handleActionButtonClick = (action: () => void) => async () =>
-        (await isEngineRunningNow())
-            ? action()
-            : toastMessage.addToast(
-                  ToastTypes.ERROR,
-                  tErrors('notAllowedWhenEngineIsNotRunningMessage'),
-                  tErrors('notAllowedWhenEngineIsNotRunningTitle'),
-              );
+    const handleActionButtonClick = (action: () => void) => async () => {
+        if (await isEngineRunningNow()) {
+            action();
+        }
+    };
 
     const retryAction = () =>
         showConfirmDialog({

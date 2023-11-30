@@ -19,18 +19,12 @@ interface EngineStatusPayload {
 
 export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
-    const useQueryResult = useQueryWithFetch<
-        EngineStatus,
-        Record<string, never>
-    >(engineStatusEndpoint, {}, 'engineStatus');
 
-    return {
-        ...useQueryResult,
-        isEngineRunningNow: async () => {
-            const result = await useQueryResult.refetch();
-            return result.data?.global_status === 'RUNNING';
-        },
-    };
+    return useQueryWithFetch<EngineStatus, Record<string, never>>(
+        engineStatusEndpoint,
+        {},
+        'engineStatus',
+    );
 };
 
 export const useEngineStatusMutation = () => {

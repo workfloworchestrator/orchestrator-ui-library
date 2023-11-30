@@ -17,14 +17,13 @@ import {
     ProcessListItem,
     WfoProcessList,
 } from '@/components/WfoProcessesList/WfoProcessList';
-import { ConfirmationDialogContext, ToastTypes } from '@/contexts';
+import { ConfirmationDialogContext } from '@/contexts';
 import {
+    useCheckEngineStatus,
     useDataDisplayParams,
-    useEngineStatusQuery,
     useMutateProcess,
     useOrchestratorTheme,
     useStoredTableConfig,
-    useToastMessage,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
 import { SortOrder } from '@/types';
@@ -32,11 +31,9 @@ import { SortOrder } from '@/types';
 export const WfoTaskListPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
-    const tErrors = useTranslations('errors');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const { retryAllProcesses } = useMutateProcess();
-    const { isEngineRunningNow } = useEngineStatusQuery();
-    const toastMessage = useToastMessage();
+    const { isEngineRunningNow } = useCheckEngineStatus();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
@@ -98,19 +95,16 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const handleRerunAllButtonClick = async () =>
-        (await isEngineRunningNow())
-            ? showConfirmDialog({
-                  question: t('rerunAllQuestion'),
-                  confirmAction: () => {
-                      retryAllProcesses.mutate();
-                  },
-              })
-            : toastMessage.addToast(
-                  ToastTypes.ERROR,
-                  tErrors('notAllowedWhenEngineIsNotRunningMessage'),
-                  tErrors('notAllowedWhenEngineIsNotRunningTitle'),
-              );
+    const handleRerunAllButtonClick = async () => {
+        if (await isEngineRunningNow()) {
+            showConfirmDialog({
+                question: t('rerunAllQuestion'),
+                confirmAction: () => {
+                    retryAllProcesses.mutate();
+                },
+            });
+        }
+    };
 
     return (
         <>
