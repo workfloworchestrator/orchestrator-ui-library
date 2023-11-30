@@ -1,28 +1,17 @@
-import React from 'react';
+import { useEffect } from 'react';
 
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPageHeader,
-    EuiSpacer,
-} from '@elastic/eui';
-import { WfoNewProcessPanel } from '@orchestrator-ui/orchestrator-ui-components';
+import { useRouter } from 'next/router';
 
-const StartProcessPage = () => {
-    return (
-        <>
-            <EuiPageHeader pageTitle="Create new process" />
-            <EuiSpacer />
-            <WfoNewProcessPanel />
-            <EuiSpacer />
-            <EuiFlexGroup>
-                <EuiFlexItem grow={false}>
-                    <EuiButton fill>Next</EuiButton>
-                </EuiFlexItem>
-            </EuiFlexGroup>
-        </>
-    );
+import { PATH_WORKFLOWS } from '@orchestrator-ui/orchestrator-ui-components';
+
+const IndexPage = () => {
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push(PATH_WORKFLOWS);
+    }, [router]);
+
+    return null;
 };
 
-export default StartProcessPage;
+export default IndexPage;
