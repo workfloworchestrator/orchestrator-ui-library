@@ -216,9 +216,7 @@ export const WfoTableWithFilter = <T,>({
                     // https://github.com/workfloworchestrator/orchestrator-ui/issues/81
                     onUpdateEsQueryString(
                         esQueryString
-                            ? esQueryString +
-                                  ' AND ' +
-                                  `${field.toString()}:"${searchText}"`
+                            ? `${esQueryString} ${field.toString()}:"${searchText}"`
                             : `${field.toString()}:"${searchText}"`,
                     );
                 }}
