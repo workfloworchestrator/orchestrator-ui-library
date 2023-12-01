@@ -83,23 +83,23 @@ function CustomApp({
                 <SessionProvider session={pageProps.session}>
                     <WfoAuth>
                         <NoSSR>
-                            <TranslationsProvider>
-                                <EuiProvider
-                                    colorMode="light"
-                                    modify={defaultOrchestratorTheme}
-                                >
-                                    <ApiClientContextProvider>
-                                        <Head>
-                                            <title>
-                                                Welcome to
-                                                example-orchestrator-ui!
-                                            </title>
-                                        </Head>
-                                        <main className="app">
-                                            <QueryClientProvider
-                                                client={queryClient}
-                                                contextSharing={true}
-                                            >
+                            <EuiProvider
+                                colorMode="light"
+                                modify={defaultOrchestratorTheme}
+                            >
+                                <ApiClientContextProvider>
+                                    <QueryClientProvider
+                                        client={queryClient}
+                                        contextSharing={true}
+                                    >
+                                        <TranslationsProvider>
+                                            <Head>
+                                                <title>
+                                                    Welcome to
+                                                    example-orchestrator-ui!
+                                                </title>
+                                            </Head>
+                                            <main className="app">
                                                 <ToastsContextProvider>
                                                     <ConfirmationDialogContextWrapper>
                                                         <WfoPageTemplate
@@ -132,11 +132,11 @@ function CustomApp({
                                                 <ReactQueryDevtools
                                                     initialIsOpen={false}
                                                 />
-                                            </QueryClientProvider>
-                                        </main>
-                                    </ApiClientContextProvider>
-                                </EuiProvider>
-                            </TranslationsProvider>
+                                            </main>
+                                        </TranslationsProvider>
+                                    </QueryClientProvider>
+                                </ApiClientContextProvider>
+                            </EuiProvider>
                         </NoSSR>
                     </WfoAuth>
                 </SessionProvider>
