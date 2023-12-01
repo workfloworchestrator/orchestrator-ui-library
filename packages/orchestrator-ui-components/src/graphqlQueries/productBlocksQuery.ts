@@ -13,14 +13,12 @@ export const GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataProductBlocks(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!]
-        $query: String
+        $sortBy: [GraphqlSort!] # $query: String
     ) {
         productBlocks(
             first: $first
             after: $after
-            sortBy: $sortBy
-            query: $query
+            sortBy: $sortBy # query: $query
         ) {
             page {
                 productBlockId

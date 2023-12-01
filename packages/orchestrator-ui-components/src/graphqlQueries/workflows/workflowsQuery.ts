@@ -16,14 +16,12 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataWorkflows(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!]
-        $query: String
+        $sortBy: [GraphqlSort!] # $query: String
     ) {
         workflows(
             first: $first
             after: $after
-            sortBy: $sortBy
-            query: $query
+            sortBy: $sortBy # query: $query
         ) {
             page {
                 name
