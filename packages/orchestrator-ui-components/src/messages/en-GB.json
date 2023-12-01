@@ -48,15 +48,8 @@
             "submit": "Submit",
             "previous": "Previous",
             "startTask": "Start task",
-            "startWorkflow": "Start workflow"
-        },
-        "fields": {
-            "bfd": {
-                "description": "Bidirectional forwarding detection",
-                "title": "BFD"
-            },
-            "esi_service_ports_add": "Add endpoint",
-            "esi_service_ports_del": "Delete endpoint"
+            "startWorkflow": "Start workflow",
+            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
         },
         "widgets": {
             "organisation": {
