@@ -4,6 +4,7 @@ import { useOrchestratorTheme } from '../../../hooks';
 import { Step } from '../../../types';
 import { WfoStep } from '../WfoStep';
 import { getStyles } from '../styles';
+import ReactDiffViewer from 'react-diff-viewer-continued';
 
 export type StepListItem = {
     step: Step;
@@ -103,6 +104,9 @@ export const WfoStepList = React.forwardRef(
                     }
                     return stepComponent;
                 })}
+                <ReactDiffViewer
+                    splitView={true}
+                />
             </>
         );
     },
