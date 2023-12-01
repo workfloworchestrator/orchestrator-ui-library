@@ -10,7 +10,7 @@ import { parseDate, parseDateToLocaleDateTimeString } from '../../utils';
 import { upperCaseFirstChar } from '../../utils';
 import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoLoading } from '../WfoLoading';
-import { PATH_WORKFLOWS } from '../WfoPageTemplate';
+import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
 import { getStyles } from './styles';
 
@@ -28,6 +28,9 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
         lastContentCellStyle,
         lastHeaderCellStyle,
     } = useWithOrchestratorTheme(getStyles);
+    const processUrl = subscriptionDetailProcess.isTask
+        ? PATH_TASKS
+        : PATH_WORKFLOWS;
 
     return (
         <>
@@ -38,7 +41,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
                         <td css={headerCellStyle}>{t('id')}</td>
                         <td css={contentCellStyle}>
                             <a
-                                href={`${PATH_WORKFLOWS}/${subscriptionDetailProcess.processId}`}
+                                href={`${processUrl}/${subscriptionDetailProcess.processId}`}
                             >
                                 {subscriptionDetailProcess.processId}
                             </a>

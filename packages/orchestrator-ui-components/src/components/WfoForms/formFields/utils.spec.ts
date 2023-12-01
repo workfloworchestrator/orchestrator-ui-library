@@ -51,6 +51,7 @@ const testSubscriptionDetail: SubscriptionDetail = {
                 createdBy: 'Test',
                 workflowTarget: WorkflowTarget.CREATE,
                 workflowName: 'Test workflow name',
+                isTask: false,
             },
         ],
     },

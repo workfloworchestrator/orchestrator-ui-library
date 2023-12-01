@@ -440,6 +440,7 @@ export type SubscriptionDetailProcess = Pick<
     | 'createdBy'
     | 'workflowTarget'
     | 'workflowName'
+    | 'isTask'
 >;
 
 export type RelatedSubscription = Pick<
