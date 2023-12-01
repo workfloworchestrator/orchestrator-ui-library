@@ -23,6 +23,7 @@ export type WfoStepListHeaderProps = {
     onChangeShowRaw: (showRaw: boolean) => void;
     onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
     onToggleAllDetailsIsOpen: () => void;
+    isTask: boolean;
 };
 
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
@@ -32,6 +33,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     onChangeShowRaw,
     allDetailToggleText,
     onToggleAllDetailsIsOpen,
+    isTask,
 }) => {
     const t = useTranslations('processes.steps');
     const { theme } = useOrchestratorTheme();
@@ -65,7 +67,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
             {/* Left side: header and expand/collapse button */}
             <EuiFlexGroup css={stepListContentStyle}>
                 <EuiText css={stepListContentBoldTextStyle}>
-                    {t('steps')}
+                    {t(isTask ? 'taskSteps' : 'workflowSteps')}
                 </EuiText>
                 {!showRaw && (
                     <EuiText

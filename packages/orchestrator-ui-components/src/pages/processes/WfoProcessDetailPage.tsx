@@ -56,7 +56,7 @@ export const WfoProcessDetailPage = ({
 
     const productNames = getProductNamesFromProcess(process);
     const pageTitle = process?.workflowName || '';
-
+    const isTask = process?.isTask ?? false;
     const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
     const timelineItems: TimelineItem[] =
         mapGroupedStepsToTimelineItems(groupedSteps);
@@ -81,6 +81,7 @@ export const WfoProcessDetailPage = ({
                             (groupedStep) => groupedStep.steps,
                         )}
                         startedAt={process.startedAt}
+                        isTask={isTask}
                     />
                 ))}
         </WfoProcessDetail>
