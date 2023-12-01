@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiComment, EuiCommentList, EuiSpacer, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
+import { useWithOrchestratorTheme } from '../../hooks';
 import { SubscriptionDetailProcess } from '../../types';
 import { parseDate, parseDateToLocaleDateTimeString } from '../../utils';
 import { upperCaseFirstChar } from '../../utils';
@@ -92,7 +92,7 @@ const WfoRenderSubscriptionProcess = ({
 }: WfoRenderSubscriptionProcess) => {
     const { timeLineStyle, workflowTargetStyle } =
         useWithOrchestratorTheme(getStyles);
-    const { theme } = useOrchestratorTheme();
+
     return (
         <EuiComment
             username={subscriptionDetailProcess.workflowTarget ?? ''}
@@ -100,7 +100,6 @@ const WfoRenderSubscriptionProcess = ({
             timelineAvatar={
                 <WfoTargetTypeIcon
                     target={subscriptionDetailProcess.workflowTarget}
-                    theme={theme}
                 />
             }
         >
