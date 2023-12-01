@@ -20,8 +20,8 @@ export const GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY: TypedDocumentNode<
 > = parse(gql`
     query RelatedSubscriptions(
         $subscriptionId: String!
-        $first: IntType!
-        $after: IntType!
+        $first: Int!
+        $after: Int!
         $sortBy: [GraphqlSort!]
         $terminatedSubscriptionFilter: [GraphqlFilter!]
     ) {
