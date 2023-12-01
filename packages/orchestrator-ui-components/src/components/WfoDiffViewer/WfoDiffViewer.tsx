@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo, FC} from 'react';
+import React, {useState, useCallback, useMemo, FC, ReactNode} from 'react';
 import * as refractor from 'refractor';
 import {diffLines, formatLines} from 'unidiff';
 import {parseDiff, Diff, Hunk, tokenize} from 'react-diff-view';
@@ -21,7 +21,12 @@ const useInput = (initialValue: string) => {
     };
 };
 
-export default function WfoDiffViewer() {
+interface WfoDiffViewerProps {
+    old: string;
+    new: string;
+}
+
+const WfoDiffViewer: React.FC<WfoDiffViewerProps> = (props) => {
     const oldText = 'jadajaja'
     const newText = 'shjkdhjkd';
     // @ts-ignore
@@ -67,3 +72,5 @@ export default function WfoDiffViewer() {
         </div>
     );
 }
+
+export default WfoDiffViewer
