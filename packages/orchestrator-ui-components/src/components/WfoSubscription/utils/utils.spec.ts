@@ -7,6 +7,7 @@ import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
     getWorkflowTargetColor,
+    getWorkflowTargetIconContent,
 } from './utils';
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
@@ -164,5 +165,28 @@ describe('getWorkflowTargetColor', () => {
         expect(
             getWorkflowTargetColor('UNKNOWN_TARGET' as WorkflowTarget, theme),
         ).toBe('bodyColor');
+    });
+});
+
+describe('getWorkflowTargetIconContent', () => {
+    it('should return C for CREATE', () => {
+        expect(getWorkflowTargetIconContent(WorkflowTarget.CREATE)).toBe('C');
+    });
+
+    it('should return T for SYSTEM', () => {
+        expect(getWorkflowTargetIconContent(WorkflowTarget.SYSTEM)).toBe('T');
+    });
+
+    it('should return X for TERMINATE', () => {
+        expect(getWorkflowTargetIconContent(WorkflowTarget.TERMINATE)).toBe(
+            'X',
+        );
+    });
+
+    it('should return M for unknown targets', () => {
+        // Test with an unknown target
+        expect(
+            getWorkflowTargetIconContent('UNKNOWN_TARGET' as WorkflowTarget),
+        ).toBe('M');
     });
 });

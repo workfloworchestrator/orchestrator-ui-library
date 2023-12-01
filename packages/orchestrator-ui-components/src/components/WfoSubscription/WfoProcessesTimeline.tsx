@@ -2,13 +2,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiAvatar,
-    EuiComment,
-    EuiCommentList,
-    EuiSpacer,
-    EuiText,
-} from '@elastic/eui';
+import { EuiComment, EuiCommentList, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
 import { SubscriptionDetailProcess } from '../../types';
@@ -17,8 +11,8 @@ import { upperCaseFirstChar } from '../../utils';
 import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoLoading } from '../WfoLoading';
 import { PATH_WORKFLOWS } from '../WfoPageTemplate';
+import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
 import { getStyles } from './styles';
-import { getWorkflowTargetColor } from './utils';
 
 interface WfoProcessCardProps {
     subscriptionDetailProcess: SubscriptionDetailProcess;
@@ -101,18 +95,14 @@ const WfoRenderSubscriptionProcess = ({
             username={subscriptionDetailProcess.workflowTarget ?? ''}
             timelineAvatarAriaLabel={subscriptionDetailProcess.workflowName}
             timelineAvatar={
-                <EuiAvatar
-                    name={subscriptionDetailProcess.workflowTarget}
-                    color={getWorkflowTargetColor(
-                        subscriptionDetailProcess.workflowTarget,
-                        theme,
-                    )}
+                <WfoTargetTypeIcon
+                    target={subscriptionDetailProcess.workflowTarget}
+                    theme={theme}
                 />
             }
         >
             <div css={timeLineStyle}>
                 <EuiText css={workflowTargetStyle}>
-                    AA{' '}
                     {upperCaseFirstChar(
                         subscriptionDetailProcess.workflowTarget,
                     )}
