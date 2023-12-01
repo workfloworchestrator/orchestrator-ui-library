@@ -192,7 +192,6 @@
             "collapseAll": "klap alles in",
             "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
-            "submitFormLabel": "Please submit the form to start this task/workflow",
             "submitTaskFormLabel": "Verstuur het formulier om deze workflow te starten",
             "submitWorkflowFormLabel": "Verstuur het formulier om deze task te starten"
         }
