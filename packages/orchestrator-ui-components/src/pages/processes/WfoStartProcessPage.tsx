@@ -193,7 +193,13 @@ export const WfoStartProcessPage = ({
                         <EuiText css={stepListContentBoldTextStyle}>
                             {t('userInput')}
                         </EuiText>
-                        <EuiText>{t('submitFormLabel')}</EuiText>
+                        <EuiText>
+                            {t(
+                                isTask
+                                    ? 'submitTaskFormLabel'
+                                    : 'submitWorkflowFormLabel',
+                            )}
+                        </EuiText>
                     </EuiFlexItem>
                 </EuiFlexGroup>
                 <EuiHorizontalRule />

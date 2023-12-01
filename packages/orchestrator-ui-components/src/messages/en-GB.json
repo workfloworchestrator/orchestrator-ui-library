@@ -195,7 +195,6 @@
             "collapseAll": "collapse all",
             "duration": "Duration",
             "userInput": "User input",
-            "submitFormLabel": "Please submit the form to start this task/workflow",
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow"
         }
