@@ -2,7 +2,7 @@ import React from 'react';
 import type { ReactNode } from 'react';
 
 import { merge } from 'lodash';
-import { NextIntlProvider } from 'next-intl';
+import { IntlErrorCode, NextIntlProvider } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import {
@@ -35,7 +35,24 @@ export const TranslationsProvider = ({
         }
     };
 
+    const onError = (error: { code: IntlErrorCode }) => {
+        if (
+            error &&
+            error.code &&
+            error.code !== IntlErrorCode.MISSING_MESSAGE
+        ) {
+            // Missing translations are expected and normal in the context of the
+            // forms module (see UserInputForm.tsx) so we silently discard them
+            // TODO: Think of a place to better log missing translations keys that shouldn't be missing
+            console.error(error);
+        }
+    };
+
     const messages = merge(standardMessages, getCustomMessages());
 
-    return <NextIntlProvider messages={messages}>{children}</NextIntlProvider>;
+    return (
+        <NextIntlProvider messages={messages} onError={onError}>
+            {children}
+        </NextIntlProvider>
+    );
 };
