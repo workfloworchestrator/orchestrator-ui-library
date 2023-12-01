@@ -158,7 +158,7 @@ export const WfoImpactTable = ({
                 return value ? (
                     <WfoImpactLevelBadge impactedObjectImpact={value} />
                 ) : (
-                    <EuiText>-</EuiText>
+                    <EuiText color={theme.colors.darkShade}>-</EuiText>
                 );
             },
             sortable: true,

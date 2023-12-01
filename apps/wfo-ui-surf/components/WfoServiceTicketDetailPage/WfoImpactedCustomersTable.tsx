@@ -1,13 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiIcon, EuiText } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiButtonEmpty,
+    EuiButtonIcon,
+    EuiCopy,
+    EuiDescriptionList,
+    EuiDescriptionListDescription,
+    EuiDescriptionListTitle,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiIcon,
+    EuiLink,
+    EuiSpacer,
+    EuiText,
+    EuiTitle,
+} from '@elastic/eui';
 import {
     WfoBadge,
     WfoCheckmarkCircleFill,
     WfoDropdownTable,
+    WfoInformationModal,
     WfoTableColumns,
+    WfoViewList,
     WfoXCircleFill,
     useFilterQueryWithRest,
     useOrchestratorTheme,
@@ -16,19 +33,15 @@ import {
 import { MINL_BY_SUBSCRIPTION_ENDPOINT } from '../../constants-surf';
 import { SurfConfigContext } from '../../contexts/surfConfigContext';
 import {
-    ImpactedCustomerRelation,
+    CustomerWithContacts,
+    ImpactedCustomerContact,
     ImpactedCustomersTableColumns,
     ImpactedObject,
     ServiceTicketDefinition,
 } from '../../types';
 import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
-import {
-    calculateInformCustomer,
-    calculateSendingLevel,
-    getImsCalculatedImpact,
-    getMinlForCustomer,
-    mapImpactedObjectToImpactedCustomersColumns,
-} from './utils';
+import { WfoCustomersContactsModal } from './WfoCustomersContactsModal';
+import { mapImpactedObjectToImpactedCustomersColumns } from './utils';
 
 interface WfoImpactedCustomersTableProps {
     impactedObject: ImpactedObject;
@@ -40,6 +53,9 @@ interface WfoImpactedCustomersTableProps {
 //     },
 // });
 
+//TODO: Try max width for the customers table
+//ADD empty column that pushes everything to the left
+//add width to every column except the last one
 export const WfoImpactedCustomersTable = ({
     impactedObject,
 }: WfoImpactedCustomersTableProps) => {
@@ -48,6 +64,8 @@ export const WfoImpactedCustomersTable = ({
     );
     const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
     const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const [contactsModal, setContactsModal] = useState<CustomerWithContacts>();
+    const [imsModal, setImsModal] = useState();
 
     const { data: minlObjectFromApi, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
@@ -60,10 +78,9 @@ export const WfoImpactedCustomersTable = ({
             customer: {
                 name: t('customers'),
                 field: 'customer',
-                width: '250',
                 render: (customer) => (
                     <EuiText size={'s'}>
-                        <b>{customer}</b>
+                        <b>{customer.customer_abbrev}</b>
                     </EuiText>
                 ),
             },
@@ -79,6 +96,21 @@ export const WfoImpactedCustomersTable = ({
             contacts: {
                 field: 'contacts',
                 name: t('contacts'),
+                render: (value, object) => (
+                    <EuiButtonEmpty
+                        size={'xs'}
+                        onClick={() =>
+                            setContactsModal({
+                                name: object.customer.customer_name,
+                                contacts: value,
+                            })
+                        }
+                    >
+                        <EuiText>
+                            <u>{value.length}</u>
+                        </EuiText>
+                    </EuiButtonEmpty>
+                ),
             },
             acceptedImpact: {
                 field: 'acceptedImpact',
@@ -90,7 +122,6 @@ export const WfoImpactedCustomersTable = ({
             minl: {
                 field: 'minl',
                 name: t('minl'),
-                width: '250',
                 render: (value) =>
                     value && (
                         <WfoImpactLevelBadge impactedObjectImpact={value} />
@@ -109,33 +140,83 @@ export const WfoImpactedCustomersTable = ({
                 render: (value) =>
                     value ? (
                         <WfoCheckmarkCircleFill
-                            width={30}
-                            height={30}
+                            width={24}
+                            height={24}
                             color={theme.colors.success}
                         />
                     ) : (
                         <WfoXCircleFill
-                            width={30}
-                            height={30}
+                            width={24}
+                            height={24}
                             color={theme.colors.danger}
                         />
                     ),
             },
         };
 
+    const handleCloseContactsModal = () => {
+        setContactsModal(undefined);
+    };
+
+    const handleCloseImsModal = () => {
+        setImsModal(undefined);
+    };
+
+    const ShowImsInformationButton = () => (
+        <EuiButtonEmpty size="s" onClick={() => setImsModal(true)}>
+            <EuiFlexGroup gutterSize="s" alignItems="center">
+                <EuiFlexItem>
+                    <WfoViewList color={theme.colors.primary} />
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <EuiText size="s" color={theme.colors.primary}>
+                        <b>{t('showImsServiceInformation')}</b>
+                    </EuiText>
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </EuiButtonEmpty>
+    );
+
     return (
-        <WfoDropdownTable
-            data={
-                impactedObject && minlObjectFromApi
-                    ? mapImpactedObjectToImpactedCustomersColumns(
-                          impactedObject,
-                          minlObjectFromApi,
-                          cimDefaultSendingLevel,
-                      )
-                    : []
-            }
-            isLoading={isFetching}
-            columns={impactedCustomersTableColumns}
-        />
+        <>
+            <EuiFlexGroup
+                gutterSize={'xs'}
+                direction="column"
+                alignItems={'flexStart'}
+            >
+                <EuiFlexItem>
+                    <WfoDropdownTable
+                        data={
+                            impactedObject && minlObjectFromApi
+                                ? mapImpactedObjectToImpactedCustomersColumns(
+                                      impactedObject,
+                                      minlObjectFromApi,
+                                      cimDefaultSendingLevel,
+                                  )
+                                : []
+                        }
+                        isLoading={isFetching}
+                        columns={impactedCustomersTableColumns}
+                    />
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <ShowImsInformationButton />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            {contactsModal && (
+                <WfoCustomersContactsModal
+                    customerWithContacts={contactsModal}
+                    handleClose={handleCloseContactsModal}
+                />
+            )}
+            {imsModal && (
+                <WfoInformationModal
+                    title={t('imsInformationModalTitle')}
+                    onClose={handleCloseImsModal}
+                >
+                    <EuiText>IMS Details here</EuiText>
+                </WfoInformationModal>
+            )}
+        </>
     );
 };

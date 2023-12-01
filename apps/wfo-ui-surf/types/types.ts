@@ -172,16 +172,6 @@ export enum ImpactedCustomerRelation {
     GRANTED_PERMISSION = 'granted permission',
 }
 
-export type ImpactedCustomersTableColumns = {
-    customer: string;
-    relation: ImpactedCustomerRelation;
-    contacts: number;
-    acceptedImpact: ImpactLevel;
-    minl: ImpactLevel | null;
-    sendingLevel: ImpactLevel;
-    informCustomer: boolean;
-};
-
 export enum ServiceTicketType {
     PLANNED_WORK = 'planned work',
     INCIDENT = 'incident',
@@ -258,4 +248,19 @@ export interface MinlObjectFromApi {
 export type ImpactedObjectWithIndex = {
     item: ImpactTableColumns;
     index: number;
+};
+
+export type ImpactedCustomersTableColumns = {
+    customer: ImpactedCustomer;
+    relation: ImpactedCustomerRelation;
+    contacts: ImpactedCustomerContact[];
+    acceptedImpact: ImpactLevel;
+    minl: ImpactLevel | null;
+    sendingLevel: ImpactLevel;
+    informCustomer: boolean;
+};
+
+export type CustomerWithContacts = {
+    name: string;
+    contacts: ImpactedCustomerContact[];
 };

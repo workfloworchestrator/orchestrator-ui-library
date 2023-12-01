@@ -65,13 +65,13 @@ export const calculateInformCustomer = (
 };
 
 export const calculateSendingLevel = (
-    acceptedImpactLevel: ImpactLevel,
     minimalImpactLevel: ImpactLevel | null,
     defaultSendingLevel: ImpactLevel,
 ) => {
     return minimalImpactLevel ? minimalImpactLevel : defaultSendingLevel;
 };
 
+//TODO: Get the highest impact of all impacted objects
 export const getImsCalculatedImpact = (object: ImpactedObject) => {
     return object.ims_circuits[object.ims_circuits.length - 1].impact;
 };
@@ -105,7 +105,6 @@ export const mapImpactedObjectToImpactedCustomersColumns = (
             minlObjectFromApi,
         );
         const sendingLevel = calculateSendingLevel(
-            acceptedImpact,
             customerMinl,
             cimDefaultSendingLevel,
         );
@@ -115,9 +114,9 @@ export const mapImpactedObjectToImpactedCustomersColumns = (
         );
 
         customerTableColumns.push({
-            customer: object.customer.customer_abbrev,
+            customer: object.customer,
             relation: object.relation,
-            contacts: object.contacts.length ?? 0,
+            contacts: object.contacts,
             acceptedImpact: acceptedImpact,
             minl: customerMinl,
             sendingLevel: sendingLevel,

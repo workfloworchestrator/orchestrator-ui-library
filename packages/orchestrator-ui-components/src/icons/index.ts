@@ -22,3 +22,4 @@ export * from './WfoCogFill';
 export * from './WfoStatistic';
 export * from './WfoPencilAlt';
 export * from './WfoPencil';
+export * from './WfoViewList';

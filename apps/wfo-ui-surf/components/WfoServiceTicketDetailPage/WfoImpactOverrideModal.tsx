@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useTranslations } from 'next-intl';
 
@@ -7,6 +7,7 @@ import {
     EuiDescriptionList,
     EuiDescriptionListDescription,
     EuiDescriptionListTitle,
+    EuiRadioGroup,
     EuiSpacer,
     EuiSuperSelect,
     EuiText,
@@ -14,6 +15,7 @@ import {
 import {
     EngineStatus,
     OrchestratorConfigContext,
+    WfoBadge,
     WfoSubmitModal,
     useEngineStatusMutation,
     useOrchestratorTheme,
@@ -103,6 +105,7 @@ export const WfoImpactOverrideModal = ({
     );
     const { theme } = useOrchestratorTheme();
     const { mutate, data } = usePatchImpactedObject();
+    const { isLoading } = useQuery(['serviceTickets', serviceTicketDetail._id]);
 
     const onChange = (value: any) => {
         setValue(value);
@@ -114,13 +117,20 @@ export const WfoImpactOverrideModal = ({
             serviceTicketId: serviceTicketDetail._id!,
             index: index,
         });
-        closeAction();
+        !isLoading && closeAction();
     };
 
-    const options = Object.values(ImpactLevel).map((value) => ({
-        value: value,
-        inputDisplay: <WfoImpactLevelBadge impactedObjectImpact={value} />,
-        'data-test-subj': 'superSelectOption',
+    const options = Object.values(ImpactLevel).map((impact) => ({
+        label: impact,
+        id: impact,
+        css: {
+            color:
+                value === impact
+                    ? theme.colors.primary
+                    : theme.colors.darkShade,
+        },
+        // inputDisplay: <WfoImpactLevelBadge impactedObjectImpact={value} />,
+        // 'data-test-subj': 'superSelectOption',
     }));
 
     return (
@@ -128,36 +138,43 @@ export const WfoImpactOverrideModal = ({
             title={t('impactOverrideModalTitle')}
             onClose={closeAction}
             onSubmit={handleSubmit}
+            submitButtonLabel={t('overrideImpactButton')}
         >
-            <EuiDescriptionList>
-                <EuiDescriptionListTitle>
-                    {t('subscriptionDescription')}
-                </EuiDescriptionListTitle>
-                <EuiDescriptionListDescription>
-                    {impactedObject.subscription_description}
-                </EuiDescriptionListDescription>
-            </EuiDescriptionList>
-            <EuiSpacer />
-            <EuiDescriptionListTitle>
-                <p>{t('impactOverrideModalCurrent')}</p>
-            </EuiDescriptionListTitle>
-            {impactedObject.impact_override ? (
-                <WfoImpactLevelBadge
-                    impactedObjectImpact={impactedObject.impact_override}
-                />
-            ) : (
-                <EuiText color={theme.colors.darkShade}>-</EuiText>
-            )}
-            <EuiSpacer />
-            <EuiDescriptionListTitle>
-                <p>{t('impactOverrideModalNew')}</p>
-            </EuiDescriptionListTitle>
-            <EuiSuperSelect
+            {/*<EuiDescriptionList>*/}
+            {/*    <EuiDescriptionListTitle>*/}
+            {/*        {t('subscriptionDescription')}*/}
+            {/*    </EuiDescriptionListTitle>*/}
+            {/*    <EuiDescriptionListDescription>*/}
+            {/*        {impactedObject.subscription_description}*/}
+            {/*    </EuiDescriptionListDescription>*/}
+            {/*</EuiDescriptionList>*/}
+            {/*<EuiSpacer />*/}
+            {/*<EuiDescriptionListTitle>*/}
+            {/*    <p>{t('impactOverrideModalCurrent')}</p>*/}
+            {/*</EuiDescriptionListTitle>*/}
+            {/*{impactedObject.impact_override ? (*/}
+            {/*    <WfoImpactLevelBadge*/}
+            {/*        impactedObjectImpact={impactedObject.impact_override}*/}
+            {/*    />*/}
+            {/*) : (*/}
+            {/*    <EuiText color={theme.colors.darkShade}>-</EuiText>*/}
+            {/*)}*/}
+            {/*<EuiSpacer />*/}
+            {/*<EuiDescriptionListTitle>*/}
+            {/*    <p>{t('impactOverrideModalNew')}</p>*/}
+            {/*</EuiDescriptionListTitle>*/}
+            <EuiRadioGroup
                 options={options}
-                valueOfSelected={value}
+                idSelected={value}
                 onChange={onChange}
-                itemLayoutAlign="top"
+                name="radio group"
             />
+            {/*<EuiSuperSelect*/}
+            {/*    options={options}*/}
+            {/*    valueOfSelected={value}*/}
+            {/*    onChange={onChange}*/}
+            {/*    itemLayoutAlign="top"*/}
+            {/*/>*/}
         </WfoSubmitModal>
     );
 };

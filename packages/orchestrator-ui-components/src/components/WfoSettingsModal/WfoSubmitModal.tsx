@@ -2,6 +2,9 @@ import React, { FC, ReactNode } from 'react';
 
 import {
     EuiButton,
+    EuiButtonEmpty,
+    EuiFlexGroup,
+    EuiFlexItem,
     EuiModal,
     EuiModalBody,
     EuiModalFooter,
@@ -14,6 +17,7 @@ export type WfoSubmitModalProps = {
     title: string;
     onClose: () => void;
     onSubmit: () => void;
+    submitButtonLabel: string;
     children: ReactNode;
 };
 
@@ -21,6 +25,7 @@ export const WfoSubmitModal: FC<WfoSubmitModalProps> = ({
     title,
     onClose,
     onSubmit,
+    submitButtonLabel = 'Submit',
     children,
 }) => {
     return (
@@ -34,10 +39,16 @@ export const WfoSubmitModal: FC<WfoSubmitModalProps> = ({
             <EuiModalBody>{children}</EuiModalBody>
 
             <EuiModalFooter>
-                <EuiButton onClick={onSubmit}>Submit</EuiButton>
-                <EuiButton onClick={onClose} fill>
-                    Close
-                </EuiButton>
+                <EuiFlexGroup justifyContent={'spaceBetween'}>
+                    <EuiFlexItem grow={false}>
+                        <EuiButtonEmpty onClick={onClose}>Close</EuiButtonEmpty>
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        <EuiButton fill onClick={onSubmit}>
+                            {submitButtonLabel}
+                        </EuiButton>
+                    </EuiFlexItem>
+                </EuiFlexGroup>
             </EuiModalFooter>
         </EuiModal>
     );

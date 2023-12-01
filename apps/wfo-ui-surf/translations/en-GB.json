@@ -46,9 +46,10 @@
                             "informCustomers": "Inform Customers",
                             "imsCalculatedImpact": "IMS Calculated Impact",
                             "nocManualOverride": "NOC Manual Impact Override",
-                            "impactOverrideModalTitle": "Set NOC manual impact override",
+                            "impactOverrideModalTitle": "Override Impact Level",
                             "impactOverrideModalCurrent": "Current NOC manual impact override:",
-                            "impactOverrideModalNew": "Set the new NOC manual impact override:"
+                            "impactOverrideModalNew": "Set new impact level:",
+                            "overrideImpactButton": "Override Impact"
                         },
                         "subscriptionImpactCustomerTable": {
                             "customers": "Customers",
@@ -57,7 +58,12 @@
                             "acceptedImpact": "Accepted impact",
                             "minl": "Minimal impact notification level",
                             "sendingLevel": "Sending level",
-                            "informCustomer": "Inform customer"
+                            "informCustomer": "Inform customer",
+                            "contactsModal": "Customer contacts",
+                            "customer": "Customer",
+                            "contact": "Contact",
+                            "showImsServiceInformation": "Show IMS service information",
+                            "imsInformationModalTitle": "IMS service information"
                         }
                     }
                 },
