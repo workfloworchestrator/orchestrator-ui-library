@@ -54,6 +54,7 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                         createdBy
                         workflowTarget
                         workflowName
+                        isTask
                     }
                 }
             }
