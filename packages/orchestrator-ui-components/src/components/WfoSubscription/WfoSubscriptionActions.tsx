@@ -16,7 +16,7 @@ import {
 } from '@elastic/eui';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
-import { PATH_START_NEW_WORKFLOW } from '@/components';
+import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
 import {
     SubscriptionAction,
     useCheckEngineStatus,
@@ -34,6 +34,7 @@ type MenuItemProps = {
     action: SubscriptionAction;
     index: number;
     target: WorkflowTarget;
+    isTask?: boolean;
 };
 
 type MenuBlockProps = {
@@ -69,12 +70,18 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         setPopover(false);
     };
 
-    const MenuItem: FC<MenuItemProps> = ({ icon, action, target }) => {
+    const MenuItem: FC<MenuItemProps> = ({
+        icon,
+        action,
+        target,
+        isTask = false,
+    }) => {
         // Change icon to include x if there's a reason
         // Add tooltip with reason
         const linkIt = (actionItem: ReactJSXElement) => {
+            const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
             const url = {
-                pathname: `${PATH_START_NEW_WORKFLOW}/${action.name}`,
+                pathname: `${path}/${action.name}`,
                 query: { subscriptionId: subscriptionId },
             };
 
@@ -221,6 +228,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     action={action}
                                     index={index}
                                     target={WorkflowTarget.SYSTEM}
+                                    isTask={true}
                                 />
                             ))}
                         </>
