@@ -73,7 +73,7 @@ const WfoDiff: React.FC<WfoDiffProps> = ({ oldText, newText }) => {
             <EuiFlexGroup>
                 <EuiFlexItem grow={false}>
                     <EuiText>
-                        <h2>{t('title')}</h2>
+                        <h3>{t('title')}</h3>
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
