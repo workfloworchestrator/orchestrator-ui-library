@@ -31,6 +31,7 @@ interface UserInputFormWizardProps {
     stepUserInput: InputForm;
     validSubmit: (processInput: object[]) => Promise<unknown>;
     cancel: () => void;
+    isTask: boolean;
     hasNext?: boolean;
 }
 
@@ -46,6 +47,7 @@ function UserInputFormWizard({
     stepUserInput,
     validSubmit,
     cancel,
+    isTask,
 }: UserInputFormWizardProps) {
     const router = useRouter();
     const apiClient = useAxiosApiClient();
@@ -113,6 +115,7 @@ function UserInputFormWizard({
             hasPrev={forms.length > 1}
             cancel={cancel}
             userInput={currentUserInput}
+            isTask={isTask}
         />
     );
 }

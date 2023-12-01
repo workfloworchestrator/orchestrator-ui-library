@@ -57,6 +57,7 @@ interface IProps {
     hasNext?: boolean;
     hasPrev?: boolean;
     userInput: object;
+    isTask: boolean;
 }
 
 interface Buttons {
@@ -388,6 +389,7 @@ function UserInputForm({
     hasNext = false,
     hasPrev = false,
     userInput,
+    isTask,
 }: IProps) {
     const t = useTranslations('pydanticForms.userInputForm');
     const { theme } = useOrchestratorTheme();
@@ -526,7 +528,7 @@ function UserInputForm({
                 iconType={() => <WfoPlayFill color="#FFF" />}
                 iconSide="right"
             >
-                {buttons.next.text ?? t('start')}
+                {buttons.next.text ?? t(isTask ? 'startTask' : 'startWorkflow')}
             </EuiButton>
         );
 

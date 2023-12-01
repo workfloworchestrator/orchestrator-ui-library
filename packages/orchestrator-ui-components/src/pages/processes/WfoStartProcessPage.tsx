@@ -211,6 +211,7 @@ export const WfoStartProcessPage = ({
                             router.push(isTask ? PATH_TASKS : PATH_WORKFLOWS)
                         }
                         hasNext={hasNext}
+                        isTask={isTask}
                     />
                 )) || <WfoLoading />}
             </EuiPanel>
