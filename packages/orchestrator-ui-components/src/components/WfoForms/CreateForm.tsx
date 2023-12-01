@@ -63,6 +63,7 @@ export function CreateForm(props: IProps) {
                     validSubmit={submit}
                     cancel={() => alert('cancelled')}
                     hasNext={hasNext ?? false}
+                    isTask={false}
                 />
             )}
         </div>
