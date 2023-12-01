@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
-    EuiAvatar,
     EuiButton,
     EuiContextMenuItem,
     EuiContextMenuPanel,
@@ -26,11 +25,11 @@ import {
 import { WfoXCircleFill } from '@/icons';
 import { WorkflowTarget } from '@/types';
 
-import { flattenArrayProps, getWorkflowTargetColor } from './utils';
+import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
+import { flattenArrayProps } from './utils';
 
 type MenuItemProps = {
     key: string;
-    icon: string;
     action: SubscriptionAction;
     index: number;
     target: WorkflowTarget;
@@ -71,7 +70,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     };
 
     const MenuItem: FC<MenuItemProps> = ({
-        icon,
         action,
         target,
         isTask = false,
@@ -143,10 +141,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         const getIcon = () => {
             return action.reason ? (
                 <div css={{ display: 'flex', width: theme.base * 2 }}>
-                    <EuiAvatar
-                        name={icon}
-                        size="s"
-                        color={theme.colors.lightShade}
+                    <WfoTargetTypeIcon
+                        target={target}
+                        theme={theme}
+                        disabled={true}
                     />
                     <div
                         css={{
@@ -162,11 +160,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                 </div>
             ) : (
                 <div css={{ width: theme.base * 2 }}>
-                    <EuiAvatar
-                        name={icon}
-                        size="s"
-                        color={getWorkflowTargetColor(target, theme)}
-                    />
+                    <WfoTargetTypeIcon target={target} theme={theme} />
                 </div>
             );
         };
@@ -209,7 +203,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                             {subscriptionActions.modify.map((action, index) => (
                                 <MenuItem
                                     key={`m_${index}`}
-                                    icon={'M'}
                                     action={action}
                                     index={index}
                                     target={WorkflowTarget.MODIFY}
@@ -224,7 +217,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                             {subscriptionActions.system.map((action, index) => (
                                 <MenuItem
                                     key={`s_${index}`}
-                                    icon={'T'}
                                     action={action}
                                     index={index}
                                     target={WorkflowTarget.SYSTEM}
@@ -241,7 +233,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                 (action, index) => (
                                     <MenuItem
                                         key={`t_${index}`}
-                                        icon={'X'}
                                         action={action}
                                         index={index}
                                         target={WorkflowTarget.TERMINATE}

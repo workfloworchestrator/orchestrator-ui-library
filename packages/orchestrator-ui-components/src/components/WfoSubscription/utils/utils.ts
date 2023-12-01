@@ -74,3 +74,19 @@ export const getWorkflowTargetColor = (
 
     return theme.colors.body;
 };
+
+export const getWorkflowTargetIconContent = (
+    workflowTarget: WorkflowTarget,
+) => {
+    // Data returned from graphql can't always be depended on to be lowercase
+    switch (workflowTarget.toLocaleLowerCase()) {
+        case WorkflowTarget.CREATE:
+            return 'C';
+        case WorkflowTarget.SYSTEM:
+            return 'T';
+        case WorkflowTarget.TERMINATE:
+            return 'X';
+        default:
+            return 'M';
+    }
+};
