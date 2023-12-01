@@ -13,15 +13,13 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
         $first: Int!
         $after: Int!
         $sortBy: [GraphqlSort!]
-        $filterBy: [GraphqlFilter!]
-        $query: String
+        $filterBy: [GraphqlFilter!] # $query: String
     ) {
         processes(
             first: $first
             after: $after
             sortBy: $sortBy
-            filterBy: $filterBy
-            query: $query
+            filterBy: $filterBy # query: $query
         ) {
             page {
                 workflowName

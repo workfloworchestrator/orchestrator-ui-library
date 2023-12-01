@@ -16,10 +16,13 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataProducts(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!]
-        $query: String
+        $sortBy: [GraphqlSort!] # $query: String
     ) {
-        products(first: $first, after: $after, sortBy: $sortBy, query: $query) {
+        products(
+            first: $first
+            after: $after
+            sortBy: $sortBy # query: $query
+        ) {
             page {
                 productId
                 name
