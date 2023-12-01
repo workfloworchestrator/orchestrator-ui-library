@@ -141,11 +141,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         const getIcon = () => {
             return action.reason ? (
                 <div css={{ display: 'flex', width: theme.base * 2 }}>
-                    <WfoTargetTypeIcon
-                        target={target}
-                        theme={theme}
-                        disabled={true}
-                    />
+                    <WfoTargetTypeIcon target={target} disabled={true} />
                     <div
                         css={{
                             transform: 'translate(-11px, -8px);',
@@ -160,7 +156,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                 </div>
             ) : (
                 <div css={{ width: theme.base * 2 }}>
-                    <WfoTargetTypeIcon target={target} theme={theme} />
+                    <WfoTargetTypeIcon target={target} />
                 </div>
             );
         };
