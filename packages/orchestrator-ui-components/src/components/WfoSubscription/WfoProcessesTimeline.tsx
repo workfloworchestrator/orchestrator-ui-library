@@ -112,6 +112,7 @@ const WfoRenderSubscriptionProcess = ({
         >
             <div css={timeLineStyle}>
                 <EuiText css={workflowTargetStyle}>
+                    AA{' '}
                     {upperCaseFirstChar(
                         subscriptionDetailProcess.workflowTarget,
                     )}

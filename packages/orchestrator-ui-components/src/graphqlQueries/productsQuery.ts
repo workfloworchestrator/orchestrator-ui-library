@@ -16,7 +16,7 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataProducts(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!] # $query: String
+        $sortBy: [GraphqlSort!]
     ) {
         products(
             first: $first
