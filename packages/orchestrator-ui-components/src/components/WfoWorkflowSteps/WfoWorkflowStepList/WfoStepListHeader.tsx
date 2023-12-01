@@ -21,8 +21,10 @@ import { getStyles } from '../styles';
 export type WfoStepListHeaderProps = {
     showHiddenKeys: boolean;
     showRaw: boolean;
+    showDelta: boolean;
     allDetailToggleText: string;
     onChangeShowRaw: (showRaw: boolean) => void;
+    onChangeShowDelta: (showRaw: boolean) => void;
     onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
     onToggleAllDetailsIsOpen: () => void;
     isTask: boolean;
@@ -31,8 +33,10 @@ export type WfoStepListHeaderProps = {
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     showHiddenKeys,
     showRaw,
+    showDelta,
     onChangeShowHiddenKeys,
     onChangeShowRaw,
+    onChangeShowDelta,
     allDetailToggleText,
     onToggleAllDetailsIsOpen,
     isTask,
@@ -85,22 +89,16 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                 css={stepListOptionsContainerStyle}
                 gutterSize="s"
             >
-                <EuiButton
-                    onClick={(
-                        e: React.MouseEvent<
-                            HTMLButtonElement | HTMLElement,
-                            MouseEvent
-                        >,
-                    ) => {
-                        e.preventDefault();
-                        alert('TODO: Implement Show delta');
-                    }}
-                    iconSide="right"
-                    size="s"
-                    iconType={() => <WfoCode color={theme.colors.link} />}
-                >
-                    {t('showDelta')}
-                </EuiButton>
+                {!showRaw && (
+                    <EuiButton
+                        onClick={() => onChangeShowDelta(!showDelta)}
+                        iconSide="right"
+                        size="s"
+                        iconType={() => <WfoCode color={theme.colors.link} />}
+                    >
+                        {showDelta ? t('hideDelta') : t('showDelta')}
+                    </EuiButton>
+                )}
                 <EuiPopover
                     button={viewOptionButton}
                     isOpen={isViewOptionOpen}

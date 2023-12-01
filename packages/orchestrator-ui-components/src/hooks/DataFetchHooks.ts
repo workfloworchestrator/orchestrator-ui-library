@@ -64,7 +64,7 @@ export const useRawProcessDetails = (processId: string) => {
     return useQueryWithFetch<object, Record<string, never>>(
         url,
         {},
-        'RawProcessDetails',
+        `RawProcessDetails-${processId}`,
     );
 };
 
