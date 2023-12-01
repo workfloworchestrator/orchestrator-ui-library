@@ -187,7 +187,8 @@
             "customer": "Customer"
         },
         "steps": {
-            "steps": "Workflow steps",
+            "taskSteps": "Task steps",
+            "workflowSteps": "Workflow steps",
             "showDelta": "Show subscription delta",
             "viewOptions": "Options",
             "expandAll": "Expand all",

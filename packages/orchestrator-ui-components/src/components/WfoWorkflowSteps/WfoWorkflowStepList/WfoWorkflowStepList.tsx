@@ -14,6 +14,7 @@ export interface WfoWorkflowStepListProps {
     steps: Step[];
     startedAt: string;
     processId: string;
+    isTask: boolean;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -23,7 +24,7 @@ export const WfoProcessRawData = ({ processId }: { processId: string }) => {
 
 export const WfoWorkflowStepList = React.forwardRef(
     (
-        { steps = [], startedAt, processId }: WfoWorkflowStepListProps,
+        { steps = [], startedAt, processId, isTask }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
@@ -97,6 +98,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                     onToggleAllDetailsIsOpen={() =>
                         setExpandedStateStepListItems(!allStepsAreExpanded)
                     }
+                    isTask={isTask}
                 />
 
                 {showRaw ? (
