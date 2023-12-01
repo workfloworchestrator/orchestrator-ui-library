@@ -16,7 +16,7 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataWorkflows(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!] # $query: String
+        $sortBy: [GraphqlSort!]
     ) {
         workflows(
             first: $first

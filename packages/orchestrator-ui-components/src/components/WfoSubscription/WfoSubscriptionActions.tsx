@@ -224,7 +224,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                             {subscriptionActions.system.map((action, index) => (
                                 <MenuItem
                                     key={`s_${index}`}
-                                    icon={'System'}
+                                    icon={'T'}
                                     action={action}
                                     index={index}
                                     target={WorkflowTarget.SYSTEM}
@@ -241,7 +241,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                 (action, index) => (
                                     <MenuItem
                                         key={`t_${index}`}
-                                        icon={'Terminate'}
+                                        icon={'X'}
                                         action={action}
                                         index={index}
                                         target={WorkflowTarget.TERMINATE}

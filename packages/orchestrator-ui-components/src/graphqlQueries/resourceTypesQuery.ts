@@ -16,7 +16,7 @@ export const GET_RESOURCE_TYPES_GRAPHQL_QUERY: TypedDocumentNode<
     query MetadataResourceTypes(
         $first: Int!
         $after: Int!
-        $sortBy: [GraphqlSort!] # $query: String
+        $sortBy: [GraphqlSort!]
     ) {
         resourceTypes(
             first: $first
