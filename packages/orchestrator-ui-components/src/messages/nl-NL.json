@@ -48,7 +48,8 @@
             "submit": "Verstuur",
             "previous": "Vorige",
             "startTask": "Start task",
-            "startWorkflow": "Start workflow"
+            "startWorkflow": "Start workflow",
+            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veldn(en) hebben validatie errors"
         },
         "widgets": {
             "organisation": {
@@ -142,13 +143,8 @@
             "createdAt": "Aangemaakt"
         }
     },
-    "workflows": {
-        "tabs": {
-            "active": "Actief",
-            "completed": "Voltooid"
-        },
+    "processes": {
         "index": {
-            "title": "Workflows",
             "workflowName": "Workflow naam",
             "step": "Huidige stap",
             "status": "Status",
@@ -193,6 +189,15 @@
             "userInput": "Invoer gebruiker",
             "submitTaskFormLabel": "Verstuur het formulier om deze workflow te starten",
             "submitWorkflowFormLabel": "Verstuur het formulier om deze task te starten"
+        }
+    },
+    "workflows": {
+        "tabs": {
+            "active": "Actief",
+            "completed": "Voltooid"
+        },
+        "index": {
+            "title": "Workflows"
         }
     },
     "subscriptions": {
