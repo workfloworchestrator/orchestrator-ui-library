@@ -42,7 +42,7 @@
         "@orchestrator-ui/eslint-config-custom": "*",
         "@orchestrator-ui/jest-config": "*",
         "@storybook/addon-essentials": "^7.2.1",
-        "@storybook/addon-interactions": "^7.2.1",
+        "@storybook/addon-interactions": "^7.6.3",
         "@storybook/addon-links": "^7.2.1",
         "@storybook/addon-onboarding": "^1.0.8",
         "@storybook/blocks": "^7.2.1",
