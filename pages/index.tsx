@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import {
     WfoMultiListSection,
@@ -8,9 +10,11 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
+    const t = useTranslations('main');
     return (
         <>
-            <EuiPageHeader pageTitle="Goodmorning Hans" />
+            <EuiPageHeader pageTitle={`${t('welcome')} Georgi`} />
+
             <EuiSpacer />
             <WfoNewProcessPanel />
             <EuiSpacer />
