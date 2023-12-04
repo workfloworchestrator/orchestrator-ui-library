@@ -106,99 +106,103 @@ export const WfoSubscriptionProductBlock = ({
                 <EuiSpacer size={'m'}></EuiSpacer>
                 {
                     <table width="100%">
-                        {!hideDetails && (
-                            <>
-                                <tr key={-2}>
-                                    <td
-                                        valign={'top'}
-                                        css={productBlockFirstLeftColStyle}
-                                    >
-                                        <b>{t('ownerSubscriptionId')}</b>
-                                    </td>
-                                    <td
-                                        valign={'top'}
-                                        css={productBlockFirstRightColStyle}
-                                    >
-                                        {subscriptionId ===
-                                        ownerSubscriptionId ? (
-                                            <>
-                                                {subscriptionId}
-                                                <EuiBadge>{t('self')}</EuiBadge>
-                                            </>
-                                        ) : (
-                                            <a
-                                                href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
-                                            >
-                                                {ownerSubscriptionId}
-                                            </a>
-                                        )}
-                                    </td>
-                                </tr>
-                                <tr key={-1}>
-                                    <td
-                                        valign={'top'}
-                                        css={productBlockLeftColStyle}
-                                    >
-                                        <b>{t('inUseByRelations')}</b>
-                                    </td>
-                                    <td
-                                        valign={'top'}
-                                        css={productBlockRightColStyle}
-                                    >
-                                        <EuiCodeBlock language="json">
-                                            {JSON.stringify(
-                                                inUseByRelations,
-                                                null,
-                                                4,
+                        <tbody>
+                            {!hideDetails && (
+                                <>
+                                    <tr key={-2}>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockFirstLeftColStyle}
+                                        >
+                                            <b>{t('ownerSubscriptionId')}</b>
+                                        </td>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockFirstRightColStyle}
+                                        >
+                                            {subscriptionId ===
+                                            ownerSubscriptionId ? (
+                                                <>
+                                                    {subscriptionId}
+                                                    <EuiBadge>
+                                                        {t('self')}
+                                                    </EuiBadge>
+                                                </>
+                                            ) : (
+                                                <a
+                                                    href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                                >
+                                                    {ownerSubscriptionId}
+                                                </a>
                                             )}
-                                        </EuiCodeBlock>
-                                    </td>
-                                </tr>
-                            </>
-                        )}
+                                        </td>
+                                    </tr>
+                                    <tr key={-1}>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockLeftColStyle}
+                                        >
+                                            <b>{t('inUseByRelations')}</b>
+                                        </td>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockRightColStyle}
+                                        >
+                                            <EuiCodeBlock language="json">
+                                                {JSON.stringify(
+                                                    inUseByRelations,
+                                                    null,
+                                                    4,
+                                                )}
+                                            </EuiCodeBlock>
+                                        </td>
+                                    </tr>
+                                </>
+                            )}
 
-                        {productBlockInstanceValues
-                            .filter(
-                                (productBlockInstanceValue) =>
-                                    !HIDDEN_KEYS.includes(
-                                        productBlockInstanceValue.field,
-                                    ),
-                            )
-                            .map((productBlockInstanceValue, index) => (
-                                <tr key={index}>
-                                    <td
-                                        valign={'top'}
-                                        css={
-                                            isFirstBlock(index)
-                                                ? productBlockFirstLeftColStyle
-                                                : productBlockLeftColStyle
-                                        }
-                                    >
-                                        <b>
-                                            {camelToHuman(
-                                                productBlockInstanceValue.field,
+                            {productBlockInstanceValues
+                                .filter(
+                                    (productBlockInstanceValue) =>
+                                        !HIDDEN_KEYS.includes(
+                                            productBlockInstanceValue.field,
+                                        ),
+                                )
+                                .map((productBlockInstanceValue, index) => (
+                                    <tr key={index}>
+                                        <td
+                                            valign={'top'}
+                                            css={
+                                                isFirstBlock(index)
+                                                    ? productBlockFirstLeftColStyle
+                                                    : productBlockLeftColStyle
+                                            }
+                                        >
+                                            <b>
+                                                {camelToHuman(
+                                                    productBlockInstanceValue.field,
+                                                )}
+                                            </b>
+                                        </td>
+                                        <td
+                                            valign={'top'}
+                                            css={
+                                                isFirstBlock(index)
+                                                    ? productBlockFirstRightColStyle
+                                                    : productBlockRightColStyle
+                                            }
+                                        >
+                                            {typeof productBlockInstanceValue.value ===
+                                            'boolean' ? (
+                                                <EuiBadge>
+                                                    {productBlockInstanceValue.value.toString()}
+                                                </EuiBadge>
+                                            ) : (
+                                                productBlockInstanceValue.value
                                             )}
-                                        </b>
-                                    </td>
-                                    <td
-                                        valign={'top'}
-                                        css={
-                                            isFirstBlock(index)
-                                                ? productBlockFirstRightColStyle
-                                                : productBlockRightColStyle
-                                        }
-                                    >
-                                        {typeof productBlockInstanceValue.value ===
-                                        'boolean' ? (
-                                            <EuiBadge>
-                                                {productBlockInstanceValue.value.toString()}
-                                            </EuiBadge>
-                                        ) : (
-                                            productBlockInstanceValue.value
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
                     </table>
                 }
             </EuiPanel>
