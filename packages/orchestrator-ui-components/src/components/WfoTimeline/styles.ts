@@ -1,4 +1,3 @@
-import { makeHighContrastColor } from '@elastic/eui';
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
@@ -26,6 +25,15 @@ export const getStyles = (theme: EuiThemeComputed) => {
             case StepStatus.PENDING:
             default:
                 return theme.colors.mediumShade;
+        }
+    };
+
+    const getTextColorForStepStatusIcon = (processStepStatus: StepStatus) => {
+        switch (processStepStatus) {
+            case StepStatus.SUSPEND:
+                return theme.colors.ink;
+            default:
+                return theme.colors.ghost;
         }
     };
 
@@ -133,9 +141,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: makeHighContrastColor(theme.colors.text)(
-                getColorForStepStatus(stepStatus),
-            ),
+            color: getTextColorForStepStatusIcon(stepStatus),
         });
     };
 
