@@ -18,3 +18,4 @@ export * from './WfoDateTime';
 export * from './WfoAuth';
 export * from './WfoDropdownButton';
 export * from './WfoProcessList';
+export * from './WfoTextAnchor';
