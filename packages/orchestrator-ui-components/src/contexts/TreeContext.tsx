@@ -12,6 +12,7 @@ export type TreeContextType = {
     expandAll: () => void;
     collapseAll: () => void;
     resetSelection: () => void;
+    selectAll: () => void;
 };
 
 export const TreeContext = React.createContext<TreeContextType | null>(null);
@@ -37,6 +38,9 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 [...prevSelectedIds, id].sort((a, b) => a - b),
             );
         }
+    };
+    const selectAll = () => {
+        setSelectedIds(Array.from(Array(depths.length).keys()));
     };
 
     const toggleExpandedId = (id: number) => {
@@ -106,6 +110,7 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 expandAll,
                 collapseAll,
                 resetSelection,
+                selectAll,
             }}
         >
             {children}

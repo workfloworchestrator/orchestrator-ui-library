@@ -283,7 +283,9 @@
                 "status": "Status",
                 "startedAt": "Started at",
                 "startedBy": "Started by"
-            }
+            },
+            "showAll": "Show all",
+            "hideAll": "Hide all"
         }
     },
     "tasks": {

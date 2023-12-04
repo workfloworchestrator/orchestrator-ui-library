@@ -2,19 +2,13 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiButtonIcon,
-    EuiCallOut,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiSearchBar,
-    EuiText,
-} from '@elastic/eui';
+import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
+
+import { WfoLoading, WfoTextAnchor } from '@/components';
 
 import { TreeContext, TreeContextType } from '../../contexts';
 import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
 import { getTokenName } from '../../utils/getTokenName';
-import { WfoLoading } from '../WfoLoading';
 import { WfoTree } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
@@ -33,9 +27,8 @@ export const WfoSubscriptionDetailTree = ({
     const t = useTranslations('subscriptions.detail');
     const [, setSelectedTreeNode] = useState(-1);
 
-    const { selectedIds, resetSelection } = React.useContext(
-        TreeContext,
-    ) as TreeContextType;
+    const { selectedIds, expandAll, collapseAll, resetSelection, selectAll } =
+        React.useContext(TreeContext) as TreeContextType;
 
     let tree: TreeBlock | null = null;
     const depthList: number[] = [];
@@ -86,6 +79,16 @@ export const WfoSubscriptionDetailTree = ({
         idToNodeMap[shallowCopy.id] = shallowCopy;
     });
 
+    const toggleShowAll = () => {
+        if (selectedIds.length === productBlockInstances.length) {
+            resetSelection();
+            collapseAll();
+        } else {
+            selectAll();
+            expandAll();
+        }
+    };
+
     if (!tree) return null;
 
     return (
@@ -93,19 +96,25 @@ export const WfoSubscriptionDetailTree = ({
             <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
                 <EuiFlexGroup direction={'column'}>
                     <EuiFlexItem grow={false}>
-                        <EuiFlexGroup>
-                            <EuiFlexItem grow={false}>
+                        <EuiFlexGroup
+                            justifyContent="spaceBetween"
+                            alignItems="center"
+                        >
+                            <EuiFlexItem>
                                 <EuiText>
                                     <h3>{t('productBlocks')}</h3>
                                 </EuiText>
                             </EuiFlexItem>
-                            <EuiFlexItem grow={true}>
-                                {selectedIds.length > 0 && (
-                                    <EuiButtonIcon
-                                        iconType="error"
-                                        onClick={resetSelection}
-                                    />
-                                )}
+                            <EuiFlexItem grow={false}>
+                                <WfoTextAnchor
+                                    text={t(
+                                        selectedIds.length ===
+                                            productBlockInstances.length
+                                            ? 'hideAll'
+                                            : 'showAll',
+                                    )}
+                                    onClick={toggleShowAll}
+                                />
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFlexItem>
@@ -119,7 +128,8 @@ export const WfoSubscriptionDetailTree = ({
             </EuiFlexItem>
             <EuiFlexItem grow={true}>
                 <div>
-                    <EuiSearchBar />
+                    <div>&nbsp;</div>{' '}
+                    {/* This is a placeholder for the searchbar */}
                     {selectedIds.length === 0 && (
                         <EuiCallOut
                             style={{
