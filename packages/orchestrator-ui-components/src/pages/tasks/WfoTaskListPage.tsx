@@ -85,7 +85,7 @@ export const WfoTaskListPage = () => {
             field: 'workflowName',
             name: t('taskName'),
             render: (value, { processId }) => (
-                <Link href={`/${PATH_TASKS}/${processId}`}>{value}</Link>
+                <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
             ),
         },
         lastStep: defaultTableColumns.lastStep,
