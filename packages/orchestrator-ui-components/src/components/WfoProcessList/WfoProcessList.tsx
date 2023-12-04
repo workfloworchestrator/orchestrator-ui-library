@@ -84,7 +84,7 @@ export const WfoProcessList = ({
             field: 'workflowName',
             name: t('workflowName'),
             render: (value, { processId }) => (
-                <Link href={`/${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
+                <Link href={`${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
             ),
         },
         lastStep: {
