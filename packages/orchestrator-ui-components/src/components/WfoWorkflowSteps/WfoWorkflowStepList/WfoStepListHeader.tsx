@@ -12,6 +12,8 @@ import {
     EuiText,
 } from '@elastic/eui';
 
+import { WfoTextAnchor } from '@/components/WfoTextAnchor/WfoTextAnchor';
+
 import { useOrchestratorTheme } from '../../../hooks';
 import { WfoCode, WfoEyeFill } from '../../../icons';
 import { getStyles } from '../styles';
@@ -41,7 +43,6 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
         stepListHeaderStyle,
         stepListContentStyle,
         stepListContentBoldTextStyle,
-        stepListContentAnchorStyle,
         stepListOptionsContainerStyle,
     } = getStyles(theme);
 
@@ -70,12 +71,10 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                     {t(isTask ? 'taskSteps' : 'workflowSteps')}
                 </EuiText>
                 {!showRaw && (
-                    <EuiText
-                        css={stepListContentAnchorStyle}
+                    <WfoTextAnchor
+                        text={allDetailToggleText}
                         onClick={onToggleAllDetailsIsOpen}
-                    >
-                        {allDetailToggleText}
-                    </EuiText>
+                    />
                 )}
             </EuiFlexGroup>
 
