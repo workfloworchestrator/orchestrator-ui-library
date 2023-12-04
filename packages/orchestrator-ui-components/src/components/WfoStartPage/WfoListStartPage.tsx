@@ -20,7 +20,7 @@ export default function WfoListStartPage({
     list,
 }: WfoListStartPage): ReactElement {
     return (
-        list?.items && (
+        (list && list.items && list.items.length > 0 && (
             <EuiFlexItem style={{ minWidth: 300 }}>
                 <EuiPanel hasShadow={false} hasBorder={true} paddingSize="l">
                     <p style={{ fontWeight: 600 }}>{list.title}</p>
@@ -40,6 +40,6 @@ export default function WfoListStartPage({
                     <EuiButton fullWidth={true}>{list.buttonName}</EuiButton>
                 </EuiPanel>
             </EuiFlexItem>
-        )
+        )) || <></>
     );
 }
