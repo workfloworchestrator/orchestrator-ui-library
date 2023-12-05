@@ -41,6 +41,7 @@ import {
     clearTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '../utils/tableConfigPersistence';
+import { updateQueryString } from './updateQueryString';
 
 export type WfoTableWithFilterProps<T> = {
     data: T[];
@@ -215,9 +216,11 @@ export const WfoTableWithFilter = <T,>({
                     // In that case, string concatenation is not the best solution
                     // https://github.com/workfloworchestrator/orchestrator-ui/issues/81
                     onUpdateEsQueryString(
-                        esQueryString
-                            ? `${esQueryString} ${field.toString()}:"${searchText}"`
-                            : `${field.toString()}:"${searchText}"`,
+                        updateQueryString(
+                            esQueryString,
+                            field.toString(),
+                            searchText,
+                        ),
                     );
                 }}
             />

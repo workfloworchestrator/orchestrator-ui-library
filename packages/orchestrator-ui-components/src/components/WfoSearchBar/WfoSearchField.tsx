@@ -1,10 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {
-    EuiFormRow,
-    EuiSearchBar,
-    EuiSearchBarOnChangeArgs,
-} from '@elastic/eui';
+import { EuiFieldSearch, EuiFormRow } from '@elastic/eui';
 
 export type WfoSearchFieldProps = {
     __filterQuery?: string; // Deprecated Pythia related way of passing querystring
@@ -22,7 +18,13 @@ export const WfoSearchField = ({
     const queryString = __filterQuery || esQueryString;
     const queryIsValid = true; // Query validation turned of for now until ESQueries can be sent to the backend
 
-    const onChange = ({ queryText }: EuiSearchBarOnChangeArgs) => {
+    const [currentQuery, setCurrentQuery] = useState(queryString ?? '');
+    useEffect(() => {
+        setCurrentQuery(queryString ?? '');
+    }, [queryString]);
+
+    // Todo: clean this up - remove deprecated props
+    const onChange = (queryText: string) => {
         if (__setFilterQuery) {
             __setFilterQuery(queryText);
         } else {
@@ -38,15 +40,16 @@ export const WfoSearchField = ({
             isInvalid={!queryIsValid}
             error={['The query contains invalid parts']}
         >
-            <EuiSearchBar
-                query={queryString}
-                onChange={onChange}
-                box={{
-                    // Todo: possible bug in EUI component EuiSearchBar
-                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/129
-                    // setting the property 'isInvalid' to true has no effect
-                    isInvalid: !queryIsValid,
+            <EuiFieldSearch
+                value={currentQuery}
+                placeholder="Search..."
+                onChange={(event) => setCurrentQuery(event.target.value)}
+                onSearch={(value) => onChange(value)}
+                onBlur={(event) => {
+                    onChange(event.target.value);
                 }}
+                isInvalid={!queryIsValid}
+                fullWidth
             />
         </EuiFormRow>
     );
