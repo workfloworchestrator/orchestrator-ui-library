@@ -25,7 +25,7 @@ export default function WfoListStartPage({
                 <EuiPanel hasShadow={false} hasBorder={true} paddingSize="l">
                     <p style={{ fontWeight: 600 }}>{list.title}</p>
                     <EuiSpacer size="m" />
-                    {list.items.map((item, index) => (
+                    {list.items?.map((item, index) => (
                         <div key={index}>
                             <WfoListItemStartPage
                                 item={item}
