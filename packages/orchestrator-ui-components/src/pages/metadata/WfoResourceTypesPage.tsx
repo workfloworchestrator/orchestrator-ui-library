@@ -16,8 +16,8 @@ import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '../../components';
 import type { StoredTableConfig } from '../../components';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
@@ -124,14 +124,14 @@ export const WfoResourceTypesPage = () => {
         },
     };
 
-    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
+    const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_RESOURCE_TYPES_GRAPHQL_QUERY,
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: esQueryString,
+            query: queryString,
         },
         'resourceTypes',
     );
@@ -172,12 +172,12 @@ export const WfoResourceTypesPage = () => {
                 onUpdatePage={getPageChangeHandler<ResourceTypeDefinition>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getEsQueryStringHandler<ResourceTypeDefinition>(
+                onUpdateQueryString={getQueryStringHandler<ResourceTypeDefinition>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                queryString={esQueryString}
+                queryString={queryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }

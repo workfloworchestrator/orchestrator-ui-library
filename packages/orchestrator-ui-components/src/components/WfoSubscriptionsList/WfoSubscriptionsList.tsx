@@ -25,8 +25,8 @@ import {
     WfoTableColumns,
     WfoTableWithFilter,
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '../WfoTable';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
@@ -120,7 +120,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         },
     };
 
-    const { sortBy, esQueryString } = dataDisplayParams;
+    const { sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
@@ -128,7 +128,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
             sortBy,
             filterBy: alwaysOnFilters,
-            query: esQueryString || undefined,
+            query: queryString || undefined,
         },
         'subscriptions',
     );
@@ -158,8 +158,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     return (
         <WfoTableWithFilter<SubscriptionListItem>
-            queryString={dataDisplayParams.esQueryString}
-            onUpdateQueryString={getEsQueryStringHandler<SubscriptionListItem>(
+            queryString={dataDisplayParams.queryString}
+            onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}

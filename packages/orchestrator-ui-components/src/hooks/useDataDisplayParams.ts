@@ -13,7 +13,7 @@ export type DataDisplayParams<Type> = {
     pageSize: number;
     pageIndex: number;
     sortBy: GraphQLSort<Type>;
-    esQueryString?: string; // The filter param is going to send to the backend as is for parsing
+    queryString?: string; // The filter param is going to send to the backend as is for parsing
 };
 
 export interface DataDisplayReturnValues<Type> {
@@ -40,9 +40,9 @@ export const useDataDisplayParams = <Type>(
             ObjectParam,
             defaultParams.sortBy ? defaultParams.sortBy : {},
         ),
-        esQueryString: withDefault(
+        queryString: withDefault(
             StringParam,
-            defaultParams.esQueryString ? defaultParams.esQueryString : '',
+            defaultParams.queryString ? defaultParams.queryString : '',
         ),
     });
 

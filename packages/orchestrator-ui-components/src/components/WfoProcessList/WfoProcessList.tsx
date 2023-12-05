@@ -23,8 +23,8 @@ import {
     WfoTableColumns,
     WfoTableWithFilter,
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '../WfoTable';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
@@ -179,7 +179,7 @@ export const WfoProcessList = ({
             ? overrideDefaultTableColumns(defaultTableColumns)
             : defaultTableColumns;
 
-    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
+    const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
@@ -187,7 +187,7 @@ export const WfoProcessList = ({
             after: pageIndex * pageSize,
             sortBy: graphQlProcessSortMapper(sortBy),
             filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-            query: esQueryString,
+            query: queryString,
         },
         'processList',
     );
@@ -210,7 +210,7 @@ export const WfoProcessList = ({
 
     return (
         <WfoTableWithFilter<ProcessListItem>
-            queryString={esQueryString}
+            queryString={queryString}
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
@@ -223,7 +223,7 @@ export const WfoProcessList = ({
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
-            onUpdateQueryString={getEsQueryStringHandler(setDataDisplayParam)}
+            onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
         />

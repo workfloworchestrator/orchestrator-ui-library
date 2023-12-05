@@ -18,8 +18,8 @@ import {
 } from '../../components';
 import {
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '../../components';
 import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import type { StoredTableConfig } from '../../components';
@@ -178,14 +178,14 @@ export const WfoProductBlocksPage = () => {
         },
     };
 
-    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
+    const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: esQueryString,
+            query: queryString,
         },
         'productBlocks',
     );
@@ -226,12 +226,12 @@ export const WfoProductBlocksPage = () => {
                 onUpdatePage={getPageChangeHandler<ProductBlockDefinition>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getEsQueryStringHandler<ProductBlockDefinition>(
+                onUpdateQueryString={getQueryStringHandler<ProductBlockDefinition>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                queryString={esQueryString}
+                queryString={queryString}
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
                 }

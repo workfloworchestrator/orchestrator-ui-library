@@ -4,7 +4,7 @@ import { EuiFieldSearch, EuiFormRow } from '@elastic/eui';
 
 export type WfoSearchFieldProps = {
     queryString?: string;
-    onUpdateQueryString?: (esQueryString: string) => void;
+    onUpdateQueryString?: (queryString: string) => void;
 };
 
 export const WfoSearchField = ({
