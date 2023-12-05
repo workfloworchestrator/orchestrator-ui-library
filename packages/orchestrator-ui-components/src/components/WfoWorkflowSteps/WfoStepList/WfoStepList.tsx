@@ -1,5 +1,7 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
+import { JSONSchema6 } from 'json-schema';
+
 import { useOrchestratorTheme } from '../../../hooks';
 import { Step } from '../../../types';
 import { WfoStep } from '../WfoStep';
@@ -8,6 +10,7 @@ import { getStyles } from '../styles';
 export type StepListItem = {
     step: Step;
     isExpanded: boolean;
+    userInputForm?: JSONSchema6;
 };
 
 export type WfoStepListRef = {
@@ -85,12 +88,10 @@ export const WfoStepList = React.forwardRef(
                                 ref={getReferenceCallbackForStepId(
                                     stepListItem.step.stepId,
                                 )}
-                                stepDetailIsOpen={stepListItem.isExpanded}
                                 onToggleStepDetail={() =>
                                     onToggleExpandStepListItem(stepListItem)
                                 }
-                                step={stepListItem.step}
-                                stepDelta={stepListItem.step.stateDelta || {}}
+                                stepListItem={stepListItem}
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
                                 isStartStep={index === 0}
