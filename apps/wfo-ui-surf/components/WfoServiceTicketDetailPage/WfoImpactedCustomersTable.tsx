@@ -3,26 +3,17 @@ import React, { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
-    EuiButton,
     EuiButtonEmpty,
-    EuiButtonIcon,
-    EuiCopy,
-    EuiDescriptionList,
-    EuiDescriptionListDescription,
-    EuiDescriptionListTitle,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiIcon,
-    EuiLink,
-    EuiSpacer,
+    EuiModal,
+    EuiModalHeader,
     EuiText,
-    EuiTitle,
 } from '@elastic/eui';
 import {
     WfoBadge,
     WfoCheckmarkCircleFill,
     WfoDropdownTable,
-    WfoInformationModal,
     WfoTableColumns,
     WfoViewList,
     WfoXCircleFill,
@@ -34,13 +25,13 @@ import { MINL_BY_SUBSCRIPTION_ENDPOINT } from '../../constants-surf';
 import { SurfConfigContext } from '../../contexts/surfConfigContext';
 import {
     CustomerWithContacts,
-    ImpactedCustomerContact,
     ImpactedCustomersTableColumns,
     ImpactedObject,
     ServiceTicketDefinition,
 } from '../../types';
 import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoCustomersContactsModal } from './WfoCustomersContactsModal';
+import { WfoImsCircuitsTable } from './WfoImsCircuitsTable';
 import { mapImpactedObjectToImpactedCustomersColumns } from './utils';
 
 interface WfoImpactedCustomersTableProps {
@@ -53,9 +44,6 @@ interface WfoImpactedCustomersTableProps {
 //     },
 // });
 
-//TODO: Try max width for the customers table
-//ADD empty column that pushes everything to the left
-//add width to every column except the last one
 export const WfoImpactedCustomersTable = ({
     impactedObject,
 }: WfoImpactedCustomersTableProps) => {
@@ -183,6 +171,7 @@ export const WfoImpactedCustomersTable = ({
                 gutterSize={'xs'}
                 direction="column"
                 alignItems={'flexStart'}
+                css={{ backgroundColor: theme.colors.lightestShade }}
             >
                 <EuiFlexItem>
                     <WfoDropdownTable
@@ -210,12 +199,24 @@ export const WfoImpactedCustomersTable = ({
                 />
             )}
             {imsModal && (
-                <WfoInformationModal
-                    title={t('imsInformationModalTitle')}
+                <EuiModal
                     onClose={handleCloseImsModal}
+                    style={{
+                        width: '1500px',
+                        maxWidth: '1500px',
+                        padding: theme.size.m,
+                    }}
+                    title={t('imsInformationModalTitle')}
                 >
-                    <EuiText>IMS Details here</EuiText>
-                </WfoInformationModal>
+                    <EuiModalHeader>
+                        <EuiText size="s">
+                            <b>{t('imsInformationModalTitle')}</b>
+                        </EuiText>
+                    </EuiModalHeader>
+                    <WfoImsCircuitsTable
+                        imsCircuits={impactedObject.ims_circuits}
+                    />
+                </EuiModal>
             )}
         </>
     );

@@ -140,41 +140,12 @@ export const WfoImpactOverrideModal = ({
             onSubmit={handleSubmit}
             submitButtonLabel={t('overrideImpactButton')}
         >
-            {/*<EuiDescriptionList>*/}
-            {/*    <EuiDescriptionListTitle>*/}
-            {/*        {t('subscriptionDescription')}*/}
-            {/*    </EuiDescriptionListTitle>*/}
-            {/*    <EuiDescriptionListDescription>*/}
-            {/*        {impactedObject.subscription_description}*/}
-            {/*    </EuiDescriptionListDescription>*/}
-            {/*</EuiDescriptionList>*/}
-            {/*<EuiSpacer />*/}
-            {/*<EuiDescriptionListTitle>*/}
-            {/*    <p>{t('impactOverrideModalCurrent')}</p>*/}
-            {/*</EuiDescriptionListTitle>*/}
-            {/*{impactedObject.impact_override ? (*/}
-            {/*    <WfoImpactLevelBadge*/}
-            {/*        impactedObjectImpact={impactedObject.impact_override}*/}
-            {/*    />*/}
-            {/*) : (*/}
-            {/*    <EuiText color={theme.colors.darkShade}>-</EuiText>*/}
-            {/*)}*/}
-            {/*<EuiSpacer />*/}
-            {/*<EuiDescriptionListTitle>*/}
-            {/*    <p>{t('impactOverrideModalNew')}</p>*/}
-            {/*</EuiDescriptionListTitle>*/}
             <EuiRadioGroup
                 options={options}
                 idSelected={value}
                 onChange={onChange}
                 name="radio group"
             />
-            {/*<EuiSuperSelect*/}
-            {/*    options={options}*/}
-            {/*    valueOfSelected={value}*/}
-            {/*    onChange={onChange}*/}
-            {/*    itemLayoutAlign="top"*/}
-            {/*/>*/}
         </WfoSubmitModal>
     );
 };

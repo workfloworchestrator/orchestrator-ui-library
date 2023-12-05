@@ -63,7 +63,11 @@
                             "customer": "Customer",
                             "contact": "Contact",
                             "showImsServiceInformation": "Show IMS service information",
-                            "imsInformationModalTitle": "IMS service information"
+                            "imsInformationModalTitle": "IMS service information",
+                            "imsCircuitId": "ID",
+                            "imsCircuitName": "IMS name",
+                            "extraInformation": "Extra info",
+                            "impact": "Impact"
                         }
                     }
                 },

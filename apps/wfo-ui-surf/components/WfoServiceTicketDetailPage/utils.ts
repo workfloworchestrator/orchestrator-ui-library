@@ -18,7 +18,7 @@ export const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN,
 ];
 
-const impactedObjectPriority = [
+const impactLevelPriority = [
     ImpactLevel.NO_IMPACT,
     ImpactLevel.REDUCED_REDUNDANCY,
     ImpactLevel.RESILIENCE_LOSS,
@@ -26,7 +26,7 @@ const impactedObjectPriority = [
 ];
 
 export const getImpactedObjectPriority = (impact: ImpactLevel) => {
-    return impactedObjectPriority.indexOf(impact);
+    return impactLevelPriority.indexOf(impact);
 };
 
 export const convertApiToUiImpactLevel = (
@@ -73,6 +73,9 @@ export const calculateSendingLevel = (
 
 //TODO: Get the highest impact of all impacted objects
 export const getImsCalculatedImpact = (object: ImpactedObject) => {
+    // Get the highest impact level from object.ims_circuits. ImpactLevel.NO_IMPACT is the lowest possible impact level. ImpactLevel.DOWN is the highest possible impact level.
+    // Compare them with the following order: ImpactLevel.NO_IMPACT < ImpactLevel.REDUCED_REDUNDANCY < ImpactLevel.RESILIENCE_LOSS < ImpactLevel.DOWN
+    // if there are two circuits the one with the highest impact level is the one that will be returned
     return object.ims_circuits[object.ims_circuits.length - 1].impact;
 };
 
