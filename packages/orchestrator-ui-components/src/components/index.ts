@@ -19,3 +19,4 @@ export * from './WfoAuth';
 export * from './WfoDropdownButton';
 export * from './WfoProcessList';
 export * from './WfoTextAnchor';
+export * from './WfoJsonCodeBlock';

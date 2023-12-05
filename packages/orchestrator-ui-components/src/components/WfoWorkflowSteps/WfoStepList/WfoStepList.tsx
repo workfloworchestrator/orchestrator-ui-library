@@ -1,17 +1,10 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
-import { JSONSchema6 } from 'json-schema';
+import { useOrchestratorTheme } from '@/hooks';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { Step } from '../../../types';
 import { WfoStep } from '../WfoStep';
 import { getStyles } from '../styles';
-
-export type StepListItem = {
-    step: Step;
-    isExpanded: boolean;
-    userInputForm?: JSONSchema6;
-};
+import { StepListItem } from './../WfoWorkflowStepList';
 
 export type WfoStepListRef = {
     scrollToStep: (stepId: string) => void;
@@ -23,6 +16,7 @@ export type WfoStepListProps = {
     startedAt: string;
     onToggleExpandStepListItem: (stepListItem: StepListItem) => void;
     onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
+    isTask: boolean;
 };
 
 export const WfoStepList = React.forwardRef(
@@ -33,6 +27,7 @@ export const WfoStepList = React.forwardRef(
             startedAt,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
+            isTask,
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
@@ -95,6 +90,7 @@ export const WfoStepList = React.forwardRef(
                                 startedAt={stepStartTime}
                                 showHiddenKeys={showHiddenKeys}
                                 isStartStep={index === 0}
+                                isTask={isTask}
                             />
                         </div>
                     );

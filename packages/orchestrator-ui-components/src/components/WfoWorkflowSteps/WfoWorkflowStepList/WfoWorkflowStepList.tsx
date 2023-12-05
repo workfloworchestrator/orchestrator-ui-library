@@ -1,22 +1,27 @@
 import React, { Ref, useEffect, useState } from 'react';
 
-import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 
-import { useRawProcessDetails } from '../../../hooks';
-import { Step, StepStatus } from '../../../types';
-import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
-import { WfoLoading } from '../../WfoLoading';
-import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
-import { updateStepListItems } from '../stepListUtils';
+import { WfoJsonCodeBlock, WfoLoading } from '@/components';
+import { useRawProcessDetails } from '@/hooks';
+import { Step, StepStatus } from '@/types';
+import { InputForm } from '@/types/forms';
+
+import { WfoStepList, WfoStepListRef } from '../WfoStepList';
 import { WfoStepListHeader } from './WfoStepListHeader';
+
+export type StepListItem = {
+    step: Step;
+    isExpanded: boolean;
+    userInputForm?: InputForm;
+};
 
 export interface WfoWorkflowStepListProps {
     steps: Step[];
     startedAt: string;
     processId: string;
     isTask: boolean;
-    userInputForm?: JSONSchema6;
+    userInputForm?: InputForm;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -44,21 +49,39 @@ export const WfoWorkflowStepList = React.forwardRef(
             step,
             isExpanded: false,
             userInputForm:
-                step.status === StepStatus.SUSPEND && userInputForm
-                    ? userInputForm
-                    : undefined,
+                step.status === StepStatus.SUSPEND ? userInputForm : undefined,
         })); // If the step is in the suspend state, we show the user input form
 
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);
 
-        useEffect(
-            () =>
-                setStepListItems((previousStepListItems) =>
-                    updateStepListItems(previousStepListItems, steps),
-                ),
-            [steps],
-        );
+        const persistStepListItemState = (
+            previousStepListItems: StepListItem[],
+            updatedSteps: Step[],
+        ): StepListItem[] => {
+            return updatedSteps.map((step) => {
+                const previousStepListItem = previousStepListItems.find(
+                    (previousStepListItem) =>
+                        previousStepListItem.step.stepId === step.stepId,
+                );
+                return {
+                    step,
+                    isExpanded: previousStepListItem
+                        ? previousStepListItem.isExpanded
+                        : false,
+                    userInputForm: previousStepListItem
+                        ? previousStepListItem.userInputForm
+                        : undefined,
+                };
+            });
+        };
+
+        useEffect(() => {
+            // We want to preserve the state of stepListItems between renders
+            setStepListItems((previousStepListItems) =>
+                persistStepListItemState(previousStepListItems, steps),
+            );
+        }, [steps]);
 
         const updateStepListItem = (
             stepListItemToUpdate: StepListItem,
@@ -121,6 +144,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                         stepListItems={stepListItems}
                         startedAt={startedAt}
                         showHiddenKeys={showHiddenKeys}
+                        isTask={isTask}
                         onToggleExpandStepListItem={
                             toggleExpandedStateStepListItem
                         }
