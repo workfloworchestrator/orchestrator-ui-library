@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const textAnchorStyle = css({
-        marginTop: 2,
+        marginTop: theme.size.xxs,
         marginLeft: 0,
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.bold,
