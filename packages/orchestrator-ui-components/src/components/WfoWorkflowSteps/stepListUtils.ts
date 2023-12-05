@@ -1,5 +1,4 @@
-import { Step, StepState } from '../../types';
-import { StepListItem } from './WfoStepList';
+import { StepState } from '@/types';
 
 export const STEP_STATE_HIDDEN_KEYS = [
     'label_',
@@ -27,30 +26,4 @@ export const getStepContent = (
             }),
             {},
         );
-};
-
-export const updateStepListItems = (
-    previousStepListItems: StepListItem[],
-    updatedSteps: Step[],
-) => {
-    const currentExpandedStateByStepId = previousStepListItems.reduce<
-        Map<string, boolean>
-    >(
-        (previousValue, currentValue) =>
-            previousValue.set(
-                currentValue.step.stepId,
-                currentValue.isExpanded,
-            ),
-        new Map(),
-    );
-
-    return updatedSteps.map((step) => {
-        const isCurrentlyExpanded = currentExpandedStateByStepId.get(
-            step.stepId,
-        );
-        return {
-            step,
-            isExpanded: isCurrentlyExpanded ?? false,
-        };
-    });
 };

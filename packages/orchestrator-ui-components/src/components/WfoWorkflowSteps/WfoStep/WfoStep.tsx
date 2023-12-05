@@ -4,14 +4,15 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WfoChevronDown, WfoChevronUp } from '../../../icons';
-import type { EmailState } from '../../../types';
-import { formatDate } from '../../../utils';
-import { calculateTimeDifference } from '../../../utils';
-import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
-import type { StepListItem } from '../WfoStepList';
+import { UserInputFormWizard, WfoJsonCodeBlock } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoChevronDown, WfoChevronUp } from '@/icons';
+import type { EmailState } from '@/types';
+import { StepStatus } from '@/types';
+import { calculateTimeDifference, formatDate } from '@/utils';
+
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
+import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getStyles } from '../styles';
 
@@ -20,6 +21,7 @@ export interface WfoStepProps {
     startedAt: string;
     showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
+    isTask: boolean;
     isStartStep?: boolean;
 }
 
@@ -31,11 +33,12 @@ export const WfoStep = React.forwardRef(
             startedAt,
             showHiddenKeys,
             isStartStep = false,
+            isTask,
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
-        const { name, executed, status, stateDelta } = step;
+
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
@@ -47,10 +50,11 @@ export const WfoStep = React.forwardRef(
             getStepToggleExpandStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
-        const hasHtmlMail = stateDelta?.hasOwnProperty('confirmation_mail');
+        const hasHtmlMail =
+            step.stateDelta?.hasOwnProperty('confirmation_mail');
 
-        const stepContent = stateDelta
-            ? getStepContent(stateDelta, showHiddenKeys)
+        const stepContent = step.stateDelta
+            ? getStepContent(step.stateDelta, showHiddenKeys)
             : {};
         const hasStepContent = Object.keys(stepContent).length > 0;
 
@@ -95,10 +99,6 @@ export const WfoStep = React.forwardRef(
             );
         };
 
-        if (userInputForm) {
-            console.log(step, userInputForm);
-        }
-
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -107,17 +107,18 @@ export const WfoStep = React.forwardRef(
                         onClick={() => hasStepContent && onToggleStepDetail()}
                     >
                         <WfoStepStatusIcon
-                            stepStatus={status}
+                            stepStatus={step.status}
                             isStartStep={isStartStep}
                         />
 
                         <EuiFlexItem grow={0}>
                             <EuiText css={stepListContentBoldTextStyle}>
-                                {name}
+                                {step.name}
                             </EuiText>
                             <EuiText>
-                                {status}{' '}
-                                {executed && `- ${formatDate(executed)}`}
+                                {step.status}{' '}
+                                {step.executed &&
+                                    `- ${formatDate(step.executed)}`}
                             </EuiText>
                         </EuiFlexItem>
 
@@ -161,6 +162,20 @@ export const WfoStep = React.forwardRef(
                                 step.state.confirmation_mail as EmailState,
                             )}
                         </div>
+                    )}
+                    {step.status === StepStatus.SUSPEND && userInputForm && (
+                        <UserInputFormWizard
+                            stepUserInput={userInputForm}
+                            validSubmit={(processInput: object[]) => {
+                                console.log('processInput', processInput);
+                                return Promise.resolve('');
+                            }}
+                            cancel={() => {
+                                console.log('Cancel, now what?');
+                            }}
+                            hasNext={false}
+                            isTask={isTask}
+                        />
                     )}
                 </EuiPanel>
             </div>
