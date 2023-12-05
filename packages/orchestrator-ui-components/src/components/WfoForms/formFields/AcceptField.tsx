@@ -71,11 +71,13 @@ function Accept({
     data,
     ...props
 }: AcceptFieldProps) {
-    const t = useTranslations('pydanticForms.backendTranslations');
+    const t = useTranslations();
     const { acceptFieldStyle } = useWithOrchestratorTheme(getStyles);
 
     const legacy = !data;
-    const i18nBaseKey = `${name}_accept`;
+    const i18nBaseKey = data
+        ? `pydanticForms.backendTranslations.${name}_accept`
+        : 'pydanticForms.backendTranslations';
 
     data = data ?? [
         [name, 'label', {}],
