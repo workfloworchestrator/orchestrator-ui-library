@@ -32,7 +32,7 @@ export const WfoProcessDetailPage = ({
     const [fetchInterval, setFetchInterval] = useState<number | undefined>(
         dataRefetchInterval.processDetail,
     );
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isFetching, isFetched } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
             processId,
@@ -42,14 +42,14 @@ export const WfoProcessDetailPage = ({
     );
 
     useEffect(() => {
-        const lastStatus = data?.processes.page[0].lastStatus;
-        const isInProgress = !(
-            lastStatus && ProcessDoneStatuses.includes(lastStatus)
-        );
+        const lastStatus = data?.processes?.page[0]?.lastStatus;
+        const isInProgress =
+            !(lastStatus && ProcessDoneStatuses.includes(lastStatus)) &&
+            !isFetched;
         setFetchInterval(
             isInProgress ? dataRefetchInterval.processDetail : undefined,
         );
-    }, [data, dataRefetchInterval.processDetail]);
+    }, [data, dataRefetchInterval.processDetail, isFetched]);
 
     const process = data?.processes.page[0];
     const steps = process?.steps ?? [];
@@ -72,7 +72,7 @@ export const WfoProcessDetailPage = ({
                 stepListRef.current?.scrollToStep(id)
             }
         >
-            {(isFetching && !process && <WfoLoading />) ||
+            {(isFetching && !process && !isFetched && <WfoLoading />) ||
                 (process !== undefined && (
                     <WfoWorkflowStepList
                         ref={stepListRef}
@@ -83,7 +83,7 @@ export const WfoProcessDetailPage = ({
                         startedAt={process.startedAt}
                         isTask={isTask}
                     />
-                ))}
+                )) || <h1>Invalid processId</h1>}
         </WfoProcessDetail>
     );
 };
