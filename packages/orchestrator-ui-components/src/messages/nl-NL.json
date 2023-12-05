@@ -283,8 +283,8 @@
                 "startedAt": "Started at",
                 "startedBy": "Started by"
             },
-            "showAll": "Show all",
-            "hideAll": "Hide all"
+            "showAll": "Toon alles",
+            "hideAll": "Verberg alles"
         }
     },
     "tasks": {
