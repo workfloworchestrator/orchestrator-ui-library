@@ -199,12 +199,12 @@ export const WfoProductsPage = () => {
                 onUpdatePage={getPageChangeHandler<ProductDefinition>(
                     setDataDisplayParam,
                 )}
-                onUpdateEsQueryString={getEsQueryStringHandler<ProductDefinition>(
+                onUpdateQueryString={getEsQueryStringHandler<ProductDefinition>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={esQueryString}
+                queryString={esQueryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>

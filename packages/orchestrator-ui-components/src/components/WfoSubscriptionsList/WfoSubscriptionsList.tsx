@@ -158,8 +158,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     return (
         <WfoTableWithFilter<SubscriptionListItem>
-            esQueryString={dataDisplayParams.esQueryString}
-            onUpdateEsQueryString={getEsQueryStringHandler<SubscriptionListItem>(
+            queryString={dataDisplayParams.esQueryString}
+            onUpdateQueryString={getEsQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
             data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}

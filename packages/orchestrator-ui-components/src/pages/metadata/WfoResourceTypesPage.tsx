@@ -172,12 +172,12 @@ export const WfoResourceTypesPage = () => {
                 onUpdatePage={getPageChangeHandler<ResourceTypeDefinition>(
                     setDataDisplayParam,
                 )}
-                onUpdateEsQueryString={getEsQueryStringHandler<ResourceTypeDefinition>(
+                onUpdateQueryString={getEsQueryStringHandler<ResourceTypeDefinition>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={esQueryString}
+                queryString={esQueryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }

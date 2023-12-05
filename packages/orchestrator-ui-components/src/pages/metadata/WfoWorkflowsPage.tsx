@@ -183,12 +183,12 @@ export const WfoWorkflowsPage = () => {
                 onUpdatePage={getPageChangeHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdateEsQueryString={getEsQueryStringHandler<WorkflowListItem>(
+                onUpdateQueryString={getEsQueryStringHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                esQueryString={esQueryString}
+                queryString={esQueryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>
