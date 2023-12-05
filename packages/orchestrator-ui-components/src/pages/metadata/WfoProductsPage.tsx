@@ -16,8 +16,8 @@ import {
     WfoProductStatusBadge,
     WfoTableWithFilter,
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '@/components';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
@@ -152,14 +152,14 @@ export const WfoProductsPage = () => {
         },
     };
 
-    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
+    const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: esQueryString || undefined,
+            query: queryString || undefined,
         },
         'products',
     );
@@ -199,12 +199,12 @@ export const WfoProductsPage = () => {
                 onUpdatePage={getPageChangeHandler<ProductDefinition>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getEsQueryStringHandler<ProductDefinition>(
+                onUpdateQueryString={getQueryStringHandler<ProductDefinition>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                queryString={esQueryString}
+                queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>

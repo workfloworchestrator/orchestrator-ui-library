@@ -15,8 +15,8 @@ import {
 import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
-    getEsQueryStringHandler,
     getPageChangeHandler,
+    getQueryStringHandler,
 } from '../../components';
 import type { WfoDataSorting, WfoTableColumns } from '../../components';
 import { StoredTableConfig } from '../../components';
@@ -136,14 +136,14 @@ export const WfoWorkflowsPage = () => {
         },
     };
 
-    const { pageSize, pageIndex, sortBy, esQueryString } = dataDisplayParams;
+    const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isFetching } = useQueryWithGraphql(
         GET_WORKFLOWS_GRAPHQL_QUERY,
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: graphQlWorkflowListMapper(sortBy),
-            query: esQueryString,
+            query: queryString,
         },
         'workflows',
     );
@@ -183,12 +183,12 @@ export const WfoWorkflowsPage = () => {
                 onUpdatePage={getPageChangeHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getEsQueryStringHandler<WorkflowListItem>(
+                onUpdateQueryString={getQueryStringHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                queryString={esQueryString}
+                queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />
         </WfoMetadataPageLayout>

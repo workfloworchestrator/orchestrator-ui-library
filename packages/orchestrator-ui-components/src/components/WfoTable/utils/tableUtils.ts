@@ -44,10 +44,10 @@ export const getPageChangeHandler =
         }
     };
 
-export const getEsQueryStringHandler =
+export const getQueryStringHandler =
     <Type>(
         setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
     ) =>
-    (esQueryString: string) => {
-        setDataDisplayParam('esQueryString', esQueryString);
+    (queryString: string) => {
+        setDataDisplayParam('queryString', queryString);
     };
