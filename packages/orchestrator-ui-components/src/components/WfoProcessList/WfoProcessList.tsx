@@ -210,7 +210,7 @@ export const WfoProcessList = ({
 
     return (
         <WfoTableWithFilter<ProcessListItem>
-            esQueryString={esQueryString}
+            queryString={esQueryString}
             data={mapGraphQlProcessListResultToProcessListItems(data)}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
@@ -223,7 +223,7 @@ export const WfoProcessList = ({
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
-            onUpdateEsQueryString={getEsQueryStringHandler(setDataDisplayParam)}
+            onUpdateQueryString={getEsQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
         />

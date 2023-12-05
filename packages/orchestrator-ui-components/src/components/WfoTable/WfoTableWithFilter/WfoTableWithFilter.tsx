@@ -51,12 +51,12 @@ export type WfoTableWithFilterProps<T> = {
     defaultHiddenColumns?: TableColumnKeys<T>;
     dataSorting: WfoDataSorting<T>;
     pagination: Pagination;
-    esQueryString?: string;
+    queryString?: string;
     isLoading: boolean;
     localStorageKey: string;
     detailModal?: boolean;
     detailModalTitle?: string;
-    onUpdateEsQueryString: (esQueryString: string) => void;
+    onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
 };
@@ -69,12 +69,12 @@ export const WfoTableWithFilter = <T,>({
     defaultHiddenColumns = [],
     dataSorting,
     pagination,
-    esQueryString,
+    queryString,
     isLoading,
     localStorageKey,
     detailModal = true,
     detailModalTitle = 'Details',
-    onUpdateEsQueryString,
+    onUpdateQueryString,
     onUpdatePage,
     onUpdateDataSort,
 }: WfoTableWithFilterProps<T>) => {
@@ -193,8 +193,8 @@ export const WfoTableWithFilter = <T,>({
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <WfoSearchField
-                        esQueryString={esQueryString}
-                        onUpdateEsQueryString={onUpdateEsQueryString}
+                        queryString={queryString}
+                        onUpdateQueryString={onUpdateQueryString}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
@@ -211,18 +211,15 @@ export const WfoTableWithFilter = <T,>({
                 pagination={pagination}
                 isLoading={isLoading}
                 onCriteriaChange={onCriteriaChange}
-                onDataSearch={({ field, searchText }) => {
-                    // Todo: This is not the final implementation. Need to decide to use esquery in the frontend.
-                    // In that case, string concatenation is not the best solution
-                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/81
-                    onUpdateEsQueryString(
+                onDataSearch={({ field, searchText }) =>
+                    onUpdateQueryString(
                         updateQueryString(
-                            esQueryString,
+                            queryString,
                             field.toString(),
                             searchText,
                         ),
-                    );
-                }}
+                    )
+                }
             />
 
             {showSettingsModal && (
