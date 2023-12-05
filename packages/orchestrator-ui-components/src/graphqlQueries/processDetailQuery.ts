@@ -20,6 +20,14 @@ export const GET_PROCESS_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                 lastStep
                 workflowName
                 isTask
+                form {
+                    additionalProperties
+                    definitions
+                    properties
+                    required
+                    title
+                    type
+                }
                 steps {
                     name
                     status

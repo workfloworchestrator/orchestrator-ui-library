@@ -6,18 +6,17 @@ import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '../../../hooks';
 import { WfoChevronDown, WfoChevronUp } from '../../../icons';
-import type { EmailState, Step, StepState } from '../../../types';
+import type { EmailState } from '../../../types';
 import { formatDate } from '../../../utils';
 import { calculateTimeDifference } from '../../../utils';
 import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
+import type { StepListItem } from '../WfoStepList';
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import { getStepContent } from '../stepListUtils';
 import { getStyles } from '../styles';
 
 export interface WfoStepProps {
-    step: Step;
-    stepDelta: StepState;
-    stepDetailIsOpen: boolean;
+    stepListItem: StepListItem;
     startedAt: string;
     showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
@@ -27,9 +26,7 @@ export interface WfoStepProps {
 export const WfoStep = React.forwardRef(
     (
         {
-            step,
-            stepDelta,
-            stepDetailIsOpen,
+            stepListItem,
             onToggleStepDetail,
             startedAt,
             showHiddenKeys,
@@ -37,7 +34,8 @@ export const WfoStep = React.forwardRef(
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
-        const { name, executed, status } = step;
+        const { isExpanded, step, userInputForm } = stepListItem;
+        const { name, executed, status, stateDelta } = step;
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
@@ -49,9 +47,11 @@ export const WfoStep = React.forwardRef(
             getStepToggleExpandStyle,
         } = getStyles(theme);
         const t = useTranslations('processes.steps');
-        const hasHtmlMail = stepDelta?.hasOwnProperty('confirmation_mail');
+        const hasHtmlMail = stateDelta?.hasOwnProperty('confirmation_mail');
 
-        const stepContent = getStepContent(stepDelta, showHiddenKeys);
+        const stepContent = stateDelta
+            ? getStepContent(stateDelta, showHiddenKeys)
+            : {};
         const hasStepContent = Object.keys(stepContent).length > 0;
 
         const displayMailConfirmation = (value: EmailState) => {
@@ -94,6 +94,10 @@ export const WfoStep = React.forwardRef(
                 </EuiText>
             );
         };
+
+        if (userInputForm) {
+            console.log(step, userInputForm);
+        }
 
         return (
             <div ref={ref}>
@@ -140,18 +144,18 @@ export const WfoStep = React.forwardRef(
                                             hasStepContent,
                                         )}
                                     >
-                                        {(stepDetailIsOpen && (
-                                            <WfoChevronUp />
-                                        )) || <WfoChevronDown />}
+                                        {(isExpanded && <WfoChevronUp />) || (
+                                            <WfoChevronDown />
+                                        )}
                                     </EuiFlexItem>
                                 </>
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {hasStepContent && stepDetailIsOpen && (
+                    {hasStepContent && isExpanded && (
                         <WfoJsonCodeBlock data={stepContent} />
                     )}
-                    {stepDetailIsOpen && hasHtmlMail && (
+                    {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(
                                 step.state.confirmation_mail as EmailState,

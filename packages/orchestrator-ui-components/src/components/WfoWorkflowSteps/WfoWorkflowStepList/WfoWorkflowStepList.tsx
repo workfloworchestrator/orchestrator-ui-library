@@ -1,9 +1,10 @@
 import React, { Ref, useEffect, useState } from 'react';
 
+import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 
 import { useRawProcessDetails } from '../../../hooks';
-import { Step } from '../../../types';
+import { Step, StepStatus } from '../../../types';
 import { WfoJsonCodeBlock } from '../../WfoJsonCodeBlock/WfoJsonCodeBlock';
 import { WfoLoading } from '../../WfoLoading';
 import { StepListItem, WfoStepList, WfoStepListRef } from '../WfoStepList';
@@ -15,6 +16,7 @@ export interface WfoWorkflowStepListProps {
     startedAt: string;
     processId: string;
     isTask: boolean;
+    userInputForm?: JSONSchema6;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -24,7 +26,13 @@ export const WfoProcessRawData = ({ processId }: { processId: string }) => {
 
 export const WfoWorkflowStepList = React.forwardRef(
     (
-        { steps = [], startedAt, processId, isTask }: WfoWorkflowStepListProps,
+        {
+            steps = [],
+            startedAt,
+            processId,
+            isTask,
+            userInputForm,
+        }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
@@ -35,7 +43,11 @@ export const WfoWorkflowStepList = React.forwardRef(
         const initialStepListItems: StepListItem[] = steps.map((step) => ({
             step,
             isExpanded: false,
-        }));
+            userInputForm:
+                step.status === StepStatus.SUSPEND && userInputForm
+                    ? userInputForm
+                    : undefined,
+        })); // If the step is in the suspend state, we show the user input form
 
         const [stepListItems, setStepListItems] =
             useState(initialStepListItems);

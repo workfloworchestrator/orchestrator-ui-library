@@ -1,3 +1,5 @@
+import { JSONSchema6 } from 'json-schema';
+
 import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
 
 export type UnionOfInterfaceTypes<T> = T[keyof T];
@@ -196,6 +198,7 @@ export interface ProcessDetail {
     createdBy: Process['createdBy'];
     startedAt: Process['startedAt'];
     lastStep: string;
+    form?: JSONSchema6; // If there is a step that contains a form, this is the form
     lastModifiedAt: Process['lastModifiedAt'];
     workflowName: string;
     isTask: boolean;

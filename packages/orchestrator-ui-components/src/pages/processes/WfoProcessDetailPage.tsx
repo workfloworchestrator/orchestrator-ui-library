@@ -80,6 +80,7 @@ export const WfoProcessDetailPage = ({
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
                         )}
+                        userInputForm={process.form}
                         startedAt={process.startedAt}
                         isTask={isTask}
                     />
