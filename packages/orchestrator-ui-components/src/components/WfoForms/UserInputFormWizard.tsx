@@ -17,8 +17,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import hash from 'object-hash';
 
-import { ConfirmDialogActions } from '../../contexts/ConfirmationDialogProvider';
-import { FormNotCompleteResponse, InputForm } from '../../types/forms';
+import { ConfirmDialogActions } from '@/contexts';
+import { FormNotCompleteResponse, InputForm } from '@/types/forms';
+
 import UserInputForm from './UserInputForm';
 import { useAxiosApiClient } from './useAxiosApiClient';
 
@@ -42,7 +43,7 @@ function stop(e: React.SyntheticEvent) {
     }
 }
 
-function UserInputFormWizard({
+export function UserInputFormWizard({
     hasNext = false,
     stepUserInput,
     validSubmit,
