@@ -259,7 +259,6 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
     getProps(name: string) {
         const props = super.getProps(name);
 
-        // not translated labels for now
         const translationKey = name.replace(/\.\d+(.\d+)*/, '_fields'); // This is evaluates to name or name_fields
         const nextIntlKey = `pydanticForms.backendTranslations.${translationKey}`;
         let label = this.translationKeyExists(nextIntlKey)
