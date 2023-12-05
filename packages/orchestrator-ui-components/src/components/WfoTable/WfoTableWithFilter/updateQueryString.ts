@@ -27,8 +27,6 @@ export const updateQueryString = (
         return `${fieldName}:${toQueryValue(value)}`;
     }
 
-    // (field1)(?>:)(\([\S "]+\)|"[\S ]+"|\S+)
-    // Todo split up for readability
     const fieldRegex = new RegExp(
         `${fieldName}:(\\([\\S "]+\\)|"[\\S ]+"|\\S+)`,
     );
