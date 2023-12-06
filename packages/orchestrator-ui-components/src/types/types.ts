@@ -322,6 +322,10 @@ export interface ProductDefinitionsResult {
     products: GraphQlResultPage<ProductDefinition>;
 }
 
+export interface ProcessStepsResult {
+    workflows: GraphQlSinglePage<{ steps: Step[] }>;
+}
+
 export interface ProductBlockDefinitionsResult {
     productBlocks: GraphQlResultPage<ProductBlockDefinition>;
 }

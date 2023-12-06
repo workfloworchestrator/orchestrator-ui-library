@@ -18,7 +18,12 @@ import { PATH_WORKFLOWS } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
-import { EngineStatus, useOrchestratorTheme } from '@/hooks';
+import { GET_PROCESS_STEPS_GRAPHQL_QUERY } from '@/graphqlQueries';
+import {
+    EngineStatus,
+    useOrchestratorTheme,
+    useQueryWithGraphql,
+} from '@/hooks';
 import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
 
@@ -87,6 +92,24 @@ export const WfoStartProcessPage = ({
     const { stepUserInput, hasNext } = form;
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
+
+    const { data, isFetched } = useQueryWithGraphql(
+        GET_PROCESS_STEPS_GRAPHQL_QUERY,
+        {
+            processName,
+        },
+        `processSteps={processName}`,
+    );
+
+    const timeLineItems: TimelineItem[] =
+        data?.workflows?.page[0]?.steps && isFetched
+            ? data.workflows.page[0].steps.map((step: any) => {
+                  return {
+                      processStepStatus: StepStatus.PENDING,
+                      stepDetail: step.name,
+                  };
+              })
+            : [];
 
     const submit = useCallback(
         (processInput: object[]) => {
@@ -159,31 +182,13 @@ export const WfoStartProcessPage = ({
         createdBy: '-',
     };
 
-    const fakeTimeLineItems: TimelineItem[] = [
-        {
-            processStepStatus: StepStatus.FORM,
-        },
-        {
-            processStepStatus: StepStatus.PENDING,
-        },
-        {
-            processStepStatus: StepStatus.PENDING,
-        },
-        {
-            processStepStatus: StepStatus.PENDING,
-        },
-        {
-            processStepStatus: StepStatus.PENDING,
-        },
-    ];
-
     return (
         <WfoProcessDetail
             pageTitle={processName}
             productNames={''}
             buttonsAreDisabled={true}
             processDetail={processDetail}
-            timelineItems={fakeTimeLineItems}
+            timelineItems={timeLineItems}
         >
             <EuiPanel css={{ marginTop: theme.base * 3 }}>
                 <EuiFlexGroup css={getStepHeaderStyle(false)}>
