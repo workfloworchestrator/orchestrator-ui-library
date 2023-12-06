@@ -148,6 +148,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                         onToggleExpandStepListItem={
                             toggleExpandedStateStepListItem
                         }
+                        processId={processId}
                         onTriggerExpandStepListItem={handleExpandStepListItem}
                     />
                 )}

@@ -124,6 +124,17 @@ export class ApiClient extends ApiClientInterface {
             true,
         );
     };
+
+    resumeProcess = (processId: string, userInput: object[]) => {
+        return this.postPutJson(
+            `processes/${processId}/resume`,
+            userInput,
+            'put',
+            false,
+            false,
+        );
+    };
+
     products = (): Promise<ProductDefinition[]> => {
         return this.fetchJson<ProductDefinition[]>(PRODUCTS_ENDPOINT);
     };

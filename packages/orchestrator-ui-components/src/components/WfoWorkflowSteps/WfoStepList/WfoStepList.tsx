@@ -17,6 +17,7 @@ export type WfoStepListProps = {
     onToggleExpandStepListItem: (stepListItem: StepListItem) => void;
     onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
     isTask: boolean;
+    processId: string;
 };
 
 export const WfoStepList = React.forwardRef(
@@ -28,6 +29,7 @@ export const WfoStepList = React.forwardRef(
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
             isTask,
+            processId,
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
@@ -91,6 +93,7 @@ export const WfoStepList = React.forwardRef(
                                 showHiddenKeys={showHiddenKeys}
                                 isStartStep={index === 0}
                                 isTask={isTask}
+                                processId={processId}
                             />
                         </div>
                     );
