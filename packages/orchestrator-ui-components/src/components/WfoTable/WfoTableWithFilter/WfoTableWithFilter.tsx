@@ -214,7 +214,7 @@ export const WfoTableWithFilter = <T,>({
                 onDataSearch={({ field, searchText }) =>
                     onUpdateQueryString(
                         updateQueryString(
-                            queryString,
+                            queryString ?? '',
                             field.toString(),
                             searchText,
                         ),
