@@ -31,9 +31,10 @@ interface DiffState {
 interface WfoDiffProps {
     oldText: string;
     newText: string;
+    syntax?: 'javascript' | 'python';
 }
 
-const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText }) => {
+const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
     const t = useTranslations('processes.delta');
     const [showSplit, setShowSplit] = useState(true);
     const [showFull, setShowFull] = useState(false);
@@ -57,8 +58,8 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText }) => {
 
         const options = {
             refractor,
-            highlight: true,
-            language: 'javascript',
+            highlight: !!syntax,
+            language: syntax ?? '',
         };
 
         try {

@@ -26,9 +26,9 @@ export interface WfoWorkflowStepListProps {
     userInputForm?: InputForm;
 }
 
-interface SubscriptionDeltaState {
-    subscription: object;
-}
+// interface SubscriptionDeltaState {
+//     subscription: object;
+// }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
     const { data, isFetching } = useRawProcessDetails(processId);
@@ -42,32 +42,22 @@ export const WfoProcessSubscriptionDelta = ({
 }) => {
     const { data, isFetching } = useRawProcessDetails(processId);
 
+    const subscriptionKey =
+        data?.current_state?.subscription?.subscription_id ?? '';
+    const newText = data?.current_state?.subscription ?? null;
     const oldText =
-        data &&
-        'current_state' in data &&
-        'subscription' in (data.current_state as object)
-            ? (data.current_state as SubscriptionDeltaState).subscription
-            : '';
-
-    const newText =
-        data &&
-        'current_state' in data &&
-        '__old_subscriptions__' in (data.current_state as object)
-            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              data.current_state.__old_subscriptions__[
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  data.current_state.subscription.subscription_id
-              ]
-            : '';
+        data?.current_state?.__old_subscriptions__ &&
+        subscriptionKey in data?.current_state?.__old_subscriptions__
+            ? data?.current_state?.__old_subscriptions__[subscriptionKey]
+            : null;
 
     return isFetching ? (
         <WfoLoading />
     ) : (
         <WfoDiff
-            oldText={JSON.stringify(oldText, null, 2)}
-            newText={JSON.stringify(newText, null, 2)}
+            oldText={oldText ? JSON.stringify(oldText, null, 2) : ''}
+            newText={newText ? JSON.stringify(newText, null, 2) : ''}
+            syntax="javascript"
         />
     );
 };
