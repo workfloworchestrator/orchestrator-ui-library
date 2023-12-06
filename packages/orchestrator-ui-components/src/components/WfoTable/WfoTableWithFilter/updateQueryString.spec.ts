@@ -82,4 +82,14 @@ describe('updateQueryString', () => {
 
         expect(result).toBe('field1:value1 field2:value2');
     });
+
+    it('updates an existing field ignoring case in the field name', () => {
+        const queryString = 'field1:value1 field2:value2';
+        const fieldName = 'Field1';
+        const value = 'value3';
+
+        const result = updateQueryString(queryString, fieldName, value);
+
+        expect(result).toBe('field1:(value1|value3) field2:value2');
+    });
 });
