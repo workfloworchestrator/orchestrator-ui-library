@@ -320,7 +320,7 @@ export interface ProductDefinitionsResult {
 }
 
 export interface ProcessStepsResult {
-    workflows: GraphQlSinglePage<{ steps: Step[] }>;
+    workflows: GraphQlSinglePage<{ steps: { name: Step['name'] }[] }>;
 }
 
 export interface ProductBlockDefinitionsResult {
