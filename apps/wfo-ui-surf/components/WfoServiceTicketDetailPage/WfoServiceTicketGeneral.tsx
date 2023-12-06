@@ -12,7 +12,6 @@ import {
 } from '@elastic/eui';
 import {
     SubscriptionKeyValueBlock,
-    WfoBadge,
     WfoInformationModal,
     WfoKeyValueTableDataType,
     formatDate,
@@ -34,7 +33,7 @@ export const WfoServiceTicketGeneral = ({
     serviceTicketGeneral,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('cim.serviceTickets.detail.tabDetails.general');
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
     const [defaultSendingLevelModalIsOpen, setDefaultSendingLevelModalIsOpen] =
         useState(false);

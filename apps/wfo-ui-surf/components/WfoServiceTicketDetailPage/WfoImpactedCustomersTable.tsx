@@ -12,11 +12,12 @@ import {
 } from '@elastic/eui';
 import {
     WfoBadge,
+    WfoBasicTable,
     WfoCheckmarkCircleFill,
-    WfoDropdownTable,
     WfoTableColumns,
     WfoViewList,
     WfoXCircleFill,
+    getStyles,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -38,12 +39,6 @@ interface WfoImpactedCustomersTableProps {
     impactedObject: ImpactedObject;
 }
 
-// const defaultTableStyle = css({
-//     '.euiTableCellContent__text': {
-//         display: 'flex',
-//     },
-// });
-
 export const WfoImpactedCustomersTable = ({
     impactedObject,
 }: WfoImpactedCustomersTableProps) => {
@@ -51,9 +46,10 @@ export const WfoImpactedCustomersTable = ({
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
     );
     const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const [contactsModal, setContactsModal] = useState<CustomerWithContacts>();
-    const [imsModal, setImsModal] = useState();
+    const [imsModal, setImsModal] = useState<boolean | undefined>();
+    const { dropDownTableStyle } = getStyles(theme);
 
     const { data: minlObjectFromApi, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
@@ -150,8 +146,12 @@ export const WfoImpactedCustomersTable = ({
         setImsModal(undefined);
     };
 
+    const handleOpenImsModal = () => {
+        setImsModal(true);
+    };
+
     const ShowImsInformationButton = () => (
-        <EuiButtonEmpty size="s" onClick={() => setImsModal(true)}>
+        <EuiButtonEmpty size="s" onClick={handleOpenImsModal}>
             <EuiFlexGroup gutterSize="s" alignItems="center">
                 <EuiFlexItem>
                     <WfoViewList color={theme.colors.primary} />
@@ -174,7 +174,7 @@ export const WfoImpactedCustomersTable = ({
                 css={{ backgroundColor: theme.colors.lightestShade }}
             >
                 <EuiFlexItem>
-                    <WfoDropdownTable
+                    <WfoBasicTable
                         data={
                             impactedObject && minlObjectFromApi
                                 ? mapImpactedObjectToImpactedCustomersColumns(
@@ -186,6 +186,7 @@ export const WfoImpactedCustomersTable = ({
                         }
                         isLoading={isFetching}
                         columns={impactedCustomersTableColumns}
+                        customTableStyle={dropDownTableStyle}
                     />
                 </EuiFlexItem>
                 <EuiFlexItem>

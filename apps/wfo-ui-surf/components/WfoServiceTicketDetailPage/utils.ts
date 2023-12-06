@@ -1,5 +1,3 @@
-import { defaultOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
-
 import {
     ImpactLevel,
     ImpactLevelFromApi,
@@ -8,9 +6,7 @@ import {
     ImpactedObject,
     MinlObjectFromApi,
     ServiceTicketProcessState,
-    ServiceTicketWithDetails,
 } from '../../types';
-import { ColorMappings } from '../../utils/getColorForState';
 
 export const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN_RELATED,

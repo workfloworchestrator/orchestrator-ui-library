@@ -15,6 +15,7 @@ import {
     WfoTableColumns,
     formatDate,
     getSortDirectionFromString,
+    getStyles,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -75,6 +76,7 @@ export const WfoServiceTicketsList = ({
     });
 
     const t = useTranslations('cim.serviceTickets');
+    const { getStatusColumnStyle } = getStyles(theme);
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
@@ -232,6 +234,7 @@ export const WfoServiceTicketsList = ({
             onUpdateDataSorting={(currentSort) => {
                 setDataSorting(currentSort);
             }}
+            customTableStyle={getStatusColumnStyle(1)}
         />
     );
 };

@@ -20,7 +20,6 @@ import {
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import {
     ServiceTicketDetailPageTab,
-    ServiceTicketProcessState,
     ServiceTicketTabIds,
     ServiceTicketWithDetails,
 } from '../../types';

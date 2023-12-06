@@ -62,6 +62,7 @@
                             "contactsModal": "Customer contacts",
                             "customer": "Customer",
                             "contact": "Contact",
+                            "customerContacts": "Customer contacts",
                             "showImsServiceInformation": "Show IMS service information",
                             "imsInformationModalTitle": "IMS service information",
                             "imsCircuitId": "ID",

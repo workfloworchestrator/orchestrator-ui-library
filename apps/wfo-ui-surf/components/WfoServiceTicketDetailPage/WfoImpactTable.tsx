@@ -8,6 +8,7 @@ import {
     WfoBadge,
     WfoBasicTable,
     WfoTableColumns,
+    getStyles,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -47,7 +48,9 @@ export const WfoImpactTable = ({
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
+    const { expandableTableStyle } = getStyles(theme);
+
     const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
         Record<string, ReactNode>
     >({});
@@ -79,7 +82,7 @@ export const WfoImpactTable = ({
             field: SUBSCRIPTION_IMPACT_FIELD_ID,
             width: '20',
             name: '',
-            render: (value, object) => {
+            render: (value) => {
                 const itemIdToExpandedRowMapValues = {
                     ...itemIdToExpandedRowMap,
                 };
@@ -168,10 +171,9 @@ export const WfoImpactTable = ({
             name: '',
             width: '15',
             render: (value, object) => {
-                let index = serviceTicketDetail.impacted_objects.findIndex(
+                const index = serviceTicketDetail.impacted_objects.findIndex(
                     (o) => o.subscription_id === object.subscription_id,
                 );
-
                 return (
                     value && (
                         <EuiButtonIcon
@@ -221,6 +223,7 @@ export const WfoImpactTable = ({
                 isExpandable={true}
                 itemIdToExpandedRowMap={itemIdToExpandedRowMap}
                 itemId="subscription_id"
+                customTableStyle={expandableTableStyle}
             />
             {currentModalItemIndex >= 0 && (
                 <WfoImpactOverrideModal

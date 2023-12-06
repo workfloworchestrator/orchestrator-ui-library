@@ -21,7 +21,7 @@ export const WfoImsCircuitsTable = ({
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
     );
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
 
     const imsCircuitsTableColumns: WfoTableColumns<ServiceTicketImpactedIMSCircuit> =
         {

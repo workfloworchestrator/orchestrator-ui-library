@@ -23,7 +23,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const getStatusColumnStyle = (columnNumber: number) =>
-        css({
+        css(basicTableStyle, {
             [`tbody tr td:nth-child(${columnNumber}) .euiTableCellContent`]: {
                 padding: 0,
                 '.euiTableCellContent__text': {
@@ -34,6 +34,30 @@ export const getStyles = (theme: EuiThemeComputed) => {
                 },
             },
         });
+
+    const dropDownTableStyle = css({
+        thead: {
+            backgroundColor: theme.colors.lightestShade,
+            'tr>:first-child': {
+                borderTopLeftRadius: 0,
+            },
+            'tr>:last-child': {
+                borderTopRightRadius: 0,
+            },
+        },
+        tbody: {
+            backgroundColor: theme.colors.lightestShade,
+        },
+    });
+
+    const expandableTableStyle = css([
+        basicTableStyle,
+        {
+            'tr.euiTableRow-isExpandedRow': {
+                backgroundColor: theme.colors.lightestShade,
+            },
+        },
+    ]);
 
     const headerCellContentStyle = css({
         fontWeight: theme.font.weight.semiBold,
@@ -69,5 +93,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         headerCellPopoverContentStyle,
         getHeaderCellButtonStyle,
         getStatusColumnStyle,
+        dropDownTableStyle,
+        expandableTableStyle,
     };
 };

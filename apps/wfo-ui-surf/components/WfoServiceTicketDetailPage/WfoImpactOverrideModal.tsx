@@ -1,36 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useTranslations } from 'next-intl';
 
+import { EuiRadioGroup } from '@elastic/eui';
 import {
-    EuiDescriptionList,
-    EuiDescriptionListDescription,
-    EuiDescriptionListTitle,
-    EuiRadioGroup,
-    EuiSpacer,
-    EuiSuperSelect,
-    EuiText,
-} from '@elastic/eui';
-import {
-    EngineStatus,
-    OrchestratorConfigContext,
-    WfoBadge,
     WfoSubmitModal,
-    useEngineStatusMutation,
     useOrchestratorTheme,
     useSessionWithToken,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { ORCHESTRATOR_CIM_BASE_URL } from '../../constants';
 import { PATCH_IMPACT_OVERRIDE_ENDPOINT } from '../../constants-surf';
-import {
-    ImpactLevel,
-    ImpactTableColumns,
-    ImpactedObjectWithIndex,
-    ServiceTicketWithDetails,
-} from '../../types';
-import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
+import { ImpactLevel, ServiceTicketWithDetails } from '../../types';
 
 interface PatchImpactOverridePayload {
     impact_override: ImpactLevel;
@@ -99,16 +81,18 @@ export const WfoImpactOverrideModal = ({
     closeAction: () => void;
 }) => {
     const impactedObject = serviceTicketDetail.impacted_objects[index];
-    const [value, setValue] = useState(impactedObject.impact_override);
+    const [value, setValue] = useState<ImpactLevel>(
+        impactedObject.impact_override,
+    );
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
     const { theme } = useOrchestratorTheme();
-    const { mutate, data } = usePatchImpactedObject();
+    const { mutate } = usePatchImpactedObject();
     const { isLoading } = useQuery(['serviceTickets', serviceTicketDetail._id]);
 
-    const onChange = (value: any) => {
-        setValue(value);
+    const onChange = (value: string) => {
+        setValue(value as ImpactLevel);
     };
 
     const handleSubmit = () => {
@@ -129,8 +113,6 @@ export const WfoImpactOverrideModal = ({
                     ? theme.colors.primary
                     : theme.colors.darkShade,
         },
-        // inputDisplay: <WfoImpactLevelBadge impactedObjectImpact={value} />,
-        // 'data-test-subj': 'superSelectOption',
     }));
 
     return (
@@ -144,7 +126,6 @@ export const WfoImpactOverrideModal = ({
                 options={options}
                 idSelected={value}
                 onChange={onChange}
-                name="radio group"
             />
         </WfoSubmitModal>
     );

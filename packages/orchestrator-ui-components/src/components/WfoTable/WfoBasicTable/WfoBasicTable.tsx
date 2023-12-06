@@ -65,7 +65,7 @@ export const WfoBasicTable = <T,>({
     customTableStyle,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
+    const { basicTableStyle } = getStyles(theme);
 
     const statusColorColumn: WfoTableControlColumnConfig<T> = {
         statusColorField: {
@@ -87,11 +87,11 @@ export const WfoBasicTable = <T,>({
         ? { ...statusColorColumn, ...columns }
         : { ...columns };
 
-    const tableStyling = getStatusColorForRow
-        ? [basicTableStyle, getStatusColumnStyle(1)]
-        : basicTableStyle;
+    // const tableStyling = getStatusColorForRow
+    //     ? [basicTableStyle, getStatusColumnStyle(1)]
+    //     : basicTableStyle;
 
-    // const tableStyling = customTableStyle ?? basicTableStyle;
+    const tableStyling = customTableStyle ?? basicTableStyle;
 
     return (
         <EuiBasicTable

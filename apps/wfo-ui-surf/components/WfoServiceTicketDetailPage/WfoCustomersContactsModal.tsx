@@ -1,21 +1,17 @@
 import React from 'react';
 
-import { useTranslations } from 'next-intl';
-
 import {
     EuiButtonIcon,
     EuiCopy,
-    EuiDescriptionListDescription,
-    EuiDescriptionListTitle,
     EuiFlexGroup,
     EuiFlexItem,
     EuiHorizontalRule,
-    EuiLink,
     EuiModal,
     EuiPanel,
     EuiSpacer,
+    EuiText,
 } from '@elastic/eui';
-import { WfoInformationModal } from '@orchestrator-ui/orchestrator-ui-components';
+import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { CustomerWithContacts, ImpactedCustomerContact } from '../../types';
 
@@ -28,52 +24,58 @@ export const WfoCustomersContactsModal = ({
     customerWithContacts,
     handleClose,
 }: WfoCustomersContactsModalProps) => {
-    const t = useTranslations(
-        'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
-    );
+    const { theme } = useOrchestratorTheme();
 
     return (
-        <WfoInformationModal title={'Customer contacts'} onClose={handleClose}>
-            {/*<EuiPanel color={"subdued"} borderRadius={"none"} paddingSize={"none"} >*/}
-            <EuiDescriptionListTitle>{t('customer')}</EuiDescriptionListTitle>
-            <EuiDescriptionListDescription>
-                {customerWithContacts.name}
-            </EuiDescriptionListDescription>
+        <EuiModal onClose={handleClose}>
+            <EuiText
+                css={{ paddingTop: theme.size.l, paddingLeft: theme.size.l }}
+            >
+                <b>{customerWithContacts.name}</b>
+            </EuiText>
             <EuiSpacer size={'m'} />
-            {customerWithContacts.contacts.map(
-                (contact: ImpactedCustomerContact, index: number) => (
-                    <>
-                        <EuiDescriptionListTitle>
-                            {t('contact') + ' '}
-                            {customerWithContacts.contacts.length > 1
-                                ? index + 1
-                                : ''}
-                        </EuiDescriptionListTitle>
-                        <EuiDescriptionListDescription>
-                            {contact.name}
-                        </EuiDescriptionListDescription>
-                        <EuiFlexGroup gutterSize={'xs'} alignItems={'center'}>
-                            <EuiFlexItem grow={false}>
-                                <EuiLink>{contact.email}</EuiLink>
+            <EuiHorizontalRule margin={'none'} />
+            <EuiFlexItem css={{ overflowY: 'scroll' }}>
+                {customerWithContacts.contacts.map(
+                    (contact: ImpactedCustomerContact) => (
+                        <>
+                            <EuiFlexItem css={{ paddingLeft: theme.size.l }}>
+                                <EuiSpacer size={'m'} />
+                                <EuiText>
+                                    <b>{contact.name}</b>
+                                </EuiText>
+                                <EuiFlexGroup
+                                    gutterSize={'xs'}
+                                    alignItems={'center'}
+                                >
+                                    <EuiFlexItem grow={false}>
+                                        <EuiText color={theme.colors.primary}>
+                                            {contact.email}
+                                        </EuiText>
+                                    </EuiFlexItem>
+                                    <EuiFlexItem grow={false}>
+                                        <EuiCopy textToCopy={contact.email}>
+                                            {(copy) => (
+                                                <EuiButtonIcon
+                                                    onClick={copy}
+                                                    iconType="copy"
+                                                    aria-label="Copy"
+                                                />
+                                            )}
+                                        </EuiCopy>
+                                    </EuiFlexItem>
+                                </EuiFlexGroup>
+                                <EuiSpacer size={'m'} />
                             </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiCopy textToCopy={contact.email}>
-                                    {(copy) => (
-                                        <EuiButtonIcon
-                                            onClick={copy}
-                                            iconType="copy"
-                                            aria-label="Copy"
-                                        />
-                                    )}
-                                </EuiCopy>
-                            </EuiFlexItem>
-                        </EuiFlexGroup>
-                        <EuiSpacer size={'m'} />
-                        <EuiHorizontalRule margin={'none'} />
-                    </>
-                ),
-            )}
-            {/*</EuiPanel>*/}
-        </WfoInformationModal>
+                            <EuiHorizontalRule margin={'none'} />
+                        </>
+                    ),
+                )}
+                <EuiPanel
+                    color={'subdued'}
+                    css={{ paddingBlock: theme.size.xxxxl }}
+                />
+            </EuiFlexItem>
+        </EuiModal>
     );
 };
