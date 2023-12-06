@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { UserInputFormWizard } from '@/components';
+import { UserInputFormWizard, WfoLoading } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { useOrchestratorTheme } from '@/hooks';
 import { InputForm } from '@/types/forms';
@@ -18,6 +18,7 @@ export const WfoStepForm = ({
     isTask,
     processId,
 }: WfoStepFormProps) => {
+    const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
     const apiClient = useAxiosApiClient();
 
@@ -27,21 +28,24 @@ export const WfoStepForm = ({
         }
 
         return apiClient.resumeProcess(processId, processInput).then(() => {
+            setIsProcessing(true);
             console.log('RESUMED: ' + processId);
         });
     };
 
     return (
         <EuiFlexItem css={{ margin: theme.size.m }}>
-            <UserInputFormWizard
-                stepUserInput={userInputForm}
-                validSubmit={submitForm}
-                cancel={() => {
-                    console.log('Cancel, now what?');
-                }}
-                hasNext={false}
-                isTask={isTask}
-            />
+            {(isProcessing && <WfoLoading />) || (
+                <UserInputFormWizard
+                    stepUserInput={userInputForm}
+                    validSubmit={submitForm}
+                    cancel={() => {
+                        console.log('Cancel, now what?');
+                    }}
+                    hasNext={false}
+                    isTask={isTask}
+                />
+            )}
         </EuiFlexItem>
     );
 };
