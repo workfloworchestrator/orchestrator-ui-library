@@ -24,7 +24,7 @@ import {
     useOrchestratorTheme,
     useQueryWithGraphql,
 } from '@/hooks';
-import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
+import { ProcessDetail, ProcessStatus, Step, StepStatus } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
 
 import UserInputFormWizard from '../../components/WfoForms/UserInputFormWizard';
@@ -103,12 +103,14 @@ export const WfoStartProcessPage = ({
 
     const timeLineItems: TimelineItem[] =
         data?.workflows?.page[0]?.steps && isFetched
-            ? data.workflows.page[0].steps.map((step: any) => {
-                  return {
-                      processStepStatus: StepStatus.PENDING,
-                      stepDetail: step.name,
-                  };
-              })
+            ? data.workflows.page[0].steps.map(
+                  ({ name }: { name: Step['name'] }) => {
+                      return {
+                          processStepStatus: StepStatus.PENDING,
+                          stepDetail: name,
+                      };
+                  },
+              )
             : [];
 
     const submit = useCallback(
