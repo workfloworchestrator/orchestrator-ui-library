@@ -26,7 +26,7 @@ import {
     useMutateProcess,
     useOrchestratorTheme,
 } from '@/hooks';
-import { WfoPlayFill, WfoRefresh, WfoXCircleFill } from '@/icons';
+import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import { ProcessDetail, ProcessStatus } from '@/types';
 import { parseDateRelativeToToday, parseIsoString } from '@/utils';
 
@@ -143,8 +143,6 @@ export const WfoProcessDetail = ({
             },
         });
 
-    const resumeAction = () => alert('TODO: Implement resume');
-
     const abortAction = () =>
         showConfirmDialog({
             question: t(
@@ -200,21 +198,6 @@ export const WfoProcessDetail = ({
                         isDisabled={retryButtonIsDisabled}
                     >
                         {t('retry')}
-                    </EuiButton>
-                    <EuiButton
-                        onClick={handleActionButtonClick(resumeAction)}
-                        iconType={() => (
-                            <WfoPlayFill
-                                color={
-                                    buttonsAreDisabled
-                                        ? theme.colors.subduedText
-                                        : theme.colors.link
-                                }
-                            />
-                        )}
-                        isDisabled={buttonsAreDisabled}
-                    >
-                        {t('resume')}
                     </EuiButton>
                     <EuiButton
                         onClick={handleActionButtonClick(abortAction)}
