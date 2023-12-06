@@ -48,6 +48,7 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
+            "previousQuestion": "Are you sure to leave this page? Any data filled on this page will be lost",
             "startTask": "Start task",
             "startWorkflow": "Start workflow",
             "resumeTask": "Resume task",

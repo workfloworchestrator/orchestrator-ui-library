@@ -62,8 +62,8 @@ export default function WfoConfirmationDialog({
                 <section
                     className={`dialog-content ${isError ? ' error' : ''}`}
                 >
-                    <h2>{t('leavePage')}</h2>
-                    <p>{t('leavePageSub')}</p>
+                    <h2>{question || t('leavePage')}</h2>
+                    {!question && <p>{t('leavePageSub')}</p>}
                 </section>
             ) : (
                 <section className="dialog-content">
