@@ -345,6 +345,19 @@ export interface ProcessesDetailResult {
     processes: GraphQlSinglePage<ProcessDetail>;
 }
 
+export interface ProcessDetailResultRaw {
+    note: string;
+    product?: string;
+    reporter: string;
+    process_id: string;
+    organisation: string;
+    subscription?: object;
+    workflow_name: string;
+    subscription_id?: string;
+    workflow_target: string;
+    __old_subscriptions__?: object;
+}
+
 export interface CustomersResult {
     customers: GraphQlSinglePage<Customer>;
 }

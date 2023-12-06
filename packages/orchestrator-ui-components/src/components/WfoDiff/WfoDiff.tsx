@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Diff, Hunk, parseDiff, tokenize } from 'react-diff-view';
 import 'react-diff-view/style/index.css';
 import { DiffType } from 'react-diff-view/types/Diff';
@@ -20,6 +20,9 @@ import {
 
 const EMPTY_HUNKS: never[] = [];
 
+const SMALL_CONTEXT = 3;
+const FULL_CONTEXT = 1000000;
+
 interface DiffState {
     type: DiffType;
     hunks: HunkData[];
@@ -30,9 +33,10 @@ interface WfoDiffProps {
     newText: string;
 }
 
-const WfoDiff: React.FC<WfoDiffProps> = ({ oldText, newText }) => {
+const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText }) => {
     const t = useTranslations('processes.delta');
     const [showSplit, setShowSplit] = useState(true);
+    const [showFull, setShowFull] = useState(false);
 
     const [{ type, hunks }, setDiff] = useState<DiffState>({
         type: 'modify',
@@ -40,11 +44,11 @@ const WfoDiff: React.FC<WfoDiffProps> = ({ oldText, newText }) => {
     });
     const updateDiffText = useCallback(() => {
         const diffText = formatLines(diffLines(oldText, newText), {
-            context: 3,
+            context: showFull ? FULL_CONTEXT : SMALL_CONTEXT,
         });
         const [diff] = parseDiff(diffText, { nearbySequences: 'zip' });
         setDiff(diff);
-    }, [oldText, newText, setDiff]);
+    }, [oldText, newText, setDiff, showFull]);
 
     const tokens = useMemo(() => {
         if (!hunks) {
@@ -66,11 +70,11 @@ const WfoDiff: React.FC<WfoDiffProps> = ({ oldText, newText }) => {
 
     useEffect(() => {
         updateDiffText();
-    }, [updateDiffText]);
+    }, [updateDiffText, showFull]);
 
     return (
         <div>
-            <EuiFlexGroup>
+            <EuiFlexGroup gutterSize={'xs'}>
                 <EuiFlexItem grow={false}>
                     <EuiText>
                         <h3>{t('title')}</h3>
@@ -85,6 +89,13 @@ const WfoDiff: React.FC<WfoDiffProps> = ({ oldText, newText }) => {
                                 : 'continuityWithin'
                         }
                         onClick={() => setShowSplit(!showSplit)}
+                    />
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        size={'s'}
+                        iconType={showFull ? 'fullScreenExit' : 'fullScreen'}
+                        onClick={() => setShowFull(!showFull)}
                     />
                 </EuiFlexItem>
             </EuiFlexGroup>
