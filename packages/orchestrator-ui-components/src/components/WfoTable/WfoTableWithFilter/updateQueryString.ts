@@ -42,7 +42,8 @@ export const updateQueryString = (
     // field:(value1|value2)
     // field:("value1 with spaces"|value2|value3)
     const fieldRegex = new RegExp(
-        `${fieldName}:(\\w+|"[\\w ]+"|\\([\\w"| ]+\\))`,
+        `(${fieldName}):(\\w+|"[\\w ]+"|\\([\\w"| ]+\\))`,
+        'i',
     );
     const match = queryString.match(fieldRegex);
 
@@ -52,7 +53,11 @@ export const updateQueryString = (
     }
 
     // 4 - Field name already exists in query string as:
-    const existingValue = getValueWithoutBrackets(match[1]);
+    const existingFieldName = match[1];
+    const existingValue = getValueWithoutBrackets(match[2]);
     const updatedValue = `${existingValue}|${toQueryValue(value)}`;
-    return queryString.replace(fieldRegex, `${fieldName}:(${updatedValue})`);
+    return queryString.replace(
+        fieldRegex,
+        `${existingFieldName}:(${updatedValue})`,
+    );
 };
