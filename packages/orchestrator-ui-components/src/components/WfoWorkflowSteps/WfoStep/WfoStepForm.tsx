@@ -29,7 +29,6 @@ export const WfoStepForm = ({
 
         return apiClient.resumeProcess(processId, processInput).then(() => {
             setIsProcessing(true);
-            console.log('RESUMED: ' + processId);
         });
     };
 
@@ -39,11 +38,9 @@ export const WfoStepForm = ({
                 <UserInputFormWizard
                     stepUserInput={userInputForm}
                     validSubmit={submitForm}
-                    cancel={() => {
-                        console.log('Cancel, now what?');
-                    }}
                     hasNext={false}
                     isTask={isTask}
+                    isResume={true}
                 />
             )}
         </EuiFlexItem>
