@@ -1,18 +1,3 @@
-const getValueWithoutBrackets = (value: string) => {
-    if (value.startsWith('(') && value.endsWith(')')) {
-        return value.slice(1, -1);
-    }
-    return value;
-};
-
-const isContainingSpaces = (value: string) => {
-    return value.indexOf(' ') !== -1;
-};
-
-const toQueryValue = (value: string) => {
-    return isContainingSpaces(value) ? `"${value}"` : value;
-};
-
 // Four cases to consider when this function is called
 // 1 - fieldName or value is empty
 // 2 - queryString is empty
@@ -29,20 +14,20 @@ export const updateQueryString = (
     }
 
     // 2 - Empty query string returning directly fieldName:value
-    if (!queryString) {
+    if (queryString === '') {
         return `${fieldName}:${toQueryValue(value)}`;
     }
 
     // Finding fieldName with values in queryString in this order:
-    // - Value is not surrounded with anything
-    // field:value
-    // - Value is surrounded with " and " (spaces are allowed)
-    // field:"value with spaces"
-    // - Value is surrounded with ( and )
+    // - Value surrounded with double quotes
+    // field:"value"
+    // - Value is surrounded with brackets
     // field:(value1|value2)
     // field:("value1 with spaces"|value2|value3)
+    // - Value is a single word (no quotes and no brackets)
+    // field:value
     const fieldRegex = new RegExp(
-        `(${fieldName}):(\\w+|"[\\w ]+"|\\([\\w"| ]+\\))`,
+        `(${fieldName}):(".*?"|\\(.*?\\)|[^()|!:<>*"\\s]+\\*?)`,
         'i',
     );
     const match = queryString.match(fieldRegex);
@@ -61,3 +46,15 @@ export const updateQueryString = (
         `${existingFieldName}:(${updatedValue})`,
     );
 };
+
+const getValueWithoutBrackets = (value: string) => {
+    if (value.startsWith('(') && value.endsWith(')')) {
+        return value.slice(1, -1);
+    }
+    return value;
+};
+
+const hasSpaces = (value: string) => value.indexOf(' ') !== -1;
+
+const toQueryValue = (value: string) =>
+    hasSpaces(value) ? `"${value}"` : value;
