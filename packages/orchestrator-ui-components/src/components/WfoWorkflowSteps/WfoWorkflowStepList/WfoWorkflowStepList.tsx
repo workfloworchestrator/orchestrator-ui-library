@@ -1,4 +1,4 @@
-import React, { Ref, use, useEffect, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 

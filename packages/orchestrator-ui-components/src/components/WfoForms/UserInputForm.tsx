@@ -52,12 +52,13 @@ interface IProps {
     router: NextRouter;
     stepUserInput: JSONSchema6;
     validSubmit: (userInput: { [index: string]: unknown }) => Promise<unknown>;
-    cancel: ConfirmDialogActions['closeConfirmDialog'];
+    cancel?: ConfirmDialogActions['closeConfirmDialog'];
     previous: ConfirmDialogActions['closeConfirmDialog'];
     hasNext?: boolean;
     hasPrev?: boolean;
     userInput: object;
-    isTask: boolean;
+    isTask?: boolean;
+    isResume?: boolean;
 }
 
 interface Buttons {
@@ -383,12 +384,13 @@ function UserInputForm({
     router,
     stepUserInput,
     validSubmit,
-    cancel,
+    cancel = () => {},
     previous = () => {},
     hasNext = false,
     hasPrev = false,
     userInput,
-    isTask,
+    isTask = false,
+    isResume = false,
 }: IProps) {
     const t = useTranslations('pydanticForms.userInputForm');
     const { theme } = useOrchestratorTheme();
@@ -487,7 +489,7 @@ function UserInputForm({
             >
                 {buttons.previous.text ?? t('previous')}
             </EuiButton>
-        ) : (
+        ) : !isResume ? (
             <div
                 onClick={(e) => {
                     onButtonClick(e, buttons.previous.dialog, openDialog);
@@ -503,6 +505,8 @@ function UserInputForm({
             >
                 {buttons.previous.text ?? t('cancel')}
             </div>
+        ) : (
+            <div></div>
         );
 
         const nextButton = hasNext ? (
@@ -543,7 +547,6 @@ function UserInputForm({
         );
     };
 
-    //const prefilledForm = fillPreselection(stepUserInput, location.search);
     const prefilledForm = fillPreselection(stepUserInput, router);
     const bridge = new CustomTitleJSONSchemaBridge(
         prefilledForm,
