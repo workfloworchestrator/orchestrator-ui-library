@@ -27,7 +27,7 @@ export const updateQueryString = (
     // - Value is a single word (no quotes and no brackets)
     // field:value
     const fieldRegex = new RegExp(
-        `(${fieldName}):(".*?"|\\(.*?\\)|[^()|!:<>*"\\s]+\\*?)`,
+        String.raw`(${fieldName}):(".*?"|\(.*?\)|[^()|!:<>*"\s]+\*?)`,
         'i',
     );
     const match = queryString.match(fieldRegex);
