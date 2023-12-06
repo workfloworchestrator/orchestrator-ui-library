@@ -399,13 +399,17 @@ function UserInputForm({
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
     const [rootErrors, setRootErrors] = useState<string[]>([]);
 
-    const openDialog = () => {
-        showConfirmDialog({
-            question: '',
-            confirmAction: () => {},
-            cancelAction: cancel,
-            leavePage: true,
-        });
+    const openLeavePageDialog = (
+        leaveAction: ConfirmDialogActions['closeConfirmDialog'],
+        leaveQuestion?: string,
+    ) => {
+        return () =>
+            showConfirmDialog({
+                question: leaveQuestion || '',
+                confirmAction: () => {},
+                cancelAction: leaveAction,
+                leavePage: true,
+            });
     };
 
     const submit = async (userInput: any = {}) => {
@@ -484,7 +488,11 @@ function UserInputForm({
                 fill
                 color={buttons.previous.color ?? 'primary'}
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    onButtonClick(e, buttons.previous.dialog, previous);
+                    onButtonClick(
+                        e,
+                        buttons.previous.dialog,
+                        openLeavePageDialog(previous, t('previousQuestion')),
+                    );
                 }}
             >
                 {buttons.previous.text ?? t('previous')}
@@ -492,7 +500,11 @@ function UserInputForm({
         ) : !isResuming ? (
             <div
                 onClick={(e) => {
-                    onButtonClick(e, buttons.previous.dialog, openDialog);
+                    onButtonClick(
+                        e,
+                        buttons.previous.dialog,
+                        openLeavePageDialog(cancel),
+                    );
                 }}
                 css={{
                     cursor: 'pointer',

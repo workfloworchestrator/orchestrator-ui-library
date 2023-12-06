@@ -49,6 +49,7 @@
             "submit": "Verstuur",
             "previous": "Vorige",
             "startTask": "Start taak",
+            "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
             "startWorkflow": "Start workflow",
             "resumeTask": "Hervat task",
             "resumeWorkflow": "Hervat workflow",
