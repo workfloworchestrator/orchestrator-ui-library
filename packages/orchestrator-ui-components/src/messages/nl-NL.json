@@ -48,8 +48,10 @@
             "cancel": "Annuleren",
             "submit": "Verstuur",
             "previous": "Vorige",
-            "startTask": "Start task",
+            "startTask": "Start taak",
             "startWorkflow": "Start workflow",
+            "resumeTask": "Hervat task",
+            "resumeWorkflow": "Hervat workflow",
             "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veldn(en) hebben validatie errors"
         },
         "widgets": {
