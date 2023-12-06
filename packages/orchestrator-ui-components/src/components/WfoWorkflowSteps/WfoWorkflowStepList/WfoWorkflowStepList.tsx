@@ -1,4 +1,4 @@
-import React, { Ref, useEffect, useState } from 'react';
+import React, { Ref, use, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -48,8 +48,6 @@ export const WfoWorkflowStepList = React.forwardRef(
         const initialStepListItems: StepListItem[] = steps.map((step) => ({
             step,
             isExpanded: false,
-            userInputForm:
-                step.status === StepStatus.SUSPEND ? userInputForm : undefined,
         })); // If the step is in the suspend state, we show the user input form
 
         const [stepListItems, setStepListItems] =
@@ -58,7 +56,13 @@ export const WfoWorkflowStepList = React.forwardRef(
         const persistStepListItemState = (
             previousStepListItems: StepListItem[],
             updatedSteps: Step[],
+            userInputForm?: InputForm,
         ): StepListItem[] => {
+            const reversedSteps = [...updatedSteps].reverse();
+            const lastStepWithSuspendStatusStepId = reversedSteps.find(
+                (step) => step.status === StepStatus.SUSPEND,
+            )?.stepId;
+
             return updatedSteps.map((step) => {
                 const previousStepListItem = previousStepListItems.find(
                     (previousStepListItem) =>
@@ -69,9 +73,11 @@ export const WfoWorkflowStepList = React.forwardRef(
                     isExpanded: previousStepListItem
                         ? previousStepListItem.isExpanded
                         : false,
-                    userInputForm: previousStepListItem
-                        ? previousStepListItem.userInputForm
-                        : undefined,
+                    userInputForm:
+                        lastStepWithSuspendStatusStepId === step.stepId &&
+                        userInputForm
+                            ? userInputForm
+                            : undefined,
                 };
             });
         };
@@ -79,9 +85,13 @@ export const WfoWorkflowStepList = React.forwardRef(
         useEffect(() => {
             // We want to preserve the state of stepListItems between renders
             setStepListItems((previousStepListItems) =>
-                persistStepListItemState(previousStepListItems, steps),
+                persistStepListItemState(
+                    previousStepListItems,
+                    steps,
+                    userInputForm,
+                ),
             );
-        }, [steps]);
+        }, [steps, userInputForm]);
 
         const updateStepListItem = (
             stepListItemToUpdate: StepListItem,
