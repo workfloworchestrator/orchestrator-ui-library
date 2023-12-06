@@ -1,9 +1,6 @@
 import React from 'react';
 
 import {
-    EuiButtonIcon,
-    EuiCopy,
-    EuiFlexGroup,
     EuiFlexItem,
     EuiHorizontalRule,
     EuiModal,
@@ -11,7 +8,11 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { css } from '@emotion/react';
+import {
+    WfoValueCell,
+    useOrchestratorTheme,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 import { CustomerWithContacts, ImpactedCustomerContact } from '../../types';
 
@@ -25,6 +26,19 @@ export const WfoCustomersContactsModal = ({
     handleClose,
 }: WfoCustomersContactsModalProps) => {
     const { theme } = useOrchestratorTheme();
+
+    const valueCellStyle = css({
+        fontWeight: theme.font.weight.regular,
+        color: theme.colors.primaryText,
+    });
+
+    const valueColumnStyle = css({
+        paddingTop: theme.size.s,
+        display: 'flex',
+        '&:hover > div': {
+            visibility: 'visible',
+        },
+    });
 
     return (
         <EuiModal onClose={handleClose}>
@@ -44,27 +58,14 @@ export const WfoCustomersContactsModal = ({
                                 <EuiText>
                                     <b>{contact.name}</b>
                                 </EuiText>
-                                <EuiFlexGroup
-                                    gutterSize={'xs'}
-                                    alignItems={'center'}
-                                >
-                                    <EuiFlexItem grow={false}>
-                                        <EuiText color={theme.colors.primary}>
-                                            {contact.email}
-                                        </EuiText>
-                                    </EuiFlexItem>
-                                    <EuiFlexItem grow={false}>
-                                        <EuiCopy textToCopy={contact.email}>
-                                            {(copy) => (
-                                                <EuiButtonIcon
-                                                    onClick={copy}
-                                                    iconType="copy"
-                                                    aria-label="Copy"
-                                                />
-                                            )}
-                                        </EuiCopy>
-                                    </EuiFlexItem>
-                                </EuiFlexGroup>
+                                <WfoValueCell
+                                    value={contact.email}
+                                    textToCopy={contact.email}
+                                    rowNumber={1}
+                                    enableCopyIcon={true}
+                                    valueCellCustomStyle={valueCellStyle}
+                                    valueColumnCustomStyle={valueColumnStyle}
+                                />
                                 <EuiSpacer size={'m'} />
                             </EuiFlexItem>
                             <EuiHorizontalRule margin={'none'} />

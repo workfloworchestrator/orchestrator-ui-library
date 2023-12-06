@@ -56,13 +56,11 @@ const usePatchImpactedObject = () => {
                 },
             },
         );
-        console.log('serviceTicketId', serviceTicketId);
         return await response.json();
     };
 
     return useMutation(setImpactOverride, {
         onMutate: () => {
-            console.log('serviceTicketId2', serviceTicketId);
             queryClient.setQueryData(['serviceTickets', serviceTicketId], null); // Set loading state of the button
         },
         onSuccess: () => {
