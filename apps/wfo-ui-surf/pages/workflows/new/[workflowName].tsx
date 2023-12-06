@@ -10,7 +10,7 @@ const StartWorkflowPage = () => {
 
     if (workflowName && typeof workflowName === 'string') {
         return (
-            <WfoStartProcessPage isTask={false} workflowName={workflowName} />
+            <WfoStartProcessPage isTask={false} processName={workflowName} />
         );
     }
 

@@ -9,7 +9,7 @@ const StartTaskPage = () => {
     const { taskName } = router.query;
 
     if (taskName && typeof taskName === 'string') {
-        return <WfoStartProcessPage isTask={true} workflowName={taskName} />;
+        return <WfoStartProcessPage isTask={true} processName={taskName} />;
     }
 
     return <div>Invalid arguments provided</div>;

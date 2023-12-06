@@ -42,7 +42,7 @@ interface StartProcessPageQuery extends ParsedUrlQuery {
 }
 
 interface WfoStartProcessPageProps {
-    workflowName: string;
+    processName: string;
     isTask?: boolean;
 }
 
@@ -51,7 +51,7 @@ export interface UserInputForm {
     hasNext?: boolean;
 }
 
-const getInitialWorkflowPayload = ({
+const getInitialProcessPayload = ({
     productId,
     subscriptionId,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
@@ -69,7 +69,7 @@ const getInitialWorkflowPayload = ({
 };
 
 export const WfoStartProcessPage = ({
-    workflowName,
+    processName,
     isTask = false,
 }: WfoStartProcessPageProps) => {
     const apiClient = useAxiosApiClient();
@@ -79,8 +79,8 @@ export const WfoStartProcessPage = ({
     const [form, setForm] = useState<UserInputForm>({});
     const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
-    const startWorkflowPayload = useMemo(
-        () => getInitialWorkflowPayload({ productId, subscriptionId }),
+    const startProcessPayload = useMemo(
+        () => getInitialProcessPayload({ productId, subscriptionId }),
         [productId, subscriptionId],
     );
 
@@ -90,11 +90,11 @@ export const WfoStartProcessPage = ({
 
     const submit = useCallback(
         (processInput: object[]) => {
-            const startWorkflowPromise = apiClient
+            const startProcessPromise = apiClient
                 .startProcess(
-                    workflowName,
-                    startWorkflowPayload
-                        ? [startWorkflowPayload, ...processInput]
+                    processName,
+                    startProcessPayload
+                        ? [startProcessPayload, ...processInput]
                         : [...processInput],
                 )
                 .then(
@@ -123,7 +123,7 @@ export const WfoStartProcessPage = ({
             // Catch a 503: Service unavailable error indicating the engine is down. This rethrows other errors
             // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
             return apiClient.catchErrorStatus<EngineStatus>(
-                startWorkflowPromise,
+                startProcessPromise,
                 503,
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
@@ -132,11 +132,11 @@ export const WfoStartProcessPage = ({
                 },
             );
         },
-        [apiClient, workflowName, startWorkflowPayload, isTask, router],
+        [apiClient, processName, startProcessPayload, isTask, router],
     );
 
     useEffect(() => {
-        if (workflowName) {
+        if (processName) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -150,12 +150,12 @@ export const WfoStartProcessPage = ({
                 clientResultCallback,
             );
         }
-    }, [submit, workflowName, apiClient]);
+    }, [submit, processName, apiClient]);
 
     const processDetail: Partial<ProcessDetail> = {
         lastStatus: ProcessStatus.CREATE,
         lastStep: StepStatus.FORM,
-        workflowName: workflowName,
+        workflowName: processName,
         createdBy: '-',
     };
 
@@ -179,7 +179,7 @@ export const WfoStartProcessPage = ({
 
     return (
         <WfoProcessDetail
-            pageTitle={workflowName}
+            pageTitle={processName}
             productNames={''}
             buttonsAreDisabled={true}
             processDetail={processDetail}
