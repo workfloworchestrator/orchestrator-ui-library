@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
-import { UserInputFormWizard, WfoJsonCodeBlock } from '@/components';
+import { WfoJsonCodeBlock } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
@@ -15,6 +15,7 @@ import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getStyles } from '../styles';
+import { WfoStepForm } from './WfoStepForm';
 
 export interface WfoStepProps {
     stepListItem: StepListItem;
@@ -23,6 +24,7 @@ export interface WfoStepProps {
     onToggleStepDetail: () => void;
     isTask: boolean;
     isStartStep?: boolean;
+    processId?: string;
 }
 
 export const WfoStep = React.forwardRef(
@@ -34,6 +36,7 @@ export const WfoStep = React.forwardRef(
             showHiddenKeys,
             isStartStep = false,
             isTask,
+            processId,
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -164,17 +167,10 @@ export const WfoStep = React.forwardRef(
                         </div>
                     )}
                     {step.status === StepStatus.SUSPEND && userInputForm && (
-                        <UserInputFormWizard
-                            stepUserInput={userInputForm}
-                            validSubmit={(processInput: object[]) => {
-                                console.log('processInput', processInput);
-                                return Promise.resolve('');
-                            }}
-                            cancel={() => {
-                                console.log('Cancel, now what?');
-                            }}
-                            hasNext={false}
+                        <WfoStepForm
+                            userInputForm={userInputForm}
                             isTask={isTask}
+                            processId={processId}
                         />
                     )}
                 </EuiPanel>
