@@ -50,6 +50,8 @@
             "previous": "Previous",
             "startTask": "Start task",
             "startWorkflow": "Start workflow",
+            "resumeTask": "Resume task",
+            "resumeWorkflow": "Resume workflow",
             "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
         },
         "widgets": {

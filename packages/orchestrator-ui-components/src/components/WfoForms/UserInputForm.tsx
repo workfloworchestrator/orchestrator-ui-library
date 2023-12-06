@@ -509,6 +509,13 @@ function UserInputForm({
             <div></div>
         );
 
+        const nextButtonTranslationKey: string = (() => {
+            if (isResume) {
+                return isTask ? 'resumeTask' : 'resumeWorkflow';
+            }
+            return isTask ? 'startTask' : 'startWorkflow';
+        })();
+
         const nextButton = hasNext ? (
             <EuiButton
                 id="button-next-form-submit"
@@ -531,7 +538,7 @@ function UserInputForm({
                 iconType={() => <WfoPlayFill color="#FFF" />}
                 iconSide="right"
             >
-                {buttons.next.text ?? t(isTask ? 'startTask' : 'startWorkflow')}
+                {buttons.next.text ?? t(nextButtonTranslationKey)}
             </EuiButton>
         );
 
