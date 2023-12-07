@@ -318,9 +318,12 @@ export interface SubscriptionDetailResult {
 export interface ProductDefinitionsResult {
     products: GraphQlResultPage<ProductDefinition>;
 }
+export interface StartProcessStep {
+    name: Step['name'];
+}
 
 export interface ProcessStepsResult {
-    workflows: GraphQlSinglePage<{ steps: { name: Step['name'] }[] }>;
+    workflows: GraphQlSinglePage<{ steps: StartProcessStep[] }>;
 }
 
 export interface ProductBlockDefinitionsResult {
