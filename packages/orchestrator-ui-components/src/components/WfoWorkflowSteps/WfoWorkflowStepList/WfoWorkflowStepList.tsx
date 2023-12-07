@@ -70,9 +70,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                 );
                 return {
                     step,
-                    isExpanded: previousStepListItem
-                        ? previousStepListItem.isExpanded
-                        : false,
+                    isExpanded: previousStepListItem?.isExpanded || false,
                     userInputForm:
                         lastStepWithSuspendStatusStepId === step.stepId &&
                         userInputForm
