@@ -8,6 +8,8 @@ export type Nullable<T> = T | null;
 
 type GenericField = { [key: string]: number | string | boolean };
 
+type GenericResponse = { [key: string]: unknown };
+
 export type FieldValue = {
     field: string;
     value: string | number | boolean;
@@ -344,6 +346,17 @@ export interface ProcessListResult {
 export interface ProcessesDetailResult {
     processes: GraphQlSinglePage<ProcessDetail>;
 }
+
+export type ProcessDetailResultRaw = {
+    subscription?: object;
+    subscription_id?: string;
+    current_state: {
+        subscription?: {
+            subscription_id?: string;
+        } & GenericResponse;
+        __old_subscriptions__?: GenericResponse;
+    } & GenericResponse;
+} & GenericResponse;
 
 export interface CustomersResult {
     customers: GraphQlSinglePage<Customer>;

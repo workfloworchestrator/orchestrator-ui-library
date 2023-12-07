@@ -3,6 +3,7 @@ import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { WfoJsonCodeBlock, WfoLoading } from '@/components';
+import WfoDiff from '@/components/WfoDiff/WfoDiff';
 import { useRawProcessDetails } from '@/hooks';
 import { Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
@@ -29,6 +30,33 @@ export const WfoProcessRawData = ({ processId }: { processId: string }) => {
     return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data || {}} />;
 };
 
+export const WfoProcessSubscriptionDelta = ({
+    processId,
+}: {
+    processId: string;
+}) => {
+    const { data, isFetching } = useRawProcessDetails(processId);
+
+    const subscriptionKey =
+        data?.current_state?.subscription?.subscription_id ?? '';
+    const newText = data?.current_state?.subscription ?? null;
+    const oldText =
+        data?.current_state?.__old_subscriptions__ &&
+        subscriptionKey in data?.current_state?.__old_subscriptions__
+            ? data?.current_state?.__old_subscriptions__[subscriptionKey]
+            : null;
+
+    return isFetching ? (
+        <WfoLoading />
+    ) : (
+        <WfoDiff
+            oldText={oldText ? JSON.stringify(oldText, null, 2) : ''}
+            newText={newText ? JSON.stringify(newText, null, 2) : ''}
+            syntax="javascript"
+        />
+    );
+};
+
 export const WfoWorkflowStepList = React.forwardRef(
     (
         {
@@ -42,6 +70,7 @@ export const WfoWorkflowStepList = React.forwardRef(
     ) => {
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
         const [showRaw, setShowRaw] = useState(false);
+        const [showDelta, setShowDelta] = useState(false);
 
         const t = useTranslations('processes.steps');
 
@@ -133,20 +162,24 @@ export const WfoWorkflowStepList = React.forwardRef(
                 <WfoStepListHeader
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
+                    showDelta={showDelta}
                     allDetailToggleText={
                         allStepsAreExpanded ? t('collapseAll') : t('expandAll')
                     }
                     onChangeShowHiddenKeys={setShowHiddenKeys}
                     onChangeShowRaw={setShowRaw}
+                    onChangeShowDelta={setShowDelta}
                     onToggleAllDetailsIsOpen={() =>
                         setExpandedStateStepListItems(!allStepsAreExpanded)
                     }
                     isTask={isTask}
                 />
 
-                {showRaw ? (
-                    <WfoProcessRawData processId={processId} />
-                ) : (
+                {showRaw && <WfoProcessRawData processId={processId} />}
+                {showDelta && (
+                    <WfoProcessSubscriptionDelta processId={processId} />
+                )}
+                {!showRaw && !showDelta && (
                     <WfoStepList
                         ref={reference}
                         stepListItems={stepListItems}

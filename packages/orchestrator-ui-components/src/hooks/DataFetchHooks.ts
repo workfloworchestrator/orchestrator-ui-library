@@ -2,7 +2,12 @@ import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
 import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
-import { GraphqlFilter, ItemsList, ProcessFromRestApi } from '../types';
+import {
+    GraphqlFilter,
+    ItemsList,
+    ProcessDetailResultRaw,
+    ProcessFromRestApi,
+} from '../types';
 import { useQueryWithFetch } from './useQueryWithFetch';
 
 export type CacheNames = { [key: string]: string };
@@ -61,10 +66,10 @@ export const useRecentProcesses = () => {
 export const useRawProcessDetails = (processId: string) => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const url = `${orchestratorApiBaseUrl}/processes/${processId}`;
-    return useQueryWithFetch<object, Record<string, never>>(
+    return useQueryWithFetch<ProcessDetailResultRaw, Record<string, never>>(
         url,
         {},
-        'RawProcessDetails',
+        `RawProcessDetails-${processId}`,
     );
 };
 

@@ -186,6 +186,7 @@
             "taskSteps": "Task steps",
             "workflowSteps": "Workflow steps",
             "showDelta": "Show subscription delta",
+            "hideDelta": "Hide subscription delta",
             "viewOptions": "Options",
             "expandAll": "Expand all",
             "collapseAll": "collapse all",
@@ -193,6 +194,9 @@
             "userInput": "User input",
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow"
+        },
+        "delta": {
+            "title": "Subscription delta"
         }
     },
     "workflows": {
