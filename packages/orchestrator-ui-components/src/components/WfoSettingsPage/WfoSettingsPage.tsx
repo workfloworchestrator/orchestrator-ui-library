@@ -7,7 +7,7 @@ import { WfoFlushSettings } from './WfoFlushSettings';
 import { WfoModifySettings } from './WfoModifySettings';
 import { WfoStatus } from './WfoStatus';
 
-export const WfoSettings: FunctionComponent = () => {
+export const WfoSettingsPage: FunctionComponent = () => {
     const { data: engineStatus } = useEngineStatusQuery();
     const { mutate, data: newEngineStatus } = useEngineStatusMutation();
 

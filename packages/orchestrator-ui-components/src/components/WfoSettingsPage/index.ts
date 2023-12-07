@@ -1,1 +1,1 @@
-export * from './WfoSettings';
+export * from './WfoSettingsPage';
