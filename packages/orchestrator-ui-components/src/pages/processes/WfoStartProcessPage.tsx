@@ -19,12 +19,9 @@ import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
 import { GET_PROCESS_STEPS_GRAPHQL_QUERY } from '@/graphqlQueries';
+import { useOrchestratorTheme, useQueryWithGraphql } from '@/hooks';
 import {
     EngineStatus,
-    useOrchestratorTheme,
-    useQueryWithGraphql,
-} from '@/hooks';
-import {
     ProcessDetail,
     ProcessStatus,
     StartProcessStep,

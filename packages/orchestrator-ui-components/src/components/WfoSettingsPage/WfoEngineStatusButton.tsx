@@ -4,10 +4,10 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButton } from '@elastic/eui';
 
-import { EngineStatusValue } from '../../types';
+import { EngineStatus } from '@/types';
 
 interface WfoEngineStatusButtonProps {
-    engineStatus?: EngineStatusValue;
+    engineStatus?: EngineStatus;
     changeEngineStatus: () => void;
 }
 

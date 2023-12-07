@@ -2,15 +2,15 @@ import { useContext } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { OrchestratorConfigContext } from '@/contexts';
+import { EngineStatus } from '@/types';
 
 import { useQueryWithFetch } from './useQueryWithFetch';
 import { useSessionWithToken } from './useSessionWithToken';
 
-export type GlobalStatus = 'RUNNING' | 'PAUSED' | 'PAUSING';
-export interface EngineStatus {
+export interface EngineStatusReturnValue {
     global_lock: boolean;
     running_processes: number;
-    global_status: GlobalStatus;
+    global_status: EngineStatus;
 }
 
 interface EngineStatusPayload {
@@ -20,7 +20,7 @@ interface EngineStatusPayload {
 export const useEngineStatusQuery = () => {
     const { engineStatusEndpoint } = useContext(OrchestratorConfigContext);
 
-    return useQueryWithFetch<EngineStatus, Record<string, never>>(
+    return useQueryWithFetch<EngineStatusReturnValue, Record<string, never>>(
         engineStatusEndpoint,
         {},
         'engineStatus',
@@ -50,14 +50,14 @@ export const useEngineStatusMutation = () => {
                 ...requestHeaders,
             },
         });
-        return (await response.json()) as EngineStatus;
+        return (await response.json()) as EngineStatusReturnValue;
     };
 
     return useMutation('engineStatus', setEngineStatus, {
         onMutate: () => {
             queryClient.setQueryData(['engineStatus'], null); // Set loading state of the button
         },
-        onSuccess: (data: EngineStatus) => {
+        onSuccess: (data: EngineStatusReturnValue) => {
             queryClient.setQueryData(['engineStatus'], data); // Set global status
         },
     });

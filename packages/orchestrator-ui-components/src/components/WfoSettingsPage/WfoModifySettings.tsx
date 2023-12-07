@@ -4,11 +4,12 @@ import { useTranslations } from 'next-intl';
 
 import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 
-import { EngineStatusValue } from '../../types';
+import { EngineStatus } from '@/types';
+
 import { WfoEngineStatusButton } from './WfoEngineStatusButton';
 
 export type WfoModifySettingsProps = {
-    engineStatus?: EngineStatusValue;
+    engineStatus?: EngineStatus;
     changeEngineStatus: () => void;
 };
 
