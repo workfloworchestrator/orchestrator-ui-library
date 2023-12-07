@@ -58,7 +58,7 @@ interface IProps {
     hasPrev?: boolean;
     userInput: object;
     isTask?: boolean;
-    isResume?: boolean;
+    isResuming?: boolean;
 }
 
 interface Buttons {
@@ -390,7 +390,7 @@ function UserInputForm({
     hasPrev = false,
     userInput,
     isTask = false,
-    isResume = false,
+    isResuming = false,
 }: IProps) {
     const t = useTranslations('pydanticForms.userInputForm');
     const { theme } = useOrchestratorTheme();
@@ -489,7 +489,7 @@ function UserInputForm({
             >
                 {buttons.previous.text ?? t('previous')}
             </EuiButton>
-        ) : !isResume ? (
+        ) : !isResuming ? (
             <div
                 onClick={(e) => {
                     onButtonClick(e, buttons.previous.dialog, openDialog);
@@ -510,7 +510,7 @@ function UserInputForm({
         );
 
         const nextButtonTranslationKey: string = (() => {
-            if (isResume) {
+            if (isResuming) {
                 return isTask ? 'resumeTask' : 'resumeWorkflow';
             }
             return isTask ? 'startTask' : 'startWorkflow';
