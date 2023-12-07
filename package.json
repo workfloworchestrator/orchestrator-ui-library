@@ -16,7 +16,7 @@
         "reset": "rm -rf node_modules"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.26.2",
+        "@changesets/cli": "^2.27.1",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@turbo/gen": "^1.10.12",
         "eslint-config-custom": "*",
