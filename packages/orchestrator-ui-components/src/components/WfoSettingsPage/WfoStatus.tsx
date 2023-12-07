@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -10,17 +10,21 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { WfoStatusDotIcon } from '../../icons';
-import { EngineStatusValue } from '../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoStatusDotIcon } from '@/icons';
+import { EngineStatus } from '@/types';
 
-export type WfoStatusProps = {
-    engineStatus?: EngineStatusValue;
-};
+interface WfoStatusProps {
+    engineStatus: EngineStatus;
+    runningProcesses: number;
+}
 
-export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
+export const WfoStatus = ({
+    engineStatus,
+    runningProcesses,
+}: WfoStatusProps) => {
     const { theme } = useOrchestratorTheme();
-    const isRunning = engineStatus === 'RUNNING';
+    const isRunning = engineStatus === EngineStatus.RUNNING;
     const t = useTranslations('settings.page');
 
     return (
@@ -38,7 +42,7 @@ export const WfoStatus: FC<WfoStatusProps> = ({ engineStatus }) => {
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
                     <EuiText size="s">
-                        <p>0</p>
+                        <p>{runningProcesses || 0}</p>
                     </EuiText>
                 </EuiFlexItem>
             </EuiFlexGroup>

@@ -20,7 +20,11 @@ export type KeyValue = {
     value: string | number | boolean | undefined;
 };
 
-export type EngineStatusValue = 'RUNNING' | 'PAUSING' | 'PAUSED';
+export enum EngineStatus {
+    RUNNING = 'RUNNING',
+    PAUSING = 'PAUSING',
+    PAUSED = 'PAUSED',
+}
 
 export type Customer = {
     fullname: string;
