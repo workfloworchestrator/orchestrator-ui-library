@@ -2,9 +2,8 @@ import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import WfoDiff from '@/components/WfoDiff/WfoDiff';
-
 import { WfoJsonCodeBlock, WfoLoading } from '@/components';
+import WfoDiff from '@/components/WfoDiff/WfoDiff';
 import { useRawProcessDetails } from '@/hooks';
 import { Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
