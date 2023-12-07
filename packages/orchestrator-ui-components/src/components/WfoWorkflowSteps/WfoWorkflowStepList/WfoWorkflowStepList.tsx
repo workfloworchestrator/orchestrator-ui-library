@@ -25,10 +25,6 @@ export interface WfoWorkflowStepListProps {
     userInputForm?: InputForm;
 }
 
-// interface SubscriptionDeltaState {
-//     subscription: object;
-// }
-
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
     const { data, isFetching } = useRawProcessDetails(processId);
     return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data || {}} />;
