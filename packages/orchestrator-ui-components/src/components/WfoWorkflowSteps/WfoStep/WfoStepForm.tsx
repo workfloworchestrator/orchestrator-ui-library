@@ -40,7 +40,7 @@ export const WfoStepForm = ({
                     validSubmit={submitForm}
                     hasNext={false}
                     isTask={isTask}
-                    isResume={true}
+                    isResuming={true}
                 />
             )}
         </EuiFlexItem>

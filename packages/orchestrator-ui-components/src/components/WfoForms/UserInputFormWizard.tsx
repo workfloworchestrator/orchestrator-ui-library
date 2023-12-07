@@ -34,7 +34,7 @@ interface UserInputFormWizardProps {
     cancel?: () => void;
     isTask: boolean;
     hasNext?: boolean;
-    isResume?: boolean;
+    isResuming?: boolean;
 }
 
 function stop(e: React.SyntheticEvent) {
@@ -50,7 +50,7 @@ export function UserInputFormWizard({
     validSubmit,
     cancel,
     isTask,
-    isResume = false,
+    isResuming = false,
 }: UserInputFormWizardProps) {
     const router = useRouter();
     const apiClient = useAxiosApiClient();
@@ -119,7 +119,7 @@ export function UserInputFormWizard({
             cancel={cancel}
             userInput={currentUserInput}
             isTask={isTask}
-            isResume={isResume}
+            isResuming={isResuming}
         />
     );
 }
