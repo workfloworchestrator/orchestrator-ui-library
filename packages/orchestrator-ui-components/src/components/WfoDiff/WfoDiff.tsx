@@ -67,7 +67,7 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
         } catch (ex) {
             return undefined;
         }
-    }, [hunks]);
+    }, [hunks, syntax]);
 
     useEffect(() => {
         updateDiffText();
