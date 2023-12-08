@@ -10,6 +10,7 @@ import {
 
 import { WfoFrequentlyUsed } from '@/components';
 
+// todo: decide to remove from libaray (currently not used)
 export const WfoNewProcessPanel: FC = () => {
     const [value, setValue] = useState('');
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

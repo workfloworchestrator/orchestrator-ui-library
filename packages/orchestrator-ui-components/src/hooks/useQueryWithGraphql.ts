@@ -9,7 +9,8 @@ import {
 
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
-import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+import { OrchestratorConfigContext } from '@/contexts';
+
 import { useSessionWithToken } from './useSessionWithToken';
 
 export const useQueryWithGraphql = <U, V extends Variables>(
@@ -18,6 +19,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     queryKey: string,
     refetchInterval: number | false = false,
     enabled: boolean = true,
+    extraQueryKeys: string[] = [], // todo: replace queryKey with queryKeys -- this is just for testing
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const { session } = useSessionWithToken();
@@ -35,8 +37,14 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         // @ts-ignore
         await graphQLClient.request<U, V>(query, queryVars, requestHeaders);
 
+    const queryKeys = [
+        queryKey,
+        ...extraQueryKeys,
+        ...Object.values(queryVars),
+    ];
+
     const { error, ...restWithoutError } = useQuery<U>(
-        [queryKey, ...Object.values(queryVars)],
+        queryKeys,
         fetchFromGraphql,
         {
             refetchInterval,
