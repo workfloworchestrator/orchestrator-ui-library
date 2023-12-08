@@ -143,10 +143,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             filterBy: alwaysOnFilters,
             query: queryString || undefined,
         },
-        'subscriptions',
-        false,
-        true,
-        ['listPage'],
+        ['subscriptions', 'listPage'],
     );
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
