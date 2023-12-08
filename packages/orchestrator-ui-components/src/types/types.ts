@@ -312,8 +312,8 @@ export type GraphQLPageInfo = {
     filterFields: string[];
 };
 
-export interface SubscriptionsResult {
-    subscriptions: GraphQlResultPage<Subscription>;
+export interface SubscriptionsResult<T = Subscription> {
+    subscriptions: GraphQlResultPage<T>;
 }
 
 export interface SubscriptionDropdownOptionsResult {

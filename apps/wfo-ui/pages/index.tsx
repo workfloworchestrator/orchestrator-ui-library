@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 import {
     WfoMultiListSection,
-    WfoNewProcessPanel,
     WfoStatCards,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -18,10 +17,8 @@ export function Index() {
         <>
             <EuiPageHeader pageTitle={`${t('welcome')} ${username}`} />
             <EuiSpacer />
-            <WfoNewProcessPanel />
-            <EuiSpacer />
+
             <WfoStatCards />
-            <EuiSpacer />
             <WfoMultiListSection />
         </>
     );

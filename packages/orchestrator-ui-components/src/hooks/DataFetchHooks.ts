@@ -14,6 +14,7 @@ import { useSessionWithToken } from './useSessionWithToken';
 
 export type CacheNames = { [key: string]: string };
 
+// todo: decide to remove from libaray (currently not used)
 export const useFavouriteSubscriptions = () => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
     const url = `${orchestratorApiBaseUrl}/subscriptions/?range=10%2C15`;

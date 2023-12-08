@@ -32,6 +32,7 @@ const totalStats: TotalStat[] = [
     },
 ];
 
+// todo: decide to remove from libaray (currently not used)
 export const WfoStatCards: FC = () => {
     const [stats] = useState<TotalStat[]>(totalStats);
     const { theme } = useOrchestratorTheme();
