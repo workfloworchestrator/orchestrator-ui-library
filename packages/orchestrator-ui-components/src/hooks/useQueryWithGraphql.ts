@@ -16,10 +16,9 @@ import { useSessionWithToken } from './useSessionWithToken';
 export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
-    queryKey: string,
+    cacheKeys: string[] | string,
     refetchInterval: number | false = false,
     enabled: boolean = true,
-    extraQueryKeys: string[] = [], // todo: replace queryKey with queryKeys -- this is just for testing
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const { session } = useSessionWithToken();
@@ -38,8 +37,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         await graphQLClient.request<U, V>(query, queryVars, requestHeaders);
 
     const queryKeys = [
-        queryKey,
-        ...extraQueryKeys,
+        ...(typeof cacheKeys === 'string' ? [cacheKeys] : cacheKeys),
         ...Object.values(queryVars),
     ];
 

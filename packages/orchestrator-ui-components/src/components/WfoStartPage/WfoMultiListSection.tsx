@@ -29,10 +29,7 @@ export const WfoMultiListSection: FC = () => {
             after: 0,
             filterBy: [{ field: 'status', value: 'ACTIVE' }],
         },
-        'subscriptions',
-        false,
-        true,
-        ['startPage'],
+        ['subscriptions', 'startPage'],
     );
 
     return (
