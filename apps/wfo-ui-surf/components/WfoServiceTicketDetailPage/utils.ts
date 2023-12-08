@@ -64,7 +64,7 @@ export const calculateSendingLevel = (
     minimalImpactLevel: ImpactLevel | null,
     defaultSendingLevel: ImpactLevel,
 ) => {
-    return minimalImpactLevel ? minimalImpactLevel : defaultSendingLevel;
+    return minimalImpactLevel ?? defaultSendingLevel;
 };
 
 //TODO: Get the highest impact of all impacted objects

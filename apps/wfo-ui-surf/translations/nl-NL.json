@@ -1,49 +1,81 @@
 {
     "cim": {
         "serviceTickets": {
-            "jiraTicketId": "Jira ticket",
-            "titleNl": "Title",
-            "processState": "State",
-            "startDate": "Start time",
-            "openedBy": "Opened by",
-            "createDate": "Created on",
-            "lastUpdateTime": "Updated on",
+            "jiraTicketId": "Todo-Jira ticket",
+            "titleNl": "Todo-Title",
+            "processState": "Todo-State",
+            "startDate": "Todo-Start time",
+            "openedBy": "Todo-Opened by",
+            "createDate": "Todo-Created on",
+            "lastUpdateTime": "Todo-Updated on",
             "tabs": {
-                "active": "Active",
-                "completed": "Completed"
+                "active": "Todo-Active",
+                "completed": "Todo-Completed"
             },
-            "newServiceTicket": "New Service Ticket",
-            "serviceTicketPageTitle": "Service Tickets",
+            "newServiceTicket": "Todo-New Service Ticket",
+            "serviceTicketPageTitle": "Todo-Service Tickets",
             "detail": {
                 "tabs": {
-                    "general": "General",
-                    "notificationLog": "Notification Log",
-                    "sentEmails": "Sent e-mails"
+                    "general": "Todo-General",
+                    "notificationLog": "Todo-Notification Log",
+                    "sentEmails": "Todo-Sent e-mails"
                 },
                 "tabDetails": {
                     "general": {
-                        "title": "Service ticket details",
-                        "serviceTicketId": "Service Ticket ID",
-                        "serviceTicketTitle": "Title",
-                        "jiraTicketId": "Jira ticket",
-                        "imsPlannedWork": "IMS Planned work",
-                        "titleNl": "Title",
-                        "processState": "State",
-                        "startDate": "Start time",
-                        "endDate": "End time",
-                        "openedBy": "Opened by",
-                        "createDate": "Created on",
-                        "lastUpdateTime": "Updated on",
-                        "type": "Type"
+                        "title": "Todo-Service ticket details",
+                        "serviceTicketId": "Todo-Service Ticket ID",
+                        "serviceTicketTitle": "Todo-Title",
+                        "jiraTicketId": "Todo-Jira ticket",
+                        "imsPlannedWork": "Todo-IMS Planned work",
+                        "titleNl": "Todo-Title",
+                        "processState": "Todo-State",
+                        "startDate": "Todo-Start time",
+                        "endDate": "Todo-End time",
+                        "openedBy": "Todo-Opened by",
+                        "createDate": "Todo-Created on",
+                        "lastUpdateTime": "Todo-Updated on",
+                        "type": "Todo-Type",
+                        "defaultSendingLevel": "Todo-Default sending level",
+                        "defaultSendingLevelModalTitle": "Todo-Default sending level of CIM",
+                        "defaultSendingLevelModalText": "Todo-Default sending level (DSL) of CIM defines the minimal impact levels for which CIM shall send email to customers. Impacted subscriptions with a lower impact than the DSL will not be included in the email notification to the customer. However, if the customer has set the minimal impact notification level (MINL) of the subscription to a lower impact than the DSL, the subscription will be included.",
+                        "impactOnSubscriptions": "Todo-Impact on subscriptions",
+                        "subscriptionImpactTable": {
+                            "subscriptionTitle": "Todo-Subscriptions",
+                            "affectedCustomers": "Todo-Affected Customers",
+                            "informCustomers": "Todo-Inform Customers",
+                            "imsCalculatedImpact": "Todo-IMS Calculated Impact",
+                            "nocManualOverride": "Todo-NOC Manual Impact Override",
+                            "impactOverrideModalTitle": "Todo-Override Impact Level",
+                            "overrideImpactButton": "Todo-Override Impact"
+                        },
+                        "subscriptionImpactCustomerTable": {
+                            "customers": "Todo-Customers",
+                            "relation": "Todo-Relation",
+                            "contacts": "Todo-Contacts",
+                            "acceptedImpact": "Todo-Accepted impact",
+                            "minl": "Todo-Minimal impact notification level",
+                            "sendingLevel": "Todo-Sending level",
+                            "informCustomer": "Todo-Inform customer",
+                            "contactsModal": "Todo-Customer contacts",
+                            "customer": "Todo-Customer",
+                            "contact": "Todo-Contact",
+                            "customerContacts": "Todo-Customer contacts",
+                            "showImsServiceInformation": "Todo-Show IMS service information",
+                            "imsInformationModalTitle": "Todo-IMS service information",
+                            "imsCircuitId": "Todo-ID",
+                            "imsCircuitName": "Todo-IMS name",
+                            "extraInformation": "Todo-Extra info",
+                            "impact": "Todo-Impact"
+                        }
                     }
                 },
                 "buttons": {
-                    "abort": "Abort",
-                    "sendNewEmail": "Send new e-mail",
-                    "sendOpenEmail": "Send OPEN e-mail",
-                    "sendUpdateEmail": "Send UPDATE e-mail",
-                    "sendOpenCloseEmail": "Send OPEN & CLOSE e-mail",
-                    "sendCloseEmail": "Send CLOSE e-mail"
+                    "abort": "Todo-Abort",
+                    "sendNewEmail": "Todo-Send new e-mail",
+                    "sendOpenEmail": "Todo-Send OPEN e-mail",
+                    "sendUpdateEmail": "Todo-Send UPDATE e-mail",
+                    "sendOpenCloseEmail": "Todo-Send OPEN & CLOSE e-mail",
+                    "sendCloseEmail": "Todo-Send CLOSE e-mail"
                 }
             }
         }

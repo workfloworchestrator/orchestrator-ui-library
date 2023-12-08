@@ -1,7 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
 import { EuiCopy } from '@elastic/eui';
-import { SerializedStyles } from '@emotion/react';
 
 import { useOrchestratorTheme } from '../../hooks';
 import { WfoClipboardCopy } from '../../icons/WfoClipboardCopy';
@@ -12,8 +11,6 @@ export type WfoValueCellProps = {
     textToCopy?: string;
     rowNumber: number;
     enableCopyIcon: boolean;
-    valueCellCustomStyle?: SerializedStyles;
-    valueColumnCustomStyle?: SerializedStyles;
 };
 
 export const WfoValueCell: FC<WfoValueCellProps> = ({
@@ -21,17 +18,15 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
     textToCopy,
     rowNumber,
     enableCopyIcon,
-    valueCellCustomStyle,
-    valueColumnCustomStyle,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { clipboardIconStyle, clickable, getBackgroundColorStyleForRow } =
-        getStyles(theme);
-
-    const valueCellStyle =
-        valueCellCustomStyle ?? getStyles(theme).valueCellStyle;
-    const valueColumnStyle =
-        valueColumnCustomStyle ?? getStyles(theme).valueColumnStyle;
+    const {
+        clipboardIconStyle,
+        clickable,
+        getBackgroundColorStyleForRow,
+        valueColumnStyle,
+        valueCellStyle,
+    } = getStyles(theme);
 
     const shouldRenderCopyColumn = enableCopyIcon && textToCopy;
 

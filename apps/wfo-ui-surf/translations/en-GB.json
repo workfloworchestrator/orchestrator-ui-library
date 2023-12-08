@@ -41,14 +41,11 @@
                         "impactOnSubscriptions": "Impact on subscriptions",
                         "subscriptionImpactTable": {
                             "subscriptionTitle": "Subscriptions",
-                            "subscriptionDescription": "Subscription:",
                             "affectedCustomers": "Affected Customers",
                             "informCustomers": "Inform Customers",
                             "imsCalculatedImpact": "IMS Calculated Impact",
                             "nocManualOverride": "NOC Manual Impact Override",
                             "impactOverrideModalTitle": "Override Impact Level",
-                            "impactOverrideModalCurrent": "Current NOC manual impact override:",
-                            "impactOverrideModalNew": "Set new impact level:",
                             "overrideImpactButton": "Override Impact"
                         },
                         "subscriptionImpactCustomerTable": {

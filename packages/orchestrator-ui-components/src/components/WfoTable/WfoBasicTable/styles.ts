@@ -1,6 +1,7 @@
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
+//TODO getWfoBasicTableStyles
 export const getStyles = (theme: EuiThemeComputed) => {
     const radius = theme.border.radius.medium;
 

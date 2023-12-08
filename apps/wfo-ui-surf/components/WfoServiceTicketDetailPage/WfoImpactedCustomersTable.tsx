@@ -23,7 +23,7 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { MINL_BY_SUBSCRIPTION_ENDPOINT } from '../../constants-surf';
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
+import { SurfConfigContext } from '../../contexts/SurfConfigContext';
 import {
     CustomerWithContacts,
     ImpactedCustomersTableColumns,

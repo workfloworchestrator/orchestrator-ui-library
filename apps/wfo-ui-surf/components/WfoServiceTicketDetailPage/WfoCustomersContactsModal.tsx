@@ -8,11 +8,7 @@ import {
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
-import { css } from '@emotion/react';
-import {
-    WfoValueCell,
-    useOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { CustomerWithContacts, ImpactedCustomerContact } from '../../types';
 
@@ -26,19 +22,6 @@ export const WfoCustomersContactsModal = ({
     handleClose,
 }: WfoCustomersContactsModalProps) => {
     const { theme } = useOrchestratorTheme();
-
-    const valueCellStyle = css({
-        fontWeight: theme.font.weight.regular,
-        color: theme.colors.primaryText,
-    });
-
-    const valueColumnStyle = css({
-        paddingTop: theme.size.s,
-        display: 'flex',
-        '&:hover > div': {
-            visibility: 'visible',
-        },
-    });
 
     return (
         <EuiModal onClose={handleClose}>
@@ -58,14 +41,12 @@ export const WfoCustomersContactsModal = ({
                                 <EuiText>
                                     <b>{contact.name}</b>
                                 </EuiText>
-                                <WfoValueCell
-                                    value={contact.email}
-                                    textToCopy={contact.email}
-                                    rowNumber={1}
-                                    enableCopyIcon={true}
-                                    valueCellCustomStyle={valueCellStyle}
-                                    valueColumnCustomStyle={valueColumnStyle}
-                                />
+                                <EuiText
+                                    size={'s'}
+                                    color={theme.colors.primaryText}
+                                >
+                                    {contact.email}
+                                </EuiText>
                                 <EuiSpacer size={'m'} />
                             </EuiFlexItem>
                             <EuiHorizontalRule margin={'none'} />

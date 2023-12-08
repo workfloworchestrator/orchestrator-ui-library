@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Criteria } from '@elastic/eui';
+import { Criteria, EuiText } from '@elastic/eui';
 import {
     DEFAULT_PAGE_SIZES,
     DataDisplayParams,
@@ -126,19 +126,27 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_START_DATE,
             name: t('startDate'),
             width: '150',
-            render: (date) => formatDate(date),
+            render: (date, object) => {
+                return object.create_date > date ? (
+                    <EuiText color={theme.colors.dangerText} size={'s'}>
+                        {formatDate(date)}
+                    </EuiText>
+                ) : (
+                    <EuiText size={'s'}>{formatDate(date)}</EuiText>
+                );
+            },
         },
         create_date: {
             field: SERVICE_TICKET_FIELD_CREATE_DATE,
             name: t('createDate'),
             width: '150',
-            render: (date: string) => formatDate(date),
+            render: formatDate,
         },
         last_update_time: {
             field: SERVICE_TICKET_FIELD_LAST_UPDATE,
             name: t('lastUpdateTime'),
             width: '150',
-            render: (date: string) => formatDate(date),
+            render: formatDate,
         },
     };
 
@@ -238,5 +246,3 @@ export const WfoServiceTicketsList = ({
         />
     );
 };
-
-//TODO: Color the Start Time if its in the past

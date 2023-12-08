@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useTranslations } from 'next-intl';
@@ -10,9 +10,9 @@ import {
     useSessionWithToken,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { ORCHESTRATOR_CIM_BASE_URL } from '../../constants';
-import { PATCH_IMPACT_OVERRIDE_ENDPOINT } from '../../constants-surf';
-import { ImpactLevel, ServiceTicketWithDetails } from '../../types';
+import { PATCH_IMPACT_OVERRIDE_ENDPOINT } from '@/constants-surf';
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { ImpactLevel, ServiceTicketWithDetails } from '@/types';
 
 interface PatchImpactOverridePayload {
     impact_override: ImpactLevel;
@@ -23,6 +23,7 @@ interface PatchImpactOverridePayload {
 const usePatchImpactedObject = () => {
     const queryClient = useQueryClient();
     const { session } = useSessionWithToken();
+    const { cimApiBaseUrl } = useContext(SurfConfigContext);
     let requestHeaders = {};
 
     if (session) {
@@ -42,7 +43,7 @@ const usePatchImpactedObject = () => {
         };
 
         const response = await fetch(
-            ORCHESTRATOR_CIM_BASE_URL +
+            cimApiBaseUrl +
                 PATCH_IMPACT_OVERRIDE_ENDPOINT +
                 serviceTicketId +
                 '/' +

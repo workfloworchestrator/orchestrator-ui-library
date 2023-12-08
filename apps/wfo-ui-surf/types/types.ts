@@ -219,7 +219,7 @@ export interface ImsInfo {
 }
 
 export enum Locale {
-    enUS = 'en-Us',
+    enUS = 'en-GB',
     nlNL = 'nl-NL',
 }
 

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiText } from '@elastic/eui';
+import { EuiLink, EuiText } from '@elastic/eui';
 import {
     WfoBasicTable,
     WfoTableColumns,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { ServiceTicketImpactedIMSCircuit } from '../../types';
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { ServiceTicketImpactedIMSCircuit } from '@/types';
 
 interface WfoImpactedCustomersTableProps {
     imsCircuits: ServiceTicketImpactedIMSCircuit[];
@@ -22,17 +23,20 @@ export const WfoImsCircuitsTable = ({
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
     );
     const { theme } = useOrchestratorTheme();
+    const { imsBaseUrl } = useContext(SurfConfigContext);
+    const imsLink = imsBaseUrl.concat('/form', '/circuit', '/');
 
     const imsCircuitsTableColumns: WfoTableColumns<ServiceTicketImpactedIMSCircuit> =
         {
-            // Ims table columns here. See WfoTableColumns type for more info about the columns and ServiceTicketImpactedIMSCircuit for the data type
             ims_circuit_id: {
                 field: 'ims_circuit_id',
                 name: t('imsCircuitId'),
                 width: '5%',
                 render: (value) => (
                     <EuiText color={theme.colors.primary} size={'xs'}>
-                        <b>{value}</b>
+                        <EuiLink href={imsLink + value}>
+                            <b>{value}</b>
+                        </EuiLink>
                     </EuiText>
                 ),
             },

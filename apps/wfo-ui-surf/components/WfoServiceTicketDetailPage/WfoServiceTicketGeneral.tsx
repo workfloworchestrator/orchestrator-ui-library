@@ -19,7 +19,7 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { WfoStatistic } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
+import { SurfConfigContext } from '../../contexts/SurfConfigContext';
 import { ServiceTicketWithDetails } from '../../types';
 import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';

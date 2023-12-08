@@ -112,7 +112,6 @@ export const WfoBasicTable = <T,>({
     );
 };
 
-//can we move this outside so it can be reusable for other tables?
 function mapWfoTableColumnsToEuiColumns<T>(
     tableColumns: WfoBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
