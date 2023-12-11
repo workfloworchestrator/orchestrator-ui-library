@@ -4,4 +4,4 @@
 '@orchestrator-ui/jest-config': minor
 ---
 
-Typescript 5 and NextJS 14
+Updates all major dependencies including Typescript to version 5 and NextJS to version 14
