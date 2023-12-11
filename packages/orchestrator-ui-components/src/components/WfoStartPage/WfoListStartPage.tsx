@@ -16,9 +16,8 @@ interface WfoListStartPage {
     list: ItemsList;
 }
 
-export default function WfoListStartPage({
-    list,
-}: WfoListStartPage): ReactElement {
+// Todo: currently not used
+export function WfoListStartPage({ list }: WfoListStartPage): ReactElement {
     return (
         (list?.items?.length > 0 && (
             <EuiFlexItem style={{ minWidth: 300 }}>
