@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
+import { PATH_SUBSCRIPTIONS, PATH_WORKFLOWS } from '@/components';
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { SummaryCardListItem } from '@/components/WfoSummary/WfoSummaryCardList';
 import {
@@ -66,6 +67,8 @@ export const WfoMultiListSection: FC = () => {
             headerStatus: SummaryCardStatus.Neutral,
             listTitle: 'Favourite Subscriptions',
             listItems: summaryListItems,
+            buttonName: 'Show all subscriptions',
+            buttonUrl: PATH_SUBSCRIPTIONS,
         },
         {
             headerTitle: 'Total Subscriptions',
@@ -73,6 +76,8 @@ export const WfoMultiListSection: FC = () => {
             headerStatus: SummaryCardStatus.Neutral,
             listTitle: 'Favourite Subscriptions',
             listItems: [summaryListItems[0]],
+            buttonName: 'Show all workflows',
+            buttonUrl: PATH_WORKFLOWS,
         },
     ];
 

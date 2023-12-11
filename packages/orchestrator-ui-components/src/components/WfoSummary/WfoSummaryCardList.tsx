@@ -1,5 +1,7 @@
 import React, { FC, ReactNode, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import {
     EuiButton,
     EuiFlexGroup,
@@ -20,14 +22,18 @@ export type SummaryCardListItem = {
 export type WfoSummaryCardListProps = {
     title: string;
     items: SummaryCardListItem[];
-    buttonName: string; // todo: also need button action
+    buttonName: string;
+    buttonUrl: string;
 };
 
 export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
     title,
     items,
     buttonName,
+    buttonUrl,
 }) => {
+    const router = useRouter();
+
     return (
         <EuiFlexItem style={{ minWidth: 300 }}>
             <EuiPanel
@@ -59,7 +65,9 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
                     <EuiSpacer size="m" />
                 </div>
                 <div>
-                    <EuiButton fullWidth>{buttonName}</EuiButton>
+                    <EuiButton fullWidth onClick={() => router.push(buttonUrl)}>
+                        {buttonName}
+                    </EuiButton>
                 </div>
             </EuiPanel>
         </EuiFlexItem>
