@@ -54,7 +54,6 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         <WfoLogoutIcon color={theme.colors.emptyShade} />
                     )}
                     css={{ width: 48, height: 48, marginLeft: 10 }}
-                    color="ghost"
                     onClick={handleSideMenuClick}
                 />
             </EuiHeaderSection>
@@ -72,8 +71,10 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         iconType={() => (
                             <WfoLogoutIcon color={theme.colors.emptyShade} />
                         )}
-                        css={{ width: 48, height: 48 }}
-                        color="ghost"
+                        css={{
+                            width: 48,
+                            height: 48,
+                        }}
                         onClick={handleLogoutClick}
                     />
                 </EuiHeaderSectionItem>
