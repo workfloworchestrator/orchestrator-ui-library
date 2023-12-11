@@ -18,7 +18,7 @@
         "@emotion/react": "^11.11.1",
         "@graphql-typed-document-node/core": "3.2.0",
         "@orchestrator-ui/orchestrator-ui-components": "*",
-        "graphql": "16.7.1",
+        "graphql": "^16.8.1",
         "graphql-request": "^6.1.0",
         "moment": "^2.29.4",
         "next": "^13.4.12",
