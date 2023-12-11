@@ -10812,14 +10812,14 @@ next-auth@^4.23.1:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
-next-intl@2.19.0:
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-2.19.0.tgz#9f80f1c56680385f8ef97e1075f2a56cb35504af"
-  integrity sha512-vK/3Lk1A2zPVl+D6n/cft+MsD6nsZO5/F4l+pHXSXrNQIjdClvGMKouM3xK/u5n75E4mmHQevVdyJQ1a7zWICw==
+next-intl@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-3.3.1.tgz#ec8352e8687bfc9352cb89d7739f2b00e4136d82"
+  integrity sha512-/NXy0txAZihat2dkuTrrLWgQUkuJTIu7up1R+xXZbCj4mJX+1OkoRnt/BhhszqcOW6CkmfYfkAG8q7LoI5cOUw==
   dependencies:
     "@formatjs/intl-localematcher" "^0.2.32"
     negotiator "^0.6.3"
-    use-intl "^2.19.0"
+    use-intl "^3.3.1"
 
 next-query-params@^5.0.0:
   version "5.0.0"
@@ -14582,10 +14582,10 @@ use-callback-ref@^1.3.0:
   dependencies:
     tslib "^2.0.0"
 
-use-intl@^2.19.0:
-  version "2.22.3"
-  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-2.22.3.tgz#927cfae5bd14df6de935b1780d03cbd33a5e1671"
-  integrity sha512-aGBsRvVoincUV+skTg1qYInU9bu4OuCBx02uGa0er9X+eR43ZqaZehIZk7zAVubyVZNLyKbawxX+SXvdxOUKcA==
+use-intl@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-3.3.1.tgz#b250c54054f77560c796c1cb36d6956d826b767b"
+  integrity sha512-BAFmkbUvtU/9AnAM5fzc/mqz+KIsWGNJ1bJ9bxYB5UHvlxU5qTamYgPa8ZO94V7tOpAFFSskL3sPKKlknZLXlA==
   dependencies:
     "@formatjs/ecma402-abstract" "^1.11.4"
     intl-messageformat "^9.3.18"
