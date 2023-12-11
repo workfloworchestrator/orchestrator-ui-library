@@ -16,7 +16,7 @@ import { EngineStatus } from '@/types';
 
 interface WfoStatusProps {
     engineStatus: EngineStatus;
-    runningProcesses: number;
+    runningProcesses?: number;
 }
 
 export const WfoStatus = ({
@@ -42,7 +42,7 @@ export const WfoStatus = ({
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
                     <EuiText size="s">
-                        <p>{runningProcesses || 0}</p>
+                        <p>{runningProcesses || '-'}</p>
                     </EuiText>
                 </EuiFlexItem>
             </EuiFlexGroup>

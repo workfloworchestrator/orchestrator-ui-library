@@ -33,7 +33,7 @@ export const WfoSettings = ({
             <EuiSpacer />
             <WfoStatus
                 engineStatus={currentEngineStatus || EngineStatus.PAUSED}
-                runningProcesses={currentRunningProcesses || 0}
+                runningProcesses={currentRunningProcesses}
             />
         </>
     );
