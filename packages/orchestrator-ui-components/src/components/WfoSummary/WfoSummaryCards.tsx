@@ -19,6 +19,8 @@ export type SummaryCard = {
     headerStatus: SummaryCardStatus;
     listTitle: string;
     listItems: SummaryCardListItem[];
+    buttonName: string;
+    buttonUrl: string;
 };
 
 export type WfoSummaryCardsProps = {
@@ -32,35 +34,34 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
 
     return (
         <EuiFlexGroup wrap>
-            {summaryCards.map(
-                (
-                    {
-                        headerTitle,
-                        headerValue,
-                        headerStatus, // todo: use status to determine icon and icon color
-                        listTitle,
-                        listItems,
-                    },
-                    index,
-                ) => {
-                    return (
-                        <EuiFlexItem key={index}>
-                            <WfoSummaryCardHeader
-                                text={headerTitle}
-                                value={headerValue}
-                                iconType="kubernetesPod"
-                                iconColor={theme.colors.primary}
-                            />
-                            <EuiSpacer />
-                            <WfoSummaryCardList
-                                title={listTitle}
-                                items={listItems}
-                                buttonName="View"
-                            />
-                        </EuiFlexItem>
-                    );
-                },
-            )}
+            {summaryCards.map((summaryCard, index) => {
+                const {
+                    headerTitle,
+                    headerValue,
+                    headerStatus, // todo: use status to determine icon and icon color
+                    listTitle,
+                    listItems,
+                    buttonName,
+                    buttonUrl,
+                } = summaryCard;
+                return (
+                    <EuiFlexItem key={index} grow={0}>
+                        <WfoSummaryCardHeader
+                            text={headerTitle}
+                            value={headerValue}
+                            iconType="kubernetesPod"
+                            iconColor={theme.colors.primary}
+                        />
+                        <EuiSpacer />
+                        <WfoSummaryCardList
+                            title={listTitle}
+                            items={listItems}
+                            buttonName={buttonName}
+                            buttonUrl={buttonUrl}
+                        />
+                    </EuiFlexItem>
+                );
+            })}
         </EuiFlexGroup>
     );
 };
