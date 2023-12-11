@@ -2,7 +2,7 @@ import React from 'react';
 import type { ReactNode } from 'react';
 
 import { merge } from 'lodash';
-import { IntlErrorCode, NextIntlProvider } from 'next-intl';
+import { IntlErrorCode, IntlProvider } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import {
@@ -51,8 +51,12 @@ export const TranslationsProvider = ({
     const messages = merge(standardMessages, getCustomMessages());
 
     return (
-        <NextIntlProvider messages={messages} onError={onError}>
+        <IntlProvider
+            locale={locale || Locale.enGB}
+            messages={messages}
+            onError={onError}
+        >
             {children}
-        </NextIntlProvider>
+        </IntlProvider>
     );
 };
