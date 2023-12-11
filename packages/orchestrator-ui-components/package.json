@@ -9,8 +9,7 @@
         "lint": "eslint \"src/**/*.ts*\"",
         "dev": "yarn build -- --watch",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build",
-        "reset": "rm -rf node_modules"
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@graphql-typed-document-node/core": "3.2.0",
@@ -18,7 +17,7 @@
         "invariant": "^2.2.4",
         "moment": "2.29.4",
         "moment-timezone": "^0.5.43",
-        "object-hash": "^2.1.1",
+        "object-hash": "^3.0.0",
         "react-select": "^5.8.0",
         "react-diff-view": "^3.2.0",
         "unidiff": "^1.0.4",
@@ -38,7 +37,8 @@
         "next-auth": "^4.23.1",
         "next-intl": "2.19.0",
         "next-query-params": "4.2.2",
-        "react-query": "3.39.3"
+        "react-query": "3.39.3",
+        "react": "^18.2.0"
     },
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",
@@ -51,13 +51,13 @@
         "@storybook/nextjs": "^7.2.1",
         "@storybook/react": "^7.2.1",
         "@storybook/testing-library": "^0.2.0",
-        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/jest-dom": "^6.1.5",
         "@testing-library/react": "^14.0.0",
         "@testing-library/react-hooks": "^8.0.1",
         "@testing-library/user-event": "^14.4.3",
         "@types/invariant": "^2.2.33",
         "@types/jest": "^29.5.8",
-        "@types/object-hash": "^2.1.0",
+        "@types/object-hash": "^3.0.6",
         "@types/scroll-into-view": "^1.16.3",
         "esbuild": "^0.19.9",
         "esbuild-jest": "^0.5.0",
@@ -67,7 +67,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "storybook": "^7.2.1",
-        "tsup": "^7.2.0",
+        "tsup": "^8.0.1",
         "uniforms-bridge-simple-schema-2": "^3.8.1"
     },
     "type": "module",
