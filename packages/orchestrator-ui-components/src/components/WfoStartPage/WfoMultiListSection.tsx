@@ -1,28 +1,24 @@
 import React, { FC } from 'react';
-import { useQueryClient } from 'react-query';
 
-import { EuiButton, EuiFlexGroup } from '@elastic/eui';
+import { EuiFlexItem } from '@elastic/eui';
 
-import { WfoJsonCodeBlock } from '@/components/WfoJsonCodeBlock/WfoJsonCodeBlock';
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
-import { getSubscriptionsListGraphQlQueryForStartPage } from '@/graphqlQueries';
+import { SummaryCardListItem } from '@/components/WfoSummary/WfoSummaryCardList';
 import {
-    useFavouriteSubscriptions,
-    useProcessesAttention,
-    useQueryWithGraphql,
-    useRecentProcesses,
-} from '@/hooks';
-
-import WfoListStartPage from './WfoListStartPage';
+    SummaryCard,
+    SummaryCardStatus,
+    WfoSummaryCards,
+} from '@/components/WfoSummary/WfoSummaryCards';
+import { getSubscriptionsListGraphQlQueryForStartPage } from '@/graphqlQueries';
+import { useQueryWithGraphql } from '@/hooks';
 
 export const WfoMultiListSection: FC = () => {
-    const queryClient = useQueryClient();
+    // Todo: get data from graphql
+    // const favouriteSubscriptionsList = useFavouriteSubscriptions();
+    // const processesAttentionList = useProcessesAttention();
+    // const completedProcessesList = useRecentProcesses();
 
-    const favouriteSubscriptionsList = useFavouriteSubscriptions();
-    const processesAttentionList = useProcessesAttention();
-    const completedProcessesList = useRecentProcesses();
-
-    const { data, status } = useQueryWithGraphql(
+    const { data } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQueryForStartPage<SubscriptionListItem>(),
         {
             first: 5,
@@ -32,46 +28,68 @@ export const WfoMultiListSection: FC = () => {
         ['subscriptions', 'startPage'],
     );
 
+    console.log('Subscriptions', { data });
+
+    // TEST DATA :
+    const summaryListItems: SummaryCardListItem[] = [
+        {
+            title: 'Item 1',
+            value: 'Value 1',
+            url: '#',
+        },
+        {
+            title: 'Item 2',
+            value: 'Value 2',
+            url: '#',
+        },
+        {
+            title: 'Item 3',
+            value: 'Value 3',
+            url: '#',
+        },
+        {
+            title: 'Item 4',
+            value: 'Value 4',
+            url: '#',
+        },
+        {
+            title: 'Item 5',
+            value: 'Value 5',
+            url: '#',
+        },
+    ];
+
+    const summaryCards: SummaryCard[] = [
+        {
+            headerTitle: 'Total Subscriptions',
+            headerValue: '999',
+            headerStatus: SummaryCardStatus.Neutral,
+            listTitle: 'Favourite Subscriptions',
+            listItems: summaryListItems,
+        },
+        {
+            headerTitle: 'Total Subscriptions',
+            headerValue: '999',
+            headerStatus: SummaryCardStatus.Neutral,
+            listTitle: 'Favourite Subscriptions',
+            listItems: [summaryListItems[0]],
+        },
+    ];
+
     return (
-        <EuiFlexGroup wrap>
-            <div>
-                <EuiButton
-                    onClick={() =>
-                        queryClient.invalidateQueries(['subscriptions'])
-                    }
-                >
-                    Invalidate subscriptions cache-key
-                </EuiButton>
-            </div>
+        <>
+            {/*Todo clean up:*/}
+            {/*<EuiFlexGroup wrap>*/}
+            {/*    <WfoListStartPage list={favouriteSubscriptionsList} />*/}
+            {/*    <WfoListStartPage list={processesAttentionList} />*/}
+            {/*    <WfoListStartPage list={completedProcessesList} />*/}
+            {/*</EuiFlexGroup>*/}
 
-            <div>
-                <EuiButton
-                    onClick={() =>
-                        queryClient.invalidateQueries([
-                            'subscriptions',
-                            'startPage',
-                        ])
-                    }
-                >
-                    Invalidate startPage cache-key
-                </EuiButton>
-                <EuiButton
-                    onClick={() =>
-                        queryClient.invalidateQueries([
-                            'subscriptions',
-                            'listPage',
-                        ])
-                    }
-                >
-                    Invalidate listPage cache-key
-                </EuiButton>
-            </div>
-
-            <div>Status: {status}</div>
-            <WfoJsonCodeBlock data={data ?? {}} />
-            <WfoListStartPage list={favouriteSubscriptionsList} />
-            <WfoListStartPage list={processesAttentionList} />
-            <WfoListStartPage list={completedProcessesList} />
-        </EuiFlexGroup>
+            <EuiFlexItem>
+                <WfoSummaryCards
+                    summaryCards={[...summaryCards, ...summaryCards]}
+                />
+            </EuiFlexItem>
+        </>
     );
 };

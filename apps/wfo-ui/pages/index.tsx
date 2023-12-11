@@ -4,10 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
-import {
-    WfoMultiListSection,
-    WfoStatCards,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { WfoMultiListSection } from '@orchestrator-ui/orchestrator-ui-components';
 
 export function Index() {
     const { data: session } = useSession();
@@ -18,7 +15,8 @@ export function Index() {
             <EuiPageHeader pageTitle={`${t('welcome')} ${username}`} />
             <EuiSpacer />
 
-            <WfoStatCards />
+            {/* todo: clean up component*/}
+            {/*<WfoStatCards />*/}
             <WfoMultiListSection />
         </>
     );
