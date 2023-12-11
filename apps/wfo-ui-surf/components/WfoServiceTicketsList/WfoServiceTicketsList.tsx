@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -20,12 +20,11 @@ import {
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import {
-    ServiceTicketDefinition,
-    ServiceTicketProcessState,
-} from '../../types';
-import { ColorMappings, getColorForState } from '../../utils/getColorForState';
+import { CIM_TICKETS_ENDPOINT } from '@/constants-surf';
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { ServiceTicketDefinition, ServiceTicketProcessState } from '@/types';
+import { ColorMappings, getColorForState } from '@/utils/getColorForState';
+
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
@@ -77,10 +76,11 @@ export const WfoServiceTicketsList = ({
 
     const t = useTranslations('cim.serviceTickets');
     const { getStatusColumnStyle } = getStyles(theme);
+    const { cimApiBaseUrl } = useContext(SurfConfigContext);
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
-            CIM_TICKETS_ENDPOINT,
+            cimApiBaseUrl + CIM_TICKETS_ENDPOINT,
             ['serviceTickets'],
             alwaysOnFilters,
         );
@@ -93,6 +93,11 @@ export const WfoServiceTicketsList = ({
     };
 
     const tableColumns: WfoTableColumns<ServiceTicketDefinition> = {
+        _id: {
+            field: '_id',
+            name: '_id',
+            width: '0',
+        },
         jira_ticket_id: {
             field: SERVICE_TICKET_FIELD_JIRA_ID,
             name: t('jiraTicketId'),
@@ -129,7 +134,7 @@ export const WfoServiceTicketsList = ({
             render: (date, object) => {
                 return object.create_date > date ? (
                     <EuiText color={theme.colors.dangerText} size={'s'}>
-                        {formatDate(date)}
+                        <b>{formatDate(date)}</b>
                     </EuiText>
                 ) : (
                     <EuiText size={'s'}>{formatDate(date)}</EuiText>

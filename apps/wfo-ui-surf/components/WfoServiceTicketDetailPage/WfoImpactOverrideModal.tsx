@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
 
 import { useTranslations } from 'next-intl';
 
@@ -7,68 +7,10 @@ import { EuiRadioGroup } from '@elastic/eui';
 import {
     WfoSubmitModal,
     useOrchestratorTheme,
-    useSessionWithToken,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { PATCH_IMPACT_OVERRIDE_ENDPOINT } from '@/constants-surf';
-import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { usePatchImpactedObject } from '@/hooks/modifyResourceHooks';
 import { ImpactLevel, ServiceTicketWithDetails } from '@/types';
-
-interface PatchImpactOverridePayload {
-    impact_override: ImpactLevel;
-    serviceTicketId: string;
-    index: number;
-}
-
-const usePatchImpactedObject = () => {
-    const queryClient = useQueryClient();
-    const { session } = useSessionWithToken();
-    const { cimApiBaseUrl } = useContext(SurfConfigContext);
-    let requestHeaders = {};
-
-    if (session) {
-        const { accessToken } = session;
-
-        requestHeaders = {
-            Authorization: `Bearer ${accessToken}`,
-        };
-    }
-
-    let serviceTicketId = '';
-    const setImpactOverride = async (payload: PatchImpactOverridePayload) => {
-        serviceTicketId = payload.serviceTicketId;
-
-        const data = {
-            impact_override: payload.impact_override,
-        };
-
-        const response = await fetch(
-            cimApiBaseUrl +
-                PATCH_IMPACT_OVERRIDE_ENDPOINT +
-                serviceTicketId +
-                '/' +
-                payload.index,
-            {
-                method: 'PATCH',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...requestHeaders,
-                },
-            },
-        );
-        return await response.json();
-    };
-
-    return useMutation(setImpactOverride, {
-        onMutate: () => {
-            queryClient.setQueryData(['serviceTickets', serviceTicketId], null); // Set loading state of the button
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries(['serviceTickets', serviceTicketId]);
-        },
-    });
-};
 
 export const WfoImpactOverrideModal = ({
     serviceTicketDetail,

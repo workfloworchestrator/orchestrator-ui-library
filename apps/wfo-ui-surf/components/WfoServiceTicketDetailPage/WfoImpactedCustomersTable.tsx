@@ -11,6 +11,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 import {
+    OrchestratorConfigContext,
     WfoBadge,
     WfoBasicTable,
     WfoCheckmarkCircleFill,
@@ -50,10 +51,13 @@ export const WfoImpactedCustomersTable = ({
     const [contactsModal, setContactsModal] = useState<CustomerWithContacts>();
     const [imsModal, setImsModal] = useState<boolean | undefined>();
     const { dropDownTableStyle } = getStyles(theme);
+    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
 
     const { data: minlObjectFromApi, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
-            MINL_BY_SUBSCRIPTION_ENDPOINT + impactedObject.subscription_id,
+            orchestratorApiBaseUrl +
+                MINL_BY_SUBSCRIPTION_ENDPOINT +
+                impactedObject.subscription_id,
             ['minl', impactedObject.subscription_id ?? ''],
         );
 

@@ -39,6 +39,7 @@
                         "defaultSendingLevelModalTitle": "Default sending level of CIM",
                         "defaultSendingLevelModalText": "Default sending level (DSL) of CIM defines the minimal impact levels for which CIM shall send email to customers. Impacted subscriptions with a lower impact than the DSL will not be included in the email notification to the customer. However if the customer has set the minimal impact notification level (MINL) of the subscription to a lower impact than the DSL, the subscription will be included.",
                         "impactOnSubscriptions": "Impact on subscriptions",
+                        "acceptImpact": "Accept impact",
                         "subscriptionImpactTable": {
                             "subscriptionTitle": "Subscriptions",
                             "affectedCustomers": "Affected Customers",

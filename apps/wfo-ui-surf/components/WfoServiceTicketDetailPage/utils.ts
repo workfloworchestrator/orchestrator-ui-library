@@ -14,6 +14,11 @@ export const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN,
 ];
 
+export const acceptImpactEnabledValues: ServiceTicketProcessState[] = [
+    ServiceTicketProcessState.OPEN_RELATED,
+    ServiceTicketProcessState.OPEN_ACCEPTED,
+];
+
 const impactLevelPriority = [
     ImpactLevel.NO_IMPACT,
     ImpactLevel.REDUCED_REDUNDANCY,
