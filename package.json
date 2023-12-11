@@ -21,7 +21,7 @@
         "@turbo/gen": "^1.10.12",
         "eslint-config-custom": "*",
         "husky": "^8.0.0",
-        "prettier": "^3.0.0",
+        "prettier": "^3.1.1",
         "turbo": "^1.10.14"
     },
     "name": "orchestrator-core-ui",
