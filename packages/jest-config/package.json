@@ -12,14 +12,14 @@
     },
     "main": "./dist/",
     "dependencies": {
-        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/jest-dom": "^6.1.5",
         "@testing-library/react": "^14.0.0",
         "@testing-library/react-hooks": "^8.0.1",
         "@testing-library/user-event": "^14.4.3",
-        "@types/jest": "^27.4.0",
+        "@types/jest": "^29.5.11",
         "esbuild": "^0.19.9",
         "esbuild-jest": "^0.5.0",
-        "jest": "^27.4.7",
-        "jest-watch-typeahead": "^1.0.0"
+        "jest": "^29.7.0",
+        "jest-watch-typeahead": "^2.2.2"
     }
 }
