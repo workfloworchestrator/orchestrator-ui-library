@@ -250,7 +250,8 @@ function SubscriptionFieldDefinition({
             if (parentName !== name) {
                 if (
                     parent.fieldType === Array &&
-                    // @ts-ignore
+                    // @ts-expect-error Parent field can have the uniqueItems boolean property but this is not part of JSONSchema6 type
+                    // TODO: Figure out why this is so
                     parent.uniqueItems
                 ) {
                     const allValues: string[] = get(model, parentName, []);
