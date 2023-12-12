@@ -71,7 +71,7 @@ export const WfoMultiListSection: FC = () => {
             buttonUrl: PATH_SUBSCRIPTIONS,
         },
         {
-            headerTitle: 'Total Subscriptions',
+            headerTitle: 'Total Subscriptions with a longer title!!!!!',
             headerValue: '999',
             headerStatus: SummaryCardStatus.Neutral,
             listTitle: 'Favourite Subscriptions',
