@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
+import { EuiButton, EuiSpacer } from '@elastic/eui';
 
 import {
     DEFAULT_PAGE_SIZE,
     FilterQuery,
     StoredTableConfig,
     TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
+    WfoFilterTabs,
     WfoStartTaskButtonComboBox,
     WfoTableColumns,
 } from '@/components';
@@ -28,18 +31,31 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
+import { getTaskListTabTypeFromString } from '@/pages/tasks/getTaskListTabTypeFromString';
 import { SortOrder } from '@/types';
 
+import { WfoTaskListTabType, defaultTaskListTabs } from './tabConfig';
+
 export const WfoTaskListPage = () => {
+    const router = useRouter();
+
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const { retryAllProcesses } = useMutateProcess();
     const { isEngineRunningNow } = useCheckEngineStatus();
 
+    const [activeTab, setActiveTab] = useQueryParam(
+        'activeTab',
+        withDefault(StringParam, WfoTaskListTabType.ACTIVE),
+    );
+
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
 
+    const selectedTaskListTab = getTaskListTabTypeFromString(activeTab);
+
+    // Todo rewrite to use filter for complete/inactive
     const getStoredTableConfig = useStoredTableConfig<ProcessListItem>(
         TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
     );
@@ -60,6 +76,13 @@ export const WfoTaskListPage = () => {
                 order: SortOrder.DESC,
             },
         });
+
+    const handleChangeTaskListTab = (
+        updatedTaskListTab: WfoTaskListTabType,
+    ) => {
+        setActiveTab(updatedTaskListTab);
+        setDataDisplayParam('pageIndex', 0);
+    };
 
     const alwaysOnFilters: FilterQuery<ProcessListItem>[] = [
         {
@@ -114,6 +137,11 @@ export const WfoTaskListPage = () => {
         }
     };
 
+    if (!selectedTaskListTab) {
+        router.replace(PATH_TASKS);
+        return null;
+    }
+
     return (
         <>
             <EuiSpacer />
@@ -129,8 +157,12 @@ export const WfoTaskListPage = () => {
                 </EuiButton>
                 <WfoStartTaskButtonComboBox />
             </WfoPageHeader>
-            <EuiHorizontalRule />
-
+            <WfoFilterTabs
+                tabs={defaultTaskListTabs}
+                translationNamespace="tasks.tabs"
+                selectedTab={selectedTaskListTab}
+                onChangeTab={handleChangeTaskListTab}
+            />
             <EuiSpacer size="xxl" />
 
             <WfoProcessList
