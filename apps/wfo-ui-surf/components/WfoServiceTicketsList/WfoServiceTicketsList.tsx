@@ -15,7 +15,7 @@ import {
     WfoTableColumns,
     formatDate,
     getSortDirectionFromString,
-    getStyles,
+    getWfoBasicTableStyles,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -75,7 +75,7 @@ export const WfoServiceTicketsList = ({
     });
 
     const t = useTranslations('cim.serviceTickets');
-    const { getStatusColumnStyle } = getStyles(theme);
+    const { getStatusColumnStyle } = getWfoBasicTableStyles(theme);
     const { cimApiBaseUrl } = useContext(SurfConfigContext);
 
     const { data, isFetching } =

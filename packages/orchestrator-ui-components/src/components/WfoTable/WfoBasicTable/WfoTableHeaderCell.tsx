@@ -14,7 +14,7 @@ import { useWithOrchestratorTheme } from '../../../hooks';
 import { SortOrder } from '../../../types';
 import { WfoSortButtons } from '../WfoSortButtons';
 import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
-import { getStyles } from './styles';
+import { getWfoBasicTableStyles } from './styles';
 
 export type WfoTableHeaderCellProps = {
     fieldName: string;
@@ -37,7 +37,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
         getHeaderCellButtonStyle,
-    } = useWithOrchestratorTheme(getStyles);
+    } = useWithOrchestratorTheme(getWfoBasicTableStyles);
     const t = useTranslations('common');
 
     const isSortable = !!onSetSortOrder;

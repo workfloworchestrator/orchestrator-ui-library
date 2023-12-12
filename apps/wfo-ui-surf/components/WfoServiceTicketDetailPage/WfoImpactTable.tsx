@@ -8,7 +8,7 @@ import {
     WfoBadge,
     WfoBasicTable,
     WfoTableColumns,
-    getStyles,
+    getWfoBasicTableStyles,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
@@ -49,7 +49,7 @@ export const WfoImpactTable = ({
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
     const { theme } = useOrchestratorTheme();
-    const { expandableTableStyle } = getStyles(theme);
+    const { expandableTableStyle } = getWfoBasicTableStyles(theme);
 
     const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
         Record<string, ReactNode>

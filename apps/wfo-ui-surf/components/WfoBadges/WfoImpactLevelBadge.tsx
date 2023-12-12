@@ -6,7 +6,7 @@ import {
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { ImpactLevel } from '../../types';
+import { ImpactLevel } from '@/types';
 
 export type WfoProcessStatusBadgeProps = {
     impactedObjectImpact: ImpactLevel;

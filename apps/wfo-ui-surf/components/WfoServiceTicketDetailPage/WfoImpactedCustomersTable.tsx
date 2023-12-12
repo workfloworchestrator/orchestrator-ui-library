@@ -18,7 +18,7 @@ import {
     WfoTableColumns,
     WfoViewList,
     WfoXCircleFill,
-    getStyles,
+    getWfoBasicTableStyles,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -48,9 +48,10 @@ export const WfoImpactedCustomersTable = ({
     );
     const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
     const { theme } = useOrchestratorTheme();
-    const [contactsModal, setContactsModal] = useState<CustomerWithContacts>();
-    const [imsModal, setImsModal] = useState<boolean | undefined>();
-    const { dropDownTableStyle } = getStyles(theme);
+    const [isContactsModalOpen, setIsContactsModalOpen] =
+        useState<CustomerWithContacts>();
+    const [isImsModalOpen, setIsImsModalOpen] = useState<boolean | undefined>();
+    const { dropDownTableStyle } = getWfoBasicTableStyles(theme);
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
 
     const { data: minlObjectFromApi, isFetching } =
@@ -88,7 +89,7 @@ export const WfoImpactedCustomersTable = ({
                     <EuiButtonEmpty
                         size={'xs'}
                         onClick={() =>
-                            setContactsModal({
+                            setIsContactsModalOpen({
                                 name: object.customer.customer_name,
                                 contacts: value,
                             })
@@ -143,15 +144,15 @@ export const WfoImpactedCustomersTable = ({
         };
 
     const handleCloseContactsModal = () => {
-        setContactsModal(undefined);
+        setIsContactsModalOpen(undefined);
     };
 
     const handleCloseImsModal = () => {
-        setImsModal(undefined);
+        setIsImsModalOpen(undefined);
     };
 
     const handleOpenImsModal = () => {
-        setImsModal(true);
+        setIsImsModalOpen(true);
     };
 
     const ShowImsInformationButton = () => (
@@ -197,13 +198,13 @@ export const WfoImpactedCustomersTable = ({
                     <ShowImsInformationButton />
                 </EuiFlexItem>
             </EuiFlexGroup>
-            {contactsModal && (
+            {isContactsModalOpen && (
                 <WfoCustomersContactsModal
-                    customerWithContacts={contactsModal}
+                    customerWithContacts={isContactsModalOpen}
                     handleClose={handleCloseContactsModal}
                 />
             )}
-            {imsModal && (
+            {isImsModalOpen && (
                 <EuiModal
                     onClose={handleCloseImsModal}
                     style={{
