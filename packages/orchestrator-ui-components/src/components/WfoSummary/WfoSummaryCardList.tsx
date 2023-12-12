@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useState } from 'react';
 
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
@@ -77,7 +78,7 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
 export type WfoSummaryListItemProps = {
     title: string;
     value: ReactNode;
-    url: string; // todo verify if this can be undefined
+    url: string;
 };
 
 export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
@@ -85,15 +86,15 @@ export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
     value,
     url,
 }) => {
-    // Todo: remove state from this component --> CSS
     const [hoverState, setHoverState] = useState(false);
 
     return (
-        <a href={url}>
+        <Link href={url}>
             <EuiFlexGroup
                 style={{ cursor: 'pointer', paddingBlock: 10 }}
                 onMouseOver={() => setHoverState(true)}
                 onMouseLeave={() => setHoverState(false)}
+                gutterSize="none"
             >
                 <EuiFlexItem>
                     <EuiTextColor
@@ -108,11 +109,11 @@ export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
                 </EuiFlexItem>
                 <EuiFlexItem
                     grow={false}
-                    style={{ display: hoverState ? 'block' : 'none' }}
+                    css={{ visibility: hoverState ? 'visible' : 'hidden' }}
                 >
                     <EuiIcon type="sortRight" color="primary" />
                 </EuiFlexItem>
             </EuiFlexGroup>
-        </a>
+        </Link>
     );
 };

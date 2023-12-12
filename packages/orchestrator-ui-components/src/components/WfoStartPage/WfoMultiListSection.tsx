@@ -2,9 +2,8 @@ import React, { FC } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, PATH_WORKFLOWS } from '@/components';
+import { PATH_SUBSCRIPTIONS } from '@/components';
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
-import { SummaryCardListItem } from '@/components/WfoSummary/WfoSummaryCardList';
 import {
     SummaryCard,
     SummaryCardStatus,
@@ -12,6 +11,8 @@ import {
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { getSubscriptionsListGraphQlQueryForStartPage } from '@/graphqlQueries';
 import { useQueryWithGraphql } from '@/hooks';
+import { SortOrder } from '@/types';
+import { getFirstUuidPart } from '@/utils';
 
 export const WfoMultiListSection: FC = () => {
     // Todo: get data from graphql
@@ -25,71 +26,28 @@ export const WfoMultiListSection: FC = () => {
             first: 5,
             after: 0,
             filterBy: [{ field: 'status', value: 'ACTIVE' }],
+            sortBy: {
+                field: 'startDate',
+                order: SortOrder.DESC,
+            },
         },
         ['subscriptions', 'startPage'],
     );
 
-    // eslint-disable-next-line
-    console.log('Subscriptions', { data });
-
-    // TEST DATA :
-    const summaryListItems: SummaryCardListItem[] = [
-        {
-            title: 'Item 1',
-            value: 'Value 1',
-            url: '#',
-        },
-        {
-            title: 'Item 2',
-            value: 'Value 2',
-            url: '#',
-        },
-        {
-            title: 'Item 3',
-            value: 'Value 3',
-            url: '#',
-        },
-        {
-            title: 'Item 4',
-            value: 'Value 4',
-            url: '#',
-        },
-        {
-            title: 'Item 5',
-            value: 'Value 5',
-            url: '#',
-        },
-    ];
-
-    const summaryCards: SummaryCard[] = [
-        {
-            headerTitle: 'Total Subscriptions',
-            headerValue: '999',
-            headerStatus: SummaryCardStatus.Neutral,
-            listTitle: 'Favourite Subscriptions',
-            listItems: summaryListItems,
-            buttonName: 'Show all subscriptions',
-            buttonUrl: PATH_SUBSCRIPTIONS,
-        },
-        {
-            headerTitle: 'Total Subscriptions with a longer title!!!!!',
-            headerValue: '999',
-            headerStatus: SummaryCardStatus.Success,
-            listTitle: 'Favourite Subscriptions',
-            listItems: [summaryListItems[0]],
-            buttonName: 'Show all workflows',
-            buttonUrl: PATH_WORKFLOWS,
-        },
-        {
-            headerTitle: 'Total Subscriptions with a longer title!!!!!',
-            headerValue: '999',
-            headerStatus: SummaryCardStatus.Error,
-            listTitle: 'Favourite Subscriptions',
-            listItems: summaryListItems,
-            buttonName: 'Show all workflows',
-            buttonUrl: PATH_WORKFLOWS,
-        },
-    ];
+    const lastSubscriptionsSummaryCard: SummaryCard = {
+        headerTitle: 'Total Subscriptions',
+        headerValue: data?.subscriptions.pageInfo.totalItems ?? 0,
+        headerStatus: SummaryCardStatus.Neutral,
+        listTitle: 'Latest subscriptions',
+        listItems:
+            data?.subscriptions.page.map((subscription) => ({
+                title: subscription.description,
+                value: getFirstUuidPart(subscription.subscriptionId),
+                url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
+            })) ?? [],
+        buttonName: 'Show all subscriptions',
+        buttonUrl: PATH_SUBSCRIPTIONS,
+    };
 
     return (
         <>
@@ -102,7 +60,7 @@ export const WfoMultiListSection: FC = () => {
 
             <EuiFlexItem>
                 <WfoSummaryCards
-                    summaryCards={[...summaryCards, ...summaryCards]}
+                    summaryCards={[lastSubscriptionsSummaryCard]}
                 />
             </EuiFlexItem>
         </>
