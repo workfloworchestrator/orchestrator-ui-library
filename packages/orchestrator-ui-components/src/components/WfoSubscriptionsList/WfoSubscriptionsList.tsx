@@ -121,10 +121,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         customerFullname: {
             field: 'customerFullname',
             name: t('customerFullname'),
+            width: '150',
         },
         customerShortcode: {
             field: 'customerShortcode',
             name: t('customerShortcode'),
+            width: '150',
         },
     };
 
