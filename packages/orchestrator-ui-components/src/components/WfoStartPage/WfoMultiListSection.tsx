@@ -29,6 +29,7 @@ export const WfoMultiListSection: FC = () => {
         ['subscriptions', 'startPage'],
     );
 
+    // eslint-disable-next-line
     console.log('Subscriptions', { data });
 
     // TEST DATA :
@@ -73,9 +74,18 @@ export const WfoMultiListSection: FC = () => {
         {
             headerTitle: 'Total Subscriptions with a longer title!!!!!',
             headerValue: '999',
-            headerStatus: SummaryCardStatus.Neutral,
+            headerStatus: SummaryCardStatus.Success,
             listTitle: 'Favourite Subscriptions',
             listItems: [summaryListItems[0]],
+            buttonName: 'Show all workflows',
+            buttonUrl: PATH_WORKFLOWS,
+        },
+        {
+            headerTitle: 'Total Subscriptions with a longer title!!!!!',
+            headerValue: '999',
+            headerStatus: SummaryCardStatus.Error,
+            listTitle: 'Favourite Subscriptions',
+            listItems: summaryListItems,
             buttonName: 'Show all workflows',
             buttonUrl: PATH_WORKFLOWS,
         },
