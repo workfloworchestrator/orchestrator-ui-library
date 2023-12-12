@@ -44,7 +44,7 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiText color="subdued">
-                            <h4 style={{ fontWeight: 300 }}>Total {text}</h4>
+                            <h4 style={{ fontWeight: 300 }}>{text}</h4>
                         </EuiText>
                         <EuiText>
                             <h2 style={{ fontWeight: 500 }}>{value}</h2>
