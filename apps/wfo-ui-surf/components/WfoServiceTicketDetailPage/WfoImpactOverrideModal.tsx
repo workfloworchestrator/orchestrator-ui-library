@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
 
 import { useTranslations } from 'next-intl';
 
@@ -29,8 +28,9 @@ export const WfoImpactOverrideModal = ({
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
     const { theme } = useOrchestratorTheme();
-    const { mutate } = usePatchImpactedObject();
-    const { isLoading } = useQuery(['serviceTickets', serviceTicketDetail._id]);
+    const { mutate, isLoading, isSuccess } = usePatchImpactedObject(
+        serviceTicketDetail._id,
+    );
 
     const onChange = (value: string) => {
         setValue(value as ImpactLevel);
@@ -39,10 +39,9 @@ export const WfoImpactOverrideModal = ({
     const handleSubmit = () => {
         mutate({
             impact_override: value,
-            serviceTicketId: serviceTicketDetail._id!,
+            serviceTicket: serviceTicketDetail,
             index: index,
         });
-        !isLoading && closeAction();
     };
 
     const options = Object.values(ImpactLevel).map((impact) => ({
@@ -56,11 +55,14 @@ export const WfoImpactOverrideModal = ({
         },
     }));
 
+    isSuccess && closeAction();
+
     return (
         <WfoSubmitModal
             title={t('impactOverrideModalTitle')}
             onClose={closeAction}
             onSubmit={handleSubmit}
+            isLoading={isLoading}
             submitButtonLabel={t('overrideImpactButton')}
         >
             <EuiRadioGroup

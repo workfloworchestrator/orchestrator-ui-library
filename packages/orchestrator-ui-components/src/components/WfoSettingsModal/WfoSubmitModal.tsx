@@ -17,6 +17,7 @@ export type WfoSubmitModalProps = {
     title: string;
     onClose: () => void;
     onSubmit: () => void;
+    isLoading: boolean;
     submitButtonLabel: string;
     children: ReactNode;
 };
@@ -25,6 +26,7 @@ export const WfoSubmitModal: FC<WfoSubmitModalProps> = ({
     title,
     onClose,
     onSubmit,
+    isLoading,
     submitButtonLabel = 'Submit',
     children,
 }) => {
@@ -44,7 +46,11 @@ export const WfoSubmitModal: FC<WfoSubmitModalProps> = ({
                         <EuiButtonEmpty onClick={onClose}>Close</EuiButtonEmpty>
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
-                        <EuiButton fill onClick={onSubmit}>
+                        <EuiButton
+                            isLoading={isLoading}
+                            fill
+                            onClick={onSubmit}
+                        >
                             {submitButtonLabel}
                         </EuiButton>
                     </EuiFlexItem>

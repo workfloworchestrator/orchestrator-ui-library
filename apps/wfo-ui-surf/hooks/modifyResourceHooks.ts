@@ -9,11 +9,11 @@ import {
     PATCH_IMPACT_OVERRIDE_ENDPOINT,
 } from '@/constants-surf';
 import { SurfConfigContext } from '@/contexts/SurfConfigContext';
-import { ImpactLevel } from '@/types';
+import { ImpactLevel, ServiceTicketWithDetails } from '@/types';
 
 export interface PatchImpactOverridePayload {
     impact_override: ImpactLevel;
-    serviceTicketId: string;
+    serviceTicket: ServiceTicketWithDetails;
     index: number;
 }
 
@@ -41,25 +41,29 @@ const useCimSettings = () => {
     };
 };
 
-export const usePatchImpactedObject = () => {
+export const usePatchImpactedObject = (serviceTicketId: string) => {
     const { queryClient, cimApiBaseUrl, requestHeaders } = useCimSettings();
+    let updatedServiceTicket: ServiceTicketWithDetails;
 
-    let serviceTicketId = '';
-    const mutate = async (payload: PatchImpactOverridePayload) => {
-        serviceTicketId = payload.serviceTicketId;
+    const mutate = async ({
+        impact_override,
+        index,
+        serviceTicket,
+    }: PatchImpactOverridePayload) => {
+        updatedServiceTicket = serviceTicket;
+        updatedServiceTicket.impacted_objects[index].impact_override =
+            impact_override;
 
         const data = {
-            impact_override: payload.impact_override,
+            impact_override: impact_override,
         };
-
-        console.log('CIM API BASE URL: ', cimApiBaseUrl);
 
         const response = await fetch(
             cimApiBaseUrl +
                 PATCH_IMPACT_OVERRIDE_ENDPOINT +
-                serviceTicketId +
+                serviceTicket._id +
                 '/' +
-                payload.index,
+                index,
             {
                 method: 'PATCH',
                 body: JSON.stringify(data),
@@ -73,10 +77,13 @@ export const usePatchImpactedObject = () => {
     };
 
     return useMutation(mutate, {
-        onMutate: () => {
-            queryClient.setQueryData(['serviceTickets', serviceTicketId], null); // Set loading state of the button
-        },
         onSuccess: () => {
+            queryClient.setQueryData(
+                ['serviceTickets', serviceTicketId],
+                updatedServiceTicket,
+            );
+        },
+        onError: () => {
             queryClient.invalidateQueries(['serviceTickets', serviceTicketId]);
         },
     });
