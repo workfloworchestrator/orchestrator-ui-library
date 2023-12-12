@@ -225,7 +225,9 @@
             "tag": "Tag",
             "startDate": "Start date",
             "endDate": "End date",
-            "note": "Note"
+            "note": "Note",
+            "customerFullName": "Customer",
+            "customerAbbreviation": "Customer abbreviation"
         },
         "detail": {
             "tabs": {

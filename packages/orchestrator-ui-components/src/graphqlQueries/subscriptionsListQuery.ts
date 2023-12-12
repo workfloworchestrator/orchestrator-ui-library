@@ -37,6 +37,10 @@ export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
                     tag
                     productType
                 }
+                customer {
+                    fullname
+                    shortcode
+                }
             }
             pageInfo {
                 totalItems

@@ -9,6 +9,8 @@ export type SubscriptionListItem = Pick<
     endDate: Date | null;
     productName: string;
     tag: string | null;
+    customerFullname: string;
+    customerShortcode: string;
 };
 
 export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
@@ -24,10 +26,13 @@ export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
             status,
             subscriptionId,
             note,
+            customer,
         } = subscription;
 
         const { name: productName, tag } = product;
-
+        const { fullname: customerFullname, shortcode: customerShortcode } =
+            customer;
+        customer;
         return {
             subscriptionId,
             description,
@@ -38,6 +43,8 @@ export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
             note,
             productName,
             tag,
+            customerFullname,
+            customerShortcode,
         };
     });
 }
