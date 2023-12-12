@@ -7,7 +7,10 @@ import {
     useCurrentEuiBreakpoint,
 } from '@elastic/eui';
 
-import { WfoSummaryCardHeader } from '@/components/WfoSummary/WfoSummaryCardHeader';
+import {
+    WfoSummaryCardHeader,
+    WfoSummaryCardHeaderProps,
+} from '@/components/WfoSummary/WfoSummaryCardHeader';
 import { useOrchestratorTheme } from '@/hooks';
 
 import { SummaryCardListItem, WfoSummaryCardList } from './WfoSummaryCardList';
@@ -33,22 +36,44 @@ export type WfoSummaryCardsProps = {
     summaryCards: SummaryCard[];
 };
 
-// Todo: can be one or more
 export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
-    // todo: List component with button
     const { theme } = useOrchestratorTheme();
     const currentBreakpoint = useCurrentEuiBreakpoint();
+
+    const getIconTypeAndColorForHeaderStatus = (
+        status: SummaryCardStatus,
+    ): Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'> => {
+        switch (status) {
+            case SummaryCardStatus.Success:
+                return {
+                    iconType: 'checkInCircleFilled',
+                    iconColor: theme.colors.success,
+                };
+            case SummaryCardStatus.Error:
+                return {
+                    iconType: 'error',
+                    iconColor: theme.colors.danger,
+                };
+            case SummaryCardStatus.Neutral:
+            default:
+                return {
+                    iconType: 'kubernetesPod',
+                    iconColor: theme.colors.primary,
+                };
+        }
+    };
 
     return (
         <EuiFlexGrid
             responsive={false}
             columns={getNumberOfColumns(currentBreakpoint)}
+            gutterSize="xl"
         >
             {summaryCards.map((summaryCard, index) => {
                 const {
                     headerTitle,
                     headerValue,
-                    headerStatus, // todo: use status to determine icon and icon color
+                    headerStatus,
                     listTitle,
                     listItems,
                     buttonName,
@@ -59,10 +84,11 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                         <WfoSummaryCardHeader
                             text={headerTitle}
                             value={headerValue}
-                            iconType="kubernetesPod"
-                            iconColor={theme.colors.primary}
+                            {...getIconTypeAndColorForHeaderStatus(
+                                headerStatus,
+                            )}
                         />
-                        <EuiSpacer />
+                        <EuiSpacer size="m" />
                         <WfoSummaryCardList
                             title={listTitle}
                             items={listItems}
