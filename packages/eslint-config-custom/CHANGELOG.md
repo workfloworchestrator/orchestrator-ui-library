@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.1.0
+
+### Minor Changes
+
+- ef5eace: Updates all major dependencies including Typescript to version 5 and NextJS to version 14
+
 ## 0.0.7
 
 ### Patch Changes
