@@ -5,6 +5,12 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 
+import {
+    DEFAULT_PAGE_SIZE,
+    SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
+    getSortDirectionFromString,
+} from '@/components';
+
 import { WfoFilterTabs } from '../../components';
 import {
     WfoSubscriptionsList,
@@ -14,11 +20,6 @@ import {
 } from '../../components/WfoSubscriptionsList';
 import { SubscriptionListItem } from '../../components/WfoSubscriptionsList';
 import { StoredTableConfig } from '../../components/WfoTable';
-import { SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY } from '../../components/WfoTable';
-import {
-    DEFAULT_PAGE_SIZE,
-    getSortDirectionFromString,
-} from '../../components/WfoTable';
 import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import { SortOrder } from '../../types';
 

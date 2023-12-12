@@ -118,6 +118,14 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             field: 'note',
             name: t('note'),
         },
+        customerFullname: {
+            field: 'customerFullname',
+            name: t('customerFullname'),
+        },
+        customerShortcode: {
+            field: 'customerShortcode',
+            name: t('customerShortcode'),
+        },
     };
 
     const { sortBy, queryString } = dataDisplayParams;

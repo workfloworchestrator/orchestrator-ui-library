@@ -416,6 +416,7 @@ export type Subscription = {
     status: SubscriptionStatus;
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
     productBlockInstances: ProductBlockInstance[];
+    customer: Pick<Customer, 'fullname' | 'shortcode'>;
 };
 
 export type SubscriptionDropdownOption = {
