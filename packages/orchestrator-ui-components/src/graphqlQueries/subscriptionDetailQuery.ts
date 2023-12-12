@@ -46,7 +46,10 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                     subscriptionInstanceId
                     inUseByRelations
                 }
-                processes(sortBy: { field: "startedAt", order: ASC }) {
+                processes(
+                    sortBy: { field: "startedAt", order: ASC }
+                    filterBy: { field: "isTask", value: "false" }
+                ) {
                     page {
                         processId
                         lastStatus
