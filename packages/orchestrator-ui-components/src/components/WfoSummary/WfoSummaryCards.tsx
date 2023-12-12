@@ -1,11 +1,17 @@
 import React, { FC } from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
+import {
+    EuiFlexGrid,
+    EuiFlexItem,
+    EuiSpacer,
+    useCurrentEuiBreakpoint,
+} from '@elastic/eui';
 
 import { WfoSummaryCardHeader } from '@/components/WfoSummary/WfoSummaryCardHeader';
 import { useOrchestratorTheme } from '@/hooks';
 
 import { SummaryCardListItem, WfoSummaryCardList } from './WfoSummaryCardList';
+import { getNumberOfColumns } from './getNumberOfColumns';
 
 export enum SummaryCardStatus {
     Success = 'Success',
@@ -31,9 +37,13 @@ export type WfoSummaryCardsProps = {
 export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
     // todo: List component with button
     const { theme } = useOrchestratorTheme();
+    const currentBreakpoint = useCurrentEuiBreakpoint();
 
     return (
-        <EuiFlexGroup wrap>
+        <EuiFlexGrid
+            responsive={false}
+            columns={getNumberOfColumns(currentBreakpoint)}
+        >
             {summaryCards.map((summaryCard, index) => {
                 const {
                     headerTitle,
@@ -45,7 +55,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                     buttonUrl,
                 } = summaryCard;
                 return (
-                    <EuiFlexItem key={index} grow={0}>
+                    <EuiFlexItem key={index}>
                         <WfoSummaryCardHeader
                             text={headerTitle}
                             value={headerValue}
@@ -62,6 +72,6 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                     </EuiFlexItem>
                 );
             })}
-        </EuiFlexGroup>
+        </EuiFlexGrid>
     );
 };
