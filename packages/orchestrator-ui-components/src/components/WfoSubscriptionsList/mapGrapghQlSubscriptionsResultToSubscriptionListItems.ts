@@ -32,7 +32,7 @@ export function mapGrapghQlSubscriptionsResultToSubscriptionListItems(
         const { name: productName, tag } = product;
         const { fullname: customerFullname, shortcode: customerShortcode } =
             customer;
-        customer;
+
         return {
             subscriptionId,
             description,
