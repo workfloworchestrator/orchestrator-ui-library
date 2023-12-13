@@ -94,7 +94,6 @@ export const WfoMultiListSection: FC = () => {
                         (right.subscriptions.pageInfo.totalItems ?? 0) -
                         (left.subscriptions.pageInfo.totalItems ?? 0),
                 )
-                .slice(0, 10)
                 .map((product) => ({
                     title: '',
                     value: (

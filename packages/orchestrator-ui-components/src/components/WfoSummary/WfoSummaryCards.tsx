@@ -69,18 +69,26 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
             columns={getNumberOfColumns(currentBreakpoint)}
             gutterSize="xl"
         >
-            {summaryCards.map((summaryCard, index) => {
-                const {
-                    headerTitle,
-                    headerValue,
-                    headerStatus,
-                    listTitle,
-                    listItems,
-                    buttonName,
-                    buttonUrl,
-                } = summaryCard;
-                return (
-                    <EuiFlexItem key={index}>
+            {summaryCards.map(
+                (
+                    {
+                        headerTitle,
+                        headerValue,
+                        headerStatus,
+                        listTitle,
+                        listItems,
+                        buttonName,
+                        buttonUrl,
+                    },
+                    index,
+                ) => (
+                    <EuiFlexItem
+                        key={index}
+                        css={{
+                            height: theme.base * 36,
+                            minWidth: theme.base * 25,
+                        }}
+                    >
                         <WfoSummaryCardHeader
                             text={headerTitle}
                             value={headerValue}
@@ -96,8 +104,8 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                             buttonUrl={buttonUrl}
                         />
                     </EuiFlexItem>
-                );
-            })}
+                ),
+            )}
         </EuiFlexGrid>
     );
 };

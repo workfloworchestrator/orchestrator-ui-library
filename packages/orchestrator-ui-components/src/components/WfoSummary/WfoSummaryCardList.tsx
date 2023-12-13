@@ -12,7 +12,10 @@ import {
     EuiPanel,
     EuiSpacer,
     EuiTextColor,
+    useEuiScrollBar,
 } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '@/hooks';
 
 export type SummaryCardListItem = {
     title: string;
@@ -34,6 +37,7 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
     buttonUrl,
 }) => {
     const router = useRouter();
+    const { theme } = useOrchestratorTheme();
 
     return (
         <EuiFlexItem style={{ minWidth: 300 }}>
@@ -51,20 +55,30 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
                 <div>
                     <p style={{ fontWeight: 600 }}>{title}</p>
                     <EuiSpacer size="m" />
-                    {items?.map((item, index) => (
-                        <div key={index}>
-                            <WfoSummaryListItem
-                                title={item.title}
-                                value={item.value}
-                                url={item.url}
-                            />
-                            {index === items.length - 1 ? null : (
-                                <EuiHorizontalRule margin="none" />
-                            )}
-                        </div>
-                    ))}
-                    <EuiSpacer size="m" />
+                    <div
+                        css={[
+                            {
+                                height: theme.base * 20,
+                                overflow: 'auto',
+                            },
+                            useEuiScrollBar(),
+                        ]}
+                    >
+                        {items?.map((item, index) => (
+                            <div key={index}>
+                                <WfoSummaryListItem
+                                    title={item.title}
+                                    value={item.value}
+                                    url={item.url}
+                                />
+                                {index === items.length - 1 ? null : (
+                                    <EuiHorizontalRule margin="none" />
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
+                <EuiSpacer size="m" />
                 <div>
                     <EuiButton fullWidth onClick={() => router.push(buttonUrl)}>
                         {buttonName}
