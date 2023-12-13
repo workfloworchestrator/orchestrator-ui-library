@@ -55,34 +55,6 @@ export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY = parse(gql`
     }
 `);
 
-export const GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY_START_PAGE = parse(gql`
-    query SubscriptionsList(
-        $first: Int!
-        $after: Int!
-        $sortBy: [GraphqlSort!]
-        $filterBy: [GraphqlFilter!]
-        $query: String
-    ) {
-        subscriptions(
-            first: $first
-            after: $after
-            sortBy: $sortBy
-            filterBy: $filterBy
-            query: $query
-        ) {
-            page {
-                description
-                subscriptionId
-            }
-            pageInfo {
-                totalItems
-                startCursor
-                endCursor
-            }
-        }
-    }
-`);
-
 export function getSubscriptionsListGraphQlQuery<
     QueryVariablesType = Subscription,
 >(): TypedDocumentNode<
@@ -90,13 +62,4 @@ export function getSubscriptionsListGraphQlQuery<
     GraphqlQueryVariables<QueryVariablesType>
 > {
     return GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY;
-}
-
-export function getSubscriptionsListGraphQlQueryForStartPage<
-    QueryVariablesType = Subscription,
->(): TypedDocumentNode<
-    SubscriptionsResult<Pick<Subscription, 'subscriptionId' | 'description'>>,
-    GraphqlQueryVariables<QueryVariablesType>
-> {
-    return GET_SUBSCRIPTIONS_LIST_GRAPHQL_QUERY_START_PAGE;
 }
