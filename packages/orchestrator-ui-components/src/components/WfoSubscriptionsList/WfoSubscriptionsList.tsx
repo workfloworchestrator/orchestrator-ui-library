@@ -98,6 +98,16 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             name: t('tag'),
             width: '100',
         },
+        customerFullname: {
+            field: 'customerFullname',
+            name: t('customerFullname'),
+            width: '150',
+        },
+        customerShortcode: {
+            field: 'customerShortcode',
+            name: t('customerShortcode'),
+            width: '150',
+        },
         startDate: {
             field: 'startDate',
             name: t('startDate'),
@@ -117,16 +127,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         note: {
             field: 'note',
             name: t('note'),
-        },
-        customerFullname: {
-            field: 'customerFullname',
-            name: t('customerFullname'),
-            width: '150',
-        },
-        customerShortcode: {
-            field: 'customerShortcode',
-            name: t('customerShortcode'),
-            width: '150',
         },
     };
 
