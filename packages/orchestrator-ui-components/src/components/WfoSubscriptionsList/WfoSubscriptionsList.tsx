@@ -32,8 +32,8 @@ import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import {
     SubscriptionListItem,
-    mapGrapghQlSubscriptionsResultToSubscriptionListItems,
-} from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
+    mapGraphQlSubscriptionsResultToSubscriptionListItems,
+} from './mapGraphQlSubscriptionsResultToSubscriptionListItems';
 
 export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
@@ -172,7 +172,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            data={mapGrapghQlSubscriptionsResultToSubscriptionListItems(data)}
+            data={mapGraphQlSubscriptionsResultToSubscriptionListItems(data)}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,

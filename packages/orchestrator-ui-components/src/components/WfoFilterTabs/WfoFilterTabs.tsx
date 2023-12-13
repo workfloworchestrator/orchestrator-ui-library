@@ -9,7 +9,7 @@ export type FilterQuery<DataType> = {
     value: string;
 };
 
-export type WfoFilterTab<TabType, DataType> = {
+export type WfoFilterTab<TabType, DataType = {}> = {
     id: TabType;
     translationKey: string;
     alwaysOnFilters?: FilterQuery<DataType>[];
