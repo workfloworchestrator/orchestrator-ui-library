@@ -34,6 +34,8 @@ import { PATH_SERVICE_TICKETS } from '@/constants-surf';
 import { SurfConfig, SurfConfigProvider } from '@/contexts/SurfConfigContext';
 import { TranslationsProvider } from '@/translations/translationsProvider';
 
+import '../font/inter.css';
+
 type AppOwnProps = {
     orchestratorConfig: OrchestratorConfig;
     surfConfig: SurfConfig;
