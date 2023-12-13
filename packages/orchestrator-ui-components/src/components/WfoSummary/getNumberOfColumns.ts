@@ -1,9 +1,10 @@
 export const getNumberOfColumns = (currentBreakpoint: string | undefined) => {
     switch (currentBreakpoint) {
-        case 'xl':
+        case 'xxl':
             return 3;
-        case 'l':
+        case 'xl':
             return 2;
+        case 'l':
         case 'm':
         case 's':
         case 'xs':

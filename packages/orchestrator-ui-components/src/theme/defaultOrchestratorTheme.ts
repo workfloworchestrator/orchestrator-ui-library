@@ -2,6 +2,14 @@ import { EuiThemeModifications } from '@elastic/eui';
 
 export const defaultOrchestratorTheme: EuiThemeModifications = {
     base: 16,
+    breakpoint: {
+        xs: 0,
+        s: 575,
+        m: 768,
+        l: 992,
+        xl: 1200,
+        xxl: 1600,
+    },
     size: {
         base: '16px',
         xxs: '2px',
