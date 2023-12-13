@@ -312,6 +312,20 @@ export type GraphQLPageInfo = {
     filterFields: string[];
 };
 
+export type SummaryResult = SubscriptionsResult<
+    Pick<Subscription, 'subscriptionId' | 'description'>
+> &
+    ProcessListResult<
+        Pick<Process, 'processId' | 'workflowName' | 'startedAt'>
+    > & {
+        tasks: ProcessListResult<
+            Pick<Process, 'processId' | 'workflowName' | 'startedAt'>
+        >['processes'];
+        products: ProductDefinitionsResult<
+            Pick<ProductDefinition, 'name'> & SubscriptionsResult<never>
+        >['products'];
+    };
+
 export interface SubscriptionsResult<T = Subscription> {
     subscriptions: GraphQlResultPage<T>;
 }
@@ -324,8 +338,8 @@ export interface SubscriptionDetailResult {
     subscriptions: GraphQlResultPage<SubscriptionDetail>;
 }
 
-export interface ProductDefinitionsResult {
-    products: GraphQlResultPage<ProductDefinition>;
+export interface ProductDefinitionsResult<T = ProductDefinition> {
+    products: GraphQlResultPage<T>;
 }
 export interface StartProcessStep {
     name: Step['name'];
@@ -343,8 +357,8 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
-export interface ProcessListResult {
-    processes: GraphQlResultPage<Process>;
+export interface ProcessListResult<T = Process> {
+    processes: GraphQlResultPage<T>;
 }
 
 export interface ProcessesDetailResult {
