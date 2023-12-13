@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiIcon,
-    EuiTab,
-    EuiTabs,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '@/graphqlQueries';
 import { useQueryWithGraphql } from '@/hooks';
@@ -30,8 +22,6 @@ type WfoSubscriptionProps = {
 };
 
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
-    const t = useTranslations('subscriptions.detail');
-
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WfoSubscriptionDetailTab.GENERAL_TAB),

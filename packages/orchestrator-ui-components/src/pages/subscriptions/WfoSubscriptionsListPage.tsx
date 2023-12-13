@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { useRouter } from 'next/router';
-import {
-    QueryParamConfig,
-    QueryParamOptions,
-    StringParam,
-    useQueryParam,
-    withDefault,
-} from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 
 import {
     DEFAULT_PAGE_SIZE,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
-    getSortDirectionFromString,
 } from '@/components';
 
 import { WfoFilterTabs } from '../../components';
@@ -29,8 +21,6 @@ import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import { SortOrder } from '../../types';
 
 export const WfoSubscriptionsListPage = () => {
-    const router = useRouter();
-
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<SubscriptionListItem>>();
 

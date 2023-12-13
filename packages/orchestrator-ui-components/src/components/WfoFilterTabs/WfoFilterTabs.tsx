@@ -9,10 +9,11 @@ export type FilterQuery<DataType> = {
     value: string;
 };
 
-export type WfoFilterTab<TabType, DataType = {}> = {
+export type WfoFilterTab<TabType, DataType = object> = {
     id: TabType;
     translationKey: string;
     alwaysOnFilters?: FilterQuery<DataType>[];
+    prepend?: React.ReactNode | string;
 };
 
 export type WfoFilterTabsProps<TabType, DataType> = {
@@ -31,11 +32,12 @@ export const WfoFilterTabs = <TabType extends string, DataType>({
     const t = useTranslations(translationNamespace);
     return (
         <EuiTabs>
-            {tabs.map(({ id, translationKey: name }) => (
+            {tabs.map(({ id, translationKey: name, prepend = '' }) => (
                 <EuiTab
                     key={id}
                     isSelected={id === selectedTab}
                     onClick={() => id !== selectedTab && onChangeTab(id)}
+                    prepend={prepend}
                 >
                     {t(name)}
                 </EuiTab>
