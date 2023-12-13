@@ -1,19 +1,19 @@
 import { WfoFilterTab } from '../../components';
-import { SubscriptionListItem } from './mapGrapghQlSubscriptionsResultToSubscriptionListItems';
+import { SubscriptionListItem } from './mapGraphQlSubscriptionsResultToSubscriptionListItems';
 
-export enum WfoSubscriptionsTabType {
+export enum WfoSubscriptionListTab {
     ACTIVE = 'ACTIVE',
     TERMINATED = 'TERMINATED',
     TRANSIENT = 'TRANSIENT',
     ALL = 'ALL',
 }
 
-export const defaultSubscriptionsTabs: WfoFilterTab<
-    WfoSubscriptionsTabType,
+export const subscriptionListTabs: WfoFilterTab<
+    WfoSubscriptionListTab,
     SubscriptionListItem
 >[] = [
     {
-        id: WfoSubscriptionsTabType.ACTIVE,
+        id: WfoSubscriptionListTab.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
@@ -23,7 +23,7 @@ export const defaultSubscriptionsTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoSubscriptionsTabType.TERMINATED,
+        id: WfoSubscriptionListTab.TERMINATED,
         translationKey: 'terminated',
         alwaysOnFilters: [
             {
@@ -33,7 +33,7 @@ export const defaultSubscriptionsTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoSubscriptionsTabType.TRANSIENT,
+        id: WfoSubscriptionListTab.TRANSIENT,
         translationKey: 'transient',
         alwaysOnFilters: [
             {
@@ -43,29 +43,7 @@ export const defaultSubscriptionsTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoSubscriptionsTabType.ALL,
+        id: WfoSubscriptionListTab.ALL,
         translationKey: 'all',
     },
 ];
-
-export const getSubscriptionsTabTypeFromString = (
-    tabId?: string,
-): WfoSubscriptionsTabType | undefined => {
-    if (!tabId) {
-        return undefined;
-    }
-
-    switch (tabId.toUpperCase()) {
-        case WfoSubscriptionsTabType.ACTIVE.toString():
-            return WfoSubscriptionsTabType.ACTIVE;
-        case WfoSubscriptionsTabType.TERMINATED.toString():
-            return WfoSubscriptionsTabType.TERMINATED;
-        case WfoSubscriptionsTabType.TRANSIENT.toString():
-            return WfoSubscriptionsTabType.TRANSIENT;
-        case WfoSubscriptionsTabType.ALL.toString():
-            return WfoSubscriptionsTabType.ALL;
-
-        default:
-            return undefined;
-    }
-};

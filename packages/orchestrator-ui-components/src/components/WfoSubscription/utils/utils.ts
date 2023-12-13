@@ -8,11 +8,11 @@ import { WorkflowTarget } from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
 
-export enum SubscriptionTabIds {
-    GENERAL_TAB = 'general-id',
-    SERVICE_CONFIGURATION_TAB = 'service-configuration-id',
-    PROCESSES_TAB = 'processes-id',
-    RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions-id',
+export enum WfoSubscriptionDetailTab {
+    GENERAL_TAB = 'general',
+    SERVICE_CONFIGURATION_TAB = 'service-configuration',
+    PROCESSES_TAB = 'processes',
+    RELATED_SUBSCRIPTIONS_TAB = 'related-subscriptions',
 }
 
 export const getFieldFromProductBlockInstanceValues = (

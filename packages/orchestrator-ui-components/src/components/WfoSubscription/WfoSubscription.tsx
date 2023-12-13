@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import {
     EuiFlexGroup,
@@ -11,49 +12,37 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { useQueryWithGraphql } from '../../hooks';
+import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '@/graphqlQueries';
+import { useQueryWithGraphql } from '@/hooks';
+
+import { WfoFilterTabs } from '../WfoFilterTabs';
 import { WfoLoading } from '../WfoLoading';
 import { WfoProcessesTimeline } from './WfoProcessesTimeline';
 import { WfoRelatedSubscriptions } from './WfoRelatedSubscriptions';
 import { WfoSubscriptionActions } from './WfoSubscriptionActions';
 import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
 import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
-import { SubscriptionTabIds } from './utils';
+import { subscriptionDetailTabs } from './subscriptionDetailTabs';
+import { WfoSubscriptionDetailTab } from './utils';
 
 type WfoSubscriptionProps = {
     subscriptionId: string;
 };
 
-const tabs = [
-    {
-        id: SubscriptionTabIds.GENERAL_TAB,
-        translationKey: 'tabs.general',
-        prepend: <EuiIcon type="devToolsApp" />,
-        append: <></>,
-    },
-    {
-        id: SubscriptionTabIds.SERVICE_CONFIGURATION_TAB,
-        translationKey: 'tabs.serviceConfiguration',
-        prepend: <EuiIcon type="submodule" />,
-    },
-    {
-        id: SubscriptionTabIds.PROCESSES_TAB,
-        translationKey: 'tabs.workflows',
-        prepend: <EuiIcon type="indexRuntime" />,
-    },
-    {
-        id: SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB,
-        translationKey: 'tabs.relatedSubscriptions',
-        prepend: <EuiIcon type="heatmap" />,
-    },
-];
-
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const t = useTranslations('subscriptions.detail');
-    const [selectedTabId, setSelectedTabId] = useState<SubscriptionTabIds>(
-        SubscriptionTabIds.GENERAL_TAB,
+
+    const [activeTab, setActiveTab] = useQueryParam(
+        'activeTab',
+        withDefault(StringParam, WfoSubscriptionDetailTab.GENERAL_TAB),
     );
+
+    const selectedTab = ((): WfoSubscriptionDetailTab => {
+        return (
+            subscriptionDetailTabs.find(({ id }) => id === activeTab)?.id ||
+            WfoSubscriptionDetailTab.GENERAL_TAB
+        );
+    })();
 
     const { data, isFetching } = useQueryWithGraphql(
         GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
@@ -61,22 +50,9 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
         `subscription-${subscriptionId}`,
     );
 
-    const onSelectedTabChanged = (id: SubscriptionTabIds) => {
-        setSelectedTabId(id);
+    const onSelectedTabChanged = (tab: WfoSubscriptionDetailTab) => {
+        setActiveTab(tab);
     };
-
-    const renderTabs = () =>
-        tabs.map((tab, index) => (
-            <EuiTab
-                key={index}
-                onClick={() => onSelectedTabChanged(tab.id)}
-                isSelected={tab.id === selectedTabId}
-                prepend={tab.prepend}
-                append={tab.append}
-            >
-                {t(tab.translationKey)}
-            </EuiTab>
-        ));
 
     const subscriptionResult =
         data && data.subscriptions && data.subscriptions.page;
@@ -104,24 +80,30 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 />
                             </EuiFlexItem>
                         </EuiFlexGroup>
-                        <>
-                            <EuiTabs>{renderTabs()}</EuiTabs>
-                        </>
 
-                        {selectedTabId === SubscriptionTabIds.GENERAL_TAB && (
+                        <WfoFilterTabs
+                            tabs={subscriptionDetailTabs}
+                            selectedTab={selectedTab}
+                            translationNamespace="subscriptions.detail.tabs"
+                            onChangeTab={onSelectedTabChanged}
+                        />
+
+                        {selectedTab ===
+                            WfoSubscriptionDetailTab.GENERAL_TAB && (
                             <WfoSubscriptionGeneral
                                 subscriptionDetail={subscriptionDetail}
                             />
                         )}
-                        {selectedTabId ===
-                            SubscriptionTabIds.SERVICE_CONFIGURATION_TAB && (
+                        {selectedTab ===
+                            WfoSubscriptionDetailTab.SERVICE_CONFIGURATION_TAB && (
                             <WfoSubscriptionDetailTree
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }
                             />
                         )}
-                        {selectedTabId === SubscriptionTabIds.PROCESSES_TAB &&
+                        {selectedTab ===
+                            WfoSubscriptionDetailTab.PROCESSES_TAB &&
                             data && (
                                 <WfoProcessesTimeline
                                     subscriptionDetailProcesses={
@@ -129,8 +111,8 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                     }
                                 />
                             )}
-                        {selectedTabId ===
-                            SubscriptionTabIds.RELATED_SUBSCRIPTIONS_TAB &&
+                        {selectedTab ===
+                            WfoSubscriptionDetailTab.RELATED_SUBSCRIPTIONS_TAB &&
                             data && (
                                 <WfoRelatedSubscriptions
                                     subscriptionId={

@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import {
+    QueryParamConfig,
+    QueryParamOptions,
+    StringParam,
+    useQueryParam,
+    withDefault,
+} from 'use-query-params';
 
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
 
@@ -13,10 +19,9 @@ import {
 
 import { WfoFilterTabs } from '../../components';
 import {
+    WfoSubscriptionListTab,
     WfoSubscriptionsList,
-    WfoSubscriptionsTabType,
-    defaultSubscriptionsTabs,
-    getSubscriptionsTabTypeFromString,
+    subscriptionListTabs,
 } from '../../components/WfoSubscriptionsList';
 import { SubscriptionListItem } from '../../components/WfoSubscriptionsList';
 import { StoredTableConfig } from '../../components/WfoTable';
@@ -56,28 +61,25 @@ export const WfoSubscriptionsListPage = () => {
 
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoSubscriptionsTabType.ACTIVE),
+        withDefault(StringParam, WfoSubscriptionListTab.ACTIVE),
     );
 
-    const sortOrder = getSortDirectionFromString(
-        dataDisplayParams.sortBy?.order,
-    );
-    const selectedSubscriptionsTab =
-        getSubscriptionsTabTypeFromString(activeTab);
-    if (!sortOrder || !selectedSubscriptionsTab) {
-        router.replace('/subscriptions');
-        return null;
-    }
+    const selectedTab = (): WfoSubscriptionListTab => {
+        return (
+            subscriptionListTabs.find(({ id }) => id === activeTab)?.id ||
+            WfoSubscriptionListTab.ACTIVE
+        );
+    };
 
     const handleChangeSubscriptionsTab = (
-        updatedSubscriptionsTab: WfoSubscriptionsTabType,
+        updatedSubscriptionsTab: WfoSubscriptionListTab,
     ) => {
         setActiveTab(updatedSubscriptionsTab);
         setDataDisplayParam('pageIndex', 0);
     };
 
-    const alwaysOnFilters = defaultSubscriptionsTabs.find(
-        ({ id }) => id === selectedSubscriptionsTab,
+    const alwaysOnFilters = subscriptionListTabs.find(
+        ({ id }) => id === activeTab,
     )?.alwaysOnFilters;
 
     return (
@@ -88,8 +90,8 @@ export const WfoSubscriptionsListPage = () => {
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
-                tabs={defaultSubscriptionsTabs}
-                selectedTab={selectedSubscriptionsTab}
+                tabs={subscriptionListTabs}
+                selectedTab={selectedTab()}
                 translationNamespace="subscriptions.tabs"
                 onChangeTab={handleChangeSubscriptionsTab}
             />
