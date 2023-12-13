@@ -28,6 +28,8 @@ import { getAppLogo } from '@/components/AppLogo/AppLogo';
 import { getInitialOrchestratorConfig } from '@/configuration';
 import { TranslationsProvider } from '@/translations/translationsProvider';
 
+import '../font/inter.css';
+
 type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 
 const queryClientConfig: QueryClientConfig = {
