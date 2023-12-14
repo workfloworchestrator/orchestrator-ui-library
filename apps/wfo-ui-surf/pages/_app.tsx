@@ -31,7 +31,7 @@ import {
     getInitialSurfConfig,
 } from '@/configuration';
 import { PATH_SERVICE_TICKETS } from '@/constants-surf';
-import { SurfConfig, SurfConfigProvider } from '@/contexts/surfConfigContext';
+import { SurfConfig, SurfConfigProvider } from '@/contexts/SurfConfigContext';
 import { TranslationsProvider } from '@/translations/translationsProvider';
 
 type AppOwnProps = {

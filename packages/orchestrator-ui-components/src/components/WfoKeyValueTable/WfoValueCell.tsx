@@ -21,11 +21,11 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
     const {
-        valueColumnStyle,
-        valueCellStyle,
         clipboardIconStyle,
         clickable,
         getBackgroundColorStyleForRow,
+        valueColumnStyle,
+        valueCellStyle,
     } = getStyles(theme);
 
     const shouldRenderCopyColumn = enableCopyIcon && textToCopy;

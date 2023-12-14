@@ -39,12 +39,34 @@
                         "defaultSendingLevelModalTitle": "Default sending level of CIM",
                         "defaultSendingLevelModalText": "Default sending level (DSL) of CIM defines the minimal impact levels for which CIM shall send email to customers. Impacted subscriptions with a lower impact than the DSL will not be included in the email notification to the customer. However if the customer has set the minimal impact notification level (MINL) of the subscription to a lower impact than the DSL, the subscription will be included.",
                         "impactOnSubscriptions": "Impact on subscriptions",
+                        "acceptImpact": "Accept impact",
                         "subscriptionImpactTable": {
                             "subscriptionTitle": "Subscriptions",
                             "affectedCustomers": "Affected Customers",
                             "informCustomers": "Inform Customers",
                             "imsCalculatedImpact": "IMS Calculated Impact",
-                            "nocManualOverride": "NOC Manual Impact Override"
+                            "nocManualOverride": "NOC Manual Impact Override",
+                            "impactOverrideModalTitle": "Override Impact Level",
+                            "overrideImpactButton": "Override Impact"
+                        },
+                        "subscriptionImpactCustomerTable": {
+                            "customers": "Customers",
+                            "relation": "Relation",
+                            "contacts": "Contacts",
+                            "acceptedImpact": "Accepted impact",
+                            "minl": "Minimal impact notification level",
+                            "sendingLevel": "Sending level",
+                            "informCustomer": "Inform customer",
+                            "contactsModal": "Customer contacts",
+                            "customer": "Customer",
+                            "contact": "Contact",
+                            "customerContacts": "Customer contacts",
+                            "showImsServiceInformation": "Show IMS service information",
+                            "imsInformationModalTitle": "IMS service information",
+                            "imsCircuitId": "ID",
+                            "imsCircuitName": "IMS name",
+                            "extraInformation": "Extra info",
+                            "impact": "Impact"
                         }
                     }
                 },

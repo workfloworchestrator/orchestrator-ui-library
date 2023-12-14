@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Criteria } from '@elastic/eui';
+import { Criteria, EuiText } from '@elastic/eui';
 import {
     DEFAULT_PAGE_SIZES,
     DataDisplayParams,
@@ -15,16 +15,16 @@ import {
     WfoTableColumns,
     formatDate,
     getSortDirectionFromString,
+    getWfoBasicTableStyles,
     useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import {
-    ServiceTicketDefinition,
-    ServiceTicketProcessState,
-} from '../../types';
-import { ColorMappings, getColorForState } from '../../utils/getColorForState';
+import { CIM_TICKETS_ENDPOINT } from '@/constants-surf';
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { ServiceTicketDefinition, ServiceTicketProcessState } from '@/types';
+import { ColorMappings, getColorForState } from '@/utils/getColorForState';
+
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
 
 const SERVICE_TICKET_FIELD_JIRA_ID: keyof ServiceTicketDefinition =
@@ -75,10 +75,12 @@ export const WfoServiceTicketsList = ({
     });
 
     const t = useTranslations('cim.serviceTickets');
+    const { getStatusColumnStyle } = getWfoBasicTableStyles(theme);
+    const { cimApiBaseUrl } = useContext(SurfConfigContext);
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketDefinition>(
-            CIM_TICKETS_ENDPOINT,
+            cimApiBaseUrl + CIM_TICKETS_ENDPOINT,
             ['serviceTickets'],
             alwaysOnFilters,
         );
@@ -91,6 +93,11 @@ export const WfoServiceTicketsList = ({
     };
 
     const tableColumns: WfoTableColumns<ServiceTicketDefinition> = {
+        _id: {
+            field: '_id',
+            name: '_id',
+            width: '0',
+        },
         jira_ticket_id: {
             field: SERVICE_TICKET_FIELD_JIRA_ID,
             name: t('jiraTicketId'),
@@ -124,19 +131,27 @@ export const WfoServiceTicketsList = ({
             field: SERVICE_TICKET_FIELD_START_DATE,
             name: t('startDate'),
             width: '150',
-            render: (date) => formatDate(date),
+            render: (date, object) => {
+                return object.create_date > date ? (
+                    <EuiText color={theme.colors.dangerText} size={'s'}>
+                        <b>{formatDate(date)}</b>
+                    </EuiText>
+                ) : (
+                    <EuiText size={'s'}>{formatDate(date)}</EuiText>
+                );
+            },
         },
         create_date: {
             field: SERVICE_TICKET_FIELD_CREATE_DATE,
             name: t('createDate'),
             width: '150',
-            render: (date: string) => formatDate(date),
+            render: formatDate,
         },
         last_update_time: {
             field: SERVICE_TICKET_FIELD_LAST_UPDATE,
             name: t('lastUpdateTime'),
             width: '150',
-            render: (date: string) => formatDate(date),
+            render: formatDate,
         },
     };
 
@@ -232,6 +247,7 @@ export const WfoServiceTicketsList = ({
             onUpdateDataSorting={(currentSort) => {
                 setDataSorting(currentSort);
             }}
+            customTableStyle={getStatusColumnStyle(1)}
         />
     );
 };

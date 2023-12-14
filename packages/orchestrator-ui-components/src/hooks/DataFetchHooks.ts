@@ -95,15 +95,13 @@ const filterDataByCriteria = <Type>(
 };
 
 export const useFilterQueryWithRest = <Type>(
-    endpoint: string,
+    url: string,
     queryKey: string[],
     filters?: GraphqlFilter<Type>[],
     refetchInterval?: number,
 ) => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-
     const fetchFromApi = async () => {
-        const response = await fetch(orchestratorApiBaseUrl + endpoint);
+        const response = await fetch(url);
         const data = await response.json();
         return filters ? filterDataByCriteria(data, filters) : data;
     };

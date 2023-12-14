@@ -2,22 +2,24 @@ import React, { ReactNode } from 'react';
 
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
+import { SerializedStyles } from '@emotion/react';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { SortOrder } from '../../../types';
 import type {
     TableColumnKeys,
     WfoDataSearch,
     WfoDataSorting,
-} from '../utils/columns';
+} from '@/components';
 import {
     WFO_STATUS_COLOR_FIELD,
     WfoTableControlColumnConfig,
     WfoTableDataColumnConfig,
-} from '../utils/columns';
-import { WfoStatusColorField } from './WfoStatusColorField';
-import { WfoTableHeaderCell } from './WfoTableHeaderCell';
-import { getStyles } from './styles';
+} from '@/components';
+import { WfoStatusColorField } from '@/components';
+import { WfoTableHeaderCell } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { SortOrder } from '@/types';
+
+import { getWfoBasicTableStyles } from './styles';
 
 export type WfoBasicTableColumns<T> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
@@ -44,6 +46,7 @@ export type WfoBasicTableProps<T> = {
     isExpandable?: boolean;
     itemIdToExpandedRowMap?: Record<string, ReactNode>;
     itemId?: string;
+    customTableStyle?: SerializedStyles;
 };
 
 export const WfoBasicTable = <T,>({
@@ -60,9 +63,10 @@ export const WfoBasicTable = <T,>({
     isExpandable,
     itemIdToExpandedRowMap,
     itemId,
+    customTableStyle,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle, getStatusColumnStyle } = getStyles(theme);
+    const { basicTableStyle } = getWfoBasicTableStyles(theme);
 
     const statusColorColumn: WfoTableControlColumnConfig<T> = {
         statusColorField: {
@@ -84,9 +88,7 @@ export const WfoBasicTable = <T,>({
         ? { ...statusColorColumn, ...columns }
         : { ...columns };
 
-    const tableStyling = getStatusColorForRow
-        ? [basicTableStyle, getStatusColumnStyle(1)]
-        : basicTableStyle;
+    const tableStyling = customTableStyle ?? basicTableStyle;
 
     return (
         <EuiBasicTable
