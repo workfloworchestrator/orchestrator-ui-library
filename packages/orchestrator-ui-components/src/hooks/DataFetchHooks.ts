@@ -2,69 +2,12 @@ import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
 import { OrchestratorConfigContext } from '@/contexts';
-import {
-    GraphqlFilter,
-    ItemsList,
-    ProcessDetailResultRaw,
-    ProcessFromRestApi,
-} from '@/types';
+import { GraphqlFilter, ProcessDetailResultRaw } from '@/types';
 
 import { useQueryWithFetch } from './useQueryWithFetch';
 import { useSessionWithToken } from './useSessionWithToken';
 
 export type CacheNames = { [key: string]: string };
-
-// todo: decide to remove from libaray (currently not used)
-export const useFavouriteSubscriptions = () => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const url = `${orchestratorApiBaseUrl}/subscriptions/?range=10%2C15`;
-    const initialData: ItemsList = {
-        buttonName: 'Show all favourites',
-        items: [],
-        title: 'Favourite Subscriptions',
-        type: 'subscription',
-    };
-
-    const { data, isLoading } = useQueryWithFetch<
-        ProcessFromRestApi[],
-        Record<string, never>
-    >(url, {}, 'favouriteSubscriptions');
-    return isLoading ? initialData : { ...initialData, items: data || [] };
-};
-
-export const useProcessesAttention = () => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const url = `${orchestratorApiBaseUrl}/processes/?range=100%2C105`;
-    const initialData: ItemsList = {
-        type: 'process',
-        title: 'Processes that need attention',
-        items: [],
-        buttonName: 'Show all active processes',
-    };
-
-    const { data, isLoading } = useQueryWithFetch<
-        ProcessFromRestApi[],
-        Record<string, never>
-    >(url, {}, 'processesAttention');
-    return isLoading ? initialData : { ...initialData, items: data || [] };
-};
-
-export const useRecentProcesses = () => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const url = `${orchestratorApiBaseUrl}/processes/?range=106%2C111`;
-    const initialData: ItemsList = {
-        type: 'process',
-        title: 'Recently completed processes',
-        items: [],
-        buttonName: 'Show all completed processes',
-    };
-
-    const { data, isLoading } = useQueryWithFetch<
-        ProcessFromRestApi[],
-        Record<string, never>
-    >(url, {}, 'recentProcesses');
-    return isLoading ? initialData : { ...initialData, items: data || [] };
-};
 
 export const useRawProcessDetails = (processId: string) => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
