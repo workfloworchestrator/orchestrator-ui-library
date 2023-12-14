@@ -312,20 +312,6 @@ export type GraphQLPageInfo = {
     filterFields: string[];
 };
 
-export type SummaryResult = SubscriptionsResult<
-    Pick<Subscription, 'subscriptionId' | 'description'>
-> &
-    ProcessListResult<
-        Pick<Process, 'processId' | 'workflowName' | 'startedAt'>
-    > & {
-        tasks: ProcessListResult<
-            Pick<Process, 'processId' | 'workflowName' | 'startedAt'>
-        >['processes'];
-        products: ProductDefinitionsResult<
-            Pick<ProductDefinition, 'name'> & SubscriptionsResult<never>
-        >['products'];
-    };
-
 export interface SubscriptionsResult<T = Subscription> {
     subscriptions: GraphQlResultPage<T>;
 }

@@ -7,61 +7,136 @@ import {
     PATH_SUBSCRIPTIONS,
     PATH_TASKS,
     PATH_WORKFLOWS,
-    WfoLoading,
 } from '@/components';
 import {
     SummaryCard,
     SummaryCardStatus,
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
-import { GET_SUMMARY_GRAPHQL_QUERY } from '@/graphqlQueries/summaryQuery';
+import {
+    getProductsSummaryQuery,
+    getSubscriptionsListSummaryGraphQlQuery,
+} from '@/graphqlQueries';
+import { getProcessListSummaryGraphQlQuery } from '@/graphqlQueries/processListQuery';
 import { useQueryWithGraphql } from '@/hooks';
+import { SortOrder } from '@/types';
 import { getFirstUuidPart } from '@/utils';
 
 export const WfoMultiListSection: FC = () => {
-    // Todo: get data from graphql
-    // const favouriteSubscriptionsList = useFavouriteSubscriptions();
-    // const processesAttentionList = useProcessesAttention();
-    // const completedProcessesList = useRecentProcesses();
-
-    const { data } = useQueryWithGraphql(
-        GET_SUMMARY_GRAPHQL_QUERY,
+    const { data: subscriptionsSummaryResult } = useQueryWithGraphql(
+        getSubscriptionsListSummaryGraphQlQuery(),
         {
             first: 5,
+            after: 0,
+            sortBy: {
+                field: 'startDate',
+                order: SortOrder.DESC,
+            },
+            filterBy: [
+                {
+                    field: 'status',
+                    value: 'Active',
+                },
+            ],
         },
-        ['startPage'],
+        ['subscriptions', 'startPage'],
     );
-
-    if (!data) {
-        return <WfoLoading />;
-    }
+    const { data: processesSummaryResult } = useQueryWithGraphql(
+        getProcessListSummaryGraphQlQuery(),
+        {
+            first: 5,
+            after: 0,
+            sortBy: {
+                field: 'startedAt',
+                order: SortOrder.DESC,
+            },
+            filterBy: [
+                {
+                    // Todo: isTask is not a key of Process
+                    // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore waiting for fix in backend
+                    field: 'isTask',
+                    value: 'false',
+                },
+                {
+                    field: 'lastStatus',
+                    value: 'created-running-suspended-waiting-failed-resumed',
+                },
+            ],
+        },
+        ['processes', 'startPage'],
+    );
+    const { data: failedTasksSummaryResult } = useQueryWithGraphql(
+        getProcessListSummaryGraphQlQuery(),
+        {
+            first: 5,
+            after: 0,
+            sortBy: {
+                field: 'startedAt',
+                order: SortOrder.DESC,
+            },
+            filterBy: [
+                {
+                    // Todo: isTask is not a key of Process
+                    // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore waiting for fix in backend
+                    field: 'isTask',
+                    value: 'true',
+                },
+                {
+                    field: 'lastStatus',
+                    value: 'failed',
+                },
+            ],
+        },
+        ['processes', 'startPage'],
+    );
+    const { data: productsSummaryResult } = useQueryWithGraphql(
+        getProductsSummaryQuery(),
+        {
+            first: 1000,
+            after: 0,
+            sortBy: {
+                field: 'name',
+                order: SortOrder.ASC,
+            },
+        },
+        'productSummary',
+    );
 
     // Todo map to SummaryCard function here
     const latestActiveSubscriptionsSummaryCard: SummaryCard = {
         headerTitle: 'Total Subscriptions',
-        headerValue: data.subscriptions.pageInfo.totalItems ?? 0,
+        headerValue:
+            subscriptionsSummaryResult?.subscriptions.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: 'Latest subscriptions',
         listItems:
-            data.subscriptions.page.map((subscription) => ({
-                title: subscription.description,
-                value: getFirstUuidPart(subscription.subscriptionId),
-                url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-            })) ?? [],
+            subscriptionsSummaryResult?.subscriptions.page.map(
+                (subscription) => ({
+                    title: subscription.description,
+                    value: getFirstUuidPart(subscription.subscriptionId),
+                    url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
+                }),
+            ) ?? [],
         buttonName: 'Show all subscriptions',
         buttonUrl: PATH_SUBSCRIPTIONS,
     };
 
     const latestWorkflowsSummaryCard: SummaryCard = {
         headerTitle: 'Total Workflows',
-        headerValue: data.processes.pageInfo.totalItems ?? 0,
+        headerValue: processesSummaryResult?.processes.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: 'Most recent workflows',
         listItems:
-            data.processes.page.map((process) => ({
-                title: process.workflowName,
-                value: process.startedAt,
-                url: `${PATH_WORKFLOWS}/${process.processId}`,
+            processesSummaryResult?.processes.page.map((workflow) => ({
+                title: workflow.workflowName,
+                value: workflow.startedAt,
+                url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
         buttonName: 'Show all workflows',
         buttonUrl: PATH_WORKFLOWS,
@@ -69,11 +144,12 @@ export const WfoMultiListSection: FC = () => {
 
     const failedTasksSummaryCard: SummaryCard = {
         headerTitle: 'Recently failed tasks',
-        headerValue: data.tasks.pageInfo.totalItems ?? 0,
+        headerValue:
+            failedTasksSummaryResult?.processes.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: 'Most recent workflows',
         listItems:
-            data.tasks.page.map((task) => ({
+            failedTasksSummaryResult?.processes.page.map((task) => ({
                 title: task.workflowName,
                 value: task.startedAt,
                 url: `${PATH_TASKS}/${task.processId}`,
@@ -81,14 +157,13 @@ export const WfoMultiListSection: FC = () => {
         buttonName: 'Show all tasks',
         buttonUrl: PATH_TASKS,
     };
-
     const productsSummaryCard: SummaryCard = {
         headerTitle: 'Products',
-        headerValue: data.products.pageInfo.totalItems ?? 0,
+        headerValue: productsSummaryResult?.products.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: 'Products',
         listItems:
-            data.products.page
+            productsSummaryResult?.products.page
                 .sort(
                     (left, right) =>
                         (right.subscriptions.pageInfo.totalItems ?? 0) -

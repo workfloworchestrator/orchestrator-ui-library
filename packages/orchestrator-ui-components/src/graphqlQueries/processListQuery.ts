@@ -5,10 +5,7 @@ import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 import { GraphqlQueryVariables, Process, ProcessListResult } from '@/types';
 
-export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
-    ProcessListResult,
-    GraphqlQueryVariables<Process>
-> = parse(gql`
+export const GET_PROCESS_LIST_GRAPHQL_QUERY = parse(gql`
     query ProcessList(
         $first: Int!
         $after: Int!
@@ -61,3 +58,44 @@ export const GET_PROCESS_LIST_GRAPHQL_QUERY: TypedDocumentNode<
         }
     }
 `);
+
+export const GET_PROCESS_LIST_SUMMARY_GRAPHQL_QUERY = parse(gql`
+    query ProcessListSummary(
+        $first: Int!
+        $after: Int!
+        $sortBy: [GraphqlSort!]
+        $filterBy: [GraphqlFilter!]
+        $query: String
+    ) {
+        processes(
+            first: $first
+            after: $after
+            sortBy: $sortBy
+            filterBy: $filterBy
+            query: $query
+        ) {
+            page {
+                processId
+                workflowName
+                startedAt
+            }
+            pageInfo {
+                totalItems
+                startCursor
+                endCursor
+            }
+        }
+    }
+`);
+
+export const getProcessListGraphQlQuery = (): TypedDocumentNode<
+    ProcessListResult,
+    GraphqlQueryVariables<Process>
+> => GET_PROCESS_LIST_GRAPHQL_QUERY;
+
+export const getProcessListSummaryGraphQlQuery = (): TypedDocumentNode<
+    ProcessListResult<
+        Pick<Process, 'processId' | 'workflowName' | 'startedAt'>
+    >,
+    GraphqlQueryVariables<Process>
+> => GET_PROCESS_LIST_SUMMARY_GRAPHQL_QUERY;
