@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
@@ -22,7 +22,7 @@ import { useQueryWithGraphql } from '@/hooks';
 import { SortOrder } from '@/types';
 import { getFirstUuidPart } from '@/utils';
 
-export const WfoMultiListSection: FC = () => {
+export const WfoStartPage = () => {
     const { data: subscriptionsSummaryResult } = useQueryWithGraphql(
         getSubscriptionsListSummaryGraphQlQuery(),
         {
@@ -191,24 +191,15 @@ export const WfoMultiListSection: FC = () => {
     };
 
     return (
-        <>
-            {/*Todo clean up:*/}
-            {/*<EuiFlexGroup wrap>*/}
-            {/*    <WfoListStartPage list={favouriteSubscriptionsList} />*/}
-            {/*    <WfoListStartPage list={processesAttentionList} />*/}
-            {/*    <WfoListStartPage list={completedProcessesList} />*/}
-            {/*</EuiFlexGroup>*/}
-
-            <EuiFlexItem>
-                <WfoSummaryCards
-                    summaryCards={[
-                        latestActiveSubscriptionsSummaryCard,
-                        latestWorkflowsSummaryCard,
-                        failedTasksSummaryCard,
-                        productsSummaryCard,
-                    ]}
-                />
-            </EuiFlexItem>
-        </>
+        <EuiFlexItem>
+            <WfoSummaryCards
+                summaryCards={[
+                    latestActiveSubscriptionsSummaryCard,
+                    latestWorkflowsSummaryCard,
+                    failedTasksSummaryCard,
+                    productsSummaryCard,
+                ]}
+            />
+        </EuiFlexItem>
     );
 };
