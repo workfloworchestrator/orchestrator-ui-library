@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { Pagination } from '@elastic/eui/src/components';
 
-import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
+import { getProcessListGraphQlQuery } from '../../graphqlQueries/processListQuery';
 import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
 import { WfoProcessListSubscriptionsCell } from '../../pages';
 import { Process, SortOrder } from '../../types';
@@ -179,8 +179,9 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
+
     const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_PROCESS_LIST_GRAPHQL_QUERY,
+        getProcessListGraphQlQuery(),
         {
             first: pageSize,
             after: pageIndex * pageSize,
@@ -188,7 +189,7 @@ export const WfoProcessesList = ({
             filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
             query: queryString || undefined,
         },
-        'processList',
+        ['processes', 'processList'],
     );
 
     const { totalItems, sortFields, filterFields } =

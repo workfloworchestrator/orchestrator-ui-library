@@ -20,7 +20,7 @@ import {
 } from '@/components';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_PRODUCTS_GRAPHQL_QUERY } from '@/graphqlQueries';
+import { getProductsQuery } from '@/graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
@@ -153,7 +153,7 @@ export const WfoProductsPage = () => {
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
     const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_PRODUCTS_GRAPHQL_QUERY,
+        getProductsQuery(),
         {
             first: pageSize,
             after: pageIndex * pageSize,
