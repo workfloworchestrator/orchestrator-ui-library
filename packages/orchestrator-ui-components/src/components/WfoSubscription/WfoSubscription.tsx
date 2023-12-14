@@ -15,7 +15,7 @@ import { WfoSubscriptionActions } from './WfoSubscriptionActions';
 import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
 import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
 import { subscriptionDetailTabs } from './subscriptionDetailTabs';
-import { WfoSubscriptionDetailTab } from './utils';
+import { SubscriptionDetailTab } from './utils';
 
 type WfoSubscriptionProps = {
     subscriptionId: string;
@@ -24,13 +24,13 @@ type WfoSubscriptionProps = {
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoSubscriptionDetailTab.GENERAL_TAB),
+        withDefault(StringParam, SubscriptionDetailTab.GENERAL_TAB),
     );
 
-    const selectedTab = ((): WfoSubscriptionDetailTab => {
+    const selectedTab = ((): SubscriptionDetailTab => {
         return (
             subscriptionDetailTabs.find(({ id }) => id === activeTab)?.id ||
-            WfoSubscriptionDetailTab.GENERAL_TAB
+            SubscriptionDetailTab.GENERAL_TAB
         );
     })();
 
@@ -40,7 +40,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
         `subscription-${subscriptionId}`,
     );
 
-    const onSelectedTabChanged = (tab: WfoSubscriptionDetailTab) => {
+    const onSelectedTabChanged = (tab: SubscriptionDetailTab) => {
         setActiveTab(tab);
     };
 
@@ -78,22 +78,20 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                             onChangeTab={onSelectedTabChanged}
                         />
 
-                        {selectedTab ===
-                            WfoSubscriptionDetailTab.GENERAL_TAB && (
+                        {selectedTab === SubscriptionDetailTab.GENERAL_TAB && (
                             <WfoSubscriptionGeneral
                                 subscriptionDetail={subscriptionDetail}
                             />
                         )}
                         {selectedTab ===
-                            WfoSubscriptionDetailTab.SERVICE_CONFIGURATION_TAB && (
+                            SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB && (
                             <WfoSubscriptionDetailTree
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }
                             />
                         )}
-                        {selectedTab ===
-                            WfoSubscriptionDetailTab.PROCESSES_TAB &&
+                        {selectedTab === SubscriptionDetailTab.PROCESSES_TAB &&
                             data && (
                                 <WfoProcessesTimeline
                                     subscriptionDetailProcesses={
@@ -102,7 +100,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 />
                             )}
                         {selectedTab ===
-                            WfoSubscriptionDetailTab.RELATED_SUBSCRIPTIONS_TAB &&
+                            SubscriptionDetailTab.RELATED_SUBSCRIPTIONS_TAB &&
                             data && (
                                 <WfoRelatedSubscriptions
                                     subscriptionId={
