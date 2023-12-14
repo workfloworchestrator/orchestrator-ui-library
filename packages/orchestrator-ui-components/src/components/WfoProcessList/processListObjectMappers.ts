@@ -4,7 +4,7 @@ import {
     Process,
     ProcessListResult,
 } from '../../types';
-import { ProcessListItem } from './WfoProcessList';
+import { ProcessListItem } from './WfoProcessesList';
 
 export const mapGraphQlProcessListResultToProcessListItems = (
     processesResult: ProcessListResult,

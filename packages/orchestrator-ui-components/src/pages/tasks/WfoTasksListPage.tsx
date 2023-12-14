@@ -11,7 +11,6 @@ import {
     ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
-    FilterQuery,
     StoredTableConfig,
     WfoFilterTabs,
     WfoStartTaskButtonComboBox,
@@ -21,8 +20,8 @@ import { PATH_TASKS } from '@/components';
 import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
-    WfoProcessList,
-} from '@/components/WfoProcessList/WfoProcessList';
+    WfoProcessesList,
+} from '@/components/WfoProcessList/WfoProcessesList';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
@@ -32,26 +31,25 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
-import { getTaskListTabTypeFromString } from '@/pages/tasks/getTaskListTabTypeFromString';
+import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages';
+import { getTasksListTabTypeFromString } from '@/pages/tasks/getTasksListTabTypeFromString';
 import { SortOrder } from '@/types';
 
-import { WfoTaskListTabType, defaultTaskListTabs } from './tabConfig';
-
-export const WfoTaskListPage = () => {
+export const WfoTasksListPage = () => {
     const router = useRouter();
     const t = useTranslations('tasks.page');
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoTaskListTabType.ACTIVE),
+        withDefault(StringParam, WfoTasksListTabType.ACTIVE),
     );
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
 
-    const selectedTaskListTab = getTaskListTabTypeFromString(activeTab);
+    const selectedTasksListTab = getTasksListTabTypeFromString(activeTab);
 
     const localStorageKey =
-        selectedTaskListTab === WfoTaskListTabType.ACTIVE
+        selectedTasksListTab === WfoTasksListTabType.ACTIVE
             ? ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY;
 
@@ -74,8 +72,6 @@ export const WfoTaskListPage = () => {
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProcessListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
-            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
-            // the query to wait for the values to be available
             // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
@@ -84,28 +80,32 @@ export const WfoTaskListPage = () => {
             },
         });
 
-    const handleChangeTaskListTab = (
-        updatedTaskListTab: WfoTaskListTabType,
+    const handleChangeTasksListTab = (
+        updatedTasksListTab: WfoTasksListTabType,
     ) => {
-        setActiveTab(updatedTaskListTab);
+        setActiveTab(updatedTasksListTab);
         setDataDisplayParam('pageIndex', 0);
     };
 
-    const alwaysOnFilters: FilterQuery<ProcessListItem>[] = [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'true',
-        },
-        {
-            field: 'lastStatus',
-            value: 'running-failed-api_unavailable-inconsistent_data',
-        },
-    ];
+    const alwaysOnFilters = defaultTasksListTabs.find(
+        ({ id }) => id === selectedTasksListTab,
+    )?.alwaysOnFilters;
+
+    if (!selectedTasksListTab) {
+        router.replace(PATH_TASKS);
+        return null;
+    }
+
+    const handleRerunAllButtonClick = async () => {
+        if (await isEngineRunningNow()) {
+            showConfirmDialog({
+                question: t('rerunAllQuestion'),
+                confirmAction: () => {
+                    retryAllProcesses.mutate();
+                },
+            });
+        }
+    };
 
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
@@ -133,22 +133,6 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const handleRerunAllButtonClick = async () => {
-        if (await isEngineRunningNow()) {
-            showConfirmDialog({
-                question: t('rerunAllQuestion'),
-                confirmAction: () => {
-                    retryAllProcesses.mutate();
-                },
-            });
-        }
-    };
-
-    if (!selectedTaskListTab) {
-        router.replace(PATH_TASKS);
-        return null;
-    }
-
     return (
         <>
             <EuiSpacer />
@@ -165,19 +149,19 @@ export const WfoTaskListPage = () => {
                 <WfoStartTaskButtonComboBox />
             </WfoPageHeader>
             <WfoFilterTabs
-                tabs={defaultTaskListTabs}
+                tabs={defaultTasksListTabs}
                 translationNamespace="tasks.tabs"
-                selectedTab={selectedTaskListTab}
-                onChangeTab={handleChangeTaskListTab}
+                selectedTab={selectedTasksListTab}
+                onChangeTab={handleChangeTasksListTab}
             />
             <EuiSpacer size="xxl" />
 
-            <WfoProcessList
+            <WfoProcessesList
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={localStorageKey}
+                overrideDefaultTableColumns={handleOverrideTableColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
-                overrideDefaultTableColumns={handleOverrideTableColumns}
                 alwaysOnFilters={alwaysOnFilters}
             />
         </>

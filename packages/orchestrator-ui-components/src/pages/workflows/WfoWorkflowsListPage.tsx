@@ -13,28 +13,29 @@ import {
     PATH_WORKFLOWS,
 } from '@/components';
 import type { StoredTableConfig } from '@/components';
-import { ProcessListItem, WfoFilterTabs, WfoProcessList } from '@/components';
+import { ProcessListItem, WfoFilterTabs, WfoProcessesList } from '@/components';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 
-import { getWorkflowListTabTypeFromString } from './getWorkflowListTabTypeFromString';
-import { WfoWorkflowListTabType, defaultWorkflowListTabs } from './tabConfig';
+import { getWorkflowsListTabTypeFromString } from './getWorkflowsListTabTypeFromString';
+import { WfoWorkflowsListTabType, defaultWorkflowsListTabs } from './tabConfig';
 
-export const WfoWorkflowListPage = () => {
+export const WfoWorkflowsListPage = () => {
     const router = useRouter();
     const t = useTranslations('workflows.index');
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, WfoWorkflowListTabType.ACTIVE),
+        withDefault(StringParam, WfoWorkflowsListTabType.ACTIVE),
     );
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
 
-    const selectedProcessListTab = getWorkflowListTabTypeFromString(activeTab);
+    const selectedWorkflowsListTab =
+        getWorkflowsListTabTypeFromString(activeTab);
 
     const localStorageKey =
-        selectedProcessListTab === WfoWorkflowListTabType.ACTIVE
+        selectedWorkflowsListTab === WfoWorkflowsListTabType.ACTIVE
             ? ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY
             : COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY;
 
@@ -52,8 +53,6 @@ export const WfoWorkflowListPage = () => {
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProcessListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
-            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
-            // the query to wait for the values to be available
             // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
@@ -62,18 +61,18 @@ export const WfoWorkflowListPage = () => {
             },
         });
 
-    const handleChangeProcessListTab = (
-        updatedProcessListTab: WfoWorkflowListTabType,
+    const handleChangeWorkflowsListTab = (
+        updatedWorkflowsListTab: WfoWorkflowsListTabType,
     ) => {
-        setActiveTab(updatedProcessListTab);
+        setActiveTab(updatedWorkflowsListTab);
         setDataDisplayParam('pageIndex', 0);
     };
 
-    const alwaysOnFilters = defaultWorkflowListTabs.find(
-        ({ id }) => id === selectedProcessListTab,
+    const alwaysOnFilters = defaultWorkflowsListTabs.find(
+        ({ id }) => id === selectedWorkflowsListTab,
     )?.alwaysOnFilters;
 
-    if (!selectedProcessListTab) {
+    if (!selectedWorkflowsListTab) {
         router.replace(PATH_WORKFLOWS);
         return null;
     }
@@ -86,14 +85,14 @@ export const WfoWorkflowListPage = () => {
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
-                tabs={defaultWorkflowListTabs}
+                tabs={defaultWorkflowsListTabs}
                 translationNamespace="workflows.tabs"
-                selectedTab={selectedProcessListTab}
-                onChangeTab={handleChangeProcessListTab}
+                selectedTab={selectedWorkflowsListTab}
+                onChangeTab={handleChangeWorkflowsListTab}
             />
             <EuiSpacer size="xxl" />
 
-            <WfoProcessList
+            <WfoProcessesList
                 alwaysOnFilters={alwaysOnFilters}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={localStorageKey}

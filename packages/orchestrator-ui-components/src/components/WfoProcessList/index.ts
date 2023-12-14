@@ -1,1 +1,1 @@
-export * from './WfoProcessList';
+export * from './WfoProcessesList';

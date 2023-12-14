@@ -1,17 +1,17 @@
 import { WfoFilterTab } from '@/components';
 import { ProcessListItem } from '@/components';
 
-export enum WfoTaskListTabType {
+export enum WfoTasksListTabType {
     ACTIVE = 'ACTIVE',
     COMPLETED = 'COMPLETED',
 }
 
-export const defaultTaskListTabs: WfoFilterTab<
-    WfoTaskListTabType,
+export const defaultTasksListTabs: WfoFilterTab<
+    WfoTasksListTabType,
     ProcessListItem
 >[] = [
     {
-        id: WfoTaskListTabType.ACTIVE,
+        id: WfoTasksListTabType.ACTIVE,
         translationKey: 'active',
         alwaysOnFilters: [
             {
@@ -21,7 +21,7 @@ export const defaultTaskListTabs: WfoFilterTab<
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore waiting for fix in backend
                 field: 'isTask',
-                value: 'false',
+                value: 'true',
             },
             {
                 field: 'lastStatus',
@@ -30,7 +30,7 @@ export const defaultTaskListTabs: WfoFilterTab<
         ],
     },
     {
-        id: WfoTaskListTabType.COMPLETED,
+        id: WfoTasksListTabType.COMPLETED,
         translationKey: 'completed',
         alwaysOnFilters: [
             {
@@ -40,7 +40,7 @@ export const defaultTaskListTabs: WfoFilterTab<
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore waiting for fix in backend
                 field: 'isTask',
-                value: 'false',
+                value: 'true',
             },
             {
                 field: 'lastStatus',
