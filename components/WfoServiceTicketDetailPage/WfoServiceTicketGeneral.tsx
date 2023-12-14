@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
+    EuiButton,
     EuiButtonIcon,
     EuiFlexGrid,
     EuiFlexGroup,
@@ -12,7 +13,6 @@ import {
 } from '@elastic/eui';
 import {
     SubscriptionKeyValueBlock,
-    WfoBadge,
     WfoInformationModal,
     WfoKeyValueTableDataType,
     formatDate,
@@ -20,10 +20,14 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 import { WfoStatistic } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { SurfConfigContext } from '../../contexts/surfConfigContext';
-import { ServiceTicketWithDetails } from '../../types';
+import { acceptImpactEnabledValues } from '@/components/WfoServiceTicketDetailPage/utils';
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { useAcceptImpact } from '@/hooks/modifyResourceHooks';
+import { ServiceTicketWithDetails } from '@/types';
+
+import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatusBadge';
-import { WfoSubscriptionImpactTable } from './WfoSubscriptionImpactTable';
+import { WfoImpactTable } from './WfoImpactTable';
 
 interface WfoSubscriptionGeneralProps {
     serviceTicketGeneral: ServiceTicketWithDetails;
@@ -33,10 +37,17 @@ export const WfoServiceTicketGeneral = ({
     serviceTicketGeneral,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('cim.serviceTickets.detail.tabDetails.general');
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
+    const { mutate } = useAcceptImpact();
     const [defaultSendingLevelModalIsOpen, setDefaultSendingLevelModalIsOpen] =
         useState(false);
+
+    const handleAcceptTicket = () => {
+        mutate({
+            serviceTicketId: serviceTicketGeneral._id,
+        });
+    };
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
         return [
@@ -114,14 +125,10 @@ export const WfoServiceTicketGeneral = ({
                     </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <WfoBadge
-                        textColor={theme.colors.warningText}
-                        color={toSecondaryColor(theme.colors.warning)}
-                    >
-                        <EuiText>
-                            <b>{cimDefaultSendingLevel}</b>
-                        </EuiText>
-                    </WfoBadge>
+                    <WfoImpactLevelBadge
+                        impactedObjectImpact={cimDefaultSendingLevel}
+                        size={'m'}
+                    />
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
@@ -143,24 +150,42 @@ export const WfoServiceTicketGeneral = ({
                 </WfoInformationModal>
             )}
             <EuiSpacer size={'xxl'} />
-            <EuiFlexGroup gutterSize={'s'}>
-                <EuiFlexItem grow={false}>
-                    <WfoStatistic color={theme.colors.primaryText} />
+            <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
+                <EuiFlexItem grow={7}>
+                    <EuiFlexGroup gutterSize={'s'}>
+                        <EuiFlexItem grow={false}>
+                            <WfoStatistic color={theme.colors.primaryText} />
+                        </EuiFlexItem>
+                        <EuiFlexItem
+                            grow={false}
+                            style={{ paddingRight: theme.size.xxl }}
+                        >
+                            <EuiText
+                                grow={false}
+                                css={{ fontWeight: theme.font.weight.semiBold }}
+                            >
+                                {t('impactOnSubscriptions')}
+                            </EuiText>
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
                 </EuiFlexItem>
-                <EuiFlexItem
-                    grow={false}
-                    style={{ paddingRight: theme.size.xxl }}
-                >
-                    <EuiText
-                        grow={false}
-                        css={{ fontWeight: theme.font.weight.semiBold }}
+                <EuiFlexItem grow={1}>
+                    <EuiButton
+                        onClick={handleAcceptTicket}
+                        fill
+                        iconType={'check'}
+                        isDisabled={
+                            !acceptImpactEnabledValues.includes(
+                                serviceTicketGeneral.process_state,
+                            )
+                        }
                     >
-                        {t('impactOnSubscriptions')}
-                    </EuiText>
+                        {t('acceptImpact')}
+                    </EuiButton>
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size={'m'} />
-            <WfoSubscriptionImpactTable />
+            <WfoImpactTable serviceTicketDetail={serviceTicketGeneral} />
         </>
     );
 };

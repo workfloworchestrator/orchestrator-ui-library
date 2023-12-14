@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -17,25 +17,21 @@ import {
     useFilterQueryWithRest,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+
 import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import {
     ServiceTicketDetailPageTab,
-    ServiceTicketProcessState,
     ServiceTicketTabIds,
     ServiceTicketWithDetails,
 } from '../../types';
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
+import { abortEnabledValues } from './utils';
 
 type WfoServiceTicketProps = {
     serviceTicketId: string;
 };
-
-const abortEnabledValues: ServiceTicketProcessState[] = [
-    ServiceTicketProcessState.OPEN_RELATED,
-    ServiceTicketProcessState.OPEN_ACCEPTED,
-    ServiceTicketProcessState.OPEN,
-];
 
 const tabs = [
     {
@@ -60,6 +56,7 @@ export const WfoServiceTicket = ({
     serviceTicketId,
 }: WfoServiceTicketProps) => {
     const t = useTranslations('cim.serviceTickets.detail');
+    const { cimApiBaseUrl } = useContext(SurfConfigContext);
 
     const [selectedTabId, setSelectedTabId] = useState<ServiceTicketTabIds>(
         ServiceTicketTabIds.GENERAL_TAB,
@@ -67,7 +64,7 @@ export const WfoServiceTicket = ({
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketWithDetails>(
-            CIM_TICKETS_ENDPOINT + '/' + serviceTicketId,
+            cimApiBaseUrl + CIM_TICKETS_ENDPOINT + serviceTicketId,
             ['serviceTickets', serviceTicketId],
         );
 
