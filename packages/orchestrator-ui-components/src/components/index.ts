@@ -6,7 +6,6 @@ export * from './WfoPageTemplate';
 export * from './WfoSearchBar';
 export * from './WfoSettingsModal';
 export * from '../pages/settings/WfoSettingsPage';
-export * from './WfoStartPage';
 export * from './WfoSubscription';
 export * from './WfoTable';
 export * from './WfoTimeline';
