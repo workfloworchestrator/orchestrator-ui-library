@@ -1,23 +1,24 @@
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
+    ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
+    COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
-    TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
-} from '../components';
-import type { StoredTableConfig } from '../components';
-import { ProcessListItem } from '../components/WfoProcessList/WfoProcessList';
-import { SubscriptionListItem } from '../components/WfoSubscriptionsList';
+} from '@/components';
+import type { StoredTableConfig } from '@/components';
+import { ProcessListItem } from '@/components';
+import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import {
     ProductBlockDefinition,
     ProductDefinition,
     ResourceTypeDefinition,
     WorkflowDefinition,
-} from '../types';
+} from '@/types';
 
 function getTableConfig<T>(
     hiddenColumns: (keyof T)[] = [],
@@ -81,15 +82,24 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
                 'startedAt',
             ];
             return getTableConfig<T>(completedProcessColumns as (keyof T)[]);
-        case TASK_LIST_TABLE_LOCAL_STORAGE_KEY:
-            const taskColumns: (keyof ProcessListItem)[] = [
+        case ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY:
+            const activeTasksColumns: (keyof ProcessListItem)[] = [
                 'assignee',
                 'workflowTarget',
                 'productName',
                 'customer',
                 'processId',
             ];
-            return getTableConfig<T>(taskColumns as (keyof T)[]);
+            return getTableConfig<T>(activeTasksColumns as (keyof T)[]);
+        case COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY:
+            const completedTasksColumns: (keyof ProcessListItem)[] = [
+                'assignee',
+                'workflowTarget',
+                'productName',
+                'customer',
+                'processId',
+            ];
+            return getTableConfig<T>(completedTasksColumns as (keyof T)[]);
         case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY:
             const subscriptionColumns: (keyof SubscriptionListItem)[] = [
                 'productName',

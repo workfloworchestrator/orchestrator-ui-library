@@ -8,10 +8,11 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { EuiButton, EuiSpacer } from '@elastic/eui';
 
 import {
+    ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
+    COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
     FilterQuery,
     StoredTableConfig,
-    TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
     WfoFilterTabs,
     WfoStartTaskButtonComboBox,
     WfoTableColumns,
@@ -38,13 +39,7 @@ import { WfoTaskListTabType, defaultTaskListTabs } from './tabConfig';
 
 export const WfoTaskListPage = () => {
     const router = useRouter();
-
-    const { theme } = useOrchestratorTheme();
     const t = useTranslations('tasks.page');
-    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { retryAllProcesses } = useMutateProcess();
-    const { isEngineRunningNow } = useCheckEngineStatus();
-
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
         withDefault(StringParam, WfoTaskListTabType.ACTIVE),
@@ -55,10 +50,18 @@ export const WfoTaskListPage = () => {
 
     const selectedTaskListTab = getTaskListTabTypeFromString(activeTab);
 
-    // Todo rewrite to use filter for complete/inactive
-    const getStoredTableConfig = useStoredTableConfig<ProcessListItem>(
-        TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
-    );
+    const localStorageKey =
+        selectedTaskListTab === WfoTaskListTabType.ACTIVE
+            ? ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY
+            : COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY;
+
+    const getStoredTableConfig =
+        useStoredTableConfig<ProcessListItem>(localStorageKey);
+
+    const { theme } = useOrchestratorTheme();
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+    const { retryAllProcesses } = useMutateProcess();
+    const { isEngineRunningNow } = useCheckEngineStatus();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -70,6 +73,10 @@ export const WfoTaskListPage = () => {
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProcessListItem>({
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
+            // the query to wait for the values to be available
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: 'lastModifiedAt',
@@ -167,7 +174,7 @@ export const WfoTaskListPage = () => {
 
             <WfoProcessList
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                localStorageKey={TASK_LIST_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={localStorageKey}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 overrideDefaultTableColumns={handleOverrideTableColumns}

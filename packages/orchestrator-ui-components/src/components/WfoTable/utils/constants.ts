@@ -6,6 +6,10 @@ export const ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY =
 export const COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY =
     'completedProcessesListTable';
 
+export const ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY = 'activeTasksListTable';
+export const COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY =
+    'completedTasksListTable';
+
 export const METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY =
     'metadataResourceTypesTable';
 export const METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY =
@@ -15,5 +19,3 @@ export const METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY =
     'metadataWorkflowsTable';
 
 export const SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY = 'subscriptionsTable';
-
-export const TASK_LIST_TABLE_LOCAL_STORAGE_KEY = 'taskListTable';

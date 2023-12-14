@@ -1,5 +1,5 @@
-import { WfoFilterTab } from '../../components';
-import { ProcessListItem } from '../../components/WfoProcessList/WfoProcessList';
+import { WfoFilterTab } from '@/components';
+import { ProcessListItem } from '@/components';
 
 export enum WfoWorkflowListTabType {
     ACTIVE = 'ACTIVE',
