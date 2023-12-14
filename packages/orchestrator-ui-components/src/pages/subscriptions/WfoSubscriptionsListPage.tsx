@@ -54,12 +54,12 @@ export const WfoSubscriptionsListPage = () => {
         withDefault(StringParam, WfoSubscriptionListTab.ACTIVE),
     );
 
-    const selectedTab = (): WfoSubscriptionListTab => {
+    const selectedTab = ((): WfoSubscriptionListTab => {
         return (
             subscriptionListTabs.find(({ id }) => id === activeTab)?.id ||
             WfoSubscriptionListTab.ACTIVE
         );
-    };
+    })();
 
     const handleChangeSubscriptionsTab = (
         updatedSubscriptionsTab: WfoSubscriptionListTab,
@@ -81,7 +81,7 @@ export const WfoSubscriptionsListPage = () => {
 
             <WfoFilterTabs
                 tabs={subscriptionListTabs}
-                selectedTab={selectedTab()}
+                selectedTab={selectedTab}
                 translationNamespace="subscriptions.tabs"
                 onChangeTab={handleChangeSubscriptionsTab}
             />
