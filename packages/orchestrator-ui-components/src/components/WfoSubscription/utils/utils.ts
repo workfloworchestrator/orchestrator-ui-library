@@ -8,7 +8,7 @@ import { WorkflowTarget } from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
 
-export enum WfoSubscriptionDetailTab {
+export enum SubscriptionDetailTab {
     GENERAL_TAB = 'general',
     SERVICE_CONFIGURATION_TAB = 'service-configuration',
     PROCESSES_TAB = 'processes',
