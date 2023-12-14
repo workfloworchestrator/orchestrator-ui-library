@@ -19,96 +19,38 @@ import {
 } from '@/graphqlQueries';
 import { getProcessListSummaryGraphQlQuery } from '@/graphqlQueries/processListQuery';
 import { useQueryWithGraphql } from '@/hooks';
-import { SortOrder } from '@/types';
+import {
+    GraphqlQueryVariables,
+    Process,
+    ProductDefinition,
+    SortOrder,
+    Subscription,
+} from '@/types';
 import { getFirstUuidPart } from '@/utils';
 
 export const WfoStartPage = () => {
     const { data: subscriptionsSummaryResult } = useQueryWithGraphql(
         getSubscriptionsListSummaryGraphQlQuery(),
-        {
-            first: 5,
-            after: 0,
-            sortBy: {
-                field: 'startDate',
-                order: SortOrder.DESC,
-            },
-            filterBy: [
-                {
-                    field: 'status',
-                    value: 'Active',
-                },
-            ],
-        },
+        subscriptionsListSummaryQueryVariables,
         ['subscriptions', 'startPage'],
     );
     const { data: processesSummaryResult } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
-        {
-            first: 5,
-            after: 0,
-            sortBy: {
-                field: 'startedAt',
-                order: SortOrder.DESC,
-            },
-            filterBy: [
-                {
-                    // Todo: isTask is not a key of Process
-                    // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore waiting for fix in backend
-                    field: 'isTask',
-                    value: 'false',
-                },
-                {
-                    field: 'lastStatus',
-                    value: 'created-running-suspended-waiting-failed-resumed',
-                },
-            ],
-        },
+        processListSummaryQueryVariables,
         ['processes', 'startPage'],
     );
     const { data: failedTasksSummaryResult } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
-        {
-            first: 5,
-            after: 0,
-            sortBy: {
-                field: 'startedAt',
-                order: SortOrder.DESC,
-            },
-            filterBy: [
-                {
-                    // Todo: isTask is not a key of Process
-                    // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                    // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore waiting for fix in backend
-                    field: 'isTask',
-                    value: 'true',
-                },
-                {
-                    field: 'lastStatus',
-                    value: 'failed',
-                },
-            ],
-        },
+        taskListSummaryQueryVariables,
         ['processes', 'startPage'],
     );
     const { data: productsSummaryResult } = useQueryWithGraphql(
         getProductsSummaryQuery(),
-        {
-            first: 1000,
-            after: 0,
-            sortBy: {
-                field: 'name',
-                order: SortOrder.ASC,
-            },
-        },
+        productsSummaryQueryVariables,
         'productSummary',
     );
 
-    // Todo map to SummaryCard function here
+    // Todo add translations here
     const latestActiveSubscriptionsSummaryCard: SummaryCard = {
         headerTitle: 'Total Subscriptions',
         headerValue:
@@ -203,3 +145,77 @@ export const WfoStartPage = () => {
         </EuiFlexItem>
     );
 };
+
+const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
+    {
+        first: 5,
+        after: 0,
+        sortBy: {
+            field: 'startDate',
+            order: SortOrder.DESC,
+        },
+        filterBy: [
+            {
+                field: 'status',
+                value: 'Active',
+            },
+        ],
+    };
+
+const processListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
+    first: 5,
+    after: 0,
+    sortBy: {
+        field: 'startedAt',
+        order: SortOrder.DESC,
+    },
+    filterBy: [
+        {
+            // Todo: isTask is not a key of Process
+            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore waiting for fix in backend
+            field: 'isTask',
+            value: 'false',
+        },
+        {
+            field: 'lastStatus',
+            value: 'created-running-suspended-waiting-failed-resumed',
+        },
+    ],
+};
+
+const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
+    first: 5,
+    after: 0,
+    sortBy: {
+        field: 'startedAt',
+        order: SortOrder.DESC,
+    },
+    filterBy: [
+        {
+            // Todo: isTask is not a key of Process
+            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore waiting for fix in backend
+            field: 'isTask',
+            value: 'true',
+        },
+        {
+            field: 'lastStatus',
+            value: 'failed',
+        },
+    ],
+};
+
+const productsSummaryQueryVariables: GraphqlQueryVariables<ProductDefinition> =
+    {
+        first: 1000,
+        after: 0,
+        sortBy: {
+            field: 'name',
+            order: SortOrder.ASC,
+        },
+    };
