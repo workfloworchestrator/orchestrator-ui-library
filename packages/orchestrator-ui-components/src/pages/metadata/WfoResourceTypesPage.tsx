@@ -131,7 +131,7 @@ export const WfoResourceTypesPage = () => {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: queryString,
+            query: queryString || undefined,
         },
         'resourceTypes',
     );

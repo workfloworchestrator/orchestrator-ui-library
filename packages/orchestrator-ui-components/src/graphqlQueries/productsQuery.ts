@@ -17,12 +17,9 @@ export const GET_PRODUCTS_GRAPHQL_QUERY: TypedDocumentNode<
         $first: Int!
         $after: Int!
         $sortBy: [GraphqlSort!]
+        $query: String
     ) {
-        products(
-            first: $first
-            after: $after
-            sortBy: $sortBy # query: $query
-        ) {
+        products(first: $first, after: $after, sortBy: $sortBy, query: $query) {
             page {
                 productId
                 name

@@ -185,7 +185,7 @@ export const WfoProductBlocksPage = () => {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: queryString,
+            query: queryString || undefined,
         },
         'productBlocks',
     );

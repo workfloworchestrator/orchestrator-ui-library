@@ -187,7 +187,7 @@ export const WfoProcessesList = ({
             after: pageIndex * pageSize,
             sortBy: graphQlProcessSortMapper(sortBy),
             filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-            query: queryString,
+            query: queryString || undefined,
         },
         'processList',
     );
