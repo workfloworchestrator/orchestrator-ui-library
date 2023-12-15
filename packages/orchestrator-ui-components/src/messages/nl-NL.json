@@ -229,6 +229,7 @@
             "customerAbbreviation": "Klant afkorting"
         },
         "detail": {
+            "title": "Subscriptions",
             "tabs": {
                 "general": "Algemeen",
                 "serviceConfiguration": "Service configuratie",
