@@ -7,6 +7,7 @@ import {
     useCurrentEuiBreakpoint,
 } from '@elastic/eui';
 
+import { SummaryCardListItem } from '@/components/WfoSummary/';
 import {
     WfoSummaryCardHeader,
     WfoSummaryCardHeaderProps,
@@ -15,7 +16,6 @@ import { useOrchestratorTheme } from '@/hooks';
 
 import {
     SummaryCardButtonConfig,
-    SummaryCardListItem,
     WfoSummaryCardList,
 } from './WfoSummaryCardList';
 import { getNumberOfColumns } from './getNumberOfColumns';
