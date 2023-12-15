@@ -143,7 +143,7 @@ export const WfoWorkflowsPage = () => {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: graphQlWorkflowListMapper(sortBy),
-            query: queryString,
+            query: queryString || undefined,
         },
         'workflows',
     );
