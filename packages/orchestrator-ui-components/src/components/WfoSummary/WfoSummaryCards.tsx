@@ -13,7 +13,11 @@ import {
 } from '@/components/WfoSummary/WfoSummaryCardHeader';
 import { useOrchestratorTheme } from '@/hooks';
 
-import { SummaryCardListItem, WfoSummaryCardList } from './WfoSummaryCardList';
+import {
+    SummaryCardButtonConfig,
+    SummaryCardListItem,
+    WfoSummaryCardList,
+} from './WfoSummaryCardList';
 import { getNumberOfColumns } from './getNumberOfColumns';
 
 export enum SummaryCardStatus {
@@ -28,8 +32,7 @@ export type SummaryCard = {
     headerStatus: SummaryCardStatus;
     listTitle: string;
     listItems: SummaryCardListItem[];
-    buttonName: string;
-    buttonUrl: string;
+    button?: SummaryCardButtonConfig;
 };
 
 export type WfoSummaryCardsProps = {
@@ -77,8 +80,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                         headerStatus,
                         listTitle,
                         listItems,
-                        buttonName,
-                        buttonUrl,
+                        button,
                     },
                     index,
                 ) => (
@@ -100,8 +102,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                         <WfoSummaryCardList
                             title={listTitle}
                             items={listItems}
-                            buttonName={buttonName}
-                            buttonUrl={buttonUrl}
+                            button={button}
                         />
                     </EuiFlexItem>
                 ),

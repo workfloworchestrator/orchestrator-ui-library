@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useState } from 'react';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import type { UrlObject } from 'url';
 
 import {
     EuiButton,
@@ -20,21 +21,24 @@ import { useOrchestratorTheme } from '@/hooks';
 export type SummaryCardListItem = {
     title: string;
     value: ReactNode;
+    url?: string;
+};
+
+export type SummaryCardButtonConfig = {
+    name: string;
     url: string;
 };
 
 export type WfoSummaryCardListProps = {
     title: string;
     items: SummaryCardListItem[];
-    buttonName: string;
-    buttonUrl: string;
+    button?: SummaryCardButtonConfig;
 };
 
 export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
     title,
     items,
-    buttonName,
-    buttonUrl,
+    button,
 }) => {
     const router = useRouter();
     const { theme } = useOrchestratorTheme();
@@ -79,11 +83,16 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
                     </div>
                 </div>
                 <EuiSpacer size="m" />
-                <div>
-                    <EuiButton fullWidth onClick={() => router.push(buttonUrl)}>
-                        {buttonName}
-                    </EuiButton>
-                </div>
+                {button && (
+                    <div>
+                        <EuiButton
+                            fullWidth
+                            onClick={() => router.push(button.url)}
+                        >
+                            {button.name}
+                        </EuiButton>
+                    </div>
+                )}
             </EuiPanel>
         </EuiFlexItem>
     );
@@ -92,7 +101,23 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
 export type WfoSummaryListItemProps = {
     title: string;
     value: ReactNode;
-    url: string;
+    url?: string;
+};
+
+export type WfoOptionalLinkProps = {
+    children: ReactNode;
+    href?: UrlObject | string;
+};
+
+export const WfoOptionalLink: FC<WfoOptionalLinkProps> = ({
+    children,
+    href,
+}) => {
+    if (!href) {
+        return <span>{children}</span>;
+    }
+
+    return <Link href={href}>{children}</Link>;
 };
 
 export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
@@ -103,16 +128,16 @@ export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
     const [hoverState, setHoverState] = useState(false);
 
     return (
-        <Link href={url}>
+        <WfoOptionalLink href={url}>
             <EuiFlexGroup
-                style={{ cursor: 'pointer', paddingBlock: 10 }}
+                style={{ paddingBlock: 10 }}
                 onMouseOver={() => setHoverState(true)}
                 onMouseLeave={() => setHoverState(false)}
                 gutterSize="none"
             >
                 <EuiFlexItem>
                     <EuiTextColor
-                        color={hoverState ? '#397dc2' : 'black'}
+                        color={url ? '#397dc2' : 'black'}
                         style={{ fontWeight: 500 }}
                     >
                         {title}
@@ -123,11 +148,13 @@ export const WfoSummaryListItem: FC<WfoSummaryListItemProps> = ({
                 </EuiFlexItem>
                 <EuiFlexItem
                     grow={false}
-                    css={{ visibility: hoverState ? 'visible' : 'hidden' }}
+                    css={{
+                        visibility: hoverState && url ? 'visible' : 'hidden',
+                    }}
                 >
                     <EuiIcon type="sortRight" color="primary" />
                 </EuiFlexItem>
             </EuiFlexGroup>
-        </Link>
+        </WfoOptionalLink>
     );
 };

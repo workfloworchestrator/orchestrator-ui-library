@@ -322,5 +322,26 @@
             "selectSettings": "Kies cache",
             "startEngine": "Start workflow engine"
         }
+    },
+    "startPage": {
+        "activeSubscriptions": {
+            "buttonText": "Toon alle actieve subscriptions",
+            "headerTitle": "Totaal aantal actieve subscriptions",
+            "listTitle": "Meest recente subscriptions"
+        },
+        "activeWorkflows": {
+            "buttonText": "Toon alle actieve workflows",
+            "headerTitle": "Totaal aantal actieve workflows",
+            "listTitle": "Meest recente actieve workflows"
+        },
+        "failedTasks": {
+            "buttonText": "Toon alle gefaalde taken",
+            "headerTitle": "Totaal aantal gefaalde taken",
+            "listTitle": "Meest recente gefaalde taken"
+        },
+        "products": {
+            "headerTitle": "Totaal aantal producten",
+            "listTitle": "Totaal aantal productinstanties"
+        }
     }
 }
