@@ -1,13 +1,10 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiFlexItem } from '@elastic/eui';
 
-import {
-    PATH_METADATA_PRODUCTS,
-    PATH_SUBSCRIPTIONS,
-    PATH_TASKS,
-    PATH_WORKFLOWS,
-} from '@/components';
+import { PATH_SUBSCRIPTIONS, PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import {
     SummaryCard,
     SummaryCardStatus,
@@ -29,6 +26,8 @@ import {
 import { getFirstUuidPart } from '@/utils';
 
 export const WfoStartPage = () => {
+    const t = useTranslations('startPage');
+
     const { data: subscriptionsSummaryResult } = useQueryWithGraphql(
         getSubscriptionsListSummaryGraphQlQuery(),
         subscriptionsListSummaryQueryVariables,
@@ -37,12 +36,12 @@ export const WfoStartPage = () => {
     const { data: processesSummaryResult } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
         processListSummaryQueryVariables,
-        ['processes', 'startPage'],
+        ['workflows', 'startPage'],
     );
     const { data: failedTasksSummaryResult } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
         taskListSummaryQueryVariables,
-        ['processes', 'startPage'],
+        ['tasks', 'startPage'],
     );
     const { data: productsSummaryResult } = useQueryWithGraphql(
         getProductsSummaryQuery(),
@@ -50,13 +49,12 @@ export const WfoStartPage = () => {
         'productSummary',
     );
 
-    // Todo add translations here
     const latestActiveSubscriptionsSummaryCard: SummaryCard = {
-        headerTitle: 'Total Subscriptions',
+        headerTitle: t('activeSubscriptions.headerTitle'),
         headerValue:
             subscriptionsSummaryResult?.subscriptions.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
-        listTitle: 'Latest subscriptions',
+        listTitle: t('activeSubscriptions.listTitle'),
         listItems:
             subscriptionsSummaryResult?.subscriptions.page.map(
                 (subscription) => ({
@@ -65,45 +63,51 @@ export const WfoStartPage = () => {
                     url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
                 }),
             ) ?? [],
-        buttonName: 'Show all subscriptions',
-        buttonUrl: PATH_SUBSCRIPTIONS,
+        button: {
+            name: t('activeSubscriptions.buttonText'),
+            url: PATH_SUBSCRIPTIONS,
+        },
     };
 
     const latestWorkflowsSummaryCard: SummaryCard = {
-        headerTitle: 'Total Workflows',
+        headerTitle: t('activeWorkflows.headerTitle'),
         headerValue: processesSummaryResult?.processes.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
-        listTitle: 'Most recent workflows',
+        listTitle: t('activeWorkflows.listTitle'),
         listItems:
             processesSummaryResult?.processes.page.map((workflow) => ({
                 title: workflow.workflowName,
                 value: workflow.startedAt,
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
-        buttonName: 'Show all workflows',
-        buttonUrl: PATH_WORKFLOWS,
+        button: {
+            name: t('activeWorkflows.buttonText'),
+            url: PATH_WORKFLOWS,
+        },
     };
 
     const failedTasksSummaryCard: SummaryCard = {
-        headerTitle: 'Recently failed tasks',
+        headerTitle: t('failedTasks.headerTitle'),
         headerValue:
             failedTasksSummaryResult?.processes.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
-        listTitle: 'Most recent workflows',
+        listTitle: t('failedTasks.listTitle'),
         listItems:
             failedTasksSummaryResult?.processes.page.map((task) => ({
                 title: task.workflowName,
                 value: task.startedAt,
                 url: `${PATH_TASKS}/${task.processId}`,
             })) ?? [],
-        buttonName: 'Show all tasks',
-        buttonUrl: PATH_TASKS,
+        button: {
+            name: t('failedTasks.buttonText'),
+            url: PATH_TASKS,
+        },
     };
     const productsSummaryCard: SummaryCard = {
-        headerTitle: 'Products',
+        headerTitle: t('products.headerTitle'),
         headerValue: productsSummaryResult?.products.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
-        listTitle: 'Products',
+        listTitle: t('products.listTitle'),
         listItems:
             productsSummaryResult?.products.page
                 .sort(
@@ -126,10 +130,7 @@ export const WfoStartPage = () => {
                             </div>
                         </div>
                     ),
-                    url: `${PATH_METADATA_PRODUCTS}`,
                 })) ?? [],
-        buttonName: 'Show all products',
-        buttonUrl: PATH_METADATA_PRODUCTS,
     };
 
     return (

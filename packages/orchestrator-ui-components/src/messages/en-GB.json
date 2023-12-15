@@ -323,5 +323,26 @@
             "selectSettings": "Select cache",
             "startEngine": "Start workflow engine"
         }
+    },
+    "startPage": {
+        "activeSubscriptions": {
+            "buttonText": "Show all active subscriptions",
+            "headerTitle": "Total active subscriptions",
+            "listTitle": "Most recent subscriptions"
+        },
+        "activeWorkflows": {
+            "buttonText": "Show all active workflows",
+            "headerTitle": "Total active workflows",
+            "listTitle": "Most recent active workflows"
+        },
+        "failedTasks": {
+            "buttonText": "Show all failed tasks",
+            "headerTitle": "Total failed tasks",
+            "listTitle": "Most recent failed tasks"
+        },
+        "products": {
+            "headerTitle": "Total number of products",
+            "listTitle": "Total number of product instances"
+        }
     }
 }
