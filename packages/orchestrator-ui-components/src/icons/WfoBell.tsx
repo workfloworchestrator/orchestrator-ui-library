@@ -5,7 +5,6 @@ import { WfoIconProps } from './WfoIconProps';
 export const WfoBell: FC<WfoIconProps> = ({
     width = 20,
     height = 20,
-    color = '#000000',
 }) => (
     <svg
         width={width}

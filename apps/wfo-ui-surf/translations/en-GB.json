@@ -71,7 +71,8 @@
                     },
                     "notificationLog": {
                         "nl": "NL",
-                        "en": "EN"
+                        "en": "EN",
+                        "noLogsAvailableForThisServiceTicket": "No logs available for this service ticket"
                     }
                 },
                 "buttons": {

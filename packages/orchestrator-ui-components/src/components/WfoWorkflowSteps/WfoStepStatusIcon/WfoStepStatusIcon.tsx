@@ -107,7 +107,7 @@ export const WfoStepStatusIcon = ({
                     visibility: hasSubIcon ? 'visible' : 'hidden',
                 }}
             >
-                {/*<SubIcon color={subIconColor} stepStatus={stepStatus} />*/}
+                <SubIcon color={subIconColor} stepStatus={stepStatus} />
             </div>
         </EuiFlexItem>
     );
