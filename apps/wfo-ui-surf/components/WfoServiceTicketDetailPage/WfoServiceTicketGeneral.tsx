@@ -30,11 +30,11 @@ import { WfoServiceTicketStatusBadge } from '../WfoBadges/WfoServiceTicketStatus
 import { WfoImpactTable } from './WfoImpactTable';
 
 interface WfoSubscriptionGeneralProps {
-    serviceTicketGeneral: ServiceTicketWithDetails;
+    serviceTicketDetail: ServiceTicketWithDetails;
 }
 
 export const WfoServiceTicketGeneral = ({
-    serviceTicketGeneral,
+    serviceTicketDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('cim.serviceTickets.detail.tabDetails.general');
     const { theme } = useOrchestratorTheme();
@@ -45,7 +45,7 @@ export const WfoServiceTicketGeneral = ({
 
     const handleAcceptTicket = () => {
         mutate({
-            serviceTicketId: serviceTicketGeneral._id,
+            serviceTicketId: serviceTicketDetail._id,
         });
     };
 
@@ -53,46 +53,46 @@ export const WfoServiceTicketGeneral = ({
         return [
             {
                 key: t('serviceTicketTitle'),
-                value: serviceTicketGeneral.title_nl,
-                textToCopy: serviceTicketGeneral.title_nl,
+                value: serviceTicketDetail.title_nl,
+                textToCopy: serviceTicketDetail.title_nl,
             },
             {
                 key: t('jiraTicketId'),
-                value: serviceTicketGeneral.jira_ticket_id,
+                value: serviceTicketDetail.jira_ticket_id,
             },
             {
                 key: t('imsPlannedWork'),
-                value: serviceTicketGeneral.ims_pw_id,
+                value: serviceTicketDetail.ims_pw_id,
             },
             {
                 key: t('type'),
-                value: serviceTicketGeneral.type,
+                value: serviceTicketDetail.type,
             },
             {
                 key: t('startDate'),
-                value: formatDate(serviceTicketGeneral.last_update_time),
+                value: formatDate(serviceTicketDetail.last_update_time),
             },
             {
                 key: t('endDate'),
-                value: formatDate(serviceTicketGeneral.last_update_time),
+                value: formatDate(serviceTicketDetail.last_update_time),
             },
             {
                 key: t('openedBy'),
-                value: serviceTicketGeneral.opened_by,
+                value: serviceTicketDetail.opened_by,
             },
             {
                 key: t('createDate'),
-                value: formatDate(serviceTicketGeneral.create_date),
+                value: formatDate(serviceTicketDetail.create_date),
             },
             {
                 key: t('lastUpdateTime'),
-                value: formatDate(serviceTicketGeneral.last_update_time),
+                value: formatDate(serviceTicketDetail.last_update_time),
             },
             {
                 key: t('processState'),
                 value: (
                     <WfoServiceTicketStatusBadge
-                        serviceTicketState={serviceTicketGeneral.process_state}
+                        serviceTicketState={serviceTicketDetail.process_state}
                     />
                 ),
             },
@@ -176,7 +176,7 @@ export const WfoServiceTicketGeneral = ({
                         iconType={'check'}
                         isDisabled={
                             !acceptImpactEnabledValues.includes(
-                                serviceTicketGeneral.process_state,
+                                serviceTicketDetail.process_state,
                             )
                         }
                     >
@@ -185,7 +185,7 @@ export const WfoServiceTicketGeneral = ({
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size={'m'} />
-            <WfoImpactTable serviceTicketDetail={serviceTicketGeneral} />
+            <WfoImpactTable serviceTicketDetail={serviceTicketDetail} />
         </>
     );
 };

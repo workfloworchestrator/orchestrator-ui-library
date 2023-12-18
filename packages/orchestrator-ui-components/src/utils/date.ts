@@ -1,3 +1,5 @@
+import { Locale } from '@/types';
+
 export const getCurrentBrowserLocale = () => window.navigator.language;
 
 export const parseDate = (date: string | null | undefined): Date | null => {
@@ -72,4 +74,41 @@ export const parseDateRelativeToToday = (date: Date | null) => {
     return isToday(date)
         ? parseDateToLocaleTimeString(date)
         : parseDateToLocaleDateTimeString(date);
+};
+
+export const formatDateCetWithUtc = (
+    inputDateString: string | null | undefined,
+) => {
+    const inputDate = parseDate(inputDateString);
+    if (!inputDate) {
+        return '';
+    }
+    const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+        timeZone: 'Europe/Amsterdam',
+    };
+
+    const optionsShort: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+        timeZone: 'UTC',
+    };
+    const formattedDateCET = new Intl.DateTimeFormat(
+        Locale.nlNL,
+        options,
+    ).format(inputDate);
+
+    options.timeZoneName = 'short';
+    const formattedDateUTC = new Intl.DateTimeFormat(
+        Locale.nlNL,
+        optionsShort,
+    ).format(inputDate);
+
+    return `${formattedDateCET} (${formattedDateUTC})`;
 };

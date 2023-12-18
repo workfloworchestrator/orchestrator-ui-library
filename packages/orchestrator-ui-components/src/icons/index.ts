@@ -23,3 +23,5 @@ export * from './WfoStatistic';
 export * from './WfoPencilAlt';
 export * from './WfoPencil';
 export * from './WfoViewList';
+export * from './WfoContactEnvelopeFill';
+export * from './WfoBell';

@@ -12,19 +12,22 @@ import {
     EuiText,
 } from '@elastic/eui';
 import {
+    WfoBell,
     WfoDropdownButton,
     WfoLoading,
     useFilterQueryWithRest,
 } from '@orchestrator-ui/orchestrator-ui-components';
+import { defaultOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
+import { WfoServiceTicketNotificationLog } from '@/components/WfoServiceTicketDetailPage/WfoServiceTicketNotificationLog';
+import { CIM_TICKETS_ENDPOINT } from '@/constants-surf';
 import { SurfConfigContext } from '@/contexts/SurfConfigContext';
-
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
 import {
     ServiceTicketDetailPageTab,
     ServiceTicketTabIds,
     ServiceTicketWithDetails,
-} from '../../types';
+} from '@/types';
+
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
 import { abortEnabledValues } from './utils';
@@ -43,7 +46,11 @@ const tabs = [
     {
         id: ServiceTicketTabIds.NOTIFICATION_LOG,
         translationKey: 'tabs.notificationLog',
-        prepend: <EuiIcon type="bell" />,
+        prepend: (
+            <div css={{ paddingTop: defaultOrchestratorTheme.size?.xs }}>
+                <WfoBell width={18} height={18} />
+            </div>
+        ),
     },
     {
         id: ServiceTicketTabIds.SENT_EMAILS,
@@ -138,7 +145,13 @@ export const WfoServiceTicket = ({
                         <WfoDetailPageTabs tabs={tabs} />
                         {selectedTabId === ServiceTicketTabIds.GENERAL_TAB && (
                             <WfoServiceTicketGeneral
-                                serviceTicketGeneral={data}
+                                serviceTicketDetail={data}
+                            />
+                        )}
+                        {selectedTabId ===
+                            ServiceTicketTabIds.NOTIFICATION_LOG && (
+                            <WfoServiceTicketNotificationLog
+                                serviceTicketDetail={data}
                             />
                         )}
                     </>

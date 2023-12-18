@@ -68,6 +68,10 @@
                             "extraInformation": "Extra info",
                             "impact": "Impact"
                         }
+                    },
+                    "notificationLog": {
+                        "nl": "NL",
+                        "en": "EN"
                     }
                 },
                 "buttons": {
