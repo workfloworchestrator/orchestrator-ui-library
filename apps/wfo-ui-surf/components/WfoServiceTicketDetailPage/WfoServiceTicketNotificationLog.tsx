@@ -67,11 +67,11 @@ export const WfoServiceTicketNotificationLog = ({
         <>
             <EuiSpacer />
             <EuiTimeline items={items} aria-label={'notification log'} />
-            {items.length === 0 &&
+            {items.length === 0 && (
                 <EuiText color="subdued">
                     {t('noLogsAvailableForThisServiceTicket')}
                 </EuiText>
-            }
+            )}
         </>
     );
 };

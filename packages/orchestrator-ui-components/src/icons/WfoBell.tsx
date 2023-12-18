@@ -2,10 +2,7 @@ import React, { FC } from 'react';
 
 import { WfoIconProps } from './WfoIconProps';
 
-export const WfoBell: FC<WfoIconProps> = ({
-    width = 20,
-    height = 20,
-}) => (
+export const WfoBell: FC<WfoIconProps> = ({ width = 20, height = 20 }) => (
     <svg
         width={width}
         height={height}
