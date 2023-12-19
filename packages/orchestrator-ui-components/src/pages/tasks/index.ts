@@ -1,1 +1,3 @@
-export * from './WfoTaskListPage';
+export * from './WfoTasksListPage';
+export * from './tabConfig';
+export * from './getTasksListTabTypeFromString';

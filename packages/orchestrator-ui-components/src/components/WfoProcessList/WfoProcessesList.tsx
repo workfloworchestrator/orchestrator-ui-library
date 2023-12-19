@@ -53,7 +53,7 @@ export type ProcessListItem = Pick<
     customerAbbreviation: string;
 };
 
-export type WfoProcessListProps = {
+export type WfoProcessesListProps = {
     alwaysOnFilters?: FilterQuery<ProcessListItem>[];
     defaultHiddenColumns: TableColumnKeys<ProcessListItem> | undefined;
     localStorageKey: string;
@@ -69,14 +69,14 @@ export type WfoProcessListProps = {
     ) => WfoTableColumns<ProcessListItem>;
 };
 
-export const WfoProcessList = ({
+export const WfoProcessesList = ({
     alwaysOnFilters,
     defaultHiddenColumns = [],
     localStorageKey,
     dataDisplayParams,
     setDataDisplayParam,
     overrideDefaultTableColumns,
-}: WfoProcessListProps) => {
+}: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {

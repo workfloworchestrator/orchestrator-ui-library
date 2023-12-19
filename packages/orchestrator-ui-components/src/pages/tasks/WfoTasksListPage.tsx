@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiButton, EuiHorizontalRule, EuiSpacer } from '@elastic/eui';
+import { EuiButton, EuiSpacer } from '@elastic/eui';
 
 import {
+    ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
+    COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     DEFAULT_PAGE_SIZE,
-    FilterQuery,
     StoredTableConfig,
-    TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
+    WfoFilterTabs,
     WfoStartTaskButtonComboBox,
     WfoTableColumns,
 } from '@/components';
@@ -17,8 +20,8 @@ import { PATH_TASKS } from '@/components';
 import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
-    WfoProcessList,
-} from '@/components/WfoProcessList/WfoProcessList';
+    WfoProcessesList,
+} from '@/components/WfoProcessList/WfoProcessesList';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
@@ -28,21 +31,35 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
+import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages';
+import { getTasksListTabTypeFromString } from '@/pages/tasks/getTasksListTabTypeFromString';
 import { SortOrder } from '@/types';
 
-export const WfoTaskListPage = () => {
-    const { theme } = useOrchestratorTheme();
+export const WfoTasksListPage = () => {
+    const router = useRouter();
     const t = useTranslations('tasks.page');
-    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { retryAllProcesses } = useMutateProcess();
-    const { isEngineRunningNow } = useCheckEngineStatus();
+    const [activeTab, setActiveTab] = useQueryParam(
+        'activeTab',
+        withDefault(StringParam, WfoTasksListTabType.ACTIVE),
+    );
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProcessListItem>>();
 
-    const getStoredTableConfig = useStoredTableConfig<ProcessListItem>(
-        TASK_LIST_TABLE_LOCAL_STORAGE_KEY,
-    );
+    const selectedTasksListTab = getTasksListTabTypeFromString(activeTab);
+
+    const localStorageKey =
+        selectedTasksListTab === WfoTasksListTabType.ACTIVE
+            ? ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY
+            : COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY;
+
+    const getStoredTableConfig =
+        useStoredTableConfig<ProcessListItem>(localStorageKey);
+
+    const { theme } = useOrchestratorTheme();
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+    const { retryAllProcesses } = useMutateProcess();
+    const { isEngineRunningNow } = useCheckEngineStatus();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -54,6 +71,8 @@ export const WfoTaskListPage = () => {
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<ProcessListItem>({
+            // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
+            // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
             pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: 'lastModifiedAt',
@@ -61,21 +80,32 @@ export const WfoTaskListPage = () => {
             },
         });
 
-    const alwaysOnFilters: FilterQuery<ProcessListItem>[] = [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'true',
-        },
-        {
-            field: 'lastStatus',
-            value: 'running-failed-api_unavailable-inconsistent_data',
-        },
-    ];
+    const handleChangeTasksListTab = (
+        updatedTasksListTab: WfoTasksListTabType,
+    ) => {
+        setActiveTab(updatedTasksListTab);
+        setDataDisplayParam('pageIndex', 0);
+    };
+
+    const alwaysOnFilters = defaultTasksListTabs.find(
+        ({ id }) => id === selectedTasksListTab,
+    )?.alwaysOnFilters;
+
+    if (!selectedTasksListTab) {
+        router.replace(PATH_TASKS);
+        return null;
+    }
+
+    const handleRerunAllButtonClick = async () => {
+        if (await isEngineRunningNow()) {
+            showConfirmDialog({
+                question: t('rerunAllQuestion'),
+                confirmAction: () => {
+                    retryAllProcesses.mutate();
+                },
+            });
+        }
+    };
 
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
@@ -103,17 +133,6 @@ export const WfoTaskListPage = () => {
         lastModifiedAt: defaultTableColumns.lastModifiedAt,
     });
 
-    const handleRerunAllButtonClick = async () => {
-        if (await isEngineRunningNow()) {
-            showConfirmDialog({
-                question: t('rerunAllQuestion'),
-                confirmAction: () => {
-                    retryAllProcesses.mutate();
-                },
-            });
-        }
-    };
-
     return (
         <>
             <EuiSpacer />
@@ -129,16 +148,20 @@ export const WfoTaskListPage = () => {
                 </EuiButton>
                 <WfoStartTaskButtonComboBox />
             </WfoPageHeader>
-            <EuiHorizontalRule />
-
+            <WfoFilterTabs
+                tabs={defaultTasksListTabs}
+                translationNamespace="tasks.tabs"
+                selectedTab={selectedTasksListTab}
+                onChangeTab={handleChangeTasksListTab}
+            />
             <EuiSpacer size="xxl" />
 
-            <WfoProcessList
+            <WfoProcessesList
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                localStorageKey={TASK_LIST_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={localStorageKey}
+                overrideDefaultTableColumns={handleOverrideTableColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
-                overrideDefaultTableColumns={handleOverrideTableColumns}
                 alwaysOnFilters={alwaysOnFilters}
             />
         </>
