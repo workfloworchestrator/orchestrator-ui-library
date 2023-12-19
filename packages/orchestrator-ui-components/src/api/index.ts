@@ -30,8 +30,8 @@ const PRODUCTS_ENDPOINT = 'products/';
 export class BaseApiClient {
     private _axiosInstance: AxiosInstance;
 
-    constructor(apiPath: string) {
-        this._axiosInstance = getAxiosInstance(apiPath);
+    constructor(apiPath: string, accessToken?: string) {
+        this._axiosInstance = getAxiosInstance(apiPath, accessToken);
     }
 
     axiosFetch = <R = object>(
@@ -217,6 +217,6 @@ export class ApiClient extends ApiClientInterface {
     };
 }
 
-export function getApiClient(apiEndPoint: string) {
-    return new ApiClient(apiEndPoint);
+export function getApiClient(apiEndPoint: string, accessToken?: string) {
+    return new ApiClient(apiEndPoint, accessToken);
 }

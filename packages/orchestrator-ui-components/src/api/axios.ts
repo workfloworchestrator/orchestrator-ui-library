@@ -15,20 +15,14 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 // basic configuration for axios.
-// the 'Authorization' header is set in
-// index.ts:setUser
-export const getAxiosInstance = (apiPath: string) => {
+export const getAxiosInstance = (apiPath: string, accessToken?: string) => {
     const axiosRequestConfig: AxiosRequestConfig = {
         baseURL: apiPath,
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: accessToken ? `Bearer ${accessToken}` : '',
         },
     };
     return axios.create(axiosRequestConfig);
 };
-
-// export function setUser(_user: User | null) {
-//     // @ts-ignore
-//     axiosInstance.defaults.headers.common["Authorization"] = `${_user?.token_type} ${_user?.access_token}`;
-// }
