@@ -35,7 +35,7 @@ export const useSubscriptionActions = (subscriptionId: string) => {
             {
                 method: 'GET',
                 headers: {
-                    Authorization: session.accessToken
+                    Authorization: session?.accessToken
                         ? `Bearer ${session.accessToken}`
                         : '',
                 },

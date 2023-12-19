@@ -58,7 +58,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
         await clearCache(
             orchestratorApiBaseUrl,
             cacheKey,
-            session.accessToken,
+            session?.accessToken,
         ).then(() => {
             toastMessage?.addToast(
                 ToastTypes.SUCCESS,
