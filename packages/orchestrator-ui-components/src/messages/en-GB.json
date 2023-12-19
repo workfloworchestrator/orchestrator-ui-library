@@ -230,6 +230,7 @@
             "customerShortcode": "Customer abbreviation"
         },
         "detail": {
+            "title": "Subscriptions",
             "tabs": {
                 "general": "General",
                 "serviceConfiguration": "Service configuration",

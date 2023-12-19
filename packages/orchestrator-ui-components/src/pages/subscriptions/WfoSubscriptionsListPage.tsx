@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
@@ -21,6 +22,8 @@ import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
 import { SortOrder } from '../../types';
 
 export const WfoSubscriptionsListPage = () => {
+    const t = useTranslations('subscriptions.detail');
+
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<SubscriptionListItem>>();
 
@@ -76,7 +79,7 @@ export const WfoSubscriptionsListPage = () => {
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle="Subscriptions" />
+            <EuiPageHeader pageTitle={t('title')} />
             <EuiSpacer size="m" />
 
             <WfoFilterTabs
