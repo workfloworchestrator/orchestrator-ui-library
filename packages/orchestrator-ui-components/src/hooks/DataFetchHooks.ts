@@ -1,14 +1,16 @@
 import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
-import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+import { OrchestratorConfigContext } from '@/contexts';
 import {
     GraphqlFilter,
     ItemsList,
     ProcessDetailResultRaw,
     ProcessFromRestApi,
-} from '../types';
+} from '@/types';
+
 import { useQueryWithFetch } from './useQueryWithFetch';
+import { useSessionWithToken } from './useSessionWithToken';
 
 export type CacheNames = { [key: string]: string };
 
@@ -100,8 +102,16 @@ export const useFilterQueryWithRest = <Type>(
     filters?: GraphqlFilter<Type>[],
     refetchInterval?: number,
 ) => {
+    const { session } = useSessionWithToken();
+
     const fetchFromApi = async () => {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                Authorization: session?.accessToken
+                    ? `Bearer ${session.accessToken}`
+                    : '',
+            },
+        });
         const data = await response.json();
         return filters ? filterDataByCriteria(data, filters) : data;
     };

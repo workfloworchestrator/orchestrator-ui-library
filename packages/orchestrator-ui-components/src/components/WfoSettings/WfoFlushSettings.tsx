@@ -11,14 +11,19 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import { ToastTypes } from '../../contexts';
-import { OrchestratorConfigContext } from '../../contexts/OrchestratorConfigContext';
-import { useToastMessage } from '../../hooks';
-import { useCacheNames } from '../../hooks/DataFetchHooks';
+import { OrchestratorConfigContext, ToastTypes } from '@/contexts';
+import { useCacheNames, useSessionWithToken, useToastMessage } from '@/hooks';
 
-const clearCache = async (apiUrl: string, settingName: string) => {
+const clearCache = async (
+    apiUrl: string,
+    settingName: string,
+    accessToken: string = '',
+) => {
     const response = await fetch(apiUrl + `/settings/cache/${settingName}`, {
         method: 'DELETE',
+        headers: {
+            Authorization: accessToken ? `Bearer ${accessToken}` : '',
+        },
     });
     return await response.json();
 };
@@ -35,6 +40,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
         setSelected(selectedOptions);
     };
     const { data } = useCacheNames();
+    const { session } = useSessionWithToken();
 
     const options: EuiComboBoxOptionOption[] =
         data && Object.entries(data).length > 0
@@ -49,7 +55,11 @@ export const WfoFlushSettings: FunctionComponent = () => {
             return;
         }
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
-        await clearCache(orchestratorApiBaseUrl, cacheKey).then(() => {
+        await clearCache(
+            orchestratorApiBaseUrl,
+            cacheKey,
+            session.accessToken,
+        ).then(() => {
             toastMessage?.addToast(
                 ToastTypes.SUCCESS,
                 <p>
