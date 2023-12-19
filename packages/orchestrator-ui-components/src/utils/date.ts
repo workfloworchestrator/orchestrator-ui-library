@@ -1,4 +1,4 @@
-import { Locale } from '@/types';
+import { Locale } from '../types/types';
 
 export const getCurrentBrowserLocale = () => window.navigator.language;
 
