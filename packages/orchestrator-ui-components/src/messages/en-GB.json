@@ -22,7 +22,8 @@
         "newSubscription": "New subscription",
         "newTask": "New task",
         "noFailedTasks": "No failed tasks!",
-        "search": "Search"
+        "search": "Search",
+        "errorMessage": "An error occurred"
     },
     "confirmationDialog": {
         "title": "Please confirm",
