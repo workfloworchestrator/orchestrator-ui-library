@@ -11,7 +11,6 @@ import {
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     StoredTableConfig,
     WfoDateTime,
-    WfoLoading,
     WfoProductBlockBadge,
     WfoProductStatusBadge,
     WfoTableWithFilter,
@@ -153,7 +152,7 @@ export const WfoProductsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, isError, error } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -164,11 +163,12 @@ export const WfoProductsPage = () => {
         'products',
     );
 
-    if (!data) {
-        return <WfoLoading />;
+    if (error) {
+        console.error(error);
     }
 
-    const { totalItems, sortFields, filterFields } = data.products.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data?.products?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -203,7 +203,8 @@ export const WfoProductsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
             />

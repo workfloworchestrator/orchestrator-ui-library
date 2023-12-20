@@ -195,8 +195,8 @@ export const WfoProcessesList = ({
         console.error(error);
     }
 
-    const { totalItems, sortFields, filterFields } = data?.processes
-        ?.pageInfo || { totalItems: 0, sortFields: [], filterFields: [] };
+    const { totalItems, sortFields, filterFields } =
+        data?.processes?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
