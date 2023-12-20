@@ -160,8 +160,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
-    const { totalItems, sortFields, filterFields } = data?.subscriptions
-        ?.pageInfo ?? { totalItems: 0, sortFields: [], filterFields: [] };
+    const { totalItems, sortFields, filterFields } =
+        data?.subscriptions?.pageInfo ?? {};
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,

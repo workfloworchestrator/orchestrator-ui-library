@@ -9,7 +9,6 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
 import { WfoTableWithFilter } from '../../components';
@@ -137,7 +136,7 @@ export const WfoWorkflowsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, error, isError } = useQueryWithGraphql(
         GET_WORKFLOWS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -148,8 +147,8 @@ export const WfoWorkflowsPage = () => {
         'workflows',
     );
 
-    if (!data) {
-        return <WfoLoading />;
+    if (error) {
+        console.error(error);
     }
 
     const dataSorting: WfoDataSorting<WorkflowListItem> = {
@@ -157,7 +156,8 @@ export const WfoWorkflowsPage = () => {
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } = data.workflows.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data?.workflows?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -169,7 +169,7 @@ export const WfoWorkflowsPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
-                data={mapWorkflowDefinitionToWorkflowListItem(data)}
+                data={data ? mapWorkflowDefinitionToWorkflowListItem(data) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -187,7 +187,8 @@ export const WfoWorkflowsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
             />

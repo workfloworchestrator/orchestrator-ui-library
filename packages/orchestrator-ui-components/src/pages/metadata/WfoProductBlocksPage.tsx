@@ -9,7 +9,6 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
 } from '../../components';
 import {
     WfoProductBlockBadge,
@@ -179,7 +178,7 @@ export const WfoProductBlocksPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, isError, error } = useQueryWithGraphql(
         GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -190,8 +189,8 @@ export const WfoProductBlocksPage = () => {
         'productBlocks',
     );
 
-    if (!data) {
-        return <WfoLoading />;
+    if (error) {
+        console.error(error);
     }
 
     const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
@@ -200,7 +199,7 @@ export const WfoProductBlocksPage = () => {
     };
 
     const { totalItems, sortFields, filterFields } =
-        data.productBlocks.pageInfo;
+        data?.productBlocks?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -212,7 +211,7 @@ export const WfoProductBlocksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
-                data={data.productBlocks.page}
+                data={data?.productBlocks.page || []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -230,7 +229,8 @@ export const WfoProductBlocksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY

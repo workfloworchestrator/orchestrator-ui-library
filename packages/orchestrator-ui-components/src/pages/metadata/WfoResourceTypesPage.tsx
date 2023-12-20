@@ -9,7 +9,6 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
 import type { WfoDataSorting, WfoTableColumns } from '../../components';
@@ -125,7 +124,7 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, error, isError } = useQueryWithGraphql(
         GET_RESOURCE_TYPES_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -136,8 +135,8 @@ export const WfoResourceTypesPage = () => {
         'resourceTypes',
     );
 
-    if (!data) {
-        return <WfoLoading />;
+    if (error) {
+        console.error(error);
     }
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
@@ -146,7 +145,7 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { totalItems, sortFields, filterFields } =
-        data.resourceTypes.pageInfo;
+        data?.resourceTypes?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -176,7 +175,8 @@ export const WfoResourceTypesPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
