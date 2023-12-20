@@ -7,6 +7,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '@/graphqlQueries';
 import { useQueryWithGraphql } from '@/hooks';
 
+import { WfoError } from '../WfoError';
 import { WfoFilterTabs } from '../WfoFilterTabs';
 import { WfoLoading } from '../WfoLoading';
 import { WfoProcessesTimeline } from './WfoProcessesTimeline';
@@ -34,7 +35,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
         );
     })();
 
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
         { subscriptionId },
         `subscription-${subscriptionId}`,
@@ -52,7 +53,8 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
 
     return (
         <>
-            {(isFetching && <WfoLoading />) ||
+            {(isError && <WfoError />) ||
+                (isLoading && <WfoLoading />) ||
                 (subscriptionDetail && (
                     <>
                         <EuiFlexGroup
