@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { TimelineItem, WfoLoading } from '../../components';
+import { TimelineItem, WfoError, WfoLoading } from '@/components';
+
 import {
     WfoStepListRef,
     WfoWorkflowStepList,
@@ -32,7 +33,7 @@ export const WfoProcessDetailPage = ({
     const [fetchInterval, setFetchInterval] = useState<number | undefined>(
         dataRefetchInterval.processDetail,
     );
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, isError, error } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
             processId,
@@ -40,6 +41,13 @@ export const WfoProcessDetailPage = ({
         'processDetail',
         fetchInterval,
     );
+
+    if (error && isError) {
+        console.error(error);
+        if (fetchInterval) {
+            setFetchInterval(undefined);
+        }
+    }
 
     useEffect(() => {
         const lastStatus = data?.processes?.page[0]?.lastStatus;
@@ -65,14 +73,17 @@ export const WfoProcessDetailPage = ({
         <WfoProcessDetail
             pageTitle={pageTitle}
             productNames={productNames}
-            buttonsAreDisabled={isFetching && !process}
+            buttonsAreDisabled={isLoading || isError}
             processDetail={process}
             timelineItems={timelineItems}
             onTimelineItemClick={(id: string) =>
                 stepListRef.current?.scrollToStep(id)
             }
+            isLoading={isLoading}
+            hasError={isError}
         >
-            {(isFetching && !process && <WfoLoading />) ||
+            {(isError && <WfoError />) ||
+                (isLoading && <WfoLoading />) ||
                 (process !== undefined && (
                     <WfoWorkflowStepList
                         ref={stepListRef}
