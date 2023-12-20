@@ -14,7 +14,6 @@ import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
 import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
 import { FilterQuery } from '../WfoFilterTabs';
-import { WfoLoading } from '../WfoLoading';
 import { PATH_WORKFLOWS } from '../WfoPageTemplate';
 import {
     DEFAULT_PAGE_SIZES,
@@ -180,7 +179,7 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, isLoading, isError, error } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -192,10 +191,12 @@ export const WfoProcessesList = ({
         'processList',
     );
 
-    if (!data) {
-        return <WfoLoading />;
+    if (error) {
+        console.error(error);
     }
-    const { totalItems, sortFields, filterFields } = data.processes.pageInfo;
+
+    const { totalItems, sortFields, filterFields } = data?.processes
+        ?.pageInfo || { totalItems: 0, sortFields: [], filterFields: [] };
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -211,7 +212,9 @@ export const WfoProcessesList = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
-            data={mapGraphQlProcessListResultToProcessListItems(data)}
+            data={
+                data ? mapGraphQlProcessListResultToProcessListItems(data) : []
+            }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
@@ -219,7 +222,8 @@ export const WfoProcessesList = ({
             )}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isFetching}
+            isLoading={isLoading}
+            hasError={isError}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
