@@ -4,6 +4,7 @@ import { signOut } from 'next-auth/react';
 
 import { EuiPageTemplate } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
+import { EuiThemeColorMode } from '@elastic/eui/src/services/theme/types';
 
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
@@ -16,12 +17,14 @@ export interface WfoPageTemplateProps {
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
     children: ReactNode;
+    themeSwitch: (theme: EuiThemeColorMode) => void;
 }
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     children,
     getAppLogo,
     overrideMenuItems,
+    themeSwitch,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
@@ -37,6 +40,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     setIsSideMenuVisible((prevState) => !prevState)
                 }
                 handleLogoutClick={signOut}
+                themeSwitch={themeSwitch}
             />
 
             {/* Sidebar and content area */}

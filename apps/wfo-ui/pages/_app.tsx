@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NoSSR from 'react-no-ssr';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -10,8 +10,7 @@ import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryParamProvider } from 'use-query-params';
 
-import { EuiProvider } from '@elastic/eui';
-import '@elastic/eui/dist/eui_theme_light.min.css';
+import { EuiProvider, EuiThemeColorMode } from '@elastic/eui';
 import {
     ApiClientContextProvider,
     ConfirmationDialogContextWrapper,
@@ -35,9 +34,9 @@ type AppOwnProps = { orchestratorConfig: OrchestratorConfig };
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
         queries: {
-            cacheTime: 5 * 1000,
+            cacheTime: 60 * 60 * 1000,
             refetchOnWindowFocus: true,
-            keepPreviousData: true,
+            keepPreviousData: false,
         },
     },
 };
@@ -48,6 +47,23 @@ function CustomApp({
     orchestratorConfig,
 }: AppProps & AppOwnProps) {
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
+    const [themeMode, setThemeMode] = useState<EuiThemeColorMode>('light');
+
+    function handleThemeSwitch(themeMode: EuiThemeColorMode) {
+        setThemeMode(themeMode);
+        localStorage.setItem('themeMode', themeMode);
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem('themeMode')) {
+            handleThemeSwitch(
+                (localStorage.getItem('themeMode') as EuiThemeColorMode) ??
+                    'light',
+            );
+        } else {
+            localStorage.setItem('themeMode', 'light');
+        }
+    }, []);
 
     return (
         <OrchestratorConfigProvider
@@ -57,7 +73,7 @@ function CustomApp({
                 <WfoAuth>
                     <NoSSR>
                         <EuiProvider
-                            colorMode="light"
+                            colorMode={themeMode}
                             modify={defaultOrchestratorTheme}
                         >
                             <ApiClientContextProvider>
@@ -67,6 +83,10 @@ function CustomApp({
                                 >
                                     <TranslationsProvider>
                                         <Head>
+                                            <link
+                                                rel="stylesheet"
+                                                href={`/styles/eui_theme_${themeMode}.min.css`}
+                                            />
                                             <title>
                                                 Welcome to
                                                 example-orchestrator-ui!
@@ -77,6 +97,9 @@ function CustomApp({
                                                 <ConfirmationDialogContextWrapper>
                                                     <WfoPageTemplate
                                                         getAppLogo={getAppLogo}
+                                                        themeSwitch={
+                                                            handleThemeSwitch
+                                                        }
                                                     >
                                                         <QueryParamProvider
                                                             adapter={
