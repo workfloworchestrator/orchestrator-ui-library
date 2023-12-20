@@ -260,6 +260,7 @@
             "inUseByRelations": "In use by relation",
             "showDetails": "Toon details",
             "hideDetails": "Verberg details",
+            "self": "Huidige subscription",
             "subscriptionDetails": "Subscription detail",
             "productName": "Produkt",
             "fixedInputs": "Fixed inputs",
@@ -303,6 +304,10 @@
             "taskName": "Taak",
             "rerunAll": "Alles opnieuw uitvoeren",
             "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt uitvoeren?"
+        },
+        "tabs": {
+            "active": "Actief",
+            "completed": "Voltooid"
         }
     },
     "settings": {

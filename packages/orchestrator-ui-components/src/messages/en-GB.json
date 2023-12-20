@@ -260,6 +260,7 @@
             "ownerSubscriptionId": "Owner subscription ID",
             "inUseByRelations": "In use by relation",
             "showDetails": "Show details",
+            "self": "Current subscription",
             "hideDetails": "Hide details",
             "subscriptionDetails": "Subscription details",
             "productName": "Product name",
@@ -304,6 +305,10 @@
             "taskName": "Task",
             "rerunAll": "Rerun all",
             "rerunAllQuestion": "Are you sure you want to rerun all failed tasks?"
+        },
+        "tabs": {
+            "active": "Active",
+            "completed": "Completed"
         }
     },
     "settings": {
