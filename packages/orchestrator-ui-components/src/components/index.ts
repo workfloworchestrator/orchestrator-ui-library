@@ -22,3 +22,5 @@ export * from './WfoTextAnchor';
 export * from './WfoJsonCodeBlock';
 export * from './WfoDiff';
 export * from './WfoSettings';
+export * from './WfoInsyncIcon';
+export * from './WfoError';
