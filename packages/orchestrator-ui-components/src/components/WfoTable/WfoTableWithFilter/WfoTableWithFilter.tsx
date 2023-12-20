@@ -11,8 +11,10 @@ import {
     Pagination,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WfoArrowsExpand } from '../../../icons';
+import { WfoError } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoArrowsExpand } from '@/icons';
+
 import { getTypedFieldFromObject } from '../../../utils';
 import {
     WfoKeyValueTable,
@@ -59,6 +61,7 @@ export type WfoTableWithFilterProps<T> = {
     onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
+    hasError?: boolean;
 };
 
 export const WfoTableWithFilter = <T,>({
@@ -77,6 +80,7 @@ export const WfoTableWithFilter = <T,>({
     onUpdateQueryString,
     onUpdatePage,
     onUpdateDataSort,
+    hasError = false,
 }: WfoTableWithFilterProps<T>) => {
     const { theme } = useOrchestratorTheme();
 
@@ -187,6 +191,10 @@ export const WfoTableWithFilter = <T,>({
             onUpdatePage(criterion.page);
         }
     };
+
+    if (hasError) {
+        return <WfoError />;
+    }
 
     return (
         <>

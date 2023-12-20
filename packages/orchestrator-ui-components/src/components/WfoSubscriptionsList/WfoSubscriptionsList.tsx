@@ -9,9 +9,7 @@ import { Pagination } from '@elastic/eui';
 import {
     FilterQuery,
     WfoDateTime,
-    WfoError,
     WfoInsyncIcon,
-    WfoLoading,
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { getSubscriptionsListGraphQlQuery } from '@/graphqlQueries';
@@ -148,27 +146,22 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         'subscriptions',
     );
 
+    if (error) {
+        console.error(error);
+    }
+
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
         router.replace('/subscriptions');
         return null;
     }
 
-    if (isError) {
-        console.error(error);
-        return <WfoError />;
-    }
-
-    if (isLoading || !data) {
-        return <WfoLoading />;
-    }
-
     const dataSorting: WfoDataSorting<SubscriptionListItem> = {
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
-    const { totalItems, sortFields, filterFields } =
-        data.subscriptions.pageInfo;
+    const { totalItems, sortFields, filterFields } = data?.subscriptions
+        ?.pageInfo ?? { totalItems: 0, sortFields: [], filterFields: [] };
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
@@ -182,7 +175,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            data={mapGraphQlSubscriptionsResultToSubscriptionListItems(data)}
+            data={
+                data
+                    ? mapGraphQlSubscriptionsResultToSubscriptionListItems(data)
+                    : []
+            }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
@@ -200,6 +197,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
+            hasError={isError}
         />
     );
 };
