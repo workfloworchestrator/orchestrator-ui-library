@@ -22,7 +22,7 @@ setup auth with keycloak in docker.
 -   log into keycloak at http://localhost:8085
 -   keycloak setup (use the `apps/{folder}` env):
     -   follow the [keycloak docs](https://www.keycloak.org/getting-started/getting-started-docker#_secure_the_first_application) to create a new realm and at least one user.
-    -   after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `KEYCLOAK_ISSUER`.
+    -   after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `NEXTAUTH_ISSUER`.
     -   Create a client.
         -   first page: fill in a name for `ClientID`. (`.env.example` default is `orchestrator-client`)
         -   second page: enable `Client authentication` and `Authorization`.
