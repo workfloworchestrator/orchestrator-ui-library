@@ -6,9 +6,14 @@ import { useRouter } from 'next/router';
 
 import { Pagination } from '@elastic/eui';
 
-import { WfoSubscriptionStatusBadge } from '@/components';
-import { FilterQuery, WfoDateTime, WfoLoading } from '@/components';
-import { WfoInsyncIcon } from '@/components/WfoInsyncIcon';
+import {
+    FilterQuery,
+    WfoDateTime,
+    WfoError,
+    WfoInsyncIcon,
+    WfoLoading,
+    WfoSubscriptionStatusBadge,
+} from '@/components';
 import { getSubscriptionsListGraphQlQuery } from '@/graphqlQueries';
 import { DataDisplayParams, useQueryWithGraphql } from '@/hooks';
 import { SortOrder } from '@/types';
@@ -131,7 +136,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
 
     const { sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
+    const { data, error, isError, isLoading } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
             first: dataDisplayParams.pageSize,
@@ -149,7 +154,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         return null;
     }
 
-    if (!data) {
+    if (isError) {
+        console.error(error);
+        return <WfoError />;
+    }
+
+    if (isLoading || !data) {
         return <WfoLoading />;
     }
 
@@ -181,7 +191,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isFetching}
+            isLoading={isLoading}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
             detailModalTitle={'Details - Subscription'}
             onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
