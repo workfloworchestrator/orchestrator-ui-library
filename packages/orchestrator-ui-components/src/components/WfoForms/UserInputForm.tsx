@@ -127,7 +127,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
 
     translationKeyExists(key: string): boolean {
         const translation = this.t(key);
-        return translation !== key ? true : false;
+        return translation && translation !== key ? true : false;
     }
 
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863
