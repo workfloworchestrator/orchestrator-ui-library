@@ -11,12 +11,13 @@ import {
     useEuiScrollBar,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import {
     SummaryCardListItem,
     WfoSummaryCardListItem,
 } from './WfoSummaryCardListItem';
+import { getWfoSummaryCardListStyles } from './styles';
 
 export type SummaryCardButtonConfig = {
     name: string;
@@ -35,33 +36,21 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
     button,
 }) => {
     const router = useRouter();
-    const { theme } = useOrchestratorTheme();
+    const { listContainerStyle, listHeaderStyle, listStyle } =
+        useWithOrchestratorTheme(getWfoSummaryCardListStyles);
 
     return (
-        <EuiFlexItem style={{ minWidth: 300 }}>
+        <EuiFlexItem>
             <EuiPanel
-                css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    flexGrow: 1,
-                }}
+                css={listContainerStyle}
                 hasShadow={false}
                 hasBorder={true}
                 paddingSize="l"
             >
                 <div>
-                    <p style={{ fontWeight: 600 }}>{title}</p>
+                    <p css={listHeaderStyle}>{title}</p>
                     <EuiSpacer size="m" />
-                    <div
-                        css={[
-                            {
-                                height: theme.base * 20,
-                                overflow: 'auto',
-                            },
-                            useEuiScrollBar(),
-                        ]}
-                    >
+                    <div css={[listStyle, useEuiScrollBar()]}>
                         {items?.map((item, index) => (
                             <div key={index}>
                                 <WfoSummaryCardListItem
@@ -78,14 +67,12 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
                 </div>
                 <EuiSpacer size="m" />
                 {button && (
-                    <div>
-                        <EuiButton
-                            fullWidth
-                            onClick={() => router.push(button.url)}
-                        >
-                            {button.name}
-                        </EuiButton>
-                    </div>
+                    <EuiButton
+                        fullWidth
+                        onClick={() => router.push(button.url)}
+                    >
+                        {button.name}
+                    </EuiButton>
                 )}
             </EuiPanel>
         </EuiFlexItem>

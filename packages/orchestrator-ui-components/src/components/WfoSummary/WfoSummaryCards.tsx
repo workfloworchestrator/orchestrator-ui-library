@@ -7,17 +7,18 @@ import {
     useCurrentEuiBreakpoint,
 } from '@elastic/eui';
 
-import { SummaryCardListItem } from '@/components/WfoSummary/';
 import {
+    SummaryCardListItem,
     WfoSummaryCardHeader,
     WfoSummaryCardHeaderProps,
-} from '@/components/WfoSummary/WfoSummaryCardHeader';
+} from '@/components/WfoSummary/';
+import { getWfoSummaryCardsStyles } from '@/components/WfoSummary/styles';
 import { useOrchestratorTheme } from '@/hooks';
 
 import {
     SummaryCardButtonConfig,
     WfoSummaryCardList,
-} from './WfoSummaryCardList';
+} from './WfoSummaryCardList/WfoSummaryCardList';
 import { getNumberOfColumns } from './getNumberOfColumns';
 
 export enum SummaryCardStatus {
@@ -41,6 +42,7 @@ export type WfoSummaryCardsProps = {
 
 export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
     const { theme } = useOrchestratorTheme();
+    const { cardContainerStyle } = getWfoSummaryCardsStyles(theme);
     const currentBreakpoint = useCurrentEuiBreakpoint();
 
     const getIconTypeAndColorForHeaderStatus = (
@@ -84,13 +86,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                     },
                     index,
                 ) => (
-                    <EuiFlexItem
-                        key={index}
-                        css={{
-                            height: theme.base * 36,
-                            minWidth: theme.base * 25,
-                        }}
-                    >
+                    <EuiFlexItem key={index} css={cardContainerStyle}>
                         <WfoSummaryCardHeader
                             text={headerTitle}
                             value={headerValue}

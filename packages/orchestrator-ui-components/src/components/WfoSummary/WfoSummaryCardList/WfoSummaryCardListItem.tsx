@@ -1,8 +1,11 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 
 import { WfoOptionalLink } from '@/components/WfoOptionalLink';
+import { useOrchestratorTheme } from '@/hooks';
+
+import { getWfoSummaryCardListStyles } from './styles';
 
 export type SummaryCardListItem = {
     title: string;
@@ -21,32 +24,32 @@ export const WfoSummaryCardListItem: FC<WfoSummaryCardListItemProps> = ({
     value,
     url,
 }) => {
-    const [hoverState, setHoverState] = useState(false);
+    const { theme } = useOrchestratorTheme();
+    const {
+        listItemContainerStyle,
+        listItemTitleStyle,
+        listItemSubtitleStyle,
+        listItemHighlightIconStyle,
+    } = getWfoSummaryCardListStyles(theme);
 
     return (
         <WfoOptionalLink href={url}>
-            <EuiFlexGroup
-                style={{ paddingBlock: 10 }}
-                onMouseOver={() => setHoverState(true)}
-                onMouseLeave={() => setHoverState(false)}
-                gutterSize="none"
-            >
+            <EuiFlexGroup css={listItemContainerStyle} gutterSize="none">
                 <EuiFlexItem>
                     <EuiTextColor
-                        color={url ? '#397dc2' : 'black'}
-                        style={{ fontWeight: 500 }}
+                        color={url ? theme.colors.link : 'black'}
+                        css={listItemTitleStyle}
                     >
                         {title}
                     </EuiTextColor>
-                    <EuiTextColor style={{ fontWeight: 400 }}>
+                    <EuiTextColor css={listItemSubtitleStyle}>
                         {value}
                     </EuiTextColor>
                 </EuiFlexItem>
                 <EuiFlexItem
+                    className={url ? 'highlight-icon' : undefined}
                     grow={false}
-                    css={{
-                        visibility: hoverState && url ? 'visible' : 'hidden',
-                    }}
+                    css={listItemHighlightIconStyle}
                 >
                     <EuiIcon type="sortRight" color="primary" />
                 </EuiFlexItem>
