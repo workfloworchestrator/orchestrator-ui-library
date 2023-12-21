@@ -10,7 +10,7 @@ export const WfoBell: FC<WfoIconProps> = ({ width = 20, height = 20 }) => (
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title>icon/contact-envelope-fill</title>
+        <title>icon/bell</title>
         <g
             id="Symbols"
             stroke="none"
