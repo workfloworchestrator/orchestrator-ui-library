@@ -18,9 +18,8 @@ export const getWfoSummaryCardListStyles = (theme: EuiThemeComputed) => {
         overflow: 'auto',
     });
 
-    // ListItem
     const listItemContainerStyle = css({
-        paddingBlock: 10,
+        paddingBlock: theme.size.m,
         '.highlight-icon': {
             visibility: 'hidden',
         },
@@ -30,11 +29,11 @@ export const getWfoSummaryCardListStyles = (theme: EuiThemeComputed) => {
     });
 
     const listItemTitleStyle = css({
-        fontWeight: 500,
+        fontWeight: theme.font.weight.medium,
     });
 
     const listItemSubtitleStyle = css({
-        fontWeight: 400,
+        fontWeight: theme.font.weight.regular,
     });
 
     const listItemHighlightIconStyle = css({
