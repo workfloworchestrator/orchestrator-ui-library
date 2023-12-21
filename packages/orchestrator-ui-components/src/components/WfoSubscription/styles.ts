@@ -1,5 +1,8 @@
+import { tint } from '@elastic/eui';
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
+
+const toSecondaryColor = (color: string) => tint(color, 0.91);
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const contentCellStyle = {
@@ -53,7 +56,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const productBlockPanelStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: toSecondaryColor(theme.colors.primary),
     });
 
     const productBlockLeftCol = {
