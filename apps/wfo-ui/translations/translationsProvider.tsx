@@ -39,7 +39,8 @@ export const TranslationsProvider = ({
         if (
             error &&
             error.code &&
-            error.code !== IntlErrorCode.MISSING_MESSAGE
+            error.code !== IntlErrorCode.MISSING_MESSAGE &&
+            error.code !== IntlErrorCode.INSUFFICIENT_PATH
         ) {
             // Missing translations are expected and normal in the context of the
             // forms module (see UserInputForm.tsx) so we silently discard them
