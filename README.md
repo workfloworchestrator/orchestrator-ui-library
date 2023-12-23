@@ -1,6 +1,9 @@
-Todo: copy old README.md
+# Workflow Orchestrator GUI
 
-# Getting started
+Library and 2 example GUI implementations for the
+[Workflow Orchestrator Core](https://github.com/workfloworchestrator/orchestrator-core).
+
+## Getting started
 
 -   set `AUTH_ACTIVE` env variable to false or use setup below with auth.
 
@@ -54,4 +57,9 @@ yarn run packages:changeset
 -   Adds a description or release notes for the release
 -   All entries will be saved in a `.md` file in the `.changeset` folder
 
-Once the pull-request with a changeset file is merged to the main branch another PR is opened by the Changesets-bot to update the version numbers of the packages. When this pull request gets merged to main an automatic publish to NPM will be performed.
+Once the pull-request with a changeset file is merged to the main branch another PR is opened by the Changesets-bot to update the version numbers of the packages.
+When this pull request gets merged to main an automatic publish to NPM will be performed.
+
+# Updating EUI
+
+When you update to a newer version of EUI, please ensure that you also copy the 2 minified stylesheets from the EUI dist folder to your app's `public/styles` folder.
