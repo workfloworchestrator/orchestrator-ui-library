@@ -53,7 +53,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const productBlockPanelStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.highlight,
     });
 
     const productBlockLeftCol = {

@@ -35,8 +35,8 @@ const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
         queries: {
             cacheTime: 60 * 60 * 1000,
-            // refetchOnWindowFocus: true,
-            keepPreviousData: false,
+            refetchOnWindowFocus: true,
+            keepPreviousData: true,
         },
     },
 };
@@ -49,19 +49,15 @@ function CustomApp({
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
     const [themeMode, setThemeMode] = useState<EuiThemeColorMode>('light');
 
-    function handleThemeSwitch(themeMode: EuiThemeColorMode) {
-        setThemeMode(themeMode);
-        localStorage.setItem('themeMode', themeMode);
-    }
+    const handleThemeSwitch = (newThemeMode: EuiThemeColorMode) => {
+        setThemeMode(newThemeMode);
+        localStorage.setItem('themeMode', newThemeMode);
+    };
 
     useEffect(() => {
-        if (localStorage.getItem('themeMode')) {
-            handleThemeSwitch(
-                (localStorage.getItem('themeMode') as EuiThemeColorMode) ??
-                    'light',
-            );
-        } else {
-            localStorage.setItem('themeMode', 'light');
+        // Initialize theme mode from localStorage or set it to 'light' if not present
+        if (!localStorage.getItem('themeMode')) {
+            handleThemeSwitch('light');
         }
     }, []);
 
