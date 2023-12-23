@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 export const getStyles = (theme: EuiThemeComputed) => {
     const contentCellStyle = {
         padding: (theme.base / 4) * 3,
-        borderBottom: theme.border.thin,
+        borderBottom: `solid 1px ${theme.colors.lightShade}`,
     };
 
     const headerCellStyle = css({
@@ -19,7 +19,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const tableStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.highlight,
         width: '100%',
         borderRadius: theme.border.radius.medium,
         marginTop: theme.base / 2,
@@ -46,7 +46,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     const productBlockIconStyle = css({
         width: 45,
         height: 45,
-        backgroundColor: 'rgb(193,221,241,1)',
+        backgroundColor: theme.colors.lightShade,
         paddingTop: 13,
         paddingLeft: 15,
         borderRadius: 7,

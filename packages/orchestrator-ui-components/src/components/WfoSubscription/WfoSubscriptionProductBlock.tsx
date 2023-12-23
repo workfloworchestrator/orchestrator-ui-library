@@ -72,7 +72,7 @@ export const WfoSubscriptionProductBlock = ({
                         <div css={productBlockIconStyle}>
                             <EuiIcon
                                 type="filebeatApp"
-                                color={theme.colors.primary}
+                                color={theme.colors.text}
                             />
                         </div>
                     </EuiFlexItem>
@@ -148,7 +148,10 @@ export const WfoSubscriptionProductBlock = ({
                                             valign={'top'}
                                             css={productBlockRightColStyle}
                                         >
-                                            <EuiCodeBlock language="json">
+                                            <EuiCodeBlock
+                                                transparentBackground={true}
+                                                language="json"
+                                            >
                                                 {JSON.stringify(
                                                     inUseByRelations,
                                                     null,
