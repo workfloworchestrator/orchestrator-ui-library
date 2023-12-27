@@ -7,6 +7,7 @@ import {
     EuiFlexItem,
     EuiHorizontalRule,
     EuiPanel,
+    EuiSkeletonText,
     EuiSpacer,
     useEuiScrollBar,
 } from '@elastic/eui';
@@ -28,14 +29,17 @@ export type WfoSummaryCardListProps = {
     title: string;
     items: SummaryCardListItem[];
     button?: SummaryCardButtonConfig;
+    isLoading?: boolean;
 };
 
 export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
     title,
     items,
     button,
+    isLoading = false,
 }) => {
     const router = useRouter();
+    const euiScrollBarStyle = useEuiScrollBar();
     const { listContainerStyle, listHeaderStyle, listStyle } =
         useWithOrchestratorTheme(getWfoSummaryCardListStyles);
 
@@ -50,20 +54,22 @@ export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({
                 <div>
                     <p css={listHeaderStyle}>{title}</p>
                     <EuiSpacer size="m" />
-                    <div css={[listStyle, useEuiScrollBar()]}>
-                        {items?.map((item, index) => (
-                            <div key={index}>
-                                <WfoSummaryCardListItem
-                                    title={item.title}
-                                    value={item.value}
-                                    url={item.url}
-                                />
-                                {index === items.length - 1 ? null : (
-                                    <EuiHorizontalRule margin="none" />
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                    <EuiSkeletonText isLoading={isLoading} lines={10}>
+                        <div css={[listStyle, euiScrollBarStyle]}>
+                            {items?.map((item, index) => (
+                                <div key={index}>
+                                    <WfoSummaryCardListItem
+                                        title={item.title}
+                                        value={item.value}
+                                        url={item.url}
+                                    />
+                                    {index === items.length - 1 ? null : (
+                                        <EuiHorizontalRule margin="none" />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </EuiSkeletonText>
                 </div>
                 <EuiSpacer size="m" />
                 {button && (

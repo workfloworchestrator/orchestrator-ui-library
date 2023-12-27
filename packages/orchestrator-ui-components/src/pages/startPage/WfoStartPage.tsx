@@ -28,22 +28,34 @@ import { getFirstUuidPart } from '@/utils';
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
 
-    const { data: subscriptionsSummaryResult } = useQueryWithGraphql(
+    const {
+        data: subscriptionsSummaryResult,
+        isLoading: subscriptionsSummaryIsFetching,
+    } = useQueryWithGraphql(
         getSubscriptionsListSummaryGraphQlQuery(),
         subscriptionsListSummaryQueryVariables,
         ['subscriptions', 'startPage'],
     );
-    const { data: processesSummaryResult } = useQueryWithGraphql(
+    const {
+        data: processesSummaryResult,
+        isLoading: processesSummaryIsFetching,
+    } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
         processListSummaryQueryVariables,
         ['workflows', 'startPage'],
     );
-    const { data: failedTasksSummaryResult } = useQueryWithGraphql(
+    const {
+        data: failedTasksSummaryResult,
+        isLoading: failedTasksSummaryIsFetching,
+    } = useQueryWithGraphql(
         getProcessListSummaryGraphQlQuery(),
         taskListSummaryQueryVariables,
         ['tasks', 'startPage'],
     );
-    const { data: productsSummaryResult } = useQueryWithGraphql(
+    const {
+        data: productsSummaryResult,
+        isLoading: productsSummaryIsFetching,
+    } = useQueryWithGraphql(
         getProductsSummaryQuery(),
         productsSummaryQueryVariables,
         'productSummary',
@@ -67,6 +79,7 @@ export const WfoStartPage = () => {
             name: t('activeSubscriptions.buttonText'),
             url: PATH_SUBSCRIPTIONS,
         },
+        isLoading: subscriptionsSummaryIsFetching,
     };
 
     const latestWorkflowsSummaryCard: SummaryCard = {
@@ -84,6 +97,7 @@ export const WfoStartPage = () => {
             name: t('activeWorkflows.buttonText'),
             url: PATH_WORKFLOWS,
         },
+        isLoading: processesSummaryIsFetching,
     };
 
     const failedTasksSummaryCard: SummaryCard = {
@@ -102,7 +116,9 @@ export const WfoStartPage = () => {
             name: t('failedTasks.buttonText'),
             url: PATH_TASKS,
         },
+        isLoading: failedTasksSummaryIsFetching,
     };
+
     const productsSummaryCard: SummaryCard = {
         headerTitle: t('products.headerTitle'),
         headerValue: productsSummaryResult?.products.pageInfo.totalItems ?? 0,
@@ -131,6 +147,7 @@ export const WfoStartPage = () => {
                         </div>
                     ),
                 })) ?? [],
+        isLoading: productsSummaryIsFetching,
     };
 
     return (
