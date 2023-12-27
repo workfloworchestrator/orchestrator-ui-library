@@ -3,30 +3,33 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Pagination } from '@elastic/eui/src/components';
+import { Pagination } from '@elastic/eui';
 
-import { getProcessListGraphQlQuery } from '../../graphqlQueries/processListQuery';
-import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
-import { WfoProcessListSubscriptionsCell } from '../../pages';
-import { Process, SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString } from '../../utils';
-import { WfoProcessStatusBadge } from '../WfoBadges';
-import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
-import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
-import { FilterQuery } from '../WfoFilterTabs';
-import { PATH_WORKFLOWS } from '../WfoPageTemplate';
+import {
+    FilterQuery,
+    PATH_WORKFLOWS,
+    WfoDateTime,
+    WfoProcessStatusBadge,
+    WfoWorkflowTargetBadge,
+} from '@/components';
 import {
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
     WfoDataSorting,
+    WfoFirstPartUUID,
     WfoTableColumns,
     WfoTableWithFilter,
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
-} from '../WfoTable';
-import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+    mapSortableAndFilterableValuesToTableColumnConfig,
+} from '@/components/WfoTable';
+import { getProcessListGraphQlQuery } from '@/graphqlQueries/processListQuery';
+import { DataDisplayParams, useQueryWithGraphql } from '@/hooks';
+import { WfoProcessListSubscriptionsCell } from '@/pages';
+import { Process, SortOrder } from '@/types';
+import { parseDateToLocaleDateTimeString } from '@/utils';
+
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
