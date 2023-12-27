@@ -34,6 +34,7 @@ export type SummaryCard = {
     listTitle: string;
     listItems: SummaryCardListItem[];
     button?: SummaryCardButtonConfig;
+    isLoading?: boolean;
 };
 
 export type WfoSummaryCardsProps = {
@@ -83,6 +84,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                         listTitle,
                         listItems,
                         button,
+                        isLoading,
                     },
                     index,
                 ) => (
@@ -99,6 +101,7 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
                             title={listTitle}
                             items={listItems}
                             button={button}
+                            isLoading={isLoading}
                         />
                     </EuiFlexItem>
                 ),
