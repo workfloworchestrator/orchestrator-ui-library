@@ -62,6 +62,7 @@ export type WfoTableWithFilterProps<T extends object> = {
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
     hasError?: boolean;
+    onDownloadCsv?: () => void;
 };
 
 export const WfoTableWithFilter = <T extends object>({
@@ -81,6 +82,7 @@ export const WfoTableWithFilter = <T extends object>({
     onUpdatePage,
     onUpdateDataSort,
     hasError = false,
+    onDownloadCsv,
 }: WfoTableWithFilterProps<T>) => {
     const { theme } = useOrchestratorTheme();
 
@@ -208,6 +210,11 @@ export const WfoTableWithFilter = <T extends object>({
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
                     {t('editColumns')}
                 </EuiButton>
+                {onDownloadCsv && (
+                    <EuiButton onClick={() => onDownloadCsv()}>
+                        {'CSV'}
+                    </EuiButton>
+                )}
             </EuiFlexGroup>
             <EuiSpacer size="m" />
             <WfoBasicTable

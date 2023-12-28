@@ -165,6 +165,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         totalItemCount: totalItems ?? 0,
     };
 
+    const handleCsvDownload = () => {};
+
     return (
         <WfoTableWithFilter<SubscriptionListItem>
             queryString={dataDisplayParams.queryString}
@@ -194,6 +196,53 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             hasError={isError}
+            onDownloadCsv={() => handleCsvDownload()}
         />
     );
+};
+
+//todo move out of here to make it reusable
+type WfoCsvDownloaderProps = {
+    alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
+    dataDisplayParams: DataDisplayParams<SubscriptionListItem>;
+};
+
+// A component is used since we are using a hook to fetch the data
+// Might be better to split up the hook from the actual data fetching (useQueryWithGraphql.ts)
+const WfoCsvDownloader: FC<WfoCsvDownloaderProps> = ({
+    alwaysOnFilters,
+    dataDisplayParams,
+}) => {
+    const { data, isLoading } = useQueryWithGraphql(
+        getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
+        {
+            first: 1000,
+            after: 0,
+            sortBy: dataDisplayParams.sortBy,
+            filterBy: alwaysOnFilters,
+            query: dataDisplayParams.queryString || undefined,
+        },
+        'subscriptions',
+    );
+
+    if (isLoading) {
+        return <div>Loading CSV...</div>;
+    }
+
+    const dataForCsv = data?.subscriptions.page;
+    console.log('CSV data', dataForCsv);
+
+    // inspiration https://openjavascript.info/2022/12/18/json-file-to-csv-download-with-vanilla-javascript/
+    // Note: Some fields are objects and .toString() doesn't work well on them
+    // we need to parse the data just like we do in the table.
+
+    if (dataForCsv) {
+        const headers = Object.keys(dataForCsv[0]).toString();
+        const rows = dataForCsv.map((row) => Object.values(row).toString());
+        const csv = [headers, ...rows].join('\n');
+
+        console.log({ csv });
+    }
+
+    return <div>CSV is Ready</div>;
 };
