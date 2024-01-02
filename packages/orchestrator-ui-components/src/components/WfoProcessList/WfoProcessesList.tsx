@@ -179,7 +179,7 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, isError, error } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_LIST_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -190,10 +190,6 @@ export const WfoProcessesList = ({
         },
         'processList',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const { totalItems, sortFields, filterFields } =
         data?.processes?.pageInfo || {};

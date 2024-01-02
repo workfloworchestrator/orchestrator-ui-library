@@ -178,7 +178,7 @@ export const WfoProductBlocksPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, isError, error } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -188,10 +188,6 @@ export const WfoProductBlocksPage = () => {
         },
         'productBlocks',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
         field: sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,

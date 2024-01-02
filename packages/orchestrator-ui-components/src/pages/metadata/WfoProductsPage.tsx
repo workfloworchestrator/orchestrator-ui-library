@@ -152,7 +152,7 @@ export const WfoProductsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, isError, error } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PRODUCTS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -162,10 +162,6 @@ export const WfoProductsPage = () => {
         },
         'products',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const { totalItems, sortFields, filterFields } =
         data?.products?.pageInfo ?? {};

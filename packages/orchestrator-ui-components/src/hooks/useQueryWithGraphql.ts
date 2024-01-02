@@ -35,7 +35,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         // @ts-ignore
         await graphQLClient.request<U, V>(query, queryVars, requestHeaders);
 
-    return useQuery<U>(
+    const { error, ...restWithoutError } = useQuery<U>(
         [queryKey, ...Object.values(queryVars)],
         fetchFromGraphql,
         {
@@ -43,4 +43,9 @@ export const useQueryWithGraphql = <U, V extends Variables>(
             enabled,
         },
     );
+
+    if (error) {
+        console.error(error);
+    }
+    return restWithoutError;
 };

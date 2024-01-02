@@ -33,7 +33,7 @@ export const WfoProcessDetailPage = ({
     const [fetchInterval, setFetchInterval] = useState<number | undefined>(
         dataRefetchInterval.processDetail,
     );
-    const { data, isLoading, isError, error } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
             processId,
@@ -42,8 +42,7 @@ export const WfoProcessDetailPage = ({
         fetchInterval,
     );
 
-    if (error && isError) {
-        console.error(error);
+    if (isError) {
         if (fetchInterval) {
             setFetchInterval(undefined);
         }

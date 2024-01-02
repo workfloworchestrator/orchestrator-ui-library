@@ -136,7 +136,7 @@ export const WfoWorkflowsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, error, isError } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_WORKFLOWS_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -146,10 +146,6 @@ export const WfoWorkflowsPage = () => {
         },
         'workflows',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const dataSorting: WfoDataSorting<WorkflowListItem> = {
         field: sortBy?.field ?? 'name',

@@ -97,7 +97,7 @@ export const WfoStartProcessPage = ({
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
-    const { data, isLoading, error, isError } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_STEPS_GRAPHQL_QUERY,
         {
             processName,
@@ -109,7 +109,6 @@ export const WfoStartProcessPage = ({
         if (!hasError) {
             setHasError(true);
         }
-        console.error(error);
     }
 
     const timeLineItems: TimelineItem[] =
