@@ -4078,10 +4078,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-no-ssr@^1.1.3":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@types/react-no-ssr/-/react-no-ssr-1.1.6.tgz#8b49dac69420d8471809a7232440a000c6389153"
-  integrity sha512-wsR9loM5/yAAl7MCUdb1FAKOZURl1qOAm9n4qBeTqxoc/+IC9Na0/hIalrGQIzQH6isGtMZer9FGosW+eEDPEQ==
+"@types/react-no-ssr@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@types/react-no-ssr/-/react-no-ssr-1.1.7.tgz#b0423205dffeb03e4420d2e49c560f224bbf5bbf"
+  integrity sha512-ccIthMjeaplgCSv5hNvMsP27RVYpga5E5Nog7nkNaMLkvw3Q4wfVHtJPel/SisNVoXr/6mI8O/gv8A58maipsA==
   dependencies:
     "@types/react" "*"
 
