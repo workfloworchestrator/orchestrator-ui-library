@@ -84,6 +84,7 @@ declare module 'uniforms' {
         pattern: never;
         examples: never;
         allOf: never;
+        anyOf: never;
         options: never;
     }
 }
@@ -94,6 +95,7 @@ filterDOMProps.register('required');
 filterDOMProps.register('pattern');
 filterDOMProps.register('examples');
 filterDOMProps.register('allOf');
+filterDOMProps.register('anyOf');
 filterDOMProps.register('options');
 
 function resolveRef(reference: string, schema: Record<string, any>) {
