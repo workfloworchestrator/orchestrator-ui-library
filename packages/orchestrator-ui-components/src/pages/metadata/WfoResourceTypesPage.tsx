@@ -124,7 +124,7 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, error, isError } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_RESOURCE_TYPES_GRAPHQL_QUERY,
         {
             first: pageSize,
@@ -134,10 +134,6 @@ export const WfoResourceTypesPage = () => {
         },
         'resourceTypes',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,

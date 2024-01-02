@@ -134,7 +134,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
 
     const { sortBy, queryString } = dataDisplayParams;
-    const { data, error, isError, isLoading } = useQueryWithGraphql(
+    const { data, isError, isLoading } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         {
             first: dataDisplayParams.pageSize,
@@ -145,10 +145,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         },
         'subscriptions',
     );
-
-    if (error) {
-        console.error(error);
-    }
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
