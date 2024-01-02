@@ -1,23 +1,27 @@
 import React, { ReactElement } from 'react';
 
-import Image from 'next/image';
+import { EuiText } from '@elastic/eui';
+import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { getAppLogoStyles } from '@/components/AppLogo/styles';
 
-import Logo from './logo-orchestrator.svg';
+export function getAppLogo(): ReactElement {
+    const { logoStyle } = getAppLogoStyles();
 
-export function getAppLogo(navigationLogo: number): ReactElement {
-    return (
-        <EuiFlexGroup alignItems="center" css={{ height: navigationLogo }}>
-            <EuiFlexItem>
-                <Image
-                    priority
-                    src={Logo}
-                    alt="Orchestrator Logo"
-                    width={134}
-                    height={32}
-                />
-            </EuiFlexItem>
-        </EuiFlexGroup>
-    );
+    const AppLogo = () => {
+        const { theme } = useOrchestratorTheme();
+
+        return (
+            <div css={logoStyle}>
+                <EuiText color={theme.colors.emptyShade} size="xs">
+                    Workflow
+                </EuiText>
+                <EuiText color={theme.colors.emptyShade} size="xs">
+                    Orchestrator
+                </EuiText>
+            </div>
+        );
+    };
+
+    return <AppLogo />;
 }
