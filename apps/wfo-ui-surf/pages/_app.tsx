@@ -96,6 +96,10 @@ function CustomApp({
                                     >
                                         <TranslationsProvider>
                                             <Head>
+                                                <link
+                                                    rel="icon"
+                                                    href="/favicon.png"
+                                                />
                                                 <title>
                                                     Welcome to
                                                     example-orchestrator-ui!

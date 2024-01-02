@@ -9,11 +9,15 @@ import {
     EuiHeaderSectionItem,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoLogoutIcon } from '../../../icons/WfoLogoutIcon';
-import { WfoEngineStatusBadge } from '../../WfoBadges/WfoEngineStatusBadge';
-import { WfoEnvironmentBadge } from '../../WfoBadges/WfoEnvironmentBadge';
-import { WfoFailedTasksBadge } from '../../WfoBadges/WfoFailedTasksBadge';
+import {
+    WfoEngineStatusBadge,
+    WfoEnvironmentBadge,
+    WfoFailedTasksBadge,
+} from '@/components';
+import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
+import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoLogoutIcon } from '@/icons';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!
@@ -30,19 +34,18 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     handleLogoutClick,
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+    const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
+        getWfoPageHeaderStyles,
+    );
+
     return (
-        <EuiHeader
-            css={{
-                backgroundColor: theme.colors.primary,
-                height: navigationHeight,
-            }}
-        >
+        <EuiHeader css={getHeaderStyle(navigationHeight)}>
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
-                    <EuiHeaderLogo
-                        iconType={() => getAppLogo(navigationHeight)}
-                    />
+                    <EuiHeaderLogo iconType={() => <WfoAppLogo />} />
+                    <div css={appNameStyle}>{getAppLogo(navigationHeight)}</div>
                 </EuiHeaderSectionItem>
+
                 <EuiHeaderSectionItem>
                     <WfoEnvironmentBadge />
                 </EuiHeaderSectionItem>
