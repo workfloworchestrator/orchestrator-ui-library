@@ -108,7 +108,18 @@ function resolveRef(reference: string, schema: Record<string, any>) {
     const resolvedReference = reference
         .split('/')
         .filter((part) => part && part !== '#')
-        .reduce((definition, next) => definition[next], schema);
+        .reduce((definition, next) => {
+            // FIXME: There is a ticket to fix this in the return value from GraphQL.
+            // currently the schema is not nested under $defs but under definitions when
+            // the form is in suspended step but it's still being referenced as $defs in the form.properties
+            const newDefinition = (() => {
+                if (next === '$defs' && !definition[next]) {
+                    return definition['definitions'];
+                }
+                return definition[next];
+            })();
+            return newDefinition;
+        }, schema);
 
     invariant(
         resolvedReference,
