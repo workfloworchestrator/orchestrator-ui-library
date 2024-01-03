@@ -9,7 +9,7 @@ import {
 import { OrchestratorConfigContext } from '../../contexts';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { useQueryWithGraphql } from '../../hooks';
-import { ProcessDoneStatuses, Step } from '../../types';
+import { ProcessDoneStatuses, ProcessStatus, Step } from '../../types';
 import { getProductNamesFromProcess } from '../../utils';
 import { WfoProcessDetail } from './WfoProcessDetail';
 import {
@@ -49,10 +49,16 @@ export const WfoProcessDetailPage = ({
     }
 
     useEffect(() => {
-        const lastStatus = data?.processes?.page[0]?.lastStatus;
+        const process = data?.processes.page[0];
+        // We need to cast here because the backend might return the string in upperCase and
+        // toLowerCase() will converts the value type to string
+        const lastStatus =
+            process?.lastStatus.toLocaleLowerCase() as ProcessStatus;
+
         const isInProgress = !(
             lastStatus && ProcessDoneStatuses.includes(lastStatus)
         );
+
         setFetchInterval(
             isInProgress ? dataRefetchInterval.processDetail : undefined,
         );
