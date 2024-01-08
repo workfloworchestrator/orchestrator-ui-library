@@ -194,7 +194,6 @@ export enum ProcessStatus {
 export const ProcessDoneStatuses = [
     ProcessStatus.COMPLETED,
     ProcessStatus.ABORTED,
-    ProcessStatus.SUSPENDED,
 ];
 
 export interface StepState {
