@@ -94,6 +94,7 @@ export const WfoStartProcessPage = ({
     );
 
     const { stepUserInput, hasNext } = form;
+
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
@@ -154,6 +155,11 @@ export const WfoStartProcessPage = ({
                 )
                 .catch((error: AxiosError) => {
                     if (error?.response?.status !== 510) {
+                        if (error?.response?.status === 400) {
+                            // Rethrow the error so userInputForm can catch it and display validation errors
+                            throw error;
+                        }
+
                         console.error(error);
                         setHasError(true);
                     } else {
