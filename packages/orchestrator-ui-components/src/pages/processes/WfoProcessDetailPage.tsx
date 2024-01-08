@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { TimelineItem, WfoError, WfoLoading } from '@/components';
 
@@ -6,7 +6,6 @@ import {
     WfoStepListRef,
     WfoWorkflowStepList,
 } from '../../components/WfoWorkflowSteps';
-import { OrchestratorConfigContext } from '../../contexts';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { useQueryWithGraphql } from '../../hooks';
 import { ProcessDoneStatuses, ProcessStatus, Step } from '../../types';
@@ -21,25 +20,26 @@ export type GroupedStep = {
     steps: Step[];
 };
 
+const PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL = 3000;
+
 interface WfoProcessDetailPageProps {
     processId: string;
+    processDetailRefetchInterval?: number;
 }
 
 export const WfoProcessDetailPage = ({
     processId,
+    processDetailRefetchInterval = PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
 }: WfoProcessDetailPageProps) => {
-    const { dataRefetchInterval } = useContext(OrchestratorConfigContext);
     const stepListRef = useRef<WfoStepListRef>(null);
-    const [fetchInterval, setFetchInterval] = useState<number | undefined>(
-        dataRefetchInterval.processDetail,
-    );
+    const [fetchInterval, setFetchInterval] = useState<number | undefined>();
     const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
             processId,
         },
         'processDetail',
-        { refetchInterval: fetchInterval },
+        { refetchInterval: fetchInterval, refetchOnWindowFocus: false },
     );
 
     if (isError) {
@@ -60,9 +60,9 @@ export const WfoProcessDetailPage = ({
         );
 
         setFetchInterval(
-            isInProgress ? dataRefetchInterval.processDetail : undefined,
+            isInProgress ? processDetailRefetchInterval : undefined,
         );
-    }, [data, dataRefetchInterval.processDetail]);
+    }, [data, processDetailRefetchInterval]);
 
     const process = data?.processes.page[0];
     const steps = process?.steps ?? [];

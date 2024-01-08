@@ -15,9 +15,6 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     processesEndpoint: '',
     subscriptionActionsEndpoint: '',
     subscriptionProcessesEndpoint: '',
-    dataRefetchInterval: {
-        processDetail: 0,
-    },
     authActive: true,
 });
 
