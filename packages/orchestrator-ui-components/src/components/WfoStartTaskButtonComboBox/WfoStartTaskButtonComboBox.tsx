@@ -20,9 +20,6 @@ export const WfoStartTaskButtonComboBox = () => {
     const { data } = useQueryWithGraphql(
         GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY,
         {
-            // Avoiding pagination by fetching an unrealistic amount of items
-            first: 1000,
-            after: 0,
             filterBy: [{ field: 'target', value: 'SYSTEM' }],
         },
         'taskWorkflows',
