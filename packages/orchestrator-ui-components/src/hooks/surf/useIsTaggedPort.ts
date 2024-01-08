@@ -10,8 +10,7 @@ export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
         GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
         { subscriptionId },
         `subscription-${subscriptionId}`,
-        false,
-        !!subscriptionId,
+        { enabled: !!subscriptionId },
     );
     const subscriptionDetail = data?.subscriptions.page[0];
 
