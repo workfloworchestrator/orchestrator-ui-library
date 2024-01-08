@@ -21,7 +21,7 @@ export const WfoStartCreateWorkflowButtonComboBox = () => {
         GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY,
         {
             // Avoiding pagination by fetching an unrealistic amount of items
-            first: 1000,
+            first: 1000000,
             after: 0,
             filterBy: [{ field: 'target', value: 'CREATE' }],
         },

@@ -234,7 +234,10 @@ function SubscriptionFieldDefinition({
                     )
                 ) {
                     return false;
-                } else if (portMode !== visiblePortMode) {
+                } else if (
+                    portMode !== visiblePortMode &&
+                    visiblePortMode !== 'normal'
+                ) {
                     return false;
                 }
             }
@@ -278,6 +281,7 @@ function SubscriptionFieldDefinition({
     };
 
     const options = getSubscriptionOptions();
+
     const selectedValue = options.find(
         (option: Option) => option.value === value,
     );
