@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useQuery } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 
 import { GraphQLClient } from 'graphql-request';
 import {
@@ -17,8 +17,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
     queryVars: V,
     cacheKeys: string[] | string,
-    refetchInterval: number | false = false,
-    enabled: boolean = true,
+    options: UseQueryOptions<U> = {},
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
     const { session } = useSessionWithToken();
@@ -41,14 +40,11 @@ export const useQueryWithGraphql = <U, V extends Variables>(
         ...Object.values(queryVars),
     ];
 
-    const { error, ...restWithoutError } = useQuery<U>(
-        queryKeys,
-        fetchFromGraphql,
-        {
-            refetchInterval,
-            enabled,
-        },
-    );
+    const { error, ...restWithoutError } = useQuery<U>({
+        queryKey: queryKeys,
+        queryFn: fetchFromGraphql,
+        ...options,
+    });
 
     if (error) {
         console.error(error);

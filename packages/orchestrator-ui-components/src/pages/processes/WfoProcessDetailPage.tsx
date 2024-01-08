@@ -39,7 +39,7 @@ export const WfoProcessDetailPage = ({
             processId,
         },
         'processDetail',
-        fetchInterval,
+        { refetchInterval: fetchInterval },
     );
 
     if (isError) {
