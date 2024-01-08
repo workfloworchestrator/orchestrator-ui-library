@@ -9,13 +9,10 @@ import {
     SubscriptionDropdownOptionsResult,
 } from '../types';
 
+// Avoiding pagination by passing a large number to first. TODO: Fix this better
 export const GET_SUBSCRIPTION_DROPDOWN_OPTIONS_GRAPHQL_QUERY = parse(gql`
-    query SubscriptionDropdownOptions(
-        $filterBy: [GraphqlFilter!]
-        $first: Int
-        $after: Int
-    ) {
-        subscriptions(filterBy: $filterBy, first: $first, after: $after) {
+    query SubscriptionDropdownOptions($filterBy: [GraphqlFilter!]) {
+        subscriptions(filterBy: $filterBy, first: 1000000, after: 0) {
             page {
                 description
                 subscriptionId
