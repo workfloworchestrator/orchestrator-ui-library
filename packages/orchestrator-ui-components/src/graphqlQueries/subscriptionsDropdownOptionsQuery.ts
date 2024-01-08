@@ -10,8 +10,12 @@ import {
 } from '../types';
 
 export const GET_SUBSCRIPTION_DROPDOWN_OPTIONS_GRAPHQL_QUERY = parse(gql`
-    query SubscriptionDropdownOptions($filterBy: [GraphqlFilter!]) {
-        subscriptions(filterBy: $filterBy) {
+    query SubscriptionDropdownOptions(
+        $filterBy: [GraphqlFilter!]
+        $first: Int
+        $after: Int
+    ) {
+        subscriptions(filterBy: $filterBy, first: $first, after: $after) {
             page {
                 description
                 subscriptionId

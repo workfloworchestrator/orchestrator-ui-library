@@ -32,8 +32,12 @@ export const useGetSubscriptionDropdownOptions = (
         getSubscriptionDropdownOptionsGraphQlQuery(),
         {
             filterBy: filters,
+            // Avoiding pagination by fetching an unrealistic amount of items
+            first: 1000000,
+            after: 0,
         },
         'subscriptionOptions',
+        { refetchOnWindowFocus: false },
     );
 
     const subscriptions = (() => {
