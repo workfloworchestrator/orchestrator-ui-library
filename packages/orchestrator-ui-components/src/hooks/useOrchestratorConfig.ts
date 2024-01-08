@@ -14,9 +14,6 @@ export type OrchestratorConfig = {
     processesEndpoint: string;
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
-    dataRefetchInterval: {
-        processDetail: number;
-    };
     authActive: boolean;
 };
 
