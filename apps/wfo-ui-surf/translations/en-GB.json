@@ -68,6 +68,11 @@
                             "extraInformation": "Extra info",
                             "impact": "Impact"
                         }
+                    },
+                    "notificationLog": {
+                        "nl": "NL",
+                        "en": "EN",
+                        "noLogsAvailableForThisServiceTicket": "No logs available for this service ticket"
                     }
                 },
                 "buttons": {
