@@ -25,7 +25,7 @@ export const defaultTasksListTabs: WfoFilterTab<
             },
             {
                 field: 'lastStatus',
-                value: 'created-running-suspended-waiting-failed-resumed',
+                value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data',
             },
         ],
     },
