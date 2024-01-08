@@ -199,7 +199,7 @@ const processListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
         },
         {
             field: 'lastStatus',
-            value: 'created-running-suspended-waiting-failed-resumed',
+            value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
         },
     ],
 };
@@ -223,7 +223,7 @@ const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
         },
         {
             field: 'lastStatus',
-            value: 'failed',
+            value: 'failed-inconsistent_data-api_unavailable',
         },
     ],
 };
