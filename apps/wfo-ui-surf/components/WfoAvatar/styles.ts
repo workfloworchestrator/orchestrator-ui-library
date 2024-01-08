@@ -1,32 +1,35 @@
 import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+export const getStyles = (
+    theme: EuiThemeComputed,
+    toSecondaryColor: (color: string) => string,
+) => {
     const stepStateIcon = {
-        height: '42px',
-        width: '42px',
+        height: theme.size.xxl,
+        width: theme.size.xxl,
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'center',
-        borderRadius: '24px',
-        border: `2px solid ${theme.colors.emptyShade}`,
+        borderRadius: theme.size.l,
+        border: `${theme.size.xxs} solid ${theme.colors.emptyShade}`,
     };
 
     const openIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#D9EDE1',
+        backgroundColor: toSecondaryColor(theme.colors.success),
         color: theme.colors.success,
     });
 
     const updateIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#CCE3F4',
+        backgroundColor: toSecondaryColor(theme.colors.primary),
         color: theme.colors.primary,
     });
 
     const closedIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#DCE4EF',
+        backgroundColor: toSecondaryColor(theme.colors.subduedText),
         color: theme.colors.subduedText,
     });
 

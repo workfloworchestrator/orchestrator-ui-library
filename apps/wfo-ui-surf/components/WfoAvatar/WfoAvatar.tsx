@@ -12,10 +12,12 @@ export interface WfoAvatarProps {
 }
 
 export const WfoAvatar = ({ stepStatus, icon }: WfoAvatarProps) => {
-    const { theme } = useOrchestratorTheme();
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const { openIconStyle, updateIconStyle, closedIconStyle } =
-        getStyles(theme);
+    const { openIconStyle, updateIconStyle, closedIconStyle } = getStyles(
+        theme,
+        toSecondaryColor,
+    );
 
     const [stepStateStyle] = (() => {
         switch (stepStatus) {
