@@ -1,7 +1,13 @@
 import React, { ReactNode } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    StepStatus,
+    WfoCheckmarkCircleFill,
+    WfoMinusCircleFill,
+    WfoXCircleFill,
+    useOrchestratorTheme,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getStyles } from '@/components/WfoAvatar/styles';
 import { ServiceTicketLogType } from '@/types';
@@ -9,9 +15,14 @@ import { ServiceTicketLogType } from '@/types';
 export interface WfoAvatarProps {
     stepStatus: ServiceTicketLogType;
     icon: ReactNode;
+    hasCheckmark?: boolean;
 }
 
-export const WfoAvatar = ({ stepStatus, icon }: WfoAvatarProps) => {
+export const WfoAvatar = ({
+    stepStatus,
+    icon,
+    hasCheckmark,
+}: WfoAvatarProps) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const { openIconStyle, updateIconStyle, closedIconStyle } = getStyles(
@@ -39,8 +50,18 @@ export const WfoAvatar = ({ stepStatus, icon }: WfoAvatarProps) => {
     })();
 
     return (
-        <EuiFlexItem css={{ flexDirection: 'row', ...stepStateStyle }} grow={0}>
-            {icon}
+        <EuiFlexItem css={{ flexDirection: 'row' }} grow={0}>
+            <div css={{ ...stepStateStyle }}>{icon}</div>
+            {hasCheckmark && (
+                <div
+                    css={{
+                        transform: 'translate(-16px, -8px)',
+                        width: `${theme.base}`,
+                    }}
+                >
+                    <WfoCheckmarkCircleFill color={theme.colors.success} />
+                </div>
+            )}
         </EuiFlexItem>
     );
 };

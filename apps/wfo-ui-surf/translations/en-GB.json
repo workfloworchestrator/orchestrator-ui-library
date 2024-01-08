@@ -73,6 +73,11 @@
                         "nl": "NL",
                         "en": "EN",
                         "noLogsAvailableForThisServiceTicket": "No logs available for this service ticket"
+                    },
+                    "sentEmails": {
+                        "showMore": "Show more",
+                        "sentOn": "sent on",
+                        "by": "by"
                     }
                 },
                 "buttons": {
