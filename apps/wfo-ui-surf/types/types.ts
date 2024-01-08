@@ -287,9 +287,15 @@ export interface EmailStep {
     executed: string;
     state: StepState;
     stateDelta: StepState;
+    isButton: boolean;
+}
+
+export interface EmailStepButton {
+    status: ServiceTicketLogType;
 }
 
 export type EmailListItem = {
-    step: EmailStep;
+    step: EmailStep | EmailStepButton;
     isExpanded: boolean;
+    isButton: boolean;
 };

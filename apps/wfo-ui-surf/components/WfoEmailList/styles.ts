@@ -2,6 +2,10 @@ import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
 export const getStyles = (theme: EuiThemeComputed) => {
+    const sendEmailButtonStyle = css({
+        backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%238B8B8BFF' stroke-width='2' stroke-dasharray='0.25%25%2c 0.5%25' stroke-dashoffset='15' stroke-linecap='square'/%3e%3c/svg%3e");border-radius: 10px`,
+    });
+
     const stepSpacerStyle = css({
         borderLeft: `1px solid ${theme.colors.darkShade}`,
         height: '24px',
@@ -100,6 +104,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         });
 
     return {
+        sendEmailButtonStyle,
         stepDurationStyle,
         stepEmailContainerStyle,
         stepHeaderRightStyle,

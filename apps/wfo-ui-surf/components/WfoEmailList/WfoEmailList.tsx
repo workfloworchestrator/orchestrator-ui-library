@@ -1,20 +1,31 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
-import { EuiSpacer, EuiText } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiButtonEmpty,
+    EuiButtonIcon,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPanel,
+    EuiSpacer,
+    EuiText
+} from '@elastic/eui';
 import {
     WfoStep,
     upperCaseFirstChar,
-    useOrchestratorTheme,
+    useOrchestratorTheme, WfoXCircleFill, WfoPlusCircleFill,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { WfoEmailStep } from '@/components/WfoEmailList/WfoEmailStep';
-import { EmailListItem, ServiceTicketLogType } from '@/types';
+import {EmailListItem, ServiceTicketLogType, ServiceTicketProcessState, ServiceTicketWithDetails} from '@/types';
+import {getStyles} from './styles';
 
 export type WfoStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
-export type WfoStepListProps = {
+export type WfoEmailListProps = {
+    serviceTicket: ServiceTicketWithDetails;
     stepListItems: EmailListItem[];
     showHiddenKeys: boolean;
     startedAt: string;
@@ -31,6 +42,7 @@ type EmailGroup = {
 export const WfoEmailList = React.forwardRef(
     (
         {
+            serviceTicket,
             stepListItems,
             showHiddenKeys,
             startedAt,
@@ -38,11 +50,11 @@ export const WfoEmailList = React.forwardRef(
             onTriggerExpandStepListItem,
             isTask,
             processId,
-        }: WfoStepListProps,
+        }: WfoEmailListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const { theme } = useOrchestratorTheme();
-        // const { stepSpacerStyle } = getStyles(theme);
+        const { sendEmailButtonStyle } = getStyles(theme);
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
@@ -84,7 +96,7 @@ export const WfoEmailList = React.forwardRef(
                     : stepReferences.current.delete(stepId);
 
         const groupedStepListItems = stepListItems.reduce(
-            (grouped: EmailGroup, emailListItem) => {
+            (grouped: EmailGroup, emailListItem, index) => {
                 const status = emailListItem.step.status;
                 const groupIndex = ServiceTicketLogType[status.toUpperCase()];
 
@@ -108,9 +120,8 @@ export const WfoEmailList = React.forwardRef(
                                 <b>{upperCaseFirstChar(key)}</b>
                             </EuiText>
                             <EuiSpacer size="s" />
-                            {value.map((emailListItem, index) => (
+                            {value.map((emailListItem: EmailListItem, index) => (!emailListItem.isButton &&
                                 <div key={`step-${index}`}>
-                                    {index !== 0 && <EuiSpacer />}
                                     <WfoEmailStep
                                         ref={getReferenceCallbackForStepId(
                                             emailListItem.step.stepId,
@@ -127,7 +138,27 @@ export const WfoEmailList = React.forwardRef(
                                         isTask={isTask}
                                         processId={processId}
                                     />
-                                </div>
+                                    <EuiSpacer/>
+                                </div>))}
+                            {value.map((emailListItem: EmailListItem, index) => (emailListItem.isButton &&
+                                <EuiPanel hasShadow={false} hasBorder={false} css={sendEmailButtonStyle}>
+                                    <EuiFlexGroup>
+                                        <EuiFlexItem>
+                                                <EuiButtonEmpty>
+                                                    <EuiFlexGroup alignItems="center" gutterSize='xs'>
+                                                        <EuiFlexItem>
+                                                            <WfoPlusCircleFill color={theme.colors.primaryText}/>
+                                                        </EuiFlexItem>
+                                                        <EuiFlexItem>
+                                                            <EuiText color={theme.colors.primaryText}>
+                                                                send new {emailListItem.step.status.toUpperCase()} email
+                                                            </EuiText>
+                                                        </EuiFlexItem>
+                                                    </EuiFlexGroup>
+                                                </EuiButtonEmpty>
+                                        </EuiFlexItem>
+                                    </EuiFlexGroup>
+                                </EuiPanel>
                             ))}
                             <EuiSpacer size="xxl" />
                         </div>

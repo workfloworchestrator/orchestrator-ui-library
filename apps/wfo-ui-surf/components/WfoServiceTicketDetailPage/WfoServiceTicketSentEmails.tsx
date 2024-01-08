@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 
-import {
-    EuiAvatar,
-    EuiPanel,
-    EuiSpacer,
-    EuiText,
-    EuiTimeline,
-} from '@elastic/eui';
-import {
-    StepListItem,
-    WfoStepList,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import {EuiSpacer,} from '@elastic/eui';
 
-import { WfoEmailList } from '@/components/WfoEmailList/WfoEmailList';
+import {WfoEmailList} from '@/components/WfoEmailList/WfoEmailList';
 import {
     EmailListItem,
     EmailLog,
     EmailStep,
-    ServiceTicketLogType,
+    EmailStepButton,
+    ServiceTicketLogType, ServiceTicketProcessState, ServiceTicketType,
     ServiceTicketWithDetails,
 } from '@/types';
 
@@ -29,7 +20,7 @@ interface WfoSubscriptionGeneralProps {
 
 const mapLogEntryToStep = (
     emailLog: EmailLog,
-    serviceTicketDetail: ServiceTicketWithDetails,
+    // serviceTicketDetail: ServiceTicketWithDetails,
 ): EmailStep => ({
     name: emailLog.name,
     status: emailLog.log_type,
@@ -82,10 +73,55 @@ export const WfoServiceTicketSentEmails = ({
             return timeA - timeB;
         });
 
-    const initialStepListItems: EmailListItem[] = steps.map((step) => ({
-        step,
-        isExpanded: false,
-    }));
+    const sendEmailStepButtons: EmailStepButton[] = [];
+
+    if (serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN_ACCEPTED) {
+        sendEmailStepButtons.push({
+            status: ServiceTicketLogType.OPEN,
+        });
+        console.log("OPEN")
+    }
+
+    // Condition 2
+    if (
+        serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
+        serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
+    ) {
+        sendEmailStepButtons.push({
+            status: ServiceTicketLogType.UPDATE,
+        });
+        console.log("UPDATE")
+    }
+
+    // Condition 3
+    if (
+        serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
+        serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
+    ) {
+        sendEmailStepButtons.push({
+            status: ServiceTicketLogType.CLOSE,
+        });
+        console.log("CLOSE")
+    }
+
+    // const initialStepListItems: EmailListItem[] = steps.map((step) => ({
+    //     step,
+    //     isExpanded: false,
+    //     isButton: false
+    // }));
+
+    const initialStepListItems: EmailListItem[] = [
+        ...steps.map((step) => ({
+            step,
+            isExpanded: false,
+            isButton: false,
+        })),
+        ...sendEmailStepButtons.map((stepButton) => ({
+            step: stepButton,
+            isExpanded: false,
+            isButton: true,
+        })),
+    ];
 
     const [stepListItems, setStepListItems] = useState(initialStepListItems);
 
@@ -107,7 +143,7 @@ export const WfoServiceTicketSentEmails = ({
             isExpanded: !item.isExpanded,
         }));
 
-    const handleExpandStepListItem = (stepListItem: EmailListItemw) =>
+    const handleExpandStepListItem = (stepListItem: EmailListItem) =>
         updateStepListItem(stepListItem, (item) => ({
             ...item,
             isExpanded: true,
@@ -117,6 +153,7 @@ export const WfoServiceTicketSentEmails = ({
         <>
             <EuiSpacer />
             <WfoEmailList
+                serviceTicket={serviceTicketDetail}
                 stepListItems={stepListItems}
                 showHiddenKeys={false}
                 startedAt={''}
