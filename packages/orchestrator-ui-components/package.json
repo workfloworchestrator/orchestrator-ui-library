@@ -16,6 +16,7 @@
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@graphql-typed-document-node/core": "3.2.0",
+        "@reduxjs/toolkit": "^2.0.1",
         "axios": "^1.6.5",
         "graphql-request": "^6.1.0",
         "invariant": "^2.2.4",
