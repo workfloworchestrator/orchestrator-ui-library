@@ -17,8 +17,10 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { connectField } from 'uniforms';
 
-import { GET_CUSTOMER_GRAPHQL_QUERY } from '../../../graphqlQueries';
-import { useQueryWithGraphql } from '../../../hooks';
+import { GET_CUSTOMER_GRAPHQL_QUERY } from '@/graphqlQueries';
+import { useQueryWithGraphql } from '@/hooks';
+import { useGetPokemonByNameQuery } from '@/rtk/api';
+
 import { SelectField, SelectFieldProps } from './SelectField';
 
 export type OrganisationFieldProps = Omit<
@@ -28,6 +30,10 @@ export type OrganisationFieldProps = Omit<
 
 function Organisation({ ...props }: OrganisationFieldProps) {
     const t = useTranslations('pydanticForms');
+
+    const { data: pokemon, isFetching } = useGetPokemonByNameQuery('bulbasaur');
+
+    console.log(pokemon, isFetching);
 
     const { data, isFetched } = useQueryWithGraphql(
         GET_CUSTOMER_GRAPHQL_QUERY,
