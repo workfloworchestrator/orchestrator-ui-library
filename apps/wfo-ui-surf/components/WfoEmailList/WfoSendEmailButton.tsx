@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
@@ -26,6 +27,10 @@ export const WfoSendEmailButton = ({
         router.push(`${currentPath}/new-email`);
     };
 
+    const t = useTranslations(
+        'cim.serviceTickets.detail.tabDetails.sentEmails',
+    );
+
     return (
         <EuiPanel
             onClick={navigateToNewEmailPage}
@@ -43,9 +48,12 @@ export const WfoSendEmailButton = ({
                     <WfoPlusCircleFill color={theme.colors.primaryText} />
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <EuiText color={theme.colors.primaryText}>
-                        send new {emailListItem.step.status.toUpperCase()} email
-                    </EuiText>
+                    {emailListItem.step.status && (
+                        <EuiText color={theme.colors.primaryText}>
+                            {t('sendNew')}{' '}
+                            {emailListItem.step.status.toUpperCase()} email
+                        </EuiText>
+                    )}
                 </EuiFlexItem>
             </EuiFlexGroup>
         </EuiPanel>

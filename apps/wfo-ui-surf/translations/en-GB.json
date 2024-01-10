@@ -77,7 +77,9 @@
                     "sentEmails": {
                         "showMore": "Show more",
                         "sentOn": "sent on",
-                        "by": "by"
+                        "by": "by",
+                        "sendNew": "send new",
+                        "noEmailsAvailableForThisServiceTicket": "No e-mails available for this service ticket"
                     }
                 },
                 "buttons": {

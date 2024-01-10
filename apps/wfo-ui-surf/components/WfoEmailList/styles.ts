@@ -12,8 +12,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
 
     const stepSpacerStyle = css({
         borderLeft: `1px solid ${theme.colors.darkShade}`,
-        height: '24px',
-        marginLeft: '36px',
+        height: theme.size.l,
+        marginLeft: theme.size.xl,
     });
 
     const stepRowStyle = css({
@@ -23,8 +23,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const stepListHeaderStyle = css({
-        marginBottom: '24px',
-        marginTop: '60px',
+        marginBottom: theme.size.l,
+        marginTop: theme.size.xxxl,
         alignItems: 'flex-end',
     });
 
@@ -39,7 +39,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const stepListContentAnchorStyle = css({
-        marginTop: 2,
+        marginTop: theme.size.xxs,
         marginLeft: 0,
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.bold,
@@ -51,38 +51,10 @@ export const getStyles = (theme: EuiThemeComputed) => {
         flexGrow: 0,
     });
 
-    const stepStateIcon = {
-        height: '40px',
-        width: '40px',
-        alignItems: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        borderRadius: '24px',
-    };
-
     const stepDurationStyle = {
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.semiBold,
     };
-
-    const stepStateSuccessIconStyle = css({
-        ...stepStateIcon,
-        backgroundColor: '#CCE3F4',
-    });
-
-    const stepStateSuspendIconStyle = css({
-        ...stepStateIcon,
-        backgroundColor: '#FFF3D0',
-    });
-
-    const stepStatePendingIconStyle = css({
-        ...stepStateIcon,
-        backgroundColor: '#DCE4EF',
-    });
-    const stepStateFailedIconStyle = css({
-        ...stepStateIcon,
-        backgroundColor: '#F2D4D2',
-    });
 
     const stepHeaderRightStyle = css({
         alignItems: 'center',
@@ -119,10 +91,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepListOptionsContainerStyle,
         stepRowStyle,
         stepSpacerStyle,
-        stepStateFailedIconStyle,
-        stepStatePendingIconStyle,
-        stepStateSuccessIconStyle,
-        stepStateSuspendIconStyle,
         getStepHeaderStyle,
         getStepToggleExpandStyle,
     };

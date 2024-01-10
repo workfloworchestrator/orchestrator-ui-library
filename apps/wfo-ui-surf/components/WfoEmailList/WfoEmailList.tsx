@@ -1,21 +1,17 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
 import { EuiSpacer, EuiText } from '@elastic/eui';
-import {
-    upperCaseFirstChar,
-    useOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { upperCaseFirstChar } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { WfoEmailStep } from '@/components/WfoEmailList/WfoEmailStep';
 import { WfoSendEmailButton } from '@/components/WfoEmailList/WfoSendEmailButton';
-import { EmailListItem, ServiceTicketWithDetails } from '@/types';
+import { EmailListItem } from '@/types';
 
 export type WfoStepListRef = {
     scrollToStep: (stepId: string) => void;
 };
 
 export type WfoEmailListProps = {
-    serviceTicket: ServiceTicketWithDetails;
     stepListItems: EmailListItem[];
     showHiddenKeys: boolean;
     startedAt: string;
@@ -30,7 +26,6 @@ type EmailGroup = {
 export const WfoEmailList = React.forwardRef(
     (
         {
-            serviceTicket,
             stepListItems,
             showHiddenKeys,
             startedAt,
@@ -39,11 +34,8 @@ export const WfoEmailList = React.forwardRef(
         }: WfoEmailListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
-        const { theme } = useOrchestratorTheme();
-
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
-
-        let stepStartTime = startedAt;
+        const stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
             scrollToStep: async (stepId: string) => {
@@ -83,7 +75,7 @@ export const WfoEmailList = React.forwardRef(
                     : stepReferences.current.delete(stepId);
 
         const groupedStepListItems = stepListItems.reduce(
-            (grouped: EmailGroup, emailListItem, index) => {
+            (grouped: EmailGroup, emailListItem) => {
                 const status = emailListItem.step.status;
                 const groupIndex = status ? status.toUpperCase() : '';
 
@@ -127,16 +119,16 @@ export const WfoEmailList = React.forwardRef(
                                                 emailListItem={emailListItem}
                                                 startedAt={stepStartTime}
                                                 showHiddenKeys={showHiddenKeys}
-                                                isStartStep={index === 0}
                                             />
                                             <EuiSpacer />
                                         </div>
                                     ),
                             )}
                             {value.map(
-                                (emailListItem: EmailListItem, index) =>
+                                (emailListItem: EmailListItem, index: number) =>
                                     emailListItem.isButton && (
                                         <WfoSendEmailButton
+                                            key={`button-${index}`}
                                             emailListItem={emailListItem}
                                         />
                                     ),

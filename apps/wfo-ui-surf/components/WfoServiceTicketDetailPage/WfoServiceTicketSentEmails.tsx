@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiSpacer } from '@elastic/eui';
+import { EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoEmailList } from '@/components/WfoEmailList/WfoEmailList';
 import {
@@ -38,7 +38,7 @@ export const WfoServiceTicketSentEmails = ({
     serviceTicketDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations(
-        'cim.serviceTickets.detail.tabDetails.notificationLog',
+        'cim.serviceTickets.detail.tabDetails.sentEmails',
     );
 
     // Add sentBy to email logs and UPDATE prefixes to update emails
@@ -53,7 +53,7 @@ export const WfoServiceTicketSentEmails = ({
                 (log) => log.log_id === sent_email.log_id,
             );
             const allUpdateEmails = array.filter(
-                (email, i) => email.log_type === ServiceTicketLogType.UPDATE,
+                (email) => email.log_type === ServiceTicketLogType.UPDATE,
             );
             const slicedUpdateEmails = allUpdateEmails.slice(index);
 
@@ -161,13 +161,17 @@ export const WfoServiceTicketSentEmails = ({
         <>
             <EuiSpacer />
             <WfoEmailList
-                serviceTicket={serviceTicketDetail}
                 stepListItems={stepListItems}
                 showHiddenKeys={false}
                 startedAt={''}
                 onToggleExpandStepListItem={toggleExpandedStateStepListItem}
                 onTriggerExpandStepListItem={handleExpandStepListItem}
             ></WfoEmailList>
+            {stepListItems.length === 0 && (
+                <EuiText color="subdued">
+                    {t('noEmailsAvailableForThisServiceTicket')}
+                </EuiText>
+            )}
         </>
     );
 };

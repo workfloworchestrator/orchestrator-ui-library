@@ -4,13 +4,10 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 import {
-    EmailState,
-    StepListItem,
     WfoChevronDown,
     WfoChevronUp,
     WfoContactEnvelopeFill,
     WfoJsonCodeBlock,
-    WfoStepStatusIcon,
     calculateTimeDifference,
     formatDate,
     getStepContent,
@@ -26,7 +23,6 @@ export interface WfoStepProps {
     startedAt: string;
     showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
-    isStartStep?: boolean;
 }
 
 export const WfoEmailStep = React.forwardRef(
@@ -36,7 +32,6 @@ export const WfoEmailStep = React.forwardRef(
             onToggleStepDetail,
             startedAt,
             showHiddenKeys,
-            isStartStep = false,
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -44,7 +39,6 @@ export const WfoEmailStep = React.forwardRef(
 
         const { theme } = useOrchestratorTheme();
         const {
-            stepEmailContainerStyle,
             getStepHeaderStyle,
             stepHeaderRightStyle,
             stepListContentBoldTextStyle,
@@ -52,57 +46,15 @@ export const WfoEmailStep = React.forwardRef(
             stepRowStyle,
             getStepToggleExpandStyle,
         } = getStyles(theme);
+
         const t = useTranslations(
             'cim.serviceTickets.detail.tabDetails.sentEmails',
         );
-        const hasHtmlMail =
-            step.stateDelta?.hasOwnProperty('confirmation_mail');
 
         const stepContent = step.stateDelta
             ? getStepContent(step.stateDelta, showHiddenKeys)
             : {};
         const hasStepContent = Object.keys(stepContent).length > 0;
-
-        const displayMailConfirmation = (value: EmailState) => {
-            if (!value) {
-                return '';
-            }
-            return (
-                <EuiText size="s">
-                    <h4>To</h4>
-                    <p>
-                        {value.to.map(
-                            (v: { email: string; name: string }, i) => (
-                                <div key={`to-${i}`}>
-                                    {v.name} &lt;
-                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
-                                    &gt;
-                                </div>
-                            ),
-                        )}
-                    </p>
-                    <h4>CC</h4>
-                    <p>
-                        {value.cc.map(
-                            (v: { email: string; name: string }, i) => (
-                                <div key={`cc-${i}`}>
-                                    {v.name} &lt;
-                                    <a href={`mailto: ${v.email}`}>{v.email}</a>
-                                    &gt;
-                                </div>
-                            ),
-                        )}
-                    </p>
-                    <h4>Subject</h4>
-                    <p>{value.subject}</p>
-                    <h4>Message</h4>
-                    <div
-                        className="emailMessage"
-                        dangerouslySetInnerHTML={{ __html: value.message }}
-                    ></div>
-                </EuiText>
-            );
-        };
 
         return (
             <div ref={ref}>
@@ -161,13 +113,6 @@ export const WfoEmailStep = React.forwardRef(
                     </EuiFlexGroup>
                     {hasStepContent && isExpanded && (
                         <WfoJsonCodeBlock data={stepContent} />
-                    )}
-                    {isExpanded && hasHtmlMail && (
-                        <div css={stepEmailContainerStyle}>
-                            {displayMailConfirmation(
-                                step.state.confirmation_mail as EmailState,
-                            )}
-                        </div>
                     )}
                 </EuiPanel>
             </div>
