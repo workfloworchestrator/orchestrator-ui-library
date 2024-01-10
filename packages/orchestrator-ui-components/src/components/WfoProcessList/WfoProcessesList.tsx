@@ -24,9 +24,9 @@ import {
     getQueryStringHandler,
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
-import { getProcessListGraphQlQuery } from '@/graphqlQueries/processListQuery';
-import { DataDisplayParams, useQueryWithGraphql } from '@/hooks';
+import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
+import { useGetWorkflowsQuery } from '@/rtk';
 import { Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
@@ -183,20 +183,15 @@ export const WfoProcessesList = ({
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        getProcessListGraphQlQuery(),
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: graphQlProcessSortMapper(sortBy),
-            filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-            query: queryString || undefined,
-        },
-        ['processes', 'processList'],
-    );
+    const { data, isLoading, isError } = useGetWorkflowsQuery({
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: graphQlProcessSortMapper(sortBy),
+        filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+        query: queryString || undefined,
+    });
 
-    const { totalItems, sortFields, filterFields } =
-        data?.processes?.pageInfo || {};
+    const { processes, totalItems, sortFields, filterFields } = data || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -213,7 +208,9 @@ export const WfoProcessesList = ({
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
             data={
-                data ? mapGraphQlProcessListResultToProcessListItems(data) : []
+                processes
+                    ? mapGraphQlProcessListResultToProcessListItems(processes)
+                    : []
             }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
