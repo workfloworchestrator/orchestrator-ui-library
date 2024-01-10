@@ -200,6 +200,7 @@ export interface Email {
     cc: ImpactedCustomerContact[];
     bcc: ImpactedCustomerContact[];
     language: string;
+    subject: string;
 }
 
 export type EmailLogInDB = {
@@ -281,21 +282,16 @@ export type CustomerWithContacts = {
 
 export interface EmailStep {
     name: string;
-    status: ServiceTicketLogType;
+    status: ServiceTicketLogType | null;
     sentBy: string;
     stepId: string;
     executed: string;
     state: StepState;
     stateDelta: StepState;
-    isButton: boolean;
-}
-
-export interface EmailStepButton {
-    status: ServiceTicketLogType;
 }
 
 export type EmailListItem = {
-    step: EmailStep | EmailStepButton;
+    step: EmailStep;
     isExpanded: boolean;
     isButton: boolean;
 };

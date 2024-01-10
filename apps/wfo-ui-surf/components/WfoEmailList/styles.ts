@@ -3,7 +3,11 @@ import { css } from '@emotion/react';
 
 export const getStyles = (theme: EuiThemeComputed) => {
     const sendEmailButtonStyle = css({
-        backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%238B8B8BFF' stroke-width='2' stroke-dasharray='0.25%25%2c 0.5%25' stroke-dashoffset='15' stroke-linecap='square'/%3e%3c/svg%3e");border-radius: 10px`,
+        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%238B8B8BFF' stroke-width='2' stroke-dasharray='2px, 6px' stroke-linecap='square'/%3e%3c/svg%3e");border-radius: 10px`,
+        '&:hover': {
+            cursor: 'pointer',
+            textDecoration: `underline ${theme.colors.primary}`,
+        },
     });
 
     const stepSpacerStyle = css({

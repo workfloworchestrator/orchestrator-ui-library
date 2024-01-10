@@ -1,24 +1,14 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
+import { EuiSpacer, EuiText } from '@elastic/eui';
 import {
-    EuiButton,
-    EuiButtonEmpty,
-    EuiButtonIcon,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiSpacer,
-    EuiText
-} from '@elastic/eui';
-import {
-    WfoStep,
     upperCaseFirstChar,
-    useOrchestratorTheme, WfoXCircleFill, WfoPlusCircleFill,
+    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { WfoEmailStep } from '@/components/WfoEmailList/WfoEmailStep';
-import {EmailListItem, ServiceTicketLogType, ServiceTicketProcessState, ServiceTicketWithDetails} from '@/types';
-import {getStyles} from './styles';
+import { WfoSendEmailButton } from '@/components/WfoEmailList/WfoSendEmailButton';
+import { EmailListItem, ServiceTicketWithDetails } from '@/types';
 
 export type WfoStepListRef = {
     scrollToStep: (stepId: string) => void;
@@ -31,8 +21,6 @@ export type WfoEmailListProps = {
     startedAt: string;
     onToggleExpandStepListItem: (EmailListItem: EmailListItem) => void;
     onTriggerExpandStepListItem: (EmailListItem: EmailListItem) => void;
-    isTask: boolean;
-    processId: string;
 };
 
 type EmailGroup = {
@@ -48,13 +36,10 @@ export const WfoEmailList = React.forwardRef(
             startedAt,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
-            isTask,
-            processId,
         }: WfoEmailListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const { theme } = useOrchestratorTheme();
-        const { sendEmailButtonStyle } = getStyles(theme);
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
@@ -65,8 +50,10 @@ export const WfoEmailList = React.forwardRef(
                 // Applied a promise construction to wait for the browser to expand the step before scrolling
                 try {
                     await new Promise((resolve, reject) => {
-                        const foundStepListItem = stepListItems.find(
-                            (value) => value.step.stepId === stepId,
+                        const foundStepListItem = stepListItems.find((value) =>
+                            'stepId' in value.step
+                                ? value.step.stepId === stepId
+                                : false,
                         );
 
                         if (!foundStepListItem) {
@@ -98,7 +85,7 @@ export const WfoEmailList = React.forwardRef(
         const groupedStepListItems = stepListItems.reduce(
             (grouped: EmailGroup, emailListItem, index) => {
                 const status = emailListItem.step.status;
-                const groupIndex = ServiceTicketLogType[status.toUpperCase()];
+                const groupIndex = status ? status.toUpperCase() : '';
 
                 if (!grouped[groupIndex]) {
                     grouped[groupIndex] = [];
@@ -120,46 +107,40 @@ export const WfoEmailList = React.forwardRef(
                                 <b>{upperCaseFirstChar(key)}</b>
                             </EuiText>
                             <EuiSpacer size="s" />
-                            {value.map((emailListItem: EmailListItem, index) => (!emailListItem.isButton &&
-                                <div key={`step-${index}`}>
-                                    <WfoEmailStep
-                                        ref={getReferenceCallbackForStepId(
-                                            emailListItem.step.stepId,
-                                        )}
-                                        onToggleStepDetail={() =>
-                                            onToggleExpandStepListItem(
-                                                emailListItem,
-                                            )
-                                        }
-                                        emailListItem={emailListItem}
-                                        startedAt={stepStartTime}
-                                        showHiddenKeys={showHiddenKeys}
-                                        isStartStep={index === 0}
-                                        isTask={isTask}
-                                        processId={processId}
-                                    />
-                                    <EuiSpacer/>
-                                </div>))}
-                            {value.map((emailListItem: EmailListItem, index) => (emailListItem.isButton &&
-                                <EuiPanel hasShadow={false} hasBorder={false} css={sendEmailButtonStyle}>
-                                    <EuiFlexGroup>
-                                        <EuiFlexItem>
-                                                <EuiButtonEmpty>
-                                                    <EuiFlexGroup alignItems="center" gutterSize='xs'>
-                                                        <EuiFlexItem>
-                                                            <WfoPlusCircleFill color={theme.colors.primaryText}/>
-                                                        </EuiFlexItem>
-                                                        <EuiFlexItem>
-                                                            <EuiText color={theme.colors.primaryText}>
-                                                                send new {emailListItem.step.status.toUpperCase()} email
-                                                            </EuiText>
-                                                        </EuiFlexItem>
-                                                    </EuiFlexGroup>
-                                                </EuiButtonEmpty>
-                                        </EuiFlexItem>
-                                    </EuiFlexGroup>
-                                </EuiPanel>
-                            ))}
+                            {value.map(
+                                (emailListItem: EmailListItem, index) =>
+                                    !emailListItem.isButton && (
+                                        <div key={`step-${index}`}>
+                                            <WfoEmailStep
+                                                ref={getReferenceCallbackForStepId(
+                                                    'stepId' in
+                                                        emailListItem.step
+                                                        ? emailListItem.step
+                                                              .stepId
+                                                        : '',
+                                                )}
+                                                onToggleStepDetail={() =>
+                                                    onToggleExpandStepListItem(
+                                                        emailListItem,
+                                                    )
+                                                }
+                                                emailListItem={emailListItem}
+                                                startedAt={stepStartTime}
+                                                showHiddenKeys={showHiddenKeys}
+                                                isStartStep={index === 0}
+                                            />
+                                            <EuiSpacer />
+                                        </div>
+                                    ),
+                            )}
+                            {value.map(
+                                (emailListItem: EmailListItem, index) =>
+                                    emailListItem.isButton && (
+                                        <WfoSendEmailButton
+                                            emailListItem={emailListItem}
+                                        />
+                                    ),
+                            )}
                             <EuiSpacer size="xxl" />
                         </div>
                     );

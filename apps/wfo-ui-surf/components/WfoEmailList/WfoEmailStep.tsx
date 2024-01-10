@@ -26,9 +26,7 @@ export interface WfoStepProps {
     startedAt: string;
     showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
-    isTask: boolean;
     isStartStep?: boolean;
-    processId?: string;
 }
 
 export const WfoEmailStep = React.forwardRef(
@@ -39,8 +37,6 @@ export const WfoEmailStep = React.forwardRef(
             startedAt,
             showHiddenKeys,
             isStartStep = false,
-            isTask,
-            processId,
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -115,10 +111,6 @@ export const WfoEmailStep = React.forwardRef(
                         css={getStepHeaderStyle(hasStepContent)}
                         onClick={() => hasStepContent && onToggleStepDetail()}
                     >
-                        {/*<WfoStepStatusIcon*/}
-                        {/*    stepStatus={step.status}*/}
-                        {/*    isStartStep={isStartStep}*/}
-                        {/*/>*/}
                         <WfoAvatar
                             stepStatus={step.status}
                             icon={<WfoContactEnvelopeFill />}
@@ -177,13 +169,6 @@ export const WfoEmailStep = React.forwardRef(
                             )}
                         </div>
                     )}
-                    {/*{step.status === StepStatus.SUSPEND && userInputForm && (*/}
-                    {/*    <WfoStepForm*/}
-                    {/*        userInputForm={userInputForm}*/}
-                    {/*        isTask={isTask}*/}
-                    {/*        processId={processId}*/}
-                    {/*    />*/}
-                    {/*)}*/}
                 </EuiPanel>
             </div>
         );

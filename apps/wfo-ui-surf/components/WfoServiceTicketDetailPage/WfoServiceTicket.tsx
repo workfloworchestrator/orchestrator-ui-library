@@ -47,7 +47,7 @@ export const WfoServiceTicket = ({
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketWithDetails>(
-            cimApiBaseUrl + CIM_TICKETS_ENDPOINT + serviceTicketId,
+            cimApiBaseUrl + CIM_TICKETS_ENDPOINT + '/' + serviceTicketId,
             ['serviceTickets', serviceTicketId],
         );
 
@@ -158,7 +158,9 @@ export const WfoServiceTicket = ({
                             </EuiFlexItem>
                         </EuiFlexGroup>
                         <WfoDetailPageTabs
-                            sentEmailsCount={data.email_logs.length}
+                            sentEmailsCount={
+                                data.email_logs ? data.email_logs.length : '0'
+                            }
                         />
                         {selectedTabId === ServiceTicketTabIds.GENERAL_TAB && (
                             <WfoServiceTicketGeneral

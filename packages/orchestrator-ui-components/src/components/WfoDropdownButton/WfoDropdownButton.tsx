@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import { EuiButtonGroup, EuiPopover } from '@elastic/eui';
+import { EuiButtonGroup, EuiPopover, EuiText } from '@elastic/eui';
 
 interface WfoDropdownButtonProps {
     label: string;

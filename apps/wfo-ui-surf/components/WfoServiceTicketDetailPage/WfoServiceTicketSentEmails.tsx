@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {useTranslations} from 'next-intl';
+import { useTranslations } from 'next-intl';
 
-import {EuiSpacer,} from '@elastic/eui';
+import { EuiSpacer } from '@elastic/eui';
 
-import {WfoEmailList} from '@/components/WfoEmailList/WfoEmailList';
+import { WfoEmailList } from '@/components/WfoEmailList/WfoEmailList';
 import {
     EmailListItem,
     EmailLog,
     EmailStep,
-    EmailStepButton,
-    ServiceTicketLogType, ServiceTicketProcessState, ServiceTicketType,
+    ServiceTicketLogType,
+    ServiceTicketProcessState,
     ServiceTicketWithDetails,
 } from '@/types';
 
@@ -18,14 +18,12 @@ interface WfoSubscriptionGeneralProps {
     serviceTicketDetail: ServiceTicketWithDetails;
 }
 
-const mapLogEntryToStep = (
-    emailLog: EmailLog,
-    // serviceTicketDetail: ServiceTicketWithDetails,
-): EmailStep => ({
+const mapLogEntryToStep = (emailLog: EmailLog): EmailStep => ({
     name: emailLog.name,
-    status: emailLog.log_type,
+    status: emailLog.log_type as ServiceTicketLogType,
     sentBy: emailLog.sentBy,
     executed: new Date(emailLog.entry_time).toISOString(),
+    stepId: emailLog.log_id,
     state: {
         parameter1: 'example',
         parameter2: 56,
@@ -44,71 +42,81 @@ export const WfoServiceTicketSentEmails = ({
     );
 
     // Add sentBy to email logs and UPDATE prefixes to update emails
-    const data = serviceTicketDetail.email_logs.map(
-        (sent_email, index, array) => {
+    const data = serviceTicketDetail.email_logs
+        .sort((a, b) => {
+            const timeA = new Date(a.entry_time).getTime();
+            const timeB = new Date(b.entry_time).getTime();
+            return timeA - timeB;
+        })
+        .map((sent_email, index, array) => {
             const match = serviceTicketDetail.logs.find(
                 (log) => log.log_id === sent_email.log_id,
             );
-            const updateCount = array
-                .slice(index)
-                .filter(
-                    (email) => email.log_type === ServiceTicketLogType.UPDATE,
-                ).length;
+            const allUpdateEmails = array.filter(
+                (email, i) => email.log_type === ServiceTicketLogType.UPDATE,
+            );
+            const slicedUpdateEmails = allUpdateEmails.slice(index);
+
             return {
                 ...sent_email,
-                sentBy: match ? match.logged_by : null,
+                sentBy: match ? match.logged_by : '',
                 name:
                     sent_email.log_type === ServiceTicketLogType.UPDATE
-                        ? `UPDATE#${updateCount} - ${serviceTicketDetail.title_nl}`
-                        : serviceTicketDetail.title_nl,
+                        ? `UPDATE#${
+                              allUpdateEmails.length - slicedUpdateEmails.length
+                          } - ${
+                              sent_email.emails[0]
+                                  ? sent_email.emails[0].subject
+                                  : ''
+                          }`
+                        : sent_email.emails[0]
+                          ? sent_email.emails[0].subject
+                          : '',
             };
-        },
-    );
-
-    const steps = data
-        .map((log) => mapLogEntryToStep(log, serviceTicketDetail))
-        .sort((a, b) => {
-            const timeA = new Date(a.executed).getTime();
-            const timeB = new Date(b.executed).getTime();
-            return timeA - timeB;
         });
 
-    const sendEmailStepButtons: EmailStepButton[] = [];
+    const steps = data.map((log) => mapLogEntryToStep(log));
 
-    if (serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN_ACCEPTED) {
+    const sendEmailStepButtons: EmailStep[] = [];
+    const emailStepButton: EmailStep = {
+        executed: '',
+        name: '',
+        sentBy: '',
+        state: {},
+        stateDelta: {},
+        status: null,
+        stepId: '',
+    };
+
+    if (
+        serviceTicketDetail.process_state ===
+        ServiceTicketProcessState.OPEN_ACCEPTED
+    ) {
         sendEmailStepButtons.push({
+            ...emailStepButton,
             status: ServiceTicketLogType.OPEN,
         });
-        console.log("OPEN")
     }
 
-    // Condition 2
     if (
         serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
         serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
     ) {
         sendEmailStepButtons.push({
+            ...emailStepButton,
             status: ServiceTicketLogType.UPDATE,
         });
-        console.log("UPDATE")
     }
 
-    // Condition 3
     if (
         serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
         serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
     ) {
         sendEmailStepButtons.push({
+            ...emailStepButton,
             status: ServiceTicketLogType.CLOSE,
         });
-        console.log("CLOSE")
     }
-
-    // const initialStepListItems: EmailListItem[] = steps.map((step) => ({
-    //     step,
-    //     isExpanded: false,
-    //     isButton: false
-    // }));
 
     const initialStepListItems: EmailListItem[] = [
         ...steps.map((step) => ({
@@ -158,9 +166,7 @@ export const WfoServiceTicketSentEmails = ({
                 showHiddenKeys={false}
                 startedAt={''}
                 onToggleExpandStepListItem={toggleExpandedStateStepListItem}
-                onTriggerExpandStepListIetem={handleExpandStepListItem}
-                isTask={false}
-                processId={''}
+                onTriggerExpandStepListItem={handleExpandStepListItem}
             ></WfoEmailList>
         </>
     );
