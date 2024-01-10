@@ -2,8 +2,10 @@ import { TranslationValues } from 'next-intl';
 
 import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
 import { ToastTypes } from '@/contexts';
-import { GraphQLPageInfo } from '@/types';
+import { GraphQLPageInfo, Process } from '@/types';
 import { sortObjectKeys } from '@/utils/sortObjectKeys';
+
+import { ProcessListItem, ProcessListResponse } from './../';
 
 function toCsvFileContent<T extends object>(data: T[]): string {
     const headers = Object.keys(data[0]).join(';');
@@ -48,11 +50,44 @@ export const getCsvFileNameWithDate = (fileNameWithoutExtension: string) => {
     return `${fileNameWithoutExtension}_${year}-${month}-${day}-${hour}${minute}${second}.csv`;
 };
 
-export const csvDownloadHandler =
-    <T extends object, U extends object>(
-        dataFetchFunction: () => Promise<T | undefined>,
-        dataMapper: (data: T) => U[],
-        pageInfoMapper: (data: T) => GraphQLPageInfo,
+export const csvDownloadHandler = <T extends object, U extends object>(
+    dataFetchFunction: () => Promise<T | undefined>,
+    dataMapper: (data: T) => U[],
+    pageInfoMapper: (data: T) => GraphQLPageInfo,
+    keyOrder: string[],
+    filename: string,
+    addToastFunction: (type: ToastTypes, text: string, title: string) => void,
+    translationFunction: (
+        translationKey: string,
+        variables?: TranslationValues,
+    ) => string,
+) => {
+    return async () => {
+        const data: T | undefined = await dataFetchFunction();
+
+        if (data) {
+            const dataForExport = dataMapper(data).map((d) =>
+                sortObjectKeys(d, keyOrder),
+            );
+            const pageInfo = pageInfoMapper(data);
+            (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
+                addToastFunction(
+                    ToastTypes.ERROR,
+                    translationFunction('notAllResultsExported', {
+                        totalResults: pageInfo.totalItems,
+                        maximumExportedResults: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
+                    }),
+                    translationFunction('notAllResultsExportedTitle'),
+                );
+            initiateCsvFileDownload(dataForExport, filename);
+        }
+    };
+};
+
+export const csvDownloadHandlerRTKProcesses =
+    (
+        dataFetchFunction: () => ProcessListResponse | undefined,
+        dataMapper: (data: Process[]) => ProcessListItem[],
         keyOrder: string[],
         filename: string,
         addToastFunction: (
@@ -66,18 +101,19 @@ export const csvDownloadHandler =
         ) => string,
     ) =>
     async () => {
-        const data: T | undefined = await dataFetchFunction();
+        const result = await dataFetchFunction();
+        const { processes, totalItems } = result || {};
 
-        if (data) {
-            const dataForExport = dataMapper(data).map((d) =>
+        if (processes) {
+            const dataForExport = dataMapper(processes).map((d) =>
                 sortObjectKeys(d, keyOrder),
             );
-            const pageInfo = pageInfoMapper(data);
-            (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
+
+            (totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
                 addToastFunction(
                     ToastTypes.ERROR,
                     translationFunction('notAllResultsExported', {
-                        totalResults: pageInfo.totalItems,
+                        totalResults: totalItems,
                         maximumExportedResults: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
                     }),
                     translationFunction('notAllResultsExportedTitle'),

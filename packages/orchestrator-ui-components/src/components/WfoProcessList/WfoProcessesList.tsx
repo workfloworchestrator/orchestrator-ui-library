@@ -24,28 +24,20 @@ import {
     getQueryStringHandler,
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
-import { getProcessListGraphQlQuery } from '@/graphqlQueries/processListQuery';
-import {
-    DataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
-    useToastMessage,
-} from '@/hooks';
+import { DataDisplayParams, useToastMessage } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
+import { ProcessListResponse } from '@/rtk';
+import { useGetProcessListExportQuery, useGetProcessListQuery } from '@/rtk';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
+import { parseDateToLocaleDateTimeString } from '@/utils';
 import {
-    getQueryVariablesForExport,
-    parseDateToLocaleDateTimeString,
-} from '@/utils';
-import {
-    csvDownloadHandler,
+    csvDownloadHandlerRTKProcesses,
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
-    mapGraphQlProcessListResultToPageInfo,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
@@ -205,27 +197,24 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const graphqlQueryVariables: GraphqlQueryVariables<Process> = {
+
+    const processListQueryVars: GraphqlQueryVariables<Process> = {
         first: pageSize,
         after: pageIndex * pageSize,
         sortBy: graphQlProcessSortMapper(sortBy),
         filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
         query: queryString || undefined,
     };
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        getProcessListGraphQlQuery(),
-        graphqlQueryVariables,
-        ['processes', 'processList'],
-    );
-    const { getData: getProcessListForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            getProcessListGraphQlQuery(),
-            getQueryVariablesForExport(graphqlQueryVariables),
-            ['processes', 'export'],
-        );
 
-    const { totalItems, sortFields, filterFields } =
-        data?.processes?.pageInfo || {};
+    const { data, isFetching, isError } =
+        useGetProcessListQuery(processListQueryVars);
+
+    const {
+        isFetching: isLoadingExportData,
+        refetch: getProcessListForExport,
+    } = useGetProcessListExportQuery(processListQueryVars, { skip: true });
+
+    const { processes, totalItems, sortFields, filterFields } = data || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -242,7 +231,9 @@ export const WfoProcessesList = ({
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
             data={
-                data ? mapGraphQlProcessListResultToProcessListItems(data) : []
+                processes
+                    ? mapGraphQlProcessListResultToProcessListItems(processes)
+                    : []
             }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
@@ -251,7 +242,7 @@ export const WfoProcessesList = ({
             )}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isLoading}
+            isLoading={isFetching}
             hasError={isError}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
@@ -259,16 +250,17 @@ export const WfoProcessesList = ({
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
-            onExportData={csvDownloadHandler(
-                getProcessListForExport,
+            onExportData={csvDownloadHandlerRTKProcesses(
+                getProcessListForExport as unknown as () =>
+                    | ProcessListResponse
+                    | undefined,
                 mapGraphQlProcessListResultToProcessListItems,
-                mapGraphQlProcessListResultToPageInfo,
                 Object.keys(tableColumns),
                 getCsvFileNameWithDate('Processes'),
                 addToast,
                 tError,
             )}
-            exportDataIsLoading={isFetchingCsv}
+            exportDataIsLoading={isLoadingExportData}
         />
     );
 };
