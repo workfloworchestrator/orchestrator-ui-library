@@ -3,7 +3,8 @@ import {
     GraphqlFilter,
     Process,
     ProcessListResult,
-} from '../../types';
+} from '@/types';
+
 import { ProcessListItem } from './WfoProcessesList';
 
 export const mapGraphQlProcessListResultToPageInfo = (
@@ -11,9 +12,9 @@ export const mapGraphQlProcessListResultToPageInfo = (
 ) => processesResult.processes.pageInfo;
 
 export const mapGraphQlProcessListResultToProcessListItems = (
-    processesResult: ProcessListResult,
+    processes: Process[],
 ): ProcessListItem[] =>
-    processesResult.processes.page.map((process) => {
+    processes.map((process) => {
         const {
             workflowName,
             lastStep,

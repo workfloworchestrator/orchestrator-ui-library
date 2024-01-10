@@ -8,7 +8,7 @@ const customersQuery = `query Customers {
           fullname
           identifier
           shortcode
-      }
+      }:
   }
 }`;
 
