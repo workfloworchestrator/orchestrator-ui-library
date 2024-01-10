@@ -58,7 +58,8 @@
         },
         "widgets": {
             "organisation": {
-                "placeholder": "Org placeholder"
+                "placeholder": "Org placeholder",
+                "loading": "Loading organisations..."
             },
             "contactPersonName": {
                 "placeholder": "Name placeholder"

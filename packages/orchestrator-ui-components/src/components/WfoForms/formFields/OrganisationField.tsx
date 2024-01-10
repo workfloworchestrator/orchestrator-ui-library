@@ -17,9 +17,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { connectField } from 'uniforms';
 
-import { GET_CUSTOMER_GRAPHQL_QUERY } from '@/graphqlQueries';
-import { useQueryWithGraphql } from '@/hooks';
-import { useGetPokemonByNameQuery } from '@/rtk/api';
+import { useGetCustomersQuery } from '@/rtk/endpoints';
 
 import { SelectField, SelectFieldProps } from './SelectField';
 
@@ -31,20 +29,11 @@ export type OrganisationFieldProps = Omit<
 function Organisation({ ...props }: OrganisationFieldProps) {
     const t = useTranslations('pydanticForms');
 
-    const { data: pokemon, isFetching } = useGetPokemonByNameQuery('bulbasaur');
-
-    console.log(pokemon, isFetching);
-
-    const { data, isFetched } = useQueryWithGraphql(
-        GET_CUSTOMER_GRAPHQL_QUERY,
-        {},
-        'customers',
-    );
+    const { data: customers, isLoading } = useGetCustomersQuery();
 
     const uuidCustomerNameMap = new Map<string, string>();
 
-    if (isFetched) {
-        const customers = data?.customers.page;
+    if (!isLoading && customers) {
         customers?.map((customer) => {
             uuidCustomerNameMap.set(customer.identifier, customer.fullname);
         });
@@ -55,7 +44,12 @@ function Organisation({ ...props }: OrganisationFieldProps) {
             {...props}
             allowedValues={Array.from(uuidCustomerNameMap.keys())}
             transform={(uuid: string) => uuidCustomerNameMap.get(uuid) || uuid}
-            placeholder={t('widgets.organisation.placeholder')}
+            disabled={isLoading}
+            placeholder={
+                !isLoading
+                    ? t('widgets.organisation.placeholder')
+                    : t('widgets.organisation.loading')
+            }
         />
     );
 }
