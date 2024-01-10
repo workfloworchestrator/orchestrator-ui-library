@@ -1,18 +1,11 @@
-// Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
-// Define a service using a base URL and expected endpoints
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
-    baseQuery: fetchBaseQuery({
+    baseQuery: graphqlRequestBaseQuery({
         // baseUrl: 'https://orchestrator.dev.automation.surf.net',
-        baseUrl: 'https://pokeapi.co/api/v2/',
+        url: 'https://orchestrator.dev.automation.surf.net/api/graphql',
     }),
-    endpoints: (builder) => ({
-        getPokemonByName: builder.query<any, string>({
-            query: (name) => `pokemon/${name}`,
-        }),
-    }),
+    endpoints: () => ({}),
 });
-
-export const { useGetPokemonByNameQuery } = orchestratorApi;

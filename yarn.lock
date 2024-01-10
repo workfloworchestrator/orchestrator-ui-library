@@ -2734,6 +2734,13 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.8.0.tgz#05057436705f0be9203c30612a48225ec70af741"
   integrity sha512-kb4/auKXkYKqlUYTE8s40FcJIj5soOyRLHKd4ugR0dCq0G2EfcF54eYcfQiGkHzjidZ40daB4ulsFdtqNKZtBg==
 
+"@rtk-query/graphql-request-base-query@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@rtk-query/graphql-request-base-query/-/graphql-request-base-query-2.3.1.tgz#edfb2873705c4c6b05b171b6233c590de4572739"
+  integrity sha512-D8R+YLPGpP3xLQ9JmNK2jgBWmcsIQm3u4kCjW6vRACBaGEey4WbjanYmtRPv16WbW+NcA7yXicVTuExuSXSi4A==
+  dependencies:
+    graphql-request "^4.0.0 || ^5.0.0 || ^6.0.0"
+
 "@rushstack/eslint-patch@^1.1.3", "@rushstack/eslint-patch@^1.3.3":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.6.0.tgz#1898e7a7b943680d757417a47fb10f5fcc230b39"
@@ -8491,7 +8498,7 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-graphql-request@^6.1.0:
+"graphql-request@^4.0.0 || ^5.0.0 || ^6.0.0", graphql-request@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-6.1.0.tgz#f4eb2107967af3c7a5907eb3131c671eac89be4f"
   integrity sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==

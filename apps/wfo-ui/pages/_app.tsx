@@ -3,7 +3,6 @@ import NoSSR from 'react-no-ssr';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientConfig } from 'react-query/types/core/types';
-import { Provider } from 'react-redux';
 
 import { SessionProvider } from 'next-auth/react';
 import { NextAdapter } from 'next-query-params';
@@ -23,8 +22,9 @@ import {
     WfoAuth,
     WfoPageTemplate,
     defaultOrchestratorTheme,
-    store,
+    orchestratorApi,
 } from '@orchestrator-ui/orchestrator-ui-components';
+import { ApiProvider } from '@reduxjs/toolkit/query/react';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
 import { getInitialOrchestratorConfig } from '@/configuration';
@@ -55,7 +55,7 @@ function CustomApp({
         <OrchestratorConfigProvider
             initialOrchestratorConfig={orchestratorConfig}
         >
-            <Provider store={store}>
+            <ApiProvider api={orchestratorApi}>
                 <SessionProvider session={pageProps.session}>
                     <WfoAuth>
                         <NoSSR>
@@ -117,7 +117,7 @@ function CustomApp({
                         </NoSSR>
                     </WfoAuth>
                 </SessionProvider>
-            </Provider>
+            </ApiProvider>
         </OrchestratorConfigProvider>
     );
 }
