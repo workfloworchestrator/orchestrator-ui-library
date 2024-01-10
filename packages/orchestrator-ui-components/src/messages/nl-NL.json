@@ -61,7 +61,8 @@
         },
         "widgets": {
             "organisation": {
-                "placeholder": "Org placeholder"
+                "placeholder": "Org placeholder",
+                "loading": "Organisaties laden..."
             },
             "contactPersonName": {
                 "placeholder": "Naam placeholder"
