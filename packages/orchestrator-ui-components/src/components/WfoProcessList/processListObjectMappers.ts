@@ -1,15 +1,10 @@
-import {
-    GraphQLSort,
-    GraphqlFilter,
-    Process,
-    ProcessListResult,
-} from '../../types';
+import { GraphQLSort, GraphqlFilter, Process } from '../../types';
 import { ProcessListItem } from './WfoProcessesList';
 
 export const mapGraphQlProcessListResultToProcessListItems = (
-    processesResult: ProcessListResult,
+    processes: Process[],
 ): ProcessListItem[] =>
-    processesResult.processes.page.map((process) => {
+    processes.map((process) => {
         const {
             workflowName,
             lastStep,
