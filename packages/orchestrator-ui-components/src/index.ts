@@ -9,3 +9,4 @@ export * from './hooks';
 export * from './messages';
 export * from './pages';
 export * from './graphqlQueries';
+export * from './rtk';
