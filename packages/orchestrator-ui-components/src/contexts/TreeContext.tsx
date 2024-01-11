@@ -23,7 +23,7 @@ export type TreeProviderProps = {
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
     const [depths, setDepths] = React.useState<number[]>([]);
-    const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
+    const [selectedIds, setSelectedIds] = React.useState<number[]>([0]);
     const [expandedIds, setExpandedIds] = React.useState<number[]>([0]);
 
     const toggleSelectedId = (id: number) => {
