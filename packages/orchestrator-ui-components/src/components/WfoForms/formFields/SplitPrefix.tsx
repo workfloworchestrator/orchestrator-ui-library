@@ -101,7 +101,8 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
         const { id, name, subnet, prefixlen, prefixMin, selectedSubnet } =
             this.props;
         const version = subnet.indexOf(':') === -1 ? 4 : 6;
-        const max_for_version = version === 4 ? 32 : 64;
+        const max_for_version = version === 4 ? 32 : prefixMin + 11;
+
         const { desiredPrefixlen } = this.state;
         const prefixlengths = range(max_for_version - prefixMin + 1).map(
             (x) => prefixMin + x,
