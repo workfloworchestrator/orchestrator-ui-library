@@ -12,10 +12,7 @@ import { getTokenName } from '../../utils/getTokenName';
 import { WfoTree } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
-import {
-    getFieldFromProductBlockInstanceValues,
-    getProductBlockTitle,
-} from './utils';
+import { getProductBlockTitle } from './utils';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
@@ -47,9 +44,8 @@ export const WfoSubscriptionDetailTree = ({
         // Does this node have a parent?
         if (shallowCopy.parent === null) {
             // Doesn't look like it, so this node is the root of the tree
-            shallowCopy.label = getFieldFromProductBlockInstanceValues(
+            shallowCopy.label = getProductBlockTitle(
                 shallowCopy.productBlockInstanceValues,
-                'name',
             );
             shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
             depthList.push(0); // First id is on root
