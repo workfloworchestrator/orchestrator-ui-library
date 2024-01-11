@@ -63,9 +63,8 @@ const processListQuery = `
         }
     }
 `;
-
 export type ProcessListResponse = {
-    processes: ProcessListItem[];
+    processes: Process[];
     totalItems: GraphQLPageInfo['totalItems'];
     sortFields: GraphQLPageInfo['sortFields'] | undefined;
     filterFields: GraphQLPageInfo['filterFields'] | undefined;
@@ -111,10 +110,7 @@ const processApi = orchestratorApi.injectEndpoints({
                 const { totalItems, sortFields, filterFields } =
                     response.processes?.pageInfo || {};
                 return {
-                    processes:
-                        mapGraphQlProcessListResultToProcessListItems(
-                            processes,
-                        ),
+                    processes,
                     totalItems,
                     sortFields,
                     filterFields,
