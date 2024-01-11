@@ -33,6 +33,7 @@ import { parseDateToLocaleDateTimeString } from '@/utils';
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
+    mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
 export type ProcessListItem = Pick<
@@ -206,7 +207,9 @@ export const WfoProcessesList = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
-            data={processes || []}
+            data={mapGraphQlProcessListResultToProcessListItems(
+                processes || [],
+            )}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
