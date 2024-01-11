@@ -1,3 +1,5 @@
+import { ProcessListItem } from '@/components';
+import { mapGraphQlProcessListResultToProcessListItems } from '@/components/WfoProcessList/processListObjectMappers';
 import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
 import {
     GraphQLPageInfo,
@@ -63,7 +65,7 @@ const processListQuery = `
 `;
 
 export type ProcessListResponse = {
-    processes: Process[];
+    processes: ProcessListItem[];
     totalItems: GraphQLPageInfo['totalItems'];
     sortFields: GraphQLPageInfo['sortFields'] | undefined;
     filterFields: GraphQLPageInfo['filterFields'] | undefined;
@@ -109,7 +111,10 @@ const processApi = orchestratorApi.injectEndpoints({
                 const { totalItems, sortFields, filterFields } =
                     response.processes?.pageInfo || {};
                 return {
-                    processes,
+                    processes:
+                        mapGraphQlProcessListResultToProcessListItems(
+                            processes,
+                        ),
                     totalItems,
                     sortFields,
                     filterFields,
