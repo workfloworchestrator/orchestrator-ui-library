@@ -1,3 +1,5 @@
+import { ProcessListItem } from '@/components';
+import { mapGraphQlProcessListResultToProcessListItems } from '@/components/WfoProcessList/processListObjectMappers';
 import {
     GraphQLPageInfo,
     GraphqlQueryVariables,
@@ -62,7 +64,7 @@ const workflowQuery = `
 `;
 
 type ProcessListResponse = {
-    processes: Process[];
+    processes: ProcessListItem[];
     totalItems: GraphQLPageInfo['totalItems'];
     sortFields: GraphQLPageInfo['sortFields'] | undefined;
     filterFields: GraphQLPageInfo['filterFields'] | undefined;
@@ -82,7 +84,10 @@ const workflowsApi = orchestratorApi.injectEndpoints({
                 const { totalItems, sortFields, filterFields } =
                     response.processes?.pageInfo || {};
                 return {
-                    processes,
+                    processes:
+                        mapGraphQlProcessListResultToProcessListItems(
+                            processes,
+                        ),
                     totalItems,
                     sortFields,
                     filterFields,
