@@ -86,7 +86,10 @@ export const WfoRelatedSubscriptions = ({
             field: 'description',
             name: t('description'),
             render: (value, record) => (
-                <Link href={`/subscriptions/${record.subscriptionId}`}>
+                <Link
+                    target="_blank"
+                    href={`/subscriptions/${record.subscriptionId}`}
+                >
                     {value}
                 </Link>
             ),

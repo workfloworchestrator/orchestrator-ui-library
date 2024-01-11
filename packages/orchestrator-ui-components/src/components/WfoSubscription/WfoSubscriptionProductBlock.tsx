@@ -131,6 +131,7 @@ export const WfoSubscriptionProductBlock = ({
                                             ) : (
                                                 <a
                                                     href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                                    target="_blank"
                                                 >
                                                     {ownerSubscriptionId}
                                                 </a>
