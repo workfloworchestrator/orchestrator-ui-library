@@ -15,6 +15,7 @@ export * from './WfoMinusCircleFill';
 export * from './WfoSearchStrikethrough';
 export * from './WfoSortAsc';
 export * from './WfoSortDesc';
+export * from './WfoSideMenu';
 export * from './WfoPlayFill';
 export * from './WfoCode';
 export * from './WfoEyeFill';
