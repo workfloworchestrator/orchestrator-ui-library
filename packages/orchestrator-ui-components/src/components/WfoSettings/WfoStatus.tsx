@@ -12,18 +12,13 @@ import {
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoStatusDotIcon } from '@/icons';
+import { useGetEngineStatusQuery } from '@/rtk';
 import { EngineStatus } from '@/types';
 
-interface WfoStatusProps {
-    engineStatus: EngineStatus;
-    runningProcesses?: number;
-}
-
-export const WfoStatus = ({
-    engineStatus,
-    runningProcesses,
-}: WfoStatusProps) => {
+export const WfoStatus = () => {
     const { theme } = useOrchestratorTheme();
+    const { data } = useGetEngineStatusQuery();
+    const { engineStatus, runningProcesses } = data || {};
     const isRunning = engineStatus === EngineStatus.RUNNING;
     const t = useTranslations('settings.page');
 

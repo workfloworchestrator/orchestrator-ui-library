@@ -31,4 +31,5 @@ export const orchestratorApi = createApi({
         }
     },
     endpoints: () => ({}),
+    tagTypes: ['engineStatus'],
 });
