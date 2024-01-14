@@ -18,6 +18,7 @@ export enum EngineStatus {
     RUNNING = 'RUNNING',
     PAUSING = 'PAUSING',
     PAUSED = 'PAUSED',
+    UNKNOWN = 'UNKNOWN',
 }
 
 export type Customer = {

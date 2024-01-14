@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -11,25 +11,13 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import { OrchestratorConfigContext, ToastTypes } from '@/contexts';
-import { useCacheNames, useSessionWithToken, useToastMessage } from '@/hooks';
-
-const clearCache = async (
-    apiUrl: string,
-    settingName: string,
-    accessToken: string = '',
-) => {
-    const response = await fetch(apiUrl + `/settings/cache/${settingName}`, {
-        method: 'DELETE',
-        headers: {
-            Authorization: accessToken ? `Bearer ${accessToken}` : '',
-        },
-    });
-    return await response.json();
-};
+import { ToastTypes } from '@/contexts';
+import { useCacheNames, useToastMessage } from '@/hooks';
+import { useClearCacheMutation } from '@/rtk';
 
 export const WfoFlushSettings: FunctionComponent = () => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const [clearCache] = useClearCacheMutation();
+
     const t = useTranslations('settings.page');
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
@@ -40,7 +28,6 @@ export const WfoFlushSettings: FunctionComponent = () => {
         setSelected(selectedOptions);
     };
     const { data } = useCacheNames();
-    const { session } = useSessionWithToken();
 
     const options: EuiComboBoxOptionOption[] =
         data && Object.entries(data).length > 0
@@ -50,25 +37,29 @@ export const WfoFlushSettings: FunctionComponent = () => {
               }))
             : [{ key: 'loading', label: 'Loading...' }];
 
-    const flushCache = async () => {
+    const flushCache = () => {
         if (selectedOptions.length < 1) {
             return;
         }
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
-        await clearCache(
-            orchestratorApiBaseUrl,
-            cacheKey,
-            session?.accessToken,
-        ).then(() => {
-            toastMessage?.addToast(
-                ToastTypes.SUCCESS,
-                <p>
-                    Cache for cache key &quot;{cacheKey}&quot; flushed
-                    successfully
-                </p>,
-                'Cache cleared',
-            );
-        });
+        clearCache(cacheKey)
+            .then(() => {
+                toastMessage?.addToast(
+                    ToastTypes.SUCCESS,
+                    <p>
+                        Cache for cache key &quot;{cacheKey}&quot; flushed
+                        successfully
+                    </p>,
+                    'Cache cleared',
+                );
+            })
+            .catch(() => {
+                toastMessage?.addToast(
+                    ToastTypes.ERROR,
+                    <p>Flush for cache key &quot;{cacheKey}&quot; failed</p>,
+                    'Flush failed',
+                );
+            });
     };
 
     return (

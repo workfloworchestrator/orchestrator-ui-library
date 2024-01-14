@@ -1,22 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
 import { EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 
-import { EngineStatus } from '@/types';
-
 import { WfoEngineStatusButton } from './WfoEngineStatusButton';
 
-export type WfoModifySettingsProps = {
-    engineStatus?: EngineStatus;
-    changeEngineStatus: () => void;
-};
-
-export const WfoModifySettings: FC<WfoModifySettingsProps> = ({
-    engineStatus,
-    changeEngineStatus,
-}) => {
+export const WfoModifySettings = () => {
     const t = useTranslations('settings.page');
     return (
         <EuiPanel
@@ -29,10 +19,7 @@ export const WfoModifySettings: FC<WfoModifySettingsProps> = ({
                 <h4>{t('modifyEngine')}</h4>
             </EuiText>
             <EuiSpacer size="m"></EuiSpacer>
-            <WfoEngineStatusButton
-                engineStatus={engineStatus}
-                changeEngineStatus={changeEngineStatus}
-            />
+            <WfoEngineStatusButton />
         </EuiPanel>
     );
 };
