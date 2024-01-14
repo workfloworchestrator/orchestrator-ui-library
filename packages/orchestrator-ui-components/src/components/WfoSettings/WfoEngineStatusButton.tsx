@@ -1,31 +1,29 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
 import { EuiButton } from '@elastic/eui';
 
+import { useGetEngineStatusQuery, useSetEngineStatusMutation } from '@/rtk';
 import { EngineStatus } from '@/types';
 
-interface WfoEngineStatusButtonProps {
-    engineStatus?: EngineStatus;
-    changeEngineStatus: () => void;
-}
+export const WfoEngineStatusButton = () => {
+    const { data, isLoading } = useGetEngineStatusQuery();
+    const { engineStatus } = data || {};
+    const [setEngineStatus, { isLoading: isSettingEngineStatus }] =
+        useSetEngineStatusMutation();
 
-export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
-    engineStatus,
-    changeEngineStatus,
-}) => {
     const t = useTranslations('settings.page');
-    if (!engineStatus) {
+    if (isLoading || isSettingEngineStatus) {
         return (
             <EuiButton isLoading fill>
                 Loading...
             </EuiButton>
         );
     }
-    return engineStatus === 'RUNNING' ? (
+    return engineStatus === EngineStatus.RUNNING ? (
         <EuiButton
-            onClick={changeEngineStatus}
+            onClick={() => setEngineStatus(true)}
             color="warning"
             fill
             iconType="pause"
@@ -34,7 +32,7 @@ export const WfoEngineStatusButton: FC<WfoEngineStatusButtonProps> = ({
         </EuiButton>
     ) : (
         <EuiButton
-            onClick={changeEngineStatus}
+            onClick={() => setEngineStatus(false)}
             color="primary"
             fill
             iconType="play"
