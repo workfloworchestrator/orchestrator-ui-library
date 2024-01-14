@@ -9,7 +9,8 @@ import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 export const WfoEngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
-    const { data: engineStatus } = useGetEngineStatusQuery();
+    const { data } = useGetEngineStatusQuery();
+    const { engineStatus } = data || {};
 
     const engineStatusText: string = engineStatus
         ? `Engine is ${engineStatus}`

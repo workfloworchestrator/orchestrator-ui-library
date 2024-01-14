@@ -1,19 +1,21 @@
 import { useTranslations } from 'next-intl';
 
 import { ToastTypes } from '@/contexts';
-import { useEngineStatusQuery } from '@/hooks/useEngineStatusQuery';
 import { useToastMessage } from '@/hooks/useToastMessage';
+import { useGetEngineStatusQuery } from '@/rtk/endpoints';
+import { EngineStatus } from '@/types';
 
 export const useCheckEngineStatus = () => {
+    const { data, isLoading, refetch } = useGetEngineStatusQuery();
+    const { engineStatus } = data || {};
     const tErrors = useTranslations('errors');
     const toastMessage = useToastMessage();
-    const { refetch } = useEngineStatusQuery();
 
     const isEngineRunningNow = async () => {
-        const result = await refetch();
-        const isEngineRunning = result.data?.global_status === 'RUNNING';
+        await refetch();
+        const isEngineRunning = engineStatus === EngineStatus.RUNNING;
 
-        if (!isEngineRunning) {
+        if (!isEngineRunning && !isLoading) {
             toastMessage.addToast(
                 ToastTypes.ERROR,
                 tErrors('notAllowedWhenEngineIsNotRunningMessage'),
