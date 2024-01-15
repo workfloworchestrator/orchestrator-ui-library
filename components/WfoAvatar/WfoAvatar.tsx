@@ -1,17 +1,25 @@
 import React, { ReactNode } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    WfoCheckmarkCircleFill,
+    useOrchestratorTheme,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getStyles } from '@/components/WfoAvatar/styles';
 import { ServiceTicketLogType } from '@/types';
 
 export interface WfoAvatarProps {
-    stepStatus: ServiceTicketLogType;
+    stepStatus: ServiceTicketLogType | null;
     icon: ReactNode;
+    hasCheckmark?: boolean;
 }
 
-export const WfoAvatar = ({ stepStatus, icon }: WfoAvatarProps) => {
+export const WfoAvatar = ({
+    stepStatus,
+    icon,
+    hasCheckmark,
+}: WfoAvatarProps) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
 
     const { openIconStyle, updateIconStyle, closedIconStyle } = getStyles(
@@ -27,20 +35,24 @@ export const WfoAvatar = ({ stepStatus, icon }: WfoAvatarProps) => {
                 return [updateIconStyle];
             case ServiceTicketLogType.CLOSE:
                 return [closedIconStyle];
-
             default:
-                return [
-                    closedIconStyle,
-                    theme.colors.link,
-                    true,
-                    theme.colors.success,
-                ];
+                return [closedIconStyle];
         }
     })();
 
     return (
-        <EuiFlexItem css={{ flexDirection: 'row', ...stepStateStyle }} grow={0}>
-            {icon}
+        <EuiFlexItem css={{ flexDirection: 'row' }} grow={0}>
+            <div css={{ ...stepStateStyle }}>{icon}</div>
+            {hasCheckmark && (
+                <div
+                    css={{
+                        transform: 'translate(-16px, -8px)',
+                        width: `${theme.base}`,
+                    }}
+                >
+                    <WfoCheckmarkCircleFill color={theme.colors.success} />
+                </div>
+            )}
         </EuiFlexItem>
     );
 };

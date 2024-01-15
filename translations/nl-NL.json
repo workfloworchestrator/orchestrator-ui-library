@@ -73,6 +73,13 @@
                         "nl": "NL",
                         "en": "EN",
                         "noLogsAvailableForThisServiceTicket": "Todo-No logs available for this service ticket"
+                    },
+                    "sentEmails": {
+                        "showMore": "Todo- Show more",
+                        "sentOn": "Todo - sent on",
+                        "by": "Todo -by",
+                        "sendNew": "Todo - send new",
+                        "noEmailsAvailableForThisServiceTicket": "Todo - No e-mails available for this service ticket"
                     }
                 },
                 "buttons": {
