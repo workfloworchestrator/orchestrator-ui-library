@@ -48,3 +48,24 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     }
     return restWithoutError;
 };
+
+export const useQueryWithGraphqlLazy = <U, V extends Variables>(
+    query: TypedDocumentNode<U, V>,
+    queryVars: V,
+    cacheKeys: string[] | string,
+    options: UseQueryOptions<U> = {},
+) => {
+    // Disabling the query prevent the initial fetch
+    const queryWithGraphql = useQueryWithGraphql(query, queryVars, cacheKeys, {
+        ...options,
+        enabled: false,
+    });
+
+    // Calling getData fetches the data
+    return {
+        getData: async () => {
+            const result = await queryWithGraphql.refetch();
+            return result.data;
+        },
+    };
+};
