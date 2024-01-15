@@ -24,3 +24,4 @@ export * from './WfoSettings';
 export * from './WfoInsyncIcon';
 export * from './WfoError';
 export * from './WfoWorkflowSteps';
+export * from './confirmationDialog';

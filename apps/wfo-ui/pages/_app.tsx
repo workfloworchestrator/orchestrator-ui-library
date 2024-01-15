@@ -3,6 +3,7 @@ import NoSSR from 'react-no-ssr';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientConfig } from 'react-query/types/core/types';
+import { Provider as ReduxProvider } from 'react-redux';
 
 import { SessionProvider } from 'next-auth/react';
 import { NextAdapter } from 'next-query-params';
@@ -20,11 +21,11 @@ import {
     ToastsContextProvider,
     ToastsList,
     WfoAuth,
+    WfoConfirmationDialogWrapper,
     WfoPageTemplate,
     defaultOrchestratorTheme,
-    orchestratorApi,
+    orchestratorStore,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import { ApiProvider } from '@reduxjs/toolkit/query/react';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
 import { getInitialOrchestratorConfig } from '@/configuration';
@@ -55,7 +56,7 @@ function CustomApp({
         <OrchestratorConfigProvider
             initialOrchestratorConfig={orchestratorConfig}
         >
-            <ApiProvider api={orchestratorApi}>
+            <ReduxProvider store={orchestratorStore}>
                 <SessionProvider session={pageProps.session}>
                     <WfoAuth>
                         <NoSSR>
@@ -104,6 +105,7 @@ function CustomApp({
                                                             </QueryParamProvider>
                                                         </WfoPageTemplate>
                                                         <ToastsList />
+                                                        <WfoConfirmationDialogWrapper />
                                                     </ConfirmationDialogContextWrapper>
                                                 </ToastsContextProvider>
                                                 <ReactQueryDevtools
@@ -117,7 +119,7 @@ function CustomApp({
                         </NoSSR>
                     </WfoAuth>
                 </SessionProvider>
-            </ApiProvider>
+            </ReduxProvider>
         </OrchestratorConfigProvider>
     );
 }
