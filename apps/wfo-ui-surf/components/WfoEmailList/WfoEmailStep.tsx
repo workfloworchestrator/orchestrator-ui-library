@@ -56,6 +56,8 @@ export const WfoEmailStep = React.forwardRef(
             : {};
         const hasStepContent = Object.keys(stepContent).length > 0;
 
+        const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t('by')}`;
+
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -73,11 +75,7 @@ export const WfoEmailStep = React.forwardRef(
                             <EuiText css={stepListContentBoldTextStyle}>
                                 {step.name}
                             </EuiText>
-                            <EuiText color={'subdued'}>
-                                {`${t('sentOn')} ${formatDate(
-                                    step.executed,
-                                )} ${t('by')} ${step.sentBy}`}
-                            </EuiText>
+                            <EuiText color={'subdued'}>{sentOn}</EuiText>
                         </EuiFlexItem>
 
                         <EuiFlexGroup css={stepRowStyle}>
