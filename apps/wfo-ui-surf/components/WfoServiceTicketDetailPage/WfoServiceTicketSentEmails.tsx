@@ -41,44 +41,53 @@ export const WfoServiceTicketSentEmails = ({
         'cim.serviceTickets.detail.tabDetails.sentEmails',
     );
 
-    // Add sentBy to email logs and UPDATE prefixes to update emails
+    const generateEmailName = (
+        sentEmail: EmailLog,
+        allUpdateEmails: EmailLog[],
+        index: number,
+    ) => {
+        if (sentEmail.log_type === ServiceTicketLogType.UPDATE) {
+            const updateIndex = allUpdateEmails.length - index;
+            return `UPDATE#${updateIndex} - ${
+                sentEmail.emails[0] ? sentEmail.emails[0].subject : ''
+            }`;
+        } else {
+            return sentEmail.emails[0] ? sentEmail.emails[0].subject : '';
+        }
+    };
+
     const data = serviceTicketDetail.email_logs
         .sort((a, b) => {
             const timeA = new Date(a.entry_time).getTime();
             const timeB = new Date(b.entry_time).getTime();
             return timeA - timeB;
         })
-        .map((sent_email, index, array) => {
-            const match = serviceTicketDetail.logs.find(
-                (log) => log.log_id === sent_email.log_id,
-            );
+        .map((sentEmail, index, array) => {
+            const sentBy =
+                serviceTicketDetail.logs.find(
+                    (log) => log.log_id === sentEmail.log_id,
+                )?.logged_by || '';
+
             const allUpdateEmails = array.filter(
                 (email) => email.log_type === ServiceTicketLogType.UPDATE,
             );
             const slicedUpdateEmails = allUpdateEmails.slice(index);
 
             return {
-                ...sent_email,
-                sentBy: match ? match.logged_by : '',
-                name:
-                    sent_email.log_type === ServiceTicketLogType.UPDATE
-                        ? `UPDATE#${
-                              allUpdateEmails.length - slicedUpdateEmails.length
-                          } - ${
-                              sent_email.emails[0]
-                                  ? sent_email.emails[0].subject
-                                  : ''
-                          }`
-                        : sent_email.emails[0]
-                          ? sent_email.emails[0].subject
-                          : '',
+                ...sentEmail,
+                sentBy: sentBy,
+                name: generateEmailName(
+                    sentEmail,
+                    allUpdateEmails,
+                    slicedUpdateEmails.length,
+                ),
             };
         });
 
     const steps = data.map((log) => mapLogEntryToStep(log));
 
-    const sendEmailStepButtons: EmailStep[] = [];
-    const emailStepButton: EmailStep = {
+    const sendEmailButtons: EmailStep[] = [];
+    const sendEmailButton: EmailStep = {
         executed: '',
         name: '',
         sentBy: '',
@@ -92,8 +101,8 @@ export const WfoServiceTicketSentEmails = ({
         serviceTicketDetail.process_state ===
         ServiceTicketProcessState.OPEN_ACCEPTED
     ) {
-        sendEmailStepButtons.push({
-            ...emailStepButton,
+        sendEmailButtons.push({
+            ...sendEmailButton,
             status: ServiceTicketLogType.OPEN,
         });
     }
@@ -102,20 +111,16 @@ export const WfoServiceTicketSentEmails = ({
         serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
         serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
     ) {
-        sendEmailStepButtons.push({
-            ...emailStepButton,
-            status: ServiceTicketLogType.UPDATE,
-        });
-    }
-
-    if (
-        serviceTicketDetail.process_state === ServiceTicketProcessState.OPEN ||
-        serviceTicketDetail.process_state === ServiceTicketProcessState.UPDATED
-    ) {
-        sendEmailStepButtons.push({
-            ...emailStepButton,
-            status: ServiceTicketLogType.CLOSE,
-        });
+        sendEmailButtons.push(
+            {
+                ...sendEmailButton,
+                status: ServiceTicketLogType.UPDATE,
+            },
+            {
+                ...sendEmailButton,
+                status: ServiceTicketLogType.CLOSE,
+            },
+        );
     }
 
     const initialStepListItems: EmailListItem[] = [
@@ -124,7 +129,7 @@ export const WfoServiceTicketSentEmails = ({
             isExpanded: false,
             isButton: false,
         })),
-        ...sendEmailStepButtons.map((stepButton) => ({
+        ...sendEmailButtons.map((stepButton) => ({
             step: stepButton,
             isExpanded: false,
             isButton: true,
