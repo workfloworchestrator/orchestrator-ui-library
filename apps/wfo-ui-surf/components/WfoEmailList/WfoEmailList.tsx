@@ -14,7 +14,6 @@ export type WfoStepListRef = {
 export type WfoEmailListProps = {
     stepListItems: EmailListItem[];
     showHiddenKeys: boolean;
-    startedAt: string;
     onToggleExpandStepListItem: (EmailListItem: EmailListItem) => void;
     onTriggerExpandStepListItem: (EmailListItem: EmailListItem) => void;
 };
@@ -28,14 +27,12 @@ export const WfoEmailList = React.forwardRef(
         {
             stepListItems,
             showHiddenKeys,
-            startedAt,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
         }: WfoEmailListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
-        const stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
             scrollToStep: async (stepId: string) => {
@@ -117,7 +114,6 @@ export const WfoEmailList = React.forwardRef(
                                                     )
                                                 }
                                                 emailListItem={emailListItem}
-                                                startedAt={stepStartTime}
                                                 showHiddenKeys={showHiddenKeys}
                                             />
                                             <EuiSpacer />

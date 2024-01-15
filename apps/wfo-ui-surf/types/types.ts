@@ -287,7 +287,7 @@ export interface EmailStep {
     stepId: string;
     executed: string;
     state: StepState;
-    stateDelta: StepState;
+    emails: Email[];
 }
 
 export type EmailListItem = {
