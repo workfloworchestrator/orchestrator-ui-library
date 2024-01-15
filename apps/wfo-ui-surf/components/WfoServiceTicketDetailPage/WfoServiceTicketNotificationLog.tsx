@@ -51,11 +51,11 @@ export const WfoServiceTicketNotificationLog = ({
                         </EuiText>
                         <EuiSpacer size={'m'}></EuiSpacer>
                         <EuiText>
-                            <b>{t('nl')}:</b> {serviceTicketDetail.title_nl}
+                            <b>{t('nl')}:</b> {log.update_nl}
                         </EuiText>
                         <EuiHorizontalRule margin={'xs'} />
                         <EuiText>
-                            <b>{t('en')}:</b> {serviceTicketDetail.title_en}
+                            <b>{t('en')}:</b> {log.update_en}
                         </EuiText>
                     </EuiPanel>
                 </>

@@ -1,7 +1,12 @@
 /** CIM */
 import { ReactNode } from 'react';
 
-import { Process } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    Process,
+    Step,
+    StepState,
+    StepStatus,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 export enum WfoServiceTicketListTabType {
     ACTIVE = 'ACTIVE',
@@ -100,6 +105,7 @@ export interface ServiceTicketLog {
     logged_by: string;
     transition: ServiceTicketTransition;
     completed: boolean;
+    log_id: string;
 }
 
 export enum ImpactLevel {
@@ -194,12 +200,20 @@ export interface Email {
     cc: ImpactedCustomerContact[];
     bcc: ImpactedCustomerContact[];
     language: string;
+    subject: string;
 }
 
-export interface EmailLog {
+export type EmailLogInDB = {
     entry_time: string;
     log_type: string;
-}
+    log_id: string;
+    emails: Email[];
+};
+
+export type EmailLog = {
+    name: string;
+    sentBy: string;
+} & EmailLogInDB;
 
 export interface ServiceTicketWithDetails extends ServiceTicketDefinition {
     ims_pw_id: string;
@@ -264,4 +278,20 @@ export type ImpactedCustomersTableColumns = {
 export type CustomerWithContacts = {
     name: string;
     contacts: ImpactedCustomerContact[];
+};
+
+export interface EmailStep {
+    name: string;
+    status: ServiceTicketLogType | null;
+    sentBy: string;
+    stepId: string;
+    executed: string;
+    state: StepState;
+    stateDelta: StepState;
+}
+
+export type EmailListItem = {
+    step: EmailStep;
+    isExpanded: boolean;
+    isButton: boolean;
 };
