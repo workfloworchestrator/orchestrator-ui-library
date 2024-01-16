@@ -67,5 +67,6 @@ export const useQueryWithGraphqlLazy = <U, V extends Variables>(
             const result = await queryWithGraphql.refetch();
             return result.data;
         },
+        ...queryWithGraphql,
     };
 };
