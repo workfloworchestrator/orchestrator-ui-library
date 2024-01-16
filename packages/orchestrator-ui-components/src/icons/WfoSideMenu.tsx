@@ -14,10 +14,10 @@ export const WfoSideMenu: FC<WfoIconProps> = ({
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title>icon/logout</title>
+        <title>icon/sidemenu</title>
         <g id="Symbols" stroke="none" strokeWidth="6" fill="none">
             <g
-                id="icon/logout"
+                id="icon/sidemenu"
                 stroke={color}
                 transform="translate(-1.4305115e-6,0.00126457)"
             >
