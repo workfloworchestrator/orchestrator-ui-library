@@ -183,9 +183,36 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
 
     const handleCsvDownload = async () => {
-        console.log('Start downloading csv');
-        const result = await getSubscriptionListForCsvExport();
-        console.log('Done fetching, RAW data:', { result });
+        const subscriptionListForExportGraphqlResult =
+            await getSubscriptionListForCsvExport();
+
+        if (subscriptionListForExportGraphqlResult) {
+            const subscriptionListForExport =
+                mapGraphQlSubscriptionsResultToSubscriptionListItems(
+                    subscriptionListForExportGraphqlResult,
+                );
+
+            const headers = Object.keys(subscriptionListForExport[0]).join(';');
+            const rows = subscriptionListForExport.map((row) =>
+                Object.values(row)
+                    .map((value) => (value === null ? '' : `"${value}"`))
+                    .join(';')
+                    .split('\n')
+                    .join(' '),
+            );
+            const csv = [headers, ...rows].join('\n');
+
+            // Triggering download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'data.csv'; // todo come up with a better name
+            link.click();
+            URL.revokeObjectURL(url);
+        } else {
+            console.error('No data to download');
+        }
     };
 
     return (
