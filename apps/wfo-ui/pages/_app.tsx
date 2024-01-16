@@ -71,10 +71,7 @@ function CustomApp({
                                                 rel="icon"
                                                 href="/favicon.png"
                                             />
-                                            <title>
-                                                Welcome to
-                                                example-orchestrator-ui!
-                                            </title>
+                                            <title>Workflow Orchestrator</title>
                                         </Head>
                                         <main className="app">
                                             <ToastsContextProvider>
