@@ -100,8 +100,7 @@ function CustomApp({
                                                     href="/favicon.png"
                                                 />
                                                 <title>
-                                                    Welcome to
-                                                    example-orchestrator-ui!
+                                                    Workflow Orchestrator
                                                 </title>
                                             </Head>
                                             <main className="app">
