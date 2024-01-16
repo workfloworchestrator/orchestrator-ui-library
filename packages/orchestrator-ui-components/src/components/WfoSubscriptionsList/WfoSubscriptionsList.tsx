@@ -23,6 +23,7 @@ import {
     getTypedFieldFromObject,
     parseDateToLocaleDateTimeString,
 } from '@/utils';
+import { initiateCsvFileDownload } from '@/utils/csvDownload';
 
 import {
     DEFAULT_PAGE_SIZES,
@@ -150,7 +151,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         ['subscriptions', 'listPage'],
     );
 
-    const { getData: getSubscriptionListForCsvExport } =
+    const { getData: getSubscriptionListForExport, isFetching: isFetchingCsv } =
         useQueryWithGraphqlLazy(
             getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
             {
@@ -160,7 +161,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 filterBy: alwaysOnFilters,
                 query: dataDisplayParams.queryString || undefined,
             },
-            ['subscriptions', 'csv'],
+            ['subscriptions', 'export'],
         );
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
@@ -184,7 +185,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const handleCsvDownload = async () => {
         const subscriptionListForExportGraphqlResult =
-            await getSubscriptionListForCsvExport();
+            await getSubscriptionListForExport();
 
         if (subscriptionListForExportGraphqlResult) {
             const subscriptionListForExport =
@@ -192,26 +193,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                     subscriptionListForExportGraphqlResult,
                 );
 
-            const headers = Object.keys(subscriptionListForExport[0]).join(';');
-            const rows = subscriptionListForExport.map((row) =>
-                Object.values(row)
-                    .map((value) => (value === null ? '' : `"${value}"`))
-                    .join(';')
-                    .split('\n')
-                    .join(' '),
+            initiateCsvFileDownload(
+                subscriptionListForExport,
+                'subscriptions.csv',
             );
-            const csv = [headers, ...rows].join('\n');
-
-            // Triggering download
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'data.csv'; // todo come up with a better name
-            link.click();
-            URL.revokeObjectURL(url);
-        } else {
-            console.error('No data to download');
         }
     };
 
@@ -244,7 +229,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             hasError={isError}
-            onDownloadCsv={() => handleCsvDownload()}
+            onExportData={handleCsvDownload}
+            exportDataIsLoading={isFetchingCsv}
         />
     );
 };
