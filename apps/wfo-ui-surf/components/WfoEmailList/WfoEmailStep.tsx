@@ -3,6 +3,8 @@ import React, { LegacyRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
+    EuiButton,
+    EuiButtonEmpty,
     EuiComboBox,
     EuiFlexGroup,
     EuiFlexItem,
@@ -24,8 +26,10 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { WfoAvatar } from '@/components/WfoAvatar/WfoAvatar';
+import { WfoEmailStepContent } from '@/components/WfoEmailList/WfoEmailStepContent';
 import { getStyles } from '@/components/WfoEmailList/styles';
-import { EmailListItem } from '@/types';
+import { WfoCustomersContactsModal } from '@/components/WfoServiceTicketDetailPage/WfoCustomersContactsModal';
+import { CustomerWithContacts, EmailListItem } from '@/types';
 
 export interface WfoStepProps {
     emailListItem: EmailListItem;
@@ -44,19 +48,6 @@ export const WfoEmailStep = React.forwardRef(
         const { theme } = useOrchestratorTheme();
         const { isExpanded, step } = emailListItem;
 
-        const options: EuiComboBoxOptionOption[] = step.emails.map((email) => ({
-            label: email.customer.customer_name,
-            value: email.message,
-        }));
-
-        const [selectedOptions, setSelected] = useState<
-            EuiComboBoxOptionOption[]
-        >([options[0]]);
-
-        const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
-            setSelected(selectedOptions);
-        };
-
         const {
             getStepHeaderStyle,
             stepHeaderRightStyle,
@@ -66,13 +57,9 @@ export const WfoEmailStep = React.forwardRef(
             getStepToggleExpandStyle,
         } = getStyles(theme);
 
-        const stepContent = step.emails
-            ? getStepContent(step.emails, showHiddenKeys)
-            : {};
-
-        const hasStepContent = Object.keys(stepContent).length > 0;
-
+        const hasStepContent = step.emails?.length > 0;
         const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t('by')}`;
+        const stepShowLabel = isExpanded ? t('showLess') : t('showMore');
 
         return (
             <div ref={ref}>
@@ -102,7 +89,7 @@ export const WfoEmailStep = React.forwardRef(
                                         css={stepHeaderRightStyle}
                                     >
                                         <EuiText css={stepDurationStyle}>
-                                            {t('showMore')}
+                                            {stepShowLabel}
                                         </EuiText>
                                     </EuiFlexItem>
                                     <EuiFlexItem
@@ -120,35 +107,7 @@ export const WfoEmailStep = React.forwardRef(
                         </EuiFlexGroup>
                     </EuiFlexGroup>
                     {hasStepContent && isExpanded && (
-                        <EuiPanel
-                            color="subdued"
-                            paddingSize="xl"
-                            css={{ marginTop: theme.size.m }}
-                        >
-                            <EuiFlexGroup wrap={true}>
-                                <EuiFlexItem
-                                    grow={2}
-                                    css={{ minWidth: theme.breakpoint.s / 2 }}
-                                >
-                                    <EuiText>
-                                        <b>{t('customer')}</b>
-                                    </EuiText>
-                                    <EuiSpacer size="s" />
-                                    <EuiComboBox
-                                        options={options}
-                                        selectedOptions={selectedOptions}
-                                        onChange={onChange}
-                                        singleSelection={{ asPlainText: true }}
-                                    />
-                                </EuiFlexItem>
-                                <EuiFlexItem
-                                    grow={5}
-                                    dangerouslySetInnerHTML={{
-                                        __html: selectedOptions[0].value ?? '',
-                                    }}
-                                />
-                            </EuiFlexGroup>
-                        </EuiPanel>
+                        <WfoEmailStepContent emails={step.emails} />
                     )}
                 </EuiPanel>
             </div>

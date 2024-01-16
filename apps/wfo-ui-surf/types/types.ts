@@ -194,6 +194,7 @@ export interface BackgroundJobLog {
 }
 
 export interface Email {
+    _id: string;
     customer: ImpactedCustomer;
     message: string;
     to: ImpactedCustomerContact[];

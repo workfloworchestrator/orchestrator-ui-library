@@ -44,13 +44,12 @@ export const WfoServiceTicketSentEmails = ({
         allUpdateEmails: EmailLog[],
         index: number,
     ) => {
+        const subject = sentEmail.emails[0]?.subject ?? '';
         if (sentEmail.log_type === ServiceTicketLogType.UPDATE) {
             const updateIndex = allUpdateEmails.length - index;
-            return `UPDATE#${updateIndex} - ${
-                sentEmail.emails[0] ? sentEmail.emails[0].subject : ''
-            }`;
+            return `UPDATE#${updateIndex} - ${subject}`;
         } else {
-            return sentEmail.emails[0] ? sentEmail.emails[0].subject : '';
+            return subject;
         }
     };
 
