@@ -12,7 +12,7 @@ We have a quick list of common questions to get you started engaging with this p
 ### Preparing the release
 
 ```bash
-yarn changeset
+npm changeset
 ```
 
 -   Selecting packages that will get a version bump and, in a later step, being published
@@ -23,7 +23,7 @@ yarn changeset
 ### Processing changes
 
 ```bash
-yarn changeset version
+npm changeset version
 ```
 
 -   Applies version bump in the selected packages
@@ -32,7 +32,7 @@ yarn changeset version
 ### Publishing changes
 
 ```bash
-yarn changeset publish
+npm changeset publish
 ```
 
 -   Performs the actual publish to npm
@@ -41,7 +41,7 @@ yarn changeset publish
 ### The TLDR
 
 ```
-yarn changeset
-yarn changeset version
-yarn changeset publish
+npm changeset
+npm changeset version
+npm changeset publish
 ```

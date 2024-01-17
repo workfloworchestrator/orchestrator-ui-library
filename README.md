@@ -5,7 +5,7 @@ Todo: copy old README.md
 -   set `AUTH_ACTIVE` env variable to false or use setup below with auth.
 
 ```
-yarn
+npm
 turbo dev
 ```
 
@@ -45,7 +45,7 @@ setup auth with keycloak in docker.
 ## Preparing the release
 
 ```bash
-yarn run packages:changeset
+npm run packages:changeset
 ```
 
 -   Include the changes made by this command in pull requests to the main branch

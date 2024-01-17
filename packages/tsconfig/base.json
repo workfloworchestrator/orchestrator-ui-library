@@ -17,7 +17,8 @@
         "preserveWatchOutput": true,
         "skipLibCheck": true,
         "strict": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "target": "es2019",
     },
     "exclude": ["node_modules"]
 }
