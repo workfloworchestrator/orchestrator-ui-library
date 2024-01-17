@@ -18,8 +18,9 @@ import {
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
 } from '@/hooks';
-import { SortOrder } from '@/types';
+import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
+    getQueryVariablesForExport,
     getTypedFieldFromObject,
     parseDateToLocaleDateTimeString,
 } from '@/utils';
@@ -138,29 +139,24 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         },
     };
 
-    const { sortBy, queryString } = dataDisplayParams;
+    const { sortBy, queryString, pageIndex, pageSize } = dataDisplayParams;
+
+    const graphqlQueryVariables: GraphqlQueryVariables<SubscriptionListItem> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy,
+        filterBy: alwaysOnFilters,
+        query: queryString || undefined,
+    };
     const { data, isError, isLoading } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
-        {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            sortBy,
-            filterBy: alwaysOnFilters,
-            query: queryString || undefined,
-        },
+        graphqlQueryVariables,
         ['subscriptions', 'listPage'],
     );
-
     const { getData: getSubscriptionListForExport, isFetching: isFetchingCsv } =
         useQueryWithGraphqlLazy(
             getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
-            {
-                first: 1000,
-                after: 0,
-                sortBy: dataDisplayParams.sortBy,
-                filterBy: alwaysOnFilters,
-                query: dataDisplayParams.queryString || undefined,
-            },
+            getQueryVariablesForExport(graphqlQueryVariables),
             ['subscriptions', 'export'],
         );
 
