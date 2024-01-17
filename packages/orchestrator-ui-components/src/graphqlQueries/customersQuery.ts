@@ -12,7 +12,7 @@ export const GET_CUSTOMER_GRAPHQL_QUERY: TypedDocumentNode<CustomersResult> =
             customers(first: 1000000, after: 0) {
                 page {
                     fullname
-                    identifier
+                    customerId
                     shortcode
                 }
             }

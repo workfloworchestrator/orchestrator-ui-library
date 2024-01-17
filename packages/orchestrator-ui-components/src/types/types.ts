@@ -22,7 +22,7 @@ export enum EngineStatus {
 
 export type Customer = {
     fullname: string;
-    identifier: string;
+    customerId: string;
     shortcode: string;
 };
 
@@ -377,7 +377,7 @@ export type SubscriptionDropdownOption = {
     description: Subscription['description'];
     subscriptionId: Subscription['subscriptionId'];
     product: Pick<ProductDefinition, 'tag' | 'productId'>;
-    customer: Pick<Customer, 'fullname' | 'identifier'>;
+    customer: Pick<Customer, 'fullname' | 'customerId'>;
     productBlockInstances: ProductBlockInstance[];
     fixedInputs: FieldValue[];
     tag: string;

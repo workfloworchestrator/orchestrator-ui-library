@@ -246,7 +246,7 @@ function SubscriptionFieldDefinition({
             // If a customer/organisation filter is applied we need to filter on that
             if (
                 usedOrganisationId &&
-                subscription.customer?.identifier !== usedOrganisationId
+                subscription.customer?.customerId !== usedOrganisationId
             ) {
                 return false;
             }

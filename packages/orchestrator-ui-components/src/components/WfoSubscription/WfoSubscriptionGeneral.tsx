@@ -69,7 +69,7 @@ export const WfoSubscriptionGeneral = ({
                 key: t('customerUuid'),
                 value:
                     subscriptionDetail && subscriptionDetail.customer
-                        ? `${subscriptionDetail.customer?.identifier}`
+                        ? `${subscriptionDetail.customer?.customerId}`
                         : '-',
             },
             {
