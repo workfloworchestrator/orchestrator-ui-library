@@ -5,6 +5,9 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import { getQueryVariablesForExport } from '@/utils';
+import { csvDownloadHandler } from '@/utils/csvDownload';
+
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
@@ -25,9 +28,13 @@ import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
 } from '../../hooks';
-import type { ResourceTypeDefinition } from '../../types';
+import type {
+    GraphqlQueryVariables,
+    ResourceTypeDefinition,
+} from '../../types';
 import { BadgeType, SortOrder } from '../../types';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
@@ -124,16 +131,24 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+    const graphqlQueryVariables: GraphqlQueryVariables<ResourceTypeDefinition> =
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
             query: queryString || undefined,
-        },
-        'resourceTypes',
+        };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+        graphqlQueryVariables,
+        ['resourceTypes', 'listPage'],
     );
+    const { getData: getResourceTypesForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['resourceTypes', 'export'],
+        );
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
@@ -177,6 +192,12 @@ export const WfoResourceTypesPage = () => {
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }
+                onExportData={csvDownloadHandler(
+                    getResourceTypesForExport,
+                    (data) => data.resourceTypes.page,
+                    'ResourceTypes.csv',
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );

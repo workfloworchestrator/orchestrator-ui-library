@@ -27,3 +27,18 @@ export function initiateCsvFileDownload<T extends object>(
     const csvFileContent = toCsvFileContent(data);
     startCsvDownload(csvFileContent, fileName);
 }
+
+export const csvDownloadHandler =
+    <T extends object, U extends object>(
+        dataFetchFunction: () => Promise<T | undefined>,
+        dataMapper: (data: T) => U[],
+        filename: string,
+    ) =>
+    async () => {
+        const data: T | undefined = await dataFetchFunction();
+
+        if (data) {
+            const dataForExport = dataMapper(data);
+            initiateCsvFileDownload(dataForExport, filename);
+        }
+    };

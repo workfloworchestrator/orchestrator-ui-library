@@ -25,10 +25,18 @@ import {
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
 import { getProcessListGraphQlQuery } from '@/graphqlQueries/processListQuery';
-import { DataDisplayParams, useQueryWithGraphql } from '@/hooks';
+import {
+    DataDisplayParams,
+    useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
+} from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
-import { Process, SortOrder } from '@/types';
-import { parseDateToLocaleDateTimeString } from '@/utils';
+import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+} from '@/utils';
+import { csvDownloadHandler } from '@/utils/csvDownload';
 
 import {
     graphQlProcessFilterMapper,
@@ -182,18 +190,24 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-
+    const graphqlQueryVariables: GraphqlQueryVariables<Process> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: graphQlProcessSortMapper(sortBy),
+        filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+        query: queryString || undefined,
+    };
     const { data, isLoading, isError } = useQueryWithGraphql(
         getProcessListGraphQlQuery(),
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: graphQlProcessSortMapper(sortBy),
-            filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-            query: queryString || undefined,
-        },
+        graphqlQueryVariables,
         ['processes', 'processList'],
     );
+    const { getData: getProcessListForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            getProcessListGraphQlQuery(),
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['processes', 'export'],
+        );
 
     const { totalItems, sortFields, filterFields } =
         data?.processes?.pageInfo || {};
@@ -230,6 +244,12 @@ export const WfoProcessesList = ({
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
+            onExportData={csvDownloadHandler(
+                getProcessListForExport,
+                mapGraphQlProcessListResultToProcessListItems,
+                'Processes.csv',
+            )}
+            exportDataIsLoading={isFetchingCsv}
         />
     );
 };
