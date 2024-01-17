@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "build": "tsup index.js --format esm",
-        "dev": "yarn build -- --watch"
+        "dev": "npm build -- --watch"
     },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^6.18.0",
