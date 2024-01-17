@@ -217,8 +217,7 @@ export const WfoTableWithFilter = <T extends object>({
                         isLoading={exportDataIsLoading}
                         onClick={() => onExportData()}
                     >
-                        {/* Todo add translations */}
-                        {'Export'}
+                        {t('export')}
                     </EuiButton>
                 )}
             </EuiFlexGroup>

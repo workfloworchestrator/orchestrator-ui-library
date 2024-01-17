@@ -23,7 +23,8 @@
         "newTask": "New task",
         "noFailedTasks": "No failed tasks!",
         "search": "Search",
-        "errorMessage": "An error occurred"
+        "errorMessage": "An error occurred",
+        "export": "Export"
     },
     "confirmationDialog": {
         "title": "Please confirm",
