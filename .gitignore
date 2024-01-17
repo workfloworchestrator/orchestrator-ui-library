@@ -21,8 +21,6 @@ dist/
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # local env files
 .env
@@ -41,7 +39,3 @@ yarn-error.log*
 .idea
 .vscode
 
-# yarn 
-.yarnrc.yml
-.yarnrc
-.yarn
