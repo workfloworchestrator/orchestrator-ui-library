@@ -23,7 +23,8 @@
         "newTask": "Nieuwe task",
         "noFailedTasks": "Geen gefaalde taken!",
         "search": "Zoeken",
-        "errorMessage": "Er is een fout opgetreden"
+        "errorMessage": "Er is een fout opgetreden",
+        "export": "Exporteren"
     },
     "confirmationDialog": {
         "title": "Graag bevestigen",
