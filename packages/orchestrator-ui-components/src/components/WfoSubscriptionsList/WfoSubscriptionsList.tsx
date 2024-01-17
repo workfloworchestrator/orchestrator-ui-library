@@ -24,7 +24,7 @@ import {
     getTypedFieldFromObject,
     parseDateToLocaleDateTimeString,
 } from '@/utils';
-import { initiateCsvFileDownload } from '@/utils/csvDownload';
+import { csvDownloadHandler } from '@/utils/csvDownload';
 
 import {
     DEFAULT_PAGE_SIZES,
@@ -179,23 +179,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         totalItemCount: totalItems ?? 0,
     };
 
-    const handleCsvDownload = async () => {
-        const subscriptionListForExportGraphqlResult =
-            await getSubscriptionListForExport();
-
-        if (subscriptionListForExportGraphqlResult) {
-            const subscriptionListForExport =
-                mapGraphQlSubscriptionsResultToSubscriptionListItems(
-                    subscriptionListForExportGraphqlResult,
-                );
-
-            initiateCsvFileDownload(
-                subscriptionListForExport,
-                'subscriptions.csv',
-            );
-        }
-    };
-
     return (
         <WfoTableWithFilter<SubscriptionListItem>
             queryString={dataDisplayParams.queryString}
@@ -225,7 +208,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 setDataDisplayParam,
             )}
             hasError={isError}
-            onExportData={handleCsvDownload}
+            onExportData={csvDownloadHandler(
+                getSubscriptionListForExport,
+                mapGraphQlSubscriptionsResultToSubscriptionListItems,
+                'Subscriptions.csv',
+            )}
             exportDataIsLoading={isFetchingCsv}
         />
     );

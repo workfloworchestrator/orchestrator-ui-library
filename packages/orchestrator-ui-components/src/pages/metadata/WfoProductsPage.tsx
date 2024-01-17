@@ -24,11 +24,17 @@ import { getProductsQuery } from '@/graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
 } from '@/hooks';
-import type { ProductDefinition } from '@/types';
+import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
-import { parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '@/utils';
+import { csvDownloadHandler } from '@/utils/csvDownload';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
@@ -152,16 +158,23 @@ export const WfoProductsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
+    const graphqlQueryVariables: GraphqlQueryVariables<ProductDefinition> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: sortBy,
+        query: queryString || undefined,
+    };
     const { data, isLoading, isError } = useQueryWithGraphql(
         getProductsQuery(),
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: sortBy,
-            query: queryString || undefined,
-        },
-        'products',
+        graphqlQueryVariables,
+        ['products', 'listPage'],
     );
+    const { getData: getProductsForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            getProductsQuery(),
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['products', 'export'],
+        );
 
     const { totalItems, sortFields, filterFields } =
         data?.products?.pageInfo ?? {};
@@ -203,6 +216,12 @@ export const WfoProductsPage = () => {
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
+                onExportData={csvDownloadHandler(
+                    getProductsForExport,
+                    (data) => data.products.page,
+                    'Products.csv',
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );
