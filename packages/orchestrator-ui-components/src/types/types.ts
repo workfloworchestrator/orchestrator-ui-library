@@ -217,7 +217,7 @@ export interface Step {
     status: StepStatus;
     stepId: string; // sic backend
     executed: string;
-    state: StepState;
+    state: StepState | undefined;
     stateDelta: StepState;
 }
 
