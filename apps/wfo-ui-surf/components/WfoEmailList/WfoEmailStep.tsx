@@ -42,7 +42,9 @@ export const WfoEmailStep = React.forwardRef(
         } = getStyles(theme);
 
         const hasStepContent = step.emails?.length > 0;
-        const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t('by')}`;
+        const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t(
+            'by',
+        )} ${step.sentBy}`;
         const stepShowLabel = isExpanded ? t('showLess') : t('showMore');
 
         return (

@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
-    EuiComboBox,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
     EuiSpacer,
+    EuiSuperSelect,
     EuiText,
 } from '@elastic/eui';
-import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getStyles } from '@/components/WfoEmailList/styles';
@@ -32,21 +31,21 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
     const [isContactsModalOpen, setIsContactsModalOpen] =
         useState<CustomerWithContacts>();
 
-    const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
-        const match =
-            emails.find(
-                (email: Email) => email._id === selectedOptions[0]?.value,
-            ) ?? emails[0];
-        setSelectedEmail(match);
+    const onChange = (selectedOption: Email) => {
+        setSelectedEmail(selectedOption);
     };
 
     const handleCloseContactsModal = () => {
         setIsContactsModalOpen(undefined);
     };
 
-    const mapEmailToOption = (email: Email): EuiComboBoxOptionOption => ({
-        label: email?.customer.customer_name ?? '',
-        value: email?._id ?? '',
+    const mapEmailToOption = (email: Email) => ({
+        value: email,
+        inputDisplay: (
+            <EuiText css={{ overflowX: 'hidden' }}>
+                {email?.customer.customer_name ?? ''}
+            </EuiText>
+        ),
     });
 
     const RecipientsButton = () => {
@@ -80,18 +79,18 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
         >
             <EuiFlexGroup wrap={true}>
                 <EuiFlexItem
-                    grow={2}
+                    grow={1}
                     css={{ minWidth: theme.breakpoint.s / 2 }}
                 >
                     <EuiText>
                         <b>{t('customer')}</b>
                     </EuiText>
                     <EuiSpacer size="s" />
-                    <EuiComboBox
+                    <EuiSuperSelect
+                        fullWidth
                         options={emails.map(mapEmailToOption)}
-                        selectedOptions={[mapEmailToOption(selectedEmail)]}
+                        valueOfSelected={selectedEmail}
                         onChange={onChange}
-                        singleSelection={{ asPlainText: true }}
                     />
                     <EuiSpacer />
                     <EuiText>
@@ -101,8 +100,9 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
                     <RecipientsButton />
                 </EuiFlexItem>
                 <EuiFlexItem
-                    grow={5}
-                    css={{ overflowY: 'scroll', maxHeight: theme.breakpoint.m }}
+                    grow={2}
+                    css={{ height: theme.breakpoint.m, overflow: 'auto' }}
+                    className="eui-scrollBar"
                     dangerouslySetInnerHTML={{
                         __html: selectedEmail?.message ?? '',
                     }}
