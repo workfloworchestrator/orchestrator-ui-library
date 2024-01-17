@@ -13,7 +13,6 @@ export type WfoStepListRef = {
 
 export type WfoEmailListProps = {
     stepListItems: EmailListItem[];
-    showHiddenKeys: boolean;
     onToggleExpandStepListItem: (EmailListItem: EmailListItem) => void;
     onTriggerExpandStepListItem: (EmailListItem: EmailListItem) => void;
 };
@@ -26,7 +25,6 @@ export const WfoEmailList = React.forwardRef(
     (
         {
             stepListItems,
-            showHiddenKeys,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
         }: WfoEmailListProps,
@@ -114,7 +112,6 @@ export const WfoEmailList = React.forwardRef(
                                                     )
                                                 }
                                                 emailListItem={emailListItem}
-                                                showHiddenKeys={showHiddenKeys}
                                             />
                                             <EuiSpacer />
                                         </div>

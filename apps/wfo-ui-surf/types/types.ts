@@ -287,7 +287,6 @@ export interface EmailStep {
     sentBy: string;
     stepId: string;
     executed: string;
-    state: StepState;
     emails: Email[];
 }
 

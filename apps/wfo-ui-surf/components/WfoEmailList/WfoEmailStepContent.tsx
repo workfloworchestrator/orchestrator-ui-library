@@ -7,19 +7,15 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
-    EuiSelectable,
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
-import {
-    WfoComboBox,
-    useOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getStyles } from '@/components/WfoEmailList/styles';
 import { WfoCustomersContactsModal } from '@/components/WfoServiceTicketDetailPage/WfoCustomersContactsModal';
-import { CustomerWithContacts, Email, EmailListItem } from '@/types';
+import { CustomerWithContacts, Email } from '@/types';
 
 interface WfoEmailStepContentProps {
     emails: Email[];
@@ -33,10 +29,6 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
     const { recipientButtonStyle } = getStyles(theme);
 
     const [selectedEmail, setSelectedEmail] = useState<Email>(emails[0]);
-    const [lastSelectedEmail, setLastSelectedEmail] = useState<Email>(
-        emails[0],
-    );
-
     const [isContactsModalOpen, setIsContactsModalOpen] =
         useState<CustomerWithContacts>();
 
@@ -110,7 +102,7 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
                 </EuiFlexItem>
                 <EuiFlexItem
                     grow={5}
-                    css={{ overflowY: 'auto', maxHeight: theme.breakpoint.m }}
+                    css={{ overflowY: 'scroll', maxHeight: theme.breakpoint.m }}
                     dangerouslySetInnerHTML={{
                         __html: selectedEmail?.message ?? '',
                     }}

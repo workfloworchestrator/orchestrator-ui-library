@@ -24,11 +24,6 @@ const mapLogEntryToStep = (emailLog: EmailLog): EmailStep => ({
     sentBy: emailLog.sentBy,
     executed: new Date(emailLog.entry_time).toISOString(),
     stepId: emailLog.log_id,
-    state: {
-        parameter1: 'example',
-        parameter2: 56,
-        parameter3: false,
-    },
     emails: emailLog.emails,
 });
 
@@ -88,7 +83,6 @@ export const WfoServiceTicketSentEmails = ({
         executed: '',
         name: '',
         sentBy: '',
-        state: {},
         emails: [],
         status: null,
         stepId: '',
@@ -164,7 +158,6 @@ export const WfoServiceTicketSentEmails = ({
             <EuiSpacer />
             <WfoEmailList
                 stepListItems={stepListItems}
-                showHiddenKeys={false}
                 onToggleExpandStepListItem={toggleExpandedStateStepListItem}
                 onTriggerExpandStepListItem={handleExpandStepListItem}
             ></WfoEmailList>
