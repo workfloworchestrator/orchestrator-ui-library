@@ -40,7 +40,7 @@ function Organisation({ ...props }: OrganisationFieldProps) {
     if (isFetched) {
         const customers = data?.customers.page;
         customers?.map((customer) => {
-            uuidCustomerNameMap.set(customer.identifier, customer.fullname);
+            uuidCustomerNameMap.set(customer.customerId, customer.fullname);
         });
     }
 
