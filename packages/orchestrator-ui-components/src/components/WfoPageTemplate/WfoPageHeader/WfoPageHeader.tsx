@@ -17,7 +17,7 @@ import {
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import { WfoLogoutIcon } from '@/icons';
+import { WfoLogoutIcon, WfoSideMenu } from '@/icons';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!
@@ -51,10 +51,10 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                 </EuiHeaderSectionItem>
 
                 <EuiButtonIcon
-                    aria-label="Logout"
+                    aria-label="Show/Hide side menu"
                     display="empty"
                     iconType={() => (
-                        <WfoLogoutIcon color={theme.colors.emptyShade} />
+                        <WfoSideMenu color={theme.colors.emptyShade} />
                     )}
                     css={{ width: 48, height: 48, marginLeft: 10 }}
                     onClick={handleSideMenuClick}
