@@ -37,7 +37,10 @@ import {
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
 } from '@/utils';
-import { csvDownloadHandler } from '@/utils/csvDownload';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import {
     graphQlProcessFilterMapper,
@@ -252,7 +255,7 @@ export const WfoProcessesList = ({
                 getProcessListForExport,
                 mapGraphQlProcessListResultToProcessListItems,
                 mapGraphQlProcessListResultToPageInfo,
-                'Processes.csv',
+                getCsvFileNameWithDate('Processes'),
                 addToast,
                 tError,
             )}

@@ -34,6 +34,19 @@ export function initiateCsvFileDownload<T extends object>(
     startCsvDownload(csvFileContent, fileName);
 }
 
+export const getCsvFileNameWithDate = (fileNameWithoutExtension: string) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate();
+
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+
+    return `${fileNameWithoutExtension}_${year}-${month}-${day}-${hour}${minute}${second}.csv`;
+};
+
 export const csvDownloadHandler =
     <T extends object, U extends object>(
         dataFetchFunction: () => Promise<T | undefined>,

@@ -25,7 +25,10 @@ import {
     getTypedFieldFromObject,
     parseDateToLocaleDateTimeString,
 } from '@/utils';
-import { csvDownloadHandler } from '@/utils/csvDownload';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import {
     DEFAULT_PAGE_SIZES,
@@ -216,7 +219,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
                 mapGraphQlSubscriptionsResultToPageInfo,
-                'Subscriptions.csv',
+                getCsvFileNameWithDate('Subscriptions'),
                 addToast,
                 tError,
             )}

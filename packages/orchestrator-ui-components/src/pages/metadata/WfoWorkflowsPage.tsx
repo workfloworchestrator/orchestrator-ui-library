@@ -5,7 +5,10 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
-import { csvDownloadHandler } from '@/utils/csvDownload';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import {
     DEFAULT_PAGE_SIZE,
@@ -209,7 +212,7 @@ export const WfoWorkflowsPage = () => {
                     getWorkflowsForExport,
                     (data) => data.workflows.page,
                     (data) => data.workflows.pageInfo,
-                    'Workflows.csv',
+                    getCsvFileNameWithDate('Workflows'),
                     addToast,
                     tError,
                 )}
