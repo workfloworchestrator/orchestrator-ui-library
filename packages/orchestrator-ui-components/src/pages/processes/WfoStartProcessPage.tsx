@@ -4,7 +4,6 @@ import { AxiosError } from 'axios';
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { ParsedUrlQuery } from 'querystring';
 
 import {
     EuiFlexGroup,

@@ -18,7 +18,7 @@
         "skipLibCheck": true,
         "strict": true,
         "resolveJsonModule": true,
-        "target": "es2019",
+        "target": "es2019"
     },
     "exclude": ["node_modules"]
 }
