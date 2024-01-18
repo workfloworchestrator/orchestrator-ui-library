@@ -137,7 +137,7 @@ export const WfoServiceTicketsList = ({
                         <b>{formatDate(date)}</b>
                     </EuiText>
                 ) : (
-                    <EuiText size={'s'}>{formatDate(date)}</EuiText>
+                    <EuiText size="s">{formatDate(date)}</EuiText>
                 );
             },
         },
