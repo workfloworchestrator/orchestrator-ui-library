@@ -166,8 +166,9 @@ function SubscriptionFieldDefinition({
             ].includes(subscription.product.tag as ProductTag)
         ) {
             const portMode = getPortMode(subscription.productBlockInstances);
-            return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${subscription
-                .customer?.fullname}`;
+            return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${
+                subscription.customer?.fullname
+            }`;
         } else {
             return description.trim();
         }
