@@ -22,7 +22,7 @@ export const GET_SUBSCRIPTION_DROPDOWN_OPTIONS_GRAPHQL_QUERY = parse(gql`
                 }
                 customer {
                     fullname
-                    identifier
+                    customerId
                 }
                 productBlockInstances {
                     id
