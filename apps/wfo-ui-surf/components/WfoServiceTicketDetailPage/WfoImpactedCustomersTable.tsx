@@ -68,7 +68,7 @@ export const WfoImpactedCustomersTable = ({
                 name: t('customers'),
                 field: 'customer',
                 render: (customer) => (
-                    <EuiText size={'s'}>
+                    <EuiText size="s">
                         <b>{customer.customer_abbrev}</b>
                     </EuiText>
                 ),
