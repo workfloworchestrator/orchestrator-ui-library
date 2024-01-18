@@ -6,7 +6,10 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import { getQueryVariablesForExport } from '@/utils';
-import { csvDownloadHandler } from '@/utils/csvDownload';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import {
     DEFAULT_PAGE_SIZE,
@@ -199,7 +202,7 @@ export const WfoResourceTypesPage = () => {
                     getResourceTypesForExport,
                     (data) => data.resourceTypes.page,
                     (data) => data.resourceTypes.pageInfo,
-                    'ResourceTypes.csv',
+                    getCsvFileNameWithDate('ResourceTypes'),
                     addToast,
                     tError,
                 )}

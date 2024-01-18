@@ -35,7 +35,10 @@ import {
     parseDateToLocaleDateTimeString,
     parseIsoString,
 } from '@/utils';
-import { csvDownloadHandler } from '@/utils/csvDownload';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
@@ -223,7 +226,7 @@ export const WfoProductsPage = () => {
                     getProductsForExport,
                     (data) => data.products.page,
                     (data) => data.products.pageInfo,
-                    'Products.csv',
+                    getCsvFileNameWithDate('Products'),
                     addToast,
                     tError,
                 )}
