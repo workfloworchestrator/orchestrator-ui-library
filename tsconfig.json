@@ -3,16 +3,16 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./*"]
+            "@/*": ["./*"],
         },
         "plugins": [
             {
-                "name": "next"
-            }
+                "name": "next",
+            },
         ],
         "strictNullChecks": true,
-        "jsx": "preserve"
+        "jsx": "preserve",
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
 }
