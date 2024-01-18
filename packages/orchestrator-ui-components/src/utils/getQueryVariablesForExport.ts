@@ -1,5 +1,6 @@
-import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
 import type { GraphqlQueryVariables } from '@/types';
+
+import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '../configuration/constants';
 
 export const getQueryVariablesForExport = <T extends object>(
     queryVariables: GraphqlQueryVariables<T>,
