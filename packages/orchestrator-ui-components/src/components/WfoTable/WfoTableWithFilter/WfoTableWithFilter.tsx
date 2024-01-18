@@ -45,7 +45,7 @@ import {
 } from '../utils/tableConfigPersistence';
 import { updateQueryString } from './updateQueryString';
 
-export type WfoTableWithFilterProps<T> = {
+export type WfoTableWithFilterProps<T extends object> = {
     data: T[];
     tableColumns: WfoTableColumns<T>;
     leadingControlColumns?: WfoTableControlColumnConfig<T>;
@@ -64,7 +64,7 @@ export type WfoTableWithFilterProps<T> = {
     hasError?: boolean;
 };
 
-export const WfoTableWithFilter = <T,>({
+export const WfoTableWithFilter = <T extends object>({
     data,
     tableColumns,
     leadingControlColumns,

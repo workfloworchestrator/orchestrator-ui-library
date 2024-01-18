@@ -1,6 +1,8 @@
 import { WfoTableColumns, WfoTableDataColumnConfig } from './columns';
 
-export function mapSortableAndFilterableValuesToTableColumnConfig<T>(
+export function mapSortableAndFilterableValuesToTableColumnConfig<
+    T extends object,
+>(
     tableColumnConfig: WfoTableColumns<T>,
     sortableFieldNames: string[] = [],
     filterableFieldNames: string[] = [],
