@@ -21,16 +21,16 @@ import { SortOrder } from '@/types';
 
 import { getWfoBasicTableStyles } from './styles';
 
-export type WfoBasicTableColumns<T> = {
+export type WfoBasicTableColumns<T extends object> = {
     [Property in keyof T]: WfoTableDataColumnConfig<T, Property> & {
         render?: (cellValue: T[Property], row: T) => ReactNode;
     };
 };
 
-export type WfoBasicTableColumnsWithControlColumns<T> =
+export type WfoBasicTableColumnsWithControlColumns<T extends object> =
     WfoBasicTableColumns<T> & WfoTableControlColumnConfig<T>;
 
-export type WfoBasicTableProps<T> = {
+export type WfoBasicTableProps<T extends object> = {
     data: T[];
     columns:
         | WfoBasicTableColumnsWithControlColumns<T>
@@ -49,7 +49,7 @@ export type WfoBasicTableProps<T> = {
     customTableStyle?: SerializedStyles;
 };
 
-export const WfoBasicTable = <T,>({
+export const WfoBasicTable = <T extends object>({
     data,
     columns,
     hiddenColumns,
@@ -113,7 +113,7 @@ export const WfoBasicTable = <T,>({
     );
 };
 
-function mapWfoTableColumnsToEuiColumns<T>(
+function mapWfoTableColumnsToEuiColumns<T extends object>(
     tableColumns: WfoBasicTableColumns<T>,
     hiddenColumns?: TableColumnKeys<T>,
     dataSorting?: WfoDataSorting<T>,

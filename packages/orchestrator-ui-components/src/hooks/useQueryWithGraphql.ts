@@ -2,10 +2,7 @@ import { useContext } from 'react';
 import { UseQueryOptions, useQuery } from 'react-query';
 
 import { GraphQLClient } from 'graphql-request';
-import {
-    GraphQLClientRequestHeaders,
-    Variables,
-} from 'graphql-request/build/cjs/types';
+import type { Variables } from 'graphql-request/build/esm/types';
 
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
@@ -24,7 +21,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
 
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 
-    const requestHeaders: GraphQLClientRequestHeaders = {
+    const requestHeaders = {
         Authorization: session ? `Bearer ${session.accessToken}` : '',
     };
 

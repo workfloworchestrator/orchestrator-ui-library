@@ -44,7 +44,7 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
-interface StartProcessPageQuery extends ParsedUrlQuery {
+interface StartProcessPageQuery {
     productId?: string;
     subscriptionId?: string;
 }
