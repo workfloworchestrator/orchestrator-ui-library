@@ -84,7 +84,7 @@ export const WfoSubscriptionProductBlock = ({
                                 )}
                             </h3>
                         </EuiText>
-                        <EuiText>{`${t(
+                        <EuiText size="s">{`${t(
                             'subscriptionInstanceId',
                         )}: ${subscriptionInstanceId}`}</EuiText>
                     </EuiFlexItem>
@@ -131,6 +131,7 @@ export const WfoSubscriptionProductBlock = ({
                                             ) : (
                                                 <a
                                                     href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                                    target="_blank"
                                                 >
                                                     {ownerSubscriptionId}
                                                 </a>

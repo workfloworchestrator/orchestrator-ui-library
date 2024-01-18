@@ -44,10 +44,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     const expanded = expandedIds.includes(item.id);
     const selected = selectedIds.includes(item.id);
 
-    let expandIcon = expanded ? 'arrowDown' : 'arrowRight';
-    if (item.id === 0) {
-        expandIcon = expanded ? 'folderOpen' : 'folderClosed';
-    }
+    const expandIcon = expanded ? 'arrowDown' : 'arrowRight';
 
     return (
         <div style={{ paddingLeft: `${level * parseInt(theme.size.m)}px` }}>
