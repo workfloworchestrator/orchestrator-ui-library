@@ -1,5 +1,5 @@
 import { WfoFilterTab } from '../../components';
-import { SubscriptionListItem } from './mapGraphQlSubscriptionsResultToSubscriptionListItems';
+import { SubscriptionListItem } from './subscriptionResultMappers';
 
 export enum WfoSubscriptionListTab {
     ACTIVE = 'ACTIVE',

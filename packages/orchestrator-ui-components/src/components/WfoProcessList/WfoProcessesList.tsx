@@ -29,6 +29,7 @@ import {
     DataDisplayParams,
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
+    useToastMessage,
 } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
@@ -41,6 +42,7 @@ import { csvDownloadHandler } from '@/utils/csvDownload';
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
+    mapGraphQlProcessListResultToPageInfo,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
@@ -88,6 +90,8 @@ export const WfoProcessesList = ({
     overrideDefaultTableColumns,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
@@ -247,7 +251,10 @@ export const WfoProcessesList = ({
             onExportData={csvDownloadHandler(
                 getProcessListForExport,
                 mapGraphQlProcessListResultToProcessListItems,
+                mapGraphQlProcessListResultToPageInfo,
                 'Processes.csv',
+                addToast,
+                tError,
             )}
             exportDataIsLoading={isFetchingCsv}
         />

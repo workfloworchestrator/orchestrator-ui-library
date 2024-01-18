@@ -39,6 +39,8 @@
         "start_workflow_title": "Start workflow"
     },
     "errors": {
+        "notAllResultsExported": "The current query returned {totalResults} results. Only the first {maximumExportedResults} rows will be exported",
+        "notAllResultsExportedTitle": "Not all items exported",
         "invalidQueryParts": "The query contains invalid parts",
         "notAllowedWhenEngineIsNotRunningMessage": "This action is not allowed when the Workflow Engine is not running",
         "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is not running",

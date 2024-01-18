@@ -1,3 +1,9 @@
+import { TranslationValues } from 'next-intl';
+
+import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
+import { ToastTypes } from '@/contexts';
+import { GraphQLPageInfo } from '@/types';
+
 function toCsvFileContent<T extends object>(data: T[]): string {
     const headers = Object.keys(data[0]).join(';');
     const rows = data.map((row) =>
@@ -32,13 +38,33 @@ export const csvDownloadHandler =
     <T extends object, U extends object>(
         dataFetchFunction: () => Promise<T | undefined>,
         dataMapper: (data: T) => U[],
+        pageInfoMapper: (data: T) => GraphQLPageInfo,
         filename: string,
+        addToastFunction: (
+            type: ToastTypes,
+            text: string,
+            title: string,
+        ) => void,
+        translationFunction: (
+            translationKey: string,
+            variables?: TranslationValues,
+        ) => string,
     ) =>
     async () => {
         const data: T | undefined = await dataFetchFunction();
 
         if (data) {
             const dataForExport = dataMapper(data);
+            const pageInfo = pageInfoMapper(data);
+            (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
+                addToastFunction(
+                    ToastTypes.ERROR,
+                    translationFunction('notAllResultsExported', {
+                        totalResults: pageInfo.totalItems,
+                        maximumExportedResults: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
+                    }),
+                    translationFunction('notAllResultsExportedTitle'),
+                );
             initiateCsvFileDownload(dataForExport, filename);
         }
     };
