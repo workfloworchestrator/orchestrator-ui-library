@@ -34,6 +34,7 @@ import {
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
 import type {
     GraphqlQueryVariables,
@@ -64,6 +65,8 @@ const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
 
 export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProductBlockDefinition>>();
@@ -252,7 +255,10 @@ export const WfoProductBlocksPage = () => {
                 onExportData={csvDownloadHandler(
                     getProductBlocksForExport,
                     (data) => data.productBlocks.page,
+                    (data) => data.productBlocks.pageInfo,
                     'ProductBlocks.csv',
+                    addToast,
+                    tError,
                 )}
                 exportDataIsLoading={isFetchingCsv}
             />

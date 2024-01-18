@@ -6,6 +6,10 @@ import {
 } from '../../types';
 import { ProcessListItem } from './WfoProcessesList';
 
+export const mapGraphQlProcessListResultToPageInfo = (
+    processesResult: ProcessListResult,
+) => processesResult.processes.pageInfo;
+
 export const mapGraphQlProcessListResultToProcessListItems = (
     processesResult: ProcessListResult,
 ): ProcessListItem[] =>

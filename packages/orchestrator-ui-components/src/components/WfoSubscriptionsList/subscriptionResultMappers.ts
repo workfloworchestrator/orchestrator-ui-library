@@ -13,6 +13,12 @@ export type SubscriptionListItem = Pick<
     customerShortcode: string;
 };
 
+export function mapGraphQlSubscriptionsResultToPageInfo(
+    graphqlResponse: SubscriptionsResult,
+) {
+    return graphqlResponse.subscriptions.pageInfo;
+}
+
 export function mapGraphQlSubscriptionsResultToSubscriptionListItems(
     graphqlResponse: SubscriptionsResult,
 ): SubscriptionListItem[] {

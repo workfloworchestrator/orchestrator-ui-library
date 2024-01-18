@@ -30,6 +30,7 @@ import {
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
 import type {
     GraphqlQueryVariables,
@@ -49,6 +50,8 @@ export const RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS: keyof ResourceTypeDefinition =
 
 export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ResourceTypeDefinition>>();
@@ -195,7 +198,10 @@ export const WfoResourceTypesPage = () => {
                 onExportData={csvDownloadHandler(
                     getResourceTypesForExport,
                     (data) => data.resourceTypes.page,
+                    (data) => data.resourceTypes.pageInfo,
                     'ResourceTypes.csv',
+                    addToast,
+                    tError,
                 )}
                 exportDataIsLoading={isFetchingCsv}
             />

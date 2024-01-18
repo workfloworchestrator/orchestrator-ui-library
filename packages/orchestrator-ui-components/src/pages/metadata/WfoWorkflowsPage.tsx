@@ -30,6 +30,7 @@ import {
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '../../types';
 import { BadgeType, SortOrder } from '../../types';
@@ -53,6 +54,8 @@ export type WorkflowListItem = Pick<
 
 export const WfoWorkflowsPage = () => {
     const t = useTranslations('metadata.workflows');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<WorkflowListItem>>();
@@ -205,7 +208,10 @@ export const WfoWorkflowsPage = () => {
                 onExportData={csvDownloadHandler(
                     getWorkflowsForExport,
                     (data) => data.workflows.page,
+                    (data) => data.workflows.pageInfo,
                     'Workflows.csv',
+                    addToast,
+                    tError,
                 )}
                 exportDataIsLoading={isFetchingCsv}
             />

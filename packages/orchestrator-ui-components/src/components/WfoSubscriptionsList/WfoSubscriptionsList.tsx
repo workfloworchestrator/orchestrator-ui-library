@@ -17,6 +17,7 @@ import {
     DataDisplayParams,
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
+    useToastMessage,
 } from '@/hooks';
 import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
@@ -41,8 +42,9 @@ import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import {
     SubscriptionListItem,
+    mapGraphQlSubscriptionsResultToPageInfo,
     mapGraphQlSubscriptionsResultToSubscriptionListItems,
-} from './mapGraphQlSubscriptionsResultToSubscriptionListItems';
+} from './subscriptionResultMappers';
 
 export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
@@ -67,6 +69,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const router = useRouter();
     const t = useTranslations('subscriptions.index');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const tableColumns: WfoTableColumns<SubscriptionListItem> = {
         subscriptionId: {
@@ -211,7 +215,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onExportData={csvDownloadHandler(
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
+                mapGraphQlSubscriptionsResultToPageInfo,
                 'Subscriptions.csv',
+                addToast,
+                tError,
             )}
             exportDataIsLoading={isFetchingCsv}
         />

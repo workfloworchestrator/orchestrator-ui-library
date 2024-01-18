@@ -1,0 +1,1 @@
+export const MAXIMUM_ITEMS_FOR_BULK_FETCHING = 1000;
