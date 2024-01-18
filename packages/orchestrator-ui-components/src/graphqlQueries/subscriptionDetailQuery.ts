@@ -35,7 +35,7 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
                 customerId
                 customer {
                     fullname
-                    identifier
+                    customerId
                     shortcode
                 }
                 productBlockInstances {
