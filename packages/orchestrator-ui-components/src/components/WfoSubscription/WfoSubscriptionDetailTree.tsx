@@ -131,6 +131,7 @@ export const WfoSubscriptionDetailTree = ({
                             style={{
                                 marginTop: 15,
                                 minHeight: 600,
+                                borderRadius: 6,
                             }}
                             size="m"
                             title={t('noProductBlockSelected')}
