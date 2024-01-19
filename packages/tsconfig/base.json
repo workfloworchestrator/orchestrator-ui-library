@@ -3,6 +3,7 @@
     "display": "Default",
     "compilerOptions": {
         "jsx": "react-jsx",
+        "lib": ["ES2019"],
         "jsxImportSource": "@emotion/react",
         "composite": false,
         "declaration": true,
@@ -18,7 +19,7 @@
         "skipLibCheck": true,
         "strict": true,
         "resolveJsonModule": true,
-        "target": "es2019"
+        "target": "ES6"
     },
     "exclude": ["node_modules"]
 }
