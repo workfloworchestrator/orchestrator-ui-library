@@ -11,7 +11,7 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import { useCacheNames, useToastMessage } from '@/hooks';
+import { useCacheNames, useShowToastMessage } from '@/hooks';
 import { useClearCacheMutation } from '@/rtk';
 import { ToastTypes } from '@/types';
 
@@ -22,7 +22,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
     const [selectedOptions, setSelected] = useState<EuiComboBoxOptionOption[]>(
         [],
     );
-    const toastMessage = useToastMessage();
+    const { showToastMessage } = useShowToastMessage();
 
     const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
         setSelected(selectedOptions);
@@ -44,19 +44,16 @@ export const WfoFlushSettings: FunctionComponent = () => {
         const cacheKey = selectedOptions.map((obj) => obj.key).join(', ');
         clearCache(cacheKey)
             .then(() => {
-                toastMessage?.addToast(
+                showToastMessage(
                     ToastTypes.SUCCESS,
-                    <p>
-                        Cache for cache key &quot;{cacheKey}&quot; flushed
-                        successfully
-                    </p>,
+                    `Cache for cache key ${cacheKey} flushed successfully`,
                     'Cache cleared',
                 );
             })
             .catch(() => {
-                toastMessage?.addToast(
+                showToastMessage(
                     ToastTypes.ERROR,
-                    <p>Flush for cache key &quot;{cacheKey}&quot; failed</p>,
+                    `Flush for cache key ${cacheKey} failed`,
                     'Flush failed',
                 );
             });
