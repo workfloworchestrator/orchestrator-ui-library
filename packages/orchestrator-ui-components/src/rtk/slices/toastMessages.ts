@@ -1,36 +1,24 @@
-import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction, Reducer, Slice } from '@reduxjs/toolkit';
 
-export enum ToastTypes {
-    ERROR = 'ERROR',
-    SUCCESS = 'SUCCESS',
-}
+import { Toast } from '@/types';
 
-type ToastState = {
+export type ToastState = {
     messages: Toast[];
 };
 
 const initialState: ToastState = {
-    messages: [
-        {
-            id: '1',
-            title: 'test',
-            text: 'test',
-            color: 'danger',
-            iconType: 'alert',
-            toastLifeTimeMs: 10000,
-        },
-    ],
+    messages: [],
 };
+
 type ToastMessagesSlice = Slice<
     ToastState,
     {
-        addMessage: (
+        addToastMessage: (
             state: ToastState,
             action: PayloadAction<Toast>,
         ) => ToastState;
-        removeMessage: (
+        removeToastMessage: (
             state: ToastState,
             action: PayloadAction<Toast['id']>,
         ) => ToastState;
@@ -43,13 +31,13 @@ export const toastMessagesSlice: ToastMessagesSlice = createSlice({
     name: 'toastMessages',
     initialState,
     reducers: {
-        addMessage: (state, action: PayloadAction<Toast>) => {
+        addToastMessage: (state, action: PayloadAction<Toast>) => {
             return {
                 ...state,
                 messages: [...state.messages, action.payload],
             };
         },
-        removeMessage: (state, action: PayloadAction<Toast['id']>) => {
+        removeToastMessage: (state, action: PayloadAction<Toast['id']>) => {
             return {
                 ...state,
                 messages: state.messages.filter(
@@ -61,7 +49,8 @@ export const toastMessagesSlice: ToastMessagesSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addMessage, removeMessage } = toastMessagesSlice.actions;
+export const { addToastMessage, removeToastMessage } =
+    toastMessagesSlice.actions;
 
 export const toastMessagesReducer: Reducer<ToastState> =
     toastMessagesSlice.reducer;
