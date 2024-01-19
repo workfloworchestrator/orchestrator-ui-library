@@ -12,29 +12,23 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
-        "@elastic/eui": "^92.1.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@graphql-typed-document-node/core": "3.2.0",
-        "@reduxjs/toolkit": "^2.0.1",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
         "axios": "^1.6.5",
         "graphql-request": "^6.1.0",
         "invariant": "^2.2.4",
         "moment": "2.29.4",
         "moment-timezone": "^0.5.43",
-        "next": "^14.0.4",
         "next-auth": "^4.23.1",
         "next-intl": "^3.4.1",
         "next-query-params": "^5.0.0",
         "object-hash": "^3.0.0",
         "prism-themes": "^1.9.0",
         "react-diff-view": "^3.2.0",
-        "react-no-ssr": "^1.1.0",
-        "react-select": "^5.8.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
         "react-query": "3.39.3",
+        "react-select": "^5.8.0",
         "scroll-into-view": "^1.16.2",
         "unidiff": "^1.0.4",
         "uniforms": "^3.8.1",
@@ -69,7 +63,16 @@
         "react-dom": "^18.2.0",
         "storybook": "^7.2.1",
         "tsup": "^8.0.1",
-        "uniforms-bridge-simple-schema-2": "^3.8.1"
+        "uniforms-bridge-simple-schema-2": "^3.8.1",
+        "typescript": "^5.3.2"
+    },
+    "peerDependencies": {
+        "@elastic/eui": "^92.1.0",
+        "next": "^14.0.4",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-redux": "^9.1.0",
+        "@reduxjs/toolkit": "^2.0.1"
     },
     "peerDependencies": {
         "@elastic/eui": "^92.1.0",

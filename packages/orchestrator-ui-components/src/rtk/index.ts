@@ -1,3 +1,4 @@
 export * from './api';
 export * from './endpoints';
 export * from './store';
+export * from './slices';
