@@ -1,9 +1,8 @@
 import { useTranslations } from 'next-intl';
 
 import { useToastMessage } from '@/hooks/useToastMessage';
-import { ToastTypes } from '@/rtk';
 import { useGetEngineStatusQuery } from '@/rtk/endpoints';
-import { EngineStatus } from '@/types';
+import { EngineStatus, ToastTypes } from '@/types';
 
 export const useCheckEngineStatus = () => {
     const { data, isLoading, refetch } = useGetEngineStatusQuery();

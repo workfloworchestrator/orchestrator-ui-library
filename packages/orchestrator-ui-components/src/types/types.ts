@@ -1,3 +1,5 @@
+import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
+
 import { InputForm } from './forms';
 
 export type Nullable<T> = T | null;
@@ -441,3 +443,10 @@ export type ExternalService = {
 };
 
 export type WfoTreeNodeMap = { [key: number]: TreeBlock };
+
+export type { Toast };
+
+export enum ToastTypes {
+    ERROR = 'ERROR',
+    SUCCESS = 'SUCCESS',
+}

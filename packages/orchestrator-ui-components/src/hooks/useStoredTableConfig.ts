@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { ToastTypes } from '@/rtk';
+import { ToastTypes } from '@/types';
 
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';

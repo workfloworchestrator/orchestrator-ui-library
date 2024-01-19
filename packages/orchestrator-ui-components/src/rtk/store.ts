@@ -4,10 +4,10 @@ import type { EnhancedStore } from '@reduxjs/toolkit';
 import { orchestratorApi } from './api';
 import { toastMessagesReducer } from './slices/toastMessages';
 
-export interface RootState {
+export type RootState = {
     [orchestratorApi.reducerPath]: ReturnType<typeof orchestratorApi.reducer>;
     toastMessages: ReturnType<typeof toastMessagesReducer>;
-}
+};
 
 export const orchestratorStore: EnhancedStore<RootState> = configureStore({
     reducer: {
