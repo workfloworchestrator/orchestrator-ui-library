@@ -2,9 +2,10 @@ import { useCallback, useMemo } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { ToastTypes } from '@/rtk';
+
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
-import { ToastTypes } from '../contexts';
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
 import { useToastMessage } from './useToastMessage';
 

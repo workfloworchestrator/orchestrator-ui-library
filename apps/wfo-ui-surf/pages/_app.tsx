@@ -18,8 +18,6 @@ import {
     ConfirmationDialogContextWrapper,
     OrchestratorConfig,
     OrchestratorConfigProvider,
-    ToastsContextProvider,
-    ToastsList,
     WfoAuth,
     WfoPageTemplate,
     defaultOrchestratorTheme,
@@ -104,35 +102,31 @@ function CustomApp({
                                                 </title>
                                             </Head>
                                             <main className="app">
-                                                <ToastsContextProvider>
-                                                    <ConfirmationDialogContextWrapper>
-                                                        <WfoPageTemplate
-                                                            getAppLogo={
-                                                                getAppLogo
+                                                <ConfirmationDialogContextWrapper>
+                                                    <WfoPageTemplate
+                                                        getAppLogo={getAppLogo}
+                                                        overrideMenuItems={
+                                                            getMenuItems
+                                                        }
+                                                    >
+                                                        <QueryParamProvider
+                                                            adapter={
+                                                                NextAdapter
                                                             }
-                                                            overrideMenuItems={
-                                                                getMenuItems
-                                                            }
+                                                            options={{
+                                                                removeDefaultsFromUrl:
+                                                                    false,
+                                                                enableBatching:
+                                                                    true,
+                                                            }}
                                                         >
-                                                            <QueryParamProvider
-                                                                adapter={
-                                                                    NextAdapter
-                                                                }
-                                                                options={{
-                                                                    removeDefaultsFromUrl:
-                                                                        false,
-                                                                    enableBatching:
-                                                                        true,
-                                                                }}
-                                                            >
-                                                                <Component
-                                                                    {...pageProps}
-                                                                />
-                                                            </QueryParamProvider>
-                                                        </WfoPageTemplate>
-                                                        <ToastsList />
-                                                    </ConfirmationDialogContextWrapper>
-                                                </ToastsContextProvider>
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        </QueryParamProvider>
+                                                    </WfoPageTemplate>
+                                                </ConfirmationDialogContextWrapper>
+
                                                 <ReactQueryDevtools
                                                     initialIsOpen={false}
                                                 />

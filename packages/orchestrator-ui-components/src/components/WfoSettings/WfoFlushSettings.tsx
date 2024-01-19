@@ -11,8 +11,8 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import { ToastTypes } from '@/contexts';
 import { useCacheNames, useToastMessage } from '@/hooks';
+import { ToastTypes } from '@/rtk';
 import { useClearCacheMutation } from '@/rtk';
 
 export const WfoFlushSettings: FunctionComponent = () => {
