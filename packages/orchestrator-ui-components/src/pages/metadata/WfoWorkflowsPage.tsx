@@ -212,6 +212,7 @@ export const WfoWorkflowsPage = () => {
                     getWorkflowsForExport,
                     (data) => data.workflows.page,
                     (data) => data.workflows.pageInfo,
+                    Object.keys(tableColumns),
                     getCsvFileNameWithDate('Workflows'),
                     addToast,
                     tError,

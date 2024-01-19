@@ -259,6 +259,7 @@ export const WfoProductBlocksPage = () => {
                     getProductBlocksForExport,
                     (data) => data.productBlocks.page,
                     (data) => data.productBlocks.pageInfo,
+                    Object.keys(tableColumns),
                     getCsvFileNameWithDate('ProductBlocks'),
                     addToast,
                     tError,
