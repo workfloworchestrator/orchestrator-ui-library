@@ -1,6 +1,4 @@
 ---
-'wfo-ui-surf': patch
-'wfo-ui': patch
 '@orchestrator-ui/orchestrator-ui-components': patch
 ---
 
