@@ -7,10 +7,10 @@ import { ToastTypes } from '@/types';
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
-import { useToastMessage } from './useToastMessage';
+import { useShowToastMessage } from './useShowToastMessage';
 
 export const useStoredTableConfig = <T>(localeStorageKey: string) => {
-    const toastMessage = useToastMessage();
+    const { showToastMessage } = useShowToastMessage();
     const t = useTranslations('errors');
     const tableConfig: StoredTableConfig<T> = useMemo(
         () => getDefaultTableConfig<T>(localeStorageKey),
@@ -29,7 +29,7 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
             }
             return tableConfig;
         } catch {
-            toastMessage.addToast(
+            showToastMessage(
                 ToastTypes.ERROR,
                 t('retrieve_stored_settings'),
                 t('retrieve_stored_settings_title'),

@@ -7,7 +7,7 @@ export * from './useProcessStatusCountsQuery';
 export * from './DataFetchHooks';
 export * from './useSubscriptionActions';
 export * from './useDataDisplayParams';
-export * from './useToastMessage';
+export * from './useShowToastMessage';
 export * from './useStoredTableConfig';
 export * from './useWithOrchestratorTheme';
 export * from './useSessionWithToken';
