@@ -5,5 +5,9 @@
 packages/*/CHANGELOG.md
 /coverage
 /mkdocs
+
+/.changeset/*.md
+!/.changeset/README.md
+
 .next
 node_modules
