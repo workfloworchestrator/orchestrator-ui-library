@@ -219,6 +219,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
                 mapGraphQlSubscriptionsResultToPageInfo,
+                Object.keys(tableColumns),
                 getCsvFileNameWithDate('Subscriptions'),
                 addToast,
                 tError,

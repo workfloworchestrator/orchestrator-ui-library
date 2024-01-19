@@ -255,6 +255,7 @@ export const WfoProcessesList = ({
                 getProcessListForExport,
                 mapGraphQlProcessListResultToProcessListItems,
                 mapGraphQlProcessListResultToPageInfo,
+                Object.keys(tableColumns),
                 getCsvFileNameWithDate('Processes'),
                 addToast,
                 tError,

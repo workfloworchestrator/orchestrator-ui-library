@@ -202,6 +202,7 @@ export const WfoResourceTypesPage = () => {
                     getResourceTypesForExport,
                     (data) => data.resourceTypes.page,
                     (data) => data.resourceTypes.pageInfo,
+                    Object.keys(tableColumns),
                     getCsvFileNameWithDate('ResourceTypes'),
                     addToast,
                     tError,
