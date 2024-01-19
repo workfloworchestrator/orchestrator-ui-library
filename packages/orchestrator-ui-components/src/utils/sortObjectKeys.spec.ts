@@ -15,4 +15,20 @@ describe('sortObjectKeys', () => {
         // Verifies values
         expect(sortedObject).toEqual({ a: 1, b: 2, c: 3 });
     });
+
+    it('handles missing keys in the keyOrder array', () => {
+        const testObject = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: 4,
+        };
+        const sortedObject = sortObjectKeys(testObject, ['d', 'a']);
+
+        // Verifies order of keys
+        expect(Object.keys(sortedObject).join('-')).toEqual('d-a-b-c');
+
+        // Verifies values
+        expect(sortedObject).toEqual({ a: 1, b: 2, c: 3, d: 4 });
+    });
 });
