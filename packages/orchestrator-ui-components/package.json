@@ -39,6 +39,7 @@
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",
         "@orchestrator-ui/jest-config": "*",
+        "@reduxjs/toolkit": "^2.0.1",
         "@storybook/addon-essentials": "^7.2.1",
         "@storybook/addon-interactions": "^7.6.6",
         "@storybook/addon-links": "^7.6.5",
@@ -71,14 +72,7 @@
         "next": "^14.0.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-redux": "^9.1.0",
-        "@reduxjs/toolkit": "^2.0.1"
-    },
-    "peerDependencies": {
-        "@elastic/eui": "^92.1.0",
-        "next": "^14.0.4",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-redux": "^9.1.0"
     },
     "type": "module",
     "main": "./dist/index.js",
