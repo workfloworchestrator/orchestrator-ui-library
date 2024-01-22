@@ -72,6 +72,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                             label={item.label}
                             isActive={selected}
                             color={'primary'}
+                            style={{ borderRadius: 6 }}
                             extraAction={{
                                 color: 'primary',
                                 onClick: () => toggleSelectedId(item.id),
@@ -86,6 +87,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                             onClick={() => toggleSelectedId(item.id)}
                             label={item.label}
                             isActive={selected}
+                            style={{ borderRadius: 6 }}
                         />
                     )}
                 </EuiFlexItem>
