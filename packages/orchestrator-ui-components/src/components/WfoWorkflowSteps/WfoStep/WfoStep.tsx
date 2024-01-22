@@ -59,7 +59,8 @@ export const WfoStep = React.forwardRef(
         const stepContent = step.stateDelta
             ? getStepContent(step.stateDelta, showHiddenKeys)
             : {};
-        const hasStepContent = Object.keys(stepContent).length > 0;
+        const hasStepContent =
+            hasHtmlMail || Object.keys(stepContent).length > 0;
 
         const displayMailConfirmation = (value: EmailState) => {
             if (!value) {
@@ -156,13 +157,13 @@ export const WfoStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {hasStepContent && isExpanded && (
+                    {hasStepContent && !hasHtmlMail && isExpanded && (
                         <WfoJsonCodeBlock data={stepContent} />
                     )}
                     {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(
-                                step.state.confirmation_mail as EmailState,
+                                step.stateDelta.confirmation_mail as EmailState,
                             )}
                         </div>
                     )}
