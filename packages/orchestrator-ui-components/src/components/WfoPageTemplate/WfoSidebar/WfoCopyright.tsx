@@ -14,7 +14,7 @@ export const WfoCopyright = () => {
             <span css={copyrightStyle}>
                 <p>
                     <a href="https://workfloworchestrator.org/" target="_blank">
-                        © workfloworchestrator.org {year}
+                        © {year} - workfloworchestrator.org
                     </a>
                 </p>
             </span>
