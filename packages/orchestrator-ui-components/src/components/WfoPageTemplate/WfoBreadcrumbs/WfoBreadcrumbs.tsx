@@ -30,7 +30,6 @@ export const WfoBreadcrumbs = () => {
             const _p = removeSuffix(p);
             const text = isUuid4(_p) ? _p : upperCaseFirstChar(_p);
             // eslint-disable-next-line no-console
-            console.log(text);
 
             breadcrumbs.push({
                 text: text,
