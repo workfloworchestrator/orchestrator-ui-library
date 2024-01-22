@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.3.1
+
+### Patch Changes
+
+- d824a58: fix uuid in breadcrumb
+- cb3142a: - expand the root product block card by default
+  - change tree icon of root product block
+  - open other subscription detail page opens in new tab
+  - use title of root product block in tree like the other product blocks
+- e6aaef7: 598 Fixes invisible email in step list
+
 ## 0.3.0
 
 ### Minor Changes
