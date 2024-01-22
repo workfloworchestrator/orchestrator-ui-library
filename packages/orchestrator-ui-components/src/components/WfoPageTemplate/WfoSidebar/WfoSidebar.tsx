@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components/src/hooks';
 
 import {
     PATH_METADATA,
@@ -19,6 +18,7 @@ import {
     PATH_TASKS,
     PATH_WORKFLOWS,
 } from '../paths';
+import { WfoCopyright } from './WfoCopyright';
 import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 
 export type WfoSidebarProps = {
@@ -30,7 +30,6 @@ export type WfoSidebarProps = {
 export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
-    const { theme } = useOrchestratorTheme();
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
 
     const toggleMobile = () => {
@@ -142,6 +141,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 <>
                     <WfoStartCreateWorkflowButtonComboBox />
                     <EuiSpacer size="m" />
+                    <WfoCopyright />
                 </>
             ),
             name: 'Menu',
@@ -160,24 +160,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 isOpenOnMobile={isSideNavOpenOnMobile}
                 items={defaultMenu}
             />
-            <div
-                style={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    padding: 10,
-                    fontSize: theme.size.s,
-                    color: theme.colors.primaryText,
-                }}
-            >
-                <p>
-                    ©{' '}
-                    <a href="https://workfloworchestrator.org/" target="_blank">
-                        workfloworchestrator.org
-                    </a>{' '}
-                    {new Date().getFullYear()}
-                </p>
-            </div>
         </div>
     );
 };
