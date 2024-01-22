@@ -6,10 +6,14 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
+
+import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
 import { WfoTableWithFilter } from '../../components';
@@ -27,11 +31,17 @@ import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/work
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
-import type { WorkflowDefinition } from '../../types';
+import type { GraphqlQueryVariables, WorkflowDefinition } from '../../types';
 import { BadgeType, SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -47,6 +57,8 @@ export type WorkflowListItem = Pick<
 
 export const WfoWorkflowsPage = () => {
     const t = useTranslations('metadata.workflows');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<WorkflowListItem>>();
@@ -137,27 +149,32 @@ export const WfoWorkflowsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_WORKFLOWS_GRAPHQL_QUERY,
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: graphQlWorkflowListMapper(sortBy),
-            query: queryString,
-        },
-        'workflows',
-    );
 
-    if (!data) {
-        return <WfoLoading />;
-    }
+    const graphqlQueryVariables: GraphqlQueryVariables<WorkflowDefinition> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: graphQlWorkflowListMapper(sortBy),
+        query: queryString || undefined,
+    };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        GET_WORKFLOWS_GRAPHQL_QUERY,
+        graphqlQueryVariables,
+        ['workflows', 'listPage'],
+    );
+    const { getData: getWorkflowsForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            GET_WORKFLOWS_GRAPHQL_QUERY,
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['workflows', 'export'],
+        );
 
     const dataSorting: WfoDataSorting<WorkflowListItem> = {
         field: sortBy?.field ?? 'name',
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } = data.workflows.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data?.workflows?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -169,7 +186,7 @@ export const WfoWorkflowsPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
-                data={mapWorkflowDefinitionToWorkflowListItem(data)}
+                data={data ? mapWorkflowDefinitionToWorkflowListItem(data) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -187,9 +204,20 @@ export const WfoWorkflowsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
+                onExportData={csvDownloadHandler(
+                    getWorkflowsForExport,
+                    (data) => data.workflows.page,
+                    (data) => data.workflows.pageInfo,
+                    Object.keys(tableColumns),
+                    getCsvFileNameWithDate('Workflows'),
+                    addToast,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );

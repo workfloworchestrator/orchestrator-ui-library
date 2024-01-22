@@ -61,6 +61,7 @@ export const usePatchImpactedObject = (serviceTicketId: string) => {
         const response = await fetch(
             cimApiBaseUrl +
                 PATCH_IMPACT_OVERRIDE_ENDPOINT +
+                '/' +
                 serviceTicket._id +
                 '/' +
                 index,
@@ -99,7 +100,7 @@ export const useAcceptImpact = () => {
         const data = {};
 
         const response = await fetch(
-            `${cimApiBaseUrl}${CIM_TICKETS_ENDPOINT}${serviceTicketId}${ACCEPT_IMPACT_ENDPOINT}`,
+            `${cimApiBaseUrl}${CIM_TICKETS_ENDPOINT}/${serviceTicketId}${ACCEPT_IMPACT_ENDPOINT}`,
             {
                 method: 'POST',
                 body: JSON.stringify(data),

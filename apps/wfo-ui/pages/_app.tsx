@@ -67,10 +67,11 @@ function CustomApp({
                                 >
                                     <TranslationsProvider>
                                         <Head>
-                                            <title>
-                                                Welcome to
-                                                example-orchestrator-ui!
-                                            </title>
+                                            <link
+                                                rel="icon"
+                                                href="/favicon.png"
+                                            />
+                                            <title>Workflow Orchestrator</title>
                                         </Head>
                                         <main className="app">
                                             <ToastsContextProvider>

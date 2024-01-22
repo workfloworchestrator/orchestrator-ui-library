@@ -9,13 +9,13 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
+                  cache: 'npm'
             - uses: actions/cache@v2
               with:
                   path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
             - name: Installing dependencies
-              run: yarn install --frozen-lockfile
+              run: npm ci
 
     linting-and-prettier:
         runs-on: ubuntu-latest
@@ -26,16 +26,16 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
+                  cache: 'npm'
             - uses: actions/cache@v2
               with:
                   path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
             - name: Installing dependencies
-              run: yarn install --frozen-lockfile
-            - run: yarn run tsc
-            - run: yarn run lint
-            - run: yarn run prettier
+              run: npm ci
+            - run: npm run tsc
+            - run: npm run lint
+            - run: npm run prettier
 
     unit-tests:
         runs-on: ubuntu-latest
@@ -46,14 +46,14 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
+                  cache: 'npm'
             - uses: actions/cache@v2
               with:
                   path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
             - name: Installing dependencies
-              run: yarn install --frozen-lockfile
-            - run: yarn run test
+              run: npm ci
+            - run: npm run test
 
     build:
         runs-on: ubuntu-latest
@@ -64,11 +64,11 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
+                  cache: 'npm'
             - uses: actions/cache@v2
               with:
                   path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
             - name: Installing dependencies
-              run: yarn install --frozen-lockfile
-            - run: yarn run build
+              run: npm ci
+            - run: npm run build

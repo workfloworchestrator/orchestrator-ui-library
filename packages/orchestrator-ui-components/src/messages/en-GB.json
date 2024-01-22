@@ -22,7 +22,9 @@
         "newSubscription": "New subscription",
         "newTask": "New task",
         "noFailedTasks": "No failed tasks!",
-        "search": "Search"
+        "search": "Search",
+        "errorMessage": "An error occurred",
+        "export": "Export"
     },
     "confirmationDialog": {
         "title": "Please confirm",
@@ -37,6 +39,8 @@
         "start_workflow_title": "Start workflow"
     },
     "errors": {
+        "notAllResultsExported": "The current query returned {totalResults} results. Only the first {maximumExportedResults} rows will be exported",
+        "notAllResultsExportedTitle": "Not all items exported",
         "invalidQueryParts": "The query contains invalid parts",
         "notAllowedWhenEngineIsNotRunningMessage": "This action is not allowed when the Workflow Engine is not running",
         "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is not running",
@@ -260,6 +264,7 @@
             "ownerSubscriptionId": "Owner subscription ID",
             "inUseByRelations": "In use by relation",
             "showDetails": "Show details",
+            "self": "Current subscription",
             "hideDetails": "Hide details",
             "subscriptionDetails": "Subscription details",
             "productName": "Product name",
@@ -304,6 +309,10 @@
             "taskName": "Task",
             "rerunAll": "Rerun all",
             "rerunAllQuestion": "Are you sure you want to rerun all failed tasks?"
+        },
+        "tabs": {
+            "active": "Active",
+            "completed": "Completed"
         }
     },
     "settings": {
@@ -316,6 +325,27 @@
             "runningProcesses": "Running processes",
             "selectSettings": "Select cache",
             "startEngine": "Start workflow engine"
+        }
+    },
+    "startPage": {
+        "activeSubscriptions": {
+            "buttonText": "Show all active subscriptions",
+            "headerTitle": "Total active subscriptions",
+            "listTitle": "Most recent subscriptions"
+        },
+        "activeWorkflows": {
+            "buttonText": "Show all active workflows",
+            "headerTitle": "Total active workflows",
+            "listTitle": "Most recent active workflows"
+        },
+        "failedTasks": {
+            "buttonText": "Show all failed tasks",
+            "headerTitle": "Total failed tasks",
+            "listTitle": "Most recent failed tasks"
+        },
+        "products": {
+            "headerTitle": "Total number of products",
+            "listTitle": "Total number of product instances"
         }
     }
 }

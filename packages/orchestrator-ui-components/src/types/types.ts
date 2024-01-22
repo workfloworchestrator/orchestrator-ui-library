@@ -1,12 +1,6 @@
-import { _EuiThemeColorsMode } from '@elastic/eui/src/global_styling/variables/colors';
-
 import { InputForm } from './forms';
 
-export type UnionOfInterfaceTypes<T> = T[keyof T];
-
 export type Nullable<T> = T | null;
-
-type GenericField = { [key: string]: number | string | boolean };
 
 type GenericResponse = { [key: string]: unknown };
 
@@ -31,14 +25,6 @@ export type Customer = {
     identifier: string;
     shortcode: string;
 };
-
-export type ResourceTypeBase = {
-    name: string;
-    title: string;
-    subscriptionInstanceId: string;
-    ownerSubscriptionId: string;
-    label?: string;
-} & GenericField;
 
 export type InUseByRelation = {
     subscription_instance_id: string;
@@ -89,8 +75,6 @@ export enum BadgeType {
     PRODUCT_TAG = 'product_tag',
 }
 
-export type FixedInputsBase = GenericField;
-
 export interface FixedInputDefinition {
     fixedInputId: string;
     name: string;
@@ -108,36 +92,6 @@ export interface TreeBlock extends ProductBlockInstance {
     label: string | number | boolean;
     callback: () => void;
     children: TreeBlock[];
-}
-
-export interface ItemsList {
-    type: string;
-    title: string;
-    items: ProcessFromRestApi[];
-    buttonName: string;
-}
-
-export interface TotalStat {
-    icon: string;
-    name: string;
-    value: number;
-    color: keyof _EuiThemeColorsMode;
-}
-
-// Todo: Temporary renamed this type, will be fixed in:
-// https://github.com/workfloworchestrator/orchestrator-ui/issues/216
-export interface ProcessFromRestApi {
-    pid: string;
-    workflow: string;
-    assignee: string;
-    last_status: string;
-    failed_reason: Nullable<string>;
-    traceback: string;
-    step: string;
-    created_by: string;
-    started_at: number;
-    last_modified_at: number;
-    is_task: boolean;
 }
 
 export interface ProductDefinition {
@@ -263,7 +217,7 @@ export interface Step {
     status: StepStatus;
     stepId: string; // sic backend
     executed: string;
-    state: StepState;
+    state: StepState | undefined;
     stateDelta: StepState;
 }
 
@@ -312,8 +266,8 @@ export type GraphQLPageInfo = {
     filterFields: string[];
 };
 
-export interface SubscriptionsResult {
-    subscriptions: GraphQlResultPage<Subscription>;
+export interface SubscriptionsResult<T = Subscription> {
+    subscriptions: GraphQlResultPage<T>;
 }
 
 export interface SubscriptionDropdownOptionsResult {
@@ -324,8 +278,8 @@ export interface SubscriptionDetailResult {
     subscriptions: GraphQlResultPage<SubscriptionDetail>;
 }
 
-export interface ProductDefinitionsResult {
-    products: GraphQlResultPage<ProductDefinition>;
+export interface ProductDefinitionsResult<T = ProductDefinition> {
+    products: GraphQlResultPage<T>;
 }
 export interface StartProcessStep {
     name: Step['name'];
@@ -343,8 +297,8 @@ export interface ResourceTypeDefinitionsResult {
     resourceTypes: GraphQlResultPage<ResourceTypeDefinition>;
 }
 
-export interface ProcessListResult {
-    processes: GraphQlResultPage<Process>;
+export interface ProcessListResult<T = Process> {
+    processes: GraphQlResultPage<T>;
 }
 
 export interface ProcessesDetailResult {

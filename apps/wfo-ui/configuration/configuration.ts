@@ -3,7 +3,6 @@ import process from 'process';
 import {
     Environment,
     OrchestratorConfig,
-    getNumberValueFromEnvironmentVariable,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 export const DEFAULT_GRAPHQL_CORE_ENDPOINT =
@@ -16,8 +15,6 @@ export const PROCESSES_ENDPOINT = '/processes';
 export const SUBSCRIPTION_ACTIONS_ENDPOINT = '/subscriptions/workflows';
 export const SUBSCRIPTION_PROCESSES_ENDPOINT =
     '/processes/process-subscriptions-by-subscription-id';
-
-export const PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL = 3000;
 
 export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
     const orchestratorGraphqlBaseUrl =
@@ -44,12 +41,6 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
             orchestratorApiBaseUrl + SUBSCRIPTION_ACTIONS_ENDPOINT,
         subscriptionProcessesEndpoint:
             orchestratorApiBaseUrl + SUBSCRIPTION_PROCESSES_ENDPOINT,
-        dataRefetchInterval: {
-            processDetail: getNumberValueFromEnvironmentVariable(
-                process.env.PROCESS_DETAIL_REFETCH_INTERVAL,
-                PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
-            ),
-        },
         authActive: process.env.AUTH_ACTIVE?.toLowerCase() != 'false',
     };
 };

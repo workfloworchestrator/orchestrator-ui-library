@@ -7,3 +7,4 @@ export * from './WfoEnvironmentBadge';
 export * from './WfoEngineStatusBadge';
 export * from './WfoHeaderBadge';
 export * from './WfoProductStatusBadge';
+export * from './WfoWorkflowTargetBadge';

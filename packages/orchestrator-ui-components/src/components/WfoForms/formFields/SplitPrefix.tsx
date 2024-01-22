@@ -98,14 +98,22 @@ export default class SplitPrefix extends React.PureComponent<IProps> {
     };
 
     render() {
+        // IPv4 subnet size should be between /32 and /12
+        // IPv6 subnet size should be between /128 and /32
         const { id, name, subnet, prefixlen, prefixMin, selectedSubnet } =
             this.props;
         const version = subnet.indexOf(':') === -1 ? 4 : 6;
-        const max_for_version = version === 4 ? 32 : 64;
+        const minPrefixLength = version === 4 ? 12 : 32;
+        const minimalSelectablePrefixLength =
+            minPrefixLength > prefixMin ? minPrefixLength : prefixMin;
+        const maximalSelectablePrefixLength =
+            version === 4 ? 32 : minimalSelectablePrefixLength + 12;
+
         const { desiredPrefixlen } = this.state;
-        const prefixlengths = range(max_for_version - prefixMin + 1).map(
-            (x) => prefixMin + x,
-        );
+        const prefixlengths = range(
+            maximalSelectablePrefixLength - minimalSelectablePrefixLength + 1,
+        ).map((x) => minimalSelectablePrefixLength + x);
+
         const length_options: Option<number>[] = prefixlengths.map((pl) => ({
             value: pl,
             label: pl.toString(),

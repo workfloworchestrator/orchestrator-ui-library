@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
-import { OrchestratorConfigContext } from '../contexts/OrchestratorConfigContext';
+import { OrchestratorConfigContext } from '@/contexts';
+import { useSessionWithToken } from '@/hooks';
 
 export interface SubscriptionAction {
     name: string;
@@ -27,12 +28,17 @@ export const useSubscriptionActions = (subscriptionId: string) => {
     const { subscriptionActionsEndpoint } = useContext(
         OrchestratorConfigContext,
     );
-
+    const { session } = useSessionWithToken();
     const fetchSubscriptionActions = async () => {
         const response = await fetch(
             `${subscriptionActionsEndpoint}/${subscriptionId}`,
             {
                 method: 'GET',
+                headers: {
+                    Authorization: session?.accessToken
+                        ? `Bearer ${session.accessToken}`
+                        : '',
+                },
             },
         );
         return (await response.json()) as SubscriptionActions;

@@ -5,11 +5,16 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import { getQueryVariablesForExport } from '@/utils';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
+
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
     WfoProductBlockBadge,
 } from '../../components';
 import type { WfoDataSorting, WfoTableColumns } from '../../components';
@@ -26,9 +31,14 @@ import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
-import type { ResourceTypeDefinition } from '../../types';
+import type {
+    GraphqlQueryVariables,
+    ResourceTypeDefinition,
+} from '../../types';
 import { BadgeType, SortOrder } from '../../types';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
@@ -43,6 +53,8 @@ export const RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS: keyof ResourceTypeDefinition =
 
 export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ResourceTypeDefinition>>();
@@ -125,20 +137,24 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+    const graphqlQueryVariables: GraphqlQueryVariables<ResourceTypeDefinition> =
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: queryString,
-        },
-        'resourceTypes',
+            query: queryString || undefined,
+        };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+        graphqlQueryVariables,
+        ['resourceTypes', 'listPage'],
     );
-
-    if (!data) {
-        return <WfoLoading />;
-    }
+    const { getData: getResourceTypesForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['resourceTypes', 'export'],
+        );
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
@@ -146,7 +162,7 @@ export const WfoResourceTypesPage = () => {
     };
 
     const { totalItems, sortFields, filterFields } =
-        data.resourceTypes.pageInfo;
+        data?.resourceTypes?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -176,11 +192,22 @@ export const WfoResourceTypesPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }
+                onExportData={csvDownloadHandler(
+                    getResourceTypesForExport,
+                    (data) => data.resourceTypes.page,
+                    (data) => data.resourceTypes.pageInfo,
+                    Object.keys(tableColumns),
+                    getCsvFileNameWithDate('ResourceTypes'),
+                    addToast,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );

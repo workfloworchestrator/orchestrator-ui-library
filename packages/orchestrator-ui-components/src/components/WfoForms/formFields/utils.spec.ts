@@ -1,4 +1,5 @@
-import type { ProductBlockInstance, SubscriptionDetail } from '../../../types';
+import type { ProductBlockInstance, SubscriptionDetail } from '@/types';
+
 import {
     ProcessStatus,
     ProductLifecycleStatus,
@@ -7,19 +8,25 @@ import {
 } from '../../../types';
 import { ProductTag } from './surf/types';
 import {
+    getPortMode,
     subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
 } from './utils';
 
+const getProductBlockInstance = (
+    instanceProperties: Partial<ProductBlockInstance> = {},
+): ProductBlockInstance => ({
+    id: 1,
+    ownerSubscriptionId: 'ProductBlockInstanceId 1',
+    parent: 0,
+    productBlockInstanceValues: [],
+    subscriptionInstanceId: 'testId',
+    inUseByRelations: [],
+    ...instanceProperties,
+});
+
 const testProductBlockInstances: ProductBlockInstance[] = [
-    {
-        id: 1,
-        ownerSubscriptionId: 'ProductBlockInstanceId 1',
-        parent: 0,
-        productBlockInstanceValues: [],
-        subscriptionInstanceId: 'testId',
-        inUseByRelations: [],
-    },
+    getProductBlockInstance(),
 ];
 
 const testSubscriptionDetail: SubscriptionDetail = {
@@ -58,6 +65,78 @@ const testSubscriptionDetail: SubscriptionDetail = {
 };
 
 describe('formField utils', () => {
+    describe('getPortMode()', () => {
+        it('returns undefined if the productBlockInstances is an empty array', () => {
+            const result = getPortMode([]);
+            expect(result).toEqual(undefined);
+        });
+
+        it('returns undefined if the productBlockInstances dont contain a productBlockInstanceValues', () => {
+            const result = getPortMode([
+                getProductBlockInstance({
+                    productBlockInstanceValues: [
+                        {
+                            field: 'key1',
+                            value: 'value1',
+                        },
+                    ],
+                }),
+            ]);
+            expect(result).toEqual(undefined);
+        });
+
+        it('returns undefined if the productBlockInstances dont contain productBlockInstanceValues but none with portMode', () => {
+            const result = getPortMode([
+                getProductBlockInstance({
+                    productBlockInstanceValues: [
+                        {
+                            field: 'portMode',
+                            value: 'NOTTAGGED',
+                        },
+                    ],
+                }),
+            ]);
+            expect(result).toEqual('NOTTAGGED');
+        });
+
+        it('returns undefined if the last portMode if there are more than one productBlockInstanceValue with portmode', () => {
+            const result = getPortMode([
+                getProductBlockInstance({
+                    productBlockInstanceValues: [
+                        {
+                            field: 'portMode',
+                            value: 'FIRST',
+                        },
+                    ],
+                }),
+                getProductBlockInstance({
+                    productBlockInstanceValues: [
+                        {
+                            field: 'portMode',
+                            value: 'SECOND',
+                        },
+                    ],
+                }),
+            ]);
+            expect(result).toEqual('SECOND');
+        });
+
+        it('returns undefined if the productBlockInstances dont contain a portMode field', () => {
+            const result = getPortMode([
+                ...testProductBlockInstances,
+                {
+                    id: 1,
+                    ownerSubscriptionId: 'ProductBlockInstanceId 1',
+                    parent: 0,
+                    productBlockInstanceValues: [],
+                    subscriptionInstanceId: 'testId',
+                    inUseByRelations: [],
+                },
+            ]);
+            expect(result).toEqual(undefined);
+        });
+    });
+
     describe('subscriptionHasPortModeInstanceValue()', () => {
         it('returns false if the subscriptionDetail has no productBlockInstances', () => {
             const result = subscriptionHasTaggedPortModeInstanceValue(

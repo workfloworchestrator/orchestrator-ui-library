@@ -11,20 +11,22 @@ import {
     EuiTabs,
     EuiText,
 } from '@elastic/eui';
+import { EuiNotificationBadge } from '@elastic/eui';
 import {
+    WfoBell,
+    WfoContactEnvelopeFill,
     WfoDropdownButton,
     WfoLoading,
     useFilterQueryWithRest,
+    useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
+import { WfoServiceTicketNotificationLog } from '@/components/WfoServiceTicketDetailPage/WfoServiceTicketNotificationLog';
+import { WfoServiceTicketSentEmails } from '@/components/WfoServiceTicketDetailPage/WfoServiceTicketSentEmails';
+import { CIM_TICKETS_ENDPOINT } from '@/constants-surf';
 import { SurfConfigContext } from '@/contexts/SurfConfigContext';
+import { ServiceTicketTabIds, ServiceTicketWithDetails } from '@/types';
 
-import { CIM_TICKETS_ENDPOINT } from '../../constants-surf';
-import {
-    ServiceTicketDetailPageTab,
-    ServiceTicketTabIds,
-    ServiceTicketWithDetails,
-} from '../../types';
 import { ServiceTicketDropdownItems } from './WfoServiceTicketDropdownItems';
 import { WfoServiceTicketGeneral } from './WfoServiceTicketGeneral';
 import { abortEnabledValues } from './utils';
@@ -32,25 +34,6 @@ import { abortEnabledValues } from './utils';
 type WfoServiceTicketProps = {
     serviceTicketId: string;
 };
-
-const tabs = [
-    {
-        id: ServiceTicketTabIds.GENERAL_TAB,
-        translationKey: 'tabs.general',
-        prepend: <EuiIcon type="devToolsApp" />,
-        append: <></>,
-    },
-    {
-        id: ServiceTicketTabIds.NOTIFICATION_LOG,
-        translationKey: 'tabs.notificationLog',
-        prepend: <EuiIcon type="bell" />,
-    },
-    {
-        id: ServiceTicketTabIds.SENT_EMAILS,
-        translationKey: 'tabs.sentEmails',
-        prepend: <EuiIcon type="email" />,
-    },
-];
 
 export const WfoServiceTicket = ({
     serviceTicketId,
@@ -64,7 +47,7 @@ export const WfoServiceTicket = ({
 
     const { data, isFetching } =
         useFilterQueryWithRest<ServiceTicketWithDetails>(
-            cimApiBaseUrl + CIM_TICKETS_ENDPOINT + serviceTicketId,
+            cimApiBaseUrl + CIM_TICKETS_ENDPOINT + '/' + serviceTicketId,
             ['serviceTickets', serviceTicketId],
         );
 
@@ -73,10 +56,49 @@ export const WfoServiceTicket = ({
     };
 
     const WfoDetailPageTabs = ({
-        tabs,
+        sentEmailsCount,
     }: {
-        tabs: ServiceTicketDetailPageTab[];
+        sentEmailsCount: number;
     }) => {
+        const { theme } = useOrchestratorTheme();
+
+        const tabs = [
+            {
+                id: ServiceTicketTabIds.GENERAL_TAB,
+                translationKey: 'tabs.general',
+                prepend: <EuiIcon type="devToolsApp" />,
+                append: <></>,
+            },
+            {
+                id: ServiceTicketTabIds.NOTIFICATION_LOG,
+                translationKey: 'tabs.notificationLog',
+                prepend: (
+                    <div css={{ paddingTop: theme.size.xs }}>
+                        <WfoBell width={20} height={20} />
+                    </div>
+                ),
+            },
+            {
+                id: ServiceTicketTabIds.SENT_EMAILS,
+                translationKey: 'tabs.sentEmails',
+                prepend: (
+                    <div css={{ paddingTop: theme.size.xs }}>
+                        <WfoContactEnvelopeFill />
+                    </div>
+                ),
+                append: sentEmailsCount > 0 && (
+                    <EuiNotificationBadge
+                        css={{
+                            backgroundColor: theme.colors.primaryText,
+                            borderRadius: theme.size.s,
+                        }}
+                    >
+                        {sentEmailsCount}
+                    </EuiNotificationBadge>
+                ),
+            },
+        ];
+
         return (
             <EuiTabs>
                 {tabs.map((tab, index) => (
@@ -135,10 +157,25 @@ export const WfoServiceTicket = ({
                                 </EuiFlexGroup>
                             </EuiFlexItem>
                         </EuiFlexGroup>
-                        <WfoDetailPageTabs tabs={tabs} />
+                        <WfoDetailPageTabs
+                            sentEmailsCount={
+                                data.email_logs ? data.email_logs.length : '0'
+                            }
+                        />
                         {selectedTabId === ServiceTicketTabIds.GENERAL_TAB && (
                             <WfoServiceTicketGeneral
-                                serviceTicketGeneral={data}
+                                serviceTicketDetail={data}
+                            />
+                        )}
+                        {selectedTabId ===
+                            ServiceTicketTabIds.NOTIFICATION_LOG && (
+                            <WfoServiceTicketNotificationLog
+                                serviceTicketDetail={data}
+                            />
+                        )}
+                        {selectedTabId === ServiceTicketTabIds.SENT_EMAILS && (
+                            <WfoServiceTicketSentEmails
+                                serviceTicketDetail={data}
                             />
                         )}
                     </>

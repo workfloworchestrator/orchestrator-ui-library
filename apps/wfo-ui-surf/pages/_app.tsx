@@ -44,8 +44,7 @@ type AppOwnProps = {
 const queryClientConfig: QueryClientConfig = {
     defaultOptions: {
         queries: {
-            staleTime: 1 * 60 * 60 * 1000,
-            cacheTime: 5 * 60 * 60 * 1000,
+            cacheTime: 5 * 1000,
             refetchOnWindowFocus: true,
             keepPreviousData: true,
         },
@@ -96,9 +95,12 @@ function CustomApp({
                                     >
                                         <TranslationsProvider>
                                             <Head>
+                                                <link
+                                                    rel="icon"
+                                                    href="/favicon.png"
+                                                />
                                                 <title>
-                                                    Welcome to
-                                                    example-orchestrator-ui!
+                                                    Workflow Orchestrator
                                                 </title>
                                             </Head>
                                             <main className="app">

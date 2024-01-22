@@ -39,6 +39,7 @@
                         "defaultSendingLevelModalTitle": "Todo-Default sending level of CIM",
                         "defaultSendingLevelModalText": "Todo-Default sending level (DSL) of CIM defines the minimal impact levels for which CIM shall send email to customers. Impacted subscriptions with a lower impact than the DSL will not be included in the email notification to the customer. However, if the customer has set the minimal impact notification level (MINL) of the subscription to a lower impact than the DSL, the subscription will be included.",
                         "impactOnSubscriptions": "Todo-Impact on subscriptions",
+                        "acceptImpact": "Todo- Accept impact",
                         "subscriptionImpactTable": {
                             "subscriptionTitle": "Todo-Subscriptions",
                             "affectedCustomers": "Todo-Affected Customers",
@@ -67,6 +68,18 @@
                             "extraInformation": "Todo-Extra info",
                             "impact": "Todo-Impact"
                         }
+                    },
+                    "notificationLog": {
+                        "nl": "NL",
+                        "en": "EN",
+                        "noLogsAvailableForThisServiceTicket": "Todo-No logs available for this service ticket"
+                    },
+                    "sentEmails": {
+                        "showMore": "Todo- Show more",
+                        "sentOn": "Todo - sent on",
+                        "by": "Todo -by",
+                        "sendNew": "Todo - send new",
+                        "noEmailsAvailableForThisServiceTicket": "Todo - No e-mails available for this service ticket"
                     }
                 },
                 "buttons": {

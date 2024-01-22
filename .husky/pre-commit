@@ -2,10 +2,10 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "---------- Running TSC ----------"
-yarn run tsc
+npm run tsc
 
 echo "---------- Running Linter ----------"
-yarn run lint
+npm run lint
 
 echo "---------- Running Prettier ----------"
-yarn run prettier
+npm run prettier

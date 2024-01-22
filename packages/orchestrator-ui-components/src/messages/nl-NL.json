@@ -22,7 +22,9 @@
         "newSubscription": "Nieuwe subscription",
         "newTask": "Nieuwe task",
         "noFailedTasks": "Geen gefaalde taken!",
-        "search": "Zoeken"
+        "search": "Zoeken",
+        "errorMessage": "Er is een fout opgetreden",
+        "export": "Exporteren"
     },
     "confirmationDialog": {
         "title": "Graag bevestigen",
@@ -37,6 +39,8 @@
         "start_workflow_title": "Start workflow"
     },
     "errors": {
+        "notAllResultsExported": "De huidige query resulteert in {totalResults} resultaten. Alleen de eerste {maximumExportedResults} resultaten worden geexporteerd",
+        "notAllResultsExportedTitle": "Niet alle items geexporteerd",
         "invalidQueryParts": "De query bevat ongeldige onderdelen",
         "notAllowedWhenEngineIsNotRunningMessage": "Deze actie is niet toegestaan als de Workflow Engine niet is gestart.",
         "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is niet gestart.",
@@ -260,6 +264,7 @@
             "inUseByRelations": "In use by relation",
             "showDetails": "Toon details",
             "hideDetails": "Verberg details",
+            "self": "Huidige subscription",
             "subscriptionDetails": "Subscription detail",
             "productName": "Produkt",
             "fixedInputs": "Fixed inputs",
@@ -303,6 +308,10 @@
             "taskName": "Taak",
             "rerunAll": "Alles opnieuw uitvoeren",
             "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt uitvoeren?"
+        },
+        "tabs": {
+            "active": "Actief",
+            "completed": "Voltooid"
         }
     },
     "settings": {
@@ -315,6 +324,27 @@
             "runningProcesses": "Lopende processen",
             "selectSettings": "Kies cache",
             "startEngine": "Start workflow engine"
+        }
+    },
+    "startPage": {
+        "activeSubscriptions": {
+            "buttonText": "Toon alle actieve subscriptions",
+            "headerTitle": "Totaal aantal actieve subscriptions",
+            "listTitle": "Meest recente subscriptions"
+        },
+        "activeWorkflows": {
+            "buttonText": "Toon alle actieve workflows",
+            "headerTitle": "Totaal aantal actieve workflows",
+            "listTitle": "Meest recente actieve workflows"
+        },
+        "failedTasks": {
+            "buttonText": "Toon alle gefaalde taken",
+            "headerTitle": "Totaal aantal gefaalde taken",
+            "listTitle": "Meest recente gefaalde taken"
+        },
+        "products": {
+            "headerTitle": "Totaal aantal producten",
+            "listTitle": "Totaal aantal productinstanties"
         }
     }
 }

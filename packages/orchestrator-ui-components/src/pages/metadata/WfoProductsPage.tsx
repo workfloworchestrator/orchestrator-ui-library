@@ -11,7 +11,6 @@ import {
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     StoredTableConfig,
     WfoDateTime,
-    WfoLoading,
     WfoProductBlockBadge,
     WfoProductStatusBadge,
     WfoTableWithFilter,
@@ -21,15 +20,25 @@ import {
 } from '@/components';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_PRODUCTS_GRAPHQL_QUERY } from '@/graphqlQueries';
+import { getProductsQuery } from '@/graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '@/hooks';
-import type { ProductDefinition } from '@/types';
+import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
-import { parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '@/utils';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
@@ -45,6 +54,8 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 
 export const WfoProductsPage = () => {
     const t = useTranslations('metadata.products');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProductDefinition>>();
 
@@ -153,22 +164,26 @@ export const WfoProductsPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_PRODUCTS_GRAPHQL_QUERY,
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: sortBy,
-            query: queryString || undefined,
-        },
-        'products',
+    const graphqlQueryVariables: GraphqlQueryVariables<ProductDefinition> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: sortBy,
+        query: queryString || undefined,
+    };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        getProductsQuery(),
+        graphqlQueryVariables,
+        ['products', 'listPage'],
     );
+    const { getData: getProductsForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            getProductsQuery(),
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['products', 'export'],
+        );
 
-    if (!data) {
-        return <WfoLoading />;
-    }
-
-    const { totalItems, sortFields, filterFields } = data.products.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data?.products?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -203,9 +218,20 @@ export const WfoProductsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
+                onExportData={csvDownloadHandler(
+                    getProductsForExport,
+                    (data) => data.products.page,
+                    (data) => data.products.pageInfo,
+                    Object.keys(tableColumns),
+                    getCsvFileNameWithDate('Products'),
+                    addToast,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );

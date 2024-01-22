@@ -34,6 +34,7 @@ export const useGetSubscriptionDropdownOptions = (
             filterBy: filters,
         },
         'subscriptionOptions',
+        { refetchOnWindowFocus: false },
     );
 
     const subscriptions = (() => {

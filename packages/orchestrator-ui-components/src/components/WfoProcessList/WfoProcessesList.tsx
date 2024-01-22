@@ -3,34 +3,49 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Pagination } from '@elastic/eui/src/components';
+import { Pagination } from '@elastic/eui';
 
-import { GET_PROCESS_LIST_GRAPHQL_QUERY } from '../../graphqlQueries/processListQuery';
-import { DataDisplayParams, useQueryWithGraphql } from '../../hooks';
-import { WfoProcessListSubscriptionsCell } from '../../pages';
-import { Process, SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString } from '../../utils';
-import { WfoProcessStatusBadge } from '../WfoBadges';
-import { WfoWorkflowTargetBadge } from '../WfoBadges/WfoWorkflowTargetBadge';
-import { WfoDateTime } from '../WfoDateTime/WfoDateTime';
-import { FilterQuery } from '../WfoFilterTabs';
-import { WfoLoading } from '../WfoLoading';
-import { PATH_WORKFLOWS } from '../WfoPageTemplate';
+import {
+    FilterQuery,
+    PATH_WORKFLOWS,
+    WfoDateTime,
+    WfoProcessStatusBadge,
+    WfoWorkflowTargetBadge,
+} from '@/components';
 import {
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
     WfoDataSorting,
+    WfoFirstPartUUID,
     WfoTableColumns,
     WfoTableWithFilter,
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
-} from '../WfoTable';
-import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+    mapSortableAndFilterableValuesToTableColumnConfig,
+} from '@/components/WfoTable';
+import { getProcessListGraphQlQuery } from '@/graphqlQueries/processListQuery';
+import {
+    DataDisplayParams,
+    useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
+    useToastMessage,
+} from '@/hooks';
+import { WfoProcessListSubscriptionsCell } from '@/pages';
+import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+} from '@/utils';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
+
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
+    mapGraphQlProcessListResultToPageInfo,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
@@ -78,6 +93,8 @@ export const WfoProcessesList = ({
     overrideDefaultTableColumns,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
@@ -180,22 +197,27 @@ export const WfoProcessesList = ({
             : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_PROCESS_LIST_GRAPHQL_QUERY,
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: graphQlProcessSortMapper(sortBy),
-            filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-            query: queryString,
-        },
-        'processList',
+    const graphqlQueryVariables: GraphqlQueryVariables<Process> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: graphQlProcessSortMapper(sortBy),
+        filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+        query: queryString || undefined,
+    };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        getProcessListGraphQlQuery(),
+        graphqlQueryVariables,
+        ['processes', 'processList'],
     );
+    const { getData: getProcessListForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            getProcessListGraphQlQuery(),
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['processes', 'export'],
+        );
 
-    if (!data) {
-        return <WfoLoading />;
-    }
-    const { totalItems, sortFields, filterFields } = data.processes.pageInfo;
+    const { totalItems, sortFields, filterFields } =
+        data?.processes?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -211,7 +233,9 @@ export const WfoProcessesList = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
-            data={mapGraphQlProcessListResultToProcessListItems(data)}
+            data={
+                data ? mapGraphQlProcessListResultToProcessListItems(data) : []
+            }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 sortFields,
@@ -219,13 +243,24 @@ export const WfoProcessesList = ({
             )}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isFetching}
+            isLoading={isLoading}
+            hasError={isError}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
+            onExportData={csvDownloadHandler(
+                getProcessListForExport,
+                mapGraphQlProcessListResultToProcessListItems,
+                mapGraphQlProcessListResultToPageInfo,
+                Object.keys(tableColumns),
+                getCsvFileNameWithDate('Processes'),
+                addToast,
+                tError,
+            )}
+            exportDataIsLoading={isFetchingCsv}
         />
     );
 };

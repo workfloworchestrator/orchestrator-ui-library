@@ -166,8 +166,9 @@ function SubscriptionFieldDefinition({
             ].includes(subscription.product.tag as ProductTag)
         ) {
             const portMode = getPortMode(subscription.productBlockInstances);
-            return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${subscription
-                .customer?.fullname}`;
+            return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${
+                subscription.customer?.fullname
+            }`;
         } else {
             return description.trim();
         }
@@ -234,7 +235,10 @@ function SubscriptionFieldDefinition({
                     )
                 ) {
                     return false;
-                } else if (portMode !== visiblePortMode) {
+                } else if (
+                    portMode !== visiblePortMode &&
+                    visiblePortMode !== 'normal'
+                ) {
                     return false;
                 }
             }
@@ -278,6 +282,7 @@ function SubscriptionFieldDefinition({
     };
 
     const options = getSubscriptionOptions();
+
     const selectedValue = options.find(
         (option: Option) => option.value === value,
     );

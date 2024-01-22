@@ -80,6 +80,8 @@ interface ProcessDetailProps {
     processDetail: Partial<ProcessDetail> | undefined;
     timelineItems: TimelineItem[];
     onTimelineItemClick?: (id: string) => void;
+    isLoading?: boolean;
+    hasError?: boolean;
 }
 
 export const WfoProcessDetail = ({
@@ -90,6 +92,8 @@ export const WfoProcessDetail = ({
     buttonsAreDisabled,
     timelineItems,
     onTimelineItemClick,
+    isLoading = false,
+    hasError = false,
 }: ProcessDetailProps) => {
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
@@ -243,7 +247,7 @@ export const WfoProcessDetail = ({
                 color="subdued"
                 element="div"
             >
-                {(processDetail === undefined && <WfoLoading />) ||
+                {(isLoading && !hasError && <WfoLoading />) ||
                     (processDetail !== undefined && (
                         <EuiFlexGroup direction="row" gutterSize="m">
                             <ProcessHeaderValue

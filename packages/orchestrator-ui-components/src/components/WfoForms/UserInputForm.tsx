@@ -84,6 +84,7 @@ declare module 'uniforms' {
         pattern: never;
         examples: never;
         allOf: never;
+        anyOf: never;
         options: never;
     }
 }
@@ -94,6 +95,7 @@ filterDOMProps.register('required');
 filterDOMProps.register('pattern');
 filterDOMProps.register('examples');
 filterDOMProps.register('allOf');
+filterDOMProps.register('anyOf');
 filterDOMProps.register('options');
 
 function resolveRef(reference: string, schema: Record<string, any>) {
@@ -106,7 +108,17 @@ function resolveRef(reference: string, schema: Record<string, any>) {
     const resolvedReference = reference
         .split('/')
         .filter((part) => part && part !== '#')
-        .reduce((definition, next) => definition[next], schema);
+        .reduce((definition, next) => {
+            // FIXME: There is a ticket to fix this in the return value from GraphQL: https://git.ia.surfsara.nl/netdev/automation/projects/orchestrator/-/issues/1891
+            // TLDR: currently the form properties may reference things in the forms $defs property but the forms $defs property doesnt exist but is called 'definitions' instead
+            const newDefinition = (() => {
+                if (next === '$defs' && !definition[next]) {
+                    return definition['definitions'];
+                }
+                return definition[next];
+            })();
+            return newDefinition;
+        }, schema);
 
     invariant(
         resolvedReference,
@@ -127,7 +139,7 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
 
     translationKeyExists(key: string): boolean {
         const translation = this.t(key);
-        return translation !== key ? true : false;
+        return translation && translation !== key ? true : false;
     }
 
     // This a copy of the super class function to provide a fix for https://github.com/vazco/uniforms/issues/863

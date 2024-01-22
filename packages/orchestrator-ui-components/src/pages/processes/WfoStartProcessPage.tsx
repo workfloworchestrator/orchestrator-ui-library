@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { AxiosError } from 'axios';
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { ParsedUrlQuery } from 'querystring';
 
 import {
     EuiFlexGroup,
@@ -13,7 +13,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_TASKS, TimelineItem, WfoLoading } from '@/components';
+import { PATH_TASKS, TimelineItem, WfoError, WfoLoading } from '@/components';
 import { PATH_WORKFLOWS } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
@@ -43,7 +43,7 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
-interface StartProcessPageQuery extends ParsedUrlQuery {
+interface StartProcessPageQuery {
     productId?: string;
     subscriptionId?: string;
 }
@@ -82,6 +82,7 @@ export const WfoStartProcessPage = ({
     const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
     const router = useRouter();
+    const [hasError, setHasError] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
     const { productId, subscriptionId } = router.query as StartProcessPageQuery;
@@ -92,10 +93,11 @@ export const WfoStartProcessPage = ({
     );
 
     const { stepUserInput, hasNext } = form;
+
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
-    const { data, isFetched } = useQueryWithGraphql(
+    const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_STEPS_GRAPHQL_QUERY,
         {
             processName,
@@ -103,8 +105,14 @@ export const WfoStartProcessPage = ({
         `processSteps={processName}`,
     );
 
+    if (isError) {
+        if (!hasError) {
+            setHasError(true);
+        }
+    }
+
     const timeLineItems: TimelineItem[] =
-        data?.workflows?.page[0]?.steps && isFetched
+        data?.workflows?.page[0]?.steps && !isLoading
             ? data.workflows.page[0].steps.map(({ name }: StartProcessStep) => {
                   return {
                       processStepStatus: StepStatus.PENDING,
@@ -143,7 +151,20 @@ export const WfoStartProcessPage = ({
                     (e) => {
                         throw e;
                     },
-                );
+                )
+                .catch((error: AxiosError) => {
+                    if (error?.response?.status !== 510) {
+                        if (error?.response?.status === 400) {
+                            // Rethrow the error so userInputForm can catch it and display validation errors
+                            throw error;
+                        }
+
+                        console.error(error);
+                        setHasError(true);
+                    } else {
+                        throw error;
+                    }
+                });
 
             // Catch a 503: Service unavailable error indicating the engine is down. This rethrows other errors
             // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
@@ -210,17 +231,20 @@ export const WfoStartProcessPage = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
-                {(stepUserInput && (
-                    <UserInputFormWizard
-                        stepUserInput={stepUserInput}
-                        validSubmit={submit}
-                        cancel={() =>
-                            router.push(isTask ? PATH_TASKS : PATH_WORKFLOWS)
-                        }
-                        hasNext={hasNext}
-                        isTask={isTask}
-                    />
-                )) || <WfoLoading />}
+                {(hasError && <WfoError />) ||
+                    (stepUserInput && (
+                        <UserInputFormWizard
+                            stepUserInput={stepUserInput}
+                            validSubmit={submit}
+                            cancel={() =>
+                                router.push(
+                                    isTask ? PATH_TASKS : PATH_WORKFLOWS,
+                                )
+                            }
+                            hasNext={hasNext}
+                            isTask={isTask}
+                        />
+                    )) || <WfoLoading />}
             </EuiPanel>
         </WfoProcessDetail>
     );

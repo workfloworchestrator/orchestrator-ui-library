@@ -25,8 +25,11 @@ export const WfoBreadcrumbs = () => {
     parts.forEach((p, index) => {
         if (index > 0) {
             const link = removeSuffix(parts.slice(0, index + 1).join('/'));
-            // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / 12312aa-cbc ...`
-            const text = isUuid4(p) ? p : removeSuffix(upperCaseFirstChar(p));
+            // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / b2312aa-cbc ...`
+            // first remove the suffix, like ?activeTab=....
+            const _p = removeSuffix(p);
+            const text = isUuid4(_p) ? _p : upperCaseFirstChar(_p);
+            // eslint-disable-next-line no-console
 
             breadcrumbs.push({
                 text: text,

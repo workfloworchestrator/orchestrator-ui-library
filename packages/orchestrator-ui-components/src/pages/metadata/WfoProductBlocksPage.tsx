@@ -6,10 +6,14 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
+
+import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
-    WfoLoading,
 } from '../../components';
 import {
     WfoProductBlockBadge,
@@ -31,11 +35,20 @@ import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
 import {
     useDataDisplayParams,
     useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
     useStoredTableConfig,
+    useToastMessage,
 } from '../../hooks';
-import type { ProductBlockDefinition } from '../../types';
+import type {
+    GraphqlQueryVariables,
+    ProductBlockDefinition,
+} from '../../types';
 import { BadgeType, SortOrder } from '../../types';
-import { parseDateToLocaleDateTimeString, parseIsoString } from '../../utils';
+import {
+    getQueryVariablesForExport,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
@@ -55,6 +68,8 @@ const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
 
 export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
+    const tError = useTranslations('errors');
+    const { addToast } = useToastMessage();
 
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProductBlockDefinition>>();
@@ -179,20 +194,24 @@ export const WfoProductBlocksPage = () => {
     };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
+    const graphqlQueryVariables: GraphqlQueryVariables<ProductBlockDefinition> =
         {
             first: pageSize,
             after: pageIndex * pageSize,
             sortBy: sortBy,
-            query: queryString,
-        },
-        'productBlocks',
+            query: queryString || undefined,
+        };
+    const { data, isLoading, isError } = useQueryWithGraphql(
+        GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
+        graphqlQueryVariables,
+        ['productBlocks', 'listPage'],
     );
-
-    if (!data) {
-        return <WfoLoading />;
-    }
+    const { getData: getProductBlocksForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
+            getQueryVariablesForExport(graphqlQueryVariables),
+            ['productBlocks', 'export'],
+        );
 
     const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
         field: sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,
@@ -200,7 +219,7 @@ export const WfoProductBlocksPage = () => {
     };
 
     const { totalItems, sortFields, filterFields } =
-        data.productBlocks.pageInfo;
+        data?.productBlocks?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -212,7 +231,7 @@ export const WfoProductBlocksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
-                data={data.productBlocks.page}
+                data={data?.productBlocks.page || []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -230,11 +249,22 @@ export const WfoProductBlocksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                hasError={isError}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
                 }
+                onExportData={csvDownloadHandler(
+                    getProductBlocksForExport,
+                    (data) => data.productBlocks.page,
+                    (data) => data.productBlocks.pageInfo,
+                    Object.keys(tableColumns),
+                    getCsvFileNameWithDate('ProductBlocks'),
+                    addToast,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
             />
         </WfoMetadataPageLayout>
     );

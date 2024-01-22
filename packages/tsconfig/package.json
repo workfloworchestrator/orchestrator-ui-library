@@ -2,7 +2,7 @@
     "name": "@orchestrator-ui/tsconfig",
     "scripts": {
         "build": "tsup base.json nextjs.json tsconfig.json --format esm --dts",
-        "dev": "yarn build -- --watch"
+        "dev": "npm run build -- --watch"
     },
     "main": "./dist/",
     "version": "0.1.2",

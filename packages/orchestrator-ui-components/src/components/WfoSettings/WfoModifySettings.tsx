@@ -25,7 +25,7 @@ export const WfoModifySettings: FC<WfoModifySettingsProps> = ({
             paddingSize="l"
             css={{ width: '50%' }}
         >
-            <EuiText size={'s'}>
+            <EuiText size="s">
                 <h4>{t('modifyEngine')}</h4>
             </EuiText>
             <EuiSpacer size="m"></EuiSpacer>

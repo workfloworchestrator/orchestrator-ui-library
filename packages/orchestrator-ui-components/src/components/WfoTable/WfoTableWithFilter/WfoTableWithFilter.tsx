@@ -11,8 +11,10 @@ import {
     Pagination,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WfoArrowsExpand } from '../../../icons';
+import { WfoError } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoArrowsExpand } from '@/icons';
+
 import { getTypedFieldFromObject } from '../../../utils';
 import {
     WfoKeyValueTable,
@@ -43,7 +45,7 @@ import {
 } from '../utils/tableConfigPersistence';
 import { updateQueryString } from './updateQueryString';
 
-export type WfoTableWithFilterProps<T> = {
+export type WfoTableWithFilterProps<T extends object> = {
     data: T[];
     tableColumns: WfoTableColumns<T>;
     leadingControlColumns?: WfoTableControlColumnConfig<T>;
@@ -59,9 +61,12 @@ export type WfoTableWithFilterProps<T> = {
     onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
+    hasError?: boolean;
+    onExportData?: () => void;
+    exportDataIsLoading?: boolean;
 };
 
-export const WfoTableWithFilter = <T,>({
+export const WfoTableWithFilter = <T extends object>({
     data,
     tableColumns,
     leadingControlColumns,
@@ -77,6 +82,9 @@ export const WfoTableWithFilter = <T,>({
     onUpdateQueryString,
     onUpdatePage,
     onUpdateDataSort,
+    hasError = false,
+    onExportData,
+    exportDataIsLoading = false,
 }: WfoTableWithFilterProps<T>) => {
     const { theme } = useOrchestratorTheme();
 
@@ -188,6 +196,10 @@ export const WfoTableWithFilter = <T,>({
         }
     };
 
+    if (hasError) {
+        return <WfoError />;
+    }
+
     return (
         <>
             <EuiFlexGroup>
@@ -200,6 +212,14 @@ export const WfoTableWithFilter = <T,>({
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
                     {t('editColumns')}
                 </EuiButton>
+                {onExportData && (
+                    <EuiButton
+                        isLoading={exportDataIsLoading}
+                        onClick={() => onExportData()}
+                    >
+                        {t('export')}
+                    </EuiButton>
+                )}
             </EuiFlexGroup>
             <EuiSpacer size="m" />
             <WfoBasicTable
