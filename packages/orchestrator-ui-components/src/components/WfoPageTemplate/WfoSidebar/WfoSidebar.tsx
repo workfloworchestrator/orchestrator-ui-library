@@ -18,6 +18,7 @@ import {
     PATH_TASKS,
     PATH_WORKFLOWS,
 } from '../paths';
+import { WfoCopyright } from './WfoCopyright';
 import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 
 export type WfoSidebarProps = {
@@ -140,6 +141,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 <>
                     <WfoStartCreateWorkflowButtonComboBox />
                     <EuiSpacer size="m" />
+                    <WfoCopyright />
                 </>
             ),
             name: 'Menu',
@@ -151,11 +153,13 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     ];
 
     return (
-        <EuiSideNav
-            mobileTitle={t('mobileTitle')}
-            toggleOpenOnMobile={toggleMobile}
-            isOpenOnMobile={isSideNavOpenOnMobile}
-            items={defaultMenu}
-        />
+        <>
+            <EuiSideNav
+                mobileTitle={t('mobileTitle')}
+                toggleOpenOnMobile={toggleMobile}
+                isOpenOnMobile={isSideNavOpenOnMobile}
+                items={defaultMenu}
+            />
+        </>
     );
 };
