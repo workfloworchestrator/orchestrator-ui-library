@@ -1,6 +1,3 @@
-import { ProcessListItem } from '@/components';
-import { mapGraphQlProcessListResultToProcessListItems } from '@/components/WfoProcessList/processListObjectMappers';
-import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
 import {
     GraphQLPageInfo,
     GraphqlQueryVariables,
@@ -91,34 +88,7 @@ const processApi = orchestratorApi.injectEndpoints({
                 };
             },
         }),
-        getProcessListExport: build.query<
-            ProcessListResponse,
-            GraphqlQueryVariables<Process>
-        >({
-            query: (variables) => ({
-                document: processListQuery,
-                variables: {
-                    ...variables,
-                    first: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
-                    after: 0,
-                },
-            }),
-            transformResponse: (
-                response: ProcessListResult,
-            ): ProcessListResponse => {
-                const processes = response?.processes?.page || [];
-                const { totalItems, sortFields, filterFields } =
-                    response.processes?.pageInfo || {};
-                return {
-                    processes,
-                    totalItems,
-                    sortFields,
-                    filterFields,
-                };
-            },
-        }),
     }),
 });
 
-export const { useGetProcessListQuery, useGetProcessListExportQuery } =
-    processApi;
+export const { useGetProcessListQuery } = processApi;
