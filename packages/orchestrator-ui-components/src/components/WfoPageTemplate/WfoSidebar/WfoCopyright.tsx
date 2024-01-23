@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { useOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components/src/hooks';
+import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components/src/hooks';
 
 import { getCopyrightStyles } from './styles';
 
 export const WfoCopyright = () => {
-    const { theme } = useOrchestratorTheme();
+    const { copyrightStyle } = useWithOrchestratorTheme(getCopyrightStyles);
     const year = new Date().getFullYear();
-    const { copyrightStyle } = getCopyrightStyles(theme);
 
     return (
         <div>
