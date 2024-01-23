@@ -10,7 +10,7 @@
         "start": "Start",
         "subscriptions": "Subscriptions",
         "tasks": "Tasks",
-        "title": "Welcome to example-orchestrator-ui!",
+        "title": "Workflow Orchestrator",
         "welcome": "Welcome",
         "workflows": "Workflows"
     },
