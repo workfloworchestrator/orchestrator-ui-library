@@ -158,7 +158,7 @@
             "status": "Status",
             "product": "Product",
             "customer": "Customer",
-            "customerAbbreviation": "Customer abbreviation",
+            "customerAbbreviation": "Customer abbr",
             "subscriptions": "Subscriptions",
             "createdBy": "Created by",
             "assignee": "Assignee",
@@ -231,7 +231,7 @@
             "endDate": "End date",
             "note": "Note",
             "customerFullname": "Customer",
-            "customerShortcode": "Customer abbreviation"
+            "customerShortcode": "Customer abbr"
         },
         "detail": {
             "title": "Subscriptions",

@@ -100,6 +100,7 @@ export const WfoProcessesList = ({
         workflowName: {
             field: 'workflowName',
             name: t('workflowName'),
+            width: '20%',
             render: (value, { processId }) => (
                 <Link href={`${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
             ),
@@ -107,11 +108,12 @@ export const WfoProcessesList = ({
         lastStep: {
             field: 'lastStep',
             name: t('step'),
+            width: '15%',
         },
         lastStatus: {
             field: 'lastStatus',
             name: t('status'),
-            width: '150',
+            width: '100',
             render: (cellValue) => (
                 <WfoProcessStatusBadge processStatus={cellValue} />
             ),
@@ -130,19 +132,22 @@ export const WfoProcessesList = ({
         productName: {
             field: 'productName',
             name: t('product'),
+            width: '10%',
         },
         customer: {
             field: 'customer',
             name: t('customer'),
+            width: '10%',
         },
         customerAbbreviation: {
             field: 'customerAbbreviation',
             name: t('customerAbbreviation'),
+            width: '10%',
         },
         subscriptions: {
             field: 'subscriptions',
             name: t('subscriptions'),
-            width: '400',
+            width: '15%',
             render: ({ page: subscriptions }) => (
                 <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
@@ -162,14 +167,17 @@ export const WfoProcessesList = ({
         createdBy: {
             field: 'createdBy',
             name: t('createdBy'),
+            width: '10%',
         },
         assignee: {
             field: 'assignee',
             name: t('assignee'),
+            width: '5%',
         },
         processId: {
             field: 'processId',
             name: t('processId'),
+            width: '90',
             render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
