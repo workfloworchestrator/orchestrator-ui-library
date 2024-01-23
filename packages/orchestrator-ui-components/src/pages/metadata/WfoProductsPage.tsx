@@ -25,8 +25,8 @@ import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
+    useShowToastMessage,
     useStoredTableConfig,
-    useToastMessage,
 } from '@/hooks';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
@@ -55,7 +55,7 @@ const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
 export const WfoProductsPage = () => {
     const t = useTranslations('metadata.products');
     const tError = useTranslations('errors');
-    const { addToast } = useToastMessage();
+    const { showToastMessage } = useShowToastMessage();
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ProductDefinition>>();
 
@@ -228,7 +228,7 @@ export const WfoProductsPage = () => {
                     (data) => data.products.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Products'),
-                    addToast,
+                    showToastMessage,
                     tError,
                 )}
                 exportDataIsLoading={isFetchingCsv}

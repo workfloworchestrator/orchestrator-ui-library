@@ -17,7 +17,7 @@ import {
     DataDisplayParams,
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
-    useToastMessage,
+    useShowToastMessage,
 } from '@/hooks';
 import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
@@ -73,7 +73,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     const router = useRouter();
     const t = useTranslations('subscriptions.index');
     const tError = useTranslations('errors');
-    const { addToast } = useToastMessage();
+    const { showToastMessage } = useShowToastMessage();
 
     const tableColumns: WfoTableColumns<SubscriptionListItem> = {
         subscriptionId: {
@@ -221,7 +221,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 mapGraphQlSubscriptionsResultToPageInfo,
                 Object.keys(tableColumns),
                 getCsvFileNameWithDate('Subscriptions'),
-                addToast,
+                showToastMessage,
                 tError,
             )}
             exportDataIsLoading={isFetchingCsv}

@@ -1,11 +1,9 @@
 import { TranslationValues } from 'next-intl';
 
 import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
-import { ToastTypes } from '@/contexts';
-import { GraphQLPageInfo, Process } from '@/types';
+import { ToastTypes } from '@/types';
+import { GraphQLPageInfo } from '@/types';
 import { sortObjectKeys } from '@/utils/sortObjectKeys';
-
-import { ProcessListItem, ProcessListResponse } from './../';
 
 function toCsvFileContent<T extends object>(data: T[]): string {
     const headers = Object.keys(data[0]).join(';');
@@ -83,41 +81,3 @@ export const csvDownloadHandler = <T extends object, U extends object>(
         }
     };
 };
-
-export const csvDownloadHandlerRTKProcesses =
-    (
-        dataFetchFunction: () => ProcessListResponse | undefined,
-        dataMapper: (data: Process[]) => ProcessListItem[],
-        keyOrder: string[],
-        filename: string,
-        addToastFunction: (
-            type: ToastTypes,
-            text: string,
-            title: string,
-        ) => void,
-        translationFunction: (
-            translationKey: string,
-            variables?: TranslationValues,
-        ) => string,
-    ) =>
-    async () => {
-        const result = await dataFetchFunction();
-        const { processes, totalItems } = result || {};
-
-        if (processes) {
-            const dataForExport = dataMapper(processes).map((d) =>
-                sortObjectKeys(d, keyOrder),
-            );
-
-            (totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
-                addToastFunction(
-                    ToastTypes.ERROR,
-                    translationFunction('notAllResultsExported', {
-                        totalResults: totalItems,
-                        maximumExportedResults: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
-                    }),
-                    translationFunction('notAllResultsExportedTitle'),
-                );
-            initiateCsvFileDownload(dataForExport, filename);
-        }
-    };

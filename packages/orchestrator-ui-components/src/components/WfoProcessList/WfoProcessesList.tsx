@@ -24,16 +24,11 @@ import {
     getQueryStringHandler,
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
-import { DataDisplayParams, useToastMessage } from '@/hooks';
+import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
-import { ProcessListResponse } from '@/rtk';
-import { useGetProcessListExportQuery, useGetProcessListQuery } from '@/rtk';
+import { useGetProcessListQuery } from '@/rtk';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
-import {
-    csvDownloadHandlerRTKProcesses,
-    getCsvFileNameWithDate,
-} from '@/utils/csvDownload';
 
 import {
     graphQlProcessFilterMapper,
@@ -85,8 +80,6 @@ export const WfoProcessesList = ({
     overrideDefaultTableColumns,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
-    const tError = useTranslations('errors');
-    const { addToast } = useToastMessage();
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
@@ -209,11 +202,6 @@ export const WfoProcessesList = ({
     const { data, isFetching, isError } =
         useGetProcessListQuery(processListQueryVars);
 
-    const {
-        isFetching: isLoadingExportData,
-        refetch: getProcessListForExport,
-    } = useGetProcessListExportQuery(processListQueryVars, { skip: true });
-
     const { processes, totalItems, sortFields, filterFields } = data || {};
 
     const pagination: Pagination = {
@@ -248,17 +236,6 @@ export const WfoProcessesList = ({
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
-            onExportData={csvDownloadHandlerRTKProcesses(
-                getProcessListForExport as unknown as () =>
-                    | ProcessListResponse
-                    | undefined,
-                mapGraphQlProcessListResultToProcessListItems,
-                Object.keys(tableColumns),
-                getCsvFileNameWithDate('Processes'),
-                addToast,
-                tError,
-            )}
-            exportDataIsLoading={isLoadingExportData}
         />
     );
 };
