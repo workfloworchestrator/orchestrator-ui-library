@@ -153,13 +153,13 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     ];
 
     return (
-        <div>
+        <>
             <EuiSideNav
                 mobileTitle={t('mobileTitle')}
                 toggleOpenOnMobile={toggleMobile}
                 isOpenOnMobile={isSideNavOpenOnMobile}
                 items={defaultMenu}
             />
-        </div>
+        </>
     );
 };
