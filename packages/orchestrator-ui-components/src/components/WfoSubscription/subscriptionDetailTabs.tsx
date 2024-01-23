@@ -7,14 +7,14 @@ import { SubscriptionDetailTab } from './utils';
 
 export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
     {
-        id: SubscriptionDetailTab.GENERAL_TAB,
-        translationKey: 'general',
-        prepend: <EuiIcon type="devToolsApp" />,
-    },
-    {
         id: SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         translationKey: 'serviceConfiguration',
         prepend: <EuiIcon type="submodule" />,
+    },
+    {
+        id: SubscriptionDetailTab.GENERAL_TAB,
+        translationKey: 'general',
+        prepend: <EuiIcon type="devToolsApp" />,
     },
     {
         id: SubscriptionDetailTab.PROCESSES_TAB,

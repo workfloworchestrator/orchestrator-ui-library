@@ -25,13 +25,16 @@ type WfoSubscriptionProps = {
 export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const [activeTab, setActiveTab] = useQueryParam(
         'activeTab',
-        withDefault(StringParam, SubscriptionDetailTab.GENERAL_TAB),
+        withDefault(
+            StringParam,
+            SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
+        ),
     );
 
     const selectedTab = ((): SubscriptionDetailTab => {
         return (
             subscriptionDetailTabs.find(({ id }) => id === activeTab)?.id ||
-            SubscriptionDetailTab.GENERAL_TAB
+            SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB
         );
     })();
 
