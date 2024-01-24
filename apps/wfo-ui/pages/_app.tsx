@@ -25,6 +25,7 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
+import { WfoErrorBoundary } from '@/components/WfoErrorBoundary/WfoErrorBoundary';
 import { getInitialOrchestratorConfig } from '@/configuration';
 import { TranslationsProvider } from '@/translations/translationsProvider';
 
@@ -50,69 +51,84 @@ function CustomApp({
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
-        <OrchestratorConfigProvider
-            initialOrchestratorConfig={orchestratorConfig}
+        <WfoErrorBoundary
+            fallback={
+                <p>
+                    An unexpected error occurred, try to go to home page{' '}
+                    <a href="/">home</a>
+                </p>
+            }
         >
-            <StoreProvider initialOrchestratorConfig={orchestratorConfig}>
-                <SessionProvider session={pageProps.session}>
-                    <WfoAuth>
+            <OrchestratorConfigProvider
+                initialOrchestratorConfig={orchestratorConfig}
+            >
+                <StoreProvider initialOrchestratorConfig={orchestratorConfig}>
+                    <SessionProvider session={pageProps.session}>
                         <NoSSR>
-                            <EuiProvider
-                                colorMode="light"
-                                modify={defaultOrchestratorTheme}
-                            >
-                                <ApiClientContextProvider>
-                                    <QueryClientProvider
-                                        client={queryClient}
-                                        contextSharing={true}
-                                    >
-                                        <TranslationsProvider>
-                                            <Head>
-                                                <link
-                                                    rel="icon"
-                                                    href="/favicon.png"
-                                                />
-                                                <title>
-                                                    Welcome to
-                                                    example-orchestrator-ui!
-                                                </title>
-                                            </Head>
-                                            <main className="app">
-                                                <ConfirmationDialogContextWrapper>
-                                                    <WfoPageTemplate
-                                                        getAppLogo={getAppLogo}
-                                                    >
-                                                        <QueryParamProvider
-                                                            adapter={
-                                                                NextAdapter
+                            <WfoAuth>
+                                <EuiProvider
+                                    colorMode="light"
+                                    modify={defaultOrchestratorTheme}
+                                >
+                                    <ApiClientContextProvider>
+                                        <QueryClientProvider
+                                            client={queryClient}
+                                            contextSharing={true}
+                                        >
+                                            <TranslationsProvider>
+                                                <Head>
+                                                    <link
+                                                        rel="icon"
+                                                        href="/favicon.png"
+                                                    />
+                                                    <title>
+                                                        Welcome to
+                                                        example-orchestrator-ui!
+                                                    </title>
+                                                </Head>
+                                                <main className="app">
+                                                    <ConfirmationDialogContextWrapper>
+                                                        <WfoPageTemplate
+                                                            getAppLogo={
+                                                                getAppLogo
                                                             }
-                                                            options={{
-                                                                removeDefaultsFromUrl:
-                                                                    false,
-                                                                enableBatching:
-                                                                    true,
-                                                            }}
                                                         >
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        </QueryParamProvider>
-                                                    </WfoPageTemplate>
-                                                    <WfoToastsList />
-                                                </ConfirmationDialogContextWrapper>
-                                                <ReactQueryDevtools
-                                                    initialIsOpen={false}
-                                                />
-                                            </main>
-                                        </TranslationsProvider>
-                                    </QueryClientProvider>
-                                </ApiClientContextProvider>
-                            </EuiProvider>
+                                                            <QueryParamProvider
+                                                                adapter={
+                                                                    NextAdapter
+                                                                }
+                                                            >
+                                                                <WfoErrorBoundary
+                                                                    fallback={
+                                                                        <p>
+                                                                            Something
+                                                                            went
+                                                                            wrong
+                                                                        </p>
+                                                                    }
+                                                                >
+                                                                    <Component
+                                                                        {...pageProps}
+                                                                    />
+                                                                </WfoErrorBoundary>
+                                                            </QueryParamProvider>
+                                                        </WfoPageTemplate>
+                                                        <WfoToastsList />
+                                                    </ConfirmationDialogContextWrapper>
+                                                    <ReactQueryDevtools
+                                                        initialIsOpen={false}
+                                                    />
+                                                </main>
+                                            </TranslationsProvider>
+                                        </QueryClientProvider>
+                                    </ApiClientContextProvider>
+                                </EuiProvider>
+                            </WfoAuth>
                         </NoSSR>
-                    </WfoAuth>
-                </SessionProvider>
-            </StoreProvider>
-        </OrchestratorConfigProvider>
+                    </SessionProvider>
+                </StoreProvider>
+            </OrchestratorConfigProvider>
+        </WfoErrorBoundary>
     );
 }
 
