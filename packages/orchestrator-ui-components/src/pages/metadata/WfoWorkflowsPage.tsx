@@ -156,7 +156,7 @@ export const WfoWorkflowsPage = () => {
         sortBy: graphQlWorkflowListMapper(sortBy),
         query: queryString || undefined,
     };
-    const { data, isLoading, isError } = useQueryWithGraphql(
+    const { data, isFetching, isError } = useQueryWithGraphql(
         GET_WORKFLOWS_GRAPHQL_QUERY,
         graphqlQueryVariables,
         ['workflows', 'listPage'],
@@ -204,7 +204,7 @@ export const WfoWorkflowsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
+                isLoading={isFetching}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}

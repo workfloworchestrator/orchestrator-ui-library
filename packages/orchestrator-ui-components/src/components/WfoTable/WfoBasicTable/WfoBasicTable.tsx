@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiBasicTable, EuiBasicTableColumn, Pagination } from '@elastic/eui';
 import { Criteria } from '@elastic/eui/src/components/basic_table/basic_table';
 import { SerializedStyles } from '@emotion/react';
@@ -68,6 +70,8 @@ export const WfoBasicTable = <T extends object>({
     const { theme } = useOrchestratorTheme();
     const { basicTableStyle } = getWfoBasicTableStyles(theme);
 
+    const t = useTranslations('common');
+
     const statusColorColumn: WfoTableControlColumnConfig<T> = {
         statusColorField: {
             field: WFO_STATUS_COLOR_FIELD,
@@ -94,6 +98,7 @@ export const WfoBasicTable = <T extends object>({
         <EuiBasicTable
             css={tableStyling}
             items={data}
+            noItemsMessage={isLoading ? t('loading') : t('noItemsFound')}
             columns={mapWfoTableColumnsToEuiColumns(
                 allTableColumns,
                 hiddenColumns,

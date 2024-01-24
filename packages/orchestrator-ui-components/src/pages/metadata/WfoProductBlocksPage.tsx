@@ -201,7 +201,7 @@ export const WfoProductBlocksPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isLoading, isError } = useQueryWithGraphql(
+    const { data, isFetching, isError } = useQueryWithGraphql(
         GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
         graphqlQueryVariables,
         ['productBlocks', 'listPage'],
@@ -249,7 +249,7 @@ export const WfoProductBlocksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
+                isLoading={isFetching}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={

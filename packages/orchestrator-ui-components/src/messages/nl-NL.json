@@ -19,9 +19,11 @@
         "deselect": "Deselecteer",
         "close": "Sluiten",
         "editColumns": "Wijzig kolommen",
+        "loading": "Laden",
         "newSubscription": "Nieuwe subscription",
         "newTask": "Nieuwe task",
         "noFailedTasks": "Geen gefaalde taken!",
+        "noItemsFound": "Geen items gevonden",
         "search": "Zoeken",
         "errorMessage": "Er is een fout opgetreden",
         "export": "Exporteren"
