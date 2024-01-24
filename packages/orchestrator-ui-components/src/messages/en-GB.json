@@ -19,9 +19,11 @@
         "deselect": "Deselect",
         "close": "Close",
         "editColumns": "Edit columns",
+        "loading": "Loading",
         "newSubscription": "New subscription",
         "newTask": "New task",
         "noFailedTasks": "No failed tasks!",
+        "noItemsFound": "No items found",
         "search": "Search",
         "errorMessage": "An error occurred",
         "export": "Export"

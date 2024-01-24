@@ -155,7 +155,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         filterBy: alwaysOnFilters,
         query: queryString || undefined,
     };
-    const { data, isError, isLoading } = useQueryWithGraphql(
+    const { data, isError, isFetching } = useQueryWithGraphql(
         getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
         graphqlQueryVariables,
         ['subscriptions', 'listPage'],
@@ -205,7 +205,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isLoading}
+            isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
             detailModalTitle={'Details - Subscription'}
             onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
