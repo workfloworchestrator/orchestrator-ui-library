@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
 import { SubscriptionDetail } from '@/types';
-import { getDate, parseDateToLocaleDateTimeString } from '@/utils';
+import { formatDate } from '@/utils';
 
 import {
     WfoProductStatusBadge,
@@ -41,15 +41,11 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('startDate'),
-                value: parseDateToLocaleDateTimeString(
-                    getDate(subscriptionDetail?.startDate),
-                ),
+                value: formatDate(subscriptionDetail?.startDate),
             },
             {
                 key: t('endDate'),
-                value: parseDateToLocaleDateTimeString(
-                    getDate(subscriptionDetail?.endDate),
-                ),
+                value: formatDate(subscriptionDetail?.endDate),
             },
             {
                 key: t('status'),
@@ -117,15 +113,11 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('created'),
-                value: parseDateToLocaleDateTimeString(
-                    getDate(product.createdAt),
-                ),
+                value: formatDate(product.createdAt),
             },
             {
                 key: t('endDate'),
-                value: parseDateToLocaleDateTimeString(
-                    getDate(product?.endDate),
-                ),
+                value: formatDate(product?.endDate),
             },
         ];
     };

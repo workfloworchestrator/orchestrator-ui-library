@@ -23,7 +23,7 @@ import {
     SortOrder,
     Subscription,
 } from '@/types';
-import { getDate, parseDateToLocaleDateTimeString } from '@/utils';
+import { formatDate } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -71,9 +71,7 @@ export const WfoStartPage = () => {
             subscriptionsSummaryResult?.subscriptions?.page.map(
                 (subscription) => ({
                     title: subscription.description,
-                    value: parseDateToLocaleDateTimeString(
-                        getDate(subscription?.startDate),
-                    ),
+                    value: formatDate(subscription?.startDate),
                     url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
                 }),
             ) ?? [],
@@ -92,9 +90,7 @@ export const WfoStartPage = () => {
         listItems:
             processesSummaryResult?.processes.page.map((workflow) => ({
                 title: workflow.workflowName,
-                value: parseDateToLocaleDateTimeString(
-                    getDate(workflow?.startedAt),
-                ),
+                value: formatDate(workflow?.startedAt),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
         button: {
@@ -113,9 +109,7 @@ export const WfoStartPage = () => {
         listItems:
             failedTasksSummaryResult?.processes.page.map((task) => ({
                 title: task.workflowName,
-                value: parseDateToLocaleDateTimeString(
-                    getDate(task?.startedAt),
-                ),
+                value: formatDate(task?.startedAt),
                 url: `${PATH_TASKS}/${task.processId}`,
             })) ?? [],
         button: {
