@@ -23,4 +23,5 @@ export * from './WfoDiff';
 export * from './WfoSettings';
 export * from './WfoInsyncIcon';
 export * from './WfoError';
+export * from './WfoErrorBoundary';
 export * from './WfoWorkflowSteps';
