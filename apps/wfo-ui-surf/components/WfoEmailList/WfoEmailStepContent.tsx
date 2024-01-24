@@ -99,9 +99,14 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
                     <EuiSpacer size="xs" />
                     <RecipientsButton />
                 </EuiFlexItem>
-                <EuiFlexItem
+                <EuiPanel
+                    paddingSize={'none'}
                     grow={2}
-                    css={{ height: theme.breakpoint.m, overflow: 'auto' }}
+                    css={{
+                        height: theme.breakpoint.m,
+                        overflow: 'auto',
+                        maxWidth: theme.breakpoint.m,
+                    }}
                     className="eui-scrollBar"
                     dangerouslySetInnerHTML={{
                         __html: selectedEmail?.message ?? '',
