@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { WfoFilterTab } from '@/components';
-import { WfoCogFill } from '@/icons/WfoCogFill';
-import { WfoCubeSolid } from '@/icons/WfoCubeSolid';
-import { WfoPlayCircle } from '@/icons/WfoPlayCircle';
-import { WfoShare } from '@/icons/WfoShare';
+import { WfoCogFill, WfoCubeSolid, WfoPlayCircle, WfoShare } from '@/icons';
 
 import { SubscriptionDetailTab } from './utils';
 
