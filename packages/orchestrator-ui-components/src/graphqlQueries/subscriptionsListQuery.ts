@@ -71,6 +71,7 @@ export const GET_SUBSCRIPTIONS_LIST_SUMMARY_GRAPHQL_QUERY = parse(gql`
             query: $query
         ) {
             page {
+                startDate
                 description
                 subscriptionId
             }
@@ -93,6 +94,8 @@ export const getSubscriptionsListGraphQlQuery = <
 export const getSubscriptionsListSummaryGraphQlQuery = <
     QueryVariablesType = Subscription,
 >(): TypedDocumentNode<
-    SubscriptionsResult<Pick<Subscription, 'subscriptionId' | 'description'>>,
+    SubscriptionsResult<
+        Pick<Subscription, 'subscriptionId' | 'description' | 'startDate'>
+    >,
     GraphqlQueryVariables<QueryVariablesType>
 > => GET_SUBSCRIPTIONS_LIST_SUMMARY_GRAPHQL_QUERY;

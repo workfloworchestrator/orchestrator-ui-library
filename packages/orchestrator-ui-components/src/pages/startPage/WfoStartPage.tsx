@@ -23,7 +23,7 @@ import {
     SortOrder,
     Subscription,
 } from '@/types';
-import { getFirstUuidPart } from '@/utils';
+import { getDate, parseDateToLocaleDateTimeString } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -68,10 +68,12 @@ export const WfoStartPage = () => {
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('activeSubscriptions.listTitle'),
         listItems:
-            subscriptionsSummaryResult?.subscriptions.page.map(
+            subscriptionsSummaryResult?.subscriptions?.page.map(
                 (subscription) => ({
                     title: subscription.description,
-                    value: getFirstUuidPart(subscription.subscriptionId),
+                    value: parseDateToLocaleDateTimeString(
+                        getDate(subscription?.startDate),
+                    ),
                     url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
                 }),
             ) ?? [],
@@ -90,7 +92,9 @@ export const WfoStartPage = () => {
         listItems:
             processesSummaryResult?.processes.page.map((workflow) => ({
                 title: workflow.workflowName,
-                value: workflow.startedAt,
+                value: parseDateToLocaleDateTimeString(
+                    getDate(workflow?.startedAt),
+                ),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
         button: {
@@ -109,7 +113,9 @@ export const WfoStartPage = () => {
         listItems:
             failedTasksSummaryResult?.processes.page.map((task) => ({
                 title: task.workflowName,
-                value: task.startedAt,
+                value: parseDateToLocaleDateTimeString(
+                    getDate(task?.startedAt),
+                ),
                 url: `${PATH_TASKS}/${task.processId}`,
             })) ?? [],
         button: {
