@@ -10,7 +10,7 @@
         "start": "Start",
         "subscriptions": "Subscriptions",
         "tasks": "Taken",
-        "title": "Voorbeeld Orchestrator UI",
+        "title": "Workflow Orchestrator",
         "welcome": "Welkom",
         "workflows": "Workflows"
     },
@@ -230,7 +230,7 @@
             "endDate": "Einddatum",
             "note": "Notitie",
             "customerFullName": "Klant",
-            "customerAbbreviation": "Klant afkorting"
+            "customerAbbreviation": "Klantafkorting"
         },
         "detail": {
             "title": "Subscriptions",

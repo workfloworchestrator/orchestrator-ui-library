@@ -64,19 +64,17 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             const activeProcessColumns: (keyof ProcessListItem)[] = [
                 'productName',
                 'customer',
-                'createdBy',
                 'assignee',
                 'processId',
+                'startedAt',
             ];
             return getTableConfig<T>(activeProcessColumns as (keyof T)[]);
 
         case COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY:
             const completedProcessColumns: (keyof ProcessListItem)[] = [
                 'lastStep',
-                'lastStatus',
                 'productName',
                 'customer',
-                'createdBy',
                 'assignee',
                 'processId',
                 'startedAt',
