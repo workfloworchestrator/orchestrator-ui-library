@@ -19,13 +19,13 @@ import {
     OrchestratorConfigProvider,
     StoreProvider,
     WfoAuth,
+    WfoErrorBoundary,
     WfoPageTemplate,
     WfoToastsList,
     defaultOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
-import { WfoErrorBoundary } from '@/components/WfoErrorBoundary/WfoErrorBoundary';
 import { getInitialOrchestratorConfig } from '@/configuration';
 import { TranslationsProvider } from '@/translations/translationsProvider';
 
