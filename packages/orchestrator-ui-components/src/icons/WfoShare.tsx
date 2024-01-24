@@ -2,11 +2,7 @@ import React, { FC } from 'react';
 
 import { WfoIconProps } from './WfoIconProps';
 
-export const WfoShare: FC<WfoIconProps> = ({
-    width = 24,
-    height = 24,
-    color = '#000000',
-}) => (
+export const WfoShare: FC<WfoIconProps> = ({ width = 24, height = 24 }) => (
     <svg
         width={width}
         height={height}

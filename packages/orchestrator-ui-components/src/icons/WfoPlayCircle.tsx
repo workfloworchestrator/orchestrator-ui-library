@@ -7,7 +7,6 @@ export const WfoPlayCircle: FC<WfoIconProps> = ({
     height = 24,
     xPosition = 0,
     yPosition = 0,
-    color = '#000000',
 }) => (
     <svg
         width={width}
