@@ -18,6 +18,7 @@ export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
                 height="18"
                 xPosition={-1}
                 yPosition={-1}
+                color="currentColor"
             />
         ),
     },
@@ -25,7 +26,13 @@ export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
         id: SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         translationKey: 'serviceConfiguration',
         prepend: (
-            <WfoCogFill width="18" height="18" xPosition="-2" yPosition="-2" />
+            <WfoCogFill
+                width="18"
+                height="18"
+                xPosition="-2"
+                yPosition="-2"
+                color="currentColor"
+            />
         ),
     },
     {
@@ -37,12 +44,13 @@ export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
                 height="18"
                 xPosition="-1"
                 yPosition="-1"
+                color="currentColor"
             />
         ),
     },
     {
         id: SubscriptionDetailTab.RELATED_SUBSCRIPTIONS_TAB,
         translationKey: 'relatedSubscriptions',
-        prepend: <WfoShare width="18" height="18" />,
+        prepend: <WfoShare width="18" height="18" color="currentColor" />,
     },
 ];
