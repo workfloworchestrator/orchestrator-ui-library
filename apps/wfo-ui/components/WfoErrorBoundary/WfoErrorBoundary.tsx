@@ -1,7 +1,7 @@
 import React, { ErrorInfo, ReactNode } from 'react';
 
 type ErrorBoundaryProps = {
-    fallback: ReactNode;
+    fallback?: ReactNode;
     children: ReactNode;
 };
 
@@ -18,9 +18,7 @@ export class WfoErrorBoundary extends React.Component<
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error: Error) {
-        // Todo this can be removed
-        console.error(error);
+    static getDerivedStateFromError() {
         return { hasError: true };
     }
 
@@ -30,7 +28,16 @@ export class WfoErrorBoundary extends React.Component<
 
     render() {
         if (this.state.hasError) {
-            return this.props.fallback;
+            if (this.props.fallback) {
+                return this.props.fallback;
+            }
+
+            return (
+                <p>
+                    An unexpected error occurred, try to go back to the{' '}
+                    <a href="/">home page</a>
+                </p>
+            );
         }
 
         return this.props.children;

@@ -51,14 +51,7 @@ function CustomApp({
     const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
     return (
-        <WfoErrorBoundary
-            fallback={
-                <p>
-                    An unexpected error occurred, try to go to home page{' '}
-                    <a href="/">home</a>
-                </p>
-            }
-        >
+        <WfoErrorBoundary>
             <OrchestratorConfigProvider
                 initialOrchestratorConfig={orchestratorConfig}
             >
@@ -98,19 +91,9 @@ function CustomApp({
                                                                     NextAdapter
                                                                 }
                                                             >
-                                                                <WfoErrorBoundary
-                                                                    fallback={
-                                                                        <p>
-                                                                            Something
-                                                                            went
-                                                                            wrong
-                                                                        </p>
-                                                                    }
-                                                                >
-                                                                    <Component
-                                                                        {...pageProps}
-                                                                    />
-                                                                </WfoErrorBoundary>
+                                                                <Component
+                                                                    {...pageProps}
+                                                                />
                                                             </QueryParamProvider>
                                                         </WfoPageTemplate>
                                                         <WfoToastsList />
