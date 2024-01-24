@@ -160,9 +160,9 @@ export const WfoStartPage = () => {
         <EuiFlexItem>
             <WfoSummaryCards
                 summaryCards={[
-                    latestActiveSubscriptionsSummaryCard,
-                    latestWorkflowsSummaryCard,
                     failedTasksSummaryCard,
+                    latestWorkflowsSummaryCard,
+                    latestActiveSubscriptionsSummaryCard,
                     productsSummaryCard,
                 ]}
             />
