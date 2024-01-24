@@ -20,6 +20,7 @@ import {
     OrchestratorConfigProvider,
     StoreProvider,
     WfoAuth,
+    WfoErrorBoundary,
     WfoPageTemplate,
     defaultOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
@@ -76,75 +77,76 @@ function CustomApp({
     ];
 
     return (
-        <OrchestratorConfigProvider
-            initialOrchestratorConfig={orchestratorConfig}
-        >
-            <SurfConfigProvider initialOrchestratorConfig={surfConfig}>
-                <StoreProvider initialOrchestratorConfig={orchestratorConfig}>
-                    <SessionProvider session={pageProps.session}>
-                        <WfoAuth>
-                            <NoSSR>
-                                <EuiProvider
-                                    colorMode="light"
-                                    modify={defaultOrchestratorTheme}
-                                >
-                                    <ApiClientContextProvider>
-                                        <QueryClientProvider
-                                            client={queryClient}
-                                            contextSharing={true}
-                                        >
-                                            <TranslationsProvider>
-                                                <Head>
-                                                    <link
-                                                        rel="icon"
-                                                        href="/favicon.png"
-                                                    />
-                                                    <title>
-                                                        Workflow Orchestrator
-                                                    </title>
-                                                </Head>
-                                                <main className="app">
-                                                    <ConfirmationDialogContextWrapper>
-                                                        <WfoPageTemplate
-                                                            getAppLogo={
-                                                                getAppLogo
-                                                            }
-                                                            overrideMenuItems={
-                                                                getMenuItems
-                                                            }
-                                                        >
-                                                            <QueryParamProvider
-                                                                adapter={
-                                                                    NextAdapter
+        <WfoErrorBoundary>
+            <OrchestratorConfigProvider
+                initialOrchestratorConfig={orchestratorConfig}
+            >
+                <SurfConfigProvider initialOrchestratorConfig={surfConfig}>
+                    <StoreProvider
+                        initialOrchestratorConfig={orchestratorConfig}
+                    >
+                        <SessionProvider session={pageProps.session}>
+                            <WfoAuth>
+                                <NoSSR>
+                                    <EuiProvider
+                                        colorMode="light"
+                                        modify={defaultOrchestratorTheme}
+                                    >
+                                        <ApiClientContextProvider>
+                                            <QueryClientProvider
+                                                client={queryClient}
+                                                contextSharing={true}
+                                            >
+                                                <TranslationsProvider>
+                                                    <Head>
+                                                        <link
+                                                            rel="icon"
+                                                            href="/favicon.png"
+                                                        />
+                                                        <title>
+                                                            Workflow
+                                                            Orchestrator
+                                                        </title>
+                                                    </Head>
+                                                    <main className="app">
+                                                        <ConfirmationDialogContextWrapper>
+                                                            <WfoPageTemplate
+                                                                getAppLogo={
+                                                                    getAppLogo
                                                                 }
-                                                                options={{
-                                                                    removeDefaultsFromUrl:
-                                                                        false,
-                                                                    enableBatching:
-                                                                        true,
-                                                                }}
+                                                                overrideMenuItems={
+                                                                    getMenuItems
+                                                                }
                                                             >
-                                                                <Component
-                                                                    {...pageProps}
-                                                                />
-                                                            </QueryParamProvider>
-                                                        </WfoPageTemplate>
-                                                    </ConfirmationDialogContextWrapper>
+                                                                <QueryParamProvider
+                                                                    adapter={
+                                                                        NextAdapter
+                                                                    }
+                                                                >
+                                                                    <Component
+                                                                        {...pageProps}
+                                                                    />
+                                                                </QueryParamProvider>
+                                                            </WfoPageTemplate>
+                                                        </ConfirmationDialogContextWrapper>
 
-                                                    <ReactQueryDevtools
-                                                        initialIsOpen={false}
-                                                    />
-                                                </main>
-                                            </TranslationsProvider>
-                                        </QueryClientProvider>
-                                    </ApiClientContextProvider>
-                                </EuiProvider>
-                            </NoSSR>
-                        </WfoAuth>
-                    </SessionProvider>
-                </StoreProvider>
-            </SurfConfigProvider>
-        </OrchestratorConfigProvider>
+                                                        <ReactQueryDevtools
+                                                            initialIsOpen={
+                                                                false
+                                                            }
+                                                        />
+                                                    </main>
+                                                </TranslationsProvider>
+                                            </QueryClientProvider>
+                                        </ApiClientContextProvider>
+                                    </EuiProvider>
+                                </NoSSR>
+                            </WfoAuth>
+                        </SessionProvider>
+                    </StoreProvider>
+                </SurfConfigProvider>
+            </OrchestratorConfigProvider>
+        </WfoErrorBoundary>
     );
 }
 
