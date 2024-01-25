@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
+
 import { WfoFilterTab } from '@/components';
 import { WfoCogFill, WfoCubeSolid, WfoPlayCircle, WfoShare } from '@/icons';
 
@@ -10,44 +12,48 @@ export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
         id: SubscriptionDetailTab.GENERAL_TAB,
         translationKey: 'general',
         prepend: (
-            <WfoCubeSolid
-                width="18"
-                height="18"
-                xPosition={-1}
-                yPosition={-1}
-                color="currentColor"
-            />
+            <EuiFlexGroup justifyContent={'center'}>
+                <EuiFlexItem>
+                    <WfoCubeSolid width="18" height="18" color="currentColor" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
         ),
     },
     {
         id: SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         translationKey: 'serviceConfiguration',
         prepend: (
-            <WfoCogFill
-                width="18"
-                height="18"
-                xPosition="-2"
-                yPosition="-2"
-                color="currentColor"
-            />
+            <EuiFlexGroup justifyContent={'center'}>
+                <EuiFlexItem>
+                    <WfoCogFill width="16" height="16" color="currentColor" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
         ),
     },
     {
         id: SubscriptionDetailTab.PROCESSES_TAB,
         translationKey: 'workflows',
         prepend: (
-            <WfoPlayCircle
-                width="18"
-                height="18"
-                xPosition="-1"
-                yPosition="-1"
-                color="currentColor"
-            />
+            <EuiFlexGroup justifyContent={'center'}>
+                <EuiFlexItem>
+                    <WfoPlayCircle
+                        width="18"
+                        height="18"
+                        color="currentColor"
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
         ),
     },
     {
         id: SubscriptionDetailTab.RELATED_SUBSCRIPTIONS_TAB,
         translationKey: 'relatedSubscriptions',
-        prepend: <WfoShare width="18" height="18" color="currentColor" />,
+        prepend: (
+            <EuiFlexGroup justifyContent={'center'}>
+                <EuiFlexItem>
+                    <WfoShare width="16" height="16" color="currentColor" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        ),
     },
 ];

@@ -5,14 +5,12 @@ import { WfoIconProps } from './WfoIconProps';
 export const WfoCogFill: FC<WfoIconProps> = ({
     width = 24,
     height = 24,
-    xPosition = 0,
-    yPosition = 0,
     color = '#000000',
 }) => (
     <svg
         width={width}
         height={height}
-        viewBox={`${xPosition} ${yPosition} ${width} ${height}`}
+        viewBox={`0 0 ${width} ${height}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
