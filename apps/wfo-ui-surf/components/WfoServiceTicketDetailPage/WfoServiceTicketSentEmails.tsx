@@ -6,8 +6,11 @@ import { EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoEmailList } from '@/components/WfoEmailList/WfoEmailList';
 import {
+    generateEmailName,
+    mapLogEntryToStep,
+} from '@/components/WfoEmailList/utils';
+import {
     EmailListItem,
-    EmailLog,
     EmailStep,
     ServiceTicketLogType,
     ServiceTicketProcessState,
@@ -18,43 +21,12 @@ interface WfoSubscriptionGeneralProps {
     serviceTicketDetail: ServiceTicketWithDetails;
 }
 
-const mapLogEntryToStep = (emailLog: EmailLog): EmailStep => ({
-    name: emailLog.name,
-    status: emailLog.log_type as ServiceTicketLogType,
-    sentBy: emailLog.sentBy,
-    executed: new Date(emailLog.entry_time).toISOString(),
-    stepId: emailLog.log_id,
-    state: {
-        parameter1: 'example',
-        parameter2: 56,
-        parameter3: false,
-    },
-    stateDelta: {
-        parameter1: 'example',
-    },
-});
-
 export const WfoServiceTicketSentEmails = ({
     serviceTicketDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.sentEmails',
     );
-
-    const generateEmailName = (
-        sentEmail: EmailLog,
-        allUpdateEmails: EmailLog[],
-        index: number,
-    ) => {
-        if (sentEmail.log_type === ServiceTicketLogType.UPDATE) {
-            const updateIndex = allUpdateEmails.length - index;
-            return `UPDATE#${updateIndex} - ${
-                sentEmail.emails[0] ? sentEmail.emails[0].subject : ''
-            }`;
-        } else {
-            return sentEmail.emails[0] ? sentEmail.emails[0].subject : '';
-        }
-    };
 
     const data = serviceTicketDetail.email_logs
         .sort((a, b) => {
@@ -91,8 +63,7 @@ export const WfoServiceTicketSentEmails = ({
         executed: '',
         name: '',
         sentBy: '',
-        state: {},
-        stateDelta: {},
+        emails: [],
         status: null,
         stepId: '',
     };
@@ -167,8 +138,6 @@ export const WfoServiceTicketSentEmails = ({
             <EuiSpacer />
             <WfoEmailList
                 stepListItems={stepListItems}
-                showHiddenKeys={false}
-                startedAt={''}
                 onToggleExpandStepListItem={toggleExpandedStateStepListItem}
                 onTriggerExpandStepListItem={handleExpandStepListItem}
             ></WfoEmailList>

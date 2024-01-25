@@ -194,6 +194,7 @@ export interface BackgroundJobLog {
 }
 
 export interface Email {
+    _id: string;
     customer: ImpactedCustomer;
     message: string;
     to: ImpactedCustomerContact[];
@@ -286,8 +287,7 @@ export interface EmailStep {
     sentBy: string;
     stepId: string;
     executed: string;
-    state: StepState;
-    stateDelta: StepState;
+    emails: Email[];
 }
 
 export type EmailListItem = {

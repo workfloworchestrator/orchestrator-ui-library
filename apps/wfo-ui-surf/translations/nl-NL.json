@@ -75,11 +75,18 @@
                         "noLogsAvailableForThisServiceTicket": "Todo-No logs available for this service ticket"
                     },
                     "sentEmails": {
-                        "showMore": "Todo- Show more",
-                        "sentOn": "Todo - sent on",
-                        "by": "Todo -by",
-                        "sendNew": "Todo - send new",
-                        "noEmailsAvailableForThisServiceTicket": "Todo - No e-mails available for this service ticket"
+                        "showMore": "Todo-Show more",
+                        "showLess": "Todo-Show less",
+                        "sentOn": "Todo-sent on",
+                        "by": "Todo-by",
+                        "sendNew": "Todo-send new",
+                        "noEmailsAvailableForThisServiceTicket": "Todo-No e-mails available for this service ticket",
+                        "customer": "Todo-Customer",
+                        "showAll": "Todo-Show all",
+                        "show": "Todo-Show",
+                        "recipientsLabel": "Todo-Recipient(s)",
+                        "recipient": "Todo-recipient",
+                        "recipients": "Todo-recipients"
                     }
                 },
                 "buttons": {
