@@ -1,5 +1,18 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.4.0
+
+### Minor Changes
+
+- cdc668f: 544 - Export functionality for the tables
+
+### Patch Changes
+
+- e8af27c: Process table - each column width in absolute or %
+- e9af205: change order tabs sub-detail-page
+- 996fc9f: added border radius to wfo tree and empty PB card placeholder
+- 41e0cc9: added copyright to sidebar
+
 ## 0.3.1
 
 ### Patch Changes
