@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import { WfoFilterTab } from '@/components';
 import { WfoCogFill, WfoCubeSolid, WfoPlayCircle, WfoShare } from '@/icons';
