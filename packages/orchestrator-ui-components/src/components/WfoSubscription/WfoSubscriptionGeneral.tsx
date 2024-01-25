@@ -41,11 +41,11 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('startDate'),
-                value: formatDate(subscriptionDetail?.startDate),
+                value: formatDate(subscriptionDetail.startDate),
             },
             {
                 key: t('endDate'),
-                value: formatDate(subscriptionDetail?.endDate),
+                value: formatDate(subscriptionDetail.endDate),
             },
             {
                 key: t('status'),
@@ -117,7 +117,7 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('endDate'),
-                value: formatDate(product?.endDate),
+                value: formatDate(product.endDate),
             },
         ];
     };

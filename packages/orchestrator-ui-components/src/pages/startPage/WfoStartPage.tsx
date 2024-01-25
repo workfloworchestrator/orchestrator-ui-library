@@ -68,7 +68,7 @@ export const WfoStartPage = () => {
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('activeSubscriptions.listTitle'),
         listItems:
-            subscriptionsSummaryResult?.subscriptions?.page.map(
+            subscriptionsSummaryResult?.subscriptions.page.map(
                 (subscription) => ({
                     title: subscription.description,
                     value: formatDate(subscription?.startDate),
