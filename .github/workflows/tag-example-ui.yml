@@ -44,7 +44,7 @@ jobs:
           REF: ${{ format('refs/tags/{0}', env.REF) }}
           SHA: ${{ steps.sha.outputs.result }}
         with:
-          github-token: ${{ secrets.TOKEN_CREATE_TAG_TEST_CLIENT }}
+          github-token: ${{ secrets.TAG_EXAMPLE_ORCHESTRATOR_UI_TOKEN }}
           script: |
             await github.rest.git.createRef({
               owner: process.env.OWNER,
