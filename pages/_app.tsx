@@ -3,6 +3,7 @@ import NoSSR from 'react-no-ssr';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientConfig } from 'react-query/types/core/types';
+import { Provider as ReduxProvider } from 'react-redux';
 
 import { SessionProvider } from 'next-auth/react';
 import { NextAdapter } from 'next-query-params';
@@ -21,6 +22,7 @@ import {
     WfoAuth,
     WfoPageTemplate,
     defaultOrchestratorTheme,
+    getOrchestratorStore,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
@@ -79,65 +81,69 @@ function CustomApp({
             initialOrchestratorConfig={orchestratorConfig}
         >
             <SurfConfigProvider initialOrchestratorConfig={surfConfig}>
-                <SessionProvider session={pageProps.session}>
-                    <WfoAuth>
-                        <NoSSR>
-                            <EuiProvider
-                                colorMode="light"
-                                modify={defaultOrchestratorTheme}
-                            >
-                                <ApiClientContextProvider>
-                                    <QueryClientProvider
-                                        client={queryClient}
-                                        contextSharing={true}
-                                    >
-                                        <TranslationsProvider>
-                                            <Head>
-                                                <link
-                                                    rel="icon"
-                                                    href="/favicon.png"
-                                                />
-                                                <title>
-                                                    Workflow Orchestrator
-                                                </title>
-                                            </Head>
-                                            <main className="app">
-                                                <ConfirmationDialogContextWrapper>
-                                                    <WfoPageTemplate
-                                                        getAppLogo={getAppLogo}
-                                                        overrideMenuItems={
-                                                            getMenuItems
-                                                        }
-                                                    >
-                                                        <QueryParamProvider
-                                                            adapter={
-                                                                NextAdapter
+                <ReduxProvider store={getOrchestratorStore(orchestratorConfig)}>
+                    <SessionProvider session={pageProps.session}>
+                        <WfoAuth>
+                            <NoSSR>
+                                <EuiProvider
+                                    colorMode="light"
+                                    modify={defaultOrchestratorTheme}
+                                >
+                                    <ApiClientContextProvider>
+                                        <QueryClientProvider
+                                            client={queryClient}
+                                            contextSharing={true}
+                                        >
+                                            <TranslationsProvider>
+                                                <Head>
+                                                    <link
+                                                        rel="icon"
+                                                        href="/favicon.png"
+                                                    />
+                                                    <title>
+                                                        Workflow Orchestrator
+                                                    </title>
+                                                </Head>
+                                                <main className="app">
+                                                    <ConfirmationDialogContextWrapper>
+                                                        <WfoPageTemplate
+                                                            getAppLogo={
+                                                                getAppLogo
                                                             }
-                                                            options={{
-                                                                removeDefaultsFromUrl:
-                                                                    false,
-                                                                enableBatching:
-                                                                    true,
-                                                            }}
+                                                            overrideMenuItems={
+                                                                getMenuItems
+                                                            }
                                                         >
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        </QueryParamProvider>
-                                                    </WfoPageTemplate>
-                                                </ConfirmationDialogContextWrapper>
+                                                            <QueryParamProvider
+                                                                adapter={
+                                                                    NextAdapter
+                                                                }
+                                                                options={{
+                                                                    removeDefaultsFromUrl:
+                                                                        false,
+                                                                    enableBatching:
+                                                                        true,
+                                                                }}
+                                                            >
+                                                                <Component
+                                                                    {...pageProps}
+                                                                />
+                                                            </QueryParamProvider>
+                                                        </WfoPageTemplate>
+                                                    </ConfirmationDialogContextWrapper>
 
-                                                <ReactQueryDevtools
-                                                    initialIsOpen={false}
-                                                />
-                                            </main>
-                                        </TranslationsProvider>
-                                    </QueryClientProvider>
-                                </ApiClientContextProvider>
-                            </EuiProvider>
-                        </NoSSR>
-                    </WfoAuth>
-                </SessionProvider>
+                                                    <ReactQueryDevtools
+                                                        initialIsOpen={false}
+                                                    />
+                                                </main>
+                                            </TranslationsProvider>
+                                        </QueryClientProvider>
+                                    </ApiClientContextProvider>
+                                </EuiProvider>
+                            </NoSSR>
+                        </WfoAuth>
+                    </SessionProvider>
+                </ReduxProvider>
             </SurfConfigProvider>
         </OrchestratorConfigProvider>
     );
