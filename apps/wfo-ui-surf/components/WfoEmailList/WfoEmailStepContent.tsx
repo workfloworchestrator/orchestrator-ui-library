@@ -101,7 +101,6 @@ export const WfoEmailStepContent = ({ emails }: WfoEmailStepContentProps) => {
                 </EuiFlexItem>
                 <EuiPanel
                     paddingSize={'none'}
-                    grow={2}
                     css={{
                         height: theme.breakpoint.m,
                         overflow: 'auto',

@@ -6,8 +6,11 @@ import { EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoEmailList } from '@/components/WfoEmailList/WfoEmailList';
 import {
+    generateEmailName,
+    mapLogEntryToStep,
+} from '@/components/WfoEmailList/utils';
+import {
     EmailListItem,
-    EmailLog,
     EmailStep,
     ServiceTicketLogType,
     ServiceTicketProcessState,
@@ -18,35 +21,12 @@ interface WfoSubscriptionGeneralProps {
     serviceTicketDetail: ServiceTicketWithDetails;
 }
 
-const mapLogEntryToStep = (emailLog: EmailLog): EmailStep => ({
-    name: emailLog.name,
-    status: emailLog.log_type as ServiceTicketLogType,
-    sentBy: emailLog.sentBy,
-    executed: new Date(emailLog.entry_time).toISOString(),
-    stepId: emailLog.log_id,
-    emails: emailLog.emails,
-});
-
 export const WfoServiceTicketSentEmails = ({
     serviceTicketDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.sentEmails',
     );
-
-    const generateEmailName = (
-        sentEmail: EmailLog,
-        allUpdateEmails: EmailLog[],
-        index: number,
-    ) => {
-        const subject = sentEmail.emails[0]?.subject ?? '';
-        if (sentEmail.log_type === ServiceTicketLogType.UPDATE) {
-            const updateIndex = allUpdateEmails.length - index;
-            return `UPDATE#${updateIndex} - ${subject}`;
-        } else {
-            return subject;
-        }
-    };
 
     const data = serviceTicketDetail.email_logs
         .sort((a, b) => {
