@@ -22,7 +22,7 @@ import {
     WfoPageTemplate,
     WfoToastsList,
     defaultOrchestratorTheme,
-    orchestratorStore,
+    getOrchestratorStore,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
@@ -54,7 +54,7 @@ function CustomApp({
         <OrchestratorConfigProvider
             initialOrchestratorConfig={orchestratorConfig}
         >
-            <ReduxProvider store={orchestratorStore}>
+            <ReduxProvider store={getOrchestratorStore(orchestratorConfig)}>
                 <SessionProvider session={pageProps.session}>
                     <WfoAuth>
                         <NoSSR>

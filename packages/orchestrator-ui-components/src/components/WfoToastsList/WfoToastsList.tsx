@@ -1,8 +1,6 @@
 import React from 'react';
 
-// import { useSelector } from 'react-redux';
 import { EuiGlobalToastList } from '@elastic/eui';
-import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 
 import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
 import { removeToastMessage } from '@/rtk/slices';
@@ -15,7 +13,7 @@ export const WfoToastsList = () => {
     return (
         toastMessages && (
             <EuiGlobalToastList
-                toasts={toastMessages as Toast[]}
+                toasts={toastMessages}
                 dismissToast={(toast) => dispatch(removeToastMessage(toast.id))}
                 toastLifeTimeMs={5000}
             />
