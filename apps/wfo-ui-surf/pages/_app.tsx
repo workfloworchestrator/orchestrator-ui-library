@@ -3,7 +3,6 @@ import NoSSR from 'react-no-ssr';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientConfig } from 'react-query/types/core/types';
-import { Provider as ReduxProvider } from 'react-redux';
 
 import { SessionProvider } from 'next-auth/react';
 import { NextAdapter } from 'next-query-params';
@@ -19,10 +18,10 @@ import {
     ConfirmationDialogContextWrapper,
     OrchestratorConfig,
     OrchestratorConfigProvider,
+    StoreProvider,
     WfoAuth,
     WfoPageTemplate,
     defaultOrchestratorTheme,
-    getOrchestratorStore,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { getAppLogo } from '@/components/AppLogo/AppLogo';
@@ -81,7 +80,7 @@ function CustomApp({
             initialOrchestratorConfig={orchestratorConfig}
         >
             <SurfConfigProvider initialOrchestratorConfig={surfConfig}>
-                <ReduxProvider store={getOrchestratorStore(orchestratorConfig)}>
+                <StoreProvider initialOrchestratorConfig={orchestratorConfig}>
                     <SessionProvider session={pageProps.session}>
                         <WfoAuth>
                             <NoSSR>
@@ -143,7 +142,7 @@ function CustomApp({
                             </NoSSR>
                         </WfoAuth>
                     </SessionProvider>
-                </ReduxProvider>
+                </StoreProvider>
             </SurfConfigProvider>
         </OrchestratorConfigProvider>
     );
