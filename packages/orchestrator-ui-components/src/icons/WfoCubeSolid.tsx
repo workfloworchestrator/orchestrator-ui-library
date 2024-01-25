@@ -14,7 +14,7 @@ export const WfoCubeSolid: FC<WfoIconProps> = ({
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title>icon/play-circle</title>
+        <title>icon/cube-solid</title>
         <g
             id="Symbols"
             stroke="none"
