@@ -1,10 +1,8 @@
 import React from 'react';
 import { FC, ReactNode, createContext } from 'react';
 
-import {
-    OrchestratorConfig,
-    useOrchestratorConfig,
-} from '../hooks/useOrchestratorConfig';
+import { useOrchestratorConfig } from '@/hooks/useOrchestratorConfig';
+import type { OrchestratorConfig } from '@/types';
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     environmentName: '',

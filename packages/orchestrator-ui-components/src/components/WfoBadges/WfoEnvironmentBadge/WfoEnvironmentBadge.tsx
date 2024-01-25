@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 
+import { Environment } from '@/types';
+
 import { OrchestratorConfigContext } from '../../../contexts/OrchestratorConfigContext';
-import { Environment } from '../../../hooks/useOrchestratorConfig';
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoHeaderBadge } from '../WfoHeaderBadge/WfoHeaderBadge';
 

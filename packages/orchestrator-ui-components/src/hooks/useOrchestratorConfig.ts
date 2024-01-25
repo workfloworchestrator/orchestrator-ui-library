@@ -1,21 +1,6 @@
 import { useState } from 'react';
 
-export enum Environment {
-    DEVELOPMENT = 'Development',
-    PRODUCTION = 'Production',
-}
-
-export type OrchestratorConfig = {
-    environmentName: Environment | string;
-    orchestratorApiBaseUrl: string;
-    graphqlEndpointCore: string;
-    engineStatusEndpoint: string;
-    processStatusCountsEndpoint: string;
-    processesEndpoint: string;
-    subscriptionActionsEndpoint: string;
-    subscriptionProcessesEndpoint: string;
-    authActive: boolean;
-};
+import { OrchestratorConfig } from '@/types';
 
 export const useOrchestratorConfig = (
     initialOrchestratorConfig: OrchestratorConfig,

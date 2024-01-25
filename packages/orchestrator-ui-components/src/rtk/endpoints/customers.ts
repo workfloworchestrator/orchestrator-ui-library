@@ -1,6 +1,6 @@
 import { Customer, CustomersResult } from '@/types';
 
-import { orchestratorApi } from './../api';
+import { orchestratorApi } from '../api';
 
 const customersQuery = `query Customers {
   customers(first: 1000000, after: 0) {
