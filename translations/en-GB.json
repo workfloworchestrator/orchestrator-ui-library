@@ -76,10 +76,17 @@
                     },
                     "sentEmails": {
                         "showMore": "Show more",
+                        "showLess": "Show less",
                         "sentOn": "sent on",
                         "by": "by",
                         "sendNew": "send new",
-                        "noEmailsAvailableForThisServiceTicket": "No e-mails available for this service ticket"
+                        "noEmailsAvailableForThisServiceTicket": "No e-mails available for this service ticket",
+                        "customer": "Customer",
+                        "showAll": "Show all",
+                        "show": "Show",
+                        "recipientsLabel": "Recipient(s)",
+                        "recipient": "recipient",
+                        "recipients": "recipients"
                     }
                 },
                 "buttons": {

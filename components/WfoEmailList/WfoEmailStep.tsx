@@ -7,37 +7,31 @@ import {
     WfoChevronDown,
     WfoChevronUp,
     WfoContactEnvelopeFill,
-    WfoJsonCodeBlock,
-    calculateTimeDifference,
     formatDate,
-    getStepContent,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { WfoAvatar } from '@/components/WfoAvatar/WfoAvatar';
+import { WfoEmailStepContent } from '@/components/WfoEmailList/WfoEmailStepContent';
 import { getStyles } from '@/components/WfoEmailList/styles';
 import { EmailListItem } from '@/types';
 
-export interface WfoStepProps {
+export interface WfoEmailStepProps {
     emailListItem: EmailListItem;
-    startedAt: string;
-    showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
 }
 
 export const WfoEmailStep = React.forwardRef(
     (
-        {
-            emailListItem,
-            onToggleStepDetail,
-            startedAt,
-            showHiddenKeys,
-        }: WfoStepProps,
+        { emailListItem, onToggleStepDetail }: WfoEmailStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
+        const t = useTranslations(
+            'cim.serviceTickets.detail.tabDetails.sentEmails',
+        );
+        const { theme } = useOrchestratorTheme();
         const { isExpanded, step } = emailListItem;
 
-        const { theme } = useOrchestratorTheme();
         const {
             getStepHeaderStyle,
             stepHeaderRightStyle,
@@ -47,16 +41,11 @@ export const WfoEmailStep = React.forwardRef(
             getStepToggleExpandStyle,
         } = getStyles(theme);
 
-        const t = useTranslations(
-            'cim.serviceTickets.detail.tabDetails.sentEmails',
-        );
-
-        const stepContent = step.stateDelta
-            ? getStepContent(step.stateDelta, showHiddenKeys)
-            : {};
-        const hasStepContent = Object.keys(stepContent).length > 0;
-
-        const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t('by')}`;
+        const hasStepContent = step.emails?.length > 0;
+        const sentOn = `${t('sentOn')} ${formatDate(step.executed)} ${t(
+            'by',
+        )} ${step.sentBy}`;
+        const stepShowLabel = isExpanded ? t('showLess') : t('showMore');
 
         return (
             <div ref={ref}>
@@ -86,13 +75,7 @@ export const WfoEmailStep = React.forwardRef(
                                         css={stepHeaderRightStyle}
                                     >
                                         <EuiText css={stepDurationStyle}>
-                                            {t('showMore')}
-                                        </EuiText>
-                                        <EuiText size="m">
-                                            {calculateTimeDifference(
-                                                startedAt,
-                                                step.executed,
-                                            )}
+                                            {stepShowLabel}
                                         </EuiText>
                                     </EuiFlexItem>
                                     <EuiFlexItem
@@ -110,7 +93,7 @@ export const WfoEmailStep = React.forwardRef(
                         </EuiFlexGroup>
                     </EuiFlexGroup>
                     {hasStepContent && isExpanded && (
-                        <WfoJsonCodeBlock data={stepContent} />
+                        <WfoEmailStepContent emails={step.emails} />
                     )}
                 </EuiPanel>
             </div>

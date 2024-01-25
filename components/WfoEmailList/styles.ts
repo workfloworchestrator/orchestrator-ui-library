@@ -79,6 +79,14 @@ export const getStyles = (theme: EuiThemeComputed) => {
             visibility: isVisible ? 'visible' : 'hidden',
         });
 
+    const recipientButtonStyle = css({
+        fontWeight: theme.font.weight.semiBold,
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: `underline ${theme.colors.primaryText}`,
+        },
+    });
+
     return {
         sendEmailButtonStyle,
         stepDurationStyle,
@@ -91,6 +99,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
         stepListOptionsContainerStyle,
         stepRowStyle,
         stepSpacerStyle,
+        recipientButtonStyle,
         getStepHeaderStyle,
         getStepToggleExpandStyle,
     };
