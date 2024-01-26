@@ -46,7 +46,6 @@ const queryClientConfig: QueryClientConfig = {
         queries: {
             cacheTime: 5 * 1000,
             refetchOnWindowFocus: true,
-            keepPreviousData: true,
         },
     },
 };
