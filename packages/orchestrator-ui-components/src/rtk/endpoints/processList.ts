@@ -1,5 +1,5 @@
 import {
-    GraphQLPageInfo,
+    BaseGraphQlResult,
     GraphqlQueryVariables,
     Process,
     ProcessListResult,
@@ -7,7 +7,7 @@ import {
 
 import { orchestratorApi } from '../api';
 
-const processListQuery = `
+export const processListQuery = `
     query ProcessList(
         $first: Int!
         $after: Int!
@@ -60,12 +60,10 @@ const processListQuery = `
         }
     }
 `;
+
 export type ProcessListResponse = {
     processes: Process[];
-    totalItems: GraphQLPageInfo['totalItems'];
-    sortFields: GraphQLPageInfo['sortFields'] | undefined;
-    filterFields: GraphQLPageInfo['filterFields'] | undefined;
-};
+} & BaseGraphQlResult;
 
 const processApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
@@ -78,13 +76,10 @@ const processApi = orchestratorApi.injectEndpoints({
                 response: ProcessListResult,
             ): ProcessListResponse => {
                 const processes = response?.processes?.page || [];
-                const { totalItems, sortFields, filterFields } =
-                    response.processes?.pageInfo || {};
+
                 return {
                     processes,
-                    totalItems,
-                    sortFields,
-                    filterFields,
+                    pageInfo: response.processes?.pageInfo || {},
                 };
             },
         }),
