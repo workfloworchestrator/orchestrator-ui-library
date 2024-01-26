@@ -11,9 +11,12 @@ interface AuthProps {
 
 export const WfoAuth = ({ children }: AuthProps): JSX.Element => {
     const { authActive } = useContext(OrchestratorConfigContext);
-    const { status } = useSession({
+    const { status, data } = useSession({
         required: authActive,
     });
+
+    // want to handle the OPA here
+    console.log('WfoAuth', { authActive, status, data });
 
     if (status === 'loading') {
         return <WfoLoading />;
