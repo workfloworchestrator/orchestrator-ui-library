@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.5.0
+
+### Minor Changes
+
+- 267a753: Adding RTK and RTK Query for some endpoints and store data
+
 ## 0.4.0
 
 ### Minor Changes
