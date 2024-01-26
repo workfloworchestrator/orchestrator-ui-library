@@ -24,15 +24,24 @@ import {
     getQueryStringHandler,
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
+import { getProcessListGraphQlQuery } from '@/graphqlQueries';
+import { useQueryWithGraphqlLazy, useShowToastMessage } from '@/hooks';
 import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
 import { useGetProcessListQuery } from '@/rtk';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
+import { getQueryVariablesForExport } from '@/utils';
+import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
+} from '@/utils/csvDownload';
 
 import {
     graphQlProcessFilterMapper,
     graphQlProcessSortMapper,
+    mapGraphQlProcessListExportResultToProcessListItems,
+    mapGraphQlProcessListResultToPageInfo,
     mapGraphQlProcessListResultToProcessListItems,
 } from './processListObjectMappers';
 
@@ -80,6 +89,8 @@ export const WfoProcessesList = ({
     overrideDefaultTableColumns,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
+    const tError = useTranslations('errors');
+    const { showToastMessage } = useShowToastMessage();
 
     const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
         workflowName: {
@@ -215,6 +226,13 @@ export const WfoProcessesList = ({
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
+    const { getData: getProcessListForExport, isFetching: isFetchingCsv } =
+        useQueryWithGraphqlLazy(
+            getProcessListGraphQlQuery(),
+            getQueryVariablesForExport(processListQueryVars),
+            ['processes', 'export'],
+        );
+
     return (
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
@@ -236,6 +254,16 @@ export const WfoProcessesList = ({
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
+            onExportData={csvDownloadHandler(
+                getProcessListForExport,
+                mapGraphQlProcessListExportResultToProcessListItems,
+                mapGraphQlProcessListResultToPageInfo,
+                Object.keys(tableColumns),
+                getCsvFileNameWithDate('Processes'),
+                showToastMessage,
+                tError,
+            )}
+            exportDataIsLoading={isFetchingCsv}
         />
     );
 };
