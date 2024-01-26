@@ -90,6 +90,12 @@ function CustomApp({
                                                                 adapter={
                                                                     NextAdapter
                                                                 }
+                                                                options={{
+                                                                    removeDefaultsFromUrl:
+                                                                        false,
+                                                                    enableBatching:
+                                                                        true,
+                                                                }}
                                                             >
                                                                 <Component
                                                                     {...pageProps}
