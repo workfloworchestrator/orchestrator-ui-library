@@ -269,6 +269,10 @@ export type GraphQLPageInfo = {
     filterFields: string[];
 };
 
+export type BaseGraphQlResult = {
+    pageInfo: GraphQLPageInfo;
+};
+
 export interface SubscriptionsResult<T = Subscription> {
     subscriptions: GraphQlResultPage<T>;
 }

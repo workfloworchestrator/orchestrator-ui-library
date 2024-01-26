@@ -213,13 +213,13 @@ export const WfoProcessesList = ({
     const { data, isFetching, isError } =
         useGetProcessListQuery(processListQueryVars);
 
-    const { processes, totalItems, sortFields, filterFields } = data || {};
+    const { processes, pageInfo } = data || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
         pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        totalItemCount: totalItems ? totalItems : 0,
+        totalItemCount: pageInfo?.totalItems ? pageInfo.totalItems : 0,
     };
     const dataSorting: WfoDataSorting<ProcessListItem> = {
         field: sortBy?.field ?? 'lastModified',
@@ -241,8 +241,8 @@ export const WfoProcessesList = ({
             )}
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
-                sortFields,
-                filterFields,
+                pageInfo?.sortFields,
+                pageInfo?.filterFields,
             )}
             dataSorting={dataSorting}
             pagination={pagination}
