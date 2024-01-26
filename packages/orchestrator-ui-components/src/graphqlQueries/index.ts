@@ -6,3 +6,4 @@ export * from './subscriptionDetailQuery';
 export * from './processDetailQuery';
 export * from './subscriptionsDropdownOptionsQuery';
 export * from './processStepsQuery';
+export * from './processListQuery';

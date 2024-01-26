@@ -50,6 +50,45 @@ export const mapGraphQlProcessListResultToProcessListItems = (
         };
     });
 
+export const mapGraphQlProcessListExportResultToProcessListItems = (
+    processesResult: ProcessListResult,
+): ProcessListItem[] =>
+    processesResult.processes.page.map((process) => {
+        const {
+            workflowName,
+            lastStep,
+            lastStatus,
+            workflowTarget,
+            createdBy,
+            assignee,
+            processId,
+            startedAt,
+            lastModifiedAt,
+            subscriptions,
+            product,
+            customer,
+            isTask,
+        } = process;
+
+        return {
+            workflowName,
+            lastStep,
+            lastStatus,
+            workflowTarget,
+            createdBy,
+            assignee,
+            processId,
+            isTask,
+            startedAt: new Date(startedAt),
+            lastModifiedAt: new Date(lastModifiedAt),
+            subscriptions,
+            productName: product?.name,
+            productTag: product?.tag,
+            customer: customer.fullname,
+            customerAbbreviation: customer.shortcode,
+        };
+    });
+
 // Some fields are not a key of Process, however backend still supports them
 // Backend concatenates object name with the key, e.g. product.name becomes productName
 // Todo: typecast is needed until ticket is implemented:
