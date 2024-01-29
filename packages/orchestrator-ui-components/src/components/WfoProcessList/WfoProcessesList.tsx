@@ -236,9 +236,13 @@ export const WfoProcessesList = ({
     return (
         <WfoTableWithFilter<ProcessListItem>
             queryString={queryString}
-            data={mapGraphQlProcessListResultToProcessListItems(
-                processes || [],
-            )}
+            data={
+                !isFetching
+                    ? mapGraphQlProcessListResultToProcessListItems(
+                          processes || [],
+                      )
+                    : []
+            }
             tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                 tableColumns,
                 pageInfo?.sortFields,
