@@ -23,7 +23,7 @@ import {
     SortOrder,
     Subscription,
 } from '@/types';
-import { getFirstUuidPart } from '@/utils';
+import { formatDate } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -71,7 +71,7 @@ export const WfoStartPage = () => {
             subscriptionsSummaryResult?.subscriptions.page.map(
                 (subscription) => ({
                     title: subscription.description,
-                    value: getFirstUuidPart(subscription.subscriptionId),
+                    value: formatDate(subscription.startDate),
                     url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
                 }),
             ) ?? [],
@@ -90,7 +90,7 @@ export const WfoStartPage = () => {
         listItems:
             processesSummaryResult?.processes.page.map((workflow) => ({
                 title: workflow.workflowName,
-                value: workflow.startedAt,
+                value: formatDate(workflow?.startedAt),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
         button: {
@@ -109,7 +109,7 @@ export const WfoStartPage = () => {
         listItems:
             failedTasksSummaryResult?.processes.page.map((task) => ({
                 title: task.workflowName,
-                value: task.startedAt,
+                value: formatDate(task?.startedAt),
                 url: `${PATH_TASKS}/${task.processId}`,
             })) ?? [],
         button: {
@@ -154,9 +154,9 @@ export const WfoStartPage = () => {
         <EuiFlexItem>
             <WfoSummaryCards
                 summaryCards={[
-                    latestActiveSubscriptionsSummaryCard,
-                    latestWorkflowsSummaryCard,
                     failedTasksSummaryCard,
+                    latestWorkflowsSummaryCard,
+                    latestActiveSubscriptionsSummaryCard,
                     productsSummaryCard,
                 ]}
             />

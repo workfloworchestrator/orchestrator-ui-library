@@ -4,7 +4,9 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
-import { SubscriptionDetail } from '../../types';
+import { SubscriptionDetail } from '@/types';
+import { formatDate } from '@/utils';
+
 import {
     WfoProductStatusBadge,
     WfoSubscriptionStatusBadge,
@@ -33,18 +35,17 @@ export const WfoSubscriptionGeneral = ({
                 key: t('productName'),
                 value: subscriptionDetail.product.name,
             },
-
             {
                 key: t('description'),
                 value: subscriptionDetail.description,
             },
             {
                 key: t('startDate'),
-                value: subscriptionDetail.startDate,
+                value: formatDate(subscriptionDetail.startDate),
             },
             {
                 key: t('endDate'),
-                value: subscriptionDetail.endDate,
+                value: formatDate(subscriptionDetail.endDate),
             },
             {
                 key: t('status'),
@@ -71,6 +72,7 @@ export const WfoSubscriptionGeneral = ({
                     subscriptionDetail && subscriptionDetail.customer
                         ? `${subscriptionDetail.customer?.customerId}`
                         : '-',
+                textToCopy: subscriptionDetail.customer?.customerId,
             },
             {
                 key: t('note'),
@@ -111,11 +113,11 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('created'),
-                value: product.createdAt,
+                value: formatDate(product.createdAt),
             },
             {
                 key: t('endDate'),
-                value: product.endDate,
+                value: formatDate(product.endDate),
             },
         ];
     };

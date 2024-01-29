@@ -112,3 +112,11 @@ export const formatDateCetWithUtc = (
 
     return `${formattedDateCET} (${formattedDateUTC})`;
 };
+
+export const getDate = (date: Date | string | null) => {
+    if (typeof date === 'string') {
+        return new Date(date);
+    }
+
+    return date;
+};
