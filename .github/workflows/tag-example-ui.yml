@@ -1,0 +1,54 @@
+#
+# Use the GitHub API to tag the main branch of another repository.
+#
+name: Tag remote repository
+
+on:
+  push:
+    tags:
+      - "@orchestrator-ui/orchestrator-ui-components@[0-9]+.[0-9]+.[0-9]+"
+
+# The main branch of the following repository (owner/repo) will be tagged
+# with the version part (e.g. 0.3.1) of the tag trigger above.
+env:
+  OWNER: "workfloworchestrator"
+  REPO: "example-orchestrator-ui"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Get latest commit SHA
+        id: sha
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const commit = await github.rest.repos.getCommit({
+              owner: process.env.OWNER,
+              repo: process.env.REPO,
+              ref: 'heads/main',
+            })
+            return commit.data.sha
+      - name: Extract REF from ref_name
+        run: |
+          REF_NAME=${{ github.ref_name }}
+          REF=${REF_NAME/@orchestrator-ui\/orchestrator-ui-components@/}
+          echo REF=${REF} >> $GITHUB_ENV
+      - name: Add tag to repository
+        uses: actions/github-script@v7
+        env:
+          REF: ${{ format('refs/tags/{0}', env.REF) }}
+          SHA: ${{ steps.sha.outputs.result }}
+        with:
+          github-token: ${{ secrets.TAG_EXAMPLE_ORCHESTRATOR_UI_TOKEN }}
+          script: |
+            await github.rest.git.createRef({
+              owner: process.env.OWNER,
+              repo: process.env.REPO,
+              ref: process.env.REF,
+              sha: process.env.SHA,
+            })
