@@ -71,7 +71,7 @@ export const WfoStartPage = () => {
             subscriptionsSummaryResult?.subscriptions.page.map(
                 (subscription) => ({
                     title: subscription.description,
-                    value: formatDate(subscription?.startDate),
+                    value: formatDate(subscription.startDate),
                     url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
                 }),
             ) ?? [],
