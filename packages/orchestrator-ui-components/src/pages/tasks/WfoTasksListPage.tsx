@@ -5,7 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiButton, EuiSpacer } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPageHeader,
+    EuiSpacer,
+} from '@elastic/eui';
 
 import {
     ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
@@ -17,7 +23,6 @@ import {
     WfoTableColumns,
 } from '@/components';
 import { PATH_TASKS } from '@/components';
-import { WfoPageHeader } from '@/components/WfoPageHeader/WfoPageHeader';
 import {
     ProcessListItem,
     WfoProcessesList,
@@ -137,17 +142,27 @@ export const WfoTasksListPage = () => {
         <>
             <EuiSpacer />
 
-            <WfoPageHeader pageTitle="Tasks">
-                <EuiButton
-                    onClick={handleRerunAllButtonClick}
-                    iconType={() => (
-                        <WfoRefresh color={theme.colors.primaryText} />
-                    )}
-                >
-                    {t('rerunAll')}
-                </EuiButton>
-                <WfoStartTaskButtonComboBox />
-            </WfoPageHeader>
+            <EuiFlexGroup>
+                <EuiFlexItem>
+                    <EuiPageHeader pageTitle="Tasks"></EuiPageHeader>
+                </EuiFlexItem>
+
+                <EuiFlexItem>
+                    <EuiFlexGroup justifyContent="flexEnd">
+                        {' '}
+                        <EuiButton
+                            onClick={handleRerunAllButtonClick}
+                            iconType={() => (
+                                <WfoRefresh color={theme.colors.primaryText} />
+                            )}
+                        >
+                            {t('rerunAll')}
+                        </EuiButton>
+                        <WfoStartTaskButtonComboBox />
+                    </EuiFlexGroup>
+                </EuiFlexItem>
+            </EuiFlexGroup>
+
             <WfoFilterTabs
                 tabs={defaultTasksListTabs}
                 translationNamespace="tasks.tabs"
