@@ -39,7 +39,7 @@
         "@orchestrator-ui/jest-config": "*",
         "@orchestrator-ui/tsconfig": "*",
         "@testing-library/jest-dom": "^6.2.0",
-        "@types/node": "^20.10.5",
+        "@types/node": "^20.11.10",
         "@types/react": "^18.2.45",
         "@types/react-dom": "^18.2.18",
         "@types/react-no-ssr": "^1.1.7",
