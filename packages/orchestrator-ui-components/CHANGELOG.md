@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.5.1
+
+### Patch Changes
+
+- dac8fb2: update date presentation and move getDate to utils
+- e3b847a: Adds error boundary at the top level of the app
+- 926d47b: Table enhancements: Introduces a loading-placeholder and a no-data-placeholder. Prevents showing previous page results while loading new data.
+
 ## 0.5.0
 
 ### Minor Changes
