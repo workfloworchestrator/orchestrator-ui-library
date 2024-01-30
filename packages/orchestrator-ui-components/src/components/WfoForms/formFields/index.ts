@@ -29,3 +29,4 @@ export * from './OptGroupField';
 export * from './SubscriptionField';
 export * from './IpNetworkField';
 export * from './SummaryField';
+export * from './CustomerField';

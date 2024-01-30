@@ -62,9 +62,9 @@
             "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
         },
         "widgets": {
-            "organisation": {
-                "placeholder": "Org placeholder",
-                "loading": "Loading organisations..."
+            "customer": {
+                "placeholder": "Customer placeholder",
+                "loading": "Loading customers..."
             },
             "contactPersonName": {
                 "placeholder": "Name placeholder"

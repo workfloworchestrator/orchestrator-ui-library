@@ -45,6 +45,8 @@ import { getPortMode } from './utils';
 declare module 'uniforms' {
     interface FilterDOMProps {
         excludedSubscriptionIds: never;
+        customerId: never;
+        customerKey: never;
         organisationId: never;
         organisationKey: never;
         visiblePortMode: never;
@@ -57,6 +59,8 @@ declare module 'uniforms' {
 filterDOMProps.register(
     'productIds',
     'excludedSubscriptionIds',
+    'customerId',
+    'customerKey',
     'organisationId',
     'organisationKey',
     'visiblePortMode',
@@ -71,6 +75,8 @@ export type SubscriptionFieldProps = FieldProps<
     {
         productIds?: string[];
         excludedSubscriptionIds?: string[];
+        customerId?: string;
+        customerKey?: string;
         organisationId?: string;
         organisationKey?: string;
         visiblePortMode?: string;
@@ -96,6 +102,8 @@ function SubscriptionFieldDefinition({
     className = '',
     productIds = [],
     excludedSubscriptionIds = [],
+    customerId,
+    customerKey,
     organisationId,
     organisationKey,
     visiblePortMode = 'all',
@@ -105,6 +113,13 @@ function SubscriptionFieldDefinition({
     statuses,
     ...props
 }: SubscriptionFieldProps) {
+    if (organisationId) {
+        customerId = organisationId;
+    }
+    if (organisationKey) {
+        customerKey = organisationKey;
+    }
+
     const t = useTranslations('pydanticForms');
     const { theme } = useOrchestratorTheme();
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
@@ -132,10 +147,10 @@ function SubscriptionFieldDefinition({
 
     const usedBandwidth = bandwidth || bandWithFromField;
 
-    // Get value from org field if organisationKey is set.
-    const usedOrganisationId = organisationKey
-        ? get(model, organisationKey, 'nonExistingOrgToFilterEverything')
-        : organisationId;
+    // Get value from org field if customerKey is set.
+    const usedCustomerId = customerKey
+        ? get(model, customerKey, 'nonExistingOrgToFilterEverything')
+        : customerId;
 
     const makeLabel = (subscription: SubscriptionDropdownOption) => {
         const description =
@@ -243,10 +258,10 @@ function SubscriptionFieldDefinition({
                 }
             }
 
-            // If a customer/organisation filter is applied we need to filter on that
+            // If a customer filter is applied we need to filter on that
             if (
-                usedOrganisationId &&
-                subscription.customer?.customerId !== usedOrganisationId
+                usedCustomerId &&
+                subscription.customer?.customerId !== usedCustomerId
             ) {
                 return false;
             }

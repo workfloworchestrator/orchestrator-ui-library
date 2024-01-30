@@ -361,14 +361,14 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
     if (form && form.properties) {
         Object.keys(queryParams).forEach((param) => {
             if (form && form.properties && form.properties[param]) {
-                const organisationInput = form.properties[
+                const customerInput = form.properties[
                     param
                 ] as UniformJSONSchemaProperty;
-                if (!organisationInput.uniforms) {
-                    organisationInput.uniforms = {};
+                if (!customerInput.uniforms) {
+                    customerInput.uniforms = {};
                 }
-                organisationInput.uniforms.disabled = true;
-                organisationInput.default = queryParams[param];
+                customerInput.uniforms.disabled = true;
+                customerInput.default = queryParams[param];
             }
         });
 

@@ -5,6 +5,7 @@ import {
     AcceptField,
     BoolField,
     ContactPersonNameField,
+    CustomerField,
     DateField,
     DividerField,
     ImsNodeIdField,
@@ -76,6 +77,8 @@ export function autoFieldFunction(
                     return SubscriptionSummaryField;
                 case 'organisationId':
                     return OrganisationField;
+                case 'customerId':
+                    return CustomerField;
                 case 'locationCode':
                     return LocationCodeField;
                 case 'contactPersonName': // Surf specific
