@@ -33,7 +33,6 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     handleSideMenuClick,
     handleLogoutClick,
 }) => {
-    console.log('WfoPageHeader');
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
