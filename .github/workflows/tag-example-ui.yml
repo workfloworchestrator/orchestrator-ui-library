@@ -1,7 +1,7 @@
 #
 # Use the GitHub API to tag the main branch of another repository.
 #
-name: Tag remote repository
+name: Tag main branch of example-orchestrator-ui respository
 
 on:
   push:
