@@ -1,13 +1,27 @@
-Todo: copy old README.md
+# Orchestrator ui library
 
-# Getting started
+This repo contains the generally reusable parts of the orchestrator ui grouped and exposed as pages, components and elements such as Icons.
+It is meant to be used together with an app that includes this library through NPM. For ease of development we have added the orchestrator example app implementation as a submodule in the folder /aps/wfo-ui.
+
+To install and run the app
+
+```
+git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git
+cd apps
+git submodule init
+cd ../
+cp apps/wfo-ui/.env.example apps/wfo-iu/.env
+# change the values in the env file to point to your orchestrator backend
+# set auth=false or follow the directions bellow this sections
+npm i
+npm run dev
+```
+
+This makes the orchestrator ui run on http://localhost:3000
+
+# Authentication
 
 -   set `AUTH_ACTIVE` env variable to false or use setup below with auth.
-
-```
-npm
-turbo dev
-```
 
 ## AUTH with NextAuth and keycloak
 
