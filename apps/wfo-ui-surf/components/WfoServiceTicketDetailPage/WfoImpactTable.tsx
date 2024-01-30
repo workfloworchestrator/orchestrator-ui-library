@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -12,16 +12,18 @@ import {
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
+import { SurfConfigContext } from '@/contexts/SurfConfigContext';
 import {
     ImpactTableColumns,
     ImpactedObject,
     ServiceTicketProcessState,
     ServiceTicketWithDetails,
-} from '../../types';
+} from '@/types';
+
 import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoImpactOverrideModal } from './WfoImpactOverrideModal';
 import { WfoImpactedCustomersTable } from './WfoImpactedCustomersTable';
-import { getImsCalculatedImpact } from './utils';
+import { getImpactedCustomersTableData, getImsCalculatedImpact } from './utils';
 
 const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ImpactTableColumns =
     'subscription_id';
@@ -48,6 +50,7 @@ export const WfoImpactTable = ({
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactTable',
     );
+    const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
     const { theme } = useOrchestratorTheme();
     const { expandableTableStyle } = getWfoBasicTableStyles(theme);
 
@@ -61,17 +64,18 @@ export const WfoImpactTable = ({
         serviceTicketDetail.process_state ===
             ServiceTicketProcessState.OPEN_RELATED;
 
-    const toggleDetails = (subscription_id: string) => {
+    const toggleDetails = (impactTableColumns: ImpactTableColumns) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
-        const impactedObject = serviceTicketDetail.impacted_objects.find(
-            (o) => o.subscription_id === subscription_id,
-        );
+        const subscription_id = impactTableColumns.subscription_id!;
+        const tableData = impactTableColumns.impactedCustomersTableData;
 
         if (itemIdToExpandedRowMapValues[subscription_id]) {
             delete itemIdToExpandedRowMapValues[subscription_id];
-        } else if (impactedObject) {
+        } else if (tableData) {
             itemIdToExpandedRowMapValues[subscription_id] = (
-                <WfoImpactedCustomersTable impactedObject={impactedObject} />
+                <WfoImpactedCustomersTable
+                    impactCustomerTableData={tableData}
+                />
             );
         }
         setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
@@ -82,13 +86,13 @@ export const WfoImpactTable = ({
             field: SUBSCRIPTION_IMPACT_FIELD_ID,
             width: '20',
             name: '',
-            render: (value) => {
+            render: (value, object) => {
                 const itemIdToExpandedRowMapValues = {
                     ...itemIdToExpandedRowMap,
                 };
                 return value ? (
                     <EuiButtonIcon
-                        onClick={() => toggleDetails(value)}
+                        onClick={() => toggleDetails(object)}
                         aria-label={
                             itemIdToExpandedRowMapValues[value]
                                 ? 'Collapse'
@@ -194,15 +198,23 @@ export const WfoImpactTable = ({
     ): ImpactTableColumns[] => {
         return input
             .filter((object) => object.subscription_id !== null)
-            .map((object) => ({
-                subscription_id: object.subscription_id,
-                subscription_description: object.subscription_description,
-                affectedCustomers: object.related_customers.length + 1,
-                informCustomers: '-',
-                imsCalculatedImpact: getImsCalculatedImpact(object),
-                impact_override: object.impact_override,
-                setImpactOverride: showOverrideImpact,
-            }));
+            .map((object) => {
+                const impactedCustomersTableData =
+                    getImpactedCustomersTableData(
+                        object,
+                        cimDefaultSendingLevel,
+                    );
+                return {
+                    subscription_id: object.subscription_id,
+                    subscription_description: object.subscription_description,
+                    affectedCustomers: object.related_customers.length + 1,
+                    informCustomers: impactedCustomersTableData.informCustomers,
+                    imsCalculatedImpact: getImsCalculatedImpact(object),
+                    impact_override: object.impact_override,
+                    setImpactOverride: showOverrideImpact,
+                    impactedCustomersTableData: impactedCustomersTableData,
+                };
+            });
     };
 
     const handleModalAction = () => {
