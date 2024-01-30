@@ -1,0 +1,3 @@
+[submodule "wfo-ui"]
+	path = apps/orchestrator-ui
+	url = git@git.ia.surfsara.nl:netdev/automation/projects/orchestrator-ui.git
