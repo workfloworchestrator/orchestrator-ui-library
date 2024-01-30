@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
@@ -16,11 +16,8 @@ export const StoreProvider = ({
     initialOrchestratorConfig,
     children,
 }: StoreProviderProps) => {
-    const { orchestratorConfig } = useOrchestratorConfig(
-        initialOrchestratorConfig,
-    );
+    const store = getOrchestratorStore(initialOrchestratorConfig);
+    const [orchestratorStore] = useState(store);
 
-    const store = getOrchestratorStore(orchestratorConfig);
-
-    return <Provider store={store}>{children}</Provider>;
+    return <Provider store={orchestratorStore}>{children}</Provider>;
 };
