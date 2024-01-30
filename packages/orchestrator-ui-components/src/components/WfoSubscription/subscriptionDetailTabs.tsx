@@ -9,23 +9,23 @@ import { SubscriptionDetailTab } from './utils';
 
 export const subscriptionDetailTabs: WfoFilterTab<SubscriptionDetailTab>[] = [
     {
-        id: SubscriptionDetailTab.GENERAL_TAB,
-        translationKey: 'general',
-        prepend: (
-            <EuiFlexGroup justifyContent={'center'}>
-                <EuiFlexItem>
-                    <WfoCubeSolid width="18" height="18" color="currentColor" />
-                </EuiFlexItem>
-            </EuiFlexGroup>
-        ),
-    },
-    {
         id: SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         translationKey: 'serviceConfiguration',
         prepend: (
             <EuiFlexGroup justifyContent={'center'}>
                 <EuiFlexItem>
                     <WfoCogFill width="16" height="16" color="currentColor" />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        ),
+    },
+    {
+        id: SubscriptionDetailTab.GENERAL_TAB,
+        translationKey: 'general',
+        prepend: (
+            <EuiFlexGroup justifyContent={'center'}>
+                <EuiFlexItem>
+                    <WfoCubeSolid width="18" height="18" color="currentColor" />
                 </EuiFlexItem>
             </EuiFlexGroup>
         ),
