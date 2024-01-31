@@ -44,7 +44,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (
             lastModifiedAt: new Date(lastModifiedAt),
             subscriptions,
             productName: product?.name,
-            productTag: product?.tag,
+            tag: product?.tag,
             customer: customer.fullname,
             customerAbbreviation: customer.shortcode,
         };
@@ -101,8 +101,8 @@ const fieldMapper = (field: keyof ProcessListItem): keyof Process => {
             return 'customerShortcode' as keyof Process;
         case 'productName':
             return 'productName' as keyof Process;
-        case 'productTag':
-            return 'productTag' as keyof Process;
+        case 'tag':
+            return 'tag' as keyof Process;
         default:
             return field;
     }
