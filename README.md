@@ -7,9 +7,8 @@ To install and run the app
 
 ```
 git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git
-cd apps
 git submodule init
-cd ../
+git submodule update
 cp apps/wfo-ui/.env.example apps/wfo-iu/.env
 # change the values in the env file to point to your orchestrator backend
 # set auth=false or follow the directions bellow this sections
