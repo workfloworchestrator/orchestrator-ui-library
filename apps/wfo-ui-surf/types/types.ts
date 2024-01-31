@@ -163,14 +163,14 @@ export interface ImpactedObject {
     related_customers: ImpactedRelatedCustomer[];
 }
 
-export type ImpactTableColumns = Pick<
-    ImpactedObject,
-    'subscription_id' | 'subscription_description' | 'impact_override'
-> & {
+export type ImpactTableColumns = {
+    subscriptionId: string | null;
+    subscriptionDescription: string;
+    impactOverride: ImpactLevel;
     affectedCustomers: number; //think about 0 or null
     informCustomers: number;
     imsCalculatedImpact: ImpactLevel;
-    setImpactOverride: boolean;
+    showImpactOverride: boolean;
     impactedCustomersTableData?: ImpactedCustomersTableData;
 };
 

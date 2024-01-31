@@ -25,10 +25,9 @@ import { WfoImpactOverrideModal } from './WfoImpactOverrideModal';
 import { WfoImpactedCustomersTable } from './WfoImpactedCustomersTable';
 import { getImpactedCustomersTableData, getImsCalculatedImpact } from './utils';
 
-const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ImpactTableColumns =
-    'subscription_id';
+const SUBSCRIPTION_IMPACT_FIELD_ID: keyof ImpactTableColumns = 'subscriptionId';
 const SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS: keyof ImpactTableColumns =
-    'subscription_description';
+    'subscriptionDescription';
 const SUBSCRIPTION_IMPACT_FIELD_AFFECTED_CUSTOMERS: keyof ImpactTableColumns =
     'affectedCustomers';
 const SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS: keyof ImpactTableColumns =
@@ -36,9 +35,9 @@ const SUBSCRIPTION_IMPACT_FIELD_INFORM_CUSTOMERS: keyof ImpactTableColumns =
 const SUBSCRIPTION_IMPACT_FIELD_IMS_CALCULATED_IMPACT: keyof ImpactTableColumns =
     'imsCalculatedImpact';
 const SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE: keyof ImpactTableColumns =
-    'impact_override';
+    'impactOverride';
 const SUBSCRIPTION_IMPACT_FIELD_SET_IMPACT_OVERRIDE: keyof ImpactTableColumns =
-    'setImpactOverride';
+    'showImpactOverride';
 
 interface WfoImpactTableProps {
     serviceTicketDetail: ServiceTicketWithDetails;
@@ -58,7 +57,7 @@ export const WfoImpactTable = ({
         Record<string, ReactNode>
     >({});
     const [currentModalItemIndex, setCurrentModalItemIndex] = useState(-1);
-    const showOverrideImpact =
+    const showImpactOverride =
         serviceTicketDetail.process_state ===
             ServiceTicketProcessState.OPEN_ACCEPTED ||
         serviceTicketDetail.process_state ===
@@ -66,13 +65,13 @@ export const WfoImpactTable = ({
 
     const toggleDetails = (impactTableColumns: ImpactTableColumns) => {
         const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
-        const subscription_id = impactTableColumns.subscription_id!;
+        const subscriptionId = impactTableColumns.subscriptionId!;
         const tableData = impactTableColumns.impactedCustomersTableData;
 
-        if (itemIdToExpandedRowMapValues[subscription_id]) {
-            delete itemIdToExpandedRowMapValues[subscription_id];
+        if (itemIdToExpandedRowMapValues[subscriptionId]) {
+            delete itemIdToExpandedRowMapValues[subscriptionId];
         } else if (tableData) {
-            itemIdToExpandedRowMapValues[subscription_id] = (
+            itemIdToExpandedRowMapValues[subscriptionId] = (
                 <WfoImpactedCustomersTable
                     impactCustomerTableData={tableData}
                 />
@@ -82,7 +81,7 @@ export const WfoImpactTable = ({
     };
 
     const impactTableColumns: WfoTableColumns<ImpactTableColumns> = {
-        subscription_id: {
+        subscriptionId: {
             field: SUBSCRIPTION_IMPACT_FIELD_ID,
             width: '20',
             name: '',
@@ -109,12 +108,12 @@ export const WfoImpactTable = ({
                 );
             },
         },
-        subscription_description: {
+        subscriptionDescription: {
             field: SUBSCRIPTION_IMPACT_FIELD_SUBSCRIPTIONS,
             name: t('subscriptionTitle'),
             width: '200',
             render: (value, object) => (
-                <Link href={`/subscriptions/${object.subscription_id}`}>
+                <Link href={`/subscriptions/${object.subscriptionId}`}>
                     {value}
                 </Link>
             ),
@@ -157,7 +156,7 @@ export const WfoImpactTable = ({
             ),
             sortable: true,
         },
-        impact_override: {
+        impactOverride: {
             field: SUBSCRIPTION_IMPACT_FIELD_NOC_MANUAL_OVERRIDE,
             name: t('nocManualOverride'),
             width: '75',
@@ -170,13 +169,13 @@ export const WfoImpactTable = ({
             },
             sortable: true,
         },
-        setImpactOverride: {
+        showImpactOverride: {
             field: SUBSCRIPTION_IMPACT_FIELD_SET_IMPACT_OVERRIDE,
             name: '',
             width: '15',
             render: (value, object) => {
                 const index = serviceTicketDetail.impacted_objects.findIndex(
-                    (o) => o.subscription_id === object.subscription_id,
+                    (o) => o.subscription_id === object.subscriptionId,
                 );
                 return (
                     value && (
@@ -205,13 +204,13 @@ export const WfoImpactTable = ({
                         cimDefaultSendingLevel,
                     );
                 return {
-                    subscription_id: object.subscription_id,
-                    subscription_description: object.subscription_description,
+                    subscriptionId: object.subscription_id,
+                    subscriptionDescription: object.subscription_description,
                     affectedCustomers: object.related_customers.length + 1,
                     informCustomers: impactedCustomersTableData.informCustomers,
                     imsCalculatedImpact: getImsCalculatedImpact(object),
-                    impact_override: object.impact_override,
-                    setImpactOverride: showOverrideImpact,
+                    impactOverride: object.impact_override,
+                    showImpactOverride: showImpactOverride,
                     impactedCustomersTableData: impactedCustomersTableData,
                 };
             });
@@ -234,7 +233,7 @@ export const WfoImpactTable = ({
                 columns={impactTableColumns}
                 isExpandable={true}
                 itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-                itemId="subscription_id"
+                itemId="subscriptionId"
                 customTableStyle={expandableTableStyle}
             />
             {currentModalItemIndex >= 0 && (
