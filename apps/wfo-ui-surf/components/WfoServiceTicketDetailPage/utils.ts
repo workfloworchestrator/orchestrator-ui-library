@@ -3,10 +3,10 @@ import {
     ImpactLevelFromApi,
     ImpactedCustomerRelation,
     ImpactedCustomersTableColumns,
+    ImpactedCustomersTableData,
     ImpactedObject,
-    MinlObjectFromApi,
     ServiceTicketProcessState,
-} from '../../types';
+} from '@/types';
 
 export const abortEnabledValues: ServiceTicketProcessState[] = [
     ServiceTicketProcessState.OPEN_RELATED,
@@ -20,7 +20,7 @@ export const acceptImpactEnabledValues: ServiceTicketProcessState[] = [
 ];
 
 const impactLevelPriority = [
-    ImpactLevel.NO_IMPACT,
+    ImpactLevel.NEVER,
     ImpactLevel.REDUCED_REDUNDANCY,
     ImpactLevel.RESILIENCE_LOSS,
     ImpactLevel.DOWN,
@@ -34,8 +34,8 @@ export const convertApiToUiImpactLevel = (
     apiImpactLevel?: ImpactLevelFromApi,
 ) => {
     switch (apiImpactLevel) {
-        case ImpactLevelFromApi.NO_IMPACT:
-            return ImpactLevel.NO_IMPACT;
+        case ImpactLevelFromApi.NEVER:
+            return ImpactLevel.NEVER;
         case ImpactLevelFromApi.REDUCED_REDUNDANCY:
             return ImpactLevel.REDUCED_REDUNDANCY;
         case ImpactLevelFromApi.RESILIENCE_LOSS:
@@ -49,16 +49,15 @@ export const convertApiToUiImpactLevel = (
 
 export const getMinlForCustomer = (
     customerId: string,
-    apiMinl: MinlObjectFromApi[],
+    apiMinl: ImpactLevelFromApi,
 ) => {
-    const impact = apiMinl.find((m) => m.customer_id === customerId)?.impact;
-    return convertApiToUiImpactLevel(impact);
+    return convertApiToUiImpactLevel(apiMinl);
 };
 
 export const calculateInformCustomer = (
     sendingLevel: ImpactLevel,
     acceptedImpact: ImpactLevel,
-) => {
+): boolean => {
     return (
         getImpactedObjectPriority(acceptedImpact) >=
         getImpactedObjectPriority(sendingLevel)
@@ -72,19 +71,20 @@ export const calculateSendingLevel = (
     return minimalImpactLevel ?? defaultSendingLevel;
 };
 
-//TODO: Get the highest impact of all impacted objects
 export const getImsCalculatedImpact = (object: ImpactedObject) => {
-    // Get the highest impact level from object.ims_circuits. ImpactLevel.NO_IMPACT is the lowest possible impact level. ImpactLevel.DOWN is the highest possible impact level.
-    // Compare them with the following order: ImpactLevel.NO_IMPACT < ImpactLevel.REDUCED_REDUNDANCY < ImpactLevel.RESILIENCE_LOSS < ImpactLevel.DOWN
-    // if there are two circuits the one with the highest impact level is the one that will be returned
-    return object.ims_circuits[object.ims_circuits.length - 1].impact;
+    const { ims_circuits } = object;
+
+    return ims_circuits.reduce((highest, current) => {
+        const highestIndex = impactLevelPriority.indexOf(highest);
+        const currentIndex = impactLevelPriority.indexOf(current.impact);
+        return currentIndex > highestIndex ? current.impact : highest;
+    }, ims_circuits[0].impact);
 };
 
-export const mapImpactedObjectToImpactedCustomersColumns = (
+export const getImpactedCustomersTableData = (
     impactedObject: ImpactedObject,
-    minlObjectFromApi: MinlObjectFromApi[],
     cimDefaultSendingLevel: ImpactLevel,
-) => {
+): ImpactedCustomersTableData => {
     const customerTableColumns: ImpactedCustomersTableColumns[] = [];
 
     const allCustomers = [
@@ -106,17 +106,16 @@ export const mapImpactedObjectToImpactedCustomersColumns = (
             getImsCalculatedImpact(impactedObject);
         const customerMinl = getMinlForCustomer(
             object.customer.customer_id,
-            minlObjectFromApi,
+            object.customer.customer_minl,
         );
         const sendingLevel = calculateSendingLevel(
             customerMinl,
             cimDefaultSendingLevel,
         );
-        const informCustomer = calculateInformCustomer(
+        const informCustomer: boolean = calculateInformCustomer(
             sendingLevel,
             acceptedImpact,
         );
-
         customerTableColumns.push({
             customer: object.customer,
             relation: object.relation,
@@ -127,6 +126,12 @@ export const mapImpactedObjectToImpactedCustomersColumns = (
             informCustomer: informCustomer,
         });
     });
-
-    return customerTableColumns;
+    const informCustomersCount = customerTableColumns.filter(
+        (column) => column.informCustomer,
+    ).length;
+    return {
+        columns: customerTableColumns,
+        informCustomers: informCustomersCount,
+        imsCircuits: impactedObject.ims_circuits,
+    };
 };

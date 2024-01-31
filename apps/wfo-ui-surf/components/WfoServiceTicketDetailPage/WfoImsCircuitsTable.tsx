@@ -10,10 +10,10 @@ import {
 } from '@orchestrator-ui/orchestrator-ui-components';
 
 import { SurfConfigContext } from '@/contexts/SurfConfigContext';
-import { ServiceTicketImpactedIMSCircuit } from '@/types';
+import { IMSCircuit } from '@/types';
 
 interface WfoImpactedCustomersTableProps {
-    imsCircuits: ServiceTicketImpactedIMSCircuit[];
+    imsCircuits: IMSCircuit[];
 }
 
 export const WfoImsCircuitsTable = ({
@@ -26,39 +26,38 @@ export const WfoImsCircuitsTable = ({
     const { imsBaseUrl } = useContext(SurfConfigContext);
     const imsLink = imsBaseUrl.concat('/form', '/circuit', '/');
 
-    const imsCircuitsTableColumns: WfoTableColumns<ServiceTicketImpactedIMSCircuit> =
-        {
-            ims_circuit_id: {
-                field: 'ims_circuit_id',
-                name: t('imsCircuitId'),
-                width: '5%',
-                render: (value) => (
-                    <EuiText color={theme.colors.primary} size={'xs'}>
-                        <EuiLink href={imsLink + value}>
-                            <b>{value}</b>
-                        </EuiLink>
-                    </EuiText>
-                ),
-            },
-            ims_circuit_name: {
-                field: 'ims_circuit_name',
-                name: t('imsCircuitName'),
-                width: '40%',
-                render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
-            },
-            extra_information: {
-                field: 'extra_information',
-                name: t('extraInformation'),
-                width: '40%',
-                render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
-            },
-            impact: {
-                field: 'impact',
-                name: t('impact'),
-                width: '5%',
-                render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
-            },
-        };
+    const imsCircuitsTableColumns: WfoTableColumns<IMSCircuit> = {
+        ims_circuit_id: {
+            field: 'ims_circuit_id',
+            name: t('imsCircuitId'),
+            width: '5%',
+            render: (value) => (
+                <EuiText color={theme.colors.primary} size={'xs'}>
+                    <EuiLink href={imsLink + value}>
+                        <b>{value}</b>
+                    </EuiLink>
+                </EuiText>
+            ),
+        },
+        ims_circuit_name: {
+            field: 'ims_circuit_name',
+            name: t('imsCircuitName'),
+            width: '40%',
+            render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
+        },
+        extra_information: {
+            field: 'extra_information',
+            name: t('extraInformation'),
+            width: '40%',
+            render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
+        },
+        impact: {
+            field: 'impact',
+            name: t('impact'),
+            width: '5%',
+            render: (value) => <EuiText size={'xs'}>{value}</EuiText>,
+        },
+    };
 
     return (
         <>

@@ -17,7 +17,7 @@ export type SurfConfig = {
 };
 
 export const SurfConfigContext = createContext<SurfConfig>({
-    cimDefaultSendingLevel: ImpactLevel.NO_IMPACT,
+    cimDefaultSendingLevel: ImpactLevel.NEVER,
     cimApiBaseUrl: '',
     imsBaseUrl: '',
 });

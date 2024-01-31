@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -11,7 +11,6 @@ import {
     EuiText,
 } from '@elastic/eui';
 import {
-    OrchestratorConfigContext,
     WfoBadge,
     WfoBasicTable,
     WfoCheckmarkCircleFill,
@@ -19,48 +18,34 @@ import {
     WfoViewList,
     WfoXCircleFill,
     getWfoBasicTableStyles,
-    useFilterQueryWithRest,
     useOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { MINL_BY_SUBSCRIPTION_ENDPOINT } from '../../constants-surf';
-import { SurfConfigContext } from '../../contexts/SurfConfigContext';
 import {
     CustomerWithContacts,
     ImpactedCustomersTableColumns,
-    ImpactedObject,
-    ServiceTicketDefinition,
-} from '../../types';
+    ImpactedCustomersTableData,
+} from '@/types';
+
 import { WfoImpactLevelBadge } from '../WfoBadges/WfoImpactLevelBadge';
 import { WfoCustomersContactsModal } from './WfoCustomersContactsModal';
 import { WfoImsCircuitsTable } from './WfoImsCircuitsTable';
-import { mapImpactedObjectToImpactedCustomersColumns } from './utils';
 
 interface WfoImpactedCustomersTableProps {
-    impactedObject: ImpactedObject;
+    impactCustomerTableData: ImpactedCustomersTableData;
 }
 
 export const WfoImpactedCustomersTable = ({
-    impactedObject,
+    impactCustomerTableData,
 }: WfoImpactedCustomersTableProps) => {
     const t = useTranslations(
         'cim.serviceTickets.detail.tabDetails.general.subscriptionImpactCustomerTable',
     );
-    const { cimDefaultSendingLevel } = useContext(SurfConfigContext);
     const { theme } = useOrchestratorTheme();
     const [isContactsModalOpen, setIsContactsModalOpen] =
         useState<CustomerWithContacts>();
     const [isImsModalOpen, setIsImsModalOpen] = useState<boolean | undefined>();
     const { dropDownTableStyle } = getWfoBasicTableStyles(theme);
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-
-    const { data: minlObjectFromApi, isFetching } =
-        useFilterQueryWithRest<ServiceTicketDefinition>(
-            orchestratorApiBaseUrl +
-                MINL_BY_SUBSCRIPTION_ENDPOINT +
-                impactedObject.subscription_id,
-            ['minl', impactedObject.subscription_id ?? ''],
-        );
 
     const impactedCustomersTableColumns: WfoTableColumns<ImpactedCustomersTableColumns> =
         {
@@ -180,16 +165,7 @@ export const WfoImpactedCustomersTable = ({
             >
                 <EuiFlexItem>
                     <WfoBasicTable
-                        data={
-                            impactedObject && minlObjectFromApi
-                                ? mapImpactedObjectToImpactedCustomersColumns(
-                                      impactedObject,
-                                      minlObjectFromApi,
-                                      cimDefaultSendingLevel,
-                                  )
-                                : []
-                        }
-                        isLoading={isFetching}
+                        data={impactCustomerTableData.columns}
                         columns={impactedCustomersTableColumns}
                         customTableStyle={dropDownTableStyle}
                     />
@@ -220,7 +196,7 @@ export const WfoImpactedCustomersTable = ({
                         </EuiText>
                     </EuiModalHeader>
                     <WfoImsCircuitsTable
-                        imsCircuits={impactedObject.ims_circuits}
+                        imsCircuits={impactCustomerTableData.imsCircuits}
                     />
                 </EuiModal>
             )}
