@@ -109,20 +109,20 @@ export interface ServiceTicketLog {
 }
 
 export enum ImpactLevel {
-    NO_IMPACT = 'no_impact',
+    NEVER = 'no_impact',
     REDUCED_REDUNDANCY = 'reduced_redundancy',
     RESILIENCE_LOSS = 'resilience_loss',
     DOWN = 'down',
 }
 
 export enum ImpactLevelFromApi {
-    NO_IMPACT = 'No Impact',
+    NEVER = 'Never',
     REDUCED_REDUNDANCY = 'Reduced Redundancy',
-    RESILIENCE_LOSS = 'Lost Resiliency',
+    RESILIENCE_LOSS = 'Loss of Resiliency',
     DOWN = 'Downtime',
 }
 
-export interface ServiceTicketImpactedIMSCircuit {
+export interface IMSCircuit {
     ims_circuit_id: number;
     ims_circuit_name: string;
     impact: ImpactLevel;
@@ -133,6 +133,7 @@ export interface ImpactedCustomer {
     customer_id: string;
     customer_name: string;
     customer_abbrev: string;
+    customer_minl: ImpactLevelFromApi;
 }
 export interface ServiceTicketBackgroundJobCount {
     number_of_active_jobs: number;
@@ -154,7 +155,7 @@ export interface ImpactedObject {
     subscription_id: string | null;
     product_type: string;
     logged_by: string;
-    ims_circuits: ServiceTicketImpactedIMSCircuit[];
+    ims_circuits: IMSCircuit[];
     owner_customer: ImpactedCustomer;
     subscription_description: string;
     owner_customer_description?: string;
@@ -162,14 +163,15 @@ export interface ImpactedObject {
     related_customers: ImpactedRelatedCustomer[];
 }
 
-export type ImpactTableColumns = Pick<
-    ImpactedObject,
-    'subscription_id' | 'subscription_description' | 'impact_override'
-> & {
+export type ImpactTableColumns = {
+    subscriptionId: string | null;
+    subscriptionDescription: string;
+    impactOverride: ImpactLevel;
     affectedCustomers: number; //think about 0 or null
-    informCustomers: string;
+    informCustomers: number;
     imsCalculatedImpact: ImpactLevel;
-    setImpactOverride: boolean;
+    showImpactOverride: boolean;
+    impactedCustomersTableData?: ImpactedCustomersTableData;
 };
 
 export enum ImpactedCustomerRelation {
@@ -294,4 +296,10 @@ export type EmailListItem = {
     step: EmailStep;
     isExpanded: boolean;
     isButton: boolean;
+};
+
+export type ImpactedCustomersTableData = {
+    columns: ImpactedCustomersTableColumns[];
+    informCustomers: number;
+    imsCircuits: IMSCircuit[];
 };

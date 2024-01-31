@@ -48,7 +48,7 @@ export const getInitialOrchestratorConfig = (): OrchestratorConfig => {
 };
 
 export const getInitialSurfConfig = (): SurfConfig => {
-    const SURF_CIM_DEFAULT_SENDING_LEVEL = ImpactLevel.NO_IMPACT;
+    const SURF_CIM_DEFAULT_SENDING_LEVEL = ImpactLevel.NEVER;
     const DEFAULT_CIM_API_BASE_URL = 'http://localhost:8080/api';
     const DEFAULT_IMS_BASE_URL = 'https://ims-01.surfnet.nl:4445';
 

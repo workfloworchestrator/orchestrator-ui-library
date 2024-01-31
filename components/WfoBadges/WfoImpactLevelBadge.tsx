@@ -31,11 +31,11 @@ export const WfoImpactLevelBadge: FC<WfoProcessStatusBadgeProps> = ({
             dangerText,
         } = theme.colors;
 
-        const { NO_IMPACT, REDUCED_REDUNDANCY, RESILIENCE_LOSS, DOWN } =
+        const { NEVER, REDUCED_REDUNDANCY, RESILIENCE_LOSS, DOWN } =
             ImpactLevel;
 
         switch (impactedObjectImpact) {
-            case NO_IMPACT:
+            case NEVER:
                 return {
                     badgeColor: toSecondaryColor(success),
                     textColor: successText,
