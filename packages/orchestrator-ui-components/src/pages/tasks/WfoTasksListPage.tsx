@@ -126,7 +126,7 @@ export const WfoTasksListPage = () => {
         lastStep: defaultTableColumns.lastStep,
         lastStatus: defaultTableColumns.lastStatus,
         workflowTarget: defaultTableColumns.workflowTarget,
-        productTag: defaultTableColumns.productTag,
+        productTag: defaultTableColumns.tag,
         productName: defaultTableColumns.productName,
         customer: defaultTableColumns.customer,
         customerAbbreviation: defaultTableColumns.customerAbbreviation,

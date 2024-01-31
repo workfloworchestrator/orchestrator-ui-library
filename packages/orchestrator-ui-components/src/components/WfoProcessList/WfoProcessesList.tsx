@@ -59,7 +59,7 @@ export type ProcessListItem = Pick<
     startedAt: Date;
     lastModifiedAt: Date;
     productName?: string;
-    productTag?: string;
+    tag?: string;
     customer: string;
     customerAbbreviation: string;
 };
@@ -120,8 +120,8 @@ export const WfoProcessesList = ({
             width: '100',
             render: (target) => <WfoWorkflowTargetBadge target={target} />,
         },
-        productTag: {
-            field: 'productTag',
+        tag: {
+            field: 'tag',
             name: t('productTag'),
             width: '100',
         },

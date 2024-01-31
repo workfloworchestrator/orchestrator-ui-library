@@ -120,7 +120,7 @@
         "products": {
             "id": "ID",
             "name": "Product",
-            "tag": "Product tag",
+            "tag": "Tag",
             "description": "Product description",
             "productType": "Type",
             "status": "Status",
@@ -229,7 +229,7 @@
             "status": "Status",
             "insync": "In Sync",
             "product": "Product",
-            "tag": "Tag",
+            "tag": "Product tag",
             "startDate": "Start date",
             "endDate": "End date",
             "note": "Note",
