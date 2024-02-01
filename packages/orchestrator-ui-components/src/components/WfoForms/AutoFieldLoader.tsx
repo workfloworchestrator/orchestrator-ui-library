@@ -18,7 +18,6 @@ import {
     NestField,
     NumField,
     OptGroupField,
-    OrganisationField,
     ProductField,
     RadioField,
     SelectField,
@@ -75,8 +74,6 @@ export function autoFieldFunction(
                     return SummaryField;
                 case 'subscription':
                     return SubscriptionSummaryField;
-                case 'organisationId':
-                    return OrganisationField;
                 case 'customerId':
                     return CustomerField;
                 case 'locationCode':

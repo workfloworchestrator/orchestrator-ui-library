@@ -43,8 +43,6 @@ export type ContactPersonNameFieldProps = FieldProps<
     {
         customerId?: string;
         customerKey?: string;
-        organisationId?: string;
-        organisationKey?: string;
     }
 >;
 
@@ -52,16 +50,9 @@ declare module 'uniforms' {
     interface FilterDOMProps {
         customerId: never;
         customerKey: never;
-        organisationId: never;
-        organisationKey: never;
     }
 }
-filterDOMProps.register(
-    'customerId',
-    'customerKey',
-    'organisationId',
-    'organisationKey',
-);
+filterDOMProps.register('customerId', 'customerKey');
 
 function ContactPersonName({
     disabled,
@@ -79,17 +70,8 @@ function ContactPersonName({
     errorMessage,
     customerId,
     customerKey,
-    organisationId,
-    organisationKey,
     ...props
 }: ContactPersonNameFieldProps) {
-    if (organisationId) {
-        customerId = organisationId;
-    }
-    if (organisationKey) {
-        customerKey = organisationKey;
-    }
-
     const axiosApiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
     const { model, onChange: formOnChange, schema } = useForm();

@@ -47,8 +47,6 @@ declare module 'uniforms' {
         excludedSubscriptionIds: never;
         customerId: never;
         customerKey: never;
-        organisationId: never;
-        organisationKey: never;
         visiblePortMode: never;
         bandwidth: never;
         bandwidthKey: never;
@@ -61,8 +59,6 @@ filterDOMProps.register(
     'excludedSubscriptionIds',
     'customerId',
     'customerKey',
-    'organisationId',
-    'organisationKey',
     'visiblePortMode',
     'bandwidth',
     'bandwidthKey',
@@ -77,8 +73,6 @@ export type SubscriptionFieldProps = FieldProps<
         excludedSubscriptionIds?: string[];
         customerId?: string;
         customerKey?: string;
-        organisationId?: string;
-        organisationKey?: string;
         visiblePortMode?: string;
         bandwidth?: number;
         bandwidthKey?: string;
@@ -104,8 +98,6 @@ function SubscriptionFieldDefinition({
     excludedSubscriptionIds = [],
     customerId,
     customerKey,
-    organisationId,
-    organisationKey,
     visiblePortMode = 'all',
     bandwidth,
     bandwidthKey,
@@ -113,13 +105,6 @@ function SubscriptionFieldDefinition({
     statuses,
     ...props
 }: SubscriptionFieldProps) {
-    if (organisationId) {
-        customerId = organisationId;
-    }
-    if (organisationKey) {
-        customerKey = organisationKey;
-    }
-
     const t = useTranslations('pydanticForms');
     const { theme } = useOrchestratorTheme();
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components

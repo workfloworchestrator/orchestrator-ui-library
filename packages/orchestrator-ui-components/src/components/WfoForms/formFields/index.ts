@@ -18,7 +18,6 @@ export * from './SubscriptionSummaryField';
 export * from './TextField';
 export * from './DateField';
 export * from './TimestampField';
-export * from './OrganisationField';
 export * from './ContactPersonNameField';
 export * from './ImsNodeIdField';
 export * from './ImsPortIdField';
