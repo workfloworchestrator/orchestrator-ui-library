@@ -39,3 +39,5 @@ npm-debug.log*
 .idea
 .vscode
 
+# Temporary fix for surf version
+apps/wfo-ui-surf
