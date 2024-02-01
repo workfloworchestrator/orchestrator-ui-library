@@ -45,8 +45,8 @@ import { getPortMode } from './utils';
 declare module 'uniforms' {
     interface FilterDOMProps {
         excludedSubscriptionIds: never;
-        organisationId: never;
-        organisationKey: never;
+        customerId: never;
+        customerKey: never;
         visiblePortMode: never;
         bandwidth: never;
         bandwidthKey: never;
@@ -57,8 +57,8 @@ declare module 'uniforms' {
 filterDOMProps.register(
     'productIds',
     'excludedSubscriptionIds',
-    'organisationId',
-    'organisationKey',
+    'customerId',
+    'customerKey',
     'visiblePortMode',
     'bandwidth',
     'bandwidthKey',
@@ -71,8 +71,8 @@ export type SubscriptionFieldProps = FieldProps<
     {
         productIds?: string[];
         excludedSubscriptionIds?: string[];
-        organisationId?: string;
-        organisationKey?: string;
+        customerId?: string;
+        customerKey?: string;
         visiblePortMode?: string;
         bandwidth?: number;
         bandwidthKey?: string;
@@ -96,8 +96,8 @@ function SubscriptionFieldDefinition({
     className = '',
     productIds = [],
     excludedSubscriptionIds = [],
-    organisationId,
-    organisationKey,
+    customerId,
+    customerKey,
     visiblePortMode = 'all',
     bandwidth,
     bandwidthKey,
@@ -132,10 +132,10 @@ function SubscriptionFieldDefinition({
 
     const usedBandwidth = bandwidth || bandWithFromField;
 
-    // Get value from org field if organisationKey is set.
-    const usedOrganisationId = organisationKey
-        ? get(model, organisationKey, 'nonExistingOrgToFilterEverything')
-        : organisationId;
+    // Get value from org field if customerKey is set.
+    const usedCustomerId = customerKey
+        ? get(model, customerKey, 'nonExistingOrgToFilterEverything')
+        : customerId;
 
     const makeLabel = (subscription: SubscriptionDropdownOption) => {
         const description =
@@ -243,10 +243,10 @@ function SubscriptionFieldDefinition({
                 }
             }
 
-            // If a customer/organisation filter is applied we need to filter on that
+            // If a customer filter is applied we need to filter on that
             if (
-                usedOrganisationId &&
-                subscription.customer?.customerId !== usedOrganisationId
+                usedCustomerId &&
+                subscription.customer?.customerId !== usedCustomerId
             ) {
                 return false;
             }

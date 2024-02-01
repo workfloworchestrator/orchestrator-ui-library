@@ -62,9 +62,9 @@
             "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veldn(en) hebben validatie errors"
         },
         "widgets": {
-            "organisation": {
-                "placeholder": "Org placeholder",
-                "loading": "Organisaties laden..."
+            "customer": {
+                "placeholder": "Klant placeholder",
+                "loading": "Klanten laden..."
             },
             "contactPersonName": {
                 "placeholder": "Naam placeholder"

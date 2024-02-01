@@ -21,12 +21,12 @@ import { useGetCustomersQuery } from '@/rtk/endpoints';
 
 import { SelectField, SelectFieldProps } from './SelectField';
 
-export type OrganisationFieldProps = Omit<
+export type CustomerFieldProps = Omit<
     SelectFieldProps,
     'placeholder' | 'transform' | 'allowedValues'
 >;
 
-function Organisation({ ...props }: OrganisationFieldProps) {
+function Customer({ ...props }: CustomerFieldProps) {
     const t = useTranslations('pydanticForms');
 
     const { data: customers, isLoading } = useGetCustomersQuery();
@@ -47,11 +47,11 @@ function Organisation({ ...props }: OrganisationFieldProps) {
             disabled={isLoading}
             placeholder={
                 !isLoading
-                    ? t('widgets.organisation.placeholder')
-                    : t('widgets.organisation.loading')
+                    ? t('widgets.customer.placeholder')
+                    : t('widgets.customer.loading')
             }
         />
     );
 }
 
-export const OrganisationField = connectField(Organisation, { kind: 'leaf' });
+export const CustomerField = connectField(Customer, { kind: 'leaf' });

@@ -40,16 +40,19 @@ export function stop(e: React.SyntheticEvent) {
 
 export type ContactPersonNameFieldProps = FieldProps<
     string,
-    { organisationId?: string; organisationKey?: string }
+    {
+        customerId?: string;
+        customerKey?: string;
+    }
 >;
 
 declare module 'uniforms' {
     interface FilterDOMProps {
-        organisationId: never;
-        organisationKey: never;
+        customerId: never;
+        customerKey: never;
     }
 }
-filterDOMProps.register('organisationId', 'organisationKey');
+filterDOMProps.register('customerId', 'customerKey');
 
 function ContactPersonName({
     disabled,
@@ -65,8 +68,8 @@ function ContactPersonName({
     error,
     showInlineError,
     errorMessage,
-    organisationId,
-    organisationKey,
+    customerId,
+    customerKey,
     ...props
 }: ContactPersonNameFieldProps) {
     const axiosApiClient = useAxiosApiClient();
@@ -86,26 +89,21 @@ function ContactPersonName({
         : name;
     const contactsField = useField(useFieldName, {}, { absoluteName: true })[0];
 
-    const organisationFieldName =
-        organisationKey ||
-        contactsField.field.organisationKey ||
-        'organisation';
+    const customerFieldName =
+        customerKey || contactsField.field.customerKey || 'customer';
 
     // Get initial value for org field if it exists (we cant really test)
-    let organisationInitialValue;
+    let customerInitialValue;
     try {
-        organisationInitialValue = schema.getInitialValue(
-            organisationFieldName,
-            {},
-        );
+        customerInitialValue = schema.getInitialValue(customerFieldName, {});
     } catch {
-        organisationInitialValue = '';
+        customerInitialValue = '';
     }
 
-    const organisationIdValue =
-        organisationId ||
-        contactsField.field.organisationId ||
-        get(model, organisationFieldName, organisationInitialValue);
+    const customerIdValue =
+        customerId ||
+        contactsField.field.customerId ||
+        get(model, customerFieldName, customerInitialValue);
 
     const [displayAutocomplete, setDisplayAutocomplete] = useState(false);
     const [contactPersons, setContactPersons] = useState<ContactPerson[]>([]);
@@ -126,10 +124,10 @@ function ContactPersonName({
         : [];
 
     useEffect(() => {
-        if (organisationIdValue) {
+        if (customerIdValue) {
             axiosApiClient
                 .axiosFetch<ContactPerson[]>(
-                    `/surf/crm/contacts/${organisationIdValue}`,
+                    `/surf/crm/contacts/${customerIdValue}`,
                     {},
                     {},
                     false,
@@ -143,7 +141,7 @@ function ContactPersonName({
                     setContactPersons([]);
                 });
         }
-    }, [organisationIdValue, axiosApiClient]);
+    }, [customerIdValue, axiosApiClient]);
 
     useEffect(() => {
         // Set focus to the last name component to be created
