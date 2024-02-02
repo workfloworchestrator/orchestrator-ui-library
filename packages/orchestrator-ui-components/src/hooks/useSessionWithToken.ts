@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 
 export type SessionToken = Session & {
     accessToken?: string;
+    profile?: unknown; // todo: specify the type
 };
 
 export const useSessionWithToken = () => {

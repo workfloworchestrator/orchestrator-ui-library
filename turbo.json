@@ -16,6 +16,7 @@
         "NEXTAUTH_SECRET",
         "NEXTAUTH_ISSUER",
         "NEXTAUTH_URL",
+        "NEXTAUTH_WELL_KNOWN_OVERRIDE",
         "AUTH_ACTIVE"
     ],
     "pipeline": {
