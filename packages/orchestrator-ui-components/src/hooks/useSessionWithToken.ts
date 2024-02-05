@@ -1,6 +1,5 @@
 import { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import type { UseSessionOptions } from 'next-auth/src/react/types';
+import { UseSessionOptions, useSession } from 'next-auth/react';
 
 export type WfoSession = Session & {
     accessToken?: string;
