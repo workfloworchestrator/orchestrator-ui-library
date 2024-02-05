@@ -559,7 +559,11 @@ function UserInputForm({
                 color={buttons.next.color ?? 'primary'}
                 isLoading={processing}
                 type="submit"
-                iconType={() => <WfoPlayFill color="#FFF" />}
+                iconType={
+                    buttons.next.text
+                        ? undefined
+                        : () => <WfoPlayFill color="#FFF" />
+                }
                 iconSide="right"
             >
                 {buttons.next.text ?? t(nextButtonTranslationKey)}

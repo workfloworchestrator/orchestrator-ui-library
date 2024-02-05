@@ -19,11 +19,12 @@ import {
     IpBlock,
     IpPrefix,
     NodeSubscription,
-} from '../components/WfoForms/formFields/surf/types';
-import { ProductDefinition } from '../types';
+} from '@/components/WfoForms/formFields/surf/types';
+import { ProductDefinition } from '@/types';
+
 import { getAxiosInstance } from './axios';
 
-const FORMS_ENDPOINT = 'surf/forms/';
+const FORMS_ENDPOINT = 'surf/cim/forms/';
 const PROCESS_ENDPOINT = 'processes/';
 const PRODUCTS_ENDPOINT = 'products/';
 
