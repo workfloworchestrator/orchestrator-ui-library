@@ -333,7 +333,7 @@ function SubscriptionFieldDefinition({
                                 onChange(option?.value);
                             }}
                             options={options}
-                            value={isDisabled ? null : selectedValue}
+                            value={selectedValue}
                             isSearchable={true}
                             isClearable={false}
                             placeholder={
