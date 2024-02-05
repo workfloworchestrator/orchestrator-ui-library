@@ -3,7 +3,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'next',
         'next/core-web-vitals',
-        'turbo',
         'prettier',
     ],
     rules: {
