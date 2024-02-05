@@ -53,9 +53,9 @@ function CustomApp({
         <OrchestratorConfigProvider
             initialOrchestratorConfig={orchestratorConfig}
         >
-            <SessionProvider session={pageProps.session}>
-                <WfoAuth>
-                    <NoSSR>
+            <NoSSR>
+                <SessionProvider session={pageProps.session}>
+                    <WfoAuth>
                         <EuiProvider
                             colorMode="light"
                             modify={defaultOrchestratorTheme}
@@ -106,9 +106,9 @@ function CustomApp({
                                 </QueryClientProvider>
                             </ApiClientContextProvider>
                         </EuiProvider>
-                    </NoSSR>
-                </WfoAuth>
-            </SessionProvider>
+                    </WfoAuth>
+                </SessionProvider>
+            </NoSSR>
         </OrchestratorConfigProvider>
     );
 }

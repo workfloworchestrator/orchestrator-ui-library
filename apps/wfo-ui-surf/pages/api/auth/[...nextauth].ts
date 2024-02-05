@@ -2,16 +2,17 @@ import NextAuth, { AuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { OAuthConfig } from 'next-auth/providers';
 
-import { SessionToken } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    WfoSession,
+    WfoUserProfile,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const token_endpoint_auth_method = process.env.NEXTAUTH_CLIENT_SECRET
     ? 'client_secret_basic'
     : 'none';
 
-export interface WfoProfile extends Record<string, string> {}
-
 const authActive = process.env.AUTH_ACTIVE?.toLowerCase() != 'false';
-const WfoProvider: OAuthConfig<WfoProfile> = {
+const wfoProvider: OAuthConfig<WfoUserProfile> = {
     id: process.env.NEXTAUTH_ID || '',
     name: process.env.NEXTAUTH_ID || '',
     clientId: process.env.NEXTAUTH_CLIENT_ID || '',
@@ -37,7 +38,7 @@ const WfoProvider: OAuthConfig<WfoProfile> = {
 };
 
 export const authOptions: AuthOptions = {
-    providers: authActive ? [WfoProvider] : [],
+    providers: authActive ? [wfoProvider] : [],
     callbacks: {
         async jwt({ token, account }) {
             // Persist the OAuth access_token to the token right after signin
@@ -46,14 +47,9 @@ export const authOptions: AuthOptions = {
             }
             return token;
         },
-        async session({
-            session,
-            token,
-        }: {
-            session: SessionToken;
-            token: JWT;
-        }) {
+        async session({ session, token }: { session: WfoSession; token: JWT }) {
             // Send properties to the client, like an access_token from a provider.
+            session.profile = token.profile as WfoUserProfile | undefined;
             session.accessToken = token.accessToken
                 ? String(token.accessToken)
                 : '';

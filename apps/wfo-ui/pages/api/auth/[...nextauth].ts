@@ -2,16 +2,17 @@ import NextAuth, { AuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { OAuthConfig } from 'next-auth/providers';
 
-import { SessionToken } from '@orchestrator-ui/orchestrator-ui-components';
+import {
+    WfoSession,
+    WfoUserProfile,
+} from '@orchestrator-ui/orchestrator-ui-components';
 
 const token_endpoint_auth_method = process.env.NEXTAUTH_CLIENT_SECRET
     ? 'client_secret_basic'
     : 'none';
 
-export interface WfoProfile extends Record<string, string> {}
-
 const authActive = process.env.AUTH_ACTIVE?.toLowerCase() != 'false';
-const wfoProvider: OAuthConfig<WfoProfile> = {
+const wfoProvider: OAuthConfig<WfoUserProfile> = {
     id: process.env.NEXTAUTH_ID || '',
     name: process.env.NEXTAUTH_ID || '',
     type: 'oauth',
@@ -58,15 +59,9 @@ export const authOptions: AuthOptions = {
             }
             return token;
         },
-        async session({
-            session,
-            token,
-        }: {
-            session: SessionToken;
-            token: JWT;
-        }) {
+        async session({ session, token }: { session: WfoSession; token: JWT }) {
             // Assign data to the session to be available in the client through the useSession hook
-            session.profile = token.profile;
+            session.profile = token.profile as WfoUserProfile | undefined;
             session.accessToken = token.accessToken
                 ? String(token.accessToken)
                 : '';

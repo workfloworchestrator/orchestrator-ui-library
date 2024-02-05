@@ -9,10 +9,7 @@ import { WfoStartPage } from '@orchestrator-ui/orchestrator-ui-components';
 export function Index() {
     const { data: session } = useSession();
     const t = useTranslations('main');
-    // Sample usage of getting the user data from the session
     const username = session?.user?.name || '';
-
-    console.log('Index', { session });
 
     return (
         <>
