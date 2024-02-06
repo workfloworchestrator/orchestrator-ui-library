@@ -3,11 +3,15 @@
     "trailingComma": "all",
     "bracketSpacing": true,
     "importOrder": [
-        "^react", "^react-native", "^[a-zA-Z]", "^@?\\w", "^@/?\\w", "^[./]"
+        "^react",
+        "^react-native",
+        "^[a-zA-Z]",
+        "^@?\\w",
+        "^@/?\\w",
+        "^[./]"
     ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
-    "plugins": [
-        "@trivago/prettier-plugin-sort-imports"
-    ]
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "tabWidth": 4
 }
