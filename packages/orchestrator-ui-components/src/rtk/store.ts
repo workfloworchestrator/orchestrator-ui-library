@@ -6,8 +6,7 @@ import { CombinedState } from '@reduxjs/toolkit/query';
 import type { OrchestratorConfig } from '@/types';
 
 import { orchestratorApi } from './api';
-import { getOrchestratorConfigSlice } from './slices/orchestratorConfig';
-import { toastMessagesReducer } from './slices/toastMessages';
+import { getOrchestratorConfigSlice, toastMessagesReducer } from './slices';
 
 export type RootState = {
     orchestratorApi: CombinedState<
