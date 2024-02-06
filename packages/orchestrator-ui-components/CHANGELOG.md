@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.6.0
+
+### Minor Changes
+
+- d44c55c: Fix ProcessDetailQuery by removing form subfields
+  - !WARNING: this version requires backend version 2.1.0.
+    - It changes the graphql processes.page.form to a JSON type, so there are no subfields to request and will respond with an error.
+
 ## 0.5.2
 
 ### Patch Changes
