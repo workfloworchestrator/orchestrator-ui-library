@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.5.2
+
+### Patch Changes
+
+- e88410d: Update form fields to remove 'organisation' naming
+- 2310074: 723: Fix SummaryField .includes is not a function
+
 ## 0.5.1
 
 ### Patch Changes
