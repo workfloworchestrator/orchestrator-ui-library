@@ -89,13 +89,13 @@ function ContactPersonName({
         : name;
     const contactsField = useField(useFieldName, {}, { absoluteName: true })[0];
 
-    const customerFieldName =
-        customerKey || contactsField.field.customerKey || 'customer';
+    const customerIdFieldName =
+        customerKey || contactsField.field.customerKey || 'customer_id';
 
     // Get initial value for org field if it exists (we cant really test)
     let customerInitialValue;
     try {
-        customerInitialValue = schema.getInitialValue(customerFieldName, {});
+        customerInitialValue = schema.getInitialValue(customerIdFieldName, {});
     } catch {
         customerInitialValue = '';
     }
@@ -103,7 +103,7 @@ function ContactPersonName({
     const customerIdValue =
         customerId ||
         contactsField.field.customerId ||
-        get(model, customerFieldName, customerInitialValue);
+        get(model, customerIdFieldName, customerInitialValue);
 
     const [displayAutocomplete, setDisplayAutocomplete] = useState(false);
     const [contactPersons, setContactPersons] = useState<ContactPerson[]>([]);

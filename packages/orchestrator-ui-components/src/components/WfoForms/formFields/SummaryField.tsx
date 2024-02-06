@@ -46,12 +46,11 @@ function Summary({
     const { headers, labels, columns } = data;
 
     const extraColumnsData = columns.filter((_, index) => index !== 0);
-
     const rows = columns[0].map((row, index) => (
         <tr key={index}>
             {labels && <td className={`label`}>{labels[index]}</td>}
             <td className={`value`}>
-                {row.includes('<!doctype html>') ? (
+                {typeof row === 'string' && row.includes('<!doctype html>') ? (
                     <div
                         className="emailMessage"
                         dangerouslySetInnerHTML={{ __html: row }}
