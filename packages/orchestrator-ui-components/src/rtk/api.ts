@@ -19,7 +19,7 @@ type ExtraOptions = {
 
 const prepareHeaders = async (headers: Headers) => {
     const session = (await getSession()) as SessionWithToken;
-    if (session && session.accessToken) {
+    if (session?.accessToken) {
         headers.set('Authorization', `Bearer ${session.accessToken}`);
     }
     return headers;
@@ -38,17 +38,13 @@ export const orchestratorApi = createApi({
             case BaseQueryTypes.fetch:
                 const fetchFn = fetchBaseQuery({
                     baseUrl: orchestratorApiBaseUrl,
-                    prepareHeaders: (headers) => {
-                        return prepareHeaders(headers);
-                    },
+                    prepareHeaders,
                 });
                 return fetchFn(args, api, {});
             default:
                 const graphqlFn = graphqlRequestBaseQuery({
                     url: graphqlEndpointCore,
-                    prepareHeaders: (headers) => {
-                        return prepareHeaders(headers);
-                    },
+                    prepareHeaders,
                 });
                 return graphqlFn(args, api, {});
         }
