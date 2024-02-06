@@ -37,6 +37,7 @@ npm-debug.log*
 
 # IDE
 .idea
+*.iml
 .vscode
 
 # Temporary fix for surf version
