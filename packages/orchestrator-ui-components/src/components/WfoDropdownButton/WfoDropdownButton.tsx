@@ -2,8 +2,11 @@ import React, { ReactNode, useState } from 'react';
 
 import { EuiButtonGroup, EuiPopover } from '@elastic/eui';
 
+import { WfoChevronDown, WfoPencilAlt } from '@/icons';
+
 interface WfoDropdownButtonProps {
     label: string;
+    isDisabled?: boolean;
     children: ReactNode;
 }
 
@@ -18,7 +21,7 @@ export const WfoDropdownButton = ({
         {
             id: 'id_1',
             label: label,
-            iconType: 'documentEdit',
+            iconType: () => <WfoPencilAlt color="currentColor" />,
             style: {
                 textDecoration: isHovered && 'underline',
             },
@@ -26,7 +29,7 @@ export const WfoDropdownButton = ({
         {
             id: 'id_2',
             label: '',
-            iconType: 'arrowDown',
+            iconType: () => <WfoChevronDown color="currentColor" />,
             onMouseEnter: () => setIsHovered(true),
             onMouseLeave: () => setIsHovered(false),
         },

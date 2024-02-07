@@ -133,8 +133,15 @@ function mapWfoTableColumnsToEuiColumns<T extends object>(
         const typedColumnKey = colKey as keyof T;
         const column: WfoBasicTableColumns<T>[keyof T] =
             tableColumns[typedColumnKey];
-        const { name, render, width, description, sortable, filterable } =
-            column;
+        const {
+            name,
+            render,
+            width,
+            description,
+            sortable,
+            filterable,
+            truncateText,
+        } = column;
 
         // In most cases columns are sortable and filterable, making them optional saves some lines in configuring the table
         const isSortable = sortable ?? true;
@@ -174,7 +181,7 @@ function mapWfoTableColumnsToEuiColumns<T extends object>(
                     {name}
                 </WfoTableHeaderCell>
             ),
-            truncateText: true,
+            truncateText: truncateText ?? true,
             textOnly: true,
         };
     }

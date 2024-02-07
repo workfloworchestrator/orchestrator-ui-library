@@ -29,3 +29,4 @@ export * from './WfoPencil';
 export * from './WfoViewList';
 export * from './WfoContactEnvelopeFill';
 export * from './WfoBell';
+export * from './WfoWarningTriangle';
