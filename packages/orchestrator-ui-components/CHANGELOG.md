@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.7.0
+
+### Minor Changes
+
+- 5d20aec: Adds accesToken to RTK Query clients
+
 ## 0.6.0
 
 ### Minor Changes
