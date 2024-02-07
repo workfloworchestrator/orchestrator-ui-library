@@ -19,6 +19,7 @@ export type WfoTableDataColumnConfig<
     name: string;
     sortable?: boolean;
     filterable?: boolean;
+    truncateText?: boolean;
 };
 
 export const WFO_STATUS_COLOR_FIELD = 'statusColorField';
