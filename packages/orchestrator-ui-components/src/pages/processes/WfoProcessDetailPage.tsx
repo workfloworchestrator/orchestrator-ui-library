@@ -8,7 +8,12 @@ import {
 } from '../../components/WfoWorkflowSteps';
 import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
 import { useQueryWithGraphql } from '../../hooks';
-import { ProcessDoneStatuses, ProcessStatus, Step } from '../../types';
+import {
+    ProcessDetail,
+    ProcessDoneStatuses,
+    ProcessStatus,
+    Step,
+} from '../../types';
 import { getProductNamesFromProcess } from '../../utils';
 import { WfoProcessDetail } from './WfoProcessDetail';
 import {
@@ -33,6 +38,7 @@ export const WfoProcessDetailPage = ({
 }: WfoProcessDetailPageProps) => {
     const stepListRef = useRef<WfoStepListRef>(null);
     const [fetchInterval, setFetchInterval] = useState<number | undefined>();
+    const [process, setProcess] = useState<ProcessDetail | undefined>();
     const { data, isLoading, isError } = useQueryWithGraphql(
         GET_PROCESS_DETAIL_GRAPHQL_QUERY,
         {
@@ -64,7 +70,22 @@ export const WfoProcessDetailPage = ({
         );
     }, [data, processDetailRefetchInterval]);
 
-    const process = data?.processes.page[0];
+    useEffect(() => {
+        const fetchedProcessDetails = data?.processes.page[0];
+
+        if (!process) {
+            setProcess(fetchedProcessDetails);
+            return;
+        }
+
+        const shouldUpdateProcess =
+            process.lastStatus != fetchedProcessDetails?.lastStatus ||
+            process.lastStep !== fetchedProcessDetails?.lastStep;
+        if (shouldUpdateProcess) {
+            setProcess(fetchedProcessDetails);
+        }
+    }, [data, process]);
+
     const steps = process?.steps ?? [];
 
     const productNames = getProductNamesFromProcess(process);
