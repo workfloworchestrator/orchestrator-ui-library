@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.8.0
+
+### Minor Changes
+
+- 8eded72: Required for issue 573 Add restart open relate
+
+### Patch Changes
+
+- 534ecf4: 685: Fix form reloading and resetting inputs
+
 ## 0.7.0
 
 ### Minor Changes
