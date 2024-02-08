@@ -6,7 +6,7 @@ import { useQueryWithGraphql } from '../useQueryWithGraphql';
 
 export const useGetSubscriptionDropdownOptions = (
     tags: string[] = [],
-    statuses: string[] = [],
+    statuses: string[] = ['active'],
 ) => {
     // The way the graphql filterBy clause on the backend handled multiple AND values is by joining them with -
     const tagValue = tags.join('-');

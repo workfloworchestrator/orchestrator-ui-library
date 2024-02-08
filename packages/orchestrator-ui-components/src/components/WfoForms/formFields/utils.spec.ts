@@ -99,7 +99,7 @@ describe('formField utils', () => {
             expect(result).toEqual('NOTTAGGED');
         });
 
-        it('returns undefined if the last portMode if there are more than one productBlockInstanceValue with portmode', () => {
+        it('returns the first portMode if there are more than one productBlockInstanceValue with portmode', () => {
             const result = getPortMode([
                 getProductBlockInstance({
                     productBlockInstanceValues: [
@@ -118,7 +118,7 @@ describe('formField utils', () => {
                     ],
                 }),
             ]);
-            expect(result).toEqual('SECOND');
+            expect(result).toEqual('FIRST');
         });
 
         it('returns undefined if the productBlockInstances dont contain a portMode field', () => {
