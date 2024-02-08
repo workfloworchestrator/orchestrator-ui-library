@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
 import { ApiClient, getApiClient } from '@/api';
-import { useSessionWithToken } from '@/hooks';
+import { useWfoSession } from '@/hooks';
 
 import { OrchestratorConfigContext } from './OrchestratorConfigContext';
 
@@ -22,7 +22,7 @@ export const ApiClientContextProvider = ({
     children,
 }: ApiClientContextProviderProps) => {
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
     const accessToken = session?.accessToken;
     const apiClient = getApiClient(orchestratorApiBaseUrl, accessToken);
 

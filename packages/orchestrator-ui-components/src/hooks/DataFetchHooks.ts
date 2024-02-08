@@ -5,7 +5,7 @@ import { OrchestratorConfigContext } from '@/contexts';
 import { GraphqlFilter, ProcessDetailResultRaw } from '@/types';
 
 import { useQueryWithFetch } from './useQueryWithFetch';
-import { useSessionWithToken } from './useSessionWithToken';
+import { useWfoSession } from './useSessionWithToken';
 
 export type CacheNames = { [key: string]: string };
 
@@ -48,7 +48,7 @@ export const useFilterQueryWithRest = <Type>(
     filters?: GraphqlFilter<Type>[],
     refetchInterval?: number,
 ) => {
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
 
     const fetchFromApi = async () => {
         const response = await fetch(url, {
