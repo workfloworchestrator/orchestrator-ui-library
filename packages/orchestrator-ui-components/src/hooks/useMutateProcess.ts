@@ -4,11 +4,11 @@ import { useMutation, useQueryClient } from 'react-query';
 import { signOut } from 'next-auth/react';
 
 import { OrchestratorConfigContext } from '@/contexts';
-import { useSessionWithToken } from '@/hooks/index';
+import { useWfoSession } from '@/hooks/index';
 
 export const useMutateProcess = () => {
     const { processesEndpoint } = useContext(OrchestratorConfigContext);
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
     const queryClient = useQueryClient();
 
     const genericRequestHeaders = {

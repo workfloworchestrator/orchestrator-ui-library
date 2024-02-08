@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
 import { OrchestratorConfigContext } from '@/contexts';
-import { useSessionWithToken } from '@/hooks';
+import { useWfoSession } from '@/hooks';
 
 export interface SubscriptionAction {
     name: string;
@@ -28,7 +28,7 @@ export const useSubscriptionActions = (subscriptionId: string) => {
     const { subscriptionActionsEndpoint } = useContext(
         OrchestratorConfigContext,
     );
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
     const fetchSubscriptionActions = async () => {
         const response = await fetch(
             `${subscriptionActionsEndpoint}/${subscriptionId}`,

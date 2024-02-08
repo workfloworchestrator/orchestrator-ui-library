@@ -15,13 +15,6 @@ export type WfoUserProfile = {
     [key: string]: unknown;
 };
 
-// Todo rename this to useWfoSession and remove the use of useSession in the project
-export const useSessionWithToken = () => {
-    const sessionData = useSession();
-    const dataWithToken = sessionData.data as WfoSession;
-    return { ...sessionData, session: dataWithToken };
-};
-
 export const useWfoSession = <R extends boolean>(
     options?: UseSessionOptions<R>,
 ) => {

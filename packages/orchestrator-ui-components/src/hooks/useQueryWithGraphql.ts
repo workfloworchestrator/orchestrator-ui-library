@@ -8,7 +8,7 @@ import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 import { OrchestratorConfigContext } from '@/contexts';
 
-import { useSessionWithToken } from './useSessionWithToken';
+import { useWfoSession } from './useSessionWithToken';
 
 export const useQueryWithGraphql = <U, V extends Variables>(
     query: TypedDocumentNode<U, V>,
@@ -17,7 +17,7 @@ export const useQueryWithGraphql = <U, V extends Variables>(
     options: UseQueryOptions<U> = {},
 ) => {
     const { graphqlEndpointCore } = useContext(OrchestratorConfigContext);
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
 
     const graphQLClient = new GraphQLClient(graphqlEndpointCore);
 

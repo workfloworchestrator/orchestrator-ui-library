@@ -3,14 +3,14 @@ import { useQuery } from 'react-query';
 import { Variables } from 'graphql-request/build/cjs/types';
 import { signOut } from 'next-auth/react';
 
-import { useSessionWithToken } from './useSessionWithToken';
+import { useWfoSession } from './useSessionWithToken';
 
 export const useQueryWithFetch = <T, V extends Variables>(
     url: string,
     queryVars: V,
     queryKey: string,
 ) => {
-    const { session } = useSessionWithToken();
+    const { session } = useWfoSession();
     const requestHeaders = {
         authorization: session ? `Bearer ${session.accessToken}` : '',
     };
