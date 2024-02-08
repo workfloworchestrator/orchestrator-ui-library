@@ -114,7 +114,14 @@ export const WfoProcessDetail = ({
 
     const retryButtonIsDisabled =
         buttonsAreDisabled ||
-        !listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus);
+        !listIncludesStatus(
+            [
+                ProcessStatus.FAILED,
+                ProcessStatus.API_UNAVAILABLE,
+                ProcessStatus.INCONSISTENT_DATA,
+            ],
+            processDetail?.lastStatus,
+        );
     const abortButtonIsDisabled =
         buttonsAreDisabled ||
         listIncludesStatus(
