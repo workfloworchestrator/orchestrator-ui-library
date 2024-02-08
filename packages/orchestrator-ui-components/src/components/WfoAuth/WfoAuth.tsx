@@ -2,6 +2,7 @@ import React, { JSX, useContext } from 'react';
 
 import { WfoLoading } from '@/components';
 import { OrchestratorConfigContext } from '@/contexts';
+import { PolicyContextProvider } from '@/contexts/PolicyContext';
 import { useWfoSession } from '@/hooks';
 
 interface AuthProps {
@@ -22,8 +23,9 @@ export const WfoAuth = ({
         return <WfoLoading />;
     }
 
-    // Todo remove
-    console.error('Testing isAllowed', isAllowed('/orchestrator/prefixes/'));
-
-    return children;
+    return (
+        <PolicyContextProvider initialIsAllowed={isAllowed}>
+            {children}
+        </PolicyContextProvider>
+    );
 };
