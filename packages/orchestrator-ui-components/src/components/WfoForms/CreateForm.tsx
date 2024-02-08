@@ -14,7 +14,8 @@
  */
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Form, FormNotCompleteResponse } from '../../types/forms';
+import { Form, FormNotCompleteResponse } from '@/types/forms';
+
 import UserInputFormWizard from './UserInputFormWizard';
 import { useAxiosApiClient } from './useAxiosApiClient';
 
@@ -23,10 +24,11 @@ interface IProps {
     preselectedInput?: unknown;
     formKey: string;
     handleSubmit: (userInputs: any) => void;
+    handleCancel?: () => void;
 }
 
 export function CreateForm(props: IProps) {
-    const { preselectedInput, formKey, handleSubmit } = props;
+    const { preselectedInput, formKey, handleSubmit, handleCancel } = props;
     const [form, setForm] = useState<Form>({});
     const { stepUserInput, hasNext } = form;
     const apiClient = useAxiosApiClient();
@@ -61,7 +63,7 @@ export function CreateForm(props: IProps) {
                 <UserInputFormWizard
                     stepUserInput={stepUserInput}
                     validSubmit={submit}
-                    cancel={() => alert('cancelled')}
+                    cancel={handleCancel}
                     hasNext={hasNext ?? false}
                     isTask={false}
                 />
