@@ -44,7 +44,7 @@ function Customer({ ...props }: CustomerFieldProps) {
             {...props}
             allowedValues={Array.from(uuidCustomerNameMap.keys())}
             transform={(uuid: string) => uuidCustomerNameMap.get(uuid) || uuid}
-            disabled={isLoading}
+            disabled={isLoading || props.disabled}
             placeholder={
                 !isLoading
                     ? t('widgets.customer.placeholder')
