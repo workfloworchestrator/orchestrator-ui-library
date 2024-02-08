@@ -166,6 +166,13 @@ function SubscriptionFieldDefinition({
             ].includes(subscription.product.tag as ProductTag)
         ) {
             const portMode = getPortMode(subscription.productBlockInstances);
+            const subscriptionTitle =
+                subscription.productBlockInstances[0].productBlockInstanceValues.find(
+                    (item) => item.field === 'title',
+                );
+            if (subscriptionTitle) {
+                return `${subscriptionSubstring} - ${description.trim()} - ${subscriptionTitle.value}`;
+            }
             return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${
                 subscription.customer?.fullname
             }`;
