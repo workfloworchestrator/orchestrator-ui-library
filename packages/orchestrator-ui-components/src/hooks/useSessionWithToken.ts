@@ -29,7 +29,7 @@ export const useWfoSession = <R extends boolean>(
 
     // Data prop of type Session from NextAuth endpoint is not properly typed
     const { data, ...updatedSessionData } = sessionData;
-    const dataWithToken = data as WfoSession;
+    const dataWithToken = data as WfoSession | null;
 
     return { ...updatedSessionData, session: dataWithToken };
 };
