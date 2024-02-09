@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
-import type { SessionWithToken } from '@/hooks';
+import type { WfoSession } from '@/hooks';
 
 import type { RootState } from './store';
 
@@ -18,7 +18,7 @@ type ExtraOptions = {
 };
 
 const prepareHeaders = async (headers: Headers) => {
-    const session = (await getSession()) as SessionWithToken;
+    const session = (await getSession()) as WfoSession;
     if (session?.accessToken) {
         headers.set('Authorization', `Bearer ${session.accessToken}`);
     }
