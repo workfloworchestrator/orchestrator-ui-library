@@ -6,14 +6,16 @@ import React, {
     useContext,
 } from 'react';
 
+import { useRouter } from 'next/router';
+
 export type Policy = {
-    isAllowed: (resource: string) => boolean;
+    isAllowed: (resource: string, routerPath: string) => boolean;
 };
 
 export const PolicyContext = createContext<Policy>({ isAllowed: () => true });
 
 export type PolicyProviderProps = {
-    initialIsAllowed: (resource: string) => boolean;
+    initialIsAllowed: (resource: string, routerPath: string) => boolean;
     children: ReactNode;
 };
 
@@ -22,7 +24,8 @@ export const PolicyContextProvider: FC<PolicyProviderProps> = ({
     children,
 }) => {
     const isAllowed = useCallback(
-        (resource: string) => initialIsAllowed(resource),
+        (resource: string, routerPath: string) =>
+            initialIsAllowed(resource, routerPath),
         [initialIsAllowed],
     );
 
@@ -33,4 +36,11 @@ export const PolicyContextProvider: FC<PolicyProviderProps> = ({
     );
 };
 
-export const usePolicy = () => useContext(PolicyContext);
+export const usePolicy = () => {
+    const { isAllowed } = useContext(PolicyContext);
+    const router = useRouter();
+
+    return {
+        isAllowed: (resource: string) => isAllowed(resource, router.asPath),
+    };
+};
