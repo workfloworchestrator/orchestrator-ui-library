@@ -23,11 +23,7 @@ export const PolicyContextProvider: FC<PolicyProviderProps> = ({
     initialIsAllowed,
     children,
 }) => {
-    const isAllowed = useCallback(
-        (resource: string, routerPath: string) =>
-            initialIsAllowed(resource, routerPath),
-        [initialIsAllowed],
-    );
+    const isAllowed = useCallback(initialIsAllowed, [initialIsAllowed]);
 
     return (
         <PolicyContext.Provider value={{ isAllowed }}>
