@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { Variables } from 'graphql-request/build/cjs/types';
 import { signOut } from 'next-auth/react';
 
-import { useWfoSession } from './useSessionWithToken';
+import { useWfoSession } from './useWfoSession';
 
 export const useQueryWithFetch = <T, V extends Variables>(
     url: string,
