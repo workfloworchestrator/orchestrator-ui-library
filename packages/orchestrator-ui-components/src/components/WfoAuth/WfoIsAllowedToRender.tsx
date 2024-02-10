@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
-import { usePolicy } from '@/contexts';
+import { usePolicy } from '@/hooks';
 
 export type WfoIsAllowedToRenderProps = {
     resource: string;
