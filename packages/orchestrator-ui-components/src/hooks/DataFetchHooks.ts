@@ -5,7 +5,7 @@ import { OrchestratorConfigContext } from '@/contexts';
 import { GraphqlFilter, ProcessDetailResultRaw } from '@/types';
 
 import { useQueryWithFetch } from './useQueryWithFetch';
-import { useWfoSession } from './useSessionWithToken';
+import { useWfoSession } from './useWfoSession';
 
 export type CacheNames = { [key: string]: string };
 
