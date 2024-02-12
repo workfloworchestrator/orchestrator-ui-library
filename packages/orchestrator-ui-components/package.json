@@ -52,7 +52,7 @@
         "@testing-library/react": "^14.0.0",
         "@testing-library/user-event": "^14.5.2",
         "@types/invariant": "^2.2.33",
-        "@types/jest": "^29.5.8",
+        "@types/jest": "^29.5.12",
         "@types/object-hash": "^3.0.6",
         "@types/scroll-into-view": "^1.16.3",
         "esbuild": "^0.19.9",
