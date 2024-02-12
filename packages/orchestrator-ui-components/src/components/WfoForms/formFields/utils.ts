@@ -7,22 +7,20 @@ import { PortMode, ProductTag } from './surf/types';
 export const getPortMode = (
     productBlockInstances: ProductBlockInstance[],
 ): PortMode | undefined => {
-    const portMode = productBlockInstances?.reduce(
+    return productBlockInstances?.reduce(
         (portMode: PortMode | undefined, productBlockInstance) => {
             const portModeField =
                 productBlockInstance.productBlockInstanceValues.find(
                     (productBlockInstanceValue) =>
                         productBlockInstanceValue.field === 'portMode',
                 );
-            if (portModeField) {
+            if (!portMode && portModeField) {
                 return portModeField.value as PortMode;
             }
             return portMode;
         },
         undefined,
     );
-
-    return portMode;
 };
 
 export const isEmpty = (obj: unknown) => {
