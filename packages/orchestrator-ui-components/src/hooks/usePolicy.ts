@@ -9,6 +9,6 @@ export const usePolicy = () => {
     const router = useRouter();
 
     return {
-        isAllowed: (resource: string) => isAllowed(resource, router.asPath),
+        isAllowed: (resource?: string) => isAllowed(router.asPath, resource),
     };
 };

@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from 'react';
 import { usePolicy } from '@/hooks';
 
 export type WfoIsAllowedToRenderProps = {
-    resource: string;
+    resource?: string;
     children: ReactNode;
 };
 

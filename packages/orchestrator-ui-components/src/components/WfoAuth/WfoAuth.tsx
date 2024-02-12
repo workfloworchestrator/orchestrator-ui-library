@@ -7,7 +7,7 @@ import { useWfoSession } from '@/hooks';
 
 interface AuthProps {
     children: JSX.Element;
-    isAllowed?: (resource: string, routerPath: string) => boolean;
+    isAllowed?: (routerPath: string, resource?: string) => boolean;
 }
 
 export const WfoAuth = ({

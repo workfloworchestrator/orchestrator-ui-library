@@ -1,13 +1,13 @@
 import React, { FC, ReactNode, createContext, useCallback } from 'react';
 
 export type Policy = {
-    isAllowed: (resource: string, routerPath: string) => boolean;
+    isAllowed: (routerPath: string, resource?: string) => boolean;
 };
 
 export const PolicyContext = createContext<Policy>({ isAllowed: () => true });
 
 export type PolicyProviderProps = {
-    initialIsAllowed: (resource: string, routerPath: string) => boolean;
+    initialIsAllowed: (routerPath: string, resource?: string) => boolean;
     children: ReactNode;
 };
 
