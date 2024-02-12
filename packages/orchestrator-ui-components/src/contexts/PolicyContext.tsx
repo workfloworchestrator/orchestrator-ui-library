@@ -1,25 +1,23 @@
-import React, { FC, ReactNode, createContext, useCallback } from 'react';
+import React, { FC, ReactNode, createContext } from 'react';
 
 export type Policy = {
-    isAllowed: (routerPath: string, resource?: string) => boolean;
+    isAllowedHandler: (routerPath: string, resource?: string) => boolean;
 };
 
-export const PolicyContext = createContext<Policy>({ isAllowed: () => true });
+export const PolicyContext = createContext<Policy>({
+    isAllowedHandler: () => true,
+});
 
 export type PolicyProviderProps = {
-    initialIsAllowed: (routerPath: string, resource?: string) => boolean;
+    isAllowedHandler: (routerPath: string, resource?: string) => boolean;
     children: ReactNode;
 };
 
 export const PolicyContextProvider: FC<PolicyProviderProps> = ({
-    initialIsAllowed,
+    isAllowedHandler,
     children,
-}) => {
-    const isAllowed = useCallback(initialIsAllowed, [initialIsAllowed]);
-
-    return (
-        <PolicyContext.Provider value={{ isAllowed }}>
-            {children}
-        </PolicyContext.Provider>
-    );
-};
+}) => (
+    <PolicyContext.Provider value={{ isAllowedHandler }}>
+        {children}
+    </PolicyContext.Provider>
+);
