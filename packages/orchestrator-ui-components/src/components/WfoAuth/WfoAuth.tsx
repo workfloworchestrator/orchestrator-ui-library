@@ -7,17 +7,17 @@ import { useWfoSession } from '@/hooks';
 
 interface AuthProps {
     children: ReactNode;
-    isAllowed?: (routerPath: string, resource?: string) => boolean;
+    isAllowedHandler?: (routerPath: string, resource?: string) => boolean;
 }
 
 /**
- * The WfoAuth component exposes a function isAllowed to apply policy checks.
- * In components in this library a usePolicy hook is available that exposes this function
- * with the optional parameter "resource".
+ * The WfoAuth component exposes a function isAllowedHandler to apply policy checks.
+ * In components in this library a usePolicy hook is available that exposes a function isAllowed
+ * with 1 optional parameter "resource".
  *
  * For convenience there is also a WfoIsAllowedToRender component available. In both hook
  * and component the current route is determined in the usePolicy hook and passed as
- * first parameter in the isAllowed function in this WfoAuth component.
+ * first parameter in the isAllowedHandler function in this WfoAuth component.
  *
  * Example for usage in any component:
  * const { isAllowed } = usePolicy();
@@ -25,11 +25,14 @@ interface AuthProps {
  *
  * Example for implementing the isAllowed function:
  * const isAllowed = (routerPath: string, resource?: string) => {
- *     // Your own rules to determine is something is allowed or not
+ *     // Your own rules to determine if something is allowed or not
  *     // The useWfoSession hook can be used to get the current user profile
  * }
  */
-export const WfoAuth = ({ children, isAllowed = () => true }: AuthProps) => {
+export const WfoAuth = ({
+    children,
+    isAllowedHandler = () => true,
+}: AuthProps) => {
     const { authActive } = useContext(OrchestratorConfigContext);
     const { status } = useWfoSession({
         required: authActive,
@@ -40,7 +43,7 @@ export const WfoAuth = ({ children, isAllowed = () => true }: AuthProps) => {
     }
 
     return (
-        <PolicyContextProvider initialIsAllowed={isAllowed}>
+        <PolicyContextProvider isAllowedHandler={isAllowedHandler}>
             {children}
         </PolicyContextProvider>
     );
