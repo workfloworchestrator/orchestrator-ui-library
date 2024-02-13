@@ -2,7 +2,7 @@ import { CacheTags, orchestratorApi } from '../api';
 
 // From https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
 const streamMessagesApi = orchestratorApi.injectEndpoints({
-    endpoints: (build, api) => ({
+    endpoints: (build) => ({
         streamMessages: build.query({
             queryFn: () => {
                 return { data: [] };
@@ -20,30 +20,18 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     'message',
                     (message: MessageEvent<string>) => {
                         const tagToInvalidate =
-                            message.data as CacheTags as string;
-                        // const validCacheTags = Object.values(CacheTags);
-                        const validCacheTags: string[] = [
-                            'engineStatus',
-                            'testStatus',
-                        ];
-                        console.log(
-                            tagToInvalidate,
-                            validCacheTags,
-                            typeof tagToInvalidate,
-                            typeof validCacheTags,
-                        );
-                        console.log(validCacheTags.includes(tagToInvalidate));
+                            message.data.trim() as CacheTags;
+                        const validCacheTags = Object.values(CacheTags);
+
                         if (
                             tagToInvalidate &&
-                            validCacheTags.indexOf(tagToInvalidate) !== -1
+                            validCacheTags.includes(tagToInvalidate)
                         ) {
                             const cacheInvalidationAction =
-                                api.util.invalidateTags([tagToInvalidate]);
+                                orchestratorApi.util.invalidateTags([
+                                    tagToInvalidate,
+                                ]);
                             dispatch(cacheInvalidationAction);
-                            console.log(
-                                'invalidateTags: ' + tagToInvalidate,
-                                validCacheTags,
-                            );
                         } else {
                             console.error(
                                 `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
