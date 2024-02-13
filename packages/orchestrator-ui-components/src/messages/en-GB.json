@@ -265,7 +265,7 @@
             },
             "subscriptionInstanceId": "Instance ID",
             "ownerSubscriptionId": "Owner subscription ID",
-            "inUseByRelations": "In use by relation",
+            "inUseByRelations": "In-use by subscription(s)",
             "showDetails": "Show details",
             "self": "Current subscription",
             "hideDetails": "Hide details",
