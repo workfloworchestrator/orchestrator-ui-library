@@ -6,6 +6,8 @@ import { EuiPageTemplate } from '@elastic/eui';
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
+import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
+
 import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
 import { WfoPageHeader } from '../WfoPageHeader';
@@ -28,7 +30,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
 }) => {
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
-
+    useStreamMessagesQuery('start');
     const navigationHeight = multiplyByBaseUnit(3);
 
     return (
