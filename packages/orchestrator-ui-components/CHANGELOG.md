@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.8.1
+
+### Patch Changes
+
+- 5224527: 721: Fix customer select not being disabled
+- 16f32ad: 651: Fix incorrect port select options
+- 84a75b7: Change service port select label when root subscription instance has title
+
 ## 0.8.0
 
 ### Minor Changes
