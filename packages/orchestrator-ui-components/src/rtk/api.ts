@@ -13,6 +13,11 @@ export enum BaseQueryTypes {
     custom = 'custom',
 }
 
+export enum CacheTags {
+    engineStatus = 'engineStatus',
+    testStatus = 'testStatus',
+}
+
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
 };
@@ -50,5 +55,5 @@ export const orchestratorApi = createApi({
         }
     },
     endpoints: () => ({}),
-    tagTypes: ['engineStatus'],
+    tagTypes: [CacheTags.engineStatus],
 });

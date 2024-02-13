@@ -1,6 +1,6 @@
 import { EngineStatus } from '@/types';
 
-import { BaseQueryTypes, orchestratorApi } from '../api';
+import { BaseQueryTypes, CacheTags, orchestratorApi } from '../api';
 
 interface EngineStatusReturnValue {
     engineStatus: EngineStatus;
@@ -35,7 +35,7 @@ const statusApi = orchestratorApi.injectEndpoints({
                     runningProcesses: data?.running_processes || 0,
                 };
             },
-            providesTags: ['engineStatus'],
+            providesTags: [CacheTags.engineStatus],
         }),
         clearCache: build.mutation<void, string>({
             query: (settingName) => ({
@@ -60,7 +60,7 @@ const statusApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: ['engineStatus'],
+            invalidatesTags: [CacheTags.engineStatus],
         }),
     }),
 });
