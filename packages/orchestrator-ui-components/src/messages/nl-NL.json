@@ -69,6 +69,9 @@
             "contactPersonName": {
                 "placeholder": "Naam placeholder"
             },
+            "ipvAnyNetworkField": {
+                "manuallySelectedPrefix": "Manually selected prefix"
+            },
             "node_select": {
                 "nodes_loading": "Nodes laden...",
                 "select_node": "Selecteer node",
