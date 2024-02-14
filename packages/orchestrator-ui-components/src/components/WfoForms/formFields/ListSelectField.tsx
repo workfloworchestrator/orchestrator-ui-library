@@ -20,7 +20,7 @@ that seems to be impossible with the new webpack.
 import React from 'react';
 
 import { get } from 'lodash';
-import { connectField, joinName, useField, useForm } from 'uniforms';
+import { joinName, useField, useForm } from 'uniforms';
 
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
@@ -33,11 +33,12 @@ export type ListSelectFieldProps = FieldProps<
     { allowedValues?: string[]; transform?(value: string): string }
 >;
 
-function ListSelect({
+export function ListSelectField({
     allowedValues = [],
     fieldType,
     name,
     transform,
+    ...props
 }: ListSelectFieldProps) {
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
@@ -74,6 +75,8 @@ function ListSelect({
                         name=""
                         transform={transform}
                         allowedValues={allowedValues}
+                        fieldType={fieldType}
+                        {...props}
                     />
                 </ListItemField>
             </ListField>
@@ -84,9 +87,9 @@ function ListSelect({
                 name=""
                 transform={transform}
                 allowedValues={allowedValues}
+                fieldType={fieldType}
+                {...props}
             />
         );
     }
 }
-
-export const ListSelectField = connectField(ListSelect, { kind: 'leaf' });
