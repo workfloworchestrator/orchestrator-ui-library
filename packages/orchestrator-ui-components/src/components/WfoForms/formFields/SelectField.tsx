@@ -17,13 +17,7 @@ import ReactSelect from 'react-select';
 
 import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
-import {
-    connectField,
-    filterDOMProps,
-    joinName,
-    useField,
-    useForm,
-} from 'uniforms';
+import { joinName, useField, useForm } from 'uniforms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
@@ -39,7 +33,7 @@ export type SelectFieldProps = FieldProps<
     { allowedValues?: string[]; transform?(value: string): string }
 >;
 
-function Select({
+export function SelectField({
     allowedValues = [],
     disabled,
     fieldType,
@@ -106,16 +100,35 @@ function Select({
             <ListField name={name}>
                 <ListItemField name="$">
                     <ListSelectField
+                        {...{
+                            allowedValues,
+                            disabled,
+                            fieldType,
+                            id,
+                            label,
+                            description,
+                            name,
+                            onChange,
+                            placeholder,
+                            readOnly,
+                            transform,
+                            value,
+                            error,
+                            showInlineError,
+                            errorMessage,
+                        }}
+                        fieldType={fieldType}
                         name=""
                         transform={transform}
                         allowedValues={allowedValues}
+                        {...props}
                     />
                 </ListItemField>
             </ListField>
         );
     } else {
         return (
-            <section {...filterDOMProps(props)}>
+            <section>
                 <EuiFormRow
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
@@ -148,5 +161,3 @@ function Select({
         );
     }
 }
-
-export const SelectField = connectField(Select);

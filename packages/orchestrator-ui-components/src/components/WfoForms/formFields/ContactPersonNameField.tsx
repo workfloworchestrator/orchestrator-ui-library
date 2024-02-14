@@ -50,9 +50,10 @@ declare module 'uniforms' {
     interface FilterDOMProps {
         customerId: never;
         customerKey: never;
+        organisationKey: never;
     }
 }
-filterDOMProps.register('customerId', 'customerKey');
+filterDOMProps.register('customerId', 'customerKey', 'organisationKey');
 
 function ContactPersonName({
     disabled,
