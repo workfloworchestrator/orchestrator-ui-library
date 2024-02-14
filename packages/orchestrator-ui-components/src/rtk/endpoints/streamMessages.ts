@@ -1,3 +1,7 @@
+import { addToastMessage } from '@/rtk/slices/toastMessages';
+import { ToastTypes } from '@/types';
+import { getToastMessage } from '@/utils/getToastMessage';
+
 import { CacheTags, orchestratorApi } from '../api';
 
 // From https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
@@ -8,7 +12,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 return { data: [] };
             },
             async onCacheEntryAdded(
-                arg,
+                _,
                 { cacheDataLoaded, cacheEntryRemoved, dispatch },
             ) {
                 await cacheDataLoaded;
@@ -35,17 +39,24 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         } else {
                             console.error(
                                 `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
-                                validCacheTags,
                             );
                         }
                     },
                 );
 
                 webSocket.onerror = (event) => {
-                    console.error('WebSocket error observed:', event);
+                    console.error('WebSocket error', event);
                 };
                 webSocket.onopen = () => {
                     webSocket.send('start');
+                };
+                webSocket.onclose = () => {
+                    const message = getToastMessage(
+                        ToastTypes.ERROR,
+                        'Connection to the server was lost. Please refresh the page to reconnect.',
+                        'WebSocket closed',
+                    );
+                    dispatch(addToastMessage(message));
                 };
                 await cacheEntryRemoved;
                 webSocket.close();
