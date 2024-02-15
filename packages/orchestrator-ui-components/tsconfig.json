@@ -6,8 +6,8 @@
         "outDir": "./dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"],
-        },
+            "@/*": ["./src/*"]
+        }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx"],
     "exclude": [
@@ -15,6 +15,6 @@
         "**/*.stories.ts",
         "**/*.stories.js",
         "**/*.stories.jsx",
-        "**/*.stories.tsx",
-    ],
+        "**/*.stories.tsx"
+    ]
 }
