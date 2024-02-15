@@ -51,9 +51,15 @@ declare module 'uniforms' {
         customerId: never;
         customerKey: never;
         organisationKey: never;
+        organisationId: never;
     }
 }
-filterDOMProps.register('customerId', 'customerKey', 'organisationKey');
+filterDOMProps.register(
+    'customerId',
+    'customerKey',
+    'organisationKey',
+    'organisationId',
+);
 
 function ContactPersonName({
     disabled,
