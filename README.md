@@ -1,7 +1,9 @@
 # Orchestrator ui library
 
-This repo contains the generally reusable parts of the orchestrator ui grouped and exposed as pages, components and elements such as Icons.
+This repo contains the generally reusable parts of the orchestrator ui grouped and exposed as pages, components and elements such as icons.
 It is meant to be used together with an app that includes this library through NPM. For ease of development we have added the orchestrator example app implementation as a submodule in the folder /aps/wfo-ui.
+
+
 
 To install and run the app
 
@@ -13,7 +15,7 @@ git submodule update
 git submodule update --remote
 cp apps/wfo-ui/.env.example apps/wfo-iu/.env
 # change the values in the env file to point to your orchestrator backend
-# set auth=false or follow the directions bellow this sections
+# set auth=false or follow the directions below this sections
 npm install
 npm run dev
 ```
@@ -54,6 +56,10 @@ setup auth with keycloak in docker.
     -   go to the client details and go to tab `Credentials` and copy the Client secret and pase it into your env file. (`OAUTH2_RESOURCE_SERVER_SECRET`)
     -   if you don't use authorization and only use authentication set `OAUTH2_AUTHORIZATION_ACTIVE` to `False`. if you do have authentication, you should set `OAUTH2_TOKEN_URL` to the inspection endpoint of your auth provider.
     -   run the backend.
+
+# Contributing
+
+Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
 
 # Release and publish
 
