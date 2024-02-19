@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { useAxiosApiClient } from '../useAxiosApiClient';
-import { SelectField, SelectFieldProps } from './SelectField';
+import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
 
 export type LocationCodeFieldProps = { locationCodes?: string[] } & Omit<
     SelectFieldProps,
@@ -55,7 +55,7 @@ function LocationCode({ locationCodes, ...props }: LocationCodeFieldProps) {
     }, [axiosApiClient]);
 
     return (
-        <SelectField
+        <UnconnectedSelectField
             {...props}
             allowedValues={codes}
             placeholder={t('widgets.locationCode.placeholder')}

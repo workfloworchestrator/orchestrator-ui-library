@@ -33,7 +33,10 @@ export type SelectFieldProps = FieldProps<
     { allowedValues?: string[]; transform?(value: string): string }
 >;
 
-export function SelectField({
+/*
+
+*/
+export function UnconnectedSelectField({
     allowedValues = [],
     disabled,
     fieldType,

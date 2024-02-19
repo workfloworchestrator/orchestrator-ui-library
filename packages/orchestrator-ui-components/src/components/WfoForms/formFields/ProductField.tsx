@@ -21,7 +21,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { ProductDefinition } from '../../../types';
 import { useAxiosApiClient } from '../useAxiosApiClient';
-import { SelectField, SelectFieldProps } from './SelectField';
+import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
 
 export type ProductFieldProps = { productIds?: string[] } & Omit<
     SelectFieldProps,
@@ -65,7 +65,7 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
         }, {}) ?? {};
 
     return (
-        <SelectField
+        <UnconnectedSelectField
             name={name}
             {...props}
             allowedValues={Object.keys(productLabelLookup)}
