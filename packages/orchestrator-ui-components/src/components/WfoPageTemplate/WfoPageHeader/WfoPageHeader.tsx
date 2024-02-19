@@ -77,7 +77,9 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
-                        <WfoWebsocketStatusBadge />
+                        {WEBSOCKET_FEATURE_TOGGLE && (
+                            <WfoWebsocketStatusBadge />
+                        )}
                     </EuiBadgeGroup>
 
                     {ENABLE_THEME_SWITCH && (
