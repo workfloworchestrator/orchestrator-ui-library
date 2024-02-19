@@ -4,6 +4,7 @@ import { AutoField } from 'uniforms-unstyled';
 import {
     AcceptField,
     BoolField,
+    ConnectedSelectField,
     ContactPersonNameField,
     CustomerField,
     DateField,
@@ -20,7 +21,6 @@ import {
     OptGroupField,
     ProductField,
     RadioField,
-    SelectField,
     SubscriptionField,
     SubscriptionSummaryField,
     SummaryField,
@@ -91,7 +91,9 @@ export function autoFieldFunction(
     }
 
     if (allowedValues && format !== 'accept') {
-        return checkboxes && fieldType !== Array ? RadioField : SelectField;
+        return checkboxes && fieldType !== Array
+            ? RadioField
+            : ConnectedSelectField;
     } else {
         switch (fieldType) {
             case Array:
