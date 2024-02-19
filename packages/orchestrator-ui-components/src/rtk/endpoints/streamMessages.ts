@@ -18,14 +18,31 @@ const DEBOUNCE_CLOSE_INTERVAL = 10000;
 // From https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
 const streamMessagesApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
-        streamMessages: build.query({
+        streamMessages: build.query<boolean, void>({
             queryFn: () => {
-                return { data: [] };
+                return { data: false };
             },
             async onCacheEntryAdded(
                 _,
-                { cacheDataLoaded, cacheEntryRemoved, dispatch, getState },
+                {
+                    cacheDataLoaded,
+                    cacheEntryRemoved,
+                    dispatch,
+                    getState,
+                    updateCachedData,
+                },
             ) {
+                const cleanUp = () => {
+                    const message = getToastMessage(
+                        ToastTypes.ERROR,
+                        'Connection to the server was lost. Please refresh the page to reconnect.',
+                        'WebSocket closed',
+                    );
+                    dispatch(addToastMessage(message));
+                    clearInterval(pingInterval);
+                    updateCachedData(() => false);
+                };
+
                 await cacheDataLoaded;
 
                 const state = getState() as RootState;
@@ -76,19 +93,15 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 webSocket.onerror = (event) => {
                     console.error('WebSocket error', event);
+                    cleanUp();
                 };
                 webSocket.onopen = () => {
-                    webSocket.send('start');
+                    updateCachedData(() => true);
                 };
 
                 webSocket.onclose = () => {
-                    const message = getToastMessage(
-                        ToastTypes.ERROR,
-                        'Connection to the server was lost. Please refresh the page to reconnect.',
-                        'WebSocket closed',
-                    );
-                    dispatch(addToastMessage(message));
-                    clearInterval(pingInterval);
+                    console.error('WebSocket closed');
+                    cleanUp();
                 };
 
                 await cacheEntryRemoved;

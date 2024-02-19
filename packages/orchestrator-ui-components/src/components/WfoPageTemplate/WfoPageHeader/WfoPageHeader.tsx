@@ -17,6 +17,7 @@ import {
     WfoEnvironmentBadge,
     WfoFailedTasksBadge,
 } from '@/components';
+import { WfoWebsocketStatusBadge } from '@/components/WfoBadges/WfoWebsocketStatusBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -73,9 +74,10 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
 
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
-                    <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(2) }}>
+                    <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
+                        <WfoWebsocketStatusBadge />
                     </EuiBadgeGroup>
 
                     {ENABLE_THEME_SWITCH && (
