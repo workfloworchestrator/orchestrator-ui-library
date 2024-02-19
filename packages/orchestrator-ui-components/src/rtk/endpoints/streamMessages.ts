@@ -1,9 +1,19 @@
+import { debounce } from 'lodash';
+
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
 import { getToastMessage } from '@/utils/getToastMessage';
 
 import { CacheTags, orchestratorApi } from '../api';
+
+const getWebSocket = (url: string) => {
+    // TODO: Implement authentication taking this into account: https://stackoverflow.com/a/77060459o
+    return new WebSocket(url);
+};
+
+const PING_INTERVAL = 5000;
+const DEBOUNCE_CLOSE_INTERVAL = 10000;
 
 // From https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
 const streamMessagesApi = orchestratorApi.injectEndpoints({
@@ -20,30 +30,46 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 const state = getState() as RootState;
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
+                const webSocket = getWebSocket(orchestratorWebsocketUrl);
 
-                const webSocket = new WebSocket(orchestratorWebsocketUrl);
+                const pingInterval = setInterval(() => {
+                    webSocket.send('ping');
+                }, PING_INTERVAL);
 
-                // populate the array with messages as they are received from the websocket
+                const closeWebSocket = () => {
+                    webSocket.close();
+                };
+                const debounceCloseWebSocket = debounce(
+                    closeWebSocket,
+                    DEBOUNCE_CLOSE_INTERVAL,
+                );
+                debounceCloseWebSocket();
+
                 webSocket.addEventListener(
                     'message',
                     (message: MessageEvent<string>) => {
-                        const tagToInvalidate =
-                            message.data.trim() as CacheTags;
-                        const validCacheTags = Object.values(CacheTags);
+                        const tagOrPong = message.data.trim();
 
-                        if (
-                            tagToInvalidate &&
-                            validCacheTags.includes(tagToInvalidate)
-                        ) {
-                            const cacheInvalidationAction =
-                                orchestratorApi.util.invalidateTags([
-                                    tagToInvalidate,
-                                ]);
-                            dispatch(cacheInvalidationAction);
+                        if (tagOrPong === 'pong') {
+                            debounceCloseWebSocket();
                         } else {
-                            console.error(
-                                `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
-                            );
+                            const tagToInvalidate = tagOrPong as CacheTags;
+                            const validCacheTags = Object.values(CacheTags);
+
+                            if (
+                                tagToInvalidate &&
+                                validCacheTags.includes(tagToInvalidate)
+                            ) {
+                                const cacheInvalidationAction =
+                                    orchestratorApi.util.invalidateTags([
+                                        tagToInvalidate,
+                                    ]);
+                                dispatch(cacheInvalidationAction);
+                            } else {
+                                console.error(
+                                    `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
+                                );
+                            }
                         }
                     },
                 );
@@ -54,6 +80,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 webSocket.onopen = () => {
                     webSocket.send('start');
                 };
+
                 webSocket.onclose = () => {
                     const message = getToastMessage(
                         ToastTypes.ERROR,
@@ -61,8 +88,11 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         'WebSocket closed',
                     );
                     dispatch(addToastMessage(message));
+                    clearInterval(pingInterval);
                 };
+
                 await cacheEntryRemoved;
+
                 webSocket.close();
             },
         }),
