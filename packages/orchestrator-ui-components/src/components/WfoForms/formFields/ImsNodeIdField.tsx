@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { useAxiosApiClient } from '../useAxiosApiClient';
-import { SelectField, SelectFieldProps } from './SelectField';
+import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
 import { ImsNode } from './surf/types';
 
 export type ImsNodeIdFieldProps = {
@@ -91,7 +91,7 @@ function ImsNodeId({
         }, {}) ?? {};
 
     return (
-        <SelectField
+        <UnconnectedSelectField
             name=""
             {...props}
             allowedValues={Object.keys(imsNodeIdLabelLookup)}

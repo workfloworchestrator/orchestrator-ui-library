@@ -25,7 +25,7 @@ import { joinName, useField, useForm } from 'uniforms';
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
 // Avoid circular deps
-import { SelectField } from './SelectField';
+import { UnconnectedSelectField } from './SelectField';
 import { FieldProps } from './types';
 
 export type ListSelectFieldProps = FieldProps<
@@ -71,7 +71,7 @@ export function ListSelectField({
         return (
             <ListField name={name}>
                 <ListItemField name="$">
-                    <SelectField
+                    <UnconnectedSelectField
                         name=""
                         transform={transform}
                         allowedValues={allowedValues}
@@ -83,7 +83,7 @@ export function ListSelectField({
         );
     } else {
         return (
-            <SelectField
+            <UnconnectedSelectField
                 name=""
                 transform={transform}
                 allowedValues={allowedValues}

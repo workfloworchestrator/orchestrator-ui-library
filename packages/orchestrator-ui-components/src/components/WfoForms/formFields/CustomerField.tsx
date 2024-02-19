@@ -19,7 +19,7 @@ import { connectField } from 'uniforms';
 
 import { useGetCustomersQuery } from '@/rtk/endpoints';
 
-import { SelectField, SelectFieldProps } from './SelectField';
+import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
 
 export type CustomerFieldProps = Omit<
     SelectFieldProps,
@@ -40,7 +40,7 @@ function Customer({ ...props }: CustomerFieldProps) {
     }
 
     return (
-        <SelectField
+        <UnconnectedSelectField
             {...props}
             allowedValues={Array.from(uuidCustomerNameMap.keys())}
             transform={(uuid: string) => uuidCustomerNameMap.get(uuid) || uuid}
