@@ -14,7 +14,9 @@
         "welcome": "Welkom",
         "workflows": "Workflows",
         "darkMode": "Dark mode",
-        "lightMode": "Light mode"
+        "lightMode": "Light mode",
+        "websocketConnected": "De websocket is aktief",
+        "websocketDisconnected": "De websocket verbinding is verbroken, probeer de pagina te verversen."
     },
     "common": {
         "product": "Produkt",

@@ -7,7 +7,7 @@ import { WfoBadge } from '../WfoBadge/WfoBadge';
 
 export type HeaderBadgeProps = EuiBadgeProps & {
     textColor: TextColor | string;
-    children: ReactNode;
+    children?: ReactNode;
 };
 
 export const WfoHeaderBadge: FC<HeaderBadgeProps> = ({
@@ -18,7 +18,6 @@ export const WfoHeaderBadge: FC<HeaderBadgeProps> = ({
         ? {
               height: 24,
               display: 'flex',
-              paddingLeft: 0,
           }
         : {
               height: 24,

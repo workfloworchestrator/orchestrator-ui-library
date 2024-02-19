@@ -86,9 +86,7 @@ export const WfoFailedTasksBadge = () => {
                     iconType={() => (
                         <WfoCheckmarkCircleFill color={theme.colors.success} />
                     )}
-                >
-                    {taskCountsSummary.total}
-                </WfoHeaderBadge>
+                />
             </EuiToolTip>
         );
     }
