@@ -1,4 +1,5 @@
 import { addToastMessage } from '@/rtk/slices/toastMessages';
+import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
 import { getToastMessage } from '@/utils/getToastMessage';
 
@@ -13,11 +14,14 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
             },
             async onCacheEntryAdded(
                 _,
-                { cacheDataLoaded, cacheEntryRemoved, dispatch },
+                { cacheDataLoaded, cacheEntryRemoved, dispatch, getState },
             ) {
                 await cacheDataLoaded;
 
-                const webSocket = new WebSocket('ws://127.0.0.1:8888/');
+                const state = getState() as RootState;
+                const { orchestratorWebsocketUrl } = state.orchestratorConfig;
+
+                const webSocket = new WebSocket(orchestratorWebsocketUrl);
 
                 // populate the array with messages as they are received from the websocket
                 webSocket.addEventListener(
