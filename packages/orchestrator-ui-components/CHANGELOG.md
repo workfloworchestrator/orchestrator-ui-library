@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.10.0
+
+### Minor Changes
+
+- 18da717: 460 Introduces a usePolicy hook to help with conditionally rendering of components. The useWfoSession hook can be used to identify the user
+
 ## 0.9.1
 
 ### Patch Changes
