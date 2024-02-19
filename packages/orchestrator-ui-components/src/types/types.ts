@@ -462,6 +462,7 @@ export enum Environment {
 
 export type OrchestratorConfig = {
     environmentName: Environment | string;
+    orchestratorWebsocketUrl: string;
     orchestratorApiBaseUrl: string;
     graphqlEndpointCore: string;
     engineStatusEndpoint: string;

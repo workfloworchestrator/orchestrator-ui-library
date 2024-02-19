@@ -20,6 +20,10 @@ npm run dev
 
 This makes the orchestrator ui run on http://localhost:3000
 
+## Websocket
+
+The application tries to open a websocket to ORCHESTRATOR_WEBSOCKET_URL that defaults to ws://localhost:8080 to get updates as they happen. The messages received through this endpoint are used to invalidate the frontend cache that triggers a refetch of data were needed.
+
 # Authentication
 
 -   set `AUTH_ACTIVE` env variable to false or use setup below with auth.
