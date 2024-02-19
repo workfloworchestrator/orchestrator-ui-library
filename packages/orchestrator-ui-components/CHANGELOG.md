@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.9.0
+
+### Minor Changes
+
+- 8675375: Fixes a SelectField bug
+- c8c6e10: Update npm dependency versions
+
+### Patch Changes
+
+- 4bee6a1: Fixes crashes caused by uniforms connectField function
+- 56d5e6e: Trigger the changesets action
+
 ## 0.8.1
 
 ### Patch Changes
