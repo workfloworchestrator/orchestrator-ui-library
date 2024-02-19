@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 0.2.0
+
+### Minor Changes
+
+- c8c6e10: Update npm dependency versions
+
 ## 0.1.0
 
 ### Minor Changes
