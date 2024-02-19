@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.9.1
+
+### Patch Changes
+
+- 1578b99: NPM Audit fix for IP package
+
 ## 0.9.0
 
 ### Minor Changes
