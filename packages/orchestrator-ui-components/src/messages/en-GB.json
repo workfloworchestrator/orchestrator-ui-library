@@ -339,6 +339,11 @@
             "headerTitle": "Total active subscriptions",
             "listTitle": "Most recent subscriptions"
         },
+        "outOfSyncSubscriptions": {
+            "buttonText": "Show all active out-of-sync subscriptions",
+            "headerTitle": "Total active out-of-sync subscriptions",
+            "listTitle": "Most recent active out-of-sync subscriptions"
+        },
         "activeWorkflows": {
             "buttonText": "Show all active workflows",
             "headerTitle": "Total active workflows",

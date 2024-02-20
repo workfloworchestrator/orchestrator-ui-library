@@ -338,6 +338,11 @@
             "headerTitle": "Totaal aantal actieve subscriptions",
             "listTitle": "Meest recente subscriptions"
         },
+        "outOfSyncSubscriptions": {
+            "buttonText": "Toon alle actieve out-of-sync subscriptions",
+            "headerTitle": "Totaal aantal actieve out-of-sync subscriptions",
+            "listTitle": "Meest recente actieve out-of-sync subscriptions"
+        },
         "activeWorkflows": {
             "buttonText": "Toon alle actieve workflows",
             "headerTitle": "Totaal aantal actieve workflows",
