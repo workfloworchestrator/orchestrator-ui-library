@@ -12,7 +12,9 @@
         "tasks": "Tasks",
         "title": "Workflow Orchestrator",
         "welcome": "Welcome",
-        "workflows": "Workflows"
+        "workflows": "Workflows",
+        "darkMode": "Dark mode",
+        "lightMode": "Light mode"
     },
     "common": {
         "product": "Product",
