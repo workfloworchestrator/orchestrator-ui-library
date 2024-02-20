@@ -1,5 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     EuiBadgeGroup,
     EuiButtonIcon,
@@ -8,6 +10,7 @@ import {
     EuiHeaderSection,
     EuiHeaderSectionItem,
 } from '@elastic/eui';
+import type { EuiThemeColorMode } from '@elastic/eui';
 
 import {
     WfoEngineStatusBadge,
@@ -18,6 +21,7 @@ import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLog
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoLogoutIcon, WfoSideMenu } from '@/icons';
+import { ColorModes } from '@/types';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!
@@ -25,15 +29,21 @@ export interface WfoPageHeaderProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
     handleSideMenuClick: () => void;
     handleLogoutClick: () => void;
+    onThemeSwitch: (theme: EuiThemeColorMode) => void;
 }
+
+const ENABLE_THEME_SWITCH =
+    process.env.NEXT_PUBLIC_ENABLE_THEME_SWITCH || false;
 
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
     handleSideMenuClick,
     handleLogoutClick,
+    onThemeSwitch,
 }) => {
-    const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+    const t = useTranslations('main');
+    const { theme, multiplyByBaseUnit, colorMode } = useOrchestratorTheme();
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
     );
@@ -67,6 +77,37 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
                     </EuiBadgeGroup>
+
+                    {ENABLE_THEME_SWITCH && (
+                        <EuiButtonIcon
+                            aria-label={t(
+                                colorMode === ColorModes.LIGHT
+                                    ? 'darkMode'
+                                    : 'lightMode',
+                            )}
+                            display="empty"
+                            iconType={
+                                colorMode === ColorModes.LIGHT ? 'moon' : 'sun'
+                            }
+                            css={{
+                                width: '48px',
+                                height: '48px',
+                                color: 'white',
+                            }}
+                            title={t(
+                                colorMode === ColorModes.LIGHT
+                                    ? 'darkMode'
+                                    : 'lightMode',
+                            )}
+                            onClick={() =>
+                                onThemeSwitch(
+                                    colorMode === ColorModes.LIGHT
+                                        ? ColorModes.DARK
+                                        : ColorModes.LIGHT,
+                                )
+                            }
+                        />
+                    )}
 
                     <EuiButtonIcon
                         aria-label="Logout"

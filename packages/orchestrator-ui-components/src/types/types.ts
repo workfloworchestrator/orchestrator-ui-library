@@ -471,3 +471,8 @@ export type OrchestratorConfig = {
     subscriptionProcessesEndpoint: string;
     authActive: boolean;
 };
+
+export enum ColorModes {
+    LIGHT = 'LIGHT',
+    DARK = 'DARK',
+}
