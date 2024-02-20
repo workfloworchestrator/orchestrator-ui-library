@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 
-import { WfoSideMenu } from './WfoSidemenu';
+import { WfoSideMenu } from './WfoSideMenu';
 
 const Story: Meta<typeof WfoSideMenu> = {
     component: WfoSideMenu,
