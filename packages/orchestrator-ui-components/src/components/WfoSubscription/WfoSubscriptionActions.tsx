@@ -16,10 +16,12 @@ import {
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
+import { PolicyResource } from '@/configuration/policy-resources';
 import {
     SubscriptionAction,
     useCheckEngineStatus,
     useOrchestratorTheme,
+    usePolicy,
     useSubscriptionActions,
 } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
@@ -60,6 +62,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     const { data: subscriptionActions } =
         useSubscriptionActions(subscriptionId);
     const { isEngineRunningNow } = useCheckEngineStatus();
+    const { isAllowed } = usePolicy();
 
     const onButtonClick = () => {
         setPopover(!isPopoverOpen);
@@ -193,50 +196,68 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         >
             <EuiContextMenuPanel>
                 <EuiPanel color="transparent" paddingSize="s">
-                    {subscriptionActions && subscriptionActions.modify && (
-                        <>
-                            <MenuBlock title={t('modify')}></MenuBlock>
-                            {subscriptionActions.modify.map((action, index) => (
-                                <MenuItem
-                                    key={`m_${index}`}
-                                    action={action}
-                                    index={index}
-                                    target={WorkflowTarget.MODIFY}
-                                />
-                            ))}
-                        </>
-                    )}
+                    {subscriptionActions &&
+                        isAllowed(
+                            PolicyResource.SUBSCRIPTION_MODIFY + subscriptionId,
+                        ) &&
+                        subscriptionActions.modify && (
+                            <>
+                                <MenuBlock title={t('modify')}></MenuBlock>
+                                {subscriptionActions.modify.map(
+                                    (action, index) => (
+                                        <MenuItem
+                                            key={`m_${index}`}
+                                            action={action}
+                                            index={index}
+                                            target={WorkflowTarget.MODIFY}
+                                        />
+                                    ),
+                                )}
+                            </>
+                        )}
 
-                    {subscriptionActions && subscriptionActions.system && (
-                        <>
-                            <MenuBlock title={t('tasks')}></MenuBlock>
-                            {subscriptionActions.system.map((action, index) => (
-                                <MenuItem
-                                    key={`s_${index}`}
-                                    action={action}
-                                    index={index}
-                                    target={WorkflowTarget.SYSTEM}
-                                    isTask={true}
-                                />
-                            ))}
-                        </>
-                    )}
+                    {subscriptionActions &&
+                        isAllowed(
+                            PolicyResource.SUBSCRIPTION_VALIDATE +
+                                subscriptionId,
+                        ) &&
+                        subscriptionActions.system && (
+                            <>
+                                <MenuBlock title={t('tasks')}></MenuBlock>
+                                {subscriptionActions.system.map(
+                                    (action, index) => (
+                                        <MenuItem
+                                            key={`s_${index}`}
+                                            action={action}
+                                            index={index}
+                                            target={WorkflowTarget.SYSTEM}
+                                            isTask={true}
+                                        />
+                                    ),
+                                )}
+                            </>
+                        )}
 
-                    {subscriptionActions && subscriptionActions.terminate && (
-                        <>
-                            <MenuBlock title={t('terminate')}></MenuBlock>
-                            {subscriptionActions.terminate.map(
-                                (action, index) => (
-                                    <MenuItem
-                                        key={`t_${index}`}
-                                        action={action}
-                                        index={index}
-                                        target={WorkflowTarget.TERMINATE}
-                                    />
-                                ),
-                            )}
-                        </>
-                    )}
+                    {subscriptionActions &&
+                        isAllowed(
+                            PolicyResource.SUBSCRIPTION_TERMINATE +
+                                subscriptionId,
+                        ) &&
+                        subscriptionActions.terminate && (
+                            <>
+                                <MenuBlock title={t('terminate')}></MenuBlock>
+                                {subscriptionActions.terminate.map(
+                                    (action, index) => (
+                                        <MenuItem
+                                            key={`t_${index}`}
+                                            action={action}
+                                            index={index}
+                                            target={WorkflowTarget.TERMINATE}
+                                        />
+                                    ),
+                                )}
+                            </>
+                        )}
                 </EuiPanel>
             </EuiContextMenuPanel>
         </EuiPopover>
