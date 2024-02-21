@@ -15,7 +15,8 @@ export enum BaseQueryTypes {
 
 export enum CacheTags {
     engineStatus = 'engineStatus',
-    testStatus = 'testStatus', // This is a placeholder for now. Having only one messes up the type of the tag in the onCacheEntryAdded function.
+    // This is a placeholder for now. Having only one messes up the type of the tag in the onCacheEntryAdded function.
+    testStatus = 'testStatus',
 }
 
 type ExtraOptions = {

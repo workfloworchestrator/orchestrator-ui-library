@@ -10,7 +10,6 @@ import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
-``;
 export const WfoWebsocketStatusBadge = () => {
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
@@ -35,6 +34,7 @@ export const WfoWebsocketStatusBadge = () => {
                         <WfoXCircleFill color={theme.colors.danger} />
                     )
                 }
+                style={{ paddingLeft: '8px' }}
             />
         </EuiToolTip>
     );

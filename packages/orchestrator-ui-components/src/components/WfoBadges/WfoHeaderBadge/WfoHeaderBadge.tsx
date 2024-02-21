@@ -18,6 +18,7 @@ export const WfoHeaderBadge: FC<HeaderBadgeProps> = ({
         ? {
               height: 24,
               display: 'flex',
+              paddingLeft: 0,
           }
         : {
               height: 24,

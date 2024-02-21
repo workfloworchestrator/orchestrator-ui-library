@@ -35,6 +35,8 @@ export interface WfoPageHeaderProps {
 
 const ENABLE_THEME_SWITCH =
     process.env.NEXT_PUBLIC_USE_THEME_TOGGLE === 'true' || false;
+const ENABLE_WEBSOCKET =
+    process.env.NEXT_PUBLIC_USE_WEBSOCKET === 'true' || false;
 
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
@@ -77,9 +79,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
-                        {WEBSOCKET_FEATURE_TOGGLE && (
-                            <WfoWebsocketStatusBadge />
-                        )}
+                        {ENABLE_WEBSOCKET && <WfoWebsocketStatusBadge />}
                     </EuiBadgeGroup>
 
                     {ENABLE_THEME_SWITCH && (
