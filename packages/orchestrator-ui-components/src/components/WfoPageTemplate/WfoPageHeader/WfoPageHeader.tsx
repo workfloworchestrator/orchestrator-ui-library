@@ -33,7 +33,7 @@ export interface WfoPageHeaderProps {
 }
 
 const ENABLE_THEME_SWITCH =
-    process.env.NEXT_PUBLIC_ENABLE_THEME_SWITCH || false;
+    process.env.NEXT_PUBLIC_USE_THEME_TOGGLE === 'true' || false;
 
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
