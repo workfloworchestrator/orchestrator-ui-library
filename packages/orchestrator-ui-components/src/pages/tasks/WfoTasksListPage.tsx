@@ -19,6 +19,7 @@ import {
     DEFAULT_PAGE_SIZE,
     StoredTableConfig,
     WfoFilterTabs,
+    WfoIsAllowedToRender,
     WfoStartTaskButtonComboBox,
     WfoTableColumns,
 } from '@/components';
@@ -27,6 +28,7 @@ import {
     ProcessListItem,
     WfoProcessesList,
 } from '@/components/WfoProcessList/WfoProcessesList';
+import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
@@ -150,15 +152,25 @@ export const WfoTasksListPage = () => {
                 <EuiFlexItem>
                     <EuiFlexGroup justifyContent="flexEnd">
                         {' '}
-                        <EuiButton
-                            onClick={handleRerunAllButtonClick}
-                            iconType={() => (
-                                <WfoRefresh color={theme.colors.primaryText} />
-                            )}
+                        <WfoIsAllowedToRender
+                            resource={PolicyResource.TASKS_RETRY_ALL}
                         >
-                            {t('rerunAll')}
-                        </EuiButton>
-                        <WfoStartTaskButtonComboBox />
+                            <EuiButton
+                                onClick={handleRerunAllButtonClick}
+                                iconType={() => (
+                                    <WfoRefresh
+                                        color={theme.colors.primaryText}
+                                    />
+                                )}
+                            >
+                                {t('rerunAll')}
+                            </EuiButton>
+                        </WfoIsAllowedToRender>
+                        <WfoIsAllowedToRender
+                            resource={PolicyResource.TASKS_CREATE}
+                        >
+                            <WfoStartTaskButtonComboBox />
+                        </WfoIsAllowedToRender>
                     </EuiFlexGroup>
                 </EuiFlexItem>
             </EuiFlexGroup>

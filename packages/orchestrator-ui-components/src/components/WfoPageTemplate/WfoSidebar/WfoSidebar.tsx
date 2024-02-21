@@ -6,6 +6,9 @@ import { useRouter } from 'next/router';
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
+import { WfoIsAllowedToRender } from '@/components';
+import { PolicyResource } from '@/configuration/policy-resources';
+
 import {
     PATH_METADATA,
     PATH_METADATA_PRODUCTS,
@@ -69,6 +72,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             name: t('metadata'),
             id: '5',
+            href: PATH_METADATA,
             onClick: () => {
                 router.push(PATH_METADATA);
             },
@@ -139,7 +143,11 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             renderItem: () => (
                 <>
-                    <WfoStartCreateWorkflowButtonComboBox />
+                    <WfoIsAllowedToRender
+                        resource={PolicyResource.SUBSCRIPTION_CREATE}
+                    >
+                        <WfoStartCreateWorkflowButtonComboBox />
+                    </WfoIsAllowedToRender>
                     <EuiSpacer size="m" />
                     <WfoCopyright />
                 </>
