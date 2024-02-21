@@ -35,7 +35,10 @@ function Customer({ ...props }: CustomerFieldProps) {
 
     if (!isLoading && customers) {
         customers?.map((customer) => {
-            uuidCustomerNameMap.set(customer.customerId, customer.fullname);
+            uuidCustomerNameMap.set(
+                customer.customerId,
+                `${customer.shortcode} - ${customer.fullname}`,
+            );
         });
     }
 
