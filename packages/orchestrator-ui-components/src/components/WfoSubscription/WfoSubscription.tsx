@@ -2,11 +2,18 @@ import React from 'react';
 
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
+import {
+    EuiBadgeGroup,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiText,
+} from '@elastic/eui';
 
 import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '@/graphqlQueries';
-import { useQueryWithGraphql } from '@/hooks';
+import { useOrchestratorTheme, useQueryWithGraphql } from '@/hooks';
 
+import { WfoSubscriptionStatusBadge } from '../WfoBadges';
+import { WfoSubscriptionSyncStatusBadge } from '../WfoBadges/WfoSubscriptionSyncStatusBadge';
 import { WfoError } from '../WfoError';
 import { WfoFilterTabs } from '../WfoFilterTabs';
 import { WfoLoading } from '../WfoLoading';
@@ -30,6 +37,8 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
             SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         ),
     );
+
+    const { multiplyByBaseUnit } = useOrchestratorTheme();
 
     const selectedTab = ((): SubscriptionDetailTab => {
         return (
@@ -68,6 +77,20 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 <EuiText>
                                     <h2>{subscriptionDetail.description}</h2>
                                 </EuiText>
+                                <EuiBadgeGroup
+                                    css={{ marginRight: multiplyByBaseUnit(1) }}
+                                >
+                                    <EuiFlexItem grow={false}>
+                                        <WfoSubscriptionStatusBadge
+                                            status={subscriptionDetail.status}
+                                        />
+                                    </EuiFlexItem>
+                                    <EuiFlexItem grow={false}>
+                                        <WfoSubscriptionSyncStatusBadge
+                                            insync={subscriptionDetail.insync}
+                                        />
+                                    </EuiFlexItem>
+                                </EuiBadgeGroup>
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
                                 <WfoSubscriptionActions
