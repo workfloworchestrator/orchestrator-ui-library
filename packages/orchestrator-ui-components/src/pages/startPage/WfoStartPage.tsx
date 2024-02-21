@@ -109,7 +109,7 @@ export const WfoStartPage = () => {
             name: t('outOfSyncSubscriptions.buttonText'),
             url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28initial%7Cactive%29+insync%3Afalse`,
         },
-        isLoading: subscriptionsSummaryIsFetching,
+        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
     };
 
     const latestWorkflowsSummaryCard: SummaryCard = {
