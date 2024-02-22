@@ -12,8 +12,8 @@ const getWebSocket = (url: string) => {
     return new WebSocket(url);
 };
 
-const PING_INTERVAL = 5000;
-const DEBOUNCE_CLOSE_INTERVAL = 10000;
+const PING_INTERVAL_MS = 5000;
+const DEBOUNCE_CLOSE_INTERVAL_MS = 10000;
 
 /*
  * Websocket handling as recommended by RTK QUery see: https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
@@ -67,11 +67,11 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 // Send a ping message every to the websocket server to keep the connection alive
                 const pingInterval = setInterval(() => {
                     webSocket.send('ping');
-                }, PING_INTERVAL);
+                }, PING_INTERVAL_MS);
 
                 const debounceCloseWebSocket = debounce(() => {
                     webSocket.close();
-                }, DEBOUNCE_CLOSE_INTERVAL);
+                }, DEBOUNCE_CLOSE_INTERVAL_MS);
                 // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
                 debounceCloseWebSocket();
 
@@ -83,24 +83,25 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         if (tagOrPong === 'pong') {
                             // Reset the debounced every time a 'pong' message is received
                             debounceCloseWebSocket();
-                        } else {
-                            const tagToInvalidate = tagOrPong as CacheTags;
-                            const validCacheTags = Object.values(CacheTags);
+                            return;
+                        }
 
-                            if (
-                                tagToInvalidate &&
-                                validCacheTags.includes(tagToInvalidate)
-                            ) {
-                                const cacheInvalidationAction =
-                                    orchestratorApi.util.invalidateTags([
-                                        tagToInvalidate,
-                                    ]);
-                                dispatch(cacheInvalidationAction);
-                            } else {
-                                console.error(
-                                    `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
-                                );
-                            }
+                        const tagToInvalidate = tagOrPong as CacheTags;
+                        const validCacheTags = Object.values(CacheTags);
+
+                        if (
+                            tagToInvalidate &&
+                            validCacheTags.includes(tagToInvalidate)
+                        ) {
+                            const cacheInvalidationAction =
+                                orchestratorApi.util.invalidateTags([
+                                    tagToInvalidate,
+                                ]);
+                            dispatch(cacheInvalidationAction);
+                        } else {
+                            console.error(
+                                `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
+                            );
                         }
                     },
                 );
