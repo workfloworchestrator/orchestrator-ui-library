@@ -9,6 +9,7 @@ import { CacheTags, orchestratorApi } from '../api';
 
 const getWebSocket = (url: string) => {
     // TODO: Implement authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
+    // https://github.com/workfloworchestrator/orchestrator-core/issues/502 - https://github.com/workfloworchestrator/orchestrator-ui-library/issues/823
     return new WebSocket(url);
 };
 
