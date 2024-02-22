@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "0.10.0",
+    "version": "0.11.0",
     "license": "MIT",
     "scripts": {
         "test": "jest",
