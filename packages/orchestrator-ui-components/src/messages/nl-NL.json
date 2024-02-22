@@ -31,6 +31,7 @@
         "search": "Zoeken",
         "errorMessage": "Er is een fout opgetreden",
         "export": "Exporteren",
+        "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
         "insyncTrue": "in-sync",
         "insyncFalse": "out-of-sync"
     },

@@ -8,6 +8,7 @@ import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_na
 
 import { WfoIsAllowedToRender } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
+import { usePolicy } from '@/hooks';
 
 import {
     PATH_METADATA,
@@ -24,6 +25,17 @@ import {
 import { WfoCopyright } from './WfoCopyright';
 import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 
+export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
+    isAllowed ? undefined : () => <></>;
+
+export const urlPolicyMap = new Map<string, PolicyResource>([
+    [PATH_WORKFLOWS, PolicyResource.NAVIGATION_WORKFLOWS],
+    [PATH_SUBSCRIPTIONS, PolicyResource.NAVIGATION_SUBSCRIPTIONS],
+    [PATH_METADATA, PolicyResource.NAVIGATION_METADATA],
+    [PATH_TASKS, PolicyResource.NAVIGATION_TASKS],
+    [PATH_SETTINGS, PolicyResource.NAVIGATION_SETTINGS],
+]);
+
 export type WfoSidebarProps = {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
@@ -34,6 +46,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
+    const { isAllowed } = usePolicy();
 
     const toggleMobile = () => {
         setIsSideNavOpenOnMobile((openState) => !openState);
@@ -139,6 +152,18 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         },
     ];
 
+    const defaultMenuItemsFilteredByPolicy = defaultMenuItems.filter(
+        ({ href }) => {
+            if (!href) {
+                return true;
+            }
+
+            const policyResource = urlPolicyMap.get(href);
+
+            return policyResource ? isAllowed(policyResource) : true;
+        },
+    );
+
     const defaultMenu: EuiSideNavItemType<object>[] = [
         {
             renderItem: () => (
@@ -155,8 +180,8 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: 'Menu',
             id: '1',
             items: overrideMenuItems
-                ? overrideMenuItems(defaultMenuItems)
-                : defaultMenuItems,
+                ? overrideMenuItems(defaultMenuItemsFilteredByPolicy)
+                : defaultMenuItemsFilteredByPolicy,
         },
     ];
 
