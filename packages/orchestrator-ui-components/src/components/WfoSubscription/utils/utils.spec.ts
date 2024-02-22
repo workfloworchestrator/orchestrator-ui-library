@@ -1,10 +1,17 @@
 import { EuiThemeComputed } from '@elastic/eui';
 
 import { SubscriptionAction } from '../../../hooks';
-import { FieldValue, WorkflowTarget } from '../../../types';
+import {
+    FieldValue,
+    ProcessStatus,
+    SubscriptionDetailProcess,
+    WorkflowTarget,
+} from '../../../types';
 import {
     flattenArrayProps,
     getFieldFromProductBlockInstanceValues,
+    getLastUncompletedProcessId,
+    getLatestTaskDate,
     getProductBlockTitle,
     getWorkflowTargetColor,
     getWorkflowTargetIconContent,
@@ -188,5 +195,149 @@ describe('getWorkflowTargetIconContent', () => {
         expect(
             getWorkflowTargetIconContent('UNKNOWN_TARGET' as WorkflowTarget),
         ).toBe('M');
+    });
+});
+
+const testProcess: SubscriptionDetailProcess = {
+    workflowName: 'testWorkflow 1',
+    lastStatus: ProcessStatus.COMPLETED,
+    workflowTarget: WorkflowTarget.MODIFY,
+    createdBy: 'testUser 1',
+    processId: 'testProcessId 1',
+    startedAt: '2021-01-01T00:00:00Z',
+    isTask: false,
+};
+
+describe('getLastUncompletedProcessId', () => {
+    it('Returns empty string with empty process array', () => {
+        expect(getLastUncompletedProcessId([])).toBe('');
+    });
+
+    it('Return empty string when there is only completed process', () => {
+        const completedProcesses = [
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-01-01T00:00:00Z',
+            },
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-02-01T00:00:00Z',
+            },
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-03-01T00:00:00Z',
+            },
+        ];
+        expect(getLastUncompletedProcessId(completedProcesses)).toBe('');
+    });
+    it('Returns process id of uncompleted process', () => {
+        const failedProcess = {
+            ...testProcess,
+            lastStatus: ProcessStatus.FAILED,
+            processId: 'FAILED_PROCESS_ID',
+            startedAt: '2021-02-01T00:00:00Z',
+        };
+
+        const failedProcesses = [
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-01-01T00:00:00Z',
+            },
+            failedProcess,
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-03-01T00:00:00Z',
+            },
+        ];
+        expect(getLastUncompletedProcessId(failedProcesses)).toBe(
+            'FAILED_PROCESS_ID',
+        );
+    });
+
+    it('Returns last failed process id if there are more uncompleted processes', () => {
+        const failedProcess = {
+            ...testProcess,
+            lastStatus: ProcessStatus.FAILED,
+            processId: 'FAILED_PROCESS_1',
+            startedAt: '2021-02-01T00:00:00Z',
+        };
+
+        const failedProcess2 = {
+            ...testProcess,
+            lastStatus: ProcessStatus.SUSPENDED,
+            processId: 'FAILED_PROCESS_ID_2',
+            startedAt: '2021-04-01T00:00:00Z',
+        };
+
+        const failedProcesses = [
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-01-01T00:00:00Z',
+            },
+            failedProcess,
+            {
+                ...testProcess,
+                lastStatus: ProcessStatus.COMPLETED,
+                startedAt: '2021-03-01T00:00:00Z',
+            },
+            failedProcess2,
+        ];
+        expect(getLastUncompletedProcessId(failedProcesses)).toBe(
+            'FAILED_PROCESS_ID_2',
+        );
+    });
+});
+
+describe('getLatestTaskDate', () => {
+    it('Returns empty string on empty array', () => {
+        expect(getLatestTaskDate([])).toBe('');
+    });
+
+    it('Returns empty string if there are no tasks among the processes', () => {
+        const workflowsOnly = [
+            { ...testProcess, isTask: false },
+            { ...testProcess, isTask: false },
+        ];
+
+        expect(getLatestTaskDate(workflowsOnly)).toBe('');
+    });
+
+    it('Returns date of tasks among the processes', () => {
+        const workflowsAndTask = [
+            { ...testProcess, isTask: false },
+            { ...testProcess, isTask: true, startedAt: '2021-01-01T00:00:00Z' },
+            { ...testProcess, isTask: false },
+        ];
+
+        expect(getLatestTaskDate(workflowsAndTask)).toBe(
+            '2021-01-01T00:00:00Z',
+        );
+    });
+
+    it('Returns date of last task among the processes if there are more tasks', () => {
+        const workflowsAndTask = [
+            {
+                ...testProcess,
+                isTask: false,
+                startedAt: '2021-01-01T00:00:00Z',
+            },
+            { ...testProcess, isTask: true, startedAt: '2021-02-01T00:00:00Z' },
+            {
+                ...testProcess,
+                isTask: false,
+                startedAt: '2021-03-01T00:00:00Z',
+            },
+            { ...testProcess, isTask: true, startedAt: '2021-04-01T00:00:00Z' },
+        ];
+
+        expect(getLatestTaskDate(workflowsAndTask)).toBe(
+            '2021-04-01T00:00:00Z',
+        );
     });
 });
