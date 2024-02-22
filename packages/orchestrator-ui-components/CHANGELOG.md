@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.11.0
+
+### Minor Changes
+
+- 6332355: Adds dark theme behind feature toggle
+- e808db4: Add a websocket that can be called to clear cache
+
+### Patch Changes
+
+- c3da8a6: add customer abbrev to customer drop down string in form field
+- 05c9acc: add status and insync badge to subscription detail page
+
 ## 0.10.0
 
 ### Minor Changes

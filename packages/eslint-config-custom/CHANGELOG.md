@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 0.3.1
+
+### Patch Changes
+
+- 5be68af: Exposing @typescript-eslint/eslint-plugin as dependency instead of devDependency
+
 ## 0.3.0
 
 ### Minor Changes
