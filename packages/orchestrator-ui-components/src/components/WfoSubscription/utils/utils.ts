@@ -2,9 +2,14 @@ import { TranslationValues } from 'next-intl';
 
 import { EuiThemeComputed } from '@elastic/eui';
 
-import { SubscriptionAction } from '../../../hooks';
-import type { FieldValue } from '../../../types';
-import { WorkflowTarget } from '../../../types';
+import { SubscriptionAction } from '@/hooks';
+
+import {
+    FieldValue,
+    ProcessStatus,
+    SubscriptionDetailProcess,
+    WorkflowTarget,
+} from '../../../types';
 
 const MAX_LABEL_LENGTH = 45;
 
@@ -89,4 +94,40 @@ export const getWorkflowTargetIconContent = (
         default:
             return 'M';
     }
+};
+
+export const getLastUncompletedProcessId = (
+    processes: SubscriptionDetailProcess[],
+): string => {
+    if (processes.length === 0) {
+        return '';
+    }
+
+    const uncompletedProcesses = processes
+        .filter((process) => process.lastStatus !== ProcessStatus.COMPLETED)
+        .sort((a, b) => {
+            const dateA = new Date(a.startedAt);
+            const dateB = new Date(b.startedAt);
+            return dateB.getTime() - dateA.getTime();
+        });
+
+    return uncompletedProcesses.length > 0
+        ? uncompletedProcesses[0].processId
+        : '';
+};
+
+export const getLatestTaskDate = (processes: SubscriptionDetailProcess[]) => {
+    if (processes.length === 0) {
+        return '';
+    }
+
+    const tasks = processes
+        .filter((process) => process.isTask)
+        .sort((a, b) => {
+            const dateA = new Date(a.startedAt);
+            const dateB = new Date(b.startedAt);
+            return dateB.getTime() - dateA.getTime();
+        });
+
+    return tasks.length > 0 ? tasks[0].startedAt : '';
 };
