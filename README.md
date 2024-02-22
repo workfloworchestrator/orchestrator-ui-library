@@ -22,7 +22,7 @@ This makes the orchestrator ui run on http://localhost:3000
 
 ## Websocket
 
-The application tries to open a websocket to ORCHESTRATOR_WEBSOCKET_URL that defaults to ws://localhost:8080 to get updates as they happen. The messages received through this endpoint are used to invalidate the frontend cache that triggers a refetch of data were needed.
+Using websockets is controlled by NEXT_PUBLIC_USE_WEBSOCKET, when set to 'true' the application tries to open a websocket to ORCHESTRATOR_WEBSOCKET_URL that defaults to ws://localhost:8080 to get updates as they happen. The messages received through this endpoint are used to invalidate the frontend cache that triggers a refetch of data were needed.
 
 # Authentication
 
