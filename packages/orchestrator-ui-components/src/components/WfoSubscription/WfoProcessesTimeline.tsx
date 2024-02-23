@@ -133,16 +133,16 @@ export const WfoProcessesTimeline = ({
             <EuiCommentList aria-label="Processes">
                 {subscriptionDetailProcesses && (
                     <EuiCommentList aria-label="Processes">
-                        {subscriptionDetailProcesses.map(
-                            (subscriptionDetailProcess, index) => (
+                        {subscriptionDetailProcesses
+                            .filter((process) => !process.isTask)
+                            .map((subscriptionDetailProcess, index) => (
                                 <WfoRenderSubscriptionProcess
                                     key={index}
                                     subscriptionDetailProcess={
                                         subscriptionDetailProcess
                                     }
                                 />
-                            ),
-                        )}
+                            ))}
                     </EuiCommentList>
                 )}
             </EuiCommentList>

@@ -10,7 +10,7 @@ import {
 import {
     flattenArrayProps,
     getFieldFromProductBlockInstanceValues,
-    getLastUncompletedProcessId,
+    getLastUncompletedProcess,
     getLatestTaskDate,
     getProductBlockTitle,
     getWorkflowTargetColor,
@@ -208,12 +208,12 @@ const testProcess: SubscriptionDetailProcess = {
     isTask: false,
 };
 
-describe('getLastUncompletedProcessId', () => {
+describe('getLastUncompletedProcess', () => {
     it('Returns empty string with empty process array', () => {
-        expect(getLastUncompletedProcessId([])).toBe('');
+        expect(getLastUncompletedProcess([])).toBe(undefined);
     });
 
-    it('Return empty string when there is only completed process', () => {
+    it('Return undefined string when there is only completed process', () => {
         const completedProcesses = [
             {
                 ...testProcess,
@@ -231,9 +231,9 @@ describe('getLastUncompletedProcessId', () => {
                 startedAt: '2021-03-01T00:00:00Z',
             },
         ];
-        expect(getLastUncompletedProcessId(completedProcesses)).toBe('');
+        expect(getLastUncompletedProcess(completedProcesses)).toBe(undefined);
     });
-    it('Returns process id of uncompleted process', () => {
+    it('Returns uncompleted process from list of processes', () => {
         const failedProcess = {
             ...testProcess,
             lastStatus: ProcessStatus.FAILED,
@@ -254,12 +254,12 @@ describe('getLastUncompletedProcessId', () => {
                 startedAt: '2021-03-01T00:00:00Z',
             },
         ];
-        expect(getLastUncompletedProcessId(failedProcesses)).toBe(
+        expect(getLastUncompletedProcess(failedProcesses)?.processId).toBe(
             'FAILED_PROCESS_ID',
         );
     });
 
-    it('Returns last failed process id if there are more uncompleted processes', () => {
+    it('Returns last failed process if there are more uncompleted processes', () => {
         const failedProcess = {
             ...testProcess,
             lastStatus: ProcessStatus.FAILED,
@@ -288,7 +288,7 @@ describe('getLastUncompletedProcessId', () => {
             },
             failedProcess2,
         ];
-        expect(getLastUncompletedProcessId(failedProcesses)).toBe(
+        expect(getLastUncompletedProcess(failedProcesses)?.processId).toBe(
             'FAILED_PROCESS_ID_2',
         );
     });

@@ -313,7 +313,8 @@
                 "startedBy": "Started by"
             },
             "showAll": "Toon alles",
-            "hideAll": "Verberg alles"
+            "hideAll": "Verberg alles",
+            "see": "Bekijk"
         }
     },
     "tasks": {

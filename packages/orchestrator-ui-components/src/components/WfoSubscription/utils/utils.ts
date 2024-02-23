@@ -96,11 +96,11 @@ export const getWorkflowTargetIconContent = (
     }
 };
 
-export const getLastUncompletedProcessId = (
+export const getLastUncompletedProcess = (
     processes: SubscriptionDetailProcess[],
-): string => {
+): SubscriptionDetailProcess | undefined => {
     if (processes.length === 0) {
-        return '';
+        return;
     }
 
     const uncompletedProcesses = processes
@@ -112,8 +112,8 @@ export const getLastUncompletedProcessId = (
         });
 
     return uncompletedProcesses.length > 0
-        ? uncompletedProcesses[0].processId
-        : '';
+        ? uncompletedProcesses[0]
+        : undefined;
 };
 
 export const getLatestTaskDate = (processes: SubscriptionDetailProcess[]) => {

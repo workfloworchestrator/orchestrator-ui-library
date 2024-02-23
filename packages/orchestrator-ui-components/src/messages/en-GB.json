@@ -314,7 +314,8 @@
                 "startedBy": "Started by"
             },
             "showAll": "Show all",
-            "hideAll": "Hide all"
+            "hideAll": "Hide all",
+            "see": "See"
         }
     },
     "tasks": {
