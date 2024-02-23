@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
@@ -13,7 +14,9 @@ import {
 } from '../WfoBadges';
 import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { WfoKeyValueTableDataType } from '../WfoKeyValueTable/WfoKeyValueTable';
+import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
+import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
 
 interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
@@ -23,6 +26,39 @@ export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
+
+    const InSyncField = ({ inSync }: { inSync: boolean }) => {
+        const lastTaskRunDate = getLatestTaskDate(
+            subscriptionDetail.processes.page,
+        );
+        const lastUncompletedProcess = getLastUncompletedProcess(
+            subscriptionDetail.processes.page,
+        );
+
+        const getProcessLink = () => {
+            const processUrl =
+                (lastUncompletedProcess?.isTask ? PATH_TASKS : PATH_WORKFLOWS) +
+                '/' +
+                lastUncompletedProcess?.processId;
+            return (
+                <Link href={processUrl}>
+                    {t('see')} {lastUncompletedProcess?.processId}
+                </Link>
+            );
+        };
+
+        return (
+            <>
+                <div css={{ paddingRight: 4, display: 'flex' }}>
+                    <WfoInsyncIcon inSync={inSync} />
+                </div>
+                {inSync &&
+                    lastTaskRunDate &&
+                    `(${formatDate(lastTaskRunDate)})`}
+                {!inSync && lastUncompletedProcess && getProcessLink()}
+            </>
+        );
+    };
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
         return [
@@ -57,7 +93,7 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('insync'),
-                value: <WfoInsyncIcon inSync={subscriptionDetail.insync} />,
+                value: <InSyncField inSync={subscriptionDetail.insync} />,
             },
             {
                 key: t('customer'),
