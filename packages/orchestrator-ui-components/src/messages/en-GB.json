@@ -315,7 +315,8 @@
             },
             "showAll": "Show all",
             "hideAll": "Hide all",
-            "see": "See"
+            "see": "See",
+            "setInSync": "Set in Sync"
         }
     },
     "tasks": {
