@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
+import { EuiButton } from '@elastic/eui';
 
 import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
@@ -41,9 +42,17 @@ export const WfoSubscriptionGeneral = ({
                 '/' +
                 lastUncompletedProcess?.processId;
             return (
-                <Link href={processUrl}>
-                    {t('see')} {lastUncompletedProcess?.processId}
-                </Link>
+                <>
+                    <Link
+                        href={processUrl}
+                        css={{ paddingLeft: 10, paddingRight: 20 }}
+                    >
+                        {t('see')} {lastUncompletedProcess?.processId}
+                    </Link>
+                    <EuiButton color="danger" size="s">
+                        {t('setInSync')}
+                    </EuiButton>
+                </>
             );
         };
 
