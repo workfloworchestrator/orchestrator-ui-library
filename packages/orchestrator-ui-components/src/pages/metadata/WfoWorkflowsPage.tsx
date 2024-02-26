@@ -55,6 +55,10 @@ export type WorkflowListItem = Pick<
     productTags: string[];
 };
 
+function onlyUnique(value: string, index: number, array: string[]) {
+    return array.indexOf(value) === index;
+}
+
 export const WfoWorkflowsPage = () => {
     const t = useTranslations('metadata.workflows');
     const tError = useTranslations('errors');
@@ -115,14 +119,16 @@ export const WfoWorkflowsPage = () => {
             name: t('productTags'),
             render: (productTags) => (
                 <>
-                    {productTags?.map((productTag, index) => (
-                        <WfoProductBlockBadge
-                            key={index}
-                            badgeType={BadgeType.PRODUCT_TAG}
-                        >
-                            {productTag}
-                        </WfoProductBlockBadge>
-                    ))}
+                    {productTags
+                        ?.filter(onlyUnique)
+                        .map((productTag, index) => (
+                            <WfoProductBlockBadge
+                                key={index}
+                                badgeType={BadgeType.PRODUCT_TAG}
+                            >
+                                {productTag}
+                            </WfoProductBlockBadge>
+                        ))}
                 </>
             ),
             renderDetails: (productTags) => (
