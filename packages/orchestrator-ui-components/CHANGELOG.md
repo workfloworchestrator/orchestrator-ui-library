@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.11.1
+
+### Patch Changes
+
+- e83d9aa: new summary card out-of-sync subscriptions
+- 7ff8936: Applies policies in several components
+
 ## 0.11.0
 
 ### Minor Changes
