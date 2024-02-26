@@ -1,4 +1,10 @@
-import { camelToHuman, removeSuffix, upperCaseFirstChar } from './strings';
+import {
+    camelToHuman,
+    removeSuffix,
+    snakeToHuman,
+    snakeToKebab,
+    upperCaseFirstChar,
+} from './strings';
 
 describe('upperCaseFirstChar()', () => {
     it("Doesn't crash on an empty string but returns empty string", () => {
@@ -66,5 +72,35 @@ describe('camelToHuman()', () => {
     it('Works ok for strings starting with an uppercase char', () => {
         const result = camelToHuman('AQuickBrownFox');
         expect(result).toEqual('A Quick Brown Fox');
+    });
+});
+
+describe('snakeToHuman()', () => {
+    it("Doesn't crash on an empty string but returns empty string", () => {
+        const result = snakeToHuman('');
+        expect(result).toEqual('');
+    });
+    it('Works ok for snake case strings with one word', () => {
+        const result = snakeToHuman('hello_world');
+        expect(result).toEqual('hello world');
+    });
+    it('Works ok for snake case strings with multiple words', () => {
+        const result = snakeToHuman('quick_brown_fox');
+        expect(result).toEqual('quick brown fox');
+    });
+});
+
+describe('snakeToKebab()', () => {
+    it("Doesn't crash on an empty string but returns empty string", () => {
+        const result = snakeToKebab('');
+        expect(result).toEqual('');
+    });
+    it('Works ok for snake case strings with one word', () => {
+        const result = snakeToKebab('hello_world');
+        expect(result).toEqual('hello-world');
+    });
+    it('Works ok for snake case strings with multiple words', () => {
+        const result = snakeToKebab('quick_brown_fox');
+        expect(result).toEqual('quick-brown-fox');
     });
 });
