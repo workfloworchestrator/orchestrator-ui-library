@@ -76,30 +76,30 @@ describe('camelToHuman()', () => {
 });
 
 describe('snakeToHuman()', () => {
-    it("Doesn't crash on an empty string but returns empty string", () => {
+    it('Returns an empty string when input is an empty string', () => {
         const result = snakeToHuman('');
         expect(result).toEqual('');
     });
-    it('Works ok for snake case strings with one word', () => {
+    it('Returns two words from a single underscore snake case word', () => {
         const result = snakeToHuman('hello_world');
         expect(result).toEqual('hello world');
     });
-    it('Works ok for snake case strings with multiple words', () => {
+    it('Returns multiple words from a multiple underscore snake case word', () => {
         const result = snakeToHuman('quick_brown_fox');
         expect(result).toEqual('quick brown fox');
     });
 });
 
 describe('snakeToKebab()', () => {
-    it("Doesn't crash on an empty string but returns empty string", () => {
+    it('Returns an empty string when input is an empty string', () => {
         const result = snakeToKebab('');
         expect(result).toEqual('');
     });
-    it('Works ok for snake case strings with one word', () => {
+    it('Returns kebab case word from a single underscore snake case word', () => {
         const result = snakeToKebab('hello_world');
         expect(result).toEqual('hello-world');
     });
-    it('Works ok for snake case strings with multiple words', () => {
+    it('Returns kebab case word from a multiple underscore snake case word', () => {
         const result = snakeToKebab('quick_brown_fox');
         expect(result).toEqual('quick-brown-fox');
     });
