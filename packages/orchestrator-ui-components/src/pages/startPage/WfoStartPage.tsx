@@ -107,7 +107,7 @@ export const WfoStartPage = () => {
             ) ?? [],
         button: {
             name: t('outOfSyncSubscriptions.buttonText'),
-            url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28initial%7Cactive%29+insync%3Afalse`,
+            url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
         },
         isLoading: outOfSyncsubscriptionsSummaryIsFetching,
     };
