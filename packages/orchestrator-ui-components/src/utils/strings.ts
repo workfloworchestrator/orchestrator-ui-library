@@ -13,3 +13,12 @@ export const camelToHuman = (value: string): string => {
     const result = value.replace(/([A-Z])/g, ' $1').trimStart();
     return result.charAt(0).toUpperCase() + result.slice(1);
 };
+
+export const snakeToHuman = (value: string): string => {
+    const result = value.replace(/_/g, ' ');
+    return result.charAt(0) + result.slice(1);
+};
+
+export const snakeToKebab = (value: string): string => {
+    return value.replace(/_/g, '-');
+};

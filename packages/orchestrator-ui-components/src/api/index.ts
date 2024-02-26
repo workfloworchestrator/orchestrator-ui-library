@@ -24,9 +24,9 @@ import { ProductDefinition } from '@/types';
 
 import { getAxiosInstance } from './axios';
 
-const CIM_FORMS_ENDPOINT = 'surf/cim/forms/';
 const PROCESS_ENDPOINT = 'processes/';
 const PRODUCTS_ENDPOINT = 'products/';
+const FORMS_ENDPOINT = 'surf/forms/';
 
 export class BaseApiClient {
     private _axiosInstance: AxiosInstance;
@@ -105,14 +105,20 @@ export class BaseApiClient {
     };
 }
 
-abstract class ApiClientInterface extends BaseApiClient {
-    abstract cimStartForm: (
+export class ApiClient extends BaseApiClient {
+    startForm = (
         formKey: string,
         userInputs: object[],
-    ) => Promise<object>;
-}
+    ): Promise<{ id: string }> => {
+        return this.postPutJson(
+            `${FORMS_ENDPOINT}${formKey}`,
+            userInputs,
+            'post',
+            false,
+            true,
+        );
+    };
 
-export class ApiClient extends ApiClientInterface {
     startProcess = (
         workflowName: string,
         processInput: object,
@@ -141,18 +147,6 @@ export class ApiClient extends ApiClientInterface {
     };
     productById = (productId: string): Promise<ProductDefinition> => {
         return this.fetchJson(`${PRODUCTS_ENDPOINT}${productId}`);
-    };
-    cimStartForm = (
-        formKey: string,
-        userInputs: object[],
-    ): Promise<{ id: string }> => {
-        return this.postPutJson(
-            `${CIM_FORMS_ENDPOINT}${formKey}`,
-            userInputs,
-            'post',
-            false,
-            true,
-        );
     };
     prefix_filters = (): Promise<IpPrefix[]> => {
         return this.fetchJson('surf/ipam/prefix_filters');

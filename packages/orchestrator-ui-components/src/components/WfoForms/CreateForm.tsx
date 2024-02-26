@@ -35,7 +35,7 @@ export function CreateForm(props: IProps) {
 
     const submit = useCallback(
         (userInputs: object[]) => {
-            return apiClient.cimStartForm(formKey, userInputs).then((form) => {
+            return apiClient.startForm(formKey, userInputs).then((form) => {
                 handleSubmit(form);
             });
         },
