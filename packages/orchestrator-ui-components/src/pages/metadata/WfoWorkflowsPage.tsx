@@ -133,7 +133,9 @@ export const WfoWorkflowsPage = () => {
             ),
             renderDetails: (productTags) => (
                 <EuiBadgeGroup gutterSize="s">
-                    {productTags?.map((productTag, index) => (
+                    {productTags
+                        ?.filter(onlyUnique)
+                        .map((productTag, index) => (
                         <WfoProductBlockBadge
                             key={index}
                             badgeType={BadgeType.PRODUCT_TAG}
