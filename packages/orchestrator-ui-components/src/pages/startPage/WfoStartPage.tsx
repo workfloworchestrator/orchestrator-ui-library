@@ -37,6 +37,14 @@ export const WfoStartPage = () => {
         ['subscriptions', 'startPage'],
     );
     const {
+        data: outOfSyncSubscriptionsSummaryResult,
+        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
+    } = useQueryWithGraphql(
+        getSubscriptionsListSummaryGraphQlQuery(),
+        outOfSyncSubscriptionsListSummaryQueryVariables,
+        ['subscriptions', 'startPage'],
+    );
+    const {
         data: processesSummaryResult,
         isLoading: processesSummaryIsFetching,
     } = useQueryWithGraphql(
@@ -80,6 +88,28 @@ export const WfoStartPage = () => {
             url: PATH_SUBSCRIPTIONS,
         },
         isLoading: subscriptionsSummaryIsFetching,
+    };
+
+    const latestOutOfSyncSubscriptionsSummaryCard: SummaryCard = {
+        headerTitle: t('outOfSyncSubscriptions.headerTitle'),
+        headerValue:
+            outOfSyncSubscriptionsSummaryResult?.subscriptions.pageInfo
+                .totalItems ?? 0,
+        headerStatus: SummaryCardStatus.Error,
+        listTitle: t('outOfSyncSubscriptions.listTitle'),
+        listItems:
+            outOfSyncSubscriptionsSummaryResult?.subscriptions.page.map(
+                (subscription) => ({
+                    title: subscription.description,
+                    value: formatDate(subscription.startDate),
+                    url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
+                }),
+            ) ?? [],
+        button: {
+            name: t('outOfSyncSubscriptions.buttonText'),
+            url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28initial%7Cactive%29+insync%3Afalse`,
+        },
+        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
     };
 
     const latestWorkflowsSummaryCard: SummaryCard = {
@@ -155,6 +185,7 @@ export const WfoStartPage = () => {
             <WfoSummaryCards
                 summaryCards={[
                     failedTasksSummaryCard,
+                    latestOutOfSyncSubscriptionsSummaryCard,
                     latestWorkflowsSummaryCard,
                     latestActiveSubscriptionsSummaryCard,
                     productsSummaryCard,
@@ -176,6 +207,23 @@ const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription
             {
                 field: 'status',
                 value: 'Active',
+            },
+        ],
+    };
+
+const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
+    {
+        first: 5,
+        after: 0,
+        sortBy: {
+            field: 'startDate',
+            order: SortOrder.ASC,
+        },
+        query: 'insync:false',
+        filterBy: [
+            {
+                field: 'status',
+                value: 'Active-Provisioning',
             },
         ],
     };
