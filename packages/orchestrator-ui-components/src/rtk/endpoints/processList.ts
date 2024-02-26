@@ -75,7 +75,7 @@ const processApi = orchestratorApi.injectEndpoints({
             transformResponse: (
                 response: ProcessListResult,
             ): ProcessListResponse => {
-                const processes = response?.processes?.page || [];
+                const processes = response.processes.page || [];
 
                 return {
                     processes,
