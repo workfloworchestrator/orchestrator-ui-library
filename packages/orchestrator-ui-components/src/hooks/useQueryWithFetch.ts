@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 
 import { Variables } from 'graphql-request/build/cjs/types';
 import { signOut } from 'next-auth/react';
@@ -9,6 +9,7 @@ export const useQueryWithFetch = <T, V extends Variables>(
     url: string,
     queryVars: V,
     queryKey: string,
+    options?: UseQueryOptions<T, unknown, T, [string, ...unknown[]]>,
 ) => {
     const { session } = useWfoSession();
     const requestHeaders = {
@@ -29,5 +30,9 @@ export const useQueryWithFetch = <T, V extends Variables>(
         }
         return (await response.json()) as T;
     };
-    return useQuery([queryKey, ...Object.values(queryVars)], fetchData);
+    return useQuery(
+        [queryKey, ...Object.values(queryVars)],
+        fetchData,
+        options,
+    );
 };
