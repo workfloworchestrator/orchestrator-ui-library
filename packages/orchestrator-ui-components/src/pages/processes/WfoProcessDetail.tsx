@@ -17,14 +17,17 @@ import {
     PATH_TASKS,
     PATH_WORKFLOWS,
     TimelineItem,
+    WfoIsAllowedToRender,
     WfoLoading,
     WfoTimeline,
 } from '@/components';
+import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
     useMutateProcess,
     useOrchestratorTheme,
+    usePolicy,
 } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import { ProcessDetail, ProcessStatus } from '@/types';
@@ -101,6 +104,7 @@ export const WfoProcessDetail = ({
     const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
+    const { isAllowed } = usePolicy();
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -195,55 +199,65 @@ export const WfoProcessDetail = ({
                     css={{ flexGrow: 0 }}
                     gutterSize="s"
                 >
-                    <EuiButton
-                        onClick={handleActionButtonClick(retryAction)}
-                        iconType={() => (
-                            <WfoRefresh
-                                color={
-                                    retryButtonIsDisabled
-                                        ? theme.colors.subduedText
-                                        : theme.colors.link
-                                }
-                            />
-                        )}
-                        isDisabled={retryButtonIsDisabled}
+                    <WfoIsAllowedToRender
+                        resource={PolicyResource.PROCESS_RETRY}
                     >
-                        {t('retry')}
-                    </EuiButton>
-                    <EuiButton
-                        onClick={handleActionButtonClick(abortAction)}
-                        iconType={() => (
-                            <WfoXCircleFill
-                                color={
-                                    abortButtonIsDisabled
-                                        ? theme.colors.subduedText
-                                        : theme.colors.danger
-                                }
-                            />
-                        )}
-                        color="danger"
-                        isDisabled={abortButtonIsDisabled}
-                    >
-                        {t('abort')}
-                    </EuiButton>
-                    {processDetail && processIsTask && (
                         <EuiButton
-                            onClick={handleActionButtonClick(deleteAction)}
+                            onClick={handleActionButtonClick(retryAction)}
+                            iconType={() => (
+                                <WfoRefresh
+                                    color={
+                                        retryButtonIsDisabled
+                                            ? theme.colors.subduedText
+                                            : theme.colors.link
+                                    }
+                                />
+                            )}
+                            isDisabled={retryButtonIsDisabled}
+                        >
+                            {t('retry')}
+                        </EuiButton>
+                    </WfoIsAllowedToRender>
+                    <WfoIsAllowedToRender
+                        resource={PolicyResource.PROCESS_ABORT}
+                    >
+                        <EuiButton
+                            onClick={handleActionButtonClick(abortAction)}
                             iconType={() => (
                                 <WfoXCircleFill
                                     color={
-                                        deleteButtonIsDisabled
+                                        abortButtonIsDisabled
                                             ? theme.colors.subduedText
                                             : theme.colors.danger
                                     }
                                 />
                             )}
                             color="danger"
-                            isDisabled={deleteButtonIsDisabled}
+                            isDisabled={abortButtonIsDisabled}
                         >
-                            {t('delete')}
+                            {t('abort')}
                         </EuiButton>
-                    )}
+                    </WfoIsAllowedToRender>
+                    {processDetail &&
+                        processIsTask &&
+                        isAllowed(PolicyResource.PROCESS_DELETE) && (
+                            <EuiButton
+                                onClick={handleActionButtonClick(deleteAction)}
+                                iconType={() => (
+                                    <WfoXCircleFill
+                                        color={
+                                            deleteButtonIsDisabled
+                                                ? theme.colors.subduedText
+                                                : theme.colors.danger
+                                        }
+                                    />
+                                )}
+                                color="danger"
+                                isDisabled={deleteButtonIsDisabled}
+                            >
+                                {t('delete')}
+                            </EuiButton>
+                        )}
                 </EuiFlexGroup>
             </EuiFlexGroup>
             <EuiSpacer />
@@ -295,47 +309,51 @@ export const WfoProcessDetail = ({
                                         : ''
                                 }
                             />
-                            {process && processDetail.subscriptions && (
-                                <EuiFlexGroup
-                                    gutterSize="xs"
-                                    direction="column"
-                                    css={{
-                                        flex: 1,
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    <EuiText size="xs">
-                                        {t('relatedSubscriptions')}
-                                    </EuiText>
-                                    <EuiText
+                            {process &&
+                                isAllowed(
+                                    PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS,
+                                ) &&
+                                processDetail.subscriptions && (
+                                    <EuiFlexGroup
+                                        gutterSize="xs"
+                                        direction="column"
                                         css={{
                                             flex: 1,
-                                            whiteSpace: 'nowrap',
                                             overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            fontSize: theme.size.m,
                                         }}
                                     >
-                                        <WfoProcessListSubscriptionsCell
-                                            subscriptions={
-                                                (process &&
-                                                    processDetail?.subscriptions?.page.map(
-                                                        (subscription) => ({
-                                                            subscriptionId:
-                                                                subscription.subscriptionId,
-                                                            description:
-                                                                subscription.description,
-                                                        }),
-                                                    )) ||
-                                                []
-                                            }
-                                            renderDirection={
-                                                RenderDirection.VERTICAL
-                                            }
-                                        />
-                                    </EuiText>
-                                </EuiFlexGroup>
-                            )}
+                                        <EuiText size="xs">
+                                            {t('relatedSubscriptions')}
+                                        </EuiText>
+                                        <EuiText
+                                            css={{
+                                                flex: 1,
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                fontSize: theme.size.m,
+                                            }}
+                                        >
+                                            <WfoProcessListSubscriptionsCell
+                                                subscriptions={
+                                                    (process &&
+                                                        processDetail?.subscriptions?.page.map(
+                                                            (subscription) => ({
+                                                                subscriptionId:
+                                                                    subscription.subscriptionId,
+                                                                description:
+                                                                    subscription.description,
+                                                            }),
+                                                        )) ||
+                                                    []
+                                                }
+                                                renderDirection={
+                                                    RenderDirection.VERTICAL
+                                                }
+                                            />
+                                        </EuiText>
+                                    </EuiFlexGroup>
+                                )}
                         </EuiFlexGroup>
                     ))}
             </EuiPanel>

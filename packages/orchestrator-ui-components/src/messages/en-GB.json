@@ -31,6 +31,7 @@
         "search": "Search",
         "errorMessage": "An error occurred",
         "export": "Export",
+        "unauthorizedPage": "You are not authorized to see this page",
         "insyncTrue": "in-sync",
         "insyncFalse": "out-of-sync"
     },
