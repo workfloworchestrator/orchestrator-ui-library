@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { TimelineItem, WfoError, WfoLoading } from '@/components';
+import { useGetProcessDetailQuery } from '@/rtk/endpoints/processDetail';
 
 import {
     WfoStepListRef,
     WfoWorkflowStepList,
 } from '../../components/WfoWorkflowSteps';
-import { GET_PROCESS_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { useQueryWithGraphql } from '../../hooks';
 import {
     ProcessDetail,
     ProcessDoneStatuses,
@@ -39,13 +38,10 @@ export const WfoProcessDetailPage = ({
     const stepListRef = useRef<WfoStepListRef>(null);
     const [fetchInterval, setFetchInterval] = useState<number | undefined>();
     const [process, setProcess] = useState<ProcessDetail | undefined>();
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_PROCESS_DETAIL_GRAPHQL_QUERY,
-        {
-            processId,
-        },
-        'processDetail',
-        { refetchInterval: fetchInterval, refetchOnWindowFocus: false },
+
+    const { data, isLoading, isError } = useGetProcessDetailQuery(
+        { processId },
+        { pollingInterval: fetchInterval },
     );
 
     if (isError) {
@@ -55,7 +51,7 @@ export const WfoProcessDetailPage = ({
     }
 
     useEffect(() => {
-        const process = data?.processes.page[0];
+        const process = data?.processes[0];
         // We need to cast here because the backend might return the string in upperCase and
         // toLowerCase() will converts the value type to string
         const lastStatus =
@@ -71,7 +67,7 @@ export const WfoProcessDetailPage = ({
     }, [data, processDetailRefetchInterval]);
 
     useEffect(() => {
-        const fetchedProcessDetails = data?.processes.page[0];
+        const fetchedProcessDetails = data?.processes[0];
 
         if (!process) {
             setProcess(fetchedProcessDetails);
