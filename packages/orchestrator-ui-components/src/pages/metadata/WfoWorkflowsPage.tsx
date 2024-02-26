@@ -136,13 +136,13 @@ export const WfoWorkflowsPage = () => {
                     {productTags
                         ?.filter(onlyUnique)
                         .map((productTag, index) => (
-                        <WfoProductBlockBadge
-                            key={index}
-                            badgeType={BadgeType.PRODUCT_TAG}
-                        >
-                            {productTag}
-                        </WfoProductBlockBadge>
-                    ))}
+                            <WfoProductBlockBadge
+                                key={index}
+                                badgeType={BadgeType.PRODUCT_TAG}
+                            >
+                                {productTag}
+                            </WfoProductBlockBadge>
+                        ))}
                 </EuiBadgeGroup>
             ),
         },
