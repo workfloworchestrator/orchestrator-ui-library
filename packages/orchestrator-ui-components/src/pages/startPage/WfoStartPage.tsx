@@ -223,7 +223,7 @@ const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Sub
         filterBy: [
             {
                 field: 'status',
-                value: 'Active-Initial',
+                value: 'Active-Provisioning',
             },
         ],
     };
