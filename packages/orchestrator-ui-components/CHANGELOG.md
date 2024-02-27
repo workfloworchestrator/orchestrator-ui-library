@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.12.0
+
+### Minor Changes
+
+- 5efb8b0: #821 Reverted FORMS_ENPOINT string, removed cimStartForm, added new string utils
+  #833 Small change to useQueryWithFetch for the default sending level
+
 ## 0.11.1
 
 ### Patch Changes
