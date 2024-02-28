@@ -6,6 +6,21 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
+    useShowToastMessage,
+    useStoredTableConfig,
+} from '@/hooks';
+import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
+import { BadgeType, SortOrder } from '@/types';
+import {
+    getQueryVariablesForExport,
+    onlyUnique,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '@/utils';
+import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
@@ -28,20 +43,6 @@ import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTa
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
-import {
-    useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
-    useShowToastMessage,
-    useStoredTableConfig,
-} from '../../hooks';
-import type { GraphqlQueryVariables, WorkflowDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
-import {
-    getQueryVariablesForExport,
-    parseDateToLocaleDateTimeString,
-    parseIsoString,
-} from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -115,26 +116,30 @@ export const WfoWorkflowsPage = () => {
             name: t('productTags'),
             render: (productTags) => (
                 <>
-                    {productTags?.map((productTag, index) => (
-                        <WfoProductBlockBadge
-                            key={index}
-                            badgeType={BadgeType.PRODUCT_TAG}
-                        >
-                            {productTag}
-                        </WfoProductBlockBadge>
-                    ))}
+                    {productTags
+                        ?.filter(onlyUnique)
+                        .map((productTag, index) => (
+                            <WfoProductBlockBadge
+                                key={index}
+                                badgeType={BadgeType.PRODUCT_TAG}
+                            >
+                                {productTag}
+                            </WfoProductBlockBadge>
+                        ))}
                 </>
             ),
             renderDetails: (productTags) => (
                 <EuiBadgeGroup gutterSize="s">
-                    {productTags?.map((productTag, index) => (
-                        <WfoProductBlockBadge
-                            key={index}
-                            badgeType={BadgeType.PRODUCT_TAG}
-                        >
-                            {productTag}
-                        </WfoProductBlockBadge>
-                    ))}
+                    {productTags
+                        ?.filter(onlyUnique)
+                        .map((productTag, index) => (
+                            <WfoProductBlockBadge
+                                key={index}
+                                badgeType={BadgeType.PRODUCT_TAG}
+                            >
+                                {productTag}
+                            </WfoProductBlockBadge>
+                        ))}
                 </EuiBadgeGroup>
             ),
         },
