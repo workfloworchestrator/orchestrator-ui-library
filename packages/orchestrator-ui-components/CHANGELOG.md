@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.13.0
+
+### Minor Changes
+
+- 89835a4: 702 - Moves processDetail to rtkquery
+
+### Patch Changes
+
+- e56c142: 760 remove duplicate product tags on metadata workflow page
+
 ## 0.12.0
 
 ### Minor Changes
