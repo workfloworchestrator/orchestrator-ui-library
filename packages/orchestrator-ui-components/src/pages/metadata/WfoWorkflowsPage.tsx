@@ -6,6 +6,21 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    useDataDisplayParams,
+    useQueryWithGraphql,
+    useQueryWithGraphqlLazy,
+    useShowToastMessage,
+    useStoredTableConfig,
+} from '@/hooks';
+import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
+import { BadgeType, SortOrder } from '@/types';
+import {
+    getQueryVariablesForExport,
+    onlyUnique,
+    parseDateToLocaleDateTimeString,
+    parseIsoString,
+} from '@/utils';
+import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
@@ -28,20 +43,6 @@ import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTa
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
-import {
-    useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
-    useShowToastMessage,
-    useStoredTableConfig,
-} from '../../hooks';
-import type { GraphqlQueryVariables, WorkflowDefinition } from '../../types';
-import { BadgeType, SortOrder } from '../../types';
-import {
-    getQueryVariablesForExport,
-    parseDateToLocaleDateTimeString,
-    parseIsoString,
-} from '../../utils';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -54,10 +55,6 @@ export type WorkflowListItem = Pick<
 > & {
     productTags: string[];
 };
-
-function onlyUnique(value: string, index: number, array: string[]) {
-    return array.indexOf(value) === index;
-}
 
 export const WfoWorkflowsPage = () => {
     const t = useTranslations('metadata.workflows');
