@@ -10,11 +10,13 @@ import {
     SummaryCardStatus,
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
+import { PolicyResource } from '@/configuration/policy-resources';
 import {
     getProductsSummaryQuery,
     getSubscriptionsListSummaryGraphQlQuery,
 } from '@/graphqlQueries';
 import { getProcessListSummaryGraphQlQuery } from '@/graphqlQueries/processListQuery';
+import { usePolicy } from '@/hooks';
 import { useQueryWithGraphql } from '@/hooks';
 import {
     GraphqlQueryVariables,
@@ -27,6 +29,7 @@ import { formatDate } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
+    const { isAllowed } = usePolicy();
 
     const {
         data: subscriptionsSummaryResult,
@@ -69,7 +72,7 @@ export const WfoStartPage = () => {
         'productSummary',
     );
 
-    const latestActiveSubscriptionsSummaryCard: SummaryCard = {
+    const latestActiveSubscriptionsSummaryCard: SummaryCard | null = {
         headerTitle: t('activeSubscriptions.headerTitle'),
         headerValue:
             subscriptionsSummaryResult?.subscriptions.pageInfo.totalItems ?? 0,
@@ -180,17 +183,21 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
+    const allowedSummaryCards = [
+        latestWorkflowsSummaryCard,
+        latestActiveSubscriptionsSummaryCard,
+        productsSummaryCard,
+    ];
+
+    isAllowed(PolicyResource.NAVIGATION_TASKS) &&
+        allowedSummaryCards.push(
+            failedTasksSummaryCard,
+            latestOutOfSyncSubscriptionsSummaryCard,
+        );
+
     return (
         <EuiFlexItem>
-            <WfoSummaryCards
-                summaryCards={[
-                    failedTasksSummaryCard,
-                    latestOutOfSyncSubscriptionsSummaryCard,
-                    latestWorkflowsSummaryCard,
-                    latestActiveSubscriptionsSummaryCard,
-                    productsSummaryCard,
-                ]}
-            />
+            <WfoSummaryCards summaryCards={allowedSummaryCards} />
         </EuiFlexItem>
     );
 };
