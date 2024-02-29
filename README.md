@@ -78,3 +78,13 @@ npm run packages:changeset
 -   All entries will be saved in a `.md` file in the `.changeset` folder
 
 Once the pull-request with a changeset file is merged to the main branch another PR is opened by the Changesets-bot to update the version numbers of the packages. When this pull request gets merged to main an automatic publish to NPM will be performed.
+
+## Storybook
+
+The storybook can be run from the packages/orchestrator-ui-components/ folder, run:
+
+```bash
+npx storybook dev
+```
+
+Story book can be inspected on [http://localhost:61834/](http://localhost:61834/).
