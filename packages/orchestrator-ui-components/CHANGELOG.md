@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 0.13.1
+
+### Patch Changes
+
+- 9155f40: Added isDisabled prop to WfoSubmitModal
+
 ## 0.13.0
 
 ### Minor Changes
