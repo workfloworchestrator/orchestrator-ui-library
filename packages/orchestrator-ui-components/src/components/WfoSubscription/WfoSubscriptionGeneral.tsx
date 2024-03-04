@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { EuiButton } from '@elastic/eui';
 
+import { ConfirmationDialogContext } from '@/contexts';
 import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
 
@@ -27,6 +28,10 @@ export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+    const setInSyncAction = () => {
+        // console.log('todo: implement api call');
+    };
 
     const InSyncField = ({ inSync }: { inSync: boolean }) => {
         const lastTaskRunDate = getLatestTaskDate(
@@ -41,6 +46,16 @@ export const WfoSubscriptionGeneral = ({
                 (lastUncompletedProcess?.isTask ? PATH_TASKS : PATH_WORKFLOWS) +
                 '/' +
                 lastUncompletedProcess?.processId;
+
+            const confirmSetInSync = () => {
+                showConfirmDialog({
+                    question: t('setInSyncQuestion'),
+                    confirmAction: () => {
+                        setInSyncAction();
+                    },
+                });
+            };
+
             return (
                 <>
                     <Link
@@ -49,7 +64,11 @@ export const WfoSubscriptionGeneral = ({
                     >
                         {t('see')} {lastUncompletedProcess?.processId}
                     </Link>
-                    <EuiButton color="danger" size="s">
+                    <EuiButton
+                        color="danger"
+                        size="s"
+                        onClick={confirmSetInSync}
+                    >
                         {t('setInSync')}
                     </EuiButton>
                 </>
