@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.0.0
+
+### Major Changes
+
+- 507399b: R1 Release
+
 ## 0.3.1
 
 ### Patch Changes

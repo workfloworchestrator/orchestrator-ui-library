@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.0.0
+
+### Major Changes
+
+- 507399b: R1 Release
+
 ## 0.13.1
 
 ### Patch Changes
