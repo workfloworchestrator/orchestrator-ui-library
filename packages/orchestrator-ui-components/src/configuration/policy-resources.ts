@@ -3,7 +3,7 @@ export enum PolicyResource {
     NAVIGATION_SETTINGS = '/orchestrator/settings/',
     NAVIGATION_SUBSCRIPTIONS = '/orchestrator/subscriptions/',
     NAVIGATION_TASKS = '/orchestrator/tasks/',
-    NAVIGATION_WORKFLOWS = '/orchestrator/workflows/',
+    NAVIGATION_WORKFLOWS = '/orchestrator/processes/',
     PROCESS_ABORT = '/orchestrator/processes/abort/',
     PROCESS_DELETE = '/orchestrator/processes/delete/',
     PROCESS_DETAILS = '/orchestrator/processes/details/',
