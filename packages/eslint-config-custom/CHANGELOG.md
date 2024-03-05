@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.1.0
+
+### Minor Changes
+
+- 1bed1cb: Add prettier and plugings to eslint config package
+
 ## 1.0.0
 
 ### Major Changes
