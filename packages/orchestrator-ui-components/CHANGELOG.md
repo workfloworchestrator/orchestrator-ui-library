@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.1.0
+
+### Minor Changes
+
+- 2d0c99c: 840 Updates policy resources
+
 ## 1.0.0
 
 ### Major Changes
