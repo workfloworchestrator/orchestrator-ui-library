@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.1.2
+
+### Patch Changes
+
+- 6646b65: Fixes rule extend
+
 ## 1.1.1
 
 ### Patch Changes
