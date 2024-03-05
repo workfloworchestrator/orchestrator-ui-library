@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import { PATH_START_NEW_TASK } from '@/components';
-import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '@/graphqlQueries/workflows/workflowsQueryForDropdownList';
+import { GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY } from '@/graphqlQueries/workflowsQueryForDropdownList';
 import { useCheckEngineStatus, useQueryWithGraphql } from '@/hooks';
 
 import {

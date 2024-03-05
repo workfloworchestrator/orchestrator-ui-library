@@ -7,7 +7,7 @@ import {
     GraphqlQueryVariables,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
-} from '../../types';
+} from '../types';
 
 // Avoiding pagination by passing a large number to first. TODO: Fix this better
 export const GET_WORKFLOWS_FOR_DROPDOWN_LIST_GRAPHQL_QUERY: TypedDocumentNode<

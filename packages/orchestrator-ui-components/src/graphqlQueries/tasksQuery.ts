@@ -9,11 +9,12 @@ import {
     WorkflowDefinitionsResult,
 } from '@/types';
 
-export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
+// TODO: fix filterBy to include CREATE, MODIFY, TERMINATE
+export const GET_TASKS_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult,
     GraphqlQueryVariables<WorkflowDefinition>
 > = parse(gql`
-    query MetadataWorkflows(
+    query MetadataTasks(
         $first: Int!
         $after: Int!
         $sortBy: [GraphqlSort!]
@@ -24,6 +25,7 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
             after: $after
             sortBy: $sortBy
             query: $query
+            filterBy: { field: "target", value: "SYSTEM" }
         ) {
             page {
                 name

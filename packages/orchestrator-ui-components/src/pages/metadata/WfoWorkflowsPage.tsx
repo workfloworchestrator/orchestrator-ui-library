@@ -42,7 +42,7 @@ import { StoredTableConfig } from '../../components';
 import { WfoProcessTargetBadge } from '../../components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
 import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
+import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflowsQuery';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -93,7 +93,7 @@ export const WfoWorkflowsPage = () => {
         name: {
             field: 'name',
             name: t('name'),
-            width: '200',
+            width: '20%',
             render: (name) => (
                 <WfoProductBlockBadge badgeType={BadgeType.WORKFLOW}>
                     {name}
@@ -103,17 +103,18 @@ export const WfoWorkflowsPage = () => {
         description: {
             field: 'description',
             name: t('description'),
-            width: '300',
+            width: '40%',
         },
         target: {
             field: 'target',
             name: t('target'),
-            width: '90',
+            width: '15%',
             render: (target) => <WfoProcessTargetBadge target={target} />,
         },
         productTags: {
             field: 'productTags',
             name: t('productTags'),
+            width: '20%',
             render: (productTags) => (
                 <>
                     {productTags
@@ -146,7 +147,7 @@ export const WfoWorkflowsPage = () => {
         createdAt: {
             field: 'createdAt',
             name: t('createdAt'),
-            width: '110',
+            width: '15%',
             render: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
