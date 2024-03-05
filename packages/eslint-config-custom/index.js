@@ -1,6 +1,6 @@
 module.exports = {
     extends: [
-        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/eslint-plugin/recommended',
         'next',
         'next/core-web-vitals',
         'prettier',
