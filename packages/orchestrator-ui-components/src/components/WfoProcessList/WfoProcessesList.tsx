@@ -10,7 +10,7 @@ import {
     PATH_WORKFLOWS,
     WfoDateTime,
     WfoProcessStatusBadge,
-    WfoWorkflowTargetBadge,
+    WfoProcessTargetBadge,
 } from '@/components';
 import {
     DEFAULT_PAGE_SIZES,
@@ -118,7 +118,7 @@ export const WfoProcessesList = ({
             field: 'workflowTarget',
             name: t('workflowTarget'),
             width: '100',
-            render: (target) => <WfoWorkflowTargetBadge target={target} />,
+            render: (target) => <WfoProcessTargetBadge target={target} />,
         },
         tag: {
             field: 'tag',

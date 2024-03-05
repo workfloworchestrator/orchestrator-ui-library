@@ -49,22 +49,22 @@ import {
     mapWorkflowDefinitionToWorkflowListItem,
 } from './workflowListObjectMapper';
 
-export type WorkflowListItem = Pick<
+export type TaskListItem = Pick<
     WorkflowDefinition,
     'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
 };
 
-export const WfoWorkflowsPage = () => {
+export const WfoTasksPage = () => {
     const t = useTranslations('metadata.workflows');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
 
     const [tableDefaults, setTableDefaults] =
-        useState<StoredTableConfig<WorkflowListItem>>();
+        useState<StoredTableConfig<TaskListItem>>();
 
-    const getStoredTableConfig = useStoredTableConfig<WorkflowListItem>(
+    const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
         METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     );
 
@@ -77,7 +77,7 @@ export const WfoWorkflowsPage = () => {
     }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<WorkflowListItem>({
+        useDataDisplayParams<TaskListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
             // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
             // the query to wait for the values to be available
@@ -89,7 +89,7 @@ export const WfoWorkflowsPage = () => {
             },
         });
 
-    const tableColumns: WfoTableColumns<WorkflowListItem> = {
+    const tableColumns: WfoTableColumns<TaskListItem> = {
         name: {
             field: 'name',
             name: t('name'),
@@ -173,7 +173,7 @@ export const WfoWorkflowsPage = () => {
             ['workflows', 'export'],
         );
 
-    const dataSorting: WfoDataSorting<WorkflowListItem> = {
+    const dataSorting: WfoDataSorting<TaskListItem> = {
         field: sortBy?.field ?? 'name',
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
@@ -190,7 +190,7 @@ export const WfoWorkflowsPage = () => {
 
     return (
         <WfoMetadataPageLayout>
-            <WfoTableWithFilter<WorkflowListItem>
+            <WfoTableWithFilter<TaskListItem>
                 data={data ? mapWorkflowDefinitionToWorkflowListItem(data) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
@@ -199,13 +199,13 @@ export const WfoWorkflowsPage = () => {
                 )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
+                onUpdateDataSort={getDataSortHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdatePage={getPageChangeHandler<WorkflowListItem>(
+                onUpdatePage={getPageChangeHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getQueryStringHandler<WorkflowListItem>(
+                onUpdateQueryString={getQueryStringHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}

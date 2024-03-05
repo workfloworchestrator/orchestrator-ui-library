@@ -5,6 +5,7 @@
         "metadataProductblocks": "Product blocks",
         "metadataResourceTypes": "Resource types",
         "metadataWorkflows": "Workflows",
+        "metadataTasks": "Taken",
         "mobileTitle": "Hoofdmenu",
         "settings": "Settings",
         "start": "Start",
@@ -125,7 +126,8 @@
             "products": "Producten",
             "productBlocks": "Product blocks",
             "resourceTypes": "Resource types",
-            "workflows": "Workflows"
+            "workflows": "Workflows",
+            "tasks": "Taken"
         },
         "products": {
             "id": "ID",
@@ -162,6 +164,13 @@
             "target": "Target",
             "productTags": "Product tags",
             "createdAt": "Aangemaakt"
+        },
+        "tasks": {
+            "name": "Taak",
+            "description": "Taak beschrijving",
+            "target": "Target",
+            "productTags": "Product tags",
+            "createdAt": "Aangemaakt"
         }
     },
     "processes": {
@@ -178,7 +187,7 @@
             "processId": "Proces ID",
             "started": "Starttijd",
             "lastModified": "Aangepast op",
-            "workflowTarget": "Target",
+            "processTarget": "Target",
             "productTag": "Product tag"
         },
         "detail": {

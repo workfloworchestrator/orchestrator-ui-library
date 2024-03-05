@@ -7,6 +7,7 @@ import {
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
 } from '@/components';
@@ -57,6 +58,7 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             return getTableConfig<T>(productColumns as (keyof T)[]);
 
         case METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY:
+        case METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY:
             const workflowColumns: (keyof WorkflowDefinition)[] = ['createdAt'];
             return getTableConfig<T>(workflowColumns as (keyof T)[]);
 

@@ -15,6 +15,7 @@ import {
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_PRODUCT_BLOCKS,
     PATH_METADATA_RESOURCE_TYPES,
+    PATH_METADATA_TASKS,
     PATH_METADATA_WORKFLOWS,
     PATH_SETTINGS,
     PATH_START,
@@ -126,6 +127,15 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     onClick: (e) => {
                         e.preventDefault();
                         router.push(PATH_METADATA_WORKFLOWS);
+                    },
+                },
+                {
+                    name: t('metadataTasks'),
+                    id: '5.5',
+                    isSelected: router.pathname === PATH_METADATA_TASKS,
+                    onClick: (e) => {
+                        e.preventDefault();
+                        router.push(PATH_METADATA_TASKS);
                     },
                 },
             ],

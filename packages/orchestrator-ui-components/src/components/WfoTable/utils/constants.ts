@@ -1,5 +1,5 @@
 export const DEFAULT_PAGE_SIZES = [5, 10, 15, 20, 25, 100];
-export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 15;
 
 export const ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY =
     'activeProcessesListTable';
@@ -17,5 +17,6 @@ export const METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY =
 export const METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY = 'metadataProductTable';
 export const METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY =
     'metadataWorkflowsTable';
+export const METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY = 'metadataWorkflowsTable';
 
 export const SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY = 'subscriptionsTable';

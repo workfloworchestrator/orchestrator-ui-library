@@ -4,11 +4,10 @@ import { useOrchestratorTheme } from '../../../hooks';
 import { WorkflowTarget } from '../../../types';
 import { WfoBadge } from '../WfoBadge';
 
-export type WfoWorkflowTargetBadgeProps = {
+export type WfoProcessTargetProps = {
     target: WorkflowTarget;
 };
-
-export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
+export const WfoProcessTargetBadge: FC<WfoProcessTargetProps> = ({
     target,
 }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
