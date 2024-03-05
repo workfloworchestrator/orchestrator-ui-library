@@ -7,11 +7,13 @@
         "dev": "npm run build -- --watch"
     },
     "dependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@typescript-eslint/eslint-plugin": "^7.0.1",
         "eslint": "^8.56.0",
         "eslint-config-next": "^14.0.4",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-react": "^7.28.0"
+        "eslint-plugin-react": "^7.28.0",
+        "prettier": "^3.2.5"
     },
     "publishConfig": {
         "access": "public"
