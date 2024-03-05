@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.1.0
+
+### Minor Changes
+
+- 00fe7c1: Adds jest-environment-jsdom package
+
 ## 1.0.0
 
 ### Major Changes
