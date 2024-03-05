@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.1.3
+
+### Patch Changes
+
+- 9d8b7e0: Downgrades typescript-eslint-plugin
+
 ## 1.1.2
 
 ### Patch Changes
