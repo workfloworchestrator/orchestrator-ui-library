@@ -76,6 +76,7 @@ export enum BadgeType {
     PRODUCT_BLOCK = 'product_block',
     PRODUCT_BLOCK_TAG = 'product_block_tag',
     PRODUCT_TAG = 'product_tag',
+    PRODUCT = 'product',
 }
 
 export interface FixedInputDefinition {

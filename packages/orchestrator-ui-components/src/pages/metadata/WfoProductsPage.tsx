@@ -96,6 +96,11 @@ export const WfoProductsPage = () => {
             field: PRODUCT_FIELD_NAME,
             name: t('name'),
             width: '200',
+            render: (name) => (
+                <WfoProductBlockBadge badgeType={BadgeType.PRODUCT}>
+                    {name}
+                </WfoProductBlockBadge>
+            ),
         },
         tag: {
             field: PRODUCT_FIELD_TAG,
