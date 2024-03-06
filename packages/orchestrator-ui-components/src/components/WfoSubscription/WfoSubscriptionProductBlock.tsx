@@ -20,7 +20,10 @@ import { FieldValue, InUseByRelation } from '../../types';
 import { camelToHuman } from '../../utils';
 import { PATH_SUBSCRIPTIONS } from '../WfoPageTemplate';
 import { getStyles } from './styles';
-import { getProductBlockTitle } from './utils';
+import {
+    getFieldFromProductBlockInstanceValues,
+    getProductBlockTitle,
+} from './utils';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
@@ -84,9 +87,12 @@ export const WfoSubscriptionProductBlock = ({
                                 )}
                             </h3>
                         </EuiText>
-                        <EuiText size="s">{`${t(
-                            'subscriptionInstanceId',
-                        )}: ${subscriptionInstanceId}`}</EuiText>
+                        <EuiText size="s">
+                            {getFieldFromProductBlockInstanceValues(
+                                productBlockInstanceValues,
+                                'name',
+                            )}
+                        </EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
                         <EuiButtonEmpty
@@ -109,6 +115,20 @@ export const WfoSubscriptionProductBlock = ({
                         <tbody>
                             {!hideDetails && (
                                 <>
+                                    <tr key={-3}>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockFirstLeftColStyle}
+                                        >
+                                            <b>{t('subscriptionInstanceId')}</b>
+                                        </td>
+                                        <td
+                                            valign={'top'}
+                                            css={productBlockFirstRightColStyle}
+                                        >
+                                            {subscriptionInstanceId}
+                                        </td>
+                                    </tr>
                                     <tr key={-2}>
                                         <td
                                             valign={'top'}
@@ -123,7 +143,6 @@ export const WfoSubscriptionProductBlock = ({
                                             {subscriptionId ===
                                             ownerSubscriptionId ? (
                                                 <>
-                                                    {subscriptionId}
                                                     <EuiBadge>
                                                         {t('self')}
                                                     </EuiBadge>
