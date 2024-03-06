@@ -7,6 +7,9 @@ import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 import { EuiButton } from '@elastic/eui';
 
 import { ConfirmationDialogContext } from '@/contexts';
+import { useShowToastMessage } from '@/hooks';
+import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
+import { ToastTypes } from '@/types';
 import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
 
@@ -28,9 +31,32 @@ export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
+    const [setSubscriptionInSync] = useSetSubscriptionInSyncMutation();
+    const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+
     const setInSyncAction = () => {
-        // console.log('todo: implement api call');
+        setSubscriptionInSync(subscriptionDetail.subscriptionId)
+            .unwrap()
+            .then(() => {
+                // Optimistic update for now
+                showToastMessage(
+                    ToastTypes.SUCCESS,
+                    t('setInSyncSuccess.text'),
+                    t('setInSyncSuccess.title'),
+                );
+                subscriptionDetail.insync = true;
+            })
+            .catch((error) => {
+                showToastMessage(
+                    ToastTypes.ERROR,
+                    error?.data?.detail
+                        ? error.data.detail
+                        : t('setInSyncFailed.text').toString,
+                    t('setInSyncFailed.title'),
+                );
+                console.error('Failed to set subscription in sync.', error);
+            });
     };
 
     const InSyncField = ({ inSync }: { inSync: boolean }) => {
