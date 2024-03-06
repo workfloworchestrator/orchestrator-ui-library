@@ -7,6 +7,10 @@ import type { OrchestratorConfig } from '@/types';
 
 import { orchestratorApi } from './api';
 import { getOrchestratorConfigSlice, toastMessagesReducer } from './slices';
+import {
+    CustomBaseQuery,
+    getCustomBaseQueriesSlice,
+} from './slices/customBaseQueries';
 
 export type RootState = {
     orchestratorApi: CombinedState<
@@ -16,18 +20,26 @@ export type RootState = {
     >;
     toastMessages: ReturnType<typeof toastMessagesReducer>;
     orchestratorConfig: OrchestratorConfig;
+    customBaseQueries?: CustomBaseQuery[];
 };
 
 export const getOrchestratorStore = (
     orchestratorConfig: OrchestratorConfig,
+    customBaseQueries?: CustomBaseQuery[],
 ): EnhancedStore<RootState> => {
     const configSlice = getOrchestratorConfigSlice(orchestratorConfig);
+    const customBaseQueriesSlice = customBaseQueries
+        ? getCustomBaseQueriesSlice(customBaseQueries)
+        : null;
 
     const orchestratorStore = configureStore({
         reducer: {
             [orchestratorApi.reducerPath]: orchestratorApi.reducer,
             toastMessages: toastMessagesReducer,
             orchestratorConfig: configSlice.reducer,
+            ...(customBaseQueriesSlice
+                ? { customBaseQueries: customBaseQueriesSlice.reducer }
+                : {}),
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(orchestratorApi.middleware),

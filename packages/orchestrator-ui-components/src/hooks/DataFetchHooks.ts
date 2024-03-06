@@ -29,7 +29,7 @@ export const useCacheNames = () => {
     );
 };
 
-const filterDataByCriteria = <Type>(
+export const filterDataByCriteria = <Type>(
     data: Type[],
     filterCriteria: GraphqlFilter<Type>[],
 ): Type[] => {
