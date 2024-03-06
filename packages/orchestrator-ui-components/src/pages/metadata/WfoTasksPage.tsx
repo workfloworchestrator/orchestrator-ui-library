@@ -29,7 +29,7 @@ import {
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
-    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     WfoProductBlockBadge,
 } from '../../components';
 import { WfoTableWithFilter } from '../../components';
@@ -65,7 +65,7 @@ export const WfoTasksPage = () => {
         useState<StoredTableConfig<TaskListItem>>();
 
     const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
-        METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+        METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     );
 
     useEffect(() => {
@@ -165,13 +165,13 @@ export const WfoTasksPage = () => {
     const { data, isFetching, isError } = useQueryWithGraphql(
         GET_TASKS_GRAPHQL_QUERY,
         graphqlQueryVariables,
-        ['workflows', 'listPage'],
+        ['tasks', 'listPage'],
     );
-    const { getData: getWorkflowsForExport, isFetching: isFetchingCsv } =
+    const { getData: getTasksForExport, isFetching: isFetchingCsv } =
         useQueryWithGraphqlLazy(
             GET_TASKS_GRAPHQL_QUERY,
             getQueryVariablesForExport(graphqlQueryVariables),
-            ['workflows', 'export'],
+            ['tasks', 'export'],
         );
 
     const dataSorting: WfoDataSorting<TaskListItem> = {
@@ -213,13 +213,13 @@ export const WfoTasksPage = () => {
                 isLoading={isFetching}
                 hasError={isError}
                 queryString={queryString}
-                localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
-                    getWorkflowsForExport,
+                    getTasksForExport,
                     (data) => data.workflows.page,
                     (data) => data.workflows.pageInfo,
                     Object.keys(tableColumns),
-                    getCsvFileNameWithDate('Workflows'),
+                    getCsvFileNameWithDate('Tasks'),
                     showToastMessage,
                     tError,
                 )}

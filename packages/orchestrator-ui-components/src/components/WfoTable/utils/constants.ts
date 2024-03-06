@@ -17,6 +17,6 @@ export const METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY =
 export const METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY = 'metadataProductTable';
 export const METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY =
     'metadataWorkflowsTable';
-export const METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY = 'metadataWorkflowsTable';
+export const METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY = 'metadataTasksTable';
 
 export const SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY = 'subscriptionsTable';
