@@ -40,10 +40,11 @@ export const orchestratorApi = createApi({
         const state = api.getState() as RootState;
         const { orchestratorApiBaseUrl, graphqlEndpointCore } =
             state.orchestratorConfig;
-        const baseQueries = state.customBaseQueries;
-        console.log('baseQueries', baseQueries);
-        if (baseQueries) {
-            for (const query of baseQueries) {
+
+        const customBaseQueries = state.customBaseQueries;
+
+        if (customBaseQueries) {
+            for (const query of customBaseQueries) {
                 if (query.queryType === customBaseQueryType) {
                     return query.customFn(args, api, {});
                 }

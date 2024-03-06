@@ -1,10 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { Slice } from '@reduxjs/toolkit';
-import { BaseQueryFn } from '@reduxjs/toolkit/query';
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError,
+    FetchBaseQueryMeta,
+} from '@reduxjs/toolkit/query';
 
+export type CustomBaseQueryFn = BaseQueryFn<
+    string | FetchArgs,
+    unknown,
+    FetchBaseQueryError,
+    NonNullable<unknown>,
+    FetchBaseQueryMeta
+>;
 export type CustomBaseQuery = {
     queryType: string;
-    customFn: BaseQueryFn<any, any, any, string>;
+    customFn: CustomBaseQueryFn;
 };
 type CustomBaseQueriesSlice = Slice<CustomBaseQuery[]>;
 
