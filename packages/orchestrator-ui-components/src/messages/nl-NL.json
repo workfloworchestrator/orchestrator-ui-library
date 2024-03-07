@@ -316,7 +316,7 @@
             "hideAll": "Verberg alles",
             "see": "Bekijk",
             "setInSync": "Set in Sync",
-            "setInSyncQuestion": "Are you sure you want to do this? You're about to force a subscription in sync. When it's clear why the subscription is out of sync this could enable you to start or finish a change on this subscription. When you're in doubt, please consult the network automators first as running workflows on subscriptions that are not in sync can potentially do great harm to the network.",
+            "setInSyncQuestion": "Weet je zeker dat je de subscription in-sync wilt zetten? Je gaat een subscription geforceerd in-sync zetten. Alleen als je zeker weet wat de reden is van out-of-sync kun je de actie uitvoeren, zodat je daarna wijzigingen kunt doorvoeren op deze subscription. Bij twijfel - check eerst bij de network automators of het in sync zetten van de subscription mogelijk schadelijke gevolgen kan hebben op het netwerk.",
             "setInSyncFailed": {
                 "title": "In sync zetten mislukt",
                 "text": "De subscription kon niet inSync worden gezet. Probeer het opnieuw."
