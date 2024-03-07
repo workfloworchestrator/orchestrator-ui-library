@@ -21,9 +21,10 @@ export enum CacheTags {
 
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
+    apiName?: string;
 };
 
-const prepareHeaders = async (headers: Headers) => {
+export const prepareHeaders = async (headers: Headers) => {
     const session = (await getSession()) as WfoSession;
     if (session?.accessToken) {
         headers.set('Authorization', `Bearer ${session.accessToken}`);
@@ -34,22 +35,28 @@ const prepareHeaders = async (headers: Headers) => {
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
-        const { baseQueryType } = extraOptions || {};
+        const { baseQueryType, apiName } = extraOptions || {};
 
         const state = api.getState() as RootState;
         const { orchestratorApiBaseUrl, graphqlEndpointCore } =
             state.orchestratorConfig;
 
+        const customApi = state.customApis?.find(
+            (query) => query.apiName === apiName,
+        );
+
         switch (baseQueryType) {
             case BaseQueryTypes.fetch:
                 const fetchFn = fetchBaseQuery({
-                    baseUrl: orchestratorApiBaseUrl,
+                    baseUrl: customApi
+                        ? customApi.apiBaseUrl
+                        : orchestratorApiBaseUrl,
                     prepareHeaders,
                 });
                 return fetchFn(args, api, {});
             default:
                 const graphqlFn = graphqlRequestBaseQuery({
-                    url: graphqlEndpointCore,
+                    url: customApi ? customApi.apiBaseUrl : graphqlEndpointCore,
                     prepareHeaders,
                 });
                 return graphqlFn(args, api, {});
