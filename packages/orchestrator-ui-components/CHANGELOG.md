@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.2.0
+
+### Minor Changes
+
+- 857b6de: Added option to override the baseQuery with custom baseQuery in RTK
+
 ## 1.1.0
 
 ### Minor Changes
