@@ -9,7 +9,6 @@ import {
     WorkflowDefinitionsResult,
 } from '@/types';
 
-// TODO: fix filterBy to include CREATE, MODIFY, TERMINATE
 export const GET_TASKS_GRAPHQL_QUERY: TypedDocumentNode<
     WorkflowDefinitionsResult,
     GraphqlQueryVariables<WorkflowDefinition>

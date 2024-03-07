@@ -25,7 +25,6 @@ export const GET_WORKFLOWS_GRAPHQL_QUERY: TypedDocumentNode<
             after: $after
             sortBy: $sortBy
             query: $query
-            filterBy: { field: "target", value: "CREATE" }
         ) {
             page {
                 name
