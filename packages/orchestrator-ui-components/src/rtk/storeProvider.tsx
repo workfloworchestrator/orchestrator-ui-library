@@ -2,26 +2,23 @@ import React, { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { CustomBaseQuery } from '@/rtk/slices/customBaseQueries';
+import { CustomApiConfig } from '@/rtk/slices/customApis';
 import type { OrchestratorConfig } from '@/types';
 
 import { getOrchestratorStore } from './store';
 
 export type StoreProviderProps = {
     initialOrchestratorConfig: OrchestratorConfig;
-    customBaseQueries?: CustomBaseQuery[];
+    customApis?: CustomApiConfig[];
     children: ReactNode;
 };
 
 export const StoreProvider = ({
     initialOrchestratorConfig,
-    customBaseQueries,
+    customApis = [],
     children,
 }: StoreProviderProps) => {
-    const store = getOrchestratorStore(
-        initialOrchestratorConfig,
-        customBaseQueries,
-    );
+    const store = getOrchestratorStore(initialOrchestratorConfig, customApis);
     const [orchestratorStore] = useState(store);
 
     return <Provider store={orchestratorStore}>{children}</Provider>;

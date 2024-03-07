@@ -3,14 +3,11 @@ import type { EnhancedStore } from '@reduxjs/toolkit';
 import type { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { CombinedState } from '@reduxjs/toolkit/query';
 
+import { CustomApiConfig, getCustomApiSlice } from '@/rtk/slices';
 import type { OrchestratorConfig } from '@/types';
 
 import { orchestratorApi } from './api';
 import { getOrchestratorConfigSlice, toastMessagesReducer } from './slices';
-import {
-    CustomBaseQuery,
-    getCustomBaseQueriesSlice,
-} from './slices/customBaseQueries';
 
 export type RootState = {
     orchestratorApi: CombinedState<
@@ -20,26 +17,22 @@ export type RootState = {
     >;
     toastMessages: ReturnType<typeof toastMessagesReducer>;
     orchestratorConfig: OrchestratorConfig;
-    customBaseQueries?: CustomBaseQuery[];
+    customApis: CustomApiConfig[];
 };
 
 export const getOrchestratorStore = (
     orchestratorConfig: OrchestratorConfig,
-    customBaseQueries?: CustomBaseQuery[],
+    customApis: CustomApiConfig[],
 ): EnhancedStore<RootState> => {
     const configSlice = getOrchestratorConfigSlice(orchestratorConfig);
-    const customBaseQueriesSlice = customBaseQueries
-        ? getCustomBaseQueriesSlice(customBaseQueries)
-        : null;
+    const customApisSlice = getCustomApiSlice(customApis);
 
     const orchestratorStore = configureStore({
         reducer: {
             [orchestratorApi.reducerPath]: orchestratorApi.reducer,
             toastMessages: toastMessagesReducer,
             orchestratorConfig: configSlice.reducer,
-            ...(customBaseQueriesSlice
-                ? { customBaseQueries: customBaseQueriesSlice.reducer }
-                : {}),
+            customApis: customApisSlice?.reducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(orchestratorApi.middleware),

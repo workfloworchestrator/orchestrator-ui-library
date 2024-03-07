@@ -21,7 +21,7 @@ export enum CacheTags {
 
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
-    customBaseQueryType?: string;
+    apiName?: string;
 };
 
 export const prepareHeaders = async (headers: Headers) => {
@@ -35,31 +35,28 @@ export const prepareHeaders = async (headers: Headers) => {
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
-        const { baseQueryType, customBaseQueryType } = extraOptions || {};
+        const { baseQueryType, apiName } = extraOptions || {};
 
         const state = api.getState() as RootState;
         const { orchestratorApiBaseUrl, graphqlEndpointCore } =
             state.orchestratorConfig;
 
-        const customBaseQueries = state.customBaseQueries;
+        const customApi = state.customApis?.find(
+            (query) => query.apiName === apiName,
+        );
 
-        if (customBaseQueries) {
-            for (const query of customBaseQueries) {
-                if (query.queryType === customBaseQueryType) {
-                    return query.customFn(args, api, {});
-                }
-            }
-        }
         switch (baseQueryType) {
             case BaseQueryTypes.fetch:
                 const fetchFn = fetchBaseQuery({
-                    baseUrl: orchestratorApiBaseUrl,
+                    baseUrl: customApi
+                        ? customApi.apiBaseUrl
+                        : orchestratorApiBaseUrl,
                     prepareHeaders,
                 });
                 return fetchFn(args, api, {});
             default:
                 const graphqlFn = graphqlRequestBaseQuery({
-                    url: graphqlEndpointCore,
+                    url: customApi ? customApi.apiBaseUrl : graphqlEndpointCore,
                     prepareHeaders,
                 });
                 return graphqlFn(args, api, {});

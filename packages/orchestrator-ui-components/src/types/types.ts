@@ -251,6 +251,8 @@ export type GraphqlFilter<Type> = {
     value: string;
 };
 
+export type FetchFilter<Type> = GraphqlFilter<Type>;
+
 export type GraphqlQueryVariables<Type> = {
     first?: number;
     after?: number;
