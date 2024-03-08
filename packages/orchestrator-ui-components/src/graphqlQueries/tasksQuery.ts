@@ -19,7 +19,7 @@ export const GET_TASKS_GRAPHQL_QUERY: TypedDocumentNode<
         $sortBy: [GraphqlSort!]
         $query: String
     ) {
-        workflows(
+        tasks(
             first: $first
             after: $after
             sortBy: $sortBy

@@ -303,7 +303,7 @@ export interface StartProcessStep {
 }
 
 export interface ProcessStepsResult {
-    workflows: GraphQlSinglePage<{ steps: StartProcessStep[] }>;
+    processes: GraphQlSinglePage<{ steps: StartProcessStep[] }>;
 }
 
 export interface ProductBlockDefinitionsResult {
