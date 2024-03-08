@@ -1,5 +1,6 @@
-import { Subscription, SubscriptionsResult } from '../../types';
-import { parseDate } from '../../utils';
+import { SubscriptionListResponse } from '@/rtk/endpoints/subscriptionList';
+import { Subscription } from '@/types';
+import { parseDate } from '@/utils';
 
 export type SubscriptionListItem = Pick<
     Subscription,
@@ -13,16 +14,14 @@ export type SubscriptionListItem = Pick<
     customerShortcode: string;
 };
 
-export function mapGraphQlSubscriptionsResultToPageInfo(
-    graphqlResponse: SubscriptionsResult,
-) {
-    return graphqlResponse.subscriptions.pageInfo;
-}
+export const mapGraphQlSubscriptionsResultToPageInfo = (
+    graphqlResponse: SubscriptionListResponse,
+) => graphqlResponse.pageInfo;
 
-export function mapGraphQlSubscriptionsResultToSubscriptionListItems(
-    graphqlResponse: SubscriptionsResult,
-): SubscriptionListItem[] {
-    return graphqlResponse.subscriptions.page.map((subscription) => {
+export const mapGraphQlSubscriptionsResultToSubscriptionListItems = (
+    graphqlResponse: SubscriptionListResponse,
+): SubscriptionListItem[] =>
+    graphqlResponse.subscriptions.map((subscription) => {
         const {
             description,
             insync,
@@ -53,4 +52,3 @@ export function mapGraphQlSubscriptionsResultToSubscriptionListItems(
             customerShortcode,
         };
     });
-}

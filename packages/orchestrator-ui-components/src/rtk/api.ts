@@ -15,8 +15,7 @@ export enum BaseQueryTypes {
 
 export enum CacheTags {
     engineStatus = 'engineStatus',
-    // This is a placeholder for now. Having only one messes up the type of the tag in the onCacheEntryAdded function.
-    testStatus = 'testStatus',
+    subscriptionList = 'subscriptionList',
 }
 
 type ExtraOptions = {
@@ -63,5 +62,5 @@ export const orchestratorApi = createApi({
         }
     },
     endpoints: () => ({}),
-    tagTypes: [CacheTags.engineStatus, CacheTags.testStatus],
+    tagTypes: [CacheTags.engineStatus, CacheTags.subscriptionList],
 });

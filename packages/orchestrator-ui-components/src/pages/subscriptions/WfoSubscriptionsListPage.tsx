@@ -9,17 +9,16 @@ import {
     DEFAULT_PAGE_SIZE,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
 } from '@/components';
-
-import { WfoFilterTabs } from '../../components';
+import { WfoFilterTabs } from '@/components';
+import { StoredTableConfig } from '@/components';
 import {
     WfoSubscriptionListTab,
     WfoSubscriptionsList,
     subscriptionListTabs,
-} from '../../components/WfoSubscriptionsList';
-import { SubscriptionListItem } from '../../components/WfoSubscriptionsList';
-import { StoredTableConfig } from '../../components/WfoTable';
-import { useDataDisplayParams, useStoredTableConfig } from '../../hooks';
-import { SortOrder } from '../../types';
+} from '@/components/WfoSubscriptionsList';
+import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
+import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
+import { SortOrder } from '@/types';
 
 export const WfoSubscriptionsListPage = () => {
     const t = useTranslations('subscriptions.detail');
