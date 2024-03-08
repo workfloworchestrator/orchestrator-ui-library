@@ -210,7 +210,12 @@ const testProcess: SubscriptionDetailProcess = {
 
 describe('getLastUncompletedProcess', () => {
     it('Returns empty string with empty process array', () => {
-        expect(getLastUncompletedProcess([])).toBe(undefined);
+        const processes: SubscriptionDetailProcess[] = [];
+
+        const getLastUncompletedProcessResult =
+            getLastUncompletedProcess(processes);
+
+        expect(getLastUncompletedProcessResult).toBe(undefined);
     });
 
     it('Return undefined string when there is only completed process', () => {
@@ -231,7 +236,11 @@ describe('getLastUncompletedProcess', () => {
                 startedAt: '2021-03-01T00:00:00Z',
             },
         ];
-        expect(getLastUncompletedProcess(completedProcesses)).toBe(undefined);
+
+        const lastUncompletedProcess =
+            getLastUncompletedProcess(completedProcesses);
+
+        expect(lastUncompletedProcess).toBe(undefined);
     });
     it('Returns uncompleted process from list of processes', () => {
         const failedProcess = {
@@ -254,9 +263,11 @@ describe('getLastUncompletedProcess', () => {
                 startedAt: '2021-03-01T00:00:00Z',
             },
         ];
-        expect(getLastUncompletedProcess(failedProcesses)?.processId).toBe(
-            'FAILED_PROCESS_ID',
-        );
+
+        const lastUncompletedProcess =
+            getLastUncompletedProcess(failedProcesses);
+
+        expect(lastUncompletedProcess?.processId).toBe('FAILED_PROCESS_ID');
     });
 
     it('Returns last failed process if there are more uncompleted processes', () => {
@@ -288,15 +299,21 @@ describe('getLastUncompletedProcess', () => {
             },
             failedProcess2,
         ];
-        expect(getLastUncompletedProcess(failedProcesses)?.processId).toBe(
-            'FAILED_PROCESS_ID_2',
-        );
+
+        const lastUncompletedProcess =
+            getLastUncompletedProcess(failedProcesses);
+
+        expect(lastUncompletedProcess?.processId).toBe('FAILED_PROCESS_ID_2');
     });
 });
 
 describe('getLatestTaskDate', () => {
     it('Returns empty string on empty array', () => {
-        expect(getLatestTaskDate([])).toBe('');
+        const tasks: SubscriptionDetailProcess[] = [];
+
+        const lastTask = getLatestTaskDate(tasks);
+
+        expect(lastTask).toBe('');
     });
 
     it('Returns empty string if there are no tasks among the processes', () => {
@@ -305,7 +322,9 @@ describe('getLatestTaskDate', () => {
             { ...testProcess, isTask: false },
         ];
 
-        expect(getLatestTaskDate(workflowsOnly)).toBe('');
+        const lastTask = getLatestTaskDate(workflowsOnly);
+
+        expect(lastTask).toBe('');
     });
 
     it('Returns date of tasks among the processes', () => {
@@ -315,9 +334,9 @@ describe('getLatestTaskDate', () => {
             { ...testProcess, isTask: false },
         ];
 
-        expect(getLatestTaskDate(workflowsAndTask)).toBe(
-            '2021-01-01T00:00:00Z',
-        );
+        const lastTaskDate = getLatestTaskDate(workflowsAndTask);
+
+        expect(lastTaskDate).toBe('2021-01-01T00:00:00Z');
     });
 
     it('Returns date of last task among the processes if there are more tasks', () => {
@@ -336,8 +355,8 @@ describe('getLatestTaskDate', () => {
             { ...testProcess, isTask: true, startedAt: '2021-04-01T00:00:00Z' },
         ];
 
-        expect(getLatestTaskDate(workflowsAndTask)).toBe(
-            '2021-04-01T00:00:00Z',
-        );
+        const lastTaskDate = getLatestTaskDate(workflowsAndTask);
+
+        expect(lastTaskDate).toBe('2021-04-01T00:00:00Z');
     });
 });
