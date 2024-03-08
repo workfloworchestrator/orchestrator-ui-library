@@ -96,11 +96,8 @@ export const WfoStartProcessPage = ({
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
-    const {
-        data: timeLineItems = [],
-        isLoading,
-        isError,
-    } = useGetTimeLineItemsQuery(processName);
+    const { data: timeLineItems = [], isError } =
+        useGetTimeLineItemsQuery(processName);
 
     if (isError) {
         if (!hasError) {
