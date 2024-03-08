@@ -157,8 +157,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     const { data, isFetching, isError } = useGetSubscriptionListQuery(
         graphqlQueryVariables,
     );
-    const [getSubscriptionListForExport, { isFetching: isFetchingCsv }] =
+    const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
         useLazyGetSubscriptionListQuery();
+    const getSubscriptionListForExport = () =>
+        getSubscriptionListTrigger(
+            getQueryVariablesForExport(graphqlQueryVariables),
+        ).unwrap();
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
@@ -208,10 +212,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             )}
             hasError={isError}
             onExportData={csvDownloadHandler(
-                () =>
-                    getSubscriptionListForExport(
-                        getQueryVariablesForExport(graphqlQueryVariables),
-                    ).unwrap(),
+                getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
                 mapGraphQlSubscriptionsResultToPageInfo,
                 Object.keys(tableColumns),
