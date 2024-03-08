@@ -58,10 +58,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     };
 
     const getProcessLink = () => {
-        const processUrl =
-            (lastUncompletedProcess?.isTask ? PATH_TASKS : PATH_WORKFLOWS) +
-            '/' +
-            lastUncompletedProcess?.processId;
+        const processUrl = `${lastUncompletedProcess?.isTask ? PATH_TASKS : PATH_WORKFLOWS}/${lastUncompletedProcess?.processId}`;
 
         const confirmSetInSync = () => {
             showConfirmDialog({
