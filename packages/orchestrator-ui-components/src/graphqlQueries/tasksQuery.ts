@@ -5,13 +5,13 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 import {
     GraphqlQueryVariables,
-    WorkflowDefinition,
-    WorkflowDefinitionsResult,
+    TaskDefinition,
+    TaskDefinitionsResult,
 } from '@/types';
 
 export const GET_TASKS_GRAPHQL_QUERY: TypedDocumentNode<
-    WorkflowDefinitionsResult,
-    GraphqlQueryVariables<WorkflowDefinition>
+    TaskDefinitionsResult,
+    GraphqlQueryVariables<TaskDefinition>
 > = parse(gql`
     query MetadataTasks(
         $first: Int!

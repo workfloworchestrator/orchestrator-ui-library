@@ -13,7 +13,7 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
+import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
@@ -45,19 +45,19 @@ import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
-    graphQlWorkflowListMapper,
-    mapWorkflowDefinitionToWorkflowListItem,
-} from './workflowListObjectMapper';
+    graphQlTaskListMapper,
+    mapTaskDefinitionToTaskListItem,
+} from './taskListObjectMapper';
 
 export type TaskListItem = Pick<
-    WorkflowDefinition,
+    TaskDefinition,
     'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
 };
 
 export const WfoTasksPage = () => {
-    const t = useTranslations('metadata.workflows');
+    const t = useTranslations('metadata.tasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
 
@@ -95,7 +95,7 @@ export const WfoTasksPage = () => {
             name: t('name'),
             width: '20%',
             render: (name) => (
-                <WfoProductBlockBadge badgeType={BadgeType.WORKFLOW}>
+                <WfoProductBlockBadge badgeType={BadgeType.TASK}>
                     {name}
                 </WfoProductBlockBadge>
             ),
@@ -156,10 +156,10 @@ export const WfoTasksPage = () => {
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-    const graphqlQueryVariables: GraphqlQueryVariables<WorkflowDefinition> = {
+    const graphqlQueryVariables: GraphqlQueryVariables<TaskDefinition> = {
         first: pageSize,
         after: pageIndex * pageSize,
-        sortBy: graphQlWorkflowListMapper(sortBy),
+        sortBy: graphQlTaskListMapper(sortBy),
         query: queryString || undefined,
     };
     const { data, isFetching, isError } = useQueryWithGraphql(
@@ -192,7 +192,7 @@ export const WfoTasksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<TaskListItem>
-                data={data ? mapWorkflowDefinitionToWorkflowListItem(data) : []}
+                data={data ? mapTaskDefinitionToTaskListItem(data) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,

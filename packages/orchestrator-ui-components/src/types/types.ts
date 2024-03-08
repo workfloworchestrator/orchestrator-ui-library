@@ -77,6 +77,7 @@ export enum BadgeType {
     PRODUCT_BLOCK_TAG = 'product_block_tag',
     PRODUCT_TAG = 'product_tag',
     PRODUCT = 'product',
+    TASK = 'task',
 }
 
 export interface FixedInputDefinition {
@@ -233,6 +234,14 @@ export interface WorkflowDefinition {
     createdAt: string;
 }
 
+export interface TaskDefinition {
+    name: string;
+    description?: string;
+    target: WorkflowTarget;
+    products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
+    createdAt: string;
+}
+
 export type Field<Type> = keyof Type;
 
 //// Utility types
@@ -329,6 +338,10 @@ export interface CustomersResult {
 }
 
 export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
+    workflows: GraphQlResultPage<T>;
+}
+
+export interface TaskDefinitionsResult<T = TaskDefinition> {
     workflows: GraphQlResultPage<T>;
 }
 
