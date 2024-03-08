@@ -13,18 +13,17 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_TASKS, TimelineItem, WfoError, WfoLoading } from '@/components';
+import { PATH_TASKS, WfoError, WfoLoading } from '@/components';
 import { PATH_WORKFLOWS } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
-import { GET_PROCESS_STEPS_GRAPHQL_QUERY } from '@/graphqlQueries';
-import { useOrchestratorTheme, useQueryWithGraphql } from '@/hooks';
+import { useOrchestratorTheme } from '@/hooks';
+import { useGetTimeLineItemsQuery } from '@/rtk';
 import {
     EngineStatus,
     ProcessDetail,
     ProcessStatus,
-    StartProcessStep,
     StepStatus,
 } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
@@ -97,29 +96,17 @@ export const WfoStartProcessPage = ({
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_PROCESS_STEPS_GRAPHQL_QUERY,
-        {
-            processName,
-        },
-        `processSteps={processName}`,
-    );
+    const {
+        data: timeLineItems = [],
+        isLoading,
+        isError,
+    } = useGetTimeLineItemsQuery(processName);
 
     if (isError) {
         if (!hasError) {
             setHasError(true);
         }
     }
-
-    const timeLineItems: TimelineItem[] =
-        data?.workflows?.page[0]?.steps && !isLoading
-            ? data.workflows.page[0].steps.map(({ name }: StartProcessStep) => {
-                  return {
-                      processStepStatus: StepStatus.PENDING,
-                      stepDetail: name,
-                  };
-              })
-            : [];
 
     const submit = useCallback(
         (processInput: object[]) => {
