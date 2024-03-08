@@ -10,7 +10,7 @@ export const GET_PROCESS_STEPS_GRAPHQL_QUERY: TypedDocumentNode<
     { processName: string }
 > = parse(gql`
     query ProcessSteps($processName: String!) {
-        processes(filterBy: { field: "name", value: $processName }) {
+        workflows(filterBy: { field: "name", value: $processName }) {
             page {
                 steps {
                     name

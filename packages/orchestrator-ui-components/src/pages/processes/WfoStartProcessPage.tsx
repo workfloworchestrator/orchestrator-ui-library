@@ -112,8 +112,8 @@ export const WfoStartProcessPage = ({
     }
 
     const timeLineItems: TimelineItem[] =
-        data?.processes?.page[0]?.steps && !isLoading
-            ? data.processes.page[0].steps.map(({ name }: StartProcessStep) => {
+        data?.workflows?.page[0]?.steps && !isLoading
+            ? data.workflows.page[0].steps.map(({ name }: StartProcessStep) => {
                   return {
                       processStepStatus: StepStatus.PENDING,
                       stepDetail: name,
