@@ -1,15 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
-import { EuiButton } from '@elastic/eui';
 
-import { ConfirmationDialogContext } from '@/contexts';
-import { useShowToastMessage } from '@/hooks';
-import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
-import { ToastTypes } from '@/types';
 import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
 
@@ -17,11 +11,9 @@ import {
     WfoProductStatusBadge,
     WfoSubscriptionStatusBadge,
 } from '../WfoBadges';
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { WfoKeyValueTableDataType } from '../WfoKeyValueTable/WfoKeyValueTable';
-import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { SubscriptionKeyValueBlock } from './SubscriptionKeyValueBlock';
-import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
+import { WfoInSyncField } from './WfoInSyncField';
 
 interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
@@ -31,88 +23,6 @@ export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
-    const [setSubscriptionInSync] = useSetSubscriptionInSyncMutation();
-    const { showToastMessage } = useShowToastMessage();
-    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-
-    const setInSyncAction = () => {
-        setSubscriptionInSync(subscriptionDetail.subscriptionId)
-            .unwrap()
-            .then(() => {
-                // Optimistic update for now
-                showToastMessage(
-                    ToastTypes.SUCCESS,
-                    t('setInSyncSuccess.text'),
-                    t('setInSyncSuccess.title'),
-                );
-                subscriptionDetail.insync = true;
-            })
-            .catch((error) => {
-                showToastMessage(
-                    ToastTypes.ERROR,
-                    error?.data?.detail
-                        ? error.data.detail
-                        : t('setInSyncFailed.text').toString,
-                    t('setInSyncFailed.title'),
-                );
-                console.error('Failed to set subscription in sync.', error);
-            });
-    };
-
-    const InSyncField = ({ inSync }: { inSync: boolean }) => {
-        const lastTaskRunDate = getLatestTaskDate(
-            subscriptionDetail.processes.page,
-        );
-        const lastUncompletedProcess = getLastUncompletedProcess(
-            subscriptionDetail.processes.page,
-        );
-
-        const getProcessLink = () => {
-            const processUrl =
-                (lastUncompletedProcess?.isTask ? PATH_TASKS : PATH_WORKFLOWS) +
-                '/' +
-                lastUncompletedProcess?.processId;
-
-            const confirmSetInSync = () => {
-                showConfirmDialog({
-                    question: t('setInSyncQuestion'),
-                    confirmAction: () => {
-                        setInSyncAction();
-                    },
-                });
-            };
-
-            return (
-                <>
-                    <Link
-                        href={processUrl}
-                        css={{ paddingLeft: 10, paddingRight: 20 }}
-                    >
-                        {t('see')} {lastUncompletedProcess?.processId}
-                    </Link>
-                    <EuiButton
-                        color="danger"
-                        size="s"
-                        onClick={confirmSetInSync}
-                    >
-                        {t('setInSync')}
-                    </EuiButton>
-                </>
-            );
-        };
-
-        return (
-            <>
-                <div css={{ paddingRight: 4, display: 'flex' }}>
-                    <WfoInsyncIcon inSync={inSync} />
-                </div>
-                {inSync &&
-                    lastTaskRunDate &&
-                    `(${formatDate(lastTaskRunDate)})`}
-                {!inSync && lastUncompletedProcess && getProcessLink()}
-            </>
-        );
-    };
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
         return [
@@ -147,7 +57,9 @@ export const WfoSubscriptionGeneral = ({
             },
             {
                 key: t('insync'),
-                value: <InSyncField inSync={subscriptionDetail.insync} />,
+                value: (
+                    <WfoInSyncField subscriptionDetail={subscriptionDetail} />
+                ),
             },
             {
                 key: t('customer'),

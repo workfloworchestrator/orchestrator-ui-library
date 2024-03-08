@@ -6,3 +6,4 @@ export * from './SubscriptionKeyValueBlock';
 export * from './WfoSubscriptionDetailTree';
 export * from './WfoSubscriptionGeneral';
 export * from './WfoSubscription';
+export * from './WfoInSyncField';
