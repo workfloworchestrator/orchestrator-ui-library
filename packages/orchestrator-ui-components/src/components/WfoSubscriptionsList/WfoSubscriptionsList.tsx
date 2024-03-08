@@ -12,13 +12,11 @@ import {
     WfoInsyncIcon,
     WfoSubscriptionStatusBadge,
 } from '@/components';
-import { getSubscriptionsListGraphQlQuery } from '@/graphqlQueries';
+import { DataDisplayParams, useShowToastMessage } from '@/hooks';
 import {
-    DataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
-    useShowToastMessage,
-} from '@/hooks';
+    useGetSubscriptionListQuery,
+    useLazyGetSubscriptionListQuery,
+} from '@/rtk/endpoints/subscriptionList';
 import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
@@ -155,17 +153,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         filterBy: alwaysOnFilters,
         query: queryString || undefined,
     };
-    const { data, isError, isFetching } = useQueryWithGraphql(
-        getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
+
+    const { data, isFetching, isError } = useGetSubscriptionListQuery(
         graphqlQueryVariables,
-        ['subscriptions', 'listPage'],
     );
-    const { getData: getSubscriptionListForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            getSubscriptionsListGraphQlQuery<SubscriptionListItem>(),
-            getQueryVariablesForExport(graphqlQueryVariables),
-            ['subscriptions', 'export'],
-        );
+    const [getSubscriptionListForExport, { isFetching: isFetchingCsv }] =
+        useLazyGetSubscriptionListQuery();
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
@@ -177,8 +170,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         field: sortedColumnId,
         sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
     };
-    const { totalItems, sortFields, filterFields } =
-        data?.subscriptions?.pageInfo ?? {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
@@ -216,7 +208,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             )}
             hasError={isError}
             onExportData={csvDownloadHandler(
-                getSubscriptionListForExport,
+                () =>
+                    getSubscriptionListForExport(
+                        getQueryVariablesForExport(graphqlQueryVariables),
+                    ).unwrap(),
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
                 mapGraphQlSubscriptionsResultToPageInfo,
                 Object.keys(tableColumns),

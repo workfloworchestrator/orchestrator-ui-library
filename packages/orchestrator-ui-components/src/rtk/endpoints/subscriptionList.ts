@@ -1,5 +1,5 @@
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
-import { orchestratorApi } from '@/rtk';
+import { CacheTags, orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
@@ -66,7 +66,9 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
                 document: subscriptionListQuery,
                 variables,
             }),
-            transformResponse: (response: SubscriptionsResult) => {
+            transformResponse: (
+                response: SubscriptionsResult,
+            ): SubscriptionListResponse => {
                 const subscriptions = response.subscriptions.page || [];
                 const pageInfo = response.subscriptions.pageInfo || {};
 
@@ -75,6 +77,7 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
+            providesTags: [CacheTags.subscriptionList],
         }),
     }),
 });
