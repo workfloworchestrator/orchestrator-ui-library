@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { EuiButton } from '@elastic/eui';
 
 import { ConfirmationDialogContext } from '@/contexts';
-import { useShowToastMessage } from '@/hooks';
+import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
 import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
@@ -21,6 +21,7 @@ interface WfoInSyncFieldProps {
 
 export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { theme } = useOrchestratorTheme();
     const inSync = subscriptionDetail.insync;
     const lastTaskRunDate = getLatestTaskDate(
         subscriptionDetail.processes.page,
@@ -75,7 +76,10 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
             <>
                 <Link
                     href={processUrl}
-                    css={{ paddingLeft: 10, paddingRight: 20 }}
+                    css={{
+                        paddingLeft: theme.base / 2,
+                        paddingRight: theme.base,
+                    }}
                 >
                     {t('see')} {lastUncompletedProcess?.processId}
                 </Link>
@@ -88,7 +92,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
 
     return (
         <>
-            <div css={{ paddingRight: 4, display: 'flex' }}>
+            <div css={{ paddingRight: theme.base / 4, display: 'flex' }}>
                 <WfoInsyncIcon inSync={inSync} />
             </div>
             {inSync && lastTaskRunDate && `(${formatDate(lastTaskRunDate)})`}
