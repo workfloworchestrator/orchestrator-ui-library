@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.3.0
+
+### Minor Changes
+
+- 1ab3e59: Adds set in sync action to subscription detail page
+
 ## 1.2.0
 
 ### Minor Changes
