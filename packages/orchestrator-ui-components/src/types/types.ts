@@ -382,6 +382,11 @@ export type Subscription = {
     customer: Pick<Customer, 'fullname' | 'shortcode'>;
 };
 
+export type SubscriptionSummary = Pick<
+    Subscription,
+    'subscriptionId' | 'description' | 'startDate'
+>;
+
 export type SubscriptionDropdownOption = {
     description: Subscription['description'];
     subscriptionId: Subscription['subscriptionId'];
