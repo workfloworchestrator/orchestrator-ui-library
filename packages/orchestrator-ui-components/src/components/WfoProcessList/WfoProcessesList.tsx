@@ -24,11 +24,14 @@ import {
     getQueryStringHandler,
     mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
-import { getProcessListGraphQlQuery } from '@/graphqlQueries';
-import { useQueryWithGraphqlLazy, useShowToastMessage } from '@/hooks';
+import { useShowToastMessage } from '@/hooks';
 import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
-import { useGetProcessListQuery } from '@/rtk';
+import {
+    ProcessListResponse,
+    useGetProcessListQuery,
+    useLazyGetProcessListQuery,
+} from '@/rtk';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
@@ -213,6 +216,9 @@ export const WfoProcessesList = ({
     const { data, isFetching, isError } =
         useGetProcessListQuery(processListQueryVars);
 
+    const [getProcessListTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetProcessListQuery();
+
     const { processes, pageInfo } = data || {};
 
     const pagination: Pagination = {
@@ -226,12 +232,10 @@ export const WfoProcessesList = ({
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { getData: getProcessListForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            getProcessListGraphQlQuery(),
+    const getProcessListForExport = () =>
+        getProcessListTrigger(
             getQueryVariablesForExport(processListQueryVars),
-            ['processes', 'export'],
-        );
+        ).unwrap();
 
     return (
         <WfoTableWithFilter<ProcessListItem>
@@ -258,7 +262,10 @@ export const WfoProcessesList = ({
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
             onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
-            onExportData={csvDownloadHandler(
+            onExportData={csvDownloadHandler<
+                ProcessListResponse,
+                ProcessListItem
+            >(
                 getProcessListForExport,
                 mapGraphQlProcessListExportResultToProcessListItems,
                 mapGraphQlProcessListResultToPageInfo,

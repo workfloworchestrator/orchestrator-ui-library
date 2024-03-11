@@ -1,15 +1,11 @@
-import {
-    GraphQLSort,
-    GraphqlFilter,
-    Process,
-    ProcessListResult,
-} from '@/types';
+import { ProcessListResponse } from '@/rtk';
+import { GraphQLSort, GraphqlFilter, Process } from '@/types';
 
 import { ProcessListItem } from './WfoProcessesList';
 
 export const mapGraphQlProcessListResultToPageInfo = (
-    processesResult: ProcessListResult,
-) => processesResult.processes.pageInfo;
+    processesResponse: ProcessListResponse,
+) => processesResponse.pageInfo;
 
 export const mapGraphQlProcessListResultToProcessListItems = (
     processes: Process[],
@@ -51,9 +47,9 @@ export const mapGraphQlProcessListResultToProcessListItems = (
     });
 
 export const mapGraphQlProcessListExportResultToProcessListItems = (
-    processesResult: ProcessListResult,
+    processesResponse: ProcessListResponse,
 ): ProcessListItem[] =>
-    processesResult.processes.page.map((process) => {
+    processesResponse.processes.map((process) => {
         const {
             workflowName,
             lastStep,

@@ -86,4 +86,5 @@ const processApi = orchestratorApi.injectEndpoints({
     }),
 });
 
-export const { useGetProcessListQuery } = processApi;
+export const { useGetProcessListQuery, useLazyGetProcessListQuery } =
+    processApi;
