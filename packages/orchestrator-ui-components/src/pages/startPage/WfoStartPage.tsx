@@ -10,12 +10,10 @@ import {
     SummaryCardStatus,
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
-import {
-    getProductsSummaryQuery,
-    getSubscriptionsListSummaryGraphQlQuery,
-} from '@/graphqlQueries';
+import { getProductsSummaryQuery } from '@/graphqlQueries';
 import { getProcessListSummaryGraphQlQuery } from '@/graphqlQueries/processListQuery';
 import { useQueryWithGraphql } from '@/hooks';
+import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
     Process,
@@ -31,18 +29,14 @@ export const WfoStartPage = () => {
     const {
         data: subscriptionsSummaryResult,
         isLoading: subscriptionsSummaryIsFetching,
-    } = useQueryWithGraphql(
-        getSubscriptionsListSummaryGraphQlQuery(),
+    } = useGetSubscriptionSummaryListQuery(
         subscriptionsListSummaryQueryVariables,
-        ['subscriptions', 'startPage'],
     );
     const {
         data: outOfSyncSubscriptionsSummaryResult,
         isLoading: outOfSyncsubscriptionsSummaryIsFetching,
-    } = useQueryWithGraphql(
-        getSubscriptionsListSummaryGraphQlQuery(),
+    } = useGetSubscriptionSummaryListQuery(
         outOfSyncSubscriptionsListSummaryQueryVariables,
-        ['subscriptions', 'startPage'],
     );
     const {
         data: processesSummaryResult,
@@ -71,18 +65,15 @@ export const WfoStartPage = () => {
 
     const latestActiveSubscriptionsSummaryCard: SummaryCard = {
         headerTitle: t('activeSubscriptions.headerTitle'),
-        headerValue:
-            subscriptionsSummaryResult?.subscriptions.pageInfo.totalItems ?? 0,
+        headerValue: subscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('activeSubscriptions.listTitle'),
         listItems:
-            subscriptionsSummaryResult?.subscriptions.page.map(
-                (subscription) => ({
-                    title: subscription.description,
-                    value: formatDate(subscription.startDate),
-                    url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-                }),
-            ) ?? [],
+            subscriptionsSummaryResult?.subscriptions.map((subscription) => ({
+                title: subscription.description,
+                value: formatDate(subscription.startDate),
+                url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
+            })) ?? [],
         button: {
             name: t('activeSubscriptions.buttonText'),
             url: PATH_SUBSCRIPTIONS,
@@ -93,12 +84,11 @@ export const WfoStartPage = () => {
     const latestOutOfSyncSubscriptionsSummaryCard: SummaryCard = {
         headerTitle: t('outOfSyncSubscriptions.headerTitle'),
         headerValue:
-            outOfSyncSubscriptionsSummaryResult?.subscriptions.pageInfo
-                .totalItems ?? 0,
+            outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('outOfSyncSubscriptions.listTitle'),
         listItems:
-            outOfSyncSubscriptionsSummaryResult?.subscriptions.page.map(
+            outOfSyncSubscriptionsSummaryResult?.subscriptions.map(
                 (subscription) => ({
                     title: subscription.description,
                     value: formatDate(subscription.startDate),
