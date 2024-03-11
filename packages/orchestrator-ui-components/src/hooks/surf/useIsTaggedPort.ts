@@ -6,9 +6,7 @@ import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetai
 
 export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
     const { data, isFetching } = useGetSubscriptionDetailQuery(
-        {
-            subscriptionId,
-        },
+        { subscriptionId },
         { skip: !subscriptionId },
     );
     const subscriptionDetail = data?.subscriptions[0];
