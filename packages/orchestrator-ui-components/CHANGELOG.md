@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.3.1
+
+### Patch Changes
+
+- 043b943: Moves processStepst query to RTK
+- b511e4a: Fixes bug that occurs in some create workflows
+
 ## 1.3.0
 
 ### Minor Changes
