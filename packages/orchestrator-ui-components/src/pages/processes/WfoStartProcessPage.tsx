@@ -96,8 +96,11 @@ export const WfoStartProcessPage = ({
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
         getStyles(theme);
 
-    const { data: timeLineItems = [], isError } =
-        useGetTimeLineItemsQuery(processName);
+    const {
+        data: timeLineItems = [],
+        isError,
+        isLoading,
+    } = useGetTimeLineItemsQuery(processName);
 
     if (isError) {
         if (!hasError) {
@@ -196,6 +199,7 @@ export const WfoStartProcessPage = ({
             buttonsAreDisabled={true}
             processDetail={processDetail}
             timelineItems={timeLineItems}
+            isLoading={isLoading}
         >
             <EuiPanel css={{ marginTop: theme.base * 3 }}>
                 <EuiFlexGroup css={getStepHeaderStyle(false)}>

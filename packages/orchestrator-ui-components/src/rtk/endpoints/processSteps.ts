@@ -31,17 +31,16 @@ const processStepApi = orchestratorApi.injectEndpoints({
             transformResponse: (
                 response: ProcessStepsResult,
             ): TimelineItem[] => {
-                const timeLineItems: TimelineItem[] = response.workflows
-                    ?.page[0]?.steps
-                    ? response.workflows.page[0].steps.map(
-                          ({ name }: StartProcessStep) => {
-                              return {
-                                  processStepStatus: StepStatus.PENDING,
-                                  stepDetail: name,
-                              };
-                          },
-                      )
-                    : [];
+                const timeLineItems: TimelineItem[] =
+                    response.workflows.page[0].steps.map(
+                        ({ name }: StartProcessStep) => {
+                            return {
+                                processStepStatus: StepStatus.PENDING,
+                                stepDetail: name,
+                            };
+                        },
+                    );
+
                 return timeLineItems;
             },
         }),
