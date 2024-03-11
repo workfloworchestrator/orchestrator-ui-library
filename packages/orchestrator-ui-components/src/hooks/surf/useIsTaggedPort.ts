@@ -1,18 +1,17 @@
 import {
     subscriptionHasTaggedPortModeInstanceValue,
     subscriptionHasTaggedProduct,
-} from '../../components/WfoForms/formFields/utils';
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../graphqlQueries';
-import { useQueryWithGraphql } from '../useQueryWithGraphql';
+} from '@/components/WfoForms/formFields/utils';
+import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetail';
 
 export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
-    const { data, isFetched } = useQueryWithGraphql(
-        GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
-        { subscriptionId },
-        `subscription-${subscriptionId}`,
-        { enabled: !!subscriptionId },
+    const { data, isFetching } = useGetSubscriptionDetailQuery(
+        {
+            subscriptionId,
+        },
+        { skip: !subscriptionId },
     );
-    const subscriptionDetail = data?.subscriptions.page[0];
+    const subscriptionDetail = data?.subscriptions[0];
 
     // The ports portMode is tagged (with a vlan) when:
     // - The subscription contains a productBlockInstance with a productBlockInstanceValue with  the property port_mode and
@@ -24,5 +23,5 @@ export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
           subscriptionHasTaggedProduct(subscriptionDetail)
         : false;
 
-    return [isFetched, portIsTagged];
+    return [!isFetching, portIsTagged];
 };
