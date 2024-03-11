@@ -246,7 +246,13 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                         for (const key in combinedPartial) {
                             if (combinedPartial[key] && !_definition[key]) {
                                 _definition[key] = combinedPartial[key];
-                                definition[key] = combinedPartial[key];
+
+                                // This isExtensible check is introduced to fix this bug: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/878
+                                // The reason the definition object is not extensible here but is in the same place in v1 is not known but
+                                // deemed not worth to investigate further at this point.
+                                if (Object.isExtensible(definition)) {
+                                    definition[key] = combinedPartial[key];
+                                }
                             }
                         }
                     });
