@@ -6,49 +6,45 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
-    csvDownloadHandler,
-    getCsvFileNameWithDate,
-} from '@/utils/csvDownload';
-
-import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
-} from '../../components';
-import {
+    StoredTableConfig,
+    WfoDataSorting,
+    WfoDateTime,
+    WfoFirstPartUUID,
     WfoProductBlockBadge,
     WfoProductStatusBadge,
+    WfoTableColumns,
     WfoTableWithFilter,
-} from '../../components';
-import {
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
-} from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import type { StoredTableConfig } from '../../components';
-import '../../components/WfoBadges/WfoProductStatusBadge';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY } from '../../graphqlQueries';
+    mapSortableAndFilterableValuesToTableColumnConfig,
+} from '@/components';
 import {
     useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
     useShowToastMessage,
     useStoredTableConfig,
-} from '../../hooks';
-import type {
+} from '@/hooks';
+import {
+    useGetProductBlocksQuery,
+    useLazyGetProductBlocksQuery,
+} from '@/rtk/endpoints/productBlocks';
+import {
+    BadgeType,
     GraphqlQueryVariables,
     ProductBlockDefinition,
-} from '../../types';
-import { BadgeType, SortOrder } from '../../types';
+    SortOrder,
+} from '@/types';
 import {
+    csvDownloadHandler,
+    getCsvFileNameWithDate,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
-} from '../../utils';
+} from '@/utils';
+
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
 const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
@@ -201,25 +197,22 @@ export const WfoProductBlocksPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useQueryWithGraphql(
-        GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
+    const { data, isFetching, isError } = useGetProductBlocksQuery(
         graphqlQueryVariables,
-        ['productBlocks', 'listPage'],
     );
-    const { getData: getProductBlocksForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            GET_PRODUCTS_BLOCKS_GRAPHQL_QUERY,
+    const [getProductBlocksTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetProductBlocksQuery();
+    const getProductBlocksForExport = () =>
+        getProductBlocksTrigger(
             getQueryVariablesForExport(graphqlQueryVariables),
-            ['productBlocks', 'export'],
-        );
+        ).unwrap();
 
     const dataSorting: WfoDataSorting<ProductBlockDefinition> = {
         field: sortBy?.field ?? PRODUCT_BLOCK_FIELD_NAME,
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } =
-        data?.productBlocks?.pageInfo ?? {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -231,7 +224,7 @@ export const WfoProductBlocksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
-                data={data?.productBlocks.page || []}
+                data={data?.productBlocks || []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -257,8 +250,8 @@ export const WfoProductBlocksPage = () => {
                 }
                 onExportData={csvDownloadHandler(
                     getProductBlocksForExport,
-                    (data) => data.productBlocks.page,
-                    (data) => data.productBlocks.pageInfo,
+                    (data) => data.productBlocks,
+                    (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('ProductBlocks'),
                     showToastMessage,
