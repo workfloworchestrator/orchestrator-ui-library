@@ -5,13 +5,26 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import type { WfoDataSorting, WfoTableColumns } from '@/components';
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZES,
+    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    StoredTableConfig,
+    WfoDateTime,
+    WfoProductBlockBadge,
+    WfoTableWithFilter,
+    WfoWorkflowTargetBadge,
+    getDataSortHandler,
+    getPageChangeHandler,
+    getQueryStringHandler,
+} from '@/components';
 import {
     useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
+import { useGetWorkflowsQuery, useLazyGetWorkflowsQuery } from '@/rtk';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -25,24 +38,7 @@ import {
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import {
-    DEFAULT_PAGE_SIZE,
-    DEFAULT_PAGE_SIZES,
-    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    WfoProductBlockBadge,
-} from '../../components';
-import { WfoTableWithFilter } from '../../components';
-import {
-    getDataSortHandler,
-    getPageChangeHandler,
-    getQueryStringHandler,
-} from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import { StoredTableConfig } from '../../components';
-import { WfoWorkflowTargetBadge } from '../../components/WfoBadges/WfoWorkflowTargetBadge';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflows/workflowsQuery';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -155,31 +151,31 @@ export const WfoWorkflowsPage = () => {
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-    const graphqlQueryVariables: GraphqlQueryVariables<WorkflowDefinition> = {
-        first: pageSize,
-        after: pageIndex * pageSize,
-        sortBy: graphQlWorkflowListMapper(sortBy),
-        query: queryString || undefined,
-    };
-    const { data, isFetching, isError } = useQueryWithGraphql(
-        GET_WORKFLOWS_GRAPHQL_QUERY,
-        graphqlQueryVariables,
-        ['workflows', 'listPage'],
+    const workflowListQueryVariables: GraphqlQueryVariables<WorkflowDefinition> =
+        {
+            first: pageSize,
+            after: pageIndex * pageSize,
+            sortBy: graphQlWorkflowListMapper(sortBy),
+            query: queryString || undefined,
+        };
+    const { data, isFetching, isError } = useGetWorkflowsQuery(
+        workflowListQueryVariables,
     );
-    const { getData: getWorkflowsForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            GET_WORKFLOWS_GRAPHQL_QUERY,
-            getQueryVariablesForExport(graphqlQueryVariables),
-            ['workflows', 'export'],
-        );
+
+    const [getWorkflowsTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetWorkflowsQuery();
+
+    const getWorkflowsForExport = () =>
+        getWorkflowsTrigger(
+            getQueryVariablesForExport(workflowListQueryVariables),
+        ).unwrap();
 
     const dataSorting: WfoDataSorting<WorkflowListItem> = {
         field: sortBy?.field ?? 'name',
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } =
-        data?.workflows?.pageInfo || {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -191,7 +187,13 @@ export const WfoWorkflowsPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
-                data={data ? mapWorkflowDefinitionToWorkflowListItem(data) : []}
+                data={
+                    data
+                        ? mapWorkflowDefinitionToWorkflowListItem(
+                              data?.workflows,
+                          )
+                        : []
+                }
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -215,8 +217,8 @@ export const WfoWorkflowsPage = () => {
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getWorkflowsForExport,
-                    (data) => data.workflows.page,
-                    (data) => data.workflows.pageInfo,
+                    (data) => data.workflows,
+                    (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Workflows'),
                     showToastMessage,
