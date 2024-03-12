@@ -9,7 +9,7 @@ export const useIsTaggedPort = (subscriptionId: string): [boolean, boolean] => {
         { subscriptionId },
         { skip: !subscriptionId },
     );
-    const subscriptionDetail = data?.subscriptions[0];
+    const subscriptionDetail = data?.subscription;
 
     // The ports portMode is tagged (with a vlan) when:
     // - The subscription contains a productBlockInstance with a productBlockInstanceValue with  the property port_mode and

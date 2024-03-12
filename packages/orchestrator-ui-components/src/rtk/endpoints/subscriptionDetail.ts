@@ -60,7 +60,7 @@ export const subscriptionDetailQuery = `
 `;
 
 export type SubscriptionDetailResponse = {
-    subscriptions: SubscriptionDetail[];
+    subscription: SubscriptionDetail;
 } & BaseGraphQlResult;
 
 const subscriptionDetailApi = orchestratorApi.injectEndpoints({
@@ -76,11 +76,11 @@ const subscriptionDetailApi = orchestratorApi.injectEndpoints({
             transformResponse: (
                 response: SubscriptionDetailResult,
             ): SubscriptionDetailResponse => {
-                const subscriptions = response.subscriptions.page || [];
+                const subscription = response.subscriptions.page[0] || [];
                 const pageInfo = response.subscriptions.pageInfo || {};
 
                 return {
-                    subscriptions,
+                    subscription,
                     pageInfo,
                 };
             },

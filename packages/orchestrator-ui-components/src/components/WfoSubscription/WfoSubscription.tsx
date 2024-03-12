@@ -56,11 +56,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
     const onSelectedTabChanged = (tab: SubscriptionDetailTab) => {
         setActiveTab(tab);
     };
-
-    const subscriptionResult = data && data.subscriptions;
-    const subscriptionDetail = subscriptionResult
-        ? subscriptionResult[0]
-        : null;
+    const subscriptionDetail = data?.subscription;
 
     return (
         <>

@@ -35,13 +35,12 @@ const SubscriptionSummaryDisplay = ({
     const { data } = useGetSubscriptionDetailQuery({
         subscriptionId,
     });
-    const subscriptionDetail = data?.subscriptions[0];
 
-    return (
-        (subscriptionDetail && (
-            <WfoSubscriptionGeneral subscriptionDetail={subscriptionDetail} />
-        )) || <WfoLoading />
-    );
+    if (!data) {
+        return <WfoLoading />;
+    }
+
+    return <WfoSubscriptionGeneral subscriptionDetail={data.subscription} />;
 };
 
 const SubscriptionSummary = ({
