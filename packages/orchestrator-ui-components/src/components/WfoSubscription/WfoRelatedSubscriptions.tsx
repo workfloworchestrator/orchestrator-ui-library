@@ -6,31 +6,29 @@ import Link from 'next/link';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch } from '@elastic/eui';
 import type { Criteria, Pagination } from '@elastic/eui';
 
-import { GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY } from '../../graphqlQueries/relatedSubscriptionsQuery';
 import {
-    useDataDisplayParams,
-    useOrchestratorTheme,
-    useQueryWithGraphql,
-} from '../../hooks';
-import { WfoSearchStrikethrough } from '../../icons';
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZES,
+    WfoBasicTable,
+    WfoDataSorting,
+    WfoFirstPartUUID,
+    WfoInsyncIcon,
+    WfoNoResults,
+    WfoSubscriptionStatusBadge,
+    WfoTableColumns,
+    getDataSortHandler,
+    getPageChangeHandler,
+} from '@/components';
+import { useDataDisplayParams, useOrchestratorTheme } from '@/hooks';
+import { WfoSearchStrikethrough } from '@/icons';
+import { useGetRelatedSubscriptionsQuery } from '@/rtk';
 import {
     GraphqlFilter,
     RelatedSubscription,
     SortOrder,
     SubscriptionStatus,
-} from '../../types';
-import { parseDate, parseDateToLocaleDateString } from '../../utils';
-import { WfoSubscriptionStatusBadge } from '../WfoBadges';
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
-import { WfoNoResults } from '../WfoNoResults';
-import {
-    WfoTableColumns,
-    getDataSortHandler,
-    getPageChangeHandler,
-} from '../WfoTable';
-import { WfoBasicTable, WfoDataSorting } from '../WfoTable';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../WfoTable';
-import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
+} from '@/types';
+import { parseDate, parseDateToLocaleDateString } from '@/utils';
 
 interface WfoRelatedSubscriptionsProps {
     subscriptionId: string;
@@ -58,23 +56,19 @@ export const WfoRelatedSubscriptions = ({
             },
         });
 
-    const { data, isFetching } = useQueryWithGraphql(
-        GET_RELATED_SUBSCRIPTIONS_GRAPHQL_QUERY,
-        {
-            first: dataDisplayParams.pageSize,
-            after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
-            subscriptionId: subscriptionId,
-            sortBy: dataDisplayParams.sortBy,
-            terminatedSubscriptionFilter: hideTerminatedSubscriptions
-                ? terminatedSubscriptionsFilter
-                : undefined,
-        },
-        'relatedSubscriptions',
-    );
-    const relatedSubscriptions =
-        data?.subscriptions.page[0].inUseBySubscriptions.page;
-    const relatedSubscriptionsPageInfo =
-        data?.subscriptions.page[0].inUseBySubscriptions.pageInfo;
+    const { data, isFetching } = useGetRelatedSubscriptionsQuery({
+        first: dataDisplayParams.pageSize,
+        after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
+        subscriptionId: subscriptionId,
+        sortBy: dataDisplayParams.sortBy,
+        terminatedSubscriptionFilter: hideTerminatedSubscriptions
+            ? terminatedSubscriptionsFilter
+            : undefined,
+    });
+
+    const relatedSubscriptions = data?.relatedSubscriptions;
+    const relatedSubscriptionsPageInfo = data?.pageInfo;
+
     const tableColumns: WfoTableColumns<RelatedSubscription> = {
         subscriptionId: {
             field: 'subscriptionId',

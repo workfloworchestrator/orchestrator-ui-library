@@ -25,3 +25,4 @@ export * from './WfoInsyncIcon';
 export * from './WfoError';
 export * from './WfoErrorBoundary';
 export * from './WfoWorkflowSteps';
+export * from './WfoNoResults';
