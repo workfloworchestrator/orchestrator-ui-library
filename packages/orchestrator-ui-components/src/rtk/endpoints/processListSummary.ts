@@ -34,7 +34,7 @@ export const processListSummaryQuery = `
             }
         }
     }
-)`;
+`;
 
 type ProcessSummary = Pick<Process, 'processId' | 'workflowName' | 'startedAt'>;
 
