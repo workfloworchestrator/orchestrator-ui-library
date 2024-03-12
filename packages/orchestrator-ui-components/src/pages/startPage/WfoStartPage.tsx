@@ -11,8 +11,8 @@ import {
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { getProductsSummaryQuery } from '@/graphqlQueries';
-import { getProcessListSummaryGraphQlQuery } from '@/graphqlQueries/processListQuery';
 import { useQueryWithGraphql } from '@/hooks';
+import { useGetProcessListSummaryQuery } from '@/rtk/endpoints/processListSummary';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
@@ -39,21 +39,15 @@ export const WfoStartPage = () => {
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
     const {
-        data: processesSummaryResult,
+        data: processesSummaryResponse,
         isLoading: processesSummaryIsFetching,
-    } = useQueryWithGraphql(
-        getProcessListSummaryGraphQlQuery(),
-        processListSummaryQueryVariables,
-        ['workflows', 'startPage'],
-    );
+    } = useGetProcessListSummaryQuery(processListSummaryQueryVariables);
+
     const {
-        data: failedTasksSummaryResult,
+        data: failedTasksSummaryResponse,
         isLoading: failedTasksSummaryIsFetching,
-    } = useQueryWithGraphql(
-        getProcessListSummaryGraphQlQuery(),
-        taskListSummaryQueryVariables,
-        ['tasks', 'startPage'],
-    );
+    } = useGetProcessListSummaryQuery(taskListSummaryQueryVariables);
+
     const {
         data: productsSummaryResult,
         isLoading: productsSummaryIsFetching,
@@ -104,11 +98,11 @@ export const WfoStartPage = () => {
 
     const latestWorkflowsSummaryCard: SummaryCard = {
         headerTitle: t('activeWorkflows.headerTitle'),
-        headerValue: processesSummaryResult?.processes.pageInfo.totalItems ?? 0,
+        headerValue: processesSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: t('activeWorkflows.listTitle'),
         listItems:
-            processesSummaryResult?.processes.page.map((workflow) => ({
+            processesSummaryResponse?.processes.map((workflow) => ({
                 title: workflow.workflowName,
                 value: formatDate(workflow?.startedAt),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
@@ -122,12 +116,11 @@ export const WfoStartPage = () => {
 
     const failedTasksSummaryCard: SummaryCard = {
         headerTitle: t('failedTasks.headerTitle'),
-        headerValue:
-            failedTasksSummaryResult?.processes.pageInfo.totalItems ?? 0,
+        headerValue: failedTasksSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('failedTasks.listTitle'),
         listItems:
-            failedTasksSummaryResult?.processes.page.map((task) => ({
+            failedTasksSummaryResponse?.processes.map((task) => ({
                 title: task.workflowName,
                 value: formatDate(task?.startedAt),
                 url: `${PATH_TASKS}/${task.processId}`,
