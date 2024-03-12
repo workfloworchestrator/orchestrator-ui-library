@@ -5,41 +5,41 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZES,
+    METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    WfoProductBlockBadge,
+    WfoTableWithFilter,
+    getDataSortHandler,
+    getPageChangeHandler,
+    getQueryStringHandler,
+} from '@/components';
+import type {
+    StoredTableConfig,
+    WfoDataSorting,
+    WfoTableColumns,
+} from '@/components';
+import {
+    useDataDisplayParams,
+    useShowToastMessage,
+    useStoredTableConfig,
+} from '@/hooks';
+import { useGetResourceTypesQuery, useLazyGetResourceTypesQuery } from '@/rtk';
+import {
+    BadgeType,
+    GraphqlQueryVariables,
+    ResourceTypeDefinition,
+    SortOrder,
+} from '@/types';
 import { getQueryVariablesForExport } from '@/utils';
 import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import {
-    DEFAULT_PAGE_SIZE,
-    DEFAULT_PAGE_SIZES,
-    METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
-    WfoProductBlockBadge,
-} from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import { WfoTableWithFilter } from '../../components';
-import {
-    getDataSortHandler,
-    getPageChangeHandler,
-    getQueryStringHandler,
-} from '../../components';
-import type { StoredTableConfig } from '../../components';
 import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_RESOURCE_TYPES_GRAPHQL_QUERY } from '../../graphqlQueries';
-import {
-    useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
-    useShowToastMessage,
-    useStoredTableConfig,
-} from '../../hooks';
-import type {
-    GraphqlQueryVariables,
-    ResourceTypeDefinition,
-} from '../../types';
-import { BadgeType, SortOrder } from '../../types';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
 export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
@@ -55,7 +55,6 @@ export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
-
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ResourceTypeDefinition>>();
 
@@ -144,25 +143,24 @@ export const WfoResourceTypesPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useQueryWithGraphql(
-        GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+    const { data, isFetching, isError } = useGetResourceTypesQuery(
         graphqlQueryVariables,
-        ['resourceTypes', 'listPage'],
     );
-    const { getData: getResourceTypesForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            GET_RESOURCE_TYPES_GRAPHQL_QUERY,
+
+    const [getResourceTypesTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetResourceTypesQuery();
+
+    const getResourceTypesForExport = () =>
+        getResourceTypesTrigger(
             getQueryVariablesForExport(graphqlQueryVariables),
-            ['resourceTypes', 'export'],
-        );
+        ).unwrap();
 
     const dataSorting: WfoDataSorting<ResourceTypeDefinition> = {
         field: sortBy?.field ?? RESOURCE_TYPE_FIELD_TYPE,
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } =
-        data?.resourceTypes?.pageInfo || {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -174,7 +172,7 @@ export const WfoResourceTypesPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
-                data={data ? data.resourceTypes.page : []}
+                data={data ? data.resourceTypes : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -200,8 +198,8 @@ export const WfoResourceTypesPage = () => {
                 }
                 onExportData={csvDownloadHandler(
                     getResourceTypesForExport,
-                    (data) => data.resourceTypes.page,
-                    (data) => data.resourceTypes.pageInfo,
+                    (data) => data.resourceTypes,
+                    (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('ResourceTypes'),
                     showToastMessage,
