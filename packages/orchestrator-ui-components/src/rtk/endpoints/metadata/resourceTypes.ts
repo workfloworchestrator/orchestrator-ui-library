@@ -2,8 +2,6 @@ import { orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
-    ProductBlockDefinition,
-    ProductBlockDefinitionsResult,
     ResourceTypeDefinition,
     ResourceTypeDefinitionsResult,
 } from '@/types';
