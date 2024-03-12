@@ -40,12 +40,12 @@ export const WfoStartPage = () => {
     );
     const {
         data: processesSummaryResponse,
-        isLoading: processesSummaryIsFetching,
+        isFetching: processesSummaryIsFetching,
     } = useGetProcessListSummaryQuery(processListSummaryQueryVariables);
 
     const {
         data: failedTasksSummaryResponse,
-        isLoading: failedTasksSummaryIsFetching,
+        isFetching: failedTasksSummaryIsFetching,
     } = useGetProcessListSummaryQuery(taskListSummaryQueryVariables);
 
     const {
