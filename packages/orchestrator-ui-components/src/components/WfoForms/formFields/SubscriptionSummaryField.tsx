@@ -19,7 +19,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
 import { WfoLoading, WfoSubscriptionGeneral } from '@/components';
-import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetail';
+import { useGetSubscriptionDetailQuery } from '@/rtk';
 
 import { FieldProps } from './types';
 

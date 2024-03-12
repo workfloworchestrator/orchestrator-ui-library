@@ -70,6 +70,6 @@ export const orchestratorApi = createApi({
         CacheTags.processList,
         CacheTags.processListSummary,
         CacheTags.subscriptionList,
-        CacheTags.subscription
+        CacheTags.subscription,
     ],
 });
