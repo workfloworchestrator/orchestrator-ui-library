@@ -109,6 +109,9 @@ export interface ProductDefinition {
     fixedInputs: Pick<FixedInputDefinition, 'name' | 'value'>[];
 }
 
+export type ProductsSummary = Pick<ProductDefinition, 'name'> &
+    SubscriptionsResult<never>;
+
 export enum WorkflowTarget {
     CREATE = 'create',
     MODIFY = 'modify',
