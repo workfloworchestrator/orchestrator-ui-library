@@ -12,7 +12,7 @@ import {
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { getProductsSummaryQuery } from '@/graphqlQueries';
 import { useQueryWithGraphql } from '@/hooks';
-import { useGetProcessListSummaryQuery } from '@/rtk/endpoints/processListSummary';
+import { useGetProcessListSummaryQuery } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
