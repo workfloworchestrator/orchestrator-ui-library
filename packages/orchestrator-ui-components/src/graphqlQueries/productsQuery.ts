@@ -10,6 +10,7 @@ import {
     SubscriptionsResult,
 } from '../types';
 
+// Todo remove
 export const GET_PRODUCTS_GRAPHQL_QUERY = parse(gql`
     query MetadataProducts(
         $first: Int!
@@ -79,6 +80,7 @@ export const getProductsSummaryQuery = (): TypedDocumentNode<
     GraphqlQueryVariables<ProductDefinition>
 > => GET_PRODUCTS_SUMMARY_GRAPHQL_QUERY;
 
+// Todo remove
 export const getProductsQuery = (): TypedDocumentNode<
     ProductDefinitionsResult,
     GraphqlQueryVariables<ProductDefinition>
