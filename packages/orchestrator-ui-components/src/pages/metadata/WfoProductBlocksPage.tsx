@@ -27,10 +27,7 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import {
-    useGetProductBlocksQuery,
-    useLazyGetProductBlocksQuery,
-} from '@/rtk/endpoints/productBlocks';
+import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
 import {
     BadgeType,
     GraphqlQueryVariables,
