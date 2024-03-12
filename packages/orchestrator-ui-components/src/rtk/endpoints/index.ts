@@ -1,6 +1,7 @@
 export * from './customers';
 export * from './processList';
-export * from './metadata/productBlocks';
+export * from './settings';
+export * from './streamMessages';
 export * from './inSync';
 export * from './processSteps';
 export * from './processListSummary';
@@ -8,3 +9,4 @@ export * from './metadata';
 export * from './settings';
 export * from './streamMessages';
 export * from './subscriptionDetail';
+export * from './relatedSubscriptions';
