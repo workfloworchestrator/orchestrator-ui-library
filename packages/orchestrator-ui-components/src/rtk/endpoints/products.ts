@@ -69,7 +69,6 @@ const productsApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            // todo cache tags
         }),
     }),
 });
