@@ -20,14 +20,12 @@ import {
 } from '@/components';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { getProductsQuery } from '@/graphqlQueries';
 import {
     useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
+import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -170,20 +168,17 @@ export const WfoProductsPage = () => {
         sortBy: sortBy,
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useQueryWithGraphql(
-        getProductsQuery(),
+    const { data, isFetching, isError } = useGetProductsQuery(
         graphqlQueryVariables,
-        ['products', 'listPage'],
     );
-    const { getData: getProductsForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            getProductsQuery(),
+    const [getProductsTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetProductsQuery();
+    const getProductsForExport = () =>
+        getProductsTrigger(
             getQueryVariablesForExport(graphqlQueryVariables),
-            ['products', 'export'],
-        );
+        ).unwrap();
 
-    const { totalItems, sortFields, filterFields } =
-        data?.products?.pageInfo ?? {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -200,7 +195,7 @@ export const WfoProductsPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
-                data={data ? data.products.page : []}
+                data={data?.products ?? []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -224,8 +219,8 @@ export const WfoProductsPage = () => {
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getProductsForExport,
-                    (data) => data.products.page,
-                    (data) => data.products.pageInfo,
+                    (data) => data?.products ?? [],
+                    (data) => data?.pageInfo || {},
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Products'),
                     showToastMessage,
