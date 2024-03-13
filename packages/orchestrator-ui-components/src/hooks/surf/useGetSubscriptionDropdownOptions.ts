@@ -1,8 +1,7 @@
 import { isError } from 'react-query';
 
-import { getSubscriptionDropdownOptionsGraphQlQuery } from '../../graphqlQueries';
-import { GraphqlFilter, SubscriptionDropdownOption } from '../../types';
-import { useQueryWithGraphql } from '../useQueryWithGraphql';
+import { useGetSubscriptionsDropdownOptionsQuery } from '@/rtk';
+import { GraphqlFilter, SubscriptionDropdownOption } from '@/types';
 
 export const useGetSubscriptionDropdownOptions = (
     tags: string[] = [],
@@ -28,18 +27,12 @@ export const useGetSubscriptionDropdownOptions = (
         });
     }
 
-    const { data, isFetching, refetch } = useQueryWithGraphql(
-        getSubscriptionDropdownOptionsGraphQlQuery(),
-        {
-            filterBy: filters,
-        },
-        'subscriptionOptions',
-        { refetchOnWindowFocus: false },
-    );
+    const { data, isFetching, refetch } =
+        useGetSubscriptionsDropdownOptionsQuery({ filterBy: filters });
 
     const subscriptions = (() => {
-        if (!isFetching && !isError(data) && data && data.subscriptions.page) {
-            return data.subscriptions.page;
+        if (!isFetching && !isError(data) && data) {
+            return data.subscriptionDropdownOptions;
         }
         return [];
     })();
