@@ -1,32 +1,26 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { WfoPlusCircleFill } from '../../icons';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoPlusCircleFill } from '@/icons';
+import { StartComboBoxOption } from '@/types';
+
 import { getStyles } from './styles';
 
-export type WorkflowComboBoxOption = {
-    data: {
-        workflowName: string;
-        productId?: string;
-    };
-    label: string;
-};
-
-export type WfoButtonComboBoxProps = {
+export type WfoStartButtonComboBoxProps = {
     buttonText: string;
-    options: WorkflowComboBoxOption[];
-    onOptionChange: (selectedOption: WorkflowComboBoxOption) => void;
+    options: StartComboBoxOption[];
+    onOptionChange: (selectedOption: StartComboBoxOption) => void;
     isProcess: boolean;
 };
 
-export const WfoButtonComboBox: FC<WfoButtonComboBoxProps> = ({
+export const WfoStartButtonComboBox = ({
     buttonText,
     options,
     onOptionChange,
     isProcess,
-}) => {
+}: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { selectableStyle } = getStyles();
     const { theme } = useOrchestratorTheme();
@@ -55,7 +49,7 @@ export const WfoButtonComboBox: FC<WfoButtonComboBoxProps> = ({
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
-            <EuiSelectable<WorkflowComboBoxOption>
+            <EuiSelectable<StartComboBoxOption>
                 css={selectableStyle}
                 searchable
                 options={options}
