@@ -10,8 +10,9 @@ import {
     SummaryCardStatus,
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
+import { PolicyResource } from '@/configuration';
 import { getProductsSummaryQuery } from '@/graphqlQueries';
-import { useQueryWithGraphql } from '@/hooks';
+import { usePolicy, useQueryWithGraphql } from '@/hooks';
 import { useGetProcessListSummaryQuery } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
@@ -25,6 +26,7 @@ import { formatDate } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
+    const { isAllowed } = usePolicy();
 
     const {
         data: subscriptionsSummaryResult,
@@ -163,17 +165,22 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
+    // the order of summarycards is the order of the items in the allowedSummaryCard array
+    // may need to improve this when we override the summarycard so the correct order can be defined
+    const allowedSummaryCards = [latestWorkflowsSummaryCard];
+
+    isAllowed(PolicyResource.NAVIGATION_TASKS) &&
+        allowedSummaryCards.push(failedTasksSummaryCard);
+
+    allowedSummaryCards.push(
+        latestOutOfSyncSubscriptionsSummaryCard,
+        latestActiveSubscriptionsSummaryCard,
+        productsSummaryCard,
+    );
+
     return (
         <EuiFlexItem>
-            <WfoSummaryCards
-                summaryCards={[
-                    failedTasksSummaryCard,
-                    latestOutOfSyncSubscriptionsSummaryCard,
-                    latestWorkflowsSummaryCard,
-                    latestActiveSubscriptionsSummaryCard,
-                    productsSummaryCard,
-                ]}
-            />
+            <WfoSummaryCards summaryCards={allowedSummaryCards} />
         </EuiFlexItem>
     );
 };
