@@ -5,6 +5,12 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import { WfoTableWithFilter } from '@/components';
+import type { WfoDataSorting, WfoTableColumns } from '@/components';
+import { StoredTableConfig } from '@/components';
+import { WfoProcessTargetBadge } from '@/components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
+import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { GET_TASKS_GRAPHQL_QUERY } from '@/graphqlQueries/tasksQuery';
 import {
     useDataDisplayParams,
@@ -32,17 +38,11 @@ import {
     METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     WfoProductBlockBadge,
 } from '../../components';
-import { WfoTableWithFilter } from '../../components';
 import {
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
 } from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import { StoredTableConfig } from '../../components';
-import { WfoProcessTargetBadge } from '../../components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlTaskListMapper,

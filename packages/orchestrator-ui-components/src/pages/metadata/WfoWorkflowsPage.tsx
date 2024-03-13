@@ -6,6 +6,25 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
 import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZES,
+    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    WfoDataSorting,
+    WfoProductBlockBadge,
+    WfoTableColumns,
+    WfoTableWithFilter,
+} from '@/components';
+import {
+    getDataSortHandler,
+    getPageChangeHandler,
+    getQueryStringHandler,
+} from '@/components';
+import { StoredTableConfig } from '@/components';
+import { WfoProcessTargetBadge } from '@/components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
+import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import { GET_WORKFLOWS_GRAPHQL_QUERY } from '@/graphqlQueries/workflowsQuery';
+import {
     useDataDisplayParams,
     useQueryWithGraphql,
     useQueryWithGraphqlLazy,
@@ -25,24 +44,6 @@ import {
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import {
-    DEFAULT_PAGE_SIZE,
-    DEFAULT_PAGE_SIZES,
-    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    WfoProductBlockBadge,
-} from '../../components';
-import { WfoTableWithFilter } from '../../components';
-import {
-    getDataSortHandler,
-    getPageChangeHandler,
-    getQueryStringHandler,
-} from '../../components';
-import type { WfoDataSorting, WfoTableColumns } from '../../components';
-import { StoredTableConfig } from '../../components';
-import { WfoProcessTargetBadge } from '../../components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
-import { WfoDateTime } from '../../components/WfoDateTime/WfoDateTime';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_WORKFLOWS_GRAPHQL_QUERY } from '../../graphqlQueries/workflowsQuery';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,

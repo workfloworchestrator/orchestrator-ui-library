@@ -40,7 +40,7 @@ export const defaultOrchestratorTheme: EuiThemeModifications = {
             mediumShade: '#535966',
             darkShade: '#98A2B3',
             darkestShade: '#D4DAE5',
-            fullShade: '#000000',
+            fullShade: '#FFFFFF',
             text: '#DFE5EF',
             title: '#DFE5EF',
             subduedText: '#81858f',
