@@ -15,9 +15,10 @@ export enum BaseQueryTypes {
 
 export enum CacheTags {
     engineStatus = 'engineStatus',
-    subscriptionList = 'subscriptionList',
     processList = 'processList',
     processListSummary = 'processListSummary',
+    subscription = 'subscription',
+    subscriptionList = 'subscriptionList',
 }
 
 type ExtraOptions = {
@@ -69,5 +70,6 @@ export const orchestratorApi = createApi({
         CacheTags.processList,
         CacheTags.processListSummary,
         CacheTags.subscriptionList,
+        CacheTags.subscription,
     ],
 });

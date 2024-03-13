@@ -9,19 +9,21 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '@/graphqlQueries';
-import { useOrchestratorTheme, useQueryWithGraphql } from '@/hooks';
+import {
+    WfoFilterTabs,
+    WfoLoading,
+    WfoProcessesTimeline,
+    WfoRelatedSubscriptions,
+    WfoSubscriptionActions,
+    WfoSubscriptionDetailTree,
+    WfoSubscriptionGeneral,
+} from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetail';
 
 import { WfoSubscriptionStatusBadge } from '../WfoBadges';
 import { WfoSubscriptionSyncStatusBadge } from '../WfoBadges/WfoSubscriptionSyncStatusBadge';
 import { WfoError } from '../WfoError';
-import { WfoFilterTabs } from '../WfoFilterTabs';
-import { WfoLoading } from '../WfoLoading';
-import { WfoProcessesTimeline } from './WfoProcessesTimeline';
-import { WfoRelatedSubscriptions } from './WfoRelatedSubscriptions';
-import { WfoSubscriptionActions } from './WfoSubscriptionActions';
-import { WfoSubscriptionDetailTree } from './WfoSubscriptionDetailTree';
-import { WfoSubscriptionGeneral } from './WfoSubscriptionGeneral';
 import { subscriptionDetailTabs } from './subscriptionDetailTabs';
 import { SubscriptionDetailTab } from './utils';
 
@@ -47,21 +49,14 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
         );
     })();
 
-    const { data, isLoading, isError } = useQueryWithGraphql(
-        GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
-        { subscriptionId },
-        `subscription-${subscriptionId}`,
-    );
+    const { data, isLoading, isError } = useGetSubscriptionDetailQuery({
+        subscriptionId,
+    });
 
     const onSelectedTabChanged = (tab: SubscriptionDetailTab) => {
         setActiveTab(tab);
     };
-
-    const subscriptionResult =
-        data && data.subscriptions && data.subscriptions.page;
-    const subscriptionDetail = subscriptionResult
-        ? subscriptionResult[0]
-        : null;
+    const subscriptionDetail = data?.subscription;
 
     return (
         <>

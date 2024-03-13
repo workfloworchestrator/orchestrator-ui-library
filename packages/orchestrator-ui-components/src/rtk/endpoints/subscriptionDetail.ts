@@ -1,14 +1,11 @@
-import { parse } from 'graphql';
-import { gql } from 'graphql-request';
-
-import { TypedDocumentNode } from '@graphql-typed-document-node/core';
-
-import { SubscriptionDetailResult } from '../types';
-
-export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
+import { CacheTags, orchestratorApi } from '@/rtk';
+import {
+    BaseGraphQlResult,
+    SubscriptionDetail,
     SubscriptionDetailResult,
-    { subscriptionId: string }
-> = parse(gql`
+} from '@/types';
+
+export const subscriptionDetailQuery = `
     query SubscriptionDetail($subscriptionId: String!) {
         subscriptions(
             filterBy: { value: $subscriptionId, field: "subscriptionId" }
@@ -60,4 +57,41 @@ export const GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY: TypedDocumentNode<
             }
         }
     }
-`);
+`;
+
+export type SubscriptionDetailResponse = {
+    subscription: SubscriptionDetail;
+} & BaseGraphQlResult;
+
+const subscriptionDetailApi = orchestratorApi.injectEndpoints({
+    endpoints: (builder) => ({
+        getSubscriptionDetail: builder.query<
+            SubscriptionDetailResponse,
+            { subscriptionId: string }
+        >({
+            query: (variables) => ({
+                document: subscriptionDetailQuery,
+                variables,
+            }),
+            transformResponse: (
+                response: SubscriptionDetailResult,
+            ): SubscriptionDetailResponse => {
+                const subscription = response.subscriptions.page[0] || [];
+                const pageInfo = response.subscriptions.pageInfo || {};
+
+                return {
+                    subscription,
+                    pageInfo,
+                };
+            },
+            providesTags: (result, error, arg) => [
+                {
+                    type: CacheTags.subscription,
+                    id: arg.subscriptionId,
+                },
+            ],
+        }),
+    }),
+});
+
+export const { useGetSubscriptionDetailQuery } = subscriptionDetailApi;

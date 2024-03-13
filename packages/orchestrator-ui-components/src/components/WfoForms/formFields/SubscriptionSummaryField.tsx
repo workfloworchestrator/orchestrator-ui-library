@@ -18,10 +18,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY } from '../../../graphqlQueries';
-import { useQueryWithGraphql } from '../../../hooks';
-import { WfoLoading } from '../../WfoLoading';
-import { WfoSubscriptionGeneral } from '../../WfoSubscription';
+import { WfoLoading, WfoSubscriptionGeneral } from '@/components';
+import { useGetSubscriptionDetailQuery } from '@/rtk';
+
 import { FieldProps } from './types';
 
 export type SubscriptionSummaryFieldProps = FieldProps<string>;
@@ -33,18 +32,15 @@ interface SubscriptionSummaryDisplayProps {
 const SubscriptionSummaryDisplay = ({
     subscriptionId,
 }: SubscriptionSummaryDisplayProps) => {
-    const { data } = useQueryWithGraphql(
-        GET_SUBSCRIPTION_DETAIL_GRAPHQL_QUERY,
-        { subscriptionId },
-        `subscription-${subscriptionId}`,
-    );
-    const subscriptionDetail = data?.subscriptions.page[0];
+    const { data } = useGetSubscriptionDetailQuery({
+        subscriptionId,
+    });
 
-    return (
-        (subscriptionDetail && (
-            <WfoSubscriptionGeneral subscriptionDetail={subscriptionDetail} />
-        )) || <WfoLoading />
-    );
+    if (!data) {
+        return <WfoLoading />;
+    }
+
+    return <WfoSubscriptionGeneral subscriptionDetail={data.subscription} />;
 };
 
 const SubscriptionSummary = ({
