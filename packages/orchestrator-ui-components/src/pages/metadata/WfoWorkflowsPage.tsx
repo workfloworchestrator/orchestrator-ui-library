@@ -190,7 +190,7 @@ export const WfoWorkflowsPage = () => {
                 data={
                     data
                         ? mapWorkflowDefinitionToWorkflowListItem(
-                              data?.workflows,
+                              data.workflows,
                           )
                         : []
                 }
