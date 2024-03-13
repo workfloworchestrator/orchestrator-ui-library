@@ -336,6 +336,10 @@ export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
     workflows: GraphQlResultPage<T>;
 }
 
+export interface StartButtonOptionsResult<T> {
+    workflows: GraphQlSinglePage<T>;
+}
+
 export interface RelatedSubscriptionsResult {
     subscriptions: GraphQlSinglePage<
         Pick<Subscription, 'subscriptionId'> & {
@@ -343,6 +347,14 @@ export interface RelatedSubscriptionsResult {
         }
     >;
 }
+
+export type StartComboBoxOption = {
+    data: {
+        workflowName: string;
+        productId?: string;
+    };
+    label: string;
+};
 
 interface GraphQlResultPage<T> {
     page: T[];

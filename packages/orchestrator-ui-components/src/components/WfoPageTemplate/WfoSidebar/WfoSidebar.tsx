@@ -7,6 +7,7 @@ import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoIsAllowedToRender } from '@/components';
+import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { usePolicy } from '@/hooks';
 
@@ -23,7 +24,6 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
-import { WfoStartCreateWorkflowButtonComboBox } from './WfoStartCreateWorkflowButtonComboBox';
 
 export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
     isAllowed ? undefined : () => <></>;
@@ -171,7 +171,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     <WfoIsAllowedToRender
                         resource={PolicyResource.SUBSCRIPTION_CREATE}
                     >
-                        <WfoStartCreateWorkflowButtonComboBox />
+                        <WfoStartWorkflowButtonComboBox />
                     </WfoIsAllowedToRender>
                     <EuiSpacer size="m" />
                     <WfoCopyright />
