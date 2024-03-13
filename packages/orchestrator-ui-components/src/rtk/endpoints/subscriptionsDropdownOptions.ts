@@ -1,3 +1,4 @@
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { orchestratorApi } from '@/rtk';
 import {
     GraphqlQueryVariables,
@@ -6,8 +7,11 @@ import {
 } from '@/types';
 
 export const subscriptionsDropdownOptionsQuery = `
-    query SubscriptionDropdownOptions($filterBy: [GraphqlFilter!]) {
-        subscriptions(filterBy: $filterBy, first: 1000000, after: 0) {
+    query SubscriptionDropdownOptions(
+        $filterBy: [GraphqlFilter!]
+        $first: Int!
+    ) {
+        subscriptions(filterBy: $filterBy, first: $first, after: 0) {
             page {
                 description
                 subscriptionId
@@ -45,7 +49,10 @@ const subscriptionsDropdownOptionsApi = orchestratorApi.injectEndpoints({
         >({
             query: (variables) => ({
                 document: subscriptionsDropdownOptionsQuery,
-                variables,
+                variables: {
+                    ...variables,
+                    first: NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS,
+                },
             }),
             transformResponse: (
                 response: SubscriptionDropdownOptionsResult,
