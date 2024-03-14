@@ -44,12 +44,12 @@ export function autoFieldFunction(
     switch (fieldType) {
         case Number:
             switch (format) {
-                case 'imsPortId': // Surf specific
+                case 'imsPortId': // Deprecated
                     return ImsPortIdField;
-                case 'imsNodeId': // Surf specific
+                case 'imsNodeId': // Deprecated
                     return ImsNodeIdField;
                 case 'timestamp':
-                    return TimestampField; // Surf specific
+                    return TimestampField; // Deprecated
             }
             break;
         case Object:
@@ -78,13 +78,13 @@ export function autoFieldFunction(
                     return CustomerField;
                 case 'locationCode':
                     return LocationCodeField;
-                case 'contactPersonName': // Surf specific
+                case 'contactPersonName': // Deprecated
                     return ContactPersonNameField;
-                case 'vlan': // Surf specific
+                case 'vlan': // Deprecated
                     return VlanField;
                 case 'accept':
                     return AcceptField;
-                case 'ipvanynetwork': // Surf specific
+                case 'ipvanynetwork': // Deprecated
                     return IpNetworkField;
             }
             break;
