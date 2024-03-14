@@ -18,7 +18,8 @@ import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+
 import { SelectFieldProps, UnconnectedSelectField } from '../SelectField';
 import { ImsNode } from './types';
 

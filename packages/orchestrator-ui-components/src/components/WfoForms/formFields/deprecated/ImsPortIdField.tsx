@@ -21,9 +21,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { useOrchestratorTheme } from '@/hooks';
 
-import { useAxiosApiClient } from '../../useAxiosApiClient';
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
 import { ImsNode, ImsPort, NodeSubscription } from './types';

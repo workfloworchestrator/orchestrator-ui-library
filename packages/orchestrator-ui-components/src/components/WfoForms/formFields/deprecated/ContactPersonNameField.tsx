@@ -27,7 +27,8 @@ import {
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+
 import { ContactPerson, FieldProps } from '../types';
 import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
 
