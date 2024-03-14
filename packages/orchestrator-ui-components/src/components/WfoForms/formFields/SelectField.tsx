@@ -21,7 +21,8 @@ import { joinName, useField, useForm } from 'uniforms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
+import { useOrchestratorTheme } from '@/hooks';
+
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
 import { ListSelectField } from './ListSelectField';

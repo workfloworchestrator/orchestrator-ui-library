@@ -18,7 +18,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { FieldProps } from '../../../types/forms';
+import { FieldProps } from '@/types';
 
 export type TextFieldProps = FieldProps<string>;
 

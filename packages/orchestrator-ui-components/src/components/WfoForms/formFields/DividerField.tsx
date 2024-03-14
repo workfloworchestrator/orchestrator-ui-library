@@ -18,7 +18,7 @@ import { connectField } from 'uniforms';
 
 import { EuiHorizontalRule } from '@elastic/eui';
 
-import { FieldProps } from '../../../types/forms';
+import { FieldProps } from '@/types';
 
 export type DividerFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 
