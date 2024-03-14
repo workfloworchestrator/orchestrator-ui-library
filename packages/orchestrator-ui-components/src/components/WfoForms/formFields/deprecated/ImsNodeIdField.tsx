@@ -18,9 +18,9 @@ import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { useAxiosApiClient } from '../useAxiosApiClient';
-import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
-import { ImsNode } from './surf/types';
+import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { SelectFieldProps, UnconnectedSelectField } from '../SelectField';
+import { ImsNode } from '../surf/types';
 
 export type ImsNodeIdFieldProps = {
     onChange: (value?: number | undefined) => void;

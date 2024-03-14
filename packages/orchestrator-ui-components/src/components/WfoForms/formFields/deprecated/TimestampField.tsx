@@ -19,7 +19,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiDatePicker, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { FieldProps } from './types';
+import { FieldProps } from '../types';
 
 export function utcTimestampToLocalMoment(utc_timestamp: number) {
     // Convert UTC timestamp to localized Moment object

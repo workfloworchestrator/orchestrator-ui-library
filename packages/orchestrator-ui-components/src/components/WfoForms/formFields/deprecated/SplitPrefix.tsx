@@ -19,9 +19,10 @@ import { range } from 'lodash';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { ApiClientContext } from '../../../contexts';
+import { ApiClientContext } from '@/contexts';
+
+import { Option } from '../types';
 import { splitPrefixStyling } from './SplitPrefixStyling';
-import { Option } from './types';
 
 interface IProps {
     id: string;
