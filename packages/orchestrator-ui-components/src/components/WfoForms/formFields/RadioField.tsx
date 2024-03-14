@@ -19,7 +19,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFormRow, EuiRadio, EuiText } from '@elastic/eui';
 
-import { FieldProps } from '../../../types/forms';
+import { FieldProps } from '@/types';
 
 const base64 =
     typeof btoa !== 'undefined'

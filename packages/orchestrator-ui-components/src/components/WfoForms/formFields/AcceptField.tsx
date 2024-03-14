@@ -19,7 +19,8 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 
-import { useWithOrchestratorTheme } from '../../../hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { getStyles } from './AcceptFieldStyling';
 import { FieldProps } from './types';
 

@@ -20,7 +20,8 @@ import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
 import { EuiIcon, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
+import { useOrchestratorTheme } from '@/hooks';
+
 import { FieldProps } from './types';
 
 export type ListAddFieldProps = FieldProps<

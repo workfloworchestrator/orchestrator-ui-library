@@ -33,9 +33,10 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
-import { SubscriptionDropdownOption } from '../../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { useGetSubscriptionDropdownOptions } from '@/hooks/surf/useGetSubscriptionDropdownOptions';
+import { SubscriptionDropdownOption } from '@/types';
+
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
 import { PortMode, ProductTag } from './deprecated/types';
 import { getReactSelectInnerComponentStyles } from './reactSelectStyles';

@@ -18,7 +18,8 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { FieldProps } from '../../../types/forms';
+import { FieldProps } from '@/types';
+
 import { boolFieldStyling } from './BoolFieldStyling';
 
 export type BoolFieldProps = FieldProps<boolean>;

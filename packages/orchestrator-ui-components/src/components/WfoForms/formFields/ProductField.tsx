@@ -19,7 +19,8 @@ import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { ProductDefinition } from '../../../types';
+import { ProductDefinition } from '@/types';
+
 import { useAxiosApiClient } from '../useAxiosApiClient';
 import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
 
