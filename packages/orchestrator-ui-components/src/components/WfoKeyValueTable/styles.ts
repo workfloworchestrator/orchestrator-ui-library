@@ -24,6 +24,8 @@ export const getStyles = (theme: EuiThemeComputed) => {
         rowNumber % 2 ? lightBackground : darkBackground;
 
     const keyColumnStyle = css({
+        display: 'flex',
+        alignItems: 'center',
         padding: padding,
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
