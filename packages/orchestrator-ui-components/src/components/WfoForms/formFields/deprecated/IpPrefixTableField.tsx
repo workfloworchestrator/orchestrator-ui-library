@@ -30,10 +30,10 @@ import {
 } from '@elastic/eui';
 
 import { ApiClientContext } from '../../../../contexts';
-import { IpBlock, IpPrefix, SortOption } from '../surf/types';
-import { ipamStates } from '../surf/utils';
 import { Option, prop } from '../types';
 import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
+import { IpBlock, IpPrefix, SortOption } from './types';
+import { ipamStates } from './utils';
 
 type SortKeys = 'id' | 'prefix' | 'description' | 'state_repr';
 

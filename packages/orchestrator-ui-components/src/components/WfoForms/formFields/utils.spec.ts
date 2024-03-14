@@ -6,7 +6,7 @@ import {
     SubscriptionStatus,
     WorkflowTarget,
 } from '../../../types';
-import { ProductTag } from './surf/types';
+import { ProductTag } from './deprecated/types';
 import {
     getPortMode,
     subscriptionHasTaggedPortModeInstanceValue,

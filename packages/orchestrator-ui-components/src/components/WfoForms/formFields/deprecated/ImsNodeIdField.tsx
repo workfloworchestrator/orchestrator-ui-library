@@ -20,7 +20,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { useAxiosApiClient } from '../../useAxiosApiClient';
 import { SelectFieldProps, UnconnectedSelectField } from '../SelectField';
-import { ImsNode } from '../surf/types';
+import { ImsNode } from './types';
 
 export type ImsNodeIdFieldProps = {
     onChange: (value?: number | undefined) => void;

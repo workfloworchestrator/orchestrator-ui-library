@@ -19,7 +19,7 @@ import {
     IpBlock,
     IpPrefix,
     NodeSubscription,
-} from '@/components/WfoForms/formFields/surf/types';
+} from '@/components/WfoForms/formFields/deprecated/types';
 import { ProductDefinition } from '@/types';
 
 import { getAxiosInstance } from './axios';

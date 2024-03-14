@@ -21,9 +21,9 @@ import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
 
 import SplitPrefix from '@/components/WfoForms/formFields/deprecated/SplitPrefix';
 
-import { IpBlock } from '../surf/types';
 import { FieldProps } from '../types';
 import IpPrefixTableField from './IpPrefixTableField';
+import { IpBlock } from './types';
 
 export type IPvAnyNetworkFieldProps = FieldProps<
     string,
