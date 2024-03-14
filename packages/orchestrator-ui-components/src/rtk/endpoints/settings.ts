@@ -46,6 +46,15 @@ const statusApi = orchestratorApi.injectEndpoints({
                 baseQueryType: BaseQueryTypes.fetch,
             },
         }),
+        resetTextSearchIndex: build.mutation<void, null>({
+            query: () => ({
+                url: `/settings/search-index/reset`,
+                method: 'POST',
+            }),
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+        }),
         setEngineStatus: build.mutation<EngineStatusReturnValue, boolean>({
             query: (globalStatus) => ({
                 url: `/settings/status`,
@@ -68,5 +77,6 @@ const statusApi = orchestratorApi.injectEndpoints({
 export const {
     useGetEngineStatusQuery,
     useClearCacheMutation,
+    useResetTextSearchIndexMutation,
     useSetEngineStatusMutation,
 } = statusApi;

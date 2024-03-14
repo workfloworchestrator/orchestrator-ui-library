@@ -347,7 +347,9 @@
             "pauseEngine": "Pauseer  workflow engine",
             "runningProcesses": "Lopende processen",
             "selectSettings": "Kies cache",
-            "startEngine": "Start workflow engine"
+            "startEngine": "Start workflow engine",
+            "resetTextSearchIndex": "Reset text search index",
+            "resetTextSearchIndexButton": "Reset"
         }
     },
     "startPage": {

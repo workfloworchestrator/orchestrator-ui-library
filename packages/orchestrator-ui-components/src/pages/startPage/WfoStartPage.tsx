@@ -13,12 +13,12 @@ import {
 import { PolicyResource } from '@/configuration';
 import { getProductsSummaryQuery } from '@/graphqlQueries';
 import { usePolicy, useQueryWithGraphql } from '@/hooks';
-import { useGetProcessListSummaryQuery } from '@/rtk';
+import { useGetProductsSummaryQuery, useGetProcessListSummaryQuery } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
     Process,
-    ProductDefinition,
+    ProductsSummary,
     SortOrder,
     Subscription,
 } from '@/types';
@@ -53,11 +53,7 @@ export const WfoStartPage = () => {
     const {
         data: productsSummaryResult,
         isLoading: productsSummaryIsFetching,
-    } = useQueryWithGraphql(
-        getProductsSummaryQuery(),
-        productsSummaryQueryVariables,
-        'productSummary',
-    );
+    } = useGetProductsSummaryQuery(productsSummaryQueryVariables);
 
     const latestActiveSubscriptionsSummaryCard: SummaryCard = {
         headerTitle: t('activeSubscriptions.headerTitle'),
@@ -136,11 +132,11 @@ export const WfoStartPage = () => {
 
     const productsSummaryCard: SummaryCard = {
         headerTitle: t('products.headerTitle'),
-        headerValue: productsSummaryResult?.products.pageInfo.totalItems ?? 0,
+        headerValue: productsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('products.listTitle'),
         listItems:
-            productsSummaryResult?.products.page
+            productsSummaryResult?.products
                 .sort(
                     (left, right) =>
                         (right.subscriptions.pageInfo.totalItems ?? 0) -
@@ -267,12 +263,11 @@ const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
     ],
 };
 
-const productsSummaryQueryVariables: GraphqlQueryVariables<ProductDefinition> =
-    {
-        first: 1000,
-        after: 0,
-        sortBy: {
-            field: 'name',
-            order: SortOrder.ASC,
-        },
-    };
+const productsSummaryQueryVariables: GraphqlQueryVariables<ProductsSummary> = {
+    first: 1000,
+    after: 0,
+    sortBy: {
+        field: 'name',
+        order: SortOrder.ASC,
+    },
+};
