@@ -27,9 +27,9 @@ import {
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useAxiosApiClient } from '../useAxiosApiClient';
+import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { ContactPerson, FieldProps } from '../types';
 import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
-import { ContactPerson, FieldProps } from './types';
 
 export function stop(e: React.SyntheticEvent) {
     if (e !== undefined && e !== null) {

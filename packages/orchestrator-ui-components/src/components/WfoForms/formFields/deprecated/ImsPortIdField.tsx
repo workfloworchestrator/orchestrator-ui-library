@@ -23,10 +23,10 @@ import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
 import { useOrchestratorTheme } from '@/hooks';
 
-import { useAxiosApiClient } from '../useAxiosApiClient';
+import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { ImsNode, ImsPort, NodeSubscription } from '../surf/types';
+import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
-import { ImsNode, ImsPort, NodeSubscription } from './surf/types';
-import { FieldProps, Option } from './types';
 
 export type ImsPortFieldProps = FieldProps<
     number,

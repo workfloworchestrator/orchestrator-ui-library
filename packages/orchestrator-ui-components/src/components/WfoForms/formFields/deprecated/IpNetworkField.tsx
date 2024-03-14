@@ -19,10 +19,11 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
 
+import SplitPrefix from '@/components/WfoForms/formFields/deprecated/SplitPrefix';
+
+import { IpBlock } from '../surf/types';
+import { FieldProps } from '../types';
 import IpPrefixTableField from './IpPrefixTableField';
-import SplitPrefix from './SplitPrefix';
-import { IpBlock } from './surf/types';
-import { FieldProps } from './types';
 
 export type IPvAnyNetworkFieldProps = FieldProps<
     string,

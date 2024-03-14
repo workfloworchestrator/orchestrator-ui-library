@@ -29,11 +29,11 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { ApiClientContext } from '../../../contexts';
+import { ApiClientContext } from '../../../../contexts';
+import { IpBlock, IpPrefix, SortOption } from '../surf/types';
+import { ipamStates } from '../surf/utils';
+import { Option, prop } from '../types';
 import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
-import { IpBlock, IpPrefix, SortOption } from './surf/types';
-import { ipamStates } from './surf/utils';
-import { Option, prop } from './types';
 
 type SortKeys = 'id' | 'prefix' | 'description' | 'state_repr';
 
