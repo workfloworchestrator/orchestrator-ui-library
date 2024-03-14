@@ -348,7 +348,9 @@
             "pauseEngine": "Pause workflow engine",
             "runningProcesses": "Running processes",
             "selectSettings": "Select cache",
-            "startEngine": "Start workflow engine"
+            "startEngine": "Start workflow engine",
+            "resetTextSearchIndex": "Reset text search index",
+            "resetTextSearchIndexButton": "Reset"
         }
     },
     "startPage": {
