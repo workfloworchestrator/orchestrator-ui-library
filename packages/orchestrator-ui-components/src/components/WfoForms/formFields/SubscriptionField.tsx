@@ -37,8 +37,8 @@ import { useOrchestratorTheme } from '../../../hooks';
 import { useGetSubscriptionDropdownOptions } from '../../../hooks/surf/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '../../../types';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
+import { PortMode, ProductTag } from './deprecated/types';
 import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
-import { PortMode, ProductTag } from './surf/types';
 import { FieldProps, Option } from './types';
 import { getPortMode } from './utils';
 

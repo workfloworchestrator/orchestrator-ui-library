@@ -24,9 +24,9 @@ import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFi
 import { useOrchestratorTheme } from '@/hooks';
 
 import { useAxiosApiClient } from '../../useAxiosApiClient';
-import { ImsNode, ImsPort, NodeSubscription } from '../surf/types';
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
+import { ImsNode, ImsPort, NodeSubscription } from './types';
 
 export type ImsPortFieldProps = FieldProps<
     number,

@@ -22,8 +22,8 @@ import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useIsTaggedPort } from '../../../../hooks/surf/useIsTaggedPort';
 import { useAxiosApiClient } from '../../useAxiosApiClient';
-import { ServicePort } from '../surf/types';
 import { FieldProps } from '../types';
+import { ServicePort } from './types';
 
 function inValidVlan(vlan: string) {
     const value = vlan || '0';
