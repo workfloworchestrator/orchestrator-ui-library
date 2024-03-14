@@ -165,18 +165,19 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
-    // the order of summarycards is the order of the items in the allowedSummaryCard array
-    // may need to improve this when we override the summarycard so the correct order can be defined
-    const allowedSummaryCards = [latestWorkflowsSummaryCard];
+    function getFailedTasksSummarycard() {
+        return isAllowed(PolicyResource.NAVIGATION_TASKS)
+            ? [failedTasksSummaryCard]
+            : [];
+    }
 
-    isAllowed(PolicyResource.NAVIGATION_TASKS) &&
-        allowedSummaryCards.push(failedTasksSummaryCard);
-
-    allowedSummaryCards.push(
+    const allowedSummaryCards = [
+        latestWorkflowsSummaryCard,
+        ...getFailedTasksSummarycard(),
         latestOutOfSyncSubscriptionsSummaryCard,
         latestActiveSubscriptionsSummaryCard,
         productsSummaryCard,
-    );
+    ];
 
     return (
         <EuiFlexItem>
