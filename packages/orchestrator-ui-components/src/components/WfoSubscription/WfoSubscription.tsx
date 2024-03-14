@@ -6,6 +6,7 @@ import {
     EuiBadgeGroup,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiSpacer,
     EuiText,
 } from '@elastic/eui';
 
@@ -72,6 +73,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 <EuiText>
                                     <h2>{subscriptionDetail.description}</h2>
                                 </EuiText>
+                                <EuiSpacer size="xs" />
                                 <EuiBadgeGroup
                                     css={{ marginRight: multiplyByBaseUnit(1) }}
                                 >

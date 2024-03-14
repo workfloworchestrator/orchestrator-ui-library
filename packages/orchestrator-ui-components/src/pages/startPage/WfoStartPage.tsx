@@ -11,9 +11,11 @@ import {
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { PolicyResource } from '@/configuration';
-import { getProductsSummaryQuery } from '@/graphqlQueries';
-import { usePolicy, useQueryWithGraphql } from '@/hooks';
-import { useGetProductsSummaryQuery, useGetProcessListSummaryQuery } from '@/rtk';
+import { usePolicy } from '@/hooks';
+import {
+    useGetProcessListSummaryQuery,
+    useGetProductsSummaryQuery,
+} from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
