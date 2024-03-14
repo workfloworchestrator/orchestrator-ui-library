@@ -20,8 +20,9 @@ import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useIsTaggedPort } from '../../../../hooks/surf/useIsTaggedPort';
-import { useAxiosApiClient } from '../../useAxiosApiClient';
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { useIsTaggedPort } from '@/hooks/surf/useIsTaggedPort';
+
 import { FieldProps } from '../types';
 import { ServicePort } from './types';
 

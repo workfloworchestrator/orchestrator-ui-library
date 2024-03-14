@@ -29,7 +29,8 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { ApiClientContext } from '../../../../contexts';
+import { ApiClientContext } from '@/contexts';
+
 import { Option, prop } from '../types';
 import { ipPrefixTableFieldStyling } from './IpPrefixTableFieldStyling';
 import { IpBlock, IpPrefix, SortOption } from './types';

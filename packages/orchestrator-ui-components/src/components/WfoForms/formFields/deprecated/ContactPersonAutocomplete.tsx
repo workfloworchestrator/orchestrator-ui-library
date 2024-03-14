@@ -18,7 +18,8 @@ import scrollIntoView from 'scroll-into-view';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { useWithOrchestratorTheme } from '../../../../hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { ContactPerson } from '../types';
 import { isEmpty } from '../utils';
 import { getStyles } from './ContactPersonAutocompleteStyles';

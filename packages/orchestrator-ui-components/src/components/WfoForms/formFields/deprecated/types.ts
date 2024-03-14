@@ -1,4 +1,4 @@
-import { ProductDefinition } from '../../../../types';
+import { ProductDefinition } from '@/types';
 
 export interface NodeSubscription {
     name: string;
