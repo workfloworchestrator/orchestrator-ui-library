@@ -10,8 +10,10 @@ import {
     SummaryCardStatus,
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
-import { useGetProductsSummaryQuery } from '@/rtk';
-import { useGetProcessListSummaryQuery } from '@/rtk';
+import { PolicyResource } from '@/configuration';
+import { getProductsSummaryQuery } from '@/graphqlQueries';
+import { usePolicy, useQueryWithGraphql } from '@/hooks';
+import { useGetProductsSummaryQuery, useGetProcessListSummaryQuery } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import {
     GraphqlQueryVariables,
@@ -24,6 +26,7 @@ import { formatDate } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
+    const { isAllowed } = usePolicy();
 
     const {
         data: subscriptionsSummaryResult,
@@ -158,17 +161,23 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
+    function getFailedTasksSummarycard() {
+        return isAllowed(PolicyResource.NAVIGATION_TASKS)
+            ? [failedTasksSummaryCard]
+            : [];
+    }
+
+    const allowedSummaryCards = [
+        latestWorkflowsSummaryCard,
+        ...getFailedTasksSummarycard(),
+        latestOutOfSyncSubscriptionsSummaryCard,
+        latestActiveSubscriptionsSummaryCard,
+        productsSummaryCard,
+    ];
+
     return (
         <EuiFlexItem>
-            <WfoSummaryCards
-                summaryCards={[
-                    failedTasksSummaryCard,
-                    latestOutOfSyncSubscriptionsSummaryCard,
-                    latestWorkflowsSummaryCard,
-                    latestActiveSubscriptionsSummaryCard,
-                    productsSummaryCard,
-                ]}
-            />
+            <WfoSummaryCards summaryCards={allowedSummaryCards} />
         </EuiFlexItem>
     );
 };
