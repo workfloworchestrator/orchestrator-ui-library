@@ -336,7 +336,7 @@ export interface WorkflowDefinitionsResult<T = WorkflowDefinition> {
     workflows: GraphQlResultPage<T>;
 }
 
-export interface StartButtonOptionsResult<T> {
+export interface StartOptionsResult<T> {
     workflows: GraphQlSinglePage<T>;
 }
 
