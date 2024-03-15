@@ -16,7 +16,16 @@ export const WfoStartTaskButtonComboBox = () => {
     const { isEngineRunningNow } = useCheckEngineStatus();
 
     const { data } = useGetTaskOptionsQuery();
-    const taskOptions = data?.startComboBoxOptions || [];
+    const taskOptions = data?.startOptions || [];
+
+    const comboBoxOptions: StartComboBoxOption[] = taskOptions.map(
+        (option) => ({
+            data: {
+                workflowName: option.name,
+            },
+            label: option.description || '',
+        }),
+    );
 
     const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
         if (await isEngineRunningNow()) {
@@ -30,7 +39,7 @@ export const WfoStartTaskButtonComboBox = () => {
     return (
         <WfoStartButtonComboBox
             buttonText={t('newTask')}
-            options={taskOptions}
+            options={comboBoxOptions}
             onOptionChange={handleOptionChange}
             isProcess={false}
         />

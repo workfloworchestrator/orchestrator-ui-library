@@ -16,7 +16,17 @@ export const WfoStartWorkflowButtonComboBox = () => {
     const { isEngineRunningNow } = useCheckEngineStatus();
 
     const { data } = useGetWorkflowOptionsQuery();
-    const workflowOptions = data?.startComboBoxOptions || [];
+    const workflowOptions = data?.startOptions || [];
+
+    const comboBoxOptions: StartComboBoxOption[] = workflowOptions.map(
+        (option) => ({
+            data: {
+                workflowName: option.workflowName,
+                productId: option.productId,
+            },
+            label: option.productName || '',
+        }),
+    );
 
     const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
         if (await isEngineRunningNow()) {
@@ -31,7 +41,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
     return (
         <WfoStartButtonComboBox
             buttonText={t('newSubscription')}
-            options={workflowOptions}
+            options={comboBoxOptions}
             onOptionChange={handleOptionChange}
             isProcess
         />
