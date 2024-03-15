@@ -19,7 +19,7 @@ import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { ProductDefinition } from '@/types';
+import type { LegacyProduct } from '@/api/types';
 
 import { useAxiosApiClient } from '../useAxiosApiClient';
 import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
@@ -45,15 +45,15 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
 
     const productById = (
         id: string,
-        products: ProductDefinition[],
-    ): ProductDefinition => {
-        return products.find((prod) => prod.productId === id)!;
+        products: LegacyProduct[],
+    ): LegacyProduct => {
+        return products.find((prod) => prod.product_id === id)!;
     };
 
-    if (isLoading || error) return null;
+    if (isLoading || error || !data) return null;
 
     const products = productIds
-        ? data?.map((id) => productById(id.productId, data))
+        ? productIds?.map((id) => productById(id, data))
         : data;
 
     const productLabelLookup =
@@ -61,7 +61,7 @@ function Product({ name, productIds, ...props }: ProductFieldProps) {
             mapping,
             product,
         ) {
-            mapping[product.productId] = product.name;
+            mapping[product.product_id] = product.name;
             return mapping;
         }, {}) ?? {};
 

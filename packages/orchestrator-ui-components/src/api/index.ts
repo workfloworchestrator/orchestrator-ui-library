@@ -14,6 +14,7 @@
  */
 import { AxiosInstance } from 'axios';
 
+import { LegacyProduct } from '@/api/types';
 import {
     ImsPort,
     IpBlock,
@@ -142,8 +143,8 @@ export class ApiClient extends BaseApiClient {
         );
     };
 
-    products = (): Promise<ProductDefinition[]> => {
-        return this.fetchJson<ProductDefinition[]>(PRODUCTS_ENDPOINT);
+    products = (): Promise<LegacyProduct[]> => {
+        return this.fetchJson<LegacyProduct[]>(PRODUCTS_ENDPOINT);
     };
     productById = (productId: string): Promise<ProductDefinition> => {
         return this.fetchJson(`${PRODUCTS_ENDPOINT}${productId}`);
