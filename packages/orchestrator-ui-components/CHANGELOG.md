@@ -1,5 +1,23 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.4.0
+
+### Minor Changes
+
+- 62b356f: 702 - Moves product blocks graphql query to RTK Client
+- 0e5c8f3: 702 Moves subscriptionList query to RTK client
+- 92ce67b: 702 Moves subscriptionDetail to RTK
+- 3f68b52: 702 Moves subscriptions dropdown options to RTK
+- d7b1ce2: 702 Moves products and productsSummary to RTK
+
+### Patch Changes
+
+- 0b4da83: Moves resourceTypes metadata query to RTK client
+- 6ee952f: Uses relatedSubscriptions RTK Query
+- af1c86b: Moves processList summary queries to RTK client
+- 70efdf5: Moves getting startOptions to RTK
+- 0d10af8: Uses RTK client to get metadata workflows
+
 ## 1.3.1
 
 ### Patch Changes
