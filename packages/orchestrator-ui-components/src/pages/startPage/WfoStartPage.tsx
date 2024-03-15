@@ -138,7 +138,7 @@ export const WfoStartPage = () => {
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('products.listTitle'),
         listItems:
-            productsSummaryResult?.products
+            [...(productsSummaryResult?.products ?? [])]
                 .sort(
                     (left, right) =>
                         (right.subscriptions.pageInfo.totalItems ?? 0) -
