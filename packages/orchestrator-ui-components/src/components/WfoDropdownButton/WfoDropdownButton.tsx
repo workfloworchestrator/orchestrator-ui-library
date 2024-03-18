@@ -12,6 +12,7 @@ interface WfoDropdownButtonProps {
 
 export const WfoDropdownButton = ({
     label,
+    isDisabled = false,
     children,
 }: WfoDropdownButtonProps) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -58,6 +59,7 @@ export const WfoDropdownButton = ({
                     legend={'Buttons'}
                     options={buttonOptions}
                     onChange={onButtonClick}
+                    isDisabled={isDisabled}
                 />
             }
             isOpen={isPopoverOpen}
