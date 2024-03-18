@@ -34,7 +34,7 @@ import {
 } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
-import { useGetSubscriptionDropdownOptions } from '@/hooks/surf/useGetSubscriptionDropdownOptions';
+import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '@/types';
 
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
