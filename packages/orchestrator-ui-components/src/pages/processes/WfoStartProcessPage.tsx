@@ -121,13 +121,7 @@ export const WfoStartProcessPage = ({
                     // Resolve handler
                     (result) => {
                         const process = result as { id: string };
-                        // TODO: Use toast hook to display success message
                         if (process.id) {
-                            // eslint-disable-next-line no-console
-                            console.log(
-                                'resolver successfullly!: ',
-                                process.id,
-                            );
                             const basePath = isTask
                                 ? PATH_TASKS
                                 : PATH_WORKFLOWS;
