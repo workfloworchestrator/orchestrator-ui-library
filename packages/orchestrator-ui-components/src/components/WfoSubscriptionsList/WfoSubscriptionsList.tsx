@@ -8,6 +8,7 @@ import { Pagination } from '@elastic/eui';
 
 import {
     FilterQuery,
+    PATH_SUBSCRIPTIONS,
     WfoDateTime,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
@@ -174,7 +175,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
-        router.replace('/subscriptions');
+        router.replace(PATH_SUBSCRIPTIONS);
         return null;
     }
 
