@@ -21,7 +21,7 @@ import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
-import { useIsTaggedPort } from '@/hooks/surf/useIsTaggedPort';
+import { useIsTaggedPort } from '@/hooks/deprecated/useIsTaggedPort';
 
 import { FieldProps } from '../types';
 import { ServicePort } from './types';
