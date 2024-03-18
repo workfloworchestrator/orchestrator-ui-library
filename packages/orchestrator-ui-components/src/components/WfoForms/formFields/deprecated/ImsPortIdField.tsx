@@ -102,6 +102,9 @@ function ImsPortId({
                 return;
             }
 
+            // Prevents the value of the port dropdown remains
+            onChange(undefined);
+
             setLoading(true);
             setNodeId(value);
             setPorts([]);
@@ -217,7 +220,7 @@ function ImsPortId({
                                     }}
                                     options={port_options}
                                     placeholder={portPlaceholder}
-                                    value={port_value}
+                                    value={port_value || null}
                                     isSearchable={true}
                                     isDisabled={
                                         disabled ||
