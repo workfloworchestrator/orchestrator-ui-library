@@ -242,6 +242,7 @@
             "tag": "Product tag",
             "startDate": "Start date",
             "endDate": "End date",
+            "metadata": "Metadata",
             "note": "Note",
             "customerFullname": "Customer",
             "customerShortcode": "Customer abbr"

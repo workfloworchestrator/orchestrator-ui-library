@@ -30,9 +30,16 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
 
     const shouldRenderCopyColumn = enableCopyIcon && textToCopy;
 
+    const valueToRender =
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        React.isValidElement(value)
+            ? value
+            : JSON.stringify(value);
+
     return (
         <div css={[getBackgroundColorStyleForRow(rowNumber), valueColumnStyle]}>
-            <div css={valueCellStyle}>{value}</div>
+            <div css={valueCellStyle}>{valueToRender}</div>
             <div css={clipboardIconStyle}>
                 {shouldRenderCopyColumn && (
                     <EuiCopy textToCopy={textToCopy}>

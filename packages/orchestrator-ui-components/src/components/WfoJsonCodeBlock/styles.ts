@@ -7,7 +7,20 @@ export const getStyles = (theme: EuiThemeComputed) => {
         borderRadius: theme.border.radius.medium,
     });
 
+    const euiBasicCodeBlockStyle = css({
+        backgroundColor: 'inherit',
+        '.euiCodeBlock__pre': {
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+        },
+        '.euiCodeBlock__controls': {
+            backgroundColor: 'inherit',
+        },
+    });
+
     return {
         euiCodeBlockStyle,
+        euiBasicCodeBlockStyle,
     };
 };

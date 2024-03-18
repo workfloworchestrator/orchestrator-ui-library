@@ -242,6 +242,7 @@
             "startDate": "Startdatum",
             "endDate": "Einddatum",
             "note": "Notitie",
+            "metadata": "Metadata",
             "customerFullName": "Klant",
             "customerAbbreviation": "Klantafkorting"
         },

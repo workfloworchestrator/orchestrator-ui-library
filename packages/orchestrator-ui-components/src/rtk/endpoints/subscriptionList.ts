@@ -38,6 +38,7 @@ export const subscriptionListQuery = `query SubscriptionsList(
                     fullname
                     shortcode
                 }
+                metadata
             }
             pageInfo {
                 totalItems

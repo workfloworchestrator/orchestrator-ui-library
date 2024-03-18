@@ -395,6 +395,7 @@ export type Subscription = {
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
     productBlockInstances: ProductBlockInstance[];
     customer: Pick<Customer, 'fullname' | 'shortcode'>;
+    metadata: object;
 };
 
 export type SubscriptionSummary = Pick<
