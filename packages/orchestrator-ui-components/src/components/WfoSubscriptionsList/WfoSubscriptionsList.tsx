@@ -10,6 +10,7 @@ import {
     FilterQuery,
     WfoDateTime,
     WfoInsyncIcon,
+    WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
@@ -141,6 +142,13 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         note: {
             field: 'note',
             name: t('note'),
+        },
+        metadata: {
+            field: 'metadata',
+            name: t('metadata'),
+            render: (value) => value && JSON.stringify(value),
+            renderDetails: (value) =>
+                value && <WfoJsonCodeBlock data={value} isBasicStyle />,
         },
     };
 
