@@ -146,7 +146,8 @@ export function UnconnectedSelectField({
                         name={name}
                         onChange={(option) => {
                             if (!readOnly) {
-                                onChange(option?.value);
+                                // @ts-expect-error - null needs to be passed in some cases to remove something (eg. a fw endpoint in an l2vpn)
+                                onChange(option?.value ?? null);
                             }
                         }}
                         styles={reactSelectInnerComponentStyles}
