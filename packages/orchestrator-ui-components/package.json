@@ -13,6 +13,7 @@
         "url": "https://github.com/workfloworchestrator/orchestrator-ui-librar.git"
     },
     "homepage": "https://www.workfloworchestrator.org",
+    "bugs": "https://github.com/workfloworchestrator/orchestrator-ui-library/issues",
     "keywords": [
         "orchestrator",
         "workflow",
