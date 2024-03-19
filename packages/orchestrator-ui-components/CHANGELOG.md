@@ -4,25 +4,22 @@
 
 ### Minor Changes
 
-- 62b356f: 702 - Moves product blocks graphql query to RTK Client
-- 0e5c8f3: 702 Moves subscriptionList query to RTK client
-- 92ce67b: 702 Moves subscriptionDetail to RTK
-- 3f68b52: 702 Moves subscriptions dropdown options to RTK
-- d7b1ce2: 702 Moves products and productsSummary to RTK
-
-### Patch Changes
-
+- 62b356f: Moves product blocks graphql query to RTK client
+- 0e5c8f3: Moves subscriptionList query to RTK client
+- 92ce67b: Moves subscriptionDetail to RTK client
+- 3f68b52: Moves subscriptions dropdown options to RTK client
+- d7b1ce2: Moves products and productsSummary to RTK client
 - 0b4da83: Moves resourceTypes metadata query to RTK client
-- 6ee952f: Uses relatedSubscriptions RTK Query
+- 6ee952f: Moves relatedSubscriptions RTK client
 - af1c86b: Moves processList summary queries to RTK client
-- 70efdf5: Moves getting startOptions to RTK
-- 0d10af8: Uses RTK client to get metadata workflows
+- 70efdf5: Moves getting startOptions to RTK client
+- 0d10af8: MOves get metadata workflows to RTK client
 
 ## 1.3.1
 
 ### Patch Changes
 
-- 043b943: Moves processStepst query to RTK
+- 043b943: Moves processSteps query to RTK client
 - b511e4a: Fixes bug that occurs in some create workflows
 
 ## 1.3.0
@@ -35,7 +32,7 @@
 
 ### Minor Changes
 
-- 857b6de: Added option to override the baseQuery with custom baseQuery in RTK
+- 857b6de: Added option to override the baseQuery with custom baseQuery in RTK client
 
 ## 1.1.0
 
