@@ -102,7 +102,7 @@ function ImsPortId({
                 return;
             }
 
-            // Prevents the value of the port dropdown remains
+            // Clears the value when another selection is made
             onChange(undefined);
 
             setLoading(true);
