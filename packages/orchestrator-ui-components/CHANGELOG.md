@@ -1,6 +1,6 @@
 # @orchestrator-ui/orchestrator-ui-components
 
-## 1.4.0
+## 1.4.0.
 
 ### Minor Changes
 
