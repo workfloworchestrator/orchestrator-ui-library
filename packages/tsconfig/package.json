@@ -24,7 +24,7 @@
     },
     "main": "./dist/",
     "version": "1.0.0",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "publishConfig": {
         "access": "public"
     }
