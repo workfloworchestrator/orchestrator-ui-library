@@ -2,6 +2,22 @@
     "name": "@orchestrator-ui/orchestrator-ui-components",
     "version": "1.4.0",
     "license": "MIT",
+    "description": "Library of UI Components used to display the workflow orchestrator frontend",
+    "author": {
+        "name": "Workflow Orchestrator Programme",
+        "email": "workfloworchestrator.board@commonsconservancy.org",
+        "url": "https://www.workfloworchestrator.org"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/workfloworchestrator/orchestrator-ui-librar.git"
+    },
+    "homepage": "https://www.workfloworchestrator.org",
+    "keywords": [
+        "orchestrator",
+        "workflow",
+        "workflow orchestrator"
+    ],
     "scripts": {
         "test": "jest",
         "build": "tsup src/index.ts --format esm --dts --tsconfig tsconfig.build.json",
