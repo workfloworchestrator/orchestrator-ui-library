@@ -1,7 +1,7 @@
 {
     "name": "@orchestrator-ui/eslint-config-custom",
     "version": "1.1.3",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "description": "Contains the eslint configuration used in the Workflow orchestrator frontend projects",
     "author": {
         "name": "Workflow Orchestrator Programme",
