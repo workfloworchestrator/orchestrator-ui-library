@@ -10,6 +10,7 @@ import {
     FilterQuery,
     PATH_SUBSCRIPTIONS,
     WfoDateTime,
+    WfoInlineJson,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
@@ -147,7 +148,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         metadata: {
             field: 'metadata',
             name: t('metadata'),
-            render: (value) => value && JSON.stringify(value),
+            render: (value) => <WfoInlineJson data={value} />,
             renderDetails: (value) =>
                 value && <WfoJsonCodeBlock data={value} isBasicStyle />,
         },
