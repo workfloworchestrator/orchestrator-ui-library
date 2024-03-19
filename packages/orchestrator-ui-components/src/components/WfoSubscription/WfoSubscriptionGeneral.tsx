@@ -4,8 +4,9 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
+import { WfoJsonCodeBlock } from '@/components';
 import { SubscriptionDetail } from '@/types';
-import { formatDate } from '@/utils';
+import { camelToHuman, formatDate } from '@/utils';
 
 import {
     WfoProductStatusBadge,
@@ -24,71 +25,72 @@ export const WfoSubscriptionGeneral = ({
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
 
-    const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => {
-        return [
-            {
-                key: t('subscriptionId'),
-                value: subscriptionDetail.subscriptionId,
-                textToCopy: subscriptionDetail.subscriptionId,
-            },
-            {
-                key: t('productName'),
-                value: subscriptionDetail.product.name,
-            },
-            {
-                key: t('description'),
-                value: subscriptionDetail.description,
-            },
-            {
-                key: t('startDate'),
-                value: formatDate(subscriptionDetail.startDate),
-            },
-            {
-                key: t('endDate'),
-                value: formatDate(subscriptionDetail.endDate),
-            },
-            {
-                key: t('status'),
-                value: (
-                    <WfoSubscriptionStatusBadge
-                        status={subscriptionDetail.status}
-                    />
-                ),
-            },
-            {
-                key: t('insync'),
-                value: (
-                    <WfoInSyncField subscriptionDetail={subscriptionDetail} />
-                ),
-            },
-            {
-                key: t('customer'),
-                value:
-                    subscriptionDetail && subscriptionDetail.customer
-                        ? `${subscriptionDetail.customer?.fullname}`
-                        : '-',
-            },
-            {
-                key: t('customerUuid'),
-                value:
-                    subscriptionDetail && subscriptionDetail.customer
-                        ? `${subscriptionDetail.customer?.customerId}`
-                        : '-',
-                textToCopy: subscriptionDetail.customer?.customerId,
-            },
-            {
-                key: t('note'),
-                value: (subscriptionDetail && subscriptionDetail.note) || '-',
-            },
-        ];
-    };
+    const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => [
+        {
+            key: t('subscriptionId'),
+            value: subscriptionDetail.subscriptionId,
+            textToCopy: subscriptionDetail.subscriptionId,
+        },
+        {
+            key: t('productName'),
+            value: subscriptionDetail.product.name,
+        },
+        {
+            key: t('description'),
+            value: subscriptionDetail.description,
+        },
+        {
+            key: t('startDate'),
+            value: formatDate(subscriptionDetail.startDate),
+        },
+        {
+            key: t('endDate'),
+            value: formatDate(subscriptionDetail.endDate),
+        },
+        {
+            key: t('status'),
+            value: (
+                <WfoSubscriptionStatusBadge
+                    status={subscriptionDetail.status}
+                />
+            ),
+        },
+        {
+            key: t('insync'),
+            value: <WfoInSyncField subscriptionDetail={subscriptionDetail} />,
+        },
+        {
+            key: t('customer'),
+            value:
+                subscriptionDetail && subscriptionDetail.customer
+                    ? `${subscriptionDetail.customer?.fullname}`
+                    : '-',
+        },
+        {
+            key: t('customerUuid'),
+            value:
+                subscriptionDetail && subscriptionDetail.customer
+                    ? `${subscriptionDetail.customer?.customerId}`
+                    : '-',
+            textToCopy: subscriptionDetail.customer?.customerId,
+        },
+        {
+            key: t('note'),
+            value: (subscriptionDetail && subscriptionDetail.note) || '-',
+        },
+    ];
 
-    const getFixedInputBlockData = (): WfoKeyValueTableDataType[] => {
-        return subscriptionDetail.fixedInputs.map((fixedInput) => ({
+    const getMetadataBlockData = (): WfoKeyValueTableDataType[] =>
+        Object.entries(subscriptionDetail.metadata).map(([key, value]) => ({
+            key: camelToHuman(key),
+            value: <WfoJsonCodeBlock data={value} isBasicStyle />,
+        }));
+
+    const getFixedInputBlockData = (): WfoKeyValueTableDataType[] =>
+        subscriptionDetail.fixedInputs.map((fixedInput) => ({
             key: fixedInput.field,
             value: fixedInput.value,
         }));
-    };
 
     const getProductInfoBlockData = (): WfoKeyValueTableDataType[] => {
         const product = subscriptionDetail.product;
@@ -131,6 +133,12 @@ export const WfoSubscriptionGeneral = ({
                     <SubscriptionKeyValueBlock
                         title={t('blockTitleSubscriptionDetails')}
                         keyValues={getSubscriptionDetailBlockData()}
+                    />
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <SubscriptionKeyValueBlock
+                        title={t('metadata')}
+                        keyValues={getMetadataBlockData()}
                     />
                 </EuiFlexItem>
                 <EuiFlexItem>

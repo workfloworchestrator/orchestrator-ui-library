@@ -30,6 +30,7 @@ export const subscriptionDetailQuery = `
                 startDate
                 status
                 customerId
+                metadata
                 customer {
                     fullname
                     customerId

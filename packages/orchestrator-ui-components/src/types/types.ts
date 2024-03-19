@@ -435,6 +435,7 @@ export type SubscriptionDetail = {
     endDate: string;
     startDate: string;
     status: SubscriptionStatus;
+    metadata: object;
     productBlockInstances: ProductBlockInstance[];
 
     customerId?: string | null;

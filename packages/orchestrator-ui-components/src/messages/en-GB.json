@@ -305,6 +305,7 @@
             "tag": "Tag",
             "created": "Created",
             "endDate": "End date",
+            "metadata": "Metadata",
             "note": "Note",
             "noRelatedSubscriptions": "No related subscriptions found",
             "hideTerminatedRelatedSubscriptions": "Hide terminated subscriptions",
