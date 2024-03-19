@@ -299,6 +299,7 @@
             "insync": "In sync",
             "customer": "Klant",
             "customerUuid": "Klant UUID",
+            "metadata": "Metadata",
             "name": "Naam",
             "productType": "Produkttype",
             "tag": "Tag",
