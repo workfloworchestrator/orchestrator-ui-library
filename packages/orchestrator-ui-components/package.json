@@ -17,7 +17,9 @@
     "keywords": [
         "orchestrator",
         "workflow",
-        "workflow orchestrator"
+        "workflow orchestrator",
+        "network",
+        "automation"
     ],
     "scripts": {
         "test": "jest",
