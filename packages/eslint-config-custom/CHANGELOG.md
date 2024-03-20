@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.2.0
+
+### Minor Changes
+
+- c122786: Adds README files to be displayed on NPM. Adds Apache 2.0 license.
+
 ## 1.1.3
 
 ### Patch Changes

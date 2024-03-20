@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 1.1.0
+
+### Minor Changes
+
+- c122786: Adds README files to be displayed on NPM. Adds Apache 2.0 license.
+
 ## 1.0.0
 
 ### Major Changes
