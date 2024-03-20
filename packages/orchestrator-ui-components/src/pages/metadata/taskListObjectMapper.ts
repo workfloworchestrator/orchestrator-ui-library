@@ -1,14 +1,13 @@
-import {
-    GraphQLSort,
-    TaskDefinition,
-    TaskDefinitionsResult,
-} from '../../types';
+import { GraphQLSort, TaskDefinition } from '@/types';
+
 import { TaskListItem } from './WfoTasksPage';
 
 export const mapTaskDefinitionToTaskListItem = (
-    processDefinitionResult: TaskDefinitionsResult,
+    // processDefinitionResult: TaskDefinitionsResult,
+    tasks: TaskDefinition[],
 ): TaskListItem[] =>
-    processDefinitionResult.workflows.page.map((taskDefinition) => {
+    // processDefinitionResult.workflows.page.map((taskDefinition) => {
+    tasks.map((taskDefinition) => {
         const { name, target, description, createdAt, products } =
             taskDefinition;
 

@@ -11,14 +11,14 @@ import { StoredTableConfig } from '@/components';
 import { WfoProcessTargetBadge } from '@/components/WfoBadges/WfoProcessTargetBadge/WfoProcessTargetBadge';
 import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
-import { GET_TASKS_GRAPHQL_QUERY } from '@/graphqlQueries/tasksQuery';
+// import { GET_TASKS_GRAPHQL_QUERY } from '@/graphqlQueries/tasksQuery';
 import {
-    useDataDisplayParams,
-    useQueryWithGraphql,
-    useQueryWithGraphqlLazy,
+    useDataDisplayParams, // useQueryWithGraphql,
+    // useQueryWithGraphqlLazy,
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
+import { useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -156,31 +156,47 @@ export const WfoTasksPage = () => {
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-    const graphqlQueryVariables: GraphqlQueryVariables<TaskDefinition> = {
+    // const graphqlQueryVariables: GraphqlQueryVariables<TaskDefinition> = {
+    //     first: pageSize,
+    //     after: pageIndex * pageSize,
+    //     sortBy: graphQlTaskListMapper(sortBy),
+    //     query: queryString || undefined,
+    // };
+    // const { data, isFetching, isError } = useQueryWithGraphql(
+    //     GET_TASKS_GRAPHQL_QUERY,
+    //     graphqlQueryVariables,
+    //     ['tasks', 'listPage'],
+    // );
+    const taskListQueryVariables: GraphqlQueryVariables<TaskDefinition> = {
         first: pageSize,
         after: pageIndex * pageSize,
         sortBy: graphQlTaskListMapper(sortBy),
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useQueryWithGraphql(
-        GET_TASKS_GRAPHQL_QUERY,
-        graphqlQueryVariables,
-        ['tasks', 'listPage'],
+    const { data, isFetching, isError } = useGetTasksQuery(
+        taskListQueryVariables,
     );
-    const { getData: getTasksForExport, isFetching: isFetchingCsv } =
-        useQueryWithGraphqlLazy(
-            GET_TASKS_GRAPHQL_QUERY,
-            getQueryVariablesForExport(graphqlQueryVariables),
-            ['tasks', 'export'],
-        );
+    // const { getData: getTasksForExport, isFetching: isFetchingCsv } =
+    //     useQueryWithGraphqlLazy(
+    //         GET_TASKS_GRAPHQL_QUERY,
+    //         getQueryVariablesForExport(graphqlQueryVariables),
+    //         ['tasks', 'export'],
+    //     );
+
+    const [getTasksTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetTasksQuery();
+
+    const getTasksForExport = () =>
+        getTasksTrigger(
+            getQueryVariablesForExport(taskListQueryVariables),
+        ).unwrap();
 
     const dataSorting: WfoDataSorting<TaskListItem> = {
         field: sortBy?.field ?? 'name',
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const { totalItems, sortFields, filterFields } =
-        data?.workflows?.pageInfo || {};
+    const { totalItems, sortFields, filterFields } = data?.pageInfo || {};
 
     const pagination: Pagination = {
         pageSize: pageSize,
@@ -192,7 +208,7 @@ export const WfoTasksPage = () => {
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<TaskListItem>
-                data={data ? mapTaskDefinitionToTaskListItem(data) : []}
+                data={data ? mapTaskDefinitionToTaskListItem(data.tasks) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -216,8 +232,8 @@ export const WfoTasksPage = () => {
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getTasksForExport,
-                    (data) => data.workflows.page,
-                    (data) => data.workflows.pageInfo,
+                    (data) => data.tasks,
+                    (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Tasks'),
                     showToastMessage,
