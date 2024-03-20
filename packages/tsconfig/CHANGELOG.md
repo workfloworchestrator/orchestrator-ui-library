@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 1.1.1
+
+### Patch Changes
+
+- 09f3e09: Fixes markdown in README files
+
 ## 1.1.0
 
 ### Minor Changes
