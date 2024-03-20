@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.2.1
+
+### Patch Changes
+
+- 09f3e09: Fixes markdown in README files
+
 ## 1.2.0
 
 ### Minor Changes
