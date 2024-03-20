@@ -15,7 +15,7 @@ This package is meant to be consumed by an app that connects it to a running wor
 
 To have an development setup where both the code of the app and the code of this package are available have a look at the [Orchestrator UI library][4] repository.
 
-[1]: https://workfloworchestrator.org
+[1]: https://www.workfloworchestrator.org
 [2]: https://github.com/workfloworchestrator/orchestrator-core
 [3]: https://github.com/workfloworchestrator/example-orchestrator-ui
 [4]: https://github.com/workfloworchestrator/orchestrator-ui-library
