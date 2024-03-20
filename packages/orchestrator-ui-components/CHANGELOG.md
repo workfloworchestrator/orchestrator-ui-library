@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.5.0
+
+### Minor Changes
+
+- 9662041: 638 Moves SURF specific form fields to deprecated folder
+- c122786: Adds README files to be displayed on NPM. Adds Apache 2.0 license.
+
+### Patch Changes
+
+- 78a0b55: 812 Fixed object mapping from products rest call
+- 1b3a9f0: Allows sending null as a value when removing existing values
+- 9cf620e: 919 Fix port dropdown after changing the node in a Create Service Port workflow
+- c5c73da: Added isDisabled prop to WfoDropdownButton, small styles adjustment for keyColumn
+
 ## 1.4.0.
 
 ### Minor Changes
