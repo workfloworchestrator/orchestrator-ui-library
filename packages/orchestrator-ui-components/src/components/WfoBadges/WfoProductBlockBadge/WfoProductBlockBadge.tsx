@@ -42,6 +42,8 @@ export function WfoProductBlockBadge({
                     textColor: primaryText,
                 };
             case BadgeType.WORKFLOW:
+            case BadgeType.TASK:
+            case BadgeType.PRODUCT:
                 return {
                     badgeColor: toSecondaryColor(danger),
                     textColor: dangerText,
