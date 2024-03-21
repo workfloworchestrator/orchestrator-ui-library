@@ -77,6 +77,13 @@ export const WfoStepStatusIcon = ({
                     true,
                     theme.colors.danger,
                 ];
+            case StepStatus.SKIPPED:
+                return [
+                    stepStateSuccessIconStyle,
+                    theme.colors.primaryText,
+                    true,
+                    theme.colors.accent,
+                ];
             case StepStatus.FORM:
                 return [stepStateSuccessIconStyle, theme.colors.link];
 
