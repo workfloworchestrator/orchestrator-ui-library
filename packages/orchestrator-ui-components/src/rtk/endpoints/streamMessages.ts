@@ -1,5 +1,7 @@
 import { debounce } from 'lodash';
+import { getSession } from 'next-auth/react';
 
+import type { WfoSession } from '@/hooks';
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
@@ -7,10 +9,11 @@ import { getToastMessage } from '@/utils/getToastMessage';
 
 import { CacheTags, orchestratorApi } from '../api';
 
-const getWebSocket = (url: string) => {
-    // TODO: Implement authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
-    // https://github.com/workfloworchestrator/orchestrator-core/issues/502 - https://github.com/workfloworchestrator/orchestrator-ui-library/issues/823
-    return new WebSocket(url);
+const getWebSocket = async (url: string) => {
+    const session = (await getSession()) as WfoSession;
+    const token = session?.accessToken ? [session?.accessToken] : [];
+    // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
+    return new WebSocket(url, token);
 };
 
 const PING_INTERVAL_MS = 5000;
@@ -58,7 +61,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
 
                 // Starts the websocket
-                const webSocket = getWebSocket(orchestratorWebsocketUrl);
+                const webSocket = await getWebSocket(orchestratorWebsocketUrl);
 
                 // Lets the WfoWebsocketStatusBadge know the websocket is connected
                 webSocket.onopen = () => {
