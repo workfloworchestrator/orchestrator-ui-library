@@ -30,3 +30,4 @@ export * from './WfoViewList';
 export * from './WfoContactEnvelopeFill';
 export * from './WfoBell';
 export * from './WfoWarningTriangle';
+export * from './WfoExternalLink';
