@@ -57,6 +57,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const productBlockLeftCol = {
+        verticalAlign: 'top',
         width: 250,
         paddingLeft: 0,
         paddingTop: 10,
@@ -72,6 +73,7 @@ export const getStyles = (theme: EuiThemeComputed) => {
     });
 
     const productBlockRightCol = {
+        verticalAlign: 'top',
         paddingLeft: 0,
         paddingTop: 10,
         paddingBottom: 10,
