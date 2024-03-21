@@ -1,4 +1,4 @@
-import React, { FC, Key, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -16,6 +16,7 @@ import {
 } from '@elastic/eui';
 
 import { PATH_SUBSCRIPTIONS } from '@/components';
+import { useOverrideValueRender } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
 import { camelToHuman } from '@/utils';
@@ -35,25 +36,6 @@ interface WfoSubscriptionProductBlockProps {
 }
 
 export const HIDDEN_KEYS = ['title', 'name', 'label'];
-
-// Todo make this a context and a hook for usage
-// Provider should be placed in the page component in the APP
-const overrideValueRender:
-    | undefined
-    | ((key: string, value: FieldValue['value']) => ReactNode) = (
-    key,
-    value,
-): ReactNode => {
-    if (key === 'imsCircuitId') {
-        return (
-            <>
-                <h1>(+)</h1>
-                <div css={{ color: 'hotpink' }}>{value}</div>
-            </>
-        );
-    }
-    return value;
-};
 
 export const WfoSubscriptionProductBlock = ({
     ownerSubscriptionId,
@@ -225,24 +207,24 @@ export const WfoSubscriptionProductBlock = ({
 // Todo: move to a separate file
 export type WfoProductBlockKeyValueRowProps = {
     fieldValue: FieldValue;
-    key: Key;
     isFirstBlock: boolean;
 };
 
 export const WfoProductBlockKeyValueRow: FC<
     WfoProductBlockKeyValueRowProps
-> = ({ fieldValue, key, isFirstBlock }) => {
+> = ({ fieldValue, isFirstBlock }) => {
     const {
         productBlockFirstLeftColStyle,
         productBlockLeftColStyle,
         productBlockFirstRightColStyle,
         productBlockRightColStyle,
     } = useWithOrchestratorTheme(getStyles);
+    const { overrideValueRender } = useOverrideValueRender();
 
     const { field, value } = fieldValue;
 
     return (
-        <tr key={key}>
+        <tr>
             <td
                 css={
                     isFirstBlock
