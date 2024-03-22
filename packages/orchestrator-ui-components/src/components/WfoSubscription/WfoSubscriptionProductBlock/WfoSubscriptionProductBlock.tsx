@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import {
     EuiBadge,
     EuiButtonEmpty,
-    EuiCodeBlock,
     EuiFlexGroup,
     EuiFlexItem,
     EuiIcon,
@@ -15,7 +14,11 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, WfoProductBlockKeyValueRow } from '@/components';
+import {
+    PATH_SUBSCRIPTIONS,
+    WfoJsonCodeBlock,
+    WfoProductBlockKeyValueRow,
+} from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
 
@@ -148,14 +151,10 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
                                         <td css={productBlockRightColStyle}>
-                                            {/* Todo use the Wfo version */}
-                                            <EuiCodeBlock language="json">
-                                                {JSON.stringify(
-                                                    inUseByRelations,
-                                                    null,
-                                                    4,
-                                                )}
-                                            </EuiCodeBlock>
+                                            <WfoJsonCodeBlock
+                                                data={inUseByRelations}
+                                                isBasicStyle
+                                            />
                                         </td>
                                     </tr>
                                 </>
