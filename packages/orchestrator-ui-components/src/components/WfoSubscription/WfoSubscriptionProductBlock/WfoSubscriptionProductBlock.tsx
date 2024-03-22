@@ -25,7 +25,7 @@ import { getStyles } from './styles';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
-} from './utils';
+} from '../utils';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
@@ -52,17 +52,11 @@ export const WfoSubscriptionProductBlock = ({
         productBlockIconStyle,
         productBlockPanelStyle,
         productBlockLeftColStyle,
-        productBlockFirstLeftColStyle,
         productBlockRightColStyle,
-        productBlockFirstRightColStyle,
+        productBlockRowStyle,
     } = useWithOrchestratorTheme(getStyles);
 
     const [hideDetails, setHideDetails] = useState(true);
-
-    const isFirstBlock = (index: number): boolean => {
-        if (!hideDetails) return false;
-        return index === 0;
-    };
 
     return (
         <>
@@ -117,31 +111,23 @@ export const WfoSubscriptionProductBlock = ({
                         <tbody>
                             {!hideDetails && (
                                 <>
-                                    <tr key={-3}>
+                                    <tr key={-3} css={productBlockRowStyle}>
                                         <td
-                                            valign={'top'}
-                                            css={productBlockFirstLeftColStyle}
+                                            css={productBlockLeftColStyle}
                                         >
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
                                         <td
-                                            valign={'top'}
-                                            css={productBlockFirstRightColStyle}
+                                            css={productBlockRightColStyle}
                                         >
                                             {subscriptionInstanceId}
                                         </td>
                                     </tr>
-                                    <tr key={-2}>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstLeftColStyle}
-                                        >
+                                    <tr key={-2} css={productBlockRowStyle}>
+                                        <td css={productBlockLeftColStyle}>
                                             <b>{t('ownerSubscriptionId')}</b>
                                         </td>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstRightColStyle}
-                                        >
+                                        <td css={productBlockRightColStyle}>
                                             {subscriptionId ===
                                             ownerSubscriptionId ? (
                                                 <>
@@ -159,17 +145,12 @@ export const WfoSubscriptionProductBlock = ({
                                             )}
                                         </td>
                                     </tr>
-                                    <tr key={-1}>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockLeftColStyle}
-                                        >
+                                    <tr key={-1} css={productBlockRowStyle}>
+                                        <td css={productBlockLeftColStyle}>
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockRightColStyle}
-                                        >
+                                        <td css={productBlockRightColStyle}>
+                                            {/* Todo use the Wfo version */}
                                             <EuiCodeBlock language="json">
                                                 {JSON.stringify(
                                                     inUseByRelations,
@@ -192,7 +173,6 @@ export const WfoSubscriptionProductBlock = ({
                                 .map((productBlockInstanceValue, index) => (
                                     <WfoProductBlockKeyValueRow
                                         fieldValue={productBlockInstanceValue}
-                                        isFirstBlock={isFirstBlock(index)}
                                         key={index}
                                     />
                                 ))}
@@ -207,41 +187,26 @@ export const WfoSubscriptionProductBlock = ({
 // Todo: move to a separate file
 export type WfoProductBlockKeyValueRowProps = {
     fieldValue: FieldValue;
-    isFirstBlock: boolean;
 };
 
 export const WfoProductBlockKeyValueRow: FC<
     WfoProductBlockKeyValueRowProps
-> = ({ fieldValue, isFirstBlock }) => {
+> = ({ fieldValue }) => {
     const {
-        productBlockFirstLeftColStyle,
         productBlockLeftColStyle,
-        productBlockFirstRightColStyle,
         productBlockRightColStyle,
+        productBlockRowStyle,
     } = useWithOrchestratorTheme(getStyles);
     const { valueOverride } = useValueOverride();
 
     const { field, value } = fieldValue;
 
-    // Todo css can probably be simplified without using TS (pseudo class first child)
     return (
-        <tr>
-            <td
-                css={
-                    isFirstBlock
-                        ? productBlockFirstLeftColStyle
-                        : productBlockLeftColStyle
-                }
-            >
+        <tr css={productBlockRowStyle}>
+            <td css={productBlockLeftColStyle}>
                 <b>{camelToHuman(field)}</b>
             </td>
-            <td
-                css={
-                    isFirstBlock
-                        ? productBlockFirstRightColStyle
-                        : productBlockRightColStyle
-                }
-            >
+            <td css={productBlockRightColStyle}>
                 {valueOverride?.(fieldValue) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
@@ -249,24 +214,6 @@ export const WfoProductBlockKeyValueRow: FC<
         </tr>
     );
 };
-
-// export type WfoOverridableValueProps = {
-//     // input is needed to
-//
-//     children: ReactNode;
-// };
-//
-// export const WfoOverridableValue: FC<WfoOverridableValueProps> = ({
-//     children,
-// }): ReactNode => {
-//     const { overrideValueRender } = useOverrideValueRender();
-//
-//     if (!overrideValueRender) {
-//         return <>{children}</>;
-//     }
-//
-//     return overrideValueRender('1', '2') ?? <>{children}</>;
-// };
 
 // Todo: move to a separate file
 export type WfoProductBlockValueProps = {

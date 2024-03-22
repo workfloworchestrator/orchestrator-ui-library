@@ -43,50 +43,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         border: 0,
     });
 
-    const productBlockIconStyle = css({
-        width: 45,
-        height: 45,
-        backgroundColor: 'rgb(193,221,241,1)',
-        paddingTop: 13,
-        paddingLeft: 15,
-        borderRadius: 7,
-    });
-
-    const productBlockPanelStyle = css({
-        backgroundColor: theme.colors.lightestShade,
-    });
-
-    const productBlockLeftCol = {
-        verticalAlign: 'top',
-        width: 250,
-        paddingLeft: 0,
-        paddingTop: 10,
-        paddingBottom: 10,
-        borderBottom: `solid 1px ${theme.colors.lightShade}`,
-    };
-
-    const productBlockLeftColStyle = css({ ...productBlockLeftCol });
-
-    const productBlockFirstLeftColStyle = css({
-        borderTop: `solid 1px ${theme.colors.lightShade}`,
-        ...productBlockLeftCol,
-    });
-
-    const productBlockRightCol = {
-        verticalAlign: 'top',
-        paddingLeft: 0,
-        paddingTop: 10,
-        paddingBottom: 10,
-        borderBottom: `solid 1px ${theme.colors.lightShade}`,
-    };
-
-    const productBlockRightColStyle = css({ ...productBlockRightCol });
-
-    const productBlockFirstRightColStyle = css({
-        borderTop: `solid 1px ${theme.colors.lightShade}`,
-        ...productBlockRightCol,
-    });
-
     return {
         contentCellStyle,
         headerCellStyle,
@@ -96,11 +52,5 @@ export const getStyles = (theme: EuiThemeComputed) => {
         emptyCellStyle,
         lastContentCellStyle,
         lastHeaderCellStyle,
-        productBlockIconStyle,
-        productBlockPanelStyle,
-        productBlockLeftColStyle,
-        productBlockFirstLeftColStyle,
-        productBlockRightColStyle,
-        productBlockFirstRightColStyle,
     };
 };
