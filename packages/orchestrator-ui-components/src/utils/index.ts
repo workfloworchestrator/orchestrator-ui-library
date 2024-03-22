@@ -8,3 +8,4 @@ export * from './strings';
 export * from './getProductNamesFromProcess';
 export * from './getQueryVariablesForExport';
 export * from './onlyUnique';
+export * from './pagedResultFlattener';

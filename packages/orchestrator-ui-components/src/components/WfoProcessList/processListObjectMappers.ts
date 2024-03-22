@@ -1,7 +1,8 @@
 import { ProcessListResponse } from '@/rtk';
-import { GraphQLSort, GraphqlFilter, Process } from '@/types';
+import { GraphQLSort, GraphqlFilter, Process, Subscription } from '@/types';
+import { pagedResultFlattener } from '@/utils';
 
-import { ProcessListItem } from './WfoProcessesList';
+import { ProcessListExportItem, ProcessListItem } from './WfoProcessesList';
 
 export const mapGraphQlProcessListResultToPageInfo = (
     processesResponse: ProcessListResponse,
@@ -48,7 +49,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (
 
 export const mapGraphQlProcessListExportResultToProcessListItems = (
     processesResponse: ProcessListResponse,
-): ProcessListItem[] =>
+): ProcessListExportItem[] =>
     processesResponse.processes.map((process) => {
         const {
             workflowName,
@@ -77,7 +78,9 @@ export const mapGraphQlProcessListExportResultToProcessListItems = (
             isTask,
             startedAt: new Date(startedAt),
             lastModifiedAt: new Date(lastModifiedAt),
-            subscriptions,
+            subscriptions: pagedResultFlattener<
+                Pick<Subscription, 'subscriptionId' | 'description'>
+            >(subscriptions, ['subscriptionId', 'description']),
             productName: product?.name,
             productTag: product?.tag,
             customer: customer.fullname,

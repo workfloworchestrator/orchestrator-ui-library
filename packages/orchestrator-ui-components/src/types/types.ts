@@ -357,12 +357,12 @@ export type StartComboBoxOption = {
     label: string;
 };
 
-interface GraphQlResultPage<T> {
+export interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
 }
 
-interface GraphQlSinglePage<T> {
+export interface GraphQlSinglePage<T> {
     page: T[];
 }
 
