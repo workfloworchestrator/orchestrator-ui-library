@@ -26,12 +26,14 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
+import { ProductsResponse } from '@/rtk';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
+    resultFlattener,
 } from '@/utils';
 import {
     csvDownloadHandler,
@@ -49,6 +51,14 @@ const PRODUCT_FIELD_STATUS: keyof ProductDefinition = 'status';
 const PRODUCT_FIELD_PRODUCT_BLOCKS: keyof ProductDefinition = 'productBlocks';
 const PRODUCT_FIELD_FIXED_INPUTS: keyof ProductDefinition = 'fixedInputs';
 const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
+
+type ProductDefinitionExportItem = Omit<
+    ProductDefinition,
+    'fixedInputs' | 'productBlocks'
+> & {
+    fixedInputs: string;
+    productBlocks: string;
+};
 
 export const WfoProductsPage = () => {
     const t = useTranslations('metadata.products');
@@ -197,6 +207,20 @@ export const WfoProductsPage = () => {
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
+    const mapToExportItems = (
+        productsResponse: ProductsResponse,
+    ): ProductDefinitionExportItem[] => {
+        const { products } = productsResponse;
+        return products.map((product) => ({
+            ...product,
+            fixedInputs: resultFlattener(product.fixedInputs, [
+                'name',
+                'value',
+            ]),
+            productBlocks: resultFlattener(product.productBlocks, ['name']),
+        }));
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
@@ -222,9 +246,12 @@ export const WfoProductsPage = () => {
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
-                onExportData={csvDownloadHandler(
+                onExportData={csvDownloadHandler<
+                    ProductsResponse,
+                    ProductDefinitionExportItem
+                >(
                     getProductsForExport,
-                    (data) => data?.products ?? [],
+                    mapToExportItems,
                     (data) => data?.pageInfo || {},
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Products'),

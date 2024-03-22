@@ -28,6 +28,7 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
+import type { ProductBlocksResponse } from '@/rtk';
 import {
     BadgeType,
     GraphqlQueryVariables,
@@ -40,6 +41,7 @@ import {
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
+    resultFlattener,
 } from '@/utils';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
@@ -58,6 +60,14 @@ const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
 const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
     'dependsOn';
+
+type ProductBlockDefinitionExportItem = Omit<
+    ProductBlockDefinition,
+    'resourceTypes' | 'dependsOn'
+> & {
+    resourceTypes: string;
+    dependsOn: string;
+};
 
 export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
@@ -218,6 +228,20 @@ export const WfoProductBlocksPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
+    const mapToExportItems = (
+        productBlocksResponse: ProductBlocksResponse,
+    ): ProductBlockDefinitionExportItem[] => {
+        const { productBlocks } = productBlocksResponse;
+        return productBlocks.map((productBlock) => ({
+            ...productBlock,
+            resourceTypes: resultFlattener(productBlock.resourceTypes, [
+                'resourceType',
+                'description',
+            ]),
+            dependsOn: resultFlattener(productBlock.dependsOn, ['name']),
+        }));
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
@@ -245,9 +269,12 @@ export const WfoProductBlocksPage = () => {
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
                 }
-                onExportData={csvDownloadHandler(
+                onExportData={csvDownloadHandler<
+                    ProductBlocksResponse,
+                    ProductBlockDefinitionExportItem
+                >(
                     getProductBlocksForExport,
-                    (data) => data.productBlocks,
+                    mapToExportItems,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('ProductBlocks'),
