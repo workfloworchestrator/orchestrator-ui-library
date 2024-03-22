@@ -16,7 +16,7 @@ import {
 } from '@elastic/eui';
 
 import { PATH_SUBSCRIPTIONS } from '@/components';
-import { useOverrideValueRender } from '@/contexts';
+import { useValueOverride } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
 import { camelToHuman } from '@/utils';
@@ -219,10 +219,11 @@ export const WfoProductBlockKeyValueRow: FC<
         productBlockFirstRightColStyle,
         productBlockRightColStyle,
     } = useWithOrchestratorTheme(getStyles);
-    const { overrideValueRender } = useOverrideValueRender();
+    const { valueOverride } = useValueOverride();
 
     const { field, value } = fieldValue;
 
+    // Todo css can probably be simplified without using TS (pseudo class first child)
     return (
         <tr>
             <td
@@ -241,13 +242,31 @@ export const WfoProductBlockKeyValueRow: FC<
                         : productBlockRightColStyle
                 }
             >
-                {overrideValueRender?.(field, value) ?? (
+                {valueOverride?.(fieldValue) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
             </td>
         </tr>
     );
 };
+
+// export type WfoOverridableValueProps = {
+//     // input is needed to
+//
+//     children: ReactNode;
+// };
+//
+// export const WfoOverridableValue: FC<WfoOverridableValueProps> = ({
+//     children,
+// }): ReactNode => {
+//     const { overrideValueRender } = useOverrideValueRender();
+//
+//     if (!overrideValueRender) {
+//         return <>{children}</>;
+//     }
+//
+//     return overrideValueRender('1', '2') ?? <>{children}</>;
+// };
 
 // Todo: move to a separate file
 export type WfoProductBlockValueProps = {
