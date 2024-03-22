@@ -24,7 +24,7 @@ describe('resultFlattener', () => {
         ];
         const fields: Array<keyof TestItem> = ['name', 'age'];
         const result = resultFlattener<TestItem>(results, fields);
-        expect(result).toBe('John, 25 - Jane, 30 - Bob, 40');
+        expect(result).toBe('John: 25 - Jane: 30 - Bob: 40');
     });
 
     it('returns a flattened string with selected fields only', () => {
@@ -43,6 +43,6 @@ describe('resultFlattener', () => {
 
         const result = resultFlattener(results, fields);
 
-        expect(result).toBe('John, New York - Jane, London - Bob, Paris');
+        expect(result).toBe('John: New York - Jane: London - Bob: Paris');
     });
 });

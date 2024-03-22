@@ -16,7 +16,7 @@ export const resultFlattener = <T>(
         const resultFields = fields.reduce((accumulator, field, index) => {
             return (
                 accumulator +
-                `${result[field]}${index !== fields.length - 1 ? ', ' : ''}`
+                `${result[field]}${index !== fields.length - 1 ? ': ' : ''}`
             );
         }, '');
 
