@@ -16,9 +16,17 @@ const getWebSocket = async (url: string) => {
     return new WebSocket(url, token);
 };
 
-const PING_INTERVAL_MS = 5000;
-const DEBOUNCE_CLOSE_INTERVAL_MS = 10000;
+const PING_INTERVAL_MS = 45000; // Recommended values are between 30 and 60 seconds
+const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
 
+type WebSocketMessage = {
+    name: MessageTypes;
+    value: string;
+};
+
+enum MessageTypes {
+    invalidateCache = 'invalidateCache',
+}
 /*
  * Websocket handling as recommended by RTK QUery see: https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
  * The websocket is opened after the cacheDataLoaded promise is resolved, and closed after the cacheEntryRemoved promise is resolved maintaining
@@ -70,7 +78,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 // Send a ping message every to the websocket server to keep the connection alive
                 const pingInterval = setInterval(() => {
-                    webSocket.send('ping');
+                    webSocket.send('__ping__');
                 }, PING_INTERVAL_MS);
 
                 const debounceCloseWebSocket = debounce(() => {
@@ -82,30 +90,41 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 webSocket.addEventListener(
                     'message',
                     (message: MessageEvent<string>) => {
-                        const tagOrPong = message.data.trim();
+                        console.log('message', message);
+                        const data = message.data;
 
-                        if (tagOrPong === 'pong') {
+                        if (data === '__pong__') {
                             // Reset the debounced every time a 'pong' message is received
                             debounceCloseWebSocket();
                             return;
                         }
+                        const messageData = JSON.parse(
+                            data,
+                        ) as WebSocketMessage;
 
-                        const tagToInvalidate = tagOrPong as CacheTags;
-                        const validCacheTags = Object.values(CacheTags);
+                        console.log('message', message);
+                        console.log('messageData', messageData);
 
-                        if (
-                            tagToInvalidate &&
-                            validCacheTags.includes(tagToInvalidate)
-                        ) {
-                            const cacheInvalidationAction =
-                                orchestratorApi.util.invalidateTags([
-                                    tagToInvalidate,
-                                ]);
-                            dispatch(cacheInvalidationAction);
-                        } else {
-                            console.error(
-                                `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
-                            );
+                        if (messageData.name === MessageTypes.invalidateCache) {
+                            console.log('Invalidating cache entry');
+                            const validCacheTags = Object.values(CacheTags);
+                            const tagToInvalidate =
+                                messageData.value as CacheTags;
+
+                            if (
+                                tagToInvalidate &&
+                                validCacheTags.includes(tagToInvalidate)
+                            ) {
+                                const cacheInvalidationAction =
+                                    orchestratorApi.util.invalidateTags([
+                                        tagToInvalidate,
+                                    ]);
+                                dispatch(cacheInvalidationAction);
+                            } else {
+                                console.error(
+                                    `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
+                                );
+                            }
                         }
                     },
                 );
