@@ -24,7 +24,11 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetWorkflowsQuery, useLazyGetWorkflowsQuery } from '@/rtk';
+import {
+    WorkflowsResponse,
+    useGetWorkflowsQuery,
+    useLazyGetWorkflowsQuery,
+} from '@/rtk';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -32,6 +36,7 @@ import {
     onlyUnique,
     parseDateToLocaleDateTimeString,
     parseIsoString,
+    resultFlattener,
 } from '@/utils';
 import {
     csvDownloadHandler,
@@ -50,6 +55,10 @@ export type WorkflowListItem = Pick<
     'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
+};
+
+type WorkflowListExportItem = Omit<WorkflowDefinition, 'products'> & {
+    productTags: string;
 };
 
 export const WfoWorkflowsPage = () => {
@@ -184,6 +193,16 @@ export const WfoWorkflowsPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
+    const mapToExportItems = (
+        workflowsResponse: WorkflowsResponse,
+    ): WorkflowListExportItem[] => {
+        const { workflows } = workflowsResponse;
+        return workflows.map((workflow) => ({
+            ...workflow,
+            productTags: resultFlattener(workflow.products, ['tag', 'name']),
+        }));
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<WorkflowListItem>
@@ -217,7 +236,7 @@ export const WfoWorkflowsPage = () => {
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getWorkflowsForExport,
-                    (data) => data.workflows,
+                    mapToExportItems,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Workflows'),
