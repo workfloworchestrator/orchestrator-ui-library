@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -15,11 +15,9 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS } from '@/components';
-import { useValueOverride } from '@/contexts';
+import { PATH_SUBSCRIPTIONS, WfoProductBlockKeyValueRow } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
-import { camelToHuman } from '@/utils';
 
 import { getStyles } from './styles';
 import {
@@ -183,48 +181,3 @@ export const WfoSubscriptionProductBlock = ({
         </>
     );
 };
-
-// Todo: move to a separate file
-export type WfoProductBlockKeyValueRowProps = {
-    fieldValue: FieldValue;
-};
-
-export const WfoProductBlockKeyValueRow: FC<
-    WfoProductBlockKeyValueRowProps
-> = ({ fieldValue }) => {
-    const {
-        productBlockLeftColStyle,
-        productBlockRightColStyle,
-        productBlockRowStyle,
-    } = useWithOrchestratorTheme(getStyles);
-    const { valueOverride } = useValueOverride();
-
-    const { field, value } = fieldValue;
-
-    return (
-        <tr css={productBlockRowStyle}>
-            <td css={productBlockLeftColStyle}>
-                <b>{camelToHuman(field)}</b>
-            </td>
-            <td css={productBlockRightColStyle}>
-                {valueOverride?.(fieldValue) ?? (
-                    <WfoProductBlockValue value={value} />
-                )}
-            </td>
-        </tr>
-    );
-};
-
-// Todo: move to a separate file
-export type WfoProductBlockValueProps = {
-    value: FieldValue['value'];
-};
-
-export const WfoProductBlockValue: FC<WfoProductBlockValueProps> = ({
-    value,
-}) =>
-    typeof value === 'boolean' ? (
-        <EuiBadge>{value.toString()}</EuiBadge>
-    ) : (
-        <>{value}</>
-    );
