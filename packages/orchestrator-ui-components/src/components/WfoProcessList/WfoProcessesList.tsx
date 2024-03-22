@@ -67,6 +67,10 @@ export type ProcessListItem = Pick<
     customerAbbreviation: string;
 };
 
+export type ProcessListExportItem = Omit<ProcessListItem, 'subscriptions'> & {
+    subscriptions: string;
+};
+
 export type WfoProcessesListProps = {
     alwaysOnFilters?: FilterQuery<ProcessListItem>[];
     defaultHiddenColumns: TableColumnKeys<ProcessListItem> | undefined;
@@ -264,7 +268,7 @@ export const WfoProcessesList = ({
             onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
             onExportData={csvDownloadHandler<
                 ProcessListResponse,
-                ProcessListItem
+                ProcessListExportItem
             >(
                 getProcessListForExport,
                 mapGraphQlProcessListExportResultToProcessListItems,
