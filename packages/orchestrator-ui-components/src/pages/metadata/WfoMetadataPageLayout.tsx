@@ -17,7 +17,7 @@ export interface MetaDataTab {
     path: string;
 }
 
-const metaDataTabs: MetaDataTab[] = [
+export const metaDataTabs: MetaDataTab[] = [
     {
         id: 1,
         translationKey: 'products',
@@ -45,14 +45,14 @@ export const WfoMetadataPageLayout = ({
     tabs = metaDataTabs,
 }: MetadataLayoutProps) => {
     const router = useRouter();
-    const t = useTranslations('metadata.tabs');
+    const t = useTranslations('metadata');
     const currentPath = router.pathname;
 
     return (
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle="Metadata" />
+            <EuiPageHeader pageTitle={t('title')} />
             <EuiSpacer size="m" />
             <EuiTabs>
                 {tabs.map(({ id, translationKey: name, path }) => (
@@ -61,7 +61,7 @@ export const WfoMetadataPageLayout = ({
                         isSelected={path === currentPath}
                         onClick={() => router.push(path)}
                     >
-                        {t(name)}
+                        {t(`tabs.${name}`)}
                     </EuiTab>
                 ))}
             </EuiTabs>
