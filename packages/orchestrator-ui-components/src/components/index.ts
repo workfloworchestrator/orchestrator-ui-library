@@ -26,3 +26,4 @@ export * from './WfoErrorBoundary';
 export * from './WfoWorkflowSteps';
 export * from './WfoNoResults';
 export * from './WfoStartButton';
+export * from './WfoSubscriptionsList';
