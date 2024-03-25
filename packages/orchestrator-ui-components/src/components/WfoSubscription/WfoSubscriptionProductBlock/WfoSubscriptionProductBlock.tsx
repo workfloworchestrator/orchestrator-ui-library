@@ -22,11 +22,11 @@ import {
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
 
-import { getStyles } from './styles';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
 } from '../utils';
+import { getStyles } from './styles';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
@@ -109,14 +109,10 @@ export const WfoSubscriptionProductBlock = ({
                             {!hideDetails && (
                                 <>
                                     <tr key={-3} css={rowStyle}>
-                                        <td
-                                            css={leftColumnStyle}
-                                        >
+                                        <td css={leftColumnStyle}>
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
-                                        <td
-                                            css={rightColumnStyle}
-                                        >
+                                        <td css={rightColumnStyle}>
                                             {subscriptionInstanceId}
                                         </td>
                                     </tr>
