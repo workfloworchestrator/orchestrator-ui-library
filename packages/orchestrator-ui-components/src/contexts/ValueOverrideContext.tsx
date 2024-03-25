@@ -36,7 +36,7 @@ export const ValueOverrideProvider: FC<ValueOverrideProviderProps> = ({
         const renderFunctionForField: ValueOverrideFunction | undefined =
             valueOverrideConfiguration[fieldValue.field];
 
-        // This check is needed TS does not infer the type correctly
+        // This check is needed because TS does not infer the type correctly
         if (renderFunctionForField) {
             return renderFunctionForField(fieldValue);
         }
