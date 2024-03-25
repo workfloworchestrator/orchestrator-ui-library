@@ -126,6 +126,8 @@ export const WfoSubscriptionGeneral = ({
         ];
     };
 
+    const hasMetadata = Object.entries(subscriptionDetail.metadata).length > 0;
+
     return (
         <EuiFlexGrid direction={'row'}>
             <>
@@ -135,12 +137,14 @@ export const WfoSubscriptionGeneral = ({
                         keyValues={getSubscriptionDetailBlockData()}
                     />
                 </EuiFlexItem>
-                <EuiFlexItem>
-                    <SubscriptionKeyValueBlock
-                        title={t('metadata')}
-                        keyValues={getMetadataBlockData()}
-                    />
-                </EuiFlexItem>
+                {hasMetadata && (
+                    <EuiFlexItem>
+                        <SubscriptionKeyValueBlock
+                            title={t('metadata')}
+                            keyValues={getMetadataBlockData()}
+                        />
+                    </EuiFlexItem>
+                )}
                 <EuiFlexItem>
                     <SubscriptionKeyValueBlock
                         title={t('blockTitleFixedInputs')}
