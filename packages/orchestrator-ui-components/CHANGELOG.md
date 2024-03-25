@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.6.0
+
+### Minor Changes
+
+- bf4698e: 332 Adds subscription metadata to the subscription list page and subscription detail page
+
+### Patch Changes
+
+- e3874e0: Changed overlay icon colour of skipped step in workflow/task
+  Badge style to product name column in metadata table products
+  Some features owner subscription presentation & hide pb-sub-instance-id
+  Changed default table row settings
+- 29c6459: Added external link icon
+
 ## 1.5.0
 
 ### Minor Changes
