@@ -215,10 +215,7 @@ export const WfoResourceTypesPage = () => {
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
                 }
-                onExportData={csvDownloadHandler<
-                    ResourceTypesResponse,
-                    ResourceTypeExportItem
-                >(
+                onExportData={csvDownloadHandler(
                     getResourceTypesForExport,
                     mapToExportItems,
                     (data) => data.pageInfo,

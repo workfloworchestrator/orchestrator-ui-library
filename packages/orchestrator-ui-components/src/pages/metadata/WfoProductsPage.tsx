@@ -248,10 +248,7 @@ export const WfoProductsPage = () => {
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
-                onExportData={csvDownloadHandler<
-                    ProductsResponse,
-                    ProductDefinitionExportItem
-                >(
+                onExportData={csvDownloadHandler(
                     getProductsForExport,
                     mapToExportItems,
                     (data) => data?.pageInfo || {},

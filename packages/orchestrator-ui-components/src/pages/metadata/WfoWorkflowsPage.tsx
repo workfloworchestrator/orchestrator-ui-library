@@ -57,7 +57,7 @@ export type WorkflowListItem = Pick<
     productTags: string[];
 };
 
-type WorkflowListExportItem = Omit<WorkflowDefinition, 'products'> & {
+type WorkflowListExportItem = Omit<WorkflowListItem, 'productTags'> & {
     productTags: string;
 };
 
