@@ -122,6 +122,7 @@
         }
     },
     "metadata": {
+        "title": "Metadata",
         "tabs": {
             "products": "Products",
             "productBlocks": "Product blocks",
@@ -251,6 +252,7 @@
             "tag": "Product tag",
             "startDate": "Start date",
             "endDate": "End date",
+            "metadata": "Metadata",
             "note": "Note",
             "customerFullname": "Customer",
             "customerShortcode": "Customer abbr"
@@ -313,6 +315,7 @@
             "tag": "Tag",
             "created": "Created",
             "endDate": "End date",
+            "metadata": "Metadata",
             "note": "Note",
             "noRelatedSubscriptions": "No related subscriptions found",
             "hideTerminatedRelatedSubscriptions": "Hide terminated subscriptions",

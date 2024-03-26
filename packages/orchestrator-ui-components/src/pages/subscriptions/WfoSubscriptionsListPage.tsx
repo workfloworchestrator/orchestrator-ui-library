@@ -11,12 +11,12 @@ import {
 } from '@/components';
 import { WfoFilterTabs } from '@/components';
 import { StoredTableConfig } from '@/components';
+import type { SubscriptionListItem } from '@/components';
 import {
     WfoSubscriptionListTab,
     WfoSubscriptionsList,
     subscriptionListTabs,
 } from '@/components/WfoSubscriptionsList';
-import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 

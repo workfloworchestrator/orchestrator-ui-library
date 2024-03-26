@@ -28,6 +28,7 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
+import type { ProductBlocksResponse } from '@/rtk';
 import {
     BadgeType,
     GraphqlQueryVariables,
@@ -36,6 +37,7 @@ import {
 } from '@/types';
 import {
     csvDownloadHandler,
+    getConcatenatedResult,
     getCsvFileNameWithDate,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
@@ -58,6 +60,14 @@ const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
     'resourceTypes';
 const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
     'dependsOn';
+
+type ProductBlockDefinitionExportItem = Omit<
+    ProductBlockDefinition,
+    'resourceTypes' | 'dependsOn'
+> & {
+    resourceTypes: string;
+    dependsOn: string;
+};
 
 export const WfoProductBlocksPage = () => {
     const t = useTranslations('metadata.productBlocks');
@@ -218,6 +228,20 @@ export const WfoProductBlocksPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
+    const mapToExportItems = (
+        productBlocksResponse: ProductBlocksResponse,
+    ): ProductBlockDefinitionExportItem[] => {
+        const { productBlocks } = productBlocksResponse;
+        return productBlocks.map((productBlock) => ({
+            ...productBlock,
+            resourceTypes: getConcatenatedResult(productBlock.resourceTypes, [
+                'resourceType',
+                'description',
+            ]),
+            dependsOn: getConcatenatedResult(productBlock.dependsOn, ['name']),
+        }));
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductBlockDefinition>
@@ -247,7 +271,7 @@ export const WfoProductBlocksPage = () => {
                 }
                 onExportData={csvDownloadHandler(
                     getProductBlocksForExport,
-                    (data) => data.productBlocks,
+                    mapToExportItems,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('ProductBlocks'),

@@ -370,12 +370,12 @@ export type StartComboBoxOption = {
     label: string;
 };
 
-interface GraphQlResultPage<T> {
+export interface GraphQlResultPage<T> {
     page: T[];
     pageInfo: GraphQLPageInfo;
 }
 
-interface GraphQlSinglePage<T> {
+export interface GraphQlSinglePage<T> {
     page: T[];
 }
 
@@ -409,6 +409,7 @@ export type Subscription = {
     product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
     productBlockInstances: ProductBlockInstance[];
     customer: Pick<Customer, 'fullname' | 'shortcode'>;
+    metadata: object;
 };
 
 export type SubscriptionSummary = Pick<
@@ -448,6 +449,7 @@ export type SubscriptionDetail = {
     endDate: string;
     startDate: string;
     status: SubscriptionStatus;
+    metadata: object;
     productBlockInstances: ProductBlockInstance[];
 
     customerId?: string | null;

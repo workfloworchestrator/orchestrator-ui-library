@@ -103,17 +103,17 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                             onChangeTab={onSelectedTabChanged}
                         />
 
-                        {selectedTab === SubscriptionDetailTab.GENERAL_TAB && (
-                            <WfoSubscriptionGeneral
-                                subscriptionDetail={subscriptionDetail}
-                            />
-                        )}
                         {selectedTab ===
                             SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB && (
                             <WfoSubscriptionDetailTree
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }
+                            />
+                        )}
+                        {selectedTab === SubscriptionDetailTab.GENERAL_TAB && (
+                            <WfoSubscriptionGeneral
+                                subscriptionDetail={subscriptionDetail}
                             />
                         )}
                         {selectedTab === SubscriptionDetailTab.PROCESSES_TAB &&

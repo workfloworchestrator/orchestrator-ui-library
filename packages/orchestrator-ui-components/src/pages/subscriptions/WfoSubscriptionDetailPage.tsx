@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-import { WfoSubscription } from '../../components';
-import { TreeProvider } from '../../contexts';
+import { WfoSubscription } from '@/components';
+import { TreeProvider } from '@/contexts';
 
 export const WfoSubscriptionDetailPage = () => {
     const router = useRouter();

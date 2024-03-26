@@ -8,8 +8,11 @@ import { Pagination } from '@elastic/eui';
 
 import {
     FilterQuery,
+    PATH_SUBSCRIPTIONS,
     WfoDateTime,
+    WfoInlineJson,
     WfoInsyncIcon,
+    WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
@@ -142,6 +145,13 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             field: 'note',
             name: t('note'),
         },
+        metadata: {
+            field: 'metadata',
+            name: t('metadata'),
+            render: (value) => <WfoInlineJson data={value} />,
+            renderDetails: (value) =>
+                value && <WfoJsonCodeBlock data={value} isBasicStyle />,
+        },
     };
 
     const { sortBy, queryString, pageIndex, pageSize } = dataDisplayParams;
@@ -166,7 +176,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
     if (!sortedColumnId) {
-        router.replace('/subscriptions');
+        router.replace(PATH_SUBSCRIPTIONS);
         return null;
     }
 

@@ -25,14 +25,18 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetResourceTypesQuery, useLazyGetResourceTypesQuery } from '@/rtk';
+import {
+    ResourceTypesResponse,
+    useGetResourceTypesQuery,
+    useLazyGetResourceTypesQuery,
+} from '@/rtk';
 import {
     BadgeType,
     GraphqlQueryVariables,
     ResourceTypeDefinition,
     SortOrder,
 } from '@/types';
-import { getQueryVariablesForExport } from '@/utils';
+import { getConcatenatedResult, getQueryVariablesForExport } from '@/utils';
 import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
@@ -50,6 +54,10 @@ export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
     'description';
 export const RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS: keyof ResourceTypeDefinition =
     'productBlocks';
+
+type ResourceTypeExportItem = Omit<ResourceTypeDefinition, 'productBlocks'> & {
+    productBlocks: string;
+};
 
 export const WfoResourceTypesPage = () => {
     const t = useTranslations('metadata.resourceTypes');
@@ -168,7 +176,18 @@ export const WfoResourceTypesPage = () => {
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
     };
-
+    const mapToExportItems = (
+        resourceTypesResponse: ResourceTypesResponse,
+    ): ResourceTypeExportItem[] => {
+        const { resourceTypes } = resourceTypesResponse;
+        return resourceTypes.map((resourceType) => ({
+            ...resourceType,
+            productBlocks: getConcatenatedResult(resourceType.productBlocks, [
+                'productBlockId',
+                'name',
+            ]),
+        }));
+    };
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ResourceTypeDefinition>
@@ -198,7 +217,7 @@ export const WfoResourceTypesPage = () => {
                 }
                 onExportData={csvDownloadHandler(
                     getResourceTypesForExport,
-                    (data) => data.resourceTypes,
+                    mapToExportItems,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('ResourceTypes'),

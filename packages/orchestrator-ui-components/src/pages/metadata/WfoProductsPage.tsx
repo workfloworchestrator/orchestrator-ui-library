@@ -26,9 +26,11 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
+import { ProductsResponse } from '@/rtk';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getConcatenatedResult,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
@@ -49,6 +51,14 @@ const PRODUCT_FIELD_STATUS: keyof ProductDefinition = 'status';
 const PRODUCT_FIELD_PRODUCT_BLOCKS: keyof ProductDefinition = 'productBlocks';
 const PRODUCT_FIELD_FIXED_INPUTS: keyof ProductDefinition = 'fixedInputs';
 const PRODUCT_FIELD_CREATED_AT: keyof ProductDefinition = 'createdAt';
+
+type ProductDefinitionExportItem = Omit<
+    ProductDefinition,
+    'fixedInputs' | 'productBlocks'
+> & {
+    fixedInputs: string;
+    productBlocks: string;
+};
 
 export const WfoProductsPage = () => {
     const t = useTranslations('metadata.products');
@@ -94,6 +104,11 @@ export const WfoProductsPage = () => {
             field: PRODUCT_FIELD_NAME,
             name: t('name'),
             width: '200',
+            render: (name) => (
+                <WfoProductBlockBadge badgeType={BadgeType.PRODUCT}>
+                    {name}
+                </WfoProductBlockBadge>
+            ),
         },
         tag: {
             field: PRODUCT_FIELD_TAG,
@@ -192,6 +207,22 @@ export const WfoProductsPage = () => {
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
+    const mapToExportItems = (
+        productsResponse: ProductsResponse,
+    ): ProductDefinitionExportItem[] => {
+        const { products } = productsResponse;
+        return products.map((product) => ({
+            ...product,
+            fixedInputs: getConcatenatedResult(product.fixedInputs, [
+                'name',
+                'value',
+            ]),
+            productBlocks: getConcatenatedResult(product.productBlocks, [
+                'name',
+            ]),
+        }));
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<ProductDefinition>
@@ -219,7 +250,7 @@ export const WfoProductsPage = () => {
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getProductsForExport,
-                    (data) => data?.products ?? [],
+                    mapToExportItems,
                     (data) => data?.pageInfo || {},
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Products'),

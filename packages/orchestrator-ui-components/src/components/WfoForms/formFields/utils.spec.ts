@@ -49,6 +49,7 @@ const testSubscriptionDetail: SubscriptionDetail = {
     startDate: '1111-01-01',
     status: SubscriptionStatus.ACTIVE,
     productBlockInstances: testProductBlockInstances,
+    metadata: {},
     processes: {
         page: [
             {

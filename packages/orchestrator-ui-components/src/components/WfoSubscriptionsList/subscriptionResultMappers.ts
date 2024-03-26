@@ -12,6 +12,7 @@ export type SubscriptionListItem = Pick<
     tag: string | null;
     customerFullname: string;
     customerShortcode: string;
+    metadata: object | null;
 };
 
 export const mapGraphQlSubscriptionsResultToPageInfo = (
@@ -32,6 +33,7 @@ export const mapGraphQlSubscriptionsResultToSubscriptionListItems = (
             subscriptionId,
             note,
             customer,
+            metadata,
         } = subscription;
 
         const { name: productName, tag } = product;
@@ -50,5 +52,6 @@ export const mapGraphQlSubscriptionsResultToSubscriptionListItems = (
             tag,
             customerFullname,
             customerShortcode,
+            metadata: Object.keys(metadata).length > 0 ? metadata : null,
         };
     });
