@@ -5,34 +5,31 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 import type { Pagination } from '@elastic/eui/src/components';
 
+import { WfoTableWithFilter, WfoWorkflowTargetBadge } from '@/components';
 import type { WfoDataSorting, WfoTableColumns } from '@/components';
+import { StoredTableConfig } from '@/components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
-    METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
-    StoredTableConfig,
-    WfoDateTime,
+    METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     WfoProductBlockBadge,
-    WfoTableWithFilter,
-    WfoWorkflowTargetBadge,
+} from '@/components';
+import {
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import {
     useDataDisplayParams,
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import {
-    WorkflowsResponse,
-    useGetWorkflowsQuery,
-    useLazyGetWorkflowsQuery,
-} from '@/rtk';
-import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
+import { useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
+import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
-    getConcatenatedResult,
     getQueryVariablesForExport,
     onlyUnique,
     parseDateToLocaleDateTimeString,
@@ -43,34 +40,29 @@ import {
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
-    graphQlWorkflowListMapper,
-    mapWorkflowDefinitionToWorkflowListItem,
-} from './workflowListObjectMapper';
+    graphQlTaskListMapper,
+    mapTaskDefinitionToTaskListItem,
+} from './taskListObjectMapper';
 
-export type WorkflowListItem = Pick<
-    WorkflowDefinition,
+export type TaskListItem = Pick<
+    TaskDefinition,
     'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
 };
 
-type WorkflowListExportItem = Omit<WorkflowListItem, 'productTags'> & {
-    productTags: string;
-};
-
-export const WfoWorkflowsPage = () => {
-    const t = useTranslations('metadata.workflows');
+export const WfoTasksPage = () => {
+    const t = useTranslations('metadata.tasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
 
     const [tableDefaults, setTableDefaults] =
-        useState<StoredTableConfig<WorkflowListItem>>();
+        useState<StoredTableConfig<TaskListItem>>();
 
-    const getStoredTableConfig = useStoredTableConfig<WorkflowListItem>(
-        METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
+    const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
+        METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     );
 
     useEffect(() => {
@@ -82,7 +74,7 @@ export const WfoWorkflowsPage = () => {
     }, [getStoredTableConfig]);
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<WorkflowListItem>({
+        useDataDisplayParams<TaskListItem>({
             // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
             // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
             // the query to wait for the values to be available
@@ -94,13 +86,13 @@ export const WfoWorkflowsPage = () => {
             },
         });
 
-    const tableColumns: WfoTableColumns<WorkflowListItem> = {
+    const tableColumns: WfoTableColumns<TaskListItem> = {
         name: {
             field: 'name',
             name: t('name'),
             width: '20%',
             render: (name) => (
-                <WfoProductBlockBadge badgeType={BadgeType.WORKFLOW}>
+                <WfoProductBlockBadge badgeType={BadgeType.TASK}>
                     {name}
                 </WfoProductBlockBadge>
             ),
@@ -161,26 +153,25 @@ export const WfoWorkflowsPage = () => {
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-    const workflowListQueryVariables: GraphqlQueryVariables<WorkflowDefinition> =
-        {
-            first: pageSize,
-            after: pageIndex * pageSize,
-            sortBy: graphQlWorkflowListMapper(sortBy),
-            query: queryString || undefined,
-        };
-    const { data, isFetching, isError } = useGetWorkflowsQuery(
-        workflowListQueryVariables,
+    const taskListQueryVariables: GraphqlQueryVariables<TaskDefinition> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy: graphQlTaskListMapper(sortBy),
+        query: queryString || undefined,
+    };
+    const { data, isFetching, isError } = useGetTasksQuery(
+        taskListQueryVariables,
     );
 
-    const [getWorkflowsTrigger, { isFetching: isFetchingCsv }] =
-        useLazyGetWorkflowsQuery();
+    const [getTasksTrigger, { isFetching: isFetchingCsv }] =
+        useLazyGetTasksQuery();
 
-    const getWorkflowsForExport = () =>
-        getWorkflowsTrigger(
-            getQueryVariablesForExport(workflowListQueryVariables),
+    const getTasksForExport = () =>
+        getTasksTrigger(
+            getQueryVariablesForExport(taskListQueryVariables),
         ).unwrap();
 
-    const dataSorting: WfoDataSorting<WorkflowListItem> = {
+    const dataSorting: WfoDataSorting<TaskListItem> = {
         field: sortBy?.field ?? 'name',
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
@@ -194,29 +185,10 @@ export const WfoWorkflowsPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
-    const mapToExportItems = (
-        workflowsResponse: WorkflowsResponse,
-    ): WorkflowListExportItem[] => {
-        const { workflows } = workflowsResponse;
-        return workflows.map((workflow) => ({
-            ...workflow,
-            productTags: getConcatenatedResult(workflow.products, [
-                'tag',
-                'name',
-            ]),
-        }));
-    };
-
     return (
         <WfoMetadataPageLayout>
-            <WfoTableWithFilter<WorkflowListItem>
-                data={
-                    data
-                        ? mapWorkflowDefinitionToWorkflowListItem(
-                              data.workflows,
-                          )
-                        : []
-                }
+            <WfoTableWithFilter<TaskListItem>
+                data={data ? mapTaskDefinitionToTaskListItem(data.tasks) : []}
                 tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
@@ -224,26 +196,26 @@ export const WfoWorkflowsPage = () => {
                 )}
                 dataSorting={dataSorting}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
+                onUpdateDataSort={getDataSortHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdatePage={getPageChangeHandler<WorkflowListItem>(
+                onUpdatePage={getPageChangeHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
-                onUpdateQueryString={getQueryStringHandler<WorkflowListItem>(
+                onUpdateQueryString={getQueryStringHandler<TaskListItem>(
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
                 hasError={isError}
                 queryString={queryString}
-                localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
+                localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
-                    getWorkflowsForExport,
-                    mapToExportItems,
+                    getTasksForExport,
+                    (data) => data.tasks,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
-                    getCsvFileNameWithDate('Workflows'),
+                    getCsvFileNameWithDate('Tasks'),
                     showToastMessage,
                     tError,
                 )}

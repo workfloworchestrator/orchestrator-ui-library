@@ -34,9 +34,14 @@ export const metaDataTabs: MetaDataTab[] = [
         path: '/metadata/resource-types',
     },
     {
-        id: 5,
+        id: 4,
         translationKey: 'workflows',
         path: '/metadata/workflows',
+    },
+    {
+        id: 5,
+        translationKey: 'tasks',
+        path: '/metadata/tasks',
     },
 ];
 
