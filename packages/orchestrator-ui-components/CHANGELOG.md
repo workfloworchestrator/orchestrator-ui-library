@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.6.1
+
+### Patch Changes
+
+- 3cfd9f5: Fixes error in exported values
+- 5807458: 332 Subscription detail page: hides metadata section when there is no data available
+
 ## 1.6.0
 
 ### Minor Changes
