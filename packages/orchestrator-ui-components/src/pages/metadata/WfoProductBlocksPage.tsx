@@ -269,10 +269,7 @@ export const WfoProductBlocksPage = () => {
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
                 }
-                onExportData={csvDownloadHandler<
-                    ProductBlocksResponse,
-                    ProductBlockDefinitionExportItem
-                >(
+                onExportData={csvDownloadHandler(
                     getProductBlocksForExport,
                     mapToExportItems,
                     (data) => data.pageInfo,
