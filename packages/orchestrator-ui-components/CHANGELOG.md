@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.6.2
+
+### Patch Changes
+
+- 0bf6f82: New metadata taskpage with rtk
+
 ## 1.6.1
 
 ### Patch Changes
