@@ -67,7 +67,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('workflows'),
             id: '3',
             isSelected: router.pathname === PATH_WORKFLOWS,
-            href: PATH_WORKFLOWS,
             onClick: (e) => {
                 e.preventDefault();
                 router.push(PATH_WORKFLOWS);
@@ -77,7 +76,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('subscriptions'),
             id: '4',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
-            href: PATH_SUBSCRIPTIONS,
             onClick: (e) => {
                 e.preventDefault();
                 router.push(PATH_SUBSCRIPTIONS);
@@ -86,7 +84,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             name: t('metadata'),
             id: '5',
-            href: PATH_METADATA,
             onClick: () => {
                 router.push(PATH_METADATA);
             },
@@ -148,7 +145,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 e.preventDefault();
                 router.push(PATH_TASKS);
             },
-            href: PATH_TASKS,
         },
         {
             name: t('settings'),
@@ -158,7 +154,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 e.preventDefault();
                 router.push(PATH_SETTINGS);
             },
-            href: PATH_SETTINGS,
         },
     ];
 
