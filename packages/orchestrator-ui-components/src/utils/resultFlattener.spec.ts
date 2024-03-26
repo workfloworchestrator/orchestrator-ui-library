@@ -1,11 +1,14 @@
-import { pagedResultFlattener, resultFlattener } from './resultFlattener';
+import {
+    getConcatenatedPagedResult,
+    getConcatenatedResult,
+} from './resultFlattener';
 
 describe('pagedResultFlattener', () => {
     it('returns an empty string when the paged result is empty', () => {
         const pagedResult = { page: [] };
         const fields = ['name', 'age'];
 
-        const result = pagedResultFlattener(pagedResult, fields);
+        const result = getConcatenatedPagedResult(pagedResult, fields);
 
         expect(result).toBe('');
     });
@@ -23,7 +26,7 @@ describe('resultFlattener', () => {
             { name: 'Bob', age: 40 },
         ];
         const fields: Array<keyof TestItem> = ['name', 'age'];
-        const result = resultFlattener<TestItem>(results, fields);
+        const result = getConcatenatedResult<TestItem>(results, fields);
         expect(result).toBe('John: 25 - Jane: 30 - Bob: 40');
     });
 
@@ -41,7 +44,7 @@ describe('resultFlattener', () => {
 
         const fields: Array<keyof TestItem> = ['name', 'city'];
 
-        const result = resultFlattener(results, fields);
+        const result = getConcatenatedResult(results, fields);
 
         expect(result).toBe('John: New York - Jane: London - Bob: Paris');
     });

@@ -36,7 +36,7 @@ import {
     ResourceTypeDefinition,
     SortOrder,
 } from '@/types';
-import { getQueryVariablesForExport, resultFlattener } from '@/utils';
+import { getConcatenatedResult, getQueryVariablesForExport } from '@/utils';
 import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
@@ -182,7 +182,7 @@ export const WfoResourceTypesPage = () => {
         const { resourceTypes } = resourceTypesResponse;
         return resourceTypes.map((resourceType) => ({
             ...resourceType,
-            productBlocks: resultFlattener(resourceType.productBlocks, [
+            productBlocks: getConcatenatedResult(resourceType.productBlocks, [
                 'productBlockId',
                 'name',
             ]),

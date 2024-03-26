@@ -32,11 +32,11 @@ import {
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getConcatenatedResult,
     getQueryVariablesForExport,
     onlyUnique,
     parseDateToLocaleDateTimeString,
     parseIsoString,
-    resultFlattener,
 } from '@/utils';
 import {
     csvDownloadHandler,
@@ -199,7 +199,10 @@ export const WfoWorkflowsPage = () => {
         const { workflows } = workflowsResponse;
         return workflows.map((workflow) => ({
             ...workflow,
-            productTags: resultFlattener(workflow.products, ['tag', 'name']),
+            productTags: getConcatenatedResult(workflow.products, [
+                'tag',
+                'name',
+            ]),
         }));
     };
 

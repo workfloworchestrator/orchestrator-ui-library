@@ -1,14 +1,14 @@
 import { GraphQlSinglePage } from '@/types';
 
-export const pagedResultFlattener = <T>(
+export const getConcatenatedPagedResult = <T>(
     pagedResult: GraphQlSinglePage<T>,
     fields: Array<keyof T>,
 ): string => {
     const results = pagedResult.page || [];
-    return resultFlattener(results, fields);
+    return getConcatenatedResult(results, fields);
 };
 
-export const resultFlattener = <T>(
+export const getConcatenatedResult = <T>(
     results: T[],
     fields: Array<keyof T>,
 ): string => {

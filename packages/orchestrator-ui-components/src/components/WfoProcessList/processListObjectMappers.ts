@@ -1,6 +1,6 @@
 import { ProcessListResponse } from '@/rtk';
 import { GraphQLSort, GraphqlFilter, Process, Subscription } from '@/types';
-import { pagedResultFlattener } from '@/utils';
+import { getConcatenatedPagedResult } from '@/utils';
 
 import { ProcessListExportItem, ProcessListItem } from './WfoProcessesList';
 
@@ -78,7 +78,7 @@ export const mapGraphQlProcessListExportResultToProcessListItems = (
             isTask,
             startedAt: new Date(startedAt),
             lastModifiedAt: new Date(lastModifiedAt),
-            subscriptions: pagedResultFlattener<
+            subscriptions: getConcatenatedPagedResult<
                 Pick<Subscription, 'subscriptionId' | 'description'>
             >(subscriptions, ['subscriptionId', 'description']),
             productName: product?.name,

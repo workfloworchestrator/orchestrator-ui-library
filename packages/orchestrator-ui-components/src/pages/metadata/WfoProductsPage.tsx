@@ -30,10 +30,10 @@ import { ProductsResponse } from '@/rtk';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getConcatenatedResult,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
-    resultFlattener,
 } from '@/utils';
 import {
     csvDownloadHandler,
@@ -213,11 +213,13 @@ export const WfoProductsPage = () => {
         const { products } = productsResponse;
         return products.map((product) => ({
             ...product,
-            fixedInputs: resultFlattener(product.fixedInputs, [
+            fixedInputs: getConcatenatedResult(product.fixedInputs, [
                 'name',
                 'value',
             ]),
-            productBlocks: resultFlattener(product.productBlocks, ['name']),
+            productBlocks: getConcatenatedResult(product.productBlocks, [
+                'name',
+            ]),
         }));
     };
 

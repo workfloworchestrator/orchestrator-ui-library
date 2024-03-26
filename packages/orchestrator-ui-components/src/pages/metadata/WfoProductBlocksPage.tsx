@@ -37,11 +37,11 @@ import {
 } from '@/types';
 import {
     csvDownloadHandler,
+    getConcatenatedResult,
     getCsvFileNameWithDate,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
-    resultFlattener,
 } from '@/utils';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
@@ -234,11 +234,11 @@ export const WfoProductBlocksPage = () => {
         const { productBlocks } = productBlocksResponse;
         return productBlocks.map((productBlock) => ({
             ...productBlock,
-            resourceTypes: resultFlattener(productBlock.resourceTypes, [
+            resourceTypes: getConcatenatedResult(productBlock.resourceTypes, [
                 'resourceType',
                 'description',
             ]),
-            dependsOn: resultFlattener(productBlock.dependsOn, ['name']),
+            dependsOn: getConcatenatedResult(productBlock.dependsOn, ['name']),
         }));
     };
 
