@@ -83,6 +83,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('subscriptions'),
             id: '4',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
+            href: PATH_SUBSCRIPTIONS,
             renderItem: (props) => (
                 <Link className={props.className} href={PATH_SUBSCRIPTIONS}>
                     {t('subscriptions')}
@@ -92,6 +93,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             name: t('metadata'),
             id: '5',
+            href: PATH_METADATA,
             renderItem: (props) => (
                 <Link className={props.className} href={PATH_METADATA}>
                     {t('metadata')}
@@ -102,6 +104,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     name: t('metadataProducts'),
                     id: '5.1',
                     isSelected: router.pathname === PATH_METADATA_PRODUCTS,
+                    href: PATH_METADATA_PRODUCTS,
                     renderItem: (props) => (
                         <Link
                             className={props.className}
@@ -116,6 +119,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     id: '5.2',
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
+                    href: PATH_METADATA_PRODUCT_BLOCKS,
                     renderItem: (props) => (
                         <Link
                             className={props.className}
@@ -128,6 +132,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 {
                     name: t('metadataResourceTypes'),
                     id: '5.3',
+                    href: PATH_METADATA_RESOURCE_TYPES,
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
                     renderItem: (props) => (
@@ -143,6 +148,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     name: t('metadataWorkflows'),
                     id: '5.4',
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
+                    href: PATH_METADATA_WORKFLOWS,
                     renderItem: (props) => (
                         <Link
                             className={props.className}
@@ -156,6 +162,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     name: t('metadataTasks'),
                     id: '5.5',
                     isSelected: router.pathname === PATH_METADATA_TASKS,
+                    href: PATH_METADATA_TASKS,
                     renderItem: (props) => (
                         <Link
                             className={props.className}
@@ -171,6 +178,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('tasks'),
             isSelected: router.pathname === PATH_TASKS,
             id: '6',
+            href: PATH_TASKS,
             renderItem: (props) => (
                 <Link className={props.className} href={PATH_TASKS}>
                     {t('tasks')}
@@ -181,6 +189,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('settings'),
             isSelected: router.pathname === PATH_SETTINGS,
             id: '7',
+            href: PATH_SETTINGS,
             renderItem: (props) => (
                 <Link className={props.className} href={PATH_SETTINGS}>
                     {t('settings')}
