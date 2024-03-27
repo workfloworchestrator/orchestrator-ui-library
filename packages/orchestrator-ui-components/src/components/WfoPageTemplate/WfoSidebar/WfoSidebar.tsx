@@ -4,13 +4,13 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { EuiButtonEmpty, EuiSideNav, EuiSpacer } from '@elastic/eui';
+import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoIsAllowedToRender } from '@/components';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy, useWithOrchestratorTheme } from '@/hooks';
+import { usePolicy } from '@/hooks';
 
 import {
     PATH_METADATA,
@@ -26,7 +26,6 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
-import { getMenuItemStyles } from './styles';
 
 export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
     isAllowed ? undefined : () => <></>;
@@ -55,7 +54,8 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         setIsSideNavOpenOnMobile((openState) => !openState);
     };
 
-    // Note: href is used to determine if the user has access to the page
+    // Note: href is used to determine if the user has access to the page in
+    // defaultMenuItemsFilteredByPolicy so we need to keep it in the item although we don't use it in the render.
     const defaultMenuItems: EuiSideNavItemType<object>[] = [
         {
             name: t('start'),
