@@ -50,7 +50,9 @@ export const getOrchestratorStore = ({
             customApis: customApisSlice?.reducer,
         },
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(orchestratorApi.middleware),
+            getDefaultMiddleware({
+                serializableCheck: false,
+            }).concat(orchestratorApi.middleware),
     });
 
     return orchestratorStore;
