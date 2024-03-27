@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 
 import { EuiBadge } from '@elastic/eui';
 
-import { useValueOverride } from '@/contexts';
+import { ValueOverrideFunction, useValueOverride } from '@/contexts';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { useAppSelector } from '@/rtk/hooks';
 import { FieldValue } from '@/types';
 import { camelToHuman } from '@/utils';
 
@@ -19,6 +20,34 @@ export const WfoProductBlockKeyValueRow: FC<
     const { leftColumnStyle, rightColumnStyle, rowStyle } =
         useWithOrchestratorTheme(getStyles);
     const { valueOverride } = useValueOverride();
+
+    // START ------ Get data from store
+    const valueOverride2 = useAppSelector(
+        (state) =>
+            state.orchestratorComponentOverride?.subscriptionDetail
+                ?.valueOverrides,
+    );
+
+    // Should be placed in a hook
+    const getRenderedValue = (
+        fieldValue: FieldValue,
+    ): React.ReactNode | null => {
+        if (!valueOverride2) {
+            return null;
+        }
+
+        const renderFunctionForField: ValueOverrideFunction | undefined =
+            valueOverride2[fieldValue.field];
+
+        // This check is needed because TS does not infer the type correctly
+        if (renderFunctionForField) {
+            return renderFunctionForField(fieldValue);
+        }
+
+        return null;
+    };
+
+    /////// END
 
     const { field, value } = fieldValue;
 
@@ -38,6 +67,12 @@ export const WfoProductBlockKeyValueRow: FC<
             </td>
             <td css={rightColumnStyle}>
                 {valueOverride?.(fieldValue) ?? (
+                    <WfoProductBlockValue value={value} />
+                )}
+            </td>
+            {/* Todo Temporary copy of previous col to compare solutions */}
+            <td css={rightColumnStyle}>
+                {getRenderedValue?.(fieldValue) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
             </td>
