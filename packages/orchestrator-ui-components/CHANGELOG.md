@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.7.0
+
+### Minor Changes
+
+- d61106d: Release of the metadata task page
+
 ## 1.6.2
 
 ### Patch Changes
