@@ -79,6 +79,10 @@ npm run packages:changeset
 
 Once the pull-request with a changeset file is merged to the main branch another PR is opened by the Changesets-bot to update the version numbers of the packages. When this pull request gets merged to main an automatic publish to NPM will be performed.
 
+## Releaseto NPM
+
+Just merge the `Version Packages` PR into main, and the packages will be published to npm automatically.
+
 ## Storybook
 
 The storybook can be run from the packages/orchestrator-ui-components/ folder, run:
