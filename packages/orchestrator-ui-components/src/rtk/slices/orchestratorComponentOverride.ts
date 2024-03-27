@@ -1,6 +1,8 @@
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-import { ValueOverrideConfiguration } from '@/contexts';
+import { ValueOverrideFunction } from '@/components/WfoSubscription/overrides/useSubscriptionDetailValueOverride';
+
+export type ValueOverrideConfiguration = Record<string, ValueOverrideFunction>;
 
 export type OrchestratorComponentOverride = {
     subscriptionDetail?: {

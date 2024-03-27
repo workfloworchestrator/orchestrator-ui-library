@@ -2,9 +2,8 @@ import React, { FC } from 'react';
 
 import { EuiBadge } from '@elastic/eui';
 
-import { ValueOverrideFunction, useValueOverride } from '@/contexts';
+import { useSubscriptionDetailValueOverride } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { useAppSelector } from '@/rtk/hooks';
 import { FieldValue } from '@/types';
 import { camelToHuman } from '@/utils';
 
@@ -19,35 +18,7 @@ export const WfoProductBlockKeyValueRow: FC<
 > = ({ fieldValue }) => {
     const { leftColumnStyle, rightColumnStyle, rowStyle } =
         useWithOrchestratorTheme(getStyles);
-    const { valueOverride } = useValueOverride();
-
-    // START ------ Get data from store
-    const valueOverride2 = useAppSelector(
-        (state) =>
-            state.orchestratorComponentOverride?.subscriptionDetail
-                ?.valueOverrides,
-    );
-
-    // Should be placed in a hook
-    const getRenderedValue = (
-        fieldValue: FieldValue,
-    ): React.ReactNode | null => {
-        if (!valueOverride2) {
-            return null;
-        }
-
-        const renderFunctionForField: ValueOverrideFunction | undefined =
-            valueOverride2[fieldValue.field];
-
-        // This check is needed because TS does not infer the type correctly
-        if (renderFunctionForField) {
-            return renderFunctionForField(fieldValue);
-        }
-
-        return null;
-    };
-
-    /////// END
+    const { getOverriddenValue } = useSubscriptionDetailValueOverride();
 
     const { field, value } = fieldValue;
 
@@ -66,13 +37,7 @@ export const WfoProductBlockKeyValueRow: FC<
                 <b>{camelToHuman(field)}</b>
             </td>
             <td css={rightColumnStyle}>
-                {valueOverride?.(fieldValue) ?? (
-                    <WfoProductBlockValue value={value} />
-                )}
-            </td>
-            {/* Todo Temporary copy of previous col to compare solutions */}
-            <td css={rightColumnStyle}>
-                {getRenderedValue?.(fieldValue) ?? (
+                {getOverriddenValue(fieldValue) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
             </td>
