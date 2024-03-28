@@ -11,11 +11,6 @@ export type FieldValue = {
     value: string | number | boolean;
 };
 
-export type KeyValue = {
-    key: string;
-    value: string | number | boolean | undefined;
-};
-
 export enum EngineStatus {
     RUNNING = 'RUNNING',
     PAUSING = 'PAUSING',
@@ -244,8 +239,6 @@ export interface TaskDefinition {
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
 }
-
-export type Field<Type> = keyof Type;
 
 //// Utility types
 

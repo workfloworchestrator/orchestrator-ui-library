@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import {
     EuiBadge,
     EuiButtonEmpty,
-    EuiCodeBlock,
     EuiFlexGroup,
     EuiFlexItem,
     EuiIcon,
@@ -15,15 +14,19 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '../../hooks';
-import { FieldValue, InUseByRelation } from '../../types';
-import { camelToHuman } from '../../utils';
-import { PATH_SUBSCRIPTIONS } from '../WfoPageTemplate';
-import { getStyles } from './styles';
+import {
+    PATH_SUBSCRIPTIONS,
+    WfoJsonCodeBlock,
+    WfoProductBlockKeyValueRow,
+} from '@/components';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { FieldValue, InUseByRelation } from '@/types';
+
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
-} from './utils';
+} from '../utils';
+import { getStyles } from './styles';
 
 interface WfoSubscriptionProductBlockProps {
     ownerSubscriptionId: string;
@@ -47,32 +50,22 @@ export const WfoSubscriptionProductBlock = ({
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
     const {
-        productBlockIconStyle,
-        productBlockPanelStyle,
-        productBlockLeftColStyle,
-        productBlockFirstLeftColStyle,
-        productBlockRightColStyle,
-        productBlockFirstRightColStyle,
+        iconStyle,
+        panelStyle,
+        leftColumnStyle,
+        rightColumnStyle,
+        rowStyle,
     } = useWithOrchestratorTheme(getStyles);
 
     const [hideDetails, setHideDetails] = useState(true);
 
-    const isFirstBlock = (index: number): boolean => {
-        if (!hideDetails) return false;
-        return index === 0;
-    };
-
     return (
         <>
             <EuiSpacer size={'m'}></EuiSpacer>
-            <EuiPanel
-                color="transparent"
-                hasShadow={false}
-                css={productBlockPanelStyle}
-            >
+            <EuiPanel color="transparent" hasShadow={false} css={panelStyle}>
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>
-                        <div css={productBlockIconStyle}>
+                        <div css={iconStyle}>
                             <EuiIcon
                                 type="filebeatApp"
                                 color={theme.colors.primary}
@@ -115,31 +108,19 @@ export const WfoSubscriptionProductBlock = ({
                         <tbody>
                             {!hideDetails && (
                                 <>
-                                    <tr key={-3}>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstLeftColStyle}
-                                        >
+                                    <tr key={-3} css={rowStyle}>
+                                        <td css={leftColumnStyle}>
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstRightColStyle}
-                                        >
+                                        <td css={rightColumnStyle}>
                                             {subscriptionInstanceId}
                                         </td>
                                     </tr>
-                                    <tr key={-2}>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstLeftColStyle}
-                                        >
+                                    <tr key={-2} css={rowStyle}>
+                                        <td css={leftColumnStyle}>
                                             <b>{t('ownerSubscriptionId')}</b>
                                         </td>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockFirstRightColStyle}
-                                        >
+                                        <td css={rightColumnStyle}>
                                             {subscriptionId ===
                                             ownerSubscriptionId ? (
                                                 <>
@@ -157,24 +138,15 @@ export const WfoSubscriptionProductBlock = ({
                                             )}
                                         </td>
                                     </tr>
-                                    <tr key={-1}>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockLeftColStyle}
-                                        >
+                                    <tr key={-1} css={rowStyle}>
+                                        <td css={leftColumnStyle}>
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
-                                        <td
-                                            valign={'top'}
-                                            css={productBlockRightColStyle}
-                                        >
-                                            <EuiCodeBlock language="json">
-                                                {JSON.stringify(
-                                                    inUseByRelations,
-                                                    null,
-                                                    4,
-                                                )}
-                                            </EuiCodeBlock>
+                                        <td css={rightColumnStyle}>
+                                            <WfoJsonCodeBlock
+                                                data={inUseByRelations}
+                                                isBasicStyle
+                                            />
                                         </td>
                                     </tr>
                                 </>
@@ -188,39 +160,10 @@ export const WfoSubscriptionProductBlock = ({
                                         ),
                                 )
                                 .map((productBlockInstanceValue, index) => (
-                                    <tr key={index}>
-                                        <td
-                                            valign={'top'}
-                                            css={
-                                                isFirstBlock(index)
-                                                    ? productBlockFirstLeftColStyle
-                                                    : productBlockLeftColStyle
-                                            }
-                                        >
-                                            <b>
-                                                {camelToHuman(
-                                                    productBlockInstanceValue.field,
-                                                )}
-                                            </b>
-                                        </td>
-                                        <td
-                                            valign={'top'}
-                                            css={
-                                                isFirstBlock(index)
-                                                    ? productBlockFirstRightColStyle
-                                                    : productBlockRightColStyle
-                                            }
-                                        >
-                                            {typeof productBlockInstanceValue.value ===
-                                            'boolean' ? (
-                                                <EuiBadge>
-                                                    {productBlockInstanceValue.value.toString()}
-                                                </EuiBadge>
-                                            ) : (
-                                                productBlockInstanceValue.value
-                                            )}
-                                        </td>
-                                    </tr>
+                                    <WfoProductBlockKeyValueRow
+                                        fieldValue={productBlockInstanceValue}
+                                        key={index}
+                                    />
                                 ))}
                         </tbody>
                     </table>

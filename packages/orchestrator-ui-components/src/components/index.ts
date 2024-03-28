@@ -1,4 +1,5 @@
 export * from './WfoBadges';
+export * from './WfoExpandableField';
 export * from './WfoPageTemplate/WfoBreadcrumbs';
 export * from './WfoFilterTabs';
 export * from './WfoKeyValueTable';
