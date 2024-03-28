@@ -372,6 +372,11 @@
         }
     },
     "startPage": {
+        "myWorkflows": {
+            "buttonText": "Show my completed workflows",
+            "headerTitle": "My complete workflows",
+            "listTitle": "My most recent workflows"
+        },
         "activeSubscriptions": {
             "buttonText": "Show all active subscriptions",
             "headerTitle": "Total active subscriptions",
