@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
+import { ValueOverrideFunction } from '@/rtk';
 import { useAppSelector } from '@/rtk/hooks';
 import { FieldValue } from '@/types';
-
-export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
 
 export const useSubscriptionDetailValueOverride = () => {
     const valueOverrideConfiguration = useAppSelector(
