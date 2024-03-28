@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
@@ -10,7 +9,7 @@ import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_na
 import { WfoIsAllowedToRender } from '@/components';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy, useWithOrchestratorTheme } from '@/hooks';
+import { usePolicy } from '@/hooks';
 
 import {
     PATH_METADATA,
@@ -26,7 +25,7 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
-import { getMenuItemStyles } from './styles';
+import { WfoMenuItemLink } from './WfoMenuLink';
 
 export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
     isAllowed ? undefined : () => <></>;
@@ -43,42 +42,6 @@ export type WfoSidebarProps = {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
-};
-
-type MenuItemProps = {
-    path: string;
-    translationString: string;
-    isSelected: boolean;
-    isSubItem?: boolean;
-};
-
-const MenuItemLink: FC<MenuItemProps> = ({
-    path,
-    translationString,
-    isSelected,
-    isSubItem,
-}) => {
-    const {
-        menuItemStyle,
-        selectedMenuItem,
-        selectedSubMenuItem,
-        subMenuItemStyle,
-    } = useWithOrchestratorTheme(getMenuItemStyles);
-
-    const getMenuItemStyle = () => {
-        if (isSubItem) {
-            return isSelected ? selectedSubMenuItem : subMenuItemStyle;
-        } else {
-            return isSelected ? selectedMenuItem : menuItemStyle;
-        }
-    };
-
-    const t = useTranslations('main');
-    return (
-        <Link css={getMenuItemStyle()} href={path}>
-            {t(translationString)}
-        </Link>
-    );
 };
 
 export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
@@ -101,7 +64,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             isSelected: router.pathname === PATH_START,
             href: PATH_START,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_START}
                     translationString="start"
                     isSelected={router.pathname === PATH_START}
@@ -114,7 +77,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             isSelected: router.pathname === PATH_WORKFLOWS,
             href: PATH_WORKFLOWS,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_WORKFLOWS}
                     translationString="workflows"
                     isSelected={router.pathname === PATH_WORKFLOWS}
@@ -127,7 +90,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
             href: PATH_SUBSCRIPTIONS,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_SUBSCRIPTIONS}
                     translationString="subscriptions"
                     isSelected={router.pathname === PATH_SUBSCRIPTIONS}
@@ -142,7 +105,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 router.pathname.substring(0, PATH_METADATA.length) ===
                 PATH_METADATA,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_METADATA_PRODUCTS}
                     translationString="metadata"
                     isSelected={
@@ -157,7 +120,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     id: '5.1',
                     href: PATH_METADATA_PRODUCTS,
                     renderItem: () => (
-                        <MenuItemLink
+                        <WfoMenuItemLink
                             path={PATH_METADATA_PRODUCTS}
                             translationString="metadataProducts"
                             isSelected={
@@ -174,7 +137,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
                     href: PATH_METADATA_PRODUCT_BLOCKS,
                     renderItem: () => (
-                        <MenuItemLink
+                        <WfoMenuItemLink
                             path={PATH_METADATA_PRODUCT_BLOCKS}
                             translationString="metadataProductblocks"
                             isSelected={
@@ -191,7 +154,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
                     renderItem: () => (
-                        <MenuItemLink
+                        <WfoMenuItemLink
                             path={PATH_METADATA_RESOURCE_TYPES}
                             translationString="metadataResourceTypes"
                             isSelected={
@@ -207,7 +170,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
                     href: PATH_METADATA_WORKFLOWS,
                     renderItem: () => (
-                        <MenuItemLink
+                        <WfoMenuItemLink
                             path={PATH_METADATA_WORKFLOWS}
                             translationString="metadataWorkflows"
                             isSelected={
@@ -223,7 +186,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     isSelected: router.pathname === PATH_METADATA_TASKS,
                     href: PATH_METADATA_TASKS,
                     renderItem: () => (
-                        <MenuItemLink
+                        <WfoMenuItemLink
                             path={PATH_METADATA_TASKS}
                             translationString="metadataTasks"
                             isSelected={router.pathname === PATH_METADATA_TASKS}
@@ -239,7 +202,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             id: '6',
             href: PATH_TASKS,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_TASKS}
                     translationString="tasks"
                     isSelected={router.pathname === PATH_TASKS}
@@ -252,7 +215,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             id: '7',
             href: PATH_SETTINGS,
             renderItem: () => (
-                <MenuItemLink
+                <WfoMenuItemLink
                     path={PATH_SETTINGS}
                     translationString="settings"
                     isSelected={router.pathname === PATH_SETTINGS}
