@@ -49,18 +49,33 @@ type MenuItemProps = {
     path: string;
     translationString: string;
     isSelected: boolean;
+    isSubItem?: boolean;
 };
 
 const MenuItemLink: FC<MenuItemProps> = ({
     path,
     translationString,
     isSelected,
+    isSubItem,
 }) => {
+    const {
+        menuItemStyle,
+        selectedMenuItem,
+        selectedSubMenuItem,
+        subMenuItemStyle,
+    } = useWithOrchestratorTheme(getMenuItemStyles);
+
+    const getMenuItemStyle = () => {
+        if (isSubItem) {
+            return isSelected ? selectedSubMenuItem : subMenuItemStyle;
+        } else {
+            return isSelected ? selectedMenuItem : menuItemStyle;
+        }
+    };
+
     const t = useTranslations('main');
-    const { menuItemStyle, selectedMenuItem } =
-        useWithOrchestratorTheme(getMenuItemStyles);
     return (
-        <Link css={isSelected ? selectedMenuItem : menuItemStyle} href={path}>
+        <Link css={getMenuItemStyle()} href={path}>
             {t(translationString)}
         </Link>
     );
@@ -123,26 +138,32 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('metadata'),
             id: '5',
             href: PATH_METADATA,
+            isSelected:
+                router.pathname.substring(0, PATH_METADATA.length) ===
+                PATH_METADATA,
             renderItem: () => (
                 <MenuItemLink
-                    path={PATH_METADATA}
+                    path={PATH_METADATA_PRODUCTS}
                     translationString="metadata"
-                    isSelected={router.pathname === PATH_METADATA}
+                    isSelected={
+                        router.pathname.substring(0, PATH_METADATA.length) ===
+                        PATH_METADATA
+                    }
                 />
             ),
             items: [
                 {
                     name: t('metadataProducts'),
                     id: '5.1',
-                    isSelected: router.pathname === PATH_METADATA_PRODUCTS,
                     href: PATH_METADATA_PRODUCTS,
                     renderItem: () => (
                         <MenuItemLink
-                            path={PATH_METADATA}
+                            path={PATH_METADATA_PRODUCTS}
                             translationString="metadataProducts"
                             isSelected={
                                 router.pathname === PATH_METADATA_PRODUCTS
                             }
+                            isSubItem={true}
                         />
                     ),
                 },
@@ -152,13 +173,15 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
                     href: PATH_METADATA_PRODUCT_BLOCKS,
-                    renderItem: (props) => (
-                        <Link
-                            className={props.className}
-                            href={PATH_METADATA_PRODUCT_BLOCKS}
-                        >
-                            {t('metadataProductblocks')}
-                        </Link>
+                    renderItem: () => (
+                        <MenuItemLink
+                            path={PATH_METADATA_PRODUCT_BLOCKS}
+                            translationString="metadataProductblocks"
+                            isSelected={
+                                router.pathname === PATH_METADATA_PRODUCT_BLOCKS
+                            }
+                            isSubItem={true}
+                        />
                     ),
                 },
                 {
@@ -167,13 +190,15 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     href: PATH_METADATA_RESOURCE_TYPES,
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
-                    renderItem: (props) => (
-                        <Link
-                            className={props.className}
-                            href={PATH_METADATA_RESOURCE_TYPES}
-                        >
-                            {t('metadataResourceTypes')}
-                        </Link>
+                    renderItem: () => (
+                        <MenuItemLink
+                            path={PATH_METADATA_RESOURCE_TYPES}
+                            translationString="metadataResourceTypes"
+                            isSelected={
+                                router.pathname === PATH_METADATA_RESOURCE_TYPES
+                            }
+                            isSubItem={true}
+                        />
                     ),
                 },
                 {
@@ -181,13 +206,15 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     id: '5.4',
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
                     href: PATH_METADATA_WORKFLOWS,
-                    renderItem: (props) => (
-                        <Link
-                            className={props.className}
-                            href={PATH_METADATA_WORKFLOWS}
-                        >
-                            {t('metadataWorkflows')}
-                        </Link>
+                    renderItem: () => (
+                        <MenuItemLink
+                            path={PATH_METADATA_WORKFLOWS}
+                            translationString="metadataWorkflows"
+                            isSelected={
+                                router.pathname === PATH_METADATA_WORKFLOWS
+                            }
+                            isSubItem={true}
+                        />
                     ),
                 },
                 {
@@ -195,13 +222,13 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     id: '5.5',
                     isSelected: router.pathname === PATH_METADATA_TASKS,
                     href: PATH_METADATA_TASKS,
-                    renderItem: (props) => (
-                        <Link
-                            className={props.className}
-                            href={PATH_METADATA_TASKS}
-                        >
-                            {t('metadataTasks')}
-                        </Link>
+                    renderItem: () => (
+                        <MenuItemLink
+                            path={PATH_METADATA_TASKS}
+                            translationString="metadataTasks"
+                            isSelected={router.pathname === PATH_METADATA_TASKS}
+                            isSubItem={true}
+                        />
                     ),
                 },
             ],
