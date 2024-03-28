@@ -43,9 +43,14 @@ export const WfoStartPage = () => {
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
     const {
-        data: processesSummaryResponse,
-        isFetching: processesSummaryIsFetching,
-    } = useGetProcessListSummaryQuery(processListSummaryQueryVariables);
+        data: activeWorkflowsSummaryResponse,
+        isFetching: activeWorkflowsSummaryIsFetching,
+    } = useGetProcessListSummaryQuery(activeWorkflowsListSummaryQueryVariables);
+
+    const {
+        data: myWorkflowsSummaryResponse,
+        isFetching: myWorkflowsSummaryIsFetching,
+    } = useGetProcessListSummaryQuery(myWorkflowListSummaryQueryVariables);
 
     const {
         data: failedTasksSummaryResponse,
@@ -96,13 +101,13 @@ export const WfoStartPage = () => {
         isLoading: outOfSyncsubscriptionsSummaryIsFetching,
     };
 
-    const latestWorkflowsSummaryCard: SummaryCard = {
+    const activeWorkflowsSummaryCard: SummaryCard = {
         headerTitle: t('activeWorkflows.headerTitle'),
-        headerValue: processesSummaryResponse?.pageInfo.totalItems ?? 0,
+        headerValue: activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: t('activeWorkflows.listTitle'),
         listItems:
-            processesSummaryResponse?.processes.map((workflow) => ({
+            activeWorkflowsSummaryResponse?.processes.map((workflow) => ({
                 title: workflow.workflowName,
                 value: formatDate(workflow?.startedAt),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
@@ -111,7 +116,25 @@ export const WfoStartPage = () => {
             name: t('activeWorkflows.buttonText'),
             url: PATH_WORKFLOWS,
         },
-        isLoading: processesSummaryIsFetching,
+        isLoading: activeWorkflowsSummaryIsFetching,
+    };
+
+    const myWorkflowsSummaryCard: SummaryCard = {
+        headerTitle: t('myWorkflows.headerTitle'),
+        headerValue: myWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
+        headerStatus: SummaryCardStatus.Success,
+        listTitle: t('myWorkflows.listTitle'),
+        listItems:
+            myWorkflowsSummaryResponse?.processes.map((workflow) => ({
+                title: workflow.workflowName,
+                value: formatDate(workflow?.startedAt),
+                url: `${PATH_WORKFLOWS}/${workflow.processId}`,
+            })) ?? [],
+        button: {
+            name: t('myWorkflows.buttonText'),
+            url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3ASYSTEM`,
+        },
+        isLoading: myWorkflowsSummaryIsFetching,
     };
 
     const failedTasksSummaryCard: SummaryCard = {
@@ -170,7 +193,8 @@ export const WfoStartPage = () => {
     }
 
     const allowedSummaryCards = [
-        latestWorkflowsSummaryCard,
+        myWorkflowsSummaryCard,
+        activeWorkflowsSummaryCard,
         ...getFailedTasksSummarycard(),
         latestOutOfSyncSubscriptionsSummaryCard,
         latestActiveSubscriptionsSummaryCard,
@@ -217,7 +241,7 @@ const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Sub
         ],
     };
 
-const processListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
+const myWorkflowListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
     first: 5,
     after: 0,
     sortBy: {
@@ -235,11 +259,36 @@ const processListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
             value: 'false',
         },
         {
-            field: 'lastStatus',
-            value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
+            field: 'createdBy',
+            value: 'SYSTEM',
         },
     ],
 };
+
+const activeWorkflowsListSummaryQueryVariables: GraphqlQueryVariables<Process> =
+    {
+        first: 5,
+        after: 0,
+        sortBy: {
+            field: 'startedAt',
+            order: SortOrder.DESC,
+        },
+        filterBy: [
+            {
+                // Todo: isTask is not a key of Process
+                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore waiting for fix in backend
+                field: 'isTask',
+                value: 'false',
+            },
+            {
+                field: 'lastStatus',
+                value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
+            },
+        ],
+    };
 
 const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
     first: 5,
