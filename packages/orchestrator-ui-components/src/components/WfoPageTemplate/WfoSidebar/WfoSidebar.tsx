@@ -10,7 +10,7 @@ import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_na
 import { WfoIsAllowedToRender } from '@/components';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy } from '@/hooks';
+import { usePolicy, useWithOrchestratorTheme } from '@/hooks';
 
 import {
     PATH_METADATA,
@@ -26,6 +26,7 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
+import { getMenuItemStyles } from './styles';
 
 export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
     isAllowed ? undefined : () => <></>;
@@ -44,9 +45,31 @@ export type WfoSidebarProps = {
     ) => EuiSideNavItemType<object>[];
 };
 
+type MenuItemProps = {
+    path: string;
+    translationString: string;
+    isSelected: boolean;
+};
+
+const MenuItemLink: FC<MenuItemProps> = ({
+    path,
+    translationString,
+    isSelected,
+}) => {
+    const t = useTranslations('main');
+    const { menuItemStyle, selectedMenuItem } =
+        useWithOrchestratorTheme(getMenuItemStyles);
+    return (
+        <Link css={isSelected ? selectedMenuItem : menuItemStyle} href={path}>
+            {t(translationString)}
+        </Link>
+    );
+};
+
 export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
+
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
     const { isAllowed } = usePolicy();
 
@@ -62,10 +85,12 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             id: '2',
             isSelected: router.pathname === PATH_START,
             href: PATH_START,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_START}>
-                    {t('start')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_START}
+                    translationString="start"
+                    isSelected={router.pathname === PATH_START}
+                />
             ),
         },
         {
@@ -73,10 +98,12 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             id: '3',
             isSelected: router.pathname === PATH_WORKFLOWS,
             href: PATH_WORKFLOWS,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_WORKFLOWS}>
-                    {t('workflows')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_WORKFLOWS}
+                    translationString="workflows"
+                    isSelected={router.pathname === PATH_WORKFLOWS}
+                />
             ),
         },
         {
@@ -84,20 +111,24 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             id: '4',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
             href: PATH_SUBSCRIPTIONS,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_SUBSCRIPTIONS}>
-                    {t('subscriptions')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_SUBSCRIPTIONS}
+                    translationString="subscriptions"
+                    isSelected={router.pathname === PATH_SUBSCRIPTIONS}
+                />
             ),
         },
         {
             name: t('metadata'),
             id: '5',
             href: PATH_METADATA,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_METADATA}>
-                    {t('metadata')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_METADATA}
+                    translationString="metadata"
+                    isSelected={router.pathname === PATH_METADATA}
+                />
             ),
             items: [
                 {
@@ -105,13 +136,14 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     id: '5.1',
                     isSelected: router.pathname === PATH_METADATA_PRODUCTS,
                     href: PATH_METADATA_PRODUCTS,
-                    renderItem: (props) => (
-                        <Link
-                            className={props.className}
-                            href={PATH_METADATA_PRODUCTS}
-                        >
-                            {t('metadataProducts')}
-                        </Link>
+                    renderItem: () => (
+                        <MenuItemLink
+                            path={PATH_METADATA}
+                            translationString="metadataProducts"
+                            isSelected={
+                                router.pathname === PATH_METADATA_PRODUCTS
+                            }
+                        />
                     ),
                 },
                 {
@@ -179,10 +211,12 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             isSelected: router.pathname === PATH_TASKS,
             id: '6',
             href: PATH_TASKS,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_TASKS}>
-                    {t('tasks')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_TASKS}
+                    translationString="tasks"
+                    isSelected={router.pathname === PATH_TASKS}
+                />
             ),
         },
         {
@@ -190,10 +224,12 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             isSelected: router.pathname === PATH_SETTINGS,
             id: '7',
             href: PATH_SETTINGS,
-            renderItem: (props) => (
-                <Link className={props.className} href={PATH_SETTINGS}>
-                    {t('settings')}
-                </Link>
+            renderItem: () => (
+                <MenuItemLink
+                    path={PATH_SETTINGS}
+                    translationString="settings"
+                    isSelected={router.pathname === PATH_SETTINGS}
+                />
             ),
         },
     ];
