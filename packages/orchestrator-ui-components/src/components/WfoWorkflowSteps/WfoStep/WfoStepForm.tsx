@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { UserInputFormWizard, WfoLoading } from '@/components';
+import { UserInputFormWizardDeprecated, WfoLoading } from '@/components';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { useOrchestratorTheme } from '@/hooks';
 import { InputForm } from '@/types/forms';
@@ -35,7 +35,7 @@ export const WfoStepForm = ({
     return (
         <EuiFlexItem css={{ margin: theme.size.m }}>
             {(isProcessing && <WfoLoading />) || (
-                <UserInputFormWizard
+                <UserInputFormWizardDeprecated
                     stepUserInput={userInputForm}
                     validSubmit={submitForm}
                     hasNext={false}

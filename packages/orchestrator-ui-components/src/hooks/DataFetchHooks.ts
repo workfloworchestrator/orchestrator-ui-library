@@ -42,6 +42,10 @@ export const filterDataByCriteria = <Type>(
     });
 };
 
+/**
+ * @deprecated
+ * Currently not in use in the SURF app - switched to RTK Query
+ */
 export const useFilterQueryWithRest = <Type>(
     url: string,
     queryKey: string[],
