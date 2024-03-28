@@ -36,9 +36,15 @@ export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
     };
 
     const t = useTranslations('main');
+
+    // This is a workaround to use the translation string as the link text if it's not found in the translation file.
+    const linkText =
+        t(translationString) === `main.${translationString}`
+            ? translationString
+            : t(translationString);
     return (
         <Link css={getMenuItemStyle()} href={path}>
-            {t(translationString)}
+            {linkText}
         </Link>
     );
 };
