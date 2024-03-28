@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.8.0
+
+### Minor Changes
+
+- 752b3fd: 102 Adds context provider and hook to override values in subscription detail product blocks
+
 ## 1.7.0
 
 ### Minor Changes
