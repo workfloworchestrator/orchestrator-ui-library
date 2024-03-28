@@ -21,6 +21,12 @@ export enum CacheTags {
     subscriptionList = 'subscriptionList',
 }
 
+export enum HttpStatus {
+    FormNotComplete = 510,
+    BadGateway = 502,
+    BadRequest = 400,
+}
+
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
     apiName?: string;
@@ -32,6 +38,20 @@ export const prepareHeaders = async (headers: Headers) => {
         headers.set('Authorization', `Bearer ${session.accessToken}`);
     }
     return headers;
+};
+
+export const handlePromiseErrorWithCallback = <T>(
+    promise: Promise<unknown>,
+    status: number,
+    callbackAction: (json: T) => void,
+) => {
+    return promise.catch((err) => {
+        if (err.data && err.status === status) {
+            callbackAction(err.data);
+        } else {
+            throw err;
+        }
+    });
 };
 
 export const orchestratorApi = createApi({
