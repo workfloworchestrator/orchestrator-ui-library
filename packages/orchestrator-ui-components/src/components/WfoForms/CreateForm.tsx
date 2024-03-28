@@ -16,7 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Form, FormNotCompleteResponse } from '@/types/forms';
 
-import UserInputFormWizard from './UserInputFormWizard';
+import UserInputFormWizardDeprecated from './UserInputFormWizardDeprecated';
 import { useAxiosApiClient } from './useAxiosApiClient';
 
 interface IProps {
@@ -60,7 +60,7 @@ export function CreateForm(props: IProps) {
     return (
         <div>
             {stepUserInput && (
-                <UserInputFormWizard
+                <UserInputFormWizardDeprecated
                     stepUserInput={stepUserInput}
                     validSubmit={submit}
                     cancel={handleCancel}

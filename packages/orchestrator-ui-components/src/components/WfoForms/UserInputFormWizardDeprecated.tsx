@@ -18,10 +18,10 @@ import { useRouter } from 'next/router';
 import hash from 'object-hash';
 
 import { ConfirmDialogActions } from '@/contexts';
-import { HttpStatus, handlePromiseErrorWithCallback } from '@/rtk';
 import { FormNotCompleteResponse, InputForm } from '@/types/forms';
 
 import UserInputForm from './UserInputForm';
+import { useAxiosApiClient } from './useAxiosApiClient';
 
 interface Form {
     form: InputForm;
@@ -30,7 +30,7 @@ interface Form {
 
 interface UserInputFormWizardProps {
     stepUserInput: InputForm;
-    stepSubmit: (processInput: object[]) => Promise<unknown>;
+    validSubmit: (processInput: object[]) => Promise<unknown>;
     cancel?: () => void;
     isTask: boolean;
     hasNext?: boolean;
@@ -44,15 +44,16 @@ function stop(e: React.SyntheticEvent) {
     }
 }
 
-export function UserInputFormWizard({
+export function UserInputFormWizardDeprecated({
     hasNext = false,
     stepUserInput,
-    stepSubmit,
+    validSubmit,
     cancel,
     isTask,
     isResuming = false,
 }: UserInputFormWizardProps) {
     const router = useRouter();
+    const apiClient = useAxiosApiClient();
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
     ]);
@@ -74,17 +75,20 @@ export function UserInputFormWizard({
         const newUserInputs = userInputs.slice(0, forms.length - 1);
         newUserInputs.push(currentFormData);
 
-        const promise = stepSubmit(newUserInputs);
-        const callback = (data: FormNotCompleteResponse) => {
-            window.scrollTo(0, 0);
-            setForms([...forms, { form: data.form, hasNext: data.hasNext }]);
-            setUserInputs(newUserInputs);
-        };
-
-        return handlePromiseErrorWithCallback<FormNotCompleteResponse>(
-            promise,
-            HttpStatus.FormNotComplete,
-            callback,
+        const result = validSubmit(newUserInputs);
+        return apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            result,
+            510,
+            (json) => {
+                // Scroll to top when navigating to next screen of wizard
+                window.scrollTo(0, 0);
+                // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
+                setForms([
+                    ...forms,
+                    { form: json.form, hasNext: json.hasNext },
+                ]);
+                setUserInputs(newUserInputs);
+            },
         );
     };
 
@@ -120,4 +124,4 @@ export function UserInputFormWizard({
     );
 }
 
-export default UserInputFormWizard;
+export default UserInputFormWizardDeprecated;
