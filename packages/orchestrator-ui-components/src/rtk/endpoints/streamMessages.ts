@@ -1,5 +1,7 @@
 import { debounce } from 'lodash';
+import { getSession } from 'next-auth/react';
 
+import type { WfoSession } from '@/hooks';
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
@@ -7,15 +9,24 @@ import { getToastMessage } from '@/utils/getToastMessage';
 
 import { CacheTags, orchestratorApi } from '../api';
 
-const getWebSocket = (url: string) => {
-    // TODO: Implement authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
-    // https://github.com/workfloworchestrator/orchestrator-core/issues/502 - https://github.com/workfloworchestrator/orchestrator-ui-library/issues/823
-    return new WebSocket(url);
+const getWebSocket = async (url: string) => {
+    const session = (await getSession()) as WfoSession;
+    const token = session?.accessToken ? [session?.accessToken] : [];
+    // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
+    return new WebSocket(url, token);
 };
 
-const PING_INTERVAL_MS = 5000;
-const DEBOUNCE_CLOSE_INTERVAL_MS = 10000;
+const PING_INTERVAL_MS = 45000; // Recommended values are between 30 and 60 seconds
+const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
 
+type WebSocketMessage = {
+    name: MessageTypes;
+    value: string[] | string;
+};
+
+enum MessageTypes {
+    invalidateCache = 'invalidateCache',
+}
 /*
  * Websocket handling as recommended by RTK QUery see: https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
  * The websocket is opened after the cacheDataLoaded promise is resolved, and closed after the cacheEntryRemoved promise is resolved maintaining
@@ -56,9 +67,10 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 const state = getState() as RootState;
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
+                const validCacheTags = Object.values(CacheTags);
 
                 // Starts the websocket
-                const webSocket = getWebSocket(orchestratorWebsocketUrl);
+                const webSocket = await getWebSocket(orchestratorWebsocketUrl);
 
                 // Lets the WfoWebsocketStatusBadge know the websocket is connected
                 webSocket.onopen = () => {
@@ -67,7 +79,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 // Send a ping message every to the websocket server to keep the connection alive
                 const pingInterval = setInterval(() => {
-                    webSocket.send('ping');
+                    webSocket.send('__ping__');
                 }, PING_INTERVAL_MS);
 
                 const debounceCloseWebSocket = debounce(() => {
@@ -79,33 +91,50 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 webSocket.addEventListener(
                     'message',
                     (message: MessageEvent<string>) => {
-                        const tagOrPong = message.data.trim();
+                        const data = message.data;
 
-                        if (tagOrPong === 'pong') {
+                        if (data === '__pong__') {
                             // Reset the debounced every time a 'pong' message is received
                             debounceCloseWebSocket();
                             return;
                         }
+                        const messageData = JSON.parse(
+                            data,
+                        ) as WebSocketMessage;
 
-                        const tagToInvalidate = tagOrPong as CacheTags;
-                        const validCacheTags = Object.values(CacheTags);
+                        if (messageData.name === MessageTypes.invalidateCache) {
+                            const messageValue = messageData.value;
 
-                        if (
-                            tagToInvalidate &&
-                            validCacheTags.includes(tagToInvalidate)
-                        ) {
-                            const cacheInvalidationAction =
-                                orchestratorApi.util.invalidateTags([
-                                    tagToInvalidate,
-                                ]);
-                            dispatch(cacheInvalidationAction);
-                        } else {
-                            console.error(
-                                `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
-                            );
+                            if (typeof messageValue === 'string') {
+                                invalidateTag(messageValue);
+                            } else if (Array.isArray(messageValue)) {
+                                messageValue.forEach((tag) =>
+                                    invalidateTag(tag),
+                                );
+                            } else {
+                                console.error(
+                                    'invalid message value type',
+                                    messageValue,
+                                );
+                            }
                         }
                     },
                 );
+
+                const invalidateTag = (tag: string) => {
+                    const tagToInvalidate = tag as CacheTags;
+                    if (validCacheTags.includes(tagToInvalidate)) {
+                        const cacheInvalidationAction =
+                            orchestratorApi.util.invalidateTags([
+                                tagToInvalidate,
+                            ]);
+                        dispatch(cacheInvalidationAction);
+                    } else {
+                        console.error(
+                            `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
+                        );
+                    }
+                };
 
                 webSocket.onerror = (event) => {
                     console.error('WebSocket error', event);
