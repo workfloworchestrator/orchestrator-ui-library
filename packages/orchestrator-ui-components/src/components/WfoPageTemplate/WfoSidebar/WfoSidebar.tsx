@@ -25,6 +25,7 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
+import { WfoMenuItemLink } from './WfoMenuLink';
 
 export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
     isAllowed ? undefined : () => <></>;
@@ -46,6 +47,7 @@ export type WfoSidebarProps = {
 export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     const t = useTranslations('main');
     const router = useRouter();
+
     const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
     const { isAllowed } = usePolicy();
 
@@ -53,90 +55,144 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         setIsSideNavOpenOnMobile((openState) => !openState);
     };
 
+    // Note: href is used to determine if the user has access to the page in
+    // defaultMenuItemsFilteredByPolicy so we need to keep it in the item although we don't use it in the render.
     const defaultMenuItems: EuiSideNavItemType<object>[] = [
         {
             name: t('start'),
             id: '2',
             isSelected: router.pathname === PATH_START,
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_START);
-            },
+            href: PATH_START,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_START}
+                    translationString="start"
+                    isSelected={router.pathname === PATH_START}
+                />
+            ),
         },
         {
             name: t('workflows'),
             id: '3',
             isSelected: router.pathname === PATH_WORKFLOWS,
             href: PATH_WORKFLOWS,
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_WORKFLOWS);
-            },
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_WORKFLOWS}
+                    translationString="workflows"
+                    isSelected={router.pathname === PATH_WORKFLOWS}
+                />
+            ),
         },
         {
             name: t('subscriptions'),
             id: '4',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
             href: PATH_SUBSCRIPTIONS,
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_SUBSCRIPTIONS);
-            },
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_SUBSCRIPTIONS}
+                    translationString="subscriptions"
+                    isSelected={router.pathname === PATH_SUBSCRIPTIONS}
+                />
+            ),
         },
         {
             name: t('metadata'),
             id: '5',
             href: PATH_METADATA,
-            onClick: () => {
-                router.push(PATH_METADATA);
-            },
+            isSelected:
+                router.pathname.substring(0, PATH_METADATA.length) ===
+                PATH_METADATA,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_METADATA_PRODUCTS}
+                    translationString="metadata"
+                    isSelected={
+                        router.pathname.substring(0, PATH_METADATA.length) ===
+                        PATH_METADATA
+                    }
+                />
+            ),
             items: [
                 {
                     name: t('metadataProducts'),
                     id: '5.1',
-                    isSelected: router.pathname === PATH_METADATA_PRODUCTS,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(PATH_METADATA_PRODUCTS);
-                    },
+                    href: PATH_METADATA_PRODUCTS,
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_PRODUCTS}
+                            translationString="metadataProducts"
+                            isSelected={
+                                router.pathname === PATH_METADATA_PRODUCTS
+                            }
+                            isSubItem={true}
+                        />
+                    ),
                 },
                 {
                     name: t('metadataProductblocks'),
                     id: '5.2',
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(PATH_METADATA_PRODUCT_BLOCKS);
-                    },
+                    href: PATH_METADATA_PRODUCT_BLOCKS,
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_PRODUCT_BLOCKS}
+                            translationString="metadataProductblocks"
+                            isSelected={
+                                router.pathname === PATH_METADATA_PRODUCT_BLOCKS
+                            }
+                            isSubItem={true}
+                        />
+                    ),
                 },
                 {
                     name: t('metadataResourceTypes'),
                     id: '5.3',
+                    href: PATH_METADATA_RESOURCE_TYPES,
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(PATH_METADATA_RESOURCE_TYPES);
-                    },
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_RESOURCE_TYPES}
+                            translationString="metadataResourceTypes"
+                            isSelected={
+                                router.pathname === PATH_METADATA_RESOURCE_TYPES
+                            }
+                            isSubItem={true}
+                        />
+                    ),
                 },
                 {
                     name: t('metadataWorkflows'),
                     id: '5.4',
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(PATH_METADATA_WORKFLOWS);
-                    },
+                    href: PATH_METADATA_WORKFLOWS,
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_WORKFLOWS}
+                            translationString="metadataWorkflows"
+                            isSelected={
+                                router.pathname === PATH_METADATA_WORKFLOWS
+                            }
+                            isSubItem={true}
+                        />
+                    ),
                 },
                 {
                     name: t('metadataTasks'),
                     id: '5.5',
                     isSelected: router.pathname === PATH_METADATA_TASKS,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        router.push(PATH_METADATA_TASKS);
-                    },
+                    href: PATH_METADATA_TASKS,
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_TASKS}
+                            translationString="metadataTasks"
+                            isSelected={router.pathname === PATH_METADATA_TASKS}
+                            isSubItem={true}
+                        />
+                    ),
                 },
             ],
         },
@@ -144,21 +200,27 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             name: t('tasks'),
             isSelected: router.pathname === PATH_TASKS,
             id: '6',
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_TASKS);
-            },
             href: PATH_TASKS,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_TASKS}
+                    translationString="tasks"
+                    isSelected={router.pathname === PATH_TASKS}
+                />
+            ),
         },
         {
             name: t('settings'),
             isSelected: router.pathname === PATH_SETTINGS,
             id: '7',
-            onClick: (e) => {
-                e.preventDefault();
-                router.push(PATH_SETTINGS);
-            },
             href: PATH_SETTINGS,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_SETTINGS}
+                    translationString="settings"
+                    isSelected={router.pathname === PATH_SETTINGS}
+                />
+            ),
         },
     ];
 
