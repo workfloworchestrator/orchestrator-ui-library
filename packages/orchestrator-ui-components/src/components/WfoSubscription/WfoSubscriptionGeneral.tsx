@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
 import { WfoJsonCodeBlock } from '@/components';
+import { useSubscriptionDetailGeneralSectionConfigurationOverride } from '@/components/WfoSubscription/overrides/useSubscriptionDetailGeneralSectionConfigurationOverride';
+import { WfoSubscriptionDetailGeneralConfiguration } from '@/rtk';
 import { SubscriptionDetail } from '@/types';
 import { camelToHuman, formatDate } from '@/utils';
 
@@ -24,6 +26,8 @@ export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { overrideSections } =
+        useSubscriptionDetailGeneralSectionConfigurationOverride();
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => [
         {
@@ -127,37 +131,63 @@ export const WfoSubscriptionGeneral = ({
     };
 
     const hasMetadata = Object.entries(subscriptionDetail.metadata).length > 0;
+    const hasFixedInputs = subscriptionDetail.fixedInputs.length > 0;
+
+    const defaultConfiguration: WfoSubscriptionDetailGeneralConfiguration[] = [
+        {
+            id: 'blockTitleSubscriptionDetails',
+            node: (
+                <SubscriptionKeyValueBlock
+                    title={t('blockTitleSubscriptionDetails')}
+                    keyValues={getSubscriptionDetailBlockData()}
+                />
+            ),
+        },
+        ...(hasMetadata
+            ? [
+                  {
+                      id: 'metadata',
+                      node: (
+                          <SubscriptionKeyValueBlock
+                              title={t('metadata')}
+                              keyValues={getMetadataBlockData()}
+                          />
+                      ),
+                  },
+              ]
+            : []),
+        ...(hasFixedInputs
+            ? [
+                  {
+                      id: 'blockTitleFixedInputs',
+                      node: (
+                          <SubscriptionKeyValueBlock
+                              title={t('blockTitleFixedInputs')}
+                              keyValues={getFixedInputBlockData()}
+                          />
+                      ),
+                  },
+              ]
+            : []),
+        {
+            id: 'blockTitleProductInfo',
+            node: (
+                <SubscriptionKeyValueBlock
+                    title={t('blockTitleProductInfo')}
+                    keyValues={getProductInfoBlockData()}
+                />
+            ),
+        },
+    ];
+
+    const configuration: WfoSubscriptionDetailGeneralConfiguration[] =
+        overrideSections?.(defaultConfiguration) || defaultConfiguration;
 
     return (
-        <EuiFlexGrid direction={'row'}>
-            <>
-                <EuiFlexItem>
-                    <SubscriptionKeyValueBlock
-                        title={t('blockTitleSubscriptionDetails')}
-                        keyValues={getSubscriptionDetailBlockData()}
-                    />
-                </EuiFlexItem>
-                {hasMetadata && (
-                    <EuiFlexItem>
-                        <SubscriptionKeyValueBlock
-                            title={t('metadata')}
-                            keyValues={getMetadataBlockData()}
-                        />
-                    </EuiFlexItem>
-                )}
-                <EuiFlexItem>
-                    <SubscriptionKeyValueBlock
-                        title={t('blockTitleFixedInputs')}
-                        keyValues={getFixedInputBlockData()}
-                    />
-                </EuiFlexItem>
-                <EuiFlexItem>
-                    <SubscriptionKeyValueBlock
-                        title={t('blockTitleProductInfo')}
-                        keyValues={getProductInfoBlockData()}
-                    />
-                </EuiFlexItem>
-            </>
+        <EuiFlexGrid direction="row">
+            {configuration.map(({ id, node }) => (
+                <EuiFlexItem key={id}>{node}</EuiFlexItem>
+            ))}
         </EuiFlexGrid>
     );
 };
