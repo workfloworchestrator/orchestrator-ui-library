@@ -7,9 +7,17 @@ import { FieldValue } from '@/types';
 export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
 export type ValueOverrideConfiguration = Record<string, ValueOverrideFunction>;
 
+export type WfoSubscriptionDetailGeneralConfiguration = {
+    id: string;
+    node: ReactNode;
+};
+
 export type OrchestratorComponentOverride = {
     subscriptionDetail?: {
         valueOverrides?: ValueOverrideConfiguration;
+        generalSectionConfigurationOverride?: (
+            defaultSections: WfoSubscriptionDetailGeneralConfiguration[],
+        ) => WfoSubscriptionDetailGeneralConfiguration[];
     };
 };
 
