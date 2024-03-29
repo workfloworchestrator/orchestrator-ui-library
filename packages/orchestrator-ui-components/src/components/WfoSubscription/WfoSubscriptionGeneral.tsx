@@ -8,7 +8,7 @@ import { WfoJsonCodeBlock } from '@/components';
 import { useSubscriptionDetailGeneralSectionConfigurationOverride } from '@/components/WfoSubscription/overrides/useSubscriptionDetailGeneralSectionConfigurationOverride';
 import { WfoSubscriptionDetailGeneralConfiguration } from '@/rtk';
 import { SubscriptionDetail } from '@/types';
-import { camelToHuman, formatDate } from '@/utils';
+import { camelToHuman, formatDate, toOptionalArrayEntry } from '@/utils';
 
 import {
     WfoProductStatusBadge,
@@ -143,32 +143,30 @@ export const WfoSubscriptionGeneral = ({
                 />
             ),
         },
-        ...(hasMetadata
-            ? [
-                  {
-                      id: 'metadata',
-                      node: (
-                          <SubscriptionKeyValueBlock
-                              title={t('metadata')}
-                              keyValues={getMetadataBlockData()}
-                          />
-                      ),
-                  },
-              ]
-            : []),
-        ...(hasFixedInputs
-            ? [
-                  {
-                      id: 'blockTitleFixedInputs',
-                      node: (
-                          <SubscriptionKeyValueBlock
-                              title={t('blockTitleFixedInputs')}
-                              keyValues={getFixedInputBlockData()}
-                          />
-                      ),
-                  },
-              ]
-            : []),
+        ...toOptionalArrayEntry(
+            {
+                id: 'metadata',
+                node: (
+                    <SubscriptionKeyValueBlock
+                        title={t('metadata')}
+                        keyValues={getMetadataBlockData()}
+                    />
+                ),
+            },
+            hasMetadata,
+        ),
+        ...toOptionalArrayEntry(
+            {
+                id: 'blockTitleFixedInputs',
+                node: (
+                    <SubscriptionKeyValueBlock
+                        title={t('blockTitleFixedInputs')}
+                        keyValues={getFixedInputBlockData()}
+                    />
+                ),
+            },
+            hasFixedInputs,
+        ),
         {
             id: 'blockTitleProductInfo',
             node: (
