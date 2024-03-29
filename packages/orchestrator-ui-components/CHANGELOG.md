@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.9.0
+
+### Minor Changes
+
+- a9f3806: Improves sideBar navigation
+
 ## 1.8.0
 
 ### Minor Changes
