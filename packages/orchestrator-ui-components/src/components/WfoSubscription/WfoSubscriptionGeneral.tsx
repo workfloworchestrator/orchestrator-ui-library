@@ -179,7 +179,8 @@ export const WfoSubscriptionGeneral = ({
     ];
 
     const configuration: WfoSubscriptionDetailGeneralConfiguration[] =
-        overrideSections?.(defaultConfiguration) || defaultConfiguration;
+        overrideSections?.(defaultConfiguration, subscriptionDetail) ||
+        defaultConfiguration;
 
     return (
         <EuiFlexGrid direction="row">
