@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-import { FieldValue } from '@/types';
+import { FieldValue, SubscriptionDetail } from '@/types';
 
 export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
 export type ValueOverrideConfiguration = Record<string, ValueOverrideFunction>;
@@ -17,6 +17,7 @@ export type OrchestratorComponentOverride = {
         valueOverrides?: ValueOverrideConfiguration;
         generalSectionConfigurationOverride?: (
             defaultSections: WfoSubscriptionDetailGeneralConfiguration[],
+            subscriptionDetail: SubscriptionDetail,
         ) => WfoSubscriptionDetailGeneralConfiguration[];
     };
 };
