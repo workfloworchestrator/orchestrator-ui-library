@@ -80,9 +80,7 @@ export function UserInputFormWizardDeprecated({
             result,
             510,
             (json) => {
-                // Scroll to top when navigating to next screen of wizard
                 window.scrollTo(0, 0);
-                // setFlash(intl.formatMessage({ id: "process.flash.wizard_next_step" }));
                 setForms([
                     ...forms,
                     { form: json.form, hasNext: json.hasNext },
