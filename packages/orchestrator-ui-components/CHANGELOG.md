@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.10.0
+
+### Minor Changes
+
+- 04ef921: Deprecate apiclient version of UserInputFormWizard
+
 ## 1.9.0
 
 ### Minor Changes
