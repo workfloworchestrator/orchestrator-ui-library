@@ -75,6 +75,7 @@ export const WfoRelatedSubscriptions = ({
             name: t('id'),
             width: '100',
             render: (value) => <WfoFirstPartUUID UUID={value} />,
+            filterable: false,
         },
         description: {
             field: 'description',
@@ -87,18 +88,21 @@ export const WfoRelatedSubscriptions = ({
                     {value}
                 </Link>
             ),
+            filterable: false,
         },
         status: {
             field: 'status',
             name: t('status'),
             width: '130',
             render: (value) => <WfoSubscriptionStatusBadge status={value} />,
+            filterable: false,
         },
         insync: {
             field: 'insync',
             name: t('insync'),
             width: '60',
             render: (value) => <WfoInsyncIcon inSync={value} />,
+            filterable: false,
         },
         customer: {
             field: 'customer',
@@ -112,12 +116,14 @@ export const WfoRelatedSubscriptions = ({
             name: t('tag'),
             width: '150',
             render: (product) => product.tag,
+            filterable: false,
         },
         startDate: {
             field: 'startDate',
             name: t('startDate'),
             width: '100',
             render: (value) => parseDateToLocaleDateString(parseDate(value)),
+            filterable: false,
         },
     };
 
