@@ -28,7 +28,7 @@ import {
 } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
 
-import UserInputFormWizard from '../../components/WfoForms/UserInputFormWizard';
+import UserInputFormWizardDeprecated from '../../components/WfoForms/UserInputFormWizardDeprecated';
 import { WfoProcessDetail } from './WfoProcessDetail';
 
 type StartCreateWorkflowPayload = {
@@ -215,7 +215,7 @@ export const WfoStartProcessPage = ({
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
                     (stepUserInput && (
-                        <UserInputFormWizard
+                        <UserInputFormWizardDeprecated
                             stepUserInput={stepUserInput}
                             validSubmit={submit}
                             cancel={() =>
