@@ -8,7 +8,7 @@ import {
 export const subscriptionDetailQuery = `
     query SubscriptionDetail($subscriptionId: String!) {
         subscriptions(
-            filterBy: { value: $subscriptionId, field: "subscriptionId" }
+            filterBy: { field: "subscriptionId", value: $subscriptionId }
         ) {
             page {
                 subscriptionId
