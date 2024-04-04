@@ -36,6 +36,11 @@ export const subscriptionDetailQuery = `
                     customerId
                     shortcode
                 }
+                customerDescriptions {
+                    subscriptionId
+                    description
+                    customerId
+                }
                 productBlockInstances {
                     id
                     ownerSubscriptionId

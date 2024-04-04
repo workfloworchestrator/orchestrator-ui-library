@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
 import { WfoJsonCodeBlock } from '@/components';
+import { WfoCustomerDescriptionsField } from '@/components/WfoSubscription/WfoCustomerDescriptionsField';
 import { useSubscriptionDetailGeneralSectionConfigurationOverride } from '@/components/WfoSubscription/overrides/useSubscriptionDetailGeneralSectionConfigurationOverride';
 import { WfoSubscriptionDetailGeneralConfiguration } from '@/rtk';
 import { SubscriptionDetail } from '@/types';
@@ -28,6 +29,9 @@ export const WfoSubscriptionGeneral = ({
     const t = useTranslations('subscriptions.detail');
     const { overrideSections } =
         useSubscriptionDetailGeneralSectionConfigurationOverride();
+
+    const hasCustomerDescriptions =
+        subscriptionDetail.customerDescriptions.length > 0;
 
     const getSubscriptionDetailBlockData = (): WfoKeyValueTableDataType[] => [
         {
@@ -78,6 +82,19 @@ export const WfoSubscriptionGeneral = ({
                     : '-',
             textToCopy: subscriptionDetail.customer?.customerId,
         },
+        ...toOptionalArrayEntry(
+            {
+                key: t('customerDescriptions'),
+                value: (
+                    <WfoCustomerDescriptionsField
+                        customerDescriptions={
+                            subscriptionDetail.customerDescriptions
+                        }
+                    />
+                ),
+            },
+            hasCustomerDescriptions,
+        ),
         {
             key: t('note'),
             value: (subscriptionDetail && subscriptionDetail.note) || '-',

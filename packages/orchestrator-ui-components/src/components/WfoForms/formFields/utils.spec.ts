@@ -50,6 +50,7 @@ const testSubscriptionDetail: SubscriptionDetail = {
     status: SubscriptionStatus.ACTIVE,
     productBlockInstances: testProductBlockInstances,
     metadata: {},
+    customerDescriptions: [],
     processes: {
         page: [
             {

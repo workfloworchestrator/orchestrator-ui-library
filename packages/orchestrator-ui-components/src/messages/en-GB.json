@@ -310,6 +310,7 @@
             "insync": "In sync",
             "customer": "Customer",
             "customerUuid": "Customer UUID",
+            "customerDescriptions": "Customer descriptions",
             "name": "Name",
             "productType": "Product type",
             "tag": "Tag",
