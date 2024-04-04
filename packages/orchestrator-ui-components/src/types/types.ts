@@ -421,6 +421,12 @@ export type SubscriptionDropdownOption = {
     status: SubscriptionStatus;
 };
 
+export type CustomerDescriptions = {
+    subscriptionId: string;
+    description: string;
+    customerId: string;
+};
+
 export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;
@@ -447,6 +453,8 @@ export type SubscriptionDetail = {
 
     customerId?: string | null;
     customer?: Customer;
+    customerDescriptions: CustomerDescriptions[];
+
     externalServices?: ExternalService[];
 
     processes: GraphQlSinglePage<SubscriptionDetailProcess>;
