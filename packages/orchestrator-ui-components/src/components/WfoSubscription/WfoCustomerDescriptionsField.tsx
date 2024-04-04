@@ -1,6 +1,13 @@
 import React, { FC } from 'react';
 
-import { CustomerDescriptions } from '@/types';
+import { useGetCustomerQuery } from '@/rtk';
+import { Customer, CustomerDescriptions } from '@/types';
+
+type CustomerDescriptionWithName = Pick<
+    CustomerDescriptions,
+    'description' | 'customerId'
+> &
+    Partial<Pick<Customer, 'fullname' | 'shortcode'>>;
 
 export type WfoCustomerDescriptionsFieldProps = {
     customerDescriptions: CustomerDescriptions[];
@@ -9,16 +16,39 @@ export type WfoCustomerDescriptionsFieldProps = {
 export const WfoCustomerDescriptionsField: FC<
     WfoCustomerDescriptionsFieldProps
 > = ({ customerDescriptions }) => {
-    // Todo service call to fetch short codes
+    const customerIds = customerDescriptions.map(
+        (customerDescription) => customerDescription.customerId,
+    );
+    const { data } = useGetCustomerQuery({ customerIds });
+
+    if (!data) {
+        return null;
+    }
+
+    const customerDescriptionsWithName: CustomerDescriptionWithName[] =
+        customerDescriptions.map(({ description, customerId }) => {
+            const customer = data.find(
+                (customer) => customer.customerId === customerId,
+            );
+
+            return {
+                customerId,
+                shortcode: customer?.shortcode,
+                fullname: customer?.fullname,
+                description,
+            };
+        });
 
     return (
-        <>
-            {customerDescriptions
-                .map(
-                    (q) =>
-                        `${q.subscriptionId}/${q.description}/${q.customerId}`,
-                )
-                .join(', ')}
-        </>
+        <div>
+            {customerDescriptionsWithName.map(
+                ({ shortcode, fullname, description }) => (
+                    <div
+                        key={shortcode}
+                        title={fullname}
+                    >{`${shortcode}: ${description}`}</div>
+                ),
+            )}
+        </div>
     );
 };
