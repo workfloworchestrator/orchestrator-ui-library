@@ -12,18 +12,20 @@ const customersQuery = `query Customers {
     }
 }`;
 
-// Todo: fix hardcoded "first 10"
-const customerQuery = `query Customer($customerId: String!) {
-    customers(
-        first: 10
-        filterBy: [{field: "customerId", value: $customerId}]
+const customerQuery = `query Customer(
+        $customerId: String!
+        $first: Int!
     ) {
-        page {
-            customerId
-            fullname
-            shortcode
-      }
-    }
+        customers(
+            first: $first
+            filterBy: [{field: "customerId", value: $customerId}]
+        ) {
+            page {
+                customerId
+                fullname
+                shortcode
+          }
+        }
 }`;
 
 const customersApi = orchestratorApi.injectEndpoints({
@@ -37,14 +39,22 @@ const customersApi = orchestratorApi.injectEndpoints({
             Customer[],
             { customerIds: string | string[] }
         >({
-            query: (inputParameters) => ({
-                document: customerQuery,
-                variables: {
-                    customerId: Array.isArray(inputParameters.customerIds)
-                        ? inputParameters.customerIds.join('|')
-                        : inputParameters.customerIds,
-                },
-            }),
+            query: ({ customerIds }) =>
+                Array.isArray(customerIds)
+                    ? {
+                          document: customerQuery,
+                          variables: {
+                              customerId: customerIds.join('|'),
+                              first: customerIds.length,
+                          },
+                      }
+                    : {
+                          document: customerQuery,
+                          variables: {
+                              customerId: customerIds,
+                              first: 1,
+                          },
+                      },
             transformResponse: (response: CustomersResult): Customer[] =>
                 response?.customers?.page || [],
         }),
