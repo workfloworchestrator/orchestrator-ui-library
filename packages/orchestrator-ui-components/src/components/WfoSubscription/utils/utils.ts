@@ -27,7 +27,7 @@ export const getFieldFromProductBlockInstanceValues = (
     const nameValue = instanceValues.find(
         (instanceValue) => instanceValue.field === field,
     );
-    return nameValue ? nameValue.value : '';
+    return nameValue?.value ?? '';
 };
 
 export const getProductBlockTitle = (

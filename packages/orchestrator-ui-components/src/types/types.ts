@@ -8,7 +8,7 @@ type GenericResponse = { [key: string]: unknown };
 
 export type FieldValue = {
     field: string;
-    value: string | number | boolean;
+    value: string | number | boolean | null;
 };
 
 export enum EngineStatus {
