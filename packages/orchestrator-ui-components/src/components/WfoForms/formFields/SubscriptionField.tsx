@@ -193,7 +193,7 @@ function SubscriptionFieldDefinition({
                     (fixedInput) => fixedInput.field === 'port_speed',
                 );
                 if (
-                    portSpeedInput &&
+                    portSpeedInput?.value &&
                     parseInt(portSpeedInput.value.toString(), 10) <
                         parseInt(usedBandwidth.toString(), 10)
                 ) {
