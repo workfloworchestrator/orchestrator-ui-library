@@ -198,13 +198,15 @@ export const WfoWorkflowsPage = () => {
         workflowsResponse: WorkflowsResponse,
     ): WorkflowListExportItem[] => {
         const { workflows } = workflowsResponse;
-        return workflows.map((workflow) => ({
-            ...workflow,
-            productTags: getConcatenatedResult(workflow.products, [
-                'tag',
-                'name',
-            ]),
-        }));
+        return workflows.map(
+            ({ name, target, description, createdAt, products }) => ({
+                name,
+                target,
+                description,
+                createdAt,
+                productTags: getConcatenatedResult(products, ['tag']),
+            }),
+        );
     };
 
     return (
