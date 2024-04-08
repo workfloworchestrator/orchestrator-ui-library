@@ -30,7 +30,6 @@ import { TasksResponse, useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
-    getConcatenatedResult,
     getQueryVariablesForExport,
     onlyUnique,
     parseDateToLocaleDateTimeString,
@@ -195,13 +194,18 @@ export const WfoTasksPage = () => {
     ): TaskListExportItem[] => {
         const { tasks } = tasksResponse;
         return tasks.map(
-            ({ name, target, description, createdAt, products }) => ({
-                name,
-                target,
-                description,
-                createdAt,
-                productTags: getConcatenatedResult(products, ['tag']),
-            }),
+            ({ name, target, description, createdAt, products }) => {
+                const uniqueProducts = products
+                    .map((product) => product.tag)
+                    .filter(onlyUnique);
+                return {
+                    name,
+                    target,
+                    description,
+                    createdAt,
+                    productTags: uniqueProducts.join(' - '),
+                };
+            },
         );
     };
 
