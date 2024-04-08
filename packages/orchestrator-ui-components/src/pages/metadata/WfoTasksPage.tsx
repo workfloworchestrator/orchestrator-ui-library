@@ -26,10 +26,11 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
+import { TasksResponse, useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getConcatenatedResult,
     getQueryVariablesForExport,
     onlyUnique,
     parseDateToLocaleDateTimeString,
@@ -51,6 +52,10 @@ export type TaskListItem = Pick<
     'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
+};
+
+type TaskListExportItem = Omit<TaskListItem, 'productTags'> & {
+    productTags: string;
 };
 
 export const WfoTasksPage = () => {
@@ -185,6 +190,21 @@ export const WfoTasksPage = () => {
         totalItemCount: totalItems ? totalItems : 0,
     };
 
+    const mapToExportItems = (
+        tasksResponse: TasksResponse,
+    ): TaskListExportItem[] => {
+        const { tasks } = tasksResponse;
+        return tasks.map(
+            ({ name, target, description, createdAt, products }) => ({
+                name,
+                target,
+                description,
+                createdAt,
+                productTags: getConcatenatedResult(products, ['tag']),
+            }),
+        );
+    };
+
     return (
         <WfoMetadataPageLayout>
             <WfoTableWithFilter<TaskListItem>
@@ -212,7 +232,7 @@ export const WfoTasksPage = () => {
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(
                     getTasksForExport,
-                    (data) => data.tasks,
+                    mapToExportItems,
                     (data) => data.pageInfo,
                     Object.keys(tableColumns),
                     getCsvFileNameWithDate('Tasks'),

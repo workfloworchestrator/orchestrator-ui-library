@@ -207,21 +207,35 @@ export const WfoProductsPage = () => {
         sortOrder: sortBy?.order ?? SortOrder.ASC,
     };
 
-    const mapToExportItems = (
-        productsResponse: ProductsResponse,
-    ): ProductDefinitionExportItem[] => {
-        const { products } = productsResponse;
-        return products.map((product) => ({
-            ...product,
-            fixedInputs: getConcatenatedResult(product.fixedInputs, [
-                'name',
-                'value',
-            ]),
-            productBlocks: getConcatenatedResult(product.productBlocks, [
-                'name',
-            ]),
-        }));
-    };
+    const mapToExportItems = ({
+        products,
+    }: ProductsResponse): ProductDefinitionExportItem[] =>
+        products.map(
+            ({
+                productId,
+                name,
+                tag,
+                description,
+                productType,
+                status,
+                fixedInputs,
+                productBlocks,
+                createdAt,
+            }) => ({
+                productId,
+                name,
+                tag,
+                description,
+                productType,
+                status,
+                fixedInputs: getConcatenatedResult(fixedInputs, [
+                    'name',
+                    'value',
+                ]),
+                productBlocks: getConcatenatedResult(productBlocks, ['name']),
+                createdAt,
+            }),
+        );
 
     return (
         <WfoMetadataPageLayout>
