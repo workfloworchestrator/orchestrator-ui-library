@@ -35,26 +35,14 @@ const customersApi = orchestratorApi.injectEndpoints({
             transformResponse: (response: CustomersResult): Customer[] =>
                 response?.customers?.page || [],
         }),
-        getCustomer: build.query<
-            Customer[],
-            { customerIds: string | string[] }
-        >({
-            query: ({ customerIds }) =>
-                Array.isArray(customerIds)
-                    ? {
-                          document: customerQuery,
-                          variables: {
-                              customerId: customerIds.join('|'),
-                              first: customerIds.length,
-                          },
-                      }
-                    : {
-                          document: customerQuery,
-                          variables: {
-                              customerId: customerIds,
-                              first: 1,
-                          },
-                      },
+        getCustomer: build.query<Customer[], { customerIds: string[] }>({
+            query: ({ customerIds }) => ({
+                document: customerQuery,
+                variables: {
+                    customerId: customerIds.join('|'),
+                    first: customerIds.length,
+                },
+            }),
             transformResponse: (response: CustomersResult): Customer[] =>
                 response?.customers?.page || [],
         }),
