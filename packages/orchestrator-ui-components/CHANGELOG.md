@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.11.0
+
+### Minor Changes
+
+- 38b0c66: 333 - Adds override option for General tab on the SubscriptionDetail page and adds Customer descriptions field
+
+### Patch Changes
+
+- 9eca836: 983 Improvements in exporting data from the metadata pages
+- df1a9b6: Hide filter option on related subscriptions table
+
 ## 1.10.0
 
 ### Minor Changes
