@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.12.0
+
+### Minor Changes
+
+- a95a6dc: Updates what the websocket interface is listening to
+
 ## 1.11.0
 
 ### Minor Changes
