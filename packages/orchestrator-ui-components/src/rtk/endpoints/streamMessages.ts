@@ -63,64 +63,6 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     updateCachedData(() => false);
                 };
 
-                await cacheDataLoaded;
-
-                const state = getState() as RootState;
-                const { orchestratorWebsocketUrl } = state.orchestratorConfig;
-                const validCacheTags = Object.values(CacheTags);
-
-                // Starts the websocket
-                const webSocket = await getWebSocket(orchestratorWebsocketUrl);
-
-                // Lets the WfoWebsocketStatusBadge know the websocket is connected
-                webSocket.onopen = () => {
-                    updateCachedData(() => true);
-                };
-
-                // Send a ping message every to the websocket server to keep the connection alive
-                const pingInterval = setInterval(() => {
-                    webSocket.send('__ping__');
-                }, PING_INTERVAL_MS);
-
-                const debounceCloseWebSocket = debounce(() => {
-                    webSocket.close();
-                }, DEBOUNCE_CLOSE_INTERVAL_MS);
-                // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
-                debounceCloseWebSocket();
-
-                webSocket.addEventListener(
-                    'message',
-                    (message: MessageEvent<string>) => {
-                        const data = message.data;
-
-                        if (data === '__pong__') {
-                            // Reset the debounced every time a 'pong' message is received
-                            debounceCloseWebSocket();
-                            return;
-                        }
-                        const messageData = JSON.parse(
-                            data,
-                        ) as WebSocketMessage;
-
-                        if (messageData.name === MessageTypes.invalidateCache) {
-                            const messageValue = messageData.value;
-
-                            if (typeof messageValue === 'string') {
-                                invalidateTag(messageValue);
-                            } else if (Array.isArray(messageValue)) {
-                                messageValue.forEach((tag) =>
-                                    invalidateTag(tag),
-                                );
-                            } else {
-                                console.error(
-                                    'invalid message value type',
-                                    messageValue,
-                                );
-                            }
-                        }
-                    },
-                );
-
                 const invalidateTag = (tag: string) => {
                     const tagToInvalidate = tag as CacheTags;
                     if (validCacheTags.includes(tagToInvalidate)) {
@@ -135,6 +77,65 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         );
                     }
                 };
+
+                const handleInvalidateCacheMessage = (
+                    message: WebSocketMessage,
+                ) => {
+                    if (message.name === MessageTypes.invalidateCache) {
+                        const messageValue = message.value;
+
+                        if (typeof messageValue === 'string') {
+                            invalidateTag(messageValue);
+                        } else if (Array.isArray(messageValue)) {
+                            messageValue.forEach((tag) => invalidateTag(tag));
+                        } else {
+                            console.error(
+                                'invalid message value type',
+                                messageValue,
+                            );
+                        }
+                    }
+                };
+
+                // Send a ping message every to the websocket server to keep the connection alive
+                const pingInterval = setInterval(() => {
+                    webSocket.send('__ping__');
+                }, PING_INTERVAL_MS);
+
+                const debounceCloseWebSocket = debounce(() => {
+                    webSocket.close();
+                }, DEBOUNCE_CLOSE_INTERVAL_MS);
+                // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
+                debounceCloseWebSocket();
+
+                await cacheDataLoaded;
+
+                const state = getState() as RootState;
+                const { orchestratorWebsocketUrl } = state.orchestratorConfig;
+                const validCacheTags = Object.values(CacheTags);
+
+                // Starts the websocket
+                const webSocket = await getWebSocket(orchestratorWebsocketUrl);
+
+                // Lets the WfoWebsocketStatusBadge know the websocket is connected
+                webSocket.onopen = () => {
+                    updateCachedData(() => true);
+                };
+
+                webSocket.addEventListener(
+                    'message',
+                    (messageEvent: MessageEvent<string>) => {
+                        const data = messageEvent.data;
+
+                        if (data === '__pong__') {
+                            // Reset the debounced every time a 'pong' message is received
+                            debounceCloseWebSocket();
+                            return;
+                        }
+                        const message = JSON.parse(data) as WebSocketMessage;
+                        handleInvalidateCacheMessage(message);
+                    },
+                );
 
                 webSocket.onerror = (event) => {
                     console.error('WebSocket error', event);
