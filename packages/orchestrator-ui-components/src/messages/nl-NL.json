@@ -34,7 +34,9 @@
         "export": "Exporteren",
         "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
         "insyncTrue": "in-sync",
-        "insyncFalse": "out-of-sync"
+        "insyncFalse": "out-of-sync",
+        "searchModalTitle": "Todo- Search string options",
+        "searchModalText": "Todo- <p>The search bar filters the tables.</p> <p>Different options are available from free text search covering all data columns, or column specific filtering. <ul><li>Hidden column are included</li> <li>TSV search (only available for subscriptions)</li></ul></p> <p>For example:</p> <li>productTag:LP description:test – search within columns</li><li>“l2vpn” -  Free text search</li><li>tag:(LP|LR) – multiselect within 1 column (not yet implemented in FE)</li><li>-tag:LP – Inverted filter</li><li>Prefix filter: test*</li>"
     },
     "confirmationDialog": {
         "title": "Graag bevestigen",

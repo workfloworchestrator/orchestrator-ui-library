@@ -5,9 +5,11 @@ import { useTranslations } from 'next-intl';
 import {
     Criteria,
     EuiButton,
+    EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiSpacer,
+    EuiText,
     Pagination,
 } from '@elastic/eui';
 
@@ -94,6 +96,7 @@ export const WfoTableWithFilter = <T extends object>({
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [selectedDataForDetailModal, setSelectedDataForDetailModal] =
         useState<T | undefined>(undefined);
+    const [showSearchModal, setShowSearchModal] = useState(false);
     const t = useTranslations('common');
 
     useEffect(() => {
@@ -200,13 +203,28 @@ export const WfoTableWithFilter = <T extends object>({
         return <WfoError />;
     }
 
+    const searchModalText = t.rich('searchModalText', {
+        br: () => <br />,
+        p: (chunks) => <p>{chunks}</p>,
+        ul: (chunks) => <ul>{chunks}</ul>,
+        li: (chunks) => <li>{chunks}</li>,
+        span: (chunks) => <span>{chunks}</span>,
+    });
+
     return (
         <>
-            <EuiFlexGroup>
+            <EuiFlexGroup alignItems="center">
                 <EuiFlexItem>
                     <WfoSearchField
                         queryString={queryString}
                         onUpdateQueryString={onUpdateQueryString}
+                    />
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                    <EuiButtonIcon
+                        onClick={() => setShowSearchModal(true)}
+                        iconSize={'xl'}
+                        iconType={'iInCircle'}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
@@ -256,6 +274,17 @@ export const WfoTableWithFilter = <T extends object>({
                     onUpdateTableConfig={handleUpdateTableConfig}
                     onResetToDefaults={handleResetToDefaults}
                 />
+            )}
+
+            {showSearchModal && (
+                <WfoInformationModal
+                    title={t('searchModalTitle')}
+                    onClose={() => setShowSearchModal(false)}
+                >
+                    <EuiText>
+                        <p>{searchModalText}</p>
+                    </EuiText>
+                </WfoInformationModal>
             )}
 
             {rowDetailData && (
