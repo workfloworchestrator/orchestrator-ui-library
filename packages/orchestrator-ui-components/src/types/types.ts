@@ -510,6 +510,8 @@ export type OrchestratorConfig = {
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
     authActive: boolean;
+    useWebSockets: boolean;
+    useThemeToggle: boolean;
 };
 
 export enum ColorModes {

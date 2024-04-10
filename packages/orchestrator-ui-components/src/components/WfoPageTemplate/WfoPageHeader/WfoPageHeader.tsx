@@ -20,7 +20,11 @@ import {
 import { WfoWebsocketStatusBadge } from '@/components/WfoBadges/WfoWebsocketStatusBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import {
+    useGetOrchestratorConfig,
+    useOrchestratorTheme,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoLogoutIcon, WfoSideMenu } from '@/icons';
 import { ColorModes } from '@/types';
 
@@ -33,11 +37,6 @@ export interface WfoPageHeaderProps {
     onThemeSwitch: (theme: EuiThemeColorMode) => void;
 }
 
-const ENABLE_THEME_SWITCH =
-    process.env.NEXT_PUBLIC_USE_THEME_TOGGLE === 'true' || false;
-const ENABLE_WEBSOCKET =
-    process.env.NEXT_PUBLIC_USE_WEBSOCKET === 'true' || false;
-
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
@@ -47,6 +46,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
 }) => {
     const t = useTranslations('main');
     const { theme, multiplyByBaseUnit, colorMode } = useOrchestratorTheme();
+    const orchestratorConfig = useGetOrchestratorConfig();
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
     );
@@ -79,10 +79,12 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
-                        {ENABLE_WEBSOCKET && <WfoWebsocketStatusBadge />}
+                        {orchestratorConfig.useWebSockets && (
+                            <WfoWebsocketStatusBadge />
+                        )}
                     </EuiBadgeGroup>
 
-                    {ENABLE_THEME_SWITCH && (
+                    {orchestratorConfig.useThemeToggle && (
                         <EuiButtonIcon
                             aria-label={t(
                                 colorMode === ColorModes.LIGHT
