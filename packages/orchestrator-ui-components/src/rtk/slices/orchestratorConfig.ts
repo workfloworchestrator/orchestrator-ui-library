@@ -3,6 +3,8 @@ import type { Slice } from '@reduxjs/toolkit';
 
 import type { OrchestratorConfig } from '@/types';
 
+import { RootState } from '../store';
+
 type OrchestratorConfigSlice = Slice<OrchestratorConfig>;
 
 export const getOrchestratorConfigSlice = (
@@ -14,3 +16,6 @@ export const getOrchestratorConfigSlice = (
         reducers: {},
     });
 };
+
+export const selectOrchestratorConfig = (state: RootState) =>
+    state.orchestratorConfig;

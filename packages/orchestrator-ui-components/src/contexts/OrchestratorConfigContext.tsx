@@ -15,6 +15,8 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     subscriptionActionsEndpoint: '',
     subscriptionProcessesEndpoint: '',
     authActive: true,
+    useWebSockets: false,
+    useThemeToggle: false,
 });
 
 export type OrchestratorConfigProviderProps = {
