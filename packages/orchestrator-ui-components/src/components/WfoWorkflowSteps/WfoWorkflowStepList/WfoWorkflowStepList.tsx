@@ -2,14 +2,17 @@ import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { EuiCodeBlock } from '@elastic/eui';
+
 import { WfoJsonCodeBlock, WfoLoading } from '@/components';
 import WfoDiff from '@/components/WfoDiff/WfoDiff';
-import { useRawProcessDetails } from '@/hooks';
+import { useRawProcessDetails, useWithOrchestratorTheme } from '@/hooks';
 import { Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
 
 import { WfoStepList, WfoStepListRef } from '../WfoStepList';
 import { WfoStepListHeader } from './WfoStepListHeader';
+import { getStyles } from './styles';
 
 export type StepListItem = {
     step: Step;
@@ -19,6 +22,7 @@ export type StepListItem = {
 
 export interface WfoWorkflowStepListProps {
     steps: Step[];
+    traceBack: string | null;
     startedAt: string;
     processId: string;
     isTask: boolean;
@@ -61,6 +65,7 @@ export const WfoWorkflowStepList = React.forwardRef(
     (
         {
             steps = [],
+            traceBack,
             startedAt,
             processId,
             isTask,
@@ -68,9 +73,12 @@ export const WfoWorkflowStepList = React.forwardRef(
         }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
+        const { codeBlockStyle } = useWithOrchestratorTheme(getStyles);
+
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
         const [showRaw, setShowRaw] = useState(false);
         const [showDelta, setShowDelta] = useState(false);
+        const [showTraceback, setShowTraceback] = useState(false);
 
         const t = useTranslations('processes.steps');
 
@@ -163,6 +171,8 @@ export const WfoWorkflowStepList = React.forwardRef(
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
                     showDelta={showDelta}
+                    showTracebackButton={traceBack !== null}
+                    showTraceback={showTraceback}
                     allDetailToggleText={
                         allStepsAreExpanded ? t('collapseAll') : t('expandAll')
                     }
@@ -172,9 +182,14 @@ export const WfoWorkflowStepList = React.forwardRef(
                     onToggleAllDetailsIsOpen={() =>
                         setExpandedStateStepListItems(!allStepsAreExpanded)
                     }
+                    onShowTraceback={setShowTraceback}
                     isTask={isTask}
                 />
-
+                {showTraceback && (
+                    <EuiCodeBlock css={codeBlockStyle}>
+                        {traceBack}
+                    </EuiCodeBlock>
+                )}
                 {showRaw && <WfoProcessRawData processId={processId} />}
                 {showDelta && (
                     <WfoProcessSubscriptionDelta processId={processId} />

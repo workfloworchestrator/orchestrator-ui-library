@@ -22,10 +22,13 @@ export type WfoStepListHeaderProps = {
     showHiddenKeys: boolean;
     showRaw: boolean;
     showDelta: boolean;
+    showTraceback: boolean;
+    showTracebackButton: boolean;
     allDetailToggleText: string;
     onChangeShowRaw: (showRaw: boolean) => void;
     onChangeShowDelta: (showRaw: boolean) => void;
     onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
+    onShowTraceback: (showTraceback: boolean) => void;
     onToggleAllDetailsIsOpen: () => void;
     isTask: boolean;
 };
@@ -34,11 +37,14 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     showHiddenKeys,
     showRaw,
     showDelta,
+    showTraceback,
+    showTracebackButton,
     onChangeShowHiddenKeys,
     onChangeShowRaw,
     onChangeShowDelta,
     allDetailToggleText,
     onToggleAllDetailsIsOpen,
+    onShowTraceback,
     isTask,
 }) => {
     const t = useTranslations('processes.steps');
@@ -89,6 +95,15 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                 css={stepListOptionsContainerStyle}
                 gutterSize="s"
             >
+                {showTracebackButton && (
+                    <EuiButton
+                        onClick={() => onShowTraceback(!showTraceback)}
+                        size="s"
+                    >
+                        {/* TODO: Add icon and translation */}
+                        {showTraceback ? 'Hide Traceback' : 'Show Traceback'}
+                    </EuiButton>
+                )}
                 {!showRaw && (
                     <EuiButton
                         onClick={() => onChangeShowDelta(!showDelta)}

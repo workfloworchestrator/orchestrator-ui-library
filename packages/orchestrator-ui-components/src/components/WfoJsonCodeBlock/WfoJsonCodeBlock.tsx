@@ -11,6 +11,12 @@ export type WfoJsonCodeBlockProps = {
     isBasicStyle?: boolean;
 };
 
+/**
+ * WfoJsonCodeBlock is used to render objects in JSON format
+ * @param data
+ * @param isBasicStyle Basic style is a minimalistic style of the code block. It has no paddings and line numbers
+ * @constructor
+ */
 export const WfoJsonCodeBlock: FC<WfoJsonCodeBlockProps> = ({
     data,
     isBasicStyle = false,
