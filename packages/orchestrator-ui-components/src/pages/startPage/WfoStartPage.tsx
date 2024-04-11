@@ -11,7 +11,7 @@ import {
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { PolicyResource } from '@/configuration';
-import { usePolicy } from '@/hooks';
+import { usePolicy, useWfoSession } from '@/hooks';
 import {
     useGetProcessListSummaryQuery,
     useGetProductsSummaryQuery,
@@ -29,6 +29,8 @@ import { formatDate } from '@/utils';
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
     const { isAllowed } = usePolicy();
+    const { session } = useWfoSession();
+    const username = session?.user?.name ?? '';
 
     const {
         data: subscriptionsSummaryResult,
@@ -50,7 +52,9 @@ export const WfoStartPage = () => {
     const {
         data: myWorkflowsSummaryResponse,
         isFetching: myWorkflowsSummaryIsFetching,
-    } = useGetProcessListSummaryQuery(myWorkflowListSummaryQueryVariables);
+    } = useGetProcessListSummaryQuery(
+        getMyWorkflowListSummaryQueryVariables(username),
+    );
 
     const {
         data: failedTasksSummaryResponse,
@@ -132,7 +136,7 @@ export const WfoStartPage = () => {
             })) ?? [],
         button: {
             name: t('myWorkflows.buttonText'),
-            url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3ASYSTEM`,
+            url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username || ' '}`,
         },
         isLoading: myWorkflowsSummaryIsFetching,
     };
@@ -241,28 +245,32 @@ const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Sub
         ],
     };
 
-const myWorkflowListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
-    first: 5,
-    after: 0,
-    sortBy: {
-        field: 'startedAt',
-        order: SortOrder.DESC,
-    },
-    filterBy: [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'false',
+const getMyWorkflowListSummaryQueryVariables = (
+    username: string,
+): GraphqlQueryVariables<Process> => {
+    return {
+        first: 5,
+        after: 0,
+        sortBy: {
+            field: 'startedAt',
+            order: SortOrder.DESC,
         },
-        {
-            field: 'createdBy',
-            value: 'SYSTEM',
-        },
-    ],
+        filterBy: [
+            {
+                // Todo: isTask is not a key of Process
+                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
+                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore waiting for fix in backend
+                field: 'isTask',
+                value: 'false',
+            },
+            {
+                field: 'createdBy',
+                value: username,
+            },
+        ],
+    };
 };
 
 const activeWorkflowsListSummaryQueryVariables: GraphqlQueryVariables<Process> =
