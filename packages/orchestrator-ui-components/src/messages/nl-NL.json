@@ -223,7 +223,8 @@
             "duration": "Looptijd",
             "userInput": "Invoer gebruiker",
             "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
-            "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten"
+            "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
+            "traceback": "Traceback"
         },
         "delta": {
             "title": "Subscription delta"

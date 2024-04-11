@@ -225,7 +225,8 @@
             "duration": "Duration",
             "userInput": "User input",
             "submitTaskFormLabel": "Please submit the form to start this task",
-            "submitWorkflowFormLabel": "Please submit the form to start this workflow"
+            "submitWorkflowFormLabel": "Please submit the form to start this workflow",
+            "traceback": "Traceback"
         },
         "delta": {
             "title": "Subscription delta"
