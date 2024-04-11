@@ -213,6 +213,8 @@
             "steps": "Workflow stappen",
             "showDelta": "Toon subscription delta",
             "hideDelta": "Verberg subscription delta",
+            "showTraceback": "Toon traceback",
+            "hideTraceback": "Verberg traceback",
             "viewOptions": "Opties",
             "expandAll": "klap alles uit",
             "collapseAll": "klap alles in",
