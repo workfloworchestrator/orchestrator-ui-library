@@ -166,6 +166,7 @@ export interface ProcessDetail {
     workflowName: string;
     isTask: boolean;
     steps: Step[];
+    traceback: string | null;
     subscriptions: {
         page: {
             product: Pick<ProductDefinition, 'name'>;

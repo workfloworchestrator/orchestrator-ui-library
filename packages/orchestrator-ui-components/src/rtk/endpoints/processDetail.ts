@@ -13,6 +13,7 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                 workflowName
                 isTask
                 form
+                traceback
                 steps {
                     name
                     status

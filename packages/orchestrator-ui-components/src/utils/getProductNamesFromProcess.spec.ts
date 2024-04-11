@@ -11,6 +11,7 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
         lastModifiedAt: 'lastModifiedAt',
         workflowName: 'workflowName',
         isTask: false,
+        traceback: null,
         steps: [
             {
                 name: 'step name',
