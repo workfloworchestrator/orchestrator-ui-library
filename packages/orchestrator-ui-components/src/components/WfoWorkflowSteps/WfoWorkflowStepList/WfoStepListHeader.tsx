@@ -100,8 +100,9 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                         onClick={() => onShowTraceback(!showTraceback)}
                         size="s"
                     >
-                        {/* TODO: Add icon and translation */}
-                        {showTraceback ? 'Hide Traceback' : 'Show Traceback'}
+                        {showTraceback
+                            ? t('hideTraceback')
+                            : t('showTraceback')}
                     </EuiButton>
                 )}
                 {!showRaw && (

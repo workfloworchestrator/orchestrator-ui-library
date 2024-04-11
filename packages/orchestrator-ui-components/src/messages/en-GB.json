@@ -215,6 +215,8 @@
             "workflowSteps": "Workflow steps",
             "showDelta": "Show subscription delta",
             "hideDelta": "Hide subscription delta",
+            "showTraceback": "Show traceback",
+            "hideTraceback": "Hide traceback",
             "viewOptions": "Options",
             "expandAll": "Expand all",
             "collapseAll": "collapse all",
