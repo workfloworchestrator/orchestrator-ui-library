@@ -34,7 +34,9 @@
         "export": "Export",
         "unauthorizedPage": "You are not authorized to see this page",
         "insyncTrue": "in-sync",
-        "insyncFalse": "out-of-sync"
+        "insyncFalse": "out-of-sync",
+        "searchModalTitle": "Search string options",
+        "searchModalText": "<p>The search bar filters the table using the search string</p> <p>Different options are available from free text search covering all data columns, or column specific filtering. <ul><li>Hidden columns are included</li> <li>TSV (text search vector) search only available for subscriptions table</li></ul></p> <p>For example:</p> <li><b>productTag:LP description:test</b> – search within columns (on column productTag and description)</li><li><b>“l2vpn”</b> – free text search</li><li><b>tag:(LP|LR)</b> – multiselect within 1 column</li><li><b>-tag:LP</b> – negated filter</li><li><b>test*</b> – prefix filter</li>"
     },
     "confirmationDialog": {
         "title": "Please confirm",
