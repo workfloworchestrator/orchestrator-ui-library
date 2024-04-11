@@ -2,17 +2,15 @@ import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiCodeBlock } from '@elastic/eui';
-
 import { WfoJsonCodeBlock, WfoLoading } from '@/components';
 import WfoDiff from '@/components/WfoDiff/WfoDiff';
-import { useRawProcessDetails, useWithOrchestratorTheme } from '@/hooks';
+import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
+import { useRawProcessDetails } from '@/hooks';
 import { Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
 
 import { WfoStepList, WfoStepListRef } from '../WfoStepList';
 import { WfoStepListHeader } from './WfoStepListHeader';
-import { getStyles } from './styles';
 
 export type StepListItem = {
     step: Step;
@@ -73,8 +71,6 @@ export const WfoWorkflowStepList = React.forwardRef(
         }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
-        const { codeBlockStyle } = useWithOrchestratorTheme(getStyles);
-
         const [showHiddenKeys, setShowHiddenKeys] = useState(false);
         const [showRaw, setShowRaw] = useState(false);
         const [showDelta, setShowDelta] = useState(false);
@@ -185,11 +181,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                     onShowTraceback={setShowTraceback}
                     isTask={isTask}
                 />
-                {showTraceback && (
-                    <EuiCodeBlock css={codeBlockStyle}>
-                        {traceBack}
-                    </EuiCodeBlock>
-                )}
+                {showTraceback && <WfoTraceback>{traceBack}</WfoTraceback>}
                 {showRaw && <WfoProcessRawData processId={processId} />}
                 {showDelta && (
                     <WfoProcessSubscriptionDelta processId={processId} />
