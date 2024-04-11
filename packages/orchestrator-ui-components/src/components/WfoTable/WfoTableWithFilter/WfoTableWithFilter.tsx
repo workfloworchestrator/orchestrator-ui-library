@@ -209,6 +209,7 @@ export const WfoTableWithFilter = <T extends object>({
         ul: (chunks) => <ul>{chunks}</ul>,
         li: (chunks) => <li>{chunks}</li>,
         span: (chunks) => <span>{chunks}</span>,
+        b: (chunks) => <b>{chunks}</b>,
     });
 
     return (
