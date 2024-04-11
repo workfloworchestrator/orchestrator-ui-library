@@ -105,16 +105,14 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                             : t('showTraceback')}
                     </EuiButton>
                 )}
-                {!showRaw && (
-                    <EuiButton
-                        onClick={() => onChangeShowDelta(!showDelta)}
-                        iconSide="right"
-                        size="s"
-                        iconType={() => <WfoCode color={theme.colors.link} />}
-                    >
-                        {showDelta ? t('hideDelta') : t('showDelta')}
-                    </EuiButton>
-                )}
+                <EuiButton
+                    onClick={() => onChangeShowDelta(!showDelta)}
+                    iconSide="right"
+                    size="s"
+                    iconType={() => <WfoCode color={theme.colors.link} />}
+                >
+                    {showDelta ? t('hideDelta') : t('showDelta')}
+                </EuiButton>
                 <EuiPopover
                     button={viewOptionButton}
                     isOpen={isViewOptionOpen}
