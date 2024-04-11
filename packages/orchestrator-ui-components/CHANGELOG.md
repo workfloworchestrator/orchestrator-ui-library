@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.13.1
+
+### Patch Changes
+
+- 63ee9c0: 863 Adds title for traceback section on workflow detail page
+
 ## 1.13.0
 
 ### Minor Changes
