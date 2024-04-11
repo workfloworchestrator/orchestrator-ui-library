@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.13.0
+
+### Minor Changes
+
+- 12d72f9: Ads feature toggles to configuration
+
+### Patch Changes
+
+- abd239c: filter workflows on target
+- 72ee276: 863 Adds Traceback on process detail page
+
 ## 1.12.0
 
 ### Minor Changes
