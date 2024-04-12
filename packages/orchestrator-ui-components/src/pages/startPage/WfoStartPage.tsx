@@ -134,10 +134,12 @@ export const WfoStartPage = () => {
                 value: formatDate(workflow?.startedAt),
                 url: `${PATH_WORKFLOWS}/${workflow.processId}`,
             })) ?? [],
-        button: {
-            name: t('myWorkflows.buttonText'),
-            url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username || ' '}`,
-        },
+        button: username
+            ? {
+                  name: t('myWorkflows.buttonText'),
+                  url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username}`,
+              }
+            : undefined,
         isLoading: myWorkflowsSummaryIsFetching,
     };
 
