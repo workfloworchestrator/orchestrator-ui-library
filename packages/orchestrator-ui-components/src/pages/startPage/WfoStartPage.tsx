@@ -26,8 +26,12 @@ import {
 } from '@/types';
 import { formatDate } from '@/utils';
 
+import { useStartPageSummaryCardConfigurationOverride } from './useStartPageSummaryCardConfigurationOverride';
+
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
+    const { overrideSummaryCards } =
+        useStartPageSummaryCardConfigurationOverride();
     const { isAllowed } = usePolicy();
 
     const {
@@ -177,9 +181,12 @@ export const WfoStartPage = () => {
         productsSummaryCard,
     ];
 
+    const summaryCards =
+        overrideSummaryCards?.(allowedSummaryCards) || allowedSummaryCards;
+
     return (
         <EuiFlexItem>
-            <WfoSummaryCards summaryCards={allowedSummaryCards} />
+            <WfoSummaryCards summaryCards={summaryCards} />
         </EuiFlexItem>
     );
 };
