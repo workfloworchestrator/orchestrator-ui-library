@@ -29,8 +29,7 @@ const baseQueryVariablesForProcess: Partial<GraphqlQueryVariables<Process>> = {
     },
 };
 
-// GraphqlFilter<Type>[];
-const getTaskFilter = (isTask: boolean): GraphqlFilter<Process>[] => {
+const getTaskFilter = (isTask: boolean): GraphqlFilter<Process> => {
     return {
         // Todo: isTask is not a key of Process
         // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
@@ -70,7 +69,7 @@ export const getMyWorkflowListSummaryQueryVariables = (
 ): GraphqlQueryVariables<Process> => ({
     ...baseQueryVariablesForProcess,
     filterBy: [
-        ...getTaskFilter(false),
+        getTaskFilter(false),
         {
             field: 'createdBy',
             value: username,
@@ -82,7 +81,7 @@ export const activeWorkflowsListSummaryQueryVariables: GraphqlQueryVariables<Pro
     {
         ...baseQueryVariablesForProcess,
         filterBy: [
-            ...getTaskFilter(false),
+            getTaskFilter(false),
             {
                 field: 'lastStatus',
                 value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
@@ -93,7 +92,7 @@ export const activeWorkflowsListSummaryQueryVariables: GraphqlQueryVariables<Pro
 export const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
     ...baseQueryVariablesForProcess,
     filterBy: [
-        ...getTaskFilter(true),
+        getTaskFilter(true),
         {
             field: 'lastStatus',
             value: 'failed-inconsistent_data-api_unavailable',
