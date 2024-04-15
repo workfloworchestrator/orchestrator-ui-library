@@ -4,19 +4,21 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import {
+    PATH_SUBSCRIPTIONS,
+    PATH_TASKS,
+    PATH_WORKFLOWS,
     SummaryCard,
     SummaryCardStatus,
     WfoSummaryCards,
-} from '@/components/WfoSummary/WfoSummaryCards';
+} from '@/components';
 import { PolicyResource } from '@/configuration';
 import { usePolicy, useWfoSession } from '@/hooks';
 import {
     useGetProcessListSummaryQuery,
     useGetProductsSummaryQuery,
+    useGetSubscriptionSummaryListQuery,
 } from '@/rtk';
-import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
 import { optionalArrayMapper, toOptionalArrayEntry } from '@/utils';
 
 import {
