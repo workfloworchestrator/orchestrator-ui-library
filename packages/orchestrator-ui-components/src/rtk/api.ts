@@ -42,7 +42,7 @@ export const prepareHeaders = async (headers: Headers) => {
 
 export const handlePromiseErrorWithCallback = <T>(
     promise: Promise<unknown>,
-    status: number,
+    status: HttpStatus,
     callbackAction: (json: T) => void,
 ) => {
     return promise.catch((err) => {

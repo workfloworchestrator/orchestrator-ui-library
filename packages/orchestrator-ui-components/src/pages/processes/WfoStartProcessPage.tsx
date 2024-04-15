@@ -1,35 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {JSONSchema6} from 'json-schema';
+import {useTranslations} from 'next-intl';
+import {useRouter} from 'next/router';
 
-import { AxiosError } from 'axios';
-import { JSONSchema6 } from 'json-schema';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
+import {EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiText,} from '@elastic/eui';
 
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiHorizontalRule,
-    EuiPanel,
-    EuiText,
-} from '@elastic/eui';
+import {PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading} from '@/components';
+import {useAxiosApiClient} from '@/components/WfoForms/useAxiosApiClient';
+import {WfoStepStatusIcon} from '@/components/WfoWorkflowSteps';
+import {getStyles} from '@/components/WfoWorkflowSteps/styles';
+import {useOrchestratorTheme} from '@/hooks';
+import {handlePromiseErrorWithCallback, HttpStatus, useGetTimeLineItemsQuery} from '@/rtk';
+import {EngineStatus, ProcessDetail, ProcessStatus, StepStatus,} from '@/types';
+import {FormNotCompleteResponse} from '@/types/forms';
 
-import { PATH_TASKS, WfoError, WfoLoading } from '@/components';
-import { PATH_WORKFLOWS } from '@/components';
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
-import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
-import { getStyles } from '@/components/WfoWorkflowSteps/styles';
-import { useOrchestratorTheme } from '@/hooks';
-import { useGetTimeLineItemsQuery } from '@/rtk';
-import {
-    EngineStatus,
-    ProcessDetail,
-    ProcessStatus,
-    StepStatus,
-} from '@/types';
-import { FormNotCompleteResponse } from '@/types/forms';
-
-import UserInputFormWizardDeprecated from '../../components/WfoForms/UserInputFormWizardDeprecated';
-import { WfoProcessDetail } from './WfoProcessDetail';
+// import UserInputFormWizardDeprecated from '../../components/WfoForms/UserInputFormWizardDeprecated';
+import UserInputFormWizard from '@/components/WfoForms/UserInputFormWizard';
+import {WfoProcessDetail} from './WfoProcessDetail';
+import {useStartProcessMutation} from "@/rtk/endpoints/forms";
 
 type StartCreateWorkflowPayload = {
     product: string;
@@ -86,6 +74,8 @@ export const WfoStartProcessPage = ({
     const [form, setForm] = useState<UserInputForm>({});
     const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
+    const [startProcess] = useStartProcessMutation();
+
     const startProcessPayload = useMemo(
         () => getInitialProcessPayload({ productId, subscriptionId }),
         [productId, subscriptionId],
@@ -110,13 +100,10 @@ export const WfoStartProcessPage = ({
 
     const submit = useCallback(
         (processInput: object[]) => {
-            const startProcessPromise = apiClient
-                .startProcess(
-                    processName,
-                    startProcessPayload
-                        ? [startProcessPayload, ...processInput]
-                        : [...processInput],
-                )
+            const startProcessPromise = startProcess({workflowName: processName, userInputs: startProcessPayload
+                ? [startProcessPayload, ...processInput]
+                : [...processInput]})
+                .unwrap()
                 .then(
                     // Resolve handler
                     (result) => {
@@ -130,26 +117,31 @@ export const WfoStartProcessPage = ({
                     },
                     // Reject handler
                     (e) => {
+                        console.log("REJECT ME IF YOU CAN", e)
                         throw e;
                     },
                 )
-                .catch((error: AxiosError) => {
-                    if (error?.response?.status !== 510) {
-                        if (error?.response?.status === 400) {
+                .catch((error) => {
+                    console.log("CATCH ME IF YOU CAN", error)
+                    console.log("error statys", error?.status)
+                    if (error?.status !== 510) {
+                        if (error?.status === 400) {
                             // Rethrow the error so userInputForm can catch it and display validation errors
+                            console.log("400", error)
                             throw error;
                         }
-
+                        console.log("510", error)
                         console.error(error);
                         setHasError(true);
                     } else {
+                        console.log("CATCH ME IF YOU ELSE", error)
                         throw error;
                     }
                 });
 
             // Catch a 503: Service unavailable error indicating the engine is down. This rethrows other errors
             // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
-            return apiClient.catchErrorStatus<EngineStatus>(
+            return handlePromiseErrorWithCallback<EngineStatus>(
                 startProcessPromise,
                 503,
                 (json) => {
@@ -171,9 +163,9 @@ export const WfoStartProcessPage = ({
                 });
             };
 
-            apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            handlePromiseErrorWithCallback<FormNotCompleteResponse>(
                 submit([]),
-                510,
+                HttpStatus.FormNotComplete,
                 clientResultCallback,
             );
         }
@@ -215,9 +207,9 @@ export const WfoStartProcessPage = ({
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
                     (stepUserInput && (
-                        <UserInputFormWizardDeprecated
+                        <UserInputFormWizard
                             stepUserInput={stepUserInput}
-                            validSubmit={submit}
+                            stepSubmit={submit}
                             cancel={() =>
                                 router.push(
                                     isTask ? PATH_TASKS : PATH_WORKFLOWS,
