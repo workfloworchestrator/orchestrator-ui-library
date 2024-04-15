@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.13.2
+
+### Patch Changes
+
+- 43be47b: 565 Added a new summary card listing the 5 latest workflows for the user that is logged in
+- 8b6e73d: 879 Makes SummaryCards on the start page overridable
+
 ## 1.13.1
 
 ### Patch Changes
