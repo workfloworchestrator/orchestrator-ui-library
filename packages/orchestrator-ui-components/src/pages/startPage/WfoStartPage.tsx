@@ -24,7 +24,12 @@ import {
     SortOrder,
     Subscription,
 } from '@/types';
-import { formatDate, toOptionalArrayEntry } from '@/utils';
+import { optionalArrayMapper, toOptionalArrayEntry } from '@/utils';
+
+import {
+    mapProcessSummaryToSummaryCardListItem,
+    mapSubscriptionSummaryToSummaryCardListItem,
+} from './mappers';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -71,12 +76,10 @@ export const WfoStartPage = () => {
         headerValue: subscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('activeSubscriptions.listTitle'),
-        listItems:
-            subscriptionsSummaryResult?.subscriptions.map((subscription) => ({
-                title: subscription.description,
-                value: formatDate(subscription.startDate),
-                url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            subscriptionsSummaryResult?.subscriptions,
+            mapSubscriptionSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('activeSubscriptions.buttonText'),
             url: PATH_SUBSCRIPTIONS,
@@ -90,14 +93,10 @@ export const WfoStartPage = () => {
             outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('outOfSyncSubscriptions.listTitle'),
-        listItems:
-            outOfSyncSubscriptionsSummaryResult?.subscriptions.map(
-                (subscription) => ({
-                    title: subscription.description,
-                    value: formatDate(subscription.startDate),
-                    url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-                }),
-            ) ?? [],
+        listItems: optionalArrayMapper(
+            outOfSyncSubscriptionsSummaryResult?.subscriptions,
+            mapSubscriptionSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('outOfSyncSubscriptions.buttonText'),
             url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
@@ -110,12 +109,10 @@ export const WfoStartPage = () => {
         headerValue: activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: t('activeWorkflows.listTitle'),
-        listItems:
-            activeWorkflowsSummaryResponse?.processes.map((workflow) => ({
-                title: workflow.workflowName,
-                value: formatDate(workflow?.startedAt),
-                url: `${PATH_WORKFLOWS}/${workflow.processId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            activeWorkflowsSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('activeWorkflows.buttonText'),
             url: PATH_WORKFLOWS,
@@ -128,12 +125,10 @@ export const WfoStartPage = () => {
         headerValue: myWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: t('myWorkflows.listTitle'),
-        listItems:
-            myWorkflowsSummaryResponse?.processes.map((workflow) => ({
-                title: workflow.workflowName,
-                value: formatDate(workflow?.startedAt),
-                url: `${PATH_WORKFLOWS}/${workflow.processId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            myWorkflowsSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
         button: username
             ? {
                   name: t('myWorkflows.buttonText'),
@@ -148,12 +143,10 @@ export const WfoStartPage = () => {
         headerValue: failedTasksSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('failedTasks.listTitle'),
-        listItems:
-            failedTasksSummaryResponse?.processes.map((task) => ({
-                title: task.workflowName,
-                value: formatDate(task?.startedAt),
-                url: `${PATH_TASKS}/${task.processId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            failedTasksSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('failedTasks.buttonText'),
             url: PATH_TASKS,
