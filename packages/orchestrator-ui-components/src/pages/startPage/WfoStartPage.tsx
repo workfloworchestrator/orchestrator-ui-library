@@ -24,7 +24,7 @@ import {
     SortOrder,
     Subscription,
 } from '@/types';
-import { formatDate } from '@/utils';
+import { formatDate, toOptionalArrayEntry } from '@/utils';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -192,16 +192,13 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
-    function getFailedTasksSummarycard() {
-        return isAllowed(PolicyResource.NAVIGATION_TASKS)
-            ? [failedTasksSummaryCard]
-            : [];
-    }
-
     const allowedSummaryCards = [
-        myWorkflowsSummaryCard,
+        ...toOptionalArrayEntry(myWorkflowsSummaryCard, !!username),
         activeWorkflowsSummaryCard,
-        ...getFailedTasksSummarycard(),
+        ...toOptionalArrayEntry(
+            failedTasksSummaryCard,
+            isAllowed(PolicyResource.NAVIGATION_TASKS),
+        ),
         latestOutOfSyncSubscriptionsSummaryCard,
         latestActiveSubscriptionsSummaryCard,
         productsSummaryCard,
