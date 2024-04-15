@@ -17,19 +17,20 @@ import {
     useGetProductsSummaryQuery,
 } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
-import {
-    GraphqlQueryVariables,
-    Process,
-    ProductsSummary,
-    SortOrder,
-    Subscription,
-} from '@/types';
 import { optionalArrayMapper, toOptionalArrayEntry } from '@/utils';
 
 import {
     mapProcessSummaryToSummaryCardListItem,
     mapSubscriptionSummaryToSummaryCardListItem,
 } from './mappers';
+import {
+    activeWorkflowsListSummaryQueryVariables,
+    getMyWorkflowListSummaryQueryVariables,
+    outOfSyncSubscriptionsListSummaryQueryVariables,
+    productsSummaryQueryVariables,
+    subscriptionsListSummaryQueryVariables,
+    taskListSummaryQueryVariables,
+} from './queryVariables';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
@@ -202,123 +203,4 @@ export const WfoStartPage = () => {
             <WfoSummaryCards summaryCards={allowedSummaryCards} />
         </EuiFlexItem>
     );
-};
-
-const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
-    {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startDate',
-            order: SortOrder.DESC,
-        },
-        filterBy: [
-            {
-                field: 'status',
-                value: 'Active',
-            },
-        ],
-    };
-
-const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
-    {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startDate',
-            order: SortOrder.ASC,
-        },
-        query: 'insync:false',
-        filterBy: [
-            {
-                field: 'status',
-                value: 'Active-Provisioning',
-            },
-        ],
-    };
-
-const getMyWorkflowListSummaryQueryVariables = (
-    username: string,
-): GraphqlQueryVariables<Process> => {
-    return {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startedAt',
-            order: SortOrder.DESC,
-        },
-        filterBy: [
-            {
-                // Todo: isTask is not a key of Process
-                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore waiting for fix in backend
-                field: 'isTask',
-                value: 'false',
-            },
-            {
-                field: 'createdBy',
-                value: username,
-            },
-        ],
-    };
-};
-
-const activeWorkflowsListSummaryQueryVariables: GraphqlQueryVariables<Process> =
-    {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startedAt',
-            order: SortOrder.DESC,
-        },
-        filterBy: [
-            {
-                // Todo: isTask is not a key of Process
-                // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-                // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore waiting for fix in backend
-                field: 'isTask',
-                value: 'false',
-            },
-            {
-                field: 'lastStatus',
-                value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
-            },
-        ],
-    };
-
-const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
-    first: 5,
-    after: 0,
-    sortBy: {
-        field: 'startedAt',
-        order: SortOrder.DESC,
-    },
-    filterBy: [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'true',
-        },
-        {
-            field: 'lastStatus',
-            value: 'failed-inconsistent_data-api_unavailable',
-        },
-    ],
-};
-
-const productsSummaryQueryVariables: GraphqlQueryVariables<ProductsSummary> = {
-    first: 1000,
-    after: 0,
-    sortBy: {
-        field: 'name',
-        order: SortOrder.ASC,
-    },
 };
