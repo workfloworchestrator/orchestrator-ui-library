@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
+import { SummaryCard } from '@/components/WfoSummary';
 import { FieldValue, SubscriptionDetail } from '@/types';
 
 export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
@@ -13,6 +14,11 @@ export type WfoSubscriptionDetailGeneralConfiguration = {
 };
 
 export type OrchestratorComponentOverride = {
+    startPage?: {
+        summaryCardConfigurationOverride?: (
+            defaultItems: SummaryCard[],
+        ) => SummaryCard[];
+    };
     subscriptionDetail?: {
         valueOverrides?: ValueOverrideConfiguration;
         generalSectionConfigurationOverride?: (

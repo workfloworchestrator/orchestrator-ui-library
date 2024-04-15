@@ -32,8 +32,12 @@ import {
     taskListSummaryQueryVariables,
 } from './queryVariables';
 
+import { useStartPageSummaryCardConfigurationOverride } from './useStartPageSummaryCardConfigurationOverride';
+
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
+    const { overrideSummaryCards } =
+        useStartPageSummaryCardConfigurationOverride();
     const { isAllowed } = usePolicy();
     const { session } = useWfoSession();
     const username = session?.user?.name ?? '';
@@ -198,9 +202,12 @@ export const WfoStartPage = () => {
         productsSummaryCard,
     ];
 
+    const summaryCards =
+        overrideSummaryCards?.(allowedSummaryCards) || allowedSummaryCards;
+
     return (
         <EuiFlexItem>
-            <WfoSummaryCards summaryCards={allowedSummaryCards} />
+            <WfoSummaryCards summaryCards={summaryCards} />
         </EuiFlexItem>
     );
 };
