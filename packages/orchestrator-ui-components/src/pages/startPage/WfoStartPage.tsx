@@ -31,7 +31,6 @@ import {
     subscriptionsListSummaryQueryVariables,
     taskListSummaryQueryVariables,
 } from './queryVariables';
-
 import { useStartPageSummaryCardConfigurationOverride } from './useStartPageSummaryCardConfigurationOverride';
 
 export const WfoStartPage = () => {
