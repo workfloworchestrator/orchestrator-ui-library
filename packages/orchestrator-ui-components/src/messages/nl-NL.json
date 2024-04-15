@@ -370,6 +370,11 @@
         }
     },
     "startPage": {
+        "myWorkflows": {
+            "buttonText": "Toon mijn afgeronde workflows",
+            "headerTitle": "Mijn afgeronde workflows",
+            "listTitle": "Mijn recente afgeronde workflows"
+        },
         "activeSubscriptions": {
             "buttonText": "Toon alle actieve subscriptions",
             "headerTitle": "Totaal aantal actieve subscriptions",

@@ -11,24 +11,32 @@ import {
     WfoSummaryCards,
 } from '@/components/WfoSummary/WfoSummaryCards';
 import { PolicyResource } from '@/configuration';
-import { usePolicy } from '@/hooks';
+import { usePolicy, useWfoSession } from '@/hooks';
 import {
     useGetProcessListSummaryQuery,
     useGetProductsSummaryQuery,
 } from '@/rtk';
 import { useGetSubscriptionSummaryListQuery } from '@/rtk/endpoints/subscriptionListSummary';
+import { optionalArrayMapper, toOptionalArrayEntry } from '@/utils';
+
 import {
-    GraphqlQueryVariables,
-    Process,
-    ProductsSummary,
-    SortOrder,
-    Subscription,
-} from '@/types';
-import { formatDate } from '@/utils';
+    mapProcessSummaryToSummaryCardListItem,
+    mapSubscriptionSummaryToSummaryCardListItem,
+} from './mappers';
+import {
+    activeWorkflowsListSummaryQueryVariables,
+    getMyWorkflowListSummaryQueryVariables,
+    outOfSyncSubscriptionsListSummaryQueryVariables,
+    productsSummaryQueryVariables,
+    subscriptionsListSummaryQueryVariables,
+    taskListSummaryQueryVariables,
+} from './queryVariables';
 
 export const WfoStartPage = () => {
     const t = useTranslations('startPage');
     const { isAllowed } = usePolicy();
+    const { session } = useWfoSession();
+    const username = session?.user?.name ?? '';
 
     const {
         data: subscriptionsSummaryResult,
@@ -43,9 +51,16 @@ export const WfoStartPage = () => {
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
     const {
-        data: processesSummaryResponse,
-        isFetching: processesSummaryIsFetching,
-    } = useGetProcessListSummaryQuery(processListSummaryQueryVariables);
+        data: activeWorkflowsSummaryResponse,
+        isFetching: activeWorkflowsSummaryIsFetching,
+    } = useGetProcessListSummaryQuery(activeWorkflowsListSummaryQueryVariables);
+
+    const {
+        data: myWorkflowsSummaryResponse,
+        isFetching: myWorkflowsSummaryIsFetching,
+    } = useGetProcessListSummaryQuery(
+        getMyWorkflowListSummaryQueryVariables(username),
+    );
 
     const {
         data: failedTasksSummaryResponse,
@@ -62,12 +77,10 @@ export const WfoStartPage = () => {
         headerValue: subscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Neutral,
         listTitle: t('activeSubscriptions.listTitle'),
-        listItems:
-            subscriptionsSummaryResult?.subscriptions.map((subscription) => ({
-                title: subscription.description,
-                value: formatDate(subscription.startDate),
-                url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            subscriptionsSummaryResult?.subscriptions,
+            mapSubscriptionSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('activeSubscriptions.buttonText'),
             url: PATH_SUBSCRIPTIONS,
@@ -81,14 +94,10 @@ export const WfoStartPage = () => {
             outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('outOfSyncSubscriptions.listTitle'),
-        listItems:
-            outOfSyncSubscriptionsSummaryResult?.subscriptions.map(
-                (subscription) => ({
-                    title: subscription.description,
-                    value: formatDate(subscription.startDate),
-                    url: `${PATH_SUBSCRIPTIONS}/${subscription.subscriptionId}`,
-                }),
-            ) ?? [],
+        listItems: optionalArrayMapper(
+            outOfSyncSubscriptionsSummaryResult?.subscriptions,
+            mapSubscriptionSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('outOfSyncSubscriptions.buttonText'),
             url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
@@ -96,22 +105,38 @@ export const WfoStartPage = () => {
         isLoading: outOfSyncsubscriptionsSummaryIsFetching,
     };
 
-    const latestWorkflowsSummaryCard: SummaryCard = {
+    const activeWorkflowsSummaryCard: SummaryCard = {
         headerTitle: t('activeWorkflows.headerTitle'),
-        headerValue: processesSummaryResponse?.pageInfo.totalItems ?? 0,
+        headerValue: activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Success,
         listTitle: t('activeWorkflows.listTitle'),
-        listItems:
-            processesSummaryResponse?.processes.map((workflow) => ({
-                title: workflow.workflowName,
-                value: formatDate(workflow?.startedAt),
-                url: `${PATH_WORKFLOWS}/${workflow.processId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            activeWorkflowsSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('activeWorkflows.buttonText'),
             url: PATH_WORKFLOWS,
         },
-        isLoading: processesSummaryIsFetching,
+        isLoading: activeWorkflowsSummaryIsFetching,
+    };
+
+    const myWorkflowsSummaryCard: SummaryCard = {
+        headerTitle: t('myWorkflows.headerTitle'),
+        headerValue: myWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
+        headerStatus: SummaryCardStatus.Success,
+        listTitle: t('myWorkflows.listTitle'),
+        listItems: optionalArrayMapper(
+            myWorkflowsSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
+        button: username
+            ? {
+                  name: t('myWorkflows.buttonText'),
+                  url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username}`,
+              }
+            : undefined,
+        isLoading: myWorkflowsSummaryIsFetching,
     };
 
     const failedTasksSummaryCard: SummaryCard = {
@@ -119,12 +144,10 @@ export const WfoStartPage = () => {
         headerValue: failedTasksSummaryResponse?.pageInfo.totalItems ?? 0,
         headerStatus: SummaryCardStatus.Error,
         listTitle: t('failedTasks.listTitle'),
-        listItems:
-            failedTasksSummaryResponse?.processes.map((task) => ({
-                title: task.workflowName,
-                value: formatDate(task?.startedAt),
-                url: `${PATH_TASKS}/${task.processId}`,
-            })) ?? [],
+        listItems: optionalArrayMapper(
+            failedTasksSummaryResponse?.processes,
+            mapProcessSummaryToSummaryCardListItem,
+        ),
         button: {
             name: t('failedTasks.buttonText'),
             url: PATH_TASKS,
@@ -163,15 +186,13 @@ export const WfoStartPage = () => {
         isLoading: productsSummaryIsFetching,
     };
 
-    function getFailedTasksSummarycard() {
-        return isAllowed(PolicyResource.NAVIGATION_TASKS)
-            ? [failedTasksSummaryCard]
-            : [];
-    }
-
     const allowedSummaryCards = [
-        latestWorkflowsSummaryCard,
-        ...getFailedTasksSummarycard(),
+        ...toOptionalArrayEntry(myWorkflowsSummaryCard, !!username),
+        activeWorkflowsSummaryCard,
+        ...toOptionalArrayEntry(
+            failedTasksSummaryCard,
+            isAllowed(PolicyResource.NAVIGATION_TASKS),
+        ),
         latestOutOfSyncSubscriptionsSummaryCard,
         latestActiveSubscriptionsSummaryCard,
         productsSummaryCard,
@@ -182,94 +203,4 @@ export const WfoStartPage = () => {
             <WfoSummaryCards summaryCards={allowedSummaryCards} />
         </EuiFlexItem>
     );
-};
-
-const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
-    {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startDate',
-            order: SortOrder.DESC,
-        },
-        filterBy: [
-            {
-                field: 'status',
-                value: 'Active',
-            },
-        ],
-    };
-
-const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> =
-    {
-        first: 5,
-        after: 0,
-        sortBy: {
-            field: 'startDate',
-            order: SortOrder.ASC,
-        },
-        query: 'insync:false',
-        filterBy: [
-            {
-                field: 'status',
-                value: 'Active-Provisioning',
-            },
-        ],
-    };
-
-const processListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
-    first: 5,
-    after: 0,
-    sortBy: {
-        field: 'startedAt',
-        order: SortOrder.DESC,
-    },
-    filterBy: [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'false',
-        },
-        {
-            field: 'lastStatus',
-            value: 'created-running-suspended-waiting-failed-resumed-inconsistent_data-api_unavailable-awaiting_callback',
-        },
-    ],
-};
-
-const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
-    first: 5,
-    after: 0,
-    sortBy: {
-        field: 'startedAt',
-        order: SortOrder.DESC,
-    },
-    filterBy: [
-        {
-            // Todo: isTask is not a key of Process
-            // However, backend still supports it. Field should not be a keyof ProcessListItem (or process)
-            // https://github.com/workfloworchestrator/orchestrator-ui/issues/290
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore waiting for fix in backend
-            field: 'isTask',
-            value: 'true',
-        },
-        {
-            field: 'lastStatus',
-            value: 'failed-inconsistent_data-api_unavailable',
-        },
-    ],
-};
-
-const productsSummaryQueryVariables: GraphqlQueryVariables<ProductsSummary> = {
-    first: 1000,
-    after: 0,
-    sortBy: {
-        field: 'name',
-        order: SortOrder.ASC,
-    },
 };

@@ -36,7 +36,10 @@ export const processListSummaryQuery = `
     }
 `;
 
-type ProcessSummary = Pick<Process, 'processId' | 'workflowName' | 'startedAt'>;
+export type ProcessSummary = Pick<
+    Process,
+    'processId' | 'workflowName' | 'startedAt'
+>;
 
 export type ProcessListSummaryResponse = {
     processes: ProcessSummary[];

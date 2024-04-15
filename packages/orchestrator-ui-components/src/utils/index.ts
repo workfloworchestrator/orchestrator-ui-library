@@ -9,4 +9,4 @@ export * from './onlyUnique';
 export * from './uuid';
 export * from './resultFlattener';
 export * from './strings';
-export * from './toOptionalArrayEntry';
+export * from './optionalArray';
