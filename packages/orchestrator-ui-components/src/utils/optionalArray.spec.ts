@@ -3,7 +3,7 @@ import { optionalArrayMapper, toOptionalArrayEntry } from './optionalArray';
 describe('toOptionalArrayEntry', () => {
     const testInput = { testField: 'testValue' };
 
-    it('returns an array with the data if ', () => {
+    it('returns an array with the data if the condition is true', () => {
         const result = toOptionalArrayEntry(testInput, true);
 
         expect(result).toEqual([testInput]);
