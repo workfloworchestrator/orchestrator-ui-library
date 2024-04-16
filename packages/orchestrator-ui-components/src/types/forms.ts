@@ -3,6 +3,8 @@ import { Ref } from 'react';
 import { JSONSchema6 } from 'json-schema';
 import { HTMLFieldProps } from 'uniforms';
 
+import { HttpStatus } from '@/rtk';
+
 export interface ValidationError {
     input_type: string;
     loc: (string | number)[];
@@ -38,3 +40,17 @@ export type FieldProps<
         description?: string;
     } & Extra
 >;
+
+type ValidationErrorData = {
+    detail: string;
+    status: HttpStatus;
+    title: string;
+    traceback: string;
+    type: string;
+    validation_errors: [];
+};
+
+export type FormValidationError = {
+    data: ValidationErrorData;
+    status: HttpStatus;
+};

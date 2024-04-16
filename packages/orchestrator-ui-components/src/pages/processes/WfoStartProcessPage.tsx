@@ -1,23 +1,38 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {JSONSchema6} from 'json-schema';
-import {useTranslations} from 'next-intl';
-import {useRouter} from 'next/router';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import {EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiText,} from '@elastic/eui';
+import { JSONSchema6 } from 'json-schema';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
-import {PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading} from '@/components';
-import {useAxiosApiClient} from '@/components/WfoForms/useAxiosApiClient';
-import {WfoStepStatusIcon} from '@/components/WfoWorkflowSteps';
-import {getStyles} from '@/components/WfoWorkflowSteps/styles';
-import {useOrchestratorTheme} from '@/hooks';
-import {handlePromiseErrorWithCallback, HttpStatus, useGetTimeLineItemsQuery} from '@/rtk';
-import {EngineStatus, ProcessDetail, ProcessStatus, StepStatus,} from '@/types';
-import {FormNotCompleteResponse} from '@/types/forms';
+import {
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiHorizontalRule,
+    EuiPanel,
+    EuiText,
+} from '@elastic/eui';
 
-// import UserInputFormWizardDeprecated from '../../components/WfoForms/UserInputFormWizardDeprecated';
+import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import UserInputFormWizard from '@/components/WfoForms/UserInputFormWizard';
-import {WfoProcessDetail} from './WfoProcessDetail';
-import {useStartProcessMutation} from "@/rtk/endpoints/forms";
+import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
+import { getStyles } from '@/components/WfoWorkflowSteps/styles';
+import { useOrchestratorTheme } from '@/hooks';
+import {
+    HttpStatus,
+    handlePromiseErrorWithCallback,
+    useGetTimeLineItemsQuery,
+} from '@/rtk';
+import { useStartProcessMutation } from '@/rtk/endpoints/forms';
+import {
+    EngineStatus,
+    ProcessDetail,
+    ProcessStatus,
+    StepStatus,
+} from '@/types';
+import { FormNotCompleteResponse } from '@/types/forms';
+
+import { WfoProcessDetail } from './WfoProcessDetail';
 
 type StartCreateWorkflowPayload = {
     product: string;
@@ -100,12 +115,14 @@ export const WfoStartProcessPage = ({
 
     const submit = useCallback(
         (processInput: object[]) => {
-            const startProcessPromise = startProcess({workflowName: processName, userInputs: startProcessPayload
-                ? [startProcessPayload, ...processInput]
-                : [...processInput]})
+            const startProcessPromise = startProcess({
+                workflowName: processName,
+                userInputs: startProcessPayload
+                    ? [startProcessPayload, ...processInput]
+                    : [...processInput],
+            })
                 .unwrap()
                 .then(
-                    // Resolve handler
                     (result) => {
                         const process = result as { id: string };
                         if (process.id) {
@@ -117,24 +134,18 @@ export const WfoStartProcessPage = ({
                     },
                     // Reject handler
                     (e) => {
-                        console.log("REJECT ME IF YOU CAN", e)
                         throw e;
                     },
                 )
                 .catch((error) => {
-                    console.log("CATCH ME IF YOU CAN", error)
-                    console.log("error statys", error?.status)
                     if (error?.status !== 510) {
                         if (error?.status === 400) {
                             // Rethrow the error so userInputForm can catch it and display validation errors
-                            console.log("400", error)
                             throw error;
                         }
-                        console.log("510", error)
                         console.error(error);
                         setHasError(true);
                     } else {
-                        console.log("CATCH ME IF YOU ELSE", error)
                         throw error;
                     }
                 });
@@ -143,7 +154,7 @@ export const WfoStartProcessPage = ({
             // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
             return handlePromiseErrorWithCallback<EngineStatus>(
                 startProcessPromise,
-                503,
+                HttpStatus.ServiceUnavailable,
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
                     console.error('engine down!!!', json);
@@ -151,7 +162,7 @@ export const WfoStartProcessPage = ({
                 },
             );
         },
-        [apiClient, processName, startProcessPayload, isTask, router],
+        [startProcess, processName, startProcessPayload, isTask, router],
     );
 
     useEffect(() => {

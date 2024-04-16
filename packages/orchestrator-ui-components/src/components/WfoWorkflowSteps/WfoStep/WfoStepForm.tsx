@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { UserInputFormWizardDeprecated, WfoLoading } from '@/components';
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { UserInputFormWizard, WfoLoading } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
+import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
 import { InputForm } from '@/types/forms';
 
 interface WfoStepFormProps {
@@ -20,24 +20,26 @@ export const WfoStepForm = ({
 }: WfoStepFormProps) => {
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
-    const apiClient = useAxiosApiClient();
+    const [resumeProcess] = useResumeProcessMutation();
 
     const submitForm = (processInput: object[]) => {
         if (!processId) {
             return Promise.reject();
         }
 
-        return apiClient.resumeProcess(processId, processInput).then(() => {
-            setIsProcessing(true);
-        });
+        return resumeProcess({ processId, userInputs: processInput }).then(
+            () => {
+                setIsProcessing(true);
+            },
+        );
     };
 
     return (
         <EuiFlexItem css={{ margin: theme.size.m }}>
             {(isProcessing && <WfoLoading />) || (
-                <UserInputFormWizardDeprecated
+                <UserInputFormWizard
                     stepUserInput={userInputForm}
-                    validSubmit={submitForm}
+                    stepSubmit={submitForm}
                     hasNext={false}
                     isTask={isTask}
                     isResuming={true}

@@ -25,6 +25,7 @@ export enum HttpStatus {
     FormNotComplete = 510,
     BadGateway = 502,
     BadRequest = 400,
+    ServiceUnavailable = 503,
 }
 
 type ExtraOptions = {

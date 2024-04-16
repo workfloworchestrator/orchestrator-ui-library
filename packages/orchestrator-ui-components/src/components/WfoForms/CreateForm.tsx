@@ -14,10 +14,10 @@
  */
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { UserInputFormWizard } from '@/components';
+import { handlePromiseErrorWithCallback } from '@/rtk';
+import { useStartFormMutation } from '@/rtk/endpoints/forms';
 import { Form, FormNotCompleteResponse } from '@/types/forms';
-
-import UserInputFormWizardDeprecated from './UserInputFormWizardDeprecated';
-import { useAxiosApiClient } from './useAxiosApiClient';
 
 interface IProps {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -31,20 +31,22 @@ export function CreateForm(props: IProps) {
     const { preselectedInput, formKey, handleSubmit, handleCancel } = props;
     const [form, setForm] = useState<Form>({});
     const { stepUserInput, hasNext } = form;
-    const apiClient = useAxiosApiClient();
+    const [startForm] = useStartFormMutation();
 
     const submit = useCallback(
         (userInputs: object[]) => {
-            return apiClient.startForm(formKey, userInputs).then((form) => {
-                handleSubmit(form);
-            });
+            return startForm({ formKey, userInputs })
+                .unwrap()
+                .then((form) => {
+                    handleSubmit(form);
+                });
         },
-        [formKey, handleSubmit, apiClient],
+        [formKey, handleSubmit, startForm],
     );
 
     useEffect(() => {
-        if (formKey && apiClient) {
-            apiClient.catchErrorStatus<FormNotCompleteResponse>(
+        if (formKey) {
+            handlePromiseErrorWithCallback<FormNotCompleteResponse>(
                 submit([]),
                 510,
                 (json) => {
@@ -55,14 +57,14 @@ export function CreateForm(props: IProps) {
                 },
             );
         }
-    }, [formKey, submit, preselectedInput, apiClient]);
+    }, [formKey, submit, preselectedInput]);
 
     return (
         <div>
             {stepUserInput && (
-                <UserInputFormWizardDeprecated
+                <UserInputFormWizard
                     stepUserInput={stepUserInput}
-                    validSubmit={submit}
+                    stepSubmit={submit}
                     cancel={handleCancel}
                     hasNext={hasNext ?? false}
                     isTask={false}
