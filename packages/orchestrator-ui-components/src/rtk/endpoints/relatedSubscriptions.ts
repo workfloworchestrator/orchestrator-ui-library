@@ -10,50 +10,50 @@ import {
 import { orchestratorApi } from '../api';
 
 export const RelatedSubscriptionsQuery = `
-query RelatedSubscriptions(
-    $subscriptionId: String!
-    $first: Int!
-    $after: Int!
-    $sortBy: [GraphqlSort!]
-    $terminatedSubscriptionFilter: [GraphqlFilter!]
-) {
-    subscriptions(
-        filterBy: { value: $subscriptionId, field: "subscriptionId" }
+    query RelatedSubscriptions(
+        $subscriptionId: String!
+        $first: Int!
+        $after: Int!
+        $sortBy: [GraphqlSort!]
+        $terminatedSubscriptionFilter: [GraphqlFilter!]
     ) {
-        page {
-            subscriptionId
-            inUseBySubscriptions(
-                first: $first
-                after: $after
-                sortBy: $sortBy
-                filterBy: $terminatedSubscriptionFilter
-            ) {
-                page {
-                    subscriptionId
-                    customer {
-                        fullname
+        subscriptions(
+            filterBy: { value: $subscriptionId, field: "subscriptionId" }
+        ) {
+            page {
+                subscriptionId
+                inUseBySubscriptions(
+                    first: $first
+                    after: $after
+                    sortBy: $sortBy
+                    filterBy: $terminatedSubscriptionFilter
+                ) {
+                    page {
+                        subscriptionId
+                        customer {
+                            fullname
+                        }
+                        description
+                        insync
+                        startDate
+                        status
+                        product {
+                            tag
+                        }
                     }
-                    description
-                    insync
-                    startDate
-                    status
-                    product {
-                        tag
+                    pageInfo {
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                        startCursor
+                        totalItems
+                        sortFields
+                        filterFields
                     }
-                }
-                pageInfo {
-                    endCursor
-                    hasNextPage
-                    hasPreviousPage
-                    startCursor
-                    totalItems
-                    sortFields
-                    filterFields
                 }
             }
         }
     }
-}
 `;
 
 export type RelatedSubscriptionsResponse = {

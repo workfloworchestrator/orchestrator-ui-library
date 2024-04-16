@@ -6,7 +6,6 @@ export * from './processListSummary';
 export * from './processSteps';
 export * from './products';
 export * from './productsSummary';
-export * from './relatedSubscriptions';
 export * from './settings';
 export * from './streamMessages';
 export * from './subscriptionDetail';
