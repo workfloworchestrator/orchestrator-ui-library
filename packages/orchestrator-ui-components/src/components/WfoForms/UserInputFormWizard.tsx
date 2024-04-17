@@ -44,14 +44,14 @@ function stop(e: React.SyntheticEvent) {
     }
 }
 
-export function UserInputFormWizard({
+export const UserInputFormWizard = ({
     hasNext = false,
     stepUserInput,
     stepSubmit,
     cancel,
     isTask,
     isResuming = false,
-}: UserInputFormWizardProps) {
+}: UserInputFormWizardProps) => {
     const router = useRouter();
     const [forms, setForms] = useState<Form[]>([
         { form: stepUserInput, hasNext: hasNext },
@@ -118,6 +118,4 @@ export function UserInputFormWizard({
             isResuming={isResuming}
         />
     );
-}
-
-export default UserInputFormWizard;
+};

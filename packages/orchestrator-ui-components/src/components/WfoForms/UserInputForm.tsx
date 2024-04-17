@@ -16,7 +16,6 @@
  */
 import React, { useContext, useState } from 'react';
 
-import axios from 'axios';
 import invariant from 'invariant';
 import { JSONSchema6 } from 'json-schema';
 import cloneDeep from 'lodash/cloneDeep';
@@ -37,7 +36,7 @@ import {
 import { ConfirmDialogActions, ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlayFill } from '@/icons';
-import { ValidationError } from '@/types/forms';
+import { FormValidationError, ValidationError } from '@/types/forms';
 
 import { autoFieldFunction } from './AutoFieldLoader';
 import AutoFields from './AutoFields';
@@ -440,31 +439,30 @@ function UserInputForm({
                 return null;
             } catch (error: unknown) {
                 setProcessing(false);
-
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 400
-                ) {
-                    const json = error.response.data;
-                    setNrOfValidationErrors(json.validation_errors.length);
-                    setRootErrors(
-                        json.validation_errors
-                            .filter(
-                                (e: ValidationError) => e.loc[0] === '__root__',
-                            )
-                            .map((e: ValidationError) => e.msg),
-                    );
-                    throw Object.assign(new Error(), {
-                        details: json.validation_errors.map(
-                            (e: ValidationError) => ({
-                                message: e.msg,
-                                params: e.ctx || {},
-                                dataPath: '.' + e.loc.join('.'),
-                            }),
-                        ),
-                    });
+                if (typeof error === 'object' && error !== null) {
+                    const validationError = error as FormValidationError;
+                    if (validationError?.status === 400) {
+                        const json = validationError.data;
+                        setNrOfValidationErrors(json.validation_errors.length);
+                        setRootErrors(
+                            json.validation_errors
+                                .filter(
+                                    (e: ValidationError) =>
+                                        e.loc[0] === '__root__',
+                                )
+                                .map((e: ValidationError) => e.msg),
+                        );
+                        throw Object.assign(new Error(), {
+                            details: json.validation_errors.map(
+                                (e: ValidationError) => ({
+                                    message: e.msg,
+                                    params: e.ctx || {},
+                                    dataPath: '.' + e.loc.join('.'),
+                                }),
+                            ),
+                        });
+                    }
                 }
-
                 // Let the error escape so it can be caught by our own onerror handler instead of being silenced by uniforms
                 setTimeout(() => {
                     throw error;

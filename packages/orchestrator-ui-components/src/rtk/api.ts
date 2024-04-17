@@ -25,6 +25,7 @@ export enum HttpStatus {
     FormNotComplete = 510,
     BadGateway = 502,
     BadRequest = 400,
+    ServiceUnavailable = 503,
 }
 
 type ExtraOptions = {
@@ -42,7 +43,7 @@ export const prepareHeaders = async (headers: Headers) => {
 
 export const handlePromiseErrorWithCallback = <T>(
     promise: Promise<unknown>,
-    status: number,
+    status: HttpStatus,
     callbackAction: (json: T) => void,
 ) => {
     return promise.catch((err) => {

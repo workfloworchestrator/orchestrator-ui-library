@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AxiosError } from 'axios';
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -13,13 +12,18 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_TASKS, WfoError, WfoLoading } from '@/components';
-import { PATH_WORKFLOWS } from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
+import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme } from '@/hooks';
-import { useGetTimeLineItemsQuery } from '@/rtk';
+import {
+    HttpStatus,
+    handlePromiseErrorWithCallback,
+    useGetTimeLineItemsQuery,
+} from '@/rtk';
+import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import {
     EngineStatus,
     ProcessDetail,
@@ -28,7 +32,6 @@ import {
 } from '@/types';
 import { FormNotCompleteResponse } from '@/types/forms';
 
-import UserInputFormWizardDeprecated from '../../components/WfoForms/UserInputFormWizardDeprecated';
 import { WfoProcessDetail } from './WfoProcessDetail';
 
 type StartCreateWorkflowPayload = {
@@ -86,6 +89,8 @@ export const WfoStartProcessPage = ({
     const [form, setForm] = useState<UserInputForm>({});
     const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
+    const [startProcess] = useStartProcessMutation();
+
     const startProcessPayload = useMemo(
         () => getInitialProcessPayload({ productId, subscriptionId }),
         [productId, subscriptionId],
@@ -110,17 +115,15 @@ export const WfoStartProcessPage = ({
 
     const submit = useCallback(
         (processInput: object[]) => {
-            const startProcessPromise = apiClient
-                .startProcess(
-                    processName,
-                    startProcessPayload
-                        ? [startProcessPayload, ...processInput]
-                        : [...processInput],
-                )
+            const startProcessPromise = startProcess({
+                workflowName: processName,
+                userInputs: startProcessPayload
+                    ? [startProcessPayload, ...processInput]
+                    : [...processInput],
+            })
+                .unwrap()
                 .then(
-                    // Resolve handler
-                    (result) => {
-                        const process = result as { id: string };
+                    (process) => {
                         if (process.id) {
                             const basePath = isTask
                                 ? PATH_TASKS
@@ -133,13 +136,12 @@ export const WfoStartProcessPage = ({
                         throw e;
                     },
                 )
-                .catch((error: AxiosError) => {
-                    if (error?.response?.status !== 510) {
-                        if (error?.response?.status === 400) {
+                .catch((error) => {
+                    if (error?.status !== HttpStatus.FormNotComplete) {
+                        if (error?.status === HttpStatus.BadRequest) {
                             // Rethrow the error so userInputForm can catch it and display validation errors
                             throw error;
                         }
-
                         console.error(error);
                         setHasError(true);
                     } else {
@@ -149,9 +151,9 @@ export const WfoStartProcessPage = ({
 
             // Catch a 503: Service unavailable error indicating the engine is down. This rethrows other errors
             // if it's not 503 so we can catch the special 510 error in the catchErrorStatus call in the useEffect hook
-            return apiClient.catchErrorStatus<EngineStatus>(
+            return handlePromiseErrorWithCallback<EngineStatus>(
                 startProcessPromise,
-                503,
+                HttpStatus.ServiceUnavailable,
                 (json) => {
                     // TODO: Use the toastMessage hook to display an engine down error message
                     console.error('engine down!!!', json);
@@ -159,7 +161,7 @@ export const WfoStartProcessPage = ({
                 },
             );
         },
-        [apiClient, processName, startProcessPayload, isTask, router],
+        [startProcess, processName, startProcessPayload, isTask, router],
     );
 
     useEffect(() => {
@@ -171,9 +173,9 @@ export const WfoStartProcessPage = ({
                 });
             };
 
-            apiClient.catchErrorStatus<FormNotCompleteResponse>(
+            handlePromiseErrorWithCallback<FormNotCompleteResponse>(
                 submit([]),
-                510,
+                HttpStatus.FormNotComplete,
                 clientResultCallback,
             );
         }
@@ -215,9 +217,9 @@ export const WfoStartProcessPage = ({
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
                     (stepUserInput && (
-                        <UserInputFormWizardDeprecated
+                        <UserInputFormWizard
                             stepUserInput={stepUserInput}
-                            validSubmit={submit}
+                            stepSubmit={submit}
                             cancel={() =>
                                 router.push(
                                     isTask ? PATH_TASKS : PATH_WORKFLOWS,
