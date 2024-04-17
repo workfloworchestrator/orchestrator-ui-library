@@ -3,83 +3,92 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { SessionProvider } from 'next-auth/react';
 import { IntlProvider } from 'next-intl';
-import 'src/font/inter.css';
 
 import { EuiProvider } from '@elastic/eui';
 import '@elastic/eui/dist/eui_theme_dark.min.css';
 import '@elastic/eui/dist/eui_theme_light.min.css';
+import type { Preview } from '@storybook/react';
 
-import { WfoAuth } from '../src/components/WfoAuth';
 import { OrchestratorConfigProvider } from '../src/contexts/OrchestratorConfigContext';
 import { StoreProvider } from '../src/rtk/storeProvider';
-import { defaultOrchestratorTheme } from '../src/theme/defaultOrchestratorTheme';
 
-/** @type { import('@storybook/react').Preview } */
-
-const placeholder = 'http://placeholder';
-const placeHolderConfig = {
-    orchestratorApiBaseUrl: placeholder,
-    engineStatusEndpoint: placeholder,
-    graphqlEndpointCore: placeholder,
-    processStatusCountsEndpoint: placeholder,
-    processesEndpoint: placeholder,
+const placeholderUrl = 'https://storybook';
+const storybookConfigWithPlaceHolders = {
     environmentName: 'storybook',
-    subscriptionActionsEndpoint: placeholder,
-    subscriptionProcessesEndpoint: placeholder,
-    orchestratorWebsocketUrl: placeholder,
+    orchestratorWebsocketUrl: 'wss://storybook',
+    orchestratorApiBaseUrl: placeholderUrl + '/api',
+    graphqlEndpointCore: placeholderUrl + '/graphql',
+    engineStatusEndpoint: placeholderUrl + '/engine/status',
+    processStatusCountsEndpoint: placeholderUrl + '/process/status/counts',
+    processesEndpoint: placeholderUrl + '/processes',
+    subscriptionActionsEndpoint: placeholderUrl + '/subscription/actions',
+    subscriptionProcessesEndpoint: placeholderUrl + '/subscription/processes',
     authActive: false,
     useWebSockets: false,
     useThemeToggle: false,
 };
 
-const queryClientConfig = {
-    defaultOptions: {
-        queries: {
-            cacheTime: 5 * 1000,
-            refetchOnWindowFocus: true,
-        },
-    },
-};
-
-const preview = {
+const preview: Preview = {
     parameters: {
         controls: {
             matchers: {
                 color: /(background|color)$/i,
-                date: /Date$/,
+                date: /Date$/i,
             },
         },
     },
     decorators: [
         (Story) => {
-            const queryClient = new QueryClient(queryClientConfig);
-
             return (
                 <OrchestratorConfigProvider
-                    initialOrchestratorConfig={placeHolderConfig}
+                    initialOrchestratorConfig={storybookConfigWithPlaceHolders}
                 >
-                    <StoreProvider
-                        initialOrchestratorConfig={placeHolderConfig}
-                    >
-                        <SessionProvider>
-                            <WfoAuth>
-                                <EuiProvider
-                                    colorMode={'LIGHT'}
-                                    modify={defaultOrchestratorTheme}
-                                >
-                                    <QueryClientProvider
-                                        client={queryClient}
-                                        contextSharing={true}
-                                    >
-                                        <IntlProvider locale="enGB">
-                                            <Story />
-                                        </IntlProvider>
-                                    </QueryClientProvider>
-                                </EuiProvider>
-                            </WfoAuth>
-                        </SessionProvider>
-                    </StoreProvider>
+                    <Story />
                 </OrchestratorConfigProvider>
+            );
+        },
+        (Story) => {
+            return (
+                <StoreProvider
+                    initialOrchestratorConfig={storybookConfigWithPlaceHolders}
+                >
+                    <Story />
+                </StoreProvider>
+            );
+        },
+        (Story) => {
+            return (
+                <EuiProvider>
+                    <Story />
+                </EuiProvider>
+            );
+        },
+        (Story) => {
+            return (
+                <div style={{ border: 'thin solid green' }}>
+                    <Story />
+                </div>
+            );
+        },
+        (Story) => {
+            return (
+                <IntlProvider locale={'enGB'}>
+                    <Story />
+                </IntlProvider>
+            );
+        },
+        (Story) => {
+            return (
+                <SessionProvider>
+                    <Story />
+                </SessionProvider>
+            );
+        },
+        (Story) => {
+            return (
+                <QueryClientProvider client={new QueryClient()}>
+                    <Story />
+                </QueryClientProvider>
             );
         },
     ],

@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoStatusDotIcon } from '@/icons';
 import { useGetEngineStatusQuery } from '@/rtk';
 import { EngineStatus } from '@/types';
 
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoStatusDotIcon } from '../../../icons/WfoStatusDotIcon';
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 export const WfoEngineStatusBadge = () => {

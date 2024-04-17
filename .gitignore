@@ -42,3 +42,5 @@ npm-debug.log*
 
 # Temporary fix for surf version
 apps/wfo-ui-surf
+
+*storybook.log

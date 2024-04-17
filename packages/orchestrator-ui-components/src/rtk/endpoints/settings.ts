@@ -1,6 +1,5 @@
+import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
 import { EngineStatus } from '@/types';
-
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '../api';
 
 interface EngineStatusReturnValue {
     engineStatus: EngineStatus;
