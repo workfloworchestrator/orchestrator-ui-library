@@ -13,7 +13,7 @@ import {
 } from '@elastic/eui';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
-import UserInputFormWizard from '@/components/WfoForms/UserInputFormWizard';
+import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
@@ -123,8 +123,7 @@ export const WfoStartProcessPage = ({
             })
                 .unwrap()
                 .then(
-                    (result) => {
-                        const process = result as { id: string };
+                    (process) => {
                         if (process.id) {
                             const basePath = isTask
                                 ? PATH_TASKS
@@ -138,8 +137,8 @@ export const WfoStartProcessPage = ({
                     },
                 )
                 .catch((error) => {
-                    if (error?.status !== 510) {
-                        if (error?.status === 400) {
+                    if (error?.status !== HttpStatus.FormNotComplete) {
+                        if (error?.status === HttpStatus.BadRequest) {
                             // Rethrow the error so userInputForm can catch it and display validation errors
                             throw error;
                         }

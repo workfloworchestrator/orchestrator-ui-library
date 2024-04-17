@@ -2,12 +2,12 @@ import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 const PROCESS_ENDPOINT = 'processes';
 const RESUME_ENDPOINT = 'resume';
-const FORMS_ENDPOINT = 'surf/forms/'; // It is still being used by example-wfo-uo
+const FORMS_ENDPOINT = 'surf/forms/'; // It is still being used by example-wfo-ui
 
 const formsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         startProcess: build.mutation<
-            unknown,
+            { id: string },
             { workflowName: string; userInputs: object[] }
         >({
             query: ({ workflowName, userInputs }) => ({
@@ -23,7 +23,7 @@ const formsApi = orchestratorApi.injectEndpoints({
             },
         }),
         resumeProcess: build.mutation<
-            unknown,
+            void,
             { processId: string; userInputs: object[] }
         >({
             query: ({ processId, userInputs }) => ({
@@ -39,7 +39,7 @@ const formsApi = orchestratorApi.injectEndpoints({
             },
         }),
         startForm: build.mutation<
-            unknown,
+            void,
             { formKey: string; userInputs: object[] }
         >({
             query: ({ formKey, userInputs }) => ({
