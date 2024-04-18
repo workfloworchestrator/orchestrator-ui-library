@@ -1,8 +1,16 @@
 import React from 'react';
 
-import { WfoError, WfoLoading } from '@/components';
+import { useTranslations } from 'next-intl';
+
+import {
+    WfoError,
+    WfoFirstPartUUID,
+    WfoKeyValueTable,
+    WfoLoading,
+} from '@/components';
+import type { WfoKeyValueTableDataType } from '@/components';
 import { useGetInUseByRelationDetailsQuery } from '@/rtk';
-import { InUseByRelation } from '@/types';
+import { InUseByRelation, InUseByRelationDetail } from '@/types';
 
 interface WfoInUseByRelationsProps {
     inUseByRelations: InUseByRelation[];
@@ -11,13 +19,15 @@ interface WfoInUseByRelationsProps {
 export const WfoInUseByRelations = ({
     inUseByRelations,
 }: WfoInUseByRelationsProps) => {
+    const t = useTranslations('subscriptions.detail');
+
     const subscriptionIds = inUseByRelations
         .map((relation) => relation.subscription_id)
         .join('|');
     const { data, isLoading, isError } = useGetInUseByRelationDetailsQuery({
         subscriptionIds,
     });
-    console.log(data);
+
     if (isError) {
         return <WfoError />;
     }
@@ -25,5 +35,46 @@ export const WfoInUseByRelations = ({
     if (isLoading) {
         return <WfoLoading />;
     }
-    return <>WIP</>;
+
+    const getKeyValues = (
+        inUseByRelationDetails: InUseByRelationDetail,
+    ): WfoKeyValueTableDataType[] => {
+        return [
+            {
+                key: t('description'),
+                value: inUseByRelationDetails.description,
+                textToCopy: inUseByRelationDetails.description,
+            },
+            {
+                key: t('productType'),
+                value: inUseByRelationDetails.product.productType,
+                textToCopy: inUseByRelationDetails.product.productType,
+            },
+            {
+                key: t('subscriptionId'),
+                value: (
+                    <WfoFirstPartUUID
+                        UUID={inUseByRelationDetails.subscriptionId}
+                    />
+                ),
+                textToCopy: inUseByRelationDetails.subscriptionId,
+            },
+        ];
+    };
+
+    return (
+        <>
+            {data?.inUseByRelationDetails.map((relation, index) => {
+                const keyValues = getKeyValues(relation);
+
+                return (
+                    <WfoKeyValueTable
+                        keyValues={keyValues}
+                        showCopyToClipboardIcon={true}
+                        key={index}
+                    />
+                );
+            })}
+        </>
+    );
 };
