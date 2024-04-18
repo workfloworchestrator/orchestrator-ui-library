@@ -13,3 +13,4 @@ export * from './subscriptionDetail';
 export * from './subscriptionsDropdownOptions';
 export * from './relatedSubscriptions';
 export * from './startOptions';
+export * from './subscriptionInUseByRelationsList';

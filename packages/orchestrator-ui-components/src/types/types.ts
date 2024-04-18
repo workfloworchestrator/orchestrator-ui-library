@@ -356,6 +356,10 @@ export interface RelatedSubscriptionsResult {
     >;
 }
 
+export interface InUseByRelationsDetailResult {
+    subscriptions: GraphQlSinglePage<InUseByRelationDetail>;
+}
+
 export type StartComboBoxOption = {
     data: {
         workflowName: string;
@@ -478,6 +482,13 @@ export type RelatedSubscription = Pick<
 > & {
     product: Pick<ProductDefinition, 'tag'>;
     customer: Pick<Customer, 'fullname'>;
+};
+
+export type InUseByRelationDetail = Pick<
+    Subscription,
+    'subscriptionId' | 'description'
+> & {
+    product: Pick<ProductDefinition, 'productType'>;
 };
 
 export type ExternalService = {

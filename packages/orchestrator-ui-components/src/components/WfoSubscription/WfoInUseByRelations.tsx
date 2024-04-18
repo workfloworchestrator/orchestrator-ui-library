@@ -1,20 +1,29 @@
 import React from 'react';
 
-type inUseByRelation = {
-    subscription_instance_id: string;
-    subscription_id: string;
-};
+import { WfoError, WfoLoading } from '@/components';
+import { useGetInUseByRelationDetailsQuery } from '@/rtk';
+import { InUseByRelation } from '@/types';
 
 interface WfoInUseByRelationsProps {
-    inUseByRelations: inUseByRelation[];
+    inUseByRelations: InUseByRelation[];
 }
 
 export const WfoInUseByRelations = ({
     inUseByRelations,
 }: WfoInUseByRelationsProps) => {
-    const subscriptionIds = inUseByRelations.map(
-        (relation) => relation.subscription_id,
-    );
+    const subscriptionIds = inUseByRelations
+        .map((relation) => relation.subscription_id)
+        .join('|');
+    const { data, isLoading, isError } = useGetInUseByRelationDetailsQuery({
+        subscriptionIds,
+    });
+    console.log(data);
+    if (isError) {
+        return <WfoError />;
+    }
 
-    return <div>WfoInUseBySubscriptions: {subscriptionIds.join(', ')}</div>;
+    if (isLoading) {
+        return <WfoLoading />;
+    }
+    return <>WIP</>;
 };
