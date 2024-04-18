@@ -1,0 +1,49 @@
+import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
+import { SummaryCard, SummaryCardStatus, WfoSummaryCard } from '@/components';
+import { productsSummaryQueryVariables } from '@/pages/startPage/queryVariables';
+import { useGetProductsSummaryQuery } from '@/rtk';
+
+export const WfoProductsSummaryCard = () => {
+    const t = useTranslations('startPage.products');
+
+    const {
+        data: productsSummaryResult,
+        isLoading: productsSummaryIsFetching,
+    } = useGetProductsSummaryQuery(productsSummaryQueryVariables);
+
+    const productsSummaryCard: SummaryCard = {
+        headerTitle: t('headerTitle'),
+        headerValue: productsSummaryResult?.pageInfo.totalItems ?? 0,
+        headerStatus: SummaryCardStatus.Neutral,
+        listTitle: t('listTitle'),
+        listItems:
+            [...(productsSummaryResult?.products ?? [])]
+                .sort(
+                    (left, right) =>
+                        (right.subscriptions.pageInfo.totalItems ?? 0) -
+                        (left.subscriptions.pageInfo.totalItems ?? 0),
+                )
+                .map((product) => ({
+                    title: '',
+                    value: (
+                        <div
+                            css={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <div>{product.name}</div>
+                            <div>
+                                {product.subscriptions.pageInfo.totalItems || 0}
+                            </div>
+                        </div>
+                    ),
+                })) ?? [],
+        isLoading: productsSummaryIsFetching,
+    };
+
+    return <WfoSummaryCard {...productsSummaryCard} />;
+};
