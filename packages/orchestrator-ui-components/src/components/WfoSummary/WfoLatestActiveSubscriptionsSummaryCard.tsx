@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import {
     PATH_SUBSCRIPTIONS,
-    SummaryCard,
     SummaryCardStatus,
     WfoSummaryCard,
 } from '@/components';
@@ -23,22 +22,18 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
         subscriptionsListSummaryQueryVariables,
     );
 
-    // Todo make the props inline
-    const latestActiveSubscriptionsSummaryCard: SummaryCard = {
-        headerTitle: t('headerTitle'),
-        headerValue: subscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
-        headerStatus: SummaryCardStatus.Neutral,
-        listTitle: t('listTitle'),
-        listItems: optionalArrayMapper(
-            subscriptionsSummaryResult?.subscriptions,
-            mapSubscriptionSummaryToSummaryCardListItem,
-        ),
-        button: {
-            name: t('buttonText'),
-            url: PATH_SUBSCRIPTIONS,
-        },
-        isLoading: subscriptionsSummaryIsFetching,
-    };
-
-    return <WfoSummaryCard {...latestActiveSubscriptionsSummaryCard} />;
+    return (
+        <WfoSummaryCard
+            headerTitle={t('headerTitle')}
+            headerValue={subscriptionsSummaryResult?.pageInfo.totalItems ?? 0}
+            headerStatus={SummaryCardStatus.Neutral}
+            listTitle={t('listTitle')}
+            listItems={optionalArrayMapper(
+                subscriptionsSummaryResult?.subscriptions,
+                mapSubscriptionSummaryToSummaryCardListItem,
+            )}
+            button={{ name: t('buttonText'), url: PATH_SUBSCRIPTIONS }}
+            isLoading={subscriptionsSummaryIsFetching}
+        />
+    );
 };

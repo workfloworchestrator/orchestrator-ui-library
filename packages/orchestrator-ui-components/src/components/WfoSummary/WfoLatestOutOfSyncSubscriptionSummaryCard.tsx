@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import {
     PATH_SUBSCRIPTIONS,
-    SummaryCard,
     SummaryCardStatus,
     WfoSummaryCard,
 } from '@/components';
@@ -13,7 +12,7 @@ import { outOfSyncSubscriptionsListSummaryQueryVariables } from '@/pages/startPa
 import { useGetSubscriptionSummaryListQuery } from '@/rtk';
 import { optionalArrayMapper } from '@/utils';
 
-export const WfoLatestActiveSubscriptionsSummaryCard = () => {
+export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
     const t = useTranslations('startPage.outOfSyncSubscriptions');
 
     const {
@@ -23,23 +22,23 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
 
-    // Todo make the props inline
-    const latestOutOfSyncSubscriptionsSummaryCard: SummaryCard = {
-        headerTitle: t('headerTitle'),
-        headerValue:
-            outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0,
-        headerStatus: SummaryCardStatus.Error,
-        listTitle: t('listTitle'),
-        listItems: optionalArrayMapper(
-            outOfSyncSubscriptionsSummaryResult?.subscriptions,
-            mapSubscriptionSummaryToSummaryCardListItem,
-        ),
-        button: {
-            name: t('buttonText'),
-            url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
-        },
-        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
-    };
-
-    return <WfoSummaryCard {...latestOutOfSyncSubscriptionsSummaryCard} />;
+    return (
+        <WfoSummaryCard
+            headerTitle={t('headerTitle')}
+            headerValue={
+                outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0
+            }
+            headerStatus={SummaryCardStatus.Error}
+            listTitle={t('listTitle')}
+            listItems={optionalArrayMapper(
+                outOfSyncSubscriptionsSummaryResult?.subscriptions,
+                mapSubscriptionSummaryToSummaryCardListItem,
+            )}
+            button={{
+                name: t('buttonText'),
+                url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
+            }}
+            isLoading={outOfSyncsubscriptionsSummaryIsFetching}
+        />
+    );
 };
