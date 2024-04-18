@@ -7,6 +7,7 @@ export const useOrchestratorTheme = () => {
 
     const multiplyByBaseUnit = (multiplier: number) => baseUnit * multiplier;
 
+    // Todo use shade() to mix with black for secondary color
     const toSecondaryColor = (color: string) => tint(color, 0.8);
 
     return {
