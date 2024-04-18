@@ -11,6 +11,7 @@ import type { Preview } from '@storybook/react';
 
 import { OrchestratorConfigProvider } from '../src/contexts/OrchestratorConfigContext';
 import { StoreProvider } from '../src/rtk/storeProvider';
+import './font/inter.css';
 
 const placeholderUrl = 'https://storybook';
 const storybookConfigWithPlaceHolders = {
@@ -61,13 +62,6 @@ const preview: Preview = {
                 <EuiProvider>
                     <Story />
                 </EuiProvider>
-            );
-        },
-        (Story) => {
-            return (
-                <div style={{ border: 'thin solid green' }}>
-                    <Story />
-                </div>
             );
         },
         (Story) => {
