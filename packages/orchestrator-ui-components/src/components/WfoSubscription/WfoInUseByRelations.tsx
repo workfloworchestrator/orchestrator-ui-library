@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import {
     WfoError,
@@ -9,8 +10,11 @@ import {
     WfoLoading,
 } from '@/components';
 import type { WfoKeyValueTableDataType } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetInUseByRelationDetailsQuery } from '@/rtk';
 import { InUseByRelation, InUseByRelationDetail } from '@/types';
+
+import { getStyles } from './styles';
 
 interface WfoInUseByRelationsProps {
     inUseByRelations: InUseByRelation[];
@@ -20,7 +24,7 @@ export const WfoInUseByRelations = ({
     inUseByRelations,
 }: WfoInUseByRelationsProps) => {
     const t = useTranslations('subscriptions.detail');
-
+    const { inUseByRelationDetailsStyle } = useWithOrchestratorTheme(getStyles);
     const subscriptionIds = inUseByRelations
         .map((relation) => relation.subscription_id)
         .join('|');
@@ -41,16 +45,6 @@ export const WfoInUseByRelations = ({
     ): WfoKeyValueTableDataType[] => {
         return [
             {
-                key: t('description'),
-                value: inUseByRelationDetails.description,
-                textToCopy: inUseByRelationDetails.description,
-            },
-            {
-                key: t('productType'),
-                value: inUseByRelationDetails.product.productType,
-                textToCopy: inUseByRelationDetails.product.productType,
-            },
-            {
                 key: t('subscriptionId'),
                 value: (
                     <WfoFirstPartUUID
@@ -58,6 +52,22 @@ export const WfoInUseByRelations = ({
                     />
                 ),
                 textToCopy: inUseByRelationDetails.subscriptionId,
+            },
+            {
+                key: t('description'),
+                value: (
+                    <Link
+                        href={`/subscriptions/${inUseByRelationDetails.subscriptionId}`}
+                    >
+                        {inUseByRelationDetails.description}
+                    </Link>
+                ),
+                textToCopy: inUseByRelationDetails.description,
+            },
+            {
+                key: t('productType'),
+                value: inUseByRelationDetails.product.productType,
+                textToCopy: inUseByRelationDetails.product.productType,
             },
         ];
     };
@@ -68,11 +78,12 @@ export const WfoInUseByRelations = ({
                 const keyValues = getKeyValues(relation);
 
                 return (
-                    <WfoKeyValueTable
-                        keyValues={keyValues}
-                        showCopyToClipboardIcon={true}
-                        key={index}
-                    />
+                    <div css={inUseByRelationDetailsStyle} key={index}>
+                        <WfoKeyValueTable
+                            keyValues={keyValues}
+                            showCopyToClipboardIcon={true}
+                        />
+                    </div>
                 );
             })}
         </>

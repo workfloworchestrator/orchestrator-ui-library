@@ -140,11 +140,14 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
                                         <td css={rightColumnStyle}>
-                                            <WfoInUseByRelations
-                                                inUseByRelations={
-                                                    inUseByRelations
-                                                }
-                                            />
+                                            {(inUseByRelations.length === 0 &&
+                                                'None') || (
+                                                <WfoInUseByRelations
+                                                    inUseByRelations={
+                                                        inUseByRelations
+                                                    }
+                                                />
+                                            )}
                                         </td>
                                     </tr>
                                 </>
