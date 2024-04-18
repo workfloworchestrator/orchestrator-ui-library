@@ -488,7 +488,7 @@ export type InUseByRelationDetail = Pick<
     Subscription,
     'subscriptionId' | 'description'
 > & {
-    product: Pick<ProductDefinition, 'productType'>;
+    product: Pick<ProductDefinition, 'name'>;
 };
 
 export type ExternalService = {
