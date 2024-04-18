@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-import { SummaryCard } from '@/components/WfoSummary';
 import { FieldValue, SubscriptionDetail } from '@/types';
 
 export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
@@ -16,8 +15,8 @@ export type WfoSubscriptionDetailGeneralConfiguration = {
 export type OrchestratorComponentOverride = {
     startPage?: {
         summaryCardConfigurationOverride?: (
-            defaultItems: SummaryCard[],
-        ) => SummaryCard[];
+            defaultItems: ReactElement[],
+        ) => ReactElement[];
     };
     subscriptionDetail?: {
         valueOverrides?: ValueOverrideConfiguration;
@@ -32,10 +31,9 @@ type OrchestratorComponentOverrideSlice = Slice<OrchestratorComponentOverride>;
 
 export const getOrchestratorComponentOverrideSlice = (
     config: OrchestratorComponentOverride,
-): OrchestratorComponentOverrideSlice => {
-    return createSlice({
+): OrchestratorComponentOverrideSlice =>
+    createSlice({
         name: 'orchestratorComponentOverride',
         initialState: config,
         reducers: {},
     });
-};

@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import {
     PATH_WORKFLOWS,
-    SummaryCard,
     SummaryCardStatus,
     WfoSummaryCard,
 } from '@/components';
@@ -13,7 +12,7 @@ import { activeWorkflowsListSummaryQueryVariables } from '@/pages/startPage/quer
 import { useGetProcessListSummaryQuery } from '@/rtk';
 import { optionalArrayMapper } from '@/utils';
 
-export const WfoLatestActiveSubscriptionsSummaryCard = () => {
+export const WfoActiveWorkflowsSummaryCard = () => {
     const t = useTranslations('startPage.activeWorkflows');
 
     const {
@@ -21,22 +20,20 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
         isFetching: activeWorkflowsSummaryIsFetching,
     } = useGetProcessListSummaryQuery(activeWorkflowsListSummaryQueryVariables);
 
-    // Todo make the props inline
-    const activeWorkflowsSummaryCard: SummaryCard = {
-        headerTitle: t('headerTitle'),
-        headerValue: activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0,
-        headerStatus: SummaryCardStatus.Success,
-        listTitle: t('listTitle'),
-        listItems: optionalArrayMapper(
-            activeWorkflowsSummaryResponse?.processes,
-            mapProcessSummaryToSummaryCardListItem,
-        ),
-        button: {
-            name: t('buttonText'),
-            url: PATH_WORKFLOWS,
-        },
-        isLoading: activeWorkflowsSummaryIsFetching,
-    };
-
-    return <WfoSummaryCard {...activeWorkflowsSummaryCard} />;
+    return (
+        <WfoSummaryCard
+            headerTitle={t('headerTitle')}
+            headerValue={
+                activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0
+            }
+            headerStatus={SummaryCardStatus.Success}
+            listTitle={t('listTitle')}
+            listItems={optionalArrayMapper(
+                activeWorkflowsSummaryResponse?.processes,
+                mapProcessSummaryToSummaryCardListItem,
+            )}
+            button={{ name: t('buttonText'), url: PATH_WORKFLOWS }}
+            isLoading={activeWorkflowsSummaryIsFetching}
+        />
+    );
 };
