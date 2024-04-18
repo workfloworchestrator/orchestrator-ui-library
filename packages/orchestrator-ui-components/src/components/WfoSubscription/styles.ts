@@ -43,6 +43,14 @@ export const getStyles = (theme: EuiThemeComputed) => {
         border: 0,
     });
 
+    const inUseByRelationDetailsStyle = css({
+        borderColor: theme.colors.lightShade,
+        borderStyle: 'solid',
+        borderWidth: 'thin',
+        marginBottom: theme.base / 4,
+        borderRadius: theme.border.radius.medium,
+    });
+
     return {
         contentCellStyle,
         headerCellStyle,
@@ -52,5 +60,6 @@ export const getStyles = (theme: EuiThemeComputed) => {
         emptyCellStyle,
         lastContentCellStyle,
         lastHeaderCellStyle,
+        inUseByRelationDetailsStyle,
     };
 };
