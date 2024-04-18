@@ -14,14 +14,11 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import {
-    PATH_SUBSCRIPTIONS,
-    WfoJsonCodeBlock,
-    WfoProductBlockKeyValueRow,
-} from '@/components';
+import { PATH_SUBSCRIPTIONS, WfoProductBlockKeyValueRow } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { FieldValue, InUseByRelation } from '@/types';
 
+import { WfoInUseByRelations } from '../WfoInUseByRelations';
 import {
     getFieldFromProductBlockInstanceValues,
     getProductBlockTitle,
@@ -143,9 +140,10 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
                                         <td css={rightColumnStyle}>
-                                            <WfoJsonCodeBlock
-                                                data={inUseByRelations}
-                                                isBasicStyle
+                                            <WfoInUseByRelations
+                                                inUseByRelations={
+                                                    inUseByRelations
+                                                }
                                             />
                                         </td>
                                     </tr>
