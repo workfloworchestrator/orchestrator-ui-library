@@ -12,7 +12,7 @@ export const subscriptionInUseByRelationQuery = `
           ) {
             page {
               product {
-                productType
+                name
               }
               description
               subscriptionId

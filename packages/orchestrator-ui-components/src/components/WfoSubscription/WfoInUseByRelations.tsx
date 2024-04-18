@@ -65,9 +65,9 @@ export const WfoInUseByRelations = ({
                 textToCopy: inUseByRelationDetails.description,
             },
             {
-                key: t('productType'),
-                value: inUseByRelationDetails.product.productType,
-                textToCopy: inUseByRelationDetails.product.productType,
+                key: t('productName'),
+                value: inUseByRelationDetails.product.name,
+                textToCopy: inUseByRelationDetails.product.name,
             },
         ];
     };
