@@ -123,6 +123,7 @@ export const WfoProcessDetail = ({
                 ProcessStatus.FAILED,
                 ProcessStatus.API_UNAVAILABLE,
                 ProcessStatus.INCONSISTENT_DATA,
+                ProcessStatus.WAITING,
             ],
             processDetail?.lastStatus,
         );

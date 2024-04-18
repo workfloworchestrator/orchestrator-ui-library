@@ -8,6 +8,8 @@ export * from './WfoMinusCircleOutline';
 export * from './WfoPlusCircleFill';
 export * from './WfoChevronDown';
 export * from './WfoChevronUp';
+export * from './WfoBoltFill';
+export * from './WfoBoltSlashFill';
 export * from './WfoCubeSolid';
 export * from './WfoArrowNarrowDown';
 export * from './WfoRefresh';
