@@ -27,6 +27,7 @@ export enum SummaryCardStatus {
     Neutral = 'Neutral',
 }
 
+// Todo: these are basically the props -- rename to WfoSummaryCardProps
 export type SummaryCard = {
     headerTitle: string;
     headerValue: string | number;
@@ -42,9 +43,32 @@ export type WfoSummaryCardsProps = {
 };
 
 export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
+    const currentBreakpoint = useCurrentEuiBreakpoint();
+
+    return (
+        <EuiFlexGrid
+            responsive={false}
+            columns={getNumberOfColumns(currentBreakpoint)}
+            gutterSize="xl"
+        >
+            {summaryCards.map((summaryCard, index) => (
+                <WfoSummaryCard key={index} {...summaryCard} />
+            ))}
+        </EuiFlexGrid>
+    );
+};
+
+export const WfoSummaryCard: FC<SummaryCard> = ({
+    button,
+    isLoading,
+    headerStatus,
+    headerValue,
+    headerTitle,
+    listTitle,
+    listItems,
+}) => {
     const { theme } = useOrchestratorTheme();
     const { cardContainerStyle } = getWfoSummaryCardsStyles(theme);
-    const currentBreakpoint = useCurrentEuiBreakpoint();
 
     const getIconTypeAndColorForHeaderStatus = (
         status: SummaryCardStatus,
@@ -70,42 +94,19 @@ export const WfoSummaryCards: FC<WfoSummaryCardsProps> = ({ summaryCards }) => {
     };
 
     return (
-        <EuiFlexGrid
-            responsive={false}
-            columns={getNumberOfColumns(currentBreakpoint)}
-            gutterSize="xl"
-        >
-            {summaryCards.map(
-                (
-                    {
-                        headerTitle,
-                        headerValue,
-                        headerStatus,
-                        listTitle,
-                        listItems,
-                        button,
-                        isLoading,
-                    },
-                    index,
-                ) => (
-                    <EuiFlexItem key={index} css={cardContainerStyle}>
-                        <WfoSummaryCardHeader
-                            text={headerTitle}
-                            value={headerValue}
-                            {...getIconTypeAndColorForHeaderStatus(
-                                headerStatus,
-                            )}
-                        />
-                        <EuiSpacer size="m" />
-                        <WfoSummaryCardList
-                            title={listTitle}
-                            items={listItems}
-                            button={button}
-                            isLoading={isLoading}
-                        />
-                    </EuiFlexItem>
-                ),
-            )}
-        </EuiFlexGrid>
+        <EuiFlexItem css={cardContainerStyle}>
+            <WfoSummaryCardHeader
+                text={headerTitle}
+                value={headerValue}
+                {...getIconTypeAndColorForHeaderStatus(headerStatus)}
+            />
+            <EuiSpacer size="m" />
+            <WfoSummaryCardList
+                title={listTitle}
+                items={listItems}
+                button={button}
+                isLoading={isLoading}
+            />
+        </EuiFlexItem>
     );
 };
