@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.14.1
+
+### Patch Changes
+
+- d835c16: add retry for processes in waiting state - added new icon to be used …
+
 ## 1.14.0
 
 ### Minor Changes
