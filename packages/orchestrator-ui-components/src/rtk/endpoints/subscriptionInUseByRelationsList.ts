@@ -1,5 +1,17 @@
 import { CacheTags, orchestratorApi } from '@/rtk';
-import { InUseByRelationDetail, InUseByRelationsDetailResult } from '@/types';
+import {
+    InUseByRelationDetail,
+    InUseByRelationsDetailResult,
+    SubscriptionStatus,
+} from '@/types';
+
+const nonTerminalSubscriptionStatuses = [
+    SubscriptionStatus.INITIAL,
+    SubscriptionStatus.ACTIVE,
+    SubscriptionStatus.MIGRATING,
+    SubscriptionStatus.DISABLED,
+    SubscriptionStatus.PROVISIONING,
+].join('|');
 
 export const subscriptionInUseByRelationQuery = `
     query SubscriptionsInUseByRelationsDetails(
@@ -8,7 +20,7 @@ export const subscriptionInUseByRelationQuery = `
         subscriptions(
             first: 1000000
             after: 0
-            filterBy: [{field: "subscriptionId", value: $subscriptionIds},{field: "status", value: "INITIAL|ACTIVE|MIGRATING|DISABLED|PROVISIONING"}]
+            filterBy: [{field: "subscriptionId", value: $subscriptionIds},{field: "status", value: ${nonTerminalSubscriptionStatuses}}]
           ) {
             page {
               product {
