@@ -510,9 +510,11 @@ export type OrchestratorConfig = {
     processesEndpoint: string;
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
+    workflowInformationLinkUrl: string;
     authActive: boolean;
     useWebSockets: boolean;
     useThemeToggle: boolean;
+    showWorkflowInformationLink: boolean;
 };
 
 export enum ColorModes {

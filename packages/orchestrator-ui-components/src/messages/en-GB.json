@@ -210,7 +210,8 @@
             "lastUpdate": "Last update",
             "relatedSubscriptions": "Related subscriptions",
             "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
-            "customer": "Customer"
+            "customer": "Customer",
+            "openWorkflowTaskInfo": "open workflow/task information in a new tab"
         },
         "steps": {
             "taskSteps": "Task steps",

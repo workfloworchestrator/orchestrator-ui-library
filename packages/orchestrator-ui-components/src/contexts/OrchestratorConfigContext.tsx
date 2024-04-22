@@ -17,6 +17,8 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     authActive: true,
     useWebSockets: false,
     useThemeToggle: false,
+    showWorkflowInformationLink: false,
+    workflowInformationLinkUrl: '',
 });
 
 export type OrchestratorConfigProviderProps = {

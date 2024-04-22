@@ -209,7 +209,8 @@
             "lastUpdate": "Laatste update",
             "relatedSubscriptions": "Gerelateerde subscriptions",
             "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscriptie} other {# subscriptions}}",
-            "customer": "Customer"
+            "customer": "Customer",
+            "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad"
         },
         "steps": {
             "steps": "Workflow stappen",

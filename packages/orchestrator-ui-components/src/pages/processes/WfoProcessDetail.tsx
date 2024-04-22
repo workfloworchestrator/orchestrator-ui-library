@@ -5,12 +5,14 @@ import { useRouter } from 'next/router';
 
 import {
     EuiButton,
+    EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPageHeader,
     EuiPanel,
     EuiSpacer,
     EuiText,
+    EuiToolTip,
 } from '@elastic/eui';
 
 import {
@@ -22,7 +24,10 @@ import {
     WfoTimeline,
 } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { ConfirmationDialogContext } from '@/contexts';
+import {
+    ConfirmationDialogContext,
+    OrchestratorConfigContext,
+} from '@/contexts';
 import {
     useCheckEngineStatus,
     useMutateProcess,
@@ -105,6 +110,8 @@ export const WfoProcessDetail = ({
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
+    const { workflowInformationLinkUrl, showWorkflowInformationLink } =
+        useContext(OrchestratorConfigContext);
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -185,13 +192,30 @@ export const WfoProcessDetail = ({
             },
         });
 
+    const openDocs = () =>
+        window.open(
+            workflowInformationLinkUrl + processDetail?.workflowName,
+            '_blank',
+        );
+
     return (
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <EuiPageHeader pageTitle={pageTitle} />
                     <EuiSpacer />
-                    <EuiText size="s">{productNames}</EuiText>
+                    <EuiFlexGroup gutterSize={'s'} alignItems={'center'}>
+                        {showWorkflowInformationLink && (
+                            <EuiToolTip content={t('openWorkflowTaskInfo')}>
+                                <EuiButtonIcon
+                                    onClick={openDocs}
+                                    iconSize={'l'}
+                                    iconType={'iInCircle'}
+                                />
+                            </EuiToolTip>
+                        )}
+                        <EuiText size="s">{productNames}</EuiText>
+                    </EuiFlexGroup>
                 </EuiFlexItem>
                 <EuiFlexGroup
                     justifyContent="flexEnd"
