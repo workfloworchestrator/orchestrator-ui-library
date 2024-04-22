@@ -227,10 +227,8 @@ function Vlan({
             : undefined;
 
     let message = '';
-    if (!imsIsLoading) {
-        if (missingInIms) {
-            message = t('widgets.vlan.missingInIms');
-        } else if (portIsTagged && nsiVlansOnly) {
+    if (!imsIsLoading && subscriptionId) {
+        if (portIsTagged && nsiVlansOnly) {
             const initialUsedVlans = schema
                 .getInitialValue('service_ports', {})
                 .map((sp: { vlan: string }) => sp.vlan);
