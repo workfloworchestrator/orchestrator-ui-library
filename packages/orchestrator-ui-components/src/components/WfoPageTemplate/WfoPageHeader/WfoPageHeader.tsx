@@ -66,9 +66,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                 <EuiButtonIcon
                     aria-label="Show/Hide side menu"
                     display="empty"
-                    iconType={() => (
-                        <WfoSideMenu color={theme.colors.emptyShade} />
-                    )}
+                    iconType={() => <WfoSideMenu color={theme.colors.ghost} />}
                     css={{ width: 48, height: 48, marginLeft: 10 }}
                     onClick={handleSideMenuClick}
                 />
@@ -119,7 +117,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         aria-label="Logout"
                         display="empty"
                         iconType={() => (
-                            <WfoLogoutIcon color={theme.colors.emptyShade} />
+                            <WfoLogoutIcon color={theme.colors.ghost} />
                         )}
                         css={{
                             width: 48,

@@ -60,7 +60,7 @@ export const WfoFailedTasksBadge = () => {
                 }
             >
                 <WfoHeaderBadge
-                    color={theme.colors.emptyShade}
+                    color={theme.colors.ghost}
                     textColor={theme.colors.shadow}
                     iconType={() => (
                         <WfoXCircleFill color={theme.colors.danger} />
