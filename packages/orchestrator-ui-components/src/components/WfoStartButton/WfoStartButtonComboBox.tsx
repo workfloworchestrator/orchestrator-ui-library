@@ -4,7 +4,7 @@ import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlusCircleFill } from '@/icons';
-import { StartComboBoxOption } from '@/types';
+import { ColorModes, StartComboBoxOption } from '@/types';
 
 import { getStyles } from './styles';
 
@@ -23,7 +23,12 @@ export const WfoStartButtonComboBox = ({
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { selectableStyle } = getStyles();
-    const { theme } = useOrchestratorTheme();
+    const { theme, colorMode } = useOrchestratorTheme();
+
+    const isDarkThemeActive = colorMode === ColorModes.DARK;
+    const iconColor = isDarkThemeActive
+        ? theme.colors.title
+        : theme.colors.emptyShade;
 
     const Button = (
         <EuiButton
@@ -31,12 +36,10 @@ export const WfoStartButtonComboBox = ({
             iconType={
                 isProcess
                     ? 'plus'
-                    : () => (
-                          <WfoPlusCircleFill color={theme.colors.emptyShade} />
-                      )
+                    : () => <WfoPlusCircleFill color={iconColor} />
             }
             fullWidth={isProcess}
-            fill={!isProcess}
+            fill={!isProcess || isDarkThemeActive}
         >
             {buttonText}
         </EuiButton>
