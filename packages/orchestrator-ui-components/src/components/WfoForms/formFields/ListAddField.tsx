@@ -53,9 +53,9 @@ function ListAdd({
         !disabled &&
         !(
             parent.maxCount! <=
-            Math.max(initialCount ?? 0, parent.value!.length)
+            Math.max(initialCount ?? 0, parent?.value!.length)
         );
-    const count = 1 + Math.max((initialCount ?? 0) - parent.value!.length, 0);
+    const count = 1 + Math.max((initialCount ?? 0) - parent?.value!.length, 0);
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
         if (

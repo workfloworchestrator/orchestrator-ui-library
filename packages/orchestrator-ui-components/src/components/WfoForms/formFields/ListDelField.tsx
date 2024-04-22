@@ -50,7 +50,7 @@ function ListDel({
     )[0];
 
     const limitNotReached =
-        !disabled && !(parent.minCount! >= parent.value!.length);
+        !disabled && !(parent.minCount! >= parent?.value!.length);
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
         if (
@@ -58,7 +58,7 @@ function ListDel({
             !readOnly &&
             (!('key' in event) || event.key === 'Enter')
         ) {
-            const value = parent.value!.slice();
+            const value = parent?.value!.slice();
             value.splice(nameIndex, 1);
             parent.onChange(value);
         }
