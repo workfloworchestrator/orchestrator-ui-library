@@ -16,6 +16,20 @@ export const getCopyrightStyles = (theme: EuiThemeComputed) => {
     };
 };
 
+export const getMenuStyles = (theme: EuiThemeComputed) => {
+    const menuStyle = css({
+        '.euiSideNavItem--branch': {
+            '&:after': {
+                backgroundColor: theme.colors.lightShade,
+            },
+        },
+    });
+
+    return {
+        menuStyle,
+    };
+};
+
 export const getMenuItemStyles = (theme: EuiThemeComputed) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
@@ -36,7 +50,7 @@ export const getMenuItemStyles = (theme: EuiThemeComputed) => {
             left: 0,
             width: '4px',
             height: '1px',
-            backgroundColor: '#d3dae6',
+            backgroundColor: theme.colors.lightShade,
             position: 'absolute',
         },
         padding: '8px 12px',
@@ -48,7 +62,7 @@ export const getMenuItemStyles = (theme: EuiThemeComputed) => {
 
     const menuItemStyle = css({
         ...baseStyles,
-        color: theme.colors.title,
+        color: theme.colors.subduedText,
     });
 
     const selectedMenuItem = css({
@@ -57,12 +71,13 @@ export const getMenuItemStyles = (theme: EuiThemeComputed) => {
         backgroundColor: theme.colors.lightShade,
         borderRadius: theme.border.radius.medium,
         fontWeight: theme.font.weight.semiBold,
-        color: theme.colors.primaryText,
+        color: theme.colors.darkestShade,
     });
 
     const selectedSubMenuItem = css({
         ...baseSubMenuStyles,
-        fontWeight: theme.font.weight.semiBold,
+        fontWeight: theme.font.weight.medium,
+        color: theme.colors.darkestShade,
     });
 
     const subMenuItemStyle = css({

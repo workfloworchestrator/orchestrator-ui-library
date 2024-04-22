@@ -7,9 +7,10 @@ import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoIsAllowedToRender } from '@/components';
+import { getMenuStyles } from '@/components/WfoPageTemplate/WfoSidebar/styles';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy } from '@/hooks';
+import { usePolicy, useWithOrchestratorTheme } from '@/hooks';
 
 import {
     PATH_METADATA,
@@ -45,6 +46,8 @@ export type WfoSidebarProps = {
 };
 
 export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
+    const { menuStyle } = useWithOrchestratorTheme(getMenuStyles);
+
     const t = useTranslations('main');
     const router = useRouter();
 
@@ -258,13 +261,12 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     ];
 
     return (
-        <>
-            <EuiSideNav
-                mobileTitle={t('mobileTitle')}
-                toggleOpenOnMobile={toggleMobile}
-                isOpenOnMobile={isSideNavOpenOnMobile}
-                items={defaultMenu}
-            />
-        </>
+        <EuiSideNav
+            css={menuStyle}
+            mobileTitle={t('mobileTitle')}
+            toggleOpenOnMobile={toggleMobile}
+            isOpenOnMobile={isSideNavOpenOnMobile}
+            items={defaultMenu}
+        />
     );
 };
