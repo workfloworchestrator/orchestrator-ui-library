@@ -7,6 +7,7 @@ export const getWfoSummaryCardListStyles = (theme: EuiThemeComputed) => {
         flexDirection: 'column',
         justifyContent: 'space-between',
         flexGrow: 1,
+        borderColor: theme.colors.lightShade,
     });
 
     const listHeaderStyle = css({
