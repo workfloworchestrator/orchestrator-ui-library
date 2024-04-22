@@ -1,3 +1,4 @@
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { CacheTags, orchestratorApi } from '@/rtk';
 import {
     InUseByRelationDetail,
@@ -18,7 +19,7 @@ export const subscriptionInUseByRelationQuery = `
         $subscriptionIds: String!
     ) {
         subscriptions(
-            first: 1000000
+            first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}
             after: 0
             filterBy: [{field: "subscriptionId", value: $subscriptionIds},{field: "status", value: ${nonTerminalSubscriptionStatuses}}]
           ) {

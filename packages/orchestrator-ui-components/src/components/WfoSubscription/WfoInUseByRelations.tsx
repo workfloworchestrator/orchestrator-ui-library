@@ -10,6 +10,7 @@ import {
     WfoLoading,
 } from '@/components';
 import type { WfoKeyValueTableDataType } from '@/components';
+import { PATH_SUBSCRIPTIONS } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetInUseByRelationDetailsQuery } from '@/rtk';
 import { InUseByRelation, InUseByRelationDetail } from '@/types';
@@ -57,7 +58,7 @@ export const WfoInUseByRelations = ({
                 key: t('description'),
                 value: (
                     <Link
-                        href={`/subscriptions/${inUseByRelationDetails.subscriptionId}`}
+                        href={`/${PATH_SUBSCRIPTIONS}/${inUseByRelationDetails.subscriptionId}`}
                     >
                         {inUseByRelationDetails.description}
                     </Link>
