@@ -28,9 +28,6 @@ import {
 import { WfoCopyright } from './WfoCopyright';
 import { WfoMenuItemLink } from './WfoMenuLink';
 
-export const renderEmptyElementWhenNotAllowedByPolicy = (isAllowed: boolean) =>
-    isAllowed ? undefined : () => <></>;
-
 export const urlPolicyMap = new Map<string, PolicyResource>([
     [PATH_WORKFLOWS, PolicyResource.NAVIGATION_WORKFLOWS],
     [PATH_SUBSCRIPTIONS, PolicyResource.NAVIGATION_SUBSCRIPTIONS],
@@ -248,7 +245,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     >
                         <WfoStartWorkflowButtonComboBox />
                     </WfoIsAllowedToRender>
-                    <EuiSpacer size="m" />
+                    <EuiSpacer size="xl" />
                     <WfoCopyright />
                 </>
             ),
