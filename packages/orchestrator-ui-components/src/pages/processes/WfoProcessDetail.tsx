@@ -24,12 +24,10 @@ import {
     WfoTimeline,
 } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
-import {
-    ConfirmationDialogContext,
-    OrchestratorConfigContext,
-} from '@/contexts';
+import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
+    useGetOrchestratorConfig,
     useMutateProcess,
     useOrchestratorTheme,
     usePolicy,
@@ -111,7 +109,7 @@ export const WfoProcessDetail = ({
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
     const { workflowInformationLinkUrl, showWorkflowInformationLink } =
-        useContext(OrchestratorConfigContext);
+        useGetOrchestratorConfig();
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -192,11 +190,7 @@ export const WfoProcessDetail = ({
             },
         });
 
-    const openDocs = () =>
-        window.open(
-            workflowInformationLinkUrl + processDetail?.workflowName,
-            '_blank',
-        );
+    const docsUrl = workflowInformationLinkUrl + processDetail?.workflowName;
 
     return (
         <>
@@ -207,11 +201,12 @@ export const WfoProcessDetail = ({
                     <EuiFlexGroup gutterSize={'s'} alignItems={'center'}>
                         {showWorkflowInformationLink && (
                             <EuiToolTip content={t('openWorkflowTaskInfo')}>
-                                <EuiButtonIcon
-                                    onClick={openDocs}
-                                    iconSize={'l'}
-                                    iconType={'iInCircle'}
-                                />
+                                <a href={docsUrl} target="_blank">
+                                    <EuiButtonIcon
+                                        iconSize={'l'}
+                                        iconType={'iInCircle'}
+                                    />
+                                </a>
                             </EuiToolTip>
                         )}
                         <EuiText size="s">{productNames}</EuiText>
