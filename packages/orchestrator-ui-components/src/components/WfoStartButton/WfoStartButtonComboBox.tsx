@@ -26,9 +26,6 @@ export const WfoStartButtonComboBox = ({
     const { theme, colorMode } = useOrchestratorTheme();
 
     const isDarkThemeActive = colorMode === ColorModes.DARK;
-    const iconColor = isDarkThemeActive
-        ? theme.colors.title
-        : theme.colors.emptyShade;
 
     const Button = (
         <EuiButton
@@ -36,7 +33,7 @@ export const WfoStartButtonComboBox = ({
             iconType={
                 isProcess
                     ? 'plus'
-                    : () => <WfoPlusCircleFill color={iconColor} />
+                    : () => <WfoPlusCircleFill color={theme.colors.ghost} />
             }
             fullWidth={isProcess}
             fill={!isProcess || isDarkThemeActive}
