@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, HTMLAttributeAnchorTarget } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -9,13 +9,15 @@ import { getMenuItemStyles } from './styles';
 
 type WfoMenuItemLinkProps = {
     path: string;
+    target?: HTMLAttributeAnchorTarget;
     translationString: string;
-    isSelected: boolean;
+    isSelected?: boolean;
     isSubItem?: boolean;
 };
 
 export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
     path,
+    target,
     translationString,
     isSelected,
     isSubItem,
@@ -43,7 +45,7 @@ export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
             ? translationString
             : t(translationString);
     return (
-        <Link css={getMenuItemStyle()} href={path}>
+        <Link css={getMenuItemStyle()} href={path} target={target}>
             {linkText}
         </Link>
     );
