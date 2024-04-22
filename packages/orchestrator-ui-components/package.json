@@ -59,7 +59,7 @@
         "@reduxjs/toolkit": "^2.0.1",
         "@storybook/addon-essentials": "^7.2.1",
         "@storybook/addon-interactions": "^7.6.6",
-        "@storybook/addon-links": "^7.6.5",
+        "@storybook/addon-links": "^8.0.8",
         "@storybook/addon-onboarding": "^1.0.10",
         "@storybook/blocks": "^7.6.6",
         "@storybook/nextjs": "^7.6.7",
