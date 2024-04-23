@@ -5,8 +5,18 @@ export const getWfoBasicTableStyles = (theme: EuiThemeComputed) => {
     const radius = theme.border.radius.medium;
 
     const basicTableStyle = css({
+        table: {
+            backgroundColor: theme.colors.emptyShade,
+        },
+
+        // The lines between rows
+        'tr>td': {
+            borderColor: theme.colors.lightShade,
+        },
+
         '.euiTableCellContent__text': {
             display: 'flex',
+            color: theme.colors.text,
         },
         thead: {
             backgroundColor: theme.colors.lightShade,
@@ -17,8 +27,10 @@ export const getWfoBasicTableStyles = (theme: EuiThemeComputed) => {
                 borderTopRightRadius: radius,
             },
         },
-        'tr.euiTableRow:hover': {
-            backgroundColor: theme.colors.lightestShade,
+        tbody: {
+            'tr.euiTableRow:hover': {
+                backgroundColor: theme.colors.lightestShade,
+            },
         },
     });
 
