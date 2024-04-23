@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.14.2
+
+### Patch Changes
+
+- 06377ba: Adds prettier output for the "In-use by subscription(s)" on product blocks on subscription details
+- df57566: 799 Exports SummaryCard components and its related subcomponents and types
+
 ## 1.14.1
 
 ### Patch Changes
