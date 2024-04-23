@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.15.0
+
+### Minor Changes
+
+- a8c625e: Added workflow information link and env vars for it
+
 ## 1.14.2
 
 ### Patch Changes
