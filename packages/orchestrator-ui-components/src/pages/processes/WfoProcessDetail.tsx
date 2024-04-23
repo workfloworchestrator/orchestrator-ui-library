@@ -5,14 +5,12 @@ import { useRouter } from 'next/router';
 
 import {
     EuiButton,
-    EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPageHeader,
     EuiPanel,
     EuiSpacer,
     EuiText,
-    EuiToolTip,
 } from '@elastic/eui';
 
 import {
@@ -27,19 +25,19 @@ import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
-    useGetOrchestratorConfig,
     useMutateProcess,
     useOrchestratorTheme,
     usePolicy,
 } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
-import { ProcessDetail, ProcessStatus } from '@/types';
-import { parseDateRelativeToToday, parseIsoString } from '@/utils';
-
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
-} from './WfoProcessListSubscriptionsCell';
+    WfoProductInformationWithLink,
+} from '@/pages';
+import { ProcessDetail, ProcessStatus } from '@/types';
+import { parseDateRelativeToToday, parseIsoString } from '@/utils';
+
 import { getIndexOfCurrentStep } from './timelineUtils';
 
 interface ProcessHeaderValueProps {
@@ -108,8 +106,6 @@ export const WfoProcessDetail = ({
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
-    const { workflowInformationLinkUrl, showWorkflowInformationLink } =
-        useGetOrchestratorConfig();
 
     const listIncludesStatus = (
         processStatusesForDisabledState: ProcessStatus[],
@@ -190,27 +186,16 @@ export const WfoProcessDetail = ({
             },
         });
 
-    const docsUrl = workflowInformationLinkUrl + processDetail?.workflowName;
-
     return (
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
                     <EuiPageHeader pageTitle={pageTitle} />
                     <EuiSpacer />
-                    <EuiFlexGroup gutterSize={'s'} alignItems={'center'}>
-                        {showWorkflowInformationLink && (
-                            <EuiToolTip content={t('openWorkflowTaskInfo')}>
-                                <a href={docsUrl} target="_blank">
-                                    <EuiButtonIcon
-                                        iconSize={'l'}
-                                        iconType={'iInCircle'}
-                                    />
-                                </a>
-                            </EuiToolTip>
-                        )}
-                        <EuiText size="s">{productNames}</EuiText>
-                    </EuiFlexGroup>
+                    <WfoProductInformationWithLink
+                        productNames={productNames}
+                        workflowName={processDetail?.workflowName ?? ''}
+                    />
                 </EuiFlexItem>
                 <EuiFlexGroup
                     justifyContent="flexEnd"
