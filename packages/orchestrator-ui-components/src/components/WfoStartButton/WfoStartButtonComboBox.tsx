@@ -4,7 +4,7 @@ import { EuiButton, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlusCircleFill } from '@/icons';
-import { ColorModes, StartComboBoxOption } from '@/types';
+import { StartComboBoxOption } from '@/types';
 
 import { getStyles } from './styles';
 
@@ -23,9 +23,7 @@ export const WfoStartButtonComboBox = ({
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { selectableStyle } = getStyles();
-    const { theme, colorMode } = useOrchestratorTheme();
-
-    const isDarkThemeActive = colorMode === ColorModes.DARK;
+    const { theme, isDarkThemeActive } = useOrchestratorTheme();
 
     const Button = (
         <EuiButton
