@@ -4,14 +4,11 @@ import { useTranslations } from 'next-intl';
 
 import { EuiToolTip } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import {
-    ProcessStatusCounts,
-    useProcessStatusCountsQuery,
-} from '../../../hooks/useProcessStatusCountsQuery';
-import { WfoCheckmarkCircleFill } from '../../../icons';
-import { WfoXCircleFill } from '../../../icons/WfoXCircleFill';
-import { WfoHeaderBadge } from '../WfoHeaderBadge';
+import { WfoHeaderBadge } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { ProcessStatusCounts, useProcessStatusCountsQuery } from '@/hooks';
+import { WfoCheckmarkCircleFill } from '@/icons';
+import { WfoXCircleFill } from '@/icons';
 
 type TaskCountsSummary = {
     failed: number;
@@ -81,12 +78,14 @@ export const WfoFailedTasksBadge = () => {
                 }
             >
                 <WfoHeaderBadge
-                    color={theme.colors.emptyShade}
+                    color={theme.colors.ghost}
                     textColor={theme.colors.shadow}
                     iconType={() => (
                         <WfoCheckmarkCircleFill color={theme.colors.success} />
                     )}
-                />
+                >
+                    0
+                </WfoHeaderBadge>
             </EuiToolTip>
         );
     }
