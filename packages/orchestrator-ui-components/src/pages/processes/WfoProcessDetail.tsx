@@ -30,13 +30,14 @@ import {
     usePolicy,
 } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
-import { ProcessDetail, ProcessStatus } from '@/types';
-import { parseDateRelativeToToday, parseIsoString } from '@/utils';
-
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
-} from './WfoProcessListSubscriptionsCell';
+    WfoProductInformationWithLink,
+} from '@/pages';
+import { ProcessDetail, ProcessStatus } from '@/types';
+import { parseDateRelativeToToday, parseIsoString } from '@/utils';
+
 import { getIndexOfCurrentStep } from './timelineUtils';
 
 interface ProcessHeaderValueProps {
@@ -192,7 +193,10 @@ export const WfoProcessDetail = ({
                 <EuiFlexItem>
                     <EuiPageHeader pageTitle={pageTitle} />
                     <EuiSpacer />
-                    <EuiText size="s">{productNames}</EuiText>
+                    <WfoProductInformationWithLink
+                        productNames={productNames}
+                        workflowName={processDetail?.workflowName ?? ''}
+                    />
                 </EuiFlexItem>
                 <EuiFlexGroup
                     justifyContent="flexEnd"
