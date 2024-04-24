@@ -31,6 +31,7 @@ interface WfoSubscriptionProductBlockProps {
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
     id: number;
+    outsideSubscriptionBoundary?: boolean;
 }
 
 export const HIDDEN_KEYS = ['title', 'name', 'label'];
@@ -40,6 +41,7 @@ export const WfoSubscriptionProductBlock = ({
     subscriptionInstanceId,
     productBlockInstanceValues,
     inUseByRelations,
+    outsideSubscriptionBoundary = false,
 }: WfoSubscriptionProductBlockProps) => {
     const router = useRouter();
     const subscriptionId = router.query['subscriptionId'];
@@ -49,6 +51,7 @@ export const WfoSubscriptionProductBlock = ({
     const {
         iconStyle,
         panelStyle,
+        panelStyleOutsideSubscriptionBoundary,
         leftColumnStyle,
         rightColumnStyle,
         rowStyle,
@@ -59,7 +62,15 @@ export const WfoSubscriptionProductBlock = ({
     return (
         <>
             <EuiSpacer size={'m'}></EuiSpacer>
-            <EuiPanel color="transparent" hasShadow={false} css={panelStyle}>
+            <EuiPanel
+                color="transparent"
+                hasShadow={false}
+                css={
+                    outsideSubscriptionBoundary
+                        ? panelStyleOutsideSubscriptionBoundary
+                        : panelStyle
+                }
+            >
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>
                         <div css={iconStyle}>
