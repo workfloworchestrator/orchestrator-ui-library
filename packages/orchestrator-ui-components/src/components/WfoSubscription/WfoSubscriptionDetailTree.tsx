@@ -144,6 +144,7 @@ export const WfoSubscriptionDetailTree = ({
                         selectedIds.map((id, index) => {
                             const block =
                                 productBlockInstances[selectedIds[index]];
+
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}
@@ -157,6 +158,9 @@ export const WfoSubscriptionDetailTree = ({
                                         block.productBlockInstanceValues
                                     }
                                     inUseByRelations={block.inUseByRelations}
+                                    outsideSubscriptionBoundary={
+                                        block.outsideSubscriptionBoundary
+                                    }
                                     id={id}
                                 />
                             );
