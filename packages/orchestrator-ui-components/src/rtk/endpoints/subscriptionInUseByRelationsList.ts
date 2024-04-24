@@ -21,7 +21,7 @@ export const subscriptionInUseByRelationQuery = `
         subscriptions(
             first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}
             after: 0
-            filterBy: [{field: "subscriptionId", value: $subscriptionIds},{field: "status", value: ${nonTerminalSubscriptionStatuses}}]
+            filterBy: [{field: "subscriptionId", value: $subscriptionIds},{field: "status", value: "${nonTerminalSubscriptionStatuses}"}]
           ) {
             page {
               product {
