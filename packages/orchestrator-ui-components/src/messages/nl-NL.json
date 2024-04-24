@@ -73,7 +73,7 @@
         },
         "widgets": {
             "customer": {
-                "placeholder": "Klant placeholder",
+                "placeholder": "Zoek en selecteer een klant...",
                 "loading": "Klanten laden..."
             },
             "contactPersonName": {
@@ -88,13 +88,13 @@
                 "no_nodes_placeholder": "Geen nodes"
             },
             "locationCode": {
-                "placeholder": "Location placeholder"
+                "placeholder": "Zoek en selecteer een locatie code..."
             },
             "product": {
                 "placeholder": "Kies product"
             },
             "select": {
-                "placeholder": "Placeholder"
+                "placeholder": "Zoek en selecteer een waarde..."
             },
             "vlan": {
                 "vlansInUseError": "VLAN range {vlans} is al in gebruik door geslecteerde service port",
