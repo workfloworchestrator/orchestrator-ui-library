@@ -36,6 +36,7 @@ export type ProductBlockInstance = {
     parent: Nullable<number>;
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
+    outsideSubscriptionBoundary?: boolean;
 };
 
 export interface ResourceTypeDefinition {
