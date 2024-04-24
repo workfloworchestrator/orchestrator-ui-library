@@ -117,6 +117,9 @@ function ContactPersonName({
     const [contactPersons, setContactPersons] = useState<ContactPerson[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
+    // Waits for https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1049
+    // const {data, error: fetchError} = useContactPersonsQuery({customerIdValue}, {skip: !customerIdValue})
+
     const suggestions = value
         ? contactPersons
               .filter(
