@@ -1,10 +1,11 @@
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
-import { StepStatus } from '../../types';
+import { WfoTheme } from '@/hooks';
+import { StepStatus } from '@/types';
+
 import { TimelinePosition } from './WfoTimeline';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+export const getStyles = ({ theme }: WfoTheme) => {
     const emptyStepOuterDiameter = theme.base;
     const emptyStepInnerDiameter = theme.base / 2;
     const stepWithValueOuterDiameter = theme.base * 1.5;

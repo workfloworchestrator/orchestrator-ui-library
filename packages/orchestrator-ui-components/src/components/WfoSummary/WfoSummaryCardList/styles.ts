@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-export const getWfoSummaryCardListStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getWfoSummaryCardListStyles = ({ theme }: WfoTheme) => {
     const listContainerStyle = css({
         display: 'flex',
         flexDirection: 'column',

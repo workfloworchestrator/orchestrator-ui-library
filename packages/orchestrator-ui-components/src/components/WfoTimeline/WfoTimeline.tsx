@@ -3,8 +3,9 @@ import { ReactNode } from 'react';
 
 import { useEuiScrollBar } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { StepStatus } from '../../types';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { StepStatus } from '@/types';
+
 import { WfoTimelineStep } from './WfoTimelineStep';
 import { getStyles } from './styles';
 import { getTimelinePosition } from './timelineUtils';
@@ -33,8 +34,7 @@ export const WfoTimeline: FC<WfoTimelineProps> = ({
     indexOfCurrentStep = 0,
     onStepClick,
 }) => {
-    const { theme } = useOrchestratorTheme();
-    const { timelinePanelStyle } = getStyles(theme);
+    const { timelinePanelStyle } = useWithOrchestratorTheme(getStyles);
 
     const mapTimelineItemToStep = (
         timelineItem: TimelineItem,

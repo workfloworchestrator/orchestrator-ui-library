@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 import { WfoJsonCodeBlock } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
 import { StepStatus } from '@/types';
@@ -42,7 +42,6 @@ export const WfoStep = React.forwardRef(
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
 
-        const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
             getStepHeaderStyle,
@@ -51,7 +50,7 @@ export const WfoStep = React.forwardRef(
             stepDurationStyle,
             stepRowStyle,
             getStepToggleExpandStyle,
-        } = getStyles(theme);
+        } = useWithOrchestratorTheme(getStyles);
         const t = useTranslations('processes.steps');
         const hasHtmlMail =
             step.stateDelta?.hasOwnProperty('confirmation_mail');

@@ -1,9 +1,10 @@
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
+
+import { WfoTheme } from '@/hooks';
 
 import { toHexColorWithOpacity } from './utils/toHexColorWithOpacity';
 
-export const getWfoPageHeaderStyles = (theme: EuiThemeComputed) => {
+export const getWfoPageHeaderStyles = ({ theme }: WfoTheme) => {
     const navigationBackgroundColor = '#04385F';
 
     const appNameStyle = css({

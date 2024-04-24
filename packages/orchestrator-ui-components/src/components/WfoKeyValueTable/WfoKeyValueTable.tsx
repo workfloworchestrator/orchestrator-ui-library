@@ -1,6 +1,7 @@
 import React, { FC, Fragment, ReactNode } from 'react';
 
-import { useOrchestratorTheme } from '../../hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { WfoKeyCell } from './WfoKeyCell';
 import { WfoValueCell } from './WfoValueCell';
 import { getStyles } from './styles';
@@ -20,8 +21,7 @@ export const WfoKeyValueTable: FC<WfoKeyValueTableProps> = ({
     keyValues,
     showCopyToClipboardIcon = false,
 }) => {
-    const { theme } = useOrchestratorTheme();
-    const { keyValueTable } = getStyles(theme);
+    const { keyValueTable } = useWithOrchestratorTheme(getStyles);
 
     return (
         <div css={keyValueTable}>

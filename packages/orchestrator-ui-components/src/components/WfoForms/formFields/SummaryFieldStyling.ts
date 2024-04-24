@@ -1,8 +1,9 @@
 import { tint } from '@elastic/eui';
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const toShadeColor = (color: string) => tint(color, 0.9);
 
     const summaryFieldStyle = css({

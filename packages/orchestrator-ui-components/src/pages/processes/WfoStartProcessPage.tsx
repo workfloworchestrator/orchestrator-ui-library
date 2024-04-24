@@ -17,7 +17,7 @@ import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     HttpStatus,
     handlePromiseErrorWithCallback,
@@ -99,7 +99,7 @@ export const WfoStartProcessPage = ({
     const { stepUserInput, hasNext } = form;
 
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
-        getStyles(theme);
+        useWithOrchestratorTheme(getStyles);
 
     const {
         data: timeLineItems = [],

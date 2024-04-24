@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 
 import { WfoOptionalLink } from '@/components/WfoOptionalLink';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 
 import { getWfoSummaryCardListStyles } from './styles';
 
@@ -30,7 +30,7 @@ export const WfoSummaryCardListItem: FC<WfoSummaryCardListItemProps> = ({
         listItemTitleStyle,
         listItemSubtitleStyle,
         listItemHighlightIconStyle,
-    } = getWfoSummaryCardListStyles(theme);
+    } = useWithOrchestratorTheme(getWfoSummaryCardListStyles);
 
     return (
         <WfoOptionalLink href={url}>

@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-export const getWfoSummaryCardHeaderStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getWfoSummaryCardHeaderStyles = ({ theme }: WfoTheme) => {
     const avatarStyle = css({
         maxHeight: theme.base * 3,
         maxWidth: theme.base * 3,

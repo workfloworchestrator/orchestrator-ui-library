@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { CSSObject, css } from '@emotion/react';
 
-export const getCopyrightStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getCopyrightStyles = ({ theme }: WfoTheme) => {
     const copyrightStyle = css({
         position: 'fixed',
         bottom: 0,
@@ -16,7 +17,7 @@ export const getCopyrightStyles = (theme: EuiThemeComputed) => {
     };
 };
 
-export const getMenuStyles = (theme: EuiThemeComputed) => {
+export const getMenuStyles = ({ theme }: WfoTheme) => {
     const menuStyle = css({
         '.euiSideNavItem--branch': {
             '&:after': {
@@ -30,7 +31,7 @@ export const getMenuStyles = (theme: EuiThemeComputed) => {
     };
 };
 
-export const getMenuItemStyles = (theme: EuiThemeComputed) => {
+export const getMenuItemStyles = ({ theme }: WfoTheme) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',

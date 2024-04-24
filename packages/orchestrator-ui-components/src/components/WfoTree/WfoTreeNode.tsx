@@ -10,8 +10,9 @@ import {
     EuiToken,
 } from '@elastic/eui';
 
-import { TreeContext, TreeContextType } from '../../contexts';
-import { useOrchestratorTheme } from '../../hooks';
+import { TreeContext, TreeContextType } from '@/contexts';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+
 import { getStyles } from './styles';
 
 type Item = {
@@ -32,7 +33,8 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     level,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { expandIconContainerStyle, treeContainerStyle } = getStyles(theme);
+    const { expandIconContainerStyle, treeContainerStyle } =
+        useWithOrchestratorTheme(getStyles);
     const t = useTranslations('common');
     const {
         expandedIds,

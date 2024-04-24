@@ -33,7 +33,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '@/types';
 
@@ -107,10 +107,10 @@ function SubscriptionFieldDefinition({
     ...props
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
-    const { theme } = useOrchestratorTheme();
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles =
-        getReactSelectInnerComponentStyles(theme);
+    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
+        getReactSelectInnerComponentStyles,
+    );
 
     const { refetch, subscriptions, isFetching } =
         useGetSubscriptionDropdownOptions(tags, statuses);

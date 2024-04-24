@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const stepSpacerStyle = css({
         borderLeft: `1px solid ${theme.colors.darkShade}`,
         height: '24px',

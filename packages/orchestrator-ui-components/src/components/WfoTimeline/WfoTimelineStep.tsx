@@ -2,8 +2,9 @@ import React, { ReactNode } from 'react';
 
 import { EuiToolTip } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { StepStatus } from '../../types';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { StepStatus } from '@/types';
+
 import { TimelinePosition } from './WfoTimeline';
 import { getStyles } from './styles';
 
@@ -26,7 +27,6 @@ export const WfoTimelineStep = ({
     children,
     onClick,
 }: WfoTimelineStepProps) => {
-    const { theme } = useOrchestratorTheme();
     const {
         stepStyle,
         clickableStyle,
@@ -34,7 +34,7 @@ export const WfoTimelineStep = ({
         getStepLineStyle,
         getStepOuterCircleStyle,
         getStepInnerCircleStyle,
-    } = getStyles(theme);
+    } = useWithOrchestratorTheme(getStyles);
 
     return (
         <button

@@ -13,9 +13,9 @@ import {
 } from '@elastic/eui';
 
 import { WfoTextAnchor } from '@/components/WfoTextAnchor/WfoTextAnchor';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoCode, WfoEyeFill } from '@/icons';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WfoCode, WfoEyeFill } from '../../../icons';
 import { getStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
@@ -54,7 +54,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
         stepListContentStyle,
         stepListContentBoldTextStyle,
         stepListOptionsContainerStyle,
-    } = getStyles(theme);
+    } = useWithOrchestratorTheme(getStyles);
 
     const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
 

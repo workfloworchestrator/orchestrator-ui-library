@@ -22,7 +22,7 @@ import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
 import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
@@ -82,10 +82,10 @@ function ImsPortId({
 }: ImsPortFieldProps) {
     const apiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
-    const { theme } = useOrchestratorTheme();
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles =
-        getReactSelectInnerComponentStyles(theme);
+    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
+        getReactSelectInnerComponentStyles,
+    );
 
     const [nodes, setNodes] = useState<ImsNode[] | NodeSubscription[]>([]);
     const [nodeId, setNodeId] = useState<number | string | undefined>(
