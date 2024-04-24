@@ -1,4 +1,4 @@
-import { WfoTheme } from '@/hooks';
+import type { WfoTheme } from '@/hooks';
 
 export const getStyles = (wfoTheme: WfoTheme) => {
     const { theme, toSecondaryColor } = wfoTheme;
