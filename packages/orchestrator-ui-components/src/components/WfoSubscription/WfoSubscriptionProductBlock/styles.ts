@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import type { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
+export const getStyles = (wfoTheme: WfoTheme) => {
+    const { theme, toSecondaryColor } = wfoTheme;
     const iconStyle = css({
         width: 45,
         height: 45,
