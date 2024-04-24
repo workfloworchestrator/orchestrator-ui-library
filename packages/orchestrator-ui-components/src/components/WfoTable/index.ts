@@ -1,6 +1,3 @@
-export * from './WfoDataGridTable/WfoDataGridTable';
-export * from './WfoDataGridTable/WfodataGridColumns';
-
 export * from './WfoTableSettingsModal';
 
 export * from './utils/columns';
