@@ -16,6 +16,11 @@ export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
+    const panelStyleOutsideSubscriptionBoundary = css({
+        backgroundColor: toSecondaryColor(theme.colors.lightestShade),
+        border: `dashed 1px ${theme.colors.lightShade}`,
+    });
+
     const rowStyle = css({
         '&:first-child': {
             borderTop: `solid 1px ${theme.colors.lightShade}`,
@@ -45,5 +50,6 @@ export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
         leftColumnStyle,
         rightColumnStyle,
         rowStyle,
+        panelStyleOutsideSubscriptionBoundary,
     };
 };
