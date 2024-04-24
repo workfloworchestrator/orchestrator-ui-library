@@ -2,8 +2,9 @@ import React, { FC, ReactNode } from 'react';
 
 import { EuiCopy } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { WfoClipboardCopy } from '../../icons/WfoClipboardCopy';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoClipboardCopy } from '@/icons/WfoClipboardCopy';
+
 import { getStyles } from './styles';
 
 export type WfoValueCellProps = {
@@ -26,7 +27,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
         getBackgroundColorStyleForRow,
         valueColumnStyle,
         valueCellStyle,
-    } = getStyles(theme);
+    } = useWithOrchestratorTheme(getStyles);
 
     const shouldRenderCopyColumn = enableCopyIcon && textToCopy;
 

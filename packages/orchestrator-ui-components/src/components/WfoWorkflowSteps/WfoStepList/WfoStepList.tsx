@@ -1,6 +1,6 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoStep } from '../WfoStep';
 import { getStyles } from '../styles';
@@ -33,8 +33,7 @@ export const WfoStepList = React.forwardRef(
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
-        const { theme } = useOrchestratorTheme();
-        const { stepSpacerStyle } = getStyles(theme);
+        const { stepSpacerStyle } = useWithOrchestratorTheme(getStyles);
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 

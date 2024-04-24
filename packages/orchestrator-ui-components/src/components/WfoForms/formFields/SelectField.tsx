@@ -21,7 +21,7 @@ import { joinName, useField, useForm } from 'uniforms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { ListField, ListFieldProps } from './ListField';
 import { ListItemField } from './ListItemField';
@@ -56,7 +56,6 @@ export function UnconnectedSelectField({
     ...props
 }: SelectFieldProps) {
     const t = useTranslations('pydanticForms');
-    const { theme } = useOrchestratorTheme();
 
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
@@ -95,8 +94,9 @@ export function UnconnectedSelectField({
     );
 
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles =
-        getReactSelectInnerComponentStyles(theme);
+    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
+        getReactSelectInnerComponentStyles,
+    );
 
     if (fieldType === Array) {
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)

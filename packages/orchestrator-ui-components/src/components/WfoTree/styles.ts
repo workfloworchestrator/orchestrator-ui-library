@@ -1,6 +1,6 @@
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
+import { WfoTheme } from '@/hooks';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+export const getStyles = ({ theme }: WfoTheme) => {
     const expandIconContainerStyle = {
         cursor: 'pointer',
     };

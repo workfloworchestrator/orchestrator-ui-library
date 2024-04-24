@@ -10,7 +10,7 @@ import {
     WfoSummaryCardList,
 } from '@/components';
 import { getWfoSummaryCardsStyles } from '@/components/WfoSummary/styles';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 
 export enum SummaryCardStatus {
     Success = 'Success',
@@ -38,7 +38,9 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     listItems,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { cardContainerStyle } = getWfoSummaryCardsStyles(theme);
+    const { cardContainerStyle } = useWithOrchestratorTheme(
+        getWfoSummaryCardsStyles,
+    );
 
     const getIconTypeAndColorForHeaderStatus = (
         status: SummaryCardStatus,

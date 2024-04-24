@@ -1,8 +1,22 @@
-import { shade, tint, useEuiTheme } from '@elastic/eui';
+import {
+    EuiThemeColorModeStandard,
+    EuiThemeComputed,
+    shade,
+    tint,
+    useEuiTheme,
+} from '@elastic/eui';
 
 import { ColorModes } from '@/types';
 
-export const useOrchestratorTheme = () => {
+export type WfoTheme = {
+    theme: EuiThemeComputed;
+    multiplyByBaseUnit: (multiplier: number) => number;
+    toSecondaryColor: (color: string) => string;
+    colorMode: EuiThemeColorModeStandard;
+    isDarkThemeActive: boolean;
+};
+
+export const useOrchestratorTheme = (): WfoTheme => {
     const { euiTheme, colorMode } = useEuiTheme();
     const isDarkThemeActive = colorMode === ColorModes.DARK;
 

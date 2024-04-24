@@ -1,6 +1,6 @@
-import { EuiThemeComputed } from '@elastic/eui';
+import { WfoTheme } from '@/hooks';
 
-export const getReactSelectInnerComponentStyles = (theme: EuiThemeComputed) => {
+export const getReactSelectInnerComponentStyles = ({ theme }: WfoTheme) => {
     const reactSelectInnerComponentStyles = {
         option: (
             baseStyles: object,

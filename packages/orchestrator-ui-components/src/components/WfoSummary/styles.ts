@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-export const getWfoSummaryCardsStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getWfoSummaryCardsStyles = ({ theme }: WfoTheme) => {
     const cardContainerStyle = css({
         height: theme.base * 36,
         minWidth: theme.base * 25,

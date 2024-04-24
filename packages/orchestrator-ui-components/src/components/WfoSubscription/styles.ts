@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui/src/services/theme/types';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const contentCellStyle = {
         padding: (theme.base / 4) * 3,
         borderBottom: theme.border.thin,

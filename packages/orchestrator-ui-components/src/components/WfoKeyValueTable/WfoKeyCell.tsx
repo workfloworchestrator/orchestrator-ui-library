@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 
 import { EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '../../hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { getStyles } from './styles';
 
 export type WfoKeyCellProps = {
@@ -11,9 +12,8 @@ export type WfoKeyCellProps = {
 };
 
 export const WfoKeyCell: FC<WfoKeyCellProps> = ({ value, rowNumber }) => {
-    const { theme } = useOrchestratorTheme();
     const { keyColumnStyle, keyCellStyle, getBackgroundColorStyleForRow } =
-        getStyles(theme);
+        useWithOrchestratorTheme(getStyles);
 
     return (
         <div css={[getBackgroundColorStyleForRow(rowNumber), keyColumnStyle]}>

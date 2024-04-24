@@ -18,7 +18,7 @@ import {
 } from '@/components';
 import { WfoStatusColorField } from '@/components';
 import { WfoTableHeaderCell } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
 import { getWfoBasicTableStyles } from './styles';
@@ -68,7 +68,9 @@ export const WfoBasicTable = <T extends object>({
     customTableStyle,
 }: WfoBasicTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
-    const { basicTableStyle } = getWfoBasicTableStyles(theme);
+    const { basicTableStyle } = useWithOrchestratorTheme(
+        getWfoBasicTableStyles,
+    );
 
     const t = useTranslations('common');
 

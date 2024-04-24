@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 
 import { EuiButtonIcon } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoMinusCircleFill, WfoPlusCircleFill } from '@/icons';
 
 import { getStyles } from './styles';
@@ -21,7 +21,7 @@ export const WfoExpandableField: FC<WfoExpandableFieldProps> = ({
     children,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { titleRowStyle, titleStyle } = getStyles(theme);
+    const { titleRowStyle, titleStyle } = useWithOrchestratorTheme(getStyles);
 
     return (
         <>

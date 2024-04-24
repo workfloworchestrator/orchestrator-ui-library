@@ -9,7 +9,7 @@ import {
 } from '@elastic/eui';
 import { IconType } from '@elastic/eui/src/components/icon';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 
 import { getWfoSummaryCardHeaderStyles } from './styles';
 
@@ -28,7 +28,7 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
     const { avatarStyle, totalSectionStyle, valueStyle } =
-        getWfoSummaryCardHeaderStyles(theme);
+        useWithOrchestratorTheme(getWfoSummaryCardHeaderStyles);
 
     return (
         <EuiFlexItem grow={0}>

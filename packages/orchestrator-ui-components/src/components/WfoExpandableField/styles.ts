@@ -1,7 +1,8 @@
-import { EuiThemeComputed } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const titleRowStyle = css({
         display: 'flex',
         alignItems: 'center',

@@ -1,7 +1,8 @@
-import type { EuiThemeComputed } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-export const getStyles = (theme: EuiThemeComputed) => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const panelStyle = css({
         display: 'flex',
         padding: theme.base * 2,

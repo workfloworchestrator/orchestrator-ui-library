@@ -1,10 +1,7 @@
-import { EuiThemeComputed } from '@elastic/eui';
-
-import { useOrchestratorTheme } from './useOrchestratorTheme';
+import { WfoTheme, useOrchestratorTheme } from './useOrchestratorTheme';
 
 export function useWithOrchestratorTheme<T>(
-    getStylesFunction: (theme: EuiThemeComputed) => T,
+    getStylesFunction: (wfoTheme: WfoTheme) => T,
 ) {
-    const { theme } = useOrchestratorTheme();
-    return getStylesFunction(theme);
+    return getStylesFunction(useOrchestratorTheme());
 }
