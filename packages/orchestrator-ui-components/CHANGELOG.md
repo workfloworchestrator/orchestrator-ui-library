@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.16.0
+
+### Minor Changes
+
+- ed6d5c7: Fixes tooltip message on vlan field
+
+### Patch Changes
+
+- 5301916: Added trash icon
+
 ## 1.15.0
 
 ### Minor Changes
