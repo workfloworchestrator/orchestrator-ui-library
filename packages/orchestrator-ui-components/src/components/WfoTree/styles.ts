@@ -1,6 +1,7 @@
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = (wfoTheme: WfoTheme) => {
+    const { theme, toSecondaryColor } = wfoTheme;
     const expandIconContainerStyle = {
         cursor: 'pointer',
     };
@@ -11,8 +12,14 @@ export const getStyles = ({ theme }: WfoTheme) => {
         marginRight: `-${theme.size.s}`,
     };
 
+    const treeItemOutsideSubscriptionBoundaryStyle = {
+        backgroundColor: toSecondaryColor(theme.colors.lightestShade),
+        border: `thin dashed ${theme.colors.lightShade}`,
+    };
+
     return {
         expandIconContainerStyle: expandIconContainerStyle,
         treeContainerStyle: treeContainerStyle,
+        treeItemOutsideSubscriptionBoundaryStyle,
     };
 };

@@ -12,17 +12,12 @@ import {
 
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { TreeBlock } from '@/types';
 
 import { getStyles } from './styles';
 
-type Item = {
-    id: number;
-    icon: string;
-    label: string | number | boolean;
-};
-
 type WfoTreeNodeProps = {
-    item: Item;
+    item: TreeBlock;
     hasChildren: boolean;
     level: number;
 };
@@ -33,8 +28,11 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     level,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { expandIconContainerStyle, treeContainerStyle } =
-        useWithOrchestratorTheme(getStyles);
+    const {
+        expandIconContainerStyle,
+        treeContainerStyle,
+        treeItemOutsideSubscriptionBoundaryStyle,
+    } = useWithOrchestratorTheme(getStyles);
     const t = useTranslations('common');
     const {
         expandedIds,
@@ -83,13 +81,25 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                                 'aria-label': t('deselect'),
                                 alwaysShow: true,
                             }}
+                            css={
+                                item.outsideSubscriptionBoundary
+                                    ? treeItemOutsideSubscriptionBoundaryStyle
+                                    : {}
+                            }
                         />
                     ) : (
                         <EuiListGroupItem
                             onClick={() => toggleSelectedId(item.id)}
                             label={item.label}
                             isActive={selected}
-                            style={{ borderRadius: 6 }}
+                            style={{
+                                borderRadius: 6,
+                            }}
+                            css={
+                                item.outsideSubscriptionBoundary
+                                    ? treeItemOutsideSubscriptionBoundaryStyle
+                                    : {}
+                            }
                         />
                     )}
                 </EuiFlexItem>
