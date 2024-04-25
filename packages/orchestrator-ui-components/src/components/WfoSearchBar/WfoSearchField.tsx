@@ -5,8 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFieldSearch, EuiFormRow } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
-
-import { getWfoSearchBarStyles } from './styles';
+import { getFormFieldsBaseStyle } from '@/theme';
 
 export type WfoSearchFieldProps = {
     queryString?: string;
@@ -19,7 +18,9 @@ export const WfoSearchField = ({
 }: WfoSearchFieldProps) => {
     const t = useTranslations('common');
     const tError = useTranslations('errors');
-    const { searchBarStyle } = useWithOrchestratorTheme(getWfoSearchBarStyles);
+    const { formFieldBaseStyle } = useWithOrchestratorTheme(
+        getFormFieldsBaseStyle,
+    );
 
     const queryIsValid = true; // Query validation turned of for now until ESQueries can be sent to the backend
 
@@ -38,7 +39,7 @@ export const WfoSearchField = ({
             error={[tError('invalidQueryParts')]}
         >
             <EuiFieldSearch
-                css={searchBarStyle}
+                css={formFieldBaseStyle}
                 value={currentQuery}
                 placeholder={`${t('search')}...`}
                 onChange={(event) => setCurrentQuery(event.target.value)}

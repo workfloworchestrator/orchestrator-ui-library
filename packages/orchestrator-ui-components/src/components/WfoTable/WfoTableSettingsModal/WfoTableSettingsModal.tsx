@@ -9,7 +9,9 @@ import {
     EuiSwitch,
 } from '@elastic/eui';
 
-import { WfoSettingsModal } from '../../WfoSettingsModal';
+import { WfoSettingsModal } from '@/components';
+import { getWfoTableSettingsModalStyles } from '@/components/WfoTable/WfoTableSettingsModal/styles';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 export type ColumnConfig<T> = {
     field: keyof T;
@@ -37,6 +39,10 @@ export const TableSettingsModal = <T,>({
     onResetToDefaults,
     onClose,
 }: TableSettingsModalProps<T>) => {
+    const { formRowStyle, selectFieldStyle } = useWithOrchestratorTheme(
+        getWfoTableSettingsModalStyles,
+    );
+
     const [columns, setColumns] = useState(tableConfig.columns);
     const [selectedPageSize, setSelectedPageSize] = useState(
         tableConfig.selectedPageSize,
@@ -71,15 +77,14 @@ export const TableSettingsModal = <T,>({
                 })
             }
         >
+            {/* Todo not sure how to target the text in the form - it needs a better color */}
             <EuiForm>
                 {columns.map(({ field, name, isVisible }) => (
                     <div key={field.toString()}>
                         <EuiFormRow
                             display="columnCompressedSwitch"
                             label={name}
-                            css={{
-                                justifyContent: 'space-between',
-                            }}
+                            css={formRowStyle}
                         >
                             <EuiSwitch
                                 showLabel={false}
@@ -97,11 +102,13 @@ export const TableSettingsModal = <T,>({
                 <EuiSpacer size="xs" />
 
                 <EuiFormRow
+                    css={formRowStyle}
                     hasEmptyLabelSpace
                     label="Number of Rows"
                     display="columnCompressed"
                 >
                     <EuiSelect
+                        css={selectFieldStyle}
                         compressed
                         onChange={(event) =>
                             setSelectedPageSize(parseInt(event.target.value))

@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getWfoSearchBarStyles = ({ theme }: WfoTheme) => {
-    const searchBarStyle = css({
+export const getFormFieldsBaseStyle = ({ theme }: WfoTheme) => {
+    const formFieldBaseStyle = css({
         backgroundColor: theme.colors.body,
         color: theme.colors.text,
         '&:focus': {
@@ -12,6 +12,6 @@ export const getWfoSearchBarStyles = ({ theme }: WfoTheme) => {
     });
 
     return {
-        searchBarStyle,
+        formFieldBaseStyle,
     };
 };
