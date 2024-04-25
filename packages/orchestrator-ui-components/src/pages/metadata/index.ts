@@ -5,3 +5,4 @@ export * from './WfoWorkflowsPage';
 export * from './WfoTasksPage';
 export * from './WfoMetadataPageLayout';
 export * from './workflowListObjectMapper';
+export * from './WfoTestPage';
