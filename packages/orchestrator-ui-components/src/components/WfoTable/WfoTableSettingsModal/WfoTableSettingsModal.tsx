@@ -77,7 +77,6 @@ export const TableSettingsModal = <T,>({
                 })
             }
         >
-            {/* Todo not sure how to target the text in the form - it needs a better color */}
             <EuiForm>
                 {columns.map(({ field, name, isVisible }) => (
                     <div key={field.toString()}>
