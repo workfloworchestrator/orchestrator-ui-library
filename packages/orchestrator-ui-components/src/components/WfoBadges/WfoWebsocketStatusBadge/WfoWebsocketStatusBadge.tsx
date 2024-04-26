@@ -25,7 +25,7 @@ export const WfoWebsocketStatusBadge = () => {
             }
         >
             <WfoHeaderBadge
-                color={theme.colors.emptyShade}
+                color={theme.colors.ghost}
                 textColor={theme.colors.shadow}
                 iconType={() =>
                     websocketConnected ? (
