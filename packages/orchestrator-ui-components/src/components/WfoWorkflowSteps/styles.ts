@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
     const stepSpacerStyle = css({
         borderLeft: `1px solid ${theme.colors.darkShade}`,
         height: '24px',
@@ -61,21 +61,21 @@ export const getStyles = ({ theme }: WfoTheme) => {
 
     const stepStateSuccessIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#CCE3F4',
+        backgroundColor: toSecondaryColor(theme.colors.primary),
     });
 
     const stepStateSuspendIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#FFF3D0',
+        backgroundColor: toSecondaryColor(theme.colors.warning),
     });
 
     const stepStatePendingIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#DCE4EF',
+        backgroundColor: toSecondaryColor(theme.colors.darkShade),
     });
     const stepStateFailedIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: '#F2D4D2',
+        backgroundColor: toSecondaryColor(theme.colors.danger),
     });
 
     const stepHeaderRightStyle = css({

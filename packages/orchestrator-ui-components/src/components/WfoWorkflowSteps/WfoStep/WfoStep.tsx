@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 import { WfoJsonCodeBlock } from '@/components';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
 import { StepStatus } from '@/types';
@@ -42,6 +42,7 @@ export const WfoStep = React.forwardRef(
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
 
+        const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
             getStepHeaderStyle,
@@ -148,8 +149,14 @@ export const WfoStep = React.forwardRef(
                                             hasStepContent,
                                         )}
                                     >
-                                        {(isExpanded && <WfoChevronUp />) || (
-                                            <WfoChevronDown />
+                                        {(isExpanded && (
+                                            <WfoChevronUp
+                                                color={theme.colors.text}
+                                            />
+                                        )) || (
+                                            <WfoChevronDown
+                                                color={theme.colors.text}
+                                            />
                                         )}
                                     </EuiFlexItem>
                                 </>
