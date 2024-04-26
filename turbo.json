@@ -17,7 +17,7 @@
         "NEXTAUTH_ISSUER",
         "NEXTAUTH_URL",
         "NEXTAUTH_WELL_KNOWN_OVERRIDE",
-        "NEXTATHU_AUTHORIZATION_SCOPE",
+        "NEXTAUTH_AUTHORIZATION_SCOPE",
         "AUTH_ACTIVE"
     ],
     "pipeline": {
