@@ -11,11 +11,21 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import { useCacheNames, useShowToastMessage } from '@/hooks';
+import {
+    useCacheNames,
+    useShowToastMessage,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { useClearCacheMutation } from '@/rtk';
 import { ToastTypes } from '@/types';
 
+import { getWfoFlushSettingsStyle } from './styles';
+
 export const WfoFlushSettings: FunctionComponent = () => {
+    const { comboboxStyle } = useWithOrchestratorTheme(
+        getWfoFlushSettingsStyle,
+    );
+
     const [clearCache] = useClearCacheMutation();
 
     const t = useTranslations('settings.page');
@@ -71,6 +81,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
             </EuiText>
             <EuiSpacer size="m" />
             <EuiComboBox
+                css={comboboxStyle}
                 aria-label="Flush settings"
                 placeholder={t('selectSettings')}
                 singleSelection={{ asPlainText: true }}
