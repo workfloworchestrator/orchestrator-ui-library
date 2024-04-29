@@ -18,6 +18,9 @@ import {
     EuiText,
 } from '@elastic/eui';
 
+import { getWfoDiffStyles } from '@/components/WfoDiff/styles';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 const EMPTY_HUNKS: never[] = [];
 
 const SMALL_CONTEXT = 3;
@@ -38,6 +41,8 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
     const t = useTranslations('processes.delta');
     const [showSplit, setShowSplit] = useState(true);
     const [showFull, setShowFull] = useState(false);
+
+    const { diffStyle } = useWithOrchestratorTheme(getWfoDiffStyles);
 
     const [{ type, hunks }, setDiff] = useState<DiffState>({
         type: 'modify',
@@ -103,6 +108,7 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
 
             <EuiSpacer />
             <Diff
+                css={diffStyle}
                 viewType={showSplit ? 'split' : 'unified'}
                 diffType={type}
                 hunks={hunks || EMPTY_HUNKS}
