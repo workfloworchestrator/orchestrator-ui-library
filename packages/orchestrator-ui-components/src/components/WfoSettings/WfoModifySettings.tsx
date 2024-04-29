@@ -11,12 +11,7 @@ export const WfoModifySettings = () => {
     const t = useTranslations('settings.page');
     return (
         <EuiFlexItem>
-            <EuiPanel
-                hasShadow={false}
-                color="subdued"
-                paddingSize="l"
-                css={{ width: '50%' }}
-            >
+            <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
                 <EuiText size="s">
                     <h4>{t('resetTextSearchIndex')}</h4>
                 </EuiText>
@@ -24,12 +19,7 @@ export const WfoModifySettings = () => {
                 <WfoResetTextSearchIndexButton />
             </EuiPanel>
             <EuiSpacer />
-            <EuiPanel
-                hasShadow={false}
-                color="subdued"
-                paddingSize="l"
-                css={{ width: '50%' }}
-            >
+            <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
                 <EuiText size="s">
                     <h4>{t('modifyEngine')}</h4>
                 </EuiText>

@@ -70,12 +70,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
     };
 
     return (
-        <EuiPanel
-            hasShadow={false}
-            color="subdued"
-            paddingSize="l"
-            style={{ width: '50%' }}
-        >
+        <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
             <EuiText size="s">
                 <h4>{t('flushCacheSettingsTitle')}</h4>
             </EuiText>

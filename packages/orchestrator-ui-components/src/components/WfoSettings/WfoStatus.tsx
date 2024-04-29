@@ -23,12 +23,7 @@ export const WfoStatus = () => {
     const t = useTranslations('settings.page');
 
     return (
-        <EuiPanel
-            hasShadow={false}
-            color="subdued"
-            paddingSize="l"
-            style={{ width: '50%' }}
-        >
+        <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
             <EuiFlexGroup>
                 <EuiFlexItem grow={false} style={{ minWidth: 208 }}>
                     <EuiText size="s">
