@@ -77,7 +77,7 @@
                 "loading": "Loading customers..."
             },
             "contactPersonName": {
-                "placeholder": "Name placeholder"
+                "placeholder": "Search and add contact persons..."
             },
             "ipvAnyNetworkField": {
                 "manuallySelectedPrefix": "Manually selected prefix"

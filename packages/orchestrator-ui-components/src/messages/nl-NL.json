@@ -77,7 +77,7 @@
                 "loading": "Klanten laden..."
             },
             "contactPersonName": {
-                "placeholder": "Naam placeholder"
+                "placeholder": "Zoek en voeg contactpersonen toe..."
             },
             "ipvAnyNetworkField": {
                 "manuallySelectedPrefix": "Manually selected prefix"
