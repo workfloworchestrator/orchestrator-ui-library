@@ -73,11 +73,11 @@
         },
         "widgets": {
             "customer": {
-                "placeholder": "Customer placeholder",
+                "placeholder": "Search and select a customer...",
                 "loading": "Loading customers..."
             },
             "contactPersonName": {
-                "placeholder": "Name placeholder"
+                "placeholder": "Search and add contact persons..."
             },
             "ipvAnyNetworkField": {
                 "manuallySelectedPrefix": "Manually selected prefix"
@@ -88,13 +88,13 @@
                 "no_nodes_placeholder": "No nodes"
             },
             "locationCode": {
-                "placeholder": "Location placeholder"
+                "placeholder": "Search and select a location code..."
             },
             "product": {
                 "placeholder": "Choose product"
             },
             "select": {
-                "placeholder": "Select Placeholder"
+                "placeholder": "Search and select a value..."
             },
             "vlan": {
                 "vlansInUseError": "VLAN range {vlans} are already in use for the selected service port",
