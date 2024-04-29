@@ -2,11 +2,11 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
     const iconStyle = css({
         width: 45,
         height: 45,
-        backgroundColor: 'rgb(193,221,241,1)',
+        backgroundColor: toSecondaryColor(theme.colors.primary),
         paddingTop: 13,
         paddingLeft: 15,
         borderRadius: 7,
