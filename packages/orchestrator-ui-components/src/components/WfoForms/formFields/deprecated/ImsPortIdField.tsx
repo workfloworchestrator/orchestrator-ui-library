@@ -27,6 +27,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
 import { ImsNode, ImsPort, NodeSubscription } from './types';
+import { useFreePortsByNodeSubscriptionIdAndSpeedQuery } from '@/rtk/endpoints/formFields';
 
 export type ImsPortFieldProps = FieldProps<
     number,
@@ -94,6 +95,8 @@ function ImsPortId({
     const [ports, setPorts] = useState<ImsPort[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const {data: freePorts, error: freePortsError} = useFreePortsByNodeSubscriptionIdAndSpeedQuery()
+
     const onChangeNodes = useCallback(
         (option: SingleValue<Option>) => {
             const value = option?.value;
@@ -108,7 +111,7 @@ function ImsPortId({
             setLoading(true);
             setNodeId(value);
             setPorts([]);
-
+            console.log("yes");
             apiClient
                 .getFreePortsByNodeSubscriptionIdAndSpeed(
                     value as string,

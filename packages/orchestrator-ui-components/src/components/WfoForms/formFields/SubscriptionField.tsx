@@ -38,7 +38,7 @@ import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubs
 import { SubscriptionDropdownOption } from '@/types';
 
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
-import { PortMode, ProductTag } from './deprecated/types';
+import { PortMode, ProductTag } from '@/components';
 import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
 import { FieldProps, Option } from './types';
 import { getPortMode } from './utils';
@@ -56,7 +56,6 @@ declare module 'uniforms' {
     }
 }
 filterDOMProps.register(
-    'productIds',
     'excludedSubscriptionIds',
     'customerId',
     'customerKey',

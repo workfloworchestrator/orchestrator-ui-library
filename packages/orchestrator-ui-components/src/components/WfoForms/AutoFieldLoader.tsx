@@ -19,7 +19,6 @@ import {
     NestField,
     NumField,
     OptGroupField,
-    ProductField,
     RadioField,
     SubscriptionField,
     SubscriptionSummaryField,
@@ -62,8 +61,6 @@ export function autoFieldFunction(
             switch (format) {
                 case 'subscriptionId':
                     return SubscriptionField;
-                case 'productId':
-                    return ProductField;
                 case 'long':
                     return LongTextField;
                 case 'label':
