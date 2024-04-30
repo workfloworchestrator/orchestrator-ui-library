@@ -19,6 +19,7 @@ export enum CacheTags {
     processListSummary = 'processListSummary',
     subscription = 'subscription',
     subscriptionList = 'subscriptionList',
+    backendTranslations = 'backendTranslations',
 }
 
 export enum HttpStatus {
@@ -92,5 +93,6 @@ export const orchestratorApi = createApi({
         CacheTags.processListSummary,
         CacheTags.subscriptionList,
         CacheTags.subscription,
+        CacheTags.backendTranslations,
     ],
 });

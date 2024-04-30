@@ -14,7 +14,6 @@ import {
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -81,7 +80,6 @@ export const WfoStartProcessPage = ({
     processName,
     isTask = false,
 }: WfoStartProcessPageProps) => {
-    const apiClient = useAxiosApiClient();
     const t = useTranslations('processes.steps');
     const router = useRouter();
     const [hasError, setHasError] = useState<boolean>(false);
@@ -179,7 +177,7 @@ export const WfoStartProcessPage = ({
                 clientResultCallback,
             );
         }
-    }, [submit, processName, apiClient]);
+    }, [submit, processName]);
 
     const processDetail: Partial<ProcessDetail> = {
         lastStatus: ProcessStatus.CREATE,
