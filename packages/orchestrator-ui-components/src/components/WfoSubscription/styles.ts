@@ -6,6 +6,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
     const contentCellStyle = {
         padding: (theme.base / 4) * 3,
         borderBottom: theme.border.thin,
+        borderBottomColor: theme.colors.lightShade,
     };
 
     const headerCellStyle = css({

@@ -71,15 +71,20 @@ export const WfoStepStatusIcon = ({
     ] = (() => {
         switch (stepStatus) {
             case StepStatus.SUSPEND:
-                return [stepStateSuspendIconStyle, '#8E6A00', true, '#8E6A00'];
+                return [
+                    stepStateSuspendIconStyle,
+                    theme.colors.warningText,
+                    true,
+                    theme.colors.warningText,
+                ];
             case StepStatus.PENDING:
-                return [stepStatePendingIconStyle, '#94A4B8'];
+                return [stepStatePendingIconStyle, theme.colors.darkShade];
             case StepStatus.FAILED:
                 return [
                     stepStateFailedIconStyle,
-                    '#AC0A01',
+                    theme.colors.dangerText,
                     true,
-                    theme.colors.danger,
+                    theme.colors.dangerText,
                 ];
             case StepStatus.SKIPPED:
                 return [
@@ -94,9 +99,9 @@ export const WfoStepStatusIcon = ({
             default:
                 return [
                     stepStateSuccessIconStyle,
-                    theme.colors.link,
+                    theme.colors.primaryText,
                     true,
-                    theme.colors.success,
+                    theme.colors.successText,
                 ];
         }
     })();
