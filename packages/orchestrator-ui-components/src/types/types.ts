@@ -517,7 +517,6 @@ export type OrchestratorConfig = {
     orchestratorApiBaseUrl: string;
     graphqlEndpointCore: string;
     engineStatusEndpoint: string;
-    processStatusCountsEndpoint: string;
     processesEndpoint: string;
     subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
