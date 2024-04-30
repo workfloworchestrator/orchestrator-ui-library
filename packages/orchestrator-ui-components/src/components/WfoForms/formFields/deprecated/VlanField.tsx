@@ -21,10 +21,10 @@ import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useIsTaggedPort } from '@/hooks/deprecated/useIsTaggedPort';
+import { useVlansByServicePortQuery } from '@/rtk/endpoints/formFields';
 
 import { FieldProps } from '../types';
 import { ServicePort } from './types';
-import { useVlansByServicePortQuery } from '@/rtk/endpoints/formFields';
 
 function inValidVlan(vlan: string) {
     const value = vlan || '0';
@@ -168,16 +168,21 @@ function Vlan({
 
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);
-    const {data,  isFetching: isLoading, error: fetchError} = useVlansByServicePortQuery(
-        {subscriptionId, nsiVlansOnly}, {
-            skip: !subscriptionId
-        }
-    )
+    const {
+        data,
+        isFetching: isLoading,
+        error: fetchError,
+    } = useVlansByServicePortQuery(
+        { subscriptionId, nsiVlansOnly },
+        {
+            skip: !subscriptionId,
+        },
+    );
 
     useEffect(() => {
         if (data) {
-            setUsedVlansInIms(data)
-            setMissingInIms(false)
+            setUsedVlansInIms(data);
+            setMissingInIms(false);
         }
         if (fetchError) {
             console.error(fetchError);
@@ -199,27 +204,27 @@ function Vlan({
     const vlansInUse =
         validFormat && !disabled
             ? getAllNumbersForVlanRange(value).filter((num) =>
-                allUsedVlans.includes(num),
-            )
+                  allUsedVlans.includes(num),
+              )
             : [];
 
     const placeholder = isLoading
         ? t('widgets.vlan.loadingIms')
         : subscriptionId
-            ? t('widgets.vlan.placeholder')
-            : t('widgets.vlan.placeholderNoServicePort');
+          ? t('widgets.vlan.placeholder')
+          : t('widgets.vlan.placeholderNoServicePort');
 
     const errorMessageExtra = missingInIms
         ? t('widgets.vlan.missingInIms')
         : !validFormat
-            ? t('widgets.vlan.invalidVlan')
-            : vlansInUse.length
-                ? vlansInUse.length >= 1 && vlansInUse[0] === 0
-                    ? t('widgets.vlan.untaggedPortInUse')
-                    : t('widgets.vlan.vlansInUseError', {
-                        vlans: vlanRangeFromNumbers(vlansInUse),
-                    })
-                : undefined;
+          ? t('widgets.vlan.invalidVlan')
+          : vlansInUse.length
+            ? vlansInUse.length >= 1 && vlansInUse[0] === 0
+                ? t('widgets.vlan.untaggedPortInUse')
+                : t('widgets.vlan.vlansInUseError', {
+                      vlans: vlanRangeFromNumbers(vlansInUse),
+                  })
+            : undefined;
 
     let message = '';
     if (!isLoading && subscriptionId) {
@@ -244,14 +249,14 @@ function Vlan({
             message = !allAvailableVlans.length
                 ? t('widgets.vlan.nsiNoPortsAvailable')
                 : t('widgets.vlan.nsiVlansAvailable', {
-                    vlans: vlanRangeFromNumbers(allAvailableVlans),
-                });
+                      vlans: vlanRangeFromNumbers(allAvailableVlans),
+                  });
         } else if (portIsTagged) {
             message = !allUsedVlans.length
                 ? t('widgets.vlan.allPortsAvailable')
                 : t('widgets.vlan.vlansInUse', {
-                    vlans: vlanRangeFromNumbers(allUsedVlans),
-                });
+                      vlans: vlanRangeFromNumbers(allUsedVlans),
+                  });
         } else {
             message = t('widgets.vlan.taggedOnly');
         }

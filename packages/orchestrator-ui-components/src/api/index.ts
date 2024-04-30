@@ -26,7 +26,7 @@ import { ProductDefinition } from '@/types';
 import { getAxiosInstance } from './axios';
 
 const PROCESS_ENDPOINT = 'processes/';
-const PRODUCTS_ENDPOINT = 'productsssss/';
+const PRODUCTS_ENDPOINT = 'products/';
 const FORMS_ENDPOINT = 'surf/forms/';
 
 export class BaseApiClient {
