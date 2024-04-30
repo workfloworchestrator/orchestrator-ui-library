@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.18.0
+
+### Minor Changes
+
+- b8cf381: 626 Tweaks dark theme on detail pages and the settings page
+
+### Patch Changes
+
+- 3888ea9: Adjustment to placeholder translations
+
 ## 1.17.0
 
 ### Minor Changes
