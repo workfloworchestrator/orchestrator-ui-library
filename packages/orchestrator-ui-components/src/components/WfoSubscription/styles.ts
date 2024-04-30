@@ -3,11 +3,11 @@ import { css } from '@emotion/react';
 import { WfoTheme } from '@/hooks';
 
 export const getStyles = ({ theme }: WfoTheme) => {
-    const contentCellStyle = {
+    const contentCellStyle = css({
         padding: (theme.base / 4) * 3,
         borderBottom: theme.border.thin,
         borderBottomColor: theme.colors.lightShade,
-    };
+    });
 
     const headerCellStyle = css({
         ...contentCellStyle,
