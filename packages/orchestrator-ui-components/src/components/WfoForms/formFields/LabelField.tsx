@@ -16,15 +16,19 @@ import React from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
+import { useOrchestratorTheme } from '@/hooks';
 import { FieldProps } from '@/types';
 
 export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 
 // onChange not used on purpose
 function Label({ id, value, label, ...props }: LabelFieldProps) {
+    const { theme } = useOrchestratorTheme();
+
     return (
         <section {...filterDOMProps(props)}>
             <label
+                css={{ color: theme.colors.text }}
                 id={id}
                 className={`euiFormLabel euiFormRow__label${
                     value ? '__large' : ''

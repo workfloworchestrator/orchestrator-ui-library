@@ -9,7 +9,7 @@ export * from './ListDelField';
 export * from './ListField';
 export * from './ListSelectField';
 export * from './LongTextField';
-export * from './NumField';
+export * from './NumField/NumField';
 export * from './RadioField';
 export * from './SelectField';
 export * from './SubmitField';
