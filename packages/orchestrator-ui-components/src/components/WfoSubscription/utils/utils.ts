@@ -2,14 +2,13 @@ import { TranslationValues } from 'next-intl';
 
 import { EuiThemeComputed } from '@elastic/eui';
 
-import { SubscriptionAction } from '@/hooks';
-
 import {
     FieldValue,
     ProcessStatus,
+    SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
-} from '../../../types';
+} from '@/types';
 
 const MAX_LABEL_LENGTH = 45;
 
