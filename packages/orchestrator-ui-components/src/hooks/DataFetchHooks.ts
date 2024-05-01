@@ -1,33 +1,6 @@
-import { useContext } from 'react';
-import { useQuery } from 'react-query';
-
-import { OrchestratorConfigContext } from '@/contexts';
-import { GraphqlFilter, ProcessDetailResultRaw } from '@/types';
-
-import { useQueryWithFetch } from './useQueryWithFetch';
-import { useWfoSession } from './useWfoSession';
+import { GraphqlFilter } from '@/types';
 
 export type CacheNames = { [key: string]: string };
-
-export const useRawProcessDetails = (processId: string) => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const url = `${orchestratorApiBaseUrl}/processes/${processId}`;
-    return useQueryWithFetch<ProcessDetailResultRaw, Record<string, never>>(
-        url,
-        {},
-        `RawProcessDetails-${processId}`,
-    );
-};
-
-export const useCacheNames = () => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const url = `${orchestratorApiBaseUrl}/settings/cache-names`;
-    return useQueryWithFetch<CacheNames, Record<string, never>>(
-        url,
-        {},
-        'cacheNames',
-    );
-};
 
 export const filterDataByCriteria = <Type>(
     data: Type[],
@@ -40,37 +13,4 @@ export const filterDataByCriteria = <Type>(
             return dataValue === filterValue;
         });
     });
-};
-
-/**
- * @deprecated
- * Currently not in use in the SURF app - switched to RTK Query
- */
-export const useFilterQueryWithRest = <Type>(
-    url: string,
-    queryKey: string[],
-    filters?: GraphqlFilter<Type>[],
-    refetchInterval?: number,
-) => {
-    const { session } = useWfoSession();
-
-    const fetchFromApi = async () => {
-        const response = await fetch(url, {
-            headers: {
-                Authorization: session?.accessToken
-                    ? `Bearer ${session.accessToken}`
-                    : '',
-            },
-        });
-        const data = await response.json();
-        return filters ? filterDataByCriteria(data, filters) : data;
-    };
-
-    return useQuery(
-        filters ? [...queryKey, { filters }] : [...queryKey],
-        fetchFromApi,
-        {
-            refetchInterval,
-        },
-    );
 };

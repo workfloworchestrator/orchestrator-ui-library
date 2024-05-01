@@ -10,5 +10,4 @@ export * from './useShowToastMessage';
 export * from './useStoredTableConfig';
 export * from './useWithOrchestratorTheme';
 export * from './useWfoSession';
-export * from './useQueryWithFetch';
 export * from './useGetOrchestratorConfig';

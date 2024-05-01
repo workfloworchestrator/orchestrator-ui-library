@@ -11,12 +11,8 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
-import {
-    useCacheNames,
-    useShowToastMessage,
-    useWithOrchestratorTheme,
-} from '@/hooks';
-import { useClearCacheMutation } from '@/rtk';
+import { useShowToastMessage, useWithOrchestratorTheme } from '@/hooks';
+import { useClearCacheMutation, useGetCacheNamesQuery } from '@/rtk';
 import { ToastTypes } from '@/types';
 
 import { getWfoFlushSettingsStyle } from './styles';
@@ -37,7 +33,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
     const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
         setSelected(selectedOptions);
     };
-    const { data } = useCacheNames();
+    const { data } = useGetCacheNamesQuery();
 
     const options: EuiComboBoxOptionOption[] =
         data && Object.entries(data).length > 0

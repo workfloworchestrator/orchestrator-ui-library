@@ -12,17 +12,17 @@
  * limitations under the License.
  *
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
 
 import { range } from 'lodash';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { ApiClientContext } from '@/contexts';
+import { splitPrefixStyling } from '@/components';
+import { useFreeSubnetsQuery } from '@/rtk/endpoints/ipam';
 
 import { Option } from '../types';
-import { splitPrefixStyling } from './SplitPrefixStyling';
 
 interface IProps {
     id: string;
@@ -34,139 +34,106 @@ interface IProps {
     selectedSubnet?: string;
 }
 
-interface IState {
-    subnets: [];
-    desiredPrefixlen: number;
-}
+const SplitPrefix: React.FC<IProps> = ({
+    id,
+    name,
+    subnet,
+    prefixlen,
+    prefixMin,
+    onChange,
+    selectedSubnet,
+}) => {
+    const [subnets, setSubnets] = useState<string[]>([]);
+    const [desiredPrefixlen, setDesiredPrefixlen] = useState<number>(prefixMin);
+    const { data, isFetching } = useFreeSubnetsQuery({
+        subnet,
+        netmask: prefixlen,
+        prefixLen: desiredPrefixlen,
+    });
 
-export default class SplitPrefix extends React.PureComponent<IProps> {
-    static contextType = ApiClientContext;
-    context!: React.ContextType<typeof ApiClientContext>;
-    state: IState = {
-        subnets: [],
-        desiredPrefixlen: 0,
-    };
-
-    fetchFreePrefixes(
-        subnet: string,
-        prefixlen: number,
-        desiredPrefixlen: number,
-    ) {
-        this.context.apiClient
-            .free_subnets(subnet, prefixlen, desiredPrefixlen)
-            .then((result: string[]) => {
-                const subnets = result.filter(
-                    (x) => parseInt(x.split('/')[1], 10) === desiredPrefixlen,
-                );
-                this.setState({
-                    subnets: subnets,
-                    desiredPrefixlen: desiredPrefixlen,
-                    loading: false,
-                });
-            });
-    }
-
-    componentDidUpdate(prevProps: IProps) {
-        if (
-            this.props.subnet !== prevProps.subnet ||
-            this.props.prefixlen !== prevProps.prefixlen
-        ) {
-            this.fetchFreePrefixes(
-                this.props.subnet,
-                this.props.prefixlen,
-                this.props.prefixMin,
-            );
+    useEffect(() => {
+        if (isFetching) {
+            setSubnets([]);
         }
-    }
+        if (data) {
+            const filteredSubnets = data.filter(
+                (x) => parseInt(x.split('/')[1], 10) === desiredPrefixlen,
+            );
+            setSubnets(filteredSubnets);
+            setDesiredPrefixlen(desiredPrefixlen);
+        }
+    }, [data, desiredPrefixlen, isFetching]);
 
-    componentDidMount() {
-        const { subnet, prefixlen, prefixMin } = { ...this.props };
-
-        this.fetchFreePrefixes(subnet, prefixlen, prefixMin);
-    }
-
-    changePrefixLength = (e: SingleValue<Option<number>>) => {
-        const { subnet, prefixlen } = { ...this.props };
-
+    const changePrefixLength = (e: SingleValue<Option<number>>) => {
         const desiredPrefixlen = e?.value;
         if (desiredPrefixlen) {
-            this.fetchFreePrefixes(subnet, prefixlen, desiredPrefixlen);
+            setDesiredPrefixlen(desiredPrefixlen);
         }
     };
 
-    selectSubnet = (e: SingleValue<Option>) => {
-        this.props.onChange(e?.value ?? '');
+    const selectSubnet = (e: SingleValue<Option>) => {
+        onChange(e?.value ?? '');
     };
 
-    render() {
-        // IPv4 subnet size should be between /32 and /12
-        // IPv6 subnet size should be between /128 and /32
-        const { id, name, subnet, prefixlen, prefixMin, selectedSubnet } =
-            this.props;
-        const version = subnet.indexOf(':') === -1 ? 4 : 6;
-        const minPrefixLength = version === 4 ? 12 : 32;
-        const minimalSelectablePrefixLength =
-            minPrefixLength > prefixMin ? minPrefixLength : prefixMin;
-        const maximalSelectablePrefixLength =
-            version === 4 ? 32 : minimalSelectablePrefixLength + 12;
+    // IPv4 subnet size should be between /32 and /12
+    // IPv6 subnet size should be between /128 and /32
+    const version = subnet.indexOf(':') === -1 ? 4 : 6;
+    const minPrefixLength = version === 4 ? 12 : 32;
+    const minimalSelectablePrefixLength =
+        minPrefixLength > prefixMin ? minPrefixLength : prefixMin;
+    const maximalSelectablePrefixLength =
+        version === 4 ? 32 : minimalSelectablePrefixLength + 12;
 
-        const { desiredPrefixlen } = this.state;
-        const prefixlengths = range(
-            maximalSelectablePrefixLength - minimalSelectablePrefixLength + 1,
-        ).map((x) => minimalSelectablePrefixLength + x);
+    const prefixlengths = range(
+        maximalSelectablePrefixLength - minimalSelectablePrefixLength + 1,
+    ).map((x) => minimalSelectablePrefixLength + x);
 
-        const length_options: Option<number>[] = prefixlengths.map((pl) => ({
-            value: pl,
-            label: pl.toString(),
-        }));
-        const length_value = length_options.find(
-            (option) => option.value === desiredPrefixlen,
-        );
+    const length_options: Option<number>[] = prefixlengths.map((pl) => ({
+        value: pl,
+        label: pl.toString(),
+    }));
+    const length_value = length_options.find(
+        (option) => option.value === desiredPrefixlen,
+    );
 
-        const prefix_options = this.state.subnets.map((sn) => ({
-            label: sn,
-            value: sn,
-        }));
-        const prefix_value = prefix_options.find(
-            (option) => option.value === selectedSubnet,
-        );
-        // Todo 482: re-implement when this component is refactored to function based
-        // const customStyles = getReactSelectTheme(this.context.theme);
+    const prefix_options = subnets.map((sn) => ({
+        label: sn,
+        value: sn,
+    }));
 
-        return (
-            <EuiFlexItem css={splitPrefixStyling}>
-                <section>
-                    <h3>
-                        Selected prefix: {subnet}/{prefixlen}
-                    </h3>
-                    <div>Desired netmask of the new subnet:</div>
+    const prefix_value = prefix_options.find(
+        (option) => option.value === selectedSubnet,
+    );
+
+    return (
+        <EuiFlexItem css={splitPrefixStyling}>
+            <section>
+                <h3>
+                    Selected prefix: {subnet}/{prefixlen}
+                </h3>
+                <div>Desired netmask of the new subnet:</div>
+                <ReactSelect
+                    id={`${id}.desired-netmask`}
+                    name={`${name}.desired-netmask`}
+                    onChange={changePrefixLength}
+                    options={length_options}
+                    value={length_value}
+                />
+                <div>
+                    <div>Desired prefix:</div>
                     <ReactSelect
-                        id={`${id}.desired-netmask`}
-                        // Todo 482: re-implement when this component is refactored to function based
-                        // styles={customStyles}
-                        inputId={`${id}.desired-netmask.search`}
-                        name={`${name}.desired-netmask`}
-                        onChange={this.changePrefixLength}
-                        options={length_options}
-                        value={length_value}
+                        isDisabled={isFetching}
+                        isLoading={isFetching}
+                        id={`${id}.desired-prefix`}
+                        name={`${name}.desired-prefix`}
+                        options={prefix_options}
+                        onChange={selectSubnet}
+                        value={prefix_value}
                     />
-                    {this.state.subnets && (
-                        <div>
-                            <div>Desired prefix:</div>
-                            <ReactSelect
-                                id={`${id}.desired-prefix`}
-                                // Todo 482: re-implement when this component is refactored to function based
-                                // styles={customStyles}
-                                inputId={`${id}.desired-prefix.search`}
-                                name={`${name}.desired-prefix`}
-                                options={prefix_options}
-                                onChange={this.selectSubnet}
-                                value={prefix_value}
-                            />
-                        </div>
-                    )}
-                </section>
-            </EuiFlexItem>
-        );
-    }
-}
+                </div>
+            </section>
+        </EuiFlexItem>
+    );
+};
+
+export default SplitPrefix;
