@@ -20,7 +20,6 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
 import {
     nodeSubscriptions,
@@ -28,6 +27,7 @@ import {
     useSubscriptionsWithFiltersQuery,
 } from '@/rtk/endpoints/formFields';
 
+import { getSelectFieldStyles } from '../SelectField/styles';
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
 import { ImsNode, ImsPort, NodeSubscription } from './types';
@@ -86,9 +86,8 @@ function ImsPortId({
 }: ImsPortFieldProps) {
     const t = useTranslations('pydanticForms');
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
-        getReactSelectInnerComponentStyles,
-    );
+    const { reactSelectInnerComponentStyles } =
+        useWithOrchestratorTheme(getSelectFieldStyles);
 
     const [nodes, setNodes] = useState<ImsNode[] | NodeSubscription[]>([]);
     const [nodeId, setNodeId] = useState<number | string | undefined>(

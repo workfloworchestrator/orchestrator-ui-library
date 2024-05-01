@@ -38,8 +38,8 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '@/types';
 
+import { getSelectFieldStyles } from './SelectField/styles';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
-import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
 import { FieldProps, Option } from './types';
 import { getPortMode } from './utils';
 
@@ -107,9 +107,8 @@ function SubscriptionFieldDefinition({
 }: SubscriptionFieldProps) {
     const t = useTranslations('pydanticForms');
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
-        getReactSelectInnerComponentStyles,
-    );
+    const { reactSelectInnerComponentStyles } =
+        useWithOrchestratorTheme(getSelectFieldStyles);
 
     const { refetch, subscriptions, isFetching } =
         useGetSubscriptionDropdownOptions(tags, statuses);

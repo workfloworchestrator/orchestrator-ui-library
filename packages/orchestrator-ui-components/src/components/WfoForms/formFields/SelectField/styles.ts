@@ -1,6 +1,10 @@
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { WfoTheme } from '@/hooks';
 
-export const getReactSelectInnerComponentStyles = ({ theme }: WfoTheme) => {
+export const getSelectFieldStyles = (wfoTheme: WfoTheme) => {
+    const { theme } = wfoTheme;
+    const { formRowStyle } = getCommonFormFieldStyles(wfoTheme);
+
     const reactSelectInnerComponentStyles = {
         option: (
             baseStyles: object,
@@ -8,17 +12,20 @@ export const getReactSelectInnerComponentStyles = ({ theme }: WfoTheme) => {
         ) => ({
             ...baseStyles,
             borderBottom: theme.border.thin,
+            borderColor: theme.colors.lightShade,
             backgroundColor: theme.colors.lightestShade,
             color: state.isSelected
                 ? theme.colors.primaryText
                 : theme.colors.text,
         }),
-        control: (baseStyles: object) => {
+        control: (baseStyles: object, state: { isFocused: boolean }) => {
             return {
                 ...baseStyles,
-                backgroundColor: theme.colors.lightestShade,
+                backgroundColor: state.isFocused
+                    ? theme.colors.emptyShade
+                    : theme.colors.lightestShade,
                 color: theme.colors.text,
-                border: theme.border.thin,
+                border: `1px solid ${theme.colors.lightShade}`,
             };
         },
         input: (baseStyles: object) => ({
@@ -41,5 +48,5 @@ export const getReactSelectInnerComponentStyles = ({ theme }: WfoTheme) => {
         }),
     };
 
-    return reactSelectInnerComponentStyles;
+    return { reactSelectInnerComponentStyles, formRowStyle };
 };

@@ -18,10 +18,10 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFieldNumber, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { getFormFieldsBaseStyle } from '@/theme';
 import { FieldProps } from '@/types';
-
-import { getNumFieldStyles } from './styles';
 
 export type NumFieldProps = FieldProps<
     number,
@@ -48,8 +48,10 @@ function Num({
     errorMessage,
     ...props
 }: NumFieldProps) {
-    const { numFieldStyle, formRowStyle } =
-        useWithOrchestratorTheme(getNumFieldStyles);
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+    const { formFieldBaseStyle } = useWithOrchestratorTheme(
+        getFormFieldsBaseStyle,
+    );
 
     return (
         <div {...filterDOMProps(props)}>
@@ -63,7 +65,7 @@ function Num({
                 fullWidth
             >
                 <EuiFieldNumber
-                    css={numFieldStyle}
+                    css={formFieldBaseStyle}
                     name={name}
                     isInvalid={error}
                     placeholder={placeholder}
