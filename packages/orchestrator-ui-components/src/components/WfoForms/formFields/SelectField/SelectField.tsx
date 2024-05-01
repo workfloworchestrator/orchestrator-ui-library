@@ -23,11 +23,11 @@ import { EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
-import { ListField, ListFieldProps } from './ListField';
-import { ListItemField } from './ListItemField';
-import { ListSelectField } from './ListSelectField';
-import { getReactSelectInnerComponentStyles } from './reactSelectStyles';
-import { FieldProps, Option } from './types';
+import { ListField, ListFieldProps } from '../ListField';
+import { ListItemField } from '../ListItemField';
+import { ListSelectField } from '../ListSelectField';
+import { FieldProps, Option } from '../types';
+import { getSelectFieldStyles } from './styles';
 
 export type SelectFieldProps = FieldProps<
     string | string[],
@@ -94,9 +94,8 @@ export function UnconnectedSelectField({
     );
 
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
-        getReactSelectInnerComponentStyles,
-    );
+    const { reactSelectInnerComponentStyles, formRowStyle } =
+        useWithOrchestratorTheme(getSelectFieldStyles);
 
     if (fieldType === Array) {
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)
@@ -134,6 +133,7 @@ export function UnconnectedSelectField({
         return (
             <section>
                 <EuiFormRow
+                    css={formRowStyle}
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
                     error={showInlineError ? errorMessage : false}

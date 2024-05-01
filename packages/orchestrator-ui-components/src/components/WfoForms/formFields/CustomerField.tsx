@@ -19,7 +19,10 @@ import { connectField } from 'uniforms';
 
 import { useGetCustomersQuery } from '@/rtk/endpoints';
 
-import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
+import {
+    SelectFieldProps,
+    UnconnectedSelectField,
+} from './SelectField/SelectField';
 
 export type CustomerFieldProps = Omit<
     SelectFieldProps,
