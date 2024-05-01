@@ -17,8 +17,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { useAxiosApiClient } from '../useAxiosApiClient';
-import { SelectFieldProps, UnconnectedSelectField } from './SelectField';
+import { SelectFieldProps, UnconnectedSelectField } from '@/components';
+import { useLocationCodesQuery } from '@/rtk/endpoints/formFields';
 
 export type LocationCodeFieldProps = { locationCodes?: string[] } & Omit<
     SelectFieldProps,
@@ -36,23 +36,17 @@ filterDOMProps.register('locationCodes');
 function LocationCode({ locationCodes, ...props }: LocationCodeFieldProps) {
     const t = useTranslations('pydanticForms');
     const [codes, setCodes] = useState<string[]>(locationCodes ?? []);
-    const axiosApiClient = useAxiosApiClient();
+    const { data, error } = useLocationCodesQuery();
 
     useEffect(() => {
-        axiosApiClient
-            .axiosFetch<string[]>('surf/crm/location_codes', {}, {}, false)
-            .then((result) => {
-                if (result) {
-                    setCodes(result);
-                }
-            })
-            .catch((error) => {
-                if (error) {
-                    console.error(error);
-                }
-                setCodes([]);
-            });
-    }, [axiosApiClient]);
+        if (data) {
+            setCodes(data);
+        }
+        if (error) {
+            console.error(error);
+            setCodes([]);
+        }
+    }, [data, error]);
 
     return (
         <UnconnectedSelectField

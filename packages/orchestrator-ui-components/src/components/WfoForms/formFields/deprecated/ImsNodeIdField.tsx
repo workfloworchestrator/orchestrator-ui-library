@@ -18,7 +18,7 @@ import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { useImsNodesQuery } from '@/rtk/endpoints/formFields';
 
 import { SelectFieldProps, UnconnectedSelectField } from '../SelectField';
 import { ImsNode } from './types';
@@ -56,30 +56,28 @@ function ImsNodeId({
     unsubscribedOnly = true,
     ...props
 }: ImsNodeIdFieldProps) {
-    const axiosApiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
-    const [loading, setIsLoading] = useState(true);
     const [nodes, setNodes] = useState<ImsNode[]>([]);
+    const { data, isLoading, error } = useImsNodesQuery(
+        {
+            locationCode,
+            status,
+            unsubscribedOnly,
+        },
+        { skip: !(locationCode && status) },
+    );
 
     useEffect(() => {
-        if (locationCode && status) {
-            const imsNodeEndPoint = `/surf/ims/nodes/${locationCode}/${status}?unsubscribed_only=${unsubscribedOnly}`;
-            axiosApiClient
-                .axiosFetch<ImsNode[]>(imsNodeEndPoint)
-                .then((result) => {
-                    if (result) {
-                        setNodes(result);
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => setIsLoading(false));
+        if (data) {
+            setNodes(data);
         }
-    }, [locationCode, status, axiosApiClient, unsubscribedOnly]);
+        if (error) {
+            console.error(error);
+        }
+    }, [locationCode, status, unsubscribedOnly, data, error]);
 
     const placeholder =
-        loading && locationCode
+        isLoading && locationCode
             ? t('widgets.node_select.nodes_loading')
             : nodes.length
               ? t('widgets.node_select.select_node')

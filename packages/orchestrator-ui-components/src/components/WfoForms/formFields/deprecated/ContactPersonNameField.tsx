@@ -27,7 +27,7 @@ import {
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
+import { useContactPersonsQuery } from '@/rtk/endpoints/formFields';
 
 import { ContactPerson, FieldProps } from '../types';
 import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
@@ -80,7 +80,6 @@ function ContactPersonName({
     customerKey,
     ...props
 }: ContactPersonNameFieldProps) {
-    const axiosApiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
     const { model, onChange: formOnChange, schema } = useForm();
 
@@ -117,6 +116,11 @@ function ContactPersonName({
     const [contactPersons, setContactPersons] = useState<ContactPerson[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
+    const { data, error: fetchError } = useContactPersonsQuery(
+        { customerIdValue },
+        { skip: !customerIdValue },
+    );
+
     const suggestions = value
         ? contactPersons
               .filter(
@@ -133,23 +137,14 @@ function ContactPersonName({
 
     useEffect(() => {
         if (customerIdValue) {
-            axiosApiClient
-                .axiosFetch<ContactPerson[]>(
-                    `/surf/crm/contacts/${customerIdValue}`,
-                    {},
-                    {},
-                    false,
-                )
-                .then((result) => {
-                    if (result) {
-                        setContactPersons(result);
-                    }
-                })
-                .catch(() => {
-                    setContactPersons([]);
-                });
+            if (data) {
+                setContactPersons(data);
+            }
+            if (fetchError) {
+                setContactPersons([]);
+            }
         }
-    }, [customerIdValue, axiosApiClient]);
+    }, [customerIdValue, data, fetchError]);
 
     useEffect(() => {
         // Set focus to the last name component to be created

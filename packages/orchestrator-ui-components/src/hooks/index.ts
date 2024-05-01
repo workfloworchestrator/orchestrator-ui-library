@@ -3,7 +3,6 @@ export * from './useMutateProcess';
 export * from './useOrchestratorConfig';
 export * from './useOrchestratorTheme';
 export * from './usePolicy';
-export * from './useProcessStatusCountsQuery';
 export * from './DataFetchHooks';
 export * from './useSubscriptionActions';
 export * from './useDataDisplayParams';

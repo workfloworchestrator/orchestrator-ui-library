@@ -6,9 +6,12 @@ import { EuiToolTip } from '@elastic/eui';
 
 import { WfoHeaderBadge } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
-import { ProcessStatusCounts, useProcessStatusCountsQuery } from '@/hooks';
 import { WfoCheckmarkCircleFill } from '@/icons';
 import { WfoXCircleFill } from '@/icons';
+import {
+    ProcessStatusCounts,
+    useProcessStatusCountsQuery,
+} from '@/rtk/endpoints/processStatusCounts';
 
 type TaskCountsSummary = {
     failed: number;
@@ -37,6 +40,7 @@ export const WfoFailedTasksBadge = () => {
     const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
+
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
     if (taskCountsSummary.total != 0) {

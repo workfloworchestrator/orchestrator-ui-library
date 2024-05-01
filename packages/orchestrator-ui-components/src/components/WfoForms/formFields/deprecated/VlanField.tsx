@@ -20,8 +20,8 @@ import { connectField, filterDOMProps, joinName, useForm } from 'uniforms';
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { useIsTaggedPort } from '@/hooks/deprecated/useIsTaggedPort';
+import { useVlansByServicePortQuery } from '@/rtk/endpoints/formFields';
 
 import { FieldProps } from '../types';
 import { ServicePort } from './types';
@@ -114,7 +114,7 @@ export type VlanFieldProps = FieldProps<
     { subscriptionFieldName?: string; nsiVlansOnly?: boolean }
 >;
 
-type VlanRange = [number, number];
+export type VlanRange = [number, number];
 
 function Vlan({
     disabled,
@@ -133,7 +133,6 @@ function Vlan({
     ...props
 }: VlanFieldProps) {
     const t = useTranslations('pydanticForms');
-    const axiosApiClient = useAxiosApiClient();
 
     const { model, schema } = useForm();
     const initialValue = schema.getInitialValue(name, {});
@@ -167,29 +166,30 @@ function Vlan({
         }
     }, [onChange, subscriptionId, value, isFetched, portIsTagged]);
 
-    const [imsIsLoading, setImsIsLoading] = useState<boolean>(false);
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);
+    const {
+        data,
+        isFetching: isLoading,
+        error: fetchError,
+    } = useVlansByServicePortQuery(
+        { subscriptionId, nsiVlansOnly },
+        {
+            skip: !subscriptionId,
+        },
+    );
 
     useEffect(() => {
-        if (subscriptionId) {
-            setImsIsLoading(true);
-            axiosApiClient
-                .axiosFetch<VlanRange[]>(
-                    `surf/subscriptions/vlans-by-service-port/${subscriptionId}?nsi_vlans_only=${nsiVlansOnly}`,
-                )
-                .then((result) => {
-                    setUsedVlansInIms(result);
-                    setMissingInIms(false);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setMissingInIms(true);
-                    setUsedVlansInIms([]);
-                })
-                .finally(() => setImsIsLoading(false));
+        if (data) {
+            setUsedVlansInIms(data);
+            setMissingInIms(false);
         }
-    }, [axiosApiClient, nsiVlansOnly, subscriptionId]);
+        if (fetchError) {
+            console.error(fetchError);
+            setMissingInIms(true);
+            setUsedVlansInIms([]);
+        }
+    }, [data, error, fetchError, isLoading, nsiVlansOnly, subscriptionId]);
 
     // Filter currently used vlans because they are probably from the current subscription
     const currentVlans = getAllNumbersForVlanRange(initialValue);
@@ -208,7 +208,7 @@ function Vlan({
               )
             : [];
 
-    const placeholder = imsIsLoading
+    const placeholder = isLoading
         ? t('widgets.vlan.loadingIms')
         : subscriptionId
           ? t('widgets.vlan.placeholder')
@@ -227,7 +227,7 @@ function Vlan({
             : undefined;
 
     let message = '';
-    if (!imsIsLoading && subscriptionId) {
+    if (!isLoading && subscriptionId) {
         if (portIsTagged && nsiVlansOnly) {
             const initialUsedVlans = schema
                 .getInitialValue('service_ports', {})
@@ -278,6 +278,7 @@ function Vlan({
                 fullWidth
             >
                 <EuiFieldText
+                    isLoading={isLoading}
                     fullWidth
                     disabled={!subscriptionId || disabled || !portIsTagged}
                     name={name}

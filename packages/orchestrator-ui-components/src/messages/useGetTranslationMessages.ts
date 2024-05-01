@@ -1,29 +1,11 @@
-import { useContext } from 'react';
-
-import { AbstractIntlMessages } from 'next-intl';
-
-import { OrchestratorConfigContext } from '@/contexts';
-import { useQueryWithFetch } from '@/hooks';
+import { useTranslationsQuery } from '@/rtk/endpoints/translations';
 import { Locale } from '@/types';
 
 import enGB from './en-GB.json';
 import nlNL from './nl-NL.json';
 
-export type TranslationMessagesMap = Map<Locale, AbstractIntlMessages>;
-
-type BackendTranslationsResponse = {
-    forms: {
-        fields: Record<string, string>;
-    };
-};
-
 export const useGetTranslationMessages = (locale: string | undefined) => {
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
-    const translationsUrl = `${orchestratorApiBaseUrl}/translations/${locale}`;
-    const { isLoading, data } = useQueryWithFetch<
-        BackendTranslationsResponse,
-        Record<never, never>
-    >(translationsUrl, {}, 'backendTranslations');
+    const { data, isLoading } = useTranslationsQuery({ locale: locale ?? '' });
 
     const backendMessages = isLoading ? {} : data?.forms?.fields || {};
 

@@ -21,8 +21,12 @@ import { connectField, filterDOMProps } from 'uniforms';
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getReactSelectInnerComponentStyles } from '@/components/WfoForms/formFields/reactSelectStyles';
-import { useAxiosApiClient } from '@/components/WfoForms/useAxiosApiClient';
 import { useWithOrchestratorTheme } from '@/hooks';
+import {
+    nodeSubscriptions,
+    useFreePortsByNodeSubscriptionIdAndSpeedQuery,
+    useSubscriptionsWithFiltersQuery,
+} from '@/rtk/endpoints/formFields';
 
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
@@ -80,7 +84,6 @@ function ImsPortId({
     nodeStatuses,
     ...props
 }: ImsPortFieldProps) {
-    const apiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
     const reactSelectInnerComponentStyles = useWithOrchestratorTheme(
@@ -92,7 +95,29 @@ function ImsPortId({
         nodeSubscriptionId,
     );
     const [ports, setPorts] = useState<ImsPort[]>([]);
-    const [loading, setLoading] = useState(true);
+
+    const {
+        data: freePorts,
+        error: freePortsError,
+        isFetching: loading,
+    } = useFreePortsByNodeSubscriptionIdAndSpeedQuery(
+        {
+            nodeSubscriptionId: nodeId as string,
+            interfaceSpeed: interfaceSpeed as number,
+            mode: imsPortMode,
+        },
+        {
+            skip: !nodeId,
+        },
+    );
+
+    const { data: nodeSubscriptionsData } = useSubscriptionsWithFiltersQuery({
+        filters: nodeSubscriptions(nodeStatuses ?? ['active']),
+    });
+
+    useEffect(() => {
+        setPorts(freePorts ?? []);
+    }, [freePorts, freePortsError]);
 
     const onChangeNodes = useCallback(
         (option: SingleValue<Option>) => {
@@ -101,52 +126,34 @@ function ImsPortId({
             if (value === undefined) {
                 return;
             }
-
             // Clears the value when another selection is made
             onChange(undefined);
-
-            setLoading(true);
             setNodeId(value);
             setPorts([]);
-
-            apiClient
-                .getFreePortsByNodeSubscriptionIdAndSpeed(
-                    value as string,
-                    interfaceSpeed as number,
-                    imsPortMode,
-                )
-                .then((result) => {
-                    setPorts(result);
-                    setLoading(false);
-                });
         },
-        [interfaceSpeed, imsPortMode, apiClient],
+        [onChange],
     );
 
     useEffect(() => {
-        setLoading(true);
-
-        const nodesPromise = apiClient.nodeSubscriptions(
-            nodeStatuses ?? ['active'],
-        );
-        if (nodeSubscriptionId) {
-            nodesPromise.then((result) => {
-                setNodes(
-                    result.filter(
-                        (subscription) =>
-                            subscription.subscription_id === nodeSubscriptionId,
-                    ),
-                );
-                setLoading(false);
-                onChangeNodes({ value: nodeSubscriptionId } as Option);
-            });
+        if (nodeSubscriptionId && nodeSubscriptionsData) {
+            setNodes(
+                nodeSubscriptionsData.filter(
+                    (subscription) =>
+                        subscription.subscription_id === nodeSubscriptionId,
+                ),
+            );
+            onChangeNodes({ value: nodeSubscriptionId } as Option);
         } else {
-            nodesPromise.then((result) => {
-                setNodes(result);
-                setLoading(false);
-            });
+            setNodes(nodeSubscriptionsData ?? []);
         }
-    }, [onChangeNodes, nodeStatuses, nodeSubscriptionId, apiClient]);
+    }, [
+        onChangeNodes,
+        nodeStatuses,
+        nodeSubscriptionId,
+        loading,
+        nodeSubscriptionsData,
+    ]);
+
     const nodesPlaceholder = loading
         ? t('widgets.nodePort.loadingNodes')
         : t('widgets.nodePort.selectNode');
