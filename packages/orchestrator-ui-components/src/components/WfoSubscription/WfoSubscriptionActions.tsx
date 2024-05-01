@@ -17,15 +17,10 @@ import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
-import {
-    SubscriptionAction,
-    useCheckEngineStatus,
-    useOrchestratorTheme,
-    usePolicy,
-    useSubscriptionActions,
-} from '@/hooks';
+import { useCheckEngineStatus, useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
-import { WorkflowTarget } from '@/types';
+import { useGetSubscriptionActionsQuery } from '@/rtk/endpoints/subscriptionActions';
+import { SubscriptionAction, WorkflowTarget } from '@/types';
 
 import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
 import { flattenArrayProps } from './utils';
@@ -59,8 +54,9 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
-    const { data: subscriptionActions } =
-        useSubscriptionActions(subscriptionId);
+    const { data: subscriptionActions } = useGetSubscriptionActionsQuery({
+        subscriptionId,
+    });
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
 
