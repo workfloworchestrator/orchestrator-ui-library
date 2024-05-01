@@ -69,7 +69,7 @@
             "startWorkflow": "Start workflow",
             "resumeTask": "Hervat task",
             "resumeWorkflow": "Hervat workflow",
-            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veldn(en) hebben validatie errors"
+            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten"
         },
         "widgets": {
             "customer": {
