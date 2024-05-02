@@ -27,10 +27,7 @@ import {
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useContactPersonsQuery } from '@/rtk/endpoints/formFields';
-import { useWithOrchestratorTheme } from '@/hooks';
-import { getFormFieldsBaseStyle } from '@/theme';
 
 import { ContactPerson, FieldProps } from '../types';
 import { ContactPersonAutocomplete } from './ContactPersonAutocomplete';
@@ -83,12 +80,6 @@ function ContactPersonName({
     customerKey,
     ...props
 }: ContactPersonNameFieldProps) {
-    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
-    const { formFieldBaseStyle } = useWithOrchestratorTheme(
-        getFormFieldsBaseStyle,
-    );
-
-    const axiosApiClient = useAxiosApiClient();
     const t = useTranslations('pydanticForms');
     const { model, onChange: formOnChange, schema } = useForm();
 
