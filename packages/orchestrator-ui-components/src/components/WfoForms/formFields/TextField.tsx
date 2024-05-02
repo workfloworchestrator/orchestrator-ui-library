@@ -18,6 +18,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFieldText, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { getFormFieldsBaseStyle } from '@/theme';
 import { FieldProps } from '@/types';
 
 export type TextFieldProps = FieldProps<string>;
@@ -39,9 +42,15 @@ function Text({
     errorMessage,
     ...props
 }: TextFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+    const { formFieldBaseStyle } = useWithOrchestratorTheme(
+        getFormFieldsBaseStyle,
+    );
+
     return (
         <section {...filterDOMProps(props)}>
             <EuiFormRow
+                css={formRowStyle}
                 label={label}
                 labelAppend={<EuiText size="m">{description}</EuiText>}
                 error={showInlineError ? errorMessage : false}
@@ -50,6 +59,7 @@ function Text({
                 fullWidth
             >
                 <EuiFieldText
+                    css={formFieldBaseStyle}
                     autoComplete={autoComplete}
                     disabled={disabled}
                     name={name}
