@@ -19,7 +19,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import SplitPrefix from '@/components/WfoForms/formFields/deprecated/SplitPrefix';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { FieldProps } from '../types';
 import IpPrefixTableField from './IpPrefixTableField';
@@ -44,6 +46,8 @@ function IpNetwork({
     prefixMin,
     ...props
 }: IPvAnyNetworkFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     const t = useTranslations('pydanticForms');
     const [selectedPrefix, setSelectedPrefix] = useState<IpBlock | undefined>(
         undefined,
@@ -59,6 +63,7 @@ function IpNetwork({
     return (
         <section {...filterDOMProps(props)}>
             <EuiFormRow
+                css={formRowStyle}
                 label={label}
                 labelAppend={<EuiText size="m">{description}</EuiText>}
                 error={showInlineError ? errorMessage : false}

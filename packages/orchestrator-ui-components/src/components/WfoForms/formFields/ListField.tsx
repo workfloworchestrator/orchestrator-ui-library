@@ -19,6 +19,9 @@ import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { ListAddField } from './ListAddField';
 import { ListItemField } from './ListItemField';
 import { listFieldStyling } from './listFieldStyling';
@@ -58,6 +61,8 @@ function List({
     errorMessage,
     ...props
 }: ListFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     const child = useField(joinName(name, '$'), {}, { absoluteName: true })[0];
     const hasListAsChild = child.fieldType === Array;
 
@@ -68,6 +73,7 @@ function List({
                 className={`list-field${hasListAsChild ? ' outer-list' : ''}`}
             >
                 <EuiFormRow
+                    css={formRowStyle}
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
                     error={showInlineError ? errorMessage : false}
