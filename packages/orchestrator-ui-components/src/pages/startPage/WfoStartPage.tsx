@@ -21,12 +21,12 @@ export const WfoStartPage = () => {
 
     const { isAllowed } = usePolicy();
     const { session } = useWfoSession();
-    const username = session?.user?.name ?? '';
+    const username = session?.profile?.preferred_username ?? '';
 
     // The key can be used to filter or sort on when overriding the cards in the app
     const defaultSummaryCards: ReactElement[] = [
         ...toOptionalArrayEntry(
-            <WfoMyWorkflowsSummaryCard key="myWorkflows" username="Todo" />,
+            <WfoMyWorkflowsSummaryCard key="myWorkflows" username={username} />,
             !!username,
         ),
         <WfoActiveWorkflowsSummaryCard key="activeWorkflows" />,
