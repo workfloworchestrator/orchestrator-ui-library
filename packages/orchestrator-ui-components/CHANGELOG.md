@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.19.1
+
+### Patch Changes
+
+- e1811bc: revert username to old code solution
+
 ## 1.19.0
 
 ### Minor Changes
