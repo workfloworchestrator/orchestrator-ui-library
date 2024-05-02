@@ -21,7 +21,7 @@ export const WfoStartPage = () => {
 
     const { isAllowed } = usePolicy();
     const { session } = useWfoSession();
-    const username = session?.profile?.preferred_username ?? '';
+    const username = session?.user?.name ?? '';
 
     // The key can be used to filter or sort on when overriding the cards in the app
     const defaultSummaryCards: ReactElement[] = [

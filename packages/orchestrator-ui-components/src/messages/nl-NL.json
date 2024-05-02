@@ -124,6 +124,7 @@
         }
     },
     "metadata": {
+        "title": "Metadata",
         "tabs": {
             "products": "Producten",
             "productBlocks": "Product blocks",
@@ -213,6 +214,7 @@
             "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad"
         },
         "steps": {
+            "taskSteps": "Taak stappen",
             "steps": "Workflow stappen",
             "showDelta": "Toon subscription delta",
             "hideDelta": "Verberg subscription delta",
@@ -259,7 +261,7 @@
             "note": "Notitie",
             "metadata": "Metadata",
             "customerFullName": "Klant",
-            "customerAbbreviation": "Klantafkorting"
+            "customerShortcode": "Klantafkorting"
         },
         "detail": {
             "title": "Subscriptions",
