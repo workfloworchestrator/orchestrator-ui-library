@@ -18,6 +18,8 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { FieldProps } from '@/types';
 
 import { boolFieldStyling } from './BoolFieldStyling';
@@ -39,6 +41,8 @@ function Bool({
     errorMessage,
     ...props
 }: BoolFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     return (
         <EuiFlexItem css={boolFieldStyling}>
             <section
@@ -46,6 +50,7 @@ function Bool({
                 className={`${className} bool-field`}
             >
                 <EuiFormRow
+                    css={formRowStyle}
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
                     error={showInlineError ? errorMessage : false}
