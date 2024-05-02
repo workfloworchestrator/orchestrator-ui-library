@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.19.0
+
+### Minor Changes
+
+- 7dc5cf0: Moving axios form fields and fetches to RTK
+
+### Patch Changes
+
+- 213fb25: Uses preferred_username to filter for my-workflows
+- 71fa3bd: 1055 Making OAuth Scopes configurable via Environment Variables
+
 ## 1.18.0
 
 ### Minor Changes
