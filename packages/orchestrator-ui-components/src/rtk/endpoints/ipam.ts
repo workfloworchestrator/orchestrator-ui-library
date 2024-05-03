@@ -1,8 +1,8 @@
 import { IpBlock, IpPrefix } from '@/components';
 import {
-    FREE_SUBNETS_ENDPOINT,
-    IP_BLOCKS_ENDPOINT,
-    PREFIX_FILTERS_ENDPOINT,
+    IPAM_FREE_SUBNETS_ENDPOINT,
+    IPAM_IP_BLOCKS_ENDPOINT,
+    IPAM_PREFIX_FILTERS_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
@@ -10,7 +10,7 @@ const ipamApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         prefixFilters: build.query<IpPrefix[], void>({
             query: () => ({
-                url: `${PREFIX_FILTERS_ENDPOINT}`,
+                url: `${IPAM_PREFIX_FILTERS_ENDPOINT}`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ const ipamApi = orchestratorApi.injectEndpoints({
         }),
         ipBlocks: build.query<IpBlock[], { parentPrefix: number }>({
             query: ({ parentPrefix }) => ({
-                url: `${IP_BLOCKS_ENDPOINT}/${parentPrefix}`,
+                url: `${IPAM_IP_BLOCKS_ENDPOINT}/${parentPrefix}`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const ipamApi = orchestratorApi.injectEndpoints({
             { subnet: string; netmask: number; prefixLen: number }
         >({
             query: ({ subnet, netmask, prefixLen }) => ({
-                url: `${FREE_SUBNETS_ENDPOINT}/${subnet}/${netmask}/${prefixLen}`,
+                url: `${IPAM_FREE_SUBNETS_ENDPOINT}/${subnet}/${netmask}/${prefixLen}`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

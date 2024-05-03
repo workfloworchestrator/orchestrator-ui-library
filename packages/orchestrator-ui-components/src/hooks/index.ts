@@ -1,5 +1,4 @@
 export * from './useCheckEngineStatus';
-export * from './useMutateProcess';
 export * from './useOrchestratorConfig';
 export * from './useOrchestratorTheme';
 export * from './usePolicy';

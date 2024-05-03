@@ -1,5 +1,14 @@
-import { PROCESSES_ENDPOINT } from '@/configuration';
-import { BaseQueryTypes, orchestratorApi } from '@/rtk';
+import { signOut } from 'next-auth/react';
+
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
+import {
+    PROCESSES_ENDPOINT,
+    PROCESSES_RESUME_ALL_ENDPOINT,
+    PROCESS_ABORT_ENDPOINT,
+    PROCESS_RESUME_ENDPOINT,
+} from '@/configuration';
+import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
 import {
     ProcessDetail,
     ProcessDetailResultRaw,
@@ -46,6 +55,18 @@ export type ProcessDetailResponse = {
     processes: ProcessDetail[];
 };
 
+const catchErrorResponse = (
+    _: FetchBaseQueryError,
+    meta: { response: Response },
+) => {
+    if (meta.response.status < 200 || meta.response.status >= 300) {
+        console.error(meta.response.status, meta.response.body);
+    }
+    if (meta.response.status === 401 || meta.response.status === 403) {
+        signOut();
+    }
+};
+
 const processDetailApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
         getProcessDetail: builder.query<
@@ -81,8 +102,62 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 baseQueryType: BaseQueryTypes.fetch,
             },
         }),
+        retryAllProcesses: builder.mutation<void, null>({
+            query: () => ({
+                url: `${PROCESSES_ENDPOINT}/${PROCESSES_RESUME_ALL_ENDPOINT}`,
+                method: 'PUT',
+            }),
+            transformErrorResponse: catchErrorResponse,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            invalidatesTags: [CacheTags.processList],
+        }),
+        retryProcess: builder.mutation<void, { processId: string }>({
+            query: ({ processId }) => ({
+                url: `${PROCESSES_ENDPOINT}/${processId}/${PROCESS_RESUME_ENDPOINT}`,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: '{}',
+            }),
+            transformErrorResponse: catchErrorResponse,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            invalidatesTags: [CacheTags.processList],
+        }),
+        deleteProcess: builder.mutation<void, { processId: string }>({
+            query: ({ processId }) => ({
+                url: `${PROCESSES_ENDPOINT}/${processId}`,
+                method: 'DELETE',
+            }),
+            transformErrorResponse: catchErrorResponse,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            invalidatesTags: [CacheTags.processList],
+        }),
+        abortProcess: builder.mutation<void, { processId: string }>({
+            query: ({ processId }) => ({
+                url: `${PROCESSES_ENDPOINT}/${processId}/${PROCESS_ABORT_ENDPOINT}`,
+                method: 'PUT',
+            }),
+            transformErrorResponse: catchErrorResponse,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            invalidatesTags: [CacheTags.processList],
+        }),
     }),
 });
 
-export const { useGetProcessDetailQuery, useGetRawProcessDetailQuery } =
-    processDetailApi;
+export const {
+    useGetProcessDetailQuery,
+    useGetRawProcessDetailQuery,
+    useRetryAllProcessesMutation,
+    useRetryProcessMutation,
+    useDeleteProcessMutation,
+    useAbortProcessMutation,
+} = processDetailApi;

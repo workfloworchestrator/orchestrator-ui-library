@@ -518,7 +518,6 @@ export type OrchestratorConfig = {
     graphqlEndpointCore: string;
     engineStatusEndpoint: string;
     processesEndpoint: string;
-    subscriptionActionsEndpoint: string; //TODO: Remove
     subscriptionProcessesEndpoint: string;
     workflowInformationLinkUrl: string;
     authActive: boolean;

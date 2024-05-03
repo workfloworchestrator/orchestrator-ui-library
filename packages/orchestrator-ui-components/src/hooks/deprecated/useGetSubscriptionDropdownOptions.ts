@@ -1,5 +1,3 @@
-import { isError } from 'react-query';
-
 import { useGetSubscriptionsDropdownOptionsQuery } from '@/rtk';
 import { GraphqlFilter, SubscriptionDropdownOption } from '@/types';
 
@@ -27,11 +25,11 @@ export const useGetSubscriptionDropdownOptions = (
         });
     }
 
-    const { data, isFetching, refetch } =
+    const { data, isFetching, refetch, isError } =
         useGetSubscriptionsDropdownOptionsQuery({ filterBy: filters });
 
     const subscriptions = (() => {
-        if (!isFetching && !isError(data) && data) {
+        if (!isFetching && !isError && data) {
             return data.subscriptionDropdownOptions;
         }
         return [];

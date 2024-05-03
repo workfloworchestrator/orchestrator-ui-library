@@ -5,7 +5,7 @@ import {
     ProcessListResult,
 } from '@/types';
 
-import { orchestratorApi } from '../api';
+import { CacheTags, orchestratorApi } from '../api';
 
 export const processListQuery = `
     query ProcessList(
@@ -82,6 +82,7 @@ const processApi = orchestratorApi.injectEndpoints({
                     pageInfo: response.processes?.pageInfo || {},
                 };
             },
+            providesTags: [CacheTags.processList],
         }),
     }),
 });
