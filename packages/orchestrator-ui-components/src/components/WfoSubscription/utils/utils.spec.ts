@@ -6,8 +6,7 @@ import {
     SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
-} from '@/types';
-
+} from '../../../types';
 import {
     flattenArrayProps,
     getFieldFromProductBlockInstanceValues,
