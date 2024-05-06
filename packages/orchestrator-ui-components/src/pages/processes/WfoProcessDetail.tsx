@@ -102,7 +102,6 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    // const { abortProcess } = useMutateProcess();
     const [retryProcess] = useRetryProcessMutation();
     const [deleteProcess] = useDeleteProcessMutation();
     const [abortProcess] = useAbortProcessMutation();

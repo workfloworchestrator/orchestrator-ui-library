@@ -151,13 +151,13 @@ const IpPrefixTableField = ({
 
     const filterState = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement;
-        const state_filter = parseInt(target.value, 10);
+        const stateFilter = parseInt(target.value, 10);
 
         const newFilter = { ...filter };
         if (target.checked) {
-            newFilter.state.push(state_filter);
+            newFilter.state.push(stateFilter);
         } else {
-            newFilter.state = newFilter.state.filter((e) => e !== state_filter);
+            newFilter.state = newFilter.state.filter((e) => e !== stateFilter);
         }
         setFilter(newFilter);
     };

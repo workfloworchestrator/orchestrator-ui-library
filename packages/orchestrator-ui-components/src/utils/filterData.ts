@@ -1,7 +1,5 @@
 import { GraphqlFilter } from '@/types';
 
-export type CacheNames = { [key: string]: string };
-
 export const filterDataByCriteria = <Type>(
     data: Type[],
     filterCriteria: GraphqlFilter<Type>[],

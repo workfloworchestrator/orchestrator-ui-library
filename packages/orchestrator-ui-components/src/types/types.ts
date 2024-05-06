@@ -382,6 +382,8 @@ export interface CacheOption {
     label: string;
 }
 
+export type CacheNames = { [key: string]: string };
+
 export enum Locale {
     enGB = 'en-GB',
     nlNL = 'nl-NL',

@@ -4,9 +4,8 @@ import {
     SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
     SETTINGS_STATUS_ENDPOINT,
 } from '@/configuration';
-import { CacheNames } from '@/hooks';
 import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
-import { EngineStatus } from '@/types';
+import { CacheNames, EngineStatus } from '@/types';
 
 interface EngineStatusReturnValue {
     engineStatus: EngineStatus;
