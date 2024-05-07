@@ -1,9 +1,9 @@
 import { EuiThemeComputed } from '@elastic/eui';
 
-import { SubscriptionAction } from '../../../hooks';
 import {
     FieldValue,
     ProcessStatus,
+    SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
 } from '../../../types';

@@ -15,12 +15,14 @@ export enum BaseQueryTypes {
 
 export enum CacheTags {
     engineStatus = 'engineStatus',
+    cacheNames = 'cacheNames',
     processList = 'processList',
     processListSummary = 'processListSummary',
     subscription = 'subscription',
     subscriptionList = 'subscriptionList',
     backendTranslations = 'backendTranslations',
     processStatusCounts = 'processStatusCounts',
+    subscriptionActions = 'subscriptionActions',
 }
 
 export enum HttpStatus {
@@ -90,11 +92,13 @@ export const orchestratorApi = createApi({
     endpoints: () => ({}),
     tagTypes: [
         CacheTags.engineStatus,
+        CacheTags.cacheNames,
         CacheTags.processList,
         CacheTags.processListSummary,
         CacheTags.subscriptionList,
         CacheTags.subscription,
         CacheTags.backendTranslations,
         CacheTags.processStatusCounts,
+        CacheTags.subscriptionActions,
     ],
 });

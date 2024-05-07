@@ -1,6 +1,11 @@
-import { EngineStatus } from '@/types';
-
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '../api';
+import {
+    SETTINGS_CACHE_ENDPOINT,
+    SETTINGS_CACHE_NAMES_ENDPOINT,
+    SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
+    SETTINGS_STATUS_ENDPOINT,
+} from '@/configuration';
+import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
+import { CacheNames, EngineStatus } from '@/types';
 
 interface EngineStatusReturnValue {
     engineStatus: EngineStatus;
@@ -10,7 +15,7 @@ interface EngineStatusReturnValue {
 const statusApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         getEngineStatus: build.query<EngineStatusReturnValue, void>({
-            query: () => '/settings/status',
+            query: () => SETTINGS_STATUS_ENDPOINT,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
@@ -37,9 +42,16 @@ const statusApi = orchestratorApi.injectEndpoints({
             },
             providesTags: [CacheTags.engineStatus],
         }),
+        getCacheNames: build.query<CacheNames, void>({
+            query: () => SETTINGS_CACHE_NAMES_ENDPOINT,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            providesTags: [CacheTags.cacheNames],
+        }),
         clearCache: build.mutation<void, string>({
             query: (settingName) => ({
-                url: `/settings/cache/${settingName}`,
+                url: `${SETTINGS_CACHE_ENDPOINT}/${settingName}`,
                 method: 'DELETE',
             }),
             extraOptions: {
@@ -48,7 +60,7 @@ const statusApi = orchestratorApi.injectEndpoints({
         }),
         resetTextSearchIndex: build.mutation<void, null>({
             query: () => ({
-                url: `/settings/search-index/reset`,
+                url: SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
                 method: 'POST',
             }),
             extraOptions: {
@@ -57,7 +69,7 @@ const statusApi = orchestratorApi.injectEndpoints({
         }),
         setEngineStatus: build.mutation<EngineStatusReturnValue, boolean>({
             query: (globalStatus) => ({
-                url: `/settings/status`,
+                url: SETTINGS_STATUS_ENDPOINT,
                 method: 'PUT',
                 body: JSON.stringify({
                     global_lock: globalStatus,
@@ -76,6 +88,7 @@ const statusApi = orchestratorApi.injectEndpoints({
 
 export const {
     useGetEngineStatusQuery,
+    useGetCacheNamesQuery,
     useClearCacheMutation,
     useResetTextSearchIndexMutation,
     useSetEngineStatusMutation,

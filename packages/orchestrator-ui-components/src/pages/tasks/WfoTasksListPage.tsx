@@ -33,13 +33,13 @@ import { ConfirmationDialogContext } from '@/contexts';
 import {
     useCheckEngineStatus,
     useDataDisplayParams,
-    useMutateProcess,
     useOrchestratorTheme,
     useStoredTableConfig,
 } from '@/hooks';
 import { WfoRefresh } from '@/icons';
 import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages';
 import { getTasksListTabTypeFromString } from '@/pages/tasks/getTasksListTabTypeFromString';
+import { useRetryAllProcessesMutation } from '@/rtk/endpoints/processDetail';
 import { SortOrder } from '@/types';
 
 export const WfoTasksListPage = () => {
@@ -65,7 +65,7 @@ export const WfoTasksListPage = () => {
 
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { retryAllProcesses } = useMutateProcess();
+    const [retryAllProcesses] = useRetryAllProcessesMutation();
     const { isEngineRunningNow } = useCheckEngineStatus();
 
     useEffect(() => {
@@ -108,7 +108,7 @@ export const WfoTasksListPage = () => {
             showConfirmDialog({
                 question: t('rerunAllQuestion'),
                 confirmAction: () => {
-                    retryAllProcesses.mutate();
+                    retryAllProcesses(null);
                 },
             });
         }

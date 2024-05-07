@@ -23,18 +23,18 @@ import {
 } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
-import {
-    useCheckEngineStatus,
-    useMutateProcess,
-    useOrchestratorTheme,
-    usePolicy,
-} from '@/hooks';
+import { useCheckEngineStatus, useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import {
     RenderDirection,
     WfoProcessListSubscriptionsCell,
     WfoProductInformationWithLink,
 } from '@/pages';
+import {
+    useAbortProcessMutation,
+    useDeleteProcessMutation,
+    useRetryProcessMutation,
+} from '@/rtk/endpoints/processDetail';
 import { ProcessDetail, ProcessStatus } from '@/types';
 import { parseDateRelativeToToday, parseIsoString } from '@/utils';
 
@@ -102,7 +102,10 @@ export const WfoProcessDetail = ({
     const t = useTranslations('processes.detail');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
-    const { deleteProcess, abortProcess, retryProcess } = useMutateProcess();
+    const [retryProcess] = useRetryProcessMutation();
+    const [deleteProcess] = useDeleteProcessMutation();
+    const [abortProcess] = useAbortProcessMutation();
+
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
@@ -156,7 +159,7 @@ export const WfoProcessDetail = ({
             ),
             confirmAction: () => {
                 processDetail?.processId &&
-                    retryProcess.mutate(processDetail.processId);
+                    retryProcess({ processId: processDetail.processId });
             },
         });
 
@@ -170,7 +173,7 @@ export const WfoProcessDetail = ({
             ),
             confirmAction: () => {
                 processDetail?.processId &&
-                    abortProcess.mutate(processDetail.processId);
+                    abortProcess({ processId: processDetail.processId });
                 router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
             },
         });
@@ -182,7 +185,7 @@ export const WfoProcessDetail = ({
             }),
             confirmAction: () => {
                 processDetail?.processId &&
-                    deleteProcess.mutate(processDetail.processId);
+                    deleteProcess({ processId: processDetail.processId });
                 router.push(PATH_TASKS);
             },
         });

@@ -2,15 +2,18 @@ import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { WfoJsonCodeBlock, WfoLoading } from '@/components';
+import {
+    WfoJsonCodeBlock,
+    WfoLoading,
+    WfoStepList,
+    WfoStepListHeader,
+    WfoStepListRef,
+} from '@/components';
 import WfoDiff from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
-import { useRawProcessDetails } from '@/hooks';
+import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
 import { Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
-
-import { WfoStepList, WfoStepListRef } from '../WfoStepList';
-import { WfoStepListHeader } from './WfoStepListHeader';
 
 export type StepListItem = {
     step: Step;
@@ -28,7 +31,7 @@ export interface WfoWorkflowStepListProps {
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
-    const { data, isFetching } = useRawProcessDetails(processId);
+    const { data, isFetching } = useGetRawProcessDetailQuery({ processId });
     return isFetching ? <WfoLoading /> : <WfoJsonCodeBlock data={data || {}} />;
 };
 
@@ -37,7 +40,7 @@ export const WfoProcessSubscriptionDelta = ({
 }: {
     processId: string;
 }) => {
-    const { data, isFetching } = useRawProcessDetails(processId);
+    const { data, isFetching } = useGetRawProcessDetailQuery({ processId });
 
     const subscriptionKey =
         data?.current_state?.subscription?.subscription_id ?? '';

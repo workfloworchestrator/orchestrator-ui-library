@@ -382,6 +382,8 @@ export interface CacheOption {
     label: string;
 }
 
+export type CacheNames = { [key: string]: string };
+
 export enum Locale {
     enGB = 'en-GB',
     nlNL = 'nl-NL',
@@ -518,7 +520,6 @@ export type OrchestratorConfig = {
     graphqlEndpointCore: string;
     engineStatusEndpoint: string;
     processesEndpoint: string;
-    subscriptionActionsEndpoint: string;
     subscriptionProcessesEndpoint: string;
     workflowInformationLinkUrl: string;
     authActive: boolean;
@@ -531,3 +532,23 @@ export enum ColorModes {
     LIGHT = 'LIGHT',
     DARK = 'DARK',
 }
+
+export interface SubscriptionAction {
+    name: string;
+    description: string;
+    reason?: string;
+    usable_when?: string[];
+    locked_relations?: string[];
+    unterminated_parents?: string[];
+    unterminated_in_use_by_subscriptions?: string[];
+    status?: string;
+    action?: string;
+}
+
+export type SubscriptionActions = {
+    reason?: string;
+    locked_relations?: string[];
+    modify: SubscriptionAction[];
+    terminate: SubscriptionAction[];
+    system: SubscriptionAction[];
+};

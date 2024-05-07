@@ -10,3 +10,4 @@ export * from './uuid';
 export * from './resultFlattener';
 export * from './strings';
 export * from './optionalArray';
+export * from './filterData';

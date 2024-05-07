@@ -11,7 +11,6 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     orchestratorApiBaseUrl: '',
     orchestratorWebsocketUrl: '',
     processesEndpoint: '',
-    subscriptionActionsEndpoint: '',
     subscriptionProcessesEndpoint: '',
     authActive: true,
     useWebSockets: false,
