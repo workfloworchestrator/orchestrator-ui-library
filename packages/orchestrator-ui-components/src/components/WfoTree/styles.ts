@@ -12,7 +12,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         marginRight: `-${theme.size.s}`,
     };
 
-    const treeItemOutsideSubscriptionBoundaryStyle = {
+    const treeItemOtherSubscriptionStyle = {
         backgroundColor: toSecondaryColor(theme.colors.lightestShade),
         border: `thin dashed ${theme.colors.lightShade}`,
     };
@@ -20,6 +20,6 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     return {
         expandIconContainerStyle: expandIconContainerStyle,
         treeContainerStyle: treeContainerStyle,
-        treeItemOutsideSubscriptionBoundaryStyle,
+        treeItemOtherSubscriptionStyle,
     };
 };

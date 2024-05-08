@@ -31,7 +31,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     const {
         expandIconContainerStyle,
         treeContainerStyle,
-        treeItemOutsideSubscriptionBoundaryStyle,
+        treeItemOtherSubscriptionStyle,
     } = useWithOrchestratorTheme(getStyles);
     const t = useTranslations('common');
     const {
@@ -82,8 +82,8 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                                 alwaysShow: true,
                             }}
                             css={
-                                item.outsideSubscriptionBoundary &&
-                                treeItemOutsideSubscriptionBoundaryStyle
+                                item.outsideCurrentSubscription &&
+                                treeItemOtherSubscriptionStyle
                             }
                         />
                     ) : (
@@ -95,8 +95,8 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                                 borderRadius: 6,
                             }}
                             css={
-                                item.outsideSubscriptionBoundary &&
-                                treeItemOutsideSubscriptionBoundaryStyle
+                                item.outsideCurrentSubscription &&
+                                treeItemOtherSubscriptionStyle
                             }
                         />
                     )}

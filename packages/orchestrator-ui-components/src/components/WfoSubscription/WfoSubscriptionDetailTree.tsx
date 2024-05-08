@@ -5,9 +5,14 @@ import { useTranslations } from 'next-intl';
 import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { WfoLoading, WfoTextAnchor } from '@/components';
+import { TreeContext, TreeContextType } from '@/contexts';
+import {
+    ProductBlockInstance,
+    Subscription,
+    TreeBlock,
+    WfoTreeNodeMap,
+} from '@/types';
 
-import { TreeContext, TreeContextType } from '../../contexts';
-import { ProductBlockInstance, TreeBlock, WfoTreeNodeMap } from '../../types';
 import { getTokenName } from '../../utils/getTokenName';
 import { WfoTree } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
@@ -16,10 +21,12 @@ import { getProductBlockTitle } from './utils';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
+    subscriptionId: Subscription['subscriptionId'];
 }
 
 export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
+    subscriptionId,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
     const [, setSelectedTreeNode] = useState(-1);
@@ -39,6 +46,8 @@ export const WfoSubscriptionDetailTree = ({
             label: '',
             callback: () => {},
             children: [],
+            outsideCurrentSubscription:
+                productBlockInstance.ownerSubscriptionId !== subscriptionId,
         };
 
         // Does this node have a parent?
@@ -142,8 +151,7 @@ export const WfoSubscriptionDetailTree = ({
                     )}
                     {selectedIds.length !== 0 &&
                         selectedIds.map((id, index) => {
-                            const block =
-                                productBlockInstances[selectedIds[index]];
+                            const block = idToNodeMap[selectedIds[index]];
 
                             return (
                                 <WfoSubscriptionProductBlock
@@ -158,8 +166,8 @@ export const WfoSubscriptionDetailTree = ({
                                         block.productBlockInstanceValues
                                     }
                                     inUseByRelations={block.inUseByRelations}
-                                    outsideSubscriptionBoundary={
-                                        block.outsideSubscriptionBoundary
+                                    outsideCurrentSubscription={
+                                        block.outsideCurrentSubscription
                                     }
                                     id={id}
                                 />

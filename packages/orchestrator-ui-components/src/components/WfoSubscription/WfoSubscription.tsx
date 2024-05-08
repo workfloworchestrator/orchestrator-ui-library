@@ -109,6 +109,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 productBlockInstances={
                                     subscriptionDetail.productBlockInstances
                                 }
+                                subscriptionId={subscriptionId}
                             />
                         )}
                         {selectedTab === SubscriptionDetailTab.GENERAL_TAB && (

@@ -31,7 +31,7 @@ interface WfoSubscriptionProductBlockProps {
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
     id: number;
-    outsideSubscriptionBoundary?: boolean;
+    outsideCurrentSubscription?: boolean;
 }
 
 export const HIDDEN_KEYS = ['title', 'name', 'label'];
@@ -41,7 +41,7 @@ export const WfoSubscriptionProductBlock = ({
     subscriptionInstanceId,
     productBlockInstanceValues,
     inUseByRelations,
-    outsideSubscriptionBoundary = false,
+    outsideCurrentSubscription = false,
 }: WfoSubscriptionProductBlockProps) => {
     const router = useRouter();
     const subscriptionId = router.query['subscriptionId'];
@@ -51,7 +51,7 @@ export const WfoSubscriptionProductBlock = ({
     const {
         iconStyle,
         panelStyle,
-        panelStyleOutsideSubscriptionBoundary,
+        panelStyleOutsideCurrentSubscription,
         leftColumnStyle,
         rightColumnStyle,
         rowStyle,
@@ -66,8 +66,8 @@ export const WfoSubscriptionProductBlock = ({
                 color="transparent"
                 hasShadow={false}
                 css={
-                    outsideSubscriptionBoundary
-                        ? panelStyleOutsideSubscriptionBoundary
+                    outsideCurrentSubscription
+                        ? panelStyleOutsideCurrentSubscription
                         : panelStyle
                 }
             >
