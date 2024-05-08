@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.20.0
+
+### Minor Changes
+
+- decb678: Removes obsolete configuration options
+
 ## 1.19.1
 
 ### Patch Changes
