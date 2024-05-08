@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 
 import {
     EuiBadge,
@@ -43,9 +42,6 @@ export const WfoSubscriptionProductBlock = ({
     inUseByRelations,
     outsideCurrentSubscription = false,
 }: WfoSubscriptionProductBlockProps) => {
-    const router = useRouter();
-    const subscriptionId = router.query['subscriptionId'];
-
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
     const {
@@ -129,8 +125,7 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('ownerSubscriptionId')}</b>
                                         </td>
                                         <td css={rightColumnStyle}>
-                                            {subscriptionId ===
-                                            ownerSubscriptionId ? (
+                                            {!outsideCurrentSubscription ? (
                                                 <>
                                                     <EuiBadge>
                                                         {t('self')}
