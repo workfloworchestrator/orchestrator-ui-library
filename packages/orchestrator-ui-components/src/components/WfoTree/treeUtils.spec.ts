@@ -13,6 +13,7 @@ describe('getWfoTreeNodeDepth', () => {
         callback: jest.fn(),
         productBlockInstanceValues: [field],
         inUseByRelations: [],
+        outsideCurrentSubscription: false,
         children: [
             {
                 id: 2,
@@ -25,6 +26,7 @@ describe('getWfoTreeNodeDepth', () => {
                 productBlockInstanceValues: [field],
                 inUseByRelations: [],
                 children: [],
+                outsideCurrentSubscription: false,
             },
             {
                 id: 3,
@@ -36,6 +38,7 @@ describe('getWfoTreeNodeDepth', () => {
                 callback: jest.fn(),
                 productBlockInstanceValues: [field],
                 inUseByRelations: [],
+                outsideCurrentSubscription: false,
                 children: [
                     {
                         id: 4,
@@ -48,6 +51,7 @@ describe('getWfoTreeNodeDepth', () => {
                         productBlockInstanceValues: [field],
                         inUseByRelations: [],
                         children: [],
+                        outsideCurrentSubscription: false,
                     },
                 ],
             },
@@ -91,6 +95,7 @@ describe('getWfoTreeNodeDepth', () => {
             productBlockInstanceValues: [field],
             inUseByRelations: [],
             children: [],
+            outsideCurrentSubscription: false,
         };
 
         expect(() =>

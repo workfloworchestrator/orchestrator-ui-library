@@ -36,7 +36,6 @@ export type ProductBlockInstance = {
     parent: Nullable<number>;
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
-    outsideSubscriptionBoundary?: boolean;
 };
 
 export interface ResourceTypeDefinition {
@@ -93,6 +92,7 @@ export interface TreeBlock extends ProductBlockInstance {
     label: string | number | boolean;
     callback: () => void;
     children: TreeBlock[];
+    outsideCurrentSubscription: boolean;
 }
 
 export interface ProductDefinition {
