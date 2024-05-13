@@ -260,7 +260,7 @@
             "endDate": "Einddatum",
             "note": "Notitie",
             "metadata": "Metadata",
-            "customerFullName": "Klant",
+            "customerFullname": "Klant",
             "customerShortcode": "Klantafkorting"
         },
         "detail": {
