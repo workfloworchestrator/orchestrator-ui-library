@@ -156,14 +156,28 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
                 const _definition = this._compiledSchema[_key] || {};
 
                 if (next === '$' || next === '' + parseInt(next, 10)) {
-                    invariant(
-                        definition.type === 'array',
-                        'Field not found in schema: "%s"',
-                        name,
-                    );
-                    definition = Array.isArray(definition.items)
-                        ? definition.items[parseInt(next, 10)]
-                        : definition.items;
+                    if (
+                        definition.anyOf &&
+                        definition.anyOf[0].type === 'array'
+                    ) {
+                        invariant(
+                            definition.anyOf[0].type === 'array',
+                            'Field not found in schema: "%s"',
+                            name,
+                        );
+                        definition = Array.isArray(definition.anyOf[0].items)
+                            ? definition.anyOf[0].items[parseInt(next, 10)]
+                            : definition.anyOf[0].items;
+                    } else {
+                        invariant(
+                            definition.type === 'array',
+                            'Field not found in schema: "%s"',
+                            name,
+                        );
+                        definition = Array.isArray(definition.items)
+                            ? definition.items[parseInt(next, 10)]
+                            : definition.items;
+                    }
                 } else if (definition.type === 'object') {
                     invariant(
                         definition.properties,
@@ -362,7 +376,6 @@ class CustomTitleJSONSchemaBridge extends JSONSchemaBridge {
 
 function fillPreselection(form: JSONSchema6, router: NextRouter) {
     const queryParams = router.query;
-
     if (form && form.properties) {
         Object.keys(queryParams).forEach((param) => {
             if (form && form.properties && form.properties[param]) {
