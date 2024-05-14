@@ -95,6 +95,11 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
                                 : 'continuityWithin'
                         }
                         onClick={() => setShowSplit(!showSplit)}
+                        aria-label={t(
+                            showSplit
+                                ? 'continuityAboveBelow'
+                                : 'continuityWithin',
+                        )}
                     />
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
@@ -102,10 +107,12 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
                         size={'s'}
                         iconType={showFull ? 'fullScreenExit' : 'fullScreen'}
                         onClick={() => setShowFull(!showFull)}
+                        aria-label={t(
+                            showFull ? 'fullScreenExit' : 'fullScreen',
+                        )}
                     />
                 </EuiFlexItem>
             </EuiFlexGroup>
-
             <EuiSpacer />
             <Diff
                 css={diffStyle}

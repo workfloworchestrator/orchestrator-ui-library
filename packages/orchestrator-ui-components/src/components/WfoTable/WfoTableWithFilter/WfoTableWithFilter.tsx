@@ -226,6 +226,7 @@ export const WfoTableWithFilter = <T extends object>({
                         onClick={() => setShowSearchModal(true)}
                         iconSize={'xl'}
                         iconType={'iInCircle'}
+                        aria-label={t('searchModalTitle')}
                     />
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
