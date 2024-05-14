@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
@@ -85,6 +85,24 @@ export const orchestratorApi = createApi({
                 const graphqlFn = graphqlRequestBaseQuery({
                     url: customApi ? customApi.apiBaseUrl : graphqlEndpointCore,
                     prepareHeaders,
+                    customErrors: (error) => {
+                        const { name, message, stack, response } = error;
+                        if (
+                            response &&
+                            response.errors &&
+                            response.errors.length > 0
+                        ) {
+                            response.errors.map((error) => {
+                                if (
+                                    error.extensions?.error_type ===
+                                    'not_authorized'
+                                ) {
+                                    signOut();
+                                }
+                            });
+                        }
+                        return { name, message, stack };
+                    },
                 });
                 return graphqlFn(args, api, {});
         }
