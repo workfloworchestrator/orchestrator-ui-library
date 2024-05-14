@@ -30,7 +30,7 @@ interface WfoSubscriptionProductBlockProps {
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
     id: number;
-    outsideCurrentSubscription?: boolean;
+    isOutsideCurrentSubscription?: boolean;
 }
 
 export const HIDDEN_KEYS = ['title', 'name', 'label'];
@@ -40,7 +40,7 @@ export const WfoSubscriptionProductBlock = ({
     subscriptionInstanceId,
     productBlockInstanceValues,
     inUseByRelations,
-    outsideCurrentSubscription = false,
+    isOutsideCurrentSubscription = false,
 }: WfoSubscriptionProductBlockProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
@@ -62,7 +62,7 @@ export const WfoSubscriptionProductBlock = ({
                 color="transparent"
                 hasShadow={false}
                 css={
-                    outsideCurrentSubscription
+                    isOutsideCurrentSubscription
                         ? panelStyleOutsideCurrentSubscription
                         : panelStyle
                 }
@@ -125,7 +125,7 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('ownerSubscriptionId')}</b>
                                         </td>
                                         <td css={rightColumnStyle}>
-                                            {!outsideCurrentSubscription ? (
+                                            {!isOutsideCurrentSubscription ? (
                                                 <>
                                                     <EuiBadge>
                                                         {t('self')}

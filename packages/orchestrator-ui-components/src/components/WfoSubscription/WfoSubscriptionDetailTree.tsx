@@ -46,7 +46,7 @@ export const WfoSubscriptionDetailTree = ({
             label: '',
             callback: () => {},
             children: [],
-            outsideCurrentSubscription:
+            isOutsideCurrentSubscription:
                 productBlockInstance.ownerSubscriptionId !== subscriptionId,
         };
 
@@ -166,8 +166,8 @@ export const WfoSubscriptionDetailTree = ({
                                         block.productBlockInstanceValues
                                     }
                                     inUseByRelations={block.inUseByRelations}
-                                    outsideCurrentSubscription={
-                                        block.outsideCurrentSubscription
+                                    isOutsideCurrentSubscription={
+                                        block.isOutsideCurrentSubscription
                                     }
                                     id={id}
                                 />

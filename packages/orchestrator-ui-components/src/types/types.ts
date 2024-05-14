@@ -92,7 +92,7 @@ export interface TreeBlock extends ProductBlockInstance {
     label: string | number | boolean;
     callback: () => void;
     children: TreeBlock[];
-    outsideCurrentSubscription: boolean;
+    isOutsideCurrentSubscription: boolean;
 }
 
 export interface ProductDefinition {
