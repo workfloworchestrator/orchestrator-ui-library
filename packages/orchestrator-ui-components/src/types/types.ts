@@ -518,9 +518,6 @@ export type OrchestratorConfig = {
     orchestratorWebsocketUrl: string;
     orchestratorApiBaseUrl: string;
     graphqlEndpointCore: string;
-    engineStatusEndpoint: string;
-    processesEndpoint: string;
-    subscriptionProcessesEndpoint: string;
     workflowInformationLinkUrl: string;
     authActive: boolean;
     useWebSockets: boolean;

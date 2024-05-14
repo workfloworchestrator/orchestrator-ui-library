@@ -6,12 +6,9 @@ import type { OrchestratorConfig } from '@/types';
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     environmentName: '',
-    engineStatusEndpoint: '',
     graphqlEndpointCore: '',
     orchestratorApiBaseUrl: '',
     orchestratorWebsocketUrl: '',
-    processesEndpoint: '',
-    subscriptionProcessesEndpoint: '',
     authActive: true,
     useWebSockets: false,
     useThemeToggle: false,
