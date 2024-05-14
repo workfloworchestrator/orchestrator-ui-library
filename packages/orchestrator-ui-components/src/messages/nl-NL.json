@@ -230,7 +230,11 @@
             "traceback": "Traceback"
         },
         "delta": {
-            "title": "Subscription delta"
+            "title": "Subscription delta",
+            "fullScreenExit": "Exit full-screen mode",
+            "fullScreen": "Full-screen mode",
+            "continuityAboveBelow": "Continuity above below",
+            "continuityWithin": "Continuity within"
         }
     },
     "workflows": {

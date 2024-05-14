@@ -24,7 +24,11 @@ export const WfoProductInformationWithLink = ({
             {showWorkflowInformationLink && (
                 <EuiToolTip content={t('openWorkflowTaskInfo')}>
                     <a href={docsUrl} target="_blank">
-                        <EuiButtonIcon iconSize={'l'} iconType={'iInCircle'} />
+                        <EuiButtonIcon
+                            iconSize={'l'}
+                            iconType={'iInCircle'}
+                            aria-label={t('openWorkflowTaskInfo')}
+                        />
                     </a>
                 </EuiToolTip>
             )}
