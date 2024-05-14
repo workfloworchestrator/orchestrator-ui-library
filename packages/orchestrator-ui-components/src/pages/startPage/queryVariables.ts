@@ -5,6 +5,7 @@ import {
     ProductsSummary,
     SortOrder,
     Subscription,
+    SubscriptionStatus,
 } from '@/types';
 
 const baseQueryVariables: Partial<GraphqlQueryVariables<unknown>> = {
@@ -112,7 +113,7 @@ export const productsSummaryQueryVariables: GraphqlQueryVariables<
     filterBy: [
         {
             field: 'status',
-            value: '!terminated',
+            value: `!${SubscriptionStatus.TERMINATED}`,
         },
     ],
 };
