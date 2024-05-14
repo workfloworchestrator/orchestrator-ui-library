@@ -82,7 +82,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                                 alwaysShow: true,
                             }}
                             css={
-                                item.outsideCurrentSubscription &&
+                                item.isOutsideCurrentSubscription &&
                                 treeItemOtherSubscriptionStyle
                             }
                         />
@@ -95,7 +95,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                                 borderRadius: 6,
                             }}
                             css={
-                                item.outsideCurrentSubscription &&
+                                item.isOutsideCurrentSubscription &&
                                 treeItemOtherSubscriptionStyle
                             }
                         />
