@@ -4,6 +4,7 @@ import {
     GraphqlQueryVariables,
     ProductDefinitionsResult,
     ProductsSummary,
+    Subscription,
 } from '@/types';
 
 export const productsSummary = `
@@ -11,11 +12,12 @@ export const productsSummary = `
         $first: Int!
         $after: Int!
         $sortBy: [GraphqlSort!]
+        $filterBy: [GraphqlFilter!]
     ) {
         products(first: $first, after: $after, sortBy: $sortBy) {
             page {
                 name
-                subscriptions {
+                subscriptions(filterBy: $filterBy) {
                     pageInfo {
                         totalItems
                     }
@@ -38,7 +40,7 @@ const productsSummaryApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
         getProductsSummary: builder.query<
             ProductsSummaryResponse,
-            GraphqlQueryVariables<ProductsSummary>
+            GraphqlQueryVariables<ProductsSummary & Subscription>
         >({
             query: (variables) => ({
                 document: productsSummary,
