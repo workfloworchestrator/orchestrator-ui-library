@@ -87,12 +87,9 @@ export const orchestratorApi = createApi({
                     prepareHeaders,
                     customErrors: (error) => {
                         const { name, message, stack, response } = error;
-                        if (
-                            response &&
-                            response.errors &&
-                            response.errors.length > 0
-                        ) {
+                        if (response?.errors && response.errors?.length > 0) {
                             response.errors.map((error) => {
+                                // TODO: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1105
                                 if (
                                     error.extensions?.error_type ===
                                     'not_authorized'
