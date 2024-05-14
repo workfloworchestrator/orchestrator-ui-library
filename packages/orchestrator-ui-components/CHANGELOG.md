@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.21.0
+
+### Minor Changes
+
+- ae0d9a8: Removes some obsolete configuration
+- 560cf74: Adds a different style if a productblock is outside the subscription boundary
+- 5ee68fa: Signs user out when api calls fail because of expired token
+- d4ac80a: Removed axios and react-query dependencies
+
+### Patch Changes
+
+- 13d7c6d: Fixes missing aria-labels on icons
+- b9680b8: 626 Applies dark theme to form fields
+
 ## 1.20.0
 
 ### Minor Changes
