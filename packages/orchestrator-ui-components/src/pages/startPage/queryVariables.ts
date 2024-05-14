@@ -100,12 +100,19 @@ export const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
     ],
 };
 
-export const productsSummaryQueryVariables: GraphqlQueryVariables<ProductsSummary> =
-    {
-        first: 1000,
-        after: 0,
-        sortBy: {
-            field: 'name',
-            order: SortOrder.ASC,
+export const productsSummaryQueryVariables: GraphqlQueryVariables<
+    ProductsSummary & Subscription
+> = {
+    first: 1000,
+    after: 0,
+    sortBy: {
+        field: 'name',
+        order: SortOrder.ASC,
+    },
+    filterBy: [
+        {
+            field: 'status',
+            value: '!terminated',
         },
-    };
+    ],
+};
