@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { EuiSideNav, EuiSpacer } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
-import { WfoIsAllowedToRender } from '@/components';
+import { WfoIsAllowedToRender, menuItemIsAllowed } from '@/components';
 import { getMenuStyles } from '@/components/WfoPageTemplate/WfoSidebar/styles';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -225,15 +225,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
     ];
 
     const defaultMenuItemsFilteredByPolicy = defaultMenuItems.filter(
-        ({ href }) => {
-            if (!href) {
-                return true;
-            }
-
-            const policyResource = urlPolicyMap.get(href);
-
-            return policyResource ? isAllowed(policyResource) : true;
-        },
+        ({ href }) => menuItemIsAllowed(href, urlPolicyMap, isAllowed),
     );
 
     const defaultMenu: EuiSideNavItemType<object>[] = [
