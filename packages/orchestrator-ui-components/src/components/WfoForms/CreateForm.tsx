@@ -52,7 +52,7 @@ export function CreateForm(props: IProps) {
                 (json) => {
                     setForm({
                         stepUserInput: json.form,
-                        hasNext: json.hasNext ?? false,
+                        hasNext: json.meta?.hasNext ?? false,
                     });
                 },
             );

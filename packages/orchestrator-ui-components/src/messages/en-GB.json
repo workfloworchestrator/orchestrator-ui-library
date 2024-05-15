@@ -64,6 +64,7 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "previous": "Previous",
+            "next": "Next",
             "previousQuestion": "Are you sure you want to leave this page? Any filled form data will be lost",
             "startTask": "Start task",
             "startWorkflow": "Start workflow",
