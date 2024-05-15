@@ -24,7 +24,7 @@ export interface Form {
 export type InputForm = JSONSchema6;
 export interface FormNotCompleteResponse {
     form: InputForm;
-    meta?: { hasNext?: boolean};
+    meta?: { hasNext?: boolean };
 }
 
 export type FieldProps<
