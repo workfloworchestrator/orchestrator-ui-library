@@ -167,7 +167,7 @@ export const WfoStartProcessPage = ({
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
-                    hasNext: json.hasNext ?? false,
+                    hasNext: json.meta?.hasNext ?? false,
                 });
             };
 

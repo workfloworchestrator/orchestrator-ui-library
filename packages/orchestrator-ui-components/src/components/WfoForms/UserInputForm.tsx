@@ -109,7 +109,7 @@ function resolveRef(reference: string, schema: Record<string, any>) {
         .filter((part) => part && part !== '#')
         .reduce((definition, next) => {
             // FIXME: There is a ticket to fix this in the return value from GraphQL: https://git.ia.surfsara.nl/netdev/automation/projects/orchestrator/-/issues/1891
-            // TLDR: currently the form properties may reference things in the forms $defs property but the forms $defs property doesnt exist but is called 'definitions' instead
+            // TLDR: currently the form properties may reference things in the forms $defs property but the forms $defs property doesn't exist but is called 'definitions' instead
             const newDefinition = (() => {
                 if (next === '$defs' && !definition[next]) {
                     return definition['definitions'];
@@ -476,7 +476,7 @@ function UserInputForm({
                         });
                     }
                 }
-                // Let the error escape so it can be caught by our own onerror handler instead of being silenced by uniforms
+                // Let the error escape, so it can be caught by our own onerror handler instead of being silenced by uniforms
                 setTimeout(() => {
                     throw error;
                 }, 0);
