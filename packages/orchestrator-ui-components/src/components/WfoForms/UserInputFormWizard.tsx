@@ -77,7 +77,10 @@ export const UserInputFormWizard = ({
         const promise = stepSubmit(newUserInputs);
         const callback = (data: FormNotCompleteResponse) => {
             window.scrollTo(0, 0);
-            setForms([...forms, { form: data.form, hasNext: data.meta?.hasNext }]);
+            setForms([
+                ...forms,
+                { form: data.form, hasNext: data.meta?.hasNext },
+            ]);
             setUserInputs(newUserInputs);
         };
 
