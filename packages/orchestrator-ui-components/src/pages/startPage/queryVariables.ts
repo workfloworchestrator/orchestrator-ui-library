@@ -1,3 +1,4 @@
+import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration';
 import {
     GraphqlFilter,
     GraphqlQueryVariables,
@@ -104,7 +105,7 @@ export const taskListSummaryQueryVariables: GraphqlQueryVariables<Process> = {
 export const productsSummaryQueryVariables: GraphqlQueryVariables<
     ProductsSummary & Subscription
 > = {
-    first: 1000,
+    first: MAXIMUM_ITEMS_FOR_BULK_FETCHING,
     after: 0,
     sortBy: {
         field: 'name',
