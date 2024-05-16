@@ -11,23 +11,19 @@ describe('menuItemIsAllowed', () => {
         isAllowedHandlerMock.mockClear();
     });
 
-    it('returns true when url is undefined', () => {
-        const url = undefined;
+    it.each([undefined, ''])(
+        'returns true when the value of the url is: "%s"',
+        (url) => {
+            const result = menuItemIsAllowed(
+                url,
+                testUrlMap,
+                isAllowedHandlerMock,
+            );
 
-        const result = menuItemIsAllowed(url, testUrlMap, isAllowedHandlerMock);
-
-        expect(result).toEqual(true);
-        expect(isAllowedHandlerMock).not.toHaveBeenCalled();
-    });
-
-    it('returns true when url is an empty string', () => {
-        const url = '';
-
-        const result = menuItemIsAllowed(url, testUrlMap, isAllowedHandlerMock);
-
-        expect(result).toEqual(true);
-        expect(isAllowedHandlerMock).not.toHaveBeenCalled();
-    });
+            expect(result).toEqual(true);
+            expect(isAllowedHandlerMock).not.toHaveBeenCalled();
+        },
+    );
 
     it('returns the result of the isAllowedHandler when url is in the url-map', () => {
         const url = '/testUrl1';
