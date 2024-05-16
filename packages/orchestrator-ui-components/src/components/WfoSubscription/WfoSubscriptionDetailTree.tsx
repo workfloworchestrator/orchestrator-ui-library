@@ -153,6 +153,13 @@ export const WfoSubscriptionDetailTree = ({
                         selectedIds.map((id, index) => {
                             const block = idToNodeMap[selectedIds[index]];
 
+                            const inUseByRelationsWithoutCurrentSubscription =
+                                block.inUseByRelations.filter(
+                                    (inUseByRelation) =>
+                                        inUseByRelation.subscription_id !==
+                                        subscriptionId,
+                                );
+
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}
@@ -165,7 +172,9 @@ export const WfoSubscriptionDetailTree = ({
                                     productBlockInstanceValues={
                                         block.productBlockInstanceValues
                                     }
-                                    inUseByRelations={block.inUseByRelations}
+                                    inUseByRelations={
+                                        inUseByRelationsWithoutCurrentSubscription
+                                    }
                                     isOutsideCurrentSubscription={
                                         block.isOutsideCurrentSubscription
                                     }
