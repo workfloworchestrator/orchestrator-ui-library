@@ -59,6 +59,7 @@ export const WfoInUseByRelations = ({
                 value: (
                     <Link
                         href={`/${PATH_SUBSCRIPTIONS}/${inUseByRelationDetails.subscriptionId}`}
+                        target="_blank"
                     >
                         {inUseByRelationDetails.description}
                     </Link>
