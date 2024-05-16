@@ -21,7 +21,7 @@ import { ConfirmDialogActions } from '@/contexts';
 import { HttpStatus, handlePromiseErrorWithCallback } from '@/rtk';
 import { FormNotCompleteResponse, InputForm } from '@/types/forms';
 
-import UserInputForm from './UserInputForm';
+import { WfoUserInputForm } from './UserInputForm';
 
 interface Form {
     form: InputForm;
@@ -104,7 +104,7 @@ export const UserInputFormWizard = ({
      * */
     const key = hash.sha1({ form: currentForm.form, length: forms.length });
     return (
-        <UserInputForm
+        <WfoUserInputForm
             key={key}
             router={router}
             stepUserInput={currentForm.form}

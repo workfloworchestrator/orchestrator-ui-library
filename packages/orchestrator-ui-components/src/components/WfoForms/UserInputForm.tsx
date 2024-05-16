@@ -410,7 +410,7 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
     return form;
 }
 
-function UserInputForm({
+export function WfoUserInputForm({
     router,
     stepUserInput,
     validSubmit,
@@ -668,5 +668,3 @@ function UserInputForm({
         </div>
     );
 }
-
-export default UserInputForm;
