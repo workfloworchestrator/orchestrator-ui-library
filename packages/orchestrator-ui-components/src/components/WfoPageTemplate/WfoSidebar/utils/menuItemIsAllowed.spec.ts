@@ -37,7 +37,7 @@ describe('menuItemIsAllowed', () => {
         );
     });
 
-    it('returns true url is not in the url-map', () => {
+    it('returns true if url is not in the url-map', () => {
         const url = '/does-not-exist';
 
         const result = menuItemIsAllowed(url, testUrlMap, isAllowedHandlerMock);
