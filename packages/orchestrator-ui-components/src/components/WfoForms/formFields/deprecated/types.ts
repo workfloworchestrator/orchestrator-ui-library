@@ -1,18 +1,4 @@
-import { ProductDefinition } from '@/types';
-
-export interface NodeSubscription {
-    name: string;
-    subscription_id: string;
-    description: string;
-    product: ProductDefinition;
-    product_id: string;
-    status: string;
-    insync: boolean;
-    customer_id: string;
-    start_date: number;
-    end_date: number;
-    note: string;
-}
+import { GraphQlSinglePage, Subscription } from '@/types';
 
 export interface ServicePort {
     subscription_id?: string;
@@ -76,4 +62,13 @@ export interface IpBlock {
     parent_ipam_id: number;
     is_subnet: boolean;
     state_repr: string;
+}
+
+export type NodeSubscriptionOption = Pick<
+    Subscription,
+    'subscriptionId' | 'description'
+>;
+
+export interface NodeSubscriptionOptionsResult {
+    subscriptions: GraphQlSinglePage<NodeSubscriptionOption>;
 }

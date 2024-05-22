@@ -1,5 +1,12 @@
-import { ImsNode, ImsPort, NodeSubscription, VlanRange } from '@/components';
+import {
+    ImsNode,
+    ImsPort,
+    NodeSubscriptionOption,
+    NodeSubscriptionOptionsResult,
+    VlanRange,
+} from '@/components';
 import { ContactPerson } from '@/components/WfoForms/formFields/types';
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 const LOCATION_CODES_ENDPOINT = 'surf/crm/location_codes';
@@ -7,31 +14,21 @@ const CONTACT_PERSONS_ENDPOINT = 'surf/crm/contacts';
 const IMS_NODES_ENDPOINT = '/surf/ims/nodes';
 const VLANS_BY_SERVICE_PORT = 'surf/subscriptions/vlans-by-service-port';
 const FREE_PORTS_BY_NODE_SUBSCRIPTION_AND_SPEED = 'surf/ims/free_ports';
-const SUBSCRIPTIONS = 'subscriptions';
 
-export const subscriptionsParams = (
-    tagList: string[] = [],
-    statusList: string[] = [],
-    productList: string[] = [],
-): string => {
-    const filters = [];
-
-    if (tagList.length)
-        filters.push(`tags,${encodeURIComponent(tagList.join('-'))}`);
-    if (statusList.length)
-        filters.push(`statuses,${encodeURIComponent(statusList.join('-'))}`);
-    if (productList.length)
-        filters.push(`products,${encodeURIComponent(productList.join('-'))}`);
-
-    const params = new URLSearchParams();
-    if (filters.length) params.set('filter', filters.join(','));
-
-    return `${filters.length ? '?' : ''}${params.toString()}`;
-};
-
-export const nodeSubscriptions = (statusList: string[] = []): string => {
-    return subscriptionsParams(['Node'], statusList);
-};
+const nodeSubscriptionsQuery = `query NodeSubscriptions(
+    $statuses: String!
+) {
+    subscriptions(filterBy: [
+        {field: "tag", value: "Node"},
+        {field: "status", value: $statuses}
+    
+    ], first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}, after: 0) {
+        page {
+            description
+            subscriptionId
+        }
+    }
+}`;
 
 const formFieldsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
@@ -107,20 +104,19 @@ const formFieldsApi = orchestratorApi.injectEndpoints({
                 baseQueryType: BaseQueryTypes.fetch,
             },
         }),
-        subscriptionsWithFilters: build.query<
-            NodeSubscription[],
-            { filters: string }
+        getNodeSubscriptionOptions: build.query<
+            NodeSubscriptionOption[],
+            { statuses: string }
         >({
-            query: ({ filters }) => ({
-                url: `${SUBSCRIPTIONS}/${filters}`,
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
+            query: ({ statuses }) => ({
+                document: nodeSubscriptionsQuery,
+                variables: {
+                    statuses,
                 },
             }),
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
+            transformResponse: (
+                response: NodeSubscriptionOptionsResult,
+            ): NodeSubscriptionOption[] => response?.subscriptions?.page || [],
         }),
     }),
 });
@@ -131,5 +127,5 @@ export const {
     useImsNodesQuery,
     useVlansByServicePortQuery,
     useFreePortsByNodeSubscriptionIdAndSpeedQuery,
-    useSubscriptionsWithFiltersQuery,
+    useGetNodeSubscriptionOptionsQuery,
 } = formFieldsApi;
