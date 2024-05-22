@@ -22,15 +22,14 @@ import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 import {
-    nodeSubscriptions,
     useFreePortsByNodeSubscriptionIdAndSpeedQuery,
-    useSubscriptionsWithFiltersQuery,
+    useGetNodeSubscriptionOptionsQuery,
 } from '@/rtk/endpoints/formFields';
 
 import { getSelectFieldStyles } from '../SelectField/styles';
 import { FieldProps, Option } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
-import { ImsNode, ImsPort, NodeSubscription } from './types';
+import { ImsPort, NodeSubscriptionOption } from './types';
 
 export type ImsPortFieldProps = FieldProps<
     number,
@@ -42,11 +41,11 @@ export type ImsPortFieldProps = FieldProps<
     }
 >;
 
-function nodeToOptionCorelink(node: NodeSubscription): Option {
+function nodeToOptionCorelink(nodeOption: NodeSubscriptionOption): Option {
     return {
-        value: node.subscription_id,
-        label: `${node.subscription_id.substring(0, 8)} ${
-            node.description.trim() || '<No description>'
+        value: nodeOption.subscriptionId,
+        label: `${nodeOption.subscriptionId.substring(0, 8)} ${
+            nodeOption.description.trim() || '<No description>'
         }`,
     };
 }
@@ -84,16 +83,15 @@ function ImsPortId({
     nodeStatuses,
     ...props
 }: ImsPortFieldProps) {
-    const t = useTranslations('pydanticForms');
-    // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
-    const { reactSelectInnerComponentStyles } =
-        useWithOrchestratorTheme(getSelectFieldStyles);
-
-    const [nodes, setNodes] = useState<ImsNode[] | NodeSubscription[]>([]);
     const [nodeId, setNodeId] = useState<number | string | undefined>(
         nodeSubscriptionId,
     );
     const [ports, setPorts] = useState<ImsPort[]>([]);
+
+    const t = useTranslations('pydanticForms');
+    // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
+    const { reactSelectInnerComponentStyles } =
+        useWithOrchestratorTheme(getSelectFieldStyles);
 
     const {
         data: freePorts,
@@ -110,9 +108,10 @@ function ImsPortId({
         },
     );
 
-    const { data: nodeSubscriptionsData } = useSubscriptionsWithFiltersQuery({
-        filters: nodeSubscriptions(nodeStatuses ?? ['active']),
-    });
+    const { data: nodeSubscriptionOptions } =
+        useGetNodeSubscriptionOptionsQuery({
+            statuses: nodeStatuses?.join('-') ?? 'active',
+        });
 
     useEffect(() => {
         setPorts(freePorts ?? []);
@@ -133,26 +132,6 @@ function ImsPortId({
         [onChange],
     );
 
-    useEffect(() => {
-        if (nodeSubscriptionId && nodeSubscriptionsData) {
-            setNodes(
-                nodeSubscriptionsData.filter(
-                    (subscription) =>
-                        subscription.subscription_id === nodeSubscriptionId,
-                ),
-            );
-            onChangeNodes({ value: nodeSubscriptionId } as Option);
-        } else {
-            setNodes(nodeSubscriptionsData ?? []);
-        }
-    }, [
-        onChangeNodes,
-        nodeStatuses,
-        nodeSubscriptionId,
-        loading,
-        nodeSubscriptionsData,
-    ]);
-
     const nodesPlaceholder = loading
         ? t('widgets.nodePort.loadingNodes')
         : t('widgets.nodePort.selectNode');
@@ -163,22 +142,21 @@ function ImsPortId({
           ? t('widgets.nodePort.selectPort')
           : t('widgets.nodePort.selectNodeFirst');
 
-    const node_options: Option[] = (nodes as NodeSubscription[]).map(
-        nodeToOptionCorelink,
-    );
+    const nodeOptions: Option[] =
+        nodeSubscriptionOptions?.map(nodeToOptionCorelink) || [];
 
-    node_options.sort((x, y) => x.label.localeCompare(y.label));
-    const node_value = node_options.find(
+    nodeOptions.sort((x, y) => x.label.localeCompare(y.label));
+    const nodeValue = nodeOptions.find(
         (option) => option.value === nodeId?.toString(),
     );
 
-    const port_options: Option<number>[] = ports
+    const portOptions: Option<number>[] = ports
         .map((aPort) => ({
             value: aPort.id,
             label: `${aPort.port} (${aPort.status}) (${aPort.iface_type})`,
         }))
         .sort((x, y) => x.label.localeCompare(y.label));
-    const port_value = port_options.find((option) => option.value === value);
+    const portValue = portOptions.find((option) => option.value === value);
 
     return (
         <EuiFlexItem css={imsPortIdFieldStyling}>
@@ -202,15 +180,15 @@ function ImsPortId({
                                     inputId={`${id}.node.search`}
                                     name={`${name}.node`}
                                     onChange={onChangeNodes}
-                                    options={node_options}
+                                    options={nodeOptions}
                                     placeholder={nodesPlaceholder}
-                                    value={node_value}
+                                    value={nodeValue}
                                     isSearchable={true}
                                     isDisabled={
                                         disabled ||
                                         readOnly ||
-                                        !!nodeSubscriptionId ||
-                                        nodes.length === 0
+                                        nodeOptions.length === 0 ||
+                                        !!nodeSubscriptionId
                                     }
                                     styles={reactSelectInnerComponentStyles}
                                 />
@@ -224,14 +202,14 @@ function ImsPortId({
                                     onChange={(selected) => {
                                         onChange(selected?.value);
                                     }}
-                                    options={port_options}
+                                    options={portOptions}
                                     placeholder={portPlaceholder}
-                                    value={port_value || null}
+                                    value={portValue || null}
                                     isSearchable={true}
                                     isDisabled={
                                         disabled ||
                                         readOnly ||
-                                        ports.length === 0
+                                        portOptions.length === 0
                                     }
                                     styles={reactSelectInnerComponentStyles}
                                 />
