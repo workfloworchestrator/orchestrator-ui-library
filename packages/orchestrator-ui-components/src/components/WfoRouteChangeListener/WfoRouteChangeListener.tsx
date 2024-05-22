@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { getSession, signOut } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 import { useGetOrchestratorConfig } from '@/hooks';
@@ -13,9 +13,8 @@ export const WfoRouteChangeListener = () => {
         if (authActive) {
             getSession().then((session) => {
                 if (!session) {
-                    signOut();
-                }
-            });
+                    signIn();
+                }            });
         }
     }, [authActive, router]);
     return <></>;
