@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.23.0
+
+### Minor Changes
+
+- 33240b6: Fixes websockets with authentication
+- b94c618: Added customer with subscription query used by nms
+
+### Patch Changes
+
+- 9f18b7c: 1066 VlanField: Only allows to clear the value when the field is enabled
+
 ## 1.22.0
 
 ### Minor Changes
