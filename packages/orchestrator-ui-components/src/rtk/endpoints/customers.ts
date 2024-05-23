@@ -1,8 +1,10 @@
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import {
     Customer,
     CustomerWithSubscriptionCount,
     CustomersResult,
     CustomersWithSubscriptionCountResult,
+    SubscriptionStatus,
 } from '@/types';
 
 import { orchestratorApi } from '../api';
@@ -18,12 +20,12 @@ const customersQuery = `query Customers {
 }`;
 
 const customersWithSubscriptionCountQuery = `query Customers {
-  customers(first: 1000000, after: 0) {
+  customers(first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}, after: 0) {
     page {
       customerId
       fullname
       shortcode
-      subscriptions(filterBy: {field: "status", value: "ACTIVE"}) {
+      subscriptions(filterBy: {field: "status", value: "${SubscriptionStatus.ACTIVE}"}) {
         pageInfo {
           totalItems
         }
@@ -59,7 +61,8 @@ const customersApi = orchestratorApi.injectEndpoints({
                 response: CustomersWithSubscriptionCountResult,
             ): CustomerWithSubscriptionCount[] =>
                 response.customers.page.filter(
-                    (c) => c.subscriptions.pageInfo.totalItems > 0,
+                    (customer) =>
+                        customer.subscriptions.pageInfo.totalItems > 0,
                 ),
         }),
         getCustomers: build.query<Customer[], void>({
