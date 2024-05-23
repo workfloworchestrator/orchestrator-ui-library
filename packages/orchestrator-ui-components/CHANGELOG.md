@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.22.0
+
+### Minor Changes
+
+- f6dc4fb: Replaces subscriptionsWithFilter REST call with a graphQL query
+- d48df6b: Exports WFoUserInputForm
+
+### Patch Changes
+
+- bcfe7de: 916 Exposes menuItemIsAllowed helper function
+- 50e8f68: Fixes signOut modal showing in some cases
+- 6a7264f: 1086 StartPage: Summary card with product counts ignores terminated instances
+- aca21a5: 1085 Filters out current subscription from the related subscriptions list
+
 ## 1.21.0
 
 ### Minor Changes
