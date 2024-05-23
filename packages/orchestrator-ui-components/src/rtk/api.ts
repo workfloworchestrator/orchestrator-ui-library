@@ -87,11 +87,7 @@ export const orchestratorApi = createApi({
                     prepareHeaders,
                     customErrors: (error) => {
                         const { name, message, stack, response } = error;
-                        if (
-                            response?.errors &&
-                            response.errors?.length > 0 &&
-                            authActive
-                        ) {
+                        if (response?.errors?.length && authActive) {
                             response.errors.map((error) => {
                                 // TODO: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1105
                                 if (

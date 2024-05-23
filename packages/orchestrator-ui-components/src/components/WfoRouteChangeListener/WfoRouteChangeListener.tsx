@@ -14,7 +14,8 @@ export const WfoRouteChangeListener = () => {
             getSession().then((session) => {
                 if (!session) {
                     signIn();
-                }            });
+                }
+            });
         }
     }, [authActive, router]);
     return <></>;
