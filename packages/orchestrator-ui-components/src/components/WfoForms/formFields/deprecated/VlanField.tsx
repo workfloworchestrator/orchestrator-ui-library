@@ -159,8 +159,9 @@ function Vlan({
         if (subscriptionId && isFetched && !portIsTagged && value !== '0') {
             onChange('0');
         } else if (
-            (!subscriptionId && value !== '') ||
-            (subscriptionId && portIsTagged && value === '0')
+            !disabled &&
+            ((!subscriptionId && value !== '') ||
+                (subscriptionId && portIsTagged && value === '0'))
         ) {
             onChange('');
         }
