@@ -24,6 +24,14 @@ export type Customer = {
     shortcode: string;
 };
 
+export type CustomerWithSubscriptionCount = Customer & {
+    subscriptions: {
+        pageInfo: {
+            totalItems: number;
+        };
+    };
+};
+
 export type InUseByRelation = {
     subscription_instance_id: string;
     subscription_id: string;
@@ -335,6 +343,10 @@ export type ProcessDetailResultRaw = {
 
 export interface CustomersResult {
     customers: GraphQlSinglePage<Customer>;
+}
+
+export interface CustomersWithSubscriptionCountResult {
+    customers: GraphQlSinglePage<CustomerWithSubscriptionCount>;
 }
 
 export interface TaskDefinitionsResult<T = TaskDefinition> {

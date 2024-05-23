@@ -1,4 +1,11 @@
-import { Customer, CustomersResult } from '@/types';
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
+import {
+    Customer,
+    CustomerWithSubscriptionCount,
+    CustomersResult,
+    CustomersWithSubscriptionCountResult,
+    SubscriptionStatus,
+} from '@/types';
 
 import { orchestratorApi } from '../api';
 
@@ -10,6 +17,21 @@ const customersQuery = `query Customers {
             shortcode
         }
     }
+}`;
+
+const customersWithSubscriptionCountQuery = `query Customers {
+  customers(first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}, after: 0) {
+    page {
+      customerId
+      fullname
+      shortcode
+      subscriptions(filterBy: {field: "status", value: "${SubscriptionStatus.ACTIVE}"}) {
+        pageInfo {
+          totalItems
+        }
+      }
+    }
+  }
 }`;
 
 const customerQuery = `query Customer(
@@ -30,6 +52,19 @@ const customerQuery = `query Customer(
 
 const customersApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
+        getCustomersWithSubscriptionCount: build.query<
+            CustomerWithSubscriptionCount[],
+            void
+        >({
+            query: () => ({ document: customersWithSubscriptionCountQuery }),
+            transformResponse: (
+                response: CustomersWithSubscriptionCountResult,
+            ): CustomerWithSubscriptionCount[] =>
+                response.customers.page.filter(
+                    (customer) =>
+                        customer.subscriptions.pageInfo.totalItems > 0,
+                ),
+        }),
         getCustomers: build.query<Customer[], void>({
             query: () => ({ document: customersQuery }),
             transformResponse: (response: CustomersResult): Customer[] =>
@@ -49,4 +84,8 @@ const customersApi = orchestratorApi.injectEndpoints({
     }),
 });
 
-export const { useGetCustomersQuery, useGetCustomerQuery } = customersApi;
+export const {
+    useGetCustomersQuery,
+    useGetCustomerQuery,
+    useGetCustomersWithSubscriptionCountQuery,
+} = customersApi;
