@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useTranslations } from 'next-intl';
 
@@ -6,17 +7,19 @@ import { EuiToolTip } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
 import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
+import { orchestratorApi } from '@/rtk';
 import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 export const WfoWebsocketStatusBadge = () => {
+    const dispatch = useDispatch();
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
     const { data: websocketConnected = false } = useStreamMessagesQuery();
 
     const reconnect = () => {
-        alert('reconnect');
+        dispatch(orchestratorApi.util.resetApiState());
     };
 
     return (
