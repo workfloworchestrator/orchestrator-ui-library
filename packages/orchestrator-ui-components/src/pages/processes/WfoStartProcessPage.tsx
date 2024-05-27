@@ -175,7 +175,9 @@ export const WfoStartProcessPage = ({
                 HttpStatus.FormNotComplete,
                 clientResultCallback,
             );
-            return () => {setForm({})}
+            return () => {
+                setForm({});
+            };
         }
     }, [submit, processName]);
 
