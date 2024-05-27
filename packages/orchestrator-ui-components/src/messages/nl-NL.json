@@ -17,7 +17,7 @@
         "darkMode": "Dark mode",
         "lightMode": "Light mode",
         "websocketConnected": "De websocket is actief",
-        "websocketDisconnected": "De websocket verbinding is verbroken, probeer de pagina te verversen."
+        "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina."
     },
     "common": {
         "product": "Produkt",

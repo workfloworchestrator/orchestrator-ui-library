@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiToolTip } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
-import { WfoStatusDotIcon, WfoXCircleFill } from '@/icons';
+import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
 import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
@@ -14,6 +14,10 @@ export const WfoWebsocketStatusBadge = () => {
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
     const { data: websocketConnected = false } = useStreamMessagesQuery();
+
+    const reconnect = () => {
+        alert('reconnect');
+    };
 
     return (
         <EuiToolTip
@@ -29,12 +33,25 @@ export const WfoWebsocketStatusBadge = () => {
                 textColor={theme.colors.shadow}
                 iconType={() =>
                     websocketConnected ? (
-                        <WfoStatusDotIcon color={theme.colors.success} />
+                        <WfoBoltFill color={theme.colors.success} />
                     ) : (
-                        <WfoXCircleFill color={theme.colors.danger} />
+                        <WfoBoltSlashFill color={theme.colors.danger} />
                     )
                 }
-                style={{ paddingLeft: '8px' }}
+                style={{
+                    paddingLeft: '8px',
+                    cursor: !websocketConnected ? 'pointer' : 'default',
+                }}
+                onClick={
+                    !websocketConnected
+                        ? () => reconnect()
+                        : () => {
+                              return;
+                          }
+                }
+                onClickAriaLabel={'undefined'}
+                iconOnClick={undefined}
+                iconOnClickAriaLabel={undefined}
             />
         </EuiToolTip>
     );

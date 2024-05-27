@@ -17,7 +17,7 @@
         "darkMode": "Dark mode",
         "lightMode": "Light mode",
         "websocketConnected": "The websocket is connected",
-        "websocketDisconnected": "The websocket is disconnected, try refreshing the page"
+        "websocketDisconnected": "The websocket is disconnected, click the icon or refresh the page"
     },
     "common": {
         "product": "Product",
