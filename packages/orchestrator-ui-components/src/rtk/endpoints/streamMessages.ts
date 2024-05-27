@@ -58,7 +58,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 const cleanUp = () => {
                     const message = getToastMessage(
                         ToastTypes.ERROR,
-                        'Connection to the server was lost. Please refresh the page to reconnect.',
+                        'Connection to the server was lost. Please click the websocket icon or refresh the page to reconnect.',
                         'WebSocket closed',
                     );
                     dispatch(addToastMessage(message));
@@ -142,7 +142,6 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 webSocket.onerror = (event) => {
                     console.error('WebSocket error', event);
-                    cleanUp();
                 };
 
                 webSocket.onclose = () => {
