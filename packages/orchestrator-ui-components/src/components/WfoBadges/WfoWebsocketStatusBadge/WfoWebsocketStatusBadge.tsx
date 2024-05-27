@@ -5,14 +5,19 @@ import { useTranslations } from 'next-intl';
 
 import { EuiToolTip } from '@elastic/eui';
 
+import { useWithOrchestratorTheme } from '@/hooks';
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
 import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
 import { orchestratorApi } from '@/rtk';
 import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
+import { getStyles } from './styles';
 
 export const WfoWebsocketStatusBadge = () => {
+    const { connectedStyle, disconnectedStyle } =
+        useWithOrchestratorTheme(getStyles);
+
     const dispatch = useDispatch();
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
@@ -32,7 +37,6 @@ export const WfoWebsocketStatusBadge = () => {
             }
         >
             <WfoHeaderBadge
-                color={theme.colors.ghost}
                 textColor={theme.colors.shadow}
                 iconType={() =>
                     websocketConnected ? (
@@ -41,11 +45,7 @@ export const WfoWebsocketStatusBadge = () => {
                         <WfoBoltSlashFill color="yellow" />
                     )
                 }
-                style={{
-                    paddingLeft: '8px',
-                    cursor: !websocketConnected ? 'pointer' : 'default',
-                    backgroundColor: theme.colors.danger,
-                }}
+                css={websocketConnected ? connectedStyle : disconnectedStyle}
                 onClick={
                     !websocketConnected
                         ? () => reconnect()
