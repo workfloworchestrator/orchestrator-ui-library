@@ -157,65 +157,71 @@ function ImsPortId({
         }))
         .sort((x, y) => x.label.localeCompare(y.label));
     const portValue = portOptions.find((option) => option.value === value);
-
     return (
         <EuiFlexItem css={imsPortIdFieldStyling}>
             <section {...filterDOMProps(props)}>
                 <EuiFormRow
                     label={label}
-                    labelAppend={<EuiText size="m">{description}</EuiText>}
+                    labelAppend={<EuiText size="m">{description} </EuiText>}
                     error={showInlineError ? errorMessage : false}
                     isInvalid={error}
                     id={id}
                     fullWidth
                 >
-                    <section className="node-port">
-                        <div className="node-select">
-                            <EuiFormRow
-                                label="Node"
-                                id={`${id}.node`}
-                                fullWidth
-                            >
-                                <ReactSelect<Option, false>
-                                    inputId={`${id}.node.search`}
-                                    name={`${name}.node`}
-                                    onChange={onChangeNodes}
-                                    options={nodeOptions}
-                                    placeholder={nodesPlaceholder}
-                                    value={nodeValue}
-                                    isSearchable={true}
-                                    isDisabled={
-                                        disabled ||
-                                        readOnly ||
-                                        nodeOptions.length === 0 ||
-                                        !!nodeSubscriptionId
-                                    }
-                                    styles={reactSelectInnerComponentStyles}
-                                />
-                            </EuiFormRow>
-                        </div>
-                        <div className="port-select">
-                            <EuiFormRow label="Port" id={id} fullWidth>
-                                <ReactSelect<Option<number>, false>
-                                    inputId={`${id}.search`}
-                                    name={name}
-                                    onChange={(selected) => {
-                                        onChange(selected?.value);
-                                    }}
-                                    options={portOptions}
-                                    placeholder={portPlaceholder}
-                                    value={portValue || null}
-                                    isSearchable={true}
-                                    isDisabled={
-                                        disabled ||
-                                        readOnly ||
-                                        portOptions.length === 0
-                                    }
-                                    styles={reactSelectInnerComponentStyles}
-                                />
-                            </EuiFormRow>
-                        </div>
-                    </section>
+                    {(!nodeValue && nodeSubscriptionId && (
+                        <EuiText>
+                            This Node subscription is missing. Please check the
+                            nodes status: {nodeSubscriptionId}
+                        </EuiText>
+                    )) || (
+                        <section className="node-port">
+                            <div className="node-select">
+                                <EuiFormRow
+                                    label="Node"
+                                    id={`${id}.node`}
+                                    fullWidth
+                                >
+                                    <ReactSelect<Option, false>
+                                        inputId={`${id}.node.search`}
+                                        name={`${name}.node`}
+                                        onChange={onChangeNodes}
+                                        options={nodeOptions}
+                                        placeholder={nodesPlaceholder}
+                                        value={nodeValue}
+                                        isSearchable={true}
+                                        isDisabled={
+                                            disabled ||
+                                            readOnly ||
+                                            nodeOptions.length === 0 ||
+                                            !!nodeSubscriptionId
+                                        }
+                                        styles={reactSelectInnerComponentStyles}
+                                    />
+                                </EuiFormRow>
+                            </div>
+                            <div className="port-select">
+                                <EuiFormRow label="Port" id={id} fullWidth>
+                                    <ReactSelect<Option<number>, false>
+                                        inputId={`${id}.search`}
+                                        name={name}
+                                        onChange={(selected) => {
+                                            onChange(selected?.value);
+                                        }}
+                                        options={portOptions}
+                                        placeholder={portPlaceholder}
+                                        value={portValue || null}
+                                        isSearchable={true}
+                                        isDisabled={
+                                            disabled ||
+                                            readOnly ||
+                                            portOptions.length === 0
+                                        }
+                                        styles={reactSelectInnerComponentStyles}
+                                    />
+                                </EuiFormRow>
+                            </div>
+                        </section>
+                    )}
                 </EuiFormRow>
             </section>
         </EuiFlexItem>
