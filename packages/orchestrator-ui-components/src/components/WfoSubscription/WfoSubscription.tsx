@@ -63,7 +63,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
         <>
             {(isError && <WfoError />) ||
                 (isLoading && <WfoLoading />) ||
-                (subscriptionDetail && (
+                (subscriptionDetail && subscriptionDetail.subscriptionId && (
                     <>
                         <EuiFlexGroup
                             style={{ marginBottom: 10 }}
@@ -135,7 +135,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                                 />
                             )}
                     </>
-                ))}
+                )) || <h1>Unknown subscriptionId: {subscriptionId}</h1>}
         </>
     );
 };
