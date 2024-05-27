@@ -38,12 +38,13 @@ export const WfoWebsocketStatusBadge = () => {
                     websocketConnected ? (
                         <WfoBoltFill color={theme.colors.success} />
                     ) : (
-                        <WfoBoltSlashFill color={theme.colors.danger} />
+                        <WfoBoltSlashFill color="yellow" />
                     )
                 }
                 style={{
                     paddingLeft: '8px',
                     cursor: !websocketConnected ? 'pointer' : 'default',
+                    backgroundColor: theme.colors.danger,
                 }}
                 onClick={
                     !websocketConnected
