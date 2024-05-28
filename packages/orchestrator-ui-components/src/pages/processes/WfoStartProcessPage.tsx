@@ -170,12 +170,14 @@ export const WfoStartProcessPage = ({
                     hasNext: json.meta?.hasNext ?? false,
                 });
             };
-
             handlePromiseErrorWithCallback<FormNotCompleteResponse>(
                 submit([]),
                 HttpStatus.FormNotComplete,
                 clientResultCallback,
             );
+            return () => {
+                setForm({});
+            };
         }
     }, [submit, processName]);
 
