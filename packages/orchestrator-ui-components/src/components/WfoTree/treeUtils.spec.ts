@@ -5,7 +5,6 @@ describe('getWfoTreeNodeDepth', () => {
     const field: FieldValue = { field: 'test', value: 'test' };
     const sampleTree: TreeBlock = {
         id: 1,
-        ownerSubscriptionId: 'subscription-1',
         subscriptionInstanceId: 'subscription-1',
         parent: null,
         icon: 'folder',
@@ -14,10 +13,13 @@ describe('getWfoTreeNodeDepth', () => {
         productBlockInstanceValues: [field],
         inUseByRelations: [],
         isOutsideCurrentSubscription: false,
+        subscription: {
+            subscriptionId: 'subscription-1',
+            description: 'Subscription 1',
+        },
         children: [
             {
                 id: 2,
-                ownerSubscriptionId: 'subscription-2',
                 subscriptionInstanceId: 'subscription-2',
                 parent: 1,
                 icon: 'file',
@@ -27,10 +29,13 @@ describe('getWfoTreeNodeDepth', () => {
                 inUseByRelations: [],
                 children: [],
                 isOutsideCurrentSubscription: false,
+                subscription: {
+                    subscriptionId: 'subscription-2',
+                    description: 'Subscription 2',
+                },
             },
             {
                 id: 3,
-                ownerSubscriptionId: 'subscription-3',
                 subscriptionInstanceId: 'subscription-3',
                 parent: 1,
                 icon: 'file',
@@ -39,10 +44,13 @@ describe('getWfoTreeNodeDepth', () => {
                 productBlockInstanceValues: [field],
                 inUseByRelations: [],
                 isOutsideCurrentSubscription: false,
+                subscription: {
+                    subscriptionId: 'subscription-3',
+                    description: 'Subscription 3',
+                },
                 children: [
                     {
                         id: 4,
-                        ownerSubscriptionId: 'subscription-4',
                         subscriptionInstanceId: 'subscription-4',
                         parent: 3,
                         icon: 'file',
@@ -52,6 +60,10 @@ describe('getWfoTreeNodeDepth', () => {
                         inUseByRelations: [],
                         children: [],
                         isOutsideCurrentSubscription: false,
+                        subscription: {
+                            subscriptionId: 'subscription-4',
+                            description: 'Subscription 4',
+                        },
                     },
                 ],
             },
@@ -96,6 +108,10 @@ describe('getWfoTreeNodeDepth', () => {
             inUseByRelations: [],
             children: [],
             isOutsideCurrentSubscription: false,
+            subscription: {
+                subscriptionId: 'subscription-1',
+                description: 'Subscription 1',
+            },
         };
 
         expect(() =>

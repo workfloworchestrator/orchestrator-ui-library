@@ -17,11 +17,14 @@ const getProductBlockInstance = (
     instanceProperties: Partial<ProductBlockInstance> = {},
 ): ProductBlockInstance => ({
     id: 1,
-    ownerSubscriptionId: 'ProductBlockInstanceId 1',
     parent: 0,
     productBlockInstanceValues: [],
     subscriptionInstanceId: 'testId',
     inUseByRelations: [],
+    subscription: {
+        subscriptionId: 'OwnerSubscriptionId',
+        description: 'OwnerSubscription description',
+    },
     ...instanceProperties,
 });
 
@@ -128,11 +131,14 @@ describe('formField utils', () => {
                 ...testProductBlockInstances,
                 {
                     id: 1,
-                    ownerSubscriptionId: 'ProductBlockInstanceId 1',
                     parent: 0,
                     productBlockInstanceValues: [],
                     subscriptionInstanceId: 'testId',
                     inUseByRelations: [],
+                    subscription: {
+                        subscriptionId: 'OwnerSubscriptionId',
+                        description: 'OwnerSubscription description',
+                    },
                 },
             ]);
             expect(result).toEqual(undefined);
@@ -152,11 +158,14 @@ describe('formField utils', () => {
                 productBlockInstances: [
                     {
                         id: 1,
-                        ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         productBlockInstanceValues: [],
                         subscriptionInstanceId: 'testId',
                         inUseByRelations: [],
+                        subscription: {
+                            subscriptionId: 'OwnerSubscriptionId 1',
+                            description: 'OwnerSubscriptionId description',
+                        },
                     },
                 ],
             };
@@ -171,10 +180,13 @@ describe('formField utils', () => {
                 productBlockInstances: [
                     {
                         id: 1,
-                        ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         subscriptionInstanceId: 'testId',
                         inUseByRelations: [],
+                        subscription: {
+                            subscriptionId: 'OwnerSubscriptionId 1',
+                            description: 'OwnerSubscriptionId description',
+                        },
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -198,10 +210,13 @@ describe('formField utils', () => {
                 productBlockInstances: [
                     {
                         id: 1,
-                        ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         subscriptionInstanceId: 'testId',
                         inUseByRelations: [],
+                        subscription: {
+                            subscriptionId: 'OwnerSubscriptionId 1',
+                            description: 'OwnerSubscriptionId description',
+                        },
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',
@@ -225,10 +240,13 @@ describe('formField utils', () => {
                 productBlockInstances: [
                     {
                         id: 1,
-                        ownerSubscriptionId: 'ProductBlockInstanceId 1',
                         parent: 0,
                         subscriptionInstanceId: 'testId',
                         inUseByRelations: [],
+                        subscription: {
+                            subscriptionId: 'OwnerSubscriptionId 1',
+                            description: 'OwnerSubscriptionId description',
+                        },
                         productBlockInstanceValues: [
                             {
                                 field: 'key1',

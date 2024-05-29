@@ -43,7 +43,10 @@ export const subscriptionDetailQuery = `
                 }
                 productBlockInstances {
                     id
-                    ownerSubscriptionId
+                    subscription {
+                        subscriptionId
+                        description
+                    }
                     parent
                     productBlockInstanceValues
                     subscriptionInstanceId
