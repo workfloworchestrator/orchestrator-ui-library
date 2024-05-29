@@ -42,7 +42,7 @@ export const WfoWebsocketStatusBadge = () => {
                     websocketConnected ? (
                         <WfoBoltFill color={theme.colors.success} />
                     ) : (
-                        <WfoBoltSlashFill color="yellow" />
+                        <WfoBoltSlashFill color={theme.colors.warning} />
                     )
                 }
                 css={websocketConnected ? connectedStyle : disconnectedStyle}
