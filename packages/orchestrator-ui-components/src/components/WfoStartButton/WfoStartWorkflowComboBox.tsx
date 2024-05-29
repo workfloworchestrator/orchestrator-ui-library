@@ -31,7 +31,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
     const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
         if (await isEngineRunningNow()) {
             const { workflowName, productId } = selectedProduct.data;
-            router.push({
+            router.replace({
                 pathname: `${PATH_START_NEW_WORKFLOW}/${workflowName}`,
                 query: { productId },
             });

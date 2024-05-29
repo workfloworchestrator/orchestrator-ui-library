@@ -162,7 +162,17 @@ export const WfoStartProcessPage = ({
         [startProcess, processName, startProcessPayload, isTask, router],
     );
 
+    // const url = window.location.href;
+    // window.location.replace(url)
+
     useEffect(() => {
+        // const history = window.history;
+        // console.log("history", history);
+        // console.log("history state", history.state.state);
+        // console.log("Router comp", router.route);
+        // router.replace(router.asPath, "/")
+        console.log('AS PATH', router.asPath);
+        // history.replaceState({ state: "state" }, "title", "/")
         if (processName) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
