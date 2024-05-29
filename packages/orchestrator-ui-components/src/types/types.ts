@@ -39,11 +39,11 @@ export type InUseByRelation = {
 
 export type ProductBlockInstance = {
     id: number;
-    ownerSubscriptionId: string;
     subscriptionInstanceId: string;
     parent: Nullable<number>;
     productBlockInstanceValues: FieldValue[];
     inUseByRelations: InUseByRelation[];
+    subscription: Pick<Subscription, 'subscriptionId' | 'description'>;
 };
 
 export interface ResourceTypeDefinition {

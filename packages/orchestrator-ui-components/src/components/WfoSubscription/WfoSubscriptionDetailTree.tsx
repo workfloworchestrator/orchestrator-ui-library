@@ -47,7 +47,8 @@ export const WfoSubscriptionDetailTree = ({
             callback: () => {},
             children: [],
             isOutsideCurrentSubscription:
-                productBlockInstance.ownerSubscriptionId !== subscriptionId,
+                productBlockInstance.subscription.subscriptionId !==
+                subscriptionId,
         };
 
         // Does this node have a parent?
@@ -164,7 +165,7 @@ export const WfoSubscriptionDetailTree = ({
                                 <WfoSubscriptionProductBlock
                                     key={index}
                                     ownerSubscriptionId={
-                                        block.ownerSubscriptionId
+                                        block.subscription.subscriptionId
                                     }
                                     subscriptionInstanceId={
                                         block.subscriptionInstanceId
