@@ -46,13 +46,11 @@ export const WfoWebsocketStatusBadge = () => {
                     )
                 }
                 css={websocketConnected ? connectedStyle : disconnectedStyle}
-                onClick={
-                    !websocketConnected
-                        ? () => reconnect()
-                        : () => {
-                              return;
-                          }
-                }
+                onClick={() => {
+                    if (!websocketConnected) {
+                        reconnect();
+                    }
+                }}
                 onClickAriaLabel={'undefined'}
                 iconOnClick={undefined}
                 iconOnClickAriaLabel={undefined}
