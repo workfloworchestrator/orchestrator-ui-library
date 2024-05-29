@@ -53,7 +53,8 @@ export const WfoSubscriptionProductBlock = ({
         rowStyle,
     } = useWithOrchestratorTheme(getStyles);
 
-    const [hideDetails, setHideDetails] = useState(true);
+    const [showDetails, setShowDetails] = useState(false);
+    const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
 
     return (
         <>
@@ -94,14 +95,14 @@ export const WfoSubscriptionProductBlock = ({
                     <EuiFlexItem grow={false}>
                         <EuiButtonEmpty
                             aria-label={
-                                hideDetails
-                                    ? t('showDetails')
-                                    : t('hideDetails')
+                                showDetails
+                                    ? t('hideDetails')
+                                    : t('showDetails')
                             }
                             size={'m'}
-                            onClick={() => setHideDetails(!hideDetails)}
+                            onClick={() => setShowDetails(!showDetails)}
                         >
-                            {hideDetails ? t('showDetails') : t('hideDetails')}
+                            {showDetails ? t('hideDetails') : t('showDetails')}
                         </EuiButtonEmpty>
                     </EuiFlexItem>
                 </EuiFlexGroup>
@@ -125,7 +126,7 @@ export const WfoSubscriptionProductBlock = ({
                                     </td>
                                 </tr>
                             )}
-                            {!hideDetails && (
+                            {showDetails && (
                                 <>
                                     <tr key={-2} css={rowStyle}>
                                         <td css={leftColumnStyle}>
@@ -169,7 +170,7 @@ export const WfoSubscriptionProductBlock = ({
                                 </>
                             )}
 
-                            {(!isOutsideCurrentSubscription || !hideDetails) &&
+                            {showProductBlockValues &&
                                 productBlockInstanceValues
                                     .filter(
                                         (productBlockInstanceValue) =>
