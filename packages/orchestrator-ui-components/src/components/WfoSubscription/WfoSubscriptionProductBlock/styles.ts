@@ -23,6 +23,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     });
 
     const rowStyle = css({
+        borderBottom: `solid 1px ${theme.colors.lightShade}`,
         '&:first-child': {
             borderTop: `solid 1px ${theme.colors.lightShade}`,
         },
@@ -34,7 +35,6 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         paddingLeft: 0,
         paddingTop: 10,
         paddingBottom: 10,
-        borderBottom: `solid 1px ${theme.colors.lightShade}`,
     });
 
     const rightColumnStyle = css({
@@ -42,7 +42,6 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         paddingLeft: 0,
         paddingTop: 10,
         paddingBottom: 10,
-        borderBottom: `solid 1px ${theme.colors.lightShade}`,
     });
 
     return {

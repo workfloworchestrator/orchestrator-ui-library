@@ -110,9 +110,24 @@ export const WfoSubscriptionProductBlock = ({
                 {
                     <table width="100%">
                         <tbody>
+                            {isOutsideCurrentSubscription && (
+                                <tr key={-1} css={rowStyle}>
+                                    <td css={leftColumnStyle}>
+                                        <b>{t('ownerSubscriptionId')}</b>
+                                    </td>
+                                    <td css={rightColumnStyle}>
+                                        <a
+                                            href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                            target="_blank"
+                                        >
+                                            {ownerSubscriptionId}
+                                        </a>
+                                    </td>
+                                </tr>
+                            )}
                             {!hideDetails && (
                                 <>
-                                    <tr key={-3} css={rowStyle}>
+                                    <tr key={-2} css={rowStyle}>
                                         <td css={leftColumnStyle}>
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
@@ -120,28 +135,23 @@ export const WfoSubscriptionProductBlock = ({
                                             {subscriptionInstanceId}
                                         </td>
                                     </tr>
-                                    <tr key={-2} css={rowStyle}>
-                                        <td css={leftColumnStyle}>
-                                            <b>{t('ownerSubscriptionId')}</b>
-                                        </td>
-                                        <td css={rightColumnStyle}>
-                                            {!isOutsideCurrentSubscription ? (
+                                    {!isOutsideCurrentSubscription && (
+                                        <tr key={-3} css={rowStyle}>
+                                            <td css={leftColumnStyle}>
+                                                <b>
+                                                    {t('ownerSubscriptionId')}
+                                                </b>
+                                            </td>
+                                            <td css={rightColumnStyle}>
                                                 <>
                                                     <EuiBadge>
                                                         {t('self')}
                                                     </EuiBadge>
                                                 </>
-                                            ) : (
-                                                <a
-                                                    href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
-                                                    target="_blank"
-                                                >
-                                                    {ownerSubscriptionId}
-                                                </a>
-                                            )}
-                                        </td>
-                                    </tr>
-                                    <tr key={-1} css={rowStyle}>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    <tr key={-4} css={rowStyle}>
                                         <td css={leftColumnStyle}>
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
@@ -159,19 +169,22 @@ export const WfoSubscriptionProductBlock = ({
                                 </>
                             )}
 
-                            {productBlockInstanceValues
-                                .filter(
-                                    (productBlockInstanceValue) =>
-                                        !HIDDEN_KEYS.includes(
-                                            productBlockInstanceValue.field,
-                                        ),
-                                )
-                                .map((productBlockInstanceValue, index) => (
-                                    <WfoProductBlockKeyValueRow
-                                        fieldValue={productBlockInstanceValue}
-                                        key={index}
-                                    />
-                                ))}
+                            {(!isOutsideCurrentSubscription || !hideDetails) &&
+                                productBlockInstanceValues
+                                    .filter(
+                                        (productBlockInstanceValue) =>
+                                            !HIDDEN_KEYS.includes(
+                                                productBlockInstanceValue.field,
+                                            ),
+                                    )
+                                    .map((productBlockInstanceValue, index) => (
+                                        <WfoProductBlockKeyValueRow
+                                            fieldValue={
+                                                productBlockInstanceValue
+                                            }
+                                            key={index}
+                                        />
+                                    ))}
                         </tbody>
                     </table>
                 }
