@@ -15,7 +15,7 @@ import {
 
 import { PATH_SUBSCRIPTIONS, WfoProductBlockKeyValueRow } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import { FieldValue, InUseByRelation } from '@/types';
+import { ProductBlockInstance, Subscription } from '@/types';
 
 import { WfoInUseByRelations } from '../WfoInUseByRelations';
 import {
@@ -25,22 +25,15 @@ import {
 import { getStyles } from './styles';
 
 interface WfoSubscriptionProductBlockProps {
-    ownerSubscriptionId: string;
-    subscriptionInstanceId: string;
-    productBlockInstanceValues: FieldValue[];
-    inUseByRelations: InUseByRelation[];
-    id: number;
-    isOutsideCurrentSubscription?: boolean;
+    productBlock: ProductBlockInstance;
+    subscriptionId: Subscription['subscriptionId'];
 }
 
 export const HIDDEN_KEYS = ['title', 'name', 'label'];
 
 export const WfoSubscriptionProductBlock = ({
-    ownerSubscriptionId,
-    subscriptionInstanceId,
-    productBlockInstanceValues,
-    inUseByRelations,
-    isOutsideCurrentSubscription = false,
+    productBlock,
+    subscriptionId,
 }: WfoSubscriptionProductBlockProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
@@ -54,6 +47,12 @@ export const WfoSubscriptionProductBlock = ({
     } = useWithOrchestratorTheme(getStyles);
 
     const [showDetails, setShowDetails] = useState(false);
+
+    const ownerSubscriptionId = productBlock.subscription.subscriptionId;
+    const isOutsideCurrentSubscription = ownerSubscriptionId !== subscriptionId;
+    const inUseByRelations = productBlock.inUseByRelations.filter(
+        (inUseByRelation) => inUseByRelation.subscription_id !== subscriptionId,
+    );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
 
     return (
@@ -81,13 +80,13 @@ export const WfoSubscriptionProductBlock = ({
                         <EuiText grow={true}>
                             <h3>
                                 {getProductBlockTitle(
-                                    productBlockInstanceValues,
+                                    productBlock.productBlockInstanceValues,
                                 )}
                             </h3>
                         </EuiText>
                         <EuiText size="s">
                             {getFieldFromProductBlockInstanceValues(
-                                productBlockInstanceValues,
+                                productBlock.productBlockInstanceValues,
                                 'name',
                             )}
                         </EuiText>
@@ -133,7 +132,9 @@ export const WfoSubscriptionProductBlock = ({
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
                                         <td css={rightColumnStyle}>
-                                            {subscriptionInstanceId}
+                                            {
+                                                productBlock.subscriptionInstanceId
+                                            }
                                         </td>
                                     </tr>
                                     {!isOutsideCurrentSubscription && (
@@ -171,7 +172,7 @@ export const WfoSubscriptionProductBlock = ({
                             )}
 
                             {showProductBlockValues &&
-                                productBlockInstanceValues
+                                productBlock.productBlockInstanceValues
                                     .filter(
                                         (productBlockInstanceValue) =>
                                             !HIDDEN_KEYS.includes(
