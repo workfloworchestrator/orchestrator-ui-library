@@ -15,7 +15,6 @@ import {
 
 import {
     PATH_SUBSCRIPTIONS,
-    WfoFirstPartUUID,
     WfoProductBlockKeyValueRow,
     WfoValueCell,
 } from '@/components';
