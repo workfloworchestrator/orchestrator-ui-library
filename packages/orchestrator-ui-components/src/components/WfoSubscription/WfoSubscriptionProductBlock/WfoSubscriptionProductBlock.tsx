@@ -13,9 +13,15 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, WfoProductBlockKeyValueRow } from '@/components';
+import {
+    PATH_SUBSCRIPTIONS,
+    WfoFirstPartUUID,
+    WfoProductBlockKeyValueRow,
+    WfoValueCell,
+} from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { ProductBlockInstance, Subscription } from '@/types';
+import { getFirstUuidPart } from '@/utils';
 
 import { WfoInUseByRelations } from '../WfoInUseByRelations';
 import {
@@ -42,7 +48,6 @@ export const WfoSubscriptionProductBlock = ({
         panelStyle,
         panelStyleOutsideCurrentSubscription,
         leftColumnStyle,
-        rightColumnStyle,
         rowStyle,
     } = useWithOrchestratorTheme(getStyles);
 
@@ -112,16 +117,42 @@ export const WfoSubscriptionProductBlock = ({
                         <tbody>
                             {isOutsideCurrentSubscription && (
                                 <tr key={-1} css={rowStyle}>
-                                    <td css={leftColumnStyle}>
+                                    <td
+                                        css={leftColumnStyle}
+                                        style={{ alignSelf: 'center' }}
+                                    >
                                         <b>{t('ownerSubscriptionId')}</b>
                                     </td>
-                                    <td css={rightColumnStyle}>
-                                        <a
-                                            href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
-                                            target="_blank"
-                                        >
-                                            {ownerSubscriptionId}
-                                        </a>
+                                    <td>
+                                        <WfoValueCell
+                                            value={
+                                                <>
+                                                    <a
+                                                        href={`${PATH_SUBSCRIPTIONS}/${ownerSubscriptionId}`}
+                                                        target="_blank"
+                                                    >
+                                                        {
+                                                            productBlock
+                                                                .subscription
+                                                                .description
+                                                        }
+                                                    </a>
+                                                    <EuiText
+                                                        style={{
+                                                            padding: '0 4px',
+                                                        }}
+                                                    >
+                                                        -
+                                                    </EuiText>
+                                                    {getFirstUuidPart(
+                                                        ownerSubscriptionId,
+                                                    )}
+                                                </>
+                                            }
+                                            textToCopy={ownerSubscriptionId}
+                                            rowNumber={-1}
+                                            enableCopyIcon={true}
+                                        />
                                     </td>
                                 </tr>
                             )}
@@ -131,7 +162,7 @@ export const WfoSubscriptionProductBlock = ({
                                         <td css={leftColumnStyle}>
                                             <b>{t('subscriptionInstanceId')}</b>
                                         </td>
-                                        <td css={rightColumnStyle}>
+                                        <td>
                                             {
                                                 productBlock.subscriptionInstanceId
                                             }
@@ -144,7 +175,7 @@ export const WfoSubscriptionProductBlock = ({
                                                     {t('ownerSubscriptionId')}
                                                 </b>
                                             </td>
-                                            <td css={rightColumnStyle}>
+                                            <td>
                                                 <>
                                                     <EuiBadge>
                                                         {t('self')}
@@ -157,7 +188,7 @@ export const WfoSubscriptionProductBlock = ({
                                         <td css={leftColumnStyle}>
                                             <b>{t('inUseByRelations')}</b>
                                         </td>
-                                        <td css={rightColumnStyle}>
+                                        <td>
                                             {(inUseByRelations.length === 0 &&
                                                 'None') || (
                                                 <WfoInUseByRelations

@@ -31,7 +31,6 @@ export const getStyles = ({ theme }: WfoTheme) => {
     });
 
     const valueColumnStyle = css({
-        padding: padding,
         borderTopRightRadius: radius,
         borderBottomRightRadius: radius,
         display: 'flex',

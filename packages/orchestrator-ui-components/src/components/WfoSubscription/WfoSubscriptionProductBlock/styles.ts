@@ -23,6 +23,10 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     });
 
     const rowStyle = css({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        padding: `${theme.base / 2}px 0`,
         borderBottom: `solid 1px ${theme.colors.lightShade}`,
         '&:first-child': {
             borderTop: `solid 1px ${theme.colors.lightShade}`,
@@ -30,25 +34,14 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     });
 
     const leftColumnStyle = css({
-        verticalAlign: 'top',
         width: 250,
-        paddingLeft: 0,
-        paddingTop: 10,
-        paddingBottom: 10,
-    });
-
-    const rightColumnStyle = css({
-        verticalAlign: 'top',
-        paddingLeft: 0,
-        paddingTop: 10,
-        paddingBottom: 10,
+        flexShrink: 0,
     });
 
     return {
         iconStyle,
         panelStyle,
         leftColumnStyle,
-        rightColumnStyle,
         rowStyle,
         panelStyleOutsideCurrentSubscription,
     };

@@ -16,8 +16,7 @@ export type WfoProductBlockKeyValueRowProps = {
 export const WfoProductBlockKeyValueRow: FC<
     WfoProductBlockKeyValueRowProps
 > = ({ fieldValue }) => {
-    const { leftColumnStyle, rightColumnStyle, rowStyle } =
-        useWithOrchestratorTheme(getStyles);
+    const { leftColumnStyle, rowStyle } = useWithOrchestratorTheme(getStyles);
     const { getOverriddenValue } = useSubscriptionDetailValueOverride();
 
     const { field, value } = fieldValue;
@@ -36,7 +35,7 @@ export const WfoProductBlockKeyValueRow: FC<
             <td css={leftColumnStyle}>
                 <b>{camelToHuman(field)}</b>
             </td>
-            <td css={rightColumnStyle}>
+            <td>
                 {getOverriddenValue(fieldValue) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
