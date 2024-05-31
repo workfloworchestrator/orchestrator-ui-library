@@ -1,6 +1,7 @@
 export * from './csvDownload';
 export * from './date';
 export * from './environmentVariables';
+export * from './getEnvironmentVariables';
 export * from './getProductNamesFromProcess';
 export * from './getQueryVariablesForExport';
 export * from './getStatusBadgeColor';
