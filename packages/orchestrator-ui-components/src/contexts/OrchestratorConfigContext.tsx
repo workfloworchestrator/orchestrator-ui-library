@@ -4,7 +4,7 @@ import { FC, ReactNode, createContext } from 'react';
 import { useOrchestratorConfig } from '@/hooks/useOrchestratorConfig';
 import type { OrchestratorConfig } from '@/types';
 
-export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
+export const emptyOrchestratorConfig: OrchestratorConfig = {
     environmentName: '',
     graphqlEndpointCore: '',
     orchestratorApiBaseUrl: '',
@@ -14,10 +14,14 @@ export const OrchestratorConfigContext = createContext<OrchestratorConfig>({
     useThemeToggle: false,
     showWorkflowInformationLink: false,
     workflowInformationLinkUrl: '',
-});
+};
+
+export const OrchestratorConfigContext = createContext<OrchestratorConfig>(
+    emptyOrchestratorConfig,
+);
 
 export type OrchestratorConfigProviderProps = {
-    initialOrchestratorConfig: OrchestratorConfig;
+    initialOrchestratorConfig: OrchestratorConfig | null;
     children: ReactNode;
 };
 
@@ -25,7 +29,7 @@ export const OrchestratorConfigProvider: FC<
     OrchestratorConfigProviderProps
 > = ({ initialOrchestratorConfig, children }) => {
     const { orchestratorConfig } = useOrchestratorConfig(
-        initialOrchestratorConfig,
+        initialOrchestratorConfig ?? emptyOrchestratorConfig,
     );
 
     return (
