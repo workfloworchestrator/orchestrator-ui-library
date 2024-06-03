@@ -1,5 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     EuiButton,
     EuiButtonEmpty,
@@ -26,25 +28,29 @@ export const WfoSettingsModal: FC<WfoSettingsModalProps> = ({
     onResetToDefaults,
     onUpdateTableConfig,
     children,
-}) => (
-    <EuiModal onClose={onClose} maxWidth={400}>
-        <EuiModalHeader>
-            <EuiModalHeaderTitle size="xs">{title}</EuiModalHeaderTitle>
-        </EuiModalHeader>
+}) => {
+    const t = useTranslations('main');
 
-        <EuiSpacer size="s" />
+    return (
+        <EuiModal onClose={onClose} maxWidth={400}>
+            <EuiModalHeader>
+                <EuiModalHeaderTitle size="xs">{title}</EuiModalHeaderTitle>
+            </EuiModalHeader>
 
-        <EuiModalBody>{children}</EuiModalBody>
+            <EuiSpacer size="s" />
 
-        <EuiModalFooter>
-            <EuiFlexGroup justifyContent="spaceBetween">
-                <EuiButtonEmpty onClick={onResetToDefaults} flush="left">
-                    Reset to default
-                </EuiButtonEmpty>
-                <EuiButton onClick={onUpdateTableConfig} fill>
-                    Save preference
-                </EuiButton>
-            </EuiFlexGroup>
-        </EuiModalFooter>
-    </EuiModal>
-);
+            <EuiModalBody>{children}</EuiModalBody>
+
+            <EuiModalFooter>
+                <EuiFlexGroup justifyContent="spaceBetween">
+                    <EuiButtonEmpty onClick={onResetToDefaults} flush="left">
+                        {t('resetToDefault')}
+                    </EuiButtonEmpty>
+                    <EuiButton onClick={onUpdateTableConfig} fill>
+                        {t('savePreferences')}
+                    </EuiButton>
+                </EuiFlexGroup>
+            </EuiModalFooter>
+        </EuiModal>
+    );
+};
