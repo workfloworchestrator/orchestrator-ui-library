@@ -23,13 +23,7 @@ export function getEnvironmentVariables<T>(
         {} as Record<keyof T, string>,
     );
 
-    // Todo: Try preventing to get environment variables in the browser. This code should only run on the Node side.
-    // https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1108
-    if (
-        typeof window === 'undefined' &&
-        missingEnvironmentVariables.length > 0
-    ) {
-        // eslint-disable-next-line no-console
+    if (missingEnvironmentVariables.length > 0) {
         console.warn(
             `Warning: Missing required environment variables: ${missingEnvironmentVariables.join(', ')}`,
         );
