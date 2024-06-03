@@ -20,7 +20,7 @@ describe('getEnvironmentVariables()', () => {
         process.env = originalEnv;
     });
 
-    it('returns an empty string as value in the result when the environment variable is not set', () => {
+    it('returns an object with the environment variables and its values', () => {
         process.env.test01 = 'value01';
         process.env.test02 = 'value02';
 
@@ -33,7 +33,7 @@ describe('getEnvironmentVariables()', () => {
         });
     });
 
-    it('returns an object with the environment variables and its values', () => {
+    it('returns an empty string as value in the result when the environment variable is not set', () => {
         process.env.test01 = 'value01';
         process.env.test03 = 'value03';
 
