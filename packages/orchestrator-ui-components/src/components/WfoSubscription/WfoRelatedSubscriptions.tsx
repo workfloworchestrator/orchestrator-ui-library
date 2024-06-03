@@ -19,6 +19,7 @@ import {
     getDataSortHandler,
     getPageChangeHandler,
 } from '@/components';
+import { PATH_SUBSCRIPTIONS } from '@/components';
 import { useDataDisplayParams, useOrchestratorTheme } from '@/hooks';
 import { WfoSearchStrikethrough } from '@/icons';
 import { useGetRelatedSubscriptionsQuery } from '@/rtk';
@@ -80,14 +81,16 @@ export const WfoRelatedSubscriptions = ({
         description: {
             field: 'description',
             name: t('description'),
-            render: (value, record) => (
-                <Link
-                    target="_blank"
-                    href={`/subscriptions/${record.subscriptionId}`}
-                >
-                    {value}
-                </Link>
-            ),
+            render: (value, record) => {
+                return (
+                    <Link
+                        target="_blank"
+                        href={`${PATH_SUBSCRIPTIONS}/${record.subscriptionId}`}
+                    >
+                        {value}
+                    </Link>
+                );
+            },
             filterable: false,
         },
         status: {
