@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.3.0
+
+### Minor Changes
+
+- ef169fc: 1108 For the no-console rule allowing warnings too
+
 ## 1.2.1
 
 ### Patch Changes

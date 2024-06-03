@@ -1,5 +1,18 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.24.0
+
+### Minor Changes
+
+- 83fb33d: Adds a reconnect option for the websocket
+- ef169fc: 1108 Adds getEnvironmentVariables helper function that retrieves multiple environment variables and logs warnings in case variables do not exist
+- e4e9b73: Adds better messages for some edge cases
+
+### Patch Changes
+
+- fda8911: Hides more product block items for productblocks outside the current subscription
+- 54e6f9f: Fixed caching issue when switching from Create Node to create Corelink form caused 400 error
+
 ## 1.23.0
 
 ### Minor Changes
