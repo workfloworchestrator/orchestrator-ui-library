@@ -16,6 +16,7 @@ import {
 import { WfoError } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
+import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
 
 import { getTypedFieldFromObject } from '../../../utils';
 import {
@@ -89,8 +90,6 @@ export const WfoTableWithFilter = <T extends object>({
     exportDataIsLoading = false,
 }: WfoTableWithFilterProps<T>) => {
     const { theme } = useOrchestratorTheme();
-
-    const defaultPageSize = pagination.pageSize;
     const [hiddenColumns, setHiddenColumns] =
         useState<TableColumnKeys<T>>(defaultHiddenColumns);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -184,12 +183,13 @@ export const WfoTableWithFilter = <T extends object>({
     };
 
     const handleResetToDefaults = () => {
-        setHiddenColumns(defaultHiddenColumns);
+        const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
+        setHiddenColumns(defaultTableConfig.hiddenColumns);
         setShowSettingsModal(false);
         clearTableConfigFromLocalStorage(localStorageKey);
         onUpdatePage({
             index: 0,
-            size: defaultPageSize ?? DEFAULT_PAGE_SIZE,
+            size: defaultTableConfig.selectedPageSize ?? DEFAULT_PAGE_SIZE,
         });
     };
 
