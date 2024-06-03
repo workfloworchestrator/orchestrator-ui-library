@@ -1,7 +1,7 @@
 import process from 'process';
 
 // By convention, only this function should be used to access the process.env object.
-// It trows an error if any of variables is not set
+// It logs a warning if one or more variables are not set
 export function getEnvironmentVariables<T>(
     envVars: (keyof T)[],
 ): Record<keyof T, string> {
