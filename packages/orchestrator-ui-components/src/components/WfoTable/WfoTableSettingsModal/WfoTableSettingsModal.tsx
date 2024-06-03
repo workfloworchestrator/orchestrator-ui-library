@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
     EuiForm,
     EuiFormRow,
@@ -39,6 +41,7 @@ export const TableSettingsModal = <T,>({
     onResetToDefaults,
     onClose,
 }: TableSettingsModalProps<T>) => {
+    const t = useTranslations('main');
     const { formRowStyle, selectFieldStyle } = useWithOrchestratorTheme(
         getWfoTableSettingsModalStyles,
     );
@@ -67,7 +70,7 @@ export const TableSettingsModal = <T,>({
 
     return (
         <WfoSettingsModal
-            title="Table settings"
+            title={t('tableSettings')}
             onClose={onClose}
             onResetToDefaults={onResetToDefaults}
             onUpdateTableConfig={() =>
@@ -103,7 +106,7 @@ export const TableSettingsModal = <T,>({
                 <EuiFormRow
                     css={formRowStyle}
                     hasEmptyLabelSpace
-                    label="Number of Rows"
+                    label={t('numberOfRows')}
                     display="columnCompressed"
                 >
                     <EuiSelect
