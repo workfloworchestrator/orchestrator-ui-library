@@ -126,7 +126,7 @@ export const WfoStartProcessPage = ({
                             const basePath = isTask
                                 ? PATH_TASKS
                                 : PATH_WORKFLOWS;
-                            router.push(`${basePath}/${process.id}`);
+                            router.replace(`${basePath}/${process.id}`);
                         }
                     },
                     // Reject handler
