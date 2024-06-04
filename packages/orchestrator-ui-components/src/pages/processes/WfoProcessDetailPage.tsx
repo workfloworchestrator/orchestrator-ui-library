@@ -1,19 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { TimelineItem, WfoError, WfoLoading } from '@/components';
+import { WfoStepListRef, WfoWorkflowStepList } from '@/components';
 import { useGetProcessDetailQuery } from '@/rtk/endpoints/processDetail';
+import { Step } from '@/types';
+import { getProductNamesFromProcess } from '@/utils';
 
-import {
-    WfoStepListRef,
-    WfoWorkflowStepList,
-} from '../../components/WfoWorkflowSteps';
-import {
-    ProcessDetail,
-    ProcessDoneStatuses,
-    ProcessStatus,
-    Step,
-} from '../../types';
-import { getProductNamesFromProcess } from '../../utils';
 import { WfoProcessDetail } from './WfoProcessDetail';
 import {
     convertStepsToGroupedSteps,
@@ -24,69 +16,25 @@ export type GroupedStep = {
     steps: Step[];
 };
 
-const PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL = 3000;
-
 interface WfoProcessDetailPageProps {
     processId: string;
-    processDetailRefetchInterval?: number;
 }
 
 export const WfoProcessDetailPage = ({
     processId,
-    processDetailRefetchInterval = PROCESS_DETAIL_DEFAULT_REFETCH_INTERVAL,
 }: WfoProcessDetailPageProps) => {
     const stepListRef = useRef<WfoStepListRef>(null);
-    const [fetchInterval, setFetchInterval] = useState<number | undefined>();
-    const [process, setProcess] = useState<ProcessDetail | undefined>();
 
-    const { data, isLoading, isError } = useGetProcessDetailQuery(
-        { processId },
-        { pollingInterval: fetchInterval },
-    );
+    const { data, isLoading, isError } = useGetProcessDetailQuery({
+        processId,
+    });
+    const processDetail = data?.processes[0];
 
-    if (isError) {
-        if (fetchInterval) {
-            setFetchInterval(undefined);
-        }
-    }
+    const steps = processDetail?.steps ?? [];
 
-    useEffect(() => {
-        const process = data?.processes[0];
-        // We need to cast here because the backend might return the string in upperCase and
-        // toLowerCase() will converts the value type to string
-        const lastStatus =
-            process?.lastStatus.toLocaleLowerCase() as ProcessStatus;
-
-        const isInProgress = !(
-            lastStatus && ProcessDoneStatuses.includes(lastStatus)
-        );
-
-        setFetchInterval(
-            isInProgress ? processDetailRefetchInterval : undefined,
-        );
-    }, [data, processDetailRefetchInterval]);
-
-    useEffect(() => {
-        const fetchedProcessDetails = data?.processes[0];
-
-        if (!process) {
-            setProcess(fetchedProcessDetails);
-            return;
-        }
-
-        const shouldUpdateProcess =
-            process.lastStatus != fetchedProcessDetails?.lastStatus ||
-            process.lastStep !== fetchedProcessDetails?.lastStep;
-        if (shouldUpdateProcess) {
-            setProcess(fetchedProcessDetails);
-        }
-    }, [data, process]);
-
-    const steps = process?.steps ?? [];
-
-    const productNames = getProductNamesFromProcess(process);
-    const pageTitle = process?.workflowName || '';
-    const isTask = process?.isTask ?? false;
+    const productNames = getProductNamesFromProcess(processDetail);
+    const pageTitle = processDetail?.workflowName || '';
+    const isTask = processDetail?.isTask ?? false;
     const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
     const timelineItems: TimelineItem[] =
         mapGroupedStepsToTimelineItems(groupedSteps);
@@ -96,7 +44,7 @@ export const WfoProcessDetailPage = ({
             pageTitle={pageTitle}
             productNames={productNames}
             buttonsAreDisabled={isLoading || isError}
-            processDetail={process}
+            processDetail={processDetail}
             timelineItems={timelineItems}
             onTimelineItemClick={(id: string) =>
                 stepListRef.current?.scrollToStep(id)
@@ -106,16 +54,16 @@ export const WfoProcessDetailPage = ({
         >
             {(isError && <WfoError />) ||
                 (isLoading && <WfoLoading />) ||
-                (process !== undefined && (
+                (processDetail !== undefined && (
                     <WfoWorkflowStepList
                         ref={stepListRef}
-                        processId={process.processId}
+                        processId={processDetail.processId}
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
                         )}
-                        traceBack={process.traceback}
-                        userInputForm={process.form}
-                        startedAt={process.startedAt}
+                        traceBack={processDetail.traceback}
+                        userInputForm={processDetail.form}
+                        startedAt={processDetail.startedAt}
                         isTask={isTask}
                     />
                 )) || <h1>Invalid processId</h1>}
