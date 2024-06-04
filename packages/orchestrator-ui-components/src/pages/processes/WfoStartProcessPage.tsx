@@ -22,6 +22,7 @@ import {
     handlePromiseErrorWithCallback,
     useGetTimeLineItemsQuery,
 } from '@/rtk';
+import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import {
     EngineStatus,
@@ -87,6 +88,17 @@ export const WfoStartProcessPage = ({
     const [form, setForm] = useState<UserInputForm>({});
     const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
+    const {
+        data: subscriptionDetail,
+        isLoading: isLoadingSubscriptionDetail,
+        isError: isErrorSubscriptionDetail,
+    } = useGetSubscriptionDetailQuery(
+        {
+            subscriptionId: subscriptionId || '',
+        },
+        { skip: !subscriptionId },
+    );
+
     const [startProcess] = useStartProcessMutation();
 
     const startProcessPayload = useMemo(
@@ -101,9 +113,12 @@ export const WfoStartProcessPage = ({
 
     const {
         data: timeLineItems = [],
-        isError,
-        isLoading,
+        isError: isErrorTimeLineItems,
+        isLoading: isLoadingTimeLineItems,
     } = useGetTimeLineItemsQuery(processName);
+
+    const isLoading = isLoadingSubscriptionDetail || isLoadingTimeLineItems;
+    const isError = isErrorSubscriptionDetail || isErrorTimeLineItems;
 
     if (isError) {
         if (!hasError) {
@@ -186,6 +201,18 @@ export const WfoStartProcessPage = ({
         lastStep: StepStatus.FORM,
         workflowName: processName,
         createdBy: '-',
+        subscriptions: subscriptionDetail && {
+            page: [
+                {
+                    product: {
+                        name: subscriptionDetail.subscription.product.name,
+                    },
+                    description: subscriptionDetail.subscription.description,
+                    subscriptionId:
+                        subscriptionDetail.subscription.subscriptionId,
+                },
+            ],
+        },
     };
 
     return (
