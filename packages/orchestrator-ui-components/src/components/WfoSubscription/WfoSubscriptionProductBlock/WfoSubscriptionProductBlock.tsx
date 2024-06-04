@@ -47,6 +47,8 @@ export const WfoSubscriptionProductBlock = ({
         panelStyle,
         panelStyleOutsideCurrentSubscription,
         leftColumnStyle,
+        leftColumnStyleWithAlignSelf,
+        outsideSubscriptionIdTextStyle,
         rowStyle,
     } = useWithOrchestratorTheme(getStyles);
 
@@ -58,6 +60,10 @@ export const WfoSubscriptionProductBlock = ({
         (inUseByRelation) => inUseByRelation.subscription_id !== subscriptionId,
     );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
+
+    const isEmpty = (value: unknown) => {
+        return value === null || value === undefined || value === '';
+    };
 
     return (
         <>
@@ -116,10 +122,7 @@ export const WfoSubscriptionProductBlock = ({
                         <tbody>
                             {isOutsideCurrentSubscription && (
                                 <tr key={-1} css={rowStyle}>
-                                    <td
-                                        css={leftColumnStyle}
-                                        style={{ alignSelf: 'center' }}
-                                    >
+                                    <td css={leftColumnStyleWithAlignSelf}>
                                         <b>{t('ownerSubscriptionId')}</b>
                                     </td>
                                     <td>
@@ -137,9 +140,9 @@ export const WfoSubscriptionProductBlock = ({
                                                         }
                                                     </a>
                                                     <EuiText
-                                                        style={{
-                                                            padding: '0 4px',
-                                                        }}
+                                                        css={
+                                                            outsideSubscriptionIdTextStyle
+                                                        }
                                                     >
                                                         -
                                                     </EuiText>
@@ -212,12 +215,9 @@ export const WfoSubscriptionProductBlock = ({
                                     .map((productBlockInstanceValue, index) => {
                                         if (
                                             productBlockInstanceValue &&
-                                            productBlockInstanceValue.value !==
-                                                null &&
-                                            productBlockInstanceValue.value !==
-                                                undefined &&
-                                            productBlockInstanceValue.value !==
-                                                ''
+                                            !isEmpty(
+                                                productBlockInstanceValue.value,
+                                            )
                                         ) {
                                             return (
                                                 <WfoProductBlockKeyValueRow
