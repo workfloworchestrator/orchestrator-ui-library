@@ -86,6 +86,17 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                     processes,
                 };
             },
+            providesTags: (result, error, queryArguments) => {
+                if (!error && result) {
+                    return [
+                        {
+                            type: CacheTags.processDetail,
+                            id: queryArguments.processId,
+                        },
+                    ];
+                }
+                return [];
+            },
         }),
         getRawProcessDetail: builder.query<
             ProcessDetailResultRaw,
