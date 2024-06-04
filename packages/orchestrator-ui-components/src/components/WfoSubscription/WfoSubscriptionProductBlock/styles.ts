@@ -38,11 +38,23 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         flexShrink: 0,
     });
 
+    const leftColumnStyleWithAlignSelf = css({
+        width: 250,
+        flexShrink: 0,
+        alignSelf: 'center',
+    });
+
+    const outsideSubscriptionIdTextStyle = css({
+        padding: `${theme.size.xs}px 0`,
+    });
+
     return {
         iconStyle,
         panelStyle,
         leftColumnStyle,
+        leftColumnStyleWithAlignSelf,
         rowStyle,
         panelStyleOutsideCurrentSubscription,
+        outsideSubscriptionIdTextStyle,
     };
 };

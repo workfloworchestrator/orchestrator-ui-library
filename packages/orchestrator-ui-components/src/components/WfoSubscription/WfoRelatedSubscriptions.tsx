@@ -81,16 +81,14 @@ export const WfoRelatedSubscriptions = ({
         description: {
             field: 'description',
             name: t('description'),
-            render: (value, record) => {
-                return (
-                    <Link
-                        target="_blank"
-                        href={`${PATH_SUBSCRIPTIONS}/${record.subscriptionId}`}
-                    >
-                        {value}
-                    </Link>
-                );
-            },
+            render: (value, record) => (
+                <Link
+                    target="_blank"
+                    href={`${PATH_SUBSCRIPTIONS}/${record.subscriptionId}`}
+                >
+                    {value}
+                </Link>
+            ),
             filterable: false,
         },
         status: {
