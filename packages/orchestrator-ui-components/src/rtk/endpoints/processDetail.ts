@@ -90,7 +90,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 if (!error && result) {
                     return [
                         {
-                            type: CacheTags.processDetail,
+                            type: CacheTags.processes,
                             id: queryArguments.processId,
                         },
                     ];
@@ -122,7 +122,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processList],
+            invalidatesTags: [CacheTags.processes],
         }),
         retryProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -137,7 +137,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processList],
+            invalidatesTags: [CacheTags.processes],
         }),
         deleteProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -148,7 +148,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processList],
+            invalidatesTags: [CacheTags.processes],
         }),
         abortProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -159,7 +159,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processList],
+            invalidatesTags: [CacheTags.processes],
         }),
     }),
 });

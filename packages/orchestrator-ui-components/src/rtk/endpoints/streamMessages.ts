@@ -66,17 +66,18 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     updateCachedData(() => false);
                 };
 
-                const invalidateTag = (tag: string) => {
-                    const tagToInvalidate = tag as CacheTags;
-                    if (validCacheTags.includes(tagToInvalidate)) {
+                const invalidateTag = (
+                    tag: CacheTags | { type: CacheTags; id: string },
+                ) => {
+                    const tagType = typeof tag === 'string' ? tag : tag.type;
+
+                    if (validCacheTags.includes(tagType)) {
                         const cacheInvalidationAction =
-                            orchestratorApi.util.invalidateTags([
-                                tagToInvalidate,
-                            ]);
+                            orchestratorApi.util.invalidateTags([tag]);
                         dispatch(cacheInvalidationAction);
                     } else {
                         console.error(
-                            `Trying to invalidate a cache entry with an unknown tag: ${tagToInvalidate}`,
+                            `Trying to invalidate a cache entry with an unknown tag: ${tagType}`,
                         );
                     }
                 };
@@ -88,9 +89,14 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         const messageValue = message.value;
 
                         if (typeof messageValue === 'string') {
-                            invalidateTag(messageValue);
-                        } else if (Array.isArray(messageValue)) {
-                            messageValue.forEach((tag) => invalidateTag(tag));
+                            invalidateTag(messageValue as CacheTags);
+                        } else if (
+                            Array.isArray(messageValue) &&
+                            messageValue.length === 2
+                        ) {
+                            const [tagType, id] = messageValue;
+                            const type = tagType as CacheTags;
+                            invalidateTag({ type, id });
                         } else {
                             console.error(
                                 'invalid message value type',
