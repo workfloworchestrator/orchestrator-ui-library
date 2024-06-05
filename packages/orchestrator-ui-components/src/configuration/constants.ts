@@ -22,6 +22,7 @@ export const IPAM_ENDPOINT = 'surf/ipam';
 export const IPAM_PREFIX_FILTERS_ENDPOINT = `${IPAM_ENDPOINT}/prefix_filters`;
 export const IPAM_IP_BLOCKS_ENDPOINT = `${IPAM_ENDPOINT}/ip_blocks`;
 export const IPAM_FREE_SUBNETS_ENDPOINT = `${IPAM_ENDPOINT}/free_subnets`;
+export const IPAM_PREFIX_SUBSCRIPTIONS = `${IPAM_ENDPOINT}/prefix_subscriptions`;
 
 //subscriptions
 export const SUBSCRIPTION_ACTIONS_ENDPOINT = 'subscriptions/workflows';
