@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 
-import { TimelineItem, WfoError, WfoLoading } from '@/components';
-import { WfoStepListRef, WfoWorkflowStepList } from '@/components';
+import {
+    TimelineItem,
+    WfoError,
+    WfoLoading,
+    WfoStepListRef,
+    WfoWorkflowStepList,
+} from '@/components';
 import { useGetProcessDetailQuery } from '@/rtk/endpoints/processDetail';
 import { Step } from '@/types';
 import { getProductNamesFromProcess } from '@/utils';
