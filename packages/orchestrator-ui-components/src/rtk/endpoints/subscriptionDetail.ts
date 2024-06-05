@@ -93,12 +93,17 @@ const subscriptionDetailApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            providesTags: (result, error, arg) => [
-                {
-                    type: CacheTags.subscription,
-                    id: arg.subscriptionId,
-                },
-            ],
+            providesTags: (result, error, queryArguments) => {
+                if (!error && result) {
+                    return [
+                        {
+                            type: CacheTags.subscriptions,
+                            id: queryArguments.subscriptionId,
+                        },
+                    ];
+                }
+                return [];
+            },
         }),
     }),
 });

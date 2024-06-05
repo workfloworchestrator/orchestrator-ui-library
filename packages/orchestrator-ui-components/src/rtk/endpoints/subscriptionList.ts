@@ -78,7 +78,7 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            providesTags: [CacheTags.subscriptionList],
+            providesTags: [CacheTags.subscriptions],
         }),
     }),
 });

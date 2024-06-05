@@ -65,7 +65,7 @@ const processApi = orchestratorApi.injectEndpoints({
                     pageInfo: response.processes?.pageInfo || {},
                 };
             },
-            providesTags: [CacheTags.processListSummary],
+            providesTags: [CacheTags.processes],
         }),
     }),
 });

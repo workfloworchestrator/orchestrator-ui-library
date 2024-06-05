@@ -58,7 +58,7 @@ const subscriptionInUseByRelationsListApi = orchestratorApi.injectEndpoints({
                     inUseByRelationDetails: subscriptions,
                 };
             },
-            providesTags: [CacheTags.subscriptionList],
+            providesTags: [CacheTags.subscriptions],
         }),
     }),
 });
