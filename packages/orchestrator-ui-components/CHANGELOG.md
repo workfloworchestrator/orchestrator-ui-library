@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.25.0
+
+### Minor Changes
+
+- 10e542e: Adds websockets responsiveness to process list and processDetails
+- f225422: Resolves external subscription id and name in product block details
+- 47a545b: Adds subscription info to modify workflow start page
+- cd59329: Hides empty productBlock values in subscription detail
+
+### Patch Changes
+
+- 43bcc3c: Fixes table settings reset
+- 02d39db: Fix pressing back not returning to the form page for submitted forms
+
 ## 1.24.0
 
 ### Minor Changes
