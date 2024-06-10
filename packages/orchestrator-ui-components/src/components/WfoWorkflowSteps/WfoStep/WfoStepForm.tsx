@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { UserInputFormWizard, WfoLoading } from '@/components';
+import { UserInputFormWizard, WfoError, WfoLoading } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
+import { HttpStatus } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
 import { InputForm } from '@/types/forms';
 
@@ -19,6 +20,7 @@ export const WfoStepForm = ({
     processId,
 }: WfoStepFormProps) => {
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
+    const [hasError, setHasError] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
     const [resumeProcess] = useResumeProcessMutation();
 
@@ -27,16 +29,28 @@ export const WfoStepForm = ({
             return Promise.reject();
         }
 
-        return resumeProcess({ processId, userInputs: processInput }).then(
-            () => {
+        return resumeProcess({ processId, userInputs: processInput })
+            .unwrap()
+            .then(() => {
                 setIsProcessing(true);
-            },
-        );
+            })
+            .catch((error) => {
+                if (error?.status !== HttpStatus.FormNotComplete) {
+                    if (error?.status === HttpStatus.BadRequest) {
+                        // Rethrow the error so userInputForm can catch it and display validation errors
+                        throw error;
+                    }
+                    console.error(error);
+                    setHasError(true);
+                } else {
+                    throw error;
+                }
+            });
     };
 
     return (
         <EuiFlexItem css={{ margin: theme.size.m }}>
-            {(isProcessing && <WfoLoading />) || (
+            {(hasError && <WfoError />) || (isProcessing && <WfoLoading />) || (
                 <UserInputFormWizard
                     stepUserInput={userInputForm}
                     stepSubmit={submitForm}
