@@ -212,6 +212,20 @@ export const WfoSubscriptionProductBlock = ({
                                                 productBlockInstanceValue.field,
                                             ),
                                     )
+                                    .sort(
+                                        (
+                                            { field: fieldNameA },
+                                            { field: fieldNameB },
+                                        ) => {
+                                            if (fieldNameA < fieldNameB) {
+                                                return -1;
+                                            }
+                                            if (fieldNameA > fieldNameB) {
+                                                return 1;
+                                            }
+                                            return 0;
+                                        },
+                                    )
                                     .map((productBlockInstanceValue, index) => {
                                         if (
                                             productBlockInstanceValue &&
