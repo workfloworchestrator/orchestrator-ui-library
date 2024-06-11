@@ -2,7 +2,9 @@ import { Locale } from '../types/types';
 
 export const getCurrentBrowserLocale = () => window.navigator.language;
 
-export const parseDate = (date: string | null | undefined): Date | null => {
+export const parseDate = (
+    date: string | null | undefined | number,
+): Date | null => {
     if (date === null || date === undefined || date === '') {
         return null;
     }
