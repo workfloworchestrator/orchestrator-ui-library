@@ -36,6 +36,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     const leftColumnStyle = css({
         width: 250,
         flexShrink: 0,
+        paddingTop: `${theme.base / 4}px`,
     });
 
     const leftColumnStyleWithAlignSelf = css({
