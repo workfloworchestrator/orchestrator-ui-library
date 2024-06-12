@@ -76,8 +76,8 @@ export const WfoBreadcrumbs = ({
                         )}
                         color="text"
                         css={{
-                            width: 24,
-                            height: 24,
+                            width: `${theme.size.l}px`,
+                            height: `${theme.size.l}px`,
                             marginRight: `${theme.base * 0.375}px`,
                         }}
                         onClick={handleSideMenuClick}
