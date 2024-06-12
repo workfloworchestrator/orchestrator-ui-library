@@ -157,7 +157,7 @@ export const WfoProcessDetail = ({
                     workflowName: processDetail?.workflowName,
                 },
             ),
-            confirmAction: () => {
+            onConfirm: () => {
                 processDetail?.processId &&
                     retryProcess({ processId: processDetail.processId });
             },
@@ -171,7 +171,7 @@ export const WfoProcessDetail = ({
                     workflowName: processDetail?.workflowName,
                 },
             ),
-            confirmAction: () => {
+            onConfirm: () => {
                 processDetail?.processId &&
                     abortProcess({ processId: processDetail.processId });
                 router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
@@ -183,7 +183,7 @@ export const WfoProcessDetail = ({
             question: t('deleteQuestion', {
                 workflowName: processDetail?.workflowName,
             }),
-            confirmAction: () => {
+            onConfirm: () => {
                 processDetail?.processId &&
                     deleteProcess({ processId: processDetail.processId });
                 router.push(PATH_TASKS);

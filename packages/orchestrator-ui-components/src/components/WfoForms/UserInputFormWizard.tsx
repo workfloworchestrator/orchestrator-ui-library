@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import hash from 'object-hash';
 
-import { ConfirmDialogActions } from '@/contexts';
+import type { ConfirmDialogHandler } from '@/contexts';
 import { HttpStatus, handlePromiseErrorWithCallback } from '@/rtk';
 import { FormNotCompleteResponse, InputForm } from '@/types/forms';
 
@@ -31,7 +31,7 @@ interface Form {
 interface UserInputFormWizardProps {
     stepUserInput: InputForm;
     stepSubmit: (processInput: object[]) => Promise<unknown>;
-    cancel?: () => void;
+    cancel?: ConfirmDialogHandler;
     isTask: boolean;
     hasNext?: boolean;
     isResuming?: boolean;
@@ -62,7 +62,7 @@ export const UserInputFormWizard = ({
         setForms([{ form: stepUserInput, hasNext: hasNext }]);
     }, [hasNext, stepUserInput]);
 
-    const previous: ConfirmDialogActions['closeConfirmDialog'] = (e) => {
+    const previous: ConfirmDialogHandler = (e) => {
         if (e) {
             stop(e);
         }
