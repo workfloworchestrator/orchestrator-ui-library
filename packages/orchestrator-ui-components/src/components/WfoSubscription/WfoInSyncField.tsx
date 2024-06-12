@@ -63,7 +63,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         const confirmSetInSync = () => {
             showConfirmDialog({
                 question: t('setInSyncQuestion'),
-                confirmAction: () => {
+                onConfirm: () => {
                     setInSyncAction();
                 },
             });

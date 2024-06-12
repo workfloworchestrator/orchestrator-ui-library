@@ -107,7 +107,7 @@ export const WfoTasksListPage = () => {
         if (await isEngineRunningNow()) {
             showConfirmDialog({
                 question: t('rerunAllQuestion'),
-                confirmAction: () => {
+                onConfirm: () => {
                     retryAllProcesses(null);
                 },
             });

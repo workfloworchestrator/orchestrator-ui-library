@@ -33,7 +33,8 @@ import {
     EuiHorizontalRule,
 } from '@elastic/eui';
 
-import { ConfirmDialogActions, ConfirmationDialogContext } from '@/contexts';
+import { ConfirmationDialogContext } from '@/contexts';
+import { ConfirmDialogHandler } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlayFill } from '@/icons';
 import { FormValidationError, ValidationError } from '@/types/forms';
@@ -51,8 +52,8 @@ interface IProps {
     router: NextRouter;
     stepUserInput: JSONSchema6;
     validSubmit: (userInput: { [index: string]: unknown }) => Promise<unknown>;
-    cancel?: ConfirmDialogActions['closeConfirmDialog'];
-    previous: ConfirmDialogActions['closeConfirmDialog'];
+    cancel?: ConfirmDialogHandler;
+    previous: ConfirmDialogHandler;
     hasNext?: boolean;
     hasPrev?: boolean;
     userInput: object;
@@ -423,6 +424,7 @@ export function WfoUserInputForm({
     isResuming = false,
 }: IProps) {
     const t = useTranslations('pydanticForms.userInputForm');
+    const tDialog = useTranslations('confirmationDialog');
     const { theme } = useOrchestratorTheme();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
     const [processing, setProcessing] = useState<boolean>(false);
@@ -430,15 +432,21 @@ export function WfoUserInputForm({
     const [rootErrors, setRootErrors] = useState<string[]>([]);
 
     const openLeavePageDialog = (
-        leaveAction: ConfirmDialogActions['closeConfirmDialog'],
+        leaveAction: ConfirmDialogHandler,
         leaveQuestion?: string,
     ) => {
+        const question = leaveQuestion || tDialog('leavePage');
+        const subQuestion = leaveQuestion ? tDialog('leavePageSub') : '';
+        const cancelButtonText = tDialog('stay');
+        const confirmButtonText = tDialog('leave');
+
         return () =>
             showConfirmDialog({
-                question: leaveQuestion || '',
-                confirmAction: () => {},
-                cancelAction: leaveAction,
-                leavePage: true,
+                question,
+                subQuestion,
+                onConfirm: leaveAction,
+                cancelButtonText,
+                confirmButtonText,
             });
     };
 
@@ -496,17 +504,15 @@ export function WfoUserInputForm({
             | React.MouseEvent<HTMLButtonElement>
             | React.MouseEvent<HTMLDivElement, MouseEvent>,
         question: string | undefined,
-        confirm: ConfirmDialogActions['closeConfirmDialog'],
+        confirm: () => void,
     ) => {
         if (!question) {
-            return confirm(e);
+            return confirm();
         }
 
         showConfirmDialog({
             question: question,
-            confirmAction: confirm,
-            cancelAction: () => {},
-            leavePage: false,
+            onConfirm: confirm,
         });
     };
 
