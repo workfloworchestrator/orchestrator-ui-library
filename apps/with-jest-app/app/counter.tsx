@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-
-import { TestComponent } from 'npm-template-with-tsup';
+import React, { useState } from 'react';
 
 export default function Counter() {
     const [count, setCount] = useState(0);
@@ -12,7 +10,6 @@ export default function Counter() {
             <button type="button" onClick={() => setCount(count + 1)}>
                 +
             </button>
-            <TestComponent />
         </>
     );
 }
