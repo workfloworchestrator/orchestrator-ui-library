@@ -127,7 +127,10 @@ export const WfoSubscriptionDetailTree = ({
                     <EuiFlexItem grow={true}>
                         {!tree && <WfoLoading />}
                         {tree && (
-                            <WfoTree data={[tree]} depthList={depthList} />
+                            <WfoTree
+                                treeBlocks={[tree]}
+                                depthList={depthList}
+                            />
                         )}
                     </EuiFlexItem>
                 </EuiFlexGroup>

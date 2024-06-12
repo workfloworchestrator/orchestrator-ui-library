@@ -3,13 +3,14 @@ import React, { FC, useEffect } from 'react';
 import { TreeContext, TreeContextType } from '../../contexts';
 import { TreeBlock } from '../../types';
 import { WfoTreeBranch } from './WfoTreeBranch';
+import { sortTreeBlockByLabel } from './treeUtils';
 
 type WfoTreeProps = {
-    data: TreeBlock[];
+    treeBlocks: TreeBlock[];
     depthList: number[];
 };
 
-export const WfoTree: FC<WfoTreeProps> = ({ data, depthList }) => {
+export const WfoTree: FC<WfoTreeProps> = ({ treeBlocks, depthList }) => {
     const { setDepths } = React.useContext(TreeContext) as TreeContextType;
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export const WfoTree: FC<WfoTreeProps> = ({ data, depthList }) => {
 
     return (
         <div style={{ width: '500px' }}>
-            {data.map((item) => (
+            {treeBlocks.sort(sortTreeBlockByLabel).map((item) => (
                 <WfoTreeBranch key={item.id} item={item} level={0} />
             ))}
         </div>

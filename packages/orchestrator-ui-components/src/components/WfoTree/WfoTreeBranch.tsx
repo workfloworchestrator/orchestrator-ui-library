@@ -5,6 +5,7 @@ import { EuiListGroup } from '@elastic/eui';
 import { TreeContext, TreeContextType } from '../../contexts';
 import { TreeBlock } from '../../types';
 import { WfoTreeNode } from './WfoTreeNode';
+import { sortTreeBlockByLabel } from './treeUtils';
 
 type WfoTreeBranchProps = {
     item: TreeBlock;
@@ -21,9 +22,15 @@ export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
         if (hasChildren) {
             const newLevel = level + 1;
 
-            return item.children.map((child) => (
-                <WfoTreeBranch key={child.id} item={child} level={newLevel} />
-            ));
+            return item.children
+                .sort(sortTreeBlockByLabel)
+                .map((child) => (
+                    <WfoTreeBranch
+                        key={child.id}
+                        item={child}
+                        level={newLevel}
+                    />
+                ));
         }
 
         return null;

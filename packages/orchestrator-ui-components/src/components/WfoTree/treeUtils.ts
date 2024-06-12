@@ -19,3 +19,16 @@ export function getWfoTreeNodeDepth(
         }
     }
 }
+
+export const sortTreeBlockByLabel = (
+    { label: labelA }: TreeBlock,
+    { label: labelB }: TreeBlock,
+): number => {
+    if (labelA < labelB) {
+        return -1;
+    }
+    if (labelA > labelB) {
+        return 1;
+    }
+    return 0;
+};
