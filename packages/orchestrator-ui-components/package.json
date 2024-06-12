@@ -23,7 +23,8 @@
     ],
     "scripts": {
         "test": "jest",
-        "build": "tsup src/index.ts --format esm --dts --tsconfig tsconfig.build.json",
+        "build:old": "tsup src/index.ts --format cjs,esm --dts --tsconfig tsconfig.build.json",
+        "build": "tsup --tsconfig tsconfig.build.json",
         "tsc": "tsc --noEmit",
         "lint": "eslint \"src/**/*.ts*\"",
         "dev": "npm run build -- --watch",
@@ -89,8 +90,11 @@
         "react-dom": "^18.2.0",
         "react-redux": "^9.1.0"
     },
-    "type": "module",
+    "files": [
+        "dist",
+        "package.json"
+    ],
     "main": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts"
 }

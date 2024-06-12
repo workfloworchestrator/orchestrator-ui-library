@@ -1,18 +1,37 @@
+// https://blog.logrocket.com/publishing-node-modules-typescript-es-modules/
 {
-    "extends": "@orchestrator-ui/tsconfig/base.json",
     "compilerOptions": {
+        "resolveJsonModule": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "@emotion/react",
+        "target": "es2016",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
         "strictNullChecks": true,
-        "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
         }
-    },
-    "include": ["**/*.ts", "**/*.tsx"],
-    "exclude": [
-        "node_modules",
-        "**/*.stories.ts",
-        "**/*.stories.js",
-        "**/*.stories.jsx",
-        "**/*.stories.tsx"
-    ]
+    }
 }
+
+// The old tsconfig.build.json
+// {
+//     "extends": "@orchestrator-ui/tsconfig/base.json",
+//     "compilerOptions": {
+//         "strictNullChecks": true,
+//         "baseUrl": ".",
+//         "paths": {
+//             "@/*": ["./src/*"]
+//         }
+//     },
+//     "include": ["**/*.ts", "**/*.tsx"],
+//     "exclude": [
+//         "node_modules",
+//         "**/*.stories.ts",
+//         "**/*.stories.js",
+//         "**/*.stories.jsx",
+//         "**/*.stories.tsx"
+//     ]
+// }
