@@ -37,7 +37,17 @@ export function ConfirmationDialogContextWrapper({
     children: ReactNode;
 }) {
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-    const [state, setState] = useState<ConfirmDialogState>({
+    const [
+        {
+            onConfirm,
+            question,
+            isError,
+            subQuestion,
+            cancelButtonText,
+            confirmButtonText,
+        },
+        setState,
+    ] = useState<ConfirmDialogState>({
         onConfirm: () => {},
         question: '',
     });
@@ -48,9 +58,9 @@ export function ConfirmationDialogContextWrapper({
         onConfirm,
         question,
         isError = false,
-        subQuestion,
-        cancelButtonText,
-        confirmButtonText,
+        subQuestion = '',
+        cancelButtonText = '',
+        confirmButtonText = '',
     }: ConfirmDialogState) => {
         setConfirmationDialogOpen(true);
         setState({
@@ -71,14 +81,14 @@ export function ConfirmationDialogContextWrapper({
                 isOpen={confirmationDialogOpen}
                 onCancel={() => setConfirmationDialogOpen(false)}
                 onConfirm={(e) => {
-                    state.onConfirm(e);
+                    onConfirm(e);
                     setConfirmationDialogOpen(false);
                 }}
-                question={state.question}
-                isError={state.isError}
-                subQuestion={state.subQuestion}
-                cancelButtonText={state.cancelButtonText}
-                confirmButtonText={state.confirmButtonText}
+                question={question}
+                isError={isError}
+                subQuestion={subQuestion}
+                cancelButtonText={cancelButtonText}
+                confirmButtonText={confirmButtonText}
             />
             {children}
         </ConfirmationDialogProvider>
