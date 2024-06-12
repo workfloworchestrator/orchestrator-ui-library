@@ -35,9 +35,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
-                handleSideMenuClick={() =>
-                    setIsSideMenuVisible((prevState) => !prevState)
-                }
                 handleLogoutClick={signOut}
                 onThemeSwitch={onThemeSwitch}
             />
@@ -64,7 +61,11 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                         backgroundColor: theme.colors.emptyShade,
                     }}
                 >
-                    <WfoBreadcrumbs />
+                    <WfoBreadcrumbs
+                        handleSideMenuClick={() =>
+                            setIsSideMenuVisible((prevState) => !prevState)
+                        }
+                    />
                     {children}
                 </EuiPageTemplate.Section>
             </EuiPageTemplate>

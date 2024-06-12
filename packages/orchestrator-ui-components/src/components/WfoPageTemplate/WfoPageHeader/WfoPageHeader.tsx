@@ -25,14 +25,13 @@ import {
     useOrchestratorTheme,
     useWithOrchestratorTheme,
 } from '@/hooks';
-import { WfoLogoutIcon, WfoSideMenu } from '@/icons';
+import { WfoLogoutIcon } from '@/icons';
 import { ColorModes } from '@/types';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
     getAppLogo: (navigationHeight: number) => ReactElement;
-    handleSideMenuClick: () => void;
     handleLogoutClick: () => void;
     onThemeSwitch: (theme: EuiThemeColorMode) => void;
 }
@@ -40,7 +39,6 @@ export interface WfoPageHeaderProps {
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
-    handleSideMenuClick,
     handleLogoutClick,
     onThemeSwitch,
 }) => {
@@ -62,14 +60,6 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                 <EuiHeaderSectionItem>
                     <WfoEnvironmentBadge />
                 </EuiHeaderSectionItem>
-
-                <EuiButtonIcon
-                    aria-label="Show/Hide side menu"
-                    display="empty"
-                    iconType={() => <WfoSideMenu color={theme.colors.ghost} />}
-                    css={{ width: 48, height: 48, marginLeft: 10 }}
-                    onClick={handleSideMenuClick}
-                />
             </EuiHeaderSection>
 
             <EuiHeaderSection>
