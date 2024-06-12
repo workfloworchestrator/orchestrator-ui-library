@@ -1,17 +1,35 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiBreadcrumb, EuiBreadcrumbs, EuiSpacer } from '@elastic/eui';
+import {
+    EuiBreadcrumb,
+    EuiBreadcrumbs,
+    EuiButtonIcon,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiSpacer,
+} from '@elastic/eui';
 
-import { isUuid4, removeSuffix, upperCaseFirstChar } from '../../../utils';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoSideMenu } from '@/icons';
+import { isUuid4, removeSuffix, upperCaseFirstChar } from '@/utils';
 
-export const WfoBreadcrumbs = () => {
+interface WfoBreadcrumbsProps {
+    handleSideMenuClick: () => void;
+}
+
+export const WfoBreadcrumbs = ({
+    handleSideMenuClick,
+}: WfoBreadcrumbsProps) => {
     const router = useRouter();
+    const { theme } = useOrchestratorTheme();
+    const t = useTranslations('main');
     // Setup initial breadcrumbs with navigation to home
     const breadcrumbs: EuiBreadcrumb[] = [
         {
-            text: 'Start',
+            text: t('start'),
             href: '/',
             onClick: (e) => {
                 e.preventDefault();
@@ -29,7 +47,6 @@ export const WfoBreadcrumbs = () => {
             // first remove the suffix, like ?activeTab=....
             const _p = removeSuffix(p);
             const text = isUuid4(_p) ? _p : upperCaseFirstChar(_p);
-            // eslint-disable-next-line no-console
 
             breadcrumbs.push({
                 text: text,
@@ -44,11 +61,36 @@ export const WfoBreadcrumbs = () => {
 
     return (
         <>
-            <EuiBreadcrumbs
-                breadcrumbs={breadcrumbs}
-                truncate={false}
-                aria-label="Current page"
-            />
+            <EuiFlexGroup
+                direction="row"
+                alignItems="center"
+                justifyContent="flexStart"
+                gutterSize="none"
+            >
+                <EuiFlexItem grow={0}>
+                    <EuiButtonIcon
+                        aria-label={t('ariaLabelToggleSideMenu')}
+                        display="empty"
+                        iconType={() => (
+                            <WfoSideMenu color={theme.colors.subduedText} />
+                        )}
+                        color="text"
+                        css={{
+                            width: 24,
+                            height: 24,
+                            marginRight: `${theme.base * 0.375}px`,
+                        }}
+                        onClick={handleSideMenuClick}
+                    />
+                </EuiFlexItem>
+                <EuiFlexItem>
+                    <EuiBreadcrumbs
+                        breadcrumbs={breadcrumbs}
+                        truncate={false}
+                        aria-label={t('ariaLabelCurrentPage')}
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
             <EuiSpacer size="m" />
         </>
     );
