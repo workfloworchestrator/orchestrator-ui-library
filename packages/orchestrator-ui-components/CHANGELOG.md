@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.26.0
+
+### Minor Changes
+
+- 3508ff8: Sort product block instance values by field name
+
+### Patch Changes
+
+- 257ef6e: Added number type to parseDate function
+
 ## 1.25.0
 
 ### Minor Changes
