@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components/src/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { getCopyrightStyles } from './styles';
 
