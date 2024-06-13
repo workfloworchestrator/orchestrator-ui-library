@@ -20,7 +20,7 @@ export const WfoTree: FC<WfoTreeProps> = ({ treeBlocks, depthList }) => {
 
     return (
         <div style={{ width: '500px' }}>
-            {treeBlocks.sort(sortTreeBlockByLabel).map((item) => (
+            {[...treeBlocks].sort(sortTreeBlockByLabel).map((item) => (
                 <WfoTreeBranch key={item.id} item={item} level={0} />
             ))}
         </div>
