@@ -24,10 +24,10 @@ const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
 
 type WebSocketMessage = {
     name: MessageTypes;
-    value: string[] | string;
+    value: CacheInvalidationTag;
 };
 
-type CacheInvalidationTag = CacheTags | { type: CacheTags; id: string };
+type CacheInvalidationTag = { type: CacheTags; id: string } | CacheTags;
 
 enum MessageTypes {
     invalidateCache = 'invalidateCache',
@@ -68,50 +68,25 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     updateCachedData(() => false);
                 };
 
-                const invalidateTag = (cacheTag: CacheTags, id?: string) => {
-                    if (validCacheTags.includes(cacheTag)) {
-                        // If we receive an object with cacheTag and id we both invalidate the cache key and the cache key with the id
-                        // invalidating both the general and specific caches
-                        const cacheTags: CacheInvalidationTag[] = [cacheTag];
-
-                        if (id) {
-                            cacheTags.push({
-                                type: cacheTag,
-                                id,
-                            });
+                const invalidateTag = (cacheTag: CacheInvalidationTag) => {
+                    const tagType = (() => {
+                        if (typeof cacheTag === 'object') {
+                            return cacheTag.type;
                         }
+                        return cacheTag;
+                    })();
 
+                    if (validCacheTags.includes(tagType)) {
                         const cacheInvalidationAction =
-                            orchestratorApi.util.invalidateTags(cacheTags);
+                            orchestratorApi.util.invalidateTags([
+                                cacheTag,
+                                CacheTags.processes,
+                            ]);
                         dispatch(cacheInvalidationAction);
                     } else {
                         console.error(
-                            `Trying to invalidate a cache entry with an unknown tag: ${cacheTag}`,
+                            `Trying to invalidate a cache entry with an unknown tag: ${tagType}`,
                         );
-                    }
-                };
-
-                const handleInvalidateCacheMessage = (
-                    message: WebSocketMessage,
-                ) => {
-                    if (message.name === MessageTypes.invalidateCache) {
-                        const messageValue = message.value;
-
-                        if (typeof messageValue === 'string') {
-                            invalidateTag(messageValue as CacheTags);
-                        } else if (
-                            Array.isArray(messageValue) &&
-                            messageValue.length === 2
-                        ) {
-                            const [tag, id] = messageValue;
-                            const cacheTag = tag as CacheTags;
-                            invalidateTag(cacheTag, id);
-                        } else {
-                            console.error(
-                                'invalid message value type',
-                                messageValue,
-                            );
-                        }
                     }
                 };
 
@@ -151,7 +126,11 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                             return;
                         }
                         const message = JSON.parse(data) as WebSocketMessage;
-                        handleInvalidateCacheMessage(message);
+                        if (message.name === MessageTypes.invalidateCache) {
+                            invalidateTag(message.value);
+                        } else {
+                            console.error('Unknown message type', message);
+                        }
                     },
                 );
 
