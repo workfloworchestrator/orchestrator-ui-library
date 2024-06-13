@@ -1,5 +1,14 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.27.0
+
+### Minor Changes
+
+- 0a3877d: Moves side menu toggle from header to breadcrumb
+- bc65670: Orders product blocks in subcription detail tree
+- 8f45591: Improves confirmation dialog on page leave
+- cbfc034: Updates websocket messages to work with new format
+
 ## 1.26.0
 
 ### Minor Changes
