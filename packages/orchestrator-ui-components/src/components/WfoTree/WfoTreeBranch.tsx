@@ -22,7 +22,7 @@ export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
         if (hasChildren) {
             const newLevel = level + 1;
 
-            return item.children
+            return [...item.children]
                 .sort(sortTreeBlockByLabel)
                 .map((child) => (
                     <WfoTreeBranch
