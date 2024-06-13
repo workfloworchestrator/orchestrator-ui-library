@@ -33,8 +33,7 @@ import {
     EuiHorizontalRule,
 } from '@elastic/eui';
 
-import { ConfirmationDialogContext } from '@/contexts';
-import { ConfirmDialogHandler } from '@/contexts';
+import { ConfirmDialogHandler, ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlayFill } from '@/icons';
 import { FormValidationError, ValidationError } from '@/types/forms';
