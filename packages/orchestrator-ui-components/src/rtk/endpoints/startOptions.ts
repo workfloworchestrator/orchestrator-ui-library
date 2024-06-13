@@ -13,6 +13,7 @@ const workflowOptionsQuery = `
             page {
                 name
                 products {
+                    productType
                     productId
                     name
                 }
@@ -36,6 +37,7 @@ type WorkflowOption = {
     workflowName: WorkflowDefinition['name'];
     productName: ProductDefinition['name'];
     productId: ProductDefinition['productId'];
+    productType: ProductDefinition['productType'];
 };
 
 type WorkflowOptionsResult = StartOptionsResult<{
@@ -43,6 +45,7 @@ type WorkflowOptionsResult = StartOptionsResult<{
     products: {
         name: ProductDefinition['name'];
         productId: ProductDefinition['productId'];
+        productType: ProductDefinition['productType'];
     }[];
 }>;
 
@@ -72,6 +75,7 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
                             workflowName,
                             productName: product.name,
                             productId: product.productId,
+                            productType: product.productType,
                         });
                     });
                 });
