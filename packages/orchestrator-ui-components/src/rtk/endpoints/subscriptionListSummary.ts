@@ -1,4 +1,5 @@
-import { CacheTags, orchestratorApi } from '@/rtk';
+import { orchestratorApi } from '@/rtk';
+import { CacheTagTypes } from '@/types';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
@@ -6,6 +7,7 @@ import {
     SubscriptionSummary,
     SubscriptionsResult,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 export const subscriptionListSummaryQuery = `
     query SubscriptionsList(
@@ -61,7 +63,7 @@ const subscriptionListSummaryApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            providesTags: [CacheTags.subscriptionList],
+            providesTags: getCacheTag(CacheTagTypes.subscriptions),
         }),
     }),
 });

@@ -1,11 +1,13 @@
 import {
     BaseGraphQlResult,
+    CacheTagTypes,
     GraphqlQueryVariables,
     Process,
     ProcessListResult,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
-import { CacheTags, orchestratorApi } from '../api';
+import { orchestratorApi } from '../api';
 
 export const processListQuery = `
     query ProcessList(
@@ -82,7 +84,7 @@ const processApi = orchestratorApi.injectEndpoints({
                     pageInfo: response.processes?.pageInfo || {},
                 };
             },
-            providesTags: [CacheTags.processes],
+            providesTags: getCacheTag(CacheTagTypes.processes),
         }),
     }),
 });

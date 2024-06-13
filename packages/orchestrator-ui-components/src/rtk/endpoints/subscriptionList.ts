@@ -1,11 +1,13 @@
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
-import { CacheTags, orchestratorApi } from '@/rtk';
+import { orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
+    CacheTagTypes,
     GraphqlQueryVariables,
     Subscription,
     SubscriptionsResult,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 export const subscriptionListQuery = `query SubscriptionsList(
         $first: Int!
@@ -78,7 +80,7 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            providesTags: [CacheTags.subscriptionList],
+            providesTags: getCacheTag(CacheTagTypes.subscriptions),
         }),
     }),
 });

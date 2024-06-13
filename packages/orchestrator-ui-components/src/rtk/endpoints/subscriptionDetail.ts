@@ -1,9 +1,11 @@
-import { CacheTags, orchestratorApi } from '@/rtk';
+import { orchestratorApi } from '@/rtk';
+import { CacheTagTypes } from '@/types';
 import {
     BaseGraphQlResult,
     SubscriptionDetail,
     SubscriptionDetailResult,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 export const subscriptionDetailQuery = `
     query SubscriptionDetail($subscriptionId: String!) {
@@ -93,12 +95,15 @@ const subscriptionDetailApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
-            providesTags: (result, error, arg) => [
-                {
-                    type: CacheTags.subscription,
-                    id: arg.subscriptionId,
-                },
-            ],
+            providesTags: (result, error, queryArguments) => {
+                if (!error && result) {
+                    return getCacheTag(
+                        CacheTagTypes.subscriptions,
+                        queryArguments.subscriptionId,
+                    );
+                }
+                return [];
+            },
         }),
     }),
 });
