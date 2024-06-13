@@ -5,7 +5,7 @@ import {
     Process,
     ProcessListResult,
 } from '@/types';
-import { CacheTagTypes } from '@/types';
+import { CACHETAG_TYPE_LIST, CacheTagTypes } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 export const processListSummaryQuery = `
@@ -66,7 +66,10 @@ const processApi = orchestratorApi.injectEndpoints({
                     pageInfo: response.processes?.pageInfo || {},
                 };
             },
-            providesTags: getCacheTag(CacheTagTypes.processes),
+            providesTags: getCacheTag(
+                CacheTagTypes.processes,
+                CACHETAG_TYPE_LIST,
+            ),
         }),
     }),
 });
