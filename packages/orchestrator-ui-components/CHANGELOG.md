@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.27.1
+
+### Patch Changes
+
+- 54b537c: Added productType to Workflow option used by LIR prefixes
+
 ## 1.27.0
 
 ### Minor Changes
