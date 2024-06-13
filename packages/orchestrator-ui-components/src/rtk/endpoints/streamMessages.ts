@@ -77,10 +77,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                     if (validCacheTags.includes(tagType)) {
                         const cacheInvalidationAction =
-                            orchestratorApi.util.invalidateTags([
-                                cacheTag,
-                                CacheTagTypes.processes,
-                            ]);
+                            orchestratorApi.util.invalidateTags([cacheTag]);
                         dispatch(cacheInvalidationAction);
                     } else {
                         console.error(

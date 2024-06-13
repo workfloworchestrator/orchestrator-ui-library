@@ -571,3 +571,5 @@ export enum CacheTagTypes {
     processStatusCounts = 'processStatusCounts',
     subscriptions = 'subscriptions',
 }
+
+export const CACHETAG_TYPE_LIST = 'LIST';
