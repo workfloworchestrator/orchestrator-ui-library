@@ -1,6 +1,6 @@
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { orchestratorApi } from '@/rtk';
-import { CacheTagTypes } from '@/types';
+import { CacheTagType } from '@/types';
 import {
     InUseByRelationDetail,
     InUseByRelationsDetailResult,
@@ -60,7 +60,7 @@ const subscriptionInUseByRelationsListApi = orchestratorApi.injectEndpoints({
                     inUseByRelationDetails: subscriptions,
                 };
             },
-            providesTags: getCacheTag(CacheTagTypes.subscriptions),
+            providesTags: getCacheTag(CacheTagType.subscriptions),
         }),
     }),
 });

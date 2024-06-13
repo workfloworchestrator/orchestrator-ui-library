@@ -5,7 +5,7 @@ import type { WfoSession } from '@/hooks';
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
-import { CacheTag, CacheTagTypes } from '@/types';
+import { CacheTag, CacheTagType } from '@/types';
 import { getToastMessage } from '@/utils/getToastMessage';
 
 import { orchestratorApi } from '../api';
@@ -68,20 +68,13 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 };
 
                 const invalidateTag = (cacheTag: CacheTag) => {
-                    const tagType = (() => {
-                        if (typeof cacheTag === 'object') {
-                            return cacheTag.type;
-                        }
-                        return cacheTag;
-                    })();
-
-                    if (validCacheTags.includes(tagType)) {
+                    if (validCacheTags.includes(cacheTag.type)) {
                         const cacheInvalidationAction =
                             orchestratorApi.util.invalidateTags([cacheTag]);
                         dispatch(cacheInvalidationAction);
                     } else {
                         console.error(
-                            `Trying to invalidate a cache entry with an unknown tag: ${tagType}`,
+                            `Trying to invalidate a cache entry with an unknown tag: ${cacheTag.type}`,
                         );
                     }
                 };
@@ -101,7 +94,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 const state = getState() as RootState;
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
-                const validCacheTags = Object.values(CacheTagTypes);
+                const validCacheTags = Object.values(CacheTagType);
 
                 // Starts the websocket
                 const webSocket = await getWebSocket(orchestratorWebsocketUrl);

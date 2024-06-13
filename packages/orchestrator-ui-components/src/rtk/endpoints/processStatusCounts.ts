@@ -1,6 +1,6 @@
 import { PROCESS_STATUS_COUNTS_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { CacheTagTypes, ProcessStatus } from '@/types';
+import { CacheTagType, ProcessStatus } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 export type ProcessStatusCounts = {
@@ -21,7 +21,7 @@ const processStatusApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            providesTags: getCacheTag(CacheTagTypes.processStatusCounts),
+            providesTags: getCacheTag(CacheTagType.processStatusCounts),
         }),
     }),
 });
