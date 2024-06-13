@@ -1,10 +1,12 @@
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
-import { CacheTags, orchestratorApi } from '@/rtk';
+import { orchestratorApi } from '@/rtk';
+import { CacheTagTypes } from '@/types';
 import {
     InUseByRelationDetail,
     InUseByRelationsDetailResult,
     SubscriptionStatus,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 const nonTerminalSubscriptionStatuses = [
     SubscriptionStatus.INITIAL,
@@ -58,7 +60,7 @@ const subscriptionInUseByRelationsListApi = orchestratorApi.injectEndpoints({
                     inUseByRelationDetails: subscriptions,
                 };
             },
-            providesTags: [CacheTags.subscriptionList],
+            providesTags: getCacheTag(CacheTagTypes.subscriptions),
         }),
     }),
 });

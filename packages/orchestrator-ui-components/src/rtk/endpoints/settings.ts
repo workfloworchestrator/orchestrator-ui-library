@@ -4,8 +4,9 @@ import {
     SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
     SETTINGS_STATUS_ENDPOINT,
 } from '@/configuration';
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
-import { CacheNames, EngineStatus } from '@/types';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
+import { CacheNames, CacheTagTypes, EngineStatus } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 interface EngineStatusReturnValue {
     engineStatus: EngineStatus;
@@ -40,14 +41,13 @@ const statusApi = orchestratorApi.injectEndpoints({
                     runningProcesses: data?.running_processes || 0,
                 };
             },
-            providesTags: [CacheTags.engineStatus],
+            providesTags: getCacheTag(CacheTagTypes.engineStatus),
         }),
         getCacheNames: build.query<CacheNames, void>({
             query: () => SETTINGS_CACHE_NAMES_ENDPOINT,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            providesTags: [CacheTags.cacheNames],
         }),
         clearCache: build.mutation<void, string>({
             query: (settingName) => ({
@@ -81,7 +81,7 @@ const statusApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.engineStatus],
+            invalidatesTags: getCacheTag(CacheTagTypes.engineStatus),
         }),
     }),
 });

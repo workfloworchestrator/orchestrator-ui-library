@@ -1,4 +1,4 @@
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 const TRANSLATIONS_URL = 'translations';
 
@@ -24,7 +24,6 @@ const translationsApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            providesTags: [CacheTags.backendTranslations],
         }),
     }),
 });

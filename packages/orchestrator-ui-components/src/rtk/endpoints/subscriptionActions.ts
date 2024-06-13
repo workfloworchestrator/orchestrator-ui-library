@@ -1,5 +1,5 @@
 import { SUBSCRIPTION_ACTIONS_ENDPOINT } from '@/configuration';
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import { SubscriptionActions } from '@/types';
 
 const subscriptionActionsApi = orchestratorApi.injectEndpoints({
@@ -13,7 +13,6 @@ const subscriptionActionsApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            providesTags: [CacheTags.subscriptionActions],
         }),
     }),
 });

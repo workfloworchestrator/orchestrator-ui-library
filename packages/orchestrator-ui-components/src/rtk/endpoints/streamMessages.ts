@@ -5,9 +5,10 @@ import type { WfoSession } from '@/hooks';
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
 import { ToastTypes } from '@/types';
+import { CacheTag, CacheTagTypes } from '@/types';
 import { getToastMessage } from '@/utils/getToastMessage';
 
-import { CacheTags, orchestratorApi } from '../api';
+import { orchestratorApi } from '../api';
 
 const getWebSocket = async (url: string) => {
     const session = (await getSession()) as WfoSession;
@@ -24,10 +25,8 @@ const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
 
 type WebSocketMessage = {
     name: MessageTypes;
-    value: CacheInvalidationTag;
+    value: CacheTag;
 };
-
-type CacheInvalidationTag = { type: CacheTags; id: string } | CacheTags;
 
 enum MessageTypes {
     invalidateCache = 'invalidateCache',
@@ -68,7 +67,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     updateCachedData(() => false);
                 };
 
-                const invalidateTag = (cacheTag: CacheInvalidationTag) => {
+                const invalidateTag = (cacheTag: CacheTag) => {
                     const tagType = (() => {
                         if (typeof cacheTag === 'object') {
                             return cacheTag.type;
@@ -80,7 +79,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         const cacheInvalidationAction =
                             orchestratorApi.util.invalidateTags([
                                 cacheTag,
-                                CacheTags.processes,
+                                CacheTagTypes.processes,
                             ]);
                         dispatch(cacheInvalidationAction);
                     } else {
@@ -105,7 +104,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                 const state = getState() as RootState;
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
-                const validCacheTags = Object.values(CacheTags);
+                const validCacheTags = Object.values(CacheTagTypes);
 
                 // Starts the websocket
                 const webSocket = await getWebSocket(orchestratorWebsocketUrl);

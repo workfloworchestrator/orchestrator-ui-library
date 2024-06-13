@@ -562,3 +562,12 @@ export type SubscriptionActions = {
     terminate: SubscriptionAction[];
     system: SubscriptionAction[];
 };
+
+export type CacheTag = { type: CacheTagTypes; id?: string };
+
+export enum CacheTagTypes {
+    engineStatus = 'engineStatus',
+    processes = 'processes',
+    processStatusCounts = 'processStatusCounts',
+    subscriptions = 'subscriptions',
+}
