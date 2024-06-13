@@ -10,7 +10,7 @@ import {
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
-    CacheTagTypes,
+    CacheTagType,
     ProcessDetail,
     ProcessDetailResultRaw,
     ProcessesDetailResult,
@@ -91,7 +91,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             providesTags: (result, error, queryArguments) => {
                 if (!error && result) {
                     return getCacheTag(
-                        CacheTagTypes.processes,
+                        CacheTagType.processes,
                         queryArguments.processId,
                     );
                 }
@@ -122,7 +122,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: getCacheTag(CacheTagTypes.processes),
+            invalidatesTags: getCacheTag(CacheTagType.processes),
         }),
         retryProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -137,7 +137,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: getCacheTag(CacheTagTypes.processes),
+            invalidatesTags: getCacheTag(CacheTagType.processes),
         }),
         deleteProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -148,7 +148,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: getCacheTag(CacheTagTypes.processes),
+            invalidatesTags: getCacheTag(CacheTagType.processes),
         }),
         abortProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -159,7 +159,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: getCacheTag(CacheTagTypes.processes),
+            invalidatesTags: getCacheTag(CacheTagType.processes),
         }),
     }),
 });

@@ -1,6 +1,6 @@
-import { CacheTag, CacheTagTypes } from '@/types';
+import { CacheTag, CacheTagType } from '@/types';
 
-export const getCacheTag = (type: CacheTagTypes, id?: string): CacheTag[] => {
+export const getCacheTag = (type: CacheTagType, id?: string): CacheTag[] => {
     const cacheTag: CacheTag = {
         type,
     };

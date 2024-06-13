@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
 import type { WfoSession } from '@/hooks';
-import { CacheTagTypes } from '@/types';
+import { CacheTagType } from '@/types';
 
 import type { RootState } from './store';
 
@@ -95,9 +95,9 @@ export const orchestratorApi = createApi({
     },
     endpoints: () => ({}),
     tagTypes: [
-        CacheTagTypes.engineStatus,
-        CacheTagTypes.processes,
-        CacheTagTypes.processStatusCounts,
-        CacheTagTypes.subscriptions,
+        CacheTagType.engineStatus,
+        CacheTagType.processes,
+        CacheTagType.processStatusCounts,
+        CacheTagType.subscriptions,
     ],
 });
