@@ -1,11 +1,12 @@
+import { orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
     Process,
     ProcessListResult,
 } from '@/types';
-
-import { CacheTags, orchestratorApi } from '../api';
+import { CacheTagTypes } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 export const processListSummaryQuery = `
     query ProcessListSummary(
@@ -65,7 +66,7 @@ const processApi = orchestratorApi.injectEndpoints({
                     pageInfo: response.processes?.pageInfo || {},
                 };
             },
-            providesTags: [CacheTags.processListSummary],
+            providesTags: getCacheTag(CacheTagTypes.processes),
         }),
     }),
 });

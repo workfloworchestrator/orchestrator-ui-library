@@ -8,12 +8,14 @@ import {
     PROCESS_ABORT_ENDPOINT,
     PROCESS_RESUME_ENDPOINT,
 } from '@/configuration';
-import { BaseQueryTypes, CacheTags, orchestratorApi } from '@/rtk';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
+    CacheTagTypes,
     ProcessDetail,
     ProcessDetailResultRaw,
     ProcessesDetailResult,
 } from '@/types';
+import { getCacheTag } from '@/utils/cacheTag';
 
 export const processDetailQuery = `query ProcessDetail($processId: String!) {
         processes(filterBy: { value: $processId, field: "processId" }) {
@@ -88,12 +90,10 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             },
             providesTags: (result, error, queryArguments) => {
                 if (!error && result) {
-                    return [
-                        {
-                            type: CacheTags.processes,
-                            id: queryArguments.processId,
-                        },
-                    ];
+                    return getCacheTag(
+                        CacheTagTypes.processes,
+                        queryArguments.processId,
+                    );
                 }
                 return [];
             },
@@ -122,7 +122,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processes],
+            invalidatesTags: getCacheTag(CacheTagTypes.processes),
         }),
         retryProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -137,7 +137,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processes],
+            invalidatesTags: getCacheTag(CacheTagTypes.processes),
         }),
         deleteProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -148,7 +148,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processes],
+            invalidatesTags: getCacheTag(CacheTagTypes.processes),
         }),
         abortProcess: builder.mutation<void, { processId: string }>({
             query: ({ processId }) => ({
@@ -159,7 +159,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
-            invalidatesTags: [CacheTags.processes],
+            invalidatesTags: getCacheTag(CacheTagTypes.processes),
         }),
     }),
 });
