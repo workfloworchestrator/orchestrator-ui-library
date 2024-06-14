@@ -164,9 +164,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         query: queryString || undefined,
     };
 
-    const { data, isFetching, isError } = useGetSubscriptionListQuery(
-        graphqlQueryVariables,
-    );
+    const { data, isFetching, isLoading, isError } =
+        useGetSubscriptionListQuery(graphqlQueryVariables);
     const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
         useLazyGetSubscriptionListQuery();
     const getSubscriptionListForExport = () =>
@@ -211,7 +210,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             defaultHiddenColumns={hiddenColumns}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
             detailModalTitle={'Details - Subscription'}
             onUpdatePage={getPageChangeHandler<SubscriptionListItem>(

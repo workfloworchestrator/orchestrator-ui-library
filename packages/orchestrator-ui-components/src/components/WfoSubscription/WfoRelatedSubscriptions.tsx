@@ -57,7 +57,7 @@ export const WfoRelatedSubscriptions = ({
             },
         });
 
-    const { data, isFetching } = useGetRelatedSubscriptionsQuery({
+    const { data, isFetching, isLoading } = useGetRelatedSubscriptionsQuery({
         first: dataDisplayParams.pageSize,
         after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
         subscriptionId: subscriptionId,
@@ -177,7 +177,8 @@ export const WfoRelatedSubscriptions = ({
                             data={relatedSubscriptions}
                             columns={tableColumns}
                             pagination={pagination}
-                            isLoading={isFetching}
+                            isLoading={isLoading}
+                            isFetching={isFetching}
                             onUpdateDataSorting={getDataSortHandler(
                                 setDataDisplayParam,
                             )}

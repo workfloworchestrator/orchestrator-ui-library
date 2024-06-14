@@ -217,7 +217,7 @@ export const WfoProcessesList = ({
         query: queryString || undefined,
     };
 
-    const { data, isFetching, isError } =
+    const { data, isLoading, isFetching, isError } =
         useGetProcessListQuery(processListQueryVars);
 
     const [getProcessListTrigger, { isFetching: isFetchingCsv }] =
@@ -254,7 +254,8 @@ export const WfoProcessesList = ({
             )}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
             hasError={isError}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}

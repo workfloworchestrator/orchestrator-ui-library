@@ -57,7 +57,8 @@ export type WfoTableWithFilterProps<T extends object> = {
     dataSorting: WfoDataSorting<T>;
     pagination: Pagination;
     queryString?: string;
-    isLoading: boolean;
+    isLoading: boolean; // True when loading data for the first time
+    isFetching: boolean; // True every time data is being fetched
     localStorageKey: string;
     detailModal?: boolean;
     detailModalTitle?: string;
@@ -79,6 +80,7 @@ export const WfoTableWithFilter = <T extends object>({
     pagination,
     queryString,
     isLoading,
+    isFetching,
     localStorageKey,
     detailModal = true,
     detailModalTitle = 'Details',
@@ -250,6 +252,7 @@ export const WfoTableWithFilter = <T extends object>({
                 onUpdateDataSorting={onUpdateDataSort}
                 pagination={pagination}
                 isLoading={isLoading}
+                isFetching={isFetching}
                 onCriteriaChange={onCriteriaChange}
                 onDataSearch={({ field, searchText }) =>
                     onUpdateQueryString(
