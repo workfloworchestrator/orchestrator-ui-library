@@ -40,7 +40,8 @@ export type WfoBasicTableProps<T extends object> = {
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: WfoDataSorting<T>;
     pagination?: Pagination;
-    isLoading?: boolean;
+    isLoading: boolean; // True when loading data for the first time
+    isFetching: boolean; // True every time data is being fetched
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
@@ -58,6 +59,7 @@ export const WfoBasicTable = <T extends object>({
     dataSorting,
     pagination,
     isLoading,
+    isFetching,
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
@@ -110,7 +112,7 @@ export const WfoBasicTable = <T extends object>({
             )}
             pagination={pagination}
             onChange={onCriteriaChange}
-            loading={isLoading}
+            loading={isFetching}
             {...(isExpandable && {
                 isExpandable,
                 itemIdToExpandedRowMap,

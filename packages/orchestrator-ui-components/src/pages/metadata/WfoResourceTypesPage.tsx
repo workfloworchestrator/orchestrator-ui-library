@@ -151,7 +151,7 @@ export const WfoResourceTypesPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useGetResourceTypesQuery(
+    const { data, isFetching, isLoading, isError } = useGetResourceTypesQuery(
         graphqlQueryVariables,
     );
 
@@ -209,7 +209,8 @@ export const WfoResourceTypesPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                isFetching={isFetching}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={
