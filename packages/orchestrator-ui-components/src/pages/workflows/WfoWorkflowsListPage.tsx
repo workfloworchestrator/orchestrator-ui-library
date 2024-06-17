@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiSpacer } from '@elastic/eui';
 
 import {
     ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
@@ -13,7 +13,12 @@ import {
     PATH_WORKFLOWS,
 } from '@/components';
 import type { StoredTableConfig } from '@/components';
-import { ProcessListItem, WfoFilterTabs, WfoProcessesList } from '@/components';
+import {
+    ProcessListItem,
+    WfoFilterTabs,
+    WfoProcessesList,
+    WfoTitleWithWebsocketBadge,
+} from '@/components';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -81,7 +86,8 @@ export const WfoWorkflowsListPage = () => {
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle={t('title')} />
+            <WfoTitleWithWebsocketBadge title={t('title')} />
+
             <EuiSpacer size="m" />
 
             <WfoFilterTabs

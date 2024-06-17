@@ -17,7 +17,6 @@ import {
     WfoEnvironmentBadge,
     WfoFailedTasksBadge,
 } from '@/components';
-import { WfoWebsocketStatusBadge } from '@/components/WfoBadges/WfoWebsocketStatusBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import {
@@ -67,9 +66,6 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
-                        {orchestratorConfig.useWebSockets && (
-                            <WfoWebsocketStatusBadge />
-                        )}
                     </EuiBadgeGroup>
 
                     {orchestratorConfig.useThemeToggle && (
