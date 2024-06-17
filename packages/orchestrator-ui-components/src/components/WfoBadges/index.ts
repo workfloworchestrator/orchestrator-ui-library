@@ -1,5 +1,6 @@
 export * from './WfoBadge';
 export * from './WfoSubscriptionStatusBadge';
+export * from './WfoSubscriptionSyncStatusBadge';
 export * from './WfoProductBlockBadge';
 export * from './WfoProcessStatusBadge';
 export * from './WfoFailedTasksBadge';

@@ -5,13 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPageHeader,
-    EuiSpacer,
-} from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 
 import {
     ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
@@ -27,7 +21,8 @@ import { PATH_TASKS } from '@/components';
 import {
     ProcessListItem,
     WfoProcessesList,
-} from '@/components/WfoProcessList/WfoProcessesList';
+    WfoTitleWithWebsocketBadge,
+} from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
@@ -146,7 +141,7 @@ export const WfoTasksListPage = () => {
 
             <EuiFlexGroup>
                 <EuiFlexItem>
-                    <EuiPageHeader pageTitle="Tasks"></EuiPageHeader>
+                    <WfoTitleWithWebsocketBadge title="Tasks" />
                 </EuiFlexItem>
 
                 <EuiFlexItem>
