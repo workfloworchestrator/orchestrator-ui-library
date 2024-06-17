@@ -7,7 +7,6 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiSpacer,
-    EuiText,
 } from '@elastic/eui';
 
 import {
@@ -19,11 +18,14 @@ import {
     WfoSubscriptionDetailTree,
     WfoSubscriptionGeneral,
 } from '@/components';
+import {
+    WfoSubscriptionStatusBadge,
+    WfoSubscriptionSyncStatusBadge,
+    WfoTitleWithWebsocketBadge,
+} from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetail';
 
-import { WfoSubscriptionStatusBadge } from '../WfoBadges';
-import { WfoSubscriptionSyncStatusBadge } from '../WfoBadges/WfoSubscriptionSyncStatusBadge';
 import { WfoError } from '../WfoError';
 import { subscriptionDetailTabs } from './subscriptionDetailTabs';
 import { SubscriptionDetailTab } from './utils';
@@ -70,9 +72,9 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                             justifyContent="spaceBetween"
                         >
                             <EuiFlexItem grow={true}>
-                                <EuiText>
-                                    <h2>{subscriptionDetail.description}</h2>
-                                </EuiText>
+                                <WfoTitleWithWebsocketBadge
+                                    title={subscriptionDetail.subscriptionId}
+                                />
                                 <EuiSpacer size="xs" />
                                 <EuiBadgeGroup
                                     css={{ marginRight: multiplyByBaseUnit(1) }}

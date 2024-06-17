@@ -3,20 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiSpacer } from '@elastic/eui';
 
 import {
     DEFAULT_PAGE_SIZE,
     SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
 } from '@/components';
-import { WfoFilterTabs } from '@/components';
-import { StoredTableConfig } from '@/components';
 import type { SubscriptionListItem } from '@/components';
 import {
+    StoredTableConfig,
+    WfoFilterTabs,
     WfoSubscriptionListTab,
     WfoSubscriptionsList,
+    WfoTitleWithWebsocketBadge,
     subscriptionListTabs,
-} from '@/components/WfoSubscriptionsList';
+} from '@/components';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -78,7 +79,8 @@ export const WfoSubscriptionsListPage = () => {
         <>
             <EuiSpacer />
 
-            <EuiPageHeader pageTitle={t('title')} />
+            <WfoTitleWithWebsocketBadge title={t('title')} />
+
             <EuiSpacer size="m" />
 
             <WfoFilterTabs

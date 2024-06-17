@@ -7,7 +7,6 @@ import {
     EuiButton,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiPageHeader,
     EuiPanel,
     EuiSpacer,
     EuiText,
@@ -20,6 +19,7 @@ import {
     WfoIsAllowedToRender,
     WfoLoading,
     WfoTimeline,
+    WfoTitleWithWebsocketBadge,
 } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
@@ -194,7 +194,7 @@ export const WfoProcessDetail = ({
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
-                    <EuiPageHeader pageTitle={pageTitle} />
+                    <WfoTitleWithWebsocketBadge title={pageTitle} />
                     <EuiSpacer />
                     <WfoProductInformationWithLink
                         productNames={productNames}
