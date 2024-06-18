@@ -73,7 +73,7 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                         >
                             <EuiFlexItem grow={true}>
                                 <WfoTitleWithWebsocketBadge
-                                    title={subscriptionDetail.subscriptionId}
+                                    title={subscriptionDetail.description}
                                 />
                                 <EuiSpacer size="xs" />
                                 <EuiBadgeGroup
