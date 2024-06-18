@@ -69,10 +69,13 @@ export const WfoStepList = React.forwardRef(
         }));
 
         const getReferenceCallbackForStepId =
-            (stepId: string) => (node: HTMLDivElement | null) =>
-                node
-                    ? stepReferences.current.set(stepId, node)
-                    : stepReferences.current.delete(stepId);
+            (stepId: string) => (node: HTMLDivElement | null) => {
+                if (node) {
+                    stepReferences.current.set(stepId, node);
+                } else if (stepId && stepReferences.current.has(stepId)) {
+                    stepReferences.current.delete(stepId);
+                }
+            };
 
         return (
             <>
