@@ -5,8 +5,8 @@ module.exports = {
     coverageThreshold: null,
     testEnvironment: 'jsdom',
     transform: {
-        '^.+\\.tsx?$': 'esbuild-jest',
-        '^.+\\.jsx?$': 'esbuild-jest',
+        '^.+\\.tsx?$': 'babel-jest',
+        '^.+\\.jsx?$': 'babel-jest',
     },
     setupFilesAfterEnv: ['@testing-library/jest-dom'],
     moduleDirectories: ['node_modules'],
