@@ -1,4 +1,4 @@
-import React, { FC, Fragment, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
@@ -24,14 +24,13 @@ export const WfoValueOnlyTable: FC<WfValueOnlyTableProps> = ({
     return (
         <div css={valueOnlyTable}>
             {values.map(({ value, textToCopy }, rowNumber) => (
-                <Fragment key={rowNumber}>
-                    <WfoValueCell
-                        value={value}
-                        textToCopy={textToCopy}
-                        rowNumber={rowNumber}
-                        enableCopyIcon={showCopyToClipboardIcon}
-                    />
-                </Fragment>
+                <WfoValueCell
+                    key={rowNumber}
+                    value={value}
+                    textToCopy={textToCopy}
+                    rowNumber={rowNumber}
+                    enableCopyIcon={showCopyToClipboardIcon}
+                />
             ))}
         </div>
     );
