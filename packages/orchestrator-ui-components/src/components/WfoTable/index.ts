@@ -15,4 +15,5 @@ export * from './WfoTableWithFilter';
 
 export * from './WfoSortButtons';
 export * from './WfoFirstPartUUID';
+export * from './WfoGroupedTable';
 export * from './WfoInlineJson';
