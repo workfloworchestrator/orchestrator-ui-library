@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.28.0
+
+### Minor Changes
+
+- 3444973: added a new table for the nms chassis general tab
+
 ## 1.27.1
 
 ### Patch Changes
