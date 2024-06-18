@@ -13,6 +13,16 @@ export const getStyles = ({ theme }: WfoTheme) => {
         gridTemplateColumns: `${keyColumnWidth}px 1fr`,
     });
 
+    const valueOnlyTable = css({
+        display: 'block',
+        gridTemplateColumns: `${keyColumnWidth}px 1fr`,
+        '& > div': {
+            padding: padding,
+            borderTopLeftRadius: radius,
+            borderBottomLeftRadius: radius,
+        },
+    });
+
     const lightBackground = css({
         backgroundColor: theme.colors.emptyShade,
     });
@@ -64,6 +74,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
 
     return {
         keyValueTable,
+        valueOnlyTable,
         keyColumnStyle,
         valueColumnStyle,
         keyCellStyle,
