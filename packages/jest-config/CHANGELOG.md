@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.3.0
+
+### Minor Changes
+
+- 80f18ae: Fixes npm audit messages
+
 ## 1.2.1
 
 ### Patch Changes
