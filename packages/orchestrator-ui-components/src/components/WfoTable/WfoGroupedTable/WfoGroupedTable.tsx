@@ -12,15 +12,14 @@ import {
     useWithOrchestratorTheme,
 } from '@/index';
 
-type WfoGroupedTableProps<T extends object> = {
+export type WfoGroupedTableProps<T extends object> = {
     data: Record<string, T[]>;
     columns:
         | WfoBasicTableColumnsWithControlColumns<T>
         | WfoBasicTableColumns<T>;
 };
 
-type GroupType = {
-    // todo keyof Record<string, T[]>
+export type GroupType = {
     groupName: string;
 };
 
@@ -31,12 +30,11 @@ export const WfoGroupedTable = <T extends object>({
     const { expandableTableStyle, dropDownTableStyle } =
         useWithOrchestratorTheme(getWfoBasicTableStyles);
 
-    // Expandable config:
+    // EUI uses this Record to show expanded rows in the table. The key is the group name and the value is the component to be rendered in the expanded row
     const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
         Record<string, ReactNode>
     >({});
     const updateExpandedRowMap = (key: string) => {
-        // EUI does not accept key: undefined, it still renders the expanded row
         if (itemIdToExpandedRowMap[key]) {
             const updatedItemIdToExpandedRowMap = {
                 ...itemIdToExpandedRowMap,
@@ -57,10 +55,10 @@ export const WfoGroupedTable = <T extends object>({
         }
     };
 
-    // Outer table:
-    const theKeys = getObjectKeys(data);
-    const groups: GroupType[] = theKeys.map((key) => ({ groupName: key }));
-    const outerColum1: WfoTableControlColumnConfig<GroupType> = {
+    const groups: GroupType[] = getObjectKeys(data).map((key) => ({
+        groupName: key,
+    }));
+    const expandButtonColumn: WfoTableControlColumnConfig<GroupType> = {
         expandButton: {
             field: 'expandButton',
             width: '60px',
@@ -78,21 +76,20 @@ export const WfoGroupedTable = <T extends object>({
             },
         },
     };
-    const outerColum2: WfoBasicTableColumns<GroupType> = {
+    const groupNameColumn: WfoBasicTableColumns<GroupType> = {
         groupName: {
             field: 'groupName',
             name: 'Group Name',
         },
     };
-    const outerData: GroupType[] = [...groups];
 
     return (
         <WfoBasicTable
-            data={outerData}
-            columns={{ ...outerColum1, ...outerColum2 }}
+            data={groups}
+            columns={{ ...expandButtonColumn, ...groupNameColumn }}
             isExpandable={true}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-            itemId={'groupName'}
+            itemId={groupNameColumn.groupName.field}
             customTableStyle={expandableTableStyle}
         />
     );
