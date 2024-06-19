@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.29.0
+
+### Minor Changes
+
+- 80f18ae: Fixes npm audit messages
+- 637f8ea: Adds websocket status badge to page title instead of header
+
 ## 1.28.0
 
 ### Minor Changes
