@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.29.1
+
+### Patch Changes
+
+- deff75b: Workflow-list and Task-list pages: Keeps old data in table while refreshing data
+
 ## 1.29.0
 
 ### Minor Changes
