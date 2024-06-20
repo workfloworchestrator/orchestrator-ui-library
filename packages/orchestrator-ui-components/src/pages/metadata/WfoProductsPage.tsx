@@ -183,7 +183,7 @@ export const WfoProductsPage = () => {
         sortBy: sortBy,
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useGetProductsQuery(
+    const { data, isFetching, isLoading, isError } = useGetProductsQuery(
         graphqlQueryVariables,
     );
     const [getProductsTrigger, { isFetching: isFetchingCsv }] =
@@ -258,7 +258,8 @@ export const WfoProductsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                isFetching={isFetching}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}

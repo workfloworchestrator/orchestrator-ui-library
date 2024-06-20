@@ -163,7 +163,7 @@ export const WfoTasksPage = () => {
         sortBy: graphQlTaskListMapper(sortBy),
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useGetTasksQuery(
+    const { data, isFetching, isLoading, isError } = useGetTasksQuery(
         taskListQueryVariables,
     );
 
@@ -230,7 +230,8 @@ export const WfoTasksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isFetching}
+                isLoading={isLoading}
+                isFetching={isFetching}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
