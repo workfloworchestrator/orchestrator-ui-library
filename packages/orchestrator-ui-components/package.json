@@ -56,7 +56,7 @@
         "@orchestrator-ui/eslint-config-custom": "*",
         "@orchestrator-ui/jest-config": "*",
         "@reduxjs/toolkit": "^2.0.1",
-        "@storybook/addon-essentials": "^7.2.1",
+        "@storybook/addon-essentials": "^8.1.10",
         "@storybook/addon-interactions": "^7.6.6",
         "@storybook/addon-links": "^7.6.5",
         "@storybook/addon-onboarding": "^1.0.10",
