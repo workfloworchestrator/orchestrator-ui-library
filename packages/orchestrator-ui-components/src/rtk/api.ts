@@ -53,18 +53,20 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
+const isUnauthorized = (status: HttpStatus) =>
+    status === HttpStatus.Unauthorized || status === HttpStatus.Forbidden;
+const isNotSuccessful = (status: HttpStatus) =>
+    status < HttpStatus.Ok || status >= HttpStatus.MultipleChoices;
+
 export const catchErrorResponse: ResponseHandler = async (
     response: Response,
 ) => {
-    if (
-        response.status < HttpStatus.Ok ||
-        response.status >= HttpStatus.MultipleChoices
-    ) {
-        console.error(response.status, response.body);
-    } else if (
-        response.status === HttpStatus.Unauthorized ||
-        response.status === HttpStatus.Forbidden
-    ) {
+    const status = response.status;
+
+    if (isNotSuccessful(status)) {
+        console.error(status, response.body);
+    }
+    if (isUnauthorized(status)) {
         signOut();
     } else {
         return response.json();
