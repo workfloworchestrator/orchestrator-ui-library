@@ -1,6 +1,7 @@
 import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ResponseHandler } from '@reduxjs/toolkit/src/query/fetchBaseQuery';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
 import type { WfoSession } from '@/hooks';
@@ -19,6 +20,10 @@ export enum HttpStatus {
     BadGateway = 502,
     BadRequest = 400,
     ServiceUnavailable = 503,
+    Unauthorized = 401,
+    Forbidden = 403,
+    Ok = 200,
+    MultipleChoices = 300,
 }
 
 type ExtraOptions = {
@@ -48,6 +53,24 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
+export const catchErrorResponse: ResponseHandler = async (
+    response: Response,
+) => {
+    if (
+        response.status < HttpStatus.Ok ||
+        response.status >= HttpStatus.MultipleChoices
+    ) {
+        console.error(response.status, response.body);
+    } else if (
+        response.status === HttpStatus.Unauthorized ||
+        response.status === HttpStatus.Forbidden
+    ) {
+        signOut();
+    } else {
+        return response.json();
+    }
+};
+
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
@@ -68,6 +91,7 @@ export const orchestratorApi = createApi({
                         ? customApi.apiBaseUrl
                         : orchestratorApiBaseUrl,
                     prepareHeaders,
+                    responseHandler: catchErrorResponse,
                 });
                 return fetchFn(args, api, {});
             default:
