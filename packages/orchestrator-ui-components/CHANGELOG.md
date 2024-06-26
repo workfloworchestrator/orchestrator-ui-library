@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.30.1
+
+### Patch Changes
+
+-   6f308f9: Fix not logging out when token expires
+
 ## 1.30.0
 
 ### Minor Changes
