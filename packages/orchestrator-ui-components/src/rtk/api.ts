@@ -19,6 +19,10 @@ export enum HttpStatus {
     BadGateway = 502,
     BadRequest = 400,
     ServiceUnavailable = 503,
+    Unauthorized = 401,
+    Forbidden = 403,
+    Ok = 200,
+    MultipleChoices = 300,
 }
 
 type ExtraOptions = {
@@ -48,6 +52,27 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
+const isUnauthorized = (status: HttpStatus) =>
+    status === HttpStatus.Unauthorized || status === HttpStatus.Forbidden;
+const isNotSuccessful = (status: HttpStatus) =>
+    status < HttpStatus.Ok || status >= HttpStatus.MultipleChoices;
+
+export const catchErrorResponse = async (
+    response: Response,
+    authActive: boolean,
+) => {
+    const status = response.status;
+
+    if (isNotSuccessful(status)) {
+        console.error(status, response.body);
+    }
+    if (isUnauthorized(status) && authActive) {
+        signOut();
+    } else {
+        return response.json();
+    }
+};
+
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
@@ -68,6 +93,8 @@ export const orchestratorApi = createApi({
                         ? customApi.apiBaseUrl
                         : orchestratorApiBaseUrl,
                     prepareHeaders,
+                    responseHandler: (response) =>
+                        catchErrorResponse(response, authActive),
                 });
                 return fetchFn(args, api, {});
             default:

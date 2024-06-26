@@ -1,7 +1,3 @@
-import { signOut } from 'next-auth/react';
-
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-
 import {
     PROCESSES_ENDPOINT,
     PROCESSES_RESUME_ALL_ENDPOINT,
@@ -57,18 +53,6 @@ export type ProcessDetailResponse = {
     processes: ProcessDetail[];
 };
 
-const catchErrorResponse = (
-    _: FetchBaseQueryError,
-    meta: { response: Response },
-) => {
-    if (meta.response.status < 200 || meta.response.status >= 300) {
-        console.error(meta.response.status, meta.response.body);
-    }
-    if (meta.response.status === 401 || meta.response.status === 403) {
-        signOut();
-    }
-};
-
 const processDetailApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
         getProcessDetail: builder.query<
@@ -118,7 +102,6 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 url: `${PROCESSES_ENDPOINT}/${PROCESSES_RESUME_ALL_ENDPOINT}`,
                 method: 'PUT',
             }),
-            transformErrorResponse: catchErrorResponse,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
@@ -133,7 +116,6 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 },
                 body: '{}',
             }),
-            transformErrorResponse: catchErrorResponse,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
@@ -144,7 +126,6 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 url: `${PROCESSES_ENDPOINT}/${processId}`,
                 method: 'DELETE',
             }),
-            transformErrorResponse: catchErrorResponse,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
@@ -155,7 +136,6 @@ const processDetailApi = orchestratorApi.injectEndpoints({
                 url: `${PROCESSES_ENDPOINT}/${processId}/${PROCESS_ABORT_ENDPOINT}`,
                 method: 'PUT',
             }),
-            transformErrorResponse: catchErrorResponse,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
