@@ -1,7 +1,6 @@
 import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ResponseHandler } from '@reduxjs/toolkit/src/query/fetchBaseQuery';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
 import type { WfoSession } from '@/hooks';
@@ -58,15 +57,16 @@ const isUnauthorized = (status: HttpStatus) =>
 const isNotSuccessful = (status: HttpStatus) =>
     status < HttpStatus.Ok || status >= HttpStatus.MultipleChoices;
 
-export const catchErrorResponse: ResponseHandler = async (
+export const catchErrorResponse = async (
     response: Response,
+    authActive: boolean,
 ) => {
     const status = response.status;
 
     if (isNotSuccessful(status)) {
         console.error(status, response.body);
     }
-    if (isUnauthorized(status)) {
+    if (isUnauthorized(status) && authActive) {
         signOut();
     } else {
         return response.json();
@@ -93,7 +93,8 @@ export const orchestratorApi = createApi({
                         ? customApi.apiBaseUrl
                         : orchestratorApiBaseUrl,
                     prepareHeaders,
-                    responseHandler: catchErrorResponse,
+                    responseHandler: (response) =>
+                        catchErrorResponse(response, authActive),
                 });
                 return fetchFn(args, api, {});
             default:
