@@ -13,11 +13,15 @@ import { orchestratorApi } from '../api';
 const getWebSocket = async (url: string) => {
     const session = (await getSession()) as WfoSession;
 
-    const token = session?.accessToken
-        ? ['base64.bearer.token', session?.accessToken]
-        : '';
-    // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
-    return new WebSocket(url, token);
+    if (session?.accessToken) {
+        // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
+        return new WebSocket(url, [
+            'base64.bearer.token',
+            session?.accessToken,
+        ]);
+    } else {
+        return new WebSocket(url);
+    }
 };
 
 const PING_INTERVAL_MS = 45000; // Recommended values are between 30 and 60 seconds
