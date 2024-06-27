@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.30.2
+
+### Patch Changes
+
+-   fe3e991: Fixes websocket connection without authorization
+
 ## 1.30.1
 
 ### Patch Changes
