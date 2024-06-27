@@ -156,16 +156,10 @@ function Vlan({
         .join(',');
 
     useEffect(() => {
-        if (subscriptionId && isFetched && !portIsTagged && value !== '0') {
-            onChange('0');
-        } else if (
-            !disabled &&
-            ((!subscriptionId && value !== '') ||
-                (subscriptionId && portIsTagged && value === '0'))
-        ) {
+        if (!initialValue) {
             onChange('');
         }
-    }, [onChange, subscriptionId, value, isFetched, portIsTagged]);
+    }, [initialValue, onChange, subscriptionId, isFetched]);
 
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);
@@ -190,7 +184,7 @@ function Vlan({
             setMissingInIms(true);
             setUsedVlansInIms([]);
         }
-    }, [data, error, fetchError, isLoading, nsiVlansOnly, subscriptionId]);
+    }, [data, fetchError]);
 
     // Filter currently used vlans because they are probably from the current subscription
     const currentVlans = getAllNumbersForVlanRange(initialValue);
