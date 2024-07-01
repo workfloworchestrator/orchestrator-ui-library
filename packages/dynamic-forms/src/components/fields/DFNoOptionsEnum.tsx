@@ -3,26 +3,26 @@
  *
  * A hidden input component
  */
+import { DropDown } from '@some-ui-lib';
 
-import { DropDown } from "@some-ui-lib"
-import DfFieldWrap from "~dynamicForms/components/fields/Wrap"
-import { FormComponent, IDFInputFieldProps } from "~dynamicForms/types"
+import DfFieldWrap from '@/components/fields/Wrap';
+import { FormComponent, IDFInputFieldProps } from '@/types';
 
 function DFNoOptionsEnumWrap({ field }: IDFInputFieldProps) {
-	return (
-		<DfFieldWrap field={field}>
-			<DropDown
-				placeholder={"Er zijn geen opties beschikbaar"}
-				disabled={true}
-				options={[]}
-				value={null}
-			/>
-		</DfFieldWrap>
-	)
+    return (
+        <DfFieldWrap field={field}>
+            <DropDown
+                placeholder={'Er zijn geen opties beschikbaar'}
+                disabled={true}
+                options={[]}
+                value={null}
+            />
+        </DfFieldWrap>
+    );
 }
 
 const DFNoOptionsEnum: FormComponent = {
-	Element: DFNoOptionsEnumWrap,
-}
+    Element: DFNoOptionsEnumWrap,
+};
 
-export default DFNoOptionsEnum
+export default DFNoOptionsEnum;

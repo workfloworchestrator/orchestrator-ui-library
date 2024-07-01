@@ -7,13 +7,12 @@
  * All the fields are span6, so this will ensure there will be only 1 field
  * on a specific row
  */
-
-import { FormComponent } from "~dynamicForms/types"
+import { FormComponent } from '@/types';
 
 const DFSkipField: FormComponent = {
-	Element() {
-		return <div></div>
-	},
-}
+    Element() {
+        return <div></div>;
+    },
+};
 
-export default DFSkipField
+export default DFSkipField;

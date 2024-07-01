@@ -1,39 +1,39 @@
 /**
  * React hook form controller
  */
-
-import { useDynamicFormsContext } from "~dynamicForms/core/dynamicFormContext"
 import {
-	Controller,
-	ControllerFieldState,
-	ControllerRenderProps,
-	FieldValues,
-	UseFormStateReturn,
-} from "react-hook-form"
-import { IDFInputFieldProps, IDynamicFormField } from "~dynamicForms/types"
+    Controller,
+    ControllerFieldState,
+    ControllerRenderProps,
+    FieldValues,
+    UseFormStateReturn,
+} from 'react-hook-form';
+
+import { useDynamicFormsContext } from '@/core/dynamicFormContext';
+import { IDFInputFieldProps, IDynamicFormField } from '@/types';
 
 type FieldComponent = (
-	dfFieldConfig: IDynamicFormField,
+    dfFieldConfig: IDynamicFormField,
 ) => ({
-	field,
-	fieldState,
-	formState,
+    field,
+    fieldState,
+    formState,
 }: {
-	field: ControllerRenderProps<FieldValues, string>
-	fieldState: ControllerFieldState
-	formState: UseFormStateReturn<FieldValues>
-}) => React.ReactElement
+    field: ControllerRenderProps<FieldValues, string>;
+    fieldState: ControllerFieldState;
+    formState: UseFormStateReturn<FieldValues>;
+}) => React.ReactElement;
 
 export const DFFieldController = (FieldComponent: FieldComponent) => {
-	return function DFFieldControllerWrap({ field }: IDFInputFieldProps) {
-		const { rhf } = useDynamicFormsContext()
+    return function DFFieldControllerWrap({ field }: IDFInputFieldProps) {
+        const { rhf } = useDynamicFormsContext();
 
-		return (
-			<Controller
-				name={field.id}
-				control={rhf.control}
-				render={FieldComponent(field)}
-			/>
-		)
-	}
-}
+        return (
+            <Controller
+                name={field.id}
+                control={rhf.control}
+                render={FieldComponent(field)}
+            />
+        );
+    };
+};
