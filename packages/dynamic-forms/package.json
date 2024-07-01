@@ -18,7 +18,8 @@
         "react-use": "^17.5.0",
         "swr": "^2.2.4",
         "zod": "^3.22.4",
-        "zod-i18n-map": "^2.27.0"
+        "zod-i18n-map": "^2.27.0",
+        "@elastic/eui": "^95.1.0"
     },
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",
