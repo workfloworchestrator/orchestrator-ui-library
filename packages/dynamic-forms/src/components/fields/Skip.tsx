@@ -7,6 +7,8 @@
  * All the fields are span6, so this will ensure there will be only 1 field
  * on a specific row
  */
+import React from 'react';
+
 import { FormComponent } from '@/types';
 
 const DFSkipField: FormComponent = {

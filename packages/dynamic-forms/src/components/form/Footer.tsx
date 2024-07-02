@@ -27,8 +27,6 @@ const DynamicFormFooter = () => {
         CsFlags.ALLOW_INVALID_FORMS,
     );
 
-    console.log({ footerComponent, showErrors });
-
     return (
         <div className="form-footer">
             {(!!footerComponent || showErrors) && (

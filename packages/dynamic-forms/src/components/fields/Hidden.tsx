@@ -3,6 +3,8 @@
  *
  * A hidden input component
  */
+import React from 'react';
+
 import { z } from 'zod';
 
 import { useDynamicFormsContext } from '@/core';

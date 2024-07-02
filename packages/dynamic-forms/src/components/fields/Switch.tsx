@@ -13,7 +13,7 @@ import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
+import { EuiCheckbox } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { DFFieldController } from '@/components/render/DfFieldController';

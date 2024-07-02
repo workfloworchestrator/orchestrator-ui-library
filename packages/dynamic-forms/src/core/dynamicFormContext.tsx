@@ -5,7 +5,7 @@
  *
  * This will fetch the jsonScheme, parse it, and handle form state and validation
  */
-import type { MouseEventHandler } from 'react';
+import React from 'react';
 import {
     createContext,
     useCallback,
@@ -297,13 +297,13 @@ function DynamicFormsProvider({
 
     if (debugMode) {
         // eslint-disable-next-line no-console
-        console.log('New context cycle', {
+        console.warn('New context cycle', {
             resolver,
             DynamicFormsContextState,
         });
 
         const fieldWatcher = rhf.watch();
-        console.log({ fieldWatcher });
+        console.warn({ fieldWatcher });
     }
 
     return (
