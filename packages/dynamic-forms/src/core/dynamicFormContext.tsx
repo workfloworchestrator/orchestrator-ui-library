@@ -5,8 +5,6 @@
  *
  * This will fetch the jsonScheme, parse it, and handle form state and validation
  */
-import { useAppContext } from '~context/app';
-
 import type { MouseEventHandler } from 'react';
 import {
     createContext,
@@ -26,10 +24,6 @@ import { zodI18nMap } from 'zod-i18n-map';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
-    CsFlags,
-    IsCsFlagEnabled,
-} from '@/components/utility/ClientSideFF/ClientSideFF';
-import {
     getErrorDetailsFromResponse,
     getFormValuesFromFieldOrLabels,
 } from '@/core/helper';
@@ -44,6 +38,7 @@ import {
     IDynamicFormsContextProps,
     IValidationErrorDetails,
 } from '@/types';
+import { CsFlags, IsCsFlagEnabled } from '@/utils';
 
 import translation from './translations/nl.json';
 
@@ -84,9 +79,8 @@ function DynamicFormsProvider({
         dataProviderCacheKey,
         customValidationRules,
         tmp_pydanticFormsOriginalImplementation,
-    } = config ?? {};
+    } = config;
 
-    const { api } = useAppContext();
     // option to enable the debug mode on the fly in the browser
     // by setting localStorage.setItem("dynamicFormsDebugMode", "true")
     // reload is required
@@ -101,12 +95,7 @@ function DynamicFormsProvider({
 
     // fetch the labels of the form, but can also include the current form values
     const { data: formLabels, isLoading: isLoadingFormLabels } =
-        useLabelProvider(
-            labelProvider ?? api.portaal.Forms.getLabelsV1FormsLabelFormKeyGet,
-            formKey,
-            formIdKey,
-            cacheKey,
-        );
+        useLabelProvider(labelProvider, formKey, formIdKey, cacheKey);
 
     const { data: customData, isLoading: isCustomDataLoading } =
         useCustomDataProvider(
@@ -123,7 +112,7 @@ function DynamicFormsProvider({
         formKey,
         // TODO: remove this temp fix? ->
         formInputData,
-        formProvider ?? api.portaal.Forms.newFormV1FormsFormKeyPost,
+        formProvider,
         !!tmp_pydanticFormsOriginalImplementation,
         metaData,
         cacheKey,
@@ -251,20 +240,11 @@ function DynamicFormsProvider({
 
     const submitForm = rhf.handleSubmit(submitFormFn, onClientSideError);
 
-    const resetForm = useCallback(
-        (
-            e:
-                | MouseEventHandler<HTMLAnchorElement>
-                | MouseEventHandler<HTMLButtonElement>
-                | undefined,
-        ) => {
-            e.preventDefault();
-            resetFormData();
-            setErrorDetails(undefined);
-            rhf.trigger();
-        },
-        [resetFormData, rhf],
-    );
+    const resetForm = useCallback(() => {
+        resetFormData();
+        setErrorDetails(undefined);
+        rhf.trigger();
+    }, [resetFormData, rhf]);
 
     // with this we have the possiblity to have listeners for specific fields
     // this could be used to trigger validations of related fields, casting changes to elsewhere, etc.
@@ -292,9 +272,7 @@ function DynamicFormsProvider({
     }, [rhf, onFieldChangeHandler]);
 
     const isLoading =
-        isLoadingFormLabels ||
-        isLoadingSchema ||
-        (dataProvider ? isCustomDataLoading : false);
+        isLoadingFormLabels || isLoadingSchema || isCustomDataLoading;
 
     const DynamicFormsContextState = {
         // to prevent an issue where the sending state hangs

@@ -46,26 +46,21 @@ export function useDynamicForm(
                     meta_data: metaData,
                 };
             }
-            const ogreq = formProvider({
+            const ogreq = (await formProvider({
                 formKey,
                 requestBody,
-            });
-            const req = (await ignoreApiErrors(
-                ogreq,
-                [510, 400],
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            )) as any;
+            })) as any;
 
             if (
-                Object.keys(req).length === 0 ||
-                (!req.validation_errors && !req.form)
+                Object.keys(ogreq).length === 0 ||
+                (!ogreq.validation_errors && !ogreq.form)
             ) {
                 return {
                     success: true,
                 };
             }
 
-            return req;
+            return ogreq;
         },
 
         // swr config
