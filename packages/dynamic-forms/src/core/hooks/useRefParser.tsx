@@ -7,7 +7,7 @@
  * After this hook is run with the data those references will be resolved.
  */
 import { parse as jsonSchemaParse } from 'jsonref';
-import useSWR, { SWRConfiguration } from 'swr';
+import useSWR from 'swr';
 
 import { IDynamicFormApiRefResolved } from '@/types';
 
@@ -19,7 +19,6 @@ export function useRefParser(
     id: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     source?: any,
-    swrConfig?: SWRConfiguration,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) {
     return useSWR<IDynamicFormApiRefResolved | undefined>(
@@ -47,7 +46,6 @@ export function useRefParser(
         // swr config
         {
             fallback: {},
-            ...swrConfig,
         },
     );
 }

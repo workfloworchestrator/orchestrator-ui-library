@@ -6,12 +6,13 @@
  * to enable more types we need to store the required type in schemaToFieldTypes,
  * and use the correct sub component here based on the definition in field
  */
+import React from 'react';
 import { useRef } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import { Button, TextField } from '@some-ui-lib';
+import { EuiButton, EuiFieldText } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { DFFieldController } from '@/components/render/DfFieldController';
@@ -102,51 +103,51 @@ function DhfCtrldDFListField(dfFieldConfig: IDynamicFormField) {
                             className="d-flex mv-2"
                         >
                             {fieldType === DfFieldTypes.STRING && (
-                                <TextField
+                                <EuiFieldText
                                     value={fieldValue}
-                                    onChangeValue={listChange(fieldIndex)}
+                                    onChange={() => listChange(fieldIndex)}
                                 />
                             )}
 
                             {fieldType === DfFieldTypes.NUMBER && (
-                                <TextField
+                                <EuiFieldText
                                     value={fieldValue}
                                     type="number"
-                                    onChangeValue={listChange(fieldIndex)}
+                                    onChange={() => listChange(fieldIndex)}
                                 />
                             )}
 
                             {fieldType === DfFieldTypes.DATE && (
-                                <TextField
+                                <EuiFieldText
                                     value={fieldValue}
                                     type="date"
-                                    onChangeValue={listChange(fieldIndex)}
+                                    onChange={() => listChange(fieldIndex)}
                                 />
                             )}
 
                             <div className="d-flex ml-2">
-                                <Button
+                                <EuiButton
                                     onClick={addItem(fieldIndex)}
                                     type="button"
                                 >
                                     +
-                                </Button>
-                                <Button
+                                </EuiButton>
+                                <EuiButton
                                     onClick={removeItem(fieldIndex)}
                                     className="ml-1"
                                     type="button"
                                 >
                                     -
-                                </Button>
+                                </EuiButton>
                             </div>
                         </div>
                     ))
                 ) : (
                     <div>
                         Nog geen rijen.{' '}
-                        <Button type="button" onClick={addItem(0)}>
+                        <EuiButton type="button" onClick={addItem(0)}>
                             Rij toevoegen
-                        </Button>
+                        </EuiButton>
                     </div>
                 )}
             </DfFieldWrap>

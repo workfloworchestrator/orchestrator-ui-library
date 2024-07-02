@@ -4,14 +4,10 @@
  * We will search for the first field that returns a positive match
  * The last field has no matcher, so it will match as the default
  */
-import DFCheckboxField from '@/components/fields/Checkbox';
-import DFNoOptionsEnum from '@/components/fields/DFNoOptionsEnum';
-import DFDatePicker from '@/components/fields/DatePicker';
 import DFDateTime from '@/components/fields/DateTime';
 import DFDropDown from '@/components/fields/DropDown';
 import DFHiddenField from '@/components/fields/Hidden';
 import DFListField from '@/components/fields/List';
-import DFMultiSelect from '@/components/fields/MultiSelect';
 import DFRadioField from '@/components/fields/Radio';
 import DFSkipField from '@/components/fields/Skip';
 import DFSwitchField from '@/components/fields/Switch';
@@ -29,14 +25,6 @@ const fieldsConfig: DfFieldsConfig = [
     },
 
     {
-        id: 'datepicker',
-        Component: DFDatePicker,
-        matcher(field) {
-            return field.format === DfFieldFormats.DATE;
-        },
-    },
-
-    {
         id: 'datetimepicker',
         Component: DFDateTime,
         matcher(field) {
@@ -45,15 +33,6 @@ const fieldsConfig: DfFieldsConfig = [
             );
         },
     },
-
-    {
-        id: 'is_enum_with_no_options',
-        Component: DFNoOptionsEnum,
-        matcher(field) {
-            return field.isEnumField && field.options.length === 0;
-        },
-    },
-
     {
         id: 'switch',
         Component: DFSwitchField,
@@ -75,21 +54,6 @@ const fieldsConfig: DfFieldsConfig = [
             );
         },
     },
-
-    {
-        id: 'checkbox',
-        Component: DFCheckboxField,
-        matcher(field) {
-            // fields with array of options dont fit
-            if (field.type !== DfFieldTypes.ARRAY) {
-                return false;
-            }
-
-            // use checkbox when between 1 and 5 options
-            return field.options.length >= 1 && field.options.length < 6;
-        },
-    },
-
     {
         id: 'radio',
         Component: DFRadioField,
@@ -110,16 +74,6 @@ const fieldsConfig: DfFieldsConfig = [
         matcher(field) {
             return (
                 field.type === DfFieldTypes.STRING && field.options.length > 1
-            );
-        },
-    },
-
-    {
-        id: 'mutltiselect',
-        Component: DFMultiSelect,
-        matcher(field) {
-            return (
-                field.type === DfFieldTypes.ARRAY && field.options.length > 0
             );
         },
     },

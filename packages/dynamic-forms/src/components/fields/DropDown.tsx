@@ -3,23 +3,22 @@
  *
  * Dropdown component
  */
+import React from 'react';
 import { useCallback } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import {
-    DropDown,
-    DropDownOption,
-} from '@some-ui-lib/dist/components/Form/DropDown';
+import { EuiSelect } from '@elastic/eui';
+import type { EuiSelectOption } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { DFFieldController } from '@/components/render/DfFieldController';
 import { FormComponent, IDynamicFormField } from '@/types';
 
 function DhfCtrldDropDown(dfFieldConfig: IDynamicFormField) {
-    const options = dfFieldConfig.options.map((option) => ({
-        label: option,
+    const options: EuiSelectOption[] = dfFieldConfig.options.map((option) => ({
+        text: option,
         value: option,
     }));
 
@@ -29,7 +28,7 @@ function DhfCtrldDropDown(dfFieldConfig: IDynamicFormField) {
         field: ControllerRenderProps<FieldValues, string>;
     }) {
         const valueChange = useCallback(
-            (option: DropDownOption) => {
+            (option: EuiSelectOption) => {
                 field.onChange(option.value, dfFieldConfig.id);
             },
             [field],
@@ -37,13 +36,11 @@ function DhfCtrldDropDown(dfFieldConfig: IDynamicFormField) {
 
         return (
             <DfFieldWrap field={dfFieldConfig}>
-                <DropDown
-                    onChange={valueChange}
+                <EuiSelect
+                    onChange={() => valueChange}
                     options={options}
                     value={field.value ?? ''}
-                    placeholder={'Maak een keuze'}
                     disabled={!!dfFieldConfig.attributes.disabled}
-                    width={'100%'}
                 />
             </DfFieldWrap>
         );

@@ -3,6 +3,7 @@
  *
  * A simple text field with type number
  */
+import React from 'react';
 import {
     Controller,
     ControllerRenderProps,
@@ -11,7 +12,7 @@ import {
 
 import { z } from 'zod';
 
-import { TextField } from '@some-ui-lib/dist/components/Form/TextField';
+import { EuiFieldNumber } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { useDynamicFormsContext } from '@/core';
@@ -25,9 +26,11 @@ function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
     }) {
         return (
             <DfFieldWrap field={dfFieldConfig}>
-                <TextField
+                <EuiFieldNumber
+                    onChange={(event) =>
+                        field.onChange(parseInt(event.target.value))
+                    }
                     value={field.value ?? ''}
-                    onChangeValue={field.onChange}
                     type="number"
                     disabled={!!dfFieldConfig.attributes.disabled}
                 />

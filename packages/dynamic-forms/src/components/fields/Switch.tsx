@@ -7,12 +7,13 @@
  *
  * If custom value is set, it will also use those as labels and values
  */
+import React from 'react';
 import { ChangeEvent } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import { CheckSwitch } from '@some-ui-lib';
+import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { DFFieldController } from '@/components/render/DfFieldController';
@@ -55,10 +56,10 @@ function DhfCtrldDFSwitchField(dfFieldConfig: IDynamicFormField) {
 
         return (
             <DfFieldWrap field={dfFieldConfig}>
-                <CheckSwitch
+                <EuiCheckbox
+                    id={dfFieldConfig.id}
                     checked={isChecked}
-                    onlabel={onLabel}
-                    offlabel={offLabel}
+                    label={isChecked ? onLabel : offLabel}
                     disabled={!!dfFieldConfig.attributes.disabled}
                     onChange={onChangeHandler}
                 />

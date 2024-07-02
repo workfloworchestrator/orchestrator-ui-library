@@ -3,9 +3,10 @@
  *
  * Renders errors that are generated client-side
  */
+import React from 'react';
 import { useCallback, useState } from 'react';
 
-import { IconButton, IconInfo, IconWaarschuwing } from '@some-ui-lib';
+import { EuiButtonIcon, EuiIcon } from '@elastic/eui';
 
 import { useDynamicFormsContext } from '@/core';
 
@@ -55,12 +56,13 @@ export default function RenderFormErrors() {
                             Er {multiMistakes ? 'zijn' : 'is'}{' '}
                             {otherErrors?.length} rubriek
                             {multiMistakes && 'en'} nog niet correct ingevuld.{' '}
-                            <IconButton
+                            <EuiButtonIcon
                                 onClick={toggleDetails}
                                 className="ml-2"
+                                iconType="smile"
                             >
-                                <IconInfo size={18} />
-                            </IconButton>
+                                <EuiIcon type="info" size={'m'} />
+                            </EuiButtonIcon>
                         </div>
                         {showDetails && (
                             <ul className="error-list mb-2">
@@ -79,11 +81,7 @@ export default function RenderFormErrors() {
                     </>
                 )}
             </div>
-            <IconWaarschuwing
-                style={{ opacity: 0.4 }}
-                className="mr-3"
-                size={40}
-            />
+            <EuiIcon style={{ opacity: 0.4 }} type="warning" size={'xl'} />
         </div>
     );
 }

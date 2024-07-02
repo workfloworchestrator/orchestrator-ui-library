@@ -14,9 +14,7 @@
  *
  * Disabled revalidate / refresh system of SWR, this would cause submissions
  */
-import { ignoreApiErrors } from '~apiFactory/helpers/defaultErrorHandler';
-
-import useSWR, { SWRConfiguration } from 'swr';
+import useSWR from 'swr';
 
 import {
     DfFormProvider,
@@ -31,11 +29,10 @@ export function useDynamicForm(
     tmp_pydanticFormsOriginalImplementation: boolean,
     metaData?: DynamicFormsMetaData,
     cacheKey?: number,
-    swrConfig?: SWRConfiguration,
 ) {
     return useSWR<IDynamicFormApiErrorResponse>(
         // cache key
-        [formKey, formInputData, metaData, swrConfig, cacheKey],
+        [formKey, formInputData, metaData, cacheKey],
 
         // return val
         async ([formKey, formInputData, metaData]) => {
@@ -81,8 +78,6 @@ export function useDynamicForm(
             revalidateOnFocus: false,
             keepPreviousData: true,
             shouldRetryOnError: false,
-
-            ...swrConfig,
         },
     );
 }

@@ -7,6 +7,7 @@
  */
 import { useAppContext } from '~context/app';
 
+import type { MouseEventHandler } from 'react';
 import {
     createContext,
     useCallback,
@@ -251,7 +252,12 @@ function DynamicFormsProvider({
     const submitForm = rhf.handleSubmit(submitFormFn, onClientSideError);
 
     const resetForm = useCallback(
-        (e: MouseEvent) => {
+        (
+            e:
+                | MouseEventHandler<HTMLAnchorElement>
+                | MouseEventHandler<HTMLButtonElement>
+                | undefined,
+        ) => {
             e.preventDefault();
             resetFormData();
             setErrorDetails(undefined);

@@ -6,9 +6,8 @@
 import React from 'react';
 import { FormEvent, useCallback, useState } from 'react';
 
-import { Card, IconWaarschuwing, OutlineButton } from '@some-ui-lib';
+import { EuiButtonIcon, EuiCard, EuiIcon } from '@elastic/eui';
 
-import ChevronButton from '@/components/generic/ChevronButton/ChevronButton';
 import RenderReactHookFormErrors from '@/components/render/RenderReactHookFormErrors';
 import { useDynamicFormsContext } from '@/core';
 import { CsFlags, IsCsFlagEnabled } from '@/utils';
@@ -33,22 +32,24 @@ const DynamicFormFooter = () => {
     return (
         <div className="form-footer">
             {(!!footerComponent || showErrors) && (
-                <Card>
-                    {footerComponent}
+                <EuiCard title="">
+                    <>
+                        {footerComponent}
 
-                    {showErrors && <RenderReactHookFormErrors />}
-                </Card>
+                        {showErrors && <RenderReactHookFormErrors />}
+                    </>
+                </EuiCard>
             )}
 
             <div className="d-flex">
-                <OutlineButton
-                    variant="purple"
+                <EuiButtonIcon
+                    iconType="smile"
                     type="button"
-                    onClick={resetForm}
+                    onClick={() => resetForm}
                     disabled={!rhf.formState.isDirty}
                 >
                     Rubriekinhoud herstellen
-                </OutlineButton>
+                </EuiButtonIcon>
 
                 <span className="spacer"></span>
 
@@ -67,10 +68,11 @@ const DynamicFormFooter = () => {
                             className="d-flex mv-0 mr-3"
                             style={{ opacity: 0.8 }}
                         >
-                            <IconWaarschuwing
+                            <EuiIcon
                                 style={{ opacity: 0.4 }}
                                 className="mr-2"
-                                size={18}
+                                size={'m'}
+                                type="alert"
                             />{' '}
                             Het formulier is nog niet correct ingevuld{' '}
                             {!showErrors && (
@@ -92,26 +94,21 @@ const DynamicFormFooter = () => {
                     )}
 
                     {!!onCancel && (
-                        <OutlineButton
-                            variant="purple"
+                        <EuiButtonIcon
                             type="button"
+                            iconType={'arrow'}
                             onClick={onCancel}
                         >
                             Annuleren
-                        </OutlineButton>
+                        </EuiButtonIcon>
                     )}
 
-                    <ChevronButton
-                        variant={
-                            !rhf.formState.isValid &&
-                            enableInvalidFormSubmission
-                                ? 'red'
-                                : 'purple'
-                        }
+                    <EuiButtonIcon
                         type="submit"
                         onClick={() =>
                             submitForm({} as FormEvent<HTMLFormElement>)
                         }
+                        iconType={'arrow'}
                         disabled={
                             !enableInvalidFormSubmission &&
                             (!rhf.formState.isValid ||
@@ -120,7 +117,7 @@ const DynamicFormFooter = () => {
                         }
                     >
                         {sendLabel ? sendLabel : 'Verzenden'}
-                    </ChevronButton>
+                    </EuiButtonIcon>
                 </div>
             </div>
         </div>

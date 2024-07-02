@@ -8,9 +8,10 @@
  *
  * @Uses FormField - Rijkshuisstijl
  */
+import React from 'react';
 import { useCallback } from 'react';
 
-import { FormField, IconButton, IconOog } from '@some-ui-lib';
+import { EuiButtonIcon, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useDynamicFormsContext } from '@/core';
 import { IDynamicFormField } from '@/types';
@@ -22,7 +23,6 @@ interface IDfFieldWrapProps {
 
 function DfFieldWrap({ field, children }: IDfFieldWrapProps) {
     const { rhf, errorDetails, debugMode } = useDynamicFormsContext();
-
     const fieldState = rhf.getFieldState(field.id);
 
     const errorMsg =
@@ -35,25 +35,27 @@ function DfFieldWrap({ field, children }: IDfFieldWrapProps) {
     }, [field]);
 
     return (
-        <FormField
-            label={field.title}
-            description={field.description}
-            required={field.required}
-            isValid={!isInvalid}
+        <EuiFormRow
+            labelAppend={<EuiText size="m">{field.description}</EuiText>}
             error={errorMsg as string}
-            dense
-            className="mt-0 mb-0"
+            id={field.id}
+            fullWidth
+            label={field.title}
+            title={field.description}
+            isInvalid={!!isInvalid}
         >
             <div className="d-flex">
                 <div className="w-100">{children}</div>
 
                 {debugMode && (
-                    <IconButton className="ml-3" onClick={debugTrigger}>
-                        <IconOog />
-                    </IconButton>
+                    <EuiButtonIcon
+                        iconType="cog"
+                        className="ml-3"
+                        onClick={debugTrigger}
+                    />
                 )}
             </div>
-        </FormField>
+        </EuiFormRow>
     );
 }
 

@@ -3,10 +3,10 @@
  *
  * Renders errors received from the backend after submitting the form
  */
+import React from 'react';
 import { useCallback, useState } from 'react';
 
-import { HelpTextContainer, IconButton, IconInfo } from '@some-ui-lib';
-import { HelpContainerVariant } from '@some-ui-lib/dist/components/Elements/HelpTextContainer/HelpTextContainer';
+import { EuiButtonIcon, EuiFlexItem } from '@elastic/eui';
 
 import { useDynamicFormsContext } from '@/core';
 import { getFieldLabelById } from '@/core/helper';
@@ -27,8 +27,7 @@ export default function RenderReactHookFormErrors() {
     const multiMistakes = numErrors > 1;
 
     return (
-        <HelpTextContainer
-            variant={HelpContainerVariant.ERROR}
+        <EuiFlexItem
             title="Het formulier bevat tenminste één niet correct ingevulde rubriek,
 		waardoor het niet opgeslagen kan worden."
         >
@@ -37,9 +36,11 @@ export default function RenderReactHookFormErrors() {
                     <div className="d-flex align-items-center">
                         Er {multiMistakes ? 'zijn' : 'is'} {numErrors} rubriek
                         {multiMistakes && 'en'} nog niet correct ingevuld.
-                        <IconButton onClick={toggleDetails} className="ml-2">
-                            <IconInfo size={18} />
-                        </IconButton>
+                        <EuiButtonIcon
+                            onClick={toggleDetails}
+                            iconType="info"
+                            className="ml-2"
+                        />
                     </div>
                     {showDetails && (
                         <ul className="error-list mb-2">
@@ -65,6 +66,6 @@ export default function RenderReactHookFormErrors() {
                     )}
                 </>
             )}
-        </HelpTextContainer>
+        </EuiFlexItem>
     );
 }

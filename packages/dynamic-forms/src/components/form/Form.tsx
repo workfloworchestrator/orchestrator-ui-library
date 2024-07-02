@@ -5,10 +5,9 @@
  *
  * Here we define the outline of the form
  */
-import LoadingNotice from '~components/generic/LoadingNotice/LoadingNotice';
+import React from 'react';
 
-import { Card } from '@rijkshuisstijl/Elements/Card';
-import { IconKlaarzetten, PageTitle, Row } from '@some-ui-lib';
+import { EuiCard, EuiHeader, EuiIcon } from '@elastic/eui';
 
 import DynamicFormFooter from '@/components/form/Footer';
 import { RenderFields } from '@/components/render/Fields';
@@ -27,21 +26,21 @@ const RenderMainForm = ({
     headerComponent,
 }: IDynamicFormsContextProps) => {
     if (isLoading && !isSending) {
-        return <LoadingNotice>Formulier aan het ophalen...</LoadingNotice>;
+        return <div>Formulier aan het ophalen...</div>;
     }
 
     if (!formData) {
-        return <LoadingNotice>Formulier aan het ophalen...</LoadingNotice>;
+        return <div>Formulier aan het ophalen...</div>;
     }
 
     if (isSending) {
-        return <LoadingNotice>Formulier aan het verzenden...</LoadingNotice>;
+        return <div>Formulier aan het verzenden...</div>;
     }
 
     if (isFullFilled) {
         return (
             <div className="info-box d-flex align-items-center">
-                <IconKlaarzetten className="mr-3" />{' '}
+                <EuiIcon type="sun" />{' '}
                 {successNotice
                     ? successNotice
                     : 'Uw inzending is succesvol ontvangen'}
@@ -51,7 +50,7 @@ const RenderMainForm = ({
 
     return (
         <form action={''} onSubmit={submitForm}>
-            <PageTitle>{title ? title : formData.title}</PageTitle>
+            <EuiHeader>{title ? title : formData.title}</EuiHeader>
 
             {headerComponent}
 
@@ -61,16 +60,16 @@ const RenderMainForm = ({
                 {formData.sections.map((section) => (
                     <RenderSections section={section} key={section.id}>
                         {({ fields }) => (
-                            <Card title={section.title} spacious>
-                                <Row
+                            <EuiCard title={section.title}>
+                                <div
                                     style={{
                                         marginTop: '-0.75rem',
                                         marginBottom: '-0.75rem',
                                     }}
                                 >
                                     <RenderFields fields={fields} />
-                                </Row>
-                            </Card>
+                                </div>
+                            </EuiCard>
                         )}
                     </RenderSections>
                 ))}

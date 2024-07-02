@@ -11,15 +11,16 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
+        "@elastic/eui": "^95.1.0",
         "@hookform/resolvers": "^3.6.0",
+        "dayjs": "^1.11.11",
         "jsonref": "^8.0.8",
         "next": "^14.2.4",
         "react-hook-form": "^7.49.3",
         "react-use": "^17.5.0",
         "swr": "^2.2.4",
         "zod": "^3.22.4",
-        "zod-i18n-map": "^2.27.0",
-        "@elastic/eui": "^95.1.0"
+        "zod-i18n-map": "^2.27.0"
     },
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",

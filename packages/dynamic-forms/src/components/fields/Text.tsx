@@ -3,13 +3,14 @@
  *
  * Text component
  */
+import React from 'react';
 import {
     Controller,
     ControllerRenderProps,
     FieldValues,
 } from 'react-hook-form';
 
-import { TextField } from '@some-ui-lib/dist/components/Form/TextField';
+import { EuiFieldText } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { zodValidationPresets } from '@/components/zodValidations';
@@ -35,9 +36,9 @@ function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
 
         return (
             <DfFieldWrap field={dfFieldConfig}>
-                <TextField
+                <EuiFieldText
                     value={field.value ?? ''}
-                    onChangeValue={changeHandle}
+                    onChange={() => changeHandle}
                     onBlur={field.onBlur}
                     disabled={!!dfFieldConfig.attributes.disabled}
                 />

@@ -4,13 +4,14 @@
  * DateTime component, actually simple input element with type "datetime"
  * So uses browser component
  */
+import React from 'react';
 import { ChangeEvent } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
-import { TextField } from '@some-ui-lib';
+import { EuiFieldText } from '@elastic/eui';
 
 import DfFieldWrap from '@/components/fields/Wrap';
 import { DFFieldController } from '@/components/render/DfFieldController';
@@ -40,7 +41,7 @@ function DhfCtrldDFDateTime(dfFieldConfig: IDynamicFormField) {
 
         return (
             <DfFieldWrap field={dfFieldConfig}>
-                <TextField
+                <EuiFieldText
                     disabled={!!dfFieldConfig.attributes.disabled}
                     value={fieldValue ?? ''}
                     onChange={onchange}

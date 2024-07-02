@@ -14,7 +14,7 @@
  *
  * Disabled revalidate / refresh system of SWR, this would cause submissions
  */
-import useSWR, { SWRConfiguration } from 'swr';
+import useSWR from 'swr';
 
 import { DfLabelProvider } from '@/types';
 
@@ -23,11 +23,10 @@ export function useLabelProvider(
     formKey: string,
     id?: string | null,
     cacheKey?: number,
-    swrConfig?: SWRConfiguration,
 ) {
     return useSWR<Record<string, any>>(
         // cache key
-        [labelProvider, formKey, id, swrConfig, cacheKey],
+        [labelProvider, formKey, id, cacheKey],
 
         // return val
         async () => {
@@ -47,8 +46,6 @@ export function useLabelProvider(
             revalidateOnFocus: false,
             keepPreviousData: true,
             shouldRetryOnError: false,
-
-            ...swrConfig,
         },
     );
 }
