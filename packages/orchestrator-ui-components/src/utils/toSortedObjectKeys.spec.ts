@@ -1,13 +1,17 @@
-import { sortObjectKeys } from './sortObjectKeys';
+import { toObjectWithSortedKeys } from './toObjectWithSortedKeys';
 
-describe('sortObjectKeys', () => {
+describe('toObjectWithSortedKeys', () => {
     it('sorts the keys of an object', () => {
         const testObject = {
             a: 1,
             b: 2,
             c: 3,
         };
-        const sortedObject = sortObjectKeys(testObject, ['b', 'a', 'c']);
+        const sortedObject = toObjectWithSortedKeys(testObject, [
+            'b',
+            'a',
+            'c',
+        ]);
 
         // Verifies order of keys
         expect(Object.keys(sortedObject).join('-')).toEqual('b-a-c');
@@ -23,7 +27,7 @@ describe('sortObjectKeys', () => {
             c: 3,
             d: 4,
         };
-        const sortedObject = sortObjectKeys(testObject, ['d', 'a']);
+        const sortedObject = toObjectWithSortedKeys(testObject, ['d', 'a']);
 
         // Verifies order of keys
         expect(Object.keys(sortedObject).join('-')).toEqual('d-a-b-c');

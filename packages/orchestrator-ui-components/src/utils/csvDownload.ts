@@ -1,9 +1,8 @@
 import { TranslationValues } from 'next-intl';
 
-import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration/constants';
-import { ToastTypes } from '@/types';
-import { GraphQLPageInfo } from '@/types';
-import { sortObjectKeys } from '@/utils/sortObjectKeys';
+import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration';
+import { GraphQLPageInfo, ToastTypes } from '@/types';
+import { toObjectWithSortedKeys } from '@/utils';
 
 function toCsvFileContent<T extends object>(data: T[]): string {
     const headers = Object.keys(data[0]).join(';');
@@ -65,7 +64,7 @@ export const csvDownloadHandler = <T extends object, U extends object>(
 
         if (data) {
             const dataForExport = dataMapper(data).map((d) =>
-                sortObjectKeys(d, keyOrder),
+                toObjectWithSortedKeys(d, keyOrder),
             );
             const pageInfo = pageInfoMapper(data);
             (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&

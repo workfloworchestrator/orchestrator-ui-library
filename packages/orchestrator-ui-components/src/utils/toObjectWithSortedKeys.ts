@@ -1,7 +1,7 @@
 // Some components in this project need the keys of an object to be in a certain order
 // This function sorts the keys of an object based on an array of strings
 // Keys that do not exist in the object will be ignored
-export const sortObjectKeys = <T extends object>(
+export const toObjectWithSortedKeys = <T extends object>(
     inputObject: T,
     keyOrder: string[],
 ): T => {
