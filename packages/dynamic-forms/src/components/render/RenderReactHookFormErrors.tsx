@@ -12,18 +12,18 @@ import { useDynamicFormsContext } from '@/core';
 import { getFieldLabelById } from '@/core/helper';
 
 export default function RenderReactHookFormErrors() {
-    const { rhf, formData } = useDynamicFormsContext();
+    const { theReactHookForm, formData } = useDynamicFormsContext();
     const [showDetails, setShowDetails] = useState(false);
 
     const toggleDetails = useCallback(() => {
         setShowDetails((state) => !state);
     }, []);
 
-    if (rhf.formState.isValid) {
+    if (theReactHookForm.formState.isValid) {
         return <></>;
     }
 
-    const numErrors = Object.keys(rhf.formState.errors).length;
+    const numErrors = Object.keys(theReactHookForm.formState.errors).length;
     const multiMistakes = numErrors > 1;
 
     return (
@@ -31,7 +31,7 @@ export default function RenderReactHookFormErrors() {
             title="Het formulier bevat tenminste één niet correct ingevulde rubriek,
 		waardoor het niet opgeslagen kan worden."
         >
-            {!!Object.keys(rhf.formState.errors).length && (
+            {!!Object.keys(theReactHookForm.formState.errors).length && (
                 <>
                     <div className="d-flex align-items-center">
                         Er {multiMistakes ? 'zijn' : 'is'} {numErrors} rubriek
@@ -39,15 +39,18 @@ export default function RenderReactHookFormErrors() {
                         <EuiButtonIcon
                             onClick={toggleDetails}
                             iconType="info"
+                            aria-label="info"
                             className="ml-2"
                         />
                     </div>
                     {showDetails && (
                         <ul className="error-list mb-2">
-                            {Object.keys(rhf.formState.errors).map(
+                            {Object.keys(theReactHookForm.formState.errors).map(
                                 (fieldKey) => {
                                     const field =
-                                        rhf.formState?.errors[fieldKey];
+                                        theReactHookForm.formState?.errors[
+                                            fieldKey
+                                        ];
 
                                     const fieldName = formData
                                         ? getFieldLabelById(fieldKey, formData)

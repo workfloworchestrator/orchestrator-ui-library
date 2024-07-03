@@ -69,7 +69,7 @@ export interface IDynamicFormsContextProps {
     isLoading: boolean;
     isSending: boolean;
     isFullFilled: boolean;
-    rhf: ReturnType<typeof useForm>;
+    theReactHookForm: ReturnType<typeof useForm>;
     errorDetails?: IValidationErrorDetails;
     formData?: IDynamicForm;
     debugMode?: boolean;
@@ -110,7 +110,7 @@ export type DfDataProvider = () => Promise<IDynamicFormsLabels>;
 
 export type CustomValidationRuleFn = (
     fieldConfig: IDynamicFormField,
-    rhf?: ReturnType<typeof useForm>,
+    theReactHookForm?: ReturnType<typeof useForm>,
 ) => Zod.ZodTypeAny | undefined;
 
 export interface IDynamicFormsContextConfig {
@@ -168,7 +168,7 @@ export type onFieldChangeHandlerFn = (
         type?: string;
         value: DfFieldValue;
     },
-    rhf: ReturnType<typeof useForm>,
+    theReactHookForm: ReturnType<typeof useForm>,
 ) => void;
 
 export interface IDynamicFormApiResponseDefEnum {}

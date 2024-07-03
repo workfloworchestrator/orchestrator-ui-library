@@ -50,7 +50,6 @@ export function useDynamicForm(
                 formKey,
                 requestBody,
             })) as any;
-
             if (
                 Object.keys(ogreq).length === 0 ||
                 (!ogreq.validation_errors && !ogreq.form)
@@ -59,7 +58,6 @@ export function useDynamicForm(
                     success: true,
                 };
             }
-
             return ogreq;
         },
 

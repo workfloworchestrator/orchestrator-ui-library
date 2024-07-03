@@ -11,9 +11,9 @@ import { useDynamicFormsContext } from '@/core';
 import { FormComponent, IDFInputFieldProps } from '@/types';
 
 function DFHiddenFieldWrap({ field }: IDFInputFieldProps) {
-    const { rhf } = useDynamicFormsContext();
+    const { theReactHookForm } = useDynamicFormsContext();
 
-    return <input type="hidden" {...rhf.register(field.id)} />;
+    return <input type="hidden" {...theReactHookForm.register(field.id)} />;
 }
 
 const DFHiddenField: FormComponent = {

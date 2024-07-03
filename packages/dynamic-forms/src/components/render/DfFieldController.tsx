@@ -27,12 +27,12 @@ type FieldComponent = (
 
 export const DFFieldController = (FieldComponent: FieldComponent) => {
     return function DFFieldControllerWrap({ field }: IDFInputFieldProps) {
-        const { rhf } = useDynamicFormsContext();
+        const { theReactHookForm } = useDynamicFormsContext();
 
         return (
             <Controller
                 name={field.id}
-                control={rhf.control}
+                control={theReactHookForm.control}
                 render={FieldComponent(field)}
             />
         );

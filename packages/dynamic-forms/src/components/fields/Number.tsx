@@ -40,11 +40,11 @@ function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
 }
 
 function DFNumberFieldWrap({ field }: IDFInputFieldProps) {
-    const { rhf } = useDynamicFormsContext();
+    const { theReactHookForm } = useDynamicFormsContext();
 
     return (
         <Controller
-            control={rhf.control}
+            control={theReactHookForm.control}
             name={field.id}
             render={DhfCtrldTextField(field)}
         />

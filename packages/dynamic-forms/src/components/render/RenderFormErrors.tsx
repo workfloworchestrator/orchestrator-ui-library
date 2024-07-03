@@ -59,9 +59,14 @@ export default function RenderFormErrors() {
                             <EuiButtonIcon
                                 onClick={toggleDetails}
                                 className="ml-2"
-                                iconType="smile"
+                                iconType="errorFilled"
+                                aria-label="errorFilled"
                             >
-                                <EuiIcon type="info" size={'m'} />
+                                <EuiIcon
+                                    type="info"
+                                    aria-label="info"
+                                    size={'m'}
+                                />
                             </EuiButtonIcon>
                         </div>
                         {showDetails && (
@@ -81,7 +86,12 @@ export default function RenderFormErrors() {
                     </>
                 )}
             </div>
-            <EuiIcon style={{ opacity: 0.4 }} type="warning" size={'xl'} />
+            <EuiIcon
+                style={{ opacity: 0.4 }}
+                type="warning"
+                aria-label="warning"
+                size={'xl'}
+            />
         </div>
     );
 }

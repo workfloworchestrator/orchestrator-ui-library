@@ -18,7 +18,7 @@ import { useDynamicFormsContext } from '@/core';
 import { FormComponent, IDFInputFieldProps, IDynamicFormField } from '@/types';
 
 function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
-    const { rhf } = useDynamicFormsContext();
+    const { theReactHookForm } = useDynamicFormsContext();
 
     return function TextInput({
         field,
@@ -31,7 +31,7 @@ function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
             // it seems we need this because the 2nd error would get stale..
             // https://github.com/react-hook-form/react-hook-form/issues/8170
             // https://github.com/react-hook-form/react-hook-form/issues/10832
-            rhf.trigger(field.name);
+            theReactHookForm.trigger(field.name);
         };
 
         return (
@@ -49,12 +49,12 @@ function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
 
 const DFTextField: FormComponent = {
     Element: function DFFieldControllerWrap({ field }: IDFInputFieldProps) {
-        const { rhf } = useDynamicFormsContext();
+        const { theReactHookForm } = useDynamicFormsContext();
 
         return (
             <Controller
                 name={field.id}
-                control={rhf.control}
+                control={theReactHookForm.control}
                 render={DhfCtrldTextField(field)}
             />
         );

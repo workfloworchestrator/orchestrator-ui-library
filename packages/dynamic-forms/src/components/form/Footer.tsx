@@ -13,15 +13,21 @@ import { useDynamicFormsContext } from '@/core';
 import { CsFlags, IsCsFlagEnabled } from '@/utils';
 
 const DynamicFormFooter = () => {
-    const { resetForm, submitForm, rhf, onCancel, sendLabel, footerComponent } =
-        useDynamicFormsContext();
+    const {
+        resetForm,
+        submitForm,
+        theReactHookForm,
+        onCancel,
+        sendLabel,
+        footerComponent,
+    } = useDynamicFormsContext();
 
     const [showErrors, setShowErrors] = useState(false);
 
     const toggleErrors = useCallback(() => {
         setShowErrors((state) => !state);
-        rhf.trigger();
-    }, [rhf]);
+        theReactHookForm.trigger();
+    }, [theReactHookForm]);
 
     const enableInvalidFormSubmission = IsCsFlagEnabled(
         CsFlags.ALLOW_INVALID_FORMS,
@@ -41,10 +47,11 @@ const DynamicFormFooter = () => {
 
             <div className="d-flex">
                 <EuiButtonIcon
-                    iconType="smile"
+                    iconType="returnKey"
+                    aria-label="returnKey"
                     type="button"
                     onClick={() => resetForm}
-                    disabled={!rhf.formState.isDirty}
+                    disabled={!theReactHookForm.formState.isDirty}
                 >
                     Rubriekinhoud herstellen
                 </EuiButtonIcon>
@@ -52,16 +59,17 @@ const DynamicFormFooter = () => {
                 <span className="spacer"></span>
 
                 <div className="d-flex align-items-center">
-                    {rhf.formState.isValid && !rhf.formState.isDirty && (
-                        <div
-                            className="d-flex mv-0 mr-3"
-                            style={{ opacity: 0.8 }}
-                        >
-                            Het formulier is nog niet aangepast
-                        </div>
-                    )}
+                    {theReactHookForm.formState.isValid &&
+                        !theReactHookForm.formState.isDirty && (
+                            <div
+                                className="d-flex mv-0 mr-3"
+                                style={{ opacity: 0.8 }}
+                            >
+                                Het formulier is nog niet aangepast
+                            </div>
+                        )}
 
-                    {!rhf.formState.isValid && (
+                    {!theReactHookForm.formState.isValid && (
                         <div
                             className="d-flex mv-0 mr-3"
                             style={{ opacity: 0.8 }}
@@ -71,6 +79,7 @@ const DynamicFormFooter = () => {
                                 className="mr-2"
                                 size={'m'}
                                 type="alert"
+                                aria-label="alert"
                             />{' '}
                             Het formulier is nog niet correct ingevuld{' '}
                             {!showErrors && (
@@ -94,7 +103,8 @@ const DynamicFormFooter = () => {
                     {!!onCancel && (
                         <EuiButtonIcon
                             type="button"
-                            iconType={'arrow'}
+                            iconType="arrowLeft"
+                            aria-label="arrowLeft"
                             onClick={onCancel}
                         >
                             Annuleren
@@ -106,12 +116,13 @@ const DynamicFormFooter = () => {
                         onClick={() =>
                             submitForm({} as FormEvent<HTMLFormElement>)
                         }
-                        iconType={'arrow'}
+                        iconType="bell"
+                        aria-label="bell"
                         disabled={
                             !enableInvalidFormSubmission &&
-                            (!rhf.formState.isValid ||
-                                (!rhf.formState.isDirty &&
-                                    !rhf.formState.isSubmitting))
+                            (!theReactHookForm.formState.isValid ||
+                                (!theReactHookForm.formState.isDirty &&
+                                    !theReactHookForm.formState.isSubmitting))
                         }
                     >
                         {sendLabel ? sendLabel : 'Verzenden'}
