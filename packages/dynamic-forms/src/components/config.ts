@@ -12,6 +12,7 @@ import DFRadioField from '@/components/fields/Radio';
 import DFSkipField from '@/components/fields/Skip';
 import DFSwitchField from '@/components/fields/Switch';
 import DFTextField from '@/components/fields/Text';
+import DFTextAreaField from '@/components/fields/TextArea';
 import { DfFieldFormats, DfFieldTypes, DfFieldsConfig } from '@/types';
 
 const fieldsConfig: DfFieldsConfig = [
@@ -96,6 +97,13 @@ const fieldsConfig: DfFieldsConfig = [
         },
     },
 
+    {
+        id: 'textarea',
+        Component: DFTextAreaField,
+        matcher(field) {
+            return field.format === DfFieldFormats.LONG;
+        },
+    },
     // no matcher, last in array,
     // so its the final fallback
     {
