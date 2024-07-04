@@ -122,10 +122,8 @@ function DynamicFormsProvider({
     // the form is not in the error response
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [rawSchema, setRawSchema] = useState<any>({});
-
     // parse the raw scheme refs so all data is where it should be in the schema
     const { data: schema } = useRefParser('form', rawSchema);
-
     // extract the JSON schema to a more usable custom schema
     const formData = useFormParser(
         schema,
@@ -133,25 +131,25 @@ function DynamicFormsProvider({
         fieldDetailProvider,
     );
 
-    const rhfRef = useRef<ReturnType<typeof useForm>>();
+    const theReactHookFormRef = useRef<ReturnType<typeof useForm>>();
 
     // build validation rules based on custom schema
     const resolver = useCustomZodValidation(
         formData,
-        rhfRef.current,
+        theReactHookFormRef.current,
         customValidationRules,
     );
 
     // initialize the react-hook-form
-    const rhf = useForm({
+    const theReactHookForm = useForm({
         resolver: zodResolver(resolver),
         mode: 'all',
     });
 
-    rhfRef.current = rhf;
+    theReactHookFormRef.current = theReactHookForm;
 
     // prevent user from navigating away when there are unsaved changes
-    const hasUnsavedData = !isFullFilled && rhf.formState.isDirty;
+    const hasUnsavedData = !isFullFilled && theReactHookForm.formState.isDirty;
     useLeavePageConfirm(
         hasUnsavedData,
         'Er zijn aanpassingen in het formulier. \nWeet u zeker dat u de pagina wilt verlaten?',
@@ -166,7 +164,7 @@ function DynamicFormsProvider({
 
             // a timeout to prevent conflicting with the leavePagePrevention
             setTimeout(() => {
-                onSuccess?.(rhf.getValues());
+                onSuccess?.(theReactHookForm.getValues());
             }, 1500);
         }
 
@@ -182,7 +180,7 @@ function DynamicFormsProvider({
         }
 
         setIsSending(false);
-    }, [apiErrorResp, onSuccess, rhf]);
+    }, [apiErrorResp, onSuccess, theReactHookForm]);
 
     const resetFormData = useCallback(() => {
         if (!formData) {
@@ -194,8 +192,8 @@ function DynamicFormsProvider({
             ...customData,
         });
 
-        rhf.reset(initialData);
-    }, [rhf, formData, formLabels?.data, customData]);
+        theReactHookForm.reset(initialData);
+    }, [theReactHookForm, formData, formLabels?.data, customData]);
 
     // a useeffect for filling data whenever formdefinition or labels update
     useEffect(() => {
@@ -219,10 +217,9 @@ function DynamicFormsProvider({
 
     const submitFormFn = useCallback(() => {
         setIsSending(true);
-        setFormInputData([rhf?.getValues()]);
-
+        setFormInputData([theReactHookForm?.getValues()]);
         window.scrollTo(0, 0);
-    }, [rhf]);
+    }, [theReactHookForm]);
 
     const onClientSideError = useCallback(
         (data?: FieldValues) => {
@@ -231,20 +228,23 @@ function DynamicFormsProvider({
             );
 
             if (data && enableInvalidFormSubmission) {
-                rhf.clearErrors();
+                theReactHookForm.clearErrors();
                 submitFormFn();
             }
         },
-        [rhf, submitFormFn],
+        [theReactHookForm, submitFormFn],
     );
 
-    const submitForm = rhf.handleSubmit(submitFormFn, onClientSideError);
+    const submitForm = theReactHookForm.handleSubmit(
+        submitFormFn,
+        onClientSideError,
+    );
 
     const resetForm = useCallback(() => {
         resetFormData();
         setErrorDetails(undefined);
-        rhf.trigger();
-    }, [resetFormData, rhf]);
+        theReactHookForm.trigger();
+    }, [resetFormData, theReactHookForm]);
 
     // with this we have the possiblity to have listeners for specific fields
     // this could be used to trigger validations of related fields, casting changes to elsewhere, etc.
@@ -252,14 +252,14 @@ function DynamicFormsProvider({
         let sub: Subscription;
 
         if (onFieldChangeHandler) {
-            sub = rhf.watch((value, { name, type }) => {
+            sub = theReactHookForm.watch((value, { name, type }) => {
                 onFieldChangeHandler(
                     {
                         name,
                         type,
                         value,
                     },
-                    rhf,
+                    theReactHookForm,
                 );
             });
         }
@@ -269,17 +269,17 @@ function DynamicFormsProvider({
                 return sub.unsubscribe();
             }
         };
-    }, [rhf, onFieldChangeHandler]);
+    }, [theReactHookForm, onFieldChangeHandler]);
 
     const isLoading =
         isLoadingFormLabels || isLoadingSchema || isCustomDataLoading;
 
     const DynamicFormsContextState = {
         // to prevent an issue where the sending state hangs
-        // we check both the SWR hook state as our manual state
+        // we check both the SWR hook state and our manual state
         isSending: isSending && isLoadingSchema,
         isLoading,
-        rhf,
+        theReactHookForm,
         formData: formData || undefined,
         headerComponent,
         footerComponent,
@@ -302,7 +302,7 @@ function DynamicFormsProvider({
             DynamicFormsContextState,
         });
 
-        const fieldWatcher = rhf.watch();
+        const fieldWatcher = theReactHookForm.watch();
         console.warn({ fieldWatcher });
     }
 

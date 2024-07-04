@@ -23,6 +23,7 @@ export enum DfFieldFormats {
     DATEPICKER = 'datepicker',
     NUMBER = 'number',
     LIST = 'list',
+    LONG = 'long', // textarea
 }
 
 export enum DfFieldTypes {
