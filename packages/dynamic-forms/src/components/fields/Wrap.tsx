@@ -25,7 +25,7 @@ function DfFieldWrap({ field, children }: IDfFieldWrapProps) {
     const { theReactHookForm, errorDetails, debugMode } =
         useDynamicFormsContext();
     const fieldState = theReactHookForm.getFieldState(field.id);
-
+    console.log('error messages in field wrapper', errorDetails, fieldState);
     const errorMsg =
         errorDetails?.mapped?.[field.id]?.msg ?? fieldState.error?.message;
     const isInvalid = errorMsg ?? fieldState.invalid;
@@ -50,8 +50,8 @@ function DfFieldWrap({ field, children }: IDfFieldWrapProps) {
 
                 {debugMode && (
                     <EuiButtonIcon
-                        iconType="cog"
-                        aria-label="cog"
+                        iconType="glasses"
+                        aria-label="glasses"
                         className="ml-3"
                         onClick={debugTrigger}
                     />
