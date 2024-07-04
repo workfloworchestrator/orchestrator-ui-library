@@ -1,5 +1,5 @@
 {
-    "name": "dynamic-forms",
+    "name": "@orchestrator-ui/dynamic-forms",
     "version": "0.0.1",
     "scripts": {
         "test": "jest",
@@ -16,6 +16,7 @@
         "dayjs": "^1.11.11",
         "jsonref": "^8.0.8",
         "next": "^14.2.4",
+        "react": "^18.3.1",
         "react-hook-form": "^7.49.3",
         "react-use": "^17.5.0",
         "swr": "^2.2.4",
@@ -38,5 +39,9 @@
         "jest-watch-typeahead": "^2.2.2",
         "tsup": "^8.0.1",
         "typescript": "^5.5.2"
-    }
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "browser": "./dist/index.js",
+    "types": "./dist/index.d.ts"
 }
