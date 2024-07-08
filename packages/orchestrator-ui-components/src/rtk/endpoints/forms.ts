@@ -38,27 +38,7 @@ const formsApi = orchestratorApi.injectEndpoints({
                 baseQueryType: BaseQueryTypes.fetch,
             },
         }),
-        startForm: build.mutation<
-            void,
-            { formKey: string; userInputs: object[] }
-        >({
-            query: ({ formKey, userInputs }) => ({
-                url: `${FORMS_ENDPOINT}${formKey}`,
-                method: 'POST',
-                body: JSON.stringify(userInputs),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
-        }),
     }),
 });
 
-export const {
-    useStartProcessMutation,
-    useResumeProcessMutation,
-    useStartFormMutation,
-} = formsApi;
+export const { useStartProcessMutation, useResumeProcessMutation } = formsApi;
