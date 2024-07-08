@@ -14,9 +14,13 @@ import { z } from 'zod';
 
 import { EuiFieldNumber } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { useDynamicFormsContext } from '@/core';
-import { FormComponent, IDFInputFieldProps, IDynamicFormField } from '@/types';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import {
+    FormComponent,
+    IDFInputFieldProps,
+    IDynamicFormField,
+} from '@/dynamic-forms/types';
 
 function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
     return function TextInput({

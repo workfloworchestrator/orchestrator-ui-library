@@ -9,7 +9,7 @@
  */
 import React from 'react';
 
-import { FormComponent } from '@/types';
+import { FormComponent } from '@/dynamic-forms/types';
 
 const DFSkipField: FormComponent = {
     Element() {

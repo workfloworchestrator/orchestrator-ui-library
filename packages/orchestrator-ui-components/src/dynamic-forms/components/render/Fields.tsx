@@ -8,7 +8,7 @@ import React from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { IDynamicFormField } from '@/types';
+import { IDynamicFormField } from '@/dynamic-forms/types';
 
 interface IRenderFieldsProps {
     fields: IDynamicFormField[];

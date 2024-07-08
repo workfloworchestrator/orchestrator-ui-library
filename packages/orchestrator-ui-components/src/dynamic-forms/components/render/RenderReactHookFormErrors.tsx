@@ -8,8 +8,8 @@ import { useCallback, useState } from 'react';
 
 import { EuiButtonIcon, EuiFlexItem } from '@elastic/eui';
 
-import { useDynamicFormsContext } from '@/core';
-import { getFieldLabelById } from '@/core/helper';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import { getFieldLabelById } from '@/dynamic-forms/core/helper';
 
 export default function RenderReactHookFormErrors() {
     const { theReactHookForm, formData } = useDynamicFormsContext();

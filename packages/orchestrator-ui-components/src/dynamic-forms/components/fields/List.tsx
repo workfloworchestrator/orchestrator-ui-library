@@ -14,16 +14,16 @@ import { z } from 'zod';
 
 import { EuiButton, EuiFieldText } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { DFFieldController } from '@/components/render/DfFieldController';
-import { zodValidationPresets } from '@/components/zodValidations';
-import { getFieldAllOfAnyOfEntry } from '@/core/helper';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { DFFieldController } from '@/dynamic-forms/components/render/DfFieldController';
+import { zodValidationPresets } from '@/dynamic-forms/components/zodValidations';
+import { getFieldAllOfAnyOfEntry } from '@/dynamic-forms/core/helper';
 import {
     DfFieldTypes,
     FormComponent,
     IDynamicFormField,
     ListFieldType,
-} from '@/types';
+} from '@/dynamic-forms/types';
 
 const getFieldDefaultValueByType = (type: DfFieldTypes) => {
     switch (type) {

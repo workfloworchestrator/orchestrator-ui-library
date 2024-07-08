@@ -8,7 +8,7 @@
  */
 import { z } from 'zod';
 
-import { IDynamicFormField } from '@/types';
+import { IDynamicFormField } from '@/dynamic-forms/types';
 
 const clientSideValidationRule = (field: IDynamicFormField) => {
     let validationRule = field?.validator?.(field) ?? z.string();

@@ -8,7 +8,7 @@ import { useCallback, useState } from 'react';
 
 import { EuiButtonIcon, EuiIcon } from '@elastic/eui';
 
-import { useDynamicFormsContext } from '@/core';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
 
 export default function RenderFormErrors() {
     const { errorDetails, formData } = useDynamicFormsContext();

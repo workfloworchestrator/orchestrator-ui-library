@@ -10,8 +10,8 @@ import {
     UseFormStateReturn,
 } from 'react-hook-form';
 
-import { useDynamicFormsContext } from '@/core/dynamicFormContext';
-import { IDFInputFieldProps, IDynamicFormField } from '@/types';
+import { useDynamicFormsContext } from '@/dynamic-forms/core/dynamicFormContext';
+import { IDFInputFieldProps, IDynamicFormField } from '@/dynamic-forms/types';
 
 type FieldComponent = (
     dfFieldConfig: IDynamicFormField,

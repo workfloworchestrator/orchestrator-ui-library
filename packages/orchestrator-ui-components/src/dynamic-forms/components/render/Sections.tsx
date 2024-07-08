@@ -4,8 +4,11 @@
  * This component will render all the sections based on the
  * config in the dynamicFormContext
  */
-import { useDynamicFormsContext } from '@/core';
-import { IDynamicFormField, IDynamicFormFieldSection } from '@/types';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import {
+    IDynamicFormField,
+    IDynamicFormFieldSection,
+} from '@/dynamic-forms/types';
 
 export interface IRenderDynamicFormSectionsChildProps {
     id: string;

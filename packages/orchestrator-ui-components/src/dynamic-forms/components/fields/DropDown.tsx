@@ -12,9 +12,9 @@ import { z } from 'zod';
 import { EuiSelect } from '@elastic/eui';
 import type { EuiSelectOption } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { DFFieldController } from '@/components/render/DfFieldController';
-import { FormComponent, IDynamicFormField } from '@/types';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { DFFieldController } from '@/dynamic-forms/components/render/DfFieldController';
+import { FormComponent, IDynamicFormField } from '@/dynamic-forms/types';
 
 function DhfCtrldDropDown(dfFieldConfig: IDynamicFormField) {
     const options: EuiSelectOption[] = dfFieldConfig.options.map((option) => ({

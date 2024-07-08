@@ -9,11 +9,11 @@ import React from 'react';
 
 import { EuiCard, EuiHeader, EuiIcon } from '@elastic/eui';
 
-import DynamicFormFooter from '@/components/form/Footer';
-import { RenderFields } from '@/components/render/Fields';
-import RenderFormErrors from '@/components/render/RenderFormErrors';
-import { RenderSections } from '@/components/render/Sections';
-import { IDynamicFormsContextProps } from '@/types';
+import DynamicFormFooter from '@/dynamic-forms/components/form/Footer';
+import { RenderFields } from '@/dynamic-forms/components/render/Fields';
+import RenderFormErrors from '@/dynamic-forms/components/render/RenderFormErrors';
+import { RenderSections } from '@/dynamic-forms/components/render/Sections';
+import { IDynamicFormsContextProps } from '@/dynamic-forms/types';
 
 const RenderMainForm = ({
     submitForm,

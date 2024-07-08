@@ -13,8 +13,8 @@ import { useCallback } from 'react';
 
 import { EuiButtonIcon, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { useDynamicFormsContext } from '@/core';
-import { IDynamicFormField } from '@/types';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import { IDynamicFormField } from '@/dynamic-forms/types';
 
 interface IDfFieldWrapProps {
     field: IDynamicFormField;

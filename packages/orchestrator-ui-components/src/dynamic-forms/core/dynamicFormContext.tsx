@@ -117,7 +117,6 @@ function DynamicFormsProvider({
         // TODO: remove this temp fix? ->
         formInputData,
         formProvider,
-        !!tmp_pydanticFormsOriginalImplementation,
         metaData,
         cacheKey,
     );

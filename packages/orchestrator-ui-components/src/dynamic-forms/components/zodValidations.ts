@@ -9,7 +9,7 @@
  */
 import { z } from 'zod';
 
-import { IDFZodValidationPresets } from '@/types';
+import { IDFZodValidationPresets } from '@/dynamic-forms/types';
 
 // to prevent duplicate code in components that have (almost)the same validation
 export const zodValidationPresets: IDFZodValidationPresets = {

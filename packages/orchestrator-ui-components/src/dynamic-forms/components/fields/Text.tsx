@@ -12,10 +12,14 @@ import {
 
 import { EuiFieldText } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { zodValidationPresets } from '@/components/zodValidations';
-import { useDynamicFormsContext } from '@/core';
-import { FormComponent, IDFInputFieldProps, IDynamicFormField } from '@/types';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { zodValidationPresets } from '@/dynamic-forms/components/zodValidations';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import {
+    FormComponent,
+    IDFInputFieldProps,
+    IDynamicFormField,
+} from '@/dynamic-forms/types';
 
 function DhfCtrldTextField(dfFieldConfig: IDynamicFormField) {
     const { theReactHookForm } = useDynamicFormsContext();

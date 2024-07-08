@@ -13,9 +13,9 @@ import { z } from 'zod';
 
 import { EuiRadio } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { DFFieldController } from '@/components/render/DfFieldController';
-import { FormComponent, IDynamicFormField } from '@/types';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { DFFieldController } from '@/dynamic-forms/components/render/DfFieldController';
+import { FormComponent, IDynamicFormField } from '@/dynamic-forms/types';
 
 function DhfCtrldDFRadioField(dfFieldConfig: IDynamicFormField) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

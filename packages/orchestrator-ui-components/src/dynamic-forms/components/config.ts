@@ -4,16 +4,20 @@
  * We will search for the first field that returns a positive match
  * The last field has no matcher, so it will match as the default
  */
-import DFHiddenField from '@/components/fields/Hidden';
-import DFListField from '@/components/fields/List';
-import DFRadioField from '@/components/fields/Radio';
-import DFSkipField from '@/components/fields/Skip';
-import DFSwitchField from '@/components/fields/Switch';
-import DFTextField from '@/components/fields/Text';
-import DFTextAreaField from '@/components/fields/TextArea';
 import DFDateTime from '@/dynamic-forms/components/fields/DateTime';
 import DFDropDown from '@/dynamic-forms/components/fields/DropDown';
-import { DfFieldFormats, DfFieldTypes, DfFieldsConfig } from '@/types';
+import DFHiddenField from '@/dynamic-forms/components/fields/Hidden';
+import DFListField from '@/dynamic-forms/components/fields/List';
+import DFRadioField from '@/dynamic-forms/components/fields/Radio';
+import DFSkipField from '@/dynamic-forms/components/fields/Skip';
+import DFSwitchField from '@/dynamic-forms/components/fields/Switch';
+import DFTextField from '@/dynamic-forms/components/fields/Text';
+import DFTextAreaField from '@/dynamic-forms/components/fields/TextArea';
+import {
+    DfFieldFormats,
+    DfFieldTypes,
+    DfFieldsConfig,
+} from '@/dynamic-forms/types';
 
 const fieldsConfig: DfFieldsConfig = [
     {

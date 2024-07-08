@@ -11,12 +11,12 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
-import DynamicForm from '@orchestrator-ui/dynamic-forms';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getStyles } from '@/components/WfoWorkflowSteps/styles';
+import { DynamicForm } from '@/dynamic-forms';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     HttpStatus,
@@ -274,7 +274,12 @@ export const WfoStartProcessPage = ({
                                         },
                                     });
                                 },
-                                formProvider: ({ formKey, requestBody }) => {},
+                                formProvider: ({ formKey, requestBody }) => {
+                                    console.log(formKey, requestBody);
+                                    return Promise.resolve({
+                                        test: 'test onFieldChangeHandler',
+                                    });
+                                },
                                 fieldDetailProvider: {},
                                 dataProviderCacheKey: 10,
                                 onFieldChangeHandler: () => {

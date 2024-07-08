@@ -15,9 +15,13 @@ import { z } from 'zod';
 
 import { EuiCheckbox } from '@elastic/eui';
 
-import DfFieldWrap from '@/components/fields/Wrap';
-import { DFFieldController } from '@/components/render/DfFieldController';
-import { DfFieldTypes, FormComponent, IDynamicFormField } from '@/types';
+import DfFieldWrap from '@/dynamic-forms/components/fields/Wrap';
+import { DFFieldController } from '@/dynamic-forms/components/render/DfFieldController';
+import {
+    DfFieldTypes,
+    FormComponent,
+    IDynamicFormField,
+} from '@/dynamic-forms/types';
 
 function DhfCtrldDFSwitchField(dfFieldConfig: IDynamicFormField) {
     const onLabel = dfFieldConfig.options?.[0];
