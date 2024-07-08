@@ -2,7 +2,6 @@ import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 const PROCESS_ENDPOINT = 'processes';
 const RESUME_ENDPOINT = 'resume';
-const FORMS_ENDPOINT = 'surf/forms/'; // It is still being used by example-wfo-ui
 
 const formsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
