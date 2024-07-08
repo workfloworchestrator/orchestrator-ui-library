@@ -34,7 +34,6 @@
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@elastic/eui": "^95.1.0",
-        "@orchestrator-ui/dynamic-forms": "*",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
         "invariant": "^2.2.4",
         "lodash": "^4.17.21",
@@ -52,7 +51,15 @@
         "uniforms": "^3.8.1",
         "uniforms-bridge-json-schema": "^3.8.1",
         "uniforms-unstyled": "^3.8.1",
-        "use-query-params": "2.2.1"
+        "use-query-params": "2.2.1",
+        "@hookform/resolvers": "^3.6.0",
+        "dayjs": "^1.11.11",
+        "jsonref": "^8.0.8",
+        "react-hook-form": "^7.49.3",
+        "react-use": "^17.5.0",
+        "swr": "^2.2.4",
+        "zod": "^3.22.4",
+        "zod-i18n-map": "^2.27.0"
     },
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",
