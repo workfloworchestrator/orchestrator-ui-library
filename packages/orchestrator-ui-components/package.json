@@ -34,6 +34,7 @@
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@elastic/eui": "^95.1.0",
+        "@orchestrator-ui/dynamic-forms": "*",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
         "invariant": "^2.2.4",
         "lodash": "^4.17.21",

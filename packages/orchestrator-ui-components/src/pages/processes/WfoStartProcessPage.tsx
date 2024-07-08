@@ -11,6 +11,7 @@ import {
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
+import DynamicForm from '@orchestrator-ui/dynamic-forms';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
@@ -59,6 +60,8 @@ export interface UserInputForm {
     stepUserInput?: JSONSchema6;
     hasNext?: boolean;
 }
+
+const MODIFY_NOTE = 'modify_note';
 
 const getInitialProcessPayload = ({
     productId,
@@ -178,7 +181,9 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName) {
+        if (processName !== MODIFY_NOTE) {
+            console.log('USE EFFECT MODIFY NOTE!');
+        } else if (processName) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -243,6 +248,42 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
+                    (processName === MODIFY_NOTE && (
+                        <DynamicForm
+                            formIdKey={MODIFY_NOTE}
+                            title="Modify note test"
+                            sendLabel={'Send label'}
+                            successNotice={<div>Success notice</div>}
+                            headerComponent={<div>Header component</div>}
+                            footerComponent={<div>Footer component</div>}
+                            onSuccess={() =>
+                                alert('TODO: Redirect to process detail')
+                            }
+                            config={{
+                                // use custom method to provide data for the form. This overwrites data fetched from labels endpoint
+                                dataProvider: () => {
+                                    return Promise.resolve({
+                                        test: 'test dataprovider',
+                                    });
+                                },
+                                labelProvider: ({ formKey, id }) => {
+                                    return Promise.resolve({
+                                        labels: {
+                                            label1: 'label1 value',
+                                            label2: 'label2 value',
+                                        },
+                                    });
+                                },
+                                formProvider: ({ formKey, requestBody }) => {},
+                                fieldDetailProvider: {},
+                                dataProviderCacheKey: 10,
+                                onFieldChangeHandler: () => {
+                                    console.log('field changer');
+                                },
+                            }}
+                            id={MODIFY_NOTE}
+                        />
+                    )) ||
                     (stepUserInput && (
                         <UserInputFormWizard
                             stepUserInput={stepUserInput}

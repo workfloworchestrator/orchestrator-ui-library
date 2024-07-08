@@ -26,7 +26,6 @@ export function useDynamicForm(
     formKey: string,
     formInputData: DynamicFormsMetaData,
     formProvider: DfFormProvider,
-    tmp_pydanticFormsOriginalImplementation: boolean,
     metaData?: DynamicFormsMetaData,
     cacheKey?: number,
 ) {
@@ -38,14 +37,11 @@ export function useDynamicForm(
         async ([formKey, formInputData, metaData]) => {
             let requestBody: object | unknown = {};
 
-            if (tmp_pydanticFormsOriginalImplementation) {
-                requestBody = formInputData;
-            } else {
-                requestBody = {
-                    form_input_data: formInputData,
-                    meta_data: metaData,
-                };
-            }
+            requestBody = {
+                form_input_data: formInputData,
+                meta_data: metaData,
+            };
+
             const ogreq = (await formProvider({
                 formKey,
                 requestBody,
