@@ -16,7 +16,7 @@
  */
 import useSWR from 'swr';
 
-import { DfLabelProvider } from '@/types';
+import { DfLabelProvider } from '@/dynamic-forms/types';
 
 export function useLabelProvider(
     labelProvider: DfLabelProvider,

@@ -4,8 +4,6 @@
  * We will search for the first field that returns a positive match
  * The last field has no matcher, so it will match as the default
  */
-import DFDateTime from '@/components/fields/DateTime';
-import DFDropDown from '@/components/fields/DropDown';
 import DFHiddenField from '@/components/fields/Hidden';
 import DFListField from '@/components/fields/List';
 import DFRadioField from '@/components/fields/Radio';
@@ -13,6 +11,8 @@ import DFSkipField from '@/components/fields/Skip';
 import DFSwitchField from '@/components/fields/Switch';
 import DFTextField from '@/components/fields/Text';
 import DFTextAreaField from '@/components/fields/TextArea';
+import DFDateTime from '@/dynamic-forms/components/fields/DateTime';
+import DFDropDown from '@/dynamic-forms/components/fields/DropDown';
 import { DfFieldFormats, DfFieldTypes, DfFieldsConfig } from '@/types';
 
 const fieldsConfig: DfFieldsConfig = [

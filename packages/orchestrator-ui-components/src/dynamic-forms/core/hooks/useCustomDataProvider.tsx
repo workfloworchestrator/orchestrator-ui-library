@@ -1,7 +1,10 @@
 import useSWR from 'swr';
 import { FetcherResponse } from 'swr/dist/_internal';
 
-import { IDynamicFormApiErrorResponse, IDynamicFormsLabels } from '@/types';
+import {
+    IDynamicFormApiErrorResponse,
+    IDynamicFormsLabels,
+} from '@/dynamic-forms/types';
 
 const useCustomDataProvider = (
     cacheKey: number,

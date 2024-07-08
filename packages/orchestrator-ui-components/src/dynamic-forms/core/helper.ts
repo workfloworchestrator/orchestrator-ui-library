@@ -3,7 +3,7 @@
  *
  * Helper functions to be used in DynamicForms
  */
-import fieldsConfig from '@/components/config';
+import fieldsConfig from '@/dynamic-forms/components/config';
 import {
     IDynamicForm,
     IDynamicFormApiErrorResponse,
@@ -12,7 +12,7 @@ import {
     IDynamicFormFieldAttributes,
     IDynamicFormFieldSection,
     IDynamicFormFieldValidation,
-} from '@/types';
+} from '@/dynamic-forms/types';
 
 /**
  * Error object formatting

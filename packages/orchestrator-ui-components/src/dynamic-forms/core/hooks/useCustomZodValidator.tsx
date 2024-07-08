@@ -12,9 +12,9 @@ import { useForm } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import clientSideValidationRule from '@/core/clientSideValidationRules';
-import { useFormParser } from '@/core/hooks/useFormParser';
-import { CustomValidationRuleFn } from '@/types';
+import clientSideValidationRule from '@/dynamic-forms/core/clientSideValidationRules';
+import { useFormParser } from '@/dynamic-forms/core/hooks/useFormParser';
+import { CustomValidationRuleFn } from '@/dynamic-forms/types';
 
 const useCustomZodValidation = (
     formData: ReturnType<typeof useFormParser>,

@@ -26,19 +26,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
     getErrorDetailsFromResponse,
     getFormValuesFromFieldOrLabels,
-} from '@/core/helper';
-import { useDynamicForm, useFormParser, useRefParser } from '@/core/hooks';
-import { useCacheKey } from '@/core/hooks/useCacheKey';
-import useCustomDataProvider from '@/core/hooks/useCustomDataProvider';
-import useCustomZodValidation from '@/core/hooks/useCustomZodValidator';
-import { useLabelProvider } from '@/core/hooks/useLabelProvider';
-import { useLeavePageConfirm } from '@/core/hooks/useLeavePageConfirm';
+} from '@/dynamic-forms/core/helper';
+import {
+    useDynamicForm,
+    useFormParser,
+    useRefParser,
+} from '@/dynamic-forms/core/hooks';
+import { useCacheKey } from '@/dynamic-forms/core/hooks/useCacheKey';
+import useCustomDataProvider from '@/dynamic-forms/core/hooks/useCustomDataProvider';
+import useCustomZodValidation from '@/dynamic-forms/core/hooks/useCustomZodValidator';
+import { useLabelProvider } from '@/dynamic-forms/core/hooks/useLabelProvider';
+import { useLeavePageConfirm } from '@/dynamic-forms/core/hooks/useLeavePageConfirm';
 import {
     IDynamicFormsContextInitialProps,
     IDynamicFormsContextProps,
     IValidationErrorDetails,
-} from '@/types';
-import { CsFlags, IsCsFlagEnabled } from '@/utils';
+} from '@/dynamic-forms/types';
+import { CsFlags, IsCsFlagEnabled } from '@/dynamic-forms/utils';
 
 import translation from './translations/nl.json';
 

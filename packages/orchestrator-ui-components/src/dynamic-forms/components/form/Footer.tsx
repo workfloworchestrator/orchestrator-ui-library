@@ -8,9 +8,9 @@ import { FormEvent, useCallback, useState } from 'react';
 
 import { EuiButtonIcon, EuiCard, EuiIcon } from '@elastic/eui';
 
-import RenderReactHookFormErrors from '@/components/render/RenderReactHookFormErrors';
-import { useDynamicFormsContext } from '@/core';
-import { CsFlags, IsCsFlagEnabled } from '@/utils';
+import RenderReactHookFormErrors from '@/dynamic-forms/components/render/RenderReactHookFormErrors';
+import { useDynamicFormsContext } from '@/dynamic-forms/core';
+import { CsFlags, IsCsFlagEnabled } from '@/dynamic-forms/utils';
 
 const DynamicFormFooter = () => {
     const {

@@ -12,12 +12,12 @@ import {
     getFieldOptions,
     getFieldValidation,
     matchComponentWithField,
-} from '@/core/helper';
+} from '@/dynamic-forms/core/helper';
 import {
     IDynamicFormApiRefResolved,
     IDynamicFormField,
     IDynamicFormsLabels,
-} from '@/types';
+} from '@/dynamic-forms/types';
 
 /**
  * Map field of the schema to a better usable format

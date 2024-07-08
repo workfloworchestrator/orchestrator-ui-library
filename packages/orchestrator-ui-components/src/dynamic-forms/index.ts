@@ -1,3 +1,1 @@
-import DynamicForm from "./components/form/ContextWrap"
-
-export default DynamicForm
+export * from '@/dynamic-forms/components/form/ContextWrap';

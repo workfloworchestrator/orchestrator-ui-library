@@ -6,7 +6,8 @@
         "outDir": "./dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@/dynamic-forms/*": ["./src/dynamic-forms/*"]
         }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx"],

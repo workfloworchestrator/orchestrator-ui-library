@@ -20,7 +20,7 @@ import {
     DfFormProvider,
     DynamicFormsMetaData,
     IDynamicFormApiErrorResponse,
-} from '@/types';
+} from '@/dynamic-forms/types';
 
 export function useDynamicForm(
     formKey: string,

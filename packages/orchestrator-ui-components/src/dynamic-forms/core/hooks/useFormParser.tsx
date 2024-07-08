@@ -10,15 +10,15 @@
  */
 import { useMemo } from 'react';
 
-import { mapToUsableField } from '@/core';
-import { getFieldBySection } from '@/core/helper';
+import { mapToUsableField } from '@/dynamic-forms/core';
+import { getFieldBySection } from '@/dynamic-forms/core/helper';
 import {
     IDynamicForm,
     IDynamicFormApiRefResolved,
     IDynamicFormState,
     IDynamicFormsLabels,
     IFieldDefinitionProvider,
-} from '@/types';
+} from '@/dynamic-forms/types';
 
 export function useFormParser(
     schema?: IDynamicFormApiRefResolved,

@@ -9,7 +9,7 @@
 import { parse as jsonSchemaParse } from 'jsonref';
 import useSWR from 'swr';
 
-import { IDynamicFormApiRefResolved } from '@/types';
+import { IDynamicFormApiRefResolved } from '@/dynamic-forms/types';
 
 async function retriever() {
     return false;

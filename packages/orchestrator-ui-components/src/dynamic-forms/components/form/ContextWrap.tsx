@@ -8,12 +8,13 @@
  */
 import React from 'react';
 
-import RenderMainForm from '@/components/form/Form';
-import DynamicFormsProvider from '@/core/dynamicFormContext';
+import RenderMainForm from '@/dynamic-forms/components/form/Form';
+import DynamicFormsProvider from '@/dynamic-forms/core/dynamicFormContext';
+
 import {
     DynamicFormsMetaData,
     IDynamicFormsContextInitialProps,
-} from '@/types';
+} from '../../types';
 
 export interface DynamicFormProps
     extends Omit<IDynamicFormsContextInitialProps, 'formKey' | 'children'> {
@@ -21,12 +22,14 @@ export interface DynamicFormProps
     meta?: DynamicFormsMetaData;
 }
 
-const DynamicForm = ({ id, meta, ...contextProps }: DynamicFormProps) => (
+export const DynamicForm = ({
+    id,
+    meta,
+    ...contextProps
+}: DynamicFormProps) => (
     <div e2e-id={`dynamicforms-${id}`}>
         <DynamicFormsProvider {...contextProps} formKey={id} metaData={meta}>
             {RenderMainForm}
         </DynamicFormsProvider>
     </div>
 );
-
-export default DynamicForm;
