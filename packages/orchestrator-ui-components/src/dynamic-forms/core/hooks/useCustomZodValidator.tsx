@@ -18,7 +18,7 @@ import { CustomValidationRuleFn } from '@/dynamic-forms/types';
 
 const useCustomZodValidation = (
     formData: ReturnType<typeof useFormParser>,
-    rhf?: ReturnType<typeof useForm>,
+    theReactHookForm?: ReturnType<typeof useForm>,
     customValidationRulesFn?: CustomValidationRuleFn,
 ) => {
     return useMemo(() => {
@@ -29,7 +29,7 @@ const useCustomZodValidation = (
         return z.object(
             formData.fields.reduce((old, field) => {
                 const fieldRules =
-                    customValidationRulesFn?.(field, rhf) ??
+                    customValidationRulesFn?.(field, theReactHookForm) ??
                     clientSideValidationRule(field);
 
                 return {
@@ -38,7 +38,7 @@ const useCustomZodValidation = (
                 };
             }, {}),
         );
-    }, [formData, customValidationRulesFn, rhf]);
+    }, [formData, customValidationRulesFn, theReactHookForm]);
 };
 
 export default useCustomZodValidation;

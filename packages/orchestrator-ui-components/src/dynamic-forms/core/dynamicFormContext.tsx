@@ -6,6 +6,7 @@
  * This will fetch the jsonScheme, parse it, and handle form state and validation
  */
 import React from 'react';
+import { useMemo } from 'react';
 import {
     createContext,
     useCallback,
@@ -74,6 +75,7 @@ function DynamicFormsProvider({
     children,
     config,
 }: IDynamicFormsContextInitialProps) {
+    console.log('WHAAAAATTTTTTTTTTTTTTTTTTTTTTT');
     const {
         fieldDetailProvider,
         onFieldChangeHandler,
@@ -97,13 +99,15 @@ function DynamicFormsProvider({
     // fetch the labels of the form, but can also include the current form values
     const { formLabels, isLoadingFormLabels, hasErrorFormLabels } =
         useLabelProvider(workflowName, cacheKey);
-    console.log('hasErrorFormLabels', hasErrorFormLabels);
+
     const { data: customData, isLoading: isCustomDataLoading } =
         useCustomDataProvider(
             dataProviderCacheKey ? dataProviderCacheKey : cacheKey,
         );
 
-    const theDynamicForm = {}; //useDynamicForm(workflowName, formInputData);
+    const theDynamicForm = useMemo(() => {
+        return {};
+    }, []); //useDynamicForm(workflowName, formInputData);
 
     // we cache the form scheme so when there is an error, we still have the form
     // the form is not in the error response
@@ -117,24 +121,27 @@ function DynamicFormsProvider({
     const theReactHookFormRef = useRef<ReturnType<typeof useForm>>();
 
     // build validation rules based on custom schema
+    /*
     const resolver = useCustomZodValidation(
         formData,
         theReactHookFormRef.current,
         customValidationRules,
     );
-
+*/
     // initialize the react-hook-form
-    const theReactHookForm = {};
-
-    //useForm({
-    //    resolver: zodResolver(resolver),
-    //    mode: 'all',
-    //});
+    const theReactHookForm = useForm({
+        resolver: zodResolver(z.object({})),
+        mode: 'all',
+    });
 
     theReactHookFormRef.current = theReactHookForm;
 
     // prevent user from navigating away when there are unsaved changes
-    const hasUnsavedData = !isFullFilled && theReactHookForm.formState.isDirty;
+
+    const hasUnsavedData =
+        !isFullFilled &&
+        theReactHookForm?.formState &&
+        theReactHookForm.formState.isDirty;
     useLeavePageConfirm(
         hasUnsavedData,
         'Er zijn aanpassingen in het formulier. \nWeet u zeker dat u de pagina wilt verlaten?',
@@ -143,12 +150,17 @@ function DynamicFormsProvider({
     // a useeffect for whenever the error response updates
     // sometimes we need to update the form,
     // sometimes we need to update the errors
+
     useEffect(() => {
         console.log('retriggering useeffect!!!!!!!');
-        if (theDynamicForm.workflowResult && theDynamicForm.workflowResult.id) {
+        if (
+            theDynamicForm?.workflowResult &&
+            theDynamicForm?.workflowResult.id
+        ) {
             setIsFullFilled(true);
 
             // a timeout to prevent conflicting with the leavePagePrevention
+
             setTimeout(() => {
                 onSuccess?.(theReactHookForm.getValues());
             }, 1500);
@@ -167,8 +179,8 @@ function DynamicFormsProvider({
             setErrorDetails(theDynamicForm?.validationErrors);
         }
 
-        // setIsSending(false);
-    }, [theDynamicForm, onSuccess, theReactHookForm]);
+        setIsSending(false);
+    }, [theDynamicForm, theReactHookForm]);
 
     const resetFormData = useCallback(() => {
         if (!formData) {
@@ -184,15 +196,17 @@ function DynamicFormsProvider({
     }, [theReactHookForm, formData, formLabels, customData]);
 
     // a useeffect for filling data whenever formdefinition or labels update
+    /*
     useEffect(() => {
         // this makes sure default values are set.
         resetFormData();
     }, [resetFormData]);
-
+*/
     // this is to show an error whenever there is an unexpected error from the backend
     // for instance a 500
+
     useEffect(() => {
-        if (!theDynamicForm.hasUnexpectedError) {
+        if (!theDynamicForm?.hasUnexpectedError) {
             return;
         }
 
@@ -201,7 +215,7 @@ function DynamicFormsProvider({
             source: [],
             mapped: {},
         });
-    }, [theDynamicForm.hasUnexpectedError]);
+    }, [theDynamicForm?.hasUnexpectedError]);
 
     const submitFormFn = useCallback(() => {
         setIsSending(true);
@@ -262,12 +276,12 @@ function DynamicFormsProvider({
     }, [theReactHookForm, onFieldChangeHandler]);
 
     const isLoading =
-        isLoadingFormLabels || theDynamicForm.isLoading || isCustomDataLoading;
+        isLoadingFormLabels || theDynamicForm?.isLoading || isCustomDataLoading;
 
     const DynamicFormsContextState = {
         // to prevent an issue where the sending state hangs
         // we check both the SWR hook state and our manual state
-        isSending: isSending && isLoadingDynamicForms,
+        isSending: isSending && theDynamicForm?.isLoading,
         isLoading,
         theReactHookForm,
         formData: formData || undefined,

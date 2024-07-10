@@ -47,25 +47,24 @@ export function useDynamicForm(
     const [validationErrors, setValidationErrors] =
         useState<IValidationErrorDetails>();
 
-    1 === 2 &&
-        startProcess({
-            workflowName,
-            userInputs,
+    startProcess({
+        workflowName,
+        userInputs,
+    })
+        .unwrap()
+        .then((result) => {
+            console.log(result);
+            setWorkflowResult(result);
+            // TODO: Trigger success handler
         })
-            .unwrap()
-            .then((result) => {
-                console.log(result);
-                setWorkflowResult(result);
-                // TODO: Trigger success handler
-            })
-            .catch(
-                (error: {
-                    status: HttpStatus;
-                    data: IDynamicFormApiErrorResponse;
-                }) => {
-                    console.log('error', error);
+        .catch(
+            (error: {
+                status: HttpStatus;
+                data: IDynamicFormApiErrorResponse;
+            }) => {
+                console.log('error', error);
 
-                    /*
+                /*
                     const { status, data } = error;
                     if (
                         status === HttpStatus.BadRequest &&
@@ -85,11 +84,11 @@ export function useDynamicForm(
                         console.log('Unexpected error', error);
                         setHasUnexpectedError(true);
                     }*/
-                },
-            )
-            .finally(() => {
-                setIsLoading(false);
-            });
+            },
+        )
+        .finally(() => {
+            setIsLoading(false);
+        });
 
     console.log('formSchema', formSchema);
     return {

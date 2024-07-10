@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { use, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
@@ -181,8 +181,8 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName !== MODIFY_NOTE) {
-            console.log('USE EFFECT MODIFY NOTE!');
+        if (processName === MODIFY_NOTE) {
+            console.log('MODIFY_NOTE !!!!');
         } else if (processName) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
@@ -220,6 +220,22 @@ export const WfoStartProcessPage = ({
         },
     };
 
+    const config = useMemo(() => {
+        return {
+            fieldDetailProvider: {},
+            dataProviderCacheKey: 10,
+        };
+    }, []);
+
+    const modifyNoteSuccess = useCallback((result: unknown) => {
+        console.log('onSuccess', result);
+        alert('TODO: Redirect to process detail');
+    }, []);
+
+    console.log(
+        'WfoStartProcessPage.tsx: WfoStartProcessPage()()()()()()()()()()()()()()()()()()',
+    );
+
     return (
         <WfoProcessDetail
             pageTitle={processName}
@@ -256,17 +272,8 @@ export const WfoStartProcessPage = ({
                             successNotice={<div>Success notice</div>}
                             headerComponent={<div>Header component</div>}
                             footerComponent={<div>Footer component</div>}
-                            onSuccess={(result) => {
-                                console.log('onSuccess', result);
-                                alert('TODO: Redirect to process detail');
-                            }}
-                            config={{
-                                fieldDetailProvider: {},
-                                dataProviderCacheKey: 10,
-                                onFieldChangeHandler: () => {
-                                    console.log('field changer');
-                                },
-                            }}
+                            onSuccess={modifyNoteSuccess}
+                            config={config}
                         />
                     )) ||
                     (stepUserInput && (
