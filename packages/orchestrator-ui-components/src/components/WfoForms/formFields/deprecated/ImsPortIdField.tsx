@@ -110,7 +110,7 @@ function ImsPortId({
 
     const { data: nodeSubscriptionOptions } =
         useGetNodeSubscriptionOptionsQuery({
-            statuses: nodeStatuses?.join('-') ?? 'active',
+            statuses: nodeStatuses?.join('|') ?? 'active',
         });
 
     useEffect(() => {
