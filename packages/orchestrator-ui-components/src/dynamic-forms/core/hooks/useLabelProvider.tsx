@@ -16,7 +16,6 @@ import { isError } from 'lodash';
  * Disabled revalidate / refresh system of SWR, this would cause submissions
  */
 export function useLabelProvider(workflowName: string, cacheKey?: number) {
-    console.log(workflowName, cacheKey);
     return {
         formLabels: {
             label1: 'label1',

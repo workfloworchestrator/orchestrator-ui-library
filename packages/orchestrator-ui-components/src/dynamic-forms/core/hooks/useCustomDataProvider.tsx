@@ -6,8 +6,6 @@ const useCustomDataProvider = (
     cacheKey: number,
     promiseFn?: () => FetcherResponse<IDynamicFormsLabels>,
 ) => {
-    console.log('useCustomDataProvider', cacheKey, promiseFn);
-
     return {
         data: {
             custom1: 'custom1',

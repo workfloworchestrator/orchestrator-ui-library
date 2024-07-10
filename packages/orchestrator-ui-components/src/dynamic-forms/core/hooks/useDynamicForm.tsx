@@ -12,7 +12,7 @@
  *
  * Disabled revalidate / refresh system of SWR, this would cause submissions
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     DynamicFormsMetaData,
@@ -47,24 +47,21 @@ export function useDynamicForm(
     const [validationErrors, setValidationErrors] =
         useState<IValidationErrorDetails>();
 
-    startProcess({
-        workflowName,
-        userInputs,
-    })
-        .unwrap()
-        .then((result) => {
-            console.log(result);
-            setWorkflowResult(result);
-            // TODO: Trigger success handler
+    useEffect(() => {
+        startProcess({
+            workflowName,
+            userInputs,
         })
-        .catch(
-            (error: {
-                status: HttpStatus;
-                data: IDynamicFormApiErrorResponse;
-            }) => {
-                console.log('error', error);
-
-                /*
+            .unwrap()
+            .then((result) => {
+                setWorkflowResult(result);
+                // TODO: Trigger success handler
+            })
+            .catch(
+                (error: {
+                    status: HttpStatus;
+                    data: IDynamicFormApiErrorResponse;
+                }) => {
                     const { status, data } = error;
                     if (
                         status === HttpStatus.BadRequest &&
@@ -72,25 +69,23 @@ export function useDynamicForm(
                     ) {
                         // Form has validation errors
                         setValidationErrors(getErrorDetailsFromResponse(data));
-                        console.log(
-                            'Validation errors',
-                            data.validation_errors,
-                        );
-                    } else if (status === HttpStatus.FormNotComplete) {
-                        console.log('Form not complete hahahha', error);
-                        setFormSchema(data.form);
+                    } else if (
+                        status === HttpStatus.FormNotComplete &&
+                        data.form
+                    ) {
+                        console.log('froooze', Object.isFrozen(data.form));
+                        // Setting form schema without creating a new object will cause the formSchema object to be frozen
+                        // which gives us trouble when trying to parse it later
+                        setFormSchema({ ...data.form });
                         setHasUnexpectedError(false);
                     } else {
-                        console.log('Unexpected error', error);
                         setHasUnexpectedError(true);
-                    }*/
-            },
-        )
-        .finally(() => {
-            setIsLoading(false);
-        });
+                    }
+                },
+            )
+            .finally(() => setIsLoading(false));
+    }, [workflowName, userInputs, startProcess]);
 
-    console.log('formSchema', formSchema);
     return {
         formSchema,
         workflowResult,

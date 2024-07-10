@@ -6,7 +6,6 @@
  * This will fetch the jsonScheme, parse it, and handle form state and validation
  */
 import React from 'react';
-import { useMemo } from 'react';
 import {
     createContext,
     useCallback,
@@ -75,7 +74,6 @@ function DynamicFormsProvider({
     children,
     config,
 }: IDynamicFormsContextInitialProps) {
-    console.log('WHAAAAATTTTTTTTTTTTTTTTTTTTTTT');
     const {
         fieldDetailProvider,
         onFieldChangeHandler,
@@ -105,9 +103,7 @@ function DynamicFormsProvider({
             dataProviderCacheKey ? dataProviderCacheKey : cacheKey,
         );
 
-    const theDynamicForm = useMemo(() => {
-        return {};
-    }, []); //useDynamicForm(workflowName, formInputData);
+    const theDynamicForm = useDynamicForm(workflowName, formInputData);
 
     // we cache the form scheme so when there is an error, we still have the form
     // the form is not in the error response
@@ -121,16 +117,14 @@ function DynamicFormsProvider({
     const theReactHookFormRef = useRef<ReturnType<typeof useForm>>();
 
     // build validation rules based on custom schema
-    /*
     const resolver = useCustomZodValidation(
         formData,
         theReactHookFormRef.current,
         customValidationRules,
     );
-*/
     // initialize the react-hook-form
     const theReactHookForm = useForm({
-        resolver: zodResolver(z.object({})),
+        resolver: zodResolver(resolver),
         mode: 'all',
     });
 
@@ -152,7 +146,6 @@ function DynamicFormsProvider({
     // sometimes we need to update the errors
 
     useEffect(() => {
-        console.log('retriggering useeffect!!!!!!!');
         if (
             theDynamicForm?.workflowResult &&
             theDynamicForm?.workflowResult.id
@@ -160,27 +153,24 @@ function DynamicFormsProvider({
             setIsFullFilled(true);
 
             // a timeout to prevent conflicting with the leavePagePrevention
-
             setTimeout(() => {
                 onSuccess?.(theReactHookForm.getValues());
             }, 1500);
         }
 
         // when we receive a form from the JSON, we fully reset the scheme
-        if (theDynamicForm?.formSchema) {
-            console.log('updating the raw schema');
+        if (theDynamicForm.formSchema) {
             setRawSchema(theDynamicForm.formSchema);
             setErrorDetails(undefined);
         }
 
         // when we receive errors, we append to the scheme
         if (theDynamicForm?.validationErrors) {
-            console.log('updating the error details');
             setErrorDetails(theDynamicForm?.validationErrors);
         }
 
         setIsSending(false);
-    }, [theDynamicForm, theReactHookForm]);
+    }, [onSuccess, theDynamicForm, theReactHookForm]);
 
     const resetFormData = useCallback(() => {
         if (!formData) {
@@ -281,7 +271,7 @@ function DynamicFormsProvider({
     const DynamicFormsContextState = {
         // to prevent an issue where the sending state hangs
         // we check both the SWR hook state and our manual state
-        isSending: isSending && theDynamicForm?.isLoading,
+        isSending: (isSending && theDynamicForm?.isLoading) || false,
         isLoading,
         theReactHookForm,
         formData: formData || undefined,
@@ -301,7 +291,6 @@ function DynamicFormsProvider({
     if (debugMode) {
         // eslint-disable-next-line no-console
         console.warn('New context cycle', {
-            resolver,
             DynamicFormsContextState,
         });
 

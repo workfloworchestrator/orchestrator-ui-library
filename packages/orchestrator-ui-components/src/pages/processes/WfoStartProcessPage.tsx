@@ -181,9 +181,7 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName === MODIFY_NOTE) {
-            console.log('MODIFY_NOTE !!!!');
-        } else if (processName) {
+        if (processName && processName !== MODIFY_NOTE) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -228,13 +226,8 @@ export const WfoStartProcessPage = ({
     }, []);
 
     const modifyNoteSuccess = useCallback((result: unknown) => {
-        console.log('onSuccess', result);
         alert('TODO: Redirect to process detail');
     }, []);
-
-    console.log(
-        'WfoStartProcessPage.tsx: WfoStartProcessPage()()()()()()()()()()()()()()()()()()',
-    );
 
     return (
         <WfoProcessDetail
