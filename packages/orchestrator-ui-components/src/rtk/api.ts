@@ -108,7 +108,7 @@ export const orchestratorApi = createApi({
                                 // TODO: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1105
                                 if (
                                     error.extensions?.error_type ===
-                                    'not_authorized'
+                                    'not_authenticated'
                                 ) {
                                     signOut();
                                 }
