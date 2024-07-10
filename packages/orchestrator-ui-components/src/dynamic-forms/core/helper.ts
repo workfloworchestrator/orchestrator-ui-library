@@ -12,6 +12,7 @@ import {
     IDynamicFormFieldAttributes,
     IDynamicFormFieldSection,
     IDynamicFormFieldValidation,
+    IValidationErrorDetails,
 } from '@/dynamic-forms/types';
 
 /**
@@ -22,7 +23,7 @@ import {
  */
 export const getErrorDetailsFromResponse = function (
     apiErrorResp: IDynamicFormApiErrorResponse,
-) {
+): IValidationErrorDetails {
     return {
         detail: apiErrorResp.detail ?? '',
         source: apiErrorResp.validation_errors,

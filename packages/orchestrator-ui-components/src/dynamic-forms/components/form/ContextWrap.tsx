@@ -10,25 +10,13 @@ import React from 'react';
 
 import RenderMainForm from '@/dynamic-forms/components/form/Form';
 import DynamicFormsProvider from '@/dynamic-forms/core/dynamicFormContext';
+import { IDynamicFormsContextInitialProps } from '@/dynamic-forms/types';
 
-import {
-    DynamicFormsMetaData,
-    IDynamicFormsContextInitialProps,
-} from '../../types';
-
-export interface DynamicFormProps
-    extends Omit<IDynamicFormsContextInitialProps, 'formKey' | 'children'> {
-    id: string;
-    meta?: DynamicFormsMetaData;
-}
-
-export const DynamicForm = ({
-    id,
-    meta,
-    ...contextProps
-}: DynamicFormProps) => (
-    <div e2e-id={`dynamicforms-${id}`}>
-        <DynamicFormsProvider {...contextProps} formKey={id} metaData={meta}>
+export const DynamicForm = (
+    dynamicFormProps: Omit<IDynamicFormsContextInitialProps, 'children'>,
+) => (
+    <div e2e-id={`dynamicforms-${dynamicFormProps.workflowName}`}>
+        <DynamicFormsProvider {...dynamicFormProps}>
             {RenderMainForm}
         </DynamicFormsProvider>
     </div>

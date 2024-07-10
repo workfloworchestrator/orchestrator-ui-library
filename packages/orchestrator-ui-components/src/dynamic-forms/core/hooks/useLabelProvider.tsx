@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { isError } from 'lodash';
 
 /**
  * Dynamic Forms
@@ -14,38 +15,14 @@
  *
  * Disabled revalidate / refresh system of SWR, this would cause submissions
  */
-import useSWR from 'swr';
-
-import { DfLabelProvider } from '@/dynamic-forms/types';
-
-export function useLabelProvider(
-    labelProvider: DfLabelProvider,
-    formKey: string,
-    id?: string | null,
-    cacheKey?: number,
-) {
-    return useSWR<Record<string, any>>(
-        // cache key
-        [labelProvider, formKey, id, cacheKey],
-
-        // return val
-        async () => {
-            return labelProvider({
-                formKey,
-                id,
-            });
+export function useLabelProvider(workflowName: string, cacheKey?: number) {
+    console.log(workflowName, cacheKey);
+    return {
+        formLabels: {
+            label1: 'label1',
+            label2: 'label2',
         },
-
-        // swr config
-        {
-            fallback: {},
-
-            // we dont want to refresh the form structure automatically
-            revalidateIfStale: false,
-            revalidateOnReconnect: false,
-            revalidateOnFocus: false,
-            keepPreviousData: true,
-            shouldRetryOnError: false,
-        },
-    );
+        isLoadingFormLabels: false,
+        hasErrorFormLabels: false,
+    };
 }

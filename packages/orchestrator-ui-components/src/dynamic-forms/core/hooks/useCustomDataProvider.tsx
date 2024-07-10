@@ -1,40 +1,21 @@
-import useSWR from 'swr';
 import { FetcherResponse } from 'swr/dist/_internal';
 
-import {
-    IDynamicFormApiErrorResponse,
-    IDynamicFormsLabels,
-} from '@/dynamic-forms/types';
+import { IDynamicFormsLabels } from '@/dynamic-forms/types';
 
 const useCustomDataProvider = (
     cacheKey: number,
     promiseFn?: () => FetcherResponse<IDynamicFormsLabels>,
 ) => {
-    return useSWR<IDynamicFormApiErrorResponse | object>(
-        // cache key
-        [`dynamicFormsDataProvider-${cacheKey}`],
+    console.log('useCustomDataProvider', cacheKey, promiseFn);
 
-        // return val
-        () => {
-            if (!promiseFn) {
-                return {};
-            }
-
-            return promiseFn();
+    return {
+        data: {
+            custom1: 'custom1',
+            custom2: 'custome2',
         },
-
-        // swr config
-        {
-            fallback: {},
-
-            // we dont want to refresh the form structure automatically
-            revalidateIfStale: false,
-            revalidateOnReconnect: false,
-            revalidateOnFocus: false,
-            keepPreviousData: true,
-            shouldRetryOnError: false,
-        },
-    );
+        isLoading: false,
+        isError: false,
+    };
 };
 
 export default useCustomDataProvider;

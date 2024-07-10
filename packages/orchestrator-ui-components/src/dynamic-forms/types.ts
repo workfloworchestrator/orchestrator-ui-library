@@ -115,15 +115,6 @@ export type CustomValidationRuleFn = (
 ) => Zod.ZodTypeAny | undefined;
 
 export interface IDynamicFormsContextConfig {
-    // use custom method to provide data for the form. This overwrites data fetched from labels endpoint
-    dataProvider: DfDataProvider;
-
-    // use custom method for providing labels and data
-    labelProvider: DfLabelProvider;
-
-    // use a custom method for providing the form definition
-    formProvider: DfFormProvider;
-
     // Extend field definitions
     fieldDetailProvider?: IFieldDefinitionProvider;
 
@@ -135,17 +126,10 @@ export interface IDynamicFormsContextConfig {
 
     // provide custom validation rules for fields
     customValidationRules?: CustomValidationRuleFn;
-
-    // This is a temp solution for 2 different Backend implementations of pydantic forms
-    // we will remove this once the backends both work the same
-    // Portal backend has a hack that is a leftover from previous implementation
-    // So for only that backend, we should not send the data as a array
-    tmp_pydanticFormsOriginalImplementation?: boolean;
 }
 
 export interface IDynamicFormsContextInitialProps {
-    formKey: string;
-    formIdKey?: string;
+    workflowName: string;
     title?: string;
     sendLabel?: string;
     metaData?: DynamicFormsMetaData;
@@ -155,7 +139,6 @@ export interface IDynamicFormsContextInitialProps {
     children: (props: IDynamicFormsContextProps) => React.ReactNode;
     headerComponent?: React.ReactNode;
     footerComponent?: React.ReactNode;
-
     config: IDynamicFormsContextConfig;
 }
 

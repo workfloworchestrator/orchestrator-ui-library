@@ -250,43 +250,23 @@ export const WfoStartProcessPage = ({
                 {(hasError && <WfoError />) ||
                     (processName === MODIFY_NOTE && (
                         <DynamicForm
-                            formIdKey={MODIFY_NOTE}
+                            workflowName={MODIFY_NOTE}
                             title="Modify note test"
-                            sendLabel={'Send label'}
+                            metaData={startProcessPayload}
                             successNotice={<div>Success notice</div>}
                             headerComponent={<div>Header component</div>}
                             footerComponent={<div>Footer component</div>}
-                            onSuccess={() =>
-                                alert('TODO: Redirect to process detail')
-                            }
+                            onSuccess={(result) => {
+                                console.log('onSuccess', result);
+                                alert('TODO: Redirect to process detail');
+                            }}
                             config={{
-                                // use custom method to provide data for the form. This overwrites data fetched from labels endpoint
-                                dataProvider: () => {
-                                    return Promise.resolve({
-                                        test: 'test dataprovider',
-                                    });
-                                },
-                                labelProvider: ({ formKey, id }) => {
-                                    return Promise.resolve({
-                                        labels: {
-                                            label1: 'label1 value',
-                                            label2: 'label2 value',
-                                        },
-                                    });
-                                },
-                                formProvider: ({ formKey, requestBody }) => {
-                                    console.log(formKey, requestBody);
-                                    return Promise.resolve({
-                                        test: 'test onFieldChangeHandler',
-                                    });
-                                },
                                 fieldDetailProvider: {},
                                 dataProviderCacheKey: 10,
                                 onFieldChangeHandler: () => {
                                     console.log('field changer');
                                 },
                             }}
-                            id={MODIFY_NOTE}
                         />
                     )) ||
                     (stepUserInput && (

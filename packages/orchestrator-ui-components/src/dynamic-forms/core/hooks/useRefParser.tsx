@@ -30,7 +30,7 @@ export function useRefParser(
             if (!source) {
                 return undefined;
             }
-
+            console.log('source in ref', source);
             try {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 return jsonSchemaParse(source, {
