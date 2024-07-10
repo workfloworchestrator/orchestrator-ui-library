@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.31.0
+
+### Minor Changes
+
+-   8e2c77c: Updates graphql error code to match backend
+
 ## 1.30.3
 
 ### Patch Changes
