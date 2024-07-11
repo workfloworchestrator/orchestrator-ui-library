@@ -50,7 +50,7 @@ const RenderMainForm = ({
 
     return (
         <form action={''} onSubmit={submitForm}>
-            <EuiHeader>{title ? title : formData.title}</EuiHeader>
+            {title && <EuiHeader>{title}</EuiHeader>}
 
             {headerComponent}
 
@@ -59,8 +59,8 @@ const RenderMainForm = ({
             <div className="form-content-wrapper">
                 {formData.sections.map((section) => (
                     <RenderSections section={section} key={section.id}>
-                        {({ fields }) => (
-                            <EuiCard title={section.title}>
+                        {({ fields }) => {
+                            return (
                                 <div
                                     style={{
                                         marginTop: '-0.75rem',
@@ -69,8 +69,8 @@ const RenderMainForm = ({
                                 >
                                     <RenderFields fields={fields} />
                                 </div>
-                            </EuiCard>
-                        )}
+                            );
+                        }}
                     </RenderSections>
                 ))}
             </div>

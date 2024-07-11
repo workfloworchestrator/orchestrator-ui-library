@@ -260,11 +260,8 @@ export const WfoStartProcessPage = ({
                     (processName === MODIFY_NOTE && (
                         <DynamicForm
                             workflowName={MODIFY_NOTE}
-                            title="Modify note test"
                             metaData={startProcessPayload}
                             successNotice={<div>Success notice</div>}
-                            headerComponent={<div>Header component</div>}
-                            footerComponent={<div>Footer component</div>}
                             onSuccess={modifyNoteSuccess}
                             config={config}
                         />

@@ -73,10 +73,7 @@ export function useDynamicForm(
                         status === HttpStatus.FormNotComplete &&
                         data.form
                     ) {
-                        console.log('froooze', Object.isFrozen(data.form));
-                        // Setting form schema without creating a new object will cause the formSchema object to be frozen
-                        // which gives us trouble when trying to parse it later
-                        setFormSchema({ ...data.form });
+                        setFormSchema(data.form);
                         setHasUnexpectedError(false);
                     } else {
                         setHasUnexpectedError(true);
