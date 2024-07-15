@@ -134,7 +134,7 @@ export interface IDynamicFormsContextInitialProps {
     sendLabel?: string;
     metaData?: DynamicFormsMetaData;
     successNotice?: React.ReactNode;
-    onSuccess?: (fieldValues: FieldValues) => void;
+    onSuccess?: (result: unknown) => void;
     onCancel?: () => void;
     children: (props: IDynamicFormsContextProps) => React.ReactNode;
     headerComponent?: React.ReactNode;

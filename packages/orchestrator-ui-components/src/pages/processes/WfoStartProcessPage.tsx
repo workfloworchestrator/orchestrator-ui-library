@@ -225,9 +225,15 @@ export const WfoStartProcessPage = ({
         };
     }, []);
 
-    const modifyNoteSuccess = useCallback((result: unknown) => {
-        alert('TODO: Redirect to process detail');
-    }, []);
+    const modifyNoteSuccess = useCallback(
+        (result: unknown) => {
+            if (result) {
+                const basePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+                router.replace(`${basePath}/${result}`);
+            }
+        },
+        [isTask, router],
+    );
 
     return (
         <WfoProcessDetail

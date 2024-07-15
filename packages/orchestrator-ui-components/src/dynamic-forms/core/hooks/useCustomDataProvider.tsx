@@ -1,11 +1,5 @@
-import { FetcherResponse } from 'swr/dist/_internal';
-
-import { IDynamicFormsLabels } from '@/dynamic-forms/types';
-
-const useCustomDataProvider = (
-    cacheKey: number,
-    promiseFn?: () => FetcherResponse<IDynamicFormsLabels>,
-) => {
+const useCustomDataProvider = (cacheKey: number, promiseFn?: () => unknown) => {
+    console.log(cacheKey, promiseFn);
     return {
         data: {
             custom1: 'custom1',

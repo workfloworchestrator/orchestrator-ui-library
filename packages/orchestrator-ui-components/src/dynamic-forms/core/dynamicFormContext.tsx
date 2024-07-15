@@ -154,7 +154,7 @@ function DynamicFormsProvider({
 
             // a timeout to prevent conflicting with the leavePagePrevention
             setTimeout(() => {
-                onSuccess?.(theReactHookForm.getValues());
+                onSuccess?.(theDynamicForm?.workflowResult?.id);
             }, 1500);
         }
 
