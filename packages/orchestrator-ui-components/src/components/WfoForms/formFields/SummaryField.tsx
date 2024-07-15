@@ -19,6 +19,7 @@ import { FieldProps, connectField, filterDOMProps } from 'uniforms';
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getStyles } from '@/components/WfoForms/formFields/SummaryFieldStyling';
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export type SummaryFieldProps = FieldProps<
@@ -38,6 +39,7 @@ function Summary({
     ...props
 }: SummaryFieldProps) {
     const { summaryFieldStyle } = useWithOrchestratorTheme(getStyles);
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
     if (!data) {
         return null;
@@ -79,7 +81,7 @@ function Summary({
         );
 
     return (
-        <EuiFlexItem css={summaryFieldStyle}>
+        <EuiFlexItem css={[summaryFieldStyle, formRowStyle]}>
             <section {...filterDOMProps(props)}>
                 <EuiFormRow
                     label={label}
