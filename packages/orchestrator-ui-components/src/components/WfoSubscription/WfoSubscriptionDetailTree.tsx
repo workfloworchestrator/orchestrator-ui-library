@@ -14,7 +14,7 @@ import {
 } from '@/types';
 
 import { getTokenName } from '../../utils/getTokenName';
-import { WfoTree } from '../WfoTree';
+import { WfoTree, getPositionInTree, sortTreeBlockByLabel } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
 import { getProductBlockTitle } from './utils';
@@ -76,8 +76,12 @@ export const WfoSubscriptionDetailTree = ({
             }
 
             // Let's add the current node as a child of the parent node.
+            // We want them to be in order, so we'll sort them by label.
             if (parentNode.children && Array.isArray(parentNode.children)) {
-                parentNode.children.push(shallowCopy);
+                parentNode.children = [
+                    ...parentNode.children,
+                    shallowCopy,
+                ].sort(sortTreeBlockByLabel);
             }
         }
 
@@ -96,6 +100,26 @@ export const WfoSubscriptionDetailTree = ({
     };
 
     if (!tree) return null;
+
+    /*
+     * The order of displayed product blocks should be the same as the order in the tree. Because we sort the tree
+     * alphabetically per level we can depend on the order of product block ids anymore so we sort by the position in the tree.
+     */
+    const sortByTree = (idA: number, idB: number) => {
+        if (!tree) return 0;
+
+        const positionA = getPositionInTree(tree, idA);
+        const positionB = getPositionInTree(tree, idB);
+        if (!positionA || !positionB) return 0;
+
+        if (positionA < positionB) {
+            return -1;
+        }
+        if (positionA > positionB) {
+            return 1;
+        }
+        return 0;
+    };
 
     return (
         <EuiFlexGroup style={{ marginTop: 15 }}>
@@ -154,9 +178,8 @@ export const WfoSubscriptionDetailTree = ({
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
-                        selectedIds.map((id, index) => {
-                            const block = idToNodeMap[selectedIds[index]];
-
+                        selectedIds.sort(sortByTree).map((id, index) => {
+                            const block = idToNodeMap[id];
                             return (
                                 <WfoSubscriptionProductBlock
                                     key={index}

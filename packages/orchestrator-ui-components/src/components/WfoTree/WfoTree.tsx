@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react';
 
-import { TreeContext, TreeContextType } from '../../contexts';
-import { TreeBlock } from '../../types';
+import { TreeContext, TreeContextType } from '@/contexts';
+import { TreeBlock } from '@/types';
+
 import { WfoTreeBranch } from './WfoTreeBranch';
-import { sortTreeBlockByLabel } from './treeUtils';
 
 type WfoTreeProps = {
     treeBlocks: TreeBlock[];
@@ -20,7 +20,7 @@ export const WfoTree: FC<WfoTreeProps> = ({ treeBlocks, depthList }) => {
 
     return (
         <div style={{ width: '500px' }}>
-            {[...treeBlocks].sort(sortTreeBlockByLabel).map((item) => (
+            {treeBlocks.map((item) => (
                 <WfoTreeBranch key={item.id} item={item} level={0} />
             ))}
         </div>
