@@ -103,7 +103,7 @@ export const WfoSubscriptionDetailTree = ({
 
     /*
      * The order of displayed product blocks should be the same as the order in the tree. Because we sort the tree
-     * alphabetically per level we can depend on the order of product block ids anymore so we sort by the position in the tree.
+     * alphabetically per level we can not depend on the order of product block ids anymore so we sort by the position in the tree.
      */
     const sortByTree = (idA: number, idB: number) => {
         if (!tree) return 0;
