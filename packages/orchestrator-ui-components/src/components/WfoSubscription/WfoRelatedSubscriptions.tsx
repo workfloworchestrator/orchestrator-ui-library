@@ -177,8 +177,7 @@ export const WfoRelatedSubscriptions = ({
                             data={relatedSubscriptions}
                             columns={tableColumns}
                             pagination={pagination}
-                            isLoading={isLoading}
-                            isFetching={isFetching}
+                            loadingState={{ isLoading, isFetching }}
                             onUpdateDataSorting={getDataSortHandler(
                                 setDataDisplayParam,
                             )}

@@ -16,9 +16,10 @@ import {
 import { WfoError } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
+import { LoadingState } from '@/types';
+import { getTypedFieldFromObject } from '@/utils';
 import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
 
-import { getTypedFieldFromObject } from '../../../utils';
 import {
     WfoKeyValueTable,
     WfoKeyValueTableDataType,
@@ -57,8 +58,7 @@ export type WfoTableWithFilterProps<T extends object> = {
     dataSorting: WfoDataSorting<T>;
     pagination: Pagination;
     queryString?: string;
-    isLoading: boolean; // True when loading data for the first time
-    isFetching: boolean; // True every time data is being fetched
+    loadingState?: LoadingState;
     localStorageKey: string;
     detailModal?: boolean;
     detailModalTitle?: string;
@@ -79,8 +79,7 @@ export const WfoTableWithFilter = <T extends object>({
     dataSorting,
     pagination,
     queryString,
-    isLoading,
-    isFetching,
+    loadingState,
     localStorageKey,
     detailModal = true,
     detailModalTitle = 'Details',
@@ -251,8 +250,7 @@ export const WfoTableWithFilter = <T extends object>({
                 dataSorting={dataSorting}
                 onUpdateDataSorting={onUpdateDataSort}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={loadingState}
                 onCriteriaChange={onCriteriaChange}
                 onDataSearch={({ field, searchText }) =>
                     onUpdateQueryString(

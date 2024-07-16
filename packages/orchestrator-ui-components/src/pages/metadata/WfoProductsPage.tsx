@@ -258,8 +258,7 @@ export const WfoProductsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={{ isLoading, isFetching }}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}

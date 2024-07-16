@@ -19,7 +19,7 @@ import {
 import { WfoStatusColorField } from '@/components';
 import { WfoTableHeaderCell } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import { SortOrder } from '@/types';
+import { LoadingState, SortOrder } from '@/types';
 
 import { getWfoBasicTableStyles } from './styles';
 
@@ -40,8 +40,7 @@ export type WfoBasicTableProps<T extends object> = {
     hiddenColumns?: TableColumnKeys<T>;
     dataSorting?: WfoDataSorting<T>;
     pagination?: Pagination;
-    isLoading: boolean; // True when loading data for the first time
-    isFetching: boolean; // True every time data is being fetched
+    loadingState?: LoadingState;
     onCriteriaChange?: (criteria: Criteria<T>) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
@@ -58,8 +57,7 @@ export const WfoBasicTable = <T extends object>({
     hiddenColumns,
     dataSorting,
     pagination,
-    isLoading,
-    isFetching,
+    loadingState,
     onCriteriaChange,
     onUpdateDataSorting,
     onDataSearch,
@@ -102,7 +100,9 @@ export const WfoBasicTable = <T extends object>({
         <EuiBasicTable
             css={tableStyling}
             items={data}
-            noItemsMessage={isLoading ? t('loading') : t('noItemsFound')}
+            noItemsMessage={
+                loadingState?.isLoading ? t('loading') : t('noItemsFound')
+            }
             columns={mapWfoTableColumnsToEuiColumns(
                 allTableColumns,
                 hiddenColumns,
@@ -112,7 +112,7 @@ export const WfoBasicTable = <T extends object>({
             )}
             pagination={pagination}
             onChange={onCriteriaChange}
-            loading={isFetching}
+            loading={loadingState?.isFetching}
             {...(isExpandable && {
                 isExpandable,
                 itemIdToExpandedRowMap,

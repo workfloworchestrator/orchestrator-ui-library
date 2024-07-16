@@ -236,8 +236,10 @@ export const WfoWorkflowsPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={{
+                    isLoading,
+                    isFetching,
+                }}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}

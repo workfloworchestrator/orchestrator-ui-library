@@ -254,8 +254,7 @@ export const WfoProcessesList = ({
             )}
             dataSorting={dataSorting}
             pagination={pagination}
-            isLoading={isLoading}
-            isFetching={isFetching}
+            loadingState={{ isLoading, isFetching }}
             hasError={isError}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}

@@ -230,8 +230,10 @@ export const WfoTasksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={{
+                    isLoading,
+                    isFetching,
+                }}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}

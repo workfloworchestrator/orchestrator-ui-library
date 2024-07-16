@@ -209,8 +209,10 @@ export const WfoResourceTypesPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={{
+                    isLoading,
+                    isFetching,
+                }}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={

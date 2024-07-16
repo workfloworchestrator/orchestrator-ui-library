@@ -263,8 +263,10 @@ export const WfoProductBlocksPage = () => {
                     setDataDisplayParam,
                 )}
                 pagination={pagination}
-                isLoading={isLoading}
-                isFetching={isFetching}
+                loadingState={{
+                    isLoading,
+                    isFetching,
+                }}
                 hasError={isError}
                 queryString={queryString}
                 localStorageKey={

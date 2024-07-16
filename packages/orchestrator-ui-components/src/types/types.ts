@@ -572,4 +572,9 @@ export enum CacheTagType {
     subscriptions = 'subscriptions',
 }
 
+export type LoadingState = {
+    isLoading?: boolean;
+    isFetching?: boolean;
+};
+
 export const CACHETAG_TYPE_LIST = 'LIST';
