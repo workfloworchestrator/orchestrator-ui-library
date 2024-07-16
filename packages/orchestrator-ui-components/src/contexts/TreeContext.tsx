@@ -6,7 +6,6 @@ export type TreeContextType = {
     selectedIds: number[];
     expandedIds: number[];
     toggleSelectedId: (id: number) => void;
-    toggleExpandedId: (id: number) => void;
     expandNode: (id: number) => void;
     collapseNode: (id: number) => void;
     expandAll: () => void;
@@ -29,28 +28,15 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
     const toggleSelectedId = (id: number) => {
         if (selectedIds.includes(id)) {
             setSelectedIds((prevSelectedIds) =>
-                prevSelectedIds
-                    .filter((selectedId) => selectedId !== id)
-                    .sort((a, b) => a - b),
+                prevSelectedIds.filter((selectedId) => selectedId !== id),
             );
         } else {
-            setSelectedIds((prevSelectedIds) =>
-                [...prevSelectedIds, id].sort((a, b) => a - b),
-            );
+            setSelectedIds((prevSelectedIds) => [...prevSelectedIds, id]);
         }
-    };
-    const selectAll = () => {
-        setSelectedIds(Array.from(Array(depths.length).keys()));
     };
 
-    const toggleExpandedId = (id: number) => {
-        if (expandedIds.includes(id)) {
-            setExpandedIds((prevExpandedIds) =>
-                prevExpandedIds.filter((expandedId) => expandedId !== id),
-            );
-        } else {
-            setExpandedIds((prevExpandedIds) => [...prevExpandedIds, id]);
-        }
+    const selectAll = () => {
+        setSelectedIds(Array.from(Array(depths.length).keys()));
     };
 
     const expandAll = () => {
@@ -104,7 +90,6 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 selectedIds,
                 expandedIds,
                 toggleSelectedId,
-                toggleExpandedId,
                 expandNode,
                 collapseNode,
                 expandAll,

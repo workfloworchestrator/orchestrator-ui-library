@@ -8,7 +8,7 @@ import {
     SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
-} from '../../../types';
+} from '@/types';
 
 const MAX_LABEL_LENGTH = 45;
 
