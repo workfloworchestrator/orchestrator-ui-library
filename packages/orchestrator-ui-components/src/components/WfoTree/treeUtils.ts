@@ -42,14 +42,24 @@ export const sortTreeBlockByLabel = (
     return 0;
 };
 
-const countChildeNodes = (node: TreeBlock): number => {
+const countDescendantNodes = (node: TreeBlock): number => {
     let count = 0;
     for (const child of node.children) {
-        count += 1 + countChildeNodes(child);
+        count += 1 + countDescendantNodes(child);
     }
     return count;
 };
 
+/**
+ * This function returns the position of a node in an ordered tree. To get
+ * the position we start counting from 1 and keep incrementing for each
+ * node and descendant node we encounter such that the difference in position
+ * between two sibling nodes on the first level is the number the total number of descendants.
+ * This cab then be used to determine how to order the display of a list of nodes based on their id.
+ * @param tree
+ * @param id
+ * @returns number
+ */
 export const getPositionInTree = (
     tree: TreeBlock,
     id: number,
@@ -69,7 +79,7 @@ export const getPositionInTree = (
             if (childPosition) {
                 return startPosition + childPosition - 1;
             } else {
-                startPosition += countChildeNodes(child);
+                startPosition += countDescendantNodes(child);
             }
         }
     }
