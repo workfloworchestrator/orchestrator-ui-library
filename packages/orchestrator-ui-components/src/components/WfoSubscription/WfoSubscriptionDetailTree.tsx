@@ -122,8 +122,11 @@ export const WfoSubscriptionDetailTree = ({
     };
 
     return (
-        <EuiFlexGroup style={{ marginTop: 15 }}>
-            <EuiFlexItem style={{ maxWidth: 450, width: 450 }}>
+        <EuiFlexGroup style={{ marginTop: 15, height: '100vh' }}>
+            <EuiFlexItem
+                style={{ maxWidth: 450, overflow: 'auto' }}
+                grow={true}
+            >
                 <EuiFlexGroup direction={'column'}>
                     <EuiFlexItem grow={false}>
                         <EuiFlexGroup
@@ -159,7 +162,7 @@ export const WfoSubscriptionDetailTree = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>
-            <EuiFlexItem grow={true}>
+            <EuiFlexItem css={{ overflow: 'auto' }} grow={true}>
                 <div>
                     <div>&nbsp;</div>{' '}
                     {/* This is a placeholder for the searchbar */}
@@ -167,8 +170,7 @@ export const WfoSubscriptionDetailTree = ({
                         <EuiCallOut
                             style={{
                                 marginTop: 15,
-                                minHeight: 600,
-                                borderRadius: 6,
+                                display: 'flex',
                             }}
                             size="m"
                             title={t('noProductBlockSelected')}
