@@ -19,6 +19,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiDatePicker, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { FieldProps } from '../types';
 
 export function utcTimestampToLocalMoment(utc_timestamp: number) {
@@ -63,9 +66,12 @@ function Timestamp({
     errorMessage,
     ...props
 }: TimestampFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     return (
         <div {...filterDOMProps(props)}>
             <EuiFormRow
+                css={formRowStyle}
                 label={label}
                 labelAppend={<EuiText size="m">{description}</EuiText>}
                 error={showInlineError ? errorMessage : false}
