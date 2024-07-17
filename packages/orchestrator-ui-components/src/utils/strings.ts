@@ -22,3 +22,5 @@ export const snakeToHuman = (value: string): string => {
 export const snakeToKebab = (value: string): string => {
     return value.replace(/_/g, '-');
 };
+
+export const isAllUpperCase = (str: string) => str === str.toUpperCase();

@@ -1,5 +1,6 @@
 import {
     camelToHuman,
+    isAllUpperCase,
     removeSuffix,
     snakeToHuman,
     snakeToKebab,
@@ -102,5 +103,32 @@ describe('snakeToKebab()', () => {
     it('Returns kebab case word from a multiple underscore snake case word', () => {
         const result = snakeToKebab('quick_brown_fox');
         expect(result).toEqual('quick-brown-fox');
+    });
+});
+
+describe('isAllUpperCase()', () => {
+    it('Returns true for an empty string', () => {
+        const result = isAllUpperCase('');
+        expect(result).toBe(true);
+    });
+    it('Returns true for a string with all uppercase letters', () => {
+        const result = isAllUpperCase('HELLO');
+        expect(result).toBe(true);
+    });
+    it('Returns false for a string with all lowercase letters', () => {
+        const result = isAllUpperCase('hello');
+        expect(result).toBe(false);
+    });
+    it('Returns false for a string with mixed case letters', () => {
+        const result = isAllUpperCase('Hello');
+        expect(result).toBe(false);
+    });
+    it('Returns true for a string with uppercase letters and non-letter characters', () => {
+        const result = isAllUpperCase('HELLO123!');
+        expect(result).toBe(true);
+    });
+    it('Returns false for a string with mixed case letters and non-letter characters', () => {
+        const result = isAllUpperCase('Hello123!');
+        expect(result).toBe(false);
     });
 });

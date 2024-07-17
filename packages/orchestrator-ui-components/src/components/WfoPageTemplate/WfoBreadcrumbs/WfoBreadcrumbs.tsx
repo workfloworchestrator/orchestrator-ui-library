@@ -14,7 +14,12 @@ import {
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoSideMenu } from '@/icons';
-import { isUuid4, removeSuffix, upperCaseFirstChar } from '@/utils';
+import {
+    isAllUpperCase,
+    isUuid4,
+    removeSuffix,
+    upperCaseFirstChar,
+} from '@/utils';
 
 interface WfoBreadcrumbsProps {
     handleSideMenuClick: () => void;
@@ -46,7 +51,8 @@ export const WfoBreadcrumbs = ({
             // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / b2312aa-cbc ...`
             // first remove the suffix, like ?activeTab=....
             const _p = removeSuffix(p);
-            const text = isUuid4(_p) ? _p : upperCaseFirstChar(_p);
+            const text =
+                isUuid4(_p) || isAllUpperCase(_p) ? _p : upperCaseFirstChar(_p);
 
             breadcrumbs.push({
                 text: text,
