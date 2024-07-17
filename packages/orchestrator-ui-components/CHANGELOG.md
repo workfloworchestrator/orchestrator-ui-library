@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.32.0
+
+### Minor Changes
+
+-   06f97cc: Updates graphql seperator character
+-   cf75ff3: Keep uppercase letters if original text in breadcrumb is only uppercase
+
+### Patch Changes
+
+-   845dce4: Fix form label not visible in SummaryField and TimestampField
+-   95862a2: Orders productsblocks in service configuration page better
+
 ## 1.31.0
 
 ### Minor Changes
