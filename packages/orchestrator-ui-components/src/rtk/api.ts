@@ -123,6 +123,7 @@ export const orchestratorApi = createApi({
     endpoints: () => ({}),
     tagTypes: [
         CacheTagType.engineStatus,
+        CacheTagType.workerStatus,
         CacheTagType.processes,
         CacheTagType.processStatusCounts,
         CacheTagType.subscriptions,

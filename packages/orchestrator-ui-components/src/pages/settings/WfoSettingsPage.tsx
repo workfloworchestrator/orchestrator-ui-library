@@ -2,7 +2,11 @@ import React from 'react';
 
 import { EuiHorizontalRule, EuiPageHeader, EuiSpacer } from '@elastic/eui';
 
-import { WfoFlushSettings, WfoModifySettings, WfoStatus } from '@/components';
+import {
+    WfoEngineStatus,
+    WfoFlushSettings,
+    WfoModifySettings,
+} from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 
 export const WfoSettingsPage = () => {
@@ -19,7 +23,7 @@ export const WfoSettingsPage = () => {
                 <EuiSpacer />
                 <WfoModifySettings />
                 <EuiSpacer />
-                <WfoStatus />
+                <WfoEngineStatus />
             </div>
         </>
     );
