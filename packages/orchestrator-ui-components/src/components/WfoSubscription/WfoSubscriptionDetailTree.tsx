@@ -121,10 +121,20 @@ export const WfoSubscriptionDetailTree = ({
         return 0;
     };
 
+    const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
+
     return (
-        <EuiFlexGroup style={{ marginTop: 15, height: '100vh' }}>
+        <EuiFlexGroup
+            css={{
+                marginTop: 15,
+                height: `calc(100vh - ${headerHeight}px)`,
+            }}
+        >
             <EuiFlexItem
-                style={{ maxWidth: 450, overflow: 'auto' }}
+                style={{
+                    maxWidth: 450,
+                    overflow: 'auto',
+                }}
                 grow={true}
             >
                 <EuiFlexGroup direction={'column'}>
@@ -162,7 +172,12 @@ export const WfoSubscriptionDetailTree = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </EuiFlexItem>
-            <EuiFlexItem css={{ overflow: 'auto' }} grow={true}>
+            <EuiFlexItem
+                css={{
+                    overflow: 'auto',
+                }}
+                grow={true}
+            >
                 <div>
                     <div>&nbsp;</div>{' '}
                     {/* This is a placeholder for the searchbar */}
