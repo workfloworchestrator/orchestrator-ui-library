@@ -563,13 +563,13 @@ export type SubscriptionActions = {
     system: SubscriptionAction[];
 };
 
-export type CacheTag = { type: CacheTagType; id?: string };
-
 export enum CacheTagType {
+    workerStatus = 'workerStatus',
     engineStatus = 'engineStatus',
     processes = 'processes',
     processStatusCounts = 'processStatusCounts',
     subscriptions = 'subscriptions',
 }
+export type CacheTag = { type: CacheTagType; id?: string };
 
 export const CACHETAG_TYPE_LIST = 'LIST';

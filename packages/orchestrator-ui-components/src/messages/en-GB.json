@@ -373,14 +373,15 @@
         "page": {
             "flushButton": "Flush",
             "flushCacheSettingsTitle": "Flush cache settings",
-            "engineStatus": "Workflow engine status",
+            "engineStatusTitle": "Workflow engine status",
             "modifyEngine": "Modify the engine settings",
             "pauseEngine": "Pause workflow engine",
             "runningProcesses": "Running processes",
             "selectSettings": "Select cache",
             "startEngine": "Start workflow engine",
             "resetTextSearchIndex": "Reset text search index",
-            "resetTextSearchIndexButton": "Reset"
+            "resetTextSearchIndexButton": "Reset",
+            "status": "Status"
         }
     },
     "startPage": {

@@ -1,8 +1,9 @@
 import {
     SETTINGS_CACHE_ENDPOINT,
     SETTINGS_CACHE_NAMES_ENDPOINT,
+    SETTINGS_ENGINE_STATUS_ENDPOINT,
     SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
-    SETTINGS_STATUS_ENDPOINT,
+    SETTINGS_WORKER_STATUS_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import { CacheNames, CacheTagType, EngineStatus } from '@/types';
@@ -13,10 +14,17 @@ interface EngineStatusReturnValue {
     runningProcesses: number;
 }
 
+interface WorkerStatusReturnValue {
+    executor_type: string;
+    number_of_workers_online: number;
+    number_of_queued_jobs: number;
+    number_of_running_jobs: number;
+}
+
 const statusApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         getEngineStatus: build.query<EngineStatusReturnValue, void>({
-            query: () => SETTINGS_STATUS_ENDPOINT,
+            query: () => SETTINGS_ENGINE_STATUS_ENDPOINT,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
@@ -42,6 +50,13 @@ const statusApi = orchestratorApi.injectEndpoints({
                 };
             },
             providesTags: getCacheTag(CacheTagType.engineStatus),
+        }),
+        getWorkerStatus: build.query<WorkerStatusReturnValue, void>({
+            query: () => SETTINGS_WORKER_STATUS_ENDPOINT,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+            providesTags: getCacheTag(CacheTagType.workerStatus),
         }),
         getCacheNames: build.query<CacheNames, void>({
             query: () => SETTINGS_CACHE_NAMES_ENDPOINT,
@@ -69,7 +84,7 @@ const statusApi = orchestratorApi.injectEndpoints({
         }),
         setEngineStatus: build.mutation<EngineStatusReturnValue, boolean>({
             query: (globalStatus) => ({
-                url: SETTINGS_STATUS_ENDPOINT,
+                url: SETTINGS_ENGINE_STATUS_ENDPOINT,
                 method: 'PUT',
                 body: JSON.stringify({
                     global_lock: globalStatus,
@@ -92,4 +107,5 @@ export const {
     useClearCacheMutation,
     useResetTextSearchIndexMutation,
     useSetEngineStatusMutation,
+    useGetWorkerStatusQuery,
 } = statusApi;

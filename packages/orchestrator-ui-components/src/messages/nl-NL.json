@@ -371,7 +371,7 @@
     },
     "settings": {
         "page": {
-            "engineStatus": "Workflow engine status",
+            "engineStatusTitle": "Workflow engine status",
             "flushButton": "Flush",
             "flushCacheSettingsTitle": "Flush cache instellingen",
             "modifyEngine": "Wijzig engine status",
@@ -380,7 +380,8 @@
             "selectSettings": "Kies cache",
             "startEngine": "Start workflow engine",
             "resetTextSearchIndex": "Reset text search index",
-            "resetTextSearchIndexButton": "Reset"
+            "resetTextSearchIndexButton": "Reset",
+            "status": "Status"
         }
     },
     "startPage": {
