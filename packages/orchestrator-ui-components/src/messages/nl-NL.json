@@ -372,6 +372,7 @@
     "settings": {
         "page": {
             "engineStatusTitle": "Workflow engine status",
+            "workerStatusTitle": "Worker status",
             "flushButton": "Flush",
             "flushCacheSettingsTitle": "Flush cache instellingen",
             "modifyEngine": "Wijzig engine status",
@@ -381,7 +382,10 @@
             "startEngine": "Start workflow engine",
             "resetTextSearchIndex": "Reset text search index",
             "resetTextSearchIndexButton": "Reset",
-            "status": "Status"
+            "status": "Status",
+            "numberOfQueuedJobs": "Aantal queued jobs",
+            "numberOfRunningJobs": "Aantal running jobs",
+            "numberOfWorkersOnline": "Aantal workers online"
         }
     },
     "startPage": {
