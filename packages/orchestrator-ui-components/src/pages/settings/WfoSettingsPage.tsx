@@ -6,6 +6,7 @@ import {
     WfoEngineStatus,
     WfoFlushSettings,
     WfoModifySettings,
+    WfoWorkerStatus,
 } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 
@@ -24,6 +25,8 @@ export const WfoSettingsPage = () => {
                 <WfoModifySettings />
                 <EuiSpacer />
                 <WfoEngineStatus />
+                <EuiSpacer />
+                <WfoWorkerStatus />
             </div>
         </>
     );

@@ -374,6 +374,7 @@
             "flushButton": "Flush",
             "flushCacheSettingsTitle": "Flush cache settings",
             "engineStatusTitle": "Workflow engine status",
+            "workerStatusTitle": "Worker status",
             "modifyEngine": "Modify the engine settings",
             "pauseEngine": "Pause workflow engine",
             "runningProcesses": "Running processes",
@@ -381,7 +382,10 @@
             "startEngine": "Start workflow engine",
             "resetTextSearchIndex": "Reset text search index",
             "resetTextSearchIndexButton": "Reset",
-            "status": "Status"
+            "status": "Status",
+            "numberOfQueuedJobs": "Number of queued jobs",
+            "numberOfRunningJobs": "Number of running jobs",
+            "numberOfWorkersOnline": "Number of workers online"
         }
     },
     "startPage": {

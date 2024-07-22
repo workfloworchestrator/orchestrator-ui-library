@@ -18,6 +18,11 @@ export enum EngineStatus {
     UNKNOWN = 'UNKNOWN',
 }
 
+export enum WorkerTypes {
+    CELERY = 'CELERY',
+    THREAD = 'THREAD',
+}
+
 export type Customer = {
     fullname: string;
     customerId: string;

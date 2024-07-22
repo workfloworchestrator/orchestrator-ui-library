@@ -6,7 +6,7 @@ import {
     SETTINGS_WORKER_STATUS_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { CacheNames, CacheTagType, EngineStatus } from '@/types';
+import { CacheNames, CacheTagType, EngineStatus, WorkerTypes } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 interface EngineStatusReturnValue {
@@ -15,12 +15,18 @@ interface EngineStatusReturnValue {
 }
 
 interface WorkerStatusReturnValue {
+    executorType: WorkerTypes;
+    numberOfWorkersOnline: number;
+    numberOfQueuedJobs: number;
+    numberOfRunningJobs: number;
+}
+
+interface WorkerStatusData {
     executor_type: string;
     number_of_workers_online: number;
     number_of_queued_jobs: number;
     number_of_running_jobs: number;
 }
-
 const statusApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         getEngineStatus: build.query<EngineStatusReturnValue, void>({
@@ -55,6 +61,14 @@ const statusApi = orchestratorApi.injectEndpoints({
             query: () => SETTINGS_WORKER_STATUS_ENDPOINT,
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
+            },
+            transformResponse: (data: WorkerStatusData) => {
+                return {
+                    executorType: data?.executor_type as WorkerTypes,
+                    numberOfWorkersOnline: data?.number_of_workers_online || 0,
+                    numberOfQueuedJobs: data?.number_of_queued_jobs || 0,
+                    numberOfRunningJobs: data?.number_of_running_jobs || 0,
+                };
             },
             providesTags: getCacheTag(CacheTagType.workerStatus),
         }),
