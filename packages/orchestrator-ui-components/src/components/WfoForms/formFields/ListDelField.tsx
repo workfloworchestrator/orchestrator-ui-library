@@ -49,21 +49,19 @@ function ListDel({
         { absoluteName: true },
     )[0];
 
-    const isDeletable =
+    // Make a row deletable only if its:
+    // - doing so doesn't go below the minCount for the field
+    // - it's not the first one. You should be able to remove an empty row
+    const isDeletable: boolean =
         !disabled &&
         !readOnly &&
-        parent.value &&
-        parent.value[nameIndex] &&
-        parent.minCount &&
-        parent.value.length > parent.minCount;
+        (!parent.minCount ||
+            (parent.value && parent.value.length >= parent.minCount))
+            ? true
+            : false;
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
-        if (
-            parent &&
-            !isDeletable &&
-            !readOnly &&
-            (!('key' in event) || event.key === 'Enter')
-        ) {
+        if (isDeletable && (!('key' in event) || event.key === 'Enter')) {
             const value = parent?.value!.slice();
             value.splice(nameIndex, 1);
             parent.onChange(value);
@@ -84,7 +82,7 @@ function ListDel({
                 type="minus"
                 size="xxl"
                 color={
-                    isDeletable ? theme.colors.disabled : theme.colors.danger
+                    isDeletable ? theme.colors.danger : theme.colors.disabled
                 }
             />
             <label>
