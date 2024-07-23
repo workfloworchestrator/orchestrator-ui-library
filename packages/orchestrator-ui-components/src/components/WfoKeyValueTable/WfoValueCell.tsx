@@ -22,6 +22,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
     const {
+        copyIconSize,
         clipboardIconStyle,
         clickable,
         getBackgroundColorStyleForRow,
@@ -47,8 +48,8 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
                         {(copy) => (
                             <div onClick={copy} css={clickable}>
                                 <WfoClipboardCopy
-                                    width={16}
-                                    height={16}
+                                    width={copyIconSize}
+                                    height={copyIconSize}
                                     color={theme.colors.mediumShade}
                                 />
                             </div>

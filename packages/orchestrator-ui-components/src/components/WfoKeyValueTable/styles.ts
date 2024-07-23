@@ -7,6 +7,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
     const clipboardIconMargin = theme.font.baseline * 2;
     const keyColumnWidth = theme.base * 12;
     const radius = theme.border.radius.medium;
+    const copyIconSize = theme.base;
 
     const keyValueTable = css({
         display: 'grid',
@@ -44,6 +45,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
         borderTopRightRadius: radius,
         borderBottomRightRadius: radius,
         display: 'flex',
+        alignItems: 'center',
 
         '&:hover > div': {
             visibility: 'visible',
@@ -64,6 +66,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
 
     const clipboardIconStyle = css({
         visibility: 'hidden',
+        height: `${copyIconSize}px`,
         paddingBottom: 0,
     });
 
@@ -73,6 +76,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
     });
 
     return {
+        copyIconSize,
         keyValueTable,
         valueOnlyTable,
         keyColumnStyle,
