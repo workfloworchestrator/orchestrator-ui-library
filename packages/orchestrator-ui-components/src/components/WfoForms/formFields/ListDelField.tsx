@@ -49,17 +49,18 @@ function ListDel({
         { absoluteName: true },
     )[0];
 
-    const limitNotReached =
-        parent &&
+    const isDeletable =
         !disabled &&
-        parent.minCount &&
+        !readOnly &&
         parent.value &&
-        !(parent.minCount >= parent.value.length);
+        parent.value[nameIndex] &&
+        parent.minCount &&
+        parent.value.length > parent.minCount;
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
         if (
             parent &&
-            limitNotReached &&
+            !isDeletable &&
             !readOnly &&
             (!('key' in event) || event.key === 'Enter')
         ) {
@@ -72,8 +73,8 @@ function ListDel({
     return (
         <div
             {...filterDOMProps(props)}
-            className="del-item"
             id={`${id}.remove`}
+            css={{ marginTop: '10px' }}
             onClick={onAction}
             onKeyDown={onAction}
             role="button"
@@ -83,9 +84,7 @@ function ListDel({
                 type="minus"
                 size="xxl"
                 color={
-                    !limitNotReached || disabled
-                        ? theme.colors.disabled
-                        : theme.colors.danger
+                    isDeletable ? theme.colors.disabled : theme.colors.danger
                 }
             />
             <label>
