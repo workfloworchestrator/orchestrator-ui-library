@@ -24,7 +24,11 @@ export const WfoHamburgerMenu = ({}) => {
                     name: 'Logout',
                     icon: (
                         <WfoLogoutIcon
-                            color={isDarkThemeActive ? 'white' : 'black'}
+                            color={
+                                isDarkThemeActive
+                                    ? theme.colors.ghost
+                                    : theme.colors.ink
+                            }
                         />
                     ),
                     onClick: () => signOut(),
@@ -39,7 +43,7 @@ export const WfoHamburgerMenu = ({}) => {
             button={
                 <EuiButtonIcon
                     iconType="menu"
-                    css={{ color: 'white' }}
+                    css={{ color: theme.colors.ghost }}
                     onClick={() => setPopoverIsOpen(!isPopoverOpen)}
                 />
             }
