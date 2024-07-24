@@ -78,7 +78,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
     };
 };
 
-function stripUndefined(obj: object): Record<string, unknown> {
+export function stripUndefined(obj: object): Record<string, unknown> {
     if (!isPlainObject(obj)) {
         return obj as Record<string, unknown>;
     }
