@@ -1,5 +1,18 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.35.0
+
+### Minor Changes
+
+-   3a8ba59: Adds hamburger menu
+-   86cbc9c: Adds celery worker status card to settings page
+
+### Patch Changes
+
+-   be2a21d: Fixes typo in constant
+-   8afc446: 1252 Fixes the copy icon in the key-value table
+-   9be10f0: Removes show all option from pages that cant use it
+
 ## 1.34.0
 
 ### Minor Changes
