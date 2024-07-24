@@ -1,7 +1,5 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 
-import { signOut } from 'next-auth/react';
-
 import { EuiPageTemplate } from '@elastic/eui';
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
@@ -35,7 +33,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={navigationHeight}
-                handleLogoutClick={signOut}
                 onThemeSwitch={onThemeSwitch}
             />
 
