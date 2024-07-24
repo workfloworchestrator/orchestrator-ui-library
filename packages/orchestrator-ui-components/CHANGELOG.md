@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.34.0
+
+### Minor Changes
+
+-   6a098f6: WFO GraphQL base query that handles both errors and data returned
+
 ## 1.33.0
 
 ### Minor Changes
