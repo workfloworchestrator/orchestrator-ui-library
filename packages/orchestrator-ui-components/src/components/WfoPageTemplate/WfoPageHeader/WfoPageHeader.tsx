@@ -24,25 +24,24 @@ import {
     useOrchestratorTheme,
     useWithOrchestratorTheme,
 } from '@/hooks';
-import { WfoLogoutIcon } from '@/icons';
 import { ColorModes } from '@/types';
+
+import { WfoHamburgerMenu } from './WfoHamburgerMenu';
 
 export interface WfoPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
     getAppLogo: (navigationHeight: number) => ReactElement;
-    handleLogoutClick: () => void;
     onThemeSwitch: (theme: EuiThemeColorMode) => void;
 }
 
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
-    handleLogoutClick,
     onThemeSwitch,
 }) => {
     const t = useTranslations('main');
-    const { theme, multiplyByBaseUnit, colorMode } = useOrchestratorTheme();
+    const { multiplyByBaseUnit, colorMode } = useOrchestratorTheme();
     const orchestratorConfig = useGetOrchestratorConfig();
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
@@ -67,7 +66,6 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
                     </EuiBadgeGroup>
-
                     {orchestratorConfig.useThemeToggle && (
                         <EuiButtonIcon
                             aria-label={t(
@@ -99,18 +97,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                         />
                     )}
 
-                    <EuiButtonIcon
-                        aria-label="Logout"
-                        display="empty"
-                        iconType={() => (
-                            <WfoLogoutIcon color={theme.colors.ghost} />
-                        )}
-                        css={{
-                            width: 48,
-                            height: 48,
-                        }}
-                        onClick={handleLogoutClick}
-                    />
+                    <WfoHamburgerMenu />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
         </EuiHeader>
