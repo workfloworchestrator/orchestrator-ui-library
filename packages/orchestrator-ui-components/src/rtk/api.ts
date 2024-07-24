@@ -3,7 +3,7 @@ import { getSession, signOut } from 'next-auth/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type { WfoSession } from '@/hooks';
-import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
+import { utils } from '@/rtk/wfoGraphqlRequestBaseQuery';
 import { CacheTagType } from '@/types';
 
 import type { RootState } from './store';
@@ -98,7 +98,7 @@ export const orchestratorApi = createApi({
                 });
                 return fetchFn(args, api, {});
             default:
-                const graphqlFn = wfoGraphqlRequestBaseQuery(
+                const graphqlFn = utils(
                     {
                         url: customApi
                             ? customApi.apiBaseUrl

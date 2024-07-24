@@ -1,5 +1,4 @@
 import { ClientError, GraphQLClient } from 'graphql-request';
-import { isPlainObject } from 'lodash';
 import { signOut } from 'next-auth/react';
 
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
@@ -10,9 +9,10 @@ import {
     RequestHeaders,
 } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
 
+import { stripUndefined } from '@/rtk/utils';
 import { GraphqlQueryVariables } from '@/types';
 
-export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
+export const utils = <T, E = ErrorResponse>(
     options: GraphqlRequestBaseQueryArgs<E>,
     authActive: boolean,
 ): BaseQueryFn<
@@ -77,16 +77,3 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
         }
     };
 };
-
-export function stripUndefined(obj: object): Record<string, unknown> {
-    if (!isPlainObject(obj)) {
-        return obj as Record<string, unknown>;
-    }
-    const copy: Record<string, unknown> = { ...obj };
-    for (const [k, v] of Object.entries(copy)) {
-        if (v === undefined) {
-            delete copy[k];
-        }
-    }
-    return copy;
-}

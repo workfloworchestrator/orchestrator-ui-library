@@ -1,4 +1,4 @@
-import { stripUndefined } from '@/rtk/wfoGraphqlRequestBaseQuery';
+import { stripUndefined } from '@/rtk/utils';
 
 describe('stripUndefined', () => {
     it('should remove properties with undefined values', () => {
