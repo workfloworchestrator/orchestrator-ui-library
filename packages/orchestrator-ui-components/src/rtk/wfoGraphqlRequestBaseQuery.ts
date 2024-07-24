@@ -1,4 +1,3 @@
-import { DocumentNode } from 'graphql';
 import { ClientError, GraphQLClient } from 'graphql-request';
 import { isPlainObject } from 'lodash';
 import { signOut } from 'next-auth/react';
@@ -17,7 +16,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
     options: GraphqlRequestBaseQueryArgs<E>,
     authActive: boolean,
 ): BaseQueryFn<
-    { document: string | DocumentNode; variables?: GraphqlQueryVariables<T> },
+    { document: string; variables?: GraphqlQueryVariables<T> },
     unknown,
     E,
     Partial<Pick<ClientError, 'request' | 'response'>>
@@ -48,7 +47,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
             });
 
             const response = await client.rawRequest(
-                document as string,
+                document,
                 variables,
                 preparedHeaders,
             );
