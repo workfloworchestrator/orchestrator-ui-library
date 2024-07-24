@@ -54,7 +54,6 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
             if (response?.errors?.length && authActive) {
                 response.errors.map((error) => {
-                    // TODO: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1105
                     if (error.extensions?.error_type === 'not_authenticated') {
                         signOut();
                     }
