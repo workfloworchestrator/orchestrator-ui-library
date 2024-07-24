@@ -41,7 +41,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     onThemeSwitch,
 }) => {
     const t = useTranslations('main');
-    const { multiplyByBaseUnit, colorMode } = useOrchestratorTheme();
+    const { multiplyByBaseUnit, colorMode, theme } = useOrchestratorTheme();
     const orchestratorConfig = useGetOrchestratorConfig();
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
@@ -78,9 +78,9 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                                 colorMode === ColorModes.LIGHT ? 'moon' : 'sun'
                             }
                             css={{
-                                width: '48px',
-                                height: '48px',
-                                color: 'white',
+                                width: theme.base * 3,
+                                height: theme.base * 3,
+                                color: theme.colors.ghost,
                             }}
                             title={t(
                                 colorMode === ColorModes.LIGHT
