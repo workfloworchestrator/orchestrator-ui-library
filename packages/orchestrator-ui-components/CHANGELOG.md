@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.33.0
+
+### Minor Changes
+
+-   bd05bd4: Makes productBlocks on service configuration tab scrollable
+
+### Patch Changes
+
+-   a728dfe: 1168 Exposes toObjectWithSortedKeys util
+
 ## 1.32.0
 
 ### Minor Changes
