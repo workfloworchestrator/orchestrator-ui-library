@@ -43,7 +43,7 @@ export const WfoHamburgerMenu = ({}) => {
                     onClick={() => setPopoverIsOpen(!isPopoverOpen)}
                 />
             }
-            css={{ width: theme.base * 2, marginRight: 0 }}
+            css={{ width: theme.base * 2 }}
             isOpen={isPopoverOpen}
             closePopover={closePopover}
             panelPaddingSize="none"
