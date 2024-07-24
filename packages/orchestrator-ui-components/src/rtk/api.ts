@@ -1,9 +1,9 @@
 import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 
 import type { WfoSession } from '@/hooks';
+import { utils } from '@/rtk/wfoGraphqlRequestBaseQuery';
 import { CacheTagType } from '@/types';
 
 import type { RootState } from './store';
@@ -98,25 +98,15 @@ export const orchestratorApi = createApi({
                 });
                 return fetchFn(args, api, {});
             default:
-                const graphqlFn = graphqlRequestBaseQuery({
-                    url: customApi ? customApi.apiBaseUrl : graphqlEndpointCore,
-                    prepareHeaders,
-                    customErrors: (error) => {
-                        const { name, message, stack, response } = error;
-                        if (response?.errors?.length && authActive) {
-                            response.errors.map((error) => {
-                                // TODO: https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1105
-                                if (
-                                    error.extensions?.error_type ===
-                                    'not_authenticated'
-                                ) {
-                                    signOut();
-                                }
-                            });
-                        }
-                        return { name, message, stack };
+                const graphqlFn = utils(
+                    {
+                        url: customApi
+                            ? customApi.apiBaseUrl
+                            : graphqlEndpointCore,
+                        prepareHeaders,
                     },
-                });
+                    authActive,
+                );
                 return graphqlFn(args, api, {});
         }
     },
