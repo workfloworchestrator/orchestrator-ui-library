@@ -41,7 +41,7 @@ export const WfoEngineStatus = () => {
                                 : theme.colors.warning
                         }
                     />
-                    <EuiText size="xs" css={{ paddingTop: '4px' }}>
+                    <EuiText size="xs" css={{ paddingTop: theme.size.xs }}>
                         <p>{engineStatus}</p>
                     </EuiText>
                 </EuiFlexItem>
