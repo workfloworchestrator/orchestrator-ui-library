@@ -48,14 +48,11 @@ function ListAdd({
         { initialCount?: number; maxCount?: number },
         unknown[]
     >(parentName, { initialCount }, { absoluteName: true })[0];
-
+    const parentValueCount =
+        parent && parent.value && parent.value.length ? parent.value.length : 0;
     const limitNotReached =
-        !disabled &&
-        !(
-            parent.maxCount! <=
-            Math.max(initialCount ?? 0, parent?.value!.length)
-        );
-    const count = 1 + Math.max((initialCount ?? 0) - parent?.value!.length, 0);
+        !disabled && (!parent.maxCount || parent.maxCount >= parentValueCount);
+    const count = 1 + Math.max((initialCount ?? 0) - parentValueCount, 0);
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
         if (
