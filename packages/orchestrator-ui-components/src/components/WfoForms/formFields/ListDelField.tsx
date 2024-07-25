@@ -49,14 +49,14 @@ function ListDel({
         { absoluteName: true },
     )[0];
 
+    const parentValueCount =
+        parent && parent.value && parent.value.length ? parent.value.length : 0;
+
     // Make a row deletable only if its:
-    // - doing so doesn't go below the minCount for the field
-    // - it's not the first one. You should be able to remove an empty row
     const isDeletable: boolean =
         !disabled &&
         !readOnly &&
-        (!parent.minCount ||
-            (parent.value && parent.value.length >= parent.minCount))
+        (!parent.minCount || parentValueCount > parent.minCount)
             ? true
             : false;
 
