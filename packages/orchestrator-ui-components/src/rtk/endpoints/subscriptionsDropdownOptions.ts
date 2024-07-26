@@ -31,7 +31,12 @@ export const subscriptionsDropdownOptionsQuery = `
                     subscriptionInstanceId
                     inUseByRelations
                 }
-                fixedInputs
+                fixedInputs,      
+                inUseBySubscriptions {
+                    pageInfo {
+                        totalItems
+                    }
+                }
             }
         }
     }

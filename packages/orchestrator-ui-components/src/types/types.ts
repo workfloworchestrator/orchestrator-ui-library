@@ -444,6 +444,9 @@ export type SubscriptionDropdownOption = {
     fixedInputs: FieldValue[];
     tag: string;
     status: SubscriptionStatus;
+    inUseBySubscriptions: {
+        pageInfo: Pick<GraphQLPageInfo, 'totalItems'>;
+    };
 };
 
 export type CustomerDescriptions = {
