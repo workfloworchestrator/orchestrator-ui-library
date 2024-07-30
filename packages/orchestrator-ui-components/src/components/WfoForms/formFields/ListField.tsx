@@ -19,8 +19,12 @@ import { connectField, filterDOMProps, joinName, useField } from 'uniforms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 import { ListAddField } from './ListAddField';
 import { ListItemField } from './ListItemField';
+import { listFieldStyling } from './listFieldStyling';
 import { FieldProps } from './types';
 
 declare module 'uniforms' {
@@ -57,20 +61,19 @@ function List({
     errorMessage,
     ...props
 }: ListFieldProps) {
+    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     const child = useField(joinName(name, '$'), {}, { absoluteName: true })[0];
     const hasListAsChild = child.fieldType === Array;
 
     return (
-        <EuiFlexItem>
+        <EuiFlexItem css={listFieldStyling}>
             <section
                 {...filterDOMProps(props)}
-                css={{
-                    '.euiFormRow__labelWrapper': {
-                        minHeight: '16px',
-                    },
-                }}
+                className={`list-field${hasListAsChild ? ' outer-list' : ''}`}
             >
                 <EuiFormRow
+                    css={formRowStyle}
                     label={label}
                     labelAppend={<EuiText size="m">{description}</EuiText>}
                     error={showInlineError ? errorMessage : false}
@@ -99,13 +102,13 @@ function List({
                                     : child,
                             ),
                     )}
+                    <ListAddField
+                        initialCount={initialCount}
+                        name="$"
+                        disabled={disabled}
+                        outerList={hasListAsChild}
+                    />
                 </ul>
-                <ListAddField
-                    initialCount={initialCount}
-                    name="$"
-                    disabled={disabled}
-                    outerList={hasListAsChild}
-                />
             </section>
         </EuiFlexItem>
     );

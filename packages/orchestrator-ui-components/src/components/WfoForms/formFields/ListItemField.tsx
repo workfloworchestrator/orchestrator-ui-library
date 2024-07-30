@@ -30,8 +30,8 @@ function ListItem({
     outerList = false,
 }: ListItemFieldProps) {
     return (
-        <li css={{ display: 'flex', flexGrow: 1 }}>
-            <div css={{ flexGrow: 1 }}>{children}</div>
+        <li>
+            {children}
             <ListDelField name="" outerList={outerList} />
         </li>
     );

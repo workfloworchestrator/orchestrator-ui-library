@@ -71,8 +71,8 @@ function ListDel({
     return (
         <div
             {...filterDOMProps(props)}
+            className="del-item"
             id={`${id}.remove`}
-            css={{ marginTop: '10px' }}
             onClick={onAction}
             onKeyDown={onAction}
             role="button"
