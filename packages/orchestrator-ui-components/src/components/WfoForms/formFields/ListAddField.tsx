@@ -67,12 +67,12 @@ function ListAdd({
 
     return (
         <div
+            className="add-item"
             {...filterDOMProps(props)}
             onClick={onAction}
             onKeyDown={onAction}
             role="button"
             tabIndex={0}
-            css={{ display: 'flex', justifyContent: 'flex-end' }}
         >
             <EuiIcon
                 type="plus"
