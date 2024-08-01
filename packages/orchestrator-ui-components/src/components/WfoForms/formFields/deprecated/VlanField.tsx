@@ -155,14 +155,17 @@ function Vlan({
         .map((item) => get(item, selfName))
         .join(',');
 
-    // Refactored to simpler logic, no need to check for untagged ports and removed setting value to 0
-    // If the subscriptionId is changed then we need to reset the value only if there wasn't an initial value already set
-    // In the create workflow we need to reset the value if the subscriptionId is changed, in the modify workflow we don't
     useEffect(() => {
-        if (!initialValue) {
+        if (subscriptionId && isFetched && !portIsTagged && value !== '0') {
+            onChange('0');
+        } else if (
+            !disabled &&
+            ((!subscriptionId && value !== '') ||
+                (subscriptionId && portIsTagged && value === '0'))
+        ) {
             onChange('');
         }
-    }, [initialValue, onChange, subscriptionId, isFetched]);
+    }, [onChange, subscriptionId, isFetched, portIsTagged]);
 
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);
