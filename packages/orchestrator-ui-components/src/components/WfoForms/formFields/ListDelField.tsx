@@ -49,16 +49,13 @@ function ListDel({
         { absoluteName: true },
     )[0];
 
-    const parentValueCount =
-        parent && parent.value && parent.value.length ? parent.value.length : 0;
+    const parentValueCount = parent.value?.length ?? 0;
 
     // Make a row deletable only if its:
     const isDeletable: boolean =
         !disabled &&
         !readOnly &&
-        (!parent.minCount || parentValueCount > parent.minCount)
-            ? true
-            : false;
+        (!parent.minCount || parentValueCount > parent.minCount);
 
     function onAction(event: React.KeyboardEvent | React.MouseEvent) {
         if (isDeletable && (!('key' in event) || event.key === 'Enter')) {
