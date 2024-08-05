@@ -12,7 +12,7 @@ import {
 import { stripUndefined } from '@/rtk/utils';
 import { GraphqlQueryVariables } from '@/types';
 
-export const utils = <T, E = ErrorResponse>(
+export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
     options: GraphqlRequestBaseQueryArgs<E>,
     authActive: boolean,
 ): BaseQueryFn<
@@ -60,10 +60,17 @@ export const utils = <T, E = ErrorResponse>(
                 });
             }
 
+            if (!data && errors) {
+                return {
+                    data: null,
+                    errors,
+                    meta: { errors: [] },
+                };
+            }
+
             return {
-                data: data,
-                errors: errors,
-                meta: {},
+                data,
+                meta: { errors },
             };
         } catch (error) {
             if (error instanceof ClientError) {
