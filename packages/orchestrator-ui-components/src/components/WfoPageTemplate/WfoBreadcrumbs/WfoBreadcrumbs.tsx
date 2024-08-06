@@ -47,7 +47,7 @@ export const WfoBreadcrumbs = ({
     const parts = router.asPath.split('/');
     parts.forEach((p, index) => {
         if (index > 0) {
-            const link = removeSuffix(parts.slice(0, index + 1).join('/'));
+            const link = parts.slice(0, index + 1).join('/');
             // Handle UUID's: so you can have breadcrumb like: `Start / Subscriptions / b2312aa-cbc ...`
             // first remove the suffix, like ?activeTab=....
             const _p = removeSuffix(p);
