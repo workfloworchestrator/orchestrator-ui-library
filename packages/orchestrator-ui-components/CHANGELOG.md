@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.36.0
+
+### Minor Changes
+
+-   5663e2c: Fixes list item delete button
+
+### Patch Changes
+
+-   ef5910a: Removes unavailable untagged port subscriptions from dropdown list
+-   eed3424: Fix console errors that show when both data and errors are present in wfoGraphqlRequestBaseQuery. Fix name of the function.
+-   c880f61: 1295 - Partial rollback of changes introduced in PR 1242. These changes broke the functionality to remove a list item
+-   d23fa2b: 1294 Rollback style-change in list fields
+-   b1fc20a: Fix no no product/subscription_id prefill when clicking on a workflow breadcrumb by adding query param to link
+
 ## 1.35.0
 
 ### Minor Changes
