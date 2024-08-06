@@ -10,18 +10,22 @@ import { getToastMessage } from '@/utils/getToastMessage';
 
 import { orchestratorApi } from '../api';
 
-const getWebSocket = async (url: string) => {
-    const session = (await getSession()) as WfoSession;
+// const getWebSocket = async (url: string) => {
+//     const session = (await getSession()) as WfoSession;
+//
+//     if (session?.accessToken) {
+//         // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
+//         return new WebSocket(url, [
+//             'base64.bearer.token',
+//             session?.accessToken,
+//         ]);
+//     } else {
+//         return new WebSocket(url);
+//     }
+// };
 
-    if (session?.accessToken) {
-        // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
-        return new WebSocket(url, [
-            'base64.bearer.token',
-            session?.accessToken,
-        ]);
-    } else {
-        return new WebSocket(url);
-    }
+const getWebSocket = async (url: string) => {
+    return new WebSocket(url);
 };
 
 const PING_INTERVAL_MS = 45000; // Recommended values are between 30 and 60 seconds
@@ -78,18 +82,22 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         dispatch(cacheInvalidationAction);
                     } else {
                         console.error(
-                            `Trying to invalidate a cache entry with an unknown tag: ${cacheTag.type}`,
+                            `WS - Trying to invalidate a cache entry with an unknown tag: ${cacheTag.type}`,
                         );
                     }
                 };
 
                 // Send a ping message every to the websocket server to keep the connection alive
                 const pingInterval = setInterval(() => {
+                    console.log('WS - Sending PING');
                     webSocket.send('__ping__');
                 }, PING_INTERVAL_MS);
 
                 const debounceCloseWebSocket = debounce(() => {
-                    webSocket.close();
+                    console.log(
+                        'WS - Debounce: Closing websocket but i disabled that :)',
+                    );
+                    // webSocket.close();
                 }, DEBOUNCE_CLOSE_INTERVAL_MS);
                 // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
                 debounceCloseWebSocket();
@@ -108,6 +116,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     updateCachedData(() => true);
                 };
 
+                console.log('WS - EventListener added');
                 webSocket.addEventListener(
                     'message',
                     (messageEvent: MessageEvent<string>) => {
@@ -115,6 +124,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
                         if (data === '__pong__') {
                             // Reset the debounced every time a 'pong' message is received
+                            console.log('WS - Received PONG');
                             debounceCloseWebSocket();
                             return;
                         }
@@ -122,17 +132,17 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         if (message.name === MessageTypes.invalidateCache) {
                             invalidateTag(message.value);
                         } else {
-                            console.error('Unknown message type', message);
+                            console.error('WS - Unknown message type', message);
                         }
                     },
                 );
 
                 webSocket.onerror = (event) => {
-                    console.error('WebSocket error', event);
+                    console.error('WS - WebSocket error', event);
                 };
 
-                webSocket.onclose = () => {
-                    console.error('WebSocket closed');
+                webSocket.onclose = (ev) => {
+                    console.log('WS - WebSocket closed!!', { ev });
                     cleanUp();
                 };
 
