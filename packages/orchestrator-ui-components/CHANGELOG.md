@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.36.1
+
+### Patch Changes
+
+-   f7571b1: 822 Removes debounce mechanism in the websocket logic
+
 ## 1.36.0
 
 ### Minor Changes
