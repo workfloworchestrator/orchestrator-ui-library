@@ -16,4 +16,5 @@ export enum PolicyResource {
     SUBSCRIPTION_VALIDATE = '/orchestrator/subscriptions/validate/',
     TASKS_CREATE = '/orchestrator/processes/create/task',
     TASKS_RETRY_ALL = '/orchestrator/processes/all-tasks/retry',
+    SETTINGS_FLUSH_CACHE = '/orchestrator/settings/flush-cache',
 }
