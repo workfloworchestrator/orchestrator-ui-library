@@ -105,6 +105,7 @@ function ImsPortId({
         },
         {
             skip: !nodeId,
+            refetchOnMountOrArgChange: true,
         },
     );
 

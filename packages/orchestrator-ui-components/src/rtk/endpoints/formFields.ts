@@ -21,7 +21,7 @@ const nodeSubscriptionsQuery = `query NodeSubscriptions(
     subscriptions(filterBy: [
         {field: "tag", value: "Node"},
         {field: "status", value: $statuses}
-    
+
     ], first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}, after: 0) {
         page {
             description
