@@ -11,13 +11,13 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
+import { PolicyResource } from '@/configuration';
 import { useShowToastMessage, useWithOrchestratorTheme } from '@/hooks';
 import { useClearCacheMutation, useGetCacheNamesQuery } from '@/rtk';
 import { ToastTypes } from '@/types';
 
-import { getWfoFlushSettingsStyle } from './styles';
 import { WfoIsAllowedToRender } from '../WfoAuth';
-import { PolicyResource } from '@/configuration';
+import { getWfoFlushSettingsStyle } from './styles';
 
 export const WfoFlushSettings: FunctionComponent = () => {
     const { comboboxStyle } = useWithOrchestratorTheme(
