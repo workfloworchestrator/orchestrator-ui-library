@@ -57,7 +57,7 @@ export const WfoRelatedSubscriptions = ({
             },
         });
 
-    const { data, isFetching } = useGetRelatedSubscriptionsQuery({
+    const { data, isFetching, isLoading } = useGetRelatedSubscriptionsQuery({
         first: dataDisplayParams.pageSize,
         after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
         subscriptionId: subscriptionId,
@@ -167,7 +167,7 @@ export const WfoRelatedSubscriptions = ({
             <EuiSpacer size="m" />
             {(relatedSubscriptions &&
                 relatedSubscriptions.length > 0 &&
-                (!isFetching ||
+                (!isLoading ||
                     // This situation represents the situation where the hideRelatedsubscriptions is being toggled
                     // in which case we don't want to show the loadingState because it makes the page flicker
                     (!hideTerminatedSubscriptions &&
