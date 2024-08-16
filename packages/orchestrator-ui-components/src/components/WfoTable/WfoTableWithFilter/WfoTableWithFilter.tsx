@@ -13,9 +13,10 @@ import {
     Pagination,
 } from '@elastic/eui';
 
-import { WfoError } from '@/components';
+import { WfoErrorWithMessage } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
+import { RTKQueryError } from '@/rtk';
 import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
 
 import { getTypedFieldFromObject } from '../../../utils';
@@ -64,7 +65,7 @@ export type WfoTableWithFilterProps<T extends object> = {
     onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
-    hasError?: boolean;
+    error?: RTKQueryError;
     onExportData?: () => void;
     exportDataIsLoading?: boolean;
 };
@@ -85,7 +86,7 @@ export const WfoTableWithFilter = <T extends object>({
     onUpdateQueryString,
     onUpdatePage,
     onUpdateDataSort,
-    hasError = false,
+    error,
     onExportData,
     exportDataIsLoading = false,
 }: WfoTableWithFilterProps<T>) => {
@@ -199,10 +200,6 @@ export const WfoTableWithFilter = <T extends object>({
         }
     };
 
-    if (hasError) {
-        return <WfoError />;
-    }
-
     const searchModalText = t.rich('searchModalText', {
         br: () => <br />,
         p: (chunks) => <p>{chunks}</p>,
@@ -242,26 +239,29 @@ export const WfoTableWithFilter = <T extends object>({
                 )}
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            <WfoBasicTable
-                data={data}
-                columns={tableColumnsWithControlColumns}
-                hiddenColumns={hiddenColumns}
-                dataSorting={dataSorting}
-                onUpdateDataSorting={onUpdateDataSort}
-                pagination={pagination}
-                isLoading={isLoading}
-                onCriteriaChange={onCriteriaChange}
-                onDataSearch={({ field, searchText }) =>
-                    onUpdateQueryString(
-                        updateQueryString(
-                            queryString ?? '',
-                            field.toString(),
-                            searchText,
-                        ),
-                    )
-                }
-            />
-
+            {error ? (
+                <WfoErrorWithMessage error={error} />
+            ) : (
+                <WfoBasicTable
+                    data={data}
+                    columns={tableColumnsWithControlColumns}
+                    hiddenColumns={hiddenColumns}
+                    dataSorting={dataSorting}
+                    onUpdateDataSorting={onUpdateDataSort}
+                    pagination={pagination}
+                    isLoading={isLoading}
+                    onCriteriaChange={onCriteriaChange}
+                    onDataSearch={({ field, searchText }) =>
+                        onUpdateQueryString(
+                            updateQueryString(
+                                queryString ?? '',
+                                field.toString(),
+                                searchText,
+                            ),
+                        )
+                    }
+                />
+            )}
             {showSettingsModal && (
                 <TableSettingsModal
                     tableConfig={{

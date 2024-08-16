@@ -168,7 +168,7 @@ export const WfoWorkflowsPage = () => {
             sortBy: graphQlWorkflowListMapper(sortBy),
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useGetWorkflowsQuery(
+    const { data, isFetching, error } = useGetWorkflowsQuery(
         workflowListQueryVariables,
     );
 
@@ -237,7 +237,7 @@ export const WfoWorkflowsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={error}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

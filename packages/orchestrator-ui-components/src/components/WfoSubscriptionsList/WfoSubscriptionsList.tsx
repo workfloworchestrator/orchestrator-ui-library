@@ -164,9 +164,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         query: queryString || undefined,
     };
 
-    const { data, isFetching, isError } = useGetSubscriptionListQuery(
+    const { data, isFetching, error } = useGetSubscriptionListQuery(
         graphqlQueryVariables,
     );
+    // const serializedError: SerializedError = error ? error : { message: '' };
     const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
         useLazyGetSubscriptionListQuery();
     const getSubscriptionListForExport = () =>
@@ -220,7 +221,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            hasError={isError}
+            error={error}
             onExportData={csvDownloadHandler(
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,
