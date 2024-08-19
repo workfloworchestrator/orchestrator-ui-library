@@ -23,7 +23,8 @@
         "resetToDefault": "Reset to default",
         "savePreferences": "Save preferences",
         "numberOfRows": "Number of rows",
-        "tableSettings": "Table settings"
+        "tableSettings": "Table settings",
+        "openMenu": "Open menu"
     },
     "common": {
         "product": "Product",

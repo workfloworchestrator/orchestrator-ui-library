@@ -23,7 +23,8 @@
         "resetToDefault": "Reset naar standaard",
         "savePreferences": "Voorkeuren opslaan",
         "numberOfRows": "Aantal rijen",
-        "tableSettings": "Tabel instellingen"
+        "tableSettings": "Tabel instellingen",
+        "openMenu": "Open menu"
     },
     "common": {
         "product": "Produkt",
