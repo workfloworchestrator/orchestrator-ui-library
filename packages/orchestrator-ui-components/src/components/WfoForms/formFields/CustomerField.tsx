@@ -14,8 +14,9 @@
  */
 import React from 'react';
 
+import _ from 'lodash';
 import { useTranslations } from 'next-intl';
-import { connectField } from 'uniforms';
+import { connectField, useField } from 'uniforms';
 
 import { useGetCustomersQuery } from '@/rtk/endpoints';
 
@@ -31,6 +32,7 @@ export type CustomerFieldProps = Omit<
 
 function Customer({ ...props }: CustomerFieldProps) {
     const t = useTranslations('pydanticForms');
+    const [, context] = useField(props.name, {}, { absoluteName: true });
 
     const { data: customers, isLoading } = useGetCustomersQuery();
 
@@ -45,12 +47,22 @@ function Customer({ ...props }: CustomerFieldProps) {
         });
     }
 
+    const genericFieldName = props.name.split('.').shift();
+    const valueFromContext =
+        genericFieldName && context.model[genericFieldName];
+
+    const value =
+        Array.isArray(valueFromContext) && _.isEmpty(valueFromContext)
+            ? ''
+            : props.value;
+
     return (
         <UnconnectedSelectField
             {...props}
             allowedValues={Array.from(uuidCustomerNameMap.keys())}
             transform={(uuid: string) => uuidCustomerNameMap.get(uuid) || uuid}
             disabled={isLoading || props.disabled}
+            value={value}
             placeholder={
                 !isLoading
                     ? t('widgets.customer.placeholder')
