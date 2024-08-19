@@ -11,10 +11,12 @@ import {
 } from '@elastic/eui';
 import { EuiComboBoxOptionOption } from '@elastic/eui/src/components/combo_box/types';
 
+import { PolicyResource } from '@/configuration';
 import { useShowToastMessage, useWithOrchestratorTheme } from '@/hooks';
 import { useClearCacheMutation, useGetCacheNamesQuery } from '@/rtk';
 import { ToastTypes } from '@/types';
 
+import { WfoIsAllowedToRender } from '../WfoAuth';
 import { getWfoFlushSettingsStyle } from './styles';
 
 export const WfoFlushSettings: FunctionComponent = () => {
@@ -66,25 +68,27 @@ export const WfoFlushSettings: FunctionComponent = () => {
     };
 
     return (
-        <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
-            <EuiText size="s">
-                <h4>{t('flushCacheSettingsTitle')}</h4>
-            </EuiText>
-            <EuiSpacer size="m" />
-            <EuiComboBox
-                css={comboboxStyle}
-                aria-label="Flush settings"
-                placeholder={t('selectSettings')}
-                singleSelection={{ asPlainText: true }}
-                options={options}
-                selectedOptions={selectedOptions}
-                onChange={onChange}
-                fullWidth
-            />
-            <EuiSpacer size="m" />
-            <EuiButton onClick={flushCache} iconType="refresh">
-                {t('flushButton')}
-            </EuiButton>
-        </EuiPanel>
+        <WfoIsAllowedToRender resource={PolicyResource.SETTINGS_FLUSH_CACHE}>
+            <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
+                <EuiText size="s">
+                    <h4>{t('flushCacheSettingsTitle')}</h4>
+                </EuiText>
+                <EuiSpacer size="m" />
+                <EuiComboBox
+                    css={comboboxStyle}
+                    aria-label="Flush settings"
+                    placeholder={t('selectSettings')}
+                    singleSelection={{ asPlainText: true }}
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onChange={onChange}
+                    fullWidth
+                />
+                <EuiSpacer size="m" />
+                <EuiButton onClick={flushCache} iconType="refresh">
+                    {t('flushButton')}
+                </EuiButton>
+            </EuiPanel>
+        </WfoIsAllowedToRender>
     );
 };
