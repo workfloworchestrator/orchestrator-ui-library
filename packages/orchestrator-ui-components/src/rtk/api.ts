@@ -1,3 +1,4 @@
+import { ClientError } from 'graphql-request';
 import { getSession, signOut } from 'next-auth/react';
 
 import { SerializedError } from '@reduxjs/toolkit';
@@ -82,6 +83,19 @@ export const catchErrorResponse = async (
     }
 };
 
+export type WfoGraphqlErrorExtension = {
+    error_type: string;
+};
+
+export type WfoGraphqlErrorResponse = {
+    error: WfoGraphqlError[];
+};
+
+export type WfoGraphqlError = {
+    extensions: WfoGraphqlErrorExtension;
+    message: string;
+};
+
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
@@ -113,6 +127,9 @@ export const orchestratorApi = createApi({
                             ? customApi.apiBaseUrl
                             : graphqlEndpointCore,
                         prepareHeaders,
+                        customErrors: (args: ClientError) => {
+                            return args.response?.errors;
+                        },
                     },
                     authActive,
                 );

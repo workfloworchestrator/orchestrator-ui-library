@@ -29,6 +29,7 @@ import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
 import {
     ProcessListResponse,
+    WfoGraphqlError,
     useGetProcessListQuery,
     useLazyGetProcessListQuery,
 } from '@/rtk';
@@ -255,7 +256,7 @@ export const WfoProcessesList = ({
             dataSorting={dataSorting}
             pagination={pagination}
             isLoading={isFetching}
-            error={error}
+            error={error as WfoGraphqlError[]}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}

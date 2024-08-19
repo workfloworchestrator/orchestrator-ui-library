@@ -16,6 +16,7 @@ import {
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
+import { WfoGraphqlError } from '@/rtk';
 import {
     useGetSubscriptionListQuery,
     useLazyGetSubscriptionListQuery,
@@ -221,7 +222,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            error={error}
+            error={error as WfoGraphqlError[]}
             onExportData={csvDownloadHandler(
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,

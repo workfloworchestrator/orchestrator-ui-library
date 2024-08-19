@@ -24,6 +24,7 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
+import { WfoGraphqlError } from '@/rtk';
 import {
     WorkflowsResponse,
     useGetWorkflowsQuery,
@@ -237,7 +238,7 @@ export const WfoWorkflowsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error}
+                error={error as WfoGraphqlError[]}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

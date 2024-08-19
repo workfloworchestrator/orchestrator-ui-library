@@ -27,6 +27,7 @@ import {
 } from '@/hooks';
 import {
     ResourceTypesResponse,
+    WfoGraphqlError,
     useGetResourceTypesQuery,
     useLazyGetResourceTypesQuery,
 } from '@/rtk';
@@ -210,7 +211,7 @@ export const WfoResourceTypesPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error}
+                error={error as WfoGraphqlError[]}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY

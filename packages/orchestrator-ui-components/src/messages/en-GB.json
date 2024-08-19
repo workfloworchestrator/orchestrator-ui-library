@@ -37,6 +37,7 @@
         "noItemsFound": "No items found",
         "search": "Search",
         "errorMessage": "An error occurred",
+        "unknownError": "Unknown error",
         "export": "Export",
         "unauthorizedPage": "You are not authorized to see this page",
         "insyncTrue": "in-sync",

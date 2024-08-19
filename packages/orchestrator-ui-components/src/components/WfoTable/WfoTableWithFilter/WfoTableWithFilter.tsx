@@ -16,7 +16,7 @@ import {
 import { WfoErrorWithMessage } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
-import { RTKQueryError } from '@/rtk';
+import { WfoGraphqlError } from '@/rtk';
 import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
 
 import { getTypedFieldFromObject } from '../../../utils';
@@ -65,7 +65,7 @@ export type WfoTableWithFilterProps<T extends object> = {
     onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
-    error?: RTKQueryError;
+    error?: WfoGraphqlError[];
     onExportData?: () => void;
     exportDataIsLoading?: boolean;
 };
@@ -238,30 +238,29 @@ export const WfoTableWithFilter = <T extends object>({
                     </EuiButton>
                 )}
             </EuiFlexGroup>
-            <EuiSpacer size="m" />
-            {error ? (
-                <WfoErrorWithMessage error={error} />
-            ) : (
-                <WfoBasicTable
-                    data={data}
-                    columns={tableColumnsWithControlColumns}
-                    hiddenColumns={hiddenColumns}
-                    dataSorting={dataSorting}
-                    onUpdateDataSorting={onUpdateDataSort}
-                    pagination={pagination}
-                    isLoading={isLoading}
-                    onCriteriaChange={onCriteriaChange}
-                    onDataSearch={({ field, searchText }) =>
-                        onUpdateQueryString(
-                            updateQueryString(
-                                queryString ?? '',
-                                field.toString(),
-                                searchText,
-                            ),
-                        )
-                    }
-                />
+            {error && (
+                <WfoErrorWithMessage error={error as WfoGraphqlError[]} />
             )}
+            <EuiSpacer size="m" />
+            <WfoBasicTable
+                data={data}
+                columns={tableColumnsWithControlColumns}
+                hiddenColumns={hiddenColumns}
+                dataSorting={dataSorting}
+                onUpdateDataSorting={onUpdateDataSort}
+                pagination={pagination}
+                isLoading={isLoading}
+                onCriteriaChange={onCriteriaChange}
+                onDataSearch={({ field, searchText }) =>
+                    onUpdateQueryString(
+                        updateQueryString(
+                            queryString ?? '',
+                            field.toString(),
+                            searchText,
+                        ),
+                    )
+                }
+            />
             {showSettingsModal && (
                 <TableSettingsModal
                     tableConfig={{

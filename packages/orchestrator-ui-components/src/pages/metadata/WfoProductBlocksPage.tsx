@@ -27,7 +27,11 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
+import {
+    WfoGraphqlError,
+    useGetProductBlocksQuery,
+    useLazyGetProductBlocksQuery,
+} from '@/rtk';
 import type { ProductBlocksResponse } from '@/rtk';
 import {
     BadgeType,
@@ -264,7 +268,7 @@ export const WfoProductBlocksPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error}
+                error={error as WfoGraphqlError[]}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY
