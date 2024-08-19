@@ -51,6 +51,8 @@ function Customer({ ...props }: CustomerFieldProps) {
     const valueFromContext =
         genericFieldName && context.model[genericFieldName];
 
+    // RVL:19-89-24 This is the only way I found to make sure the value is set to undefined when the value
+    // is removed from the form (i.e. when the user clicks the "-" button in the form) for the last list item.
     const value =
         Array.isArray(valueFromContext) && _.isEmpty(valueFromContext)
             ? ''
