@@ -6,7 +6,11 @@ import { EuiFlexGroup, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
-import { WfoGraphqlErrorResponse } from '@/rtk';
+import { WfoGraphqlError } from '@/rtk';
+
+interface WfoErrorWithMessageProps {
+    error: WfoGraphqlError[];
+}
 
 export const WfoError = () => {
     const t = useTranslations('common');
@@ -19,7 +23,7 @@ export const WfoError = () => {
     );
 };
 
-export const WfoErrorWithMessage = ({ error }: WfoGraphqlErrorResponse) => {
+export const WfoErrorWithMessage = ({ error }: WfoErrorWithMessageProps) => {
     const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
     const message =
@@ -30,7 +34,6 @@ export const WfoErrorWithMessage = ({ error }: WfoGraphqlErrorResponse) => {
         <>
             <EuiFlexGroup direction="row" alignItems="center" gutterSize="s">
                 <WfoXCircleFill color={theme.colors.danger} />
-                {/*<EuiText>{t('errorMessage')}:</EuiText>*/}
                 <EuiText color={theme.colors.dangerText}>
                     {t('errorMessage')} ({message})
                 </EuiText>

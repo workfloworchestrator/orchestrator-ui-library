@@ -238,9 +238,7 @@ export const WfoTableWithFilter = <T extends object>({
                     </EuiButton>
                 )}
             </EuiFlexGroup>
-            {error && (
-                <WfoErrorWithMessage error={error as WfoGraphqlError[]} />
-            )}
+            {error && <WfoErrorWithMessage error={error} />}
             <EuiSpacer size="m" />
             <WfoBasicTable
                 data={data}

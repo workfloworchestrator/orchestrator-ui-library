@@ -24,12 +24,12 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { WfoGraphqlError } from '@/rtk';
 import {
     WorkflowsResponse,
     useGetWorkflowsQuery,
     useLazyGetWorkflowsQuery,
 } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -238,7 +238,7 @@ export const WfoWorkflowsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error as WfoGraphqlError[]}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

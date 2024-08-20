@@ -25,9 +25,9 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { WfoGraphqlError } from '@/rtk';
 import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
 import { ProductsResponse } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -260,7 +260,7 @@ export const WfoProductsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error as WfoGraphqlError[]}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

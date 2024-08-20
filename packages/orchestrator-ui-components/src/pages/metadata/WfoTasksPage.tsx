@@ -26,8 +26,8 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { WfoGraphqlError } from '@/rtk';
 import { TasksResponse, useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -232,7 +232,7 @@ export const WfoTasksPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                error={error as WfoGraphqlError[]}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

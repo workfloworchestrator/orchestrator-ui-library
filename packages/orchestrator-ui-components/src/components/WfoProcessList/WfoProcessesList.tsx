@@ -29,10 +29,10 @@ import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
 import {
     ProcessListResponse,
-    WfoGraphqlError,
     useGetProcessListQuery,
     useLazyGetProcessListQuery,
 } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
@@ -256,7 +256,7 @@ export const WfoProcessesList = ({
             dataSorting={dataSorting}
             pagination={pagination}
             isLoading={isFetching}
-            error={error as WfoGraphqlError[]}
+            error={mapRtkErrorToWfoError(error)}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}

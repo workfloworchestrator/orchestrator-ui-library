@@ -16,11 +16,11 @@ import {
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
-import { WfoGraphqlError } from '@/rtk';
 import {
     useGetSubscriptionListQuery,
     useLazyGetSubscriptionListQuery,
 } from '@/rtk/endpoints/subscriptionList';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
@@ -168,7 +168,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     const { data, isFetching, error } = useGetSubscriptionListQuery(
         graphqlQueryVariables,
     );
-    // const serializedError: SerializedError = error ? error : { message: '' };
     const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
         useLazyGetSubscriptionListQuery();
     const getSubscriptionListForExport = () =>
@@ -222,7 +221,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            error={error as WfoGraphqlError[]}
+            error={mapRtkErrorToWfoError(error)}
             onExportData={csvDownloadHandler(
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,

@@ -1,10 +1,8 @@
 import { ClientError } from 'graphql-request';
+import { GraphQLErrorExtensions } from 'graphql/error/GraphQLError';
 import { getSession, signOut } from 'next-auth/react';
 
-import { SerializedError } from '@reduxjs/toolkit';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ErrorResponse } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
 
 import type { WfoSession } from '@/hooks';
 import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
@@ -33,12 +31,6 @@ type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
     apiName?: string;
 };
-
-export type RTKQueryError =
-    | FetchBaseQueryError
-    | ErrorResponse
-    | SerializedError
-    | undefined;
 
 export const prepareHeaders = async (headers: Headers) => {
     const session = (await getSession()) as WfoSession;
@@ -83,16 +75,8 @@ export const catchErrorResponse = async (
     }
 };
 
-export type WfoGraphqlErrorExtension = {
-    error_type: string;
-};
-
-export type WfoGraphqlErrorResponse = {
-    error: WfoGraphqlError[];
-};
-
 export type WfoGraphqlError = {
-    extensions: WfoGraphqlErrorExtension;
+    extensions: GraphQLErrorExtensions;
     message: string;
 };
 
