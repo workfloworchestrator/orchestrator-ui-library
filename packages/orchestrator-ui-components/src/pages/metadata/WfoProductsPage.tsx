@@ -27,6 +27,7 @@ import {
 } from '@/hooks';
 import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
 import { ProductsResponse } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -183,7 +184,7 @@ export const WfoProductsPage = () => {
         sortBy: sortBy,
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useGetProductsQuery(
+    const { data, isFetching, error } = useGetProductsQuery(
         graphqlQueryVariables,
     );
     const [getProductsTrigger, { isFetching: isFetchingCsv }] =
@@ -259,7 +260,7 @@ export const WfoProductsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

@@ -20,6 +20,7 @@ import {
     useGetSubscriptionListQuery,
     useLazyGetSubscriptionListQuery,
 } from '@/rtk/endpoints/subscriptionList';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
@@ -164,7 +165,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
         query: queryString || undefined,
     };
 
-    const { data, isFetching, isError } = useGetSubscriptionListQuery(
+    const { data, isFetching, error } = useGetSubscriptionListQuery(
         graphqlQueryVariables,
     );
     const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
@@ -220,7 +221,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,
             )}
-            hasError={isError}
+            error={mapRtkErrorToWfoError(error)}
             onExportData={csvDownloadHandler(
                 getSubscriptionListForExport,
                 mapGraphQlSubscriptionsResultToSubscriptionListItems,

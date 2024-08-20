@@ -1,4 +1,5 @@
 import { ClientError, GraphQLClient } from 'graphql-request';
+import type { GraphQLError } from 'graphql/error/GraphQLError.js';
 import { signOut } from 'next-auth/react';
 
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
@@ -53,7 +54,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
             );
 
             if (errors?.length && authActive) {
-                errors.map((error) => {
+                errors.map((error: GraphQLError) => {
                     if (error.extensions?.error_type === 'not_authenticated') {
                         signOut();
                     }
@@ -74,9 +75,9 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
             };
         } catch (error) {
             if (error instanceof ClientError) {
-                const { name, message, stack, request, response } = error;
+                const { request, response } = error;
                 const customErrors =
-                    options.customErrors ?? (() => ({ name, message, stack }));
+                    options.customErrors ?? ((error) => error.response.errors);
                 const customizedErrors = customErrors(error) as E;
                 return { error: customizedErrors, meta: { request, response } };
             }

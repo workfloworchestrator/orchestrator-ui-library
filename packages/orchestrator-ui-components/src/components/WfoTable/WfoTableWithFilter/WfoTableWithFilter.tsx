@@ -13,9 +13,10 @@ import {
     Pagination,
 } from '@elastic/eui';
 
-import { WfoError } from '@/components';
+import { WfoErrorWithMessage } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
+import { WfoGraphqlError } from '@/rtk';
 import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
 
 import { getTypedFieldFromObject } from '../../../utils';
@@ -64,7 +65,7 @@ export type WfoTableWithFilterProps<T extends object> = {
     onUpdateQueryString: (queryString: string) => void;
     onUpdatePage: (criterion: Criteria<T>['page']) => void;
     onUpdateDataSort: (dataSorting: WfoDataSorting<T>) => void;
-    hasError?: boolean;
+    error?: WfoGraphqlError[];
     onExportData?: () => void;
     exportDataIsLoading?: boolean;
 };
@@ -85,7 +86,7 @@ export const WfoTableWithFilter = <T extends object>({
     onUpdateQueryString,
     onUpdatePage,
     onUpdateDataSort,
-    hasError = false,
+    error,
     onExportData,
     exportDataIsLoading = false,
 }: WfoTableWithFilterProps<T>) => {
@@ -199,10 +200,6 @@ export const WfoTableWithFilter = <T extends object>({
         }
     };
 
-    if (hasError) {
-        return <WfoError />;
-    }
-
     const searchModalText = t.rich('searchModalText', {
         br: () => <br />,
         p: (chunks) => <p>{chunks}</p>,
@@ -241,6 +238,7 @@ export const WfoTableWithFilter = <T extends object>({
                     </EuiButton>
                 )}
             </EuiFlexGroup>
+            {error && <WfoErrorWithMessage error={error} />}
             <EuiSpacer size="m" />
             <WfoBasicTable
                 data={data}
@@ -261,7 +259,6 @@ export const WfoTableWithFilter = <T extends object>({
                     )
                 }
             />
-
             {showSettingsModal && (
                 <TableSettingsModal
                     tableConfig={{

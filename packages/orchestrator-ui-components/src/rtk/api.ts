@@ -1,3 +1,5 @@
+import { ClientError } from 'graphql-request';
+import { GraphQLErrorExtensions } from 'graphql/error/GraphQLError';
 import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -73,6 +75,11 @@ export const catchErrorResponse = async (
     }
 };
 
+export type WfoGraphqlError = {
+    extensions: GraphQLErrorExtensions;
+    message: string;
+};
+
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
@@ -104,6 +111,9 @@ export const orchestratorApi = createApi({
                             ? customApi.apiBaseUrl
                             : graphqlEndpointCore,
                         prepareHeaders,
+                        customErrors: (args: ClientError) => {
+                            return args.response?.errors;
+                        },
                     },
                     authActive,
                 );

@@ -29,6 +29,7 @@ import {
 } from '@/hooks';
 import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
 import type { ProductBlocksResponse } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
     BadgeType,
     GraphqlQueryVariables,
@@ -204,7 +205,7 @@ export const WfoProductBlocksPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useGetProductBlocksQuery(
+    const { data, isFetching, error } = useGetProductBlocksQuery(
         graphqlQueryVariables,
     );
     const [getProductBlocksTrigger, { isFetching: isFetchingCsv }] =
@@ -264,7 +265,7 @@ export const WfoProductBlocksPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY

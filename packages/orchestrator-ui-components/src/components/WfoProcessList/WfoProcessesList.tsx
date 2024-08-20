@@ -32,6 +32,7 @@ import {
     useGetProcessListQuery,
     useLazyGetProcessListQuery,
 } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
@@ -217,7 +218,7 @@ export const WfoProcessesList = ({
         query: queryString || undefined,
     };
 
-    const { data, isFetching, isError } =
+    const { data, isFetching, error } =
         useGetProcessListQuery(processListQueryVars);
 
     const [getProcessListTrigger, { isFetching: isFetchingCsv }] =
@@ -255,7 +256,7 @@ export const WfoProcessesList = ({
             dataSorting={dataSorting}
             pagination={pagination}
             isLoading={isFetching}
-            hasError={isError}
+            error={mapRtkErrorToWfoError(error)}
             defaultHiddenColumns={defaultHiddenColumns}
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}

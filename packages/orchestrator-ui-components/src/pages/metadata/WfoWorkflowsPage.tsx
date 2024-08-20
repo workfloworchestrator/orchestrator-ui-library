@@ -29,6 +29,7 @@ import {
     useGetWorkflowsQuery,
     useLazyGetWorkflowsQuery,
 } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -168,7 +169,7 @@ export const WfoWorkflowsPage = () => {
             sortBy: graphQlWorkflowListMapper(sortBy),
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useGetWorkflowsQuery(
+    const { data, isFetching, error } = useGetWorkflowsQuery(
         workflowListQueryVariables,
     );
 
@@ -237,7 +238,7 @@ export const WfoWorkflowsPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

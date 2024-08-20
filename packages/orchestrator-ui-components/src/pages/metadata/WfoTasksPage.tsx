@@ -27,6 +27,7 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { TasksResponse, useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
@@ -163,7 +164,7 @@ export const WfoTasksPage = () => {
         sortBy: graphQlTaskListMapper(sortBy),
         query: queryString || undefined,
     };
-    const { data, isFetching, isError } = useGetTasksQuery(
+    const { data, isFetching, error } = useGetTasksQuery(
         taskListQueryVariables,
     );
 
@@ -231,7 +232,7 @@ export const WfoTasksPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY}
                 onExportData={csvDownloadHandler(

@@ -30,6 +30,7 @@ import {
     useGetResourceTypesQuery,
     useLazyGetResourceTypesQuery,
 } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
     BadgeType,
     GraphqlQueryVariables,
@@ -151,7 +152,7 @@ export const WfoResourceTypesPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, isError } = useGetResourceTypesQuery(
+    const { data, isFetching, error } = useGetResourceTypesQuery(
         graphqlQueryVariables,
     );
 
@@ -210,7 +211,7 @@ export const WfoResourceTypesPage = () => {
                 )}
                 pagination={pagination}
                 isLoading={isFetching}
-                hasError={isError}
+                error={mapRtkErrorToWfoError(error)}
                 queryString={queryString}
                 localStorageKey={
                     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY
