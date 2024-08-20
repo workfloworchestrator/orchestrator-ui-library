@@ -22,6 +22,12 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
         '.euiSideNavItem--branch': {
             '&:after': {
                 backgroundColor: theme.colors.lightShade,
+                height: '100%',
+            },
+            ':last-child': {
+                '&:after': {
+                    height: '50%',
+                },
             },
         },
     });
@@ -31,7 +37,7 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuItemStyles = ({ theme }: WfoTheme) => {
+export const getMenuItemStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',
@@ -54,10 +60,10 @@ export const getMenuItemStyles = ({ theme }: WfoTheme) => {
             backgroundColor: theme.colors.lightShade,
             position: 'absolute',
         },
-        padding: '8px 12px',
         ':last-child': {
-            top: '-4px',
-            position: 'relative',
+            ':after': {
+                top: '18px',
+            },
         },
     };
 
@@ -77,12 +83,31 @@ export const getMenuItemStyles = ({ theme }: WfoTheme) => {
 
     const selectedSubMenuItem = css({
         ...baseSubMenuStyles,
+        height: `${theme.base * 2.25}px`,
+
+        backgroundColor: toSecondaryColor(theme.colors.mediumShade),
+        borderRadius: theme.border.radius.medium,
         fontWeight: theme.font.weight.medium,
         color: theme.colors.darkestShade,
+        marginLeft: `${theme.base / 4}px`,
+        paddingLeft: `${theme.base / 2}px`,
+        ':after': {
+            content: "''",
+            top: `${theme.base}px`,
+            left: '0px',
+            width: '4px',
+            height: '1px',
+            backgroundColor: theme.colors.lightShade,
+            position: 'absolute',
+        },
     });
 
     const subMenuItemStyle = css({
         ...baseSubMenuStyles,
+        ':first-child': {
+            top: '0',
+            position: 'relative',
+        },
     });
 
     return {
