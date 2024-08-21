@@ -13,6 +13,7 @@ type WfoMenuItemLinkProps = {
     translationString: string;
     isSelected?: boolean;
     isSubItem?: boolean;
+    hasSubItems?: boolean;
 };
 
 export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
@@ -21,17 +22,21 @@ export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
     translationString,
     isSelected,
     isSubItem,
+    hasSubItems,
 }) => {
     const {
         menuItemStyle,
         selectedMenuItem,
         selectedSubMenuItem,
+        subMenuHeaderStyle,
         subMenuItemStyle,
     } = useWithOrchestratorTheme(getMenuItemStyles);
 
     const getMenuItemStyle = () => {
         if (isSubItem) {
             return isSelected ? selectedSubMenuItem : subMenuItemStyle;
+        } else if (isSelected && hasSubItems) {
+            return subMenuHeaderStyle;
         } else {
             return isSelected ? selectedMenuItem : menuItemStyle;
         }

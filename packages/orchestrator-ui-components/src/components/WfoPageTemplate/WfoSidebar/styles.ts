@@ -22,7 +22,7 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
         '.euiSideNavItem--branch': {
             '&:after': {
                 backgroundColor: theme.colors.lightShade,
-                height: '100%',
+                height: '120%',
             },
             ':last-child': {
                 '&:after': {
@@ -37,7 +37,7 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuItemStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
+export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',
@@ -72,48 +72,51 @@ export const getMenuItemStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
         color: theme.colors.subduedText,
     });
 
-    const selectedMenuItem = css({
+    const selectedMenuItemBaseStyle = {
         ...baseStyles,
         height: `${theme.base * 2.25}px`,
-        backgroundColor: theme.colors.lightShade,
+        backgroundColor: isDarkThemeActive
+            ? theme.colors.mediumShade
+            : theme.colors.header,
         borderRadius: theme.border.radius.medium,
-        fontWeight: theme.font.weight.semiBold,
-        color: theme.colors.darkestShade,
+        color: theme.colors.ghost,
+    };
+
+    const selectedMenuItem = css({
+        ...selectedMenuItemBaseStyle,
+    });
+
+    const subMenuItemStyle = css({
+        ...baseSubMenuStyles,
+        marginTop: `${theme.size.xxs}`,
+        marginLeft: `${theme.size.xs}`,
+        paddingLeft: `${theme.size.s}`,
     });
 
     const selectedSubMenuItem = css({
         ...baseSubMenuStyles,
         height: `${theme.base * 2.25}px`,
-
-        backgroundColor: toSecondaryColor(theme.colors.mediumShade),
+        backgroundColor: isDarkThemeActive
+            ? theme.colors.mediumShade
+            : theme.colors.header,
         borderRadius: theme.border.radius.medium,
-        fontWeight: theme.font.weight.medium,
-        color: theme.colors.darkestShade,
-        marginLeft: `${theme.size.xs}px`,
-        paddingLeft: `${theme.base / 2}px`,
-        ':after': {
-            content: "''",
-            top: `${theme.base}px`,
-            left: '0px',
-            width: theme.size.xs,
-            height: '1px',
-            backgroundColor: theme.colors.lightShade,
-            position: 'absolute',
-        },
+        color: theme.colors.ghost,
+        marginLeft: `${theme.size.xs}`,
+        paddingLeft: `${theme.size.s}`,
+        marginTop: `${theme.size.xxs}`,
     });
 
-    const subMenuItemStyle = css({
-        ...baseSubMenuStyles,
-        ':first-child': {
-            top: '0',
-            position: 'relative',
-        },
+    const subMenuHeaderStyle = css({
+        ...selectedMenuItemBaseStyle,
+        backgroundColor: isDarkThemeActive
+            ? theme.colors.lightShade
+            : theme.colors.mediumShade,
     });
-
     return {
         menuItemStyle,
         selectedMenuItem,
         selectedSubMenuItem,
         subMenuItemStyle,
+        subMenuHeaderStyle,
     };
 };
