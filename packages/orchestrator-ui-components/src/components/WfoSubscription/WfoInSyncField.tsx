@@ -7,10 +7,7 @@ import { EuiButton } from '@elastic/eui';
 
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
-import {
-    useGetSubscriptionDetailQuery,
-    useSetSubscriptionInSyncMutation,
-} from '@/rtk/endpoints';
+import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
