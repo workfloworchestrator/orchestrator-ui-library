@@ -7,7 +7,10 @@ import { EuiButton } from '@elastic/eui';
 
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
-import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
+import {
+    useGetSubscriptionDetailQuery,
+    useSetSubscriptionInSyncMutation,
+} from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
@@ -30,6 +33,9 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         subscriptionDetail.processes.page,
     );
     const [setSubscriptionInSync] = useSetSubscriptionInSyncMutation();
+    const { isFetching } = useGetSubscriptionDetailQuery({
+        subscriptionId: subscriptionDetail.subscriptionId,
+    });
     const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
 
@@ -37,13 +43,11 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         setSubscriptionInSync(subscriptionDetail.subscriptionId)
             .unwrap()
             .then(() => {
-                // Optimistic update for now
                 showToastMessage(
                     ToastTypes.SUCCESS,
                     t('setInSyncSuccess.text'),
                     t('setInSyncSuccess.title'),
                 );
-                subscriptionDetail.insync = true;
             })
             .catch((error) => {
                 showToastMessage(
@@ -80,7 +84,13 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
                 >
                     {t('see')} {lastUncompletedProcess?.processId}
                 </Link>
-                <EuiButton color="danger" size="s" onClick={confirmSetInSync}>
+                <EuiButton
+                    isLoading={isFetching}
+                    isDisabled={isFetching}
+                    color="danger"
+                    size="s"
+                    onClick={confirmSetInSync}
+                >
                     {t('setInSync')}
                 </EuiButton>
             </>

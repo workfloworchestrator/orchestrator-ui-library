@@ -1,4 +1,4 @@
-import { Subscription } from '@/types';
+import { CacheTagType, Subscription } from '@/types';
 
 import { BaseQueryTypes, orchestratorApi } from '../api';
 
@@ -15,6 +15,12 @@ const inSyncApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
+            invalidatesTags: (_result, _error, subscriptionId) => [
+                {
+                    type: CacheTagType.subscriptions,
+                    id: subscriptionId,
+                },
+            ],
         }),
     }),
 });
