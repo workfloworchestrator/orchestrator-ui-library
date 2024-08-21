@@ -20,9 +20,13 @@ import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
+    isFetching: boolean;
 }
 
-export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
+export const WfoInSyncField = ({
+    subscriptionDetail,
+    isFetching,
+}: WfoInSyncFieldProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
     const inSync = subscriptionDetail.insync;
@@ -33,9 +37,6 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         subscriptionDetail.processes.page,
     );
     const [setSubscriptionInSync] = useSetSubscriptionInSyncMutation();
-    const { isFetching } = useGetSubscriptionDetailQuery({
-        subscriptionId: subscriptionDetail.subscriptionId,
-    });
     const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
 

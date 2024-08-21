@@ -21,10 +21,12 @@ import { WfoInSyncField } from './WfoInSyncField';
 
 interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
+    isFetching: boolean;
 }
 
 export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
+    isFetching,
 }: WfoSubscriptionGeneralProps) => {
     const t = useTranslations('subscriptions.detail');
     const { overrideSections } =
@@ -65,7 +67,12 @@ export const WfoSubscriptionGeneral = ({
         },
         {
             key: t('insync'),
-            value: <WfoInSyncField subscriptionDetail={subscriptionDetail} />,
+            value: (
+                <WfoInSyncField
+                    subscriptionDetail={subscriptionDetail}
+                    isFetching={isFetching}
+                />
+            ),
         },
         {
             key: t('customer'),
