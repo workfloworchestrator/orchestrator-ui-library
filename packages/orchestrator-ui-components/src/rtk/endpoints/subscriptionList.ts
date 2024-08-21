@@ -1,5 +1,5 @@
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
-import { WfoGraphqlError, orchestratorApi } from '@/rtk';
+import { orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     CacheTagType,
@@ -79,9 +79,6 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
                     subscriptions,
                     pageInfo,
                 };
-            },
-            transformErrorResponse(): WfoGraphqlError[] {
-                return [];
             },
             providesTags: getCacheTag(CacheTagType.subscriptions),
         }),
