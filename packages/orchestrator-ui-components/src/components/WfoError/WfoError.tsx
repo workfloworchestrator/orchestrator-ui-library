@@ -3,7 +3,6 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiText } from '@elastic/eui';
-import { LOGICAL_PROPERTIES } from '@elastic/eui/src/global_styling/functions/logicals';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
