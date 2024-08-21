@@ -112,6 +112,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                         router.pathname.substring(0, PATH_METADATA.length) ===
                         PATH_METADATA
                     }
+                    hasSubItems={true}
                 />
             ),
             items: [
