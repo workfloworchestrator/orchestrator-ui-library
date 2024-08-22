@@ -88,7 +88,6 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
 
     const subMenuItemStyle = css({
         ...baseSubMenuStyles,
-        marginTop: `${theme.size.xxs}`,
         marginLeft: `${theme.size.xs}`,
         paddingLeft: `${theme.size.s}`,
     });
@@ -103,7 +102,6 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         color: theme.colors.ghost,
         marginLeft: `${theme.size.xs}`,
         paddingLeft: `${theme.size.s}`,
-        marginTop: `${theme.size.xxs}`,
     });
 
     const subMenuHeaderStyle = css({
