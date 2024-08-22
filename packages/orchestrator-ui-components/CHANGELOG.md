@@ -1,5 +1,22 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.37.0
+
+### Minor Changes
+
+-   4f91f82: Adds submenu higlighting
+-   6601919: Adjust submenu hightlighting
+-   a25dc81: Improve error presentation for WfoTableWithFilter
+-   d9c18b9: Fixes removing the last item in a list in some cicrumstances
+
+### Patch Changes
+
+-   2501569: Fixed bug that always showed error on subscription list page, improved function for mapping errors
+-   38f7135: 906 Uses isLoading instead of isFetching to render the no-results component. This keeps the table visible when browsing between pages of the paginated table
+-   2c6d26d: added WfoIsAllowedToRender around the cache flush component
+-   04b1ff7: Added invalidation to subscriptionId query, and loading state for setInSync button
+-   60c8947: 1312 Reretrieves ports when the user goes through the same form multiple times. Retrieving on mount keeps the port list up to date.
+
 ## 1.36.1
 
 ### Patch Changes
