@@ -107,10 +107,8 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const subMenuHeaderStyle = css({
-        ...selectedMenuItemBaseStyle,
-        backgroundColor: isDarkThemeActive
-            ? theme.colors.lightShade
-            : theme.colors.mediumShade,
+        ...baseStyles,
+        color: theme.colors.text,
     });
     return {
         menuItemStyle,
