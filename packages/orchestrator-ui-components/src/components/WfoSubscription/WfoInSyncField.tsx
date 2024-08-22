@@ -17,9 +17,13 @@ import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
+    isFetching: boolean;
 }
 
-export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
+export const WfoInSyncField = ({
+    subscriptionDetail,
+    isFetching,
+}: WfoInSyncFieldProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
     const inSync = subscriptionDetail.insync;
@@ -37,13 +41,11 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         setSubscriptionInSync(subscriptionDetail.subscriptionId)
             .unwrap()
             .then(() => {
-                // Optimistic update for now
                 showToastMessage(
                     ToastTypes.SUCCESS,
                     t('setInSyncSuccess.text'),
                     t('setInSyncSuccess.title'),
                 );
-                subscriptionDetail.insync = true;
             })
             .catch((error) => {
                 showToastMessage(
@@ -80,7 +82,13 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
                 >
                     {t('see')} {lastUncompletedProcess?.processId}
                 </Link>
-                <EuiButton color="danger" size="s" onClick={confirmSetInSync}>
+                <EuiButton
+                    isLoading={isFetching}
+                    isDisabled={isFetching}
+                    color="danger"
+                    size="s"
+                    onClick={confirmSetInSync}
+                >
                     {t('setInSync')}
                 </EuiButton>
             </>
