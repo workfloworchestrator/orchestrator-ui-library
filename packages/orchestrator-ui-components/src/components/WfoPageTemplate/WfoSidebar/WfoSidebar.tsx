@@ -72,21 +72,8 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             ),
         },
         {
-            name: t('workflows'),
-            id: '3',
-            isSelected: router.pathname === PATH_WORKFLOWS,
-            href: PATH_WORKFLOWS,
-            renderItem: () => (
-                <WfoMenuItemLink
-                    path={PATH_WORKFLOWS}
-                    translationString="workflows"
-                    isSelected={router.pathname === PATH_WORKFLOWS}
-                />
-            ),
-        },
-        {
             name: t('subscriptions'),
-            id: '4',
+            id: '3',
             isSelected: router.pathname === PATH_SUBSCRIPTIONS,
             href: PATH_SUBSCRIPTIONS,
             renderItem: () => (
@@ -98,8 +85,34 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             ),
         },
         {
-            name: t('metadata'),
+            name: t('workflows'),
+            id: '4',
+            isSelected: router.pathname === PATH_WORKFLOWS,
+            href: PATH_WORKFLOWS,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_WORKFLOWS}
+                    translationString="workflows"
+                    isSelected={router.pathname === PATH_WORKFLOWS}
+                />
+            ),
+        },
+        {
+            name: t('tasks'),
+            isSelected: router.pathname === PATH_TASKS,
             id: '5',
+            href: PATH_TASKS,
+            renderItem: () => (
+                <WfoMenuItemLink
+                    path={PATH_TASKS}
+                    translationString="tasks"
+                    isSelected={router.pathname === PATH_TASKS}
+                />
+            ),
+        },
+        {
+            name: t('metadata'),
+            id: '6',
             href: PATH_METADATA,
             isSelected:
                 router.pathname.substring(0, PATH_METADATA.length) ===
@@ -118,7 +131,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
             items: [
                 {
                     name: t('metadataProducts'),
-                    id: '5.1',
+                    id: '6.1',
                     href: PATH_METADATA_PRODUCTS,
                     renderItem: () => (
                         <WfoMenuItemLink
@@ -133,7 +146,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 },
                 {
                     name: t('metadataProductblocks'),
-                    id: '5.2',
+                    id: '6.2',
                     isSelected:
                         router.pathname === PATH_METADATA_PRODUCT_BLOCKS,
                     href: PATH_METADATA_PRODUCT_BLOCKS,
@@ -150,7 +163,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 },
                 {
                     name: t('metadataResourceTypes'),
-                    id: '5.3',
+                    id: '6.3',
                     href: PATH_METADATA_RESOURCE_TYPES,
                     isSelected:
                         router.pathname === PATH_METADATA_RESOURCE_TYPES,
@@ -167,7 +180,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 },
                 {
                     name: t('metadataWorkflows'),
-                    id: '5.4',
+                    id: '6.4',
                     isSelected: router.pathname === PATH_METADATA_WORKFLOWS,
                     href: PATH_METADATA_WORKFLOWS,
                     renderItem: () => (
@@ -183,7 +196,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 },
                 {
                     name: t('metadataTasks'),
-                    id: '5.5',
+                    id: '6.5',
                     isSelected: router.pathname === PATH_METADATA_TASKS,
                     href: PATH_METADATA_TASKS,
                     renderItem: () => (
@@ -196,19 +209,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     ),
                 },
             ],
-        },
-        {
-            name: t('tasks'),
-            isSelected: router.pathname === PATH_TASKS,
-            id: '6',
-            href: PATH_TASKS,
-            renderItem: () => (
-                <WfoMenuItemLink
-                    path={PATH_TASKS}
-                    translationString="tasks"
-                    isSelected={router.pathname === PATH_TASKS}
-                />
-            ),
         },
         {
             name: t('settings'),
