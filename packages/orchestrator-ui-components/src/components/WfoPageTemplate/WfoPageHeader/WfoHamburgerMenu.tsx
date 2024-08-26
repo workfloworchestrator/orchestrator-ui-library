@@ -1,41 +1,61 @@
 import React, { useState } from 'react';
 
 import { signOut } from 'next-auth/react';
-import { useTranslations } from 'next-intl';
 
 import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoLogoutIcon } from '@/icons';
+import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
 
 export const WfoHamburgerMenu = ({}) => {
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
-    const t = useTranslations('main');
-
+    const { enableSupportMenuItem, supportMenuItemUrl } =
+        useGetOrchestratorConfig();
     const closePopover = () => {
         setPopoverIsOpen(false);
     };
+    const handleOpenSupport = async (): Promise<undefined> => {
+        window.open(supportMenuItemUrl, '_blank');
+    };
+
+    const panelItems = [
+        {
+            name: 'Logout',
+            icon: (
+                <WfoLogoutIcon
+                    color={
+                        isDarkThemeActive
+                            ? theme.colors.ghost
+                            : theme.colors.ink
+                    }
+                />
+            ),
+            onClick: () => signOut(),
+        },
+    ];
+
+    enableSupportMenuItem &&
+        panelItems.splice(0, 0, {
+            name: 'Support',
+            icon: (
+                <WfoQuestionCircle
+                    color={
+                        isDarkThemeActive
+                            ? theme.colors.ghost
+                            : theme.colors.ink
+                    }
+                />
+            ),
+            onClick: handleOpenSupport,
+        });
 
     const panels: EuiContextMenuPanelDescriptor[] = [
         {
             id: 0,
-            items: [
-                {
-                    name: 'Logout',
-                    icon: (
-                        <WfoLogoutIcon
-                            color={
-                                isDarkThemeActive
-                                    ? theme.colors.ghost
-                                    : theme.colors.ink
-                            }
-                        />
-                    ),
-                    onClick: () => signOut(),
-                },
-            ],
+            items: panelItems,
         },
     ];
 
@@ -47,7 +67,6 @@ export const WfoHamburgerMenu = ({}) => {
                     iconType="menu"
                     css={{ color: theme.colors.ghost }}
                     onClick={() => setPopoverIsOpen(!isPopoverOpen)}
-                    aria-label={t('openMenu')}
                 />
             }
             css={{ width: theme.base * 2 }}
