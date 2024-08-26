@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.37.1
+
+### Patch Changes
+
+-   a95a3c7: Changed order of side menu to reflect the importance of the pages in a more logical order
+
 ## 1.37.0
 
 ### Minor Changes
