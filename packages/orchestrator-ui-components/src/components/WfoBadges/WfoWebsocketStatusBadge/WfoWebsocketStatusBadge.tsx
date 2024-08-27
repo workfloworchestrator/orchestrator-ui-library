@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useTranslations } from 'next-intl';
@@ -15,17 +15,29 @@ import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { getStyles } from './styles';
 
 export const WfoWebsocketStatusBadge = () => {
+    const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
         useWithOrchestratorTheme(getStyles);
 
-    const dispatch = useDispatch();
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
     const { data: websocketConnected = false } = useStreamMessagesQuery();
 
-    const reconnect = () => {
+    const reconnect = useCallback(() => {
         dispatch(orchestratorApi.util.resetApiState());
-    };
+    }, [dispatch]);
+
+    useEffect(() => {
+        const handleOnFocus = () => {
+            if (!websocketConnected) {
+                reconnect();
+            }
+        };
+        window.addEventListener('focus', handleOnFocus);
+        return () => {
+            window.removeEventListener('focus', handleOnFocus);
+        };
+    }, [dispatch, reconnect, websocketConnected]);
 
     return (
         <EuiToolTip
