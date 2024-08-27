@@ -8,6 +8,7 @@ import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoLogoutIcon } from '@/icons';
 import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
+import { toOptionalArrayEntry } from '@/utils';
 
 export const WfoHamburgerMenu = ({}) => {
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
@@ -21,36 +22,34 @@ export const WfoHamburgerMenu = ({}) => {
         window.open(supportMenuItemUrl, '_blank');
     };
 
-    const panelItems = [
-        {
-            name: 'Logout',
-            icon: (
-                <WfoLogoutIcon
-                    color={
-                        isDarkThemeActive
-                            ? theme.colors.ghost
-                            : theme.colors.ink
-                    }
-                />
-            ),
-            onClick: () => signOut(),
-        },
-    ];
+    const logoutItem = {
+        name: 'Logout',
+        icon: (
+            <WfoLogoutIcon
+                color={
+                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
+                }
+            />
+        ),
+        onClick: () => signOut(),
+    };
 
-    enableSupportMenuItem &&
-        panelItems.splice(0, 0, {
-            name: 'Support',
-            icon: (
-                <WfoQuestionCircle
-                    color={
-                        isDarkThemeActive
-                            ? theme.colors.ghost
-                            : theme.colors.ink
-                    }
-                />
-            ),
-            onClick: handleOpenSupport,
-        });
+    const supportItem = {
+        name: 'Support',
+        icon: (
+            <WfoQuestionCircle
+                color={
+                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
+                }
+            />
+        ),
+        onClick: handleOpenSupport,
+    };
+
+    const panelItems = [
+        ...toOptionalArrayEntry(supportItem, enableSupportMenuItem),
+        { ...logoutItem },
+    ];
 
     const panels: EuiContextMenuPanelDescriptor[] = [
         {
