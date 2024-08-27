@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import { getSession } from 'next-auth/react';
 
 import type { WfoSession } from '@/hooks';
@@ -23,12 +24,11 @@ const getWebSocket = async (url: string) => {
     }
 };
 
-// Recommended values are between 30 and 60 seconds
 // Note: When the browser tab is suspended, the browser will give this suspended tab approximately every 60 seconds time
 // to execute code. This means that the ping message will be sent every 60 seconds in suspended mode. This depends
 // on the browser and can differ.
 const PING_INTERVAL_MS = 45000;
-
+const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
 type WebSocketMessage = {
     name: MessageTypes;
     value: CacheTag;
@@ -88,7 +88,14 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 // Send a ping message every to the websocket server to keep the connection alive
                 const pingInterval = setInterval(() => {
                     webSocket.send('__ping__');
+                    debounceCloseWebSocket();
                 }, PING_INTERVAL_MS);
+
+                const debounceCloseWebSocket = debounce(() => {
+                    webSocket.close();
+                }, DEBOUNCE_CLOSE_INTERVAL_MS);
+                // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
+                debounceCloseWebSocket();
 
                 await cacheDataLoaded;
 
