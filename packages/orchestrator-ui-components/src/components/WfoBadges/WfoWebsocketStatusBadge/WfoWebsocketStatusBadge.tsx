@@ -21,23 +21,40 @@ export const WfoWebsocketStatusBadge = () => {
 
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
-    const { data: websocketConnected = false } = useStreamMessagesQuery();
+    const { data: websocketConnected } = useStreamMessagesQuery();
 
     const reconnect = useCallback(() => {
         dispatch(orchestratorApi.util.resetApiState());
     }, [dispatch]);
 
     useEffect(() => {
-        const handleOnFocus = () => {
-            if (!websocketConnected) {
+        // This handles the case where a tab or page is suspended and reactivated
+        // We force the store to reset and the websocket to reconnect if it's disconnected
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && !websocketConnected) {
                 reconnect();
             }
         };
-        window.addEventListener('focus', handleOnFocus);
+
+        if (typeof document !== 'undefined' && document.addEventListener) {
+            document.addEventListener(
+                'visibilitychange',
+                handleVisibilityChange,
+            );
+        }
+
         return () => {
-            window.removeEventListener('focus', handleOnFocus);
+            if (
+                typeof document !== 'undefined' &&
+                document.removeEventListener
+            ) {
+                document.removeEventListener(
+                    'visibilitychange',
+                    handleVisibilityChange,
+                );
+            }
         };
-    }, [dispatch, reconnect, websocketConnected]);
+    }, [reconnect, websocketConnected]);
 
     return (
         <EuiToolTip
