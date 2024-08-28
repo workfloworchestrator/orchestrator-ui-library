@@ -544,6 +544,8 @@ export type OrchestratorConfig = {
     useWebSockets: boolean;
     useThemeToggle: boolean;
     showWorkflowInformationLink: boolean;
+    enableSupportMenuItem: boolean;
+    supportMenuItemUrl: string;
 };
 
 export enum ColorModes {

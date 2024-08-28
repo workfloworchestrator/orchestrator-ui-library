@@ -6,36 +6,57 @@ import { useTranslations } from 'next-intl';
 import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoLogoutIcon } from '@/icons';
+import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
+import { toOptionalArrayEntry } from '@/utils';
 
 export const WfoHamburgerMenu = ({}) => {
+    const t = useTranslations('main');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
-    const t = useTranslations('main');
-
+    const { enableSupportMenuItem, supportMenuItemUrl } =
+        useGetOrchestratorConfig();
     const closePopover = () => {
         setPopoverIsOpen(false);
     };
+    const handleOpenSupport = async (): Promise<undefined> => {
+        window.open(supportMenuItemUrl, '_blank');
+    };
+
+    const logoutItem = {
+        name: 'Logout',
+        icon: (
+            <WfoLogoutIcon
+                color={
+                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
+                }
+            />
+        ),
+        onClick: () => signOut(),
+    };
+
+    const supportItem = {
+        name: 'Support',
+        icon: (
+            <WfoQuestionCircle
+                color={
+                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
+                }
+            />
+        ),
+        onClick: handleOpenSupport,
+    };
+
+    const panelItems = [
+        ...toOptionalArrayEntry(supportItem, enableSupportMenuItem),
+        { ...logoutItem },
+    ];
 
     const panels: EuiContextMenuPanelDescriptor[] = [
         {
             id: 0,
-            items: [
-                {
-                    name: 'Logout',
-                    icon: (
-                        <WfoLogoutIcon
-                            color={
-                                isDarkThemeActive
-                                    ? theme.colors.ghost
-                                    : theme.colors.ink
-                            }
-                        />
-                    ),
-                    onClick: () => signOut(),
-                },
-            ],
+            items: panelItems,
         },
     ];
 
