@@ -14,6 +14,8 @@ import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { getStyles } from './styles';
 
+const CHECK_WEBSOCKET_CONNECTION_INTERVAL_MS = 5000;
+
 export const WfoWebsocketStatusBadge = () => {
     const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
@@ -36,6 +38,12 @@ export const WfoWebsocketStatusBadge = () => {
             }
         };
 
+        const closeCheckWebsocketInterval = setInterval(() => {
+            if (!websocketConnected) {
+                reconnect();
+            }
+        }, CHECK_WEBSOCKET_CONNECTION_INTERVAL_MS);
+
         if (typeof document !== 'undefined' && document.addEventListener) {
             document.addEventListener(
                 'visibilitychange',
@@ -53,6 +61,7 @@ export const WfoWebsocketStatusBadge = () => {
                     handleVisibilityChange,
                 );
             }
+            clearInterval(closeCheckWebsocketInterval);
         };
     }, [reconnect, websocketConnected]);
 
