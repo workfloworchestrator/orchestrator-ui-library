@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
@@ -11,6 +12,7 @@ import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
 import { toOptionalArrayEntry } from '@/utils';
 
 export const WfoHamburgerMenu = ({}) => {
+    const t = useTranslations('main');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
     const { enableSupportMenuItem, supportMenuItemUrl } =
@@ -66,6 +68,7 @@ export const WfoHamburgerMenu = ({}) => {
                     iconType="menu"
                     css={{ color: theme.colors.ghost }}
                     onClick={() => setPopoverIsOpen(!isPopoverOpen)}
+                    aria-label={t('openMenu')}
                 />
             }
             css={{ width: theme.base * 2 }}
