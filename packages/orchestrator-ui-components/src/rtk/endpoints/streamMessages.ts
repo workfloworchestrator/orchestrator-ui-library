@@ -24,8 +24,8 @@ const getWebSocket = async (url: string) => {
     }
 };
 
-const PING_INTERVAL_MS = 2000;
-const NO_PONG_RECEIVED_INTERVAL_MS = 65000;
+const PING_INTERVAL_MS = 30000;
+const NO_PONG_RECEIVED_INTERVAL_MS = 35000;
 const INITIAL_CONNECTION_CHECK_INTERVAL_MS = 2000;
 
 type WebSocketMessage = {
