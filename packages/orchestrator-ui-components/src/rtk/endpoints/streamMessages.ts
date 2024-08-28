@@ -24,11 +24,10 @@ const getWebSocket = async (url: string) => {
     }
 };
 
-// Note: When the browser tab is suspended, the browser will give this suspended tab approximately every 60 seconds time
-// to execute code. This means that the ping message will be sent every 60 seconds in suspended mode. This depends
-// on the browser and can differ.
-const PING_INTERVAL_MS = 45000;
-const DEBOUNCE_CLOSE_INTERVAL_MS = 60000;
+const PING_INTERVAL_MS = 2000;
+const NO_PONG_RECEIVED_INTERVAL_MS = 65000;
+const INITIAL_CONNECTION_CHECK_INTERVAL_MS = 2000;
+
 type WebSocketMessage = {
     name: MessageTypes;
     value: CacheTag;
@@ -41,10 +40,14 @@ enum MessageTypes {
  * Websocket handling as recommended by RTK QUery see: https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#streaming-data-with-no-initial-request
  * The websocket is opened after the cacheDataLoaded promise is resolved, and closed after the cacheEntryRemoved promise is resolved maintaining
  * the connection in between
- * - It sends a ping message every PING_INTERVAL ms to keep the connection alive
+ * - It sends a ping message right after the connection is established. If no pong is received within INITIAL_CONNECTION_CHECK_INTERVAL_MS the connection
+ * is considered lost
+ * - It sends a ping message every PING_INTERVAL ms to keep the connection alive. It no pong is received withing NO_PONG_RECEIVED_INTERVAL_MS the connection
+ * is considered lost
  * - It debounces the close event to avoid closing the connection every time a 'pong' message is received
  * - It closes the connection if any websocket error or close event is received
  * - It invalidates the cache entry with the tag received in the message event
+ * - WfoWebsocketStatusBadge contains logic that handles automatic reconnection and their circumstances
  */
 const streamMessagesApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
@@ -85,29 +88,52 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     }
                 };
 
-                // Send a ping message every to the websocket server to keep the connection alive
-                const pingInterval = setInterval(() => {
-                    webSocket.send('__ping__');
-                    debounceCloseWebSocket();
-                }, PING_INTERVAL_MS);
-
-                const debounceCloseWebSocket = debounce(() => {
-                    webSocket.close();
-                }, DEBOUNCE_CLOSE_INTERVAL_MS);
-                // Start the debounced function to close the websocket when no 'pong' message is received after DEBOUNCE_CLOSE_INTERVAL
-                debounceCloseWebSocket();
-
                 await cacheDataLoaded;
-
+                let initialConnection = true;
                 const state = getState() as RootState;
                 const { orchestratorWebsocketUrl } = state.orchestratorConfig;
                 const validCacheTags = Object.values(CacheTagType);
 
+                const getDebounce = (delay: number) => {
+                    return debounce(() => {
+                        webSocket.close();
+                        // note: websocket.close doesnt trigger the onclose handler when losing
+                        // internet connection so we call the cleanup event from here to be sure it's called
+                        cleanUp();
+                    }, delay);
+                };
+
+                const closeConnectionAfterFirstPing = getDebounce(
+                    INITIAL_CONNECTION_CHECK_INTERVAL_MS,
+                );
+                const debounceClosingConnection = getDebounce(
+                    NO_PONG_RECEIVED_INTERVAL_MS,
+                );
+
                 // Starts the websocket
                 const webSocket = await getWebSocket(orchestratorWebsocketUrl);
 
-                // Lets the WfoWebsocketStatusBadge know the websocket is connected
+                const sendPing = () => {
+                    if (webSocket.readyState === WebSocket.OPEN) {
+                        webSocket.send('__ping__');
+                    }
+                };
+
+                // Send a ping message every to the websocket server to keep the connection alive
+                // Note: setInterval doesn't keep their set interval when the browser suspends. It will
+                // run less frequently at the discretion of the browser causing the websocket to disconnect
+                // sometimes. WfoWebsocketStatusBadge contains logic to reconnect based on the pageVisibility api
+                // to handle that situation.
+                const pingInterval = setInterval(() => {
+                    sendPing();
+                }, PING_INTERVAL_MS);
+
                 webSocket.onopen = () => {
+                    // Check the connection right after it is established
+                    closeConnectionAfterFirstPing();
+                    sendPing();
+                    debounceClosingConnection();
+                    // Lets the WfoWebsocketStatusBadge know the websocket is connected
                     updateCachedData(() => true);
                 };
 
@@ -117,7 +143,14 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         const data = messageEvent.data;
 
                         if (data === '__pong__') {
-                            // __pong__ is an accepted message, but should not be processed
+                            debounceClosingConnection();
+                            if (
+                                initialConnection &&
+                                closeConnectionAfterFirstPing
+                            ) {
+                                initialConnection = false;
+                                closeConnectionAfterFirstPing.cancel();
+                            }
                             return;
                         }
                         const message = JSON.parse(data) as WebSocketMessage;
