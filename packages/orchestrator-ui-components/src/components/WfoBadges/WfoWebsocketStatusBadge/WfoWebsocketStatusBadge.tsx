@@ -15,8 +15,10 @@ import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { getStyles } from './styles';
 
 const CHECK_WEBSOCKET_CONNECTION_INTERVAL_MS = 5000;
+const MAX_RETRIES = 2;
 
 export const WfoWebsocketStatusBadge = () => {
+    let retries = 0;
     const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
         useWithOrchestratorTheme(getStyles);
@@ -39,7 +41,10 @@ export const WfoWebsocketStatusBadge = () => {
         };
 
         const closeCheckWebsocketInterval = setInterval(() => {
-            if (!websocketConnected) {
+            if (retries > MAX_RETRIES) {
+                clearInterval(closeCheckWebsocketInterval);
+            } else if (!websocketConnected) {
+                retries++;
                 reconnect();
             }
         }, CHECK_WEBSOCKET_CONNECTION_INTERVAL_MS);
