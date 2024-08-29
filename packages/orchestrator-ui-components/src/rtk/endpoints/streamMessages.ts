@@ -25,7 +25,7 @@ const getWebSocket = async (url: string) => {
 };
 
 const PING_INTERVAL_MS = 30000;
-const NO_PONG_RECEIVED_INTERVAL_MS = 35000;
+const NO_PONG_RECEIVED_TIMEOUT_MS = 35000;
 const INITIAL_CONNECTION_CHECK_INTERVAL_MS = 2000;
 
 type WebSocketMessage = {
@@ -42,7 +42,7 @@ enum MessageTypes {
  * the connection in between
  * - It sends a ping message right after the connection is established. If no pong is received within INITIAL_CONNECTION_CHECK_INTERVAL_MS the connection
  * is considered lost
- * - It sends a ping message every PING_INTERVAL ms to keep the connection alive. It no pong is received withing NO_PONG_RECEIVED_INTERVAL_MS the connection
+ * - It sends a ping message every PING_INTERVAL ms to keep the connection alive. It no pong is received withing NO_PONG_RECEIVED_TIMEOUT_MS the connection
  * is considered lost
  * - It debounces the close event to avoid closing the connection every time a 'pong' message is received
  * - It closes the connection if any websocket error or close event is received
@@ -107,7 +107,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                     INITIAL_CONNECTION_CHECK_INTERVAL_MS,
                 );
                 const debounceClosingConnection = getDebounce(
-                    NO_PONG_RECEIVED_INTERVAL_MS,
+                    NO_PONG_RECEIVED_TIMEOUT_MS,
                 );
 
                 // Starts the websocket
