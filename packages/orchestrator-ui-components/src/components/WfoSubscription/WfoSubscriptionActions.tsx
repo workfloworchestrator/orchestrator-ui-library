@@ -44,19 +44,24 @@ const MenuBlock: FC<MenuBlockProps> = ({ title }) => (
 
 export type WfoSubscriptionActionsProps = {
     subscriptionId: string;
+    isLoading?: boolean;
 };
 
 export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     subscriptionId,
+    isLoading,
 }) => {
     const { theme } = useOrchestratorTheme();
 
     const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
-    const { data: subscriptionActions } = useGetSubscriptionActionsQuery({
-        subscriptionId,
-    });
+    const { data: subscriptionActions } = useGetSubscriptionActionsQuery(
+        {
+            subscriptionId,
+        },
+        { skip: isLoading },
+    );
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
 
@@ -176,6 +181,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             iconType="arrowDown"
             iconSide="right"
             onClick={onButtonClick}
+            isLoading={isLoading}
         >
             {t('actions')}
         </EuiButton>

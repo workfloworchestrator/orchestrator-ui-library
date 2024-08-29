@@ -9,7 +9,7 @@ import { WfoXCircleFill } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 
 interface WfoErrorWithMessageProps {
-    error: WfoGraphqlError[];
+    error: WfoGraphqlError[] | undefined;
 }
 
 export const WfoError = () => {
@@ -27,7 +27,7 @@ export const WfoErrorWithMessage = ({ error }: WfoErrorWithMessageProps) => {
     const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
     const message =
-        error.length > 0
+        error && error.length > 0
             ? error.map((err) => err.message).join(', ')
             : t('unknownError');
     return (
