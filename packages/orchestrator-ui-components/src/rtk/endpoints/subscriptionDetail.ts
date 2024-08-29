@@ -7,64 +7,70 @@ import {
 } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
+export const subscriptionDetailFragment = `
+fragment SubscriptionDetail on SubscriptionInterface {
+    subscriptionId
+    description
+    fixedInputs
+    insync
+    note
+    product {
+        createdAt
+        name
+        status
+        endDate
+        description
+        tag
+        productType
+        productId
+    }
+    endDate
+    startDate
+    status
+    customerId
+    metadata
+    customer {
+        fullname
+        customerId
+        shortcode
+    }
+    customerDescriptions {
+        subscriptionId
+        description
+        customerId
+    }
+    productBlockInstances {
+        id
+        subscription {
+            subscriptionId
+            description
+        }
+        parent
+        productBlockInstanceValues
+        subscriptionInstanceId
+        inUseByRelations
+    }
+    processes(sortBy: { field: "startedAt", order: ASC }) {
+        page {
+            processId
+            lastStatus
+            startedAt
+            createdBy
+            workflowTarget
+            workflowName
+            isTask
+        }
+    }
+}
+`;
+
 export const subscriptionDetailQuery = `
     query SubscriptionDetail($subscriptionId: String!) {
         subscriptions(
             filterBy: { field: "subscriptionId", value: $subscriptionId }
         ) {
             page {
-                subscriptionId
-                description
-                fixedInputs
-                insync
-                note
-                product {
-                    createdAt
-                    name
-                    status
-                    endDate
-                    description
-                    tag
-                    productType
-                    productId
-                }
-                endDate
-                startDate
-                status
-                customerId
-                metadata
-                customer {
-                    fullname
-                    customerId
-                    shortcode
-                }
-                customerDescriptions {
-                    subscriptionId
-                    description
-                    customerId
-                }
-                productBlockInstances {
-                    id
-                    subscription {
-                        subscriptionId
-                        description
-                    }
-                    parent
-                    productBlockInstanceValues
-                    subscriptionInstanceId
-                    inUseByRelations
-                }
-                processes(sortBy: { field: "startedAt", order: ASC }) {
-                    page {
-                        processId
-                        lastStatus
-                        startedAt
-                        createdBy
-                        workflowTarget
-                        workflowName
-                        isTask
-                    }
-                }
+                ...SubscriptionDetail
             }
         }
     }
@@ -81,7 +87,7 @@ const subscriptionDetailApi = orchestratorApi.injectEndpoints({
             { subscriptionId: string }
         >({
             query: (variables) => ({
-                document: subscriptionDetailQuery,
+                document: subscriptionDetailQuery + subscriptionDetailFragment,
                 variables,
             }),
             transformResponse: (

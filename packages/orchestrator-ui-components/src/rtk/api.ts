@@ -32,6 +32,15 @@ type ExtraOptions = {
     apiName?: string;
 };
 
+export type WfoGraphqlError = {
+    extensions: GraphQLErrorExtensions;
+    message: string;
+};
+
+export type WfoGraphqlErrorsMeta = {
+    errors: WfoGraphqlError[];
+};
+
 export const prepareHeaders = async (headers: Headers) => {
     const session = (await getSession()) as WfoSession;
     if (session?.accessToken) {
@@ -54,6 +63,12 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
+export const handleGraphqlMetaErrors = (meta: WfoGraphqlErrorsMeta) => {
+    if (meta.errors && meta.errors.length > 0) {
+        throw meta.errors[0];
+    }
+};
+
 const isUnauthorized = (status: HttpStatus) =>
     status === HttpStatus.Unauthorized || status === HttpStatus.Forbidden;
 const isNotSuccessful = (status: HttpStatus) =>
@@ -73,11 +88,6 @@ export const catchErrorResponse = async (
     } else {
         return response.json();
     }
-};
-
-export type WfoGraphqlError = {
-    extensions: GraphQLErrorExtensions;
-    message: string;
 };
 
 export const orchestratorApi = createApi({
