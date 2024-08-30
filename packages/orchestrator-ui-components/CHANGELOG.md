@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.38.0
+
+### Minor Changes
+
+-   6f8b708: Added WfoGraphqlErrorsMeta handler, added isLoading to WfoSubscriptionActions, using fragments in some graphql queries, changes required for #1320
+-   1318c92: Added open support menu item to context menu
+-   e46972c: Adds onFocus websocket reconnection if connection is lost
+
 ## 1.37.1
 
 ### Patch Changes
