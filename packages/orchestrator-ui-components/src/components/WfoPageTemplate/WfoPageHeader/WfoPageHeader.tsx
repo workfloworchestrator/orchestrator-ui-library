@@ -17,6 +17,7 @@ import {
     WfoEnvironmentBadge,
     WfoFailedTasksBadge,
 } from '@/components';
+import { WfoLibraryVersionBadge } from '@/components/WfoBadges/WfoLibraryVersionBadge/WfoLibraryVersionBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import {
@@ -54,9 +55,9 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                     <EuiHeaderLogo iconType={() => <WfoAppLogo />} />
                     <div css={appNameStyle}>{getAppLogo(navigationHeight)}</div>
                 </EuiHeaderSectionItem>
-
                 <EuiHeaderSectionItem>
                     <WfoEnvironmentBadge />
+                    <WfoLibraryVersionBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
