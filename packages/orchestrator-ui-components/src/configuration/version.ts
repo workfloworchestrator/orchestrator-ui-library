@@ -1,0 +1,1 @@
+export const ORCHESTRATOR_UI_LIBRARY_VERSION = '1.38.0';
