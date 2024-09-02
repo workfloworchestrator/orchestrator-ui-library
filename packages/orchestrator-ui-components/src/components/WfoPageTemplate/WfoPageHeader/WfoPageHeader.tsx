@@ -9,6 +9,7 @@ import {
     EuiHeaderLogo,
     EuiHeaderSection,
     EuiHeaderSectionItem,
+    EuiToolTip,
 } from '@elastic/eui';
 import type { EuiThemeColorMode } from '@elastic/eui';
 
@@ -17,9 +18,9 @@ import {
     WfoEnvironmentBadge,
     WfoFailedTasksBadge,
 } from '@/components';
-import { WfoLibraryVersionBadge } from '@/components/WfoBadges/WfoLibraryVersionBadge/WfoLibraryVersionBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
+import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
 import {
     useGetOrchestratorConfig,
     useOrchestratorTheme,
@@ -51,13 +52,16 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     return (
         <EuiHeader css={getHeaderStyle(navigationHeight)}>
             <EuiHeaderSection>
-                <EuiHeaderSectionItem>
-                    <EuiHeaderLogo iconType={() => <WfoAppLogo />} />
-                    <div css={appNameStyle}>{getAppLogo(navigationHeight)}</div>
-                </EuiHeaderSectionItem>
+                <EuiToolTip content={'v' + ORCHESTRATOR_UI_LIBRARY_VERSION}>
+                    <EuiHeaderSectionItem css={{ paddingTop: theme.size.xs }}>
+                        <EuiHeaderLogo iconType={() => <WfoAppLogo />} />
+                        <div css={appNameStyle}>
+                            {getAppLogo(navigationHeight)}
+                        </div>
+                    </EuiHeaderSectionItem>
+                </EuiToolTip>
                 <EuiHeaderSectionItem>
                     <WfoEnvironmentBadge />
-                    <WfoLibraryVersionBadge />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 
