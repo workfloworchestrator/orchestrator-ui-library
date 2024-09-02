@@ -3,8 +3,7 @@ import React from 'react';
 import { EuiText } from '@elastic/eui';
 
 import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
-
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
+import { useOrchestratorTheme } from '@/hooks';
 
 export const WfoLibraryVersionBadge = () => {
     const { theme } = useOrchestratorTheme();
