@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.38.1
+
+### Patch Changes
+
+-   702cbdf: Display orchestrator-ui-library version in header
+
 ## 1.38.0
 
 ### Minor Changes
