@@ -24,6 +24,13 @@ interface WfoSubscriptionGeneralProps {
     isFetching: boolean;
 }
 
+export enum WfoSubscriptionGeneralSections {
+    BLOCK_TITLE_SUBSCRIPTION_DETAILS = 'blockTitleSubscriptionDetails',
+    BLOCK_TITLE_METADATA = 'metadata',
+    BLOCK_TITLE_FIXED_INPUTS = 'blockTitleFixedInputs',
+    BLOCK_TITLE_PRODUCT_INFO = 'blockTitleProductInfo',
+}
+
 export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
     isFetching,
@@ -159,7 +166,7 @@ export const WfoSubscriptionGeneral = ({
 
     const defaultConfiguration: WfoSubscriptionDetailGeneralConfiguration[] = [
         {
-            id: 'blockTitleSubscriptionDetails',
+            id: WfoSubscriptionGeneralSections.BLOCK_TITLE_SUBSCRIPTION_DETAILS,
             node: (
                 <SubscriptionKeyValueBlock
                     title={t('blockTitleSubscriptionDetails')}
@@ -169,7 +176,7 @@ export const WfoSubscriptionGeneral = ({
         },
         ...toOptionalArrayEntry(
             {
-                id: 'metadata',
+                id: WfoSubscriptionGeneralSections.BLOCK_TITLE_METADATA,
                 node: (
                     <SubscriptionKeyValueBlock
                         title={t('metadata')}
@@ -181,7 +188,7 @@ export const WfoSubscriptionGeneral = ({
         ),
         ...toOptionalArrayEntry(
             {
-                id: 'blockTitleFixedInputs',
+                id: WfoSubscriptionGeneralSections.BLOCK_TITLE_FIXED_INPUTS,
                 node: (
                     <SubscriptionKeyValueBlock
                         title={t('blockTitleFixedInputs')}
@@ -192,7 +199,7 @@ export const WfoSubscriptionGeneral = ({
             hasFixedInputs,
         ),
         {
-            id: 'blockTitleProductInfo',
+            id: WfoSubscriptionGeneralSections.BLOCK_TITLE_PRODUCT_INFO,
             node: (
                 <SubscriptionKeyValueBlock
                     title={t('blockTitleProductInfo')}
