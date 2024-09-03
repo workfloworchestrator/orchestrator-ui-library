@@ -13,6 +13,7 @@ export type WfoStartButtonComboBoxProps = {
     options: StartComboBoxOption[];
     onOptionChange: (selectedOption: StartComboBoxOption) => void;
     isProcess: boolean;
+    width: string;
 };
 
 export const WfoStartButtonComboBox = ({
@@ -20,6 +21,7 @@ export const WfoStartButtonComboBox = ({
     options,
     onOptionChange,
     isProcess,
+    width,
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
@@ -48,12 +50,13 @@ export const WfoStartButtonComboBox = ({
             closePopover={() => setPopoverOpen(false)}
         >
             <EuiSelectable<StartComboBoxOption>
-                css={selectableStyle}
+                css={[{ ...selectableStyle }, { width }]}
                 searchable
                 options={options}
                 onChange={(_, __, changedOption) =>
                     onOptionChange(changedOption)
                 }
+                height={200}
             >
                 {(list, search) => (
                     <>
