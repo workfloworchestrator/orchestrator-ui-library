@@ -1,7 +1,8 @@
 import type { Criteria } from '@elastic/eui';
 
-import type { DataDisplayReturnValues } from '../../../hooks';
-import { SortOrder } from '../../../types';
+import type { DataDisplayReturnValues } from '@/hooks';
+import { SortOrder } from '@/types';
+
 import { WfoDataSorting } from './columns';
 
 export const determinePageIndex = (pageIndex: number, pageSize: number) =>
@@ -32,6 +33,8 @@ export const getDataSortHandler =
         });
     };
 
+// Todo: to be used with WfoBasicTable
+// Todo: The type Criteria is EuiTable specific -- remove it
 export const getPageChangeHandler =
     <Type>(
         setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
@@ -42,6 +45,24 @@ export const getPageChangeHandler =
             setDataDisplayParam('pageSize', size);
             setDataDisplayParam('pageIndex', index);
         }
+    };
+
+// Todo: to be used with WfoTable
+export const getPageSizeChangeHandler =
+    <Type>(
+        setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+    ) =>
+    (pageSize: number) => {
+        setDataDisplayParam('pageSize', pageSize);
+    };
+
+// Todo: to be used with WfoTable
+export const getPageIndexChangeHandler =
+    <Type>(
+        setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
+    ) =>
+    (pageIndex: number) => {
+        setDataDisplayParam('pageIndex', pageIndex);
     };
 
 export const getQueryStringHandler =
