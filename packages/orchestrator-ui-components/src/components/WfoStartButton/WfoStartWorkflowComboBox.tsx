@@ -44,7 +44,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
             options={comboBoxOptions}
             onOptionChange={handleOptionChange}
             isProcess
-            width="300px"
+            css={{ width: '300px' }}
         />
     );
 };
