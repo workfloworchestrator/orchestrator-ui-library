@@ -18,6 +18,7 @@ import {
 } from '@/components';
 import { WfoStatusColorField } from '@/components';
 import { WfoTableHeaderCell } from '@/components';
+import WfoTableCell from '@/components/WfoTable/WfoBasicTable/WfoTableCell';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -143,6 +144,7 @@ function mapWfoTableColumnsToEuiColumns<T extends object>(
             sortable,
             filterable,
             truncateText,
+            showTooltip,
         } = column;
 
         // In most cases columns are sortable and filterable, making them optional saves some lines in configuring the table
@@ -167,7 +169,14 @@ function mapWfoTableColumnsToEuiColumns<T extends object>(
         // Not spreading the column object here as it might contain additional props.
         // EUI does not handle extra props well.
         return {
-            render,
+            render: (value: T[keyof T], record: T) => (
+                <WfoTableCell
+                    value={value}
+                    record={record}
+                    render={render}
+                    showTooltip={showTooltip}
+                />
+            ),
             width,
             description,
             field: typedColumnKey,

@@ -12,9 +12,5 @@ export type WfoFirstUUIDPartProps = {
 export const WfoFirstPartUUID: FC<WfoFirstUUIDPartProps> = ({ UUID }) => {
     const { uuidFieldStyle } = useWithOrchestratorTheme(getStyles);
 
-    return (
-        <span css={uuidFieldStyle} title={UUID}>
-            {getFirstUuidPart(UUID)}
-        </span>
-    );
+    return <span css={uuidFieldStyle}>{getFirstUuidPart(UUID)}</span>;
 };

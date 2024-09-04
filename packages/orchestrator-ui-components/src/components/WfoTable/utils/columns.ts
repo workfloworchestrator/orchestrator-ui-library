@@ -20,6 +20,7 @@ export type WfoTableDataColumnConfig<
     sortable?: boolean;
     filterable?: boolean;
     truncateText?: boolean;
+    showTooltip?: boolean;
 };
 
 export const WFO_STATUS_COLOR_FIELD = 'statusColorField';
@@ -38,6 +39,7 @@ export type WfoTableColumns<T extends object> = {
         render?: (cellValue: T[Property], row: T) => ReactNode;
         renderDetails?: (cellValue: T[Property], row: T) => ReactNode;
         clipboardText?: (cellValue: T[Property], row: T) => string;
+        showTooltip?: boolean;
     };
 };
 

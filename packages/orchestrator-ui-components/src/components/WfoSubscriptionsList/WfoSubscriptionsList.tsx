@@ -84,6 +84,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             width: '100',
             render: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
+            showTooltip: true,
         },
         description: {
             field: 'description',
