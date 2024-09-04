@@ -51,7 +51,7 @@ export const WfoStartButtonComboBox = ({
         >
             <EuiSelectable<StartComboBoxOption>
                 className={className}
-                css={[{ ...selectableStyle }]}
+                css={selectableStyle}
                 searchable
                 options={options}
                 onChange={(_, __, changedOption) =>
