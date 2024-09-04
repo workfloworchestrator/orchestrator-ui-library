@@ -42,6 +42,7 @@ export const WfoStartTaskButtonComboBox = () => {
             options={comboBoxOptions}
             onOptionChange={handleOptionChange}
             isProcess={false}
+            css={{ width: '600px' }}
         />
     );
 };
