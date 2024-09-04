@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 1.38.2
+
+### Patch Changes
+
+-   414391f: Adjust start task combobox size, so it doesn't hide list items
+-   7c6f8b2: Add enum for ids of subscription detail sections
+
 ## 1.38.1
 
 ### Patch Changes
