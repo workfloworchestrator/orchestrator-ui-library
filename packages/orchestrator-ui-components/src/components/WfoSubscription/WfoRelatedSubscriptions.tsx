@@ -4,22 +4,25 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch } from '@elastic/eui';
-import type { Criteria, Pagination } from '@elastic/eui';
 
 import {
-    DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
-    WfoBasicTable,
     WfoDataSorting,
     WfoFirstPartUUID,
     WfoInsyncIcon,
     WfoNoResults,
     WfoSubscriptionStatusBadge,
-    WfoTableColumns,
     getDataSortHandler,
-    getPageChangeHandler,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
 } from '@/components';
 import { PATH_SUBSCRIPTIONS } from '@/components';
+import {
+    ColumnType,
+    Pagination,
+    WfoTable,
+    WfoTableColumnConfig,
+} from '@/components/WfoTable/WfoTable';
 import { useDataDisplayParams, useOrchestratorTheme } from '@/hooks';
 import { WfoSearchStrikethrough } from '@/icons';
 import { useGetRelatedSubscriptionsQuery } from '@/rtk';
@@ -50,7 +53,6 @@ export const WfoRelatedSubscriptions = ({
 
     const { dataDisplayParams, setDataDisplayParam } =
         useDataDisplayParams<RelatedSubscription>({
-            pageSize: DEFAULT_PAGE_SIZE,
             sortBy: {
                 field: 'startDate',
                 order: SortOrder.DESC,
@@ -70,18 +72,19 @@ export const WfoRelatedSubscriptions = ({
     const relatedSubscriptions = data?.relatedSubscriptions;
     const relatedSubscriptionsPageInfo = data?.pageInfo;
 
-    const tableColumns: WfoTableColumns<RelatedSubscription> = {
+    // Todo: apply isSortable
+    const tableColumns: WfoTableColumnConfig<RelatedSubscription> = {
         subscriptionId: {
-            field: 'subscriptionId',
-            name: t('id'),
+            columnType: ColumnType.DATA,
+            label: t('id'),
             width: '100',
-            render: (value) => <WfoFirstPartUUID UUID={value} />,
-            filterable: false,
+            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+            isFilterable: false,
         },
         description: {
-            field: 'description',
-            name: t('description'),
-            render: (value, record) => (
+            columnType: ColumnType.DATA,
+            label: t('description'),
+            renderData: (value, record) => (
                 <Link
                     target="_blank"
                     href={`${PATH_SUBSCRIPTIONS}/${record.subscriptionId}`}
@@ -89,62 +92,67 @@ export const WfoRelatedSubscriptions = ({
                     {value}
                 </Link>
             ),
-            filterable: false,
+            isFilterable: false,
         },
         status: {
-            field: 'status',
-            name: t('status'),
+            columnType: ColumnType.DATA,
+            label: t('status'),
             width: '130',
-            render: (value) => <WfoSubscriptionStatusBadge status={value} />,
-            filterable: false,
+            renderData: (value) => (
+                <WfoSubscriptionStatusBadge status={value} />
+            ),
+            isFilterable: false,
         },
         insync: {
-            field: 'insync',
-            name: t('insync'),
+            columnType: ColumnType.DATA,
+            label: t('insync'),
             width: '60',
-            render: (value) => <WfoInsyncIcon inSync={value} />,
-            filterable: false,
+            renderData: (value) => <WfoInsyncIcon inSync={value} />,
+            isFilterable: false,
         },
         customer: {
-            field: 'customer',
-            name: t('customer'),
-            render: (customer) => customer.fullname,
-            sortable: false,
-            filterable: false,
+            columnType: ColumnType.DATA,
+            label: t('customer'),
+            renderData: (customer) => customer.fullname,
+            isSortable: false,
+            isFilterable: false,
         },
         product: {
-            field: 'product',
-            name: t('tag'),
+            columnType: ColumnType.DATA,
+            label: t('tag'),
             width: '150',
-            render: (product) => product.tag,
-            filterable: false,
+            renderData: (product) => product.tag,
+            isFilterable: false,
         },
         startDate: {
-            field: 'startDate',
-            name: t('startDate'),
+            columnType: ColumnType.DATA,
+            label: t('startDate'),
             width: '100',
-            render: (value) => parseDateToLocaleDateString(parseDate(value)),
-            filterable: false,
+            renderData: (value) =>
+                parseDateToLocaleDateString(parseDate(value)),
+            isFilterable: false,
         },
     };
+
+    // WfoTable
+    const onUpdatePageIndex =
+        getPageIndexChangeHandler<RelatedSubscription>(setDataDisplayParam);
+    const onUpdatePageSize =
+        getPageSizeChangeHandler<RelatedSubscription>(setDataDisplayParam);
 
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
-        pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: relatedSubscriptionsPageInfo?.totalItems ?? 0,
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        onChangeItemsPerPage: onUpdatePageSize,
+        onChangePage: onUpdatePageIndex,
     };
 
     const dataSorting: WfoDataSorting<RelatedSubscription> = {
         field: dataDisplayParams.sortBy?.field,
         sortOrder: dataDisplayParams.sortBy?.order,
     };
-
-    const onUpdatePage =
-        getPageChangeHandler<RelatedSubscription>(setDataDisplayParam);
-
-    const handleCriteriaChange = (criterion: Criteria<RelatedSubscription>) =>
-        criterion.page && onUpdatePage(criterion.page);
 
     const toggleTerminatedSubscriptions = () => {
         setHideTerminatedSubscriptions((currentValue) => !currentValue);
@@ -172,19 +180,16 @@ export const WfoRelatedSubscriptions = ({
                     // in which case we don't want to show the loadingState because it makes the page flicker
                     (!hideTerminatedSubscriptions &&
                         relatedSubscriptions.length > 0)) && (
-                    <>
-                        <WfoBasicTable<RelatedSubscription>
-                            data={relatedSubscriptions}
-                            columns={tableColumns}
-                            pagination={pagination}
-                            isLoading={isFetching}
-                            onUpdateDataSorting={getDataSortHandler(
-                                setDataDisplayParam,
-                            )}
-                            dataSorting={dataSorting}
-                            onCriteriaChange={handleCriteriaChange}
-                        />
-                    </>
+                    <WfoTable
+                        data={relatedSubscriptions}
+                        columnConfig={tableColumns}
+                        pagination={pagination}
+                        isLoading={isFetching}
+                        onUpdateDataSorting={getDataSortHandler(
+                            setDataDisplayParam,
+                        )}
+                        dataSorting={[dataSorting]}
+                    />
                 )) || (
                 <WfoNoResults
                     text={t('noRelatedSubscriptions')}
