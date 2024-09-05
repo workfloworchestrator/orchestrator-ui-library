@@ -4,10 +4,10 @@ import { useTranslations } from 'next-intl';
 
 import {
     SubscriptionKeyValueBlock,
+    WfoCustomerDescriptionsField,
     WfoInSyncField,
     WfoSubscriptionStatusBadge,
 } from '@/components';
-import { WfoCustomerDescriptionsField } from '@/components/WfoSubscription/WfoCustomerDescriptionsField';
 import { SubscriptionDetail } from '@/types';
 import { formatDate, toOptionalArrayEntry } from '@/utils';
 

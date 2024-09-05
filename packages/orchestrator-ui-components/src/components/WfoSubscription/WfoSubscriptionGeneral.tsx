@@ -2,11 +2,13 @@ import React from 'react';
 
 import { EuiFlexGrid, EuiFlexItem } from '@elastic/eui';
 
-import { WfoSubscriptionDetailSection } from '@/components/WfoSubscription/WfoSubscriptionGeneralSections/WfoSubscriptionDetailSection';
-import { WfoSubscriptionFixedInputSection } from '@/components/WfoSubscription/WfoSubscriptionGeneralSections/WfoSubscriptionFixedInputSection';
-import { WfoSubscriptionMetadataSection } from '@/components/WfoSubscription/WfoSubscriptionGeneralSections/WfoSubscriptionMetadataSection';
-import { WfoSubscriptionProductInfoSection } from '@/components/WfoSubscription/WfoSubscriptionGeneralSections/WfoSubscriptionProductInfoSection';
-import { useSubscriptionDetailGeneralSectionConfigurationOverride } from '@/components/WfoSubscription/overrides/useSubscriptionDetailGeneralSectionConfigurationOverride';
+import {
+    WfoSubscriptionDetailSection,
+    WfoSubscriptionFixedInputSection,
+    WfoSubscriptionMetadataSection,
+    WfoSubscriptionProductInfoSection,
+    useSubscriptionDetailGeneralSectionConfigurationOverride,
+} from '@/components';
 import { WfoSubscriptionDetailGeneralConfiguration } from '@/rtk';
 import { SubscriptionDetail } from '@/types';
 import { toOptionalArrayEntry } from '@/utils';
