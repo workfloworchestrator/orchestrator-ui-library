@@ -5,12 +5,14 @@ import Link from 'next/link';
 
 import { EuiButton } from '@elastic/eui';
 
+import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
 import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
+import { WfoIsAllowedToRender } from '../WfoAuth/WfoIsAllowedToRender';
 import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
@@ -82,15 +84,17 @@ export const WfoInSyncField = ({
                 >
                     {t('see')} {lastUncompletedProcess?.processId}
                 </Link>
-                <EuiButton
-                    isLoading={isFetching}
-                    isDisabled={isFetching}
-                    color="danger"
-                    size="s"
-                    onClick={confirmSetInSync}
-                >
-                    {t('setInSync')}
-                </EuiButton>
+                <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
+                    <EuiButton
+                        isLoading={isFetching}
+                        isDisabled={isFetching}
+                        color="danger"
+                        size="s"
+                        onClick={confirmSetInSync}
+                    >
+                        {t('setInSync')}
+                    </EuiButton>
+                </WfoIsAllowedToRender>
             </>
         );
     };
