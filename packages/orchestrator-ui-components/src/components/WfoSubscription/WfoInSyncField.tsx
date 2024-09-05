@@ -14,6 +14,8 @@ import { formatDate } from '@/utils';
 import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
 import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
+import { WfoIsAllowedToRender } from '../WfoAuth/WfoIsAllowedToRender';
+import { PolicyResource } from '@/configuration/policy-resources';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
@@ -82,15 +84,19 @@ export const WfoInSyncField = ({
                 >
                     {t('see')} {lastUncompletedProcess?.processId}
                 </Link>
-                <EuiButton
-                    isLoading={isFetching}
-                    isDisabled={isFetching}
-                    color="danger"
-                    size="s"
-                    onClick={confirmSetInSync}
-                >
-                    {t('setInSync')}
-                </EuiButton>
+                <WfoIsAllowedToRender
+                        resource={PolicyResource.PROCESS_RETRY}
+                    >
+                    <EuiButton
+                        isLoading={isFetching}
+                        isDisabled={isFetching}
+                        color="danger"
+                        size="s"
+                        onClick={confirmSetInSync}
+                    >
+                        {t('setInSync')}
+                    </EuiButton>
+                </WfoIsAllowedToRender>
             </>
         );
     };
