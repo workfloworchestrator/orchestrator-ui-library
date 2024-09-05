@@ -1,7 +1,5 @@
-import {
-    TableColumnKeys,
-    toObjectWithSortedKeys,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { TableColumnKeys } from '@/components';
+import { toObjectWithSortedKeys } from '@/utils';
 
 import {
     WfoTableColumnConfig,

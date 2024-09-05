@@ -3,14 +3,15 @@ import React, { CSSProperties, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiSpacer, EuiTablePagination, useEuiScrollBar } from '@elastic/eui';
-import {
-    DEFAULT_PAGE_SIZES,
-    type TableColumnKeys,
-    type WfoDataSearch,
-    WfoDataSorting,
-    useWithOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
 
+import { useWithOrchestratorTheme } from '@/hooks';
+
+import {
+    TableColumnKeys,
+    WfoDataSearch,
+    WfoDataSorting,
+} from '../utils/columns';
+import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import { WfoTableDataRows } from './WfoTableDataRows';
 import { WfoTableHeaderRow } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';

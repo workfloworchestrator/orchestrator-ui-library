@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { WfoTheme } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { WfoTheme } from '@/hooks';
 
 import { getWfoGroupedTableStyles } from '../WfoGroupedTable/styles';
 import { getWfoTableStyles } from '../styles';

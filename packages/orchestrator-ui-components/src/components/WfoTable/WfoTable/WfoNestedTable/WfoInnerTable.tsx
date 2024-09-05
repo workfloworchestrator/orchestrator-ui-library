@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoTdFullWidth } from './WfoTdFullWidth';

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoExpandedRow } from './WfoExpandedRow';
 import { ColumnType, WfoTableProps } from './WfoTable';
