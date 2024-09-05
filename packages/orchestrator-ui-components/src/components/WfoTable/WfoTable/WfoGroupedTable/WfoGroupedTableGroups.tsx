@@ -1,6 +1,6 @@
 import React, { Ref, useImperativeHandle } from 'react';
 
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoTableDataRows } from '../WfoTableDataRows';
 import { getWfoTableStyles } from '../styles';

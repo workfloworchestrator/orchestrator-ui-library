@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { WfoTheme } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { WfoTheme } from '@/hooks';
 
 export const getWfoGroupedTableStyles = ({ theme }: WfoTheme) => {
     // Matches the default width of a EuiButtonIcon component

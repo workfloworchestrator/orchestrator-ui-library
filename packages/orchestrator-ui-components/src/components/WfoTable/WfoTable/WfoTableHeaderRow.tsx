@@ -1,10 +1,8 @@
 import React from 'react';
 
-import {
-    WfoTableHeaderCell,
-    useWithOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
+import { useWithOrchestratorTheme } from '@/hooks';
 
+import { WfoTableHeaderCell } from '../WfoBasicTable';
 import { ColumnType, WfoTableProps } from './WfoTable';
 import { getWfoTableStyles } from './styles';
 import { getSortedVisibleColumns } from './utils';

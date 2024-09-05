@@ -1,7 +1,8 @@
 import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
-import { WfoTheme } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { WfoTheme } from '@/hooks';
 
 export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     const radius = theme.border.radius.medium;

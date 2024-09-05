@@ -1,6 +1,6 @@
 import React, { Ref } from 'react';
 
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoTableDataRows } from '../WfoTableDataRows';
 import { WfoTableHeaderRow } from '../WfoTableHeaderRow';

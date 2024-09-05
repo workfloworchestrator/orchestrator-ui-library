@@ -3,7 +3,8 @@ import React, { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiButtonIcon, EuiText } from '@elastic/eui';
-import { useWithOrchestratorTheme } from '@orchestrator-ui/orchestrator-ui-components';
+
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import { getWfoGroupedTableStyles } from './styles';
 
