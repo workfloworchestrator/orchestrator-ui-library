@@ -72,14 +72,14 @@ export const WfoRelatedSubscriptions = ({
     const relatedSubscriptions = data?.relatedSubscriptions;
     const relatedSubscriptionsPageInfo = data?.pageInfo;
 
-    // Todo: apply isSortable
+    // Todo: use the data from GQL to determine isSortable
     const tableColumns: WfoTableColumnConfig<RelatedSubscription> = {
         subscriptionId: {
             columnType: ColumnType.DATA,
             label: t('id'),
             width: '100',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
-            isFilterable: false,
+            isSortable: true,
         },
         description: {
             columnType: ColumnType.DATA,
@@ -92,7 +92,7 @@ export const WfoRelatedSubscriptions = ({
                     {value}
                 </Link>
             ),
-            isFilterable: false,
+            isSortable: true,
         },
         status: {
             columnType: ColumnType.DATA,
@@ -101,28 +101,27 @@ export const WfoRelatedSubscriptions = ({
             renderData: (value) => (
                 <WfoSubscriptionStatusBadge status={value} />
             ),
-            isFilterable: false,
+            isSortable: true,
         },
         insync: {
             columnType: ColumnType.DATA,
             label: t('insync'),
             width: '60',
             renderData: (value) => <WfoInsyncIcon inSync={value} />,
-            isFilterable: false,
+            isSortable: true,
         },
         customer: {
             columnType: ColumnType.DATA,
             label: t('customer'),
             renderData: (customer) => customer.fullname,
             isSortable: false,
-            isFilterable: false,
         },
         product: {
             columnType: ColumnType.DATA,
             label: t('tag'),
             width: '150',
             renderData: (product) => product.tag,
-            isFilterable: false,
+            isSortable: true,
         },
         startDate: {
             columnType: ColumnType.DATA,
@@ -130,7 +129,7 @@ export const WfoRelatedSubscriptions = ({
             width: '100',
             renderData: (value) =>
                 parseDateToLocaleDateString(parseDate(value)),
-            isFilterable: false,
+            isSortable: true,
         },
     };
 
