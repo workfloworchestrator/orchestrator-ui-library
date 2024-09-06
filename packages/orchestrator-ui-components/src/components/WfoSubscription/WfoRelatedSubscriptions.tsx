@@ -23,6 +23,7 @@ import {
     WfoTable,
     WfoTableColumnConfig,
 } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useDataDisplayParams, useOrchestratorTheme } from '@/hooks';
 import { WfoSearchStrikethrough } from '@/icons';
 import { useGetRelatedSubscriptionsQuery } from '@/rtk';
@@ -72,14 +73,12 @@ export const WfoRelatedSubscriptions = ({
     const relatedSubscriptions = data?.relatedSubscriptions;
     const relatedSubscriptionsPageInfo = data?.pageInfo;
 
-    // Todo: use the data from GQL to determine isSortable
     const tableColumns: WfoTableColumnConfig<RelatedSubscription> = {
         subscriptionId: {
             columnType: ColumnType.DATA,
             label: t('id'),
             width: '100',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
-            isSortable: true,
         },
         description: {
             columnType: ColumnType.DATA,
@@ -92,7 +91,6 @@ export const WfoRelatedSubscriptions = ({
                     {value}
                 </Link>
             ),
-            isSortable: true,
         },
         status: {
             columnType: ColumnType.DATA,
@@ -101,27 +99,23 @@ export const WfoRelatedSubscriptions = ({
             renderData: (value) => (
                 <WfoSubscriptionStatusBadge status={value} />
             ),
-            isSortable: true,
         },
         insync: {
             columnType: ColumnType.DATA,
             label: t('insync'),
             width: '60',
             renderData: (value) => <WfoInsyncIcon inSync={value} />,
-            isSortable: true,
         },
         customer: {
             columnType: ColumnType.DATA,
             label: t('customer'),
             renderData: (customer) => customer.fullname,
-            isSortable: false,
         },
         product: {
             columnType: ColumnType.DATA,
             label: t('tag'),
             width: '150',
             renderData: (product) => product.tag,
-            isSortable: true,
         },
         startDate: {
             columnType: ColumnType.DATA,
@@ -129,7 +123,6 @@ export const WfoRelatedSubscriptions = ({
             width: '100',
             renderData: (value) =>
                 parseDateToLocaleDateString(parseDate(value)),
-            isSortable: true,
         },
     };
 
@@ -181,7 +174,10 @@ export const WfoRelatedSubscriptions = ({
                         relatedSubscriptions.length > 0)) && (
                     <WfoTable
                         data={relatedSubscriptions}
-                        columnConfig={tableColumns}
+                        columnConfig={mapSortableAndFilterableValuesToTableColumnConfig<RelatedSubscription>(
+                            tableColumns,
+                            data.pageInfo.sortFields,
+                        )}
                         pagination={pagination}
                         isLoading={isFetching}
                         onUpdateDataSorting={getDataSortHandler(

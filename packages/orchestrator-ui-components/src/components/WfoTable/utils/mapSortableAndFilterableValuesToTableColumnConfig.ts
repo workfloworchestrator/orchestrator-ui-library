@@ -1,5 +1,6 @@
 import { WfoTableColumns, WfoTableDataColumnConfig } from './columns';
 
+// Todo remove before PR
 export function mapSortableAndFilterableValuesToTableColumnConfig<
     T extends object,
 >(

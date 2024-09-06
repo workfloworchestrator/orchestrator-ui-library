@@ -2,6 +2,7 @@ import { TableColumnKeys } from '@/components';
 import { toObjectWithSortedKeys } from '@/utils';
 
 import {
+    ColumnType,
     WfoTableColumnConfig,
     WfoTableControlColumnConfigItem,
     WfoTableDataColumnConfigItem,
@@ -31,3 +32,47 @@ export const getSortedVisibleColumns = <T extends object>(
         ([columnId]) => !hiddenColumns.includes(columnId as keyof T),
     );
 };
+
+/**
+ * Maps from WfoTableColumnConfig to WfoTableColumnConfig.
+ * A generic type must be provided to prevent type errors
+ * @param tableColumnConfig
+ * @param sortableFieldNames
+ * @param filterableFieldNames
+ *
+ * @returns updated WfoTableColumnConfig with isSortable and isFilterable set
+ */
+export function mapSortableAndFilterableValuesToTableColumnConfig<
+    T extends object,
+>(
+    tableColumnConfig: WfoTableColumnConfig<T>,
+    sortableFieldNames: string[] = [],
+    filterableFieldNames: string[] = [],
+): WfoTableColumnConfig<T> {
+    const tableColumnConfigEntries: [
+        string,
+        (
+            | WfoTableControlColumnConfigItem<T>
+            | WfoTableDataColumnConfigItem<T, keyof T>
+        ),
+    ][] = Object.entries(tableColumnConfig);
+
+    const tableColumnConfigUpdatedEntries = tableColumnConfigEntries.map(
+        ([key, value]) => {
+            if (value.columnType === ColumnType.DATA) {
+                return [
+                    key,
+                    {
+                        ...value,
+                        isSortable: sortableFieldNames.includes(key),
+                        isFilterable: filterableFieldNames.includes(key),
+                    },
+                ];
+            }
+
+            return [key, value];
+        },
+    );
+
+    return Object.fromEntries(tableColumnConfigUpdatedEntries);
+}
