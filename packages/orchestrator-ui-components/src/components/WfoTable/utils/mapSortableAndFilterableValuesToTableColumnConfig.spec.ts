@@ -17,6 +17,7 @@ const tableColumnConfig: WfoTableColumns<TestObject> = {
     },
 };
 
+// Todo remove before PR
 describe('mapSortableAndFilterableValuesToTableColumnConfig', () => {
     it('sets the sortable and filterable properties for the columnConfig object to true when the colum name is specified in the list', () => {
         const sortableFieldNames = ['name', 'age', 'nonExistingFieldName'];
