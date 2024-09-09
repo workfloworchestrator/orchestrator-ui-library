@@ -17,6 +17,8 @@ import {
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
 } from '@/components';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
@@ -48,10 +50,6 @@ import {
     getQueryStringHandler,
 } from '../WfoTable';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import {
-    WfoAdvancedTable,
-    WfoAdvancedTableColumnConfig,
-} from '../WfoTable/WfoTable/WfoAdvancedTable';
 import {
     SubscriptionListItem,
     mapGraphQlSubscriptionsResultToPageInfo,

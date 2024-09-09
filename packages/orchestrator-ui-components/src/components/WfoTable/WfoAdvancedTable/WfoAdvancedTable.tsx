@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -26,85 +26,15 @@ import {
     clearTableConfigFromLocalStorage,
     setTableConfigToLocalStorage,
 } from '@/components';
-import {
-    ColumnType,
-    WfoTable,
-    WfoTableControlColumnConfig,
-    WfoTableControlColumnConfigItem,
-    WfoTableDataColumnConfigItem,
-    WfoTableProps,
-} from '@/components/WfoTable/WfoTable/WfoTable';
-import { updateQueryString } from '@/components/WfoTable/WfoTableWithFilter/updateQueryString';
+import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
-import { getTypedFieldFromObject } from '@/utils';
-import { getDefaultTableConfig } from '@/utils/getDefaultTableConfig';
+import { getDefaultTableConfig } from '@/utils';
 
-// These types are expanding the config of the basic table -- todo move to other file
-export type WfoAdvancedTableDataColumnConfigItem<
-    T extends object,
-    Property extends keyof T,
-> = WfoTableDataColumnConfigItem<T, Property> & {
-    renderDetails?: (cellValue: T[Property], row: T) => ReactNode;
-    clipboardText?: (cellValue: T[Property], row: T) => string;
-};
-export type WfoAdvancedTableDataColumnConfig<T extends object> = {
-    [Property in keyof T]: WfoAdvancedTableDataColumnConfigItem<T, Property>;
-};
-export type WfoAdvancedTableColumnConfig<T extends object> = Partial<
-    WfoTableControlColumnConfig<T> | WfoAdvancedTableDataColumnConfig<T>
->;
-// ---- End of expanded types
-
-// Todo move to utils
-const getRowDetailData = <T extends object>(
-    selectedDataForDetailModal: T | undefined,
-    tableColumnConfig: WfoAdvancedTableColumnConfig<T>,
-) => {
-    if (!selectedDataForDetailModal) {
-        return undefined;
-    }
-
-    const tableColumnConfigEntries: [
-        string,
-        (
-            | WfoTableControlColumnConfigItem<T>
-            | WfoAdvancedTableDataColumnConfigItem<T, keyof T>
-        ),
-    ][] = Object.entries(tableColumnConfig);
-
-    const dataColumnEntries = tableColumnConfigEntries.filter(
-        (tableColumnConfigEntry) =>
-            tableColumnConfigEntry[1].columnType === ColumnType.DATA,
-    ) as [string, WfoAdvancedTableDataColumnConfigItem<T, keyof T>][];
-
-    return dataColumnEntries.map(([key, value]) => {
-        const dataField = getTypedFieldFromObject(key, tableColumnConfig);
-        if (dataField === null) {
-            return {
-                key,
-                value: undefined,
-            };
-        }
-
-        const { renderDetails, renderData, clipboardText, label } = value;
-        const dataValue = selectedDataForDetailModal[dataField];
-
-        return {
-            key: label ?? dataField.toString(),
-            value: (renderDetails &&
-                renderDetails(dataValue, selectedDataForDetailModal)) ??
-                (renderData &&
-                    renderData(dataValue, selectedDataForDetailModal)) ?? (
-                    <>{dataValue}</>
-                ),
-            textToCopy:
-                clipboardText?.(dataValue, selectedDataForDetailModal) ??
-                (typeof dataValue === 'string' ? dataValue : undefined),
-        };
-    });
-};
+import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
+import { updateQueryString } from '../WfoTableWithFilter/updateQueryString';
+import { WfoAdvancedTableColumnConfig } from './types';
 
 export type WfoAdvancedTableProps<T extends object> = Omit<
     WfoTableProps<T>,
@@ -216,7 +146,6 @@ export const WfoAdvancedTable = <T extends object>({
         pagination?.onChangePage?.(0);
     };
 
-    // Todo: try to move out of this component
     const searchModalText = t.rich('searchModalText', {
         br: () => <br />,
         p: (chunks) => <p>{chunks}</p>,
