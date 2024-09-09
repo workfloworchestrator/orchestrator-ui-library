@@ -32,8 +32,10 @@ export const WfoSubscriptionGeneral = ({
     const { overrideSections } =
         useSubscriptionDetailGeneralSectionConfigurationOverride();
 
-    const hasMetadata = Object.entries(subscriptionDetail.metadata).length > 0;
-    const hasFixedInputs = subscriptionDetail.fixedInputs.length > 0;
+    const { metadata, fixedInputs, product } = subscriptionDetail;
+
+    const hasMetadata = Object.entries(metadata).length > 0;
+    const hasFixedInputs = fixedInputs.length > 0;
 
     const defaultConfiguration: WfoSubscriptionDetailGeneralConfiguration[] = [
         {
@@ -48,11 +50,7 @@ export const WfoSubscriptionGeneral = ({
         ...toOptionalArrayEntry(
             {
                 id: WfoSubscriptionGeneralSections.BLOCK_TITLE_METADATA,
-                node: (
-                    <WfoSubscriptionMetadataSection
-                        subscriptionDetail={subscriptionDetail}
-                    />
-                ),
+                node: <WfoSubscriptionMetadataSection metadata={metadata} />,
             },
             hasMetadata,
         ),
@@ -61,7 +59,7 @@ export const WfoSubscriptionGeneral = ({
                 id: WfoSubscriptionGeneralSections.BLOCK_TITLE_FIXED_INPUTS,
                 node: (
                     <WfoSubscriptionFixedInputSection
-                        subscriptionDetail={subscriptionDetail}
+                        fixedInputs={fixedInputs}
                     />
                 ),
             },
@@ -69,11 +67,7 @@ export const WfoSubscriptionGeneral = ({
         ),
         {
             id: WfoSubscriptionGeneralSections.BLOCK_TITLE_PRODUCT_INFO,
-            node: (
-                <WfoSubscriptionProductInfoSection
-                    subscriptionDetail={subscriptionDetail}
-                />
-            ),
+            node: <WfoSubscriptionProductInfoSection product={product} />,
         },
     ];
 

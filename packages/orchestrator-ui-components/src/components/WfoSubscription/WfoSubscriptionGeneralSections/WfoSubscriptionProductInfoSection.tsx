@@ -7,14 +7,13 @@ import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
 
 interface WfoSubscriptionProductInfoSectionProps {
-    subscriptionDetail: SubscriptionDetail;
+    product: SubscriptionDetail['product'];
 }
 
 export const WfoSubscriptionProductInfoSection = ({
-    subscriptionDetail,
+    product,
 }: WfoSubscriptionProductInfoSectionProps) => {
     const t = useTranslations('subscriptions.detail');
-    const product = subscriptionDetail.product;
 
     const productInfoBlockData = [
         {
