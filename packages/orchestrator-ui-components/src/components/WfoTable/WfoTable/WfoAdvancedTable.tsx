@@ -15,8 +15,8 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
-    TableConfig,
     TableSettingsColumnConfig,
+    TableSettingsConfig,
     TableSettingsModal,
     WfoErrorWithMessage,
     WfoInformationModal,
@@ -189,7 +189,9 @@ export const WfoAdvancedTable = <T extends object>({
     const rowDetailData: WfoKeyValueTableDataType[] | undefined =
         getRowDetailData(selectedDataForDetailModal, tableColumnConfig);
 
-    const handleUpdateTableConfig = (updatedTableConfig: TableConfig<T>) => {
+    const handleUpdateTableConfig = (
+        updatedTableConfig: TableSettingsConfig<T>,
+    ) => {
         const updatedHiddenColumns = updatedTableConfig.columns
             .filter((column) => !column.isVisible)
             .map((hiddenColumn) => hiddenColumn.field);
