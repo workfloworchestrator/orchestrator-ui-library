@@ -15,15 +15,14 @@ import { WfoSettingsModal } from '@/components';
 import { getWfoTableSettingsModalStyles } from '@/components/WfoTable/WfoTableSettingsModal/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
-// Todo consider renaming to TableSettingsColumnConfig
-export type ColumnConfig<T> = {
+export type TableSettingsColumnConfig<T> = {
     field: keyof T;
     name: string;
     isVisible: boolean;
 };
 
 export type TableConfig<T> = {
-    columns: ColumnConfig<T>[];
+    columns: TableSettingsColumnConfig<T>[];
     selectedPageSize: number;
 };
 
@@ -58,13 +57,14 @@ export const TableSettingsModal = <T,>({
     }));
 
     const handleUpdateColumnVisibility = (field: keyof T) => {
-        const updatedColumns: ColumnConfig<T>[] = columns.map((column) =>
-            column.field === field
-                ? {
-                      ...column,
-                      isVisible: !column.isVisible,
-                  }
-                : column,
+        const updatedColumns: TableSettingsColumnConfig<T>[] = columns.map(
+            (column) =>
+                column.field === field
+                    ? {
+                          ...column,
+                          isVisible: !column.isVisible,
+                      }
+                    : column,
         );
         setColumns(updatedColumns);
     };

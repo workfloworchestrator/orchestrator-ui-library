@@ -31,8 +31,8 @@ import {
     WfoBasicTableColumnsWithControlColumns,
 } from '../WfoBasicTable';
 import {
-    ColumnConfig,
     TableConfig,
+    TableSettingsColumnConfig,
     TableSettingsModal,
 } from '../WfoTableSettingsModal';
 import {
@@ -132,7 +132,7 @@ export const WfoTableWithFilter = <T extends object>({
         };
 
     // done
-    const tableSettingsColumns: ColumnConfig<T>[] = Object.entries<
+    const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries<
         WfoTableDataColumnConfig<T, keyof T>
     >(tableColumns).map((keyValuePair) => {
         const { field, name } = keyValuePair[1];

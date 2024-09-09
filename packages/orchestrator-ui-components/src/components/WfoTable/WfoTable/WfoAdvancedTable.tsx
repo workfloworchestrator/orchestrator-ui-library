@@ -12,11 +12,11 @@ import {
 } from '@elastic/eui';
 
 import {
-    ColumnConfig,
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
     TableConfig,
+    TableSettingsColumnConfig,
     TableSettingsModal,
     WfoErrorWithMessage,
     WfoInformationModal,
@@ -173,7 +173,7 @@ export const WfoAdvancedTable = <T extends object>({
         ...tableColumnConfig,
     };
 
-    const tableSettingsColumns: ColumnConfig<T>[] = Object.entries(
+    const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries(
         tableColumnConfig,
     ).map((keyValuePair) => {
         const field = keyValuePair[0] as keyof T;
