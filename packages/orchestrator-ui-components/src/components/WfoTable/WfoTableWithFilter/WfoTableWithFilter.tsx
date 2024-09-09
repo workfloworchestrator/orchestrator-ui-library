@@ -31,8 +31,8 @@ import {
     WfoBasicTableColumnsWithControlColumns,
 } from '../WfoBasicTable';
 import {
-    TableConfig,
     TableSettingsColumnConfig,
+    TableSettingsConfig,
     TableSettingsModal,
 } from '../WfoTableSettingsModal';
 import {
@@ -173,7 +173,9 @@ export const WfoTableWithFilter = <T extends object>({
         });
 
     // done
-    const handleUpdateTableConfig = (updatedTableConfig: TableConfig<T>) => {
+    const handleUpdateTableConfig = (
+        updatedTableConfig: TableSettingsConfig<T>,
+    ) => {
         const updatedHiddenColumns = updatedTableConfig.columns
             .filter((column) => !column.isVisible)
             .map((hiddenColumn) => hiddenColumn.field);

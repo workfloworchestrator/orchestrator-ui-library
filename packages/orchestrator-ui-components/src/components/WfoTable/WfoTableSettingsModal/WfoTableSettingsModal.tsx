@@ -21,16 +21,16 @@ export type TableSettingsColumnConfig<T> = {
     isVisible: boolean;
 };
 
-export type TableConfig<T> = {
+export type TableSettingsConfig<T> = {
     columns: TableSettingsColumnConfig<T>[];
     selectedPageSize: number;
 };
 
 export type TableSettingsModalProps<T> = {
-    tableConfig: TableConfig<T>;
+    tableConfig: TableSettingsConfig<T>;
     pageSizeOptions: number[];
     onClose: () => void;
-    onUpdateTableConfig: (updatedTableConfig: TableConfig<T>) => void;
+    onUpdateTableConfig: (updatedTableConfig: TableSettingsConfig<T>) => void;
     onResetToDefaults: () => void;
 };
 
