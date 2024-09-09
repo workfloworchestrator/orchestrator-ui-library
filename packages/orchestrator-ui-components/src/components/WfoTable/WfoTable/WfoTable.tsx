@@ -54,21 +54,24 @@ export type WfoTableControlColumnConfigItem<T extends object> =
         renderControl: (row: T) => ReactNode;
     };
 
+export type WfoTableDataColumnConfig<T extends object> = {
+    [Property in keyof T]: WfoTableDataColumnConfigItem<T, Property>;
+};
+
+export type WfoTableControlColumnConfig<T extends object> = {
+    [key: string]: WfoTableControlColumnConfigItem<T>; // from WfoTableColumnConfig -- consider extracting type
+};
+
 // Applying "Partial" since data should not always be shown in the table, but can still be needed for rendering
-// Not providing a config for a property of T means that the column will not be shown
+// Not providing a config for a property of T means that the column will not be shown in the table
 export type WfoTableColumnConfig<T extends object> = Partial<
-    | {
-          [Property in keyof T]: WfoTableDataColumnConfigItem<T, Property>;
-      }
-    | {
-          [key: string]: WfoTableControlColumnConfigItem<T>;
-      }
+    WfoTableDataColumnConfig<T> | WfoTableControlColumnConfig<T>
 >;
 
 export type WfoTableProps<T extends object> = {
     data: T[];
     columnConfig: WfoTableColumnConfig<T>;
-    hiddenColumns?: TableColumnKeys<T>;
+    hiddenColumns?: TableColumnKeys<T>; // todo consider to change to keyof WfoTableColumnConfig
     columnOrder?: TableColumnKeys<T>;
     isLoading?: boolean;
     dataSorting?: WfoDataSorting<T>[];

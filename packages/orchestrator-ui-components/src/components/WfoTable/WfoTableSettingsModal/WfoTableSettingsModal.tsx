@@ -15,6 +15,7 @@ import { WfoSettingsModal } from '@/components';
 import { getWfoTableSettingsModalStyles } from '@/components/WfoTable/WfoTableSettingsModal/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
+// Todo consider renaming to TableSettingsColumnConfig
 export type ColumnConfig<T> = {
     field: keyof T;
     name: string;
