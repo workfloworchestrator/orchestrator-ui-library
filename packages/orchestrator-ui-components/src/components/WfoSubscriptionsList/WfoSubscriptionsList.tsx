@@ -14,7 +14,11 @@ import {
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
 } from '@/components';
+import { ColumnType } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
 import {
     useGetSubscriptionListQuery,
@@ -38,13 +42,16 @@ import {
     TableColumnKeys,
     WfoDataSorting,
     WfoTableColumns,
-    WfoTableWithFilter,
+    WfoTableWithFilter as WfoTableWithFilterOld,
     getDataSortHandler,
     getPageChangeHandler,
     getQueryStringHandler,
 } from '../WfoTable';
 import { WfoFirstPartUUID } from '../WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
+import {
+    WfoAdvancedTable,
+    WfoAdvancedTableColumnConfig,
+} from '../WfoTable/WfoTable/WfoAdvancedTable';
 import {
     SubscriptionListItem,
     mapGraphQlSubscriptionsResultToPageInfo,
@@ -69,15 +76,90 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     setDataDisplayParam,
     hiddenColumns,
 }) => {
-    // TODO: There seems to be a problem showing the product/productName in this list
-    // https://github.com/workfloworchestrator/orchestrator-ui/issues/262
-
     const router = useRouter();
     const t = useTranslations('subscriptions.index');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
 
-    const tableColumns: WfoTableColumns<SubscriptionListItem> = {
+    const tableColumnConfig: WfoAdvancedTableColumnConfig<SubscriptionListItem> =
+        {
+            subscriptionId: {
+                columnType: ColumnType.DATA,
+                label: t('id'),
+                renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+                renderDetails: (value) => value,
+            },
+            description: {
+                columnType: ColumnType.DATA,
+                label: t('description'),
+                width: '400px',
+                renderData: (value, record) => (
+                    <Link href={`/subscriptions/${record.subscriptionId}`}>
+                        {value}
+                    </Link>
+                ),
+            },
+            status: {
+                columnType: ColumnType.DATA,
+                label: t('status'),
+                renderData: (value) => (
+                    <WfoSubscriptionStatusBadge status={value} />
+                ),
+            },
+            insync: {
+                columnType: ColumnType.DATA,
+                label: t('insync'),
+                renderData: (value) => <WfoInsyncIcon inSync={value} />,
+            },
+            productName: {
+                columnType: ColumnType.DATA,
+                label: t('product'),
+            },
+            tag: {
+                columnType: ColumnType.DATA,
+                label: t('tag'),
+                width: '100px',
+            },
+            customerFullname: {
+                columnType: ColumnType.DATA,
+                label: t('customerFullname'),
+                width: '150px',
+            },
+            customerShortcode: {
+                columnType: ColumnType.DATA,
+                label: t('customerShortcode'),
+                width: '150px',
+            },
+            startDate: {
+                columnType: ColumnType.DATA,
+                label: t('startDate'),
+                renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
+                renderDetails: parseDateToLocaleDateTimeString,
+                clipboardText: parseDateToLocaleDateTimeString,
+            },
+            endDate: {
+                columnType: ColumnType.DATA,
+                label: t('endDate'),
+                renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
+                renderDetails: parseDateToLocaleDateTimeString,
+                clipboardText: parseDateToLocaleDateTimeString,
+            },
+            note: {
+                columnType: ColumnType.DATA,
+                label: t('note'),
+                width: '100px',
+            },
+            metadata: {
+                columnType: ColumnType.DATA,
+                label: t('metadata'),
+                width: '100px',
+                renderData: (value) => <WfoInlineJson data={value} />,
+                renderDetails: (value) =>
+                    value && <WfoJsonCodeBlock data={value} isBasicStyle />,
+            },
+        };
+
+    const tableColumnsOld: WfoTableColumns<SubscriptionListItem> = {
         subscriptionId: {
             field: 'subscriptionId',
             name: t('id'),
@@ -175,7 +257,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             getQueryVariablesForExport(graphqlQueryVariables),
         ).unwrap();
 
-    const sortedColumnId = getTypedFieldFromObject(sortBy?.field, tableColumns);
+    const sortedColumnId = getTypedFieldFromObject(
+        sortBy?.field,
+        tableColumnsOld,
+    );
     if (!sortedColumnId) {
         router.replace(PATH_SUBSCRIPTIONS);
         return null;
@@ -194,44 +279,99 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
 
     return (
-        <WfoTableWithFilter<SubscriptionListItem>
-            queryString={dataDisplayParams.queryString}
-            onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            )}
-            data={
-                data
-                    ? mapGraphQlSubscriptionsResultToSubscriptionListItems(data)
-                    : []
-            }
-            tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
-                tableColumns,
-                sortFields,
-                filterFields,
-            )}
-            defaultHiddenColumns={hiddenColumns}
-            dataSorting={dataSorting}
-            pagination={pagination}
-            isLoading={isFetching}
-            localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
-            detailModalTitle={'Details - Subscription'}
-            onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            )}
-            onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            )}
-            error={mapRtkErrorToWfoError(error)}
-            onExportData={csvDownloadHandler(
-                getSubscriptionListForExport,
-                mapGraphQlSubscriptionsResultToSubscriptionListItems,
-                mapGraphQlSubscriptionsResultToPageInfo,
-                Object.keys(tableColumns),
-                getCsvFileNameWithDate('Subscriptions'),
-                showToastMessage,
-                tError,
-            )}
-            exportDataIsLoading={isFetchingCsv}
-        />
+        <>
+            <WfoAdvancedTable
+                queryString={dataDisplayParams.queryString}
+                onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
+                    setDataDisplayParam,
+                )}
+                data={
+                    data
+                        ? mapGraphQlSubscriptionsResultToSubscriptionListItems(
+                              data,
+                          )
+                        : []
+                }
+                tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
+                    tableColumnConfig,
+                    sortFields,
+                    filterFields,
+                )}
+                defaultHiddenColumns={hiddenColumns}
+                dataSorting={[dataSorting]}
+                isLoading={isFetching}
+                localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
+                detailModalTitle={'Details - Subscription'}
+                pagination={{
+                    pageIndex: dataDisplayParams.pageIndex,
+                    pageSize: dataDisplayParams.pageSize,
+                    totalItemCount: totalItems ?? 0,
+                    onChangePage:
+                        getPageIndexChangeHandler<SubscriptionListItem>(
+                            setDataDisplayParam,
+                        ),
+                    onChangeItemsPerPage:
+                        getPageSizeChangeHandler<SubscriptionListItem>(
+                            setDataDisplayParam,
+                        ),
+                }}
+                error={mapRtkErrorToWfoError(error)}
+                onUpdateDataSorting={getDataSortHandler<SubscriptionListItem>(
+                    setDataDisplayParam,
+                )}
+                onExportData={csvDownloadHandler(
+                    getSubscriptionListForExport,
+                    mapGraphQlSubscriptionsResultToSubscriptionListItems,
+                    mapGraphQlSubscriptionsResultToPageInfo,
+                    Object.keys(tableColumnsOld),
+                    getCsvFileNameWithDate('Subscriptions'),
+                    showToastMessage,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
+            />
+            <WfoTableWithFilterOld<SubscriptionListItem>
+                queryString={dataDisplayParams.queryString}
+                onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
+                    setDataDisplayParam,
+                )}
+                data={
+                    data
+                        ? mapGraphQlSubscriptionsResultToSubscriptionListItems(
+                              data,
+                          )
+                        : []
+                }
+                // tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                //     tableColumnsOld,
+                //     sortFields,
+                //     filterFields,
+                // )}
+                tableColumns={tableColumnsOld}
+                defaultHiddenColumns={hiddenColumns}
+                dataSorting={dataSorting}
+                pagination={pagination}
+                isLoading={isFetching}
+                localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
+                detailModalTitle={'Details - Subscription'}
+                onUpdatePage={getPageChangeHandler<SubscriptionListItem>(
+                    setDataDisplayParam,
+                )}
+                onUpdateDataSort={getDataSortHandler<SubscriptionListItem>(
+                    setDataDisplayParam,
+                )}
+                error={mapRtkErrorToWfoError(error)}
+                onExportData={csvDownloadHandler(
+                    getSubscriptionListForExport,
+                    mapGraphQlSubscriptionsResultToSubscriptionListItems,
+                    mapGraphQlSubscriptionsResultToPageInfo,
+                    Object.keys(tableColumnsOld),
+                    getCsvFileNameWithDate('Subscriptions'),
+                    showToastMessage,
+                    tError,
+                )}
+                exportDataIsLoading={isFetchingCsv}
+            />
+        </>
     );
 };
