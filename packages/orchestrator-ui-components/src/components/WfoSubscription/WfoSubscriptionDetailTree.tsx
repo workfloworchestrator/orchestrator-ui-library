@@ -6,6 +6,7 @@ import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { WfoLoading, WfoTextAnchor } from '@/components';
 import { TreeContext, TreeContextType } from '@/contexts';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     ProductBlockInstance,
     Subscription,
@@ -17,6 +18,7 @@ import { getTokenName } from '../../utils/getTokenName';
 import { WfoTree, getPositionInTree, sortTreeBlockByLabel } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
+import { getSubscriptionDetailStyles } from './styles';
 import { getProductBlockTitle } from './utils';
 
 interface WfoSubscriptionDetailTreeProps {
@@ -30,7 +32,9 @@ export const WfoSubscriptionDetailTree = ({
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
     const [, setSelectedTreeNode] = useState(-1);
-
+    const { productBlockTreeWidth } = useWithOrchestratorTheme(
+        getSubscriptionDetailStyles,
+    );
     const { selectedIds, expandAll, collapseAll, resetSelection, selectAll } =
         React.useContext(TreeContext) as TreeContextType;
 
@@ -132,8 +136,10 @@ export const WfoSubscriptionDetailTree = ({
         >
             <EuiFlexItem
                 style={{
-                    maxWidth: 450,
-                    overflow: 'auto',
+                    minWidth: productBlockTreeWidth,
+                    maxWidth: productBlockTreeWidth,
+                    overflowX: 'hidden',
+                    overflowY: 'auto',
                 }}
                 grow={true}
             >
@@ -175,6 +181,7 @@ export const WfoSubscriptionDetailTree = ({
             <EuiFlexItem
                 css={{
                     overflow: 'auto',
+                    minWidth: 350,
                 }}
                 grow={true}
             >

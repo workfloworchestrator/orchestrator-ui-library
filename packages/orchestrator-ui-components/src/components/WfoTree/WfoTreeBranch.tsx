@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 
 import { EuiListGroup } from '@elastic/eui';
 
+import { getSubscriptionDetailStyles } from '@/components/WfoSubscription/styles';
 import { TreeContext, TreeContextType } from '@/contexts';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { TreeBlock } from '@/types';
 
 import { WfoTreeNode } from './WfoTreeNode';
@@ -15,6 +17,9 @@ type WfoTreeBranchProps = {
 export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
     const { expandedIds } = React.useContext(TreeContext) as TreeContextType;
     const selected = expandedIds.includes(item.id);
+    const { productBlockTreeWidth } = useWithOrchestratorTheme(
+        getSubscriptionDetailStyles,
+    );
 
     const hasChildren = item.children && item.children.length !== 0;
 
@@ -32,7 +37,11 @@ export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
 
     return (
         <>
-            <EuiListGroup flush={true} color="primary" maxWidth={455}>
+            <EuiListGroup
+                flush={true}
+                color="primary"
+                maxWidth={productBlockTreeWidth}
+            >
                 <WfoTreeNode
                     item={item}
                     hasChildren={hasChildren}

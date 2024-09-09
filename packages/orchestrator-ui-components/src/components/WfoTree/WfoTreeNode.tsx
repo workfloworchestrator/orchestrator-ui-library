@@ -1,15 +1,8 @@
 import React, { FC } from 'react';
 
-import { useTranslations } from 'next-intl';
+import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiToken } from '@elastic/eui';
 
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiIcon,
-    EuiListGroupItem,
-    EuiToken,
-} from '@elastic/eui';
-
+import { WfoTreeNodeListItem } from '@/components/WfoTree/WfoTreeNodeListItem';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { TreeBlock } from '@/types';
@@ -28,19 +21,10 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
     level,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const {
-        expandIconContainerStyle,
-        treeContainerStyle,
-        treeItemOtherSubscriptionStyle,
-    } = useWithOrchestratorTheme(getStyles);
-    const t = useTranslations('common');
-    const {
-        expandedIds,
-        collapseNode,
-        expandNode,
-        selectedIds,
-        toggleSelectedId,
-    } = React.useContext(TreeContext) as TreeContextType;
+    const { expandIconContainerStyle, treeContainerStyle } =
+        useWithOrchestratorTheme(getStyles);
+    const { expandedIds, collapseNode, expandNode, selectedIds } =
+        React.useContext(TreeContext) as TreeContextType;
     const expanded = expandedIds.includes(item.id);
     const selected = selectedIds.includes(item.id);
 
@@ -65,41 +49,8 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({
                         <EuiToken iconType={item.icon} />
                     )}
                 </EuiFlexItem>
-                <EuiFlexItem grow={true}>
-                    {selected ? (
-                        <EuiListGroupItem
-                            onClick={() => toggleSelectedId(item.id)}
-                            label={item.label}
-                            isActive={selected}
-                            color={'primary'}
-                            style={{ borderRadius: 6 }}
-                            extraAction={{
-                                color: 'primary',
-                                onClick: () => toggleSelectedId(item.id),
-                                iconType: 'error',
-                                iconSize: 's',
-                                'aria-label': t('deselect'),
-                                alwaysShow: true,
-                            }}
-                            css={
-                                item.isOutsideCurrentSubscription &&
-                                treeItemOtherSubscriptionStyle
-                            }
-                        />
-                    ) : (
-                        <EuiListGroupItem
-                            onClick={() => toggleSelectedId(item.id)}
-                            label={item.label}
-                            isActive={selected}
-                            style={{
-                                borderRadius: 6,
-                            }}
-                            css={
-                                item.isOutsideCurrentSubscription &&
-                                treeItemOtherSubscriptionStyle
-                            }
-                        />
-                    )}
+                <EuiFlexItem>
+                    <WfoTreeNodeListItem item={item} selected={selected} />
                 </EuiFlexItem>
             </EuiFlexGroup>
         </div>

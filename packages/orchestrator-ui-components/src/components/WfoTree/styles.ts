@@ -12,14 +12,38 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         marginRight: `-${theme.size.s}`,
     };
 
-    const treeItemOtherSubscriptionStyle = {
-        backgroundColor: toSecondaryColor(theme.colors.lightestShade),
-        border: `thin dashed ${theme.colors.lightShade}`,
+    const treeItemStyle = (isOutsideCurrentSubscription: boolean) => {
+        return {
+            cursor: 'pointer',
+            paddingBlock: theme.size.xs,
+            paddingInline: theme.size.s,
+            borderRadius: theme.base - 10,
+            textDecoration: 'none',
+            backgroundColor: 'transparent',
+            transition: 'background-color 0.2s ease, text-decoration 0.3s ease', // Smooth transition for background
+            '&:hover': {
+                textDecoration: 'underline',
+            },
+            border: isOutsideCurrentSubscription
+                ? `1px dashed ${theme.colors.lightShade}`
+                : 'none',
+        };
+    };
+
+    const selectedTreeItemStyle = (isOutsideCurrentSubscription: boolean) => {
+        return {
+            ...treeItemStyle(isOutsideCurrentSubscription),
+            backgroundColor: isOutsideCurrentSubscription
+                ? toSecondaryColor(theme.colors.mediumShade)
+                : toSecondaryColor(theme.colors.primary),
+            color: theme.colors.primaryText,
+        };
     };
 
     return {
         expandIconContainerStyle: expandIconContainerStyle,
         treeContainerStyle: treeContainerStyle,
-        treeItemOtherSubscriptionStyle,
+        selectedTreeItemStyle,
+        treeItemStyle,
     };
 };

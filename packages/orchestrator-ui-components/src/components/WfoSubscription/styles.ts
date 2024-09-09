@@ -2,7 +2,9 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
+    const productBlockTreeWidth = theme.base * 28;
+
     const contentCellStyle = css({
         padding: (theme.base / 4) * 3,
         borderBottom: theme.border.thin,
@@ -63,5 +65,6 @@ export const getStyles = ({ theme }: WfoTheme) => {
         lastContentCellStyle,
         lastHeaderCellStyle,
         inUseByRelationDetailsStyle,
+        productBlockTreeWidth,
     };
 };
