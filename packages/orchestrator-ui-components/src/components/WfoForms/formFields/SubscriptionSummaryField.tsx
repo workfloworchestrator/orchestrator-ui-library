@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2023 SURF.
+ * Copyright 2019-2024 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { WfoLoading, WfoSubscriptionGeneral } from '@/components';
+import { WfoLoading, WfoSubscriptionDetailSection } from '@/components';
 import { useGetSubscriptionDetailQuery } from '@/rtk';
 
 import { FieldProps } from './types';
@@ -35,14 +35,15 @@ const SubscriptionSummaryDisplay = ({
     const { data, isFetching } = useGetSubscriptionDetailQuery({
         subscriptionId,
     });
+    const subscriptionDetail = data?.subscription;
 
-    if (!data) {
+    if (!subscriptionDetail) {
         return <WfoLoading />;
     }
 
     return (
-        <WfoSubscriptionGeneral
-            subscriptionDetail={data.subscription}
+        <WfoSubscriptionDetailSection
+            subscriptionDetail={subscriptionDetail}
             isFetching={isFetching}
         />
     );
