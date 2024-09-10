@@ -32,29 +32,30 @@ export const WfoTreeNodeListItem = ({
         useWithOrchestratorTheme(getStyles);
 
     const { isOutsideCurrentSubscription, id, label } = item;
+    const textLabel = label.toString();
 
     return (
         <EuiFlexGroup
-            alignItems={'center'}
+            alignItems="center"
             css={
                 selected
                     ? selectedTreeItemStyle(isOutsideCurrentSubscription)
                     : treeItemStyle(isOutsideCurrentSubscription)
             }
             onClick={() => toggleSelectedId(id)}
-            gutterSize={'xs'}
-            justifyContent={'spaceBetween'}
+            gutterSize="xs"
+            justifyContent="spaceBetween"
         >
             <EuiFlexItem>
-                <EuiText>
-                    <EuiTextTruncate text={label.toString()} />
+                <EuiText title={textLabel}>
+                    <EuiTextTruncate text={textLabel} />
                 </EuiText>
             </EuiFlexItem>
             <EuiFlexItem css={{ maxWidth: theme.size.l }}>
                 <EuiButtonIcon
-                    color={'primary'}
+                    color="primary"
                     iconType={() => <WfoXMarkSmall color="currentColor" />}
-                    size={'xs'}
+                    size="xs"
                     aria-label={t('deselect')}
                     css={{ display: selected ? 'block' : 'none' }}
                 />

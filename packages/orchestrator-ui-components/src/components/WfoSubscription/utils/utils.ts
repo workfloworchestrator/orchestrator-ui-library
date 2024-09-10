@@ -10,8 +10,6 @@ import {
     WorkflowTarget,
 } from '@/types';
 
-const MAX_LABEL_LENGTH = 40;
-
 export enum SubscriptionDetailTab {
     GENERAL_TAB = 'general',
     SERVICE_CONFIGURATION_TAB = 'service-configuration',

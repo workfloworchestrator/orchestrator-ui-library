@@ -34,7 +34,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         return {
             ...treeItemStyle(isOutsideCurrentSubscription),
             backgroundColor: isOutsideCurrentSubscription
-                ? toSecondaryColor(theme.colors.mediumShade)
+                ? theme.colors.lightShade
                 : toSecondaryColor(theme.colors.primary),
             color: theme.colors.primaryText,
         };

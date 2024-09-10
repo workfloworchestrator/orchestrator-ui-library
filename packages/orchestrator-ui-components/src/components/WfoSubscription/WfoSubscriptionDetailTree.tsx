@@ -31,6 +31,7 @@ export const WfoSubscriptionDetailTree = ({
     subscriptionId,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { theme } = useOrchestratorTheme();
     const [, setSelectedTreeNode] = useState(-1);
     const { productBlockTreeWidth } = useWithOrchestratorTheme(
         getSubscriptionDetailStyles,
@@ -190,15 +191,15 @@ export const WfoSubscriptionDetailTree = ({
                     {/* This is a placeholder for the searchbar */}
                     {selectedIds.length === 0 && (
                         <EuiCallOut
-                            style={{
-                                marginTop: 15,
-                                display: 'flex',
+                            css={{
+                                marginTop: theme.size.m,
+                                textAlign: 'center',
                             }}
                             size="m"
                             title={t('noProductBlockSelected')}
                             iconType="inspect"
                         >
-                            <p>{t('ctaSelectProductBlock')} </p>
+                            <EuiText>{t('ctaSelectProductBlock')} </EuiText>
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
