@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
@@ -15,7 +14,6 @@ import {
     WfoFilterTabs,
     WfoIsAllowedToRender,
     WfoStartTaskButtonComboBox,
-    WfoTableColumns,
 } from '@/components';
 import { PATH_TASKS } from '@/components';
 import {
@@ -110,30 +108,31 @@ export const WfoTasksListPage = () => {
     };
 
     // Changing the order of the keys, resulting in an updated column order in the table
-    const handleOverrideTableColumns: (
-        defaultTableColumns: WfoTableColumns<ProcessListItem>,
-    ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-        workflowName: {
-            field: 'workflowName',
-            name: t('taskName'),
-            render: (value, { processId }) => (
-                <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
-            ),
-        },
-        lastStep: defaultTableColumns.lastStep,
-        lastStatus: defaultTableColumns.lastStatus,
-        workflowTarget: defaultTableColumns.workflowTarget,
-        productTag: defaultTableColumns.tag,
-        productName: defaultTableColumns.productName,
-        customer: defaultTableColumns.customer,
-        customerAbbreviation: defaultTableColumns.customerAbbreviation,
-        subscriptions: defaultTableColumns.subscriptions,
-        createdBy: defaultTableColumns.createdBy,
-        assignee: defaultTableColumns.assignee,
-        processId: defaultTableColumns.processId,
-        startedAt: defaultTableColumns.startedAt,
-        lastModifiedAt: defaultTableColumns.lastModifiedAt,
-    });
+    // Todo: temporary removed
+    // const handleOverrideTableColumns: (
+    //     defaultTableColumns: WfoTableColumns<ProcessListItem>,
+    // ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
+    //     workflowName: {
+    //         field: 'workflowName',
+    //         name: t('taskName'),
+    //         render: (value, { processId }) => (
+    //             <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
+    //         ),
+    //     },
+    //     lastStep: defaultTableColumns.lastStep,
+    //     lastStatus: defaultTableColumns.lastStatus,
+    //     workflowTarget: defaultTableColumns.workflowTarget,
+    //     productTag: defaultTableColumns.tag,
+    //     productName: defaultTableColumns.productName,
+    //     customer: defaultTableColumns.customer,
+    //     customerAbbreviation: defaultTableColumns.customerAbbreviation,
+    //     subscriptions: defaultTableColumns.subscriptions,
+    //     createdBy: defaultTableColumns.createdBy,
+    //     assignee: defaultTableColumns.assignee,
+    //     processId: defaultTableColumns.processId,
+    //     startedAt: defaultTableColumns.startedAt,
+    //     lastModifiedAt: defaultTableColumns.lastModifiedAt,
+    // });
 
     return (
         <>
@@ -181,7 +180,7 @@ export const WfoTasksListPage = () => {
             <WfoProcessesList
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={localStorageKey}
-                overrideDefaultTableColumns={handleOverrideTableColumns}
+                // overrideDefaultTableColumns={handleOverrideTableColumns} // todo
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}
