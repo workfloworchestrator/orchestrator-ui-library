@@ -40,10 +40,6 @@ export const getProductBlockTitle = (
     }
 
     return title;
-
-    // return title && typeof title === 'string' && title.length > MAX_LABEL_LENGTH
-    //     ? `${title.substring(0, MAX_LABEL_LENGTH)}...`
-    //     : title;
 };
 
 export const flattenArrayProps = (
