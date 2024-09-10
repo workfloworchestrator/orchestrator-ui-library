@@ -3,27 +3,28 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Pagination } from '@elastic/eui';
-
 import {
     FilterQuery,
     PATH_WORKFLOWS,
     WfoDateTime,
     WfoProcessStatusBadge,
+    WfoTableColumns,
     WfoWorkflowTargetBadge,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
 } from '@/components';
 import {
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
     WfoDataSorting,
-    WfoFirstPartUUID,
-    WfoTableColumns,
-    WfoTableWithFilter,
+    WfoFirstPartUUID, // WfoTableColumns,
     getDataSortHandler,
-    getPageChangeHandler,
     getQueryStringHandler,
-    mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components/WfoTable';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
+import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useShowToastMessage } from '@/hooks';
 import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
@@ -83,6 +84,10 @@ export type WfoProcessesListProps = {
         prop: DisplayParamKey,
         value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
     ) => void;
+    // Todo - only works with old config object
+    // overrideDefaultTableColumns?: (
+    //     defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
+    // ) => WfoAdvancedTableColumnConfig<ProcessListItem>;
     overrideDefaultTableColumns?: (
         defaultTableColumns: WfoTableColumns<ProcessListItem>,
     ) => WfoTableColumns<ProcessListItem>;
@@ -94,65 +99,64 @@ export const WfoProcessesList = ({
     localStorageKey,
     dataDisplayParams,
     setDataDisplayParam,
-    overrideDefaultTableColumns,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
 
-    const defaultTableColumns: WfoTableColumns<ProcessListItem> = {
+    const defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> = {
         workflowName: {
-            field: 'workflowName',
-            name: t('workflowName'),
+            columnType: ColumnType.DATA,
+            label: t('workflowName'),
             width: '20%',
-            render: (value, { processId }) => (
+            renderData: (value, { processId }) => (
                 <Link href={`${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
             ),
         },
         lastStep: {
-            field: 'lastStep',
-            name: t('step'),
+            columnType: ColumnType.DATA,
+            label: t('step'),
             width: '15%',
         },
         lastStatus: {
-            field: 'lastStatus',
-            name: t('status'),
+            columnType: ColumnType.DATA,
+            label: t('status'),
             width: '100',
-            render: (cellValue) => (
+            renderData: (cellValue) => (
                 <WfoProcessStatusBadge processStatus={cellValue} />
             ),
         },
         workflowTarget: {
-            field: 'workflowTarget',
-            name: t('workflowTarget'),
+            columnType: ColumnType.DATA,
+            label: t('workflowTarget'),
             width: '100',
-            render: (target) => <WfoWorkflowTargetBadge target={target} />,
+            renderData: (target) => <WfoWorkflowTargetBadge target={target} />,
         },
         tag: {
-            field: 'tag',
-            name: t('productTag'),
+            columnType: ColumnType.DATA,
+            label: t('productTag'),
             width: '100',
         },
         productName: {
-            field: 'productName',
-            name: t('product'),
+            columnType: ColumnType.DATA,
+            label: t('product'),
             width: '10%',
         },
         customer: {
-            field: 'customer',
-            name: t('customer'),
+            columnType: ColumnType.DATA,
+            label: t('customer'),
             width: '10%',
         },
         customerAbbreviation: {
-            field: 'customerAbbreviation',
-            name: t('customerAbbreviation'),
+            columnType: ColumnType.DATA,
+            label: t('customerAbbreviation'),
             width: '10%',
         },
         subscriptions: {
-            field: 'subscriptions',
-            name: t('subscriptions'),
+            columnType: ColumnType.DATA,
+            label: t('subscriptions'),
             width: '15%',
-            render: ({ page: subscriptions }) => (
+            renderData: ({ page: subscriptions }) => (
                 <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                     numberOfSubscriptionsToRender={1}
@@ -169,44 +173,45 @@ export const WfoProcessesList = ({
                     .join(', '),
         },
         createdBy: {
-            field: 'createdBy',
-            name: t('createdBy'),
+            columnType: ColumnType.DATA,
+            label: t('createdBy'),
             width: '10%',
         },
         assignee: {
-            field: 'assignee',
-            name: t('assignee'),
+            columnType: ColumnType.DATA,
+            label: t('assignee'),
             width: '5%',
         },
         processId: {
-            field: 'processId',
-            name: t('processId'),
+            columnType: ColumnType.DATA,
+            label: t('processId'),
             width: '90',
-            render: (value) => <WfoFirstPartUUID UUID={value} />,
+            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         startedAt: {
-            field: 'startedAt',
-            name: t('started'),
+            columnType: ColumnType.DATA,
+            label: t('started'),
             width: '100',
-            render: (value) => <WfoDateTime dateOrIsoString={value} />,
+            renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
         lastModifiedAt: {
-            field: 'lastModifiedAt',
-            name: t('lastModified'),
+            columnType: ColumnType.DATA,
+            label: t('lastModified'),
             width: '100',
-            render: (value) => <WfoDateTime dateOrIsoString={value} />,
+            renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
         },
     };
 
-    const tableColumns: WfoTableColumns<ProcessListItem> =
-        overrideDefaultTableColumns
-            ? overrideDefaultTableColumns(defaultTableColumns)
-            : defaultTableColumns;
+    // Todo - uncomment before PR
+    // const tableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> =
+    //     overrideDefaultTableColumns
+    //         ? overrideDefaultTableColumns(defaultTableColumns)
+    //         : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
@@ -231,6 +236,8 @@ export const WfoProcessesList = ({
         pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: pageInfo?.totalItems ? pageInfo.totalItems : 0,
+        onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
+        onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
     };
     const dataSorting: WfoDataSorting<ProcessListItem> = {
         field: sortBy?.field ?? 'lastModified',
@@ -243,17 +250,17 @@ export const WfoProcessesList = ({
         ).unwrap();
 
     return (
-        <WfoTableWithFilter<ProcessListItem>
+        <WfoAdvancedTable<ProcessListItem>
             queryString={queryString}
             data={mapGraphQlProcessListResultToProcessListItems(
                 processes || [],
             )}
-            tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
-                tableColumns,
+            tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
+                defaultTableColumns,
                 pageInfo?.sortFields,
                 pageInfo?.filterFields,
             )}
-            dataSorting={dataSorting}
+            dataSorting={[dataSorting]}
             pagination={pagination}
             isLoading={isFetching}
             error={mapRtkErrorToWfoError(error)}
@@ -261,8 +268,7 @@ export const WfoProcessesList = ({
             localStorageKey={localStorageKey}
             detailModalTitle={'Details - Process'}
             onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
-            onUpdatePage={getPageChangeHandler(setDataDisplayParam)}
-            onUpdateDataSort={getDataSortHandler(setDataDisplayParam)}
+            onUpdateDataSorting={getDataSortHandler(setDataDisplayParam)}
             onExportData={csvDownloadHandler<
                 ProcessListResponse,
                 ProcessListExportItem
@@ -270,7 +276,7 @@ export const WfoProcessesList = ({
                 getProcessListForExport,
                 mapGraphQlProcessListExportResultToProcessListItems,
                 mapGraphQlProcessListResultToPageInfo,
-                Object.keys(tableColumns),
+                Object.keys(defaultTableColumns),
                 getCsvFileNameWithDate('Processes'),
                 showToastMessage,
                 tError,
