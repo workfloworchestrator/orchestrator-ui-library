@@ -2,4 +2,4 @@
 '@orchestrator-ui/orchestrator-ui-components': minor
 ---
 
-Updated product block view
+699, 1370 - Fix and update product block view
