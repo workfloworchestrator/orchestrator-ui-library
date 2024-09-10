@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiBadgeGroup } from '@elastic/eui';
-import type { Pagination } from '@elastic/eui/src/components';
 
-import type { WfoDataSorting, WfoTableColumns } from '@/components';
+import {
+    WfoDataSorting,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
+} from '@/components';
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
@@ -13,12 +16,17 @@ import {
     StoredTableConfig,
     WfoDateTime,
     WfoProductBlockBadge,
-    WfoTableWithFilter,
     WfoWorkflowTargetBadge,
     getDataSortHandler,
-    getPageChangeHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
+import {
+    ColumnType,
+    Pagination,
+} from '@/components/WfoTable/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import {
     useDataDisplayParams,
     useShowToastMessage,
@@ -44,7 +52,6 @@ import {
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 import {
     graphQlWorkflowListMapper,
@@ -95,33 +102,31 @@ export const WfoWorkflowsPage = () => {
             },
         });
 
-    const tableColumns: WfoTableColumns<WorkflowListItem> = {
+    const tableColumns: WfoAdvancedTableColumnConfig<WorkflowListItem> = {
         name: {
-            field: 'name',
-            name: t('name'),
-            width: '20%',
-            render: (name) => (
+            columnType: ColumnType.DATA,
+            label: t('name'),
+            renderData: (name) => (
                 <WfoProductBlockBadge badgeType={BadgeType.WORKFLOW}>
                     {name}
                 </WfoProductBlockBadge>
             ),
         },
         description: {
-            field: 'description',
-            name: t('description'),
+            columnType: ColumnType.DATA,
+            label: t('description'),
             width: '40%',
         },
         target: {
-            field: 'target',
-            name: t('target'),
-            width: '15%',
-            render: (target) => <WfoWorkflowTargetBadge target={target} />,
+            columnType: ColumnType.DATA,
+            label: t('target'),
+            renderData: (target) => <WfoWorkflowTargetBadge target={target} />,
         },
         productTags: {
-            field: 'productTags',
-            name: t('productTags'),
+            columnType: ColumnType.DATA,
+            label: t('productTags'),
             width: '20%',
-            render: (productTags) => (
+            renderData: (productTags) => (
                 <>
                     {productTags
                         ?.filter(onlyUnique)
@@ -151,10 +156,10 @@ export const WfoWorkflowsPage = () => {
             ),
         },
         createdAt: {
-            field: 'createdAt',
-            name: t('createdAt'),
+            columnType: ColumnType.DATA,
+            label: t('createdAt'),
             width: '15%',
-            render: (date) => <WfoDateTime dateOrIsoString={date} />,
+            renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
@@ -193,6 +198,8 @@ export const WfoWorkflowsPage = () => {
         pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
+        onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
+        onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
     };
 
     const mapToExportItems = (
@@ -212,7 +219,7 @@ export const WfoWorkflowsPage = () => {
 
     return (
         <WfoMetadataPageLayout>
-            <WfoTableWithFilter<WorkflowListItem>
+            <WfoAdvancedTable
                 data={
                     data
                         ? mapWorkflowDefinitionToWorkflowListItem(
@@ -220,17 +227,14 @@ export const WfoWorkflowsPage = () => {
                           )
                         : []
                 }
-                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,
                 )}
-                dataSorting={dataSorting}
+                dataSorting={[dataSorting]}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<WorkflowListItem>(
-                    setDataDisplayParam,
-                )}
-                onUpdatePage={getPageChangeHandler<WorkflowListItem>(
+                onUpdateDataSorting={getDataSortHandler<WorkflowListItem>(
                     setDataDisplayParam,
                 )}
                 onUpdateQueryString={getQueryStringHandler<WorkflowListItem>(
