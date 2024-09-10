@@ -15,7 +15,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetInUseByRelationDetailsQuery } from '@/rtk';
 import { InUseByRelation, InUseByRelationDetail } from '@/types';
 
-import { getStyles } from './styles';
+import { getSubscriptionDetailStyles } from './styles';
 
 interface WfoInUseByRelationsProps {
     inUseByRelations: InUseByRelation[];
@@ -25,7 +25,9 @@ export const WfoInUseByRelations = ({
     inUseByRelations,
 }: WfoInUseByRelationsProps) => {
     const t = useTranslations('subscriptions.detail');
-    const { inUseByRelationDetailsStyle } = useWithOrchestratorTheme(getStyles);
+    const { inUseByRelationDetailsStyle } = useWithOrchestratorTheme(
+        getSubscriptionDetailStyles,
+    );
     const subscriptionIds = inUseByRelations
         .map((relation) => relation.subscription_id)
         .join('|');

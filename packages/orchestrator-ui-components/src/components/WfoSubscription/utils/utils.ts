@@ -10,8 +10,6 @@ import {
     WorkflowTarget,
 } from '@/types';
 
-const MAX_LABEL_LENGTH = 45;
-
 export enum SubscriptionDetailTab {
     GENERAL_TAB = 'general',
     SERVICE_CONFIGURATION_TAB = 'service-configuration',
@@ -41,9 +39,7 @@ export const getProductBlockTitle = (
         return getFieldFromProductBlockInstanceValues(instanceValues, 'name');
     }
 
-    return title && typeof title === 'string' && title.length > MAX_LABEL_LENGTH
-        ? `${title.substring(0, MAX_LABEL_LENGTH)}...`
-        : title;
+    return title;
 };
 
 export const flattenArrayProps = (

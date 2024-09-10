@@ -12,7 +12,7 @@ import { WfoProcessStatusBadge } from '../WfoBadges';
 import { WfoLoading } from '../WfoLoading';
 import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
-import { getStyles } from './styles';
+import { getSubscriptionDetailStyles } from './styles';
 
 interface WfoProcessCardProps {
     subscriptionDetailProcess: SubscriptionDetailProcess;
@@ -27,7 +27,7 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
         emptyCellStyle,
         lastContentCellStyle,
         lastHeaderCellStyle,
-    } = useWithOrchestratorTheme(getStyles);
+    } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
     const processUrl = subscriptionDetailProcess.isTask
         ? PATH_TASKS
         : PATH_WORKFLOWS;
@@ -90,8 +90,9 @@ interface WfoRenderSubscriptionProcess {
 const WfoRenderSubscriptionProcess = ({
     subscriptionDetailProcess,
 }: WfoRenderSubscriptionProcess) => {
-    const { timeLineStyle, workflowTargetStyle } =
-        useWithOrchestratorTheme(getStyles);
+    const { timeLineStyle, workflowTargetStyle } = useWithOrchestratorTheme(
+        getSubscriptionDetailStyles,
+    );
 
     return (
         <EuiComment

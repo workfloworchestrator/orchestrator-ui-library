@@ -6,6 +6,7 @@ import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { WfoLoading, WfoTextAnchor } from '@/components';
 import { TreeContext, TreeContextType } from '@/contexts';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     ProductBlockInstance,
     Subscription,
@@ -17,6 +18,7 @@ import { getTokenName } from '../../utils/getTokenName';
 import { WfoTree, getPositionInTree, sortTreeBlockByLabel } from '../WfoTree';
 import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
+import { getSubscriptionDetailStyles } from './styles';
 import { getProductBlockTitle } from './utils';
 
 interface WfoSubscriptionDetailTreeProps {
@@ -29,8 +31,11 @@ export const WfoSubscriptionDetailTree = ({
     subscriptionId,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
+    const { theme } = useOrchestratorTheme();
     const [, setSelectedTreeNode] = useState(-1);
-
+    const { productBlockTreeWidth } = useWithOrchestratorTheme(
+        getSubscriptionDetailStyles,
+    );
     const { selectedIds, expandAll, collapseAll, resetSelection, selectAll } =
         React.useContext(TreeContext) as TreeContextType;
 
@@ -132,8 +137,10 @@ export const WfoSubscriptionDetailTree = ({
         >
             <EuiFlexItem
                 style={{
-                    maxWidth: 450,
-                    overflow: 'auto',
+                    minWidth: productBlockTreeWidth,
+                    maxWidth: productBlockTreeWidth,
+                    overflowX: 'hidden',
+                    overflowY: 'auto',
                 }}
                 grow={true}
             >
@@ -175,6 +182,7 @@ export const WfoSubscriptionDetailTree = ({
             <EuiFlexItem
                 css={{
                     overflow: 'auto',
+                    minWidth: 350,
                 }}
                 grow={true}
             >
@@ -183,15 +191,15 @@ export const WfoSubscriptionDetailTree = ({
                     {/* This is a placeholder for the searchbar */}
                     {selectedIds.length === 0 && (
                         <EuiCallOut
-                            style={{
-                                marginTop: 15,
-                                display: 'flex',
+                            css={{
+                                marginTop: theme.size.m,
+                                textAlign: 'center',
                             }}
                             size="m"
                             title={t('noProductBlockSelected')}
                             iconType="inspect"
                         >
-                            <p>{t('ctaSelectProductBlock')} </p>
+                            <EuiText>{t('ctaSelectProductBlock')} </EuiText>
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&

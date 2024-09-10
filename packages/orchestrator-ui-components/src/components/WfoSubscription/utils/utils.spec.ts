@@ -64,19 +64,6 @@ describe('getProductBlockTitle()', () => {
         );
     });
 
-    it("returns '[title]...'  when title field is to long", () => {
-        const longTitle =
-            'title_value title_value title_value title_value title_value';
-        const valuesWithNameAndLongTitle = [
-            ...instanceValues,
-            { field: 'name', value: 'name_value' },
-            { field: 'title', value: longTitle },
-        ];
-        expect(getProductBlockTitle(valuesWithNameAndLongTitle)).toBe(
-            'title_value title_value title_value title_val...',
-        );
-    });
-
     it('returns empty string when there are no title or name fields', () => {
         expect(getProductBlockTitle(instanceValues)).toBe('');
     });
