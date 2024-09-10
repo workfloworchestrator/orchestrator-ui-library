@@ -3,23 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiBadgeGroup } from '@elastic/eui';
-import type { Pagination } from '@elastic/eui/src/components';
 
 import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
     WfoProductBlockBadge,
-    WfoTableWithFilter,
     getDataSortHandler,
-    getPageChangeHandler,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
     getQueryStringHandler,
 } from '@/components';
-import type {
-    StoredTableConfig,
-    WfoDataSorting,
-    WfoTableColumns,
-} from '@/components';
+import type { StoredTableConfig, WfoDataSorting } from '@/components';
+import { WfoFirstPartUUID } from '@/components';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
+import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import {
     useDataDisplayParams,
     useShowToastMessage,
@@ -43,18 +43,10 @@ import {
     getCsvFileNameWithDate,
 } from '@/utils/csvDownload';
 
-import { WfoFirstPartUUID } from '../../components/WfoTable/WfoFirstPartUUID';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '../../components/WfoTable/utils/mapSortableAndFilterableValuesToTableColumnConfig';
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
-export const RESOURCE_TYPE_FIELD_ID: keyof ResourceTypeDefinition =
-    'resourceTypeId';
 export const RESOURCE_TYPE_FIELD_TYPE: keyof ResourceTypeDefinition =
     'resourceType';
-export const RESOURCE_TYPE_FIELD_DESCRIPTION: keyof ResourceTypeDefinition =
-    'description';
-export const RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS: keyof ResourceTypeDefinition =
-    'productBlocks';
 
 type ResourceTypeExportItem = Omit<ResourceTypeDefinition, 'productBlocks'> & {
     productBlocks: string;
@@ -92,32 +84,32 @@ export const WfoResourceTypesPage = () => {
             },
         });
 
-    const tableColumns: WfoTableColumns<ResourceTypeDefinition> = {
+    const tableColumns: WfoAdvancedTableColumnConfig<ResourceTypeDefinition> = {
         resourceTypeId: {
-            field: RESOURCE_TYPE_FIELD_ID,
-            name: t('resourceId'),
+            columnType: ColumnType.DATA,
+            label: t('resourceId'),
             width: '90',
-            render: (value) => <WfoFirstPartUUID UUID={value} />,
+            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         resourceType: {
-            field: RESOURCE_TYPE_FIELD_TYPE,
-            name: t('type'),
+            columnType: ColumnType.DATA,
+            label: t('type'),
             width: '200',
-            render: (value) => (
+            renderData: (value) => (
                 <WfoProductBlockBadge badgeType={BadgeType.RESOURCE_TYPE}>
                     {value}
                 </WfoProductBlockBadge>
             ),
         },
         description: {
-            field: RESOURCE_TYPE_FIELD_DESCRIPTION,
-            name: t('description'),
+            columnType: ColumnType.DATA,
+            label: t('description'),
         },
         productBlocks: {
-            field: RESOURCE_TYPE_FIELD_PRODUCT_BLOCKS,
-            name: t('usedInProductBlocks'),
-            render: (productBlocks) => (
+            columnType: ColumnType.DATA,
+            label: t('usedInProductBlocks'),
+            renderData: (productBlocks) => (
                 <>
                     {productBlocks.map((productBlock, index) => (
                         <WfoProductBlockBadge
@@ -176,6 +168,8 @@ export const WfoResourceTypesPage = () => {
         pageIndex: pageIndex,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
+        onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
+        onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
     };
     const mapToExportItems = (
         resourceTypesResponse: ResourceTypesResponse,
@@ -191,19 +185,16 @@ export const WfoResourceTypesPage = () => {
     };
     return (
         <WfoMetadataPageLayout>
-            <WfoTableWithFilter<ResourceTypeDefinition>
+            <WfoAdvancedTable
                 data={data ? data.resourceTypes : []}
-                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,
                 )}
-                dataSorting={dataSorting}
+                dataSorting={[dataSorting]}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<ResourceTypeDefinition>(
-                    setDataDisplayParam,
-                )}
-                onUpdatePage={getPageChangeHandler<ResourceTypeDefinition>(
+                onUpdateDataSorting={getDataSortHandler<ResourceTypeDefinition>(
                     setDataDisplayParam,
                 )}
                 onUpdateQueryString={getQueryStringHandler<ResourceTypeDefinition>(
