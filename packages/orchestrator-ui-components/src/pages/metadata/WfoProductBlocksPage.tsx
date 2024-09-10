@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { EuiBadgeGroup } from '@elastic/eui';
-import type { Pagination } from '@elastic/eui/src/components';
 
 import {
     DEFAULT_PAGE_SIZE,
@@ -15,13 +14,15 @@ import {
     WfoFirstPartUUID,
     WfoProductBlockBadge,
     WfoProductStatusBadge,
-    WfoTableColumns,
-    WfoTableWithFilter,
     getDataSortHandler,
-    getPageChangeHandler,
+    getPageIndexChangeHandler,
+    getPageSizeChangeHandler,
     getQueryStringHandler,
-    mapSortableAndFilterableValuesToTableColumnConfig,
 } from '@/components';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
+import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import {
     useDataDisplayParams,
     useShowToastMessage,
@@ -47,20 +48,7 @@ import {
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
-const PRODUCT_BLOCK_FIELD_ID: keyof ProductBlockDefinition = 'productBlockId';
 const PRODUCT_BLOCK_FIELD_NAME: keyof ProductBlockDefinition = 'name';
-
-const PRODUCT_BLOCK_FIELD_TAG: keyof ProductBlockDefinition = 'tag';
-const PRODUCT_BLOCK_FIELD_DESCRIPTION: keyof ProductBlockDefinition =
-    'description';
-const PRODUCT_BLOCK_FIELD_STATUS: keyof ProductBlockDefinition = 'status';
-const PRODUCT_BLOCK_FIELD_CREATED_AT: keyof ProductBlockDefinition =
-    'createdAt';
-const PRODUCT_BLOCK_FIELD_END_DATE: keyof ProductBlockDefinition = 'endDate';
-const PRODUCT_BLOCK_FIELD_RESOURCE_TYPES: keyof ProductBlockDefinition =
-    'resourceTypes';
-const PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS: keyof ProductBlockDefinition =
-    'dependsOn';
 
 type ProductBlockDefinitionExportItem = Omit<
     ProductBlockDefinition,
@@ -103,44 +91,42 @@ export const WfoProductBlocksPage = () => {
             },
         });
 
-    const tableColumns: WfoTableColumns<ProductBlockDefinition> = {
+    const tableColumns: WfoAdvancedTableColumnConfig<ProductBlockDefinition> = {
         productBlockId: {
-            field: PRODUCT_BLOCK_FIELD_ID,
-            name: t('id'),
+            columnType: ColumnType.DATA,
+            label: t('id'),
             width: '90',
-            render: (value) => <WfoFirstPartUUID UUID={value} />,
+            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
         },
         name: {
-            field: PRODUCT_BLOCK_FIELD_NAME,
-            name: t('name'),
-            width: '200',
-            render: (name) => (
+            columnType: ColumnType.DATA,
+            label: t('name'),
+            renderData: (name) => (
                 <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
                     {name}
                 </WfoProductBlockBadge>
             ),
         },
         tag: {
-            field: PRODUCT_BLOCK_FIELD_TAG,
-            name: t('tag'),
-            width: '140',
+            columnType: ColumnType.DATA,
+            label: t('tag'),
         },
         description: {
-            field: PRODUCT_BLOCK_FIELD_DESCRIPTION,
-            name: t('description'),
-            width: '400',
+            columnType: ColumnType.DATA,
+            label: t('description'),
+            width: '400px',
         },
         status: {
-            field: PRODUCT_BLOCK_FIELD_STATUS,
-            name: t('status'),
-            width: '90',
-            render: (value) => <WfoProductStatusBadge status={value} />,
+            columnType: ColumnType.DATA,
+            label: t('status'),
+            width: '90px',
+            renderData: (value) => <WfoProductStatusBadge status={value} />,
         },
         dependsOn: {
-            field: PRODUCT_BLOCK_FIELD_PRODUCT_BLOCKS,
-            name: t('dependingProductBlocks'),
-            render: (dependsOn) => (
+            columnType: ColumnType.DATA,
+            label: t('dependingProductBlocks'),
+            renderData: (dependsOn) => (
                 <>
                     {dependsOn.map((productBlock, index) => (
                         <WfoProductBlockBadge
@@ -154,9 +140,9 @@ export const WfoProductBlocksPage = () => {
             ),
         },
         resourceTypes: {
-            field: PRODUCT_BLOCK_FIELD_RESOURCE_TYPES,
-            name: t('resourceTypes'),
-            render: (resourceTypes) => (
+            columnType: ColumnType.DATA,
+            label: t('resourceTypes'),
+            renderData: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
                         <WfoProductBlockBadge
@@ -182,16 +168,16 @@ export const WfoProductBlocksPage = () => {
             ),
         },
         createdAt: {
-            field: PRODUCT_BLOCK_FIELD_CREATED_AT,
-            name: t('createdAt'),
-            render: (date) => <WfoDateTime dateOrIsoString={date} />,
+            columnType: ColumnType.DATA,
+            label: t('createdAt'),
+            renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
         endDate: {
-            field: PRODUCT_BLOCK_FIELD_END_DATE,
-            name: t('endDate'),
-            render: (date) => <WfoDateTime dateOrIsoString={date} />,
+            columnType: ColumnType.DATA,
+            label: t('endDate'),
+            renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
         },
@@ -223,10 +209,12 @@ export const WfoProductBlocksPage = () => {
     const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
 
     const pagination: Pagination = {
-        pageSize: pageSize,
-        pageIndex: pageIndex,
+        pageIndex,
+        pageSize,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ? totalItems : 0,
+        onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
+        onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
     };
 
     const mapToExportItems = (
@@ -245,21 +233,16 @@ export const WfoProductBlocksPage = () => {
 
     return (
         <WfoMetadataPageLayout>
-            <WfoTableWithFilter<ProductBlockDefinition>
+            <WfoAdvancedTable
                 data={data?.productBlocks || []}
-                tableColumns={mapSortableAndFilterableValuesToTableColumnConfig(
+                tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
                     tableColumns,
                     sortFields,
                     filterFields,
                 )}
-                dataSorting={dataSorting}
+                dataSorting={[dataSorting]}
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
-                onUpdateDataSort={getDataSortHandler<ProductBlockDefinition>(
-                    setDataDisplayParam,
-                )}
-                onUpdatePage={getPageChangeHandler<ProductBlockDefinition>(
-                    setDataDisplayParam,
-                )}
+                onUpdateDataSorting={getDataSortHandler(setDataDisplayParam)}
                 onUpdateQueryString={getQueryStringHandler<ProductBlockDefinition>(
                     setDataDisplayParam,
                 )}
