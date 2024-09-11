@@ -25,7 +25,6 @@ export type WfoTableHeaderCellProps = {
     children: string;
 };
 
-// Todo move to new WfoTable, it is used there as well
 export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     fieldName,
     sortOrder,
