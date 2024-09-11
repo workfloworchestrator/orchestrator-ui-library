@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
@@ -9,6 +10,7 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import {
     ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
     COMPLETED_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
+    ColumnType,
     DEFAULT_PAGE_SIZE,
     StoredTableConfig,
     WfoFilterTabs,
@@ -21,6 +23,7 @@ import {
     WfoProcessesList,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import {
@@ -107,32 +110,48 @@ export const WfoTasksListPage = () => {
         }
     };
 
+    // Todo move to utils
+    function sortTableColumns<T extends object>(
+        columnConfig: WfoAdvancedTableColumnConfig<T>,
+        columnKeys: (keyof WfoAdvancedTableColumnConfig<T>)[],
+    ): WfoAdvancedTableColumnConfig<T> {
+        return columnKeys.reduce((sortedConfig, key) => {
+            if (key in columnConfig) {
+                sortedConfig[key] = columnConfig[key];
+            }
+            return sortedConfig;
+        }, {} as WfoAdvancedTableColumnConfig<T>);
+    }
+
     // Changing the order of the keys, resulting in an updated column order in the table
-    // Todo: temporary removed
-    // const handleOverrideTableColumns: (
-    //     defaultTableColumns: WfoTableColumns<ProcessListItem>,
-    // ) => WfoTableColumns<ProcessListItem> = (defaultTableColumns) => ({
-    //     workflowName: {
-    //         field: 'workflowName',
-    //         name: t('taskName'),
-    //         render: (value, { processId }) => (
-    //             <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
-    //         ),
-    //     },
-    //     lastStep: defaultTableColumns.lastStep,
-    //     lastStatus: defaultTableColumns.lastStatus,
-    //     workflowTarget: defaultTableColumns.workflowTarget,
-    //     productTag: defaultTableColumns.tag,
-    //     productName: defaultTableColumns.productName,
-    //     customer: defaultTableColumns.customer,
-    //     customerAbbreviation: defaultTableColumns.customerAbbreviation,
-    //     subscriptions: defaultTableColumns.subscriptions,
-    //     createdBy: defaultTableColumns.createdBy,
-    //     assignee: defaultTableColumns.assignee,
-    //     processId: defaultTableColumns.processId,
-    //     startedAt: defaultTableColumns.startedAt,
-    //     lastModifiedAt: defaultTableColumns.lastModifiedAt,
-    // });
+    const handleOverrideTableColumns: (
+        defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
+    ) => WfoAdvancedTableColumnConfig<ProcessListItem> = (
+        defaultTableColumns,
+    ) => ({
+        workflowName: {
+            columnType: ColumnType.DATA,
+            label: t('taskName'),
+            renderData: (value, { processId }) => (
+                <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
+            ),
+        },
+        ...sortTableColumns(defaultTableColumns, [
+            'lastStep',
+            'lastStatus',
+            'workflowTarget',
+            'tag',
+            'productName',
+            'customer',
+            'customerAbbreviation',
+            'subscriptions',
+            'createdBy',
+            'assignee',
+            'processId',
+            'startedAt',
+            'lastModifiedAt',
+        ]),
+    });
 
     return (
         <>
@@ -180,7 +199,7 @@ export const WfoTasksListPage = () => {
             <WfoProcessesList
                 defaultHiddenColumns={tableDefaults?.hiddenColumns}
                 localStorageKey={localStorageKey}
-                // overrideDefaultTableColumns={handleOverrideTableColumns} // todo
+                overrideDefaultTableColumns={handleOverrideTableColumns}
                 dataDisplayParams={dataDisplayParams}
                 setDataDisplayParam={setDataDisplayParam}
                 alwaysOnFilters={alwaysOnFilters}

@@ -83,7 +83,6 @@ export type WfoProcessesListProps = {
         prop: DisplayParamKey,
         value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
     ) => void;
-    // Todo - only works with old config object
     overrideDefaultTableColumns?: (
         defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
     ) => WfoAdvancedTableColumnConfig<ProcessListItem>;
@@ -94,6 +93,7 @@ export const WfoProcessesList = ({
     defaultHiddenColumns = [],
     localStorageKey,
     dataDisplayParams,
+    overrideDefaultTableColumns,
     setDataDisplayParam,
 }: WfoProcessesListProps) => {
     const t = useTranslations('processes.index');
@@ -203,11 +203,10 @@ export const WfoProcessesList = ({
         },
     };
 
-    // Todo - uncomment before PR
-    // const tableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> =
-    //     overrideDefaultTableColumns
-    //         ? overrideDefaultTableColumns(defaultTableColumns)
-    //         : defaultTableColumns;
+    const tableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> =
+        overrideDefaultTableColumns
+            ? overrideDefaultTableColumns(defaultTableColumns)
+            : defaultTableColumns;
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
@@ -252,7 +251,7 @@ export const WfoProcessesList = ({
                 processes || [],
             )}
             tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
-                defaultTableColumns,
+                tableColumns,
                 pageInfo?.sortFields,
                 pageInfo?.filterFields,
             )}
@@ -272,7 +271,7 @@ export const WfoProcessesList = ({
                 getProcessListForExport,
                 mapGraphQlProcessListExportResultToProcessListItems,
                 mapGraphQlProcessListResultToPageInfo,
-                Object.keys(defaultTableColumns),
+                Object.keys(tableColumns),
                 getCsvFileNameWithDate('Processes'),
                 showToastMessage,
                 tError,
