@@ -23,6 +23,7 @@ import {
     WfoProcessesList,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
+import { toSortedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
@@ -110,19 +111,6 @@ export const WfoTasksListPage = () => {
         }
     };
 
-    // Todo move to utils
-    function sortTableColumns<T extends object>(
-        columnConfig: WfoAdvancedTableColumnConfig<T>,
-        columnKeys: (keyof WfoAdvancedTableColumnConfig<T>)[],
-    ): WfoAdvancedTableColumnConfig<T> {
-        return columnKeys.reduce((sortedConfig, key) => {
-            if (key in columnConfig) {
-                sortedConfig[key] = columnConfig[key];
-            }
-            return sortedConfig;
-        }, {} as WfoAdvancedTableColumnConfig<T>);
-    }
-
     // Changing the order of the keys, resulting in an updated column order in the table
     const handleOverrideTableColumns: (
         defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
@@ -136,7 +124,7 @@ export const WfoTasksListPage = () => {
                 <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>
             ),
         },
-        ...sortTableColumns(defaultTableColumns, [
+        ...toSortedTableColumnConfig(defaultTableColumns, [
             'lastStep',
             'lastStatus',
             'workflowTarget',
