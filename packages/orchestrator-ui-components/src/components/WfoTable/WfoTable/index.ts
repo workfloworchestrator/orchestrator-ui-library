@@ -1,4 +1,5 @@
 export * from './WfoTable';
+export * from './constants';
 export * from './styles';
 
 export * from './WfoGroupedTable/WfoGroupedTable';

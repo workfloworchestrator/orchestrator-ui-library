@@ -2,6 +2,7 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
+import { TABLE_ROW_HEIGHT } from '@/components/WfoTable';
 import { WfoTheme } from '@/hooks';
 
 export const getWfoTableStyles = ({ theme }: WfoTheme) => {
@@ -60,7 +61,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const rowStyle = css({
-        height: '40px',
+        height: TABLE_ROW_HEIGHT,
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
         borderColor: theme.colors.lightShade,
