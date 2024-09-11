@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
-import { WfoTableHeaderCell } from '../WfoBasicTable';
 import { ColumnType, WfoTableProps } from './WfoTable';
+import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 import { getWfoTableStyles } from './styles';
 import { getSortedVisibleColumns } from './utils';
 

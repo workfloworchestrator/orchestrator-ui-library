@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import {
     FilterQuery,
     PATH_SUBSCRIPTIONS,
+    Pagination,
     WfoDateTime,
     WfoInlineJson,
     WfoInsyncIcon,
@@ -187,6 +188,19 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
     const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
 
+    const pagination: Pagination = {
+        pageIndex: dataDisplayParams.pageIndex,
+        pageSize: dataDisplayParams.pageSize,
+        pageSizeOptions: DEFAULT_PAGE_SIZES,
+        totalItemCount: totalItems ?? 0,
+        onChangePage:
+            getPageIndexChangeHandler<SubscriptionListItem>(
+                setDataDisplayParam,
+            ),
+        onChangeItemsPerPage:
+            getPageSizeChangeHandler<SubscriptionListItem>(setDataDisplayParam),
+    };
+
     return (
         <WfoAdvancedTable
             queryString={dataDisplayParams.queryString}
@@ -208,20 +222,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             isLoading={isFetching}
             localStorageKey={SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY}
             detailModalTitle={'Details - Subscription'}
-            pagination={{
-                pageIndex: dataDisplayParams.pageIndex,
-                pageSize: dataDisplayParams.pageSize,
-                pageSizeOptions: DEFAULT_PAGE_SIZES,
-                totalItemCount: totalItems ?? 0,
-                onChangePage:
-                    getPageIndexChangeHandler<SubscriptionListItem>(
-                        setDataDisplayParam,
-                    ),
-                onChangeItemsPerPage:
-                    getPageSizeChangeHandler<SubscriptionListItem>(
-                        setDataDisplayParam,
-                    ),
-            }}
+            pagination={pagination}
             error={mapRtkErrorToWfoError(error)}
             onUpdateDataSorting={getDataSortHandler<SubscriptionListItem>(
                 setDataDisplayParam,

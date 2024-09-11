@@ -10,9 +10,10 @@ import {
     useGeneratedHtmlId,
 } from '@elastic/eui';
 
-import { useWithOrchestratorTheme } from '../../../hooks';
-import { SortOrder } from '../../../types';
-import { WfoSortButtons } from '../WfoSortButtons';
+import { WfoSortButtons } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { SortOrder } from '@/types';
+
 import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
 import { getWfoBasicTableStyles } from './styles';
 
