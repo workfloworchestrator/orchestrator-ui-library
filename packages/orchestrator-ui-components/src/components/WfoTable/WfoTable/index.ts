@@ -5,4 +5,4 @@ export * from './WfoGroupedTable/WfoGroupedTable';
 export * from './WfoGroupedTable/utils';
 export * from './WfoGroupedTable/styles';
 
-export * from './WfoNestedTable';
+export * from './WfoTable';

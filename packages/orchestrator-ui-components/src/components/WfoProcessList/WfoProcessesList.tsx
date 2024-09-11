@@ -8,7 +8,6 @@ import {
     PATH_WORKFLOWS,
     WfoDateTime,
     WfoProcessStatusBadge,
-    WfoTableColumns,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -17,7 +16,7 @@ import {
     DEFAULT_PAGE_SIZES,
     TableColumnKeys,
     WfoDataSorting,
-    WfoFirstPartUUID, // WfoTableColumns,
+    WfoFirstPartUUID,
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components/WfoTable';
@@ -85,12 +84,9 @@ export type WfoProcessesListProps = {
         value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
     ) => void;
     // Todo - only works with old config object
-    // overrideDefaultTableColumns?: (
-    //     defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
-    // ) => WfoAdvancedTableColumnConfig<ProcessListItem>;
     overrideDefaultTableColumns?: (
-        defaultTableColumns: WfoTableColumns<ProcessListItem>,
-    ) => WfoTableColumns<ProcessListItem>;
+        defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
+    ) => WfoAdvancedTableColumnConfig<ProcessListItem>;
 };
 
 export const WfoProcessesList = ({
