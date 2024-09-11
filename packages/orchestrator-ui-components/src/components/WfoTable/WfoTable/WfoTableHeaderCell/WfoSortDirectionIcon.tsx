@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WfoArrowNarrowDown, WfoArrowNarrowUp } from '../../../icons';
-import { SortOrder } from '../../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoArrowNarrowDown, WfoArrowNarrowUp } from '@/icons';
+import { SortOrder } from '@/types';
 
 export type WfoSortDirectionIconProps = {
     sortDirection: SortOrder;

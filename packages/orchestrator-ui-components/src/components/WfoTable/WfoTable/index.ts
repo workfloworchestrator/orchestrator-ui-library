@@ -6,3 +6,4 @@ export * from './WfoGroupedTable/utils';
 export * from './WfoGroupedTable/styles';
 
 export * from './WfoTable';
+export * from './WfoTableHeaderCell';

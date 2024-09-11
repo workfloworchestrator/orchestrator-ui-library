@@ -126,7 +126,6 @@ export const WfoRelatedSubscriptions = ({
         },
     };
 
-    // WfoTable
     const onUpdatePageIndex =
         getPageIndexChangeHandler<RelatedSubscription>(setDataDisplayParam);
     const onUpdatePageSize =

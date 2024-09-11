@@ -1,16 +1,13 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
-import {
-    ColumnType,
-    WfoTableColumnConfig,
-    getTotalNumberOfRows,
-} from '@/components/WfoTable/WfoTable';
 import { getObjectKeys } from '@/utils';
 
+import { ColumnType, WfoTableColumnConfig } from '../WfoTable';
 import { WfoExpandableRow } from './WfoExpandableRow';
 import { WfoExpandedGroupRow } from './WfoExpandedGroupRow';
 import { GroupType, WfoGroupedTableProps } from './WfoGroupedTable';
 import { WfoGroupedTableGroupsRef } from './WfoGroupedTableGroups';
+import { getTotalNumberOfRows } from './utils';
 
 export type UseGroupedTableConfigProps<T extends object> = Pick<
     WfoGroupedTableProps<T>,
