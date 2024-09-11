@@ -13,4 +13,5 @@ export * from './WfoSortButtons';
 export * from './WfoFirstPartUUID';
 export * from './WfoInlineJson';
 
+export * from './WfoAdvancedTable';
 export * from './WfoTable';
