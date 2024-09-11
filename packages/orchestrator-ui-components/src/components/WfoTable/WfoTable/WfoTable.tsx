@@ -72,7 +72,7 @@ export type WfoTableColumnConfig<T extends object> = Partial<
 export type WfoTableProps<T extends object> = {
     data: T[];
     columnConfig: WfoTableColumnConfig<T>;
-    hiddenColumns?: TableColumnKeys<T>; // todo consider to change to keyof WfoTableColumnConfig
+    hiddenColumns?: TableColumnKeys<T>;
     columnOrder?: TableColumnKeys<T>;
     isLoading?: boolean;
     dataSorting?: WfoDataSorting<T>[];

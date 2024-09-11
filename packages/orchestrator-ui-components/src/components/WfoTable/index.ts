@@ -6,7 +6,7 @@ export * from './utils/constants';
 export * from './utils/tableConfigPersistence';
 export * from './utils/tableUtils';
 
-export * from './WfoBasicTable';
+export * from './WfoStatusColorField';
 export * from './WfoTableWithFilter';
 
 export * from './WfoSortButtons';

@@ -10,7 +10,7 @@ type TestObject = {
 
 describe('WfoGroupedTable - utils', () => {
     describe('groupData()', () => {
-        it('is great', () => {
+        it('successfully groups the data', () => {
             // Given
             const testData: TestObject[] = [
                 {
