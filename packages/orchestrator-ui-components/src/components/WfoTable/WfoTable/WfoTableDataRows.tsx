@@ -36,49 +36,70 @@ export const WfoTableDataRows = <T extends object>({
         hiddenColumns,
     );
 
-    return data.map((row, index) => (
-        <Fragment key={`table-data-row-${index}`}>
-            <tr
-                className={className}
-                css={[rowStyle, dataRowStyle, onRowClick && clickableStyle]}
-                onClick={() => onRowClick?.(row)}
-            >
-                {sortedVisibleColumns.map(([key, columnConfig]) => {
-                    if (columnConfig.columnType === ColumnType.CONTROL) {
-                        return (
-                            <td
-                                colSpan={
-                                    columnConfig.numberOfColumnsToSpan ?? 1
-                                }
-                                key={key}
-                                css={[cellStyle, setWidth(columnConfig.width)]}
-                            >
-                                <div>{columnConfig.renderControl(row)}</div>
-                            </td>
-                        );
-                    }
+    return (
+        <>
+            {data.map((row, index) => (
+                <Fragment key={`table-data-row-${index}`}>
+                    <tr
+                        className={className}
+                        css={[
+                            rowStyle,
+                            dataRowStyle,
+                            onRowClick && clickableStyle,
+                        ]}
+                        onClick={() => onRowClick?.(row)}
+                    >
+                        {sortedVisibleColumns.map(([key, columnConfig]) => {
+                            if (
+                                columnConfig.columnType === ColumnType.CONTROL
+                            ) {
+                                return (
+                                    <td
+                                        colSpan={
+                                            columnConfig.numberOfColumnsToSpan ??
+                                            1
+                                        }
+                                        key={key}
+                                        css={[
+                                            cellStyle,
+                                            setWidth(columnConfig.width),
+                                        ]}
+                                    >
+                                        <div>
+                                            {columnConfig.renderControl(row)}
+                                        </div>
+                                    </td>
+                                );
+                            }
 
-                    // Currently there is not a good way to tell Typescript that in some cases
-                    // key is of type "keyof T"
-                    const result = row[key as keyof T];
-                    return (
-                        <td
-                            key={key}
-                            css={[cellStyle, setWidth(columnConfig.width)]}
-                        >
-                            <div>
-                                {columnConfig.renderData?.(result, row) ??
-                                    result?.toString()}
-                            </div>
-                        </td>
-                    );
-                })}
-            </tr>
+                            // Currently there is not a good way to tell Typescript that in some cases
+                            // key is of type "keyof T"
+                            const result = row[key as keyof T];
+                            return (
+                                <td
+                                    key={key}
+                                    css={[
+                                        cellStyle,
+                                        setWidth(columnConfig.width),
+                                    ]}
+                                >
+                                    <div>
+                                        {columnConfig.renderData?.(
+                                            result,
+                                            row,
+                                        ) ?? result?.toString()}
+                                    </div>
+                                </td>
+                            );
+                        })}
+                    </tr>
 
-            <WfoExpandedRow
-                rowExpandingConfiguration={rowExpandingConfiguration}
-                rowData={row}
-            />
-        </Fragment>
-    ));
+                    <WfoExpandedRow
+                        rowExpandingConfiguration={rowExpandingConfiguration}
+                        rowData={row}
+                    />
+                </Fragment>
+            ))}
+        </>
+    );
 };
