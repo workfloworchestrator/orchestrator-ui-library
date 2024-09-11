@@ -203,11 +203,11 @@ export const WfoSubscriptionDetailTree = ({
                         </EuiCallOut>
                     )}
                     {selectedIds.length !== 0 &&
-                        selectedIds.sort(sortByTree).map((id, index) => {
+                        selectedIds.sort(sortByTree).map((id) => {
                             const block = idToNodeMap[id];
                             return (
                                 <WfoSubscriptionProductBlock
-                                    key={index}
+                                    key={id}
                                     subscriptionId={subscriptionId}
                                     productBlock={block}
                                 />
