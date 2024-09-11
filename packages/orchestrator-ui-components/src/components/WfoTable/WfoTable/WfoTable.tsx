@@ -33,6 +33,7 @@ export enum ColumnType {
 
 type CommonTableColumnConfigItemProps = {
     numberOfColumnsToSpan?: number;
+    disableDefaultCellStyle?: boolean;
     width?: CSSProperties['width'];
 };
 

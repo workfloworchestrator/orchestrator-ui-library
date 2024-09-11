@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
+import { toOptionalArrayEntry } from '@/utils';
 
 import { ColumnType, WfoTableProps } from './WfoTable';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
@@ -49,7 +50,13 @@ export const WfoTableHeaderRow = <T extends object>({
                             <th
                                 colSpan={columnConfig.numberOfColumnsToSpan}
                                 key={key}
-                                css={[cellStyle, setWidth(columnConfig.width)]}
+                                css={[
+                                    ...toOptionalArrayEntry(
+                                        cellStyle,
+                                        !columnConfig.disableDefaultCellStyle,
+                                    ),
+                                    setWidth(columnConfig.width),
+                                ]}
                             >
                                 <WfoTableHeaderCell
                                     fieldName={key}
@@ -89,7 +96,13 @@ export const WfoTableHeaderRow = <T extends object>({
                         <th
                             key={key}
                             colSpan={columnConfig.numberOfColumnsToSpan}
-                            css={[cellStyle, setWidth(columnConfig.width)]}
+                            css={[
+                                ...toOptionalArrayEntry(
+                                    cellStyle,
+                                    !columnConfig.disableDefaultCellStyle,
+                                ),
+                                setWidth(columnConfig.width),
+                            ]}
                         >
                             <div>{columnConfig.label?.toString() || ''}</div>
                         </th>

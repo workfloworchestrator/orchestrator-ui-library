@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { EuiFlexItem, tint } from '@elastic/eui';
+import { tint } from '@elastic/eui';
+
+import { useOrchestratorTheme } from '@/hooks';
+
+import { TABLE_ROW_HEIGHT } from '../WfoTable/';
 
 export type WfoStatusColorFieldProps = {
     color: string;
@@ -9,13 +13,16 @@ export type WfoStatusColorFieldProps = {
 const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
 
 export const WfoStatusColorField = ({ color }: WfoStatusColorFieldProps) => {
+    const { theme } = useOrchestratorTheme();
+
+    // Todo add styles.ts file
     return (
-        <EuiFlexItem
+        <div
             css={{
                 backgroundColor: toStatusColorFieldColor(color),
-                height: '100%',
-                width: '100%',
+                height: TABLE_ROW_HEIGHT,
+                width: theme.size.xs,
             }}
-        ></EuiFlexItem>
+        ></div>
     );
 };

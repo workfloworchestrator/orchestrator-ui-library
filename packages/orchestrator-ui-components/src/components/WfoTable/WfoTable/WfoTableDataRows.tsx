@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
+import { toOptionalArrayEntry } from '@/utils';
 
 import { WfoExpandedRow } from './WfoExpandedRow';
 import { ColumnType, WfoTableProps } from './WfoTable';
@@ -61,7 +62,10 @@ export const WfoTableDataRows = <T extends object>({
                                         }
                                         key={key}
                                         css={[
-                                            cellStyle,
+                                            ...toOptionalArrayEntry(
+                                                cellStyle,
+                                                !columnConfig.disableDefaultCellStyle,
+                                            ),
                                             setWidth(columnConfig.width),
                                         ]}
                                     >
@@ -79,7 +83,10 @@ export const WfoTableDataRows = <T extends object>({
                                 <td
                                     key={key}
                                     css={[
-                                        cellStyle,
+                                        ...toOptionalArrayEntry(
+                                            cellStyle,
+                                            !columnConfig.disableDefaultCellStyle,
+                                        ),
                                         setWidth(columnConfig.width),
                                     ]}
                                 >
