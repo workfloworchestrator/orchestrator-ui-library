@@ -357,6 +357,10 @@
             "setInSyncSuccess": {
                 "title": "Subscription set in sync",
                 "text": "The subscription was successfully set in sync."
+            },
+            "workflowsTab": {
+                "startWithOldestLabel": "Start with oldest first",
+                "startWithNewestLabel": "Start with newest first"
             }
         }
     },

@@ -5,6 +5,7 @@ import { EuiThemeComputed } from '@elastic/eui';
 import {
     FieldValue,
     ProcessStatus,
+    SortOrder,
     SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
@@ -125,4 +126,20 @@ export const getLatestTaskDate = (processes: SubscriptionDetailProcess[]) => {
         });
 
     return tasks.length > 0 ? tasks[0].startedAt : '';
+};
+
+export const sortProcessesByDate = (
+    processList: SubscriptionDetailProcess[],
+    sortOrder: SortOrder,
+) => {
+    return [...processList].sort((a, b) => {
+        const dateA = new Date(a.startedAt).getTime();
+        const dateB = new Date(b.startedAt).getTime();
+
+        if (sortOrder === SortOrder.ASC) {
+            return dateA - dateB; // Ascending order (oldest first)
+        } else {
+            return dateB - dateA; // Descending order (newest first)
+        }
+    });
 };

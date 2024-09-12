@@ -2,15 +2,30 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiComment, EuiCommentList, EuiSpacer, EuiText } from '@elastic/eui';
+import {
+    EuiComment,
+    EuiCommentList,
+    EuiFlexGroup,
+    EuiSpacer,
+    EuiText,
+} from '@elastic/eui';
 
-import { useWithOrchestratorTheme } from '../../hooks';
-import { SubscriptionDetailProcess } from '../../types';
-import { parseDate, parseDateToLocaleDateTimeString } from '../../utils';
-import { upperCaseFirstChar } from '../../utils';
+import { WfoLoading } from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
+import { WfoRadioDropdown, sortProcessesByDate } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
+import {
+    SortOrder,
+    SubscriptionDetailProcess,
+    WfoRadioDropdownOption,
+} from '@/types';
+import {
+    parseDate,
+    parseDateToLocaleDateTimeString,
+    upperCaseFirstChar,
+} from '@/utils';
+
 import { WfoProcessStatusBadge } from '../WfoBadges';
-import { WfoLoading } from '../WfoLoading';
-import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
 import { getSubscriptionDetailStyles } from './styles';
 
@@ -104,14 +119,19 @@ const WfoRenderSubscriptionProcess = ({
                 />
             }
         >
-            <div css={timeLineStyle}>
+            <EuiFlexGroup
+                alignItems="center"
+                gutterSize="s"
+                css={timeLineStyle}
+            >
                 <EuiText css={workflowTargetStyle}>
                     {upperCaseFirstChar(
                         subscriptionDetailProcess.workflowTarget,
                     )}
                 </EuiText>
+                <EuiText>-</EuiText>
                 <EuiText>{subscriptionDetailProcess.workflowName}</EuiText>
-            </div>
+            </EuiFlexGroup>
 
             <WfoProcessCard
                 subscriptionDetailProcess={subscriptionDetailProcess}
@@ -127,26 +147,56 @@ interface WfoProcessesTimelineProps {
 export const WfoProcessesTimeline = ({
     subscriptionDetailProcesses,
 }: WfoProcessesTimelineProps) => {
+    const t = useTranslations('subscriptions.detail.workflowsTab');
+    const options: WfoRadioDropdownOption<SortOrder>[] = [
+        {
+            label: t('startWithOldestLabel'),
+            id: 'radioButtonOldest',
+            value: SortOrder.ASC,
+        },
+        {
+            label: t('startWithNewestLabel'),
+            id: 'radioButtonNewest',
+            value: SortOrder.DESC,
+        },
+    ];
+
+    const [selectedOption, setSelectedOption] = React.useState(options[0]);
+
+    const handleOnSelectOption = (
+        option: WfoRadioDropdownOption<SortOrder>,
+    ) => {
+        setSelectedOption(option);
+    };
+
+    const sortedProcesses = sortProcessesByDate(
+        subscriptionDetailProcesses,
+        selectedOption.value,
+    );
+
     return (
         <>
             <EuiSpacer size={'m'} />
             {!subscriptionDetailProcesses && <WfoLoading />}
-            <EuiCommentList aria-label="Processes">
-                {subscriptionDetailProcesses && (
-                    <EuiCommentList aria-label="Processes">
-                        {subscriptionDetailProcesses
-                            .filter((process) => !process.isTask)
-                            .map((subscriptionDetailProcess, index) => (
-                                <WfoRenderSubscriptionProcess
-                                    key={index}
-                                    subscriptionDetailProcess={
-                                        subscriptionDetailProcess
-                                    }
-                                />
-                            ))}
-                    </EuiCommentList>
-                )}
-            </EuiCommentList>
+            <WfoRadioDropdown
+                options={options}
+                onUpdateOption={handleOnSelectOption}
+                selectedOption={selectedOption}
+            />
+            {sortedProcesses && (
+                <EuiCommentList aria-label="Processes">
+                    {sortedProcesses
+                        .filter((process) => !process.isTask)
+                        .map((subscriptionDetailProcess, index) => (
+                            <WfoRenderSubscriptionProcess
+                                key={index}
+                                subscriptionDetailProcess={
+                                    subscriptionDetailProcess
+                                }
+                            />
+                        ))}
+                </EuiCommentList>
+            )}
         </>
     );
 };
