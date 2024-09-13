@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiPageHeader } from '@elastic/eui';
 
 import {
     WfoActiveWorkflowsSummaryCard,
@@ -13,6 +13,7 @@ import {
     WfoProductsSummaryCard,
     WfoSummaryCards,
 } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { PolicyResource } from '@/configuration';
 import { usePolicy, useWfoSession } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
@@ -50,9 +51,11 @@ export const WfoStartPage = () => {
 
     return (
         <>
-            <EuiSpacer />
-            <EuiPageHeader pageTitle={`${t('welcome')} ${username}`} />
-            <EuiSpacer />
+            <WfoContentHeader
+                title={
+                    <EuiPageHeader pageTitle={`${t('welcome')} ${username}`} />
+                }
+            />
             <WfoSummaryCards>{summaryCards}</WfoSummaryCards>
         </>
     );

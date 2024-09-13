@@ -68,6 +68,8 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                 (isLoading && <WfoLoading />) ||
                 (subscriptionDetail && subscriptionDetail.subscriptionId && (
                     <>
+                        <EuiSpacer />
+
                         <EuiFlexGroup
                             style={{ marginBottom: 10 }}
                             justifyContent="spaceBetween"

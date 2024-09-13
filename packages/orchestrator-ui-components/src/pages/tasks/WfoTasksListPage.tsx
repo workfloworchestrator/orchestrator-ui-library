@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
+import { EuiButton, EuiSpacer } from '@elastic/eui';
 
 import {
     ACTIVE_TASKS_LIST_TABLE_LOCAL_STORAGE_KEY,
@@ -23,6 +23,7 @@ import {
     WfoProcessesList,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { toSortedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -143,38 +144,23 @@ export const WfoTasksListPage = () => {
 
     return (
         <>
-            <EuiSpacer />
-
-            <EuiFlexGroup>
-                <EuiFlexItem>
-                    <WfoTitleWithWebsocketBadge title="Tasks" />
-                </EuiFlexItem>
-
-                <EuiFlexItem>
-                    <EuiFlexGroup justifyContent="flexEnd">
-                        {' '}
-                        <WfoIsAllowedToRender
-                            resource={PolicyResource.TASKS_RETRY_ALL}
-                        >
-                            <EuiButton
-                                onClick={handleRerunAllButtonClick}
-                                iconType={() => (
-                                    <WfoRefresh
-                                        color={theme.colors.primaryText}
-                                    />
-                                )}
-                            >
-                                {t('rerunAll')}
-                            </EuiButton>
-                        </WfoIsAllowedToRender>
-                        <WfoIsAllowedToRender
-                            resource={PolicyResource.TASKS_CREATE}
-                        >
-                            <WfoStartTaskButtonComboBox />
-                        </WfoIsAllowedToRender>
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-            </EuiFlexGroup>
+            <WfoContentHeader
+                title={<WfoTitleWithWebsocketBadge title="Tasks" />}
+            >
+                <WfoIsAllowedToRender resource={PolicyResource.TASKS_RETRY_ALL}>
+                    <EuiButton
+                        onClick={handleRerunAllButtonClick}
+                        iconType={() => (
+                            <WfoRefresh color={theme.colors.primaryText} />
+                        )}
+                    >
+                        {t('rerunAll')}
+                    </EuiButton>
+                </WfoIsAllowedToRender>
+                <WfoIsAllowedToRender resource={PolicyResource.TASKS_CREATE}>
+                    <WfoStartTaskButtonComboBox />
+                </WfoIsAllowedToRender>
+            </WfoContentHeader>
 
             <WfoFilterTabs
                 tabs={defaultTasksListTabs}
