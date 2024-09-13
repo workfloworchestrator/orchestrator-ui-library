@@ -105,10 +105,9 @@ export const WfoAdvancedTable = <T extends object>({
 
     const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries(
         tableColumnConfig,
-    ).map((keyValuePair) => {
-        const field = keyValuePair[0] as keyof T;
+    ).map(([key, { name }]): TableSettingsColumnConfig<T> => {
+        const field = key as keyof T;
 
-        const { label: name } = keyValuePair[1];
         return {
             field,
             name,
@@ -117,6 +116,7 @@ export const WfoAdvancedTable = <T extends object>({
     });
 
     const rowDetailData: WfoKeyValueTableDataType[] | undefined =
+        selectedDataForDetailModal &&
         getRowDetailData(selectedDataForDetailModal, tableColumnConfig);
 
     const handleUpdateTableConfig = (

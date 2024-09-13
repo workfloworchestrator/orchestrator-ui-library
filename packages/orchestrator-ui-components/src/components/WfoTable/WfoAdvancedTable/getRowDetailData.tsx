@@ -11,13 +11,9 @@ import {
 import { getTypedFieldFromObject } from '@/utils';
 
 export const getRowDetailData = <T extends object>(
-    selectedDataForDetailModal: T | undefined,
+    selectedDataForDetailModal: T,
     tableColumnConfig: WfoAdvancedTableColumnConfig<T>,
 ) => {
-    if (!selectedDataForDetailModal) {
-        return undefined;
-    }
-
     const tableColumnConfigEntries: [
         string,
         (
@@ -27,8 +23,8 @@ export const getRowDetailData = <T extends object>(
     ][] = Object.entries(tableColumnConfig);
 
     const dataColumnEntries = tableColumnConfigEntries.filter(
-        (tableColumnConfigEntry) =>
-            tableColumnConfigEntry[1].columnType === ColumnType.DATA,
+        ([, tableColumnConfig]) =>
+            tableColumnConfig.columnType === ColumnType.DATA,
     ) as [string, WfoAdvancedTableDataColumnConfigItem<T, keyof T>][];
 
     return dataColumnEntries.map(([key, value]) => {

@@ -126,18 +126,13 @@ export const WfoRelatedSubscriptions = ({
         },
     };
 
-    const onUpdatePageIndex =
-        getPageIndexChangeHandler<RelatedSubscription>(setDataDisplayParam);
-    const onUpdatePageSize =
-        getPageSizeChangeHandler<RelatedSubscription>(setDataDisplayParam);
-
     const pagination: Pagination = {
         pageSize: dataDisplayParams.pageSize,
         pageIndex: dataDisplayParams.pageIndex,
         totalItemCount: relatedSubscriptionsPageInfo?.totalItems ?? 0,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
-        onChangeItemsPerPage: onUpdatePageSize,
-        onChangePage: onUpdatePageIndex,
+        onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
+        onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
     };
 
     const dataSorting: WfoDataSorting<RelatedSubscription> = {
