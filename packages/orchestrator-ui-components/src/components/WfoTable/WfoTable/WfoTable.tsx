@@ -56,7 +56,9 @@ export type WfoTableControlColumnConfigItem<T extends object> =
     };
 
 export type WfoTableDataColumnConfig<T extends object> = {
-    [Property in keyof T]: WfoTableDataColumnConfigItem<T, Property>;
+    [Property in keyof T]:
+        | WfoTableDataColumnConfigItem<T, Property>
+        | WfoTableControlColumnConfigItem<T>;
 };
 
 export type WfoTableControlColumnConfig<T extends object> = {
