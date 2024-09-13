@@ -29,5 +29,5 @@ export const WfoExpandedRow = <T extends object>({
                     rowData[rowExpandingConfiguration.uniqueRowId] as string
                 ).toLowerCase(),
         )
-        .map((keyValue) => keyValue[1]);
+        .map(([, expandedRowComponent]) => expandedRowComponent);
 };
