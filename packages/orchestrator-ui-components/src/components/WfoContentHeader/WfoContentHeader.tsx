@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 import {
     EuiFlexGroup,
@@ -7,33 +7,12 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-// WfoPageTitle
-export type WfoContentTitleProps = {
-    children: string | ReactNode;
-};
-export const WfoContentTitle: FC<WfoContentTitleProps> = ({ children }) => {
-    if (typeof children === 'string') {
-        return <EuiPageHeader pageTitle={children} />;
-    }
-
-    return children;
-};
-
-// WfoPageSubtitle
-export const WfoContentSubtitle: FC<WfoContentTitleProps> = ({ children }) => {
-    if (typeof children === 'string') {
-        return null; // todo
-    }
-
-    return children;
-};
-
-//////////
+import { WfoRenderElementOrString } from '@/components';
 
 export type WfoContentHeaderProps = {
-    title: string | ReactNode;
-    subtitle?: string | ReactNode;
-    children?: ReactNode;
+    title: ReactElement | string;
+    subtitle?: ReactElement | string;
+    children?: ReactElement | ReactElement[] | string;
 };
 
 export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
@@ -45,13 +24,21 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
         <>
             <EuiFlexGroup>
                 <EuiFlexItem>
-                    <WfoContentTitle>{title}</WfoContentTitle>
+                    <WfoRenderElementOrString
+                        renderString={(value) => (
+                            <EuiPageHeader pageTitle={value} />
+                        )}
+                    >
+                        {title}
+                    </WfoRenderElementOrString>
                 </EuiFlexItem>
 
                 {children && (
                     <EuiFlexItem>
                         <EuiFlexGroup justifyContent="flexEnd">
-                            {children}
+                            <WfoRenderElementOrString>
+                                {children}
+                            </WfoRenderElementOrString>
                         </EuiFlexGroup>
                     </EuiFlexItem>
                 )}
@@ -60,7 +47,9 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
             {subtitle && (
                 <>
                     <EuiSpacer size="m" />
-                    {subtitle}
+                    <WfoRenderElementOrString>
+                        {subtitle}
+                    </WfoRenderElementOrString>
                 </>
             )}
 

@@ -236,26 +236,30 @@ export const WfoProcessDetail = ({
                         {t('abort')}
                     </EuiButton>
                 </WfoIsAllowedToRender>
-                {processDetail &&
-                    processIsTask &&
-                    isAllowed(PolicyResource.PROCESS_DELETE) && (
-                        <EuiButton
-                            onClick={handleActionButtonClick(deleteAction)}
-                            iconType={() => (
-                                <WfoXCircleFill
-                                    color={
-                                        deleteButtonIsDisabled
-                                            ? theme.colors.subduedText
-                                            : theme.colors.danger
-                                    }
-                                />
-                            )}
-                            color="danger"
-                            isDisabled={deleteButtonIsDisabled}
+                <>
+                    {processDetail && processIsTask && (
+                        <WfoIsAllowedToRender
+                            resource={PolicyResource.PROCESS_DELETE}
                         >
-                            {t('delete')}
-                        </EuiButton>
+                            <EuiButton
+                                onClick={handleActionButtonClick(deleteAction)}
+                                iconType={() => (
+                                    <WfoXCircleFill
+                                        color={
+                                            deleteButtonIsDisabled
+                                                ? theme.colors.subduedText
+                                                : theme.colors.danger
+                                        }
+                                    />
+                                )}
+                                color="danger"
+                                isDisabled={deleteButtonIsDisabled}
+                            >
+                                {t('delete')}
+                            </EuiButton>
+                        </WfoIsAllowedToRender>
                     )}
+                </>
             </WfoContentHeader>
 
             <EuiPanel
