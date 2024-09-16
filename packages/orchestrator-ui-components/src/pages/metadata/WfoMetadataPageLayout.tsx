@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiPageHeader, EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
+import { EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
+
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 
 interface MetadataLayoutProps {
     children: ReactNode;
@@ -55,10 +57,8 @@ export const WfoMetadataPageLayout = ({
 
     return (
         <>
-            <EuiSpacer />
+            <WfoContentHeader title={t('title')} />
 
-            <EuiPageHeader pageTitle={t('title')} />
-            <EuiSpacer size="m" />
             <EuiTabs>
                 {tabs.map(({ id, translationKey: name, path }) => (
                     <EuiTab

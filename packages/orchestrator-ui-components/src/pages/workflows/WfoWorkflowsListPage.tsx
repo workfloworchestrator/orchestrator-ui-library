@@ -19,6 +19,7 @@ import {
     WfoProcessesList,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -84,11 +85,15 @@ export const WfoWorkflowsListPage = () => {
 
     return (
         <>
-            <EuiSpacer />
+            {/*<EuiSpacer />*/}
 
-            <WfoTitleWithWebsocketBadge title={t('title')} />
+            {/*<WfoTitleWithWebsocketBadge title={t('title')} />*/}
 
-            <EuiSpacer size="m" />
+            {/*<EuiSpacer size="m" />*/}
+
+            <WfoContentHeader
+                title={<WfoTitleWithWebsocketBadge title={t('title')} />}
+            />
 
             <WfoFilterTabs
                 tabs={defaultWorkflowsListTabs}
