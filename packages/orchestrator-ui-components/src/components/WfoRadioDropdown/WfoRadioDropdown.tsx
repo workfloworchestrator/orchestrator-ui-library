@@ -8,13 +8,17 @@ import {
 } from '@elastic/eui';
 import { EuiRadioGroupOption } from '@elastic/eui/src/components/form/radio/radio_group';
 
-import { WfoRadioDropdownOption } from '@/types';
-
 export interface WfoRadioDropdownProps<T> {
     options: WfoRadioDropdownOption<T>[];
     selectedOption: WfoRadioDropdownOption<T>;
     onUpdateOption: (value: WfoRadioDropdownOption<T>) => void;
 }
+
+export type WfoRadioDropdownOption<T> = {
+    label: string;
+    id: string;
+    value: T;
+};
 
 export const WfoRadioDropdown = <T,>({
     options,

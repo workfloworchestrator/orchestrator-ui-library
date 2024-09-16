@@ -10,15 +10,11 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { WfoLoading } from '@/components';
+import { WfoLoading, WfoRadioDropdownOption } from '@/components';
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { WfoRadioDropdown, sortProcessesByDate } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import {
-    SortOrder,
-    SubscriptionDetailProcess,
-    WfoRadioDropdownOption,
-} from '@/types';
+import { SortOrder, SubscriptionDetailProcess } from '@/types';
 import {
     parseDate,
     parseDateToLocaleDateTimeString,

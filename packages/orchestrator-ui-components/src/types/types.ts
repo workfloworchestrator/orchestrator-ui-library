@@ -11,12 +11,6 @@ export type FieldValue = {
     value: string | number | boolean | null;
 };
 
-export type WfoRadioDropdownOption<T> = {
-    label: string;
-    id: string;
-    value: T;
-};
-
 export enum EngineStatus {
     RUNNING = 'RUNNING',
     PAUSING = 'PAUSING',
