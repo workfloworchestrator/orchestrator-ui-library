@@ -356,6 +356,10 @@
             "setInSyncSuccess": {
                 "title": "Subscription inSync",
                 "text": "De subscription is in sync gezet."
+            },
+            "workflowsTab": {
+                "startWithOldestLabel": "Start met oudste eerst",
+                "startWithNewestLabel": "Start met nieuwste eerst"
             }
         }
     },
