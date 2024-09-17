@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import { EuiInlineEditText } from '@elastic/eui';
@@ -27,8 +27,12 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
         });
     };
 
-    const initialNote = value || '';
+    const initialNote = useMemo(() => value || '', [value]);
     const [note, setNote] = useState<string>(initialNote);
+
+    useEffect(() => {
+        setNote(initialNote);
+    }, [initialNote]);
 
     return (
         <EuiInlineEditText
