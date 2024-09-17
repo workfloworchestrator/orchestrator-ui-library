@@ -1,5 +1,23 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.0.0
+
+### Major Changes
+
+-   7991a97: 1384 - (Breaking change) - Replaces WfoBasicTable and WfoTableWithFilter with WfoTable and WfoAdvancedTable. Both have slightly different interfaces compared with the previous components
+
+### Minor Changes
+
+-   ca01308: Refactor WfoSubscriptionGeneral, use WfoSubscriptionDetailSection in forms
+-   0041a7c: 699, 1370 - Fix and update product block view
+
+### Patch Changes
+
+-   94ed80b: "649 Fixed a bug where details were shown based on index instead of unique id of a PB
+-   5ce3e1f: 1363 Fixes labels in table settings modal
+-   0fe9ad5: 1363 Adds WfoMultilineCell and WfoTruncateCell
+-   88c4181: 1378 Add sorting for subscription details workflows tab
+
 ## 1.38.2
 
 ### Patch Changes
