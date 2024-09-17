@@ -30,6 +30,8 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     const initialNote = useMemo(() => value || '', [value]);
     const [note, setNote] = useState<string>(initialNote);
 
+    // This useEffect makes sure the note is updated when a new value property is passed in
+    // for example by a parent component that is update through a websocket event
     useEffect(() => {
         setNote(initialNote);
     }, [initialNote]);
