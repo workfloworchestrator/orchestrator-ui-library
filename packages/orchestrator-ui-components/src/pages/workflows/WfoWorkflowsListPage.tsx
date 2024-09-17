@@ -85,12 +85,6 @@ export const WfoWorkflowsListPage = () => {
 
     return (
         <>
-            {/*<EuiSpacer />*/}
-
-            {/*<WfoTitleWithWebsocketBadge title={t('title')} />*/}
-
-            {/*<EuiSpacer size="m" />*/}
-
             <WfoContentHeader
                 title={<WfoTitleWithWebsocketBadge title={t('title')} />}
             />
