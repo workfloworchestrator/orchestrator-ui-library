@@ -105,12 +105,12 @@ export const WfoAdvancedTable = <T extends object>({
 
     const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries(
         tableColumnConfig,
-    ).map(([key, { name }]): TableSettingsColumnConfig<T> => {
+    ).map(([key, { label }]): TableSettingsColumnConfig<T> => {
         const field = key as keyof T;
 
         return {
             field,
-            name,
+            name: label,
             isVisible: hiddenColumns.indexOf(field) === -1,
         };
     });
