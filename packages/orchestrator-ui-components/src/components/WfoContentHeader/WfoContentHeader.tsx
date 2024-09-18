@@ -19,41 +19,37 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
     title,
     subtitle,
     children,
-}) => {
-    return (
-        <>
-            <EuiFlexGroup>
+}) => (
+    <>
+        <EuiFlexGroup>
+            <EuiFlexItem>
+                <WfoRenderElementOrString
+                    renderString={(value) => (
+                        <EuiPageHeader pageTitle={value} />
+                    )}
+                >
+                    {title}
+                </WfoRenderElementOrString>
+            </EuiFlexItem>
+
+            {children && (
                 <EuiFlexItem>
-                    <WfoRenderElementOrString
-                        renderString={(value) => (
-                            <EuiPageHeader pageTitle={value} />
-                        )}
-                    >
-                        {title}
-                    </WfoRenderElementOrString>
+                    <EuiFlexGroup justifyContent="flexEnd">
+                        <WfoRenderElementOrString>
+                            {children}
+                        </WfoRenderElementOrString>
+                    </EuiFlexGroup>
                 </EuiFlexItem>
-
-                {children && (
-                    <EuiFlexItem>
-                        <EuiFlexGroup justifyContent="flexEnd">
-                            <WfoRenderElementOrString>
-                                {children}
-                            </WfoRenderElementOrString>
-                        </EuiFlexGroup>
-                    </EuiFlexItem>
-                )}
-            </EuiFlexGroup>
-
-            {subtitle && (
-                <>
-                    <EuiSpacer size="m" />
-                    <WfoRenderElementOrString>
-                        {subtitle}
-                    </WfoRenderElementOrString>
-                </>
             )}
+        </EuiFlexGroup>
 
-            <EuiSpacer size="l" />
-        </>
-    );
-};
+        {subtitle && (
+            <>
+                <EuiSpacer size="m" />
+                <WfoRenderElementOrString>{subtitle}</WfoRenderElementOrString>
+            </>
+        )}
+
+        <EuiSpacer size="l" />
+    </>
+);
