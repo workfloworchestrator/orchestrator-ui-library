@@ -60,10 +60,11 @@ export type RelatedSubscriptionsResponse = {
     relatedSubscriptions: RelatedSubscription[];
 } & BaseGraphQlResult;
 
-type RelatedSubscriptionVariables = GraphqlQueryVariables<RelatedSubscription> &
-    Pick<Subscription, 'subscriptionId'> & {
-        terminatedSubscriptionFilter?: GraphqlFilter<RelatedSubscription>;
-    };
+export type RelatedSubscriptionVariables =
+    GraphqlQueryVariables<RelatedSubscription> &
+        Pick<Subscription, 'subscriptionId'> & {
+            terminatedSubscriptionFilter?: GraphqlFilter<RelatedSubscription>;
+        };
 
 const relatedSubscriptionsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({

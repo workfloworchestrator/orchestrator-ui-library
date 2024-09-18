@@ -7,6 +7,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch } from '@elastic/eui';
 
 import {
     DEFAULT_PAGE_SIZES,
+    SubscriptionListItem,
     WfoDataSorting,
     WfoFirstPartUUID,
     WfoInsyncIcon,
@@ -18,6 +19,11 @@ import {
 } from '@/components';
 import { PATH_SUBSCRIPTIONS } from '@/components';
 import {
+    graphQlRelatedSubscriptionsSortMapper,
+    graphQlRelatedSubscriptionsTerminatedSubscriptionsFilterMapper,
+    mapRelatedSubscriptionsResponseToRelatedSubscriptionsListItems,
+} from '@/components/WfoSubscription/utils/relatedSubscriptionsListItemsObjectMappers';
+import {
     ColumnType,
     Pagination,
     WfoTable,
@@ -26,14 +32,23 @@ import {
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useDataDisplayParams, useOrchestratorTheme } from '@/hooks';
 import { WfoSearchStrikethrough } from '@/icons';
-import { useGetRelatedSubscriptionsQuery } from '@/rtk';
 import {
-    GraphqlFilter,
-    RelatedSubscription,
-    SortOrder,
-    SubscriptionStatus,
-} from '@/types';
-import { parseDate, parseDateToLocaleDateString } from '@/utils';
+    RelatedSubscriptionVariables,
+    useGetRelatedSubscriptionsQuery,
+} from '@/rtk';
+import { GraphqlFilter, SortOrder, SubscriptionStatus } from '@/types';
+import { parseDateToLocaleDateString } from '@/utils';
+
+export type RelatedSubscriptionListItem = Pick<
+    SubscriptionListItem,
+    | 'subscriptionId'
+    | 'description'
+    | 'status'
+    | 'insync'
+    | 'customerFullname'
+    | 'tag'
+    | 'startDate'
+>;
 
 interface WfoRelatedSubscriptionsProps {
     subscriptionId: string;
@@ -47,37 +62,44 @@ export const WfoRelatedSubscriptions = ({
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
 
-    const terminatedSubscriptionsFilter: GraphqlFilter<RelatedSubscription> = {
-        field: 'status',
-        value: `${SubscriptionStatus.ACTIVE}-${SubscriptionStatus.DISABLED}-${SubscriptionStatus.INITIAL}-${SubscriptionStatus.MIGRATING}-${SubscriptionStatus.PROVISIONING}`,
-    };
+    const terminatedSubscriptionsFilter: GraphqlFilter<RelatedSubscriptionListItem> =
+        {
+            field: 'status',
+            value: `${SubscriptionStatus.ACTIVE}-${SubscriptionStatus.DISABLED}-${SubscriptionStatus.INITIAL}-${SubscriptionStatus.MIGRATING}-${SubscriptionStatus.PROVISIONING}`,
+        };
 
     const { dataDisplayParams, setDataDisplayParam } =
-        useDataDisplayParams<RelatedSubscription>({
+        useDataDisplayParams<RelatedSubscriptionListItem>({
             sortBy: {
                 field: 'startDate',
                 order: SortOrder.DESC,
             },
         });
 
-    const { data, isFetching, isLoading } = useGetRelatedSubscriptionsQuery({
+    const graphqlQueryVariables: RelatedSubscriptionVariables = {
         first: dataDisplayParams.pageSize,
         after: dataDisplayParams.pageIndex * dataDisplayParams.pageSize,
         subscriptionId: subscriptionId,
-        sortBy: dataDisplayParams.sortBy,
+        sortBy: graphQlRelatedSubscriptionsSortMapper(dataDisplayParams.sortBy),
         terminatedSubscriptionFilter: hideTerminatedSubscriptions
-            ? terminatedSubscriptionsFilter
+            ? graphQlRelatedSubscriptionsTerminatedSubscriptionsFilterMapper(
+                  terminatedSubscriptionsFilter,
+              )
             : undefined,
-    });
+    };
 
-    const relatedSubscriptions = data?.relatedSubscriptions;
+    const { data, isFetching, isLoading } = useGetRelatedSubscriptionsQuery(
+        graphqlQueryVariables,
+    );
+
+    const relatedSubscriptions =
+        mapRelatedSubscriptionsResponseToRelatedSubscriptionsListItems(data);
     const relatedSubscriptionsPageInfo = data?.pageInfo;
 
-    const tableColumns: WfoTableColumnConfig<RelatedSubscription> = {
+    const tableColumns: WfoTableColumnConfig<RelatedSubscriptionListItem> = {
         subscriptionId: {
             columnType: ColumnType.DATA,
             label: t('id'),
-            width: '100',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
         },
         description: {
@@ -95,7 +117,6 @@ export const WfoRelatedSubscriptions = ({
         status: {
             columnType: ColumnType.DATA,
             label: t('status'),
-            width: '130',
             renderData: (value) => (
                 <WfoSubscriptionStatusBadge status={value} />
             ),
@@ -103,26 +124,21 @@ export const WfoRelatedSubscriptions = ({
         insync: {
             columnType: ColumnType.DATA,
             label: t('insync'),
-            width: '60',
             renderData: (value) => <WfoInsyncIcon inSync={value} />,
         },
-        customer: {
+        customerFullname: {
             columnType: ColumnType.DATA,
             label: t('customer'),
-            renderData: (customer) => customer.fullname,
         },
-        product: {
+        tag: {
             columnType: ColumnType.DATA,
             label: t('tag'),
-            width: '150',
-            renderData: (product) => product.tag,
+            width: '150px',
         },
         startDate: {
             columnType: ColumnType.DATA,
             label: t('startDate'),
-            width: '100',
-            renderData: (value) =>
-                parseDateToLocaleDateString(parseDate(value)),
+            renderData: parseDateToLocaleDateString,
         },
     };
 
@@ -135,7 +151,7 @@ export const WfoRelatedSubscriptions = ({
         onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
     };
 
-    const dataSorting: WfoDataSorting<RelatedSubscription> = {
+    const dataSorting: WfoDataSorting<RelatedSubscriptionListItem> = {
         field: dataDisplayParams.sortBy?.field,
         sortOrder: dataDisplayParams.sortBy?.order,
     };
@@ -143,7 +159,6 @@ export const WfoRelatedSubscriptions = ({
     const toggleTerminatedSubscriptions = () => {
         setHideTerminatedSubscriptions((currentValue) => !currentValue);
     };
-
     return (
         <>
             <EuiSpacer size="xl" />
@@ -159,8 +174,7 @@ export const WfoRelatedSubscriptions = ({
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="m" />
-            {(relatedSubscriptions &&
-                relatedSubscriptions.length > 0 &&
+            {(relatedSubscriptions?.length > 0 &&
                 (!isLoading ||
                     // This situation represents the situation where the hideRelatedsubscriptions is being toggled
                     // in which case we don't want to show the loadingState because it makes the page flicker
@@ -168,9 +182,9 @@ export const WfoRelatedSubscriptions = ({
                         relatedSubscriptions.length > 0)) && (
                     <WfoTable
                         data={relatedSubscriptions}
-                        columnConfig={mapSortableAndFilterableValuesToTableColumnConfig<RelatedSubscription>(
+                        columnConfig={mapSortableAndFilterableValuesToTableColumnConfig<RelatedSubscriptionListItem>(
                             tableColumns,
-                            data.pageInfo.sortFields,
+                            data?.pageInfo.sortFields ?? [],
                         )}
                         pagination={pagination}
                         isLoading={isFetching}
