@@ -74,39 +74,39 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
         {
             name: t('subscriptions'),
             id: '3',
-            isSelected: router.pathname === PATH_SUBSCRIPTIONS,
+            isSelected: router.pathname.startsWith(PATH_SUBSCRIPTIONS),
             href: PATH_SUBSCRIPTIONS,
             renderItem: () => (
                 <WfoMenuItemLink
                     path={PATH_SUBSCRIPTIONS}
                     translationString="subscriptions"
-                    isSelected={router.pathname === PATH_SUBSCRIPTIONS}
+                    isSelected={router.pathname.startsWith(PATH_SUBSCRIPTIONS)}
                 />
             ),
         },
         {
             name: t('workflows'),
             id: '4',
-            isSelected: router.pathname === PATH_WORKFLOWS,
+            isSelected: router.pathname.startsWith(PATH_WORKFLOWS),
             href: PATH_WORKFLOWS,
             renderItem: () => (
                 <WfoMenuItemLink
                     path={PATH_WORKFLOWS}
                     translationString="workflows"
-                    isSelected={router.pathname === PATH_WORKFLOWS}
+                    isSelected={router.pathname.startsWith(PATH_WORKFLOWS)}
                 />
             ),
         },
         {
             name: t('tasks'),
-            isSelected: router.pathname === PATH_TASKS,
+            isSelected: router.pathname.startsWith(PATH_TASKS),
             id: '5',
             href: PATH_TASKS,
             renderItem: () => (
                 <WfoMenuItemLink
                     path={PATH_TASKS}
                     translationString="tasks"
-                    isSelected={router.pathname === PATH_TASKS}
+                    isSelected={router.pathname.startsWith(PATH_TASKS)}
                 />
             ),
         },

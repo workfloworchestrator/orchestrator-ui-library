@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import {
     EuiButton,
     EuiFlexGroup,
-    EuiFlexItem,
     EuiPanel,
     EuiSpacer,
     EuiText,
@@ -21,6 +20,7 @@ import {
     WfoTimeline,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useCheckEngineStatus, useOrchestratorTheme, usePolicy } from '@/hooks';
@@ -192,63 +192,55 @@ export const WfoProcessDetail = ({
 
     return (
         <>
-            <EuiFlexGroup>
-                <EuiFlexItem>
-                    <WfoTitleWithWebsocketBadge title={pageTitle} />
-                    <EuiSpacer />
+            <WfoContentHeader
+                title={<WfoTitleWithWebsocketBadge title={pageTitle} />}
+                subtitle={
                     <WfoProductInformationWithLink
                         productNames={productNames}
                         workflowName={processDetail?.workflowName ?? ''}
                     />
-                </EuiFlexItem>
-                <EuiFlexGroup
-                    justifyContent="flexEnd"
-                    direction="row"
-                    css={{ flexGrow: 0 }}
-                    gutterSize="s"
-                >
-                    <WfoIsAllowedToRender
-                        resource={PolicyResource.PROCESS_RETRY}
+                }
+            >
+                <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
+                    <EuiButton
+                        onClick={handleActionButtonClick(retryAction)}
+                        iconType={() => (
+                            <WfoRefresh
+                                color={
+                                    retryButtonIsDisabled
+                                        ? theme.colors.subduedText
+                                        : theme.colors.link
+                                }
+                            />
+                        )}
+                        isDisabled={retryButtonIsDisabled}
                     >
-                        <EuiButton
-                            onClick={handleActionButtonClick(retryAction)}
-                            iconType={() => (
-                                <WfoRefresh
-                                    color={
-                                        retryButtonIsDisabled
-                                            ? theme.colors.subduedText
-                                            : theme.colors.link
-                                    }
-                                />
-                            )}
-                            isDisabled={retryButtonIsDisabled}
-                        >
-                            {t('retry')}
-                        </EuiButton>
-                    </WfoIsAllowedToRender>
-                    <WfoIsAllowedToRender
-                        resource={PolicyResource.PROCESS_ABORT}
+                        {t('retry')}
+                    </EuiButton>
+                </WfoIsAllowedToRender>
+                <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
+                    <EuiButton
+                        onClick={handleActionButtonClick(abortAction)}
+                        iconType={() => (
+                            <WfoXCircleFill
+                                color={
+                                    abortButtonIsDisabled
+                                        ? theme.colors.subduedText
+                                        : theme.colors.danger
+                                }
+                            />
+                        )}
+                        color="danger"
+                        isDisabled={abortButtonIsDisabled}
                     >
-                        <EuiButton
-                            onClick={handleActionButtonClick(abortAction)}
-                            iconType={() => (
-                                <WfoXCircleFill
-                                    color={
-                                        abortButtonIsDisabled
-                                            ? theme.colors.subduedText
-                                            : theme.colors.danger
-                                    }
-                                />
-                            )}
-                            color="danger"
-                            isDisabled={abortButtonIsDisabled}
+                        {t('abort')}
+                    </EuiButton>
+                </WfoIsAllowedToRender>
+                <>
+                    {processDetail && processIsTask && (
+                        <WfoIsAllowedToRender
+                            resource={PolicyResource.PROCESS_DELETE}
                         >
-                            {t('abort')}
-                        </EuiButton>
-                    </WfoIsAllowedToRender>
-                    {processDetail &&
-                        processIsTask &&
-                        isAllowed(PolicyResource.PROCESS_DELETE) && (
                             <EuiButton
                                 onClick={handleActionButtonClick(deleteAction)}
                                 iconType={() => (
@@ -265,10 +257,10 @@ export const WfoProcessDetail = ({
                             >
                                 {t('delete')}
                             </EuiButton>
-                        )}
-                </EuiFlexGroup>
-            </EuiFlexGroup>
-            <EuiSpacer />
+                        </WfoIsAllowedToRender>
+                    )}
+                </>
+            </WfoContentHeader>
 
             <EuiPanel
                 hasShadow={false}

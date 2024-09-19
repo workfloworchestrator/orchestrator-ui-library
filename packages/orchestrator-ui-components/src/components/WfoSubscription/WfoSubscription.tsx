@@ -3,13 +3,6 @@ import React from 'react';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import {
-    EuiBadgeGroup,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiSpacer,
-} from '@elastic/eui';
-
-import {
     WfoFilterTabs,
     WfoLoading,
     WfoProcessesTimeline,
@@ -23,7 +16,7 @@ import {
     WfoSubscriptionSyncStatusBadge,
     WfoTitleWithWebsocketBadge,
 } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { useGetSubscriptionDetailQuery } from '@/rtk/endpoints/subscriptionDetail';
 
 import { WfoError } from '../WfoError';
@@ -42,8 +35,6 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
             SubscriptionDetailTab.SERVICE_CONFIGURATION_TAB,
         ),
     );
-
-    const { multiplyByBaseUnit } = useOrchestratorTheme();
 
     const selectedTab = ((): SubscriptionDetailTab => {
         return (
@@ -68,36 +59,27 @@ export const WfoSubscription = ({ subscriptionId }: WfoSubscriptionProps) => {
                 (isLoading && <WfoLoading />) ||
                 (subscriptionDetail && subscriptionDetail.subscriptionId && (
                     <>
-                        <EuiFlexGroup
-                            style={{ marginBottom: 10 }}
-                            justifyContent="spaceBetween"
-                        >
-                            <EuiFlexItem grow={true}>
+                        <WfoContentHeader
+                            title={
                                 <WfoTitleWithWebsocketBadge
                                     title={subscriptionDetail.description}
                                 />
-                                <EuiSpacer size="xs" />
-                                <EuiBadgeGroup
-                                    css={{ marginRight: multiplyByBaseUnit(1) }}
-                                >
-                                    <EuiFlexItem grow={false}>
-                                        <WfoSubscriptionStatusBadge
-                                            status={subscriptionDetail.status}
-                                        />
-                                    </EuiFlexItem>
-                                    <EuiFlexItem grow={false}>
-                                        <WfoSubscriptionSyncStatusBadge
-                                            insync={subscriptionDetail.insync}
-                                        />
-                                    </EuiFlexItem>
-                                </EuiBadgeGroup>
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <WfoSubscriptionActions
-                                    subscriptionId={subscriptionId}
-                                />
-                            </EuiFlexItem>
-                        </EuiFlexGroup>
+                            }
+                            subtitle={
+                                <>
+                                    <WfoSubscriptionStatusBadge
+                                        status={subscriptionDetail.status}
+                                    />
+                                    <WfoSubscriptionSyncStatusBadge
+                                        insync={subscriptionDetail.insync}
+                                    />
+                                </>
+                            }
+                        >
+                            <WfoSubscriptionActions
+                                subscriptionId={subscriptionId}
+                            />
+                        </WfoContentHeader>
 
                         <WfoFilterTabs
                             tabs={subscriptionDetailTabs}

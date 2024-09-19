@@ -1,5 +1,9 @@
 import React, { ReactElement } from 'react';
 
+import { useTranslations } from 'next-intl';
+
+import { EuiPageHeader } from '@elastic/eui';
+
 import {
     WfoActiveWorkflowsSummaryCard,
     WfoFailedTasksSummaryCard,
@@ -9,6 +13,7 @@ import {
     WfoProductsSummaryCard,
     WfoSummaryCards,
 } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { PolicyResource } from '@/configuration';
 import { usePolicy, useWfoSession } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
@@ -16,6 +21,8 @@ import { toOptionalArrayEntry } from '@/utils';
 import { useStartPageSummaryCardConfigurationOverride } from './useStartPageSummaryCardConfigurationOverride';
 
 export const WfoStartPage = () => {
+    const t = useTranslations('main');
+
     const { overrideSummaryCards } =
         useStartPageSummaryCardConfigurationOverride();
 
@@ -42,5 +49,14 @@ export const WfoStartPage = () => {
     const summaryCards =
         overrideSummaryCards?.(defaultSummaryCards) || defaultSummaryCards;
 
-    return <WfoSummaryCards>{summaryCards}</WfoSummaryCards>;
+    return (
+        <>
+            <WfoContentHeader
+                title={
+                    <EuiPageHeader pageTitle={`${t('welcome')} ${username}`} />
+                }
+            />
+            <WfoSummaryCards>{summaryCards}</WfoSummaryCards>
+        </>
+    );
 };

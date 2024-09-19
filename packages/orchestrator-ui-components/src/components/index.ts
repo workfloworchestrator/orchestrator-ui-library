@@ -1,4 +1,5 @@
 export * from './WfoBadges';
+export * from './WfoContentHeader';
 export * from './WfoExpandableField';
 export * from './WfoPageTemplate/WfoBreadcrumbs';
 export * from './WfoFilterTabs';
@@ -25,6 +26,7 @@ export * from './WfoError';
 export * from './WfoErrorBoundary';
 export * from './WfoWorkflowSteps';
 export * from './WfoNoResults';
+export * from './WfoRenderElementOrString';
 export * from './WfoStartButton';
 export * from './WfoSubscriptionsList';
 export * from './WfoSummary';
