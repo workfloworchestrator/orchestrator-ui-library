@@ -6,7 +6,6 @@
 
 -   fb2cca8: 1376 Adds inline note edit component
 -   93e1926: 1363 Consistent header spacings on all pages
--   51b1712: Exports startProcess function
 -   72007aa: 1395 Fixes sorting in the related subscriptions table
 -   a8869f5: Adds onlyShowOnHover option to inlineNoteEdit component
 
