@@ -1,3 +1,5 @@
+import { sortBy, toPairs } from 'lodash';
+
 import { GroupedData } from './WfoGroupedTable';
 
 export const groupData = <T>(
@@ -22,14 +24,17 @@ export const groupData = <T>(
     );
 
     if (groupByFunctions.length <= 1) {
-        return groupedData;
+        return sortObjectByProperties(groupedData);
     }
 
-    const entries = Object.entries(groupedData).map(([key, value]) => [
-        key,
-        groupData(value, groupByFunctions.slice(1)),
-    ]);
-    return Object.fromEntries(entries);
+    const entries = Object.entries(groupedData).map(([key, value]) => {
+        return [key, groupData(value, groupByFunctions.slice(1))];
+    });
+    return sortObjectByProperties(Object.fromEntries(entries));
+};
+
+export const sortObjectByProperties = (object: object) => {
+    return Object.fromEntries(sortBy(toPairs(object), ([key]) => key));
 };
 
 export const getTotalNumberOfRows = <T>(groupedData: GroupedData<T>): number =>
