@@ -17,6 +17,9 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     subscriptionId,
     onlyShowOnHover = false,
 }) => {
+    const initialNote = useMemo(() => value || '', [value]);
+    const [note, setNote] = useState<string>(initialNote);
+
     const [startProcess] = useStartProcessMutation();
     const triggerNoteModifyWorkflow = () => {
         const noteModifyPayload = [
@@ -28,9 +31,6 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
             userInputs: noteModifyPayload,
         });
     };
-
-    const initialNote = useMemo(() => value || '', [value]);
-    const [note, setNote] = useState<string>(initialNote);
 
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
