@@ -9,11 +9,13 @@ import type { Subscription } from '@/types';
 interface WfoInlineNoteEditProps {
     value: Subscription['note'];
     subscriptionId?: Subscription['subscriptionId'];
+    onlyShowOnHover?: boolean;
 }
 
 export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     value,
     subscriptionId,
+    onlyShowOnHover = false,
 }) => {
     const [startProcess] = useStartProcessMutation();
     const triggerNoteModifyWorkflow = () => {
@@ -37,33 +39,67 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     }, [initialNote]);
 
     return (
-        <EuiInlineEditText
-            inputAriaLabel="Edit note"
-            value={note}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setNote(e.target.value);
-            }}
-            onCancel={() => setNote(initialNote)}
-            onSave={() => triggerNoteModifyWorkflow()}
-            size={'s'}
+        <div
             css={{
                 width: '100%',
-                '.euiFlexItem': { justifyContent: 'center' },
-            }}
-            editModeProps={{
-                formRowProps: {
-                    fullWidth: true,
-                    display: 'center',
-                },
-                saveButtonProps: {
-                    color: 'primary',
-                    size: 'xs',
-                },
-                cancelButtonProps: {
-                    color: 'danger',
-                    size: 'xs',
+                ':hover': {
+                    '.euiIcon': {
+                        visibility: 'visible',
+                    },
                 },
             }}
-        />
+        >
+            <EuiInlineEditText
+                inputAriaLabel="Edit note"
+                value={note}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setNote(e.target.value);
+                }}
+                onCancel={() => setNote(initialNote)}
+                onSave={() => triggerNoteModifyWorkflow()}
+                size={'s'}
+                css={{
+                    '.euiFlexItem:nth-of-type(2)': { justifyContent: 'center' },
+                }}
+                readModeProps={{
+                    css: {
+                        '.euiIcon': {
+                            visibility: onlyShowOnHover ? 'hidden' : 'visible',
+                        },
+                    },
+                }}
+                editModeProps={{
+                    saveButtonProps: {
+                        color: 'primary',
+                        size: 'xs',
+                    },
+                    cancelButtonProps: {
+                        color: 'danger',
+                        size: 'xs',
+                    },
+                    inputProps: {
+                        css: {
+                            height: '32px',
+                            paddingLeft: '4px',
+                            margin: '0',
+                            width: '98%',
+                        },
+                    },
+                    formRowProps: {
+                        css: {
+                            padding: 0,
+                            margin: 0,
+                            height: '32px',
+                            '.euiFormRow__fieldWrapper': {
+                                minHeight: '32px',
+                                height: '32px',
+                                padding: 0,
+                                margin: 0,
+                            },
+                        },
+                    },
+                }}
+            />
+        </div>
     );
 };
