@@ -64,7 +64,7 @@ export const handlePromiseErrorWithCallback = <T>(
 };
 
 export const handleGraphqlMetaErrors = (meta: WfoGraphqlErrorsMeta) => {
-    if (meta.errors && meta.errors.length > 0) {
+    if (meta?.errors && meta.errors.length > 0) {
         throw meta.errors[0];
     }
 };

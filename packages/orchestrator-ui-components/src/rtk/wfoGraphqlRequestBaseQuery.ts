@@ -47,37 +47,34 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
                 extra,
             });
 
-            const { data, errors } = await client.rawRequest(
+            const { data } = await client.rawRequest(
                 document,
                 variables,
                 preparedHeaders,
             );
 
-            if (errors?.length && authActive) {
-                errors.map((error: GraphQLError) => {
-                    if (error.extensions?.error_type === 'not_authenticated') {
-                        signOut();
-                    }
-                });
-            }
-
-            if (!data && errors) {
-                return {
-                    data: null,
-                    errors,
-                    meta: { errors: [] },
-                };
-            }
-
             return {
                 data,
-                meta: { errors },
             };
         } catch (error) {
             if (error instanceof ClientError) {
                 const { request, response } = error;
+                const errors = response.errors;
+
+                if (
+                    authActive &&
+                    errors?.some(
+                        (error: GraphQLError) =>
+                            error.extensions?.error_type ===
+                            'not_authenticated',
+                    )
+                ) {
+                    signOut();
+                }
+
                 const customErrors =
                     options.customErrors ?? ((error) => error.response.errors);
+
                 const customizedErrors = customErrors(error) as E;
                 return { error: customizedErrors, meta: { request, response } };
             }
