@@ -30,10 +30,18 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
                 >
                     {title}
                 </WfoRenderElementOrString>
+                {subtitle && (
+                    <div>
+                        <EuiSpacer size="m" />
+                        <WfoRenderElementOrString>
+                            {subtitle}
+                        </WfoRenderElementOrString>
+                    </div>
+                )}
             </EuiFlexItem>
 
             {children && (
-                <EuiFlexItem>
+                <EuiFlexItem grow={0}>
                     <EuiFlexGroup justifyContent="flexEnd">
                         <WfoRenderElementOrString>
                             {children}
@@ -42,13 +50,6 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
                 </EuiFlexItem>
             )}
         </EuiFlexGroup>
-
-        {subtitle && (
-            <>
-                <EuiSpacer size="m" />
-                <WfoRenderElementOrString>{subtitle}</WfoRenderElementOrString>
-            </>
-        )}
 
         <EuiSpacer size="l" />
     </>
