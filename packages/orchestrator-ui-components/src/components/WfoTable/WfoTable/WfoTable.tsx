@@ -46,6 +46,7 @@ export type WfoTableDataColumnConfigItem<
     isSortable?: boolean;
     isFilterable?: boolean;
     renderData?: (cellValue: T[Property], row: T) => ReactNode;
+    renderTooltip?: (cellValue: T[Property], row: T) => ReactNode;
 };
 
 export type WfoTableControlColumnConfigItem<T extends object> =

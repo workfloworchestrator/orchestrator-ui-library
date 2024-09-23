@@ -133,6 +133,11 @@ export const WfoResourceTypesPage = () => {
                     ))}
                 </EuiBadgeGroup>
             ),
+            renderTooltip: (productBlocks) => {
+                return productBlocks.map((productBlock) => (
+                    <p key={productBlock.name}>{productBlock.name}</p>
+                ));
+            },
         },
     };
 
