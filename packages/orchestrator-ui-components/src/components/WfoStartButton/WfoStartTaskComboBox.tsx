@@ -18,14 +18,14 @@ export const WfoStartTaskButtonComboBox = () => {
     const { data } = useGetTaskOptionsQuery();
     const taskOptions = data?.startOptions || [];
 
-    const comboBoxOptions: StartComboBoxOption[] = taskOptions.map(
-        (option) => ({
+    const comboBoxOptions: StartComboBoxOption[] = [...taskOptions]
+        .map((option) => ({
             data: {
                 workflowName: option.name,
             },
-            label: option.description || '',
-        }),
-    );
+            label: option.description ?? option.name,
+        }))
+        .sort((taskA, taskB) => taskA.label.localeCompare(taskB.label));
 
     const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
         if (await isEngineRunningNow()) {
