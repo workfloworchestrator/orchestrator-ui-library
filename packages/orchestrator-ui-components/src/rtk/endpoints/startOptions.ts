@@ -53,9 +53,7 @@ export type StartOptionsResponse<StartOption> = {
     startOptions: StartOption[];
 };
 
-type TaskOption = Pick<WorkflowDefinition, 'name'> & {
-    description: string;
-};
+type TaskOption = Pick<WorkflowDefinition, 'name' | 'description'>;
 type TaskOptionsResult = StartOptionsResult<TaskOption>;
 
 const startButtonOptionsApi = orchestratorApi.injectEndpoints({
