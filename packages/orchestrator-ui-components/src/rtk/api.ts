@@ -63,8 +63,11 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
-export const handleGraphqlMetaErrors = (meta: WfoGraphqlErrorsMeta) => {
-    if (meta?.errors && meta.errors.length > 0) {
+export const handleGraphqlMetaErrors = (
+    meta: WfoGraphqlErrorsMeta,
+    responseHasValidData: boolean,
+) => {
+    if (!responseHasValidData && meta.errors && meta.errors.length > 0) {
         throw meta.errors[0];
     }
 };
