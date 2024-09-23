@@ -47,7 +47,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
                 extra,
             });
 
-            const { data } = await client.rawRequest(
+            const { data, errors } = await client.rawRequest(
                 document,
                 variables,
                 preparedHeaders,
@@ -55,6 +55,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
             return {
                 data,
+                meta: { errors },
             };
         } catch (error) {
             if (error instanceof ClientError) {

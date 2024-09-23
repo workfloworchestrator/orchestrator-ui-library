@@ -4,6 +4,8 @@ import type { UseSessionOptions } from 'next-auth/react';
 
 export type WfoSession = Session & {
     accessToken?: string;
+    accessTokenExpiresAt?: number;
+    refreshTokenExpiresAt?: number;
     profile?: WfoUserProfile;
 };
 
