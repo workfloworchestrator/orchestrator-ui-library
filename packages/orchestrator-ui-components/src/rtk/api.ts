@@ -63,11 +63,13 @@ export const handlePromiseErrorWithCallback = <T>(
     });
 };
 
+// There are cases where a GraphQL endpoint return both data and errors
+// Only throwing the error when the data is not there or invalid
 export const handleGraphqlMetaErrors = (
     meta: WfoGraphqlErrorsMeta,
-    responseHasValidData: boolean,
+    responseHasInvalidData?: boolean,
 ) => {
-    if (!responseHasValidData && meta.errors && meta.errors.length > 0) {
+    if (responseHasInvalidData && meta.errors && meta.errors.length > 0) {
         throw meta.errors[0];
     }
 };
