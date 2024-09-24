@@ -35,6 +35,11 @@ export const useGroupedTableConfig = <T extends object>({
     // Expanding all children needs another render cycle, because they do not exist in the DOM yet
     const [isExpanding, setIsExpanding] = useState(false);
 
+    const groups: GroupType[] = getObjectKeys(data).map((key) => ({
+        groupName: key.toString(),
+    }));
+    const numberOfColumnsInnerTable = Object.keys(columnConfig).length;
+
     useEffect(() => {
         if (isExpanding) {
             groupReferences.current.forEach((ref) => {
@@ -53,12 +58,7 @@ export const useGroupedTableConfig = <T extends object>({
                     ),
             );
         }
-    }, [isAllSubgroupsExpanded, isAllGroupsExpanded]);
-
-    const groups: GroupType[] = getObjectKeys(data).map((key) => ({
-        groupName: key.toString(),
-    }));
-    const numberOfColumnsInnerTable = Object.keys(columnConfig).length;
+    }, [isAllSubgroupsExpanded, isAllGroupsExpanded, notifyParent, groups]);
 
     const groupColumnConfig: WfoTableColumnConfig<GroupType> = {
         groupName: {
