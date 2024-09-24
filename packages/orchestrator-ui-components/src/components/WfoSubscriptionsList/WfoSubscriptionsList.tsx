@@ -82,6 +82,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 label: t('id'),
                 renderData: (value) => <WfoFirstPartUUID UUID={value} />,
                 renderDetails: (value) => value,
+                renderTooltip: (value) => value,
             },
             description: {
                 columnType: ColumnType.DATA,
@@ -118,6 +119,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 columnType: ColumnType.DATA,
                 label: t('customerFullname'),
                 width: '150px',
+                renderTooltip: (value) => value,
             },
             customerShortcode: {
                 columnType: ColumnType.DATA,
@@ -130,6 +132,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
                 renderDetails: parseDateToLocaleDateTimeString,
                 clipboardText: parseDateToLocaleDateTimeString,
+                renderTooltip: (cellValue) => cellValue?.toString(),
             },
             endDate: {
                 columnType: ColumnType.DATA,
@@ -137,11 +140,13 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
                 renderDetails: parseDateToLocaleDateTimeString,
                 clipboardText: parseDateToLocaleDateTimeString,
+                renderTooltip: (cellValue) => cellValue?.toString(),
             },
             note: {
                 columnType: ColumnType.DATA,
                 label: t('note'),
                 width: '100px',
+                renderTooltip: (value) => value,
             },
             metadata: {
                 columnType: ColumnType.DATA,

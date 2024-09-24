@@ -101,6 +101,7 @@ export const WfoRelatedSubscriptions = ({
             columnType: ColumnType.DATA,
             label: t('id'),
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+            renderTooltip: (value) => value,
         },
         description: {
             columnType: ColumnType.DATA,
@@ -129,6 +130,7 @@ export const WfoRelatedSubscriptions = ({
         customerFullname: {
             columnType: ColumnType.DATA,
             label: t('customer'),
+            renderTooltip: (value) => value,
         },
         tag: {
             columnType: ColumnType.DATA,
@@ -139,6 +141,7 @@ export const WfoRelatedSubscriptions = ({
             columnType: ColumnType.DATA,
             label: t('startDate'),
             renderData: parseDateToLocaleDateString,
+            renderTooltip: parseDateToLocaleDateString,
         },
     };
 

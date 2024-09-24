@@ -95,6 +95,7 @@ export const WfoProductsPage = () => {
             width: '90',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
+            renderTooltip: (value) => value,
         },
         name: {
             columnType: ColumnType.DATA,
@@ -120,6 +121,7 @@ export const WfoProductsPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '400',
+            renderTooltip: (value) => value,
         },
         productType: {
             columnType: ColumnType.DATA,
@@ -146,6 +148,13 @@ export const WfoProductsPage = () => {
                     ))}
                 </>
             ),
+            renderTooltip: (fixedInputs) => {
+                return fixedInputs.map((fixedInput) => (
+                    <p key={fixedInput.name}>
+                        - {`${fixedInput.name}: ${fixedInput.value}`}
+                    </p>
+                ));
+            },
         },
         productBlocks: {
             columnType: ColumnType.DATA,
@@ -162,6 +171,11 @@ export const WfoProductsPage = () => {
                     ))}
                 </>
             ),
+            renderTooltip: (productBlocks) => {
+                return productBlocks.map((productBlock) => (
+                    <p key={productBlock.name}>- {productBlock.name}</p>
+                ));
+            },
         },
         createdAt: {
             columnType: ColumnType.DATA,
@@ -169,6 +183,7 @@ export const WfoProductsPage = () => {
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
+            renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

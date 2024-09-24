@@ -2,20 +2,23 @@ import React, { ReactNode } from 'react';
 
 import { EuiToolTip } from '@elastic/eui';
 
+import { useOrchestratorTheme } from '@/hooks';
+
 interface WfoDataCellProps {
-    showTooltip: boolean;
     content: ReactNode;
     children: ReactNode;
 }
 
-export const WfoDataCell = ({
-    showTooltip,
-    content,
-    children,
-}: WfoDataCellProps) => {
-    return showTooltip ? (
-        <EuiToolTip delay="long" content={content}>
-            <>{children}</>
+export const WfoDataCell = ({ content, children }: WfoDataCellProps) => {
+    const { theme } = useOrchestratorTheme();
+    return content ? (
+        <EuiToolTip
+            delay="long"
+            content={content}
+            css={{ minWidth: theme.base * 20 }}
+            repositionOnScroll
+        >
+            <div css={{ width: '100%' }}>{children}</div>
         </EuiToolTip>
     ) : (
         <>{children}</>

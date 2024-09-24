@@ -110,6 +110,7 @@ export const WfoTasksPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '40%',
+            renderTooltip: (value) => value,
         },
         target: {
             columnType: ColumnType.DATA,
@@ -148,6 +149,14 @@ export const WfoTasksPage = () => {
                         ))}
                 </EuiBadgeGroup>
             ),
+            renderTooltip: (productTags) => {
+                return productTags
+                    ?.filter(onlyUnique)
+                    .sort((tagA, tagB) => tagA.localeCompare(tagB))
+                    .map((productTag) => (
+                        <p key={productTag}>- {productTag}</p>
+                    ));
+            },
         },
         createdAt: {
             columnType: ColumnType.DATA,
@@ -156,6 +165,7 @@ export const WfoTasksPage = () => {
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
+            renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

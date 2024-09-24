@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 
-import {
-    getDate,
-    parseDateOrTimeRelativeToToday,
-    parseDateToLocaleDateTimeString,
-} from '@/utils';
+import { getDate, parseDateOrTimeRelativeToToday } from '@/utils';
 
 export type WfoDateTimeProps = {
     dateOrIsoString: Date | string | null;
@@ -13,9 +9,5 @@ export type WfoDateTimeProps = {
 export const WfoDateTime: FC<WfoDateTimeProps> = ({ dateOrIsoString }) => {
     const date = getDate(dateOrIsoString);
 
-    return (
-        <span title={parseDateToLocaleDateTimeString(date)}>
-            {parseDateOrTimeRelativeToToday(date)}
-        </span>
-    );
+    return <span>{parseDateOrTimeRelativeToToday(date)}</span>;
 };

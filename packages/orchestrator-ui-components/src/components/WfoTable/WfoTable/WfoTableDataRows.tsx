@@ -93,9 +93,6 @@ export const WfoTableDataRows = <T extends object>({
                                 >
                                     <div>
                                         <WfoDataCell
-                                            showTooltip={
-                                                !!columnConfig.renderTooltip
-                                            }
                                             content={columnConfig.renderTooltip?.(
                                                 result,
                                                 row,

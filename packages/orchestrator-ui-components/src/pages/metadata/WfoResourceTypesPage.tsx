@@ -91,6 +91,7 @@ export const WfoResourceTypesPage = () => {
             width: '90',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
+            renderTooltip: (value) => value,
         },
         resourceType: {
             columnType: ColumnType.DATA,
@@ -135,7 +136,7 @@ export const WfoResourceTypesPage = () => {
             ),
             renderTooltip: (productBlocks) => {
                 return productBlocks.map((productBlock) => (
-                    <p key={productBlock.name}>{productBlock.name}</p>
+                    <p key={productBlock.name}>- {productBlock.name}</p>
                 ));
             },
         },
