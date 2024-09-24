@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.1.1
+
+### Patch Changes
+
+-   648badb: 1423 Handles not_authenticated errors from graphql endpoints. Adds accessTokenExpiresAt and refreshTokenExpiresAt to WfoSession
+-   f5138d3: 1406 Added sorting for new tasks and workflow dropdowns
+-   223888a: 1363 - Making the title use all space available. Moves the subtitle around to show above the children (action buttons) on small screens
+
 ## 2.1.0
 
 ### Minor Changes
