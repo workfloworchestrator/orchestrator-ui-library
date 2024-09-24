@@ -5,16 +5,16 @@ import { EuiToolTip } from '@elastic/eui';
 import { useOrchestratorTheme } from '@/hooks';
 
 interface WfoDataCellProps {
-    content: ReactNode;
+    tooltipContent: ReactNode;
     children: ReactNode;
 }
 
-export const WfoDataCell = ({ content, children }: WfoDataCellProps) => {
+export const WfoDataCell = ({ tooltipContent, children }: WfoDataCellProps) => {
     const { theme } = useOrchestratorTheme();
-    return content ? (
+    return tooltipContent ? (
         <EuiToolTip
             delay="long"
-            content={content}
+            content={tooltipContent}
             css={{ minWidth: theme.base * 20 }}
             repositionOnScroll
         >

@@ -93,7 +93,7 @@ export const WfoTableDataRows = <T extends object>({
                                 >
                                     <div>
                                         <WfoDataCell
-                                            content={columnConfig.renderTooltip?.(
+                                            tooltipContent={columnConfig.renderTooltip?.(
                                                 result,
                                                 row,
                                             )}
