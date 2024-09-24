@@ -1,27 +1,23 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode } from 'react';
 
 import { EuiToolTip } from '@elastic/eui';
 
-type RenderCellComponentProps = {
+interface WfoDataCellProps {
     showTooltip: boolean;
     content: ReactNode;
     children: ReactNode;
-};
+}
 
-const WfoDataCell = ({
+export const WfoDataCell = ({
     showTooltip,
     content,
     children,
-}: RenderCellComponentProps): React.ReactElement => {
-    if (showTooltip) {
-        return (
-            <EuiToolTip delay="long" content={content}>
-                <>{children}</>
-            </EuiToolTip>
-        );
-    } else {
-        return <>{children}</>;
-    }
+}: WfoDataCellProps) => {
+    return showTooltip ? (
+        <EuiToolTip delay="long" content={content}>
+            <>{children}</>
+        </EuiToolTip>
+    ) : (
+        <>{children}</>
+    );
 };
-
-export default memo(WfoDataCell);

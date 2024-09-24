@@ -12,3 +12,4 @@ export * from './WfoTable';
 export * from './WfoTableHeaderCell';
 
 export * from './WfoTruncateCell';
+export * from './WfoDataCell';

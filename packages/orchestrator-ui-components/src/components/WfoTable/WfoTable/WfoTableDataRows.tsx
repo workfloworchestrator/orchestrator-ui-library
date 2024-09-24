@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import WfoDataCell from '@/components/WfoTable/WfoTable/WfoDataCell';
+import { WfoDataCell } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
 
