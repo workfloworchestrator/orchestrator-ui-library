@@ -24,16 +24,16 @@ export const groupData = <T>(
     );
 
     if (groupByFunctions.length <= 1) {
-        return sortObjectByProperties(groupedData);
+        return toObjectWithSortedProperties(groupedData);
     }
 
     const entries = Object.entries(groupedData).map(([key, value]) => {
         return [key, groupData(value, groupByFunctions.slice(1))];
     });
-    return sortObjectByProperties(Object.fromEntries(entries));
+    return toObjectWithSortedProperties(Object.fromEntries(entries));
 };
 
-export const sortObjectByProperties = (object: object) => {
+export const toObjectWithSortedProperties = (object: object) => {
     return Object.fromEntries(sortBy(toPairs(object), ([key]) => key));
 };
 
