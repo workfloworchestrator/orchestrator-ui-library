@@ -4,7 +4,7 @@ import { WfoIconProps } from '@/icons/WfoIconProps';
 
 import { withWfoHeroIconsWrapper } from './WfoHeroIconsWrapper';
 
-export const WfoArrowsUpDownSvg: FC<WfoIconProps> = ({
+const WfoArrowsUpDownSvg: FC<WfoIconProps> = ({
     width = 20,
     height = 20,
     color = '#000000',

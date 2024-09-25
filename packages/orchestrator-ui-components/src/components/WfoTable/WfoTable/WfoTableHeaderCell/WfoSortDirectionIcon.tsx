@@ -4,6 +4,8 @@ import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowNarrowDown, WfoArrowNarrowUp, WfoArrowsUpDown } from '@/icons';
 import { SortOrder } from '@/types';
 
+export const SORTABLE_ICON_CLASS = 'sortableIcon';
+
 export type WfoSortDirectionIconProps = {
     sortDirection?: SortOrder;
 };
@@ -16,7 +18,7 @@ export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
     if (!sortDirection) {
         return (
             <WfoArrowsUpDown
-                className="sortableIcon"
+                className={SORTABLE_ICON_CLASS}
                 css={{ visibility: 'hidden' }}
                 color={theme.colors.subduedText}
             />

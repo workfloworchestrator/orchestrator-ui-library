@@ -63,11 +63,12 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         closePopover();
     };
 
+    // Todo: Some styling is not needed anymore
     const WfoHeaderCellContentButton = () => (
         <button onClick={handleButtonClick} disabled={!shouldShowPopover}>
             <div css={getHeaderCellButtonStyle(shouldShowPopover)}>
                 <div css={headerCellContentStyle}>{children}</div>
-                <WfoSortDirectionIcon sortDirection={sortOrder} />
+                {/*<WfoSortDirectionIcon sortDirection={sortOrder} />*/}
             </div>
         </button>
     );
@@ -98,22 +99,45 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     );
 
     return (
-        <EuiPopover
-            initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
-            id={smallContextMenuPopoverId}
-            button={<WfoHeaderCellContentButton />}
-            isOpen={isPopoverOpen}
-            closePopover={closePopover}
-            panelPaddingSize="none"
-            anchorPosition="downLeft"
+        <div
+            css={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+            }}
         >
-            <WfoPopoverHeader />
-            {isFilterable && (
-                <>
-                    <EuiHorizontalRule margin="none" />
-                    <WfoPopoverContent />
-                </>
+            <EuiPopover
+                initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
+                id={smallContextMenuPopoverId}
+                button={<WfoHeaderCellContentButton />}
+                isOpen={isPopoverOpen}
+                closePopover={closePopover}
+                panelPaddingSize="none"
+                anchorPosition="downLeft"
+            >
+                <WfoPopoverHeader />
+                {isFilterable && (
+                    <>
+                        <EuiHorizontalRule margin="none" />
+                        <WfoPopoverContent />
+                    </>
+                )}
+            </EuiPopover>
+
+            {/* Todo sort icon is not properly aligned */}
+            {isSortable && (
+                <button
+                    onClick={() =>
+                        onSetSortOrder(
+                            sortOrder === SortOrder.ASC
+                                ? SortOrder.DESC
+                                : SortOrder.ASC,
+                        )
+                    }
+                >
+                    <WfoSortDirectionIcon sortDirection={sortOrder} />
+                </button>
             )}
-        </EuiPopover>
+        </div>
     );
 };
