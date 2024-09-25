@@ -67,9 +67,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         <button onClick={handleButtonClick} disabled={!shouldShowPopover}>
             <div css={getHeaderCellButtonStyle(shouldShowPopover)}>
                 <div css={headerCellContentStyle}>{children}</div>
-                {sortOrder && (
-                    <WfoSortDirectionIcon sortDirection={sortOrder} />
-                )}
+                <WfoSortDirectionIcon sortDirection={sortOrder} />
             </div>
         </button>
     );

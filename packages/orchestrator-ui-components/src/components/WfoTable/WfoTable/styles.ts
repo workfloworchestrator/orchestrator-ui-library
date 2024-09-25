@@ -77,6 +77,12 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
+    const headerCellStyle = css({
+        '&:hover .sortableIcon': {
+            visibility: 'visible',
+        },
+    });
+
     const cellStyle = css({
         paddingLeft: theme.size.m,
         paddingRight: theme.size.m,
@@ -109,6 +115,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         rowStyle,
         dataRowStyle,
         expandedRowStyle,
+        headerCellStyle,
         cellStyle,
         emptyTableMessageStyle,
         clickableStyle,

@@ -1,17 +1,33 @@
 import React, { FC } from 'react';
 
 import { useOrchestratorTheme } from '@/hooks';
-import { WfoArrowNarrowDown, WfoArrowNarrowUp } from '@/icons';
+import {
+    WfoArrowNarrowDown,
+    WfoArrowNarrowUp,
+    WfoArrowsUpDown,
+    WfoHeroIconsWrapper,
+} from '@/icons';
 import { SortOrder } from '@/types';
 
 export type WfoSortDirectionIconProps = {
-    sortDirection: SortOrder;
+    sortDirection?: SortOrder;
 };
 
 export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
     sortDirection,
 }) => {
     const { theme } = useOrchestratorTheme();
+
+    if (!sortDirection) {
+        return (
+            <WfoHeroIconsWrapper
+                className="sortableIcon"
+                css={{ visibility: 'hidden' }}
+            >
+                <WfoArrowsUpDown color={theme.colors.subduedText} />
+            </WfoHeroIconsWrapper>
+        );
+    }
 
     return sortDirection === SortOrder.ASC ? (
         <WfoArrowNarrowUp
