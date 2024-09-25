@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 
 import { WfoIconProps } from '@/icons/WfoIconProps';
 
-export const WfoArrowsUpDown: FC<WfoIconProps> = ({
+import { withWfoHeroIconsWrapper } from './WfoHeroIconsWrapper';
+
+export const WfoArrowsUpDownSvg: FC<WfoIconProps> = ({
     width = 20,
     height = 20,
     color = '#000000',
@@ -21,3 +23,5 @@ export const WfoArrowsUpDown: FC<WfoIconProps> = ({
         />
     </svg>
 );
+
+export const WfoArrowsUpDown = withWfoHeroIconsWrapper(WfoArrowsUpDownSvg);
