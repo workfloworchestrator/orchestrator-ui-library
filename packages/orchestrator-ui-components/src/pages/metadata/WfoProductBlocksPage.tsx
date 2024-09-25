@@ -176,7 +176,7 @@ export const WfoProductBlocksPage = () => {
             renderTooltip: (resourceTypes) => {
                 return resourceTypes.map((resourceType) => (
                     <p key={resourceType.resourceType}>
-                        - {resourceType.description}
+                        - {resourceType.resourceType}
                     </p>
                 ));
             },
