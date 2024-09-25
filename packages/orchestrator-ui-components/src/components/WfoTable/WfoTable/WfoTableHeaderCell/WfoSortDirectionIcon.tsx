@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
 
 import { useOrchestratorTheme } from '@/hooks';
-import {
-    WfoArrowNarrowDown,
-    WfoArrowNarrowUp,
-    WfoArrowsUpDown,
-    WfoHeroIconsWrapper,
-} from '@/icons';
+import { WfoArrowNarrowDown, WfoArrowNarrowUp, WfoArrowsUpDown } from '@/icons';
 import { SortOrder } from '@/types';
 
 export type WfoSortDirectionIconProps = {
@@ -20,12 +15,11 @@ export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
 
     if (!sortDirection) {
         return (
-            <WfoHeroIconsWrapper
+            <WfoArrowsUpDown
                 className="sortableIcon"
                 css={{ visibility: 'hidden' }}
-            >
-                <WfoArrowsUpDown color={theme.colors.subduedText} />
-            </WfoHeroIconsWrapper>
+                color={theme.colors.subduedText}
+            />
         );
     }
 
