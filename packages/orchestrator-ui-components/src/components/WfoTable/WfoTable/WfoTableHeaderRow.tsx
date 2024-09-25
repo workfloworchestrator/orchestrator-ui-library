@@ -28,7 +28,7 @@ export const WfoTableHeaderRow = <T extends object>({
     onUpdateDataSearch,
     className,
 }: WfoTableHeaderRowProps<T>) => {
-    const { cellStyle, rowStyle, setWidth } =
+    const { cellStyle, headerCellStyle, rowStyle, setWidth } =
         useWithOrchestratorTheme(getWfoTableStyles);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
@@ -54,6 +54,10 @@ export const WfoTableHeaderRow = <T extends object>({
                                     ...toOptionalArrayEntry(
                                         cellStyle,
                                         !columnConfig.disableDefaultCellStyle,
+                                    ),
+                                    ...toOptionalArrayEntry(
+                                        headerCellStyle,
+                                        !!columnConfig.isSortable,
                                     ),
                                     setWidth(columnConfig.width),
                                 ]}

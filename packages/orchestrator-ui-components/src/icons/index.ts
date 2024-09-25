@@ -1,3 +1,5 @@
+export * from './heroicons';
+
 export * from './WfoXCircleFill';
 export * from './WfoArrowsExpand';
 export * from './WfoStatusDotIcon';
