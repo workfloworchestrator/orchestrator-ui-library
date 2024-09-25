@@ -2,7 +2,7 @@ import { GroupedData } from './WfoGroupedTable';
 import {
     getTotalNumberOfRows,
     groupData,
-    sortObjectByProperties,
+    toObjectWithSortedProperties,
 } from './utils';
 
 type TestObject = {
@@ -99,7 +99,7 @@ describe('WfoGroupedTable - utils', () => {
         };
 
         // When
-        const sortedObject = sortObjectByProperties(testObject);
+        const sortedObject = toObjectWithSortedProperties(testObject);
 
         // Then
         it('sorts the object by properties', () => {
