@@ -1,26 +1,31 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { EuiToolTip } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
-
 interface WfoDataCellProps {
-    tooltipContent: ReactNode;
+    customTooltip: ReactNode;
     children: ReactNode;
 }
 
-export const WfoDataCell = ({ tooltipContent, children }: WfoDataCellProps) => {
-    const { theme } = useOrchestratorTheme();
-    return tooltipContent ? (
-        <EuiToolTip
-            delay="long"
-            content={tooltipContent}
-            css={{ minWidth: theme.base * 20 }}
-            repositionOnScroll
-        >
-            <div css={{ width: '100%' }}>{children}</div>
-        </EuiToolTip>
-    ) : (
-        <>{children}</>
-    );
+export const WfoDataCell: FC<WfoDataCellProps> = ({
+    customTooltip,
+    children,
+}) => {
+    const tooltipContent =
+        customTooltip || (typeof children === 'string' ? children : <></>);
+
+    if (tooltipContent) {
+        return (
+            <EuiToolTip
+                position="bottom"
+                delay="long"
+                content={tooltipContent}
+                css={{ maxWidth: 'fit-content' }}
+                repositionOnScroll
+            >
+                <>{children}</>
+            </EuiToolTip>
+        );
+    }
+    return <>{children}</>;
 };

@@ -110,7 +110,6 @@ export const WfoTasksPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '40%',
-            renderTooltip: (value) => value,
         },
         target: {
             columnType: ColumnType.DATA,

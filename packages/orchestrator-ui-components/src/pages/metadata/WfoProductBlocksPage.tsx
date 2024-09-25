@@ -117,7 +117,6 @@ export const WfoProductBlocksPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '400px',
-            renderTooltip: (value) => value,
         },
         status: {
             columnType: ColumnType.DATA,

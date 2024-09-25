@@ -119,7 +119,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 columnType: ColumnType.DATA,
                 label: t('customerFullname'),
                 width: '150px',
-                renderTooltip: (value) => value,
             },
             customerShortcode: {
                 columnType: ColumnType.DATA,
@@ -146,7 +145,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 columnType: ColumnType.DATA,
                 label: t('note'),
                 width: '100px',
-                renderTooltip: (value) => value,
             },
             metadata: {
                 columnType: ColumnType.DATA,
