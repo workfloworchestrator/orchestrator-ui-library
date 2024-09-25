@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { TABLE_ROW_HEIGHT } from '@/components/WfoTable';
+import { SORTABLE_ICON_CLASS, TABLE_ROW_HEIGHT } from '@/components/WfoTable';
 import { WfoTheme } from '@/hooks';
 
 export const getWfoTableStyles = ({ theme }: WfoTheme) => {
@@ -78,7 +78,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const headerCellStyle = css({
-        '&:hover .sortableIcon': {
+        [`&:hover .${SORTABLE_ICON_CLASS}`]: {
             visibility: 'visible',
         },
     });
