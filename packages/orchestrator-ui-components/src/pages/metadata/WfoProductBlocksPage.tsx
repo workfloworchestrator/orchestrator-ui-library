@@ -98,6 +98,7 @@ export const WfoProductBlocksPage = () => {
             width: '90',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
+            renderTooltip: (value) => value,
         },
         name: {
             columnType: ColumnType.DATA,
@@ -138,6 +139,11 @@ export const WfoProductBlocksPage = () => {
                     ))}
                 </>
             ),
+            renderTooltip: (productBlocks) => {
+                return productBlocks.map((productBlock) => (
+                    <p key={productBlock.name}>- {productBlock.name}</p>
+                ));
+            },
         },
         resourceTypes: {
             columnType: ColumnType.DATA,
@@ -166,6 +172,13 @@ export const WfoProductBlocksPage = () => {
                     ))}
                 </EuiBadgeGroup>
             ),
+            renderTooltip: (resourceTypes) => {
+                return resourceTypes.map((resourceType) => (
+                    <p key={resourceType.resourceType}>
+                        - {resourceType.resourceType}
+                    </p>
+                ));
+            },
         },
         createdAt: {
             columnType: ColumnType.DATA,
@@ -173,6 +186,7 @@ export const WfoProductBlocksPage = () => {
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
+            renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
         },
         endDate: {
             columnType: ColumnType.DATA,
@@ -180,6 +194,7 @@ export const WfoProductBlocksPage = () => {
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
+            renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
         },
     };
 

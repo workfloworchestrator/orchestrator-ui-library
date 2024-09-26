@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 
+import { WfoDataCell } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
 
@@ -91,10 +92,17 @@ export const WfoTableDataRows = <T extends object>({
                                     ]}
                                 >
                                     <div>
-                                        {columnConfig.renderData?.(
-                                            result,
-                                            row,
-                                        ) ?? result?.toString()}
+                                        <WfoDataCell
+                                            customTooltip={columnConfig.renderTooltip?.(
+                                                result,
+                                                row,
+                                            )}
+                                        >
+                                            {columnConfig.renderData?.(
+                                                result,
+                                                row,
+                                            ) ?? result?.toString()}
+                                        </WfoDataCell>
                                     </div>
                                 </td>
                             );
