@@ -63,7 +63,7 @@ function Bool({
                         disabled={disabled}
                         id={id}
                         name={name}
-                        label={label}
+                        label={label || <div>&nbsp;</div>}
                         onChange={() =>
                             !disabled && !readOnly && onChange(!value)
                         }
