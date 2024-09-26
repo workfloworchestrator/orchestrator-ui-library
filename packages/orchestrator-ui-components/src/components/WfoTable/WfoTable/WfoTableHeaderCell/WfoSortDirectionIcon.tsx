@@ -4,7 +4,7 @@ import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowNarrowDown, WfoArrowNarrowUp, WfoArrowsUpDown } from '@/icons';
 import { SortOrder } from '@/types';
 
-export const SORTABLE_ICON_CLASS = 'sortableIcon';
+import { SORTABLE_ICON_CLASS } from './styles';
 
 export type WfoSortDirectionIconProps = {
     sortDirection?: SortOrder;

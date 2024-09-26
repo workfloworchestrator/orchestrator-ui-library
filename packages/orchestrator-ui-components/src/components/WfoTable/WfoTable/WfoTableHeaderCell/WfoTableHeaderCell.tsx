@@ -15,7 +15,11 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
 import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
-import { getWfoBasicTableStyles } from './styles';
+import {
+    HEADER_CELL_SORT_BUTTON,
+    HEADER_CELL_TITLE_BUTTON,
+    getWfoBasicTableStyles,
+} from './styles';
 
 export type WfoTableHeaderCellProps = {
     fieldName: string;
@@ -38,6 +42,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
+        getTitleButtonStyle,
         sortButtonStyle,
     } = useWithOrchestratorTheme(getWfoBasicTableStyles);
     const t = useTranslations('common');
@@ -86,6 +91,8 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     return (
         <div css={headerCellStyle}>
             <EuiPopover
+                className={HEADER_CELL_TITLE_BUTTON}
+                css={getTitleButtonStyle(sortOrder)}
                 initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
                 id={smallContextMenuPopoverId}
                 button={<WfoHeaderCellContentButton />}
@@ -101,6 +108,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
 
             {isSortable && (
                 <button
+                    className={HEADER_CELL_SORT_BUTTON}
                     css={sortButtonStyle}
                     onClick={() =>
                         onSetSortOrder(getUpdatedSortOrder(sortOrder))
