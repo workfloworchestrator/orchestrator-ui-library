@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.2.0
+
+### Minor Changes
+
+-   e228d98: Sorts grouped table groups
+-   d24efe6: 1381 Render mouseover tooltip for the new tables
+
+### Patch Changes
+
+-   60021b1: Fixes checkboxes without labels
+
 ## 2.1.1
 
 ### Patch Changes
