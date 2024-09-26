@@ -10,7 +10,6 @@ import {
     useGeneratedHtmlId,
 } from '@elastic/eui';
 
-import { WfoSortButtons } from '@/components';
 import { getUpdatedSortOrder } from '@/components/WfoTable/WfoTable/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
@@ -45,7 +44,6 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
 
     const isSortable = !!onSetSortOrder;
     const isFilterable = !!onSearch;
-    const shouldShowPopover = isSortable || isFilterable;
 
     const smallContextMenuPopoverId = useGeneratedHtmlId({
         prefix: 'smallContextMenuPopover',
@@ -55,21 +53,14 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     const handleButtonClick = () => setPopover(!isPopoverOpen);
     const closePopover = () => setPopover(false);
 
-    const handleChangeSortOrder = (updatedSortOrder: SortOrder) => {
-        onSetSortOrder?.(updatedSortOrder);
-        closePopover();
-    };
-
     const handleSearch = (searchText: string) => {
         onSearch?.(searchText);
         closePopover();
     };
 
     const WfoHeaderCellContentButton = () => (
-        <button onClick={handleButtonClick} disabled={!shouldShowPopover}>
-            <div css={getHeaderCellContentStyle(shouldShowPopover)}>
-                {children}
-            </div>
+        <button onClick={handleButtonClick} disabled={!isFilterable}>
+            <div css={getHeaderCellContentStyle(isFilterable)}>{children}</div>
         </button>
     );
 
@@ -78,12 +69,6 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
             <EuiText size="xs" css={headerCellPopoverHeaderTitleStyle}>
                 {children}
             </EuiText>
-            {isSortable && (
-                <WfoSortButtons
-                    sortOrder={sortOrder}
-                    onChangeSortOrder={handleChangeSortOrder}
-                />
-            )}
         </div>
     );
 
@@ -110,12 +95,8 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
                 anchorPosition="downLeft"
             >
                 <WfoPopoverHeader />
-                {isFilterable && (
-                    <>
-                        <EuiHorizontalRule margin="none" />
-                        <WfoPopoverContent />
-                    </>
-                )}
+                <EuiHorizontalRule margin="none" />
+                <WfoPopoverContent />
             </EuiPopover>
 
             {isSortable && (
