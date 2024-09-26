@@ -1,7 +1,11 @@
 import { css } from '@emotion/react';
 
-import { SORTABLE_ICON_CLASS } from '@/components';
 import { WfoTheme } from '@/hooks';
+import { SortOrder } from '@/types';
+
+export const HEADER_CELL_TITLE_BUTTON = 'headerCellTitleButton';
+export const HEADER_CELL_SORT_BUTTON = 'headerCellSortButton';
+export const SORTABLE_ICON_CLASS = 'sortableIcon';
 
 export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
     const radius = theme.border.radius.medium;
@@ -77,6 +81,11 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
+
+        [`.${HEADER_CELL_TITLE_BUTTON}:has(+ .${HEADER_CELL_SORT_BUTTON}:focus-visible)`]:
+            {
+                overflow: 'hidden',
+            },
     });
 
     const getHeaderCellContentStyle = (isSortable: boolean) =>
@@ -100,8 +109,15 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         margin: theme.size.m,
     });
 
+    const getTitleButtonStyle = (sortOrder?: SortOrder) =>
+        css({
+            flex: '0 1 auto',
+            overflow: sortOrder === undefined ? 'visible' : 'hidden',
+        });
+
     const sortButtonStyle = css({
         display: 'flex',
+        flex: '0 0 auto',
         alignItems: 'center',
         [`&:focus-visible .${SORTABLE_ICON_CLASS}`]: {
             visibility: 'visible',
@@ -115,6 +131,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
+        getTitleButtonStyle,
         sortButtonStyle,
         getStatusColumnStyle,
         dropDownTableStyle,

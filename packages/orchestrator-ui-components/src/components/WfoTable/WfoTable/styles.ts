@@ -2,8 +2,13 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { SORTABLE_ICON_CLASS, TABLE_ROW_HEIGHT } from '@/components/WfoTable';
 import { WfoTheme } from '@/hooks';
+
+import {
+    HEADER_CELL_TITLE_BUTTON,
+    SORTABLE_ICON_CLASS,
+} from './WfoTableHeaderCell/styles';
+import { TABLE_ROW_HEIGHT } from './constants';
 
 export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     const radius = theme.border.radius.medium;
@@ -78,8 +83,13 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const headerCellStyle = css({
-        [`&:hover .${SORTABLE_ICON_CLASS}`]: {
-            visibility: 'visible',
+        [`&:hover`]: {
+            [`.${SORTABLE_ICON_CLASS}`]: {
+                visibility: 'visible',
+            },
+            [`.${HEADER_CELL_TITLE_BUTTON}`]: {
+                overflow: 'hidden',
+            },
         },
     });
 
