@@ -1,4 +1,5 @@
 import { TableColumnKeys } from '@/components';
+import { SortOrder } from '@/types';
 import { toObjectWithSortedKeys } from '@/utils';
 
 import {
@@ -32,6 +33,9 @@ export const getSortedVisibleColumns = <T extends object>(
         ([columnId]) => !hiddenColumns.includes(columnId as keyof T),
     );
 };
+
+export const getUpdatedSortOrder = (currentSortOrder?: SortOrder) =>
+    currentSortOrder === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC;
 
 /**
  * Maps from WfoTableColumnConfig to WfoTableColumnConfig.

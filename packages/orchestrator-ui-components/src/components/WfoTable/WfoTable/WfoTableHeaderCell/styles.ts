@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import { SORTABLE_ICON_CLASS } from '@/components';
 import { WfoTheme } from '@/hooks';
 
 export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
@@ -72,9 +73,17 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         },
     ]);
 
-    const headerCellContentStyle = css({
-        fontWeight: theme.font.weight.semiBold,
+    const headerCellStyle = css({
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     });
+
+    const getHeaderCellContentStyle = (isSortable: boolean) =>
+        css({
+            cursor: isSortable ? 'pointer' : 'not-allowed',
+            fontWeight: theme.font.weight.semiBold,
+        });
 
     const headerCellPopoverHeaderStyle = css({
         margin: theme.size.m,
@@ -91,20 +100,22 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         margin: theme.size.m,
     });
 
-    const getHeaderCellButtonStyle = (isSortable: boolean) =>
-        css({
-            display: 'flex',
-            alignItems: 'center',
-            cursor: isSortable ? 'pointer' : 'not-allowed',
-        });
+    const sortButtonStyle = css({
+        display: 'flex',
+        alignItems: 'center',
+        [`&:focus-visible .${SORTABLE_ICON_CLASS}`]: {
+            visibility: 'visible',
+        },
+    });
 
     return {
         basicTableStyle,
-        headerCellContentStyle,
+        headerCellStyle,
+        getHeaderCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
-        getHeaderCellButtonStyle,
+        sortButtonStyle,
         getStatusColumnStyle,
         dropDownTableStyle,
         expandableTableStyle,

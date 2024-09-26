@@ -11,6 +11,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoSortButtons } from '@/components';
+import { getUpdatedSortOrder } from '@/components/WfoTable/WfoTable/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -33,11 +34,12 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     onSearch,
 }) => {
     const {
-        headerCellContentStyle,
+        headerCellStyle,
+        getHeaderCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
-        getHeaderCellButtonStyle,
+        sortButtonStyle,
     } = useWithOrchestratorTheme(getWfoBasicTableStyles);
     const t = useTranslations('common');
 
@@ -63,12 +65,10 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         closePopover();
     };
 
-    // Todo: Some styling is not needed anymore
     const WfoHeaderCellContentButton = () => (
         <button onClick={handleButtonClick} disabled={!shouldShowPopover}>
-            <div css={getHeaderCellButtonStyle(shouldShowPopover)}>
-                <div css={headerCellContentStyle}>{children}</div>
-                {/*<WfoSortDirectionIcon sortDirection={sortOrder} />*/}
+            <div css={getHeaderCellContentStyle(shouldShowPopover)}>
+                {children}
             </div>
         </button>
     );
@@ -99,13 +99,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     );
 
     return (
-        <div
-            css={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-            }}
-        >
+        <div css={headerCellStyle}>
             <EuiPopover
                 initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
                 id={smallContextMenuPopoverId}
@@ -124,15 +118,11 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
                 )}
             </EuiPopover>
 
-            {/* Todo sort icon is not properly aligned */}
             {isSortable && (
                 <button
+                    css={sortButtonStyle}
                     onClick={() =>
-                        onSetSortOrder(
-                            sortOrder === SortOrder.ASC
-                                ? SortOrder.DESC
-                                : SortOrder.ASC,
-                        )
+                        onSetSortOrder(getUpdatedSortOrder(sortOrder))
                     }
                 >
                     <WfoSortDirectionIcon sortDirection={sortOrder} />
