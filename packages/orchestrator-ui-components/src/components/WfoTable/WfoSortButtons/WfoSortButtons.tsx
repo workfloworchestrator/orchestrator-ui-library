@@ -10,6 +10,7 @@ export type WfoSortButtonsProps = {
     onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
 };
 
+// Todo, not used remove?
 export const WfoSortButtons: FC<WfoSortButtonsProps> = ({
     sortOrder,
     onChangeSortOrder,
