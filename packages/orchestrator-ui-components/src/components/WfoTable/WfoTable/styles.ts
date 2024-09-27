@@ -5,7 +5,7 @@ import { css, keyframes } from '@emotion/react';
 import { WfoTheme } from '@/hooks';
 
 import {
-    HEADER_CELL_TITLE_BUTTON,
+    HEADER_CELL_TITLE_BUTTON_CLASS,
     SORTABLE_ICON_CLASS,
 } from './WfoTableHeaderCell/styles';
 import { TABLE_ROW_HEIGHT } from './constants';
@@ -87,7 +87,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
             [`.${SORTABLE_ICON_CLASS}`]: {
                 visibility: 'visible',
             },
-            [`.${HEADER_CELL_TITLE_BUTTON}`]: {
+            [`.${HEADER_CELL_TITLE_BUTTON_CLASS}`]: {
                 overflow: 'hidden',
             },
         },
