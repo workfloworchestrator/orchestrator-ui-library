@@ -1,16 +1,24 @@
 import React from 'react';
 
+import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
+import { WfoStatusDotIcon } from '@/icons/WfoStatusDotIcon';
 import { useGetEngineStatusQuery } from '@/rtk';
+import { useLazyStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 import { EngineStatus } from '@/types';
 
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoStatusDotIcon } from '../../../icons/WfoStatusDotIcon';
 import { WfoHeaderBadge } from '../WfoHeaderBadge';
 
 export const WfoEngineStatusBadge = () => {
     const { theme } = useOrchestratorTheme();
     const { data } = useGetEngineStatusQuery();
     const { engineStatus } = data || {};
+    const { useWebSockets } = useGetOrchestratorConfig();
+    const [websocketTrigger, { isUninitialized }] =
+        useLazyStreamMessagesQuery();
+
+    if (useWebSockets && isUninitialized) {
+        websocketTrigger();
+    }
 
     const engineStatusText: string = engineStatus
         ? `Engine is ${engineStatus}`
