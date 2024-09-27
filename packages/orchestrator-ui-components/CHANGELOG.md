@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.3.0
+
+### Minor Changes
+
+-   0efcf20: 315 - Making the sort icon always visible in cases of small table columns.
+-   1b23a42: 459 Implements single click sorting in the table. Marks WfoSortButtons as deprecated.
+
 ## 2.2.0
 
 ### Minor Changes
