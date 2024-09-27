@@ -179,4 +179,5 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
     }),
 });
 
-export const { useStreamMessagesQuery } = streamMessagesApi;
+export const { useStreamMessagesQuery, useLazyStreamMessagesQuery } =
+    streamMessagesApi;
