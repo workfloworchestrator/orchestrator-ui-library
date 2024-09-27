@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 import { WfoTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
-export const HEADER_CELL_TITLE_BUTTON = 'headerCellTitleButton';
-export const HEADER_CELL_SORT_BUTTON = 'headerCellSortButton';
+export const HEADER_CELL_TITLE_BUTTON_CLASS = 'headerCellTitleButton';
+export const HEADER_CELL_SORT_BUTTON_CLASS = 'headerCellSortButton';
 export const SORTABLE_ICON_CLASS = 'sortableIcon';
 
 export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
@@ -82,7 +82,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         justifyContent: 'flex-start',
         alignItems: 'center',
 
-        [`.${HEADER_CELL_TITLE_BUTTON}:has(+ .${HEADER_CELL_SORT_BUTTON}:focus-visible)`]:
+        [`.${HEADER_CELL_TITLE_BUTTON_CLASS}:has(+ .${HEADER_CELL_SORT_BUTTON_CLASS}:focus-visible)`]:
             {
                 overflow: 'hidden',
             },
