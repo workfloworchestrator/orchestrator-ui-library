@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.4.0
+
+### Minor Changes
+
+-   ad83b95: Improves performace of subscription dropdown options
+
+### Patch Changes
+
+-   ff6f520: 1377 Added copy button to UUID fields in tables
+
 ## 2.3.0
 
 ### Minor Changes
