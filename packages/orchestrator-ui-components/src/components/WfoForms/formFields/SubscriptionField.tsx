@@ -276,23 +276,6 @@ function SubscriptionFieldDefinition({
                 }
             }
 
-            // Untagged ports that are unavailable because they are already in use are part still part of the graphql result
-            // we know an untagged port is unavailable when the port is untagged but it's has an inUseBySubscription since untagged
-            // ports can only be used once. This is a hard condition to capture in a graphQL filter, solving it in the backend would
-            // be better but for now we do this extra check in the frontend until we refactor the forms part more thoroughly.
-            // https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1250
-            if (
-                getPortMode(subscription.productBlockInstances) ===
-                PortMode.UNTAGGED
-            ) {
-                if (
-                    subscription.inUseBySubscriptions.pageInfo.totalItems &&
-                    subscription.inUseBySubscriptions.pageInfo.totalItems > 0
-                ) {
-                    return false;
-                }
-            }
-
             return true;
         });
 
