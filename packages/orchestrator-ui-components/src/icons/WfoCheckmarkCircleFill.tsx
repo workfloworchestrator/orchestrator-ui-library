@@ -14,7 +14,6 @@ export const WfoCheckmarkCircleFill: FC<WfoIconProps> = ({
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title>icon/checkmark-circle-fill</title>
         <g
             id="Symbols"
             stroke="none"

@@ -10,6 +10,9 @@ export type WfoSortButtonsProps = {
     onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
 };
 
+/**
+ * @deprecated This component is not used anymore and will be removed in the next major version.
+ */
 export const WfoSortButtons: FC<WfoSortButtonsProps> = ({
     sortOrder,
     onChangeSortOrder,

@@ -1,41 +1,45 @@
 import { GroupedData } from './WfoGroupedTable';
-import { getTotalNumberOfRows, groupData } from './utils';
+import {
+    getTotalNumberOfRows,
+    groupData,
+    toObjectWithSortedProperties,
+} from './utils';
 
 type TestObject = {
     name: string;
     age: number;
-    group: 'group1' | 'group2';
-    subGroup: 'subGroup1' | 'subGroup2';
+    group: 'groupA' | 'groupB';
+    subGroup: 'subGroupA' | 'subGroupB';
 };
 
 describe('WfoGroupedTable - utils', () => {
     describe('groupData()', () => {
-        it('successfully groups the data', () => {
+        it('successfully groups the data. Sorting alphabetically by group name', () => {
             // Given
             const testData: TestObject[] = [
                 {
                     name: 'John',
                     age: 25,
-                    group: 'group2',
-                    subGroup: 'subGroup1',
+                    group: 'groupB',
+                    subGroup: 'subGroupA',
                 },
                 {
                     name: 'Bob',
                     age: 40,
-                    group: 'group2',
-                    subGroup: 'subGroup2',
+                    group: 'groupB',
+                    subGroup: 'subGroupB',
                 },
                 {
                     name: 'Jane',
                     age: 30,
-                    group: 'group2',
-                    subGroup: 'subGroup2',
+                    group: 'groupB',
+                    subGroup: 'subGroupB',
                 },
                 {
                     name: 'Tom',
                     age: 35,
-                    group: 'group1',
-                    subGroup: 'subGroup1',
+                    group: 'groupA',
+                    subGroup: 'subGroupA',
                 },
             ];
 
@@ -47,42 +51,63 @@ describe('WfoGroupedTable - utils', () => {
 
             // Then
             const expected: GroupedData<TestObject> = {
-                group1: {
-                    subGroup1: [
+                groupA: {
+                    subGroupA: [
                         {
                             name: 'Tom',
                             age: 35,
-                            group: 'group1',
-                            subGroup: 'subGroup1',
+                            group: 'groupA',
+                            subGroup: 'subGroupA',
                         },
                     ],
                 },
-                group2: {
-                    subGroup1: [
+                groupB: {
+                    subGroupA: [
                         {
                             name: 'John',
                             age: 25,
-                            group: 'group2',
-                            subGroup: 'subGroup1',
+                            group: 'groupB',
+                            subGroup: 'subGroupA',
                         },
                     ],
-                    subGroup2: [
+                    subGroupB: [
                         {
                             name: 'Bob',
                             age: 40,
-                            group: 'group2',
-                            subGroup: 'subGroup2',
+                            group: 'groupB',
+                            subGroup: 'subGroupB',
                         },
                         {
                             name: 'Jane',
                             age: 30,
-                            group: 'group2',
-                            subGroup: 'subGroup2',
+                            group: 'groupB',
+                            subGroup: 'subGroupB',
                         },
                     ],
                 },
             };
             expect(result).toEqual(expected);
+        });
+    });
+
+    describe('sort object by properties', () => {
+        // Given
+        const testObject = {
+            c: 'c',
+            a: 'a',
+            b: 'b',
+        };
+
+        // When
+        const sortedObject = toObjectWithSortedProperties(testObject);
+
+        // Then
+        it('sorts the object by properties', () => {
+            expect(sortedObject).toEqual({
+                a: 'a',
+                b: 'b',
+                c: 'c',
+            });
         });
     });
 
@@ -94,22 +119,22 @@ describe('WfoGroupedTable - utils', () => {
                         {
                             name: 'John',
                             age: 25,
-                            group: 'group1',
-                            subGroup: 'subGroup1',
+                            group: 'groupA',
+                            subGroup: 'subGroupA',
                         },
                         {
                             name: 'Bob',
                             age: 40,
-                            group: 'group1',
-                            subGroup: 'subGroup1',
+                            group: 'groupA',
+                            subGroup: 'subGroupA',
                         },
                     ],
                     subGroup2: [
                         {
                             name: 'Jane',
                             age: 30,
-                            group: 'group1',
-                            subGroup: 'subGroup2',
+                            group: 'groupA',
+                            subGroup: 'subGroupB',
                         },
                     ],
                 },
@@ -118,8 +143,8 @@ describe('WfoGroupedTable - utils', () => {
                         {
                             name: 'Tom',
                             age: 35,
-                            group: 'group1',
-                            subGroup: 'subGroup1',
+                            group: 'groupA',
+                            subGroup: 'subGroupA',
                         },
                     ],
                 },

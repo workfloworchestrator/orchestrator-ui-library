@@ -2,8 +2,13 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { TABLE_ROW_HEIGHT } from '@/components/WfoTable';
 import { WfoTheme } from '@/hooks';
+
+import {
+    HEADER_CELL_TITLE_BUTTON_CLASS,
+    SORTABLE_ICON_CLASS,
+} from './WfoTableHeaderCell/styles';
+import { TABLE_ROW_HEIGHT } from './constants';
 
 export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     const radius = theme.border.radius.medium;
@@ -77,6 +82,17 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
+    const headerCellStyle = css({
+        [`&:hover`]: {
+            [`.${SORTABLE_ICON_CLASS}`]: {
+                visibility: 'visible',
+            },
+            [`.${HEADER_CELL_TITLE_BUTTON_CLASS}`]: {
+                overflow: 'hidden',
+            },
+        },
+    });
+
     const cellStyle = css({
         paddingLeft: theme.size.m,
         paddingRight: theme.size.m,
@@ -109,6 +125,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         rowStyle,
         dataRowStyle,
         expandedRowStyle,
+        headerCellStyle,
         cellStyle,
         emptyTableMessageStyle,
         clickableStyle,

@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
+import { SortOrder } from '@/types';
+
+export const HEADER_CELL_TITLE_BUTTON_CLASS = 'headerCellTitleButton';
+export const HEADER_CELL_SORT_BUTTON_CLASS = 'headerCellSortButton';
+export const SORTABLE_ICON_CLASS = 'sortableIcon';
 
 export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
     const radius = theme.border.radius.medium;
@@ -72,9 +77,22 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         },
     ]);
 
-    const headerCellContentStyle = css({
-        fontWeight: theme.font.weight.semiBold,
+    const headerCellStyle = css({
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+
+        [`.${HEADER_CELL_TITLE_BUTTON_CLASS}:has(+ .${HEADER_CELL_SORT_BUTTON_CLASS}:focus-visible)`]:
+            {
+                overflow: 'hidden',
+            },
     });
+
+    const getHeaderCellContentStyle = (isSortable: boolean) =>
+        css({
+            cursor: isSortable ? 'pointer' : 'not-allowed',
+            fontWeight: theme.font.weight.semiBold,
+        });
 
     const headerCellPopoverHeaderStyle = css({
         margin: theme.size.m,
@@ -91,20 +109,30 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         margin: theme.size.m,
     });
 
-    const getHeaderCellButtonStyle = (isSortable: boolean) =>
+    const getTitleButtonStyle = (sortOrder?: SortOrder) =>
         css({
-            display: 'flex',
-            alignItems: 'center',
-            cursor: isSortable ? 'pointer' : 'not-allowed',
+            flex: '0 1 auto',
+            overflow: sortOrder === undefined ? 'visible' : 'hidden',
         });
+
+    const sortButtonStyle = css({
+        display: 'flex',
+        flex: '0 0 auto',
+        alignItems: 'center',
+        [`&:focus-visible .${SORTABLE_ICON_CLASS}`]: {
+            visibility: 'visible',
+        },
+    });
 
     return {
         basicTableStyle,
-        headerCellContentStyle,
+        headerCellStyle,
+        getHeaderCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
-        getHeaderCellButtonStyle,
+        getTitleButtonStyle,
+        sortButtonStyle,
         getStatusColumnStyle,
         dropDownTableStyle,
         expandableTableStyle,

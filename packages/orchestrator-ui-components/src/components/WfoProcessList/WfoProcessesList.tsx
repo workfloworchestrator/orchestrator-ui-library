@@ -113,6 +113,7 @@ export const WfoProcessesList = ({
             columnType: ColumnType.DATA,
             label: t('step'),
             width: '15%',
+            renderTooltip: (value) => value,
         },
         lastStatus: {
             columnType: ColumnType.DATA,
@@ -184,6 +185,7 @@ export const WfoProcessesList = ({
             width: '90',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
+            renderTooltip: (value) => value,
         },
         startedAt: {
             columnType: ColumnType.DATA,
@@ -192,6 +194,7 @@ export const WfoProcessesList = ({
             renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
+            renderTooltip: (value) => value.toString(),
         },
         lastModifiedAt: {
             columnType: ColumnType.DATA,
@@ -200,6 +203,7 @@ export const WfoProcessesList = ({
             renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
             renderDetails: parseDateToLocaleDateTimeString,
             clipboardText: parseDateToLocaleDateTimeString,
+            renderTooltip: (value) => value.toString(),
         },
     };
 

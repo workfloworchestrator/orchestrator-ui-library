@@ -18,7 +18,7 @@ export const WfoBadge: FC<WfoBadgeProps> = ({
     ...restProps
 }) => (
     <EuiBadge {...restProps}>
-        <EuiText color={textColor} size={size ?? 'xs'}>
+        <EuiText title="" color={textColor} size={size ?? 'xs'}>
             <b>{children}</b>
         </EuiText>
     </EuiBadge>
