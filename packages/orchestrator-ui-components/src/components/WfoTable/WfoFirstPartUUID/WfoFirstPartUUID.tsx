@@ -17,7 +17,7 @@ export const WfoFirstPartUUID: FC<WfoFirstUUIDPartProps> = ({ UUID }) => {
     const { theme } = useOrchestratorTheme();
 
     return (
-        <span css={uuidFieldStyle} title={UUID}>
+        <span css={uuidFieldStyle}>
             {getFirstUuidPart(UUID)}
             <EuiCopy textToCopy={UUID}>
                 {(copy) => (

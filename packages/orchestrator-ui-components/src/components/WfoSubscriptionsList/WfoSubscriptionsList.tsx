@@ -93,6 +93,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                         {value}
                     </Link>
                 ),
+                renderTooltip: (value) => value,
             },
             status: {
                 columnType: ColumnType.DATA,
@@ -153,6 +154,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 renderData: (value) => <WfoInlineJson data={value} />,
                 renderDetails: (value) =>
                     value && <WfoJsonCodeBlock data={value} isBasicStyle />,
+                renderTooltip: (value) =>
+                    value && (
+                        <WfoJsonCodeBlock data={value} isBasicStyle={false} />
+                    ),
             },
         };
 

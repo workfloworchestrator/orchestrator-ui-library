@@ -10,5 +10,5 @@ export const WfoInlineJson: FC<WfoInlineJsonProps> = ({ data }) => {
     }
 
     const valueAsString = JSON.stringify(data);
-    return <span title={valueAsString}>{valueAsString}</span>;
+    return <span>{valueAsString}</span>;
 };
