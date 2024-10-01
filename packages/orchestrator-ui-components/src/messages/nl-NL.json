@@ -42,8 +42,8 @@
         "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
         "insyncTrue": "in-sync",
         "insyncFalse": "out-of-sync",
-        "searchModalTitle": "Search string options",
-        "searchModalText": "<p>De zoekbalk filtert the tabel op bases van de zoektermen</p> <p>Verschillende opties zijn beschikbaar om tekst zoekacties uit te voeren over alla data, specifiek per kolom te filteren. <ul><li>Verborgen kolommen worden meegenomen in de zoekactie</li> <li>TSV (text search vector) zoekactie is alleen van toepassing op de subscriptions tabel</li></ul></p> <p>Bijvoorbeeld:</p> <li><b>productTag:LP description:test</b> – search within columns (op kolom productTag en description)</li><li><b>“l2vpn”</b> – vrije tekst search</li><li><b>tag:(LP|LR)</b> – multiselect binnen 1 column</li><li><b>-tag:LP</b> – omgekeerd filter</li><li><b>test*</b> – prefix filter</li>"
+        "searchModalTitle": "Zoekwoorden opties",
+        "searchModalText": "<p>Er zijn verschillende opties beschikbaar: zoeken in vrije tekst voor alle datakolommen en specifiek per kolom te filteren. Houd er rekening mee dat: </p><p></p><ul><li>Verborgen kolommen zijn inbegrepen</li> <li>Zoeken is niet hoofdlettergevoelig</li> <li>De volgorde van woorden doet er niet toe (tenzij het een quote)</li> <li>TSV (text search vector) zoekactie alleen beschikbaar voor subscription tabel</li></ul><p>Bijvoorbeeld:</p> <li><b>\"l2vpn\"</b> – vrije tekst search</li> <li><b>tag:l2vpn</b> – zoeken in een specifieke kolom</li> <li><b>tag:lp beschrijving: test</b> – zoeken in meerdere kolommen</li><li><b>tag:(lp|lr)</b> – multi select binnen 1 kolom</li> <li><b>-tag:lp</b> – omgekeerd filteren</li> <li><b>test*</b> – prefix filter</li> <p></p><p><b>Opmerking:</b> Zoeken op woorden die tekens `|-*():\"` bevatten, zijn mogelijk niet geldig, omdat ze deel uitmaken van de grammatica van de zoekfunctie</p><p>Ongeldige zoekwoorden zijn bijvoorbeeld:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(gepland)\"</li> <li>\"node123|gepland\"</li></ul>"
     },
     "confirmationDialog": {
         "title": "Graag bevestigen",
