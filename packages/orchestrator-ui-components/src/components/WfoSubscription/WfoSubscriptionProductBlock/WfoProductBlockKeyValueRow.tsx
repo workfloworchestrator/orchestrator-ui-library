@@ -23,12 +23,16 @@ export const WfoProductBlockKeyValueRow: FC<
 
     const WfoProductBlockValue: FC<{ value: FieldValue['value'] }> = ({
         value,
-    }) =>
-        typeof value === 'boolean' ? (
-            <EuiBadge>{value.toString()}</EuiBadge>
-        ) : (
-            <>{value}</>
-        );
+    }) => {
+        if (typeof value === 'boolean') {
+            return <EuiBadge>{value.toString()}</EuiBadge>;
+        } else if (Array.isArray(value)) {
+            const result = value.join(', ');
+            return <>{result}</>;
+        } else {
+            return <>{value}</>;
+        }
+    };
 
     return (
         <tr css={rowStyle}>
