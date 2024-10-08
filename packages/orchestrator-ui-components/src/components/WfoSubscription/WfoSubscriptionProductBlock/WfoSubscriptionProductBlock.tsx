@@ -229,9 +229,10 @@ export const WfoSubscriptionProductBlock = ({
                                     .map((productBlockInstanceValue, index) => {
                                         if (
                                             productBlockInstanceValue &&
-                                            !isEmpty(
+                                            (!isEmpty(
                                                 productBlockInstanceValue.value,
-                                            )
+                                            ) ||
+                                                showDetails)
                                         ) {
                                             return (
                                                 <WfoProductBlockKeyValueRow
