@@ -61,10 +61,6 @@ export const WfoSubscriptionProductBlock = ({
     );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
 
-    const isEmpty = (value: unknown) => {
-        return value === null || value === undefined || value === '';
-    };
-
     return (
         <>
             <EuiSpacer size={'m'}></EuiSpacer>
@@ -226,23 +222,14 @@ export const WfoSubscriptionProductBlock = ({
                                             return 0;
                                         },
                                     )
-                                    .map((productBlockInstanceValue, index) => {
-                                        if (
-                                            productBlockInstanceValue &&
-                                            !isEmpty(
-                                                productBlockInstanceValue.value,
-                                            )
-                                        ) {
-                                            return (
-                                                <WfoProductBlockKeyValueRow
-                                                    fieldValue={
-                                                        productBlockInstanceValue
-                                                    }
-                                                    key={index}
-                                                />
-                                            );
-                                        }
-                                    })}
+                                    .map((productBlockInstanceValue, index) => (
+                                        <WfoProductBlockKeyValueRow
+                                            fieldValue={
+                                                productBlockInstanceValue
+                                            }
+                                            key={index}
+                                        />
+                                    ))}
                         </tbody>
                     </table>
                 }
