@@ -15,3 +15,4 @@ export * from './resultFlattener';
 export * from './strings';
 export * from './toObjectWithSortedKeys';
 export * from './uuid';
+export * from './cacheTag';

@@ -36,3 +36,4 @@ export * from './WfoBell';
 export * from './WfoWarningTriangle';
 export * from './WfoExternalLink';
 export * from './WfoTrash';
+export * from './WfoPort';
