@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.5.0
+
+### Minor Changes
+
+-   78e5223: Fixed buy that does not display Array in blocks
+-   06ec6bc: Connects websocket regardless of what page you start on
+-   f0f5aed: 1440 Changes for the NMS service ports tab
+
+### Patch Changes
+
+-   ac98ce6: Update tsv information modal
+
 ## 2.4.0
 
 ### Minor Changes
