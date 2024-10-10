@@ -108,12 +108,12 @@ export const WfoProcessesList = ({
             renderData: (value, { processId }) => (
                 <Link href={`${PATH_WORKFLOWS}/${processId}`}>{value}</Link>
             ),
+            renderTooltip: (value) => value,
         },
         lastStep: {
             columnType: ColumnType.DATA,
             label: t('step'),
             width: '15%',
-            renderTooltip: (value) => value,
         },
         lastStatus: {
             columnType: ColumnType.DATA,
@@ -164,6 +164,10 @@ export const WfoProcessesList = ({
                     subscriptions={subscriptions}
                 />
             ),
+            renderTooltip: ({ page: subscriptions }) =>
+                subscriptions.map(({ description, subscriptionId }) => (
+                    <p key={subscriptionId}>- {description}</p>
+                )),
             clipboardText: ({ page: subscriptions }) =>
                 subscriptions
                     .map(({ subscriptionId }) => subscriptionId)
