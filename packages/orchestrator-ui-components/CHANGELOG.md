@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.6.0
+
+### Minor Changes
+
+-   404ffe2: Shows empty values in productBlocks in detail mode
+
 ## 2.5.0
 
 ### Minor Changes
