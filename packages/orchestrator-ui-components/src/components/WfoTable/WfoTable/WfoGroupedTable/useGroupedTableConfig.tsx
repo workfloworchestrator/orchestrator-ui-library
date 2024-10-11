@@ -40,6 +40,9 @@ export const useGroupedTableConfig = <T extends object>({
     }));
     const numberOfColumnsInnerTable = Object.keys(columnConfig).length;
 
+    const notifyParentRef = useRef(notifyParent);
+    const groupsRef = useRef(groups);
+
     useEffect(() => {
         if (isExpanding) {
             groupReferences.current.forEach((ref) => {
@@ -50,15 +53,20 @@ export const useGroupedTableConfig = <T extends object>({
     }, [isExpanding]);
 
     useEffect(() => {
-        if (notifyParent) {
-            notifyParent(
+        if (notifyParentRef.current) {
+            notifyParentRef.current(
                 isAllGroupsExpanded &&
-                    groups.every(({ groupName }) =>
+                    groupsRef.current.every(({ groupName }) =>
                         isAllSubgroupsExpanded.includes(groupName),
                     ),
             );
         }
-    }, [isAllSubgroupsExpanded, isAllGroupsExpanded, notifyParent, groups]);
+    }, [
+        isAllSubgroupsExpanded,
+        isAllGroupsExpanded,
+        notifyParentRef,
+        groupsRef,
+    ]);
 
     const groupColumnConfig: WfoTableColumnConfig<GroupType> = {
         groupName: {
