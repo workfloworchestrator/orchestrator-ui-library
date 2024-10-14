@@ -2,7 +2,7 @@ import { TranslationValues } from 'next-intl';
 
 import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration';
 import { GraphQLPageInfo, ToastTypes } from '@/types';
-import { toObjectWithSortedKeys } from '@/utils';
+import { toObjectWithSerializedValues, toObjectWithSortedKeys } from '@/utils';
 
 function toCsvFileContent<T extends object>(data: T[]): string {
     const headers = Object.keys(data[0]).join(';');
@@ -47,23 +47,6 @@ export const getCsvFileNameWithDate = (fileNameWithoutExtension: string) => {
     return `${fileNameWithoutExtension}_${year}-${month}-${day}-${hour}${minute}${second}.csv`;
 };
 
-// Todo move to utils
-export const serializeObjects = <T extends object>(inputObject: T) => {
-    const entries = Object.entries(inputObject);
-    const mappedEntries = entries.map(([key, value]) => {
-        if (
-            value !== null &&
-            value.constructor !== Date &&
-            typeof value === 'object'
-        ) {
-            return [key, JSON.stringify(value)];
-        }
-        return [key, value];
-    });
-
-    return Object.fromEntries(mappedEntries);
-};
-
 export const csvDownloadHandler = <T extends object, U extends object>(
     dataFetchFunction: () => Promise<T | undefined>,
     dataMapper: (data: T) => U[],
@@ -81,7 +64,10 @@ export const csvDownloadHandler = <T extends object, U extends object>(
 
         if (data) {
             const dataForExport = dataMapper(data).map((dataRow) =>
-                toObjectWithSortedKeys(serializeObjects(dataRow), keyOrder),
+                toObjectWithSortedKeys(
+                    toObjectWithSerializedValues(dataRow),
+                    keyOrder,
+                ),
             );
 
             const pageInfo = pageInfoMapper(data);
