@@ -13,6 +13,7 @@ export * from './onlyUnique';
 export * from './optionalArray';
 export * from './resultFlattener';
 export * from './strings';
+export * from './toObjectWithSerializedValues';
 export * from './toObjectWithSortedKeys';
 export * from './uuid';
 export * from './cacheTag';
