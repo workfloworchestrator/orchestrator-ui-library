@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -9,11 +9,13 @@ import { getFormFieldsBaseStyle } from '@/theme';
 
 export type WfoSearchFieldProps = {
     queryString?: string;
+    queryIsValid?: boolean;
     onUpdateQueryString?: (queryString: string) => void;
 };
 
 export const WfoSearchField = ({
     queryString,
+    queryIsValid = true,
     onUpdateQueryString,
 }: WfoSearchFieldProps) => {
     const t = useTranslations('common');
@@ -22,15 +24,20 @@ export const WfoSearchField = ({
         getFormFieldsBaseStyle,
     );
 
-    const queryIsValid = true; // Query validation turned of for now until ESQueries can be sent to the backend
+    const handleSearch = useRef((queryText: string) =>
+        onUpdateQueryString?.(queryText),
+    );
 
     const [currentQuery, setCurrentQuery] = useState(queryString ?? '');
     useEffect(() => {
         setCurrentQuery(queryString ?? '');
     }, [queryString]);
 
-    const handleSearch = (queryText: string) =>
-        onUpdateQueryString?.(queryText);
+    useEffect(() => {
+        if (currentQuery === '') {
+            handleSearch.current(currentQuery);
+        }
+    }, [currentQuery, handleSearch]);
 
     return (
         <EuiFormRow
@@ -43,8 +50,8 @@ export const WfoSearchField = ({
                 value={currentQuery}
                 placeholder={`${t('search')}...`}
                 onChange={(event) => setCurrentQuery(event.target.value)}
-                onSearch={handleSearch}
-                onBlur={(event) => handleSearch(event.target.value)}
+                onSearch={handleSearch.current}
+                onBlur={(event) => handleSearch.current(event.target.value)}
                 isInvalid={!queryIsValid}
                 fullWidth
             />
