@@ -47,6 +47,23 @@ export const getCsvFileNameWithDate = (fileNameWithoutExtension: string) => {
     return `${fileNameWithoutExtension}_${year}-${month}-${day}-${hour}${minute}${second}.csv`;
 };
 
+// Todo move to utils
+export const serializeObjects = <T extends object>(inputObject: T) => {
+    const entries = Object.entries(inputObject);
+    const mappedEntries = entries.map(([key, value]) => {
+        if (
+            value !== null &&
+            value.constructor !== Date &&
+            typeof value === 'object'
+        ) {
+            return [key, JSON.stringify(value)];
+        }
+        return [key, value];
+    });
+
+    return Object.fromEntries(mappedEntries);
+};
+
 export const csvDownloadHandler = <T extends object, U extends object>(
     dataFetchFunction: () => Promise<T | undefined>,
     dataMapper: (data: T) => U[],
@@ -63,9 +80,10 @@ export const csvDownloadHandler = <T extends object, U extends object>(
         const data: T | undefined = await dataFetchFunction();
 
         if (data) {
-            const dataForExport = dataMapper(data).map((d) =>
-                toObjectWithSortedKeys(d, keyOrder),
+            const dataForExport = dataMapper(data).map((dataRow) =>
+                toObjectWithSortedKeys(serializeObjects(dataRow), keyOrder),
             );
+
             const pageInfo = pageInfoMapper(data);
             (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
                 addToastFunction(
