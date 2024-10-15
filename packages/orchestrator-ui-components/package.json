@@ -32,7 +32,7 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
-        "@elastic/eui": "^95.1.0",
+        "@elastic/eui": "^97.0.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
