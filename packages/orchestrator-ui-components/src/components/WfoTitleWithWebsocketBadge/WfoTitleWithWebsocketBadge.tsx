@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPageHeader } from '@elastic/eui';
+import { EuiPageHeader } from '@elastic/eui';
 
 import { WfoWebsocketStatusBadge } from '@/components';
 import { useGetOrchestratorConfig } from '@/hooks';
