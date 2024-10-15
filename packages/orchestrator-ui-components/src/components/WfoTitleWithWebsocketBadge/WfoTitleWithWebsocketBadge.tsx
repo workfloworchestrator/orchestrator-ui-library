@@ -14,14 +14,13 @@ export const WfoTitleWithWebsocketBadge = ({
 }: WfoTitleWithWebsocketBadgeProps) => {
     const { useWebSockets } = useGetOrchestratorConfig();
 
-    return (
-        <EuiFlexGroup gutterSize="s" alignItems="baseline">
-            <EuiFlexItem grow={0}>
-                <EuiPageHeader pageTitle={title} />
-            </EuiFlexItem>
-            <EuiFlexItem grow={0}>
-                {useWebSockets && <WfoWebsocketStatusBadge />}
-            </EuiFlexItem>
-        </EuiFlexGroup>
+    const pageTitle = useWebSockets ? (
+        <>
+            {title} <WfoWebsocketStatusBadge />
+        </>
+    ) : (
+        title
     );
+
+    return <EuiPageHeader pageTitle={pageTitle} />;
 };
