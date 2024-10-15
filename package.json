@@ -24,5 +24,9 @@
     "workspaces": [
         "apps/*",
         "packages/*"
-    ]
+    ],
+    "dependencies": {
+        "@elastic/eui": "^97.0.0",
+        "@storybook/testing-library": "^0.2.2"
+    }
 }
