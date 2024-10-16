@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ValueOverrideFunction } from '@/rtk';
 import { useAppSelector } from '@/rtk/hooks';
-import { FieldValue } from '@/types';
+import { FieldValue, RenderableFieldValue } from '@/types';
 
 export const useSubscriptionDetailValueOverride = () => {
     const valueOverrideConfiguration = useAppSelector(
@@ -12,7 +12,7 @@ export const useSubscriptionDetailValueOverride = () => {
     );
 
     const getOverriddenValue = (
-        fieldValue: FieldValue,
+        fieldValue: FieldValue | RenderableFieldValue,
     ): React.ReactNode | null => {
         if (!valueOverrideConfiguration) {
             return null;

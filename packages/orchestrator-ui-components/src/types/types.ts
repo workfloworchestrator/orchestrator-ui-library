@@ -10,7 +10,12 @@ type GenericResponse = { [key: string]: unknown };
 
 export type FieldValue = {
     field: string;
-    value: ReactNode | (string | number | boolean | null);
+    value: string | number | boolean | null;
+};
+
+export type RenderableFieldValue = {
+    field: string;
+    value: FieldValue['value'] | ReactNode;
 };
 
 export enum EngineStatus {

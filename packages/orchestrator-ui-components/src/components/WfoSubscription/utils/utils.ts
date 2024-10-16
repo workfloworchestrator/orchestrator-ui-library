@@ -25,15 +25,7 @@ export const getFieldFromProductBlockInstanceValues = (
     const nameValue = instanceValues.find(
         (instanceValue) => instanceValue.field === field,
     );
-    const value = nameValue?.value;
-    if (
-        typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean'
-    ) {
-        return value;
-    }
-    return '';
+    return nameValue?.value ?? '';
 };
 
 export const getProductBlockTitle = (
