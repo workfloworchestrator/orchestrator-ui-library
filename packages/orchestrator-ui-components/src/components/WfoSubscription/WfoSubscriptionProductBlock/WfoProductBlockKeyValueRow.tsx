@@ -4,13 +4,13 @@ import { EuiBadge } from '@elastic/eui';
 
 import { useSubscriptionDetailValueOverride } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { FieldValue } from '@/types';
+import { FieldValue, RenderableFieldValue } from '@/types';
 import { camelToHuman } from '@/utils';
 
 import { getStyles } from './styles';
 
 export type WfoProductBlockKeyValueRowProps = {
-    fieldValue: FieldValue;
+    fieldValue: FieldValue | RenderableFieldValue;
 };
 
 export const WfoProductBlockKeyValueRow: FC<
@@ -21,9 +21,9 @@ export const WfoProductBlockKeyValueRow: FC<
 
     const { field, value } = fieldValue;
 
-    const WfoProductBlockValue: FC<{ value: FieldValue['value'] }> = ({
-        value,
-    }) => {
+    const WfoProductBlockValue: FC<{
+        value: RenderableFieldValue['value'];
+    }> = ({ value }) => {
         if (typeof value === 'boolean') {
             return <EuiBadge>{value.toString()}</EuiBadge>;
         } else if (Array.isArray(value)) {

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 
 import { InputForm } from './forms';
@@ -9,6 +11,11 @@ type GenericResponse = { [key: string]: unknown };
 export type FieldValue = {
     field: string;
     value: string | number | boolean | null;
+};
+
+export type RenderableFieldValue = {
+    field: string;
+    value: FieldValue['value'] | ReactNode;
 };
 
 export enum EngineStatus {

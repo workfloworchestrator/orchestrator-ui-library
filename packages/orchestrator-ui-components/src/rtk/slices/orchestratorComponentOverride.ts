@@ -2,9 +2,11 @@ import { ReactElement, ReactNode } from 'react';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-import { FieldValue, SubscriptionDetail } from '@/types';
+import { FieldValue, RenderableFieldValue, SubscriptionDetail } from '@/types';
 
-export type ValueOverrideFunction = (fieldValue: FieldValue) => ReactNode;
+export type ValueOverrideFunction = (
+    fieldValue: FieldValue | RenderableFieldValue,
+) => ReactNode;
 export type ValueOverrideConfiguration = Record<string, ValueOverrideFunction>;
 
 export type WfoSubscriptionDetailGeneralConfiguration = {
