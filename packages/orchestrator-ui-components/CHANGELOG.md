@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.7.0
+
+### Minor Changes
+
+-   b293024: Adds flags to disable RTK cache in development
+
+### Patch Changes
+
+-   f00a7d1: 1494 Introduces refs to fix the useEffect rerender loop
+-   aa24057: 735 - WfoSearch: Triggers onUpdateQueryString when field is erased. Adds queryIsValid prop to mark the validity of the query.
+-   6bcfd14: 1398 - Adds a generic way of serializing objects when exporting CSV files
+
 ## 2.6.0
 
 ### Minor Changes
