@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.6.0
+
+### Minor Changes
+
+-   404ffe2: Shows empty values in productBlocks in detail mode
+
+### Patch Changes
+
+-   293c85c: 1440 Adjusted FieldValue type to include ReactNode for NMS
+
 ## 2.5.0
 
 ### Minor Changes
