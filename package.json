@@ -24,10 +24,5 @@
     "workspaces": [
         "apps/*",
         "packages/*"
-    ],
-    "dependencies": {
-        "@elastic/eui": "^97.0.0",
-        "@testing-library/react": "^16.0.1",
-        "react-redux": "^8.1.3"
-    }
+    ]
 }
