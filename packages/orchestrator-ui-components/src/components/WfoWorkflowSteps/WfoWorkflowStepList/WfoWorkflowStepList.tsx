@@ -177,7 +177,6 @@ export const WfoWorkflowStepList = React.forwardRef(
 
         return (
             <>
-                {/* This component contains a delta button that needs to be disabled based on the status of the process */}
                 <WfoStepListHeader
                     showHiddenKeys={showHiddenKeys}
                     showRaw={showRaw}
