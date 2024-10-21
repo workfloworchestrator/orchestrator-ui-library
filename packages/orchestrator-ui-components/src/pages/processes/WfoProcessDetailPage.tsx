@@ -62,6 +62,7 @@ export const WfoProcessDetailPage = ({
                 (processDetail !== undefined && (
                     <WfoWorkflowStepList
                         ref={stepListRef}
+                        lastStatus={processDetail.lastStatus}
                         processId={processDetail.processId}
                         steps={groupedSteps.flatMap(
                             (groupedStep) => groupedStep.steps,
