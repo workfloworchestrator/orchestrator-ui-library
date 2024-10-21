@@ -13,6 +13,7 @@ export const getWfoPageHeaderStyles = ({ theme }: WfoTheme) => {
         return css({
             backgroundColor: theme.colors.header,
             height: navigationHeight,
+            borderBottom: theme.colors.header,
         });
     };
 
