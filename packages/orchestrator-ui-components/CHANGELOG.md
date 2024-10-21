@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.7.1
+
+### Patch Changes
+
+-   2da7671: Fix: Add onchange on the useEffect state in order to set the default
+
 ## 2.7.0
 
 ### Minor Changes
