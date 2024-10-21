@@ -12,7 +12,7 @@
  * limitations under the License.
  *
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactSelect from 'react-select';
 
 import { get } from 'lodash';
@@ -96,6 +96,10 @@ export function UnconnectedSelectField({
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
     const { reactSelectInnerComponentStyles, formRowStyle } =
         useWithOrchestratorTheme(getSelectFieldStyles);
+
+    useEffect(() => {
+        onChange(selectedValue?.value);
+    }, []);
 
     if (fieldType === Array) {
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)
