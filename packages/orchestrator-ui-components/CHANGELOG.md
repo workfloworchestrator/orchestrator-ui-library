@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.8.0
+
+### Minor Changes
+
+-   846a884: Updates npm dependency minor versions
+
 ## 2.7.1
 
 ### Patch Changes
