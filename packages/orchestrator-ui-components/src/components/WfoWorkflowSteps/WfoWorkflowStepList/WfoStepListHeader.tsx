@@ -19,33 +19,35 @@ import { WfoCode, WfoEyeFill } from '@/icons';
 import { getStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
+    allDetailToggleText: string;
+    showDelta: boolean;
     showHiddenKeys: boolean;
     showRaw: boolean;
-    showDelta: boolean;
     showTraceback: boolean;
     showTracebackButton: boolean;
-    allDetailToggleText: string;
+    isRunningWorkflow: boolean;
+    isTask: boolean;
+    onChangeShowDelta: (showDelta: boolean) => void;
     onChangeShowRaw: (showRaw: boolean) => void;
-    onChangeShowDelta: (showRaw: boolean) => void;
     onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
     onShowTraceback: (showTraceback: boolean) => void;
     onToggleAllDetailsIsOpen: () => void;
-    isTask: boolean;
 };
 
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
+    allDetailToggleText,
+    showDelta,
     showHiddenKeys,
     showRaw,
-    showDelta,
     showTraceback,
     showTracebackButton,
-    onChangeShowHiddenKeys,
-    onChangeShowRaw,
-    onChangeShowDelta,
-    allDetailToggleText,
-    onToggleAllDetailsIsOpen,
-    onShowTraceback,
+    isRunningWorkflow,
     isTask,
+    onChangeShowDelta,
+    onChangeShowRaw,
+    onChangeShowHiddenKeys,
+    onShowTraceback,
+    onToggleAllDetailsIsOpen,
 }) => {
     const t = useTranslations('processes.steps');
     const { theme } = useOrchestratorTheme();
@@ -107,9 +109,18 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                 )}
                 <EuiButton
                     onClick={() => onChangeShowDelta(!showDelta)}
+                    disabled={isRunningWorkflow}
                     iconSide="right"
                     size="s"
-                    iconType={() => <WfoCode color={theme.colors.link} />}
+                    iconType={() => (
+                        <WfoCode
+                            color={
+                                isRunningWorkflow
+                                    ? theme.colors.disabledText
+                                    : theme.colors.link
+                            }
+                        />
+                    )}
                 >
                     {showDelta ? t('hideDelta') : t('showDelta')}
                 </EuiButton>
