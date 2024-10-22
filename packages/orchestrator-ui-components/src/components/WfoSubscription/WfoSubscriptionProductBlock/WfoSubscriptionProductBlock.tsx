@@ -18,7 +18,7 @@ import {
     WfoProductBlockKeyValueRow,
     WfoValueCell,
 } from '@/components';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { ProductBlockInstance, Subscription } from '@/types';
 import { getFirstUuidPart } from '@/utils';
 
