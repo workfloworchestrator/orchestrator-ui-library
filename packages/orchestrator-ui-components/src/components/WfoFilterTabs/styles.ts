@@ -4,8 +4,9 @@ import { WfoTheme } from '@/hooks';
 
 export const getStyles = ({ theme }: WfoTheme) => {
     const tabStyle = css({
-        '.euiTab__append': {
-            marginLeft: `-${theme.size.xs}`,
+        gap: `${theme.size.xxs}`,
+        '.euiTab__prepend': {
+            marginRight: `${theme.size.xs}`,
         },
     });
 
