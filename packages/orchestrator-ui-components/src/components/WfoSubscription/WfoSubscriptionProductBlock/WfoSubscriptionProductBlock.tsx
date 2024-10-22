@@ -41,9 +41,9 @@ export const WfoSubscriptionProductBlock = ({
     subscriptionId,
 }: WfoSubscriptionProductBlockProps) => {
     const t = useTranslations('subscriptions.detail');
-    const { theme } = useOrchestratorTheme();
     const {
         iconStyle,
+        iconOutsideCurrentSubscriptionStyle,
         panelStyle,
         panelStyleOutsideCurrentSubscription,
         leftColumnStyle,
@@ -79,10 +79,18 @@ export const WfoSubscriptionProductBlock = ({
             >
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>
-                        <div css={iconStyle}>
+                        <div
+                            css={
+                                isOutsideCurrentSubscription
+                                    ? iconOutsideCurrentSubscriptionStyle
+                                    : iconStyle
+                            }
+                        >
                             <EuiIcon
                                 type="filebeatApp"
-                                color={theme.colors.primary}
+                                color="currentColor"
+                                // color={isOutsideCurrentSubscription ? theme.colors.lightShade : theme.colors.primary}
+                                // color={theme.colors.lightestShade}
                             />
                         </div>
                     </EuiFlexItem>

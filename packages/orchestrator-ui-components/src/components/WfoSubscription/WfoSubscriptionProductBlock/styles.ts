@@ -8,17 +8,29 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         width: 45,
         height: 45,
         backgroundColor: toSecondaryColor(theme.colors.primary),
+        color: theme.colors.primary,
         paddingTop: 13,
         paddingLeft: 15,
         borderRadius: 7,
     });
 
+    const iconOutsideCurrentSubscriptionStyle = css([
+        iconStyle,
+        {
+            backgroundColor: theme.colors.lightShade,
+            color: theme.colors.darkestShade,
+        },
+    ]);
+
     const panelStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: toSecondaryColor(
+            toSecondaryColor(theme.colors.primary),
+        ),
+        border: `solid 1px ${toSecondaryColor(theme.colors.primary)}`,
     });
 
     const panelStyleOutsideCurrentSubscription = css({
-        backgroundColor: toSecondaryColor(theme.colors.lightestShade),
+        backgroundColor: toSecondaryColor(theme.colors.emptyShade),
         border: `dashed 1px ${theme.colors.lightShade}`,
     });
 
@@ -51,6 +63,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
 
     return {
         iconStyle,
+        iconOutsideCurrentSubscriptionStyle,
         panelStyle,
         leftColumnStyle,
         leftColumnStyleWithAlignSelf,
