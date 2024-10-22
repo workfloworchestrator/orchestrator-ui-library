@@ -86,12 +86,7 @@ export const WfoSubscriptionProductBlock = ({
                                     : iconStyle
                             }
                         >
-                            <EuiIcon
-                                type="filebeatApp"
-                                color="currentColor"
-                                // color={isOutsideCurrentSubscription ? theme.colors.lightShade : theme.colors.primary}
-                                // color={theme.colors.lightestShade}
-                            />
+                            <EuiIcon type="filebeatApp" color="currentColor" />
                         </div>
                     </EuiFlexItem>
                     <EuiFlexItem>
