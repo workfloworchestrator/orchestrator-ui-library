@@ -22,6 +22,7 @@ export const WfoHeroIconsWrapper: FC<WfoHeroIconsWrapperProps> = ({
                 marginRight: theme.size.xs,
                 display: 'flex',
                 alignItems: 'center',
+                height: '100%',
             }}
         >
             {children}

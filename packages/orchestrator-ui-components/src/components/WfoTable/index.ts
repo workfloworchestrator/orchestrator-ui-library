@@ -12,6 +12,7 @@ export * from './WfoTableWithFilter';
 export * from './WfoSortButtons';
 export * from './WfoFirstPartUUID';
 export * from './WfoInlineJson';
+export * from './WfoRowContextMenu';
 
 export * from './WfoAdvancedTable';
 export * from './WfoTable';
