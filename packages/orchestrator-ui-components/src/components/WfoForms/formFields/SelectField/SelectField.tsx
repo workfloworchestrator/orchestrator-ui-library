@@ -98,7 +98,9 @@ export function UnconnectedSelectField({
         useWithOrchestratorTheme(getSelectFieldStyles);
 
     useEffect(() => {
-        onChange(selectedValue?.value);
+        if (selectedValue && selectedValue.value !== 'undefined') {
+            onChange(selectedValue.value);
+        }
     }, []);
 
     if (fieldType === Array) {
