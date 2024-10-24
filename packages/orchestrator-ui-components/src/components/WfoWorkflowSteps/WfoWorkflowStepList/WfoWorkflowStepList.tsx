@@ -12,7 +12,7 @@ import {
 import WfoDiff from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
 import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
-import { Step, StepStatus } from '@/types';
+import { ProcessStatus, Step, StepStatus } from '@/types';
 import { InputForm } from '@/types/forms';
 
 export type StepListItem = {
@@ -23,6 +23,7 @@ export type StepListItem = {
 
 export interface WfoWorkflowStepListProps {
     steps: Step[];
+    lastStatus: ProcessStatus;
     traceBack: string | null;
     startedAt: string;
     processId: string;
@@ -66,6 +67,7 @@ export const WfoWorkflowStepList = React.forwardRef(
     (
         {
             steps = [],
+            lastStatus,
             traceBack,
             startedAt,
             processId,
@@ -164,6 +166,15 @@ export const WfoWorkflowStepList = React.forwardRef(
                 isExpanded: true,
             }));
 
+        // The value of lastStatus is not in lowercase despite the ProcessStatus enum definition
+        const isRunningWorkflow: boolean = ![
+            ProcessStatus.FAILED,
+            ProcessStatus.ABORTED,
+            ProcessStatus.COMPLETED,
+        ]
+            .map((status) => status.toLowerCase())
+            .includes(lastStatus.toLowerCase());
+
         return (
             <>
                 <WfoStepListHeader
@@ -183,6 +194,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                     }
                     onShowTraceback={setShowTraceback}
                     isTask={isTask}
+                    isRunningWorkflow={isRunningWorkflow}
                 />
                 {showTraceback && <WfoTraceback>{traceBack}</WfoTraceback>}
                 {showRaw && <WfoProcessRawData processId={processId} />}
