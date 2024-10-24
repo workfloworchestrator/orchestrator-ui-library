@@ -1,5 +1,14 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.8.1
+
+### Patch Changes
+
+-   d119e38: 1404 Allows WfoFilterTabs to accept append property that is passed on to EuiTab component
+-   3d1ebbe: 1419 Update product block detail color to match list item color.
+-   f6a31a6: Fix: Empty value dropdown override
+-   038989c: 1451 Disables the subscription delta button when the process is running
+
 ## 2.8.0
 
 ### Minor Changes
