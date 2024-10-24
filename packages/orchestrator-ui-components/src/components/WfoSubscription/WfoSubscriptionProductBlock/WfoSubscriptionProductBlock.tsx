@@ -18,7 +18,7 @@ import {
     WfoProductBlockKeyValueRow,
     WfoValueCell,
 } from '@/components';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { ProductBlockInstance, Subscription } from '@/types';
 import { getFirstUuidPart } from '@/utils';
 
@@ -41,9 +41,9 @@ export const WfoSubscriptionProductBlock = ({
     subscriptionId,
 }: WfoSubscriptionProductBlockProps) => {
     const t = useTranslations('subscriptions.detail');
-    const { theme } = useOrchestratorTheme();
     const {
         iconStyle,
+        iconOutsideCurrentSubscriptionStyle,
         panelStyle,
         panelStyleOutsideCurrentSubscription,
         leftColumnStyle,
@@ -79,11 +79,14 @@ export const WfoSubscriptionProductBlock = ({
             >
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>
-                        <div css={iconStyle}>
-                            <EuiIcon
-                                type="filebeatApp"
-                                color={theme.colors.primary}
-                            />
+                        <div
+                            css={
+                                isOutsideCurrentSubscription
+                                    ? iconOutsideCurrentSubscriptionStyle
+                                    : iconStyle
+                            }
+                        >
+                            <EuiIcon type="filebeatApp" color="currentColor" />
                         </div>
                     </EuiFlexItem>
                     <EuiFlexItem>
