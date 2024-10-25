@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
     EuiButtonIcon,
@@ -9,10 +9,24 @@ import {
 
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 
-export const WfoRowContextMenu: FC<{
-    items: Array<EuiContextMenuPanelDescriptor>;
-}> = ({ items }) => {
+export type WfoRowContextMenuProps = {
+    items: EuiContextMenuPanelDescriptor[];
+    onOpenContextMenu?: () => void;
+};
+
+export const WfoRowContextMenu: FC<WfoRowContextMenuProps> = ({
+    items,
+    onOpenContextMenu,
+}) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const onOpenContextMenuRef = useRef(onOpenContextMenu);
+
+    useEffect(() => {
+        if (isOpen) {
+            onOpenContextMenuRef.current?.();
+        }
+    }, [isOpen, onOpenContextMenuRef]);
 
     const closePopover = () => setIsOpen(false);
     const togglePopover = () => setIsOpen(!isOpen);

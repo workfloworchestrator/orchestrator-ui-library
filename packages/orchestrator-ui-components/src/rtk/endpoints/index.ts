@@ -10,6 +10,7 @@ export * from './relatedSubscriptions';
 export * from './settings';
 export * from './startOptions';
 export * from './streamMessages';
+export * from './subscriptionActions';
 export * from './subscriptionDetail';
 export * from './subscriptionInUseByRelationsList';
 export * from './subscriptionList';
