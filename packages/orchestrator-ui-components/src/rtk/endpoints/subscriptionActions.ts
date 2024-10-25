@@ -27,4 +27,7 @@ const subscriptionActionsApi = orchestratorApi.injectEndpoints({
     }),
 });
 
-export const { useGetSubscriptionActionsQuery } = subscriptionActionsApi;
+export const {
+    useGetSubscriptionActionsQuery,
+    useLazyGetSubscriptionActionsQuery,
+} = subscriptionActionsApi;
