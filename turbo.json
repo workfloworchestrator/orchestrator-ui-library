@@ -20,7 +20,7 @@
         "NEXTAUTH_AUTHORIZATION_SCOPE_OVERRIDE",
         "AUTH_ACTIVE"
     ],
-    "pipeline": {
+    "tasks": {
         "build": {
             "dependsOn": ["^build"],
             "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
