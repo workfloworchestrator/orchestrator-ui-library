@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 
-import { WfoIconProps, withWfoHeroIconsWrapper } from '@/icons';
+import { WfoIconProps } from '@/icons';
+
+import { withWfoHeroIconsWrapper } from './WfoHeroIconsWrapper';
 
 const WfoWrenchSvg: FC<WfoIconProps> = ({
     width = 20,
