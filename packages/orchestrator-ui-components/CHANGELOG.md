@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.8.2
+
+### Patch Changes
+
+-   056ba69: 1402 Adds context menu to be used in the table. It exposes a callback that is triggered when the menu opens (for optionally triggering a REST call to populate the menu)
+
 ## 2.8.1
 
 ### Patch Changes
