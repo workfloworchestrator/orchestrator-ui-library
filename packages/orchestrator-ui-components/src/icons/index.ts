@@ -37,3 +37,6 @@ export * from './WfoWarningTriangle';
 export * from './WfoExternalLink';
 export * from './WfoTrash';
 export * from './WfoPort';
+export * from './WfoActualWork';
+export * from './WfoMalfunction';
+export * from './WfoPlannedWork';
