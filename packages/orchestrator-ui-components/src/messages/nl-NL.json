@@ -38,6 +38,7 @@
         "noItemsFound": "Geen items gevonden",
         "search": "Zoeken",
         "errorMessage": "Er is een fout opgetreden",
+        "unknownError": "Onbekende error",
         "export": "Exporteren",
         "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
         "insyncTrue": "in-sync",
@@ -223,7 +224,7 @@
         },
         "steps": {
             "taskSteps": "Taak stappen",
-            "steps": "Workflow stappen",
+            "workflowSteps": "Workflow stappen",
             "showDelta": "Toon subscription delta",
             "hideDelta": "Verberg subscription delta",
             "showTraceback": "Toon traceback",
