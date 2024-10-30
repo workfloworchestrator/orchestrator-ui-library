@@ -12,7 +12,7 @@
         "build": "turbo run build",
         "packages:changeset": "changeset",
         "packages:publish": "turbo run build lint test && changeset publish",
-        "prepare": "husky install && turbo run build --filter=./packages/*"
+        "postinstall": "husky && turbo run build --filter=./packages/*"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1",
