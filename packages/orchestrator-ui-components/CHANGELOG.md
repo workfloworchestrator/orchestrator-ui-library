@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.8.3
+
+### Patch Changes
+
+-   85f1514: Added new icons - WfoActualWork, WfoMalfunction, WfoPlannedWork
+
 ## 2.8.2
 
 ### Patch Changes
