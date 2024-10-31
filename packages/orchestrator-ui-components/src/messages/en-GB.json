@@ -116,7 +116,7 @@
                 "placeholderNoServicePort": "First select a Service Port...",
                 "invalidVlan": "Invalid VLAN - must be a range of valid [2-4094] VLAN integers, for example '2, 5-6, 1048-1052'",
                 "untaggedPortInUse": "This service port is already in use and cannot be chosen",
-                "taggedOnly": "VLAN is only relevant for SN7 MSP or SN8 SP in tagged mode, not for link_member or untagged ports.",
+                "taggedOnly": "VLAN is only relevant for service ports in tagged mode, not for link_member or untagged ports.",
                 "loadingIms": "Loading VLAN info from IMS"
             },
             "subscription": {
