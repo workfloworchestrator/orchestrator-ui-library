@@ -44,7 +44,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
             borderTop: `solid 1px ${theme.colors.lightShade}`,
         },
         '&:last-child': {
-            borderBottom: `solid 0px ${theme.colors.lightShade}`,
+            borderBottom: 'none',
         },
     });
 
