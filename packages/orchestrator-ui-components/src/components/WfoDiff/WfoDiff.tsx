@@ -69,7 +69,7 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
 
         try {
             return tokenize(hunks, options);
-        } catch (ex) {
+        } catch {
             return undefined;
         }
     }, [hunks, syntax]);

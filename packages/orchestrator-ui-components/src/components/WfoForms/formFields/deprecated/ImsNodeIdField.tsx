@@ -80,8 +80,8 @@ function ImsNodeId({
         isLoading && locationCode
             ? t('widgets.node_select.nodes_loading')
             : nodes.length
-              ? t('widgets.node_select.select_node')
-              : t('forms.widgets.node_select.no_nodes_placeholder');
+            ? t('widgets.node_select.select_node')
+            : t('forms.widgets.node_select.no_nodes_placeholder');
 
     const imsNodeIdLabelLookup =
         nodes?.reduce<{ [index: string]: string }>(function (mapping, node) {

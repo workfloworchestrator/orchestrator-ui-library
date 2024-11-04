@@ -7,25 +7,24 @@ export function getEnvironmentVariables<T>(
 ): Record<keyof T, string> {
     const missingEnvironmentVariables: string[] = [];
 
-    const environmentVariablesWithValues = envVars.reduce(
-        (acc, currentKey) => {
-            const value = process.env[currentKey.toString()];
+    const environmentVariablesWithValues = envVars.reduce((acc, currentKey) => {
+        const value = process.env[currentKey.toString()];
 
-            if (value === undefined) {
-                missingEnvironmentVariables.push(currentKey.toString());
-            }
+        if (value === undefined) {
+            missingEnvironmentVariables.push(currentKey.toString());
+        }
 
-            return {
-                ...acc,
-                [currentKey]: value || '',
-            };
-        },
-        {} as Record<keyof T, string>,
-    );
+        return {
+            ...acc,
+            [currentKey]: value || '',
+        };
+    }, {} as Record<keyof T, string>);
 
     if (missingEnvironmentVariables.length > 0) {
         console.warn(
-            `Warning: Missing required environment variables: ${missingEnvironmentVariables.join(', ')}`,
+            `Warning: Missing required environment variables: ${missingEnvironmentVariables.join(
+                ', ',
+            )}`,
         );
     }
 

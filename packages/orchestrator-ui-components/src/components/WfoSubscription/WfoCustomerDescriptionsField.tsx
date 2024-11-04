@@ -43,10 +43,9 @@ export const WfoCustomerDescriptionsField: FC<
         <div>
             {customerDescriptionsWithName.map(
                 ({ shortcode, fullname, description, customerId }) => (
-                    <div
-                        key={customerId}
-                        title={fullname ?? customerId}
-                    >{`${shortcode ?? customerId}: ${description}`}</div>
+                    <div key={customerId} title={fullname ?? customerId}>{`${
+                        shortcode ?? customerId
+                    }: ${description}`}</div>
                 ),
             )}
         </div>

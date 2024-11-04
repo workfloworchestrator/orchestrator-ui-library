@@ -170,7 +170,9 @@ function SubscriptionFieldDefinition({
                     (item) => item.field === 'title',
                 );
             if (subscriptionTitle) {
-                return `${subscriptionSubstring} - ${description.trim()} - ${subscriptionTitle.value}`;
+                return `${subscriptionSubstring} - ${description.trim()} - ${
+                    subscriptionTitle.value
+                }`;
             }
             return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${
                 subscription.customer?.fullname
@@ -326,7 +328,9 @@ function SubscriptionFieldDefinition({
                                     iconSize="l"
                                     disabled={isDisabled}
                                     onClick={() => {
-                                        !isDisabled ? refetch() : null;
+                                        if (isDisabled) {
+                                            refetch();
+                                        }
                                     }}
                                 />
                             </EuiFlexGroup>
