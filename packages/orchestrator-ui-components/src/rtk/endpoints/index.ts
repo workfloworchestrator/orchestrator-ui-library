@@ -1,6 +1,7 @@
 export * from './customers';
 export * from './inSync';
 export * from './metadata';
+export * from './processDetail';
 export * from './processList';
 export * from './processListSummary';
 export * from './processSteps';

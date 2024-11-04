@@ -20,6 +20,7 @@ import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     HttpStatus,
     handlePromiseErrorWithCallback,
+    useGetDescriptionForWorkflowNameQuery,
     useGetTimeLineItemsQuery,
 } from '@/rtk';
 import { useGetSubscriptionDetailQuery } from '@/rtk';
@@ -98,6 +99,10 @@ export const WfoStartProcessPage = ({
         },
         { skip: !subscriptionId },
     );
+
+    const { data: workflowMetadata } = useGetDescriptionForWorkflowNameQuery({
+        workflowName: processName,
+    });
 
     const [startProcess] = useStartProcessMutation();
 
@@ -217,7 +222,9 @@ export const WfoStartProcessPage = ({
 
     return (
         <WfoProcessDetail
-            pageTitle={processName}
+            pageTitle={
+                workflowMetadata?.description ?? workflowMetadata?.name ?? ''
+            }
             productNames={''}
             buttonsAreDisabled={true}
             processDetail={processDetail}

@@ -6,6 +6,31 @@ import {
     WorkflowDefinitionsResult,
 } from '@/types';
 
+export const workflowsDescription = `
+query MetadataWorkflowsDescription(
+    $workflowName: String!
+) {
+    workflows(
+        filterBy: [{ field: "name", value: $workflowName }]
+    ) {
+        page {
+            name
+            description
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            totalItems
+            sortFields
+            filterFields
+        }
+    }
+}
+
+`;
+
 export const workflowsQuery = `
 query MetadataWorkflows(
     $first: Int!
@@ -42,6 +67,11 @@ query MetadataWorkflows(
 }
 `;
 
+export type WorkflowsDescriptionResponse = Pick<
+    WorkflowDefinition,
+    'name' | 'description'
+>;
+
 export type WorkflowsResponse = {
     workflows: WorkflowDefinition[];
 } & BaseGraphQlResult;
@@ -68,7 +98,44 @@ const workflowsApi = orchestratorApi.injectEndpoints({
                 };
             },
         }),
+        getDescriptionForWorkflowName: builder.query<
+            WorkflowsDescriptionResponse,
+            { workflowName: string }
+        >({
+            query: (variables) => ({
+                document: workflowsDescription,
+                variables,
+            }),
+            transformResponse: (
+                response: WorkflowDefinitionsResult<
+                    Pick<WorkflowDefinition, 'name' | 'description'>
+                >,
+                _,
+                variables,
+            ): WorkflowsDescriptionResponse => {
+                const workflows = response.workflows.page || [];
+                const workflow = workflows.find(
+                    (value) => value.name === variables.workflowName,
+                );
+
+                if (!workflow) {
+                    return {
+                        name: variables.workflowName,
+                    };
+                }
+
+                const { name, description } = workflow;
+                return {
+                    name,
+                    description,
+                };
+            },
+        }),
     }),
 });
 
-export const { useGetWorkflowsQuery, useLazyGetWorkflowsQuery } = workflowsApi;
+export const {
+    useGetWorkflowsQuery,
+    useLazyGetWorkflowsQuery,
+    useGetDescriptionForWorkflowNameQuery,
+} = workflowsApi;
