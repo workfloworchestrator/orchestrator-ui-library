@@ -17,18 +17,8 @@ query MetadataWorkflowsDescription(
             name
             description
         }
-        pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            totalItems
-            sortFields
-            filterFields
-        }
     }
 }
-
 `;
 
 export const workflowsQuery = `
