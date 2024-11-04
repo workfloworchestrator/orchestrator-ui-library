@@ -18,4 +18,5 @@ module.exports = {
             presets: [require.resolve('next/babel')],
         },
     },
+    ignorePatterns: ['.turbo/**'],
 };
