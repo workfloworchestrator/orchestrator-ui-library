@@ -20,6 +20,8 @@ export const getConcatenatedResult = <T>(
             );
         }, '');
 
-        return `${accumulator}${resultFields}${index !== results.length - 1 ? ' - ' : ''}`;
+        return `${accumulator}${resultFields}${
+            index !== results.length - 1 ? ' - ' : ''
+        }`;
     }, '');
 };
