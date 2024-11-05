@@ -24,6 +24,7 @@ export enum HttpStatus {
     Unauthorized = 401,
     Forbidden = 403,
     Ok = 200,
+    NoContent = 204,
     MultipleChoices = 300,
 }
 
@@ -90,6 +91,8 @@ export const catchErrorResponse = async (
     }
     if (isUnauthorized(status) && authActive) {
         signOut();
+    } else if (status === HttpStatus.NoContent) {
+        return {};
     } else {
         return response.json();
     }
