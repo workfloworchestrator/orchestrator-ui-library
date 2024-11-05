@@ -22,8 +22,9 @@ import { WfoXCircleFill } from '@/icons';
 import { useGetSubscriptionActionsQuery } from '@/rtk/endpoints/subscriptionActions';
 import { SubscriptionAction, WorkflowTarget } from '@/types';
 
-import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
-import { flattenArrayProps } from './utils';
+import { WfoTargetTypeIcon } from '../WfoTargetTypeIcon';
+import { flattenArrayProps } from '../utils';
+import { WfoSubscriptionActionExpandableMenuItem } from './WfoSubscriptionActionExpandableMenuItem';
 
 type MenuItemProps = {
     key: string;
@@ -89,6 +90,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
             const handleLinkClick = async (e: React.MouseEvent) => {
                 e.preventDefault();
+                setPopover(false);
                 if (await isEngineRunningNow()) {
                     router.push(url);
                 }
@@ -96,7 +98,16 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
             return (
                 <Link href={url} onClick={handleLinkClick}>
-                    {actionItem}
+                    <div
+                        css={{
+                            '&>:hover': {
+                                backgroundColor: theme.colors.lightestShade,
+                                // todo consider only border color
+                            },
+                        }}
+                    >
+                        {actionItem}
+                    </div>
                 </Link>
             );
         };
@@ -134,9 +145,23 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             const tooltipContent = t(action.reason, flattenArrayProps(action));
 
             return (
-                <div>
+                <div
+                    css={{
+                        '&>:hover': {
+                            backgroundColor: theme.colors.lightestShade,
+                        },
+                        '& > *': {
+                            display: 'block',
+                        },
+                    }}
+                >
                     <EuiToolTip position="top" content={tooltipContent}>
-                        {actionItem}
+                        <WfoSubscriptionActionExpandableMenuItem
+                            subscriptionAction={action}
+                            onClickLockedRelation={() => setPopover(false)}
+                        >
+                            {actionItem}
+                        </WfoSubscriptionActionExpandableMenuItem>
                     </EuiToolTip>
                 </div>
             );
