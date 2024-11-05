@@ -43,6 +43,9 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         '&:first-child': {
             borderTop: `solid 1px ${theme.colors.lightShade}`,
         },
+        '&:last-child': {
+            borderBottom: 'none',
+        },
     });
 
     const leftColumnStyle = css({
