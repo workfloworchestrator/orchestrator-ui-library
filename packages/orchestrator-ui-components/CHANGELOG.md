@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.8.4
+
+### Patch Changes
+
+-   be6bf70: added extra Dutch translation term and fix workflowsteps translation
+-   3bfe651: Updates npm packages to latest versions
+-   490da42: 1490 Remove last border of a product block key value item
+
 ## 2.8.3
 
 ### Patch Changes

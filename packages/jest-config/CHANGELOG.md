@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.4.1
+
+### Patch Changes
+
+-   3bfe651: Updates npm packages to latest versions
+
 ## 1.4.0
 
 ### Minor Changes
