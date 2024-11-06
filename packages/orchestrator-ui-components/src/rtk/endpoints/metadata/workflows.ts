@@ -57,6 +57,10 @@ query MetadataWorkflows(
 }
 `;
 
+export type WorkflowsDescriptionQueryVariables = {
+    workflowName: string;
+};
+
 export type WorkflowsDescriptionResponse = Pick<
     WorkflowDefinition,
     'name' | 'description'
@@ -90,7 +94,7 @@ const workflowsApi = orchestratorApi.injectEndpoints({
         }),
         getDescriptionForWorkflowName: builder.query<
             WorkflowsDescriptionResponse,
-            { workflowName: string }
+            WorkflowsDescriptionQueryVariables
         >({
             query: (variables) => ({
                 document: workflowsDescription,
@@ -105,13 +109,13 @@ const workflowsApi = orchestratorApi.injectEndpoints({
             ): WorkflowsDescriptionResponse => {
                 const workflows = response.workflows.page || [];
                 const workflow = workflows.find(
-                    (value) => value.name === variables.workflowName,
+                    ({ name }) => name === variables.workflowName,
                 );
 
                 if (!workflow) {
-                    return {
-                        name: variables.workflowName,
-                    };
+                    throw new Error(
+                        `No workflow found with name ${variables.workflowName}`,
+                    );
                 }
 
                 const { name, description } = workflow;
