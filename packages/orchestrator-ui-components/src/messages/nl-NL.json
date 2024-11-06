@@ -290,6 +290,7 @@
                 "tasks": "Taken",
                 "terminate": "Terminate workflow",
                 "actions": "Acties",
+                "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
                 "subscription": {
                     "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
                     "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions: {unterminated_in_use_by_subscriptions}",

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiButtonIcon, EuiText } from '@elastic/eui';
@@ -20,6 +21,8 @@ export type WfoSubscriptionActionExpandableMenuItemProps = {
 export const WfoSubscriptionActionExpandableMenuItem: FC<
     WfoSubscriptionActionExpandableMenuItemProps
 > = ({ subscriptionAction, onClickLockedRelation, children }) => {
+    const t = useTranslations('subscriptions.detail.actions');
+
     const {
         expandableMenuItemStyle,
         expandButtonStyle,
@@ -45,10 +48,9 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<
             </div>
             {subscriptionAction.locked_relations && isExpanded && (
                 <div css={expandedContentStyle}>
-                    {/* TODO: Adds text */}
-                    <EuiText size="s">Todo!!!</EuiText>
+                    <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
                     {subscriptionAction.locked_relations.map((relation) => (
-                        <EuiText key={relation} size="s">
+                        <EuiText key={relation} size="xs">
                             <Link
                                 css={linkStyle}
                                 href={`${PATH_SUBSCRIPTIONS}/${relation}`}
