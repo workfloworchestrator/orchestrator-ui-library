@@ -6,7 +6,10 @@ import { EuiButtonIcon, EuiText } from '@elastic/eui';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_SUBSCRIPTIONS } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { SubscriptionAction } from '@/types';
+
+import { getSubscriptionActionStyles } from './styles';
 
 export type WfoSubscriptionActionExpandableMenuItemProps = {
     subscriptionAction: SubscriptionAction;
@@ -17,51 +20,41 @@ export type WfoSubscriptionActionExpandableMenuItemProps = {
 export const WfoSubscriptionActionExpandableMenuItem: FC<
     WfoSubscriptionActionExpandableMenuItemProps
 > = ({ subscriptionAction, onClickLockedRelation, children }) => {
+    const {
+        expandableMenuItemStyle,
+        expandButtonStyle,
+        expandedContentStyle,
+        linkStyle,
+    } = useWithOrchestratorTheme(getSubscriptionActionStyles);
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <div>
             <div
-                css={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    '&:hover, & :hover': {
-                        cursor: 'pointer',
-                    },
-                }}
+                css={expandableMenuItemStyle}
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <div>{children}</div>
                 {subscriptionAction.locked_relations && (
                     <EuiButtonIcon
-                        css={{
-                            marginRight: '12px',
-                        }}
+                        css={expandButtonStyle}
                         iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
                         onClick={() => setIsExpanded(!isExpanded)}
                     />
                 )}
             </div>
             {subscriptionAction.locked_relations && isExpanded && (
-                <div
-                    css={{
-                        marginLeft: '50px',
-                        paddingBottom: '12px',
-                        paddingRight: '12px',
-                    }}
-                >
+                <div css={expandedContentStyle}>
+                    {/* TODO: Adds text */}
+                    <EuiText size="s">Todo!!!</EuiText>
                     {subscriptionAction.locked_relations.map((relation) => (
-                        <EuiText key={relation}>
+                        <EuiText key={relation} size="s">
                             <Link
-                                css={{
-                                    display: 'block',
-                                }}
+                                css={linkStyle}
                                 href={`${PATH_SUBSCRIPTIONS}/${relation}`}
                                 onClick={() => onClickLockedRelation(relation)}
                             >
-                                {/* Todo: decide if we want this */}
-                                <code>{relation}</code>
+                                {relation}
                             </Link>
                         </EuiText>
                     ))}
