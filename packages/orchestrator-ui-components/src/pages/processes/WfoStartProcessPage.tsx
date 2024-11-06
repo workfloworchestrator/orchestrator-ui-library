@@ -100,9 +100,10 @@ export const WfoStartProcessPage = ({
         { skip: !subscriptionId },
     );
 
-    const { data: workflowMetadata } = useGetDescriptionForWorkflowNameQuery({
-        workflowName: processName,
-    });
+    const { data: workflowMetadata, isError: isErrorWorkflowDescription } =
+        useGetDescriptionForWorkflowNameQuery({
+            workflowName: processName,
+        });
 
     const [startProcess] = useStartProcessMutation();
 
@@ -220,11 +221,14 @@ export const WfoStartProcessPage = ({
         },
     };
 
+    const pageTitle =
+        workflowMetadata?.description ||
+        (isErrorWorkflowDescription && processDetail?.workflowName) ||
+        '';
+
     return (
         <WfoProcessDetail
-            pageTitle={
-                workflowMetadata?.description ?? workflowMetadata?.name ?? ''
-            }
+            pageTitle={pageTitle}
             productNames={''}
             buttonsAreDisabled={true}
             processDetail={processDetail}
