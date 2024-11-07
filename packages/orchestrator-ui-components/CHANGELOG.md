@@ -1,5 +1,18 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.9.0
+
+### Minor Changes
+
+-   fc8002a: 1503 Makes disabled action menu items expandable to list all subscriptions preventing this action to be available
+
+### Patch Changes
+
+-   beca81e: Fixes possible error in suspend step
+-   9d1881f: 1504 Resolves task names and workflow names into the description text from the metadata endpoint, making the titles more human-readable
+-   e8c65bf: update to translation file
+-   4bf976f: Fixes showing empty product block values where they should not be
+
 ## 2.8.4
 
 ### Patch Changes
