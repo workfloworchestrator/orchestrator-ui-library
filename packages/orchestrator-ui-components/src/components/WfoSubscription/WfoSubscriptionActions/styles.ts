@@ -5,13 +5,16 @@ import { WfoTheme } from '@/hooks';
 const EXPANDED_CONTENT_LEFT_MARGIN = '52px';
 
 export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
+    const clickableStyle = css({
+        '&:hover, & :hover': {
+            cursor: 'pointer',
+        },
+    });
+
     const expandableMenuItemStyle = css({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        '&:hover, & :hover': {
-            cursor: 'pointer',
-        },
     });
 
     const expandButtonStyle = css({
@@ -31,6 +34,7 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
     const linkMenuItemStyle = css({
         '&>:hover': {
             backgroundColor: theme.colors.lightestShade,
+            borderRadius: theme.border.radius.medium,
         },
     });
 
@@ -57,6 +61,7 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
     });
 
     return {
+        clickableStyle,
         expandableMenuItemStyle,
         expandButtonStyle,
         expandedContentStyle,
