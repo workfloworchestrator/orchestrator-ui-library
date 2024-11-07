@@ -32,19 +32,19 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<
     } = useWithOrchestratorTheme(getSubscriptionActionStyles);
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const { locked_relations } = subscriptionAction;
+    const { locked_relations: lockedRelations } = subscriptionAction;
 
     return (
         <div>
             <div
                 css={[
                     expandableMenuItemStyle,
-                    locked_relations && clickableStyle,
+                    lockedRelations && clickableStyle,
                 ]}
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <div>{children}</div>
-                {locked_relations && (
+                {lockedRelations && (
                     <EuiButtonIcon
                         css={expandButtonStyle}
                         iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
@@ -52,10 +52,10 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<
                     />
                 )}
             </div>
-            {locked_relations && isExpanded && (
+            {lockedRelations && isExpanded && (
                 <div css={expandedContentStyle}>
                     <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
-                    {locked_relations.map((relation) => (
+                    {lockedRelations.map((relation) => (
                         <EuiText key={relation} size="xs">
                             <Link
                                 css={linkStyle}
