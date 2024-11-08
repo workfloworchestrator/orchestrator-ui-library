@@ -2,4 +2,4 @@
 '@orchestrator-ui/orchestrator-ui-components': patch
 ---
 
-Fixes to many productblock values being hidden
+Fixes too many productblock values being hidden
