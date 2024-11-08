@@ -61,6 +61,7 @@ export const WfoSubscriptionProductBlock = ({
     );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
 
+    // On previous attempts lodash isEmpty was used here but it signals integer values and false as empty so we don't use it here
     const isEmpty = (value: unknown) => {
         return (
             value === null ||
