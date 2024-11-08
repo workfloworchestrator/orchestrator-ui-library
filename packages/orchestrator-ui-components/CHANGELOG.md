@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.9.1
+
+### Patch Changes
+
+-   fc4a7c5: Fixes too many productblock values being hidden
+
 ## 2.9.0
 
 ### Minor Changes
