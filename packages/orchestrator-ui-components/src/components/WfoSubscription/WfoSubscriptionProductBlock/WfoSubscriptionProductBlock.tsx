@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { isArray } from 'lodash';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -67,7 +66,7 @@ export const WfoSubscriptionProductBlock = ({
             value === null ||
             value === undefined ||
             value === '' ||
-            (isArray(value) && value.length === 0)
+            (Array.isArray(value) && value.length === 0)
         );
     };
 
