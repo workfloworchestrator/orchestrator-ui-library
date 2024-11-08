@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { isEmpty } from 'lodash';
+import { isArray } from 'lodash';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -61,6 +61,15 @@ export const WfoSubscriptionProductBlock = ({
         (inUseByRelation) => inUseByRelation.subscription_id !== subscriptionId,
     );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
+
+    const isEmpty = (value: unknown) => {
+        return (
+            value === null ||
+            value === undefined ||
+            value === '' ||
+            (isArray(value) && value.length === 0)
+        );
+    };
 
     return (
         <>
