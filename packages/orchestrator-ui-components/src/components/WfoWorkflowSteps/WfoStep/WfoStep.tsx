@@ -10,7 +10,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { WfoJsonCodeBlock } from '@/components';
+import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
@@ -48,7 +48,7 @@ export const WfoStep = React.forwardRef(
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
         const [tableView, setTableView] = useState<boolean>(false);
-        console.log(tableView, setTableView);
+
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
@@ -187,9 +187,14 @@ export const WfoStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {hasStepContent && !hasHtmlMail && isExpanded && (
-                        <WfoJsonCodeBlock data={stepContent} />
-                    )}
+                    {hasStepContent &&
+                        !hasHtmlMail &&
+                        isExpanded &&
+                        (tableView ? (
+                            <WfoTableCodeBlock data={stepContent} />
+                        ) : (
+                            <WfoJsonCodeBlock data={stepContent} />
+                        ))}
                     {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(
