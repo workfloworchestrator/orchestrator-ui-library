@@ -64,6 +64,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
         color: theme.colors.text,
         display: 'flex',
         alignItems: 'center',
+        overflowWrap: 'anywhere',
     });
 
     const clipboardIconStyle = css({
