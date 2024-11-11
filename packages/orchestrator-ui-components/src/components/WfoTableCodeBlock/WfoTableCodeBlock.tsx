@@ -2,18 +2,20 @@ import React, { FC } from 'react';
 
 import { EuiFlexItem } from '@elastic/eui';
 
+import { WfoKeyValueTable } from '@/components';
+import type { WfoKeyValueTableDataType } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import type { StepState } from '@/types';
 
-import { WfoKeyValueTable } from '../WfoKeyValueTable';
-import type { WfoKeyValueTableDataType } from '../WfoKeyValueTable';
 import { getStyles } from './styles';
 
 export type WfoTableCodeBlockProps = {
-    data: StepState;
+    stepState: StepState;
 };
 
-export const WfoTableCodeBlock: FC<WfoTableCodeBlockProps> = ({ data }) => {
+export const WfoTableCodeBlock: FC<WfoTableCodeBlockProps> = ({
+    stepState: data,
+}) => {
     const { tableCodeBlockMarginStyle } = useWithOrchestratorTheme(getStyles);
 
     const keyValues: WfoKeyValueTableDataType[] = Object.entries(data).map(

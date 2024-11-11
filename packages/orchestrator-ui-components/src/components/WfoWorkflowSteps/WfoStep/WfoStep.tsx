@@ -191,7 +191,7 @@ export const WfoStep = React.forwardRef(
                         !hasHtmlMail &&
                         isExpanded &&
                         (tableView ? (
-                            <WfoTableCodeBlock data={stepContent} />
+                            <WfoTableCodeBlock stepState={stepContent} />
                         ) : (
                             <WfoJsonCodeBlock data={stepContent} />
                         ))}
