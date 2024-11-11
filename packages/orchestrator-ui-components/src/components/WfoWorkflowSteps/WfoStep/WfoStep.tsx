@@ -1,8 +1,14 @@
-import React, { LegacyRef } from 'react';
+import React, { LegacyRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPanel,
+    EuiText,
+} from '@elastic/eui';
 
 import { WfoJsonCodeBlock } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -41,7 +47,8 @@ export const WfoStep = React.forwardRef(
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
-
+        const [tableView, setTableView] = useState<boolean>(false);
+        console.log(tableView, setTableView);
         const { theme } = useOrchestratorTheme();
         const {
             stepEmailContainerStyle,
@@ -129,6 +136,23 @@ export const WfoStep = React.forwardRef(
                         <EuiFlexGroup css={stepRowStyle}>
                             {step.executed && (
                                 <>
+                                    {isExpanded && (
+                                        <EuiButton
+                                            onClick={(
+                                                event: React.MouseEvent<HTMLButtonElement>,
+                                            ) => {
+                                                setTableView(!tableView);
+                                                event.stopPropagation();
+                                            }}
+                                            size="s"
+                                        >
+                                            {t(
+                                                tableView
+                                                    ? 'jsonView'
+                                                    : 'tableView',
+                                            )}
+                                        </EuiButton>
+                                    )}
                                     <EuiFlexItem
                                         grow={0}
                                         css={stepHeaderRightStyle}

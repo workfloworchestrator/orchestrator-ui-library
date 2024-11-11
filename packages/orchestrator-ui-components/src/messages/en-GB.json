@@ -236,7 +236,9 @@
             "userInput": "User input",
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow",
-            "traceback": "Traceback"
+            "traceback": "Traceback",
+            "tableView": "Table view",
+            "jsonView": "JSON view"
         },
         "delta": {
             "title": "Subscription delta",

@@ -236,7 +236,9 @@
             "userInput": "Invoer gebruiker",
             "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
             "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
-            "traceback": "Traceback"
+            "traceback": "Traceback",
+            "tableView": "Tabelweergave",
+            "jsonView": "JSON weergave"
         },
         "delta": {
             "title": "Subscription delta",
