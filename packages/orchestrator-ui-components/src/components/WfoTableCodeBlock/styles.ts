@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 
-export const getStyles = () => {
+import { WfoTheme } from '@/hooks';
+
+export const getStyles = ({ theme }: WfoTheme) => {
     const tableCodeBlockMarginStyle = css({
-        margin: 15,
-        marginTop: 20,
-        marginRight: 20,
+        margin: theme.size.base,
+        marginTop: theme.size.l,
+        marginRight: theme.size.l,
     });
 
     return {
