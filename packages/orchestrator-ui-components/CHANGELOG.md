@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.10.0
+
+### Minor Changes
+
+-   e198ef6: 1528 Add tooltip to WfoInlineText edit, fix bug showing empty tooltip
+-   4adc510: Adds table view to workflow steps
+
 ## 2.9.1
 
 ### Patch Changes
