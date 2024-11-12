@@ -12,7 +12,6 @@ interface WfoInlineNoteEditProps {
     value: Subscription['note'];
     subscriptionId?: Subscription['subscriptionId'];
     onlyShowOnHover?: boolean;
-    onNoteUpdate?: (note: string) => void;
 }
 
 export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
