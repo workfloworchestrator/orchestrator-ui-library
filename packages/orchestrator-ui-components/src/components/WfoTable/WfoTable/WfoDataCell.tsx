@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
-import { EuiToolTip } from '@elastic/eui';
+import { WfoToolTip } from '@/components';
 
 interface WfoDataCellProps {
     customTooltip: ReactNode;
@@ -12,19 +12,11 @@ export const WfoDataCell: FC<WfoDataCellProps> = ({
     children,
 }) => {
     const tooltipContent =
-        customTooltip || (typeof children === 'string' ? children : <></>);
+        customTooltip || (typeof children === 'string' ? children : null);
 
     if (tooltipContent) {
         return (
-            <EuiToolTip
-                position="bottom"
-                delay="long"
-                content={tooltipContent}
-                css={{ maxWidth: 'fit-content' }}
-                repositionOnScroll
-            >
-                <>{children}</>
-            </EuiToolTip>
+            <WfoToolTip tooltipContent={tooltipContent}>{children}</WfoToolTip>
         );
     }
     return <>{children}</>;
