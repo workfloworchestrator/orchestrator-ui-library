@@ -73,9 +73,10 @@ export const getStyles = ({ theme }: WfoTheme) => {
         paddingBottom: 0,
     });
 
-    const clickable = css({
+    const clickableStyle = css({
         marginLeft: clipboardIconMargin,
         cursor: 'pointer',
+        paddingRight: theme.size.s,
     });
 
     return {
@@ -87,7 +88,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
         keyCellStyle,
         valueCellStyle,
         clipboardIconStyle,
-        clickable,
+        clickableStyle,
         lightBackground,
         darkBackground,
         getBackgroundColorStyleForRow,

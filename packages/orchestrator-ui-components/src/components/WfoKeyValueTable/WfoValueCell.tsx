@@ -24,7 +24,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
     const {
         clipboardIconSize,
         clipboardIconStyle,
-        clickable,
+        clickableStyle,
         getBackgroundColorStyleForRow,
         valueColumnStyle,
         valueCellStyle,
@@ -32,9 +32,12 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
 
     const shouldRenderCopyColumn = enableCopyIcon && textToCopy;
 
-    const valueToRender = React.isValidElement(value)
-        ? value
-        : JSON.stringify(value);
+    const valueToRender =
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        React.isValidElement(value)
+            ? value
+            : JSON.stringify(value);
 
     const copyText =
         typeof textToCopy === 'object'
@@ -48,7 +51,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
                 {shouldRenderCopyColumn && (
                     <EuiCopy textToCopy={copyText || ''}>
                         {(copy) => (
-                            <div onClick={copy} css={clickable}>
+                            <div onClick={copy} css={clickableStyle}>
                                 <WfoClipboardCopy
                                     width={clipboardIconSize}
                                     height={clipboardIconSize}
