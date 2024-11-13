@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.10.1
+
+### Patch Changes
+
+-   4a1ef5b: Adds pre-wrap style to value display fieldds
+
 ## 2.10.0
 
 ### Minor Changes
