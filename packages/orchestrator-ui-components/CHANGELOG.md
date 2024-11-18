@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.11.0
+
+### Minor Changes
+
+-   85fca33: Adds npm provenance flag
+
+### Patch Changes
+
+-   59389ea: Removes limit on related workflows on subscription detail page
+
 ## 2.10.1
 
 ### Patch Changes
