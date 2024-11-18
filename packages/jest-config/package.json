@@ -3,7 +3,8 @@
     "version": "1.4.1",
     "license": "Apache-2.0",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "provenance": true
     },
     "description": "Contains the jest configuration used in the Workflow orchestrator frontend projects",
     "author": {
