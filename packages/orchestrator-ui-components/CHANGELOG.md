@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.11.1
+
+### Patch Changes
+
+-   56e2537: Fixes rights issue in github action
+-   b7fe3ee: Adds github action permission to publish with provenance
+
 ## 2.11.0
 
 ### Minor Changes
