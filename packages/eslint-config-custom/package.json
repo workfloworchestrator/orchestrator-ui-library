@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
     },
     "homepage": "https://www.workfloworchestrator.org",
     "keywords": [
