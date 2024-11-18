@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 1.4.0
+
+### Minor Changes
+
+-   85fca33: Adds npm provenance flag
+
 ## 1.3.1
 
 ### Patch Changes
