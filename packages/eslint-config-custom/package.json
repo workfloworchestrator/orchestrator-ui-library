@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/eslint-config-custom",
-    "version": "1.3.1",
+    "version": "1.4.1",
     "license": "Apache-2.0",
     "description": "Contains the eslint configuration used in the Workflow orchestrator frontend projects",
     "author": {
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
     },
     "homepage": "https://www.workfloworchestrator.org",
     "keywords": [
@@ -33,6 +33,7 @@
         "prettier": "^3.2.5"
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "provenance": true
     }
 }

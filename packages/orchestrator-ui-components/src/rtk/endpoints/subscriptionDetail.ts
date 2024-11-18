@@ -1,3 +1,4 @@
+import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { orchestratorApi } from '@/rtk';
 import { CacheTagType } from '@/types';
 import {
@@ -50,7 +51,7 @@ fragment SubscriptionDetail on SubscriptionInterface {
         subscriptionInstanceId
         inUseByRelations
     }
-    processes(sortBy: { field: "startedAt", order: ASC }) {
+    processes(first: ${NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS}, after: 0, sortBy: { field: "startedAt", order: ASC }) {
         page {
             processId
             lastStatus

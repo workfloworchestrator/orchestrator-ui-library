@@ -10,6 +10,9 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
     publish:
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: write
         steps:
             - name: Create GitHub app token
               uses: actions/create-github-app-token@v1
@@ -18,7 +21,7 @@ jobs:
                   app-id: ${{ vars.RW_REPOSITORY_CONTENT_APP_ID }}
                   private-key: ${{ secrets.RW_REPOSITORY_CONTENT_PRIVATE_KEY }}
                   owner: ${{ github.repository_owner }}
-                  repositories: "orchestrator-ui-library"
+                  repositories: 'orchestrator-ui-library'
             - uses: actions/checkout@v3
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3

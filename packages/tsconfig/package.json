@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
     },
     "homepage": "https://www.workfloworchestrator.org",
     "keywords": [
@@ -23,9 +23,10 @@
         "dev": "npm run build -- --watch"
     },
     "main": "./dist/",
-    "version": "1.1.1",
+    "version": "1.2.1",
     "license": "Apache-2.0",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "provenance": true
     }
 }

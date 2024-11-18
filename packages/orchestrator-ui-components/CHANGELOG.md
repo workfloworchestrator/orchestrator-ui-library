@@ -1,5 +1,28 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.11.1
+
+### Patch Changes
+
+-   56e2537: Fixes rights issue in github action
+-   b7fe3ee: Adds github action permission to publish with provenance
+
+## 2.11.0
+
+### Minor Changes
+
+-   85fca33: Adds npm provenance flag
+
+### Patch Changes
+
+-   59389ea: Removes limit on related workflows on subscription detail page
+
+## 2.10.1
+
+### Patch Changes
+
+-   4a1ef5b: Adds pre-wrap style to value display fieldds
+
 ## 2.10.0
 
 ### Minor Changes
