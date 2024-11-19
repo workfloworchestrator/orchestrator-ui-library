@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from 'react';
 
-import { useOrchestratorTheme } from '@/hooks';
 import { WfoIconProps } from '@/icons';
 
 export type WfoHeroIconsWrapperProps = {
@@ -11,24 +10,18 @@ export type WfoHeroIconsWrapperProps = {
 export const WfoHeroIconsWrapper: FC<WfoHeroIconsWrapperProps> = ({
     children,
     className,
-}) => {
-    const { theme } = useOrchestratorTheme();
-
-    return (
-        <div
-            className={className}
-            css={{
-                marginLeft: theme.size.xs,
-                marginRight: theme.size.xs,
-                display: 'flex',
-                alignItems: 'center',
-                height: '100%',
-            }}
-        >
-            {children}
-        </div>
-    );
-};
+}) => (
+    <div
+        className={className}
+        css={{
+            display: 'flex',
+            alignItems: 'center',
+            height: '100%',
+        }}
+    >
+        {children}
+    </div>
+);
 
 export const withWfoHeroIconsWrapper = (Icon: FC<WfoIconProps>) => {
     const wfoHeroIconsWrapperWithIcon = ({

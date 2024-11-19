@@ -7,12 +7,12 @@ import { withWfoHeroIconsWrapper } from './WfoHeroIconsWrapper';
 const WfoArrowsUpDownSvg: FC<WfoIconProps> = ({
     width = 20,
     height = 20,
-    color = '#000000',
+    color = 'currentColor',
 }) => (
     <svg
         width={width}
         height={height}
-        viewBox="0 0 24 24"
+        viewBox="2 2 20 20"
         fill={color}
         xmlns="http://www.w3.org/2000/svg"
     >

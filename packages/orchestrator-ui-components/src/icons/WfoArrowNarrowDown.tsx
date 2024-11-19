@@ -10,7 +10,7 @@ export const WfoArrowNarrowDown: FC<WfoIconProps> = ({
     <svg
         width={width}
         height={height}
-        viewBox="0 0 16 20"
+        viewBox="4 5 8 10"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         className="wfoArrowNarrowIcon"

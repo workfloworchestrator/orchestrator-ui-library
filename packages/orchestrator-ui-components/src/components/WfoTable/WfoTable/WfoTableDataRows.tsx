@@ -29,8 +29,14 @@ export const WfoTableDataRows = <T extends object>({
     onRowClick,
     className,
 }: WfoTableDataRowsProps<T>) => {
-    const { cellStyle, rowStyle, dataRowStyle, clickableStyle, setWidth } =
-        useWithOrchestratorTheme(getWfoTableStyles);
+    const {
+        cellStyle,
+        cellContentStyle,
+        rowStyle,
+        dataRowStyle,
+        clickableStyle,
+        setWidth,
+    } = useWithOrchestratorTheme(getWfoTableStyles);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
         columnConfig,
@@ -70,7 +76,7 @@ export const WfoTableDataRows = <T extends object>({
                                             setWidth(columnConfig.width),
                                         ]}
                                     >
-                                        <div>
+                                        <div css={cellContentStyle}>
                                             {columnConfig.renderControl(row)}
                                         </div>
                                     </td>
@@ -91,7 +97,7 @@ export const WfoTableDataRows = <T extends object>({
                                         setWidth(columnConfig.width),
                                     ]}
                                 >
-                                    <div>
+                                    <div css={cellContentStyle}>
                                         <WfoDataCell
                                             customTooltip={columnConfig.renderTooltip?.(
                                                 result,
