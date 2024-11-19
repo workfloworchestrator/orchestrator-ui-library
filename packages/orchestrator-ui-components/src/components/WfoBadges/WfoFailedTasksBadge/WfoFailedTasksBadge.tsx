@@ -6,13 +6,14 @@ import Link from 'next/link';
 import { EuiToolTip } from '@elastic/eui';
 
 import { PATH_TASKS, WfoHeaderBadge } from '@/components';
-import { getTasksBadgeStyles } from '@/components/WfoBadges/WfoFailedTasksBadge/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoCheckmarkCircleFill, WfoXCircleFill } from '@/icons';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '@/rtk/endpoints/processStatusCounts';
+
+import { getTasksBadgeStyles } from './styles';
 
 type TaskCountsSummary = {
     failed: number;
@@ -51,7 +52,8 @@ const WfoTasksLink = ({ children }: { children: ReactNode }) => (
 export const WfoFailedTasksBadge = () => {
     const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
-    const { taskBadgeStyle } = useWithOrchestratorTheme(getTasksBadgeStyles);
+    const { failedTaskBadgeStyle } =
+        useWithOrchestratorTheme(getTasksBadgeStyles);
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
 
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
@@ -75,7 +77,7 @@ export const WfoFailedTasksBadge = () => {
             >
                 <WfoTasksLink>
                     <WfoHeaderBadge
-                        css={taskBadgeStyle}
+                        css={failedTaskBadgeStyle}
                         color={theme.colors.ghost}
                         textColor={theme.colors.shadow}
                         iconType={() => (
@@ -99,7 +101,7 @@ export const WfoFailedTasksBadge = () => {
             >
                 <WfoTasksLink>
                     <WfoHeaderBadge
-                        css={taskBadgeStyle}
+                        css={failedTaskBadgeStyle}
                         color={theme.colors.ghost}
                         textColor={theme.colors.shadow}
                         iconType={() => (
