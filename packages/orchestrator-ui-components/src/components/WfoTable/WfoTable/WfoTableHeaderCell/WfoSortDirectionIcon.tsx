@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 
 import { useOrchestratorTheme } from '@/hooks';
-import { WfoArrowNarrowDown, WfoArrowNarrowUp, WfoArrowsUpDown } from '@/icons';
+import { WfoArrowsUpDown } from '@/icons';
+import { WfoArrowLongDown } from '@/icons/heroicons/WfoArrowLongDown';
+import { WfoArrowLongUp } from '@/icons/heroicons/WfoArrowLongUp';
 import { SortOrder } from '@/types';
 
 import { SORTABLE_ICON_CLASS } from './styles';
@@ -18,6 +20,8 @@ export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
     if (!sortDirection) {
         return (
             <WfoArrowsUpDown
+                height={16}
+                width={16}
                 className={SORTABLE_ICON_CLASS}
                 css={{ visibility: 'hidden' }}
                 color={theme.colors.subduedText}
@@ -25,17 +29,10 @@ export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
         );
     }
 
+    // Todo replace with Heroicons (0 margin)
     return sortDirection === SortOrder.ASC ? (
-        <WfoArrowNarrowUp
-            color={theme.colors.subduedText}
-            height={24}
-            width={24}
-        />
+        <WfoArrowLongUp color={theme.colors.subduedText} />
     ) : (
-        <WfoArrowNarrowDown
-            color={theme.colors.subduedText}
-            height={24}
-            width={24}
-        />
+        <WfoArrowLongDown color={theme.colors.subduedText} />
     );
 };
