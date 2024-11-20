@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { EuiToolTip } from '@elastic/eui';
 
-import { WfoHeaderBadge } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
-import { WfoCheckmarkCircleFill } from '@/icons';
-import { WfoXCircleFill } from '@/icons';
+import { PATH_TASKS, WfoHeaderBadge } from '@/components';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoCheckmarkCircleFill, WfoXCircleFill } from '@/icons';
 import {
     ProcessStatusCounts,
     useProcessStatusCountsQuery,
 } from '@/rtk/endpoints/processStatusCounts';
+
+import { getTasksBadgeStyles } from './styles';
 
 type TaskCountsSummary = {
     failed: number;
@@ -36,9 +38,22 @@ const getTaskCountsSummary = (
     };
 };
 
+const WfoTasksLink = ({ children }: { children: ReactNode }) => (
+    <Link
+        href={`${PATH_TASKS}`}
+        onClick={(e) => {
+            e.currentTarget.blur();
+        }}
+    >
+        {children}
+    </Link>
+);
+
 export const WfoFailedTasksBadge = () => {
     const t = useTranslations('common');
     const { theme } = useOrchestratorTheme();
+    const { failedTaskBadgeStyle } =
+        useWithOrchestratorTheme(getTasksBadgeStyles);
     const { data: processStatusCounts } = useProcessStatusCountsQuery();
 
     const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
@@ -60,15 +75,18 @@ export const WfoFailedTasksBadge = () => {
                     </>
                 }
             >
-                <WfoHeaderBadge
-                    color={theme.colors.ghost}
-                    textColor={theme.colors.shadow}
-                    iconType={() => (
-                        <WfoXCircleFill color={theme.colors.danger} />
-                    )}
-                >
-                    {taskCountsSummary.total}
-                </WfoHeaderBadge>
+                <WfoTasksLink>
+                    <WfoHeaderBadge
+                        css={failedTaskBadgeStyle}
+                        color={theme.colors.ghost}
+                        textColor={theme.colors.shadow}
+                        iconType={() => (
+                            <WfoXCircleFill color={theme.colors.danger} />
+                        )}
+                    >
+                        {taskCountsSummary.total}
+                    </WfoHeaderBadge>
+                </WfoTasksLink>
             </EuiToolTip>
         );
     } else {
@@ -81,15 +99,20 @@ export const WfoFailedTasksBadge = () => {
                     </>
                 }
             >
-                <WfoHeaderBadge
-                    color={theme.colors.ghost}
-                    textColor={theme.colors.shadow}
-                    iconType={() => (
-                        <WfoCheckmarkCircleFill color={theme.colors.success} />
-                    )}
-                >
-                    0
-                </WfoHeaderBadge>
+                <WfoTasksLink>
+                    <WfoHeaderBadge
+                        css={failedTaskBadgeStyle}
+                        color={theme.colors.ghost}
+                        textColor={theme.colors.shadow}
+                        iconType={() => (
+                            <WfoCheckmarkCircleFill
+                                color={theme.colors.success}
+                            />
+                        )}
+                    >
+                        0
+                    </WfoHeaderBadge>
+                </WfoTasksLink>
             </EuiToolTip>
         );
     }
