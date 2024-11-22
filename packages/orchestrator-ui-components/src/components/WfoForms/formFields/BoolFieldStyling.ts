@@ -12,10 +12,6 @@ export const boolFieldStyling = css`
       z-index: unset;
     }
 
-    input[type="checkbox"] {
-      display: none;
-    }
-
     label {
       display: inline-block;
       margin: 3px 0;
