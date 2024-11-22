@@ -10,6 +10,7 @@ import {
     Pagination,
     WfoDateTime,
     WfoInlineJson,
+    WfoInlineNoteEdit,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
@@ -149,6 +150,13 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             note: {
                 columnType: ColumnType.DATA,
                 label: t('note'),
+                renderData: (cellValue, row) => (
+                    <WfoInlineNoteEdit
+                        subscriptionId={row.subscriptionId}
+                        value={cellValue}
+                        onlyShowOnHover={true}
+                    />
+                ),
             },
             metadata: {
                 columnType: ColumnType.DATA,
