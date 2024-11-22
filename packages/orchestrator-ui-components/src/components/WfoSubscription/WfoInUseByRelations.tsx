@@ -52,6 +52,7 @@ export const WfoInUseByRelations = ({
                 value: (
                     <WfoFirstPartUUID
                         UUID={inUseByRelationDetails.subscriptionId}
+                        showCopyIcon={false}
                     />
                 ),
                 textToCopy: inUseByRelationDetails.subscriptionId,
