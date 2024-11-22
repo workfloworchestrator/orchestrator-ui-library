@@ -34,7 +34,7 @@ interface WfoSubscriptionProductBlockProps {
     subscriptionId: Subscription['subscriptionId'];
 }
 
-export const HIDDEN_KEYS = ['title', 'name', 'label'];
+export const HIDDEN_KEYS = ['title', 'name', 'label', 'inUseByIds'];
 
 export const WfoSubscriptionProductBlock = ({
     productBlock,
