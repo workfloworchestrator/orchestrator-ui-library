@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import { EuiInlineEditText } from '@elastic/eui';
@@ -20,8 +20,7 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     onlyShowOnHover = false,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const initialNote = useMemo(() => value || '', [value]);
-    const [note, setNote] = useState<string>(initialNote);
+    const [note, setNote] = useState<string>(value ?? '');
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const [startProcess] = useStartProcessMutation();
@@ -42,15 +41,15 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     };
 
     const handleCancel = () => {
-        setNote(initialNote);
+        setNote(value ?? '');
         setIsTooltipVisible(true);
     };
 
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
     useEffect(() => {
-        setNote(initialNote);
-    }, [initialNote]);
+        setNote(value ?? '');
+    }, [value]);
 
     return (
         <div
