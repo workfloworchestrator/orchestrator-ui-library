@@ -16,7 +16,7 @@
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1",
-        "@turbo/gen": "^2.2.3",
+        "@turbo/gen": "^2.3.1",
         "husky": "^9.0.11",
         "turbo": "^2.2.3"
     },
