@@ -38,12 +38,14 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
 }) => {
     const {
         headerCellStyle,
+        headerCellContainer,
         getHeaderCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
         headerCellPopoverContentStyle,
         getTitleButtonStyle,
         sortButtonStyle,
+        dragAndDropStyle,
     } = useWithOrchestratorTheme(getWfoBasicTableStyles);
     const t = useTranslations('common');
 
@@ -89,34 +91,36 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     );
 
     return (
-        <div css={headerCellStyle}>
-            <EuiPopover
-                className={HEADER_CELL_TITLE_BUTTON_CLASS}
-                css={getTitleButtonStyle(sortOrder)}
-                initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
-                id={smallContextMenuPopoverId}
-                button={<WfoHeaderCellContentButton />}
-                isOpen={isPopoverOpen}
-                closePopover={closePopover}
-                panelPaddingSize="none"
-                anchorPosition="downLeft"
-            >
-                <WfoPopoverHeader />
-                <EuiHorizontalRule margin="none" />
-                <WfoPopoverContent />
-            </EuiPopover>
-
-            {isSortable && (
-                <button
-                    className={HEADER_CELL_SORT_BUTTON_CLASS}
-                    css={sortButtonStyle}
-                    onClick={() =>
-                        onSetSortOrder(getUpdatedSortOrder(sortOrder))
-                    }
+        <div css={headerCellContainer}>
+            <div css={headerCellStyle}>
+                <EuiPopover
+                    className={HEADER_CELL_TITLE_BUTTON_CLASS}
+                    css={getTitleButtonStyle(sortOrder)}
+                    initialFocus={`.euiPanel .euiFieldSearch.${fieldName}`}
+                    id={smallContextMenuPopoverId}
+                    button={<WfoHeaderCellContentButton />}
+                    isOpen={isPopoverOpen}
+                    closePopover={closePopover}
+                    panelPaddingSize="none"
+                    anchorPosition="downLeft"
                 >
-                    <WfoSortDirectionIcon sortDirection={sortOrder} />
-                </button>
-            )}
+                    <WfoPopoverHeader />
+                    <EuiHorizontalRule margin="none" />
+                    <WfoPopoverContent />
+                </EuiPopover>
+                {isSortable && (
+                    <button
+                        className={HEADER_CELL_SORT_BUTTON_CLASS}
+                        css={sortButtonStyle}
+                        onClick={() =>
+                            onSetSortOrder(getUpdatedSortOrder(sortOrder))
+                        }
+                    >
+                        <WfoSortDirectionIcon sortDirection={sortOrder} />
+                    </button>
+                )}
+            </div>
+            <div css={dragAndDropStyle}>&nbsp;</div>
         </div>
     );
 };

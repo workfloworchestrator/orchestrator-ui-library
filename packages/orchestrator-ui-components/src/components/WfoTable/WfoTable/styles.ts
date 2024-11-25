@@ -96,7 +96,6 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
 
     const cellStyle = css({
         paddingLeft: theme.size.m,
-        paddingRight: theme.size.m,
         whiteSpace: 'nowrap',
         verticalAlign: 'middle',
     });
