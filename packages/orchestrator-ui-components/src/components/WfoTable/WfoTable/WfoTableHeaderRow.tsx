@@ -28,8 +28,14 @@ export const WfoTableHeaderRow = <T extends object>({
     onUpdateDataSearch,
     className,
 }: WfoTableHeaderRowProps<T>) => {
-    const { cellStyle, headerCellStyle, rowStyle, setWidth } =
-        useWithOrchestratorTheme(getWfoTableStyles);
+    const {
+        cellStyle,
+        headerCellContainer,
+        sortableHeaderCellStyle,
+        rowStyle,
+        dragAndDropStyle,
+        setWidth,
+    } = useWithOrchestratorTheme(getWfoTableStyles);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
         columnConfig,
@@ -56,41 +62,44 @@ export const WfoTableHeaderRow = <T extends object>({
                                         !columnConfig.disableDefaultCellStyle,
                                     ),
                                     ...toOptionalArrayEntry(
-                                        headerCellStyle,
+                                        sortableHeaderCellStyle,
                                         !!columnConfig.isSortable,
                                     ),
                                     setWidth(columnConfig.width),
                                 ]}
                             >
-                                <WfoTableHeaderCell
-                                    fieldName={key}
-                                    sortOrder={
-                                        dataSortingConfiguration?.sortOrder
-                                    }
-                                    onSetSortOrder={
-                                        columnConfig.isSortable
-                                            ? (updatedSortOrder) =>
-                                                  onUpdateDataSorting?.({
-                                                      // Currently there is not a good way to tell Typescript that in some cases
-                                                      // key is of type "keyof T"
-                                                      field: key as keyof T,
-                                                      sortOrder:
-                                                          updatedSortOrder,
-                                                  })
-                                            : undefined
-                                    }
-                                    onSearch={
-                                        columnConfig.isFilterable
-                                            ? (searchText) =>
-                                                  onUpdateDataSearch?.({
-                                                      field: key as keyof T,
-                                                      searchText,
-                                                  })
-                                            : undefined
-                                    }
-                                >
-                                    {columnConfig.label?.toString()}
-                                </WfoTableHeaderCell>
+                                <div css={headerCellContainer}>
+                                    <WfoTableHeaderCell
+                                        fieldName={key}
+                                        sortOrder={
+                                            dataSortingConfiguration?.sortOrder
+                                        }
+                                        onSetSortOrder={
+                                            columnConfig.isSortable
+                                                ? (updatedSortOrder) =>
+                                                      onUpdateDataSorting?.({
+                                                          // Currently there is not a good way to tell Typescript that in some cases
+                                                          // key is of type "keyof T"
+                                                          field: key as keyof T,
+                                                          sortOrder:
+                                                              updatedSortOrder,
+                                                      })
+                                                : undefined
+                                        }
+                                        onSearch={
+                                            columnConfig.isFilterable
+                                                ? (searchText) =>
+                                                      onUpdateDataSearch?.({
+                                                          field: key as keyof T,
+                                                          searchText,
+                                                      })
+                                                : undefined
+                                        }
+                                    >
+                                        {columnConfig.label?.toString()}
+                                    </WfoTableHeaderCell>
+                                    <div css={dragAndDropStyle}>&nbsp;</div>
+                                </div>
                             </th>
                         );
                     }
