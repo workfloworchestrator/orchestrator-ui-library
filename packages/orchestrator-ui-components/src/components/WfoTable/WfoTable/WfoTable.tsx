@@ -1,4 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -101,6 +102,8 @@ export type WfoTableProps<T extends object> = {
     className?: string;
 };
 
+export type OnUpdateColumnWidth = (columnName: string, width: number) => void;
+
 export const WfoTable = <T extends object>({
     data,
     columnConfig,
@@ -116,6 +119,14 @@ export const WfoTable = <T extends object>({
     onRowClick,
     className,
 }: WfoTableProps<T>) => {
+    const [localColumnConfig, setLocalColumnConfig] =
+        useState<WfoTableColumnConfig<T>>(columnConfig);
+
+    const onUpdateColumnWidth: OnUpdateColumnWidth = (columnName, width) => {
+        console.log(columnName, width);
+        // setLocalColumnConfig((columns) => columns.map());
+    };
+
     const {
         tableContainerStyle,
         tableStyle,
@@ -126,6 +137,8 @@ export const WfoTable = <T extends object>({
         emptyTableMessageStyle,
     } = useWithOrchestratorTheme(getWfoTableStyles);
     const t = useTranslations('common');
+
+    console.log('columnConfig', localColumnConfig);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
         columnConfig,
@@ -142,12 +155,13 @@ export const WfoTable = <T extends object>({
                     ) : (
                         <thead css={headerStyle}>
                             <WfoTableHeaderRow
-                                columnConfig={columnConfig}
+                                columnConfig={localColumnConfig}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 dataSorting={dataSorting}
                                 onUpdateDataSorting={onUpdateDataSorting}
                                 onUpdateDataSearch={onUpdateDataSearch}
+                                onUpdateColumnWidth={onUpdateColumnWidth}
                             />
                         </thead>
                     )}
@@ -168,7 +182,7 @@ export const WfoTable = <T extends object>({
                         <tbody css={isLoading && bodyLoadingStyle}>
                             <WfoTableDataRows
                                 data={data}
-                                columnConfig={columnConfig}
+                                columnConfig={localColumnConfig}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 rowExpandingConfiguration={

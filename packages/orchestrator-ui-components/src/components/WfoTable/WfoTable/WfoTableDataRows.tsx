@@ -110,6 +110,7 @@ export const WfoTableDataRows = <T extends object>({
                                             ) ?? result?.toString()}
                                         </WfoDataCell>
                                     </div>
+                                    <div>&nbsp;</div>
                                 </td>
                             );
                         })}

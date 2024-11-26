@@ -41,7 +41,6 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const headerStyle = css({
-        backgroundColor: theme.colors.lightShade,
         fontSize: theme.size.m,
         textAlign: 'left',
         'tr>:first-child': {
@@ -66,6 +65,8 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const rowStyle = css({
+        display: 'flex',
+        alignItems: 'center',
         height: TABLE_ROW_HEIGHT,
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
@@ -82,7 +83,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
-    const headerCellStyle = css({
+    const sortableHeaderCellStyle = css({
         paddingRight: 0,
         [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
@@ -94,10 +95,22 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         },
     });
 
-    const cellStyle = css({
+    const basicCellStyleProps = {
         paddingLeft: theme.size.m,
         whiteSpace: 'nowrap',
+        overflow: 'hidden',
         verticalAlign: 'middle',
+        display: 'flex',
+        justifyContent: 'space-between',
+    };
+
+    const cellStyle = css({ ...basicCellStyleProps });
+
+    const headerCellStyle = css({
+        ...basicCellStyleProps,
+        height: '100%',
+        flexGrow: 1,
+        backgroundColor: theme.colors.lightShade,
     });
 
     const cellContentStyle = css({
@@ -121,19 +134,30 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
             overflow: 'hidden',
         });
 
+    const dragAndDropStyle = css({
+        width: theme.size.m,
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'center',
+        cursor: 'col-resize',
+        border: 'thin solid red',
+    });
+
     return {
         tableContainerStyle,
         tableStyle,
         headerStyle,
+        headerCellStyle,
         bodyLoadingStyle,
         rowStyle,
         dataRowStyle,
         expandedRowStyle,
-        headerCellStyle,
+        sortableHeaderCellStyle,
         cellStyle,
         cellContentStyle,
         emptyTableMessageStyle,
         clickableStyle,
         setWidth,
+        dragAndDropStyle,
     };
 };

@@ -124,17 +124,6 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         },
     });
 
-    const headerCellContainer = css({
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    });
-    const dragAndDropStyle = css({
-        width: theme.size.m,
-        display: 'flex',
-        cursor: 'col-resize',
-    });
-
     return {
         basicTableStyle,
         headerCellStyle,
@@ -147,7 +136,5 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         getStatusColumnStyle,
         dropDownTableStyle,
         expandableTableStyle,
-        dragAndDropStyle,
-        headerCellContainer,
     };
 };
