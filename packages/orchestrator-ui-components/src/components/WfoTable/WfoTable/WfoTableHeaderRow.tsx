@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
@@ -50,12 +50,17 @@ export const WfoTableHeaderRow = <T extends object>({
                     const dataSortingConfiguration = dataSorting.find(
                         (dataSorting) => dataSorting.field === key,
                     );
+                    let startPosition = 0;
 
                     if (columnConfig.columnType === ColumnType.DATA) {
+                        const headerCellRef =
+                            useRef<HTMLTableCellElement>(null);
+
                         return (
                             <th
                                 colSpan={columnConfig.numberOfColumnsToSpan}
                                 key={key}
+                                ref={headerCellRef}
                                 css={[
                                     ...toOptionalArrayEntry(
                                         cellStyle,
@@ -98,7 +103,30 @@ export const WfoTableHeaderRow = <T extends object>({
                                     >
                                         {columnConfig.label?.toString()}
                                     </WfoTableHeaderCell>
-                                    <div css={dragAndDropStyle}>&nbsp;</div>
+                                    <div
+                                        css={dragAndDropStyle}
+                                        draggable={true}
+                                        onDragStart={(e) => {
+                                            startPosition = e.clientX;
+                                            console.log(
+                                                `startPosition: ${startPosition}`,
+                                            );
+                                        }}
+                                        onDragEnd={(e) => {
+                                            if (headerCellRef.current) {
+                                                const boundingRect =
+                                                    headerCellRef.current.getBoundingClientRect();
+                                                const width =
+                                                    boundingRect.width;
+                                                const travel =
+                                                    e.clientX - startPosition;
+                                                const newWidth = width + travel;
+                                                console.log(newWidth);
+                                            }
+                                        }}
+                                    >
+                                        &nbsp;
+                                    </div>
                                 </div>
                             </th>
                         );
