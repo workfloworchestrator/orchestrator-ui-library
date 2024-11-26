@@ -82,7 +82,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
-    const headerCellStyle = css({
+    const sortableHeaderCellStyle = css({
         paddingRight: 0,
         [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
@@ -96,9 +96,14 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
 
     const cellStyle = css({
         paddingLeft: theme.size.m,
-        paddingRight: theme.size.m,
         whiteSpace: 'nowrap',
         verticalAlign: 'middle',
+    });
+
+    const headerCellContainer = css({
+        display: 'flex',
+        justifyContent: 'space-between',
+        height: TABLE_ROW_HEIGHT,
     });
 
     const cellContentStyle = css({
@@ -122,19 +127,29 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
             overflow: 'hidden',
         });
 
+    const dragAndDropStyle = css({
+        width: theme.size.m,
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'center',
+        cursor: 'col-resize',
+    });
+
     return {
         tableContainerStyle,
         tableStyle,
         headerStyle,
+        headerCellContainer,
         bodyLoadingStyle,
         rowStyle,
         dataRowStyle,
         expandedRowStyle,
-        headerCellStyle,
+        sortableHeaderCellStyle,
         cellStyle,
         cellContentStyle,
         emptyTableMessageStyle,
         clickableStyle,
+        dragAndDropStyle,
         setWidth,
     };
 };
