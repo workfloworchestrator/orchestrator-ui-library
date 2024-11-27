@@ -17,7 +17,9 @@ export type WfoTableHeaderRowProps<T extends object> = Pick<
     | 'onUpdateDataSorting'
     | 'onUpdateDataSearch'
     | 'className'
->;
+> & {
+    onUpdateColumWidth?: (fieldName: string, width: number) => void;
+};
 
 export const WfoTableHeaderRow = <T extends object>({
     columnConfig,
@@ -26,6 +28,7 @@ export const WfoTableHeaderRow = <T extends object>({
     dataSorting = [],
     onUpdateDataSorting,
     onUpdateDataSearch,
+    onUpdateColumWidth,
     className,
 }: WfoTableHeaderRowProps<T>) => {
     const {
@@ -42,114 +45,117 @@ export const WfoTableHeaderRow = <T extends object>({
         columnOrder,
         hiddenColumns,
     );
-
+    const headerRowRef = useRef<HTMLTableRowElement>(null);
     return (
-        <>
-            <tr className={className} css={rowStyle}>
-                {sortedVisibleColumns.map(([key, columnConfig]) => {
-                    const dataSortingConfiguration = dataSorting.find(
-                        (dataSorting) => dataSorting.field === key,
-                    );
-                    let startPosition = 0;
+        <tr className={className} css={rowStyle} ref={headerRowRef}>
+            {sortedVisibleColumns.map(([key, columnConfig]) => {
+                const dataSortingConfiguration = dataSorting.find(
+                    (dataSorting) => dataSorting.field === key,
+                );
+                let startDragPosition = 0;
+                let startWidth = 0;
 
-                    if (columnConfig.columnType === ColumnType.DATA) {
-                        const headerCellRef =
-                            useRef<HTMLTableCellElement>(null);
-
-                        return (
-                            <th
-                                colSpan={columnConfig.numberOfColumnsToSpan}
-                                key={key}
-                                ref={headerCellRef}
-                                css={[
-                                    ...toOptionalArrayEntry(
-                                        cellStyle,
-                                        !columnConfig.disableDefaultCellStyle,
-                                    ),
-                                    ...toOptionalArrayEntry(
-                                        sortableHeaderCellStyle,
-                                        !!columnConfig.isSortable,
-                                    ),
-                                    setWidth(columnConfig.width),
-                                ]}
-                            >
-                                <div css={headerCellContainer}>
-                                    <WfoTableHeaderCell
-                                        fieldName={key}
-                                        sortOrder={
-                                            dataSortingConfiguration?.sortOrder
-                                        }
-                                        onSetSortOrder={
-                                            columnConfig.isSortable
-                                                ? (updatedSortOrder) =>
-                                                      onUpdateDataSorting?.({
-                                                          // Currently there is not a good way to tell Typescript that in some cases
-                                                          // key is of type "keyof T"
-                                                          field: key as keyof T,
-                                                          sortOrder:
-                                                              updatedSortOrder,
-                                                      })
-                                                : undefined
-                                        }
-                                        onSearch={
-                                            columnConfig.isFilterable
-                                                ? (searchText) =>
-                                                      onUpdateDataSearch?.({
-                                                          field: key as keyof T,
-                                                          searchText,
-                                                      })
-                                                : undefined
-                                        }
-                                    >
-                                        {columnConfig.label?.toString()}
-                                    </WfoTableHeaderCell>
-                                    <div
-                                        css={dragAndDropStyle}
-                                        draggable={true}
-                                        onDragStart={(e) => {
-                                            startPosition = e.clientX;
-                                            console.log(
-                                                `startPosition: ${startPosition}`,
-                                            );
-                                        }}
-                                        onDragEnd={(e) => {
-                                            if (headerCellRef.current) {
-                                                const boundingRect =
-                                                    headerCellRef.current.getBoundingClientRect();
-                                                const width =
-                                                    boundingRect.width;
-                                                const travel =
-                                                    e.clientX - startPosition;
-                                                const newWidth = width + travel;
-                                                console.log(newWidth);
-                                            }
-                                        }}
-                                    >
-                                        &nbsp;
-                                    </div>
-                                </div>
-                            </th>
-                        );
-                    }
-
-                    // Control column
+                if (columnConfig.columnType === ColumnType.DATA) {
                     return (
                         <th
-                            key={key}
                             colSpan={columnConfig.numberOfColumnsToSpan}
+                            key={key}
+                            data-key={key}
                             css={[
                                 ...toOptionalArrayEntry(
                                     cellStyle,
                                     !columnConfig.disableDefaultCellStyle,
                                 ),
+                                ...toOptionalArrayEntry(
+                                    sortableHeaderCellStyle,
+                                    !!columnConfig.isSortable,
+                                ),
                                 setWidth(columnConfig.width),
                             ]}
                         >
-                            <div>{columnConfig.label?.toString() || ''}</div>
+                            <div css={headerCellContainer}>
+                                <WfoTableHeaderCell
+                                    fieldName={key}
+                                    sortOrder={
+                                        dataSortingConfiguration?.sortOrder
+                                    }
+                                    onSetSortOrder={
+                                        columnConfig.isSortable
+                                            ? (updatedSortOrder) =>
+                                                  onUpdateDataSorting?.({
+                                                      // Currently there is not a good way to tell Typescript that in some cases
+                                                      // key is of type "keyof T"
+                                                      field: key as keyof T,
+                                                      sortOrder:
+                                                          updatedSortOrder,
+                                                  })
+                                            : undefined
+                                    }
+                                    onSearch={
+                                        columnConfig.isFilterable
+                                            ? (searchText) =>
+                                                  onUpdateDataSearch?.({
+                                                      field: key as keyof T,
+                                                      searchText,
+                                                  })
+                                            : undefined
+                                    }
+                                >
+                                    {columnConfig.label?.toString()}
+                                </WfoTableHeaderCell>
+                                <div
+                                    css={dragAndDropStyle}
+                                    draggable={true}
+                                    onDragStart={(e) => {
+                                        startDragPosition = e.clientX;
+                                        if (headerRowRef.current) {
+                                            const thElement =
+                                                headerRowRef.current.querySelector(
+                                                    `th[data-key="${key}"]`,
+                                                ) as HTMLTableCellElement;
+                                            startWidth =
+                                                thElement.getBoundingClientRect()
+                                                    .width;
+                                        }
+                                    }}
+                                    onDragEnd={(e) => {
+                                        if (
+                                            headerRowRef.current &&
+                                            onUpdateColumWidth
+                                        ) {
+                                            const travel =
+                                                e.clientX - startDragPosition;
+                                            const newWidth =
+                                                startWidth + travel;
+
+                                            onUpdateColumWidth(key, newWidth);
+                                        }
+                                    }}
+                                >
+                                    &nbsp;
+                                </div>
+                            </div>
                         </th>
                     );
-                })}
-            </tr>
-        </>
+                }
+
+                // Control column
+                return (
+                    <th
+                        key={key}
+                        colSpan={columnConfig.numberOfColumnsToSpan}
+                        css={[
+                            ...toOptionalArrayEntry(
+                                cellStyle,
+                                !columnConfig.disableDefaultCellStyle,
+                            ),
+                            setWidth(columnConfig.width),
+                        ]}
+                    >
+                        <div>{columnConfig.label?.toString() || ''}</div>
+                    </th>
+                );
+            })}
+        </tr>
     );
 };
