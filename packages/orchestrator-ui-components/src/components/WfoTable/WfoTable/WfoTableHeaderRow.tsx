@@ -48,9 +48,9 @@ export const WfoTableHeaderRow = <T extends object>({
     const headerRowRef = useRef<HTMLTableRowElement>(null);
     return (
         <tr className={className} css={rowStyle} ref={headerRowRef}>
-            {sortedVisibleColumns.map(([key, columnConfig]) => {
+            {sortedVisibleColumns.map(([fieldName, columnConfig]) => {
                 const dataSortingConfiguration = dataSorting.find(
-                    (dataSorting) => dataSorting.field === key,
+                    (dataSorting) => dataSorting.field === fieldName,
                 );
                 let startDragPosition = 0;
                 let startWidth = 0;
@@ -59,8 +59,8 @@ export const WfoTableHeaderRow = <T extends object>({
                     return (
                         <th
                             colSpan={columnConfig.numberOfColumnsToSpan}
-                            key={key}
-                            data-key={key}
+                            key={fieldName}
+                            data-field-name={fieldName}
                             css={[
                                 ...toOptionalArrayEntry(
                                     cellStyle,
@@ -75,7 +75,7 @@ export const WfoTableHeaderRow = <T extends object>({
                         >
                             <div css={headerCellContainer}>
                                 <WfoTableHeaderCell
-                                    fieldName={key}
+                                    fieldName={fieldName}
                                     sortOrder={
                                         dataSortingConfiguration?.sortOrder
                                     }
@@ -85,7 +85,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                                   onUpdateDataSorting?.({
                                                       // Currently there is not a good way to tell Typescript that in some cases
                                                       // key is of type "keyof T"
-                                                      field: key as keyof T,
+                                                      field: fieldName as keyof T,
                                                       sortOrder:
                                                           updatedSortOrder,
                                                   })
@@ -95,7 +95,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                         columnConfig.isFilterable
                                             ? (searchText) =>
                                                   onUpdateDataSearch?.({
-                                                      field: key as keyof T,
+                                                      field: fieldName as keyof T,
                                                       searchText,
                                                   })
                                             : undefined
@@ -111,7 +111,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                         if (headerRowRef.current) {
                                             const thElement =
                                                 headerRowRef.current.querySelector(
-                                                    `th[data-key="${key}"]`,
+                                                    `th[data-field-name="${fieldName}"]`,
                                                 ) as HTMLTableCellElement;
                                             startWidth =
                                                 thElement.getBoundingClientRect()
@@ -128,7 +128,10 @@ export const WfoTableHeaderRow = <T extends object>({
                                             const newWidth =
                                                 startWidth + travel;
 
-                                            onUpdateColumWidth(key, newWidth);
+                                            onUpdateColumWidth(
+                                                fieldName,
+                                                newWidth,
+                                            );
                                         }
                                     }}
                                 >
@@ -142,7 +145,7 @@ export const WfoTableHeaderRow = <T extends object>({
                 // Control column
                 return (
                     <th
-                        key={key}
+                        key={fieldName}
                         colSpan={columnConfig.numberOfColumnsToSpan}
                         css={[
                             ...toOptionalArrayEntry(
