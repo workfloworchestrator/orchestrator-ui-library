@@ -103,40 +103,43 @@ export const WfoTableHeaderRow = <T extends object>({
                                 >
                                     {columnConfig.label?.toString()}
                                 </WfoTableHeaderCell>
-                                <div
-                                    css={dragAndDropStyle}
-                                    draggable={true}
-                                    onDragStart={(e) => {
-                                        startDragPosition = e.clientX;
-                                        if (headerRowRef.current) {
-                                            const thElement =
-                                                headerRowRef.current.querySelector(
-                                                    `th[data-field-name="${fieldName}"]`,
-                                                ) as HTMLTableCellElement;
-                                            startWidth =
-                                                thElement.getBoundingClientRect()
-                                                    .width;
-                                        }
-                                    }}
-                                    onDragEnd={(e) => {
-                                        if (
-                                            headerRowRef.current &&
-                                            onUpdateColumWidth
-                                        ) {
-                                            const travel =
-                                                e.clientX - startDragPosition;
-                                            const newWidth =
-                                                startWidth + travel;
+                                {onUpdateColumWidth && (
+                                    <div
+                                        css={dragAndDropStyle}
+                                        draggable={true}
+                                        onDragStart={(e) => {
+                                            startDragPosition = e.clientX;
+                                            if (headerRowRef.current) {
+                                                const thElement =
+                                                    headerRowRef.current.querySelector(
+                                                        `th[data-field-name="${fieldName}"]`,
+                                                    ) as HTMLTableCellElement;
+                                                startWidth =
+                                                    thElement.getBoundingClientRect()
+                                                        .width;
+                                            }
+                                        }}
+                                        onDragEnd={(e) => {
+                                            if (
+                                                headerRowRef.current &&
+                                                onUpdateColumWidth
+                                            ) {
+                                                const travel =
+                                                    e.clientX -
+                                                    startDragPosition;
+                                                const newWidth =
+                                                    startWidth + travel;
 
-                                            onUpdateColumWidth(
-                                                fieldName,
-                                                newWidth,
-                                            );
-                                        }
-                                    }}
-                                >
-                                    &nbsp;
-                                </div>
+                                                onUpdateColumWidth(
+                                                    fieldName,
+                                                    newWidth,
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        &nbsp;
+                                    </div>
+                                )}
                             </div>
                         </th>
                     );
