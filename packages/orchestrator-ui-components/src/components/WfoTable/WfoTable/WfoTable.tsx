@@ -1,4 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -127,11 +128,26 @@ export const WfoTable = <T extends object>({
     } = useWithOrchestratorTheme(getWfoTableStyles);
     const t = useTranslations('common');
 
+    const [localColumnConfig, setLocalColumnConfig] = useState(columnConfig);
+
     const sortedVisibleColumns = getSortedVisibleColumns(
-        columnConfig,
+        localColumnConfig,
         columnOrder,
         hiddenColumns,
     );
+
+    const onUpdateColumWidth = (fieldName: string, width: number) => {
+        setLocalColumnConfig((config) => {
+            const currentFieldConfig = config[fieldName];
+            return {
+                ...config,
+                [fieldName]: {
+                    ...currentFieldConfig,
+                    width: `${width}px`,
+                },
+            };
+        });
+    };
 
     return (
         <>
@@ -142,12 +158,13 @@ export const WfoTable = <T extends object>({
                     ) : (
                         <thead css={headerStyle}>
                             <WfoTableHeaderRow
-                                columnConfig={columnConfig}
+                                columnConfig={localColumnConfig}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 dataSorting={dataSorting}
                                 onUpdateDataSorting={onUpdateDataSorting}
                                 onUpdateDataSearch={onUpdateDataSearch}
+                                onUpdateColumWidth={onUpdateColumWidth}
                             />
                         </thead>
                     )}
@@ -168,7 +185,7 @@ export const WfoTable = <T extends object>({
                         <tbody css={isLoading && bodyLoadingStyle}>
                             <WfoTableDataRows
                                 data={data}
-                                columnConfig={columnConfig}
+                                columnConfig={localColumnConfig}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 rowExpandingConfiguration={
