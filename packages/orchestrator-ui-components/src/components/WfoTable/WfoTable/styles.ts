@@ -10,7 +10,7 @@ import {
 } from './WfoTableHeaderCell/styles';
 import { TABLE_ROW_HEIGHT } from './constants';
 
-export const getWfoTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const radius = theme.border.radius.medium;
 
     const tableLoadingLineKeyframes = keyframes({
@@ -128,13 +128,23 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         });
 
     const dragAndDropStyle = css({
-        width: theme.size.m,
+        width: theme.size.xxs,
+        cursor: 'col-resize',
         display: 'flex',
         justifyContent: 'end',
         alignItems: 'center',
-        cursor: 'col-resize',
+        [`&:hover::after`]: {
+            content: '""',
+            zIndex: 2,
+            border: `${theme.size.xxs} solid ${
+                isDarkThemeActive
+                    ? theme.colors.mediumShade
+                    : theme.colors.header
+            }`,
+            borderRadius: theme.border.radius.small,
+            height: '100%',
+        },
     });
-
     return {
         tableContainerStyle,
         tableStyle,
