@@ -128,17 +128,21 @@ export const WfoTable = <T extends object>({
     } = useWithOrchestratorTheme(getWfoTableStyles);
     const t = useTranslations('common');
 
-    const [localColumnConfig, setLocalColumnConfig] = useState(columnConfig);
+    const [localColumnConfig, setLocalColumnConfig] =
+        useState<WfoTableColumnConfig<T>>(columnConfig);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
-        localColumnConfig,
+        columnConfig,
         columnOrder,
         hiddenColumns,
     );
 
     const onUpdateColumWidth = (fieldName: string, width: number) => {
         setLocalColumnConfig((config) => {
-            const currentFieldConfig = config[fieldName];
+            const fieldEntry = Object.entries(config).find(
+                ([propertyName]) => propertyName === fieldName,
+            );
+            const currentFieldConfig = fieldEntry ? fieldEntry[1] : undefined;
             return {
                 ...config,
                 [fieldName]: {
