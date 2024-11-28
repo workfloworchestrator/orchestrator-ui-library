@@ -83,6 +83,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
     });
 
     const headerCellStyle = css({
+        paddingRight: 0,
         [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
                 visibility: 'visible',
@@ -98,6 +99,10 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         paddingRight: theme.size.m,
         whiteSpace: 'nowrap',
         verticalAlign: 'middle',
+    });
+
+    const cellContentStyle = css({
+        display: 'inline-block',
     });
 
     const emptyTableMessageStyle = css({
@@ -127,6 +132,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         expandedRowStyle,
         headerCellStyle,
         cellStyle,
+        cellContentStyle,
         emptyTableMessageStyle,
         clickableStyle,
         setWidth,

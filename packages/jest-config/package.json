@@ -1,9 +1,10 @@
 {
     "name": "@orchestrator-ui/jest-config",
-    "version": "1.4.0",
+    "version": "1.5.1",
     "license": "Apache-2.0",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "provenance": true
     },
     "description": "Contains the jest configuration used in the Workflow orchestrator frontend projects",
     "author": {
@@ -13,7 +14,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
     },
     "homepage": "https://www.workfloworchestrator.org",
     "keywords": [
@@ -28,7 +29,7 @@
     },
     "main": "./dist/",
     "dependencies": {
-        "@testing-library/jest-dom": "^6.1.5",
+        "@testing-library/jest-dom": "^6.6.2",
         "@testing-library/react": "^16.0.1",
         "@testing-library/user-event": "^14.5.2",
         "@types/jest": "^29.5.11",

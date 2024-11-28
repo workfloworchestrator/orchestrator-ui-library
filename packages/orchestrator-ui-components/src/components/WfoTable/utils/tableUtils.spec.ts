@@ -20,9 +20,9 @@ describe('tableUtils', () => {
     });
 
     describe('determineNewSortOrder', () => {
-        const testData = {
-            column1: {},
-            column2: {},
+        type TestData = {
+            column1: object;
+            column2: object;
         };
 
         it('returns SortDirection.Asc when sorting on a new column', () => {
@@ -30,7 +30,7 @@ describe('tableUtils', () => {
             const currentSortDirection = SortOrder.ASC;
             const newSortColumnId = 'column2';
 
-            const result = determineNewSortOrder<typeof testData>(
+            const result = determineNewSortOrder<TestData>(
                 currentSortColumnId,
                 currentSortDirection,
                 newSortColumnId,
@@ -44,7 +44,7 @@ describe('tableUtils', () => {
             const currentSortDirection = SortOrder.DESC;
             const newSortColumnId = 'column1';
 
-            const result = determineNewSortOrder<typeof testData>(
+            const result = determineNewSortOrder<TestData>(
                 currentSortColumnId,
                 currentSortDirection,
                 newSortColumnId,
@@ -58,7 +58,7 @@ describe('tableUtils', () => {
             const currentSortDirection = SortOrder.DESC;
             const newSortColumnId = 'column1';
 
-            const result = determineNewSortOrder<typeof testData>(
+            const result = determineNewSortOrder<TestData>(
                 currentSortColumnId,
                 currentSortDirection,
                 newSortColumnId,

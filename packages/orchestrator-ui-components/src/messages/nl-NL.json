@@ -38,6 +38,7 @@
         "noItemsFound": "Geen items gevonden",
         "search": "Zoeken",
         "errorMessage": "Er is een fout opgetreden",
+        "unknownError": "Onbekende error",
         "export": "Exporteren",
         "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
         "insyncTrue": "in-sync",
@@ -115,7 +116,7 @@
                 "placeholderNoServicePort": "Selecteer eerst een Service Port...",
                 "invalidVlan": "Invalid VLAN - Voer een range of geldige [2-4094] VLAN integers in, bijvoorbeeld: '2, 5-6, 1048-1052'",
                 "untaggedPortInUse": "Deze service port is al in gebruik en kan niet worden gekozen",
-                "taggedOnly": "VLAN is alleen relevant SN7, MSP of SN8 SP in tagged mode, niet voor link_member of untagged ports.",
+                "taggedOnly": "VLAN is alleen relevant voor service poorten in tagged mode, niet voor link_member of untagged ports.",
                 "loadingIms": "VLAN informatie aan het laden uit IMS..."
             },
             "subscription": {
@@ -223,7 +224,7 @@
         },
         "steps": {
             "taskSteps": "Taak stappen",
-            "steps": "Workflow stappen",
+            "workflowSteps": "Workflow stappen",
             "showDelta": "Toon subscription delta",
             "hideDelta": "Verberg subscription delta",
             "showTraceback": "Toon traceback",
@@ -235,7 +236,9 @@
             "userInput": "Invoer gebruiker",
             "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
             "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
-            "traceback": "Traceback"
+            "traceback": "Traceback",
+            "tableView": "Tabelweergave",
+            "jsonView": "JSON weergave"
         },
         "delta": {
             "title": "Subscription delta",
@@ -290,6 +293,7 @@
                 "tasks": "Taken",
                 "terminate": "Terminate workflow",
                 "actions": "Acties",
+                "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
                 "subscription": {
                     "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
                     "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions: {unterminated_in_use_by_subscriptions}",

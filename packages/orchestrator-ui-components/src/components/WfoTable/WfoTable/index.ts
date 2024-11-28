@@ -13,3 +13,4 @@ export * from './WfoTableHeaderCell';
 
 export * from './WfoTruncateCell';
 export * from './WfoDataCell';
+export * from './WfoToolTip';

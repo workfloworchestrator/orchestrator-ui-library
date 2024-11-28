@@ -72,7 +72,9 @@ export default function WfoConfirmationDialog({
                         <EuiModalBody>
                             <div>
                                 <section
-                                    className={`dialog-content ${isError ? ' error' : ''}`}
+                                    className={`dialog-content ${
+                                        isError ? ' error' : ''
+                                    }`}
                                 >
                                     <h2>{question}</h2>
                                     {subQuestion && <p>{subQuestion}</p>}

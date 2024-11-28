@@ -116,7 +116,7 @@
                 "placeholderNoServicePort": "First select a Service Port...",
                 "invalidVlan": "Invalid VLAN - must be a range of valid [2-4094] VLAN integers, for example '2, 5-6, 1048-1052'",
                 "untaggedPortInUse": "This service port is already in use and cannot be chosen",
-                "taggedOnly": "VLAN is only relevant for SN7 MSP or SN8 SP in tagged mode, not for link_member or untagged ports.",
+                "taggedOnly": "VLAN is only relevant for service ports in tagged mode, not for link_member or untagged ports.",
                 "loadingIms": "Loading VLAN info from IMS"
             },
             "subscription": {
@@ -236,7 +236,9 @@
             "userInput": "User input",
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow",
-            "traceback": "Traceback"
+            "traceback": "Traceback",
+            "tableView": "Table view",
+            "jsonView": "JSON view"
         },
         "delta": {
             "title": "Subscription delta",
@@ -291,6 +293,7 @@
                 "tasks": "Tasks",
                 "terminate": "Terminate workflow",
                 "actions": "Actions",
+                "lockedBySubscriptions": "This action is locked by the following subscriptions:",
                 "subscription": {
                     "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
                     "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions: {unterminated_in_use_by_subscriptions}",

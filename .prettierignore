@@ -11,3 +11,5 @@ packages/*/CHANGELOG.md
 
 .next
 node_modules
+
+.turbo

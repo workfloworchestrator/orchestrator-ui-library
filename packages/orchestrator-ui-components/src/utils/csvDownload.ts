@@ -71,7 +71,7 @@ export const csvDownloadHandler = <T extends object, U extends object>(
             );
 
             const pageInfo = pageInfoMapper(data);
-            (pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING &&
+            if ((pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING) {
                 addToastFunction(
                     ToastTypes.ERROR,
                     translationFunction('notAllResultsExported', {
@@ -80,6 +80,7 @@ export const csvDownloadHandler = <T extends object, U extends object>(
                     }),
                     translationFunction('notAllResultsExportedTitle'),
                 );
+            }
             initiateCsvFileDownload(dataForExport, filename);
         }
     };

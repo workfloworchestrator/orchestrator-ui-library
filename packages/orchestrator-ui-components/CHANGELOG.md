@@ -1,5 +1,74 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.11.1
+
+### Patch Changes
+
+-   56e2537: Fixes rights issue in github action
+-   b7fe3ee: Adds github action permission to publish with provenance
+
+## 2.11.0
+
+### Minor Changes
+
+-   85fca33: Adds npm provenance flag
+
+### Patch Changes
+
+-   59389ea: Removes limit on related workflows on subscription detail page
+
+## 2.10.1
+
+### Patch Changes
+
+-   4a1ef5b: Adds pre-wrap style to value display fieldds
+
+## 2.10.0
+
+### Minor Changes
+
+-   e198ef6: 1528 Add tooltip to WfoInlineText edit, fix bug showing empty tooltip
+-   4adc510: Adds table view to workflow steps
+
+## 2.9.1
+
+### Patch Changes
+
+-   fc4a7c5: Fixes too many productblock values being hidden
+
+## 2.9.0
+
+### Minor Changes
+
+-   fc8002a: 1503 Makes disabled action menu items expandable to list all subscriptions preventing this action to be available
+
+### Patch Changes
+
+-   beca81e: Fixes possible error in suspend step
+-   9d1881f: 1504 Resolves task names and workflow names into the description text from the metadata endpoint, making the titles more human-readable
+-   e8c65bf: update to translation file
+-   4bf976f: Fixes showing empty product block values where they should not be
+
+## 2.8.4
+
+### Patch Changes
+
+-   be6bf70: added extra Dutch translation term and fix workflowsteps translation
+-   3bfe651: Updates npm packages to latest versions
+-   490da42: 1490 Remove last border of a product block key value item
+
+## 2.8.3
+
+### Patch Changes
+
+-   85f1514: Added new icons - WfoActualWork, WfoMalfunction, WfoPlannedWork
+
+## 2.8.2
+
+### Patch Changes
+
+-   056ba69: 1402 Adds context menu to be used in the table. It exposes a callback that is triggered when the menu opens (for optionally triggering a REST call to populate the menu)
+
 ## 2.8.1
 
 ### Patch Changes

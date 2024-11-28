@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import { EuiInlineEditText } from '@elastic/eui';
 
+import { WfoToolTip } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import type { Subscription } from '@/types';
 
@@ -17,8 +19,9 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     subscriptionId,
     onlyShowOnHover = false,
 }) => {
-    const initialNote = useMemo(() => value || '', [value]);
-    const [note, setNote] = useState<string>(initialNote);
+    const { theme } = useOrchestratorTheme();
+    const [note, setNote] = useState<string>(value ?? '');
+    const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const [startProcess] = useStartProcessMutation();
     const triggerNoteModifyWorkflow = () => {
@@ -32,11 +35,21 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
         });
     };
 
+    const handleSave = () => {
+        triggerNoteModifyWorkflow();
+        setIsTooltipVisible(true);
+    };
+
+    const handleCancel = () => {
+        setNote(value ?? '');
+        setIsTooltipVisible(true);
+    };
+
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
     useEffect(() => {
-        setNote(initialNote);
-    }, [initialNote]);
+        setNote(value ?? '');
+    }, [value]);
 
     return (
         <div
@@ -49,57 +62,74 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
                 },
             }}
         >
-            <EuiInlineEditText
-                inputAriaLabel="Edit note"
-                value={note}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setNote(e.target.value);
-                }}
-                onCancel={() => setNote(initialNote)}
-                onSave={() => triggerNoteModifyWorkflow()}
-                size={'s'}
-                css={{
-                    '.euiFlexItem:nth-of-type(2)': { justifyContent: 'center' },
-                }}
-                readModeProps={{
-                    css: {
-                        '.euiIcon': {
-                            visibility: onlyShowOnHover ? 'hidden' : 'visible',
+            <WfoToolTip
+                css={{ visibility: isTooltipVisible ? 'visible' : 'hidden' }}
+                tooltipContent={note}
+            >
+                <EuiInlineEditText
+                    inputAriaLabel="Edit note"
+                    value={note}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setNote(e.target.value);
+                    }}
+                    onCancel={handleCancel}
+                    onSave={handleSave}
+                    size={'s'}
+                    css={{
+                        width: theme.base * 16,
+                        '.euiFlexItem:nth-of-type(2)': {
+                            justifyContent: 'center',
                         },
-                    },
-                }}
-                editModeProps={{
-                    saveButtonProps: {
-                        color: 'primary',
-                        size: 'xs',
-                    },
-                    cancelButtonProps: {
-                        color: 'danger',
-                        size: 'xs',
-                    },
-                    inputProps: {
-                        css: {
-                            height: '32px',
-                            paddingLeft: '4px',
-                            margin: '0',
-                            width: '98%',
+                        '.euiButtonEmpty__content': {
+                            justifyContent: 'left',
                         },
-                    },
-                    formRowProps: {
+                    }}
+                    readModeProps={{
+                        onClick: () => setIsTooltipVisible(false),
+                        title: '',
                         css: {
-                            padding: 0,
-                            margin: 0,
-                            height: '32px',
-                            '.euiFormRow__fieldWrapper': {
-                                minHeight: '32px',
-                                height: '32px',
-                                padding: 0,
-                                margin: 0,
+                            minWidth: '100%',
+                            '.euiIcon': {
+                                visibility: onlyShowOnHover
+                                    ? 'hidden'
+                                    : 'visible',
                             },
                         },
-                    },
-                }}
-            />
+                    }}
+                    editModeProps={{
+                        saveButtonProps: {
+                            color: 'primary',
+                            size: 'xs',
+                        },
+                        cancelButtonProps: {
+                            color: 'danger',
+                            size: 'xs',
+                        },
+                        inputProps: {
+                            css: {
+                                justifyContent: 'left',
+                                height: '32px',
+                                paddingLeft: '4px',
+                                margin: '0',
+                                width: '98%',
+                            },
+                        },
+                        formRowProps: {
+                            css: {
+                                padding: 0,
+                                margin: 0,
+                                height: '32px',
+                                '.euiFormRow__fieldWrapper': {
+                                    minHeight: '32px',
+                                    height: '32px',
+                                    padding: 0,
+                                    margin: 0,
+                                },
+                            },
+                        },
+                    }}
+                />
+            </WfoToolTip>
         </div>
     );
 };

@@ -116,6 +116,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         });
 
     const sortButtonStyle = css({
+        paddingLeft: theme.size.xxs,
         display: 'flex',
         flex: '0 0 auto',
         alignItems: 'center',

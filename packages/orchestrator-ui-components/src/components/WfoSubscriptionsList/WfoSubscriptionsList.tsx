@@ -10,6 +10,7 @@ import {
     Pagination,
     WfoDateTime,
     WfoInlineJson,
+    WfoInlineNoteEdit,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
@@ -80,6 +81,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             subscriptionId: {
                 columnType: ColumnType.DATA,
                 label: t('id'),
+                width: '100px',
                 renderData: (value) => <WfoFirstPartUUID UUID={value} />,
                 renderDetails: (value) => value,
                 renderTooltip: (value) => value,
@@ -87,7 +89,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             description: {
                 columnType: ColumnType.DATA,
                 label: t('description'),
-                width: '400px',
+                width: '500px',
                 renderData: (value, record) => (
                     <Link href={`/subscriptions/${record.subscriptionId}`}>
                         {value}
@@ -98,6 +100,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             status: {
                 columnType: ColumnType.DATA,
                 label: t('status'),
+                width: '120px',
                 renderData: (value) => (
                     <WfoSubscriptionStatusBadge status={value} />
                 ),
@@ -105,6 +108,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             insync: {
                 columnType: ColumnType.DATA,
                 label: t('insync'),
+                width: '80px',
                 renderData: (value) => <WfoInsyncIcon inSync={value} />,
             },
             productName: {
@@ -119,7 +123,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             customerFullname: {
                 columnType: ColumnType.DATA,
                 label: t('customerFullname'),
-                width: '150px',
             },
             customerShortcode: {
                 columnType: ColumnType.DATA,
@@ -129,6 +132,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             startDate: {
                 columnType: ColumnType.DATA,
                 label: t('startDate'),
+                width: '120px',
                 renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
                 renderDetails: parseDateToLocaleDateTimeString,
                 clipboardText: parseDateToLocaleDateTimeString,
@@ -137,6 +141,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             endDate: {
                 columnType: ColumnType.DATA,
                 label: t('endDate'),
+                width: '120px',
                 renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
                 renderDetails: parseDateToLocaleDateTimeString,
                 clipboardText: parseDateToLocaleDateTimeString,
@@ -145,7 +150,13 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             note: {
                 columnType: ColumnType.DATA,
                 label: t('note'),
-                width: '100px',
+                renderData: (cellValue, row) => (
+                    <WfoInlineNoteEdit
+                        subscriptionId={row.subscriptionId}
+                        value={cellValue}
+                        onlyShowOnHover={true}
+                    />
+                ),
             },
             metadata: {
                 columnType: ColumnType.DATA,

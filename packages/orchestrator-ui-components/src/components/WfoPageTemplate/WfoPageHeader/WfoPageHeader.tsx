@@ -53,7 +53,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
         <EuiHeader css={getHeaderStyle(navigationHeight)}>
             <EuiHeaderSection>
                 <EuiToolTip
-                    content={'UI version' + ORCHESTRATOR_UI_LIBRARY_VERSION}
+                    content={'UI version ' + ORCHESTRATOR_UI_LIBRARY_VERSION}
                 >
                     <EuiHeaderSectionItem css={{ paddingTop: theme.size.xs }}>
                         <EuiHeaderLogo iconType={() => <WfoAppLogo />} />

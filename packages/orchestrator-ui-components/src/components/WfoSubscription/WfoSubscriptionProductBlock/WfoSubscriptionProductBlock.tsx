@@ -34,7 +34,7 @@ interface WfoSubscriptionProductBlockProps {
     subscriptionId: Subscription['subscriptionId'];
 }
 
-export const HIDDEN_KEYS = ['title', 'name', 'label'];
+export const HIDDEN_KEYS = ['title', 'name', 'label', 'inUseByIds'];
 
 export const WfoSubscriptionProductBlock = ({
     productBlock,
@@ -61,8 +61,14 @@ export const WfoSubscriptionProductBlock = ({
     );
     const showProductBlockValues = !isOutsideCurrentSubscription || showDetails;
 
+    // On previous attempts lodash isEmpty was used here but it signals integer values and false as empty so we don't use it here
     const isEmpty = (value: unknown) => {
-        return value === null || value === undefined || value === '';
+        return (
+            value === null ||
+            value === undefined ||
+            value === '' ||
+            (Array.isArray(value) && value.length === 0)
+        );
     };
 
     return (

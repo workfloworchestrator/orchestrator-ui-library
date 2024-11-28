@@ -17,13 +17,20 @@ import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { useCheckEngineStatus, useOrchestratorTheme, usePolicy } from '@/hooks';
+import {
+    useCheckEngineStatus,
+    useOrchestratorTheme,
+    usePolicy,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoXCircleFill } from '@/icons';
 import { useGetSubscriptionActionsQuery } from '@/rtk/endpoints/subscriptionActions';
 import { SubscriptionAction, WorkflowTarget } from '@/types';
 
-import { WfoTargetTypeIcon } from './WfoTargetTypeIcon';
-import { flattenArrayProps } from './utils';
+import { WfoTargetTypeIcon } from '../WfoTargetTypeIcon';
+import { flattenArrayProps } from '../utils';
+import { WfoSubscriptionActionExpandableMenuItem } from './WfoSubscriptionActionExpandableMenuItem';
+import { getSubscriptionActionStyles } from './styles';
 
 type MenuItemProps = {
     key: string;
@@ -52,6 +59,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     isLoading,
 }) => {
     const { theme } = useOrchestratorTheme();
+    const {
+        linkMenuItemStyle,
+        tooltipMenuItemStyle,
+        disabledIconStyle,
+        iconStyle,
+        secondaryIconStyle,
+    } = useWithOrchestratorTheme(getSubscriptionActionStyles);
 
     const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
@@ -89,6 +103,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
             const handleLinkClick = async (e: React.MouseEvent) => {
                 e.preventDefault();
+                setPopover(false);
                 if (await isEngineRunningNow()) {
                     router.push(url);
                 }
@@ -96,7 +111,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
             return (
                 <Link href={url} onClick={handleLinkClick}>
-                    {actionItem}
+                    <div css={linkMenuItemStyle}>{actionItem}</div>
                 </Link>
             );
         };
@@ -134,9 +149,14 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             const tooltipContent = t(action.reason, flattenArrayProps(action));
 
             return (
-                <div>
+                <div css={tooltipMenuItemStyle}>
                     <EuiToolTip position="top" content={tooltipContent}>
-                        {actionItem}
+                        <WfoSubscriptionActionExpandableMenuItem
+                            subscriptionAction={action}
+                            onClickLockedRelation={() => setPopover(false)}
+                        >
+                            {actionItem}
+                        </WfoSubscriptionActionExpandableMenuItem>
                     </EuiToolTip>
                 </div>
             );
@@ -144,13 +164,9 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
         const getIcon = () => {
             return action.reason ? (
-                <div css={{ display: 'flex', width: theme.base * 2 }}>
+                <div css={disabledIconStyle}>
                     <WfoTargetTypeIcon target={target} disabled={true} />
-                    <div
-                        css={{
-                            transform: 'translate(-11px, -8px);',
-                        }}
-                    >
+                    <div css={secondaryIconStyle}>
                         <WfoXCircleFill
                             width={20}
                             height={20}
@@ -159,7 +175,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     </div>
                 </div>
             ) : (
-                <div css={{ width: theme.base * 2 }}>
+                <div css={iconStyle}>
                     <WfoTargetTypeIcon target={target} />
                 </div>
             );

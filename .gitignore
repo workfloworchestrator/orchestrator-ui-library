@@ -40,7 +40,7 @@ npm-debug.log*
 *.iml
 .vscode
 
-# ignore genreated ui version file
+# ignore generated ui version file
 packages/orchestrator-ui-components/src/configuration/version.ts
 
 # Temporary fix for surf version

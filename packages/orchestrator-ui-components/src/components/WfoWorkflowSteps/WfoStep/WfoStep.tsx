@@ -1,10 +1,16 @@
-import React, { LegacyRef } from 'react';
+import React, { LegacyRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
+import {
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiPanel,
+    EuiText,
+} from '@elastic/eui';
 
-import { WfoJsonCodeBlock } from '@/components';
+import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
@@ -41,6 +47,7 @@ export const WfoStep = React.forwardRef(
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
+        const [tableView, setTableView] = useState<boolean>(false);
 
         const { theme } = useOrchestratorTheme();
         const {
@@ -129,6 +136,23 @@ export const WfoStep = React.forwardRef(
                         <EuiFlexGroup css={stepRowStyle}>
                             {step.executed && (
                                 <>
+                                    {isExpanded && (
+                                        <EuiButton
+                                            onClick={(
+                                                event: React.MouseEvent<HTMLButtonElement>,
+                                            ) => {
+                                                setTableView(!tableView);
+                                                event.stopPropagation();
+                                            }}
+                                            size="s"
+                                        >
+                                            {t(
+                                                tableView
+                                                    ? 'jsonView'
+                                                    : 'tableView',
+                                            )}
+                                        </EuiButton>
+                                    )}
                                     <EuiFlexItem
                                         grow={0}
                                         css={stepHeaderRightStyle}
@@ -163,9 +187,14 @@ export const WfoStep = React.forwardRef(
                             )}
                         </EuiFlexGroup>
                     </EuiFlexGroup>
-                    {hasStepContent && !hasHtmlMail && isExpanded && (
-                        <WfoJsonCodeBlock data={stepContent} />
-                    )}
+                    {hasStepContent &&
+                        !hasHtmlMail &&
+                        isExpanded &&
+                        (tableView ? (
+                            <WfoTableCodeBlock stepState={stepContent} />
+                        ) : (
+                            <WfoJsonCodeBlock data={stepContent} />
+                        ))}
                     {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
                             {displayMailConfirmation(

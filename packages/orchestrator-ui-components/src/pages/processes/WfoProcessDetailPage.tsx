@@ -7,7 +7,10 @@ import {
     WfoStepListRef,
     WfoWorkflowStepList,
 } from '@/components';
-import { useGetProcessDetailQuery } from '@/rtk/endpoints/processDetail';
+import {
+    useGetDescriptionForWorkflowNameQuery,
+    useGetProcessDetailQuery,
+} from '@/rtk';
 import { Step } from '@/types';
 import { getProductNamesFromProcess } from '@/utils';
 
@@ -35,10 +38,23 @@ export const WfoProcessDetailPage = ({
     });
     const processDetail = data?.processes[0];
 
+    const { data: workflowMetadata, isError: isErrorWorkflowDescription } =
+        useGetDescriptionForWorkflowNameQuery(
+            {
+                workflowName: processDetail?.workflowName ?? '',
+            },
+            {
+                skip: processDetail === undefined,
+            },
+        );
+
     const steps = processDetail?.steps ?? [];
 
     const productNames = getProductNamesFromProcess(processDetail);
-    const pageTitle = processDetail?.workflowName || '';
+    const pageTitle =
+        workflowMetadata?.description ||
+        (isErrorWorkflowDescription && processDetail?.workflowName) ||
+        '';
     const isTask = processDetail?.isTask ?? false;
     const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
     const timelineItems: TimelineItem[] =

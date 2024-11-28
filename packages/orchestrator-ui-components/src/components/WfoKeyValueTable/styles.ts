@@ -44,6 +44,8 @@ export const getStyles = ({ theme }: WfoTheme) => {
     const valueColumnStyle = css({
         borderTopRightRadius: radius,
         borderBottomRightRadius: radius,
+        paddingTop: theme.size.s,
+        paddingBottom: theme.size.s,
         display: 'flex',
         alignItems: 'center',
 
@@ -62,6 +64,8 @@ export const getStyles = ({ theme }: WfoTheme) => {
         color: theme.colors.text,
         display: 'flex',
         alignItems: 'center',
+        overflowWrap: 'anywhere',
+        whiteSpace: 'pre-wrap',
     });
 
     const clipboardIconStyle = css({
@@ -70,9 +74,10 @@ export const getStyles = ({ theme }: WfoTheme) => {
         paddingBottom: 0,
     });
 
-    const clickable = css({
+    const clickableStyle = css({
         marginLeft: clipboardIconMargin,
         cursor: 'pointer',
+        paddingRight: theme.size.s,
     });
 
     return {
@@ -84,7 +89,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
         keyCellStyle,
         valueCellStyle,
         clipboardIconStyle,
-        clickable,
+        clickableStyle,
         lightBackground,
         darkBackground,
         getBackgroundColorStyleForRow,

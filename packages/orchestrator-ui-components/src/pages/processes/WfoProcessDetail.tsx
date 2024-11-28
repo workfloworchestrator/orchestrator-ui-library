@@ -158,8 +158,9 @@ export const WfoProcessDetail = ({
                 },
             ),
             onConfirm: () => {
-                processDetail?.processId &&
+                if (processDetail?.processId) {
                     retryProcess({ processId: processDetail.processId });
+                }
             },
         });
 
@@ -172,8 +173,9 @@ export const WfoProcessDetail = ({
                 },
             ),
             onConfirm: () => {
-                processDetail?.processId &&
+                if (processDetail?.processId) {
                     abortProcess({ processId: processDetail.processId });
+                }
                 router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
             },
         });
@@ -184,8 +186,9 @@ export const WfoProcessDetail = ({
                 workflowName: processDetail?.workflowName,
             }),
             onConfirm: () => {
-                processDetail?.processId &&
+                if (processDetail?.processId) {
                     deleteProcess({ processId: processDetail.processId });
+                }
                 router.push(PATH_TASKS);
             },
         });

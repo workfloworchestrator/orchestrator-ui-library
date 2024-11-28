@@ -12,17 +12,18 @@
         "build": "turbo run build",
         "packages:changeset": "changeset",
         "packages:publish": "turbo run build lint test && changeset publish",
-        "prepare": "husky install && turbo run build --filter=./packages/*"
+        "postinstall": "husky && turbo run build --filter=./packages/*"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1",
-        "@turbo/gen": "^1.10.12",
+        "@turbo/gen": "^2.2.3",
         "husky": "^9.0.11",
-        "turbo": "^1.12.4"
+        "turbo": "^2.2.3"
     },
     "name": "orchestrator-core-ui",
     "workspaces": [
         "apps/*",
         "packages/*"
-    ]
+    ],
+    "packageManager": "npm@10.9.0"
 }
