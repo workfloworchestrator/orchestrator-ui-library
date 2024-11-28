@@ -3,10 +3,13 @@ import React, { useRef } from 'react';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
 
+import { WfoDragHandler } from './WfoDragHandler';
 import { ColumnType, WfoTableProps } from './WfoTable';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 import { getWfoTableStyles } from './styles';
 import { getSortedVisibleColumns } from './utils';
+
+export type onUpdateColumWidth = (fieldName: string, width: number) => void;
 
 export type WfoTableHeaderRowProps<T extends object> = Pick<
     WfoTableProps<T>,
@@ -18,7 +21,7 @@ export type WfoTableHeaderRowProps<T extends object> = Pick<
     | 'onUpdateDataSearch'
     | 'className'
 > & {
-    onUpdateColumWidth?: (fieldName: string, width: number) => void;
+    onUpdateColumWidth?: onUpdateColumWidth;
 };
 
 export const WfoTableHeaderRow = <T extends object>({
@@ -36,7 +39,6 @@ export const WfoTableHeaderRow = <T extends object>({
         headerCellContainer,
         sortableHeaderCellStyle,
         rowStyle,
-        dragAndDropStyle,
         setWidth,
     } = useWithOrchestratorTheme(getWfoTableStyles);
 
@@ -104,41 +106,11 @@ export const WfoTableHeaderRow = <T extends object>({
                                     {columnConfig.label?.toString()}
                                 </WfoTableHeaderCell>
                                 {onUpdateColumWidth && (
-                                    <div
-                                        css={dragAndDropStyle}
-                                        draggable={true}
-                                        onDragStart={(e) => {
-                                            startDragPosition = e.clientX;
-                                            if (headerRowRef.current) {
-                                                const thElement =
-                                                    headerRowRef.current.querySelector(
-                                                        `th[data-field-name="${fieldName}"]`,
-                                                    ) as HTMLTableCellElement;
-                                                startWidth =
-                                                    thElement.getBoundingClientRect()
-                                                        .width;
-                                            }
-                                        }}
-                                        onDragEnd={(e) => {
-                                            if (
-                                                headerRowRef.current &&
-                                                onUpdateColumWidth
-                                            ) {
-                                                const travel =
-                                                    e.clientX -
-                                                    startDragPosition;
-                                                const newWidth =
-                                                    startWidth + travel;
-
-                                                onUpdateColumWidth(
-                                                    fieldName,
-                                                    newWidth,
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        &nbsp;
-                                    </div>
+                                    <WfoDragHandler
+                                        headerRowRef={headerRowRef}
+                                        fieldName={fieldName}
+                                        onUpdateColumWidth={onUpdateColumWidth}
+                                    />
                                 )}
                             </div>
                         </th>

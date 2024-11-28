@@ -81,11 +81,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-
-        [`.${HEADER_CELL_TITLE_BUTTON_CLASS}:has(+ .${HEADER_CELL_SORT_BUTTON_CLASS}:focus-visible)`]:
-            {
-                overflow: 'hidden',
-            },
+        overflow: 'hidden',
     });
 
     const getHeaderCellContentStyle = (isSortable: boolean) =>

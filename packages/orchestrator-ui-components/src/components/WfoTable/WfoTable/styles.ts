@@ -133,6 +133,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         display: 'flex',
         justifyContent: 'end',
         alignItems: 'center',
+        zIndex: 100,
         [`&:hover::after`]: {
             content: '""',
             zIndex: 2,
