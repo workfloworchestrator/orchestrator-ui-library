@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
+import Draggable from 'react-draggable';
+import type { DraggableEventHandler } from 'react-draggable';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
@@ -17,31 +19,42 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
     fieldName,
     onUpdateColumWidth,
 }) => {
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+
+    const onDrag: DraggableEventHandler = (_, data) => {
+        setPosition({ x: data.x, y: data.y });
+    };
+
+    const resetPosition = () => {
+        setPosition({ x: 0, y: 0 });
+    };
+
     const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
-    let startDragPosition: number;
     let startWidth: number;
 
     return (
-        <div
-            css={dragAndDropStyle}
-            draggable={true}
-            onDragStart={(e) => {
-                startDragPosition = e.clientX;
+        <Draggable
+            axis="x"
+            position={position}
+            onDrag={onDrag}
+            onStop={(_, data) => {
                 if (headerRowRef.current) {
                     const thElement = headerRowRef.current.querySelector(
                         `th[data-field-name="${fieldName}"]`,
                     ) as HTMLTableCellElement;
                     startWidth = thElement.getBoundingClientRect().width;
+                    console.log(data, startWidth, data.x);
+                    const newWidth = startWidth + data.x;
+
+                    onUpdateColumWidth(
+                        fieldName,
+                        newWidth > 50 ? newWidth : 50,
+                    );
+                    resetPosition();
                 }
             }}
-            onDragEnd={(e) => {
-                const travel = e.clientX - startDragPosition;
-                const newWidth = startWidth + travel;
-
-                onUpdateColumWidth(fieldName, newWidth > 50 ? newWidth : 50);
-            }}
         >
-            &nbsp;
-        </div>
+            <div css={dragAndDropStyle}>&nbsp;</div>
+        </Draggable>
     );
 };
