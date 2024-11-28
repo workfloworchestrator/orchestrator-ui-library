@@ -1,5 +1,21 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.12.0
+
+### Minor Changes
+
+-   6e4d726: 1560 Table Header: for narrow columns, moving the sort icons as much as possible to the right
+-   cd0d38f: 1556 Adds inline note editing for the subscription list page
+
+### Patch Changes
+
+-   cdb9c83: 1530 Navigate to task list page when clicking on the tasks count icon
+-   87540ac: 1577 Fixes uncheckable checkbox (only the label was clickable)
+-   c592740: 1536 Hides inUseByIds in the list of product block instance values
+-   88a9db4: 1561 Fixes double copy icon in subscription detail page at the in-use-by-subscriptions section
+-   d39017a: Fix WfoInlineNoteEdit showing cached value from the previous page on the next one
+-   a442a0b: new column width and customer fullname hidden
+
 ## 2.11.1
 
 ### Patch Changes
