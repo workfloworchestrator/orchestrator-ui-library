@@ -82,7 +82,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                             orchestratorApi.util.invalidateTags([cacheTag]);
                         dispatch(cacheInvalidationAction);
                     } else {
-                        console.error(
+                        throw new Error(
                             `Trying to invalidate a cache entry with an unknown tag: ${cacheTag.type}`,
                         );
                     }
@@ -97,9 +97,12 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 const getDebounce = (delay: number) => {
                     return debounce(() => {
                         webSocket.close();
-                        // note: websocket.close doesnt trigger the onclose handler when losing
+                        // note: websocket.close doesn't trigger the onClose handler when losing
                         // internet connection so we call the cleanup event from here to be sure it's called
                         cleanUp();
+                        throw new Error(
+                            'Websocket connection lost: no pong received',
+                        );
                     }, delay);
                 };
 
@@ -157,7 +160,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                         if (message.name === MessageTypes.invalidateCache) {
                             invalidateTag(message.value);
                         } else {
-                            console.error('Unknown message type', message);
+                            throw new Error(`Unknown message type: ${message}`);
                         }
                     },
                 );
