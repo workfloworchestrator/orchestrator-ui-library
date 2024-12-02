@@ -19,6 +19,11 @@ export type WfoErrorMonitoringProviderProps = {
     children: ReactNode;
 };
 
+/**
+ *
+ * @param errorMonitoringHandler for implementing the error monitoring. When not provided, all report calls are no-ops.
+ * @param children
+ */
 export const WfoErrorMonitoringProvider: FC<
     WfoErrorMonitoringProviderProps
 > = ({ errorMonitoringHandler, children }) => {
