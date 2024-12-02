@@ -50,7 +50,7 @@ export const WfoTableHeaderRow = <T extends object>({
     const headerRowRef = useRef<HTMLTableRowElement>(null);
     return (
         <tr className={className} css={rowStyle} ref={headerRowRef}>
-            {sortedVisibleColumns.map(([fieldName, columnConfig]) => {
+            {sortedVisibleColumns.map(([fieldName, columnConfig], index) => {
                 const dataSortingConfiguration = dataSorting.find(
                     (dataSorting) => dataSorting.field === fieldName,
                 );
@@ -103,13 +103,17 @@ export const WfoTableHeaderRow = <T extends object>({
                                 >
                                     {columnConfig.label?.toString()}
                                 </WfoTableHeaderCell>
-                                {onUpdateColumWidth && (
-                                    <WfoDragHandler
-                                        headerRowRef={headerRowRef}
-                                        fieldName={fieldName}
-                                        onUpdateColumWidth={onUpdateColumWidth}
-                                    />
-                                )}
+                                {onUpdateColumWidth &&
+                                    index !==
+                                        sortedVisibleColumns.length - 1 && (
+                                        <WfoDragHandler
+                                            headerRowRef={headerRowRef}
+                                            fieldName={fieldName}
+                                            onUpdateColumWidth={
+                                                onUpdateColumWidth
+                                            }
+                                        />
+                                    )}
                             </div>
                         </th>
                     );
