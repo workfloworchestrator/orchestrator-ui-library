@@ -70,6 +70,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
         borderColor: theme.colors.lightShade,
+        position: 'relative',
     });
 
     const dataRowStyle = css({
@@ -100,12 +101,6 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         verticalAlign: 'middle',
     });
 
-    const headerCellContainer = css({
-        display: 'flex',
-        justifyContent: 'space-between',
-        height: TABLE_ROW_HEIGHT,
-    });
-
     const cellContentStyle = css({
         display: 'inline-block',
     });
@@ -127,23 +122,22 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
             overflow: 'hidden',
         });
 
-    const dragAndDropStyle = css({
-        width: theme.size.xxs,
-        cursor: 'col-resize',
+    const headerCellContainer = css({
         display: 'flex',
-        justifyContent: 'end',
-        alignItems: 'center',
-        zIndex: 100,
-        [`&:hover::after`]: {
-            content: '""',
-            zIndex: 2,
-            border: `${theme.size.xxs} solid ${
-                isDarkThemeActive
-                    ? theme.colors.mediumShade
-                    : theme.colors.header
-            }`,
-            borderRadius: theme.border.radius.small,
-            height: '100%',
+        justifyContent: 'space-between',
+        height: TABLE_ROW_HEIGHT,
+    });
+
+    const dragAndDropStyle = css({
+        width: theme.size.xs,
+        cursor: 'col-resize',
+        borderRadius: theme.border.radius.small,
+        position: 'absolute',
+        height: '100%',
+        '&:hover, &:active': {
+            backgroundColor: isDarkThemeActive
+                ? theme.colors.mediumShade
+                : theme.colors.header,
         },
     });
     return {
