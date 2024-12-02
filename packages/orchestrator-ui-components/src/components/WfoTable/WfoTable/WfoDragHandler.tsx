@@ -19,15 +19,15 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
     fieldName,
     onUpdateColumWidth,
 }) => {
-    // const [position, setPosition] = useState({ x: 0, y: 200 });
+    const [position, setPosition] = useState({ x: 0, y: 0 });
 
-    // const onDrag: DraggableEventHandler = (_, data) => {
-    //      setPosition({ x: data.x, y: data.y });
-    //  };
+    const onDrag: DraggableEventHandler = (_, data) => {
+        setPosition({ x: data.x, y: data.y });
+    };
 
-    //   const resetPosition = () => {
-    //      setPosition({ x: 0, y: 0 });
-    //   };
+    const resetPosition = () => {
+        setPosition({ x: 0, y: 0 });
+    };
 
     const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
     let startWidth: number;
@@ -36,8 +36,8 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
         <div>
             <Draggable
                 axis="x"
-                //    position={position}
-                //     onDrag={onDrag}
+                position={position}
+                onDrag={onDrag}
                 bounds="thead"
                 onStop={(_, data) => {
                     if (headerRowRef.current) {
@@ -51,7 +51,7 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
                             fieldName,
                             newWidth > 50 ? newWidth : 50,
                         );
-                        //   resetPosition();
+                        resetPosition();
                     }
                 }}
             >
