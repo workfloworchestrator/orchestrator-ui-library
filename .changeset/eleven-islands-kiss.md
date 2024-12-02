@@ -1,5 +1,5 @@
 ---
-'@orchestrator-ui/orchestrator-ui-components': major
+'@orchestrator-ui/orchestrator-ui-components': minor
 ---
 
-692 Adds WfoErrorMonitoringProvider for tracing purposes. It exposes 2 methods via the useWfoErrorMonitoring hook. The WfoErrorMonitoringProvider needs to be added to the _app.tsx and, optionally, the errorMonitoringHandler needs to be implemented. 
+692 Adds WfoErrorMonitoringProvider for tracing purposes. It exposes 2 methods via the useWfoErrorMonitoring hook. These reporting functions are used within the component library. To start using it, the WfoErrorMonitoringProvider needs to be added to the _app.tsx and the errorMonitoringHandler needs to be implemented. 
