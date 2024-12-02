@@ -19,42 +19,44 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
     fieldName,
     onUpdateColumWidth,
 }) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    // const [position, setPosition] = useState({ x: 0, y: 200 });
 
-    const onDrag: DraggableEventHandler = (_, data) => {
-        setPosition({ x: data.x, y: data.y });
-    };
+    // const onDrag: DraggableEventHandler = (_, data) => {
+    //      setPosition({ x: data.x, y: data.y });
+    //  };
 
-    const resetPosition = () => {
-        setPosition({ x: 0, y: 0 });
-    };
+    //   const resetPosition = () => {
+    //      setPosition({ x: 0, y: 0 });
+    //   };
 
     const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
     let startWidth: number;
 
     return (
-        <Draggable
-            axis="x"
-            position={position}
-            onDrag={onDrag}
-            onStop={(_, data) => {
-                if (headerRowRef.current) {
-                    const thElement = headerRowRef.current.querySelector(
-                        `th[data-field-name="${fieldName}"]`,
-                    ) as HTMLTableCellElement;
-                    startWidth = thElement.getBoundingClientRect().width;
-                    console.log(data, startWidth, data.x);
-                    const newWidth = startWidth + data.x;
+        <div>
+            <Draggable
+                axis="x"
+                //    position={position}
+                //     onDrag={onDrag}
+                bounds="thead"
+                onStop={(_, data) => {
+                    if (headerRowRef.current) {
+                        const thElement = headerRowRef.current.querySelector(
+                            `th[data-field-name="${fieldName}"]`,
+                        ) as HTMLTableCellElement;
+                        startWidth = thElement.getBoundingClientRect().width;
+                        const newWidth = startWidth + data.x;
 
-                    onUpdateColumWidth(
-                        fieldName,
-                        newWidth > 50 ? newWidth : 50,
-                    );
-                    resetPosition();
-                }
-            }}
-        >
-            <div css={dragAndDropStyle}>&nbsp;</div>
-        </Draggable>
+                        onUpdateColumWidth(
+                            fieldName,
+                            newWidth > 50 ? newWidth : 50,
+                        );
+                        //   resetPosition();
+                    }
+                }}
+            >
+                <div css={dragAndDropStyle}>&nbsp;</div>
+            </Draggable>
+        </div>
     );
 };
