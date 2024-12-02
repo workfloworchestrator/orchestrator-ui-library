@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
@@ -117,6 +117,15 @@ export const WfoTable = <T extends object>({
     onRowClick,
     className,
 }: WfoTableProps<T>) => {
+    const [localColumnConfig, setLocalColumnConfig] =
+        useState<WfoTableColumnConfig<T>>(columnConfig);
+
+    useEffect(() => {
+        if (!localColumnConfig || localColumnConfig !== columnConfig) {
+            setLocalColumnConfig(columnConfig);
+        }
+    }, [columnConfig]); // Dont add localColumnConfig to dependencies, it should trigger on local column changes
+
     const {
         tableContainerStyle,
         tableStyle,
@@ -127,9 +136,6 @@ export const WfoTable = <T extends object>({
         emptyTableMessageStyle,
     } = useWithOrchestratorTheme(getWfoTableStyles);
     const t = useTranslations('common');
-
-    const [localColumnConfig, setLocalColumnConfig] =
-        useState<WfoTableColumnConfig<T>>(columnConfig);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
         columnConfig,
