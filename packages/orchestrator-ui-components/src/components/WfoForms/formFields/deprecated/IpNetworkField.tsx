@@ -12,7 +12,7 @@
  * limitations under the License.
  *
  */
-import React, { useState } from 'react';
+import React from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
@@ -45,16 +45,12 @@ function IpNetwork({
 }: IPvAnyNetworkFieldProps) {
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    const [selectedPrefix] = useState<string | undefined>(value);
-
-    const usePrefix = selectedPrefix;
+    const usePrefix = value;
     const [subnet, netmask] = usePrefix?.split('/') ?? ['', ''];
 
-    let usedPrefixMin = prefixMin ?? parseInt(netmask, 10);
-
-    if (usedPrefixMin < 32) {
-        usedPrefixMin += 1;
-    }
+    const netMaskInt = parseInt(netmask, 10);
+    const usedPrefixMin =
+        prefixMin ?? netMaskInt < 32 ? netMaskInt + 1 : netMaskInt;
 
     return (
         <section {...filterDOMProps(props)}>
