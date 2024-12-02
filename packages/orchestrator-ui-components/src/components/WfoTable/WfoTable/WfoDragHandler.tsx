@@ -30,7 +30,6 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
     };
 
     const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
-    let startWidth: number;
 
     return (
         <div>
@@ -44,7 +43,8 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
                         const thElement = headerRowRef.current.querySelector(
                             `th[data-field-name="${fieldName}"]`,
                         ) as HTMLTableCellElement;
-                        startWidth = thElement.getBoundingClientRect().width;
+                        const startWidth =
+                            thElement.getBoundingClientRect().width;
                         const newWidth = startWidth + data.x;
 
                         onUpdateColumWidth(
