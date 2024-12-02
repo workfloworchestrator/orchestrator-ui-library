@@ -54,8 +54,6 @@ export const WfoTableHeaderRow = <T extends object>({
                 const dataSortingConfiguration = dataSorting.find(
                     (dataSorting) => dataSorting.field === fieldName,
                 );
-                let startDragPosition = 0;
-                let startWidth = 0;
 
                 if (columnConfig.columnType === ColumnType.DATA) {
                     return (
