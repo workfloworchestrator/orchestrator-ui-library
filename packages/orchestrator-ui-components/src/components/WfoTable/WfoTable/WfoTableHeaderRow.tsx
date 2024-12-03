@@ -103,7 +103,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                 >
                                     {columnConfig.label?.toString()}
                                 </WfoTableHeaderCell>
-                                {onUpdateColumWidth &&
+                                {typeof onUpdateColumWidth === 'function' &&
                                     index !==
                                         sortedVisibleColumns.length - 1 && (
                                         <WfoDragHandler
