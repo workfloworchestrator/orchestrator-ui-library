@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
@@ -102,6 +102,10 @@ export type WfoTableProps<T extends object> = {
     className?: string;
 };
 
+type LocalColumnWidths = {
+    [key: string]: string;
+};
+
 export const WfoTable = <T extends object>({
     data,
     columnConfig,
@@ -117,14 +121,22 @@ export const WfoTable = <T extends object>({
     onRowClick,
     className,
 }: WfoTableProps<T>) => {
-    const [localColumnConfig, setLocalColumnConfig] =
-        useState<WfoTableColumnConfig<T>>(columnConfig);
+    const getColumnWidthsFromConfig = (
+        columnConfig: WfoTableColumnConfig<T>,
+    ): LocalColumnWidths => {
+        return Object.entries(columnConfig).reduce(
+            (columnWidths, [key, config]) => {
+                if (config.columnType === ColumnType.DATA) {
+                    columnWidths[key] = config.width ?? 'auto';
+                }
+                return columnWidths;
+            },
+            {} as LocalColumnWidths,
+        );
+    };
 
-    useEffect(() => {
-        if (!localColumnConfig || localColumnConfig !== columnConfig) {
-            setLocalColumnConfig(columnConfig);
-        }
-    }, [columnConfig]); // Dont add localColumnConfig to dependencies, it should trigger on local column changes
+    const [localColumnWidths, setLocalColumnWidths] =
+        useState<LocalColumnWidths>(getColumnWidthsFromConfig(columnConfig));
 
     const {
         tableContainerStyle,
@@ -144,20 +156,28 @@ export const WfoTable = <T extends object>({
     );
 
     const onUpdateColumWidth = (fieldName: string, width: number) => {
-        setLocalColumnConfig((config) => {
-            const fieldEntry = Object.entries(config).find(
-                ([propertyName]) => propertyName === fieldName,
-            );
-            const currentFieldConfig = fieldEntry ? fieldEntry[1] : undefined;
+        setLocalColumnWidths((localWidths) => {
             return {
-                ...config,
-                [fieldName]: {
-                    ...currentFieldConfig,
-                    width: `${width}px`,
-                },
+                ...localWidths,
+                [fieldName]: `${width}px`,
             };
         });
     };
+
+    const configWithLocalWidths: WfoTableColumnConfig<T> = Object.entries(
+        columnConfig,
+    ).reduce((mergedConfig, [fieldName, fieldConfig]) => {
+        const key = fieldName as keyof WfoTableColumnConfig<T>;
+        if (fieldConfig.columnType === ColumnType.DATA) {
+            mergedConfig[key] = {
+                ...fieldConfig,
+                width: localColumnWidths[key],
+            };
+        } else {
+            mergedConfig[key] = fieldConfig;
+        }
+        return mergedConfig;
+    }, {} as WfoTableColumnConfig<T>);
 
     return (
         <>
@@ -168,7 +188,7 @@ export const WfoTable = <T extends object>({
                     ) : (
                         <thead css={headerStyle}>
                             <WfoTableHeaderRow
-                                columnConfig={localColumnConfig}
+                                columnConfig={configWithLocalWidths}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 dataSorting={dataSorting}
@@ -195,7 +215,7 @@ export const WfoTable = <T extends object>({
                         <tbody css={isLoading && bodyLoadingStyle}>
                             <WfoTableDataRows
                                 data={data}
-                                columnConfig={localColumnConfig}
+                                columnConfig={configWithLocalWidths}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 rowExpandingConfiguration={
