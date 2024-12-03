@@ -53,7 +53,10 @@ function IpNetwork({
 
     const netMaskInt = parseInt(netmask, 10);
     const usedPrefixMin =
-        prefixMin ?? netMaskInt < 32 ? netMaskInt + 1 : netMaskInt;
+        prefixMin ??
+        (netMaskInt < 32 && name === 'ip_sub_prefix'
+            ? netMaskInt + 1
+            : netMaskInt);
 
     return (
         <section {...filterDOMProps(props)}>
