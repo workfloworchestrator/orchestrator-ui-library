@@ -34,18 +34,23 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
     });
     const workflowTargetStyle = css({ fontWeight: theme.font.weight.bold });
 
-    const lastContentCellStyle = css({
-        ...contentCellStyle,
-        border: 0,
-    });
+    const lastContentCellStyle = css([
+        {
+            ...contentCellStyle,
+        },
+        {
+            borderBottom: 0,
+        },
+    ]);
 
-    const lastHeaderCellStyle = css({
-        padding: theme.base,
-        paddingLeft: 0,
-        width: 250,
-        fontWeight: theme.font.weight.medium,
-        border: 0,
-    });
+    const lastHeaderCellStyle = css([
+        {
+            ...headerCellStyle,
+        },
+        {
+            borderBottomWidth: 0,
+        },
+    ]);
 
     const inUseByRelationDetailsStyle = css({
         borderColor: theme.colors.lightShade,
