@@ -12,7 +12,7 @@
  * limitations under the License.
  *
  */
-import React from 'react';
+import React, { useState } from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
@@ -45,7 +45,10 @@ function IpNetwork({
 }: IPvAnyNetworkFieldProps) {
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    const usePrefix = value;
+    // The state is needed in order to keep the selected prefix in the SplitPrefix component
+    const [selectedPrefix] = useState<string | undefined>(value);
+
+    const usePrefix = selectedPrefix;
     const [subnet, netmask] = usePrefix?.split('/') ?? ['', ''];
 
     const netMaskInt = parseInt(netmask, 10);
