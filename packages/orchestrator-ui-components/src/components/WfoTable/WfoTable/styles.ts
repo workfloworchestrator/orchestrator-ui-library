@@ -134,6 +134,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         borderRadius: theme.border.radius.small,
         position: 'absolute',
         height: '100%',
+        zIndex: theme.levels.modal,
         '&:hover, &:active': {
             backgroundColor: isDarkThemeActive
                 ? theme.colors.mediumShade
