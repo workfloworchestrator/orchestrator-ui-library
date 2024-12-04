@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.14.0
+
+### Minor Changes
+
+-   0172be2: Adds resizable table columns
+
 ## 2.13.0
 
 ### Minor Changes
