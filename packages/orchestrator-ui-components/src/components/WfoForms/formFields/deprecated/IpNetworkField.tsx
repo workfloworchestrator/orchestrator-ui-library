@@ -14,18 +14,15 @@
  */
 import React, { useState } from 'react';
 
-import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { EuiCallOut, EuiFormRow, EuiText } from '@elastic/eui';
+import { EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import SplitPrefix from '@/components/WfoForms/formFields/deprecated/SplitPrefix';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 import { FieldProps } from '../types';
-import IpPrefixTableField from './IpPrefixTableField';
-import { IpBlock } from './types';
 
 export type IPvAnyNetworkFieldProps = FieldProps<
     string,
@@ -48,17 +45,18 @@ function IpNetwork({
 }: IPvAnyNetworkFieldProps) {
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    const t = useTranslations('pydanticForms');
-    const [selectedPrefix, setSelectedPrefix] = useState<IpBlock | undefined>(
-        undefined,
-    );
-    const [manualOverride, setManualOverride] = useState(false);
+    // The state is needed in order to keep the selected prefix in the SplitPrefix component
+    const [selectedPrefix] = useState<string | undefined>(value);
 
-    const usePrefix = selectedPrefix?.prefix ?? value;
+    const usePrefix = selectedPrefix;
     const [subnet, netmask] = usePrefix?.split('/') ?? ['', ''];
+
+    const netMaskInt = parseInt(netmask, 10);
     const usedPrefixMin =
         prefixMin ??
-        parseInt(netmask, 10) + (selectedPrefix?.state === 0 ? 0 : 1);
+        (netMaskInt < 32 && name === 'ip_sub_prefix'
+            ? netMaskInt + 1
+            : netMaskInt);
 
     return (
         <section {...filterDOMProps(props)}>
@@ -73,32 +71,7 @@ function IpNetwork({
             >
                 <section className="ipblock-selector">
                     <div id={id}>
-                        {!prefixMin && (
-                            <IpPrefixTableField
-                                id={id}
-                                name={name}
-                                onChange={(prefix: IpBlock) => {
-                                    if (!readOnly) {
-                                        if (
-                                            prefix.state === 0 ||
-                                            prefix.state === 1
-                                        ) {
-                                            setSelectedPrefix(prefix);
-                                        }
-                                        setManualOverride(false);
-                                        onChange(prefix.prefix);
-                                    }
-                                }}
-                                onManualOverride={(prefixString: string) => {
-                                    if (!readOnly) {
-                                        setManualOverride(true);
-                                        onChange(prefixString);
-                                    }
-                                }}
-                                selected_prefix_id={selectedPrefix?.id}
-                            />
-                        )}
-                        {usePrefix && !manualOverride && (
+                        {usePrefix && (
                             <SplitPrefix
                                 id={id}
                                 name={name}
@@ -112,17 +85,6 @@ function IpNetwork({
                                 }}
                                 selectedSubnet={usePrefix}
                             />
-                        )}
-                        {usePrefix && manualOverride && (
-                            <EuiCallOut
-                                title={t(
-                                    'widgets.ipvAnyNetworkField.manuallySelectedPrefix',
-                                )}
-                                color="primary"
-                                iconType="check"
-                            >
-                                <p>{value}</p>
-                            </EuiCallOut>
                         )}
                     </div>
                 </section>
