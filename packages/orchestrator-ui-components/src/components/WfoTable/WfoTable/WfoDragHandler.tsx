@@ -8,6 +8,8 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import type { onUpdateColumWidth } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';
 
+const MINIMUM_COLUMN_WIDTH = 50;
+
 interface WfoDragHandlerProps {
     headerRowRef: React.RefObject<HTMLTableRowElement>;
     fieldName: string;
@@ -49,13 +51,15 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
 
                         onUpdateColumWidth(
                             fieldName,
-                            newWidth > 50 ? newWidth : 50,
+                            newWidth > MINIMUM_COLUMN_WIDTH
+                                ? newWidth
+                                : MINIMUM_COLUMN_WIDTH,
                         );
                         resetPosition();
                     }
                 }}
             >
-                <div css={dragAndDropStyle}>&nbsp;</div>
+                <div css={dragAndDropStyle} />
             </Draggable>
         </div>
     );

@@ -140,6 +140,9 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
                 ? theme.colors.mediumShade
                 : theme.colors.header,
         },
+        '&::after': {
+            content: '""',
+        },
     });
     return {
         tableContainerStyle,
