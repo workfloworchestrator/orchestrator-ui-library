@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.13.0
+
+### Minor Changes
+
+-   195a951: 692 Adds WfoErrorMonitoringProvider for tracing purposes. It exposes 2 methods via the useWfoErrorMonitoring hook. These reporting functions are used within the component library. To start using it, the WfoErrorMonitoringProvider needs to be added to the \_app.tsx and the errorMonitoringHandler needs to be implemented.
+
+### Patch Changes
+
+-   95de1e8: 1552 Remove last line of workflow timeline card
+
 ## 2.12.0
 
 ### Minor Changes
