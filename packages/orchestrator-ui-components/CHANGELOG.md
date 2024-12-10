@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.14.1
+
+### Patch Changes
+
+-   7f972a1: Fixes calling getFirstUuidPart with null value
+-   86b504f: Feat: refactor IPPREFIX table #2143
+
 ## 2.14.0
 
 ### Minor Changes
