@@ -1,4 +1,5 @@
-export const getFirstUuidPart = (uuid: string): string => uuid.slice(0, 8);
+export const getFirstUuidPart = (uuid?: string): string =>
+    uuid ? uuid.slice(0, 8) : '';
 
 export const isUuid4 = (value: string): boolean =>
     !!value.match(
