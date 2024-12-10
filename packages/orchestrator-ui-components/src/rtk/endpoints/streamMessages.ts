@@ -97,7 +97,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 const getDebounce = (delay: number) => {
                     return debounce(() => {
                         webSocket.close();
-                        // note: websocket.close doesnt trigger the onclose handler when losing
+                        // note: websocket.close doesn't trigger the onClose handler when closing
                         // internet connection so we call the cleanup event from here to be sure it's called
                         cleanUp();
                     }, delay);

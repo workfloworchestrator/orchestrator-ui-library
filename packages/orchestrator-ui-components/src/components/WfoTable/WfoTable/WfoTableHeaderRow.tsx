@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 import { toOptionalArrayEntry } from '@/utils';
 
+import { WfoDragHandler } from './WfoDragHandler';
 import { ColumnType, WfoTableProps } from './WfoTable';
 import { WfoTableHeaderCell } from './WfoTableHeaderCell';
 import { getWfoTableStyles } from './styles';
 import { getSortedVisibleColumns } from './utils';
+
+export type onUpdateColumWidth = (fieldName: string, width: number) => void;
 
 export type WfoTableHeaderRowProps<T extends object> = Pick<
     WfoTableProps<T>,
@@ -17,7 +20,9 @@ export type WfoTableHeaderRowProps<T extends object> = Pick<
     | 'onUpdateDataSorting'
     | 'onUpdateDataSearch'
     | 'className'
->;
+> & {
+    onUpdateColumWidth?: onUpdateColumWidth;
+};
 
 export const WfoTableHeaderRow = <T extends object>({
     columnConfig,
@@ -26,44 +31,51 @@ export const WfoTableHeaderRow = <T extends object>({
     dataSorting = [],
     onUpdateDataSorting,
     onUpdateDataSearch,
+    onUpdateColumWidth,
     className,
 }: WfoTableHeaderRowProps<T>) => {
-    const { cellStyle, headerCellStyle, rowStyle, setWidth } =
-        useWithOrchestratorTheme(getWfoTableStyles);
+    const {
+        cellStyle,
+        headerCellContainer,
+        sortableHeaderCellStyle,
+        rowStyle,
+        setWidth,
+    } = useWithOrchestratorTheme(getWfoTableStyles);
 
     const sortedVisibleColumns = getSortedVisibleColumns(
         columnConfig,
         columnOrder,
         hiddenColumns,
     );
-
+    const headerRowRef = useRef<HTMLTableRowElement>(null);
     return (
-        <>
-            <tr className={className} css={rowStyle}>
-                {sortedVisibleColumns.map(([key, columnConfig]) => {
-                    const dataSortingConfiguration = dataSorting.find(
-                        (dataSorting) => dataSorting.field === key,
-                    );
+        <tr className={className} css={rowStyle} ref={headerRowRef}>
+            {sortedVisibleColumns.map(([fieldName, columnConfig], index) => {
+                const dataSortingConfiguration = dataSorting.find(
+                    (dataSorting) => dataSorting.field === fieldName,
+                );
 
-                    if (columnConfig.columnType === ColumnType.DATA) {
-                        return (
-                            <th
-                                colSpan={columnConfig.numberOfColumnsToSpan}
-                                key={key}
-                                css={[
-                                    ...toOptionalArrayEntry(
-                                        cellStyle,
-                                        !columnConfig.disableDefaultCellStyle,
-                                    ),
-                                    ...toOptionalArrayEntry(
-                                        headerCellStyle,
-                                        !!columnConfig.isSortable,
-                                    ),
-                                    setWidth(columnConfig.width),
-                                ]}
-                            >
+                if (columnConfig.columnType === ColumnType.DATA) {
+                    return (
+                        <th
+                            colSpan={columnConfig.numberOfColumnsToSpan}
+                            key={fieldName}
+                            data-field-name={fieldName}
+                            css={[
+                                ...toOptionalArrayEntry(
+                                    cellStyle,
+                                    !columnConfig.disableDefaultCellStyle,
+                                ),
+                                ...toOptionalArrayEntry(
+                                    sortableHeaderCellStyle,
+                                    !!columnConfig.isSortable,
+                                ),
+                                setWidth(columnConfig.width),
+                            ]}
+                        >
+                            <div css={headerCellContainer}>
                                 <WfoTableHeaderCell
-                                    fieldName={key}
+                                    fieldName={fieldName}
                                     sortOrder={
                                         dataSortingConfiguration?.sortOrder
                                     }
@@ -73,7 +85,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                                   onUpdateDataSorting?.({
                                                       // Currently there is not a good way to tell Typescript that in some cases
                                                       // key is of type "keyof T"
-                                                      field: key as keyof T,
+                                                      field: fieldName as keyof T,
                                                       sortOrder:
                                                           updatedSortOrder,
                                                   })
@@ -83,7 +95,7 @@ export const WfoTableHeaderRow = <T extends object>({
                                         columnConfig.isFilterable
                                             ? (searchText) =>
                                                   onUpdateDataSearch?.({
-                                                      field: key as keyof T,
+                                                      field: fieldName as keyof T,
                                                       searchText,
                                                   })
                                             : undefined
@@ -91,28 +103,39 @@ export const WfoTableHeaderRow = <T extends object>({
                                 >
                                     {columnConfig.label?.toString()}
                                 </WfoTableHeaderCell>
-                            </th>
-                        );
-                    }
-
-                    // Control column
-                    return (
-                        <th
-                            key={key}
-                            colSpan={columnConfig.numberOfColumnsToSpan}
-                            css={[
-                                ...toOptionalArrayEntry(
-                                    cellStyle,
-                                    !columnConfig.disableDefaultCellStyle,
-                                ),
-                                setWidth(columnConfig.width),
-                            ]}
-                        >
-                            <div>{columnConfig.label?.toString() || ''}</div>
+                                {typeof onUpdateColumWidth === 'function' &&
+                                    index !==
+                                        sortedVisibleColumns.length - 1 && (
+                                        <WfoDragHandler
+                                            headerRowRef={headerRowRef}
+                                            fieldName={fieldName}
+                                            onUpdateColumWidth={
+                                                onUpdateColumWidth
+                                            }
+                                        />
+                                    )}
+                            </div>
                         </th>
                     );
-                })}
-            </tr>
-        </>
+                }
+
+                // Control column
+                return (
+                    <th
+                        key={fieldName}
+                        colSpan={columnConfig.numberOfColumnsToSpan}
+                        css={[
+                            ...toOptionalArrayEntry(
+                                cellStyle,
+                                !columnConfig.disableDefaultCellStyle,
+                            ),
+                            setWidth(columnConfig.width),
+                        ]}
+                    >
+                        <div>{columnConfig.label?.toString() || ''}</div>
+                    </th>
+                );
+            })}
+        </tr>
     );
 };

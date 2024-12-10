@@ -34,7 +34,7 @@ import {
 } from '@elastic/eui';
 
 import { ConfirmDialogHandler, ConfirmationDialogContext } from '@/contexts';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWfoErrorMonitoring } from '@/hooks';
 import { WfoPlayFill } from '@/icons';
 import { FormValidationError, ValidationError } from '@/types/forms';
 
@@ -429,6 +429,7 @@ export function WfoUserInputForm({
     const [processing, setProcessing] = useState<boolean>(false);
     const [nrOfValidationErrors, setNrOfValidationErrors] = useState<number>(0);
     const [rootErrors, setRootErrors] = useState<string[]>([]);
+    const { reportError } = useWfoErrorMonitoring();
 
     const openLeavePageDialog = (
         leaveAction: ConfirmDialogHandler,
@@ -457,7 +458,7 @@ export function WfoUserInputForm({
                 await validSubmit(userInput);
                 setProcessing(false);
                 return null;
-            } catch (error: unknown) {
+            } catch (error) {
                 setProcessing(false);
                 if (typeof error === 'object' && error !== null) {
                     const validationError = error as FormValidationError;
@@ -485,6 +486,9 @@ export function WfoUserInputForm({
                 }
                 // Let the error escape, so it can be caught by our own onerror handler instead of being silenced by uniforms
                 setTimeout(() => {
+                    reportError(
+                        new Error(`Forms error: ${JSON.stringify({ error })}`),
+                    );
                     throw error;
                 }, 0);
 

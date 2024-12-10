@@ -1,4 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -101,6 +102,10 @@ export type WfoTableProps<T extends object> = {
     className?: string;
 };
 
+type LocalColumnWidths = {
+    [key: string]: string;
+};
+
 export const WfoTable = <T extends object>({
     data,
     columnConfig,
@@ -116,6 +121,23 @@ export const WfoTable = <T extends object>({
     onRowClick,
     className,
 }: WfoTableProps<T>) => {
+    const getColumnWidthsFromConfig = (
+        columnConfig: WfoTableColumnConfig<T>,
+    ): LocalColumnWidths => {
+        return Object.entries(columnConfig).reduce(
+            (columnWidths, [key, config]) => {
+                if (config.columnType === ColumnType.DATA) {
+                    columnWidths[key] = config.width ?? 'auto';
+                }
+                return columnWidths;
+            },
+            {} as LocalColumnWidths,
+        );
+    };
+
+    const [localColumnWidths, setLocalColumnWidths] =
+        useState<LocalColumnWidths>(getColumnWidthsFromConfig(columnConfig));
+
     const {
         tableContainerStyle,
         tableStyle,
@@ -133,6 +155,30 @@ export const WfoTable = <T extends object>({
         hiddenColumns,
     );
 
+    const onUpdateColumWidth = (fieldName: string, width: number) => {
+        setLocalColumnWidths((localWidths) => {
+            return {
+                ...localWidths,
+                [fieldName]: `${width}px`,
+            };
+        });
+    };
+
+    const configWithLocalWidths: WfoTableColumnConfig<T> = Object.entries(
+        columnConfig,
+    ).reduce((mergedConfig, [fieldName, fieldConfig]) => {
+        const key = fieldName as keyof WfoTableColumnConfig<T>;
+        if (fieldConfig.columnType === ColumnType.DATA) {
+            mergedConfig[key] = {
+                ...fieldConfig,
+                width: localColumnWidths[key],
+            };
+        } else {
+            mergedConfig[key] = fieldConfig;
+        }
+        return mergedConfig;
+    }, {} as WfoTableColumnConfig<T>);
+
     return (
         <>
             <div css={[tableContainerStyle, useEuiScrollBar()]}>
@@ -142,12 +188,13 @@ export const WfoTable = <T extends object>({
                     ) : (
                         <thead css={headerStyle}>
                             <WfoTableHeaderRow
-                                columnConfig={columnConfig}
+                                columnConfig={configWithLocalWidths}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 dataSorting={dataSorting}
                                 onUpdateDataSorting={onUpdateDataSorting}
                                 onUpdateDataSearch={onUpdateDataSearch}
+                                onUpdateColumWidth={onUpdateColumWidth}
                             />
                         </thead>
                     )}
@@ -168,7 +215,7 @@ export const WfoTable = <T extends object>({
                         <tbody css={isLoading && bodyLoadingStyle}>
                             <WfoTableDataRows
                                 data={data}
-                                columnConfig={columnConfig}
+                                columnConfig={configWithLocalWidths}
                                 hiddenColumns={hiddenColumns}
                                 columnOrder={columnOrder}
                                 rowExpandingConfiguration={

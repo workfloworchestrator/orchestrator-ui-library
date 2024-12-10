@@ -10,7 +10,7 @@ import {
 } from './WfoTableHeaderCell/styles';
 import { TABLE_ROW_HEIGHT } from './constants';
 
-export const getWfoTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const radius = theme.border.radius.medium;
 
     const tableLoadingLineKeyframes = keyframes({
@@ -70,6 +70,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
         borderColor: theme.colors.lightShade,
+        position: 'relative',
     });
 
     const dataRowStyle = css({
@@ -82,7 +83,7 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
         backgroundColor: theme.colors.lightestShade,
     });
 
-    const headerCellStyle = css({
+    const sortableHeaderCellStyle = css({
         paddingRight: 0,
         [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
@@ -96,7 +97,6 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
 
     const cellStyle = css({
         paddingLeft: theme.size.m,
-        paddingRight: theme.size.m,
         whiteSpace: 'nowrap',
         verticalAlign: 'middle',
     });
@@ -122,19 +122,43 @@ export const getWfoTableStyles = ({ theme }: WfoTheme) => {
             overflow: 'hidden',
         });
 
+    const headerCellContainer = css({
+        display: 'flex',
+        justifyContent: 'space-between',
+        height: TABLE_ROW_HEIGHT,
+    });
+
+    const dragAndDropStyle = css({
+        width: theme.size.xs,
+        cursor: 'col-resize',
+        borderRadius: theme.border.radius.small,
+        position: 'absolute',
+        height: '100%',
+        zIndex: theme.levels.modal,
+        '&:hover, &:active': {
+            backgroundColor: isDarkThemeActive
+                ? theme.colors.mediumShade
+                : theme.colors.header,
+        },
+        '&::after': {
+            content: '""',
+        },
+    });
     return {
         tableContainerStyle,
         tableStyle,
         headerStyle,
+        headerCellContainer,
         bodyLoadingStyle,
         rowStyle,
         dataRowStyle,
         expandedRowStyle,
-        headerCellStyle,
+        sortableHeaderCellStyle,
         cellStyle,
         cellContentStyle,
         emptyTableMessageStyle,
         clickableStyle,
+        dragAndDropStyle,
         setWidth,
     };
 };
