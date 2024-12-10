@@ -5,6 +5,11 @@ describe('getFirstUuidPart()', () => {
         const result = getFirstUuidPart('12345678-1234-1234-1234-123456789abc');
         expect(result).toEqual('12345678');
     });
+
+    it('returns empty string for empty uuid', () => {
+        const result = getFirstUuidPart();
+        expect(result).toEqual('');
+    });
 });
 
 describe('isUuid4()', () => {
