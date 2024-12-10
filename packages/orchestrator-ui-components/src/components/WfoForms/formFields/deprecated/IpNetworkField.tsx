@@ -24,6 +24,20 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 import { FieldProps } from '../types';
 
+export function getUsedPrefixMin(
+    netmask: string,
+    prefixMin: number | undefined,
+    name: string,
+) {
+    const netMaskInt = parseInt(netmask, 10);
+    return (
+        prefixMin ??
+        (netMaskInt < 32 && name === 'ip_sub_prefix'
+            ? netMaskInt + 1
+            : netMaskInt)
+    );
+}
+
 export type IPvAnyNetworkFieldProps = FieldProps<
     string,
     { prefixMin?: number }
@@ -51,12 +65,7 @@ function IpNetwork({
     const usePrefix = selectedPrefix;
     const [subnet, netmask] = usePrefix?.split('/') ?? ['', ''];
 
-    const netMaskInt = parseInt(netmask, 10);
-    const usedPrefixMin =
-        prefixMin ??
-        (netMaskInt < 32 && name === 'ip_sub_prefix'
-            ? netMaskInt + 1
-            : netMaskInt);
+    const usedPrefixMin = getUsedPrefixMin(netmask, prefixMin, name);
 
     return (
         <section {...filterDOMProps(props)}>
