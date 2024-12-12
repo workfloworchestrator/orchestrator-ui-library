@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
-import { WfoLoading, WfoTextAnchor } from '@/components';
+import { PATH_SUBSCRIPTIONS, WfoLoading, WfoTextAnchor } from '@/components';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
@@ -24,11 +24,13 @@ import { getProductBlockTitle } from './utils';
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
     subscriptionId: Subscription['subscriptionId'];
+    subscriptionPath?: string;
 }
 
 export const WfoSubscriptionDetailTree = ({
     productBlockInstances,
     subscriptionId,
+    subscriptionPath = PATH_SUBSCRIPTIONS,
 }: WfoSubscriptionDetailTreeProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
@@ -210,6 +212,7 @@ export const WfoSubscriptionDetailTree = ({
                                     key={id}
                                     subscriptionId={subscriptionId}
                                     productBlock={block}
+                                    subscriptionPath={subscriptionPath}
                                 />
                             );
                         })}
