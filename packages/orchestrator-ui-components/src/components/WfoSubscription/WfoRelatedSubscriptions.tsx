@@ -52,10 +52,12 @@ export type RelatedSubscriptionListItem = Pick<
 
 interface WfoRelatedSubscriptionsProps {
     subscriptionId: string;
+    subscriptionPath?: string;
 }
 
 export const WfoRelatedSubscriptions = ({
     subscriptionId,
+    subscriptionPath = PATH_SUBSCRIPTIONS,
 }: WfoRelatedSubscriptionsProps) => {
     const [hideTerminatedSubscriptions, setHideTerminatedSubscriptions] =
         useState<boolean>(true);
@@ -109,7 +111,7 @@ export const WfoRelatedSubscriptions = ({
             renderData: (value, record) => (
                 <Link
                     target="_blank"
-                    href={`${PATH_SUBSCRIPTIONS}/${record.subscriptionId}`}
+                    href={`${subscriptionPath}/${record.subscriptionId}`}
                 >
                     {value}
                 </Link>
