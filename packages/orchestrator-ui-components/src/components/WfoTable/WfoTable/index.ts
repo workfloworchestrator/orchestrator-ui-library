@@ -10,6 +10,7 @@ export * from './WfoMultilineCell';
 
 export * from './WfoTable';
 export * from './WfoTableHeaderCell';
+export * from './WfoTableDataRows';
 
 export * from './WfoTruncateCell';
 export * from './WfoDataCell';
