@@ -55,6 +55,8 @@ export function autoFieldFunction(
             switch (format) {
                 case 'optGroup':
                     return OptGroupField;
+                case 'summary':
+                    return SummaryField;
             }
             break;
         case String:
