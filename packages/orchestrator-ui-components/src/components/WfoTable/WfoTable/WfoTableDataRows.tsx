@@ -20,6 +20,10 @@ export type WfoTableDataRowsProps<T extends object> = Pick<
     | 'className'
 >;
 
+export const DATA_ROW_CLASS = 'data-row';
+export const CONTROL_CELL_CLASS = 'control-cell';
+export const DATA_CELL_CLASS = 'data-cell';
+
 export const WfoTableDataRows = <T extends object>({
     data,
     columnConfig,
@@ -49,7 +53,7 @@ export const WfoTableDataRows = <T extends object>({
             {data.map((row, index) => (
                 <Fragment key={`table-data-row-${index}`}>
                     <tr
-                        className={`${className} data-row`}
+                        className={`${className} ${DATA_ROW_CLASS}`}
                         css={[
                             rowStyle,
                             dataRowStyle,
@@ -63,7 +67,7 @@ export const WfoTableDataRows = <T extends object>({
                             ) {
                                 return (
                                     <td
-                                        className="control-cell"
+                                        className={CONTROL_CELL_CLASS}
                                         colSpan={
                                             columnConfig.numberOfColumnsToSpan ??
                                             1
@@ -89,7 +93,7 @@ export const WfoTableDataRows = <T extends object>({
                             const result = row[key as keyof T];
                             return (
                                 <td
-                                    className="data-cell"
+                                    className={DATA_CELL_CLASS}
                                     key={key}
                                     css={[
                                         ...toOptionalArrayEntry(
