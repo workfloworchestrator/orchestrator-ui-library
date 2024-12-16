@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { Fragment, ReactNode } from 'react';
 
 import { WfoTableProps } from './WfoTable';
 
@@ -29,5 +29,13 @@ export const WfoExpandedRow = <T extends object>({
                     rowData[rowExpandingConfiguration.uniqueRowId] as string
                 ).toLowerCase(),
         )
-        .map(([, expandedRowComponent]) => expandedRowComponent);
+        .map(([, expandedRowComponent], index) => (
+            <Fragment
+                key={`${index}-${
+                    rowData[rowExpandingConfiguration.uniqueRowId]
+                }`}
+            >
+                {expandedRowComponent}
+            </Fragment>
+        ));
 };
