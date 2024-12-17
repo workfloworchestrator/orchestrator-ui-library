@@ -88,7 +88,7 @@ export const WfoResourceTypesPage = () => {
         resourceTypeId: {
             columnType: ColumnType.DATA,
             label: t('resourceId'),
-            width: '90',
+            width: '90px',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
             renderTooltip: (value) => value,
@@ -96,7 +96,7 @@ export const WfoResourceTypesPage = () => {
         resourceType: {
             columnType: ColumnType.DATA,
             label: t('type'),
-            width: '200',
+            width: '225px',
             renderData: (value) => (
                 <WfoProductBlockBadge badgeType={BadgeType.RESOURCE_TYPE}>
                     {value}
@@ -106,10 +106,12 @@ export const WfoResourceTypesPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
+            width: '700px',
         },
         productBlocks: {
             columnType: ColumnType.DATA,
             label: t('usedInProductBlocks'),
+            width: '1000px',
             renderData: (productBlocks) => (
                 <>
                     {productBlocks.map((productBlock, index) => (

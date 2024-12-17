@@ -92,7 +92,7 @@ export const WfoProductsPage = () => {
         productId: {
             columnType: ColumnType.DATA,
             label: t('id'),
-            width: '90',
+            width: '90px',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
             renderTooltip: (value) => value,
@@ -100,7 +100,7 @@ export const WfoProductsPage = () => {
         name: {
             columnType: ColumnType.DATA,
             label: t('name'),
-            width: '200',
+            width: '200px',
             renderData: (name) => (
                 <WfoProductBlockBadge badgeType={BadgeType.PRODUCT}>
                     {name}
@@ -110,7 +110,7 @@ export const WfoProductsPage = () => {
         tag: {
             columnType: ColumnType.DATA,
             label: t('tag'),
-            width: '120',
+            width: '120px',
             renderData: (value) => (
                 <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_TAG}>
                     {value}
@@ -120,22 +120,24 @@ export const WfoProductsPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '400',
+            width: '400px',
             renderTooltip: (value) => value,
         },
         productType: {
             columnType: ColumnType.DATA,
             label: t('productType'),
+            width: '250px',
         },
         status: {
             columnType: ColumnType.DATA,
             label: t('status'),
-            width: '90',
+            width: '90px',
             renderData: (value) => <WfoProductStatusBadge status={value} />,
         },
         fixedInputs: {
             columnType: ColumnType.DATA,
             label: t('fixedInputs'),
+            width: '400px',
             renderData: (fixedInputs) => (
                 <>
                     {fixedInputs.map((fixedInput, index) => (
@@ -159,6 +161,7 @@ export const WfoProductsPage = () => {
         productBlocks: {
             columnType: ColumnType.DATA,
             label: t('productBlocks'),
+            width: '250px',
             renderData: (productBlocks) => (
                 <>
                     {productBlocks.map((block, index) => (

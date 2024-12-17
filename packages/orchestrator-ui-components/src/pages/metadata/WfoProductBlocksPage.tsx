@@ -95,7 +95,7 @@ export const WfoProductBlocksPage = () => {
         productBlockId: {
             columnType: ColumnType.DATA,
             label: t('id'),
-            width: '90',
+            width: '90px',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
             renderTooltip: (value) => value,
@@ -103,6 +103,7 @@ export const WfoProductBlocksPage = () => {
         name: {
             columnType: ColumnType.DATA,
             label: t('name'),
+            width: '300px',
             renderData: (name) => (
                 <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_BLOCK}>
                     {name}
@@ -112,6 +113,7 @@ export const WfoProductBlocksPage = () => {
         tag: {
             columnType: ColumnType.DATA,
             label: t('tag'),
+            width: '120px',
         },
         description: {
             columnType: ColumnType.DATA,
@@ -148,6 +150,7 @@ export const WfoProductBlocksPage = () => {
         resourceTypes: {
             columnType: ColumnType.DATA,
             label: t('resourceTypes'),
+            width: '700px',
             renderData: (resourceTypes) => (
                 <>
                     {resourceTypes.map((resourceType, index) => (
@@ -183,6 +186,7 @@ export const WfoProductBlocksPage = () => {
         createdAt: {
             columnType: ColumnType.DATA,
             label: t('createdAt'),
+            width: '120px',
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
@@ -191,6 +195,7 @@ export const WfoProductBlocksPage = () => {
         endDate: {
             columnType: ColumnType.DATA,
             label: t('endDate'),
+            width: '120px',
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
