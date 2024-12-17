@@ -111,21 +111,23 @@ export const WfoWorkflowsPage = () => {
                     {name}
                 </WfoProductBlockBadge>
             ),
+            width: '350px',
         },
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '40%',
+            width: '450px',
         },
         target: {
             columnType: ColumnType.DATA,
             label: t('target'),
             renderData: (target) => <WfoWorkflowTargetBadge target={target} />,
+            width: '100px',
         },
         productTags: {
             columnType: ColumnType.DATA,
             label: t('productTags'),
-            width: '20%',
+            width: '300px',
             renderData: (productTags) => (
                 <>
                     {productTags
@@ -166,7 +168,7 @@ export const WfoWorkflowsPage = () => {
         createdAt: {
             columnType: ColumnType.DATA,
             label: t('createdAt'),
-            width: '15%',
+            width: '100px',
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
