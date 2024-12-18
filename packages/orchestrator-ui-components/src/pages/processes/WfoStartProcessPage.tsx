@@ -35,9 +35,16 @@ import { FormNotCompleteResponse } from '@/types/forms';
 
 import { WfoProcessDetail } from './WfoProcessDetail';
 
+type PreselectedInput = {
+    prefix?: string;
+    prefixlen?: string;
+    prefix_min?: string;
+};
+
 type StartCreateWorkflowPayload = {
     product: string;
-};
+} & PreselectedInput;
+
 type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
@@ -46,10 +53,10 @@ type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
-interface StartProcessPageQuery {
+type StartProcessPageQuery = {
     productId?: string;
     subscriptionId?: string;
-}
+} & PreselectedInput;
 
 interface WfoStartProcessPageProps {
     processName: string;
@@ -64,6 +71,9 @@ export interface UserInputForm {
 const getInitialProcessPayload = ({
     productId,
     subscriptionId,
+    prefix,
+    prefixlen,
+    prefix_min,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
     if (productId) {
         return {
@@ -73,6 +83,14 @@ const getInitialProcessPayload = ({
     if (subscriptionId) {
         return {
             subscription_id: subscriptionId,
+        };
+    }
+    if (productId && prefix && prefixlen && prefix_min) {
+        return {
+            product: productId,
+            prefix: prefix,
+            prefixlen: prefixlen,
+            prefix_min: prefix_min,
         };
     }
     return undefined;
@@ -87,7 +105,8 @@ export const WfoStartProcessPage = ({
     const [hasError, setHasError] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
-    const { productId, subscriptionId } = router.query as StartProcessPageQuery;
+    const { productId, subscriptionId, prefix, prefixlen, prefix_min } =
+        router.query as StartProcessPageQuery;
 
     const {
         data: subscriptionDetail,
@@ -108,8 +127,15 @@ export const WfoStartProcessPage = ({
     const [startProcess] = useStartProcessMutation();
 
     const startProcessPayload = useMemo(
-        () => getInitialProcessPayload({ productId, subscriptionId }),
-        [productId, subscriptionId],
+        () =>
+            getInitialProcessPayload({
+                productId,
+                subscriptionId,
+                prefix,
+                prefixlen,
+                prefix_min,
+            }),
+        [productId, subscriptionId, prefix, prefixlen, prefix_min],
     );
 
     const { stepUserInput, hasNext } = form;
