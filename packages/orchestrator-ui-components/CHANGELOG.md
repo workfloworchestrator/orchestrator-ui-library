@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 2.15.0
+
+### Minor Changes
+
+-   c7eaf69: 1620 Add subscriptionPath option for WfoRelatedSubscriptions, WfoSubscriptionDetailTree
+
+### Patch Changes
+
+-   79d9133: 1569 Some non-functional tweaks on the table components: Adds classNames and adds a Fragment component in a mapper function
+-   2cab3b2: Add summary field to Object field type in AutoFieldLoader
+
 ## 2.14.1
 
 ### Patch Changes
