@@ -71,7 +71,19 @@ export function WfoProductBlockBadge({
 
     return (
         <WfoBadge textColor={textColor} color={badgeColor}>
-            {link ? <Link href={link}>{children}</Link> : children}
+            {link ? (
+                <Link
+                    css={{
+                        color: textColor,
+                        textDecoration: 'none',
+                    }}
+                    href={link}
+                >
+                    {children}
+                </Link>
+            ) : (
+                children
+            )}
         </WfoBadge>
     );
 }
