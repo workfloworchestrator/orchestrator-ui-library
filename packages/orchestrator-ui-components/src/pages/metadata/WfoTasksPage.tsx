@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiBadgeGroup } from '@elastic/eui';
 
 import {
+    PATH_METADATA_PRODUCTS,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -36,6 +37,7 @@ import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getQueryUrl,
     getQueryVariablesForExport,
     onlyUnique,
     parseDateToLocaleDateTimeString,
@@ -129,6 +131,10 @@ export const WfoTasksPage = () => {
                         .map((productTag, index) => (
                             <WfoProductBlockBadge
                                 key={index}
+                                link={getQueryUrl(
+                                    PATH_METADATA_PRODUCTS,
+                                    `tag:"${productTag}"`,
+                                )}
                                 badgeType={BadgeType.PRODUCT_TAG}
                             >
                                 {productTag}
@@ -143,6 +149,10 @@ export const WfoTasksPage = () => {
                         .map((productTag, index) => (
                             <WfoProductBlockBadge
                                 key={index}
+                                link={getQueryUrl(
+                                    PATH_METADATA_PRODUCTS,
+                                    `tag:"${productTag}"`,
+                                )}
                                 badgeType={BadgeType.PRODUCT_TAG}
                             >
                                 {productTag}
