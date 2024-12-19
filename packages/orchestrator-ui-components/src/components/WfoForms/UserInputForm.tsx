@@ -18,6 +18,7 @@ import React, { useContext, useState } from 'react';
 
 import invariant from 'invariant';
 import { JSONSchema6 } from 'json-schema';
+import { isObject } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import { useTranslations } from 'next-intl';
@@ -393,10 +394,16 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
         // ipvany preselect
         if (queryParams.prefix && queryParams.prefixlen) {
             if (form && form.properties.ip_prefix) {
-                const ipPrefixInput = form.properties
-                    .ip_prefix as UniformJSONSchemaProperty;
+                const ipPrefix = isObject(form.properties.ip_prefix)
+                    ? form.properties.ip_prefix
+                    : {};
+                const ipPrefixInput = {
+                    ...ipPrefix,
+                    uniforms: { prefixMin: 0 },
+                    default: {},
+                } as UniformJSONSchemaProperty;
                 if (!ipPrefixInput.uniforms) {
-                    ipPrefixInput.uniforms = {};
+                    ipPrefixInput.uniforms = { prefixMin: 0 };
                 }
                 ipPrefixInput.default = `${queryParams.prefix}/${queryParams.prefixlen}`;
                 ipPrefixInput.uniforms.prefixMin = parseInt(
@@ -404,6 +411,13 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
                         (queryParams.prefixlen as string),
                     10,
                 );
+                return {
+                    ...form,
+                    properties: {
+                        ...form.properties,
+                        ip_prefix: ipPrefixInput,
+                    },
+                };
             }
         }
     }
