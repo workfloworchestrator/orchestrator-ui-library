@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
+    PATH_METADATA_PRODUCT_BLOCKS,
     WfoDataSorting,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -35,6 +36,7 @@ import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
     getConcatenatedResult,
+    getQueryUrl,
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
     parseIsoString,
@@ -161,21 +163,24 @@ export const WfoProductsPage = () => {
             label: t('productBlocks'),
             renderData: (productBlocks) => (
                 <>
-                    {productBlocks.map((block, index) => (
+                    {productBlocks.map(({ name }, index) => (
                         <WfoProductBlockBadge
                             key={index}
+                            link={getQueryUrl(
+                                PATH_METADATA_PRODUCT_BLOCKS,
+                                `name:"${name}"`,
+                            )}
                             badgeType={BadgeType.PRODUCT_BLOCK}
                         >
-                            {block.name}
+                            {name}
                         </WfoProductBlockBadge>
                     ))}
                 </>
             ),
-            renderTooltip: (productBlocks) => {
-                return productBlocks.map((productBlock) => (
+            renderTooltip: (productBlocks) =>
+                productBlocks.map((productBlock) => (
                     <p key={productBlock.name}>- {productBlock.name}</p>
-                ));
-            },
+                )),
         },
         createdAt: {
             columnType: ColumnType.DATA,
