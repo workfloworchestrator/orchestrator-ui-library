@@ -161,19 +161,22 @@ export const WfoProductsPage = () => {
         productBlocks: {
             columnType: ColumnType.DATA,
             label: t('productBlocks'),
-            renderData: (productBlocks) =>
-                productBlocks.map(({ name }, index) => (
-                    <WfoProductBlockBadge
-                        key={index}
-                        link={getQueryUrl(
-                            PATH_METADATA_PRODUCT_BLOCKS,
-                            `name:"${name}"`,
-                        )}
-                        badgeType={BadgeType.PRODUCT_BLOCK}
-                    >
-                        {name}
-                    </WfoProductBlockBadge>
-                )),
+            renderData: (productBlocks) => (
+                <>
+                    {productBlocks.map(({ name }, index) => (
+                        <WfoProductBlockBadge
+                            key={index}
+                            link={getQueryUrl(
+                                PATH_METADATA_PRODUCT_BLOCKS,
+                                `name:"${name}"`,
+                            )}
+                            badgeType={BadgeType.PRODUCT_BLOCK}
+                        >
+                            {name}
+                        </WfoProductBlockBadge>
+                    ))}
+                </>
+            ),
             renderTooltip: (productBlocks) =>
                 productBlocks.map((productBlock) => (
                     <p key={productBlock.name}>- {productBlock.name}</p>
