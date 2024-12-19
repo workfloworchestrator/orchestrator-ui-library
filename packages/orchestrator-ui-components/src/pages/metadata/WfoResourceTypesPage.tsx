@@ -8,6 +8,7 @@ import {
     DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZES,
     METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
+    PATH_METADATA_PRODUCT_BLOCKS,
     WfoProductBlockBadge,
     getDataSortHandler,
     getPageIndexChangeHandler,
@@ -37,7 +38,11 @@ import {
     ResourceTypeDefinition,
     SortOrder,
 } from '@/types';
-import { getConcatenatedResult, getQueryVariablesForExport } from '@/utils';
+import {
+    getConcatenatedResult,
+    getQueryUrl,
+    getQueryVariablesForExport,
+} from '@/utils';
 import {
     csvDownloadHandler,
     getCsvFileNameWithDate,
@@ -114,24 +119,32 @@ export const WfoResourceTypesPage = () => {
             width: '1000px',
             renderData: (productBlocks) => (
                 <>
-                    {productBlocks.map((productBlock, index) => (
+                    {productBlocks.map(({ name }, index) => (
                         <WfoProductBlockBadge
                             key={index}
+                            link={getQueryUrl(
+                                PATH_METADATA_PRODUCT_BLOCKS,
+                                `name:"${name}"`,
+                            )}
                             badgeType={BadgeType.PRODUCT_BLOCK}
                         >
-                            {productBlock.name}
+                            {name}
                         </WfoProductBlockBadge>
                     ))}
                 </>
             ),
             renderDetails: (productBlocks) => (
                 <EuiBadgeGroup gutterSize="s">
-                    {productBlocks.map((productBlock, index) => (
+                    {productBlocks.map(({ name }, index) => (
                         <WfoProductBlockBadge
                             key={index}
+                            link={getQueryUrl(
+                                PATH_METADATA_PRODUCT_BLOCKS,
+                                `name:"${name}"`,
+                            )}
                             badgeType={BadgeType.PRODUCT_BLOCK}
                         >
-                            {productBlock.name}
+                            {name}
                         </WfoProductBlockBadge>
                     ))}
                 </EuiBadgeGroup>
