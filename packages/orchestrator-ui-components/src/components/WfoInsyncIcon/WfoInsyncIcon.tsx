@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useOrchestratorTheme } from '../../hooks';
-import { WfoCheckmarkCircleFill, WfoMinusCircleOutline } from '../../icons';
+import { useOrchestratorTheme } from '@/hooks';
+import { WfoCheckmarkCircleFill, WfoMinusCircleFill } from '@/icons';
 
 interface WfoInsyncIconProps {
     inSync: boolean;
@@ -14,13 +14,13 @@ export const WfoInsyncIcon = ({ inSync }: WfoInsyncIconProps) => {
         <WfoCheckmarkCircleFill
             height={20}
             width={20}
-            color={theme.colors.primary}
+            color={theme.colors.mediumShade}
         />
     ) : (
-        <WfoMinusCircleOutline
+        <WfoMinusCircleFill
             height={20}
             width={20}
-            color={theme.colors.mediumShade}
+            color={theme.colors.warningText}
         />
     );
 };
