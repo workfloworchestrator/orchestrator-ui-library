@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -24,6 +24,7 @@ export type WfoGroupedTableProps<T extends object> = Pick<
 > & {
     data: GroupedData<T>;
     groupNameLabel: string;
+    overrideHeaderSection?: (ExpandButton: ReactElement) => React.ReactNode;
 };
 
 export const WfoGroupedTable = <T extends object>({
@@ -31,6 +32,7 @@ export const WfoGroupedTable = <T extends object>({
     columnConfig,
     groupNameLabel,
     isLoading,
+    overrideHeaderSection,
     className,
 }: WfoGroupedTableProps<T>) => {
     const { headerStyle, rowStyle, cellStyle } =
@@ -53,21 +55,27 @@ export const WfoGroupedTable = <T extends object>({
         columnConfig,
     });
 
+    const ExpandCollapseButton: FC = () => (
+        <EuiButtonEmpty
+            size="xs"
+            onClick={() =>
+                isAllGroupsAndSubgroupsExpanded
+                    ? collapseAllRows()
+                    : expandAllRows()
+            }
+        >
+            {isAllGroupsAndSubgroupsExpanded ? t('collapse') : t('expand')}
+        </EuiButtonEmpty>
+    );
+
     return (
         <>
             <EuiFlexGroup justifyContent="flexEnd">
-                <EuiButtonEmpty
-                    size="xs"
-                    onClick={() =>
-                        isAllGroupsAndSubgroupsExpanded
-                            ? collapseAllRows()
-                            : expandAllRows()
-                    }
-                >
-                    {isAllGroupsAndSubgroupsExpanded
-                        ? t('collapse')
-                        : t('expand')}
-                </EuiButtonEmpty>
+                {overrideHeaderSection ? (
+                    overrideHeaderSection(<ExpandCollapseButton />)
+                ) : (
+                    <ExpandCollapseButton />
+                )}
             </EuiFlexGroup>
 
             <EuiSpacer size="xs" />
