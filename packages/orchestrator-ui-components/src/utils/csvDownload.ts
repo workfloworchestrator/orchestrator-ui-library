@@ -26,6 +26,12 @@ function startCsvDownload(csvFileContent: string, fileName: string) {
     URL.revokeObjectURL(url);
 }
 
+function totalItemsExceedMaximumItemsForBulkFetching(
+    totalItems?: number | null,
+) {
+    return (totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING;
+}
+
 export function initiateCsvFileDownload<T extends object>(
     data: T[],
     fileName: string,
@@ -53,8 +59,8 @@ export const csvDownloadHandlerSync = <T extends object, U extends object>(
     pageInfoMapper: (data: T) => GraphQLPageInfo,
     keyOrder: string[],
     filename: string,
-    addToastFunction: (type: ToastTypes, text: string, title: string) => void,
-    translationFunction: (
+    addToastFunction?: (type: ToastTypes, text: string, title: string) => void,
+    translationFunction?: (
         translationKey: string,
         variables?: TranslationValues,
     ) => string,
@@ -64,7 +70,12 @@ export const csvDownloadHandlerSync = <T extends object, U extends object>(
     );
 
     const pageInfo = pageInfoMapper(data);
-    if ((pageInfo.totalItems ?? 0) > MAXIMUM_ITEMS_FOR_BULK_FETCHING) {
+
+    if (
+        addToastFunction &&
+        translationFunction &&
+        totalItemsExceedMaximumItemsForBulkFetching(pageInfo.totalItems)
+    ) {
         addToastFunction(
             ToastTypes.ERROR,
             translationFunction('notAllResultsExported', {
@@ -84,12 +95,12 @@ export const csvDownloadHandler =
         pageInfoMapper: (data: T) => GraphQLPageInfo,
         keyOrder: string[],
         filename: string,
-        addToastFunction: (
+        addToastFunction?: (
             type: ToastTypes,
             text: string,
             title: string,
         ) => void,
-        translationFunction: (
+        translationFunction?: (
             translationKey: string,
             variables?: TranslationValues,
         ) => string,
