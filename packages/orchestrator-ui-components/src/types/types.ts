@@ -8,6 +8,10 @@ export type Nullable<T> = T | null;
 
 type GenericResponse = { [key: string]: unknown };
 
+export type StringifyObject<T extends object> = {
+    [key in keyof T]: string;
+};
+
 export type FieldValue = {
     field: string;
     value: string | number | boolean | null;
