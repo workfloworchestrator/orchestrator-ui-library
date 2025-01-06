@@ -14,13 +14,13 @@ export const WfoInsyncIcon = ({ inSync }: WfoInsyncIconProps) => {
         <WfoCheckmarkCircleFill
             height={20}
             width={20}
-            color={theme.colors.mediumShade}
+            color={theme.colors.primary}
         />
     ) : (
         <WfoMinusCircleFill
             height={20}
             width={20}
-            color={theme.colors.warningText}
+            color={theme.colors.danger}
         />
     );
 };
