@@ -87,11 +87,7 @@ export const csvDownloadHandler =
         const data = dataMapper(fetchResult);
         const pageInfo = pageInfoMapper(fetchResult);
 
-        if (
-            addToastFunction &&
-            translationFunction &&
-            totalItemsExceedMaximumItemsForBulkFetching(pageInfo.totalItems)
-        ) {
+        if (totalItemsExceedMaximumItemsForBulkFetching(pageInfo.totalItems)) {
             addToastFunction(
                 ToastTypes.ERROR,
                 translationFunction('notAllResultsExported', {
