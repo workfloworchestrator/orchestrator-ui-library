@@ -67,12 +67,12 @@ export const csvDownloadHandler =
         pageInfoMapper: (data: T) => GraphQLPageInfo,
         keyOrder: string[],
         filename: string,
-        addToastFunction?: (
+        addToastFunction: (
             type: ToastTypes,
             text: string,
             title: string,
         ) => void,
-        translationFunction?: (
+        translationFunction: (
             translationKey: string,
             variables?: TranslationValues,
         ) => string,
