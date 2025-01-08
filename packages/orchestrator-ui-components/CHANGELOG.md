@@ -1,5 +1,36 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.0.0
+
+### Major Changes
+
+-   f6315dd: 1479:
+
+    -   csvDownload (Breaking change): Changed the parameters of initiateCsvFileDownload for directly exporting data to CSV.
+    -   GroupedTable: The table has a small header with a button "Collapse / Expand", this can now be overridden.
+    -   Introduced a utility type to help ensuring that all the props of an object will be of type "string". Typically useful for the csvDownload functionality
+
+    Changes to be made by the consumer of the library:
+    The function `initiateCsvFileDownload` now requires 3 parameters instead of 2. The new parameter is `keyOrder` and is an array of strings representing the desired order of the columns in the CSV file. See example below for the placement.
+
+    Before:
+
+    ```javascript
+    initiateCsvFileDownload(data, fileName);
+    ```
+
+    After:
+
+    ```javascript
+    initiateCsvFileDownload(data, keyOrder, fileName);
+    ```
+
+### Patch Changes
+
+-   19d1d88: Enables prefilling of prefixes
+-   bbf8983: 1623 Changes the colors of the WfoInsyncIcon to make the no-in-sync state more prominent
+-   eb45e6b: 289 Metadata page: making related product blocks, resource types and product tags badges clickable. It will update the search query to show that specific item.
+
 ## 2.15.0
 
 ### Minor Changes
