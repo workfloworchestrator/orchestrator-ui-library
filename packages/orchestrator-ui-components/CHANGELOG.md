@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.0.1
+
+### Patch Changes
+
+-   4bd9869: 1146 Allow workflow to start with additional prefilled variables - LIR prefixes page
+
 ## 3.0.0
 
 ### Major Changes
