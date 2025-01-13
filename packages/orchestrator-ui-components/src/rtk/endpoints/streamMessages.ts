@@ -2,11 +2,8 @@ import { debounce } from 'lodash';
 import { getSession } from 'next-auth/react';
 
 import type { WfoSession } from '@/hooks';
-import { addToastMessage } from '@/rtk/slices/toastMessages';
 import type { RootState } from '@/rtk/store';
-import { ToastTypes } from '@/types';
 import { CacheTag, CacheTagType } from '@/types';
-import { getToastMessage } from '@/utils/getToastMessage';
 
 import { orchestratorApi } from '../api';
 
@@ -66,12 +63,6 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
                 },
             ) {
                 const cleanUp = () => {
-                    const message = getToastMessage(
-                        ToastTypes.ERROR,
-                        'Connection to the server was lost. Please click the websocket icon or refresh the page to reconnect.',
-                        'WebSocket closed',
-                    );
-                    dispatch(addToastMessage(message));
                     clearInterval(pingInterval);
                     updateCachedData(() => false);
                 };
