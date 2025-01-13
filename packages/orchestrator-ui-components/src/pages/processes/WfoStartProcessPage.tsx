@@ -75,22 +75,20 @@ const getInitialProcessPayload = ({
     prefixlen,
     prefix_min,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
-    if (productId) {
-        return {
-            product: productId,
-        };
-    }
     if (subscriptionId) {
         return {
             subscription_id: subscriptionId,
         };
-    }
-    if (productId && prefix && prefixlen && prefix_min) {
+    } else if (productId && prefix && prefixlen && prefix_min) {
         return {
             product: productId,
             prefix: prefix,
             prefixlen: prefixlen,
             prefix_min: prefix_min,
+        };
+    } else if (productId) {
+        return {
+            product: productId,
         };
     }
     return undefined;
