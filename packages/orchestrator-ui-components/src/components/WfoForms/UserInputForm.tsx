@@ -407,8 +407,7 @@ function fillPreselection(form: JSONSchema6, router: NextRouter) {
                 }
                 ipPrefixInput.default = `${queryParams.prefix}/${queryParams.prefixlen}`;
                 ipPrefixInput.uniforms.prefixMin = parseInt(
-                    (queryParams.prefix_min as string) ??
-                        (queryParams.prefixlen as string),
+                    queryParams.prefixlen as string,
                     10,
                 );
                 return {

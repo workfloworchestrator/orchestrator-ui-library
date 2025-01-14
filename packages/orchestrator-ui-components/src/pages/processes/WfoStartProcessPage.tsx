@@ -38,7 +38,6 @@ import { WfoProcessDetail } from './WfoProcessDetail';
 type PreselectedInput = {
     prefix?: string;
     prefixlen?: string;
-    prefix_min?: string;
 };
 
 type StartCreateWorkflowPayload = {
@@ -71,20 +70,10 @@ export interface UserInputForm {
 const getInitialProcessPayload = ({
     productId,
     subscriptionId,
-    prefix,
-    prefixlen,
-    prefix_min,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
     if (subscriptionId) {
         return {
             subscription_id: subscriptionId,
-        };
-    } else if (productId && prefix && prefixlen && prefix_min) {
-        return {
-            product: productId,
-            prefix: prefix,
-            prefixlen: prefixlen,
-            prefix_min: prefix_min,
         };
     } else if (productId) {
         return {
@@ -103,8 +92,7 @@ export const WfoStartProcessPage = ({
     const [hasError, setHasError] = useState<boolean>(false);
     const { theme } = useOrchestratorTheme();
     const [form, setForm] = useState<UserInputForm>({});
-    const { productId, subscriptionId, prefix, prefixlen, prefix_min } =
-        router.query as StartProcessPageQuery;
+    const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
     const {
         data: subscriptionDetail,
@@ -128,12 +116,8 @@ export const WfoStartProcessPage = ({
         () =>
             getInitialProcessPayload({
                 productId,
-                subscriptionId,
-                prefix,
-                prefixlen,
-                prefix_min,
             }),
-        [productId, subscriptionId, prefix, prefixlen, prefix_min],
+        [productId],
     );
 
     const { stepUserInput, hasNext } = form;
