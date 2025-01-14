@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.0.3
+
+### Patch Changes
+
+-   bba111c: Add missing subscription id to start process form
+
 ## 3.0.2
 
 ### Patch Changes
