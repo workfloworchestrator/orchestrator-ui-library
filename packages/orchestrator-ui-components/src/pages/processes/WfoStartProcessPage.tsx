@@ -116,8 +116,9 @@ export const WfoStartProcessPage = ({
         () =>
             getInitialProcessPayload({
                 productId,
+                subscriptionId,
             }),
-        [productId],
+        [productId, subscriptionId],
     );
 
     const { stepUserInput, hasNext } = form;
