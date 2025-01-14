@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.0.2
+
+### Patch Changes
+
+-   a4492fd: Fix 400 error in create lir prefix form
+-   4baeff5: 1509 Remove toast for failed websocket connection that covers the next and back buttons in the forms.
+
 ## 3.0.1
 
 ### Patch Changes
