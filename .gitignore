@@ -45,3 +45,7 @@ packages/orchestrator-ui-components/src/configuration/version.ts
 
 # Temporary fix for surf version
 apps/wfo-ui-surf
+
+# Storybook
+*storybook.log
+packages/orchestrator-ui-components/storybook-static/

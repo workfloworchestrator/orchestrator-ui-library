@@ -3,6 +3,7 @@
 /**/__generated__
 /**/dist
 packages/*/CHANGELOG.md
+packages/orchestrator-ui-components/storybook-static/
 /coverage
 /mkdocs
 
