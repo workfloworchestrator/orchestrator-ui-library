@@ -1,6 +1,5 @@
-import type { Meta } from '@storybook/react';
-
 import { WfoFailedTasksBadge } from '@orchestrator-ui/orchestrator-ui-components';
+import type { Meta } from '@storybook/react';
 
 const Story: Meta<typeof WfoFailedTasksBadge> = {
     component: WfoFailedTasksBadge,

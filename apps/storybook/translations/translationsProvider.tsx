@@ -25,9 +25,9 @@ export const TranslationsProvider = ({
     const getCustomMessages = () => {
         switch (locale) {
             case Locale.enGB:
-                return {  };
+                return {};
             case Locale.nlNL:
-                return { };
+                return {};
             default:
                 return {};
         }

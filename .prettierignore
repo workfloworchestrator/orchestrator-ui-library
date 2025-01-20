@@ -12,4 +12,6 @@ packages/*/CHANGELOG.md
 .next
 node_modules
 
+storybook-static
+
 .turbo

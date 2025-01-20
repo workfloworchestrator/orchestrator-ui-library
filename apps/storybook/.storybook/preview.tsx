@@ -1,8 +1,18 @@
+import {
+    EuiProvider,
+    type EuiSideNavItemType,
+    EuiThemeColorMode,
+} from '@elastic/eui';
+import {
+    ColorModes,
+    OrchestratorConfigProvider,
+    StoreProvider,
+    WfoMenuItemLink,
+    defaultOrchestratorTheme,
+} from '@orchestrator-ui/orchestrator-ui-components';
 import type { Preview } from '@storybook/react';
-import { OrchestratorConfigProvider, StoreProvider } from '@orchestrator-ui/orchestrator-ui-components';
+
 import { TranslationsProvider } from '../translations/translationsProvider';
-import { RouterContext } from 'next/dist/shared/lib/router-context'; // next 12
-import { default as mockRouter } from 'next-router-mock';
 
 const storybookConfig = {
     environmentName: 'Development',
@@ -16,6 +26,34 @@ const storybookConfig = {
     workflowInformationLinkUrl: '',
     enableSupportMenuItem: false,
     supportMenuItemUrl: '',
+};
+
+// const [themeMode, setThemeMode] = useState<EuiThemeColorMode>(
+//     ColorModes.LIGHT,
+// );
+
+const addMenuItems = (
+    defaultMenuItems: EuiSideNavItemType<object>[],
+): EuiSideNavItemType<object>[] => [
+    ...defaultMenuItems,
+    {
+        name: 'Example form',
+        id: '10',
+        isSelected: false,
+        href: '/example-form',
+        renderItem: () => (
+            <WfoMenuItemLink
+                path={'/example-form'}
+                translationString="Example form"
+                isSelected={false}
+            />
+        ),
+    },
+];
+
+const handleThemeSwitch = (newThemeMode: EuiThemeColorMode) => {
+    // setThemeMode(newThemeMode);
+    localStorage.setItem('themeMode', newThemeMode);
 };
 
 const preview: Preview = {
@@ -33,15 +71,28 @@ const preview: Preview = {
                 initialOrchestratorConfig={storybookConfig}
             >
                 <StoreProvider initialOrchestratorConfig={storybookConfig}>
-                    {/*<TranslationsProvider>*/}
-                        <div style={{ margin: '3em' }}>
-                            <Story />
-                        </div>
-                    {/*</TranslationsProvider>*/}
+                    <EuiProvider
+                        colorMode={ColorModes.LIGHT}
+                        modify={defaultOrchestratorTheme}
+                    >
+                        <TranslationsProvider>
+                            {/*<WfoPageTemplate*/}
+                            {/*    getAppLogo={() =><div></div>}*/}
+                            {/*    onThemeSwitch={*/}
+                            {/*        handleThemeSwitch*/}
+                            {/*    }*/}
+                            {/*    overrideMenuItems={addMenuItems}*/}
+                            {/*>*/}
+                            <div style={{ margin: '3em' }}>
+                                <Story />
+                            </div>
+                            {/*</WfoPageTemplate>*/}
+                        </TranslationsProvider>
+                    </EuiProvider>
                 </StoreProvider>
             </OrchestratorConfigProvider>
         ),
-    ]
+    ],
 };
 
 export default preview;

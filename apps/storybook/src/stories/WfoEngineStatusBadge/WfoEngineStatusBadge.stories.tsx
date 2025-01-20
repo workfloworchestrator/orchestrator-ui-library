@@ -1,6 +1,5 @@
-import type { Meta } from '@storybook/react';
-
 import { WfoEngineStatusBadge } from '@orchestrator-ui/orchestrator-ui-components';
+import type { Meta } from '@storybook/react';
 
 const Story: Meta<typeof WfoEngineStatusBadge> = {
     component: (args) => (
