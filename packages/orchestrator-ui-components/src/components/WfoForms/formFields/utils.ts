@@ -1,5 +1,3 @@
-import { isDate } from 'moment';
-
 import { ProductBlockInstance, SubscriptionDetail } from '@/types';
 
 import { PortMode, ProductTag } from './deprecated/types';
@@ -27,9 +25,6 @@ export const getPortMode = (
 export const isEmpty = (obj: unknown) => {
     if (obj === undefined || obj === null) {
         return true;
-    }
-    if (isDate(obj)) {
-        return false;
     }
     if (Array.isArray(obj)) {
         return obj.length === 0;

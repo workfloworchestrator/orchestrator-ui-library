@@ -43,5 +43,8 @@ npm-debug.log*
 # ignore generated ui version file
 packages/orchestrator-ui-components/src/configuration/version.ts
 
+#storybook
+storybook-static
+
 # Temporary fix for surf version
 apps/wfo-ui-surf
