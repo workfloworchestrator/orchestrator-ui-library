@@ -255,16 +255,16 @@ export const WfoStartProcessPage = ({
                 .then((result) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     return new Promise<Record<string, any>>((resolve) => {
-                        const error = result.error as {
-                            status: number;
-                            data: object;
-                        };
-                        const { status, data } = error;
-                        if (status === 510) {
-                            resolve(data);
+                        if (result.error) {
+                            // @ts-expect-error: TEMP FIX
+                            if (result.error.status === 510) {
+                                // @ts-expect-error: TEMP FIX
+                                resolve(result.error.data);
+                            }
                         } else if (result.data) {
                             resolve(result.data);
                         }
+
                         resolve({});
                     });
                 })
@@ -315,14 +315,8 @@ export const WfoStartProcessPage = ({
                     (processName === 'modify_note' && (
                         <PydanticForm
                             id="modify_note"
-                            onSuccess={(
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                fieldValues: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                summaryData: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                response: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            ) => {
-                                console.log(fieldValues, summaryData); // eslint-disable-line no-console
-
+                            // @ts-expect-error: TEMP FIX
+                            onSuccess={(a, b, { response }) => {
                                 if (response?.id) {
                                     const pfBasePath = isTask
                                         ? PATH_TASKS
@@ -334,10 +328,7 @@ export const WfoStartProcessPage = ({
                             }}
                             config={{
                                 apiProvider: getPydanticFormProvider(),
-                                skipSuccessNotice: true,
                             }}
-                            headerComponent={<div>HEADER COMPONENT</div>}
-                            footerComponent={<div>FOOTER COMPONENT</div>}
                         />
                     )) ||
                     (stepUserInput && (
