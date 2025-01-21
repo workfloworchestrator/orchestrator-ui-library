@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import { PydanticForm } from 'pydantic-forms';
+import type { PydanticFormApiProvider } from 'pydantic-forms';
 
 import {
     EuiFlexGroup,
@@ -193,7 +195,7 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName) {
+        if (processName && processName !== 'modify_note') {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -235,6 +237,53 @@ export const WfoStartProcessPage = ({
         (isErrorWorkflowDescription && processDetail?.workflowName) ||
         '';
 
+    const getPydanticFormProvider = () => {
+        const subscriptionIdInput = { subscription_id: subscriptionId };
+
+        const pydanticFormProvider: PydanticFormApiProvider = async ({
+            requestBody = [],
+            formKey,
+        }: {
+            requestBody: object[];
+            formKey: string;
+        }) => {
+            const response = startProcess({
+                workflowName: formKey,
+                userInputs: [subscriptionIdInput, ...requestBody],
+            });
+            return response
+                .then((result) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    return new Promise<Record<string, any>>((resolve) => {
+                        const error = result.error as {
+                            status: number;
+                            data: object;
+                        };
+                        const { status, data } = error;
+                        if (status === 510) {
+                            resolve(data);
+                        } else if (result.data) {
+                            resolve(result.data);
+                        }
+                        resolve({});
+                    });
+                })
+                .catch((error) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    return new Promise<Record<string, any>>(
+                        (resolve, reject) => {
+                            if (error.status === 510) {
+                                resolve(error.data);
+                            }
+                            reject(error);
+                        },
+                    );
+                });
+        };
+
+        return pydanticFormProvider;
+    };
+
     return (
         <WfoProcessDetail
             pageTitle={pageTitle}
@@ -263,6 +312,34 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
+                    (processName === 'modify_note' && (
+                        <PydanticForm
+                            id="modify_note"
+                            onSuccess={(
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                fieldValues: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                summaryData: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                response: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            ) => {
+                                console.log(fieldValues, summaryData); // eslint-disable-line no-console
+
+                                if (response?.id) {
+                                    const pfBasePath = isTask
+                                        ? PATH_TASKS
+                                        : PATH_WORKFLOWS;
+                                    router.replace(
+                                        `${pfBasePath}/${response.id}`,
+                                    );
+                                }
+                            }}
+                            config={{
+                                apiProvider: getPydanticFormProvider(),
+                                skipSuccessNotice: true,
+                            }}
+                            headerComponent={<div>HEADER COMPONENT</div>}
+                            footerComponent={<div>FOOTER COMPONENT</div>}
+                        />
+                    )) ||
                     (stepUserInput && (
                         <UserInputFormWizard
                             stepUserInput={stepUserInput}

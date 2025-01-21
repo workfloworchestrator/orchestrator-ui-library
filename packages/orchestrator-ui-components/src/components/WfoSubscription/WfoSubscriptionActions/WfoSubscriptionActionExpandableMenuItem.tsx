@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
+import type { ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiButtonIcon, EuiText } from '@elastic/eui';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_SUBSCRIPTIONS } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -15,7 +15,7 @@ import { getSubscriptionActionStyles } from './styles';
 export type WfoSubscriptionActionExpandableMenuItemProps = {
     subscriptionAction: SubscriptionAction;
     onClickLockedRelation: (relation: string) => void;
-    children: ReactJSXElement;
+    children: ReactNode;
 };
 
 export const WfoSubscriptionActionExpandableMenuItem: FC<
