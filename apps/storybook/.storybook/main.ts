@@ -18,8 +18,6 @@ const config: StorybookConfig = {
         getAbsolutePath('@storybook/addon-essentials'),
         getAbsolutePath('@chromatic-com/storybook'),
         getAbsolutePath('@storybook/addon-interactions'),
-        // getAbsolutePath('@storybook-addon-next-router'),
-        // getAbsolutePath('@storybook/addon-next'),
         {
             name: '@storybook/addon-essentials',
             options: { docs: false },
@@ -34,9 +32,3 @@ const config: StorybookConfig = {
     },
 };
 export default config;
-
-// module.exports = {
-//     typescript: {
-//         reactDocgen: 'react-docgen'
-//     }
-// }

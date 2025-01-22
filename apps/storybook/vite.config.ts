@@ -9,7 +9,7 @@ export default defineConfig({
         alias: {
             '@': resolve(
                 __dirname,
-                '../packages/orchestrator-ui-components/src',
+                '../../packages/orchestrator-ui-components/src',
             ),
         },
     },

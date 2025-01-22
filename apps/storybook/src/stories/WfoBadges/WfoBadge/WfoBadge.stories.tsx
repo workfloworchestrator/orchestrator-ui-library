@@ -16,6 +16,5 @@ export const Default = {
 export const DefaultWithIcon = {
     args: {
         children: 'Badge text with icon',
-        iconType: 'plus',
     },
 };
