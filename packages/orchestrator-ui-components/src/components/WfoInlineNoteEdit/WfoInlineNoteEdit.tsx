@@ -7,32 +7,55 @@ import { WfoToolTip } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import type { Subscription } from '@/types';
+import { useGetSubscriptionListQuery, useUpdateSubscriptionNoteLocallyMutation } from '@/rtk';
 
 interface WfoInlineNoteEditProps {
     value: Subscription['note'];
-    subscriptionId?: Subscription['subscriptionId'];
+    subscriptionId: Subscription['subscriptionId'];
     onlyShowOnHover?: boolean;
+    graphqlQueryVariables: Record<string, unknown>;
 }
 
+// This is an invisible character that is used to get the component re-rendering correctly
+const INVISIBLE_CHARACTER = '‎';
+
 export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
-    value,
+    // value,
     subscriptionId,
     onlyShowOnHover = false,
+    graphqlQueryVariables,
 }) => {
     const { theme } = useOrchestratorTheme();
-    const [note, setNote] = useState<string>(value ?? '');
+    const {subscriptionItem} = useGetSubscriptionListQuery(
+        graphqlQueryVariables,{
+            selectFromResult: (result) => ({subscriptionItem: result?.data?.subscriptions.find((sub) => sub.subscriptionId === subscriptionId)}),
+        }
+    );
+
+    console.log("WfoInlineEditData: ", subscriptionItem);
+    const noteFromData = subscriptionItem?.note?.trim() ? subscriptionItem.note : INVISIBLE_CHARACTER;
+    const [note, setNote] = useState<string>(noteFromData);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const [startProcess] = useStartProcessMutation();
+    const [updateSub] = useUpdateSubscriptionNoteLocallyMutation();
+
+    // const store = useStore();
+    // const cachedQueies = store.getState().orchestratorApi.queries;
+    // console.log("Cached Queries: ", cachedQueies);
+
     const triggerNoteModifyWorkflow = () => {
         const noteModifyPayload = [
             { subscription_id: subscriptionId },
-            { note },
+            { note: (note === INVISIBLE_CHARACTER) ? "" : note },
         ];
         startProcess({
             workflowName: 'modify_note',
             userInputs: noteModifyPayload,
         });
+
+        updateSub({ subscriptionId: subscriptionId, graphQlQueryVariables: graphqlQueryVariables, note: note });
+        // console.log("Updated,", updated);
     };
 
     const handleSave = () => {
@@ -41,15 +64,15 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     };
 
     const handleCancel = () => {
-        setNote(value ?? '');
+        setNote(noteFromData);
         setIsTooltipVisible(true);
     };
 
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
     useEffect(() => {
-        setNote(value ?? '');
-    }, [value]);
+        setNote(noteFromData);
+    }, [noteFromData]);
 
     return (
         <div
@@ -63,11 +86,11 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
             }}
         >
             <WfoToolTip
-                css={{ visibility: isTooltipVisible ? 'visible' : 'hidden' }}
+                css={{ visibility: isTooltipVisible && note !== INVISIBLE_CHARACTER ? 'visible' : 'hidden' }}
                 tooltipContent={note}
             >
-                <EuiInlineEditText
-                    inputAriaLabel="Edit note"
+                <span><EuiInlineEditText
+                    inputAriaLabel='Edit note'
                     value={note}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         setNote(e.target.value);
@@ -128,7 +151,7 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
                             },
                         },
                     }}
-                />
+                /></span>
             </WfoToolTip>
         </div>
     );

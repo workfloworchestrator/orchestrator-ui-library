@@ -24,3 +24,7 @@ export const snakeToKebab = (value: string): string => {
 };
 
 export const isAllUpperCase = (str: string) => str === str.toUpperCase();
+
+export const isNullOrEmpty = (str: string | null | undefined): boolean => {
+    return str === null || str === undefined || str.trim() === '';
+}

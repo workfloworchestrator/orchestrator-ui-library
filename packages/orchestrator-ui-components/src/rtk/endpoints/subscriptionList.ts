@@ -82,8 +82,38 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
             },
             providesTags: getCacheTag(CacheTagType.subscriptions),
         }),
+        updateSubscriptionNoteLocally: builder.mutation<
+            void,
+            { subscriptionId: string; graphQlQueryVariables: GraphqlQueryVariables<SubscriptionListItem>; note: string }
+        >({
+            queryFn: async () => {
+                return { data: undefined };
+            },
+            async onQueryStarted({ subscriptionId, graphQlQueryVariables, ...patch }, { dispatch, queryFulfilled }) {
+                const patchResult = dispatch(
+                    subscriptionListApi.util.updateQueryData('getSubscriptionList', graphQlQueryVariables, (draft) => {
+                        const subscription = draft.subscriptions.find(
+                            (item) => item.subscriptionId === subscriptionId
+                        );
+                        if (subscription) {
+                            subscription.note = patch.note;
+                        }
+                    }));
+                try {
+                    await queryFulfilled
+                } catch {
+                    patchResult.undo()
+
+                    /**
+                     * Alternatively, on failure you can invalidate the corresponding cache tags
+                     * to trigger a re-fetch:
+                     * dispatch(api.util.invalidateTags(['Post']))
+                     */
+                }
+            },
+        }),
     }),
 });
 
-export const { useGetSubscriptionListQuery, useLazyGetSubscriptionListQuery } =
+export const { useGetSubscriptionListQuery, useLazyGetSubscriptionListQuery, useUpdateSubscriptionNoteLocallyMutation } =
     subscriptionListApi;

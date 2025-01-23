@@ -150,13 +150,18 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             note: {
                 columnType: ColumnType.DATA,
                 label: t('note'),
-                renderData: (cellValue, row) => (
-                    <WfoInlineNoteEdit
-                        subscriptionId={row.subscriptionId}
-                        value={cellValue}
-                        onlyShowOnHover={true}
-                    />
-                ),
+                renderData: (cellValue, row) => {
+                    // console.log("Cell value: ", cellValue);
+                    // console.log("Row: ", row);
+                    return (
+                        <WfoInlineNoteEdit
+                            graphqlQueryVariables={graphqlQueryVariables}
+                            subscriptionId={row.subscriptionId}
+                            value={cellValue ? cellValue : "-"}
+                            onlyShowOnHover={true}
+                        />
+                    )
+                }
             },
             metadata: {
                 columnType: ColumnType.DATA,
