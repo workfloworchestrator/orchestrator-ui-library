@@ -1,8 +1,7 @@
-import { isDate } from 'moment';
+import { isDate } from 'moment/moment';
 
+import { PortMode, ProductTag } from '@/components';
 import { ProductBlockInstance, SubscriptionDetail } from '@/types';
-
-import { PortMode, ProductTag } from './deprecated/types';
 
 // NOTE: There might potentially (?) be more productBlockInstances with portMod but we get the last one here
 export const getPortMode = (

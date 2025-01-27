@@ -23,8 +23,15 @@
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+            "inputs": ["$TURBO_DEFAULT$", "!**/*.stories.{tsx,jsx,mdx}"],
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "!.next/cache/**",
+                "storybook-static/**"
+            ]
         },
+        "build:storybook": {},
         "test": {},
         "lint": {
             "dependsOn": ["^build"]
