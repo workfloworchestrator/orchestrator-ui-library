@@ -5,74 +5,74 @@ import { EuiInlineEditText } from '@elastic/eui';
 
 import { WfoToolTip } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
-import { useStartProcessMutation } from '@/rtk/endpoints/forms';
-import type { Subscription } from '@/types';
-import { useGetSubscriptionListQuery, useUpdateSubscriptionNoteLocallyMutation } from '@/rtk';
+import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoInlineNoteEditProps {
-    value: Subscription['note'];
-    subscriptionId: Subscription['subscriptionId'];
+    value: string;
+    // subscriptionId: Subscription['subscriptionId'];
     onlyShowOnHover?: boolean;
-    graphqlQueryVariables: Record<string, unknown>;
+    // graphqlQueryVariables: Record<string, unknown>;
+    // useQuery: any
+    triggerNoteModifyWorkflow? : (note: string) => void;
 }
 
 // This is an invisible character that is used to get the component re-rendering correctly
-const INVISIBLE_CHARACTER = '‎';
+// const INVISIBLE_CHARACTER = '‎';
 
 export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
-    // value,
-    subscriptionId,
+    value,
+    // subscriptionId,
     onlyShowOnHover = false,
-    graphqlQueryVariables,
+    // graphqlQueryVariables,
+    // useQuery,
+    triggerNoteModifyWorkflow = () => {}
 }) => {
     const { theme } = useOrchestratorTheme();
-    const {subscriptionItem} = useGetSubscriptionListQuery(
-        graphqlQueryVariables,{
-            selectFromResult: (result) => ({subscriptionItem: result?.data?.subscriptions.find((sub) => sub.subscriptionId === subscriptionId)}),
-        }
-    );
-
-    console.log("WfoInlineEditData: ", subscriptionItem);
-    const noteFromData = subscriptionItem?.note?.trim() ? subscriptionItem.note : INVISIBLE_CHARACTER;
-    const [note, setNote] = useState<string>(noteFromData);
+    // const {subscriptionItem} = useQuery(
+    //     graphqlQueryVariables,{
+    //         selectFromResult: (result) => ({subscriptionItem: result?.data?.subscriptions?.find((sub) => sub.subscriptionId === subscriptionId)}),
+    //     }
+    // );
+    // const endpointName = useQuery().endpointName;
+    // const noteFromData = subscriptionItem?.note?.trim() ? subscriptionItem.note : INVISIBLE_CHARACTER;
+    console.log("Value now: ", value);
+    // const trimmedNote = value ? value.trim() : INVISIBLE_CHARACTER;
+    const [note, setNote] = useState<string>(value);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
-    const [startProcess] = useStartProcessMutation();
-    const [updateSub] = useUpdateSubscriptionNoteLocallyMutation();
+    // const [startProcess] = useStartProcessMutation();
+    // const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
 
-    // const store = useStore();
-    // const cachedQueies = store.getState().orchestratorApi.queries;
-    // console.log("Cached Queries: ", cachedQueies);
+    // const triggerNoteModifyWorkflow = () => {
+    //     const noteModifyPayload = [
+    //         { subscription_id: subscriptionId },
+    //         { note: (note === INVISIBLE_CHARACTER) ? "" : note },
+    //     ];
+    //     startProcess({
+    //         workflowName: 'modify_note',
+    //         userInputs: noteModifyPayload,
+    //     });
+    //
+    //     updateSub({queryName: endpointName,  subscriptionId: subscriptionId, graphQlQueryVariables: graphqlQueryVariables, note: note });
+    // };
 
-    const triggerNoteModifyWorkflow = () => {
-        const noteModifyPayload = [
-            { subscription_id: subscriptionId },
-            { note: (note === INVISIBLE_CHARACTER) ? "" : note },
-        ];
-        startProcess({
-            workflowName: 'modify_note',
-            userInputs: noteModifyPayload,
-        });
 
-        updateSub({ subscriptionId: subscriptionId, graphQlQueryVariables: graphqlQueryVariables, note: note });
-        // console.log("Updated,", updated);
-    };
 
     const handleSave = () => {
-        triggerNoteModifyWorkflow();
+        triggerNoteModifyWorkflow(note);
         setIsTooltipVisible(true);
     };
 
     const handleCancel = () => {
-        setNote(noteFromData);
+        setNote(value);
         setIsTooltipVisible(true);
     };
 
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
     useEffect(() => {
-        setNote(noteFromData);
-    }, [noteFromData]);
+        setNote(value);
+    }, [value]);
 
     return (
         <div

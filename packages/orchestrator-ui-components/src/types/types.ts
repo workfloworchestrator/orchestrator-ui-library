@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 
 import { InputForm } from './forms';
+import { SubscriptionListItem } from '@/components';
 
 export type Nullable<T> = T | null;
 
@@ -310,6 +311,10 @@ export type BaseGraphQlResult = {
 export interface SubscriptionsResult<T = Subscription> {
     subscriptions: GraphQlResultPage<T>;
 }
+
+export type SubscriptionList = {
+    subscriptions: Subscription[];
+};
 
 export interface SubscriptionDropdownOptionsResult {
     subscriptions: GraphQlSinglePage<SubscriptionDropdownOption>;

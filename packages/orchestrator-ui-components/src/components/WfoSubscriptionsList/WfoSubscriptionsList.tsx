@@ -10,7 +10,6 @@ import {
     Pagination,
     WfoDateTime,
     WfoInlineJson,
-    WfoInlineNoteEdit,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoSubscriptionStatusBadge,
@@ -27,7 +26,7 @@ import {
     useLazyGetSubscriptionListQuery,
 } from '@/rtk/endpoints/subscriptionList';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { GraphqlQueryVariables, SortOrder } from '@/types';
+import { GraphqlQueryVariables, SortOrder, Subscription, SubscriptionList } from '@/types';
 import {
     getQueryVariablesForExport,
     getTypedFieldFromObject,
@@ -52,6 +51,8 @@ import {
     mapGraphQlSubscriptionsResultToPageInfo,
     mapGraphQlSubscriptionsResultToSubscriptionListItems,
 } from './subscriptionResultMappers';
+import { WfoSubscriptionNoteEdit } from '@/components/WfoInlineNoteEdit/WfoSubscriptionNoteEdit';
+import { UseQuery } from '@/rtk';
 
 export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
@@ -151,14 +152,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 columnType: ColumnType.DATA,
                 label: t('note'),
                 renderData: (cellValue, row) => {
-                    // console.log("Cell value: ", cellValue);
-                    // console.log("Row: ", row);
                     return (
-                        <WfoInlineNoteEdit
-                            graphqlQueryVariables={graphqlQueryVariables}
+                        <WfoSubscriptionNoteEdit
+                            queryVariables={graphqlQueryVariables}
                             subscriptionId={row.subscriptionId}
-                            value={cellValue ? cellValue : "-"}
                             onlyShowOnHover={true}
+                            useQuery={useGetSubscriptionListQuery as UseQuery<SubscriptionList, Subscription>}
                         />
                     )
                 }

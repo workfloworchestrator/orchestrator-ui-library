@@ -6,9 +6,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type { WfoSession } from '@/hooks';
 import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
-import { CacheTagType } from '@/types';
+import { CacheTagType, GraphqlQueryVariables, Subscription, SubscriptionList } from '@/types';
 
 import type { RootState } from './store';
+import { ErrorResponse } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
+import { SubscriptionListItem } from '@/components';
 
 export enum BaseQueryTypes {
     fetch = 'fetch',
@@ -27,6 +29,31 @@ export enum HttpStatus {
     NoContent = 204,
     MultipleChoices = 300,
 }
+
+export interface ApiResult<T> {
+    data?: T;
+    error?: ErrorResponse;
+    isLoading?: boolean;
+    isFetching?: boolean;
+    isError?: boolean;
+    refetch?: () => void;
+    selectFromResult?: (result: T) => T;
+    endpointName?: string;
+}
+
+interface UseQueryOptions<T, U> {
+    selectFromResult?: (result: ApiResult<T>) => Partial<ApiResult<T>> & { selectedItem?: U };
+}
+
+interface UseQueryReturn<T, U> extends ApiResult<T> {
+    selectedItem?: U;
+    endpointName?: string;
+}
+
+export type UseQuery<T, U> = (
+    queryVariables?: GraphqlQueryVariables<SubscriptionListItem>,
+    options?: UseQueryOptions<T, U>
+) => UseQueryReturn<T, U>;
 
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
