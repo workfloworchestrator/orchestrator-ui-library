@@ -9,54 +9,18 @@ import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoInlineNoteEditProps {
     value: string;
-    // subscriptionId: Subscription['subscriptionId'];
     onlyShowOnHover?: boolean;
-    // graphqlQueryVariables: Record<string, unknown>;
-    // useQuery: any
-    triggerNoteModifyWorkflow? : (note: string) => void;
+    triggerNoteModifyWorkflow?: (note: string) => void;
 }
-
-// This is an invisible character that is used to get the component re-rendering correctly
-// const INVISIBLE_CHARACTER = '‎';
 
 export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
     value,
-    // subscriptionId,
     onlyShowOnHover = false,
-    // graphqlQueryVariables,
-    // useQuery,
-    triggerNoteModifyWorkflow = () => {}
+    triggerNoteModifyWorkflow = () => {},
 }) => {
     const { theme } = useOrchestratorTheme();
-    // const {subscriptionItem} = useQuery(
-    //     graphqlQueryVariables,{
-    //         selectFromResult: (result) => ({subscriptionItem: result?.data?.subscriptions?.find((sub) => sub.subscriptionId === subscriptionId)}),
-    //     }
-    // );
-    // const endpointName = useQuery().endpointName;
-    // const noteFromData = subscriptionItem?.note?.trim() ? subscriptionItem.note : INVISIBLE_CHARACTER;
-    console.log("Value now: ", value);
-    // const trimmedNote = value ? value.trim() : INVISIBLE_CHARACTER;
     const [note, setNote] = useState<string>(value);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
-
-    // const [startProcess] = useStartProcessMutation();
-    // const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
-
-    // const triggerNoteModifyWorkflow = () => {
-    //     const noteModifyPayload = [
-    //         { subscription_id: subscriptionId },
-    //         { note: (note === INVISIBLE_CHARACTER) ? "" : note },
-    //     ];
-    //     startProcess({
-    //         workflowName: 'modify_note',
-    //         userInputs: noteModifyPayload,
-    //     });
-    //
-    //     updateSub({queryName: endpointName,  subscriptionId: subscriptionId, graphQlQueryVariables: graphqlQueryVariables, note: note });
-    // };
-
-
 
     const handleSave = () => {
         triggerNoteModifyWorkflow(note);
@@ -86,72 +50,79 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
             }}
         >
             <WfoToolTip
-                css={{ visibility: isTooltipVisible && note !== INVISIBLE_CHARACTER ? 'visible' : 'hidden' }}
+                css={{
+                    visibility:
+                        isTooltipVisible && note !== INVISIBLE_CHARACTER
+                            ? 'visible'
+                            : 'hidden',
+                }}
                 tooltipContent={note}
             >
-                <span><EuiInlineEditText
-                    inputAriaLabel='Edit note'
-                    value={note}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setNote(e.target.value);
-                    }}
-                    onCancel={handleCancel}
-                    onSave={handleSave}
-                    size={'s'}
-                    css={{
-                        width: theme.base * 16,
-                        '.euiFlexItem:nth-of-type(2)': {
-                            justifyContent: 'center',
-                        },
-                        '.euiButtonEmpty__content': {
-                            justifyContent: 'left',
-                        },
-                    }}
-                    readModeProps={{
-                        onClick: () => setIsTooltipVisible(false),
-                        title: '',
-                        css: {
-                            minWidth: '100%',
-                            '.euiIcon': {
-                                visibility: onlyShowOnHover
-                                    ? 'hidden'
-                                    : 'visible',
+                <span>
+                    <EuiInlineEditText
+                        inputAriaLabel="Edit note"
+                        value={note}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setNote(e.target.value);
+                        }}
+                        onCancel={handleCancel}
+                        onSave={handleSave}
+                        size={'s'}
+                        css={{
+                            width: theme.base * 16,
+                            '.euiFlexItem:nth-of-type(2)': {
+                                justifyContent: 'center',
                             },
-                        },
-                    }}
-                    editModeProps={{
-                        saveButtonProps: {
-                            color: 'primary',
-                            size: 'xs',
-                        },
-                        cancelButtonProps: {
-                            color: 'danger',
-                            size: 'xs',
-                        },
-                        inputProps: {
-                            css: {
+                            '.euiButtonEmpty__content': {
                                 justifyContent: 'left',
-                                height: '32px',
-                                paddingLeft: '4px',
-                                margin: '0',
-                                width: '98%',
                             },
-                        },
-                        formRowProps: {
+                        }}
+                        readModeProps={{
+                            onClick: () => setIsTooltipVisible(false),
+                            title: '',
                             css: {
-                                padding: 0,
-                                margin: 0,
-                                height: '32px',
-                                '.euiFormRow__fieldWrapper': {
-                                    minHeight: '32px',
-                                    height: '32px',
-                                    padding: 0,
-                                    margin: 0,
+                                minWidth: '100%',
+                                '.euiIcon': {
+                                    visibility: onlyShowOnHover
+                                        ? 'hidden'
+                                        : 'visible',
                                 },
                             },
-                        },
-                    }}
-                /></span>
+                        }}
+                        editModeProps={{
+                            saveButtonProps: {
+                                color: 'primary',
+                                size: 'xs',
+                            },
+                            cancelButtonProps: {
+                                color: 'danger',
+                                size: 'xs',
+                            },
+                            inputProps: {
+                                css: {
+                                    justifyContent: 'left',
+                                    height: '32px',
+                                    paddingLeft: '4px',
+                                    margin: '0',
+                                    width: '98%',
+                                },
+                            },
+                            formRowProps: {
+                                css: {
+                                    padding: 0,
+                                    margin: 0,
+                                    height: '32px',
+                                    '.euiFormRow__fieldWrapper': {
+                                        minHeight: '32px',
+                                        height: '32px',
+                                        padding: 0,
+                                        margin: 0,
+                                    },
+                                },
+                            },
+                        }}
+                    />
+                </span>
             </WfoToolTip>
         </div>
     );

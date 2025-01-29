@@ -1,56 +1,53 @@
 import type { FC } from 'react';
 import React from 'react';
 
-
 import { WfoInlineNoteEdit } from '@/components';
+import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
-import { Subscription, SubscriptionList } from '@/types';
-import { useUpdateSubscriptionNoteOptimisticMutation } from '@/rtk/endpoints/subscriptionListMutation';
+import { useUpdateSubscriptionDetailNoteOptimisticMutation } from '@/rtk/endpoints/subscriptionListMutation';
+import { SubscriptionDetail } from '@/types';
 import { INVISIBLE_CHARACTER } from '@/utils';
-import { ApiResult, UseQuery } from '@/rtk';
 
-interface WfoSubscriptionNoteEditProps {
-    subscriptionId: Subscription['subscriptionId'];
+interface WfoSubscriptionDetailNoteEditProps {
+    subscriptionId: SubscriptionDetail['subscriptionId'];
     onlyShowOnHover?: boolean;
-    queryVariables: Record<string, unknown>;
-    useQuery: UseQuery<SubscriptionList, Subscription>;
 }
 
-
-export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
-  subscriptionId,
-  onlyShowOnHover = false,
-  queryVariables,
-  useQuery
-}) => {
-    const {selectedItem} = useQuery(queryVariables,{
-        selectFromResult: (result: ApiResult<SubscriptionList>) => ({
-            selectedItem: result?.data?.subscriptions?.find(
-                (sub) => sub.subscriptionId === subscriptionId,
-            ),
-        }),
+export const WfoSubscriptionDetailNoteEdit: FC<
+    WfoSubscriptionDetailNoteEditProps
+> = ({ subscriptionId, onlyShowOnHover = false }) => {
+    const { data, endpointName } = useGetSubscriptionDetailQuery({
+        subscriptionId,
     });
-    const endpointName = useQuery().endpointName;
+
+    const selectedItem = data?.subscription ?? { note: '' };
     const [startProcess] = useStartProcessMutation();
-    const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
+    const [updateSub] = useUpdateSubscriptionDetailNoteOptimisticMutation();
 
     const triggerNoteModifyWorkflow = (note: string) => {
         const noteModifyPayload = [
             { subscription_id: subscriptionId },
-            { note: (note === INVISIBLE_CHARACTER) ? "" : note },
+            { note: note === INVISIBLE_CHARACTER ? '' : note },
         ];
         startProcess({
             workflowName: 'modify_note',
             userInputs: noteModifyPayload,
         });
 
-        updateSub({queryName: endpointName ?? "",  subscriptionId: subscriptionId, graphQlQueryVariables: queryVariables, note: note });
+        updateSub({
+            queryName: endpointName ?? '',
+            subscriptionId: subscriptionId,
+            note: note,
+        });
     };
-
 
     return (
         <WfoInlineNoteEdit
-            value={selectedItem?.note?.trim() ? selectedItem.note : INVISIBLE_CHARACTER}
+            value={
+                selectedItem?.note?.trim()
+                    ? selectedItem.note
+                    : INVISIBLE_CHARACTER
+            }
             onlyShowOnHover={onlyShowOnHover}
             triggerNoteModifyWorkflow={triggerNoteModifyWorkflow}
         />

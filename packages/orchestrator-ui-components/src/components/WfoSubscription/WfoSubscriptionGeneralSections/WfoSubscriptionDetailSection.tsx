@@ -6,7 +6,7 @@ import {
     SubscriptionKeyValueBlock,
     WfoCustomerDescriptionsField,
     WfoInSyncField,
-    WfoInlineNoteEdit,
+    WfoSubscriptionDetailNoteEdit,
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { SubscriptionDetail } from '@/types';
@@ -35,7 +35,6 @@ export const WfoSubscriptionDetailSection = ({
         status,
         customer,
         customerDescriptions,
-        note,
     } = subscriptionDetail;
 
     const subscriptionDetailBlockData = [
@@ -102,9 +101,9 @@ export const WfoSubscriptionDetailSection = ({
         {
             key: t('note'),
             value: (
-                <WfoInlineNoteEdit
+                <WfoSubscriptionDetailNoteEdit
                     subscriptionId={subscriptionId}
-                    value={note}
+                    onlyShowOnHover={true}
                 />
             ),
         },

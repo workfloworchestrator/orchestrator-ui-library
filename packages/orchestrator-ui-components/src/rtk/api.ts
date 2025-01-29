@@ -3,14 +3,14 @@ import { GraphQLErrorExtensions } from 'graphql/error/GraphQLError';
 import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ErrorResponse } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
 
+import { SubscriptionListItem } from '@/components';
 import type { WfoSession } from '@/hooks';
 import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
-import { CacheTagType, GraphqlQueryVariables, Subscription, SubscriptionList } from '@/types';
+import { CacheTagType, GraphqlQueryVariables } from '@/types';
 
 import type { RootState } from './store';
-import { ErrorResponse } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
-import { SubscriptionListItem } from '@/components';
 
 export enum BaseQueryTypes {
     fetch = 'fetch',
@@ -42,7 +42,10 @@ export interface ApiResult<T> {
 }
 
 interface UseQueryOptions<T, U> {
-    selectFromResult?: (result: ApiResult<T>) => Partial<ApiResult<T>> & { selectedItem?: U };
+    selectFromResult?: (
+        result: ApiResult<T>,
+    ) => Partial<ApiResult<T>> & { selectedItem?: U };
+    subscriptionId?: string;
 }
 
 interface UseQueryReturn<T, U> extends ApiResult<T> {
@@ -52,7 +55,7 @@ interface UseQueryReturn<T, U> extends ApiResult<T> {
 
 export type UseQuery<T, U> = (
     queryVariables?: GraphqlQueryVariables<SubscriptionListItem>,
-    options?: UseQueryOptions<T, U>
+    options?: UseQueryOptions<T, U>,
 ) => UseQueryReturn<T, U>;
 
 type ExtraOptions = {

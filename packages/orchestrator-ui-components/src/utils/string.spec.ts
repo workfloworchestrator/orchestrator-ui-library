@@ -1,6 +1,7 @@
 import {
     camelToHuman,
-    isAllUpperCase, isNullOrEmpty,
+    isAllUpperCase,
+    isNullOrEmpty,
     removeSuffix,
     snakeToHuman,
     snakeToKebab,
@@ -158,4 +159,3 @@ describe('isNullOrEmpty', () => {
         expect(isNullOrEmpty('  Hello  ')).toBe(false);
     });
 });
-
