@@ -1,13 +1,11 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 
-import { EuiPageTemplate } from '@elastic/eui';
 import type { EuiThemeColorMode } from '@elastic/eui';
+import { EuiPageTemplate } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
-import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
-import { WfoBreadcrumbs } from '../WfoBreadcrumbs';
-import { WfoPageHeader } from '../WfoPageHeader';
-import { WfoSidebar } from '../WfoSidebar';
+import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -35,7 +33,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                 navigationHeight={navigationHeight}
                 onThemeSwitch={onThemeSwitch}
             />
-
             {/* Sidebar and content area */}
             <EuiPageTemplate
                 panelled={false}
@@ -56,6 +53,8 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                 <EuiPageTemplate.Section
                     css={{
                         backgroundColor: theme.colors.emptyShade,
+                        overflowY: 'auto',
+                        maxHeight: `calc(100vh - ${navigationHeight}px)`,
                     }}
                 >
                     <WfoBreadcrumbs

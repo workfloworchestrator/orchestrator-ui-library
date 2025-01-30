@@ -50,7 +50,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         streamMessages: build.query<boolean, void>({
             queryFn: () => {
-                return { data: false };
+                return { data: true };
             },
             async onCacheEntryAdded(
                 _,

@@ -20,6 +20,7 @@
         "lightMode": "Light mode",
         "websocketConnected": "This page receives live updates from the server",
         "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
+        "websocketDisconnectedShort": "WebSocket disconnected, click the icon to reconnect",
         "resetToDefault": "Reset to default",
         "savePreferences": "Save preferences",
         "numberOfRows": "Number of rows",

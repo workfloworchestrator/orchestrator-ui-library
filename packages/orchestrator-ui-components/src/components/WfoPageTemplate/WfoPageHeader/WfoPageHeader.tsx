@@ -17,6 +17,7 @@ import {
     WfoEngineStatusBadge,
     WfoEnvironmentBadge,
     WfoFailedTasksBadge,
+    WfoHeaderWebsocketBadge,
 } from '@/components';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
@@ -70,6 +71,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
+                        <WfoHeaderWebsocketBadge />
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
                     </EuiBadgeGroup>
