@@ -15,11 +15,11 @@ import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 import { getStyles } from './styles';
 
 interface WfoWebsocketStatusBadgeProps {
-    showOnlyWhenDisconnected?: boolean;
+    hideWhenConnected?: boolean;
 }
 
 export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
-    showOnlyWhenDisconnected = false,
+    hideWhenConnected = false,
 }) => {
     const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
@@ -28,6 +28,8 @@ export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
     const { data: websocketConnected } = useStreamMessagesQuery();
+
+    const showBadge = !(websocketConnected && hideWhenConnected);
 
     const reconnect = useCallback(() => {
         dispatch(orchestratorApi.util.resetApiState());
@@ -62,7 +64,7 @@ export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
         };
     }, [reconnect, websocketConnected]);
 
-    return !(websocketConnected && showOnlyWhenDisconnected) ? (
+    return showBadge ? (
         <EuiToolTip
             position="bottom"
             content={

@@ -71,9 +71,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
             <EuiHeaderSection>
                 <EuiHeaderSectionItem>
                     <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
-                        <WfoWebsocketStatusBadge
-                            showOnlyWhenDisconnected={true}
-                        />
+                        <WfoWebsocketStatusBadge hideWhenConnected={true} />
                         <WfoEngineStatusBadge />
                         <WfoFailedTasksBadge />
                     </EuiBadgeGroup>
