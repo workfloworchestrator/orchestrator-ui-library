@@ -33,9 +33,9 @@ export enum HttpStatus {
 export interface ApiResult<T> {
     data?: T;
     error?: ErrorResponse;
-    isLoading?: boolean;
-    isFetching?: boolean;
-    isError?: boolean;
+    isLoading: boolean;
+    isFetching: boolean;
+    isError: boolean;
     refetch?: () => void;
     selectFromResult?: (result: T) => T;
     endpointName?: string;
