@@ -45,6 +45,8 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     <EuiPageTemplate.Sidebar
                         css={{
                             backgroundColor: theme.colors.body,
+                            overflowY: 'auto',
+                            maxHeight: `calc(100vh - ${navigationHeight}px)`,
                         }}
                     >
                         <WfoSidebar overrideMenuItems={overrideMenuItems} />

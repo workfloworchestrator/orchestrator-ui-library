@@ -1,20 +1,26 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useTranslations } from 'next-intl';
 
 import { EuiToolTip } from '@elastic/eui';
 
+import { WfoHeaderBadge } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
 import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
 import { orchestratorApi } from '@/rtk';
 import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
-import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { getStyles } from './styles';
 
-export const WfoWebsocketStatusBadge = () => {
+interface WfoWebsocketStatusBadgeProps {
+    showOnlyWhenDisconnected?: boolean;
+}
+
+export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
+    showOnlyWhenDisconnected = false,
+}) => {
     const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
         useWithOrchestratorTheme(getStyles);
@@ -56,7 +62,7 @@ export const WfoWebsocketStatusBadge = () => {
         };
     }, [reconnect, websocketConnected]);
 
-    return (
+    return !(websocketConnected && showOnlyWhenDisconnected) ? (
         <EuiToolTip
             position="bottom"
             content={
@@ -85,5 +91,7 @@ export const WfoWebsocketStatusBadge = () => {
                 iconOnClickAriaLabel={undefined}
             />
         </EuiToolTip>
+    ) : (
+        <></>
     );
 };
