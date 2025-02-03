@@ -1,6 +1,7 @@
 import {
     camelToHuman,
     isAllUpperCase,
+    isNullOrEmpty,
     removeSuffix,
     snakeToHuman,
     snakeToKebab,
@@ -130,5 +131,31 @@ describe('isAllUpperCase()', () => {
     it('Returns false for a string with mixed case letters and non-letter characters', () => {
         const result = isAllUpperCase('Hello123!');
         expect(result).toBe(false);
+    });
+});
+
+describe('isNullOrEmpty', () => {
+    it('should return true for null', () => {
+        expect(isNullOrEmpty(null)).toBe(true);
+    });
+
+    it('should return true for undefined', () => {
+        expect(isNullOrEmpty(undefined)).toBe(true);
+    });
+
+    it('should return true for an empty string', () => {
+        expect(isNullOrEmpty('')).toBe(true);
+    });
+
+    it('should return true for a string with only spaces', () => {
+        expect(isNullOrEmpty('   ')).toBe(true);
+    });
+
+    it('should return false for a non-empty string', () => {
+        expect(isNullOrEmpty('Hello')).toBe(false);
+    });
+
+    it('should return false for a string with spaces and text', () => {
+        expect(isNullOrEmpty('  Hello  ')).toBe(false);
     });
 });
