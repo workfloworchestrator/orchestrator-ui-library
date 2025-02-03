@@ -41,6 +41,8 @@ export const getStyles = ({ theme }: WfoTheme) => {
     const timelinePanelStyle = css({
         backgroundColor: theme.colors.body,
         borderRadius: theme.border.radius.medium,
+        outline: '10px solid white', // todo use theme
+        marginBottom: '10px',
         overflow: 'auto',
         scrollbarWidth: 'auto',
         paddingTop: theme.font.baseline * 2,

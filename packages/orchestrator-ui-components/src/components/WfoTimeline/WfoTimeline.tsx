@@ -62,7 +62,17 @@ export const WfoTimeline: FC<WfoTimelineProps> = ({
     };
 
     return (
-        <div css={[timelinePanelStyle, useEuiScrollBar()]}>
+        <div
+            css={[
+                timelinePanelStyle,
+                useEuiScrollBar(),
+                {
+                    position: 'sticky',
+                    top: '10px', // todo reusable variable
+                    zIndex: 2, // todo find out why Options button and the process icons got z-index.
+                },
+            ]}
+        >
             {timelineItems.map(mapTimelineItemToStep)}
         </div>
     );

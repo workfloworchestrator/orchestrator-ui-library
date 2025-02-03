@@ -56,9 +56,22 @@ export const WfoStepList = React.forwardRef(
                             onTriggerExpandStepListItem(foundStepListItem),
                         );
                     });
-                    stepReferences.current.get(stepId)?.scrollIntoView({
-                        behavior: 'smooth',
-                    });
+
+                    // Start of custom scrollIntoView
+                    const targetRect = stepReferences.current
+                        .get(stepId)
+                        ?.getBoundingClientRect();
+
+                    if (targetRect) {
+                        const { top } = targetRect;
+                        // Todo: Check after implementing the fixed menu bar if this is still working.
+                        // Might need to target the actual div that is scrollable.
+                        window.scrollBy({
+                            top: top - 74, // Timeline height (40) + Offset from top (10) + Space between steps (24/2)
+                            behavior: 'smooth',
+                        });
+                    }
+                    // End of custom scrollIntoView
                 } catch {
                     console.error(
                         'Error scrolling to step with stepId ',
