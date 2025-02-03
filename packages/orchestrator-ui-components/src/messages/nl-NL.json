@@ -20,6 +20,7 @@
         "lightMode": "Light mode",
         "websocketConnected": "De pagina ontvangt live updates van de server",
         "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina.",
+        "websocketDisconnectedShort": "WebSocket verbroken, klik op het icoon om opnieuw te verbinden.",
         "resetToDefault": "Reset naar standaard",
         "savePreferences": "Voorkeuren opslaan",
         "numberOfRows": "Aantal rijen",

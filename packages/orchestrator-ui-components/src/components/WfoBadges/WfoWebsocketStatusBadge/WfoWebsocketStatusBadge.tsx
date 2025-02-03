@@ -1,20 +1,26 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useTranslations } from 'next-intl';
 
 import { EuiToolTip } from '@elastic/eui';
 
+import { WfoHeaderBadge } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
 import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
 import { orchestratorApi } from '@/rtk';
 import { useStreamMessagesQuery } from '@/rtk/endpoints/streamMessages';
 
-import { WfoHeaderBadge } from '../WfoHeaderBadge';
 import { getStyles } from './styles';
 
-export const WfoWebsocketStatusBadge = () => {
+interface WfoWebsocketStatusBadgeProps {
+    hideWhenConnected?: boolean;
+}
+
+export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
+    hideWhenConnected = false,
+}) => {
     const dispatch = useDispatch();
     const { connectedStyle, disconnectedStyle } =
         useWithOrchestratorTheme(getStyles);
@@ -22,6 +28,8 @@ export const WfoWebsocketStatusBadge = () => {
     const t = useTranslations('main');
     const { theme } = useOrchestratorTheme();
     const { data: websocketConnected } = useStreamMessagesQuery();
+
+    const showBadge = !(websocketConnected && hideWhenConnected);
 
     const reconnect = useCallback(() => {
         dispatch(orchestratorApi.util.resetApiState());
@@ -56,7 +64,7 @@ export const WfoWebsocketStatusBadge = () => {
         };
     }, [reconnect, websocketConnected]);
 
-    return (
+    return showBadge ? (
         <EuiToolTip
             position="bottom"
             content={
@@ -85,5 +93,7 @@ export const WfoWebsocketStatusBadge = () => {
                 iconOnClickAriaLabel={undefined}
             />
         </EuiToolTip>
+    ) : (
+        <></>
     );
 };
