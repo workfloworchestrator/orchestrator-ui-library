@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.1.0
+
+### Minor Changes
+
+-   98c1716: Fix notes not updating when changing pages, fix cancel button resetting note to older value
+-   c19dacd: 1662 Make the navbar fixed when scrolling and notify user for failing websocket there.
+
 ## 3.0.3
 
 ### Patch Changes
