@@ -1,4 +1,11 @@
-import React, { FC, ReactElement, ReactNode, useState } from 'react';
+import React, {
+    FC,
+    ReactElement,
+    ReactNode,
+    createContext,
+    useRef,
+    useState,
+} from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiPageTemplate } from '@elastic/eui';
@@ -16,6 +23,11 @@ export interface WfoPageTemplateProps {
     children: ReactNode;
 }
 
+export type ContentType = {
+    contentRef: React.RefObject<HTMLDivElement>;
+};
+export const ContentContext = createContext<ContentType | undefined>(undefined);
+
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     children,
     getAppLogo,
@@ -25,6 +37,8 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
     const navigationHeight = multiplyByBaseUnit(3);
+
+    const headerRowRef = useRef<HTMLDivElement>(null);
 
     return (
         <>
@@ -52,20 +66,30 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                         <WfoSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
                 )}
-                <EuiPageTemplate.Section
+
+                <div
+                    ref={headerRowRef}
                     css={{
                         backgroundColor: theme.colors.emptyShade,
                         overflowY: 'auto',
                         maxHeight: `calc(100vh - ${navigationHeight}px)`,
                     }}
                 >
-                    <WfoBreadcrumbs
-                        handleSideMenuClick={() =>
-                            setIsSideMenuVisible((prevState) => !prevState)
-                        }
-                    />
-                    {children}
-                </EuiPageTemplate.Section>
+                    <ContentContext.Provider
+                        value={{ contentRef: headerRowRef }}
+                    >
+                        <EuiPageTemplate.Section className="test-contnt-area">
+                            <WfoBreadcrumbs
+                                handleSideMenuClick={() =>
+                                    setIsSideMenuVisible(
+                                        (prevState) => !prevState,
+                                    )
+                                }
+                            />
+                            {children}
+                        </EuiPageTemplate.Section>
+                    </ContentContext.Provider>
+                </div>
             </EuiPageTemplate>
         </>
     );

@@ -1,5 +1,6 @@
-import React, { Ref, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useContext, useImperativeHandle, useRef } from 'react';
 
+import { ContentContext } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoStep } from '../WfoStep';
@@ -37,6 +38,8 @@ export const WfoStepList = React.forwardRef(
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
+        const contentRef = useContext(ContentContext)?.contentRef;
+
         let stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
@@ -64,10 +67,8 @@ export const WfoStepList = React.forwardRef(
 
                     if (targetRect) {
                         const { top } = targetRect;
-                        // Todo: Check after implementing the fixed menu bar if this is still working.
-                        // Might need to target the actual div that is scrollable.
-                        window.scrollBy({
-                            top: top - 74, // Timeline height (40) + Offset from top (10) + Space between steps (24/2)
+                        contentRef?.current?.scrollBy({
+                            top: top - 122, // Timeline height (40) + Offset from top (10) + Space between steps (24) + Fixed menu bar (48)
                             behavior: 'smooth',
                         });
                     }
