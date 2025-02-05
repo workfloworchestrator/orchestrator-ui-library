@@ -3,6 +3,7 @@ import React, {
     ReactElement,
     ReactNode,
     createContext,
+    useContext,
     useRef,
     useState,
 } from 'react';
@@ -23,8 +24,6 @@ export interface WfoPageTemplateProps {
     onThemeSwitch: (theme: EuiThemeColorMode) => void;
     children: ReactNode;
 }
-
-// Todo add useContentRef()
 
 // Todo move to its own file
 export type ContentType = {
@@ -50,6 +49,9 @@ export const ContentContextProvider: FC<ContentContextProviderProps> = ({
         </div>
     );
 };
+export const useContentRef = () => ({
+    contentRef: useContext(ContentContext)?.contentRef,
+});
 // ... End of todo
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
