@@ -46,7 +46,7 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
     const timelinePanelStyle = css({
         backgroundColor: theme.colors.body,
         borderRadius: theme.border.radius.medium,
-        outline: `${timelineOutlineWidthPx} solid white`, // todo use theme
+        outline: `${timelineOutlineWidthPx} solid ${theme.colors.emptyShade}`,
         height: timelineHeightPx,
         marginTop: timelineOutlineWidthPx,
         marginBottom: timelineOutlineWidthPx,
@@ -58,10 +58,8 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
         paddingRight: theme.font.baseline * 4,
         position: 'sticky',
         top: timelineOutlineWidthPx,
-        zIndex: 2, // todo find out why Options button and the process icons got z-index.
+        zIndex: 2, // Some EUI components have a zIndex
         display: 'flex',
-
-        // opacity: 0.3,
 
         '& > button': {
             flexGrow: 2,
