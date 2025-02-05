@@ -1,13 +1,13 @@
 import React, { FC, ReactElement, ReactNode, useRef, useState } from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
-import { EuiPageTemplate } from '@elastic/eui';
-import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
+import { EuiPageTemplate, EuiSideNavItemType } from '@elastic/eui';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
-import { ContentContextProvider } from '@/components/WfoPageTemplate/WfoPageTemplate/ContentContext';
-import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
+import { ContentContextProvider } from './ContentContext';
+import { getPageTemplateStyles } from './styles';
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -24,11 +24,11 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     overrideMenuItems,
     onThemeSwitch,
 }) => {
-    const { multiplyByBaseUnit } = useOrchestratorTheme();
-    const { getSidebarStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
+    const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
+        getPageTemplateStyles,
+    );
 
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
-    const navigationHeight = multiplyByBaseUnit(3);
 
     const headerRowRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +36,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
         <>
             <WfoPageHeader
                 getAppLogo={getAppLogo}
-                navigationHeight={navigationHeight}
+                navigationHeight={NAVIGATION_HEIGHT}
                 onThemeSwitch={onThemeSwitch}
             />
             {/* Sidebar and content area */}
@@ -44,12 +44,12 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                 panelled={false}
                 grow={false}
                 contentBorder={false}
-                minHeight={`calc(100vh - ${navigationHeight}px)`}
+                minHeight={`calc(100vh - ${NAVIGATION_HEIGHT}px)`}
                 restrictWidth={false}
             >
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
-                        css={getSidebarStyle(navigationHeight)}
+                        css={getSidebarStyle(NAVIGATION_HEIGHT)}
                     >
                         <WfoSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
@@ -57,7 +57,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
 
                 <ContentContextProvider
                     contentRef={headerRowRef}
-                    navigationHeight={navigationHeight}
+                    navigationHeight={NAVIGATION_HEIGHT}
                 >
                     <EuiPageTemplate.Section>
                         <WfoBreadcrumbs

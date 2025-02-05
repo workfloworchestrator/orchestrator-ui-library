@@ -7,7 +7,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { StepStatus } from '@/types';
 
 import { WfoTimelineStep } from './WfoTimelineStep';
-import { getStyles } from './styles';
+import { getTimelineStyles } from './styles';
 import { getTimelinePosition } from './timelineUtils';
 
 export enum TimelinePosition {
@@ -34,7 +34,7 @@ export const WfoTimeline: FC<WfoTimelineProps> = ({
     indexOfCurrentStep = 0,
     onStepClick,
 }) => {
-    const { timelinePanelStyle } = useWithOrchestratorTheme(getStyles);
+    const { timelinePanelStyle } = useWithOrchestratorTheme(getTimelineStyles);
 
     const mapTimelineItemToStep = (
         timelineItem: TimelineItem,
@@ -62,17 +62,7 @@ export const WfoTimeline: FC<WfoTimelineProps> = ({
     };
 
     return (
-        <div
-            css={[
-                timelinePanelStyle,
-                useEuiScrollBar(),
-                {
-                    position: 'sticky',
-                    top: '10px', // todo reusable variable
-                    zIndex: 2, // todo find out why Options button and the process icons got z-index.
-                },
-            ]}
-        >
+        <div css={[timelinePanelStyle, useEuiScrollBar()]}>
             {timelineItems.map(mapTimelineItemToStep)}
         </div>
     );

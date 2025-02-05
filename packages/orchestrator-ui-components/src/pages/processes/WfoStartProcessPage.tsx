@@ -15,7 +15,7 @@ import {
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
-import { getStyles } from '@/components/WfoWorkflowSteps/styles';
+import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
     HttpStatus,
@@ -124,7 +124,7 @@ export const WfoStartProcessPage = ({
     const { stepUserInput, hasNext } = form;
 
     const { getStepHeaderStyle, stepListContentBoldTextStyle } =
-        useWithOrchestratorTheme(getStyles);
+        useWithOrchestratorTheme(getWorkflowStepsStyles);
 
     const {
         data: timeLineItems = [],

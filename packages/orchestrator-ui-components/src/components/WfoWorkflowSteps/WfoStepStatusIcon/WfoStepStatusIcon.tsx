@@ -13,7 +13,7 @@ import {
 } from '@/icons';
 import { StepStatus } from '@/types';
 
-import { getStyles } from '../styles';
+import { getWorkflowStepsStyles } from '../styles';
 
 export interface WfoStepStatusIconProps {
     stepStatus: StepStatus;
@@ -61,7 +61,7 @@ export const WfoStepStatusIcon = ({
         stepStateSuspendIconStyle,
         stepStatePendingIconStyle,
         stepStateFailedIconStyle,
-    } = useWithOrchestratorTheme(getStyles);
+    } = useWithOrchestratorTheme(getWorkflowStepsStyles);
 
     const [
         stepStateStyle,

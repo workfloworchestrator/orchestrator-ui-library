@@ -20,7 +20,7 @@ import { calculateTimeDifference, formatDate } from '@/utils';
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
-import { getStyles } from '../styles';
+import { getWorkflowStepsStyles } from '../styles';
 import { WfoStepForm } from './WfoStepForm';
 
 export interface WfoStepProps {
@@ -58,7 +58,7 @@ export const WfoStep = React.forwardRef(
             stepDurationStyle,
             stepRowStyle,
             getStepToggleExpandStyle,
-        } = useWithOrchestratorTheme(getStyles);
+        } = useWithOrchestratorTheme(getWorkflowStepsStyles);
         const t = useTranslations('processes.steps');
         const hasHtmlMail =
             step.stateDelta?.hasOwnProperty('confirmation_mail');
