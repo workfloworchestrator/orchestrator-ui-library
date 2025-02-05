@@ -12,7 +12,8 @@ import { EuiPageTemplate } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
+import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -23,10 +24,33 @@ export interface WfoPageTemplateProps {
     children: ReactNode;
 }
 
+// Todo add useContentRef()
+
+// Todo move to its own file
 export type ContentType = {
     contentRef: React.RefObject<HTMLDivElement>;
 };
 export const ContentContext = createContext<ContentType | undefined>(undefined);
+export type ContentContextProviderProps = ContentType & {
+    navigationHeight: number;
+    children: ReactNode;
+};
+export const ContentContextProvider: FC<ContentContextProviderProps> = ({
+    contentRef,
+    navigationHeight,
+    children,
+}) => {
+    const { getContentStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
+
+    return (
+        <div ref={contentRef} css={getContentStyle(navigationHeight)}>
+            <ContentContext.Provider value={{ contentRef }}>
+                {children}
+            </ContentContext.Provider>
+        </div>
+    );
+};
+// ... End of todo
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     children,
@@ -34,7 +58,9 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     overrideMenuItems,
     onThemeSwitch,
 }) => {
-    const { theme, multiplyByBaseUnit } = useOrchestratorTheme();
+    const { multiplyByBaseUnit } = useOrchestratorTheme();
+    const { getSidebarStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
+
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
     const navigationHeight = multiplyByBaseUnit(3);
 
@@ -57,39 +83,25 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
             >
                 {isSideMenuVisible && (
                     <EuiPageTemplate.Sidebar
-                        css={{
-                            backgroundColor: theme.colors.body,
-                            overflowY: 'auto',
-                            maxHeight: `calc(100vh - ${navigationHeight}px)`,
-                        }}
+                        css={getSidebarStyle(navigationHeight)}
                     >
                         <WfoSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
                 )}
 
-                <div
-                    ref={headerRowRef}
-                    css={{
-                        backgroundColor: theme.colors.emptyShade,
-                        overflowY: 'auto',
-                        maxHeight: `calc(100vh - ${navigationHeight}px)`,
-                    }}
+                <ContentContextProvider
+                    contentRef={headerRowRef}
+                    navigationHeight={navigationHeight}
                 >
-                    <ContentContext.Provider
-                        value={{ contentRef: headerRowRef }}
-                    >
-                        <EuiPageTemplate.Section className="test-contnt-area">
-                            <WfoBreadcrumbs
-                                handleSideMenuClick={() =>
-                                    setIsSideMenuVisible(
-                                        (prevState) => !prevState,
-                                    )
-                                }
-                            />
-                            {children}
-                        </EuiPageTemplate.Section>
-                    </ContentContext.Provider>
-                </div>
+                    <EuiPageTemplate.Section>
+                        <WfoBreadcrumbs
+                            handleSideMenuClick={() =>
+                                setIsSideMenuVisible((prevState) => !prevState)
+                            }
+                        />
+                        {children}
+                    </EuiPageTemplate.Section>
+                </ContentContextProvider>
             </EuiPageTemplate>
         </>
     );
