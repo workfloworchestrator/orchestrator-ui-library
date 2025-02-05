@@ -2,10 +2,15 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
+export const getWorkflowStepsStyles = ({
+    theme,
+    toSecondaryColor,
+}: WfoTheme) => {
+    const SPACE_BETWEEN_STEPS = theme.base * 1.5;
+
     const stepSpacerStyle = css({
         borderLeft: `1px solid ${theme.colors.darkShade}`,
-        height: '24px',
+        height: `${SPACE_BETWEEN_STEPS}px`,
         marginLeft: '36px',
     });
 
@@ -102,6 +107,7 @@ export const getStyles = ({ theme, toSecondaryColor }: WfoTheme) => {
         });
 
     return {
+        SPACE_BETWEEN_STEPS,
         stepDurationStyle,
         stepEmailContainerStyle,
         stepHeaderRightStyle,

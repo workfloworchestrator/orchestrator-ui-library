@@ -16,7 +16,7 @@ import { WfoTextAnchor } from '@/components/WfoTextAnchor/WfoTextAnchor';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoCode, WfoEyeFill } from '@/icons';
 
-import { getStyles } from '../styles';
+import { getWorkflowStepsStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
     allDetailToggleText: string;
@@ -56,7 +56,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
         stepListContentStyle,
         stepListContentBoldTextStyle,
         stepListOptionsContainerStyle,
-    } = useWithOrchestratorTheme(getStyles);
+    } = useWithOrchestratorTheme(getWorkflowStepsStyles);
 
     const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
 

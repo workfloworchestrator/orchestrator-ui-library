@@ -2,7 +2,12 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getPageTemplateStyles = ({ theme }: WfoTheme) => {
+export const getPageTemplateStyles = ({
+    theme,
+    multiplyByBaseUnit,
+}: WfoTheme) => {
+    const NAVIGATION_HEIGHT = multiplyByBaseUnit(3);
+
     const getSidebarStyle = (navigationHeight: number) =>
         css({
             backgroundColor: theme.colors.body,
@@ -18,6 +23,7 @@ export const getPageTemplateStyles = ({ theme }: WfoTheme) => {
         });
 
     return {
+        NAVIGATION_HEIGHT,
         getSidebarStyle,
         getContentStyle,
     };

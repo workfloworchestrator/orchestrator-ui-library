@@ -6,7 +6,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { StepStatus } from '@/types';
 
 import { TimelinePosition } from './WfoTimeline';
-import { getStyles } from './styles';
+import { getTimelineStyles } from './styles';
 
 export type WfoTimelineStepProps = {
     stepStatus: StepStatus;
@@ -34,7 +34,7 @@ export const WfoTimelineStep = ({
         getStepLineStyle,
         getStepOuterCircleStyle,
         getStepInnerCircleStyle,
-    } = useWithOrchestratorTheme(getStyles);
+    } = useWithOrchestratorTheme(getTimelineStyles);
 
     return (
         <button

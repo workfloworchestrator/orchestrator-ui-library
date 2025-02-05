@@ -1,9 +1,11 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
+import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
+import { getTimelineStyles } from '@/components/WfoTimeline/styles';
 import { useContentRef, useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoStep } from '../WfoStep';
-import { getStyles } from '../styles';
+import { getWorkflowStepsStyles } from '../styles';
 import { StepListItem } from './../WfoWorkflowStepList';
 
 export type WfoStepListRef = {
@@ -33,7 +35,19 @@ export const WfoStepList = React.forwardRef(
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
-        const { stepSpacerStyle } = useWithOrchestratorTheme(getStyles);
+        // const { stepSpacerStyle } = useWithOrchestratorTheme(getStyles);
+        const { NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
+            getPageTemplateStyles,
+        ); // nav height
+        const { TIMELINE_HEIGHT, TIMELINE_OUTLINE_WIDTH } =
+            useWithOrchestratorTheme(getTimelineStyles); // timeline height + timeline outline width
+        const { SPACE_BETWEEN_STEPS, stepSpacerStyle } =
+            useWithOrchestratorTheme(getWorkflowStepsStyles); // space between steps
+        const scrollOffset =
+            NAVIGATION_HEIGHT +
+            TIMELINE_HEIGHT +
+            TIMELINE_OUTLINE_WIDTH +
+            SPACE_BETWEEN_STEPS;
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
@@ -59,7 +73,6 @@ export const WfoStepList = React.forwardRef(
                         );
                     });
 
-                    // Start of custom scrollIntoView
                     const targetRect = stepReferences.current
                         .get(stepId)
                         ?.getBoundingClientRect();
@@ -67,11 +80,10 @@ export const WfoStepList = React.forwardRef(
                     if (targetRect) {
                         const { top } = targetRect;
                         contentRef?.current?.scrollBy({
-                            top: top - 122, // Todo: Timeline height (40) + Offset from top (10) + Space between steps (24) + Fixed menu bar (48)
+                            top: top - scrollOffset,
                             behavior: 'smooth',
                         });
                     }
-                    // End of custom scrollIntoView
                 } catch {
                     console.error(
                         'Error scrolling to step with stepId ',
