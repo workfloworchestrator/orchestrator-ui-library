@@ -1,7 +1,6 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 
-import { useContentRef } from '@/components';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useContentRef, useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoStep } from '../WfoStep';
 import { getStyles } from '../styles';

@@ -1,18 +1,11 @@
-import React, {
-    FC,
-    ReactElement,
-    ReactNode,
-    createContext,
-    useContext,
-    useRef,
-    useState,
-} from 'react';
+import React, { FC, ReactElement, ReactNode, useRef, useState } from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiPageTemplate } from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
+import { ContentContextProvider } from '@/components/WfoPageTemplate/WfoPageTemplate/ContentContext';
 import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 
@@ -24,35 +17,6 @@ export interface WfoPageTemplateProps {
     onThemeSwitch: (theme: EuiThemeColorMode) => void;
     children: ReactNode;
 }
-
-// Todo move to its own file
-export type ContentType = {
-    contentRef: React.RefObject<HTMLDivElement>;
-};
-export const ContentContext = createContext<ContentType | undefined>(undefined);
-export type ContentContextProviderProps = ContentType & {
-    navigationHeight: number;
-    children: ReactNode;
-};
-export const ContentContextProvider: FC<ContentContextProviderProps> = ({
-    contentRef,
-    navigationHeight,
-    children,
-}) => {
-    const { getContentStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
-
-    return (
-        <div ref={contentRef} css={getContentStyle(navigationHeight)}>
-            <ContentContext.Provider value={{ contentRef }}>
-                {children}
-            </ContentContext.Provider>
-        </div>
-    );
-};
-export const useContentRef = () => ({
-    contentRef: useContext(ContentContext)?.contentRef,
-});
-// ... End of todo
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     children,
