@@ -1,6 +1,6 @@
-import React, { Ref, useContext, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useRef } from 'react';
 
-import { ContentContext } from '@/components';
+import { useContentRef } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 import { WfoStep } from '../WfoStep';
@@ -38,7 +38,7 @@ export const WfoStepList = React.forwardRef(
 
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
-        const contentRef = useContext(ContentContext)?.contentRef;
+        const { contentRef } = useContentRef();
 
         let stepStartTime = startedAt;
 
@@ -68,7 +68,7 @@ export const WfoStepList = React.forwardRef(
                     if (targetRect) {
                         const { top } = targetRect;
                         contentRef?.current?.scrollBy({
-                            top: top - 122, // Timeline height (40) + Offset from top (10) + Space between steps (24) + Fixed menu bar (48)
+                            top: top - 122, // Todo: Timeline height (40) + Offset from top (10) + Space between steps (24) + Fixed menu bar (48)
                             behavior: 'smooth',
                         });
                     }
