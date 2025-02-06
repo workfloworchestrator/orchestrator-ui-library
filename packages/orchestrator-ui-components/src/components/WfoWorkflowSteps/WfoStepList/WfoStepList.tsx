@@ -35,14 +35,13 @@ export const WfoStepList = React.forwardRef(
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
-        // const { stepSpacerStyle } = useWithOrchestratorTheme(getStyles);
         const { NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
             getPageTemplateStyles,
-        ); // nav height
+        );
         const { TIMELINE_HEIGHT, TIMELINE_OUTLINE_WIDTH } =
-            useWithOrchestratorTheme(getTimelineStyles); // timeline height + timeline outline width
+            useWithOrchestratorTheme(getTimelineStyles);
         const { SPACE_BETWEEN_STEPS, stepSpacerStyle } =
-            useWithOrchestratorTheme(getWorkflowStepsStyles); // space between steps
+            useWithOrchestratorTheme(getWorkflowStepsStyles);
         const scrollOffset =
             NAVIGATION_HEIGHT +
             TIMELINE_HEIGHT +
