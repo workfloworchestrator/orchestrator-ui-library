@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.1.1
+
+### Patch Changes
+
+-   e838f80: 330 Making timeline in process detail pages sticky to the top of the screen. Introduces a useContentRef hook to refer to the scrollable content div in the pagetemplate
+
 ## 3.1.0
 
 ### Minor Changes
