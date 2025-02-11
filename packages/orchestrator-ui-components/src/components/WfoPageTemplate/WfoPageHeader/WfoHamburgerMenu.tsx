@@ -5,8 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { WfoLoading } from '@/components/WfoLoading';
+import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoCog, WfoLogoutIcon, WfoXCircleFill } from '@/icons';
 import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
@@ -64,11 +66,20 @@ export const WfoHamburgerMenu = ({}) => {
     if (versionFetchError) {
         console.error(versionFetchError);
     }
+
+    const applicationVersions: [{ name: string; icon: EmotionJSX.Element }] = [
+        {
+            name: `orchestrator-ui-components: ${ORCHESTRATOR_UI_LIBRARY_VERSION}`,
+            icon: <WfoCog />,
+        },
+    ];
     const appVersionsItem = {
         id: 4,
         title: 'Software Versions',
         items: isFetching
-            ? [{ name: 'Loading ...', icon: <WfoLoading /> }]
+            ? applicationVersions.concat([
+                  { name: 'Loading ...', icon: <WfoLoading /> },
+              ])
             : versionFetchError
             ? [
                   {
@@ -76,12 +87,18 @@ export const WfoHamburgerMenu = ({}) => {
                       icon: <WfoXCircleFill color={theme.colors.danger} />,
                   },
               ]
-            : data?.versions.applicationVersions.map((item) => {
-                  return {
-                      name: item,
-                      icon: <WfoCog />,
-                  };
-              }),
+            : applicationVersions.concat(
+                  data === undefined
+                      ? []
+                      : Array.from(
+                            data.versions.applicationVersions.map((item) => {
+                                return {
+                                    name: item,
+                                    icon: <WfoCog />,
+                                };
+                            }),
+                        ),
+              ),
     };
 
     const panelItems = [
@@ -115,7 +132,11 @@ export const WfoHamburgerMenu = ({}) => {
             panelPaddingSize="none"
             anchorPosition="downLeft"
         >
-            <EuiContextMenu initialPanelId={0} panels={panels} />
+            <EuiContextMenu
+                initialPanelId={0}
+                panels={panels}
+                css={{ width: theme.base * 25 }}
+            />
         </EuiPopover>
     );
 };
