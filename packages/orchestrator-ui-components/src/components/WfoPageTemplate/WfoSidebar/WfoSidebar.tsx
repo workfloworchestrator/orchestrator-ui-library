@@ -127,7 +127,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                 <WfoMenuItemLink
                     path={PATH_METADATA_PRODUCTS}
                     translationString="metadata"
-                    isSelected={true}
                     hasSubItems={true}
                 />
             ),
