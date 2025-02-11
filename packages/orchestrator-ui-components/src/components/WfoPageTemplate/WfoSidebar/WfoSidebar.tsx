@@ -128,10 +128,6 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     path={PATH_METADATA_PRODUCTS}
                     translationString="metadata"
                     isSelected={true}
-                    // isSelected={
-                    //     router.pathname.substring(0, PATH_METADATA.length) ===
-                    //     PATH_METADATA
-                    // }
                     hasSubItems={true}
                 />
             ),
