@@ -24,8 +24,7 @@
         "resetToDefault": "Reset to default",
         "savePreferences": "Save preferences",
         "numberOfRows": "Number of rows",
-        "tableSettings": "Table settings",
-        "openMenu": "Open menu"
+        "tableSettings": "Table settings"
     },
     "common": {
         "product": "Product",
@@ -428,5 +427,11 @@
             "headerTitle": "Total number of products",
             "listTitle": "Total number of product instances"
         }
+    },
+    "hamburgerMenu": {
+        "openMenu": "Open menu",
+        "support": "Support",
+        "softwareVersions": "Software Versions",
+        "logout": "Logout"
     }
 }

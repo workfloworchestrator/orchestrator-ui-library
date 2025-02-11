@@ -16,7 +16,7 @@ import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
 import { toOptionalArrayEntry } from '@/utils';
 
 export const WfoHamburgerMenu = ({}) => {
-    const t = useTranslations('main');
+    const t = useTranslations('hamburgerMenu');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
     const { enableSupportMenuItem, supportMenuItemUrl } =
@@ -34,7 +34,7 @@ export const WfoHamburgerMenu = ({}) => {
     } = useGetVersionsQuery();
 
     const logoutItem = {
-        name: 'Logout',
+        name: t('logout'),
         icon: (
             <WfoLogoutIcon
                 color={
@@ -46,7 +46,7 @@ export const WfoHamburgerMenu = ({}) => {
     };
 
     const supportItem = {
-        name: 'Support',
+        name: t('support'),
         icon: (
             <WfoQuestionCircle
                 color={
@@ -58,7 +58,7 @@ export const WfoHamburgerMenu = ({}) => {
     };
 
     const versionItem = {
-        name: 'Software Versions',
+        name: t('softwareVersions'),
         icon: <WfoSquareStack3dStack width={24} height={24} />,
         panel: 4,
     };

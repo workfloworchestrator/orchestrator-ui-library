@@ -428,5 +428,10 @@
             "headerTitle": "Totaal aantal producten",
             "listTitle": "Totaal aantal productinstanties"
         }
+    },
+    "hamburgerMenu": {
+        "support": "Support",
+        "softwareVersions": "Software Versies",
+        "logout": "Logout"
     }
 }
