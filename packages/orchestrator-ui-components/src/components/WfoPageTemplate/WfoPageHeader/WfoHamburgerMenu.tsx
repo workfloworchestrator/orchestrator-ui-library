@@ -10,7 +10,7 @@ import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { WfoLoading } from '@/components/WfoLoading';
 import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
-import { WfoCog, WfoLogoutIcon, WfoXCircleFill } from '@/icons';
+import { WfoLogoutIcon, WfoSquareStack3dStack, WfoXCircleFill } from '@/icons';
 import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
 import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
 import { toOptionalArrayEntry } from '@/utils';
@@ -59,7 +59,7 @@ export const WfoHamburgerMenu = ({}) => {
 
     const versionItem = {
         name: 'Software Versions',
-        icon: <WfoCog width={24} height={24} />,
+        icon: <WfoSquareStack3dStack width={24} height={24} />,
         panel: 4,
     };
 
@@ -70,7 +70,7 @@ export const WfoHamburgerMenu = ({}) => {
     const applicationVersions: [{ name: string; icon: EmotionJSX.Element }] = [
         {
             name: `orchestrator-ui-components: ${ORCHESTRATOR_UI_LIBRARY_VERSION}`,
-            icon: <WfoCog />,
+            icon: <WfoSquareStack3dStack />,
         },
     ];
     const appVersionsItem = {
@@ -94,7 +94,7 @@ export const WfoHamburgerMenu = ({}) => {
                             data.versions.applicationVersions.map((item) => {
                                 return {
                                     name: item,
-                                    icon: <WfoCog />,
+                                    icon: <WfoSquareStack3dStack />,
                                 };
                             }),
                         ),
