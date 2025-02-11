@@ -10,7 +10,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
@@ -27,7 +27,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
@@ -47,7 +47,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
@@ -65,7 +65,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
