@@ -89,6 +89,8 @@ export const WfoSubscriptionDetailSection = ({
             value: (
                 <WfoCustomerDescriptionsField
                     customerDescriptions={customerDescriptions}
+                    subscriptionCustomerId={customer?.customerId}
+                    subscriptionId={subscriptionId}
                 />
             ),
         },
