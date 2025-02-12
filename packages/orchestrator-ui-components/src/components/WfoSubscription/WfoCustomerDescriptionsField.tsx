@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 import { useGetCustomerQuery } from '@/rtk';
+import { useUpdateCustomerDescriptionMutation } from '@/rtk/endpoints/customerDescriptions';
 import { Customer, CustomerDescriptions } from '@/types';
 
-type CustomerDescriptionWithName = Pick<
-    CustomerDescriptions,
-    'description' | 'customerId'
-> &
+import { WfoInlineEdit } from '../WfoInlineEdit';
+
+type CustomerDescriptionWithName = CustomerDescriptions &
     Partial<Pick<Customer, 'fullname' | 'shortcode'>>;
 
 export type WfoCustomerDescriptionsFieldProps = {
@@ -16,6 +16,8 @@ export type WfoCustomerDescriptionsFieldProps = {
 export const WfoCustomerDescriptionsField: FC<
     WfoCustomerDescriptionsFieldProps
 > = ({ customerDescriptions }) => {
+    const [updateCustomerDescription, {}] =
+        useUpdateCustomerDescriptionMutation();
     const customerIds = customerDescriptions.map(
         (customerDescription) => customerDescription.customerId,
     );
@@ -26,28 +28,65 @@ export const WfoCustomerDescriptionsField: FC<
     }
 
     const customerDescriptionsWithName: CustomerDescriptionWithName[] =
-        customerDescriptions.map(({ description, customerId }) => {
-            const customer = data.find(
-                (customer) => customer.customerId === customerId,
-            );
+        customerDescriptions.map(
+            ({ description, customerId, id, subscriptionId }) => {
+                const customer = data.find(
+                    (customer) => customer.customerId === customerId,
+                );
 
-            return {
-                customerId,
-                shortcode: customer?.shortcode,
-                fullname: customer?.fullname,
-                description,
-            };
+                return {
+                    id,
+                    customerId,
+                    shortcode: customer?.shortcode,
+                    fullname: customer?.fullname,
+                    description,
+                    subscriptionId,
+                };
+            },
+        );
+
+    const triggerModifyDescription = (
+        id: string,
+        customerId: string,
+        subscriptionId: string,
+        description: string,
+    ) => {
+        updateCustomerDescription({
+            id: id,
+            description: description,
+            customerId: customerId,
+            subscriptionId: subscriptionId,
         });
+    };
 
     return (
-        <div>
+        <>
             {customerDescriptionsWithName.map(
-                ({ shortcode, fullname, description, customerId }) => (
-                    <div key={customerId} title={fullname ?? customerId}>{`${
-                        shortcode ?? customerId
-                    }: ${description}`}</div>
+                ({
+                    shortcode,
+                    fullname,
+                    description,
+                    customerId,
+                    id,
+                    subscriptionId,
+                }) => (
+                    <div key={customerId} css={{ display: 'flex' }}>
+                        {fullname ?? customerId}
+                        {`${shortcode ?? customerId}`}:
+                        <WfoInlineEdit
+                            value={description}
+                            triggerModify={(value) =>
+                                triggerModifyDescription(
+                                    id,
+                                    customerId,
+                                    subscriptionId,
+                                    value,
+                                )
+                            }
+                        />
+                    </div>
                 ),
             )}
-        </div>
+        </>
     );
 };

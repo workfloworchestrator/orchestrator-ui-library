@@ -1,12 +1,13 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { WfoInlineNoteEdit } from '@/components';
 import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useUpdateSubscriptionDetailNoteOptimisticMutation } from '@/rtk/endpoints/subscriptionListMutation';
 import { SubscriptionDetail } from '@/types';
 import { INVISIBLE_CHARACTER } from '@/utils';
+
+import { WfoInlineEdit } from '../WfoInlineEdit';
 
 interface WfoSubscriptionDetailNoteEditProps {
     subscriptionId: SubscriptionDetail['subscriptionId'];
@@ -42,14 +43,14 @@ export const WfoSubscriptionDetailNoteEdit: FC<
     };
 
     return (
-        <WfoInlineNoteEdit
+        <WfoInlineEdit
             value={
                 selectedItem?.note?.trim()
                     ? selectedItem.note
                     : INVISIBLE_CHARACTER
             }
             onlyShowOnHover={onlyShowOnHover}
-            triggerNoteModifyWorkflow={triggerNoteModifyWorkflow}
+            triggerModify={triggerNoteModifyWorkflow}
         />
     );
 };

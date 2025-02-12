@@ -10,7 +10,7 @@ import {
     WfoSubscriptionStatusBadge,
 } from '@/components';
 import { SubscriptionDetail } from '@/types';
-import { formatDate, toOptionalArrayEntry } from '@/utils';
+import { formatDate } from '@/utils';
 
 interface WfoSubscriptionDetailSectionProps {
     isFetching: boolean;
@@ -22,9 +22,6 @@ export const WfoSubscriptionDetailSection = ({
     subscriptionDetail,
 }: WfoSubscriptionDetailSectionProps) => {
     const t = useTranslations('subscriptions.detail');
-
-    const hasCustomerDescriptions =
-        subscriptionDetail.customerDescriptions.length > 0;
 
     const {
         subscriptionId,
@@ -87,17 +84,14 @@ export const WfoSubscriptionDetailSection = ({
                     : '-',
             textToCopy: customer?.customerId,
         },
-        ...toOptionalArrayEntry(
-            {
-                key: t('customerDescriptions'),
-                value: (
-                    <WfoCustomerDescriptionsField
-                        customerDescriptions={customerDescriptions}
-                    />
-                ),
-            },
-            hasCustomerDescriptions,
-        ),
+        {
+            key: t('customerDescriptions'),
+            value: (
+                <WfoCustomerDescriptionsField
+                    customerDescriptions={customerDescriptions}
+                />
+            ),
+        },
         {
             key: t('note'),
             value: (

@@ -36,6 +36,7 @@ fragment SubscriptionDetail on SubscriptionInterface {
         shortcode
     }
     customerDescriptions {
+        id
         subscriptionId
         description
         customerId

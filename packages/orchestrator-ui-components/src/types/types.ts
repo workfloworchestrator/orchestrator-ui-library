@@ -461,6 +461,7 @@ export type SubscriptionDropdownOption = {
 };
 
 export type CustomerDescriptions = {
+    id: string;
     subscriptionId: string;
     description: string;
     customerId: string;
