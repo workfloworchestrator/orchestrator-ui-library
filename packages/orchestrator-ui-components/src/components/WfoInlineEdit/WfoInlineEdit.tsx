@@ -7,35 +7,35 @@ import { WfoToolTip } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { INVISIBLE_CHARACTER } from '@/utils';
 
-interface WfoInlineNoteEditProps {
+interface WfoInlineEditProps {
     value: string;
     onlyShowOnHover?: boolean;
-    triggerNoteModifyWorkflow?: (note: string) => void;
+    triggerModify?: (note: string) => void;
 }
 
-export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
+export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
     value,
     onlyShowOnHover = false,
-    triggerNoteModifyWorkflow = () => {},
+    triggerModify = () => {},
 }) => {
     const { theme } = useOrchestratorTheme();
-    const [note, setNote] = useState<string>(value);
+    const [note, setValue] = useState<string>(value);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const handleSave = () => {
-        triggerNoteModifyWorkflow(note);
+        triggerModify(note);
         setIsTooltipVisible(true);
     };
 
     const handleCancel = () => {
-        setNote(value);
+        setValue(value);
         setIsTooltipVisible(true);
     };
 
     // This useEffect makes sure the note is updated when a new value property is passed in
     // for example by a parent component that is update through a websocket event
     useEffect(() => {
-        setNote(value);
+        setValue(value);
     }, [value]);
 
     return (
@@ -60,10 +60,10 @@ export const WfoInlineNoteEdit: FC<WfoInlineNoteEditProps> = ({
             >
                 <span>
                     <EuiInlineEditText
-                        inputAriaLabel="Edit note"
+                        inputAriaLabel="Edit field"
                         value={note}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setNote(e.target.value);
+                            setValue(e.target.value);
                         }}
                         onCancel={handleCancel}
                         onSave={handleSave}
