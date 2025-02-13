@@ -33,6 +33,44 @@ export const WfoHamburgerMenu = ({}) => {
         error: versionFetchError,
     } = useGetVersionsQuery();
 
+    const getVersionItems = () => {
+        if (versionFetchError) {
+            console.error(versionFetchError);
+            return [
+                {
+                    name: 'Error fetching application version data',
+                    icon: <WfoXCircleFill color={theme.colors.danger} />,
+                },
+            ];
+        }
+        if (isFetching) {
+            return [{ name: '', icon: <WfoLoading /> }];
+        }
+        // initial array contains orchestrator-ui-components library version
+        const versionsArr: [{ name: string; icon: EmotionJSX.Element }] = [
+            {
+                name: `orchestrator-ui-components: ${ORCHESTRATOR_UI_LIBRARY_VERSION}`,
+                icon: <WfoSquareStack3dStack />,
+            },
+        ];
+
+        if (data === undefined) {
+            return versionsArr;
+        }
+
+        const orchApiVersions = data.versions.applicationVersions.map(
+            (item) => {
+                return {
+                    name: item,
+                    icon: <WfoSquareStack3dStack />,
+                };
+            },
+        );
+
+        // orchestrator-ui-components library version + versions returned from orchestrator api
+        return versionsArr.concat(orchApiVersions);
+    };
+
     const logoutItem = {
         name: t('logout'),
         icon: (
@@ -60,45 +98,7 @@ export const WfoHamburgerMenu = ({}) => {
     const versionItem = {
         name: t('softwareVersions'),
         icon: <WfoSquareStack3dStack width={24} height={24} />,
-        panel: 4,
-    };
-
-    if (versionFetchError) {
-        console.error(versionFetchError);
-    }
-
-    const applicationVersions: [{ name: string; icon: EmotionJSX.Element }] = [
-        {
-            name: `orchestrator-ui-components: ${ORCHESTRATOR_UI_LIBRARY_VERSION}`,
-            icon: <WfoSquareStack3dStack />,
-        },
-    ];
-    const appVersionsItem = {
-        id: 4,
-        title: 'Software Versions',
-        items: isFetching
-            ? applicationVersions.concat([
-                  { name: 'Loading ...', icon: <WfoLoading /> },
-              ])
-            : versionFetchError
-            ? [
-                  {
-                      name: 'Error fetching application version data',
-                      icon: <WfoXCircleFill color={theme.colors.danger} />,
-                  },
-              ]
-            : applicationVersions.concat(
-                  data === undefined
-                      ? []
-                      : Array.from(
-                            data.versions.applicationVersions.map((item) => {
-                                return {
-                                    name: item,
-                                    icon: <WfoSquareStack3dStack />,
-                                };
-                            }),
-                        ),
-              ),
+        panel: 1,
     };
 
     const panelItems = [
@@ -112,7 +112,11 @@ export const WfoHamburgerMenu = ({}) => {
             id: 0,
             items: panelItems,
         },
-        appVersionsItem,
+        {
+            id: 1,
+            title: t('softwareVersions'),
+            items: getVersionItems(),
+        },
     ];
 
     return (
