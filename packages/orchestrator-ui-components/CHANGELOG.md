@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.2.0
+
+### Minor Changes
+
+-   2175530: 1704 - Adjustments to assist in overriding the standard menu items: Using more descriptive id values. Adds reusable divider menu item
+
 ## 3.1.1
 
 ### Patch Changes
