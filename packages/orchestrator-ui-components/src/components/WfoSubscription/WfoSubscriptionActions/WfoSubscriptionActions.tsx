@@ -13,7 +13,6 @@ import {
     EuiTitle,
     EuiToolTip,
 } from '@elastic/eui';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -94,7 +93,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     }) => {
         // Change icon to include x if there's a reason
         // Add tooltip with reason
-        const linkIt = (actionItem: ReactJSXElement) => {
+        const linkIt = (actionItem: React.ReactNode) => {
             const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
             const url = {
                 pathname: `${path}/${action.name}`,
@@ -116,7 +115,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             );
         };
 
-        const tooltipIt = (actionItem: ReactJSXElement) => {
+        const tooltipIt = (actionItem: React.ReactNode) => {
             /**
               Whether an action is disabled is indicated by it having a reason property.
               The value of the reason property is as a translation key that should

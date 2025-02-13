@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import { useOrchestratorTheme } from '@/hooks';
 import { useGetCustomerQuery } from '@/rtk';
 import {
     useSetCustomerDescriptionMutation,
@@ -22,6 +23,7 @@ export type WfoCustomerDescriptionsFieldProps = {
 export const WfoCustomerDescriptionsField: FC<
     WfoCustomerDescriptionsFieldProps
 > = ({ customerDescriptions, subscriptionCustomerId, subscriptionId }) => {
+    const { theme } = useOrchestratorTheme();
     const [updateCustomerDescription, {}] =
         useUpdateCustomerDescriptionMutation();
     const [setCustomerDescription, {}] = useSetCustomerDescriptionMutation();
@@ -61,8 +63,15 @@ export const WfoCustomerDescriptionsField: FC<
         subscriptionId,
     }: CustomerDescriptionWithName) => (
         <div key={customerId} css={{ display: 'flex' }}>
-            {fullname ?? customerId}
-            {`${shortcode ?? customerId}`}:
+            <div
+                css={{
+                    whiteSpace: 'nowrap',
+                    alignSelf: 'center',
+                    marginRight: theme.base / 2,
+                }}
+            >
+                {fullname ?? customerId} {`${shortcode ?? customerId}`}:
+            </div>
             <WfoInlineEdit
                 value={description}
                 triggerModify={(value) =>
@@ -80,7 +89,7 @@ export const WfoCustomerDescriptionsField: FC<
     const customerDescriptionCreateForm = () => {
         if (!subscriptionCustomerId) return;
         return (
-            <div key={subscriptionCustomerId} css={{ display: 'flex' }}>
+            <div key={subscriptionCustomerId}>
                 <WfoInlineEdit
                     value={INVISIBLE_CHARACTER}
                     onlyShowOnHover={true}
@@ -102,7 +111,13 @@ export const WfoCustomerDescriptionsField: FC<
         );
 
     return (
-        <>
+        <div
+            css={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+            }}
+        >
             {(currentCustomerSubscriptionDescription &&
                 customerDescriptionEditForm(
                     currentCustomerSubscriptionDescription,
@@ -115,6 +130,6 @@ export const WfoCustomerDescriptionsField: FC<
                 .map((customerDescriptionWithName) =>
                     customerDescriptionEditForm(customerDescriptionWithName),
                 )}
-        </>
+        </div>
     );
 };
