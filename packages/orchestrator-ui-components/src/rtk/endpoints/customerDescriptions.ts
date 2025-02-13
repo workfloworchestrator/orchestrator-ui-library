@@ -1,7 +1,6 @@
+import { CUSTOMER_DESCRIPTION_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import { CustomerDescriptions } from '@/types';
-
-const CUSTOMER_DESCRIPTION_ENDPOINT = '/subscription_customer_descriptions';
 
 const customerDescriptionsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
