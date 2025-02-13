@@ -58,14 +58,12 @@ export const WfoHamburgerMenu = ({}) => {
             return versionsArr;
         }
 
-        const orchApiVersions = data.versions.applicationVersions.map(
-            (item) => {
-                return {
-                    name: item,
-                    icon: <WfoSquareStack3dStack />,
-                };
-            },
-        );
+        const orchApiVersions = data.version.applicationVersions.map((item) => {
+            return {
+                name: item,
+                icon: <WfoSquareStack3dStack />,
+            };
+        });
 
         // orchestrator-ui-components library version + versions returned from orchestrator api
         return versionsArr.concat(orchApiVersions);

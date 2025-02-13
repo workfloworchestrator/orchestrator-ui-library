@@ -2,14 +2,14 @@ import { orchestratorApi } from '../api';
 
 const versionsQuery = `
     query Versions {
-        versions {
+        version {
             applicationVersions
         }
     }
 `;
 
 export type VersionsResponse = {
-    versions: {
+    version: {
         applicationVersions: [string];
     };
 };
