@@ -36,6 +36,7 @@ query MetadataWorkflows(
         filterBy: { field: "target", value: "CREATE|MODIFY|TERMINATE" }
     ) {
         page {
+            workflowId
             name
             description
             target
