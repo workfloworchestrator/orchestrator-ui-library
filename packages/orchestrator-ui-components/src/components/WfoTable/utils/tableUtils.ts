@@ -47,10 +47,20 @@ export const getPageIndexChangeHandler =
         setDataDisplayParam('pageIndex', pageIndex);
     };
 
+export const hasSpecialCharacterOrSpace = (string: string): boolean => {
+    return /[^a-zA-Z0-9] */.test(string);
+};
+
 export const getQueryStringHandler =
     <Type>(
         setDataDisplayParam: DataDisplayReturnValues<Type>['setDataDisplayParam'],
     ) =>
     (queryString: string) => {
-        setDataDisplayParam('queryString', queryString);
+        // https://github.com/workfloworchestrator/orchestrator-ui-library/issues/1732
+        // Refer to the issue for some details on this
+        const query =
+            queryString && !hasSpecialCharacterOrSpace(queryString)
+                ? `${queryString}*`
+                : queryString;
+        setDataDisplayParam('queryString', query);
     };
