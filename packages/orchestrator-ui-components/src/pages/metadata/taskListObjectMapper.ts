@@ -6,13 +6,12 @@ export const mapTaskDefinitionToTaskListItem = (
     tasks: TaskDefinition[],
 ): TaskListItem[] =>
     tasks.map((taskDefinition) => {
-        const { workflowId, name, target, description, createdAt, products } =
+        const { name, target, description, createdAt, products } =
             taskDefinition;
 
         const productTags = products.map((product) => product.tag);
 
         return {
-            workflowId,
             name,
             description,
             target,

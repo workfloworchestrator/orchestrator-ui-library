@@ -167,11 +167,10 @@
         "resourceTypes": {
             "type": "Resource type",
             "description": "Resource type description",
-            "resourceId": "ID",
+            "resourceId": "Resource ID",
             "usedInProductBlocks": "Used in product blocks"
         },
         "workflows": {
-            "workflowId": "ID",
             "name": "Workflow",
             "description": "Workflow description",
             "target": "Target",
@@ -179,7 +178,6 @@
             "createdAt": "Created"
         },
         "tasks": {
-            "workflowId": "ID",
             "name": "Task",
             "description": "Task description",
             "target": "Target",

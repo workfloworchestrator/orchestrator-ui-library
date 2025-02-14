@@ -251,7 +251,6 @@ export interface Step {
 }
 
 export interface WorkflowDefinition {
-    workflowId: string;
     name: string;
     description?: string;
     target: WorkflowTarget;
@@ -260,7 +259,6 @@ export interface WorkflowDefinition {
 }
 
 export interface TaskDefinition {
-    workflowId: string;
     name: string;
     description?: string;
     target: WorkflowTarget;
