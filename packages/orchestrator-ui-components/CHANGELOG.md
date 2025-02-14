@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.3.0
+
+### Minor Changes
+
+-   0476c1d: Adds an asteriks to every single word search
+-   937c8d6: Adds customer description edit forms
+-   1bb8c3c: Added support for displaying software versions in hamburger menu
+
 ## 3.2.0
 
 ### Minor Changes
