@@ -168,7 +168,7 @@
         "resourceTypes": {
             "type": "Resource type",
             "description": "Resource type beschrijving",
-            "resourceId": "ID",
+            "resourceId": "Resource ID",
             "usedInProductBlocks": "Gebruikt in product blocks"
         },
         "workflows": {

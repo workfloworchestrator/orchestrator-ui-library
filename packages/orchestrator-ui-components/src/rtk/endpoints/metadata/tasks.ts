@@ -21,7 +21,6 @@ query MetadataWorkflows(
         filterBy: { field: "target", value: "SYSTEM" }
     ) {
         page {
-            workflowId
             name
             description
             target

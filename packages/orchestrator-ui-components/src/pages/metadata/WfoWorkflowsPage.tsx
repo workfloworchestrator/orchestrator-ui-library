@@ -7,7 +7,6 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import {
     PATH_METADATA_PRODUCTS,
     WfoDataSorting,
-    WfoFirstPartUUID,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
 } from '@/components';
@@ -63,7 +62,7 @@ import {
 
 export type WorkflowListItem = Pick<
     WorkflowDefinition,
-    'workflowId' | 'name' | 'description' | 'target' | 'createdAt'
+    'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
 };
@@ -106,14 +105,6 @@ export const WfoWorkflowsPage = () => {
         });
 
     const tableColumns: WfoAdvancedTableColumnConfig<WorkflowListItem> = {
-        workflowId: {
-            columnType: ColumnType.DATA,
-            label: t('workflowId'),
-            width: '90px',
-            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
-            renderDetails: (value) => value,
-            renderTooltip: (value) => value,
-        },
         name: {
             columnType: ColumnType.DATA,
             label: t('name'),
@@ -237,15 +228,7 @@ export const WfoWorkflowsPage = () => {
     ): WorkflowListExportItem[] => {
         const { workflows } = workflowsResponse;
         return workflows.map(
-            ({
-                workflowId,
-                name,
-                target,
-                description,
-                createdAt,
-                products,
-            }) => ({
-                workflowId,
+            ({ name, target, description, createdAt, products }) => ({
                 name,
                 target,
                 description,
