@@ -10,20 +10,20 @@ import { INVISIBLE_CHARACTER } from '@/utils';
 interface WfoInlineEditProps {
     value: string;
     onlyShowOnHover?: boolean;
-    triggerModify?: (note: string) => void;
+    onSave?: (note: string) => void;
 }
 
 export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
     value,
     onlyShowOnHover = false,
-    triggerModify = () => {},
+    onSave = () => {},
 }) => {
     const { theme } = useOrchestratorTheme();
     const [note, setValue] = useState<string>(value);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const handleSave = () => {
-        triggerModify(note);
+        onSave(note);
         setIsTooltipVisible(true);
     };
 
