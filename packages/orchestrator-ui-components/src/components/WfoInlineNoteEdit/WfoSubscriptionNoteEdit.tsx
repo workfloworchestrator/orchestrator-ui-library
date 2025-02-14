@@ -59,7 +59,7 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
                     : INVISIBLE_CHARACTER
             }
             onlyShowOnHover={onlyShowOnHover}
-            triggerModify={triggerNoteModifyWorkflow}
+            onSave={triggerNoteModifyWorkflow}
         />
     );
 };

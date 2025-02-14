@@ -74,7 +74,7 @@ export const WfoCustomerDescriptionsField: FC<
             </div>
             <WfoInlineEdit
                 value={description}
-                triggerModify={(value) =>
+                onSave={(value) =>
                     updateCustomerDescription({
                         id: id,
                         description: value,
@@ -93,7 +93,7 @@ export const WfoCustomerDescriptionsField: FC<
                 <WfoInlineEdit
                     value={INVISIBLE_CHARACTER}
                     onlyShowOnHover={true}
-                    triggerModify={(value) =>
+                    onSave={(value) =>
                         setCustomerDescription({
                             customerId: subscriptionCustomerId,
                             subscriptionId: subscriptionId,
