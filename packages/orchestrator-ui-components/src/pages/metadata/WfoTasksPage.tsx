@@ -6,6 +6,7 @@ import { EuiBadgeGroup } from '@elastic/eui';
 
 import {
     PATH_METADATA_PRODUCTS,
+    WfoFirstPartUUID,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -37,6 +38,7 @@ import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
+    getConcatenatedResult,
     getQueryUrl,
     getQueryVariablesForExport,
     onlyUnique,
@@ -56,7 +58,7 @@ import {
 
 export type TaskListItem = Pick<
     TaskDefinition,
-    'name' | 'description' | 'target' | 'createdAt'
+    'workflowId' | 'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
 };
@@ -99,6 +101,14 @@ export const WfoTasksPage = () => {
         });
 
     const tableColumns: WfoAdvancedTableColumnConfig<TaskListItem> = {
+        workflowId: {
+            columnType: ColumnType.DATA,
+            label: t('workflowId'),
+            width: '90px',
+            renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+            renderDetails: (value) => value,
+            renderTooltip: (value) => value,
+        },
         name: {
             columnType: ColumnType.DATA,
             label: t('name'),
@@ -221,16 +231,21 @@ export const WfoTasksPage = () => {
     ): TaskListExportItem[] => {
         const { tasks } = tasksResponse;
         return tasks.map(
-            ({ name, target, description, createdAt, products }) => {
-                const uniqueProducts = products
-                    .map((product) => product.tag)
-                    .filter(onlyUnique);
+            ({
+                workflowId,
+                name,
+                target,
+                description,
+                createdAt,
+                products,
+            }) => {
                 return {
+                    workflowId,
                     name,
                     target,
                     description,
                     createdAt,
-                    productTags: uniqueProducts.join(' - '),
+                    productTags: getConcatenatedResult(products, ['tag']),
                 };
             },
         );
