@@ -58,9 +58,18 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
             return getTableConfig<T>(productColumns as (keyof T)[]);
 
         case METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY:
-        case METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY:
-            const workflowColumns: (keyof WorkflowDefinition)[] = ['createdAt'];
+            const workflowColumns: (keyof WorkflowDefinition)[] = [
+                'workflowId',
+                'createdAt',
+            ];
             return getTableConfig<T>(workflowColumns as (keyof T)[]);
+
+        case METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY:
+            const taskColumns: (keyof WorkflowDefinition)[] = [
+                'workflowId',
+                'createdAt',
+            ];
+            return getTableConfig<T>(taskColumns as (keyof T)[]);
 
         case ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY:
             const activeProcessColumns: (keyof ProcessListItem)[] = [

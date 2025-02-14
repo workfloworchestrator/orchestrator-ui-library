@@ -6,12 +6,12 @@ export const mapWorkflowDefinitionToWorkflowListItem = (
     workflows: WorkflowDefinition[],
 ): WorkflowListItem[] =>
     workflows.map((workflowDefinition) => {
-        const { name, target, description, createdAt, products } =
+        const { workflowId, name, target, description, createdAt, products } =
             workflowDefinition;
-
         const productTags = products.map((product) => product.tag);
 
         return {
+            workflowId,
             name,
             description,
             target,
