@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetCustomerQuery } from '@/rtk';
 import {
     useSetCustomerDescriptionMutation,
@@ -10,6 +10,7 @@ import { Customer, CustomerDescriptions, SubscriptionDetail } from '@/types';
 import { INVISIBLE_CHARACTER } from '@/utils';
 
 import { WfoInlineEdit } from '../WfoInlineEdit';
+import { getSubscriptionDetailStyles } from './styles';
 
 type CustomerDescriptionWithName = CustomerDescriptions &
     Partial<Pick<Customer, 'fullname' | 'shortcode'>>;
@@ -23,7 +24,10 @@ export type WfoCustomerDescriptionsFieldProps = {
 export const WfoCustomerDescriptionsField: FC<
     WfoCustomerDescriptionsFieldProps
 > = ({ customerDescriptions, subscriptionCustomerId, subscriptionId }) => {
-    const { theme } = useOrchestratorTheme();
+    const {
+        customerDescriptionsCustomerNameStyle,
+        customerDescriptionsFormStyle,
+    } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
     const [updateCustomerDescription, {}] =
         useUpdateCustomerDescriptionMutation();
     const [setCustomerDescription, {}] = useSetCustomerDescriptionMutation();
@@ -63,13 +67,7 @@ export const WfoCustomerDescriptionsField: FC<
         subscriptionId,
     }: CustomerDescriptionWithName) => (
         <div key={customerId} css={{ display: 'flex' }}>
-            <div
-                css={{
-                    whiteSpace: 'nowrap',
-                    alignSelf: 'center',
-                    marginRight: theme.base / 2,
-                }}
-            >
+            <div css={customerDescriptionsCustomerNameStyle}>
                 {fullname ?? customerId} {`${shortcode ?? customerId}`}:
             </div>
             <WfoInlineEdit
@@ -111,13 +109,7 @@ export const WfoCustomerDescriptionsField: FC<
         );
 
     return (
-        <div
-            css={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-            }}
-        >
+        <div css={customerDescriptionsFormStyle}>
             {(currentCustomerSubscriptionDescription &&
                 customerDescriptionEditForm(
                     currentCustomerSubscriptionDescription,

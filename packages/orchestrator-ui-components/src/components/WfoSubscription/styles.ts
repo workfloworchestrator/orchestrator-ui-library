@@ -60,6 +60,16 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
         borderRadius: theme.border.radius.medium,
     });
 
+    const customerDescriptionsCustomerNameStyle = css({
+        whiteSpace: 'nowrap',
+        alignSelf: 'center',
+        marginRight: theme.base / 2,
+    });
+    const customerDescriptionsFormStyle = css({
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    });
     return {
         contentCellStyle,
         headerCellStyle,
@@ -71,5 +81,7 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
         lastHeaderCellStyle,
         inUseByRelationDetailsStyle,
         productBlockTreeWidth,
+        customerDescriptionsCustomerNameStyle,
+        customerDescriptionsFormStyle,
     };
 };
