@@ -469,6 +469,11 @@ export type CustomerDescriptions = {
     customerId: string;
 };
 
+export type ResourceTypes = {
+    resource_type_id: string;
+    description: string;
+};
+
 export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;

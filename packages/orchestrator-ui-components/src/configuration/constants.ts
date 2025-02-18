@@ -27,3 +27,6 @@ export const IPAM_FREE_SUBNETS_ENDPOINT = `${IPAM_ENDPOINT}/free_subnets`;
 export const SUBSCRIPTION_ACTIONS_ENDPOINT = 'subscriptions/workflows';
 export const CUSTOMER_DESCRIPTION_ENDPOINT =
     '/subscription_customer_descriptions';
+
+//metadata
+export const RESOURCE_TYPE_ENDPOINT = 'resource_types';

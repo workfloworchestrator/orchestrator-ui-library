@@ -17,6 +17,7 @@ import {
 } from '@/components';
 import type { StoredTableConfig, WfoDataSorting } from '@/components';
 import { WfoFirstPartUUID } from '@/components';
+import { WfoResourceTypeDescriptionsField } from '@/components/WfoMetadata/WfoResourceTypeDescriptionsField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -112,6 +113,12 @@ export const WfoResourceTypesPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '700px',
+            renderData: (value, row) => (
+                <WfoResourceTypeDescriptionsField
+                    resource_type_id={row.resourceTypeId}
+                    description={value}
+                />
+            ),
         },
         productBlocks: {
             columnType: ColumnType.DATA,
