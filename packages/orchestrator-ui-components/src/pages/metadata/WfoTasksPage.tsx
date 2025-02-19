@@ -21,6 +21,7 @@ import {
 } from '@/components';
 import { getDataSortHandler, getQueryStringHandler } from '@/components';
 import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
+import { WfoWorkflowDescriptionField } from '@/components/WfoMetadata/WfoWorkflowDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import {
@@ -71,10 +72,8 @@ export const WfoTasksPage = () => {
     const t = useTranslations('metadata.tasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
-
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<TaskListItem>>();
-
     const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
         METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     );
@@ -123,6 +122,13 @@ export const WfoTasksPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '500px',
+            renderData: (value, row) =>
+                value ? (
+                    <WfoWorkflowDescriptionField
+                        workflow_id={row.workflowId}
+                        description={value}
+                    />
+                ) : null,
         },
         target: {
             columnType: ColumnType.DATA,

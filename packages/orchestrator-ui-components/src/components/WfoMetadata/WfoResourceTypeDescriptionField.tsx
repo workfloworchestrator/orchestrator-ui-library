@@ -1,19 +1,17 @@
 import React, { FC } from 'react';
 
-// import { useGetCustomerQuery } from '@/rtk';
-import { useUpdateResourceTypeMutation } from '@/rtk/endpoints/resourceTypes';
+import { useUpdateResourceTypeMutation } from '@/rtk/endpoints/metadata/resourceTypes';
 
-// import { ResourceTypes, SubscriptionDetail } from '@/types';
 import { WfoInlineEdit } from '../WfoInlineEdit';
 
-interface WfoResourceTypesDescriptionFieldProps {
+interface WfoResourceTypeDescriptionFieldProps {
     resource_type_id: string;
     description: string;
     onlyShowOnHover?: boolean;
 }
 
-export const WfoResourceTypeDescriptionsField: FC<
-    WfoResourceTypesDescriptionFieldProps
+export const WfoResourceTypeDescriptionField: FC<
+    WfoResourceTypeDescriptionFieldProps
 > = ({ resource_type_id, description, onlyShowOnHover = true }) => {
     const [updateResourceType, {}] = useUpdateResourceTypeMutation();
 

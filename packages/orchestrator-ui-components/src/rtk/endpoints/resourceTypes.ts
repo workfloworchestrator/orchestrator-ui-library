@@ -1,12 +1,12 @@
-import { RESOURCE_TYPE_ENDPOINT } from '@/configuration';
+import { METADATA_RESOURCE_TYPE_ENDPOINT } from '@/configuration/constants';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { ResourceTypes } from '@/types';
+import { ResourceType } from '@/types';
 
 const resourceTypesApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
-        updateResourceType: build.mutation<null, ResourceTypes>({
+        updateResourceType: build.mutation<null, ResourceType>({
             query: (resourceType) => ({
-                url: `${RESOURCE_TYPE_ENDPOINT}/${resourceType.resource_type_id}`,
+                url: `${METADATA_RESOURCE_TYPE_ENDPOINT}/${resourceType.resource_type_id}`,
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

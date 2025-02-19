@@ -19,6 +19,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoProductDescriptionField } from '@/components/WfoMetadata/WfoProductDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
@@ -123,7 +124,12 @@ export const WfoProductsPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '400px',
-            renderTooltip: (value) => value,
+            renderData: (value, row) => (
+                <WfoProductDescriptionField
+                    product_id={row.productId}
+                    description={value}
+                />
+            ),
         },
         productType: {
             columnType: ColumnType.DATA,
@@ -188,6 +194,7 @@ export const WfoProductsPage = () => {
         createdAt: {
             columnType: ColumnType.DATA,
             label: t('createdAt'),
+            width: '90px',
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),

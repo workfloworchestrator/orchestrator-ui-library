@@ -21,6 +21,7 @@ import {
     getPageSizeChangeHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoProductBlockDescriptionField } from '@/components/WfoMetadata/WfoProductBlockDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -121,7 +122,13 @@ export const WfoProductBlocksPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '400px',
+            width: '700px',
+            renderData: (value, row) => (
+                <WfoProductBlockDescriptionField
+                    product_block_id={row.productBlockId}
+                    description={value}
+                />
+            ),
         },
         status: {
             columnType: ColumnType.DATA,
