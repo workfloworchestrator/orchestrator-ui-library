@@ -5,7 +5,7 @@ export * from './processDetail';
 export * from './processList';
 export * from './processListSummary';
 export * from './processSteps';
-export * from './products';
+export * from './metadata/products';
 export * from './productsSummary';
 export * from './relatedSubscriptions';
 export * from './settings';

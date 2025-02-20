@@ -22,6 +22,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoWorkflowDescriptionField } from '@/components/WfoMetadata/WfoWorkflowDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import {
@@ -128,6 +129,13 @@ export const WfoWorkflowsPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '450px',
+            renderData: (value, row) =>
+                value ? (
+                    <WfoWorkflowDescriptionField
+                        workflow_id={row.workflowId}
+                        description={value}
+                    />
+                ) : null,
         },
         target: {
             columnType: ColumnType.DATA,
