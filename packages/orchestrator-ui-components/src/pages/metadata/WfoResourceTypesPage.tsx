@@ -17,7 +17,7 @@ import {
 } from '@/components';
 import type { StoredTableConfig, WfoDataSorting } from '@/components';
 import { WfoFirstPartUUID } from '@/components';
-import { WfoResourceTypeDescriptionField } from '@/components/WfoMetadata/WfoResourceTypeDescriptionField';
+import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -31,6 +31,7 @@ import {
     ResourceTypesResponse,
     useGetResourceTypesQuery,
     useLazyGetResourceTypesQuery,
+    useUpdateResourceTypeMutation,
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
@@ -68,6 +69,7 @@ export const WfoResourceTypesPage = () => {
     const getStoredTableConfig = useStoredTableConfig<ResourceTypeDefinition>(
         METADATA_RESOURCE_TYPES_TABLE_LOCAL_STORAGE_KEY,
     );
+    const [updateResourceType] = useUpdateResourceTypeMutation();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -114,8 +116,13 @@ export const WfoResourceTypesPage = () => {
             label: t('description'),
             width: '700px',
             renderData: (value, row) => (
-                <WfoResourceTypeDescriptionField
-                    resource_type_id={row.resourceTypeId}
+                <WfoMetadataDescriptionField
+                    onSave={(updatedNote) =>
+                        updateResourceType({
+                            id: row.resourceTypeId,
+                            description: updatedNote,
+                        })
+                    }
                     description={value}
                 />
             ),

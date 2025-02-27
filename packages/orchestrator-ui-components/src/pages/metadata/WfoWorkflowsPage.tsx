@@ -22,7 +22,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
-import { WfoWorkflowDescriptionField } from '@/components/WfoMetadata/WfoWorkflowDescriptionField';
+import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import {
@@ -39,6 +39,7 @@ import {
     WorkflowsResponse,
     useGetWorkflowsQuery,
     useLazyGetWorkflowsQuery,
+    useUpdateWorkflowMutation,
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, WorkflowDefinition } from '@/types';
@@ -84,6 +85,7 @@ export const WfoWorkflowsPage = () => {
     const getStoredTableConfig = useStoredTableConfig<WorkflowListItem>(
         METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY,
     );
+    const [updateWorkflow] = useUpdateWorkflowMutation();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -128,11 +130,16 @@ export const WfoWorkflowsPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '450px',
+            width: '700px',
             renderData: (value, row) =>
                 value ? (
-                    <WfoWorkflowDescriptionField
-                        workflow_id={row.workflowId}
+                    <WfoMetadataDescriptionField
+                        onSave={(updatedNote) =>
+                            updateWorkflow({
+                                id: row.workflowId,
+                                description: updatedNote,
+                            })
+                        }
                         description={value}
                     />
                 ) : null,

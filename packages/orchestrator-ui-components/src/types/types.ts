@@ -469,25 +469,15 @@ export type CustomerDescriptions = {
     customerId: string;
 };
 
-export type Product = {
-    product_id: string;
+export type MetadataDescriptionParams = {
+    id: string;
     description: string;
 };
 
-export type ProductBlock = {
-    product_block_id: string;
-    description: string;
-};
-
-export type ResourceType = {
-    resource_type_id: string;
-    description: string;
-};
-
-export type Workflow = {
-    workflow_id: string;
-    description: string;
-};
+// export type Workflow = {
+//     workflow_id: string;
+//     description: string;
+// };
 
 export type SubscriptionDetail = {
     subscriptionId: string;

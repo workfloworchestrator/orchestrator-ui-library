@@ -3,7 +3,7 @@ import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
-    Workflow,
+    MetadataDescriptionParams,
     WorkflowDefinition,
     WorkflowDefinitionsResult,
 } from '@/types';
@@ -139,9 +139,9 @@ export const {
 
 const workflowsRestApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
-        updateWorkflow: build.mutation<null, Workflow>({
+        updateWorkflow: build.mutation<null, MetadataDescriptionParams>({
             query: (workflow) => ({
-                url: `${METADATA_WORKFLOWS_ENDPOINT}/${workflow.workflow_id}`,
+                url: `${METADATA_WORKFLOWS_ENDPOINT}/${workflow.id}`,
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

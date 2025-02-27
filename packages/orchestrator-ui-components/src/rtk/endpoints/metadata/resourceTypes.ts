@@ -3,7 +3,7 @@ import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
-    ResourceType,
+    MetadataDescriptionParams,
     ResourceTypeDefinition,
     ResourceTypeDefinitionsResult,
 } from '@/types';
@@ -81,9 +81,9 @@ export const { useGetResourceTypesQuery, useLazyGetResourceTypesQuery } =
 
 const resourceTypesRestApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
-        updateResourceType: build.mutation<null, ResourceType>({
+        updateResourceType: build.mutation<null, MetadataDescriptionParams>({
             query: (resourceType) => ({
-                url: `${METADATA_RESOURCE_TYPE_ENDPOINT}/${resourceType.resource_type_id}`,
+                url: `${METADATA_RESOURCE_TYPE_ENDPOINT}/${resourceType.id}`,
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

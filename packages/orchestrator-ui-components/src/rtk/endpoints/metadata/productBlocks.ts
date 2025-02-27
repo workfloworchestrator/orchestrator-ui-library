@@ -1,6 +1,6 @@
 import { METADATA_PRODUCT_BLOCK_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { ProductBlock } from '@/types';
+import { MetadataDescriptionParams } from '@/types';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
@@ -91,9 +91,9 @@ export const { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } =
 
 const productBlocksRestApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
-        updateProductBlock: build.mutation<null, ProductBlock>({
+        updateProductBlock: build.mutation<null, MetadataDescriptionParams>({
             query: (productBlock) => ({
-                url: `${METADATA_PRODUCT_BLOCK_ENDPOINT}/${productBlock.product_block_id}`,
+                url: `${METADATA_PRODUCT_BLOCK_ENDPOINT}/${productBlock.id}`,
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
