@@ -1,5 +1,5 @@
 {
-    "name": "orchestratr-ui-storybook",
+    "name": "orchestrator-ui-storybook",
     "private": true,
     "version": "0.0.0",
     "type": "module",
