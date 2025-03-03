@@ -11,6 +11,7 @@ import {
 } from '@/components';
 import { getWfoSummaryCardsStyles } from '@/components/WfoSummary/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoCheckmarkCircleFill, WfoCubeFill, WfoXCircleFill } from '@/icons';
 
 export enum SummaryCardStatus {
     Success = 'Success',
@@ -50,23 +51,47 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
         switch (status) {
             case SummaryCardStatus.Success:
                 return {
-                    iconType: 'checkInCircleFilled',
+                    iconType: () => (
+                        <WfoCheckmarkCircleFill
+                            width={32}
+                            height={32}
+                            color={theme.colors.ghost}
+                        />
+                    ),
                     iconColor: theme.colors.success,
                 };
             case SummaryCardStatus.Error:
                 return {
-                    iconType: 'error',
+                    iconType: () => (
+                        <WfoXCircleFill
+                            width={32}
+                            height={32}
+                            color={theme.colors.ghost}
+                        />
+                    ),
                     iconColor: theme.colors.danger,
                 };
             case SummaryCardStatus.Neutral:
                 return {
-                    iconType: 'kubernetesPod',
+                    iconType: () => (
+                        <WfoCubeFill
+                            width={32}
+                            height={32}
+                            color={theme.colors.ghost}
+                        />
+                    ),
                     iconColor: theme.colors.primary,
                 };
             default:
                 return (
                     headerBadge ?? {
-                        iconType: 'kubernetesPod',
+                        iconType: () => (
+                            <WfoCubeFill
+                                width={32}
+                                height={32}
+                                color={theme.colors.ghost}
+                            />
+                        ),
                         iconColor: theme.colors.primary,
                     }
                 );
