@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.3.1
+
+### Patch Changes
+
+-   56bdc1d: 1705 Added prop for custom icon summary card
+
 ## 3.3.0
 
 ### Minor Changes
