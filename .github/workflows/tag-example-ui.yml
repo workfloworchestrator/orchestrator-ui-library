@@ -4,63 +4,63 @@
 name: Tag example-orchestrator-ui
 
 on:
-  push:
-    tags:
-      - "@orchestrator-ui/orchestrator-ui-components@[0-9]+.[0-9]+.[0-9]+"
-  release:
-    types:
-      - published
-    tags:
-      - "@orchestrator-ui/orchestrator-ui-components@[0-9]+.[0-9]+.[0-9]+"
+    push:
+        tags:
+            - '@orchestrator-ui/orchestrator-ui-components@[0-9]+.[0-9]+.[0-9]+'
+    release:
+        types:
+            - published
+        tags:
+            - '@orchestrator-ui/orchestrator-ui-components@[0-9]+.[0-9]+.[0-9]+'
 
 # The main branch of the following repository will be tagged
 # with the version part (e.g. 0.3.1) of the tag trigger above.
 env:
-  REPO: "example-orchestrator-ui"
+    REPO: 'example-orchestrator-ui'
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Create GitHub app token
-        uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ vars.RW_REPOSITORY_CONTENT_APP_ID }}
-          private-key: ${{ secrets.RW_REPOSITORY_CONTENT_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: ${{ env.REPO }}
-      - name: Get latest commit SHA
-        id: sha
-        uses: actions/github-script@v7
-        with:
-          result-encoding: string
-          script: |
-            const commit = await github.rest.repos.getCommit({
-              owner: github.repository_owner,
-              repo: env.REPO,
-              ref: 'heads/main',
-            })
-            return commit.data.sha
-      - name: Extract REF from ref_name
-        run: |
-          REF_NAME=${{ github.ref_name }}
-          REF=${REF_NAME/@orchestrator-ui\/orchestrator-ui-components@/}
-          echo REF=${REF} >> $GITHUB_ENV
-      - name: Add tag to repository
-        uses: actions/github-script@v7
-        env:
-          REF: ${{ format('refs/tags/{0}', env.REF) }}
-          SHA: ${{ steps.sha.outputs.result }}
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            await github.rest.git.createRef({
-              owner: github.repository_owner,
-              repo: env.REPO,
-              ref: process.env.REF,
-              sha: process.env.SHA,
-            })
+    docker:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - name: Create GitHub app token
+              uses: actions/create-github-app-token@v1
+              id: app-token
+              with:
+                  app-id: ${{ vars.RW_REPOSITORY_CONTENT_APP_ID }}
+                  private-key: ${{ secrets.RW_REPOSITORY_CONTENT_PRIVATE_KEY }}
+                  owner: ${{ github.repository_owner }}
+                  repositories: ${{ env.REPO }}
+            - name: Get latest commit SHA
+              id: sha
+              uses: actions/github-script@v7
+              with:
+                  result-encoding: string
+                  script: |
+                      const commit = await github.rest.repos.getCommit({
+                        owner: github.repository_owner,
+                        repo: env.REPO,
+                        ref: 'heads/main',
+                      })
+                      return commit.data.sha
+            - name: Extract REF from ref_name
+              run: |
+                  REF_NAME=${{ github.ref_name }}
+                  REF=${REF_NAME/@orchestrator-ui\/orchestrator-ui-components@/}
+                  echo REF=${REF} >> $GITHUB_ENV
+            - name: Add tag to repository
+              uses: actions/github-script@v7
+              env:
+                  REF: ${{ format('refs/tags/{0}', env.REF) }}
+                  SHA: ${{ steps.sha.outputs.result }}
+              with:
+                  github-token: ${{ steps.app-token.outputs.token }}
+                  script: |
+                      await github.rest.git.createRef({
+                        owner: github.repository_owner,
+                        repo: env.REPO,
+                        ref: process.env.REF,
+                        sha: process.env.SHA,
+                      })

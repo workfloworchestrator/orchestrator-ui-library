@@ -469,6 +469,16 @@ export type CustomerDescriptions = {
     customerId: string;
 };
 
+export type MetadataDescriptionParams = {
+    id: string;
+    description: string;
+};
+
+// export type Workflow = {
+//     workflow_id: string;
+//     description: string;
+// };
+
 export type SubscriptionDetail = {
     subscriptionId: string;
     description: string;

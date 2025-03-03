@@ -21,6 +21,7 @@ import {
     getPageSizeChangeHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -30,7 +31,11 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } from '@/rtk';
+import {
+    useGetProductBlocksQuery,
+    useLazyGetProductBlocksQuery,
+    useUpdateProductBlockMutation,
+} from '@/rtk';
 import type { ProductBlocksResponse } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
@@ -72,6 +77,7 @@ export const WfoProductBlocksPage = () => {
     const getStoredTableConfig = useStoredTableConfig<ProductBlockDefinition>(
         METADATA_PRODUCT_BLOCKS_TABLE_LOCAL_STORAGE_KEY,
     );
+    const [updateProductBlock] = useUpdateProductBlockMutation();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -121,7 +127,18 @@ export const WfoProductBlocksPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '400px',
+            width: '700px',
+            renderData: (value, row) => (
+                <WfoMetadataDescriptionField
+                    onSave={(updatedNote) =>
+                        updateProductBlock({
+                            id: row.productBlockId,
+                            description: updatedNote,
+                        })
+                    }
+                    description={value}
+                />
+            ),
         },
         status: {
             columnType: ColumnType.DATA,

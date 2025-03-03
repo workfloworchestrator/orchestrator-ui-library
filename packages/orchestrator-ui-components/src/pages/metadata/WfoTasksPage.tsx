@@ -21,6 +21,7 @@ import {
 } from '@/components';
 import { getDataSortHandler, getQueryStringHandler } from '@/components';
 import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
+import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import {
@@ -33,7 +34,12 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { TasksResponse, useGetTasksQuery, useLazyGetTasksQuery } from '@/rtk';
+import {
+    TasksResponse,
+    useGetTasksQuery,
+    useLazyGetTasksQuery,
+    useUpdateWorkflowMutation,
+} from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
@@ -71,13 +77,12 @@ export const WfoTasksPage = () => {
     const t = useTranslations('metadata.tasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
-
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<TaskListItem>>();
-
     const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
         METADATA_TASKS_TABLE_LOCAL_STORAGE_KEY,
     );
+    const [updateWorkflow] = useUpdateWorkflowMutation();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -122,8 +127,34 @@ export const WfoTasksPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '500px',
+            width: '700px',
+            renderData: (value, row) =>
+                value ? (
+                    <WfoMetadataDescriptionField
+                        onSave={(updatedNote) =>
+                            updateWorkflow({
+                                id: row.workflowId,
+                                description: updatedNote,
+                            })
+                        }
+                        description={value}
+                    />
+                ) : null,
         },
+
+        // description: {
+        //     columnType: ColumnType.DATA,
+        //     label: t('description'),
+        //     width: '450px',
+        //     renderData: (value, row) =>
+        //         value ? (
+        //             <WfoWorkflowDescriptionField
+        //                 workflow_id={row.workflowId}
+        //                 description={value}
+        //             />
+        //         ) : null,
+        // },
+
         target: {
             columnType: ColumnType.DATA,
             label: t('target'),

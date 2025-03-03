@@ -19,6 +19,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
+import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
@@ -29,7 +30,11 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
-import { useGetProductsQuery, useLazyGetProductsQuery } from '@/rtk';
+import {
+    useGetProductsQuery,
+    useLazyGetProductsQuery,
+    useUpdateProductMutation,
+} from '@/rtk';
 import { ProductsResponse } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
@@ -68,6 +73,7 @@ export const WfoProductsPage = () => {
     const getStoredTableConfig = useStoredTableConfig<ProductDefinition>(
         METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
     );
+    const [updateProduct] = useUpdateProductMutation();
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -122,8 +128,18 @@ export const WfoProductsPage = () => {
         description: {
             columnType: ColumnType.DATA,
             label: t('description'),
-            width: '400px',
-            renderTooltip: (value) => value,
+            width: '700px',
+            renderData: (value, row) => (
+                <WfoMetadataDescriptionField
+                    onSave={(updatedNote) =>
+                        updateProduct({
+                            id: row.productId,
+                            description: updatedNote,
+                        })
+                    }
+                    description={value}
+                />
+            ),
         },
         productType: {
             columnType: ColumnType.DATA,
@@ -188,6 +204,7 @@ export const WfoProductsPage = () => {
         createdAt: {
             columnType: ColumnType.DATA,
             label: t('createdAt'),
+            width: '90px',
             renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),

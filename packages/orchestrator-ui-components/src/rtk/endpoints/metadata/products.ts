@@ -1,7 +1,9 @@
-import { orchestratorApi } from '@/rtk';
+import { METADATA_PRODUCT_ENDPOINT } from '@/configuration/constants';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
     GraphqlQueryVariables,
+    MetadataDescriptionParams,
     ProductDefinition,
     ProductDefinitionsResult,
 } from '@/types';
@@ -74,3 +76,25 @@ const productsApi = orchestratorApi.injectEndpoints({
 });
 
 export const { useGetProductsQuery, useLazyGetProductsQuery } = productsApi;
+
+const productRestApi = orchestratorApi.injectEndpoints({
+    endpoints: (build) => ({
+        updateProduct: build.mutation<null, MetadataDescriptionParams>({
+            query: (product) => ({
+                url: `${METADATA_PRODUCT_ENDPOINT}/${product.id}`,
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {
+                    description: product.description,
+                },
+            }),
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+        }),
+    }),
+});
+
+export const { useUpdateProductMutation } = productRestApi;
