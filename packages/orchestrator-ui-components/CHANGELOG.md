@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.3.2
+
+### Patch Changes
+
+-   59230ea: inline edit for description of metadata pages
+
 ## 3.3.1
 
 ### Patch Changes
