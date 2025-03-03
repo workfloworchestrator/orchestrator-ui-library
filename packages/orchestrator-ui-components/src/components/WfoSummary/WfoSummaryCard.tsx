@@ -21,11 +21,12 @@ export enum SummaryCardStatus {
 export type WfoSummaryCardProps = {
     headerTitle: string;
     headerValue: string | number;
-    headerStatus: SummaryCardStatus;
     listTitle: string;
     listItems: SummaryCardListItem[];
+    headerStatus?: SummaryCardStatus;
     button?: SummaryCardButtonConfig;
     isLoading?: boolean;
+    headerBadge?: Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'>;
 };
 
 export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
@@ -36,6 +37,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     headerTitle,
     listTitle,
     listItems,
+    headerBadge,
 }) => {
     const { theme } = useOrchestratorTheme();
     const { cardContainerStyle } = useWithOrchestratorTheme(
@@ -43,7 +45,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     );
 
     const getIconTypeAndColorForHeaderStatus = (
-        status: SummaryCardStatus,
+        status?: SummaryCardStatus,
     ): Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'> => {
         switch (status) {
             case SummaryCardStatus.Success:
@@ -57,11 +59,17 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                     iconColor: theme.colors.danger,
                 };
             case SummaryCardStatus.Neutral:
-            default:
                 return {
                     iconType: 'kubernetesPod',
                     iconColor: theme.colors.primary,
                 };
+            default:
+                return (
+                    headerBadge ?? {
+                        iconType: 'kubernetesPod',
+                        iconColor: theme.colors.primary,
+                    }
+                );
         }
     };
 
