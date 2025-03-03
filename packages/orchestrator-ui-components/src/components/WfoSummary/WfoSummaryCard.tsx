@@ -16,15 +16,14 @@ export enum SummaryCardStatus {
     Success = 'Success',
     Error = 'Error',
     Neutral = 'Neutral',
-    Custom = 'Custom',
 }
 
 export type WfoSummaryCardProps = {
     headerTitle: string;
     headerValue: string | number;
-    headerStatus: SummaryCardStatus;
     listTitle: string;
     listItems: SummaryCardListItem[];
+    headerStatus?: SummaryCardStatus;
     button?: SummaryCardButtonConfig;
     isLoading?: boolean;
     headerBadge?: Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'>;
@@ -46,7 +45,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     );
 
     const getIconTypeAndColorForHeaderStatus = (
-        status: SummaryCardStatus,
+        status?: SummaryCardStatus,
     ): Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'> => {
         switch (status) {
             case SummaryCardStatus.Success:
@@ -64,7 +63,6 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                     iconType: 'kubernetesPod',
                     iconColor: theme.colors.primary,
                 };
-            case SummaryCardStatus.Custom:
             default:
                 return (
                     headerBadge ?? {
