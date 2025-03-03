@@ -38,3 +38,4 @@ export * from './WfoPort';
 export * from './WfoActualWork';
 export * from './WfoMalfunction';
 export * from './WfoPlannedWork';
+export * from './WfoCubeFill';
