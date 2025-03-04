@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.4.0
+
+### Minor Changes
+
+-   2389b16: 808 - Support for metadata description modify - requires orchestrator core 2.10.0
+
 ## 3.3.3
 
 ### Patch Changes
