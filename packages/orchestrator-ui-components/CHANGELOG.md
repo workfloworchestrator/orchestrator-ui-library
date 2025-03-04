@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.3.3
+
+### Patch Changes
+
+-   62d16da: 1709 Replace default icons with SURF icons
+
 ## 3.3.2
 
 ### Patch Changes
