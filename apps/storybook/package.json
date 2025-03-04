@@ -20,7 +20,7 @@
         "@storybook/experimental-nextjs-vite": "^8.5.0",
         "@storybook/react": "^8.5.0",
         "@storybook/react-vite": "^8.5.0",
-        "@storybook/test": "^8.5.0",
+        "@storybook/test": "^8.6.3",
         "@rollup/plugin-commonjs": "^28.0.2"
     },
     "devDependencies": {
