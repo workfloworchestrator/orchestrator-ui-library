@@ -86,11 +86,19 @@ Just merge the `Version Packages` PR into main, and the packages will be publish
 
 ## Frontend-Backend versioning dependency
 
-This table shows the line up between the frontend orchestrator ui library and backend orchestrator-core. In the UI a check is added to validate whether the UI match a minimum release of the backend.
+The file `version-compatibility.json` in the root of the orchestrator-ui-library is used to define the minimum backend version that is required for a specific frontend version.
+In the UI a check is added to validate whether the UI matches a minimum release of the backend.
 
-| Frontend version | Minimum backend version | Changes                                                 |
-| ---------------- | ----------------------- | ------------------------------------------------------- |
-| 3.4.0            | 2.10.0                  | Endpoints in BE to modify description on metadata pages |
+```
+[
+    {
+        "orchestratorUiVersion": "3.4.0",
+        "minimumOrchestratorCoreVersion": "2.10.0",
+        "changes": "Endpoints in BE to modify description on metadata pages"
+    },
+    ...
+]
+```
 
 ## Storybook
 

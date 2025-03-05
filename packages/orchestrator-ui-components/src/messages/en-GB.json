@@ -24,7 +24,11 @@
         "resetToDefault": "Reset to default",
         "savePreferences": "Save preferences",
         "numberOfRows": "Number of rows",
-        "tableSettings": "Table settings"
+        "tableSettings": "Table settings",
+        "openMenu": "Open menu",
+        "incompatibleVersion": "Incompatible version",
+        "incompatibleVersionText": "The version of the WFO UI is incompatible with this version of orchestrator-core.",
+        "minimumOrchestratorCoreVersion": "Minimum orchestrator-core version"
     },
     "common": {
         "product": "Product",
