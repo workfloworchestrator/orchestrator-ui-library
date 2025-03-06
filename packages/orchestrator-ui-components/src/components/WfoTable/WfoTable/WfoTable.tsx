@@ -146,6 +146,7 @@ export const WfoTable = <T extends object>({
         cellStyle,
         rowStyle,
         emptyTableMessageStyle,
+        paginationStyle,
     } = useWithOrchestratorTheme(getWfoTableStyles);
     const t = useTranslations('common');
 
@@ -228,7 +229,7 @@ export const WfoTable = <T extends object>({
                 </table>
             </div>
             {pagination && (
-                <>
+                <div css={paginationStyle}>
                     <EuiSpacer size="xs" />
                     <EuiTablePagination
                         pageCount={Math.ceil(
@@ -242,7 +243,7 @@ export const WfoTable = <T extends object>({
                         onChangePage={pagination.onChangePage}
                         onChangeItemsPerPage={pagination.onChangeItemsPerPage}
                     />
-                </>
+                </div>
             )}
         </>
     );
