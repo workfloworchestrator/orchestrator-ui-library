@@ -25,7 +25,9 @@
         "savePreferences": "Voorkeuren opslaan",
         "numberOfRows": "Aantal rijen",
         "tableSettings": "Tabel instellingen",
-        "openMenu": "Open menu"
+        "openMenu": "Open menu",
+        "incompatibleVersion": "Incompatibele versie",
+        "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core"
     },
     "common": {
         "product": "Produkt",

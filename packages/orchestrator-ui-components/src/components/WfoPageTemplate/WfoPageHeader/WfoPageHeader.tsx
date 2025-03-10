@@ -2,6 +2,7 @@ import React, { FC, ReactElement } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import type { EuiThemeColorMode } from '@elastic/eui';
 import {
     EuiBadgeGroup,
     EuiButtonIcon,
@@ -11,7 +12,6 @@ import {
     EuiHeaderSectionItem,
     EuiToolTip,
 } from '@elastic/eui';
-import type { EuiThemeColorMode } from '@elastic/eui';
 
 import {
     WfoEngineStatusBadge,
@@ -19,6 +19,7 @@ import {
     WfoFailedTasksBadge,
     WfoWebsocketStatusBadge,
 } from '@/components';
+import { WfoVersionIncompatibleBadge } from '@/components/WfoBadges/WfoVersionIncompatibleBadge/WfoVersionIncompatibleBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
 import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
@@ -27,6 +28,7 @@ import {
     useOrchestratorTheme,
     useWithOrchestratorTheme,
 } from '@/hooks';
+import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
 import { ColorModes } from '@/types';
 
 import { WfoHamburgerMenu } from './WfoHamburgerMenu';
@@ -49,6 +51,9 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(
         getWfoPageHeaderStyles,
     );
+    const { data } = useGetVersionsQuery();
+    const coreVersion =
+        data?.version.applicationVersions[0].split(' ')[1] ?? '';
 
     return (
         <EuiHeader css={getHeaderStyle(navigationHeight)}>
@@ -65,6 +70,12 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                 </EuiToolTip>
                 <EuiHeaderSectionItem>
                     <WfoEnvironmentBadge />
+                </EuiHeaderSectionItem>
+                <EuiHeaderSectionItem>
+                    <WfoVersionIncompatibleBadge
+                        orchestratorUiVersion={ORCHESTRATOR_UI_LIBRARY_VERSION}
+                        orchestratorCoreVersion={coreVersion}
+                    />
                 </EuiHeaderSectionItem>
             </EuiHeaderSection>
 

@@ -604,6 +604,13 @@ export enum CacheTagType {
     processStatusCounts = 'processStatusCounts',
     subscriptions = 'subscriptions',
 }
+
+export interface MappedVersion {
+    orchestratorUiVersion: string;
+    minimumOrchestratorCoreVersion: string;
+    changes: string;
+}
+
 export type CacheTag = { type: CacheTagType; id?: string };
 
 export const CACHETAG_TYPE_LIST = 'LIST';
