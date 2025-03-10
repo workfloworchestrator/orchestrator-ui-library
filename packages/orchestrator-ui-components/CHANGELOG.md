@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.4.1
+
+### Patch Changes
+
+-   0a6d086: 1758 Show error badge in navigation header when versions of frontend and backend are incompatible.
+
 ## 3.4.0
 
 ### Minor Changes
