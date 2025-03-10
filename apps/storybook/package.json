@@ -24,7 +24,7 @@
         "@rollup/plugin-commonjs": "^28.0.2"
     },
     "devDependencies": {
-        "@chromatic-com/storybook": "^3.2.4",
+        "@chromatic-com/storybook": "^3.2.5",
         "@eslint/js": "^8.57.1",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",
