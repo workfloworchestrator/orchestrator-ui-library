@@ -264,9 +264,7 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
-                    (processName === 'modify_note' && (
-                        <WfoPydanticForm id="modify_note" />
-                    )) ||
+                    (processName === 'modify_note' && <WfoPydanticForm />) ||
                     (stepUserInput && (
                         <UserInputFormWizard
                             stepUserInput={stepUserInput}
