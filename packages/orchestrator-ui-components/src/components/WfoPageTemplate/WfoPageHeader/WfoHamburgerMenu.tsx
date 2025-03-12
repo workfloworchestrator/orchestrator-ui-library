@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
-import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { WfoLoading } from '@/components/WfoLoading';
 import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
@@ -47,7 +46,7 @@ export const WfoHamburgerMenu = ({}) => {
             return [{ name: '', icon: <WfoLoading /> }];
         }
         // initial array contains orchestrator-ui-components library version
-        const versionsArr: [{ name: string; icon: EmotionJSX.Element }] = [
+        const versionsArr: [{ name: string; icon: React.ReactElement }] = [
             {
                 name: `orchestrator-ui-components: ${ORCHESTRATOR_UI_LIBRARY_VERSION}`,
                 icon: <WfoSquareStack3dStack />,
