@@ -49,7 +49,7 @@ type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
 
-type StartWorkflowPayload =
+export type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
@@ -264,7 +264,13 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
-                    (processName === 'modify_note' && <WfoPydanticForm />) ||
+                    (processName === 'modify_note' && (
+                        <WfoPydanticForm
+                            processName={processName}
+                            startProcessPayload={startProcessPayload}
+                            isTask={isTask}
+                        />
+                    )) ||
                     (stepUserInput && (
                         <UserInputFormWizard
                             stepUserInput={stepUserInput}
