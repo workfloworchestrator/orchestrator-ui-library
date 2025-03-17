@@ -10,6 +10,8 @@ import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
+import { Footer } from './Footer';
+
 interface WfoPydanticFormProps {
     processName: string;
     startProcessPayload?: StartWorkflowPayload;
@@ -89,6 +91,9 @@ export const WfoPydanticForm = ({
             onSuccess={onSuccess}
             config={{
                 apiProvider: getPydanticFormProvider(),
+                allowUntouchedSubmit: true,
+                footerRenderer: Footer,
+                skipSuccessNotice: true,
             }}
         />
     );
