@@ -10,8 +10,12 @@ import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
 interface WfoPydanticFormProps {
     processName: string;
-    startProcessPayload: StartWorkflowPayload;
+    startProcessPayload?: StartWorkflowPayload;
     isTask?: boolean;
+}
+
+interface StartProcessResponse {
+    id: string;
 }
 
 export const WfoPydanticForm = ({
@@ -21,6 +25,15 @@ export const WfoPydanticForm = ({
 }: WfoPydanticFormProps) => {
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
+
+    const onSuccess = (_fieldValues: object, req: object) => {
+        const request = req as { response: StartProcessResponse };
+        const response = request ? request?.response : null;
+        if (response?.id) {
+            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+            router.replace(`${pfBasePath}/${response.id}`);
+        }
+    };
 
     const getPydanticFormProvider = () => {
         const pydanticFormProvider: PydanticFormApiProvider = async ({
@@ -33,27 +46,24 @@ export const WfoPydanticForm = ({
             });
             return response
                 .then((result) => {
-                    console.log('resulting', result);
-
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    return new Promise<Record<string, any>>((resolve) => {
-                        if (result.error) {
-                            // @ts-expect-error: TEMP FIX
-                            if (result.error.status === 510) {
+                    return new Promise<Record<string, object | string>>(
+                        (resolve) => {
+                            if (result.error) {
                                 // @ts-expect-error: TEMP FIX
-                                resolve(result.error.data);
+                                if (result.error.status === 510) {
+                                    // @ts-expect-error: TEMP FIX
+                                    resolve(result.error.data);
+                                }
+                            } else if (result.data) {
+                                resolve(result.data);
                             }
-                        } else if (result.data) {
-                            resolve(result.data);
-                        }
 
-                        resolve({});
-                    });
+                            resolve({});
+                        },
+                    );
                 })
                 .catch((error) => {
-                    console.log('catching', error);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    return new Promise<Record<string, any>>(
+                    return new Promise<Record<string, object>>(
                         (resolve, reject) => {
                             if (error.status === 510) {
                                 resolve(error.data);
@@ -65,17 +75,6 @@ export const WfoPydanticForm = ({
         };
 
         return pydanticFormProvider;
-    };
-
-    console.log(processName, startProcessPayload, isTask);
-
-    const onSuccess = (fieldValues, result) => {
-        // console.log('onSuccess', fieldValues, response);
-        const response = result ? result?.response : null;
-        if (response?.id) {
-            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-            router.replace(`${pfBasePath}/${response.id}`);
-        }
     };
 
     return (
