@@ -55,7 +55,7 @@
         "react-select": "^5.8.0",
         "scroll-into-view": "^1.16.2",
         "unidiff": "^1.0.4",
-        "uniforms": "^3.8.1",
+        "uniforms": "^4.0.0",
         "uniforms-bridge-json-schema": "^3.8.1",
         "uniforms-unstyled": "^3.8.1",
         "use-query-params": "2.2.1"
