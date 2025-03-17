@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { PydanticForm } from 'pydantic-forms';
 import type { PydanticFormApiProvider } from 'pydantic-forms';
 
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
@@ -49,10 +51,14 @@ export const WfoPydanticForm = ({
                     return new Promise<Record<string, object | string>>(
                         (resolve) => {
                             if (result.error) {
-                                // @ts-expect-error: TEMP FIX
-                                if (result.error.status === 510) {
-                                    // @ts-expect-error: TEMP FIX
-                                    resolve(result.error.data);
+                                const error =
+                                    result.error as FetchBaseQueryError;
+                                if (error.status === 510) {
+                                    const data = error.data as Record<
+                                        string,
+                                        object | string
+                                    >;
+                                    resolve(data);
                                 }
                             } else if (result.data) {
                                 resolve(result.data);
