@@ -1,8 +1,15 @@
 import React from 'react';
 
 import { useRouter } from 'next/router';
-import { PydanticForm } from 'pydantic-forms';
-import type { PydanticFormApiProvider } from 'pydantic-forms';
+import {
+    PydanticForm,
+    PydanticFormFieldFormat,
+    PydanticFormFieldType,
+} from 'pydantic-forms';
+import type {
+    PydanticComponentMatcher,
+    PydanticFormApiProvider,
+} from 'pydantic-forms';
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
@@ -11,6 +18,7 @@ import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
 import { Footer } from './Footer';
+import { TextArea } from './fields/TextArea';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -85,6 +93,27 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     };
 
+    const componentMatcher = (
+        currentMatchers: PydanticComponentMatcher[],
+    ): PydanticComponentMatcher[] => {
+        return [
+            {
+                id: 'textarea',
+                ElementMatch: {
+                    Element: TextArea,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.format === PydanticFormFieldFormat.LONG
+                    );
+                },
+            },
+            ...currentMatchers,
+        ];
+    };
+
     return (
         <PydanticForm
             id={processName}
@@ -94,6 +123,7 @@ export const WfoPydanticForm = ({
                 allowUntouchedSubmit: true,
                 footerRenderer: Footer,
                 skipSuccessNotice: true,
+                componentMatcher: componentMatcher,
             }}
         />
     );
