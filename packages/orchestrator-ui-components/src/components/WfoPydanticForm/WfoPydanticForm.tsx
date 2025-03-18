@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { AbstractIntlMessages, useMessages } from 'next-intl';
 import { useRouter } from 'next/router';
 import {
     PydanticForm,
@@ -9,6 +10,7 @@ import {
 import type {
     PydanticComponentMatcher,
     PydanticFormApiProvider,
+    PydanticFormLabelProvider,
 } from 'pydantic-forms';
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -18,6 +20,7 @@ import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
 import { Footer } from './Footer';
+import { Row } from './Row';
 import { TextArea } from './fields/TextArea';
 
 interface WfoPydanticFormProps {
@@ -37,6 +40,13 @@ export const WfoPydanticForm = ({
 }: WfoPydanticFormProps) => {
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
+
+    const translationMessages: AbstractIntlMessages = useMessages();
+    const formTranslations =
+        translationMessages?.pydanticForms &&
+        typeof translationMessages?.pydanticForms !== 'string'
+            ? translationMessages.pydanticForms.backendTranslations
+            : {};
 
     const onSuccess = (_fieldValues: object, req: object) => {
         const request = req as { response: StartProcessResponse };
@@ -114,8 +124,20 @@ export const WfoPydanticForm = ({
         ];
     };
 
+    const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
+        return new Promise((resolve) => {
+            resolve({
+                labels: {
+                    ...(formTranslations as object),
+                },
+                data: {},
+            });
+        });
+    };
+
     return (
         <PydanticForm
+            title={''}
             id={processName}
             onSuccess={onSuccess}
             config={{
@@ -124,6 +146,8 @@ export const WfoPydanticForm = ({
                 footerRenderer: Footer,
                 skipSuccessNotice: true,
                 componentMatcher: componentMatcher,
+                labelProvider: pydanticLabelProvider,
+                rowRenderer: Row,
             }}
         />
     );
