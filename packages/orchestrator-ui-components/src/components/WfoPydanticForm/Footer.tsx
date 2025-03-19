@@ -58,7 +58,7 @@ export const Footer = () => {
                             !rhf.formState.isSubmitting)
                     }
                 >
-                    Start workflow
+                    {t('startWorkflow')}
                 </EuiButton>
             </div>
         </div>

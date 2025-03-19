@@ -18,10 +18,6 @@ export const Row: RowRenderer = ({
     return (
         <EuiFormRow
             css={{
-                '.euiFormRow__labelWrapper': {
-                    display: 'flex',
-                    flexDirection: 'column',
-                },
                 ...formRowStyle,
             }}
             label={title}
