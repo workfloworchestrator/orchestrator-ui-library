@@ -15,7 +15,7 @@ import type {
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
@@ -140,6 +140,7 @@ export const WfoPydanticForm = ({
             title={''}
             id={processName}
             onSuccess={onSuccess}
+            loadingComponent={<WfoLoading />}
             config={{
                 apiProvider: getPydanticFormProvider(),
                 allowUntouchedSubmit: true,
