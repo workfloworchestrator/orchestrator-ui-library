@@ -13,6 +13,10 @@ export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
                 color: theme.colors.primaryText,
             },
         },
+        '.euiFormRow__labelWrapper': {
+            display: 'flex',
+            flexDirection: 'column',
+        },
     });
 
     return {

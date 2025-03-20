@@ -14,6 +14,7 @@ import {
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoError, WfoLoading } from '@/components';
 import { UserInputFormWizard } from '@/components/WfoForms/UserInputFormWizard';
+import { WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -48,7 +49,7 @@ type StartModifyWorkflowPayload = {
     subscription_id: string;
 };
 
-type StartWorkflowPayload =
+export type StartWorkflowPayload =
     | StartCreateWorkflowPayload
     | StartModifyWorkflowPayload;
 
@@ -193,7 +194,7 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName) {
+        if (processName && processName !== 'modify_note') {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -263,6 +264,13 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
+                    (processName === 'modify_note' && (
+                        <WfoPydanticForm
+                            processName={processName}
+                            startProcessPayload={startProcessPayload}
+                            isTask={isTask}
+                        />
+                    )) ||
                     (stepUserInput && (
                         <UserInputFormWizard
                             stepUserInput={stepUserInput}
