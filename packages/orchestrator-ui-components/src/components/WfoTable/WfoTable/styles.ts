@@ -37,7 +37,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const tableStyle = css({
-        width: '100%',
+        width: 'auto',
     });
 
     const headerStyle = css({
@@ -136,14 +136,31 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         height: '100%',
         zIndex: theme.levels.modal,
         '&:hover, &:active': {
+            transition: 'background-color 0.15s',
             backgroundColor: isDarkThemeActive
                 ? theme.colors.mediumShade
                 : theme.colors.header,
         },
         '&::after': {
-            content: '""',
+            display: 'flex',
+            paddingTop: theme.base - (theme.base / 16) * 2,
+            content: `"|"`, // Inserts a vertical line
+            fontSize: theme.size.m,
+            color: theme.colors.mediumShade,
+            cursor: 'col-resize',
+            opacity: 0.6,
+            zIndex: theme.levels.navigation,
+        },
+        '&:hover::after, &:active::after': {
+            transition: 'opacity 0.15s',
+            opacity: 0,
         },
     });
+
+    const paginationStyle = css({
+        '.eui-xScroll': { display: 'flex', justifyContent: 'flex-start' },
+    });
+
     return {
         tableContainerStyle,
         tableStyle,
@@ -159,6 +176,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         emptyTableMessageStyle,
         clickableStyle,
         dragAndDropStyle,
+        paginationStyle,
         setWidth,
     };
 };

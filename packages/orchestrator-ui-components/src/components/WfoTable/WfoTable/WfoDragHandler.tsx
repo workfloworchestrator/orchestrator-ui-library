@@ -33,20 +33,27 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
 
     const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
 
+    const thElement =
+        headerRowRef.current &&
+        (headerRowRef.current.querySelector(
+            `th[data-field-name="${fieldName}"]`,
+        ) as HTMLTableCellElement);
+    const startWidth =
+        thElement?.getBoundingClientRect().width ?? MINIMUM_COLUMN_WIDTH;
+
     return (
         <div>
             <Draggable
                 axis="x"
                 position={position}
                 onDrag={onDrag}
-                bounds="thead"
+                bounds={{
+                    left: MINIMUM_COLUMN_WIDTH - startWidth,
+                    top: 0,
+                    bottom: 0,
+                }}
                 onStop={(_, data) => {
                     if (headerRowRef.current) {
-                        const thElement = headerRowRef.current.querySelector(
-                            `th[data-field-name="${fieldName}"]`,
-                        ) as HTMLTableCellElement;
-                        const startWidth =
-                            thElement.getBoundingClientRect().width;
                         const newWidth = startWidth + data.x;
 
                         onUpdateColumWidth(
