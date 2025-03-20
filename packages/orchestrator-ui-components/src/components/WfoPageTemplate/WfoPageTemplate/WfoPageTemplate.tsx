@@ -44,7 +44,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                 panelled={false}
                 grow={false}
                 contentBorder={false}
-                minHeight={`calc(100vh - ${NAVIGATION_HEIGHT}px)`}
                 restrictWidth={false}
             >
                 {isSideMenuVisible && (
@@ -59,7 +58,11 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     contentRef={headerRowRef}
                     navigationHeight={NAVIGATION_HEIGHT}
                 >
-                    <EuiPageTemplate.Section>
+                    <EuiPageTemplate.Section
+                        css={{
+                            minHeight: `calc(100vh - ${NAVIGATION_HEIGHT}px)`,
+                        }}
+                    >
                         <WfoBreadcrumbs
                             handleSideMenuClick={() =>
                                 setIsSideMenuVisible((prevState) => !prevState)
