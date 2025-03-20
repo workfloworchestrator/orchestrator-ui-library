@@ -42,7 +42,7 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
         thElement?.getBoundingClientRect().width ?? MINIMUM_COLUMN_WIDTH;
 
     return (
-        <div css={{ '&:hover': { backgroundColor: 'hotpink' } }}>
+        <div>
             <Draggable
                 axis="x"
                 position={position}

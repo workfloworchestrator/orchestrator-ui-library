@@ -143,7 +143,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         },
         '&::after': {
             display: 'flex',
-            paddingTop: theme.base - 2,
+            paddingTop: theme.base - (theme.base / 16) * 2,
             content: `"|"`, // Inserts a vertical line
             fontSize: theme.size.m,
             color: theme.colors.mediumShade,
