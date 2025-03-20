@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.4.1
+
+### Patch Changes
+
+-   0a6d086: 1758 Show error badge in navigation header when versions of frontend and backend are incompatible.
+-   985eed8: 1749 Set a minHeight for EuiPageTemplate section
+-   e570801: 1707 Improve resizing of table columns
+
 ## 3.4.0
 
 ### Minor Changes
