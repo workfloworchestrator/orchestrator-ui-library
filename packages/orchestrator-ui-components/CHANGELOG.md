@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.4.2
+
+### Patch Changes
+
+-   00038a1: Fix for grouped table width
+
 ## 3.4.1
 
 ### Patch Changes
