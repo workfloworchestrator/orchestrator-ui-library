@@ -72,6 +72,7 @@ export const useGroupedTableConfig = <T extends object>({
         groupName: {
             columnType: ColumnType.CONTROL,
             label: groupNameLabel,
+            width: 'calc(100vw - 300px)', //TODO: #1807
             numberOfColumnsToSpan: numberOfColumnsInnerTable,
             renderControl: ({ groupName }) => {
                 const isExpanded = expandedRowIds.includes(groupName);
