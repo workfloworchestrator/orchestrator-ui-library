@@ -51,6 +51,7 @@ export const Footer = () => {
                     type="submit"
                     iconType={() => <WfoPlayFill color="#FFF" />}
                     iconSide="right"
+                    aria-label={t('startWorkflow')}
                     disabled={
                         !rhf.formState.isValid ||
                         (!allowUntouchedSubmit &&
