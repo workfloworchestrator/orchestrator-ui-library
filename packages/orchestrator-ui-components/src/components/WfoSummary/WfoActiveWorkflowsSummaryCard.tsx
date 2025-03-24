@@ -25,7 +25,7 @@ export const WfoActiveWorkflowsSummaryCard = () => {
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
             headerValue={
-                activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0
+                activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? '-'
             }
             headerStatus={SummaryCardStatus.Success}
             listTitle={t('listTitle')}

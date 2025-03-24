@@ -36,7 +36,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     isLoading,
     isFetching,
     headerStatus,
-    headerValue,
+    headerValue = '-',
     headerTitle,
     listTitle,
     listItems,

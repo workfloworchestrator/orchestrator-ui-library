@@ -17,8 +17,8 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
 
     const {
         data: subscriptionsSummaryResult,
-        isFetching: subscriptionsSummaryIsFetching,
-        isLoading: subscriptionsSummaryIsLoading,
+        isFetching,
+        isLoading,
     } = useGetSubscriptionSummaryListQuery(
         subscriptionsListSummaryQueryVariables,
     );
@@ -26,7 +26,7 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
     return (
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
-            headerValue={subscriptionsSummaryResult?.pageInfo.totalItems ?? 0}
+            headerValue={subscriptionsSummaryResult?.pageInfo.totalItems ?? '-'}
             headerStatus={SummaryCardStatus.Neutral}
             listTitle={t('listTitle')}
             listItems={optionalArrayMapper(
@@ -34,8 +34,8 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
                 mapSubscriptionSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_SUBSCRIPTIONS }}
-            isLoading={subscriptionsSummaryIsLoading}
-            isFetching={subscriptionsSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };

@@ -15,8 +15,8 @@ export const WfoProductsSummaryCard = () => {
 
     const {
         data: productsSummaryResult,
-        isFetching: productsSummaryIsFetching,
-        isLoading: productsSummaryIsLoading,
+        isFetching,
+        isLoading,
     } = useGetProductsSummaryQuery(productsSummaryQueryVariables);
 
     const listItems: SummaryCardListItem[] =
@@ -46,12 +46,12 @@ export const WfoProductsSummaryCard = () => {
     return (
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
-            headerValue={productsSummaryResult?.pageInfo.totalItems ?? 0}
+            headerValue={productsSummaryResult?.pageInfo.totalItems ?? '-'}
             headerStatus={SummaryCardStatus.Neutral}
             listTitle={t('listTitle')}
             listItems={listItems}
-            isLoading={productsSummaryIsLoading}
-            isFetching={productsSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };

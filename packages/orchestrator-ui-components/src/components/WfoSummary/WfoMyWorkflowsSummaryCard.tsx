@@ -23,8 +23,8 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
 
     const {
         data: myWorkflowsSummaryResponse,
-        isFetching: myWorkflowsSummaryIsFetching,
-        isLoading: myWorkflowsSummaryIsLoading,
+        isFetching,
+        isLoading,
     } = useGetProcessListSummaryQuery(
         getMyWorkflowListSummaryQueryVariables(username),
     );
@@ -32,7 +32,7 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
     return (
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
-            headerValue={myWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0}
+            headerValue={myWorkflowsSummaryResponse?.pageInfo.totalItems ?? '-'}
             headerStatus={SummaryCardStatus.Success}
             listTitle={t('listTitle')}
             listItems={optionalArrayMapper(
@@ -43,8 +43,8 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
                 name: t('buttonText'),
                 url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username}`,
             }}
-            isLoading={myWorkflowsSummaryIsLoading}
-            isFetching={myWorkflowsSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };
