@@ -24,6 +24,7 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
     const {
         data: myWorkflowsSummaryResponse,
         isFetching: myWorkflowsSummaryIsFetching,
+        isLoading: myWorkflowsSummaryIsLoading,
     } = useGetProcessListSummaryQuery(
         getMyWorkflowListSummaryQueryVariables(username),
     );
@@ -42,7 +43,8 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
                 name: t('buttonText'),
                 url: `${PATH_WORKFLOWS}?activeTab=COMPLETED&sortBy=field-lastModifiedAt_order-DESC&queryString=createdBy%3A${username}`,
             }}
-            isLoading={myWorkflowsSummaryIsFetching}
+            isLoading={myWorkflowsSummaryIsLoading}
+            isFetching={myWorkflowsSummaryIsFetching}
         />
     );
 };

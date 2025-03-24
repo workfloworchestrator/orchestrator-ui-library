@@ -18,6 +18,7 @@ export const WfoActiveWorkflowsSummaryCard = () => {
     const {
         data: activeWorkflowsSummaryResponse,
         isFetching: activeWorkflowsSummaryIsFetching,
+        isLoading: activeWorkflowsSummaryIsLoading,
     } = useGetProcessListSummaryQuery(activeWorkflowsListSummaryQueryVariables);
 
     return (
@@ -33,7 +34,8 @@ export const WfoActiveWorkflowsSummaryCard = () => {
                 mapProcessSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_WORKFLOWS }}
-            isLoading={activeWorkflowsSummaryIsFetching}
+            isLoading={activeWorkflowsSummaryIsLoading}
+            isFetching={activeWorkflowsSummaryIsFetching}
         />
     );
 };

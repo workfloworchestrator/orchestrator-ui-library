@@ -17,7 +17,8 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
 
     const {
         data: subscriptionsSummaryResult,
-        isLoading: subscriptionsSummaryIsFetching,
+        isFetching: subscriptionsSummaryIsFetching,
+        isLoading: subscriptionsSummaryIsLoading,
     } = useGetSubscriptionSummaryListQuery(
         subscriptionsListSummaryQueryVariables,
     );
@@ -33,7 +34,8 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
                 mapSubscriptionSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_SUBSCRIPTIONS }}
-            isLoading={subscriptionsSummaryIsFetching}
+            isLoading={subscriptionsSummaryIsLoading}
+            isFetching={subscriptionsSummaryIsFetching}
         />
     );
 };

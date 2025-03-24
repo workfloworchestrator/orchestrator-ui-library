@@ -14,6 +14,7 @@ export const WfoFailedTasksSummaryCard = () => {
     const {
         data: failedTasksSummaryResponse,
         isFetching: failedTasksSummaryIsFetching,
+        isLoading: failedTasksSummaryIsLoading,
     } = useGetProcessListSummaryQuery(taskListSummaryQueryVariables);
 
     return (
@@ -27,7 +28,8 @@ export const WfoFailedTasksSummaryCard = () => {
                 mapProcessSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_TASKS }}
-            isLoading={failedTasksSummaryIsFetching}
+            isLoading={failedTasksSummaryIsLoading}
+            isFetching={failedTasksSummaryIsFetching}
         />
     );
 };

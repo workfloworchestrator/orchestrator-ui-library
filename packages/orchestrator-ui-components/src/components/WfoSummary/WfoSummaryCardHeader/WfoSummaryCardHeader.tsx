@@ -4,6 +4,7 @@ import {
     EuiAvatar,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiLoadingSpinner,
     EuiPanel,
     EuiText,
 } from '@elastic/eui';
@@ -18,6 +19,7 @@ export type WfoSummaryCardHeaderProps = {
     value: number | string;
     iconType: IconType;
     iconColor: string | undefined;
+    isFetching?: boolean;
 };
 
 export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
@@ -25,6 +27,7 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
     value,
     iconType,
     iconColor,
+    isFetching,
 }) => {
     const { theme } = useOrchestratorTheme();
     const { avatarStyle, totalSectionStyle, valueStyle } =
@@ -33,7 +36,7 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
     return (
         <EuiFlexItem grow={0}>
             <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
-                <EuiFlexGroup>
+                <EuiFlexGroup alignItems="center">
                     <EuiAvatar
                         iconSize="l"
                         size="xl"
@@ -46,7 +49,10 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
                     />
                     <div css={totalSectionStyle}>
                         <EuiText color="subdued">{text}</EuiText>
-                        <EuiText css={valueStyle}>{value}</EuiText>
+                        <EuiFlexGroup gutterSize="s" alignItems="center">
+                            <EuiText css={valueStyle}>{value}</EuiText>
+                            {isFetching && <EuiLoadingSpinner />}
+                        </EuiFlexGroup>
                     </div>
                 </EuiFlexGroup>
             </EuiPanel>

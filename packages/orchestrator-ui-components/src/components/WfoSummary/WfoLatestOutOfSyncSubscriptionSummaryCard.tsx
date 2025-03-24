@@ -17,7 +17,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
 
     const {
         data: outOfSyncSubscriptionsSummaryResult,
-        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
+        isFetching: outOfSyncsubscriptionsSummaryIsFetching,
+        isLoading: outOfSyncsubscriptionsSummaryIsLoading,
     } = useGetSubscriptionSummaryListQuery(
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
@@ -38,7 +39,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
                 name: t('buttonText'),
                 url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
             }}
-            isLoading={outOfSyncsubscriptionsSummaryIsFetching}
+            isLoading={outOfSyncsubscriptionsSummaryIsLoading}
+            isFetching={outOfSyncsubscriptionsSummaryIsFetching}
         />
     );
 };
