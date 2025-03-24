@@ -13,13 +13,14 @@ export const WfoFailedTasksSummaryCard = () => {
 
     const {
         data: failedTasksSummaryResponse,
-        isFetching: failedTasksSummaryIsFetching,
+        isFetching,
+        isLoading,
     } = useGetProcessListSummaryQuery(taskListSummaryQueryVariables);
 
     return (
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
-            headerValue={failedTasksSummaryResponse?.pageInfo.totalItems ?? 0}
+            headerValue={failedTasksSummaryResponse?.pageInfo.totalItems ?? '-'}
             headerStatus={SummaryCardStatus.Error}
             listTitle={t('listTitle')}
             listItems={optionalArrayMapper(
@@ -27,7 +28,8 @@ export const WfoFailedTasksSummaryCard = () => {
                 mapProcessSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_TASKS }}
-            isLoading={failedTasksSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };

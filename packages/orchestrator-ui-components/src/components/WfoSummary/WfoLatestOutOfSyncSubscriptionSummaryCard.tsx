@@ -17,7 +17,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
 
     const {
         data: outOfSyncSubscriptionsSummaryResult,
-        isLoading: outOfSyncsubscriptionsSummaryIsFetching,
+        isFetching,
+        isLoading,
     } = useGetSubscriptionSummaryListQuery(
         outOfSyncSubscriptionsListSummaryQueryVariables,
     );
@@ -26,7 +27,7 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
             headerValue={
-                outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? 0
+                outOfSyncSubscriptionsSummaryResult?.pageInfo.totalItems ?? '-'
             }
             headerStatus={SummaryCardStatus.Error}
             listTitle={t('listTitle')}
@@ -38,7 +39,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
                 name: t('buttonText'),
                 url: `${PATH_SUBSCRIPTIONS}?activeTab=ALL&sortBy=field-startDate_order-ASC&queryString=status%3A%28provisioning%7Cactive%29+insync%3Afalse`,
             }}
-            isLoading={outOfSyncsubscriptionsSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };

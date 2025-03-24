@@ -17,14 +17,15 @@ export const WfoActiveWorkflowsSummaryCard = () => {
 
     const {
         data: activeWorkflowsSummaryResponse,
-        isFetching: activeWorkflowsSummaryIsFetching,
+        isFetching,
+        isLoading,
     } = useGetProcessListSummaryQuery(activeWorkflowsListSummaryQueryVariables);
 
     return (
         <WfoSummaryCard
             headerTitle={t('headerTitle')}
             headerValue={
-                activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? 0
+                activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? '-'
             }
             headerStatus={SummaryCardStatus.Success}
             listTitle={t('listTitle')}
@@ -33,7 +34,8 @@ export const WfoActiveWorkflowsSummaryCard = () => {
                 mapProcessSummaryToSummaryCardListItem,
             )}
             button={{ name: t('buttonText'), url: PATH_WORKFLOWS }}
-            isLoading={activeWorkflowsSummaryIsFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
         />
     );
 };

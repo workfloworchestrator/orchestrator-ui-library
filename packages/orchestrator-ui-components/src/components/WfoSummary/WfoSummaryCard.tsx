@@ -27,14 +27,16 @@ export type WfoSummaryCardProps = {
     headerStatus?: SummaryCardStatus;
     button?: SummaryCardButtonConfig;
     isLoading?: boolean;
+    isFetching?: boolean;
     headerBadge?: Pick<WfoSummaryCardHeaderProps, 'iconType' | 'iconColor'>;
 };
 
 export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
     button,
     isLoading,
+    isFetching,
     headerStatus,
-    headerValue,
+    headerValue = '-',
     headerTitle,
     listTitle,
     listItems,
@@ -103,6 +105,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
             <WfoSummaryCardHeader
                 text={headerTitle}
                 value={headerValue}
+                isFetching={isFetching}
                 {...getIconTypeAndColorForHeaderStatus(headerStatus)}
             />
             <EuiSpacer size="m" />
