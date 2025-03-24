@@ -9,6 +9,7 @@ import {
     CustomerField,
     DateField,
     DividerField,
+    FileUploadField,
     ImsNodeIdField,
     ImsPortIdField,
     IpNetworkField,
@@ -85,6 +86,8 @@ export function autoFieldFunction(
                     return AcceptField;
                 case 'ipvanynetwork': // Deprecated
                     return IpNetworkField;
+                case 'file':
+                    return FileUploadField;
             }
             break;
     }
