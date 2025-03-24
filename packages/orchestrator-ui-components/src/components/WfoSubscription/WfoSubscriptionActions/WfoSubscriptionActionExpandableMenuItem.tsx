@@ -48,6 +48,7 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<
                         css={expandButtonStyle}
                         iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
                         onClick={() => setIsExpanded(!isExpanded)}
+                        aria-label={t('expand')}
                     />
                 )}
             </div>
