@@ -12,7 +12,7 @@
  * limitations under the License.
  *
  */
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
@@ -20,32 +20,44 @@ import { EuiFilePicker, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { getFormFieldsBaseStyle } from '@/theme';
+import { useUploadFileMutation } from '@/rtk/endpoints/fileUpload';
 import { FieldProps } from '@/types';
 
 export type FileUploadProps = FieldProps<string>;
 
 function FileUpload({
-    autoComplete,
-    disabled,
     id,
     label,
     description,
-    name,
     onChange,
-    placeholder,
-    readOnly,
-    type,
-    value,
     error,
     showInlineError,
     errorMessage,
     ...props
 }: FileUploadProps) {
-    const [isValidFieldType, setIsValidFieldType] = useState(true);
+    const [uploadFile, { isLoading, reset }] = useUploadFileMutation();
+    const [hasInValidFiletypes, setHasInValidFiletypes] = useState(false);
+    const [hasError, setHasError] = useState(false);
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
     const { allowed_file_types, url } = props.field;
+    const filePickerRef = useRef();
+
+    const handleError = () => {
+        filePickerRef?.current?.removeFiles();
+        setHasInValidFiletypes(false);
+        setHasError(true);
+    };
+
+    const getInitialPromptText = () => {
+        if (hasInValidFiletypes) {
+            return `Allowed file types: ${allowed_file_types.join(', ')}`;
+        }
+        if (hasError) {
+            return 'Error uploading file';
+        }
+        return 'Select or drag and drop a file';
+    };
 
     return (
         <section {...filterDOMProps(props)}>
@@ -60,38 +72,46 @@ function FileUpload({
             >
                 <>
                     <EuiFilePicker
+                        ref={filePickerRef}
                         onChange={(files) => {
                             const file = files?.item(0) || null;
+                            if (!file) return;
+
                             if (
                                 file &&
                                 allowed_file_types &&
                                 !allowed_file_types.includes(file.type)
                             ) {
-                                setIsValidFieldType(false);
+                                filePickerRef?.current?.removeFiles();
+                                setHasInValidFiletypes(true);
+                                setHasError(false);
                                 return;
                             } else {
-                                setIsValidFieldType(true);
+                                uploadFile({ url, file })
+                                    .then((response) => {
+                                        console.log('response', response);
+                                        if (response.error) {
+                                            handleError();
+                                        } else {
+                                            onChange(response?.data?.id);
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        handleError();
+                                        console.error(error);
+                                    });
+                                reset();
                             }
-                            console.log('File uploaded', files);
                         }}
-                        isInvalid={!isValidFieldType}
+                        isInvalid={hasError || hasInValidFiletypes}
                         display="large"
+                        isLoading={isLoading}
+                        initialPromptText={getInitialPromptText()}
                     />
-                    {!isValidFieldType && (
-                        <EuiText size="s">
-                            {allowed_file_types
-                                ? `Allowed file types: ${allowed_file_types.join(
-                                      ', ',
-                                  )}`
-                                : null}
-                        </EuiText>
-                    )}
                 </>
             </EuiFormRow>
         </section>
     );
 }
-
-FileUpload.defaultProps = { type: 'text' };
 
 export const FileUploadField = connectField(FileUpload, { kind: 'leaf' });
