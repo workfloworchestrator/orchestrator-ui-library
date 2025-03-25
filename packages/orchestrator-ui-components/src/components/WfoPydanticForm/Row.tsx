@@ -17,9 +17,7 @@ export const Row: RowRenderer = ({
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
     return (
         <EuiFormRow
-            css={{
-                ...formRowStyle,
-            }}
+            css={formRowStyle}
             label={title}
             labelAppend={<EuiText size="m">{description}</EuiText>}
             error={error}
