@@ -103,6 +103,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
 
     const cellContentStyle = css({
         display: 'inline-block',
+        width: '100%',
     });
 
     const emptyTableMessageStyle = css({

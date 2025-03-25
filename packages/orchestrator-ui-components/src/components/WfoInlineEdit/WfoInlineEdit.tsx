@@ -47,6 +47,9 @@ export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
                         visibility: 'visible',
                     },
                 },
+                '& > .euiToolTipAnchor': {
+                    width: '100%',
+                },
             }}
         >
             <WfoToolTip
@@ -69,7 +72,6 @@ export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
                         onSave={handleSave}
                         size={'s'}
                         css={{
-                            width: theme.base * 16,
                             '.euiFlexItem:nth-of-type(2)': {
                                 justifyContent: 'center',
                             },
@@ -104,7 +106,6 @@ export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
                                     height: '32px',
                                     paddingLeft: '4px',
                                     margin: '0',
-                                    width: '98%',
                                 },
                             },
                             formRowProps: {
