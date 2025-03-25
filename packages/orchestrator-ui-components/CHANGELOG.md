@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.5.0
+
+### Minor Changes
+
+-   267ad99: Introduces pydantic forms module to handle some workflows
+
+### Patch Changes
+
+-   34a3044: 1778 Improve re-render summary cards on dashboard page with many changes in backend
+-   2dd877d: 1726 Fix column width dragger visible on top of items covering the table header
+
 ## 3.4.2
 
 ### Patch Changes
