@@ -4,7 +4,6 @@ import type { ChangeEvent, FC } from 'react';
 import { EuiInlineEditText } from '@elastic/eui';
 
 import { WfoToolTip } from '@/components';
-import { useOrchestratorTheme } from '@/hooks';
 import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoInlineEditProps {
@@ -18,7 +17,6 @@ export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
     onlyShowOnHover = false,
     onSave = () => {},
 }) => {
-    const { theme } = useOrchestratorTheme();
     const [note, setValue] = useState<string>(value);
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
