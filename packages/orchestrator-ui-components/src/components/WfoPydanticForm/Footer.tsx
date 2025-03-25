@@ -19,10 +19,15 @@ export const Footer = () => {
     const { rhf, onCancel, allowUntouchedSubmit, isLoading } =
         usePydanticFormContext();
 
+    const isDisabled: boolean =
+        !rhf.formState.isValid ||
+        (!allowUntouchedSubmit &&
+            !rhf.formState.isDirty &&
+            !rhf.formState.isSubmitting);
+
     return (
         <div>
             <EuiHorizontalRule />
-
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div
                     onClick={() => {
@@ -34,7 +39,7 @@ export const Footer = () => {
                         cursor: 'pointer',
                         color: theme.colors.link,
                         fontWeight: theme.font.weight.bold,
-                        marginLeft: '8px',
+                        marginLeft: theme.base / 2,
                         display: 'flex',
                         alignItems: 'center',
                     }}
@@ -52,12 +57,7 @@ export const Footer = () => {
                     iconType={() => <WfoPlayFill color="#FFF" />}
                     iconSide="right"
                     aria-label={t('startWorkflow')}
-                    disabled={
-                        !rhf.formState.isValid ||
-                        (!allowUntouchedSubmit &&
-                            !rhf.formState.isDirty &&
-                            !rhf.formState.isSubmitting)
-                    }
+                    disabled={isDisabled}
                 >
                     {t('startWorkflow')}
                 </EuiButton>

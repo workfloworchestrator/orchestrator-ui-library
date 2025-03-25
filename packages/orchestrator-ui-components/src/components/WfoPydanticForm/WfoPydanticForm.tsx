@@ -17,6 +17,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
+import { HttpStatus } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 
 import { Footer } from './Footer';
@@ -73,7 +74,9 @@ export const WfoPydanticForm = ({
                             if (result.error) {
                                 const error =
                                     result.error as FetchBaseQueryError;
-                                if (error.status === 510) {
+                                if (
+                                    error.status === HttpStatus.FormNotComplete
+                                ) {
                                     const data = error.data as Record<
                                         string,
                                         object | string
@@ -91,7 +94,7 @@ export const WfoPydanticForm = ({
                 .catch((error) => {
                     return new Promise<Record<string, object>>(
                         (resolve, reject) => {
-                            if (error.status === 510) {
+                            if (error.status === HttpStatus.FormNotComplete) {
                                 resolve(error.data);
                             }
                             reject(error);
