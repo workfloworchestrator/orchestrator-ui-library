@@ -12,11 +12,16 @@
  * limitations under the License.
  *
  */
-import React, { useRef, useState } from 'react';
+import React, { LegacyRef, useState } from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { EuiFilePicker, EuiFormRow, EuiText } from '@elastic/eui';
+import {
+    EuiFilePicker,
+    EuiFilePickerProps,
+    EuiFormRow,
+    EuiText,
+} from '@elastic/eui';
 
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -41,7 +46,9 @@ function FileUpload({
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
     const { allowed_file_types, url } = props.field;
-    const filePickerRef = useRef();
+    const filePickerRef: LegacyRef<
+        Omit<EuiFilePickerProps, 'stylesMemoizer'> & { removeFiles: () => void }
+    > = React.createRef();
 
     const handleError = () => {
         filePickerRef?.current?.removeFiles();
@@ -82,14 +89,13 @@ function FileUpload({
                                 allowed_file_types &&
                                 !allowed_file_types.includes(file.type)
                             ) {
-                                filePickerRef?.current?.removeFiles();
                                 setHasInValidFiletypes(true);
                                 setHasError(false);
+                                filePickerRef?.current?.removeFiles();
                                 return;
                             } else {
                                 uploadFile({ url, file })
                                     .then((response) => {
-                                        console.log('response', response);
                                         if (response.error) {
                                             handleError();
                                         } else {
