@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.5.1
+
+### Patch Changes
+
+-   0cb0521: Updates required peer dependencies to NextJs 14.2.25 (CVE-2025-29927)
+-   dbb2468: Add: time interval 15 min on time picker
+
 ## 3.5.0
 
 ### Minor Changes
