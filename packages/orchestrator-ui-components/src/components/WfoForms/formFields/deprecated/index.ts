@@ -9,5 +9,6 @@ export * from './IpPrefixTableFieldStyling';
 export * from './SplitPrefixStyling';
 export * from './TimestampField';
 export * from './VlanField';
+export * from './FileUploadField';
 export * from './types';
 export * from './utils';

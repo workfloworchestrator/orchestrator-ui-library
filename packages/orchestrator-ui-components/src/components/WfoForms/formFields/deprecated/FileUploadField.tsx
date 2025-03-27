@@ -12,19 +12,14 @@
  * limitations under the License.
  *
  */
-import React, { LegacyRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
-import {
-    EuiFilePicker,
-    EuiFilePickerProps,
-    EuiFormRow,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFilePicker, EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { useUploadFileMutation } from '@/rtk/endpoints/fileUpload';
 import { FieldProps } from '@/types';
 
@@ -40,30 +35,40 @@ function FileUpload({
     errorMessage,
     ...props
 }: FileUploadProps) {
+    const { theme } = useOrchestratorTheme();
     const [uploadFile, { isLoading, reset }] = useUploadFileMutation();
     const [hasInValidFiletypes, setHasInValidFiletypes] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [hasFileToBig, setHasFileToBig] = useState(false);
+
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    const { allowed_file_types, url } = props.field;
-    const filePickerRef: LegacyRef<
-        Omit<EuiFilePickerProps, 'stylesMemoizer'> & { removeFiles: () => void }
-    > = React.createRef();
+    const {
+        allowed_file_types: allowedMimeTypes,
+        url,
+        filesize_limit: fileSizeLimit,
+    } = props.field;
+    const cimUrl =
+        url.replace('/cim', '').replace('rfo-upload', 'upload-rfo-report') ||
+        '';
 
-    const handleError = () => {
-        filePickerRef?.current?.removeFiles();
+    const resetErrors = () => {
         setHasInValidFiletypes(false);
-        setHasError(true);
+        setHasError(false);
+        setHasFileToBig(false);
     };
 
-    const getInitialPromptText = () => {
+    const getErrorText = (): string => {
         if (hasInValidFiletypes) {
-            return `Allowed file types: ${allowed_file_types.join(', ')}`;
+            return 'Invalid filetype!';
         }
         if (hasError) {
-            return 'Error uploading file';
+            return 'Error uploading file!';
         }
-        return 'Select or drag and drop a file';
+        if (hasFileToBig) {
+            return `File to large. Maximum file size: ${fileSizeLimit}`;
+        }
+        return '';
     };
 
     return (
@@ -79,41 +84,61 @@ function FileUpload({
             >
                 <>
                     <EuiFilePicker
-                        ref={filePickerRef}
                         onChange={(files) => {
                             const file = files?.item(0) || null;
+
                             if (!file) return;
 
+                            const { type, size } = file;
+
                             if (
-                                file &&
-                                allowed_file_types &&
-                                !allowed_file_types.includes(file.type)
+                                allowedMimeTypes &&
+                                !allowedMimeTypes.includes(type)
                             ) {
                                 setHasInValidFiletypes(true);
                                 setHasError(false);
-                                filePickerRef?.current?.removeFiles();
+                                return;
+                            } else if (fileSizeLimit && size > fileSizeLimit) {
+                                setHasFileToBig(true);
                                 return;
                             } else {
-                                uploadFile({ url, file })
+                                uploadFile({ url: cimUrl, file })
                                     .then((response) => {
                                         if (response.error) {
-                                            handleError();
+                                            setHasInValidFiletypes(false);
+                                            setHasError(true);
+                                            return;
                                         } else {
-                                            onChange(response?.data?.id);
+                                            onChange('');
+                                            resetErrors();
                                         }
                                     })
                                     .catch((error) => {
-                                        handleError();
+                                        setHasInValidFiletypes(false);
+                                        setHasError(true);
                                         console.error(error);
+                                        return;
                                     });
                                 reset();
                             }
                         }}
-                        isInvalid={hasError || hasInValidFiletypes}
+                        isInvalid={
+                            hasError || hasInValidFiletypes || hasFileToBig
+                        }
                         display="large"
                         isLoading={isLoading}
-                        initialPromptText={getInitialPromptText()}
+                        initialPromptText="Select or drag and drop a file"
                     />
+                    <div
+                        css={{
+                            color: theme.colors.danger,
+                            marginTop: theme.size.base,
+                            marginLeft: theme.size.xs,
+                            fontWeight: theme.font.weight.semiBold,
+                        }}
+                    >
+                        {getErrorText()}
+                    </div>
                 </>
             </EuiFormRow>
         </section>
