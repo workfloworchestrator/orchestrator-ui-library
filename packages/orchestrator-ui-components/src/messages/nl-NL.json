@@ -132,6 +132,12 @@
                 "selectNode": "Selecteer node",
                 "selectPort": "Selecteer poort",
                 "selectNodeFirst": "Selecteer eerst een node"
+            },
+            "fileUpload": {
+                "invalidFiletype": "Ongeldig bestandstype!",
+                "errorUploading": "Fout bij het upoaden van het bestand!",
+                "fileToBig": "Bestand te groot. Maximum bestand: {fileSizeLimit}",
+                "initialPromptText": "Selecteer een bestand of sleep het hierheen"
             }
         }
     },
