@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2023 SURF.
+ * Copyright 2024 SURF.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,7 @@
  */
 import React, { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
 import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFilePicker, EuiFormRow, EuiText } from '@elastic/eui';
@@ -35,6 +36,7 @@ function FileUpload({
     errorMessage,
     ...props
 }: FileUploadProps) {
+    const t = useTranslations('pydanticForms.widgets.fileUpload');
     const { theme } = useOrchestratorTheme();
     const [uploadFile, { isLoading, reset }] = useUploadFileMutation();
     const [hasInValidFiletypes, setHasInValidFiletypes] = useState(false);
@@ -48,9 +50,8 @@ function FileUpload({
         url,
         filesize_limit: fileSizeLimit,
     } = props.field;
-    const cimUrl =
-        url.replace('/cim', '').replace('rfo-upload', 'upload-rfo-report') ||
-        '';
+
+    const cimUrl = url.replace('/cim', '');
 
     const resetErrors = () => {
         setHasInValidFiletypes(false);
@@ -60,13 +61,13 @@ function FileUpload({
 
     const getErrorText = (): string => {
         if (hasInValidFiletypes) {
-            return 'Invalid filetype!';
+            return t('invalidFiletype');
         }
         if (hasError) {
-            return 'Error uploading file!';
+            return t('errorUploading');
         }
         if (hasFileToBig) {
-            return `File to large. Maximum file size: ${fileSizeLimit}`;
+            return t('fileToBig', { fileSizeLimit });
         }
         return '';
     };
@@ -95,17 +96,18 @@ function FileUpload({
                                 allowedMimeTypes &&
                                 !allowedMimeTypes.includes(type)
                             ) {
+                                resetErrors();
                                 setHasInValidFiletypes(true);
-                                setHasError(false);
                                 return;
-                            } else if (fileSizeLimit && size > fileSizeLimit) {
+                            } else if (size > fileSizeLimit) {
+                                resetErrors();
                                 setHasFileToBig(true);
                                 return;
                             } else {
                                 uploadFile({ url: cimUrl, file })
                                     .then((response) => {
                                         if (response.error) {
-                                            setHasInValidFiletypes(false);
+                                            resetErrors();
                                             setHasError(true);
                                             return;
                                         } else {
@@ -114,7 +116,7 @@ function FileUpload({
                                         }
                                     })
                                     .catch((error) => {
-                                        setHasInValidFiletypes(false);
+                                        resetErrors();
                                         setHasError(true);
                                         console.error(error);
                                         return;
@@ -127,7 +129,7 @@ function FileUpload({
                         }
                         display="large"
                         isLoading={isLoading}
-                        initialPromptText="Select or drag and drop a file"
+                        initialPromptText={t('initialPromptText')}
                     />
                     <div
                         css={{
