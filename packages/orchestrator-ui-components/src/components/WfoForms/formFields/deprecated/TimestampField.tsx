@@ -81,6 +81,7 @@ function Timestamp({
             >
                 <EuiDatePicker
                     disabled={disabled}
+                    timeIntervals={15}
                     selected={value ? utcTimestampToLocalMoment(value) : null}
                     value={
                         value
