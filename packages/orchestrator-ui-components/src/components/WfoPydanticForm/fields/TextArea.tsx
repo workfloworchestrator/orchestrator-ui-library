@@ -16,6 +16,7 @@ export const TextArea: PydanticFormControlledElement = ({
             name={pydanticFormField.id}
             onChange={(event) => onChange(event.target.value)}
             value={value ?? ''}
+            id={`input-${pydanticFormField.id}`}
             fullWidth
         />
     );
