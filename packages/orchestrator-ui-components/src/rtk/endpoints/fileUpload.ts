@@ -15,7 +15,6 @@ const fileUploadApi = orchestratorApi.injectEndpoints({
             query: ({ url, file }) => {
                 const formData = new FormData();
                 formData.append('file', file);
-
                 return {
                     url,
                     method: 'POST',
@@ -24,6 +23,7 @@ const fileUploadApi = orchestratorApi.injectEndpoints({
             },
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
+                apiName: 'cim',
             },
         }),
     }),
