@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.5.2
+
+### Patch Changes
+
+-   7040598: Readds testid to textarea field
+-   167bea6: 1751 - Makes width of the inline note edit field flexible
+
 ## 3.5.1
 
 ### Patch Changes
