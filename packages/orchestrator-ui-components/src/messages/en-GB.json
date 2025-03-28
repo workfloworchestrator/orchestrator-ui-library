@@ -133,6 +133,12 @@
                 "selectNode": "Select node",
                 "selectPort": "Select port",
                 "selectNodeFirst": "Select a node first"
+            },
+            "fileUpload": {
+                "invalidFiletype": "Invalid filetype!",
+                "errorUploading": "Error uploading file!",
+                "fileToBig": "File to large. Maximum file size: {fileSizeLimit}",
+                "initialPromptText": "Select or drag and drop a file"
             }
         }
     },
