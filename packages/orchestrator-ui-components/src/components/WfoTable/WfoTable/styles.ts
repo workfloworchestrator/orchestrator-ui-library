@@ -37,7 +37,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const tableStyle = css({
-        width: 'auto',
+        width: '100%',
     });
 
     const headerStyle = css({

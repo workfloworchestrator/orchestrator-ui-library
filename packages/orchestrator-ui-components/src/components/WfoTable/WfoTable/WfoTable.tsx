@@ -59,12 +59,16 @@ export type WfoTableControlColumnConfigItem<T extends object> =
 
 export type WfoTableDataColumnConfig<T extends object> = {
     [Property in keyof T]:
-        | WfoTableDataColumnConfigItem<T, Property>
-        | WfoTableControlColumnConfigItem<T>;
+    | WfoTableDataColumnConfigItem<T, Property>
+    | WfoTableControlColumnConfigItem<T>;
+} & {
+    blank?: WfoTableControlColumnConfigItem<T>;
 };
+
 
 export type WfoTableControlColumnConfig<T extends object> = {
     [key: string]: WfoTableControlColumnConfigItem<T>; // from WfoTableColumnConfig -- consider extracting type
+    blank: WfoTableControlColumnConfigItem<T>;
 };
 
 // Applying "Partial" since data should not always be shown in the table, but can still be needed for rendering
@@ -124,6 +128,21 @@ export const WfoTable = <T extends object>({
     const getColumnWidthsFromConfig = (
         columnConfig: WfoTableColumnConfig<T>,
     ): LocalColumnWidths => {
+        const columnEntries = Object.entries(columnConfig);
+
+        const lastColumnConfig = columnEntries[columnEntries.length - 1]?.[1];
+
+        if (lastColumnConfig?.columnType === ColumnType.CONTROL) {
+            lastColumnConfig.width = '100%';
+        } else {
+            columnConfig.blank = {
+                columnType: ColumnType.CONTROL,
+                label: '',
+                width: '100%',
+                renderControl: () => <></>,
+            };
+        }
+
         return Object.entries(columnConfig).reduce(
             (columnWidths, [key, config]) => {
                 if (config.columnType === ColumnType.DATA) {
