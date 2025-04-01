@@ -102,6 +102,7 @@ export const WfoGroupedTable = <T extends object>({
                     uniqueRowIdToExpandedRowMap,
                 }}
                 onRowClick={({ groupName }) => toggleExpandedRow(groupName)}
+                appendFillerColumn={false}
             />
         </>
     );
