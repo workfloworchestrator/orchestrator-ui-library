@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import Draggable from 'react-draggable';
 import type { DraggableEventHandler } from 'react-draggable';
 
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 import type { onUpdateColumWidth } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';
