@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.6.0
+
+### Minor Changes
+
+-   21c2886: 1825 Update WfoDragHandler, make WfoTable 100% width
+-   5f16a2e: 1821 Update WfoSidebar, add toOptionalArrayEntries
+
 ## 3.5.2
 
 ### Patch Changes
