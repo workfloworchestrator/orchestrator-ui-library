@@ -3,10 +3,16 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiHorizontalRule, EuiSideNav, EuiSpacer } from '@elastic/eui';
+import {
+    EuiHorizontalRule,
+    EuiSideNav,
+    EuiSpacer,
+    htmlIdGenerator,
+} from '@elastic/eui';
 import { EuiSideNavItemType } from '@elastic/eui/src/components/side_nav/side_nav_types';
 
 import { WfoIsAllowedToRender, menuItemIsAllowed } from '@/components';
+import { WfoMenuItemLink } from '@/components';
 import { getMenuStyles } from '@/components/WfoPageTemplate/WfoSidebar/styles';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -26,7 +32,6 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
-import { WfoMenuItemLink } from './WfoMenuLink';
 
 export const urlPolicyMap = new Map<string, PolicyResource>([
     [PATH_WORKFLOWS, PolicyResource.NAVIGATION_WORKFLOWS],
@@ -36,11 +41,11 @@ export const urlPolicyMap = new Map<string, PolicyResource>([
     [PATH_SETTINGS, PolicyResource.NAVIGATION_SETTINGS],
 ]);
 
-export const sideNavMenuDivider: EuiSideNavItemType<object> = {
+export const createSideNavDivider = (): EuiSideNavItemType<object> => ({
     name: '',
-    id: 'menuDivider',
+    id: htmlIdGenerator('menuDivider')(),
     renderItem: () => <EuiHorizontalRule margin="xs" />,
-};
+});
 
 export type WfoSidebarProps = {
     overrideMenuItems?: (
