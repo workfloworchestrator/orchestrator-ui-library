@@ -4,8 +4,10 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexItem, EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 
-import { WfoEngineStatusButton } from './WfoEngineStatusButton';
-import { WfoResetTextSearchIndexButton } from './WfoResetTextSearchIndexButton';
+import {
+    WfoEngineStatusButton,
+    WfoResetTextSearchIndexButton,
+} from '@/components';
 
 export const WfoModifySettings = () => {
     const t = useTranslations('settings.page');
