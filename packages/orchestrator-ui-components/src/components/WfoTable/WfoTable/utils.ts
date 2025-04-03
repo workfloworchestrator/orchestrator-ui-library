@@ -1,4 +1,4 @@
-import { TableColumnKeys } from '@/components';
+import { LocalColumnWidths, TableColumnKeys } from '@/components';
 import { SortOrder } from '@/types';
 import { toObjectWithSortedKeys } from '@/utils';
 
@@ -80,3 +80,16 @@ export function mapSortableAndFilterableValuesToTableColumnConfig<
 
     return Object.fromEntries(tableColumnConfigUpdatedEntries);
 }
+
+export const getColumnWidthsFromConfig = <T extends object>(
+    columnConfig: WfoTableColumnConfig<T>,
+): LocalColumnWidths => {
+    const columnEntries = Object.entries(columnConfig);
+
+    return columnEntries.reduce((columnWidths, [key, config]) => {
+        if (config.columnType === ColumnType.DATA) {
+            columnWidths[key] = config.width ?? 'auto';
+        }
+        return columnWidths;
+    }, {} as LocalColumnWidths);
+};

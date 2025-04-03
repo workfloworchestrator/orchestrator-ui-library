@@ -22,49 +22,62 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({
     onUpdateColumWidth,
 }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
-
-    const onDrag: DraggableEventHandler = (_, data) => {
-        setPosition({ x: data.x, y: data.y });
-    };
+    const [isDragging, setIsDragging] = useState(false);
+    const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
 
     const resetPosition = () => {
         setPosition({ x: 0, y: 0 });
     };
 
-    const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
+    const onStart: DraggableEventHandler = () => {
+        setIsDragging(false);
+    };
+
+    const onDrag: DraggableEventHandler = (_, data) => {
+        setIsDragging(true);
+        setPosition({ x: data.x, y: data.y });
+    };
+
+    const onStop: DraggableEventHandler = (_, data) => {
+        if (headerRowRef.current && isDragging) {
+            const newWidth = startWidth + data.x;
+
+            onUpdateColumWidth(
+                fieldName,
+                newWidth > MINIMUM_COLUMN_WIDTH
+                    ? newWidth
+                    : MINIMUM_COLUMN_WIDTH,
+            );
+            resetPosition();
+            setIsDragging(false);
+        }
+    };
 
     const thElement =
         headerRowRef.current &&
         (headerRowRef.current.querySelector(
             `th[data-field-name="${fieldName}"]`,
         ) as HTMLTableCellElement);
+
     const startWidth =
         thElement?.getBoundingClientRect().width ?? MINIMUM_COLUMN_WIDTH;
+
+    const bounds = {
+        left: MINIMUM_COLUMN_WIDTH - startWidth,
+        top: 0,
+        bottom: 0,
+    };
 
     return (
         <div>
             <Draggable
+                allowAnyClick={false}
                 axis="x"
                 position={position}
+                onStart={onStart}
                 onDrag={onDrag}
-                bounds={{
-                    left: MINIMUM_COLUMN_WIDTH - startWidth,
-                    top: 0,
-                    bottom: 0,
-                }}
-                onStop={(_, data) => {
-                    if (headerRowRef.current) {
-                        const newWidth = startWidth + data.x;
-
-                        onUpdateColumWidth(
-                            fieldName,
-                            newWidth > MINIMUM_COLUMN_WIDTH
-                                ? newWidth
-                                : MINIMUM_COLUMN_WIDTH,
-                        );
-                        resetPosition();
-                    }
-                }}
+                bounds={bounds}
+                onStop={onStop}
             >
                 <div css={dragAndDropStyle} />
             </Draggable>

@@ -37,7 +37,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const tableStyle = css({
-        width: 'auto',
+        width: '100%',
     });
 
     const headerStyle = css({
@@ -136,7 +136,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         position: 'absolute',
         height: '100%',
         zIndex: theme.levels.menu,
-        '&:hover, &:active': {
+        '&:active, &:focus': {
             transition: 'background-color 0.15s',
             backgroundColor: isDarkThemeActive
                 ? theme.colors.mediumShade
@@ -152,7 +152,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
             opacity: 0.6,
             zIndex: theme.levels.navigation,
         },
-        '&:hover::after, &:active::after': {
+        '&:active::after': {
             transition: 'opacity 0.15s',
             opacity: 0,
         },

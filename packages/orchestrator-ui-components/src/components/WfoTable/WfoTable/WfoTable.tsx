@@ -16,7 +16,7 @@ import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import { WfoTableDataRows } from './WfoTableDataRows';
 import { WfoTableHeaderRow } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';
-import { getSortedVisibleColumns } from './utils';
+import { getColumnWidthsFromConfig, getSortedVisibleColumns } from './utils';
 
 export type Pagination = {
     pageSize: number;
@@ -99,10 +99,11 @@ export type WfoTableProps<T extends object> = {
     onRowClick?: (row: T) => void;
     onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
     onUpdateDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
+    appendFillerColumn?: boolean;
     className?: string;
 };
 
-type LocalColumnWidths = {
+export type LocalColumnWidths = {
     [key: string]: string;
 };
 
@@ -119,24 +120,23 @@ export const WfoTable = <T extends object>({
     onUpdateDataSorting,
     onUpdateDataSearch,
     onRowClick,
+    appendFillerColumn = true,
     className,
 }: WfoTableProps<T>) => {
-    const getColumnWidthsFromConfig = (
-        columnConfig: WfoTableColumnConfig<T>,
-    ): LocalColumnWidths => {
-        return Object.entries(columnConfig).reduce(
-            (columnWidths, [key, config]) => {
-                if (config.columnType === ColumnType.DATA) {
-                    columnWidths[key] = config.width ?? 'auto';
-                }
-                return columnWidths;
-            },
-            {} as LocalColumnWidths,
-        );
-    };
-
     const [localColumnWidths, setLocalColumnWidths] =
         useState<LocalColumnWidths>(getColumnWidthsFromConfig(columnConfig));
+
+    const columnConfigWithFiller: WfoTableColumnConfig<T> = appendFillerColumn
+        ? {
+              ...columnConfig,
+              filler: {
+                  columnType: ColumnType.CONTROL,
+                  label: '',
+                  width: '100%',
+                  renderControl: () => null,
+              },
+          }
+        : columnConfig;
 
     const {
         tableContainerStyle,
@@ -151,7 +151,7 @@ export const WfoTable = <T extends object>({
     const t = useTranslations('common');
 
     const sortedVisibleColumns = getSortedVisibleColumns(
-        columnConfig,
+        columnConfigWithFiller,
         columnOrder,
         hiddenColumns,
     );
@@ -166,7 +166,7 @@ export const WfoTable = <T extends object>({
     };
 
     const configWithLocalWidths: WfoTableColumnConfig<T> = Object.entries(
-        columnConfig,
+        columnConfigWithFiller,
     ).reduce((mergedConfig, [fieldName, fieldConfig]) => {
         const key = fieldName as keyof WfoTableColumnConfig<T>;
         if (fieldConfig.columnType === ColumnType.DATA) {
