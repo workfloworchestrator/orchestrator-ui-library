@@ -86,7 +86,7 @@ export function autoFieldFunction(
                     return AcceptField;
                 case 'ipvanynetwork': // Deprecated
                     return IpNetworkField;
-                case 'file':
+                case 'file': // Deprecated
                     return FileUploadField;
             }
             break;
