@@ -72,6 +72,43 @@ function FileUpload({
         return '';
     };
 
+    const handleUploadedFiles = (files: FileList | null) => {
+        const file = files?.item(0) || null;
+
+        if (!file) return;
+
+        const { type, size } = file;
+
+        if (allowedMimeTypes && !allowedMimeTypes.includes(type)) {
+            resetErrors();
+            setHasInValidFiletypes(true);
+            return;
+        } else if (size > fileSizeLimit) {
+            resetErrors();
+            setHasFileToBig(true);
+            return;
+        } else {
+            uploadFile({ url: cimUrl, file })
+                .then((response) => {
+                    if (response.error) {
+                        resetErrors();
+                        setHasError(true);
+                        return;
+                    } else {
+                        onChange('');
+                        resetErrors();
+                    }
+                })
+                .catch((error) => {
+                    resetErrors();
+                    setHasError(true);
+                    console.error(error);
+                    return;
+                });
+            reset();
+        }
+    };
+
     return (
         <section {...filterDOMProps(props)}>
             <EuiFormRow
@@ -85,51 +122,15 @@ function FileUpload({
             >
                 <>
                     <EuiFilePicker
-                        onChange={(files) => {
-                            const file = files?.item(0) || null;
-
-                            if (!file) return;
-
-                            const { type, size } = file;
-
-                            if (
-                                allowedMimeTypes &&
-                                !allowedMimeTypes.includes(type)
-                            ) {
-                                resetErrors();
-                                setHasInValidFiletypes(true);
-                                return;
-                            } else if (size > fileSizeLimit) {
-                                resetErrors();
-                                setHasFileToBig(true);
-                                return;
-                            } else {
-                                uploadFile({ url: cimUrl, file })
-                                    .then((response) => {
-                                        if (response.error) {
-                                            resetErrors();
-                                            setHasError(true);
-                                            return;
-                                        } else {
-                                            onChange('');
-                                            resetErrors();
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        resetErrors();
-                                        setHasError(true);
-                                        console.error(error);
-                                        return;
-                                    });
-                                reset();
-                            }
-                        }}
+                        onChange={handleUploadedFiles}
                         isInvalid={
                             hasError || hasInValidFiletypes || hasFileToBig
                         }
                         display="large"
                         isLoading={isLoading}
                         initialPromptText={t('initialPromptText')}
+                        multiple={false}
+                        accept={allowedMimeTypes}
                     />
                     <div
                         css={{
