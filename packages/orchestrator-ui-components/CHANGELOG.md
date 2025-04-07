@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.7.0
+
+### Minor Changes
+
+-   8a51b24: Adds fileupload field
+
 ## 3.6.0
 
 ### Minor Changes
