@@ -95,7 +95,7 @@ function FileUpload({
                         setHasError(true);
                         return;
                     } else {
-                        onChange('');
+                        onChange(response.data.file_id);
                         resetErrors();
                     }
                 })

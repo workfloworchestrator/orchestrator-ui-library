@@ -6,7 +6,8 @@ export interface FileUploadPayload {
 }
 
 interface FileUploadReturnValue {
-    id: string;
+    file_id: string;
+    file_name: string;
 }
 
 const fileUploadApi = orchestratorApi.injectEndpoints({
