@@ -6,7 +6,7 @@ import { FieldValue, RenderableFieldValue, SubscriptionDetail } from '@/types';
 
 export type ValueOverrideFunction = (
     fieldValue: FieldValue | RenderableFieldValue,
-    allFieldValues: FieldValue[],
+    allFieldValues: FieldValue[] | RenderableFieldValue[],
 ) => ReactNode;
 export type ValueOverrideConfiguration = Record<string, ValueOverrideFunction>;
 

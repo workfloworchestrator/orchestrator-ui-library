@@ -11,7 +11,7 @@ import { getStyles } from './styles';
 
 export type WfoProductBlockKeyValueRowProps = {
     fieldValue: FieldValue | RenderableFieldValue;
-    allFieldValues: FieldValue[];
+    allFieldValues: FieldValue[] | RenderableFieldValue[];
 };
 
 export const WfoProductBlockKeyValueRow: FC<
