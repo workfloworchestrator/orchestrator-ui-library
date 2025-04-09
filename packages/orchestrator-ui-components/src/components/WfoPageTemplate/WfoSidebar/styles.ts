@@ -22,7 +22,7 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
         '.euiSideNavItem--branch': {
             '&:after': {
                 backgroundColor: theme.colors.lightShade,
-                height: '120%',
+                height: '100%',
             },
             ':last-child': {
                 '&:after': {
