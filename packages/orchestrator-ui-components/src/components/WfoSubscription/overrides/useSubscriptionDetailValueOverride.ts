@@ -13,7 +13,7 @@ export const useSubscriptionDetailValueOverride = () => {
 
     const getOverriddenValue = (
         fieldValue: FieldValue | RenderableFieldValue,
-        allFieldValues: FieldValue[],
+        allFieldValues: FieldValue[] | RenderableFieldValue[],
     ): React.ReactNode | null => {
         if (!valueOverrideConfiguration) {
             return null;
