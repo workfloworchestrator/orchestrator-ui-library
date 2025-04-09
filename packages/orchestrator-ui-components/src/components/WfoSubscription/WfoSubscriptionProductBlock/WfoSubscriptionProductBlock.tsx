@@ -246,6 +246,9 @@ export const WfoSubscriptionProductBlock = ({
                                                     fieldValue={
                                                         productBlockInstanceValue
                                                     }
+                                                    allFieldValues={
+                                                        productBlock.productBlockInstanceValues
+                                                    }
                                                     key={index}
                                                 />
                                             );
