@@ -13,6 +13,7 @@ export const useSubscriptionDetailValueOverride = () => {
 
     const getOverriddenValue = (
         fieldValue: FieldValue | RenderableFieldValue,
+        allFieldValues: FieldValue[],
     ): React.ReactNode | null => {
         if (!valueOverrideConfiguration) {
             return null;
@@ -23,7 +24,7 @@ export const useSubscriptionDetailValueOverride = () => {
 
         // This check is needed because TS does not infer the type correctly
         if (renderFunctionForField) {
-            return renderFunctionForField(fieldValue);
+            return renderFunctionForField(fieldValue, allFieldValues);
         }
 
         return null;

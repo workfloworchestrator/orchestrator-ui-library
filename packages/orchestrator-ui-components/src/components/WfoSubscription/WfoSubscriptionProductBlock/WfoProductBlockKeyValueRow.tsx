@@ -11,11 +11,12 @@ import { getStyles } from './styles';
 
 export type WfoProductBlockKeyValueRowProps = {
     fieldValue: FieldValue | RenderableFieldValue;
+    allFieldValues: FieldValue[];
 };
 
 export const WfoProductBlockKeyValueRow: FC<
     WfoProductBlockKeyValueRowProps
-> = ({ fieldValue }) => {
+> = ({ fieldValue, allFieldValues }) => {
     const { leftColumnStyle, rowStyle } = useWithOrchestratorTheme(getStyles);
     const { getOverriddenValue } = useSubscriptionDetailValueOverride();
 
@@ -40,7 +41,7 @@ export const WfoProductBlockKeyValueRow: FC<
                 <b>{camelToHuman(field)}</b>
             </td>
             <td>
-                {getOverriddenValue(fieldValue) ?? (
+                {getOverriddenValue(fieldValue, allFieldValues) ?? (
                     <WfoProductBlockValue value={value} />
                 )}
             </td>
