@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.8.0
+
+### Minor Changes
+
+-   93d46aa: 1635 Adds extra parameter ("allFieldValues") to the override function to have all data available when overriding a specific cell value
+
+### Patch Changes
+
+-   6fdc33a: 1824 Fix for the thin gray line in the sidebar that went beyond settings.
+
 ## 3.7.0
 
 ### Minor Changes
