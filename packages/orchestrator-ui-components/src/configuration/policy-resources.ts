@@ -17,5 +17,6 @@ export enum PolicyResource {
     TASKS_CREATE = '/orchestrator/processes/create/task',
     TASKS_RETRY_ALL = '/orchestrator/processes/all-tasks/retry',
     SETTINGS_FLUSH_CACHE = '/orchestrator/settings/flush-cache',
+    SETTINGS_START_STOP_ENGINE = '/orchestrator/settings/start-stop-engine',
     SET_IN_SYNC = '/orchestrator/subscriptions/set-in-sync',
 }
