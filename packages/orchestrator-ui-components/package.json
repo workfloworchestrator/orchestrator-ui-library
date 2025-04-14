@@ -58,7 +58,7 @@
         "unidiff": "^1.0.4",
         "uniforms": "^3.8.1",
         "uniforms-bridge-json-schema": "^3.8.1",
-        "uniforms-unstyled": "^3.8.1",
+        "uniforms-unstyled": "^4.0.0",
         "use-query-params": "2.2.1"
     },
     "devDependencies": {
