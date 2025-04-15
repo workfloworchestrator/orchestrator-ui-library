@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.8.1
+
+### Patch Changes
+
+-   e75d0e4: 1844 Adds isAllowed policy check to the start-stop-engine section
+
 ## 3.8.0
 
 ### Minor Changes
