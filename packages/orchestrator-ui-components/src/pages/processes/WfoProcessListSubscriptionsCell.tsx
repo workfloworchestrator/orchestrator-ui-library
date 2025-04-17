@@ -1,6 +1,7 @@
 import React from 'react';
 import { FC } from 'react';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiFlexGroup } from '@elastic/eui';
@@ -31,6 +32,7 @@ export const WfoProcessListSubscriptionsCell: FC<
     onMoreSubscriptionsClick = () => {},
 }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const t = useTranslations('processes.index');
 
     const { length } = subscriptions;
 
@@ -77,12 +79,8 @@ export const WfoProcessListSubscriptionsCell: FC<
                         color={toSecondaryColor(theme.colors.primary)}
                         onClick={() => onMoreSubscriptionsClick()}
                         iconOnClick={() => onMoreSubscriptionsClick()}
-                        onClickAriaLabel={
-                            'toDo: Show all related subscriptions'
-                        }
-                        iconOnClickAriaLabel={
-                            'toDo: Show all related subscriptions'
-                        }
+                        onClickAriaLabel={t('showAllRelatedSubscriptions')}
+                        iconOnClickAriaLabel={t('showAllRelatedSubscriptions')}
                     >
                         + {numberOfNotVisibleSubscriptions}
                     </WfoBadge>
