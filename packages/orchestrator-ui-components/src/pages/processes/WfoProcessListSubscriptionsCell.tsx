@@ -86,18 +86,6 @@ export const WfoProcessListSubscriptionsCell: FC<
                     >
                         + {numberOfNotVisibleSubscriptions}
                     </WfoBadge>
-
-                    // <div
-                    //     css={{
-                    //         backgroundColor: 'hotpink',
-                    //         padding: '3px',
-                    //         borderRadius: '50%',
-                    //         fontSize: '0.75rem',
-                    //         // flex: '0 0 auto',
-                    //     }}
-                    // >
-                    //     {`+${numberOfNotVisibleSubscriptions}`}
-                    // </div>
                 )}
             </EuiFlexGroup>
         </>
