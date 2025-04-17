@@ -157,6 +157,11 @@ export const WfoProcessesList = ({
                 <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                     numberOfSubscriptionsToRender={1}
+                    onMoreSubscriptionsClick={() =>
+                        console.log('Show modal for more subscriptions:', {
+                            subscriptions,
+                        })
+                    }
                 />
             ),
             renderDetails: ({ page: subscriptions }) => (
