@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
     FilterQuery,
@@ -99,6 +100,7 @@ export const WfoProcessesList = ({
     const t = useTranslations('processes.index');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
+    const router = useRouter();
 
     const defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> = {
         workflowName: {
@@ -153,10 +155,13 @@ export const WfoProcessesList = ({
             columnType: ColumnType.DATA,
             label: t('subscriptions'),
             width: '425px',
-            renderData: ({ page: subscriptions }) => (
+            renderData: ({ page: subscriptions }, { processId }) => (
                 <WfoProcessListSubscriptionsCell
                     subscriptions={subscriptions}
                     numberOfSubscriptionsToRender={1}
+                    onMoreSubscriptionsClick={() =>
+                        router.push(`${PATH_WORKFLOWS}/${processId}`)
+                    }
                 />
             ),
             renderDetails: ({ page: subscriptions }) => (

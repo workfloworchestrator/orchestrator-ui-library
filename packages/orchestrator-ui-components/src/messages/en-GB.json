@@ -212,7 +212,8 @@
             "started": "Started",
             "lastModified": "Last modified",
             "workflowTarget": "Target",
-            "productTag": "Product tag"
+            "productTag": "Product tag",
+            "showAllRelatedSubscriptions": "Show all related subscriptions"
         },
         "detail": {
             "retry": "Retry",

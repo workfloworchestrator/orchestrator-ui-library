@@ -1,11 +1,14 @@
 import React from 'react';
 import { FC } from 'react';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiFlexGroup } from '@elastic/eui';
 
-import { Subscription } from '../../types';
+import { WfoBadge } from '@/components';
+import { useOrchestratorTheme } from '@/hooks';
+import { Subscription } from '@/types';
 
 export const RENDER_ALL = 'RENDER_ALL';
 export enum RenderDirection {
@@ -17,6 +20,7 @@ export type WfoProcessesListSubscriptionsCellProps = {
     subscriptions: Pick<Subscription, 'subscriptionId' | 'description'>[];
     numberOfSubscriptionsToRender?: number | typeof RENDER_ALL;
     renderDirection?: RenderDirection;
+    onMoreSubscriptionsClick?: () => void;
 };
 
 export const WfoProcessListSubscriptionsCell: FC<
@@ -25,7 +29,11 @@ export const WfoProcessListSubscriptionsCell: FC<
     subscriptions,
     numberOfSubscriptionsToRender = RENDER_ALL,
     renderDirection = RenderDirection.HORIZONTAL,
+    onMoreSubscriptionsClick = () => {},
 }) => {
+    const { theme, toSecondaryColor } = useOrchestratorTheme();
+    const t = useTranslations('processes.index');
+
     const { length } = subscriptions;
 
     if (length === 0) {
@@ -47,8 +55,9 @@ export const WfoProcessListSubscriptionsCell: FC<
                         ? 'row'
                         : 'column'
                 }
+                alignItems="center"
                 gutterSize={
-                    renderDirection === RenderDirection.HORIZONTAL ? 'm' : 'xs'
+                    renderDirection === RenderDirection.HORIZONTAL ? 's' : 'xs'
                 }
             >
                 {visibleSubscriptions.map((subscription) => (
@@ -63,8 +72,18 @@ export const WfoProcessListSubscriptionsCell: FC<
                         {subscription.description}
                     </Link>
                 ))}
+
                 {numberOfNotVisibleSubscriptions > 0 && (
-                    <span>{`(+${numberOfNotVisibleSubscriptions})`}</span>
+                    <WfoBadge
+                        textColor={theme.colors.primaryText}
+                        color={toSecondaryColor(theme.colors.primary)}
+                        onClick={() => onMoreSubscriptionsClick()}
+                        iconOnClick={() => onMoreSubscriptionsClick()}
+                        onClickAriaLabel={t('showAllRelatedSubscriptions')}
+                        iconOnClickAriaLabel={t('showAllRelatedSubscriptions')}
+                    >
+                        + {numberOfNotVisibleSubscriptions}
+                    </WfoBadge>
                 )}
             </EuiFlexGroup>
         </>

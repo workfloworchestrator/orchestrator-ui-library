@@ -209,7 +209,8 @@
             "started": "Starttijd",
             "lastModified": "Aangepast op",
             "workflowTarget": "Target",
-            "productTag": "Product tag"
+            "productTag": "Product tag",
+            "showAllRelatedSubscriptions": "Toon alle gerelateerde subscriptions"
         },
         "detail": {
             "retry": "Probeer opnieuw",
