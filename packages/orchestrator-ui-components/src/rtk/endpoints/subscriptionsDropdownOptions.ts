@@ -29,7 +29,6 @@ export const subscriptionsDropdownOptionsQuery = `
                     parent
                     productBlockInstanceValues
                     subscriptionInstanceId
-                    inUseByRelations
                 }
                 fixedInputs
             }
