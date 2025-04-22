@@ -62,6 +62,14 @@ export type ProductBlockInstance = {
     subscription: Pick<Subscription, 'subscriptionId' | 'description'>;
 };
 
+export type ProductBlockInstanceForDropdown = {
+    id: number;
+    subscriptionInstanceId: string;
+    parent: Nullable<number>;
+    productBlockInstanceValues: FieldValue[];
+    subscription: Pick<Subscription, 'subscriptionId' | 'description'>;
+};
+
 export interface ResourceTypeDefinition {
     description: string;
     resourceType: string;
@@ -453,7 +461,7 @@ export type SubscriptionDropdownOption = {
     subscriptionId: Subscription['subscriptionId'];
     product: Pick<ProductDefinition, 'tag' | 'productId'>;
     customer: Pick<Customer, 'fullname' | 'customerId'>;
-    productBlockInstances: ProductBlockInstance[];
+    productBlockInstances: ProductBlockInstanceForDropdown[];
     fixedInputs: FieldValue[];
     tag: string;
     status: SubscriptionStatus;
