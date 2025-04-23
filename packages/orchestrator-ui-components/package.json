@@ -34,7 +34,7 @@
         "dev": "npm run build -- --watch"
     },
     "dependencies": {
-        "@elastic/eui": "^97.0.0",
+        "@elastic/eui": "^101.4.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
