@@ -85,7 +85,7 @@ export const TableSettingsModal = <T,>({
                 {columns.map(({ field, name, isVisible }) => (
                     <div key={field.toString()}>
                         <EuiFormRow
-                            display="columnCompressedSwitch"
+                            display="columnCompressed"
                             label={name}
                             css={formRowStyle}
                         >
