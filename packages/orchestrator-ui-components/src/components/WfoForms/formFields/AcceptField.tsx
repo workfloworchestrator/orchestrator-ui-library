@@ -114,8 +114,8 @@ function Accept({
                 state.skip
                     ? 'SKIPPED'
                     : state.allChecked
-                    ? 'ACCEPTED'
-                    : 'INCOMPLETE',
+                      ? 'ACCEPTED'
+                      : 'INCOMPLETE',
             );
 
             return { ...state };
