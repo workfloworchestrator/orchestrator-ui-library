@@ -4,10 +4,10 @@
 
 ### Patch Changes
 
--   Storybook initial version
+- Storybook initial version
 
 ## 0.0.1
 
 ### Patch Changes
 
--   Storybook init
+- Storybook init

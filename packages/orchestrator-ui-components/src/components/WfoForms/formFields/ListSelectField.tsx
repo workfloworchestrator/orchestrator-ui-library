@@ -12,7 +12,6 @@
  * limitations under the License.
  *
  */
-
 /* NOTE: This component is only needed to avoid the circular import that started to be a problem
 after the upgrade to react-script 5.0. The original SelectField would import itself to handle the list:
 that seems to be impossible with the new webpack.
