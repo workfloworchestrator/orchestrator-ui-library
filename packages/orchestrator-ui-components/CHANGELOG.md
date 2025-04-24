@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.9.0
+
+### Minor Changes
+
+-   5f8c712: 1210 Adds a badge with number of subscriptions not shown in the affected-subscriptions cell on the process list page
+
+### Patch Changes
+
+-   adc70ef: Remove inUseByRelations field from query SubscriptionDropdownOptions
+
+    To benefit from the query optimization in https://github.com/workfloworchestrator/orchestrator-core/pull/922
+
 ## 3.8.1
 
 ### Patch Changes
