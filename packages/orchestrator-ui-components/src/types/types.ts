@@ -62,13 +62,10 @@ export type ProductBlockInstance = {
     subscription: Pick<Subscription, 'subscriptionId' | 'description'>;
 };
 
-export type ProductBlockInstanceForDropdown = {
-    id: number;
-    subscriptionInstanceId: string;
-    parent: Nullable<number>;
-    productBlockInstanceValues: FieldValue[];
-    subscription: Pick<Subscription, 'subscriptionId' | 'description'>;
-};
+export type ProductBlockInstanceForDropdown = Omit<
+    ProductBlockInstance,
+    'inUseByRelations'
+>;
 
 export interface ResourceTypeDefinition {
     description: string;
