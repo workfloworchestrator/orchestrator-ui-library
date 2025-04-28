@@ -142,7 +142,7 @@ export const orchestratorApi = createApi({
         );
 
         switch (baseQueryType) {
-            case BaseQueryTypes.fetch:
+            case BaseQueryTypes.fetch: {
                 const fetchFn = fetchBaseQuery({
                     baseUrl: customApi
                         ? customApi.apiBaseUrl
@@ -152,7 +152,8 @@ export const orchestratorApi = createApi({
                         catchErrorResponse(response, authActive),
                 });
                 return fetchFn(args, api, {});
-            default:
+            }
+            default: {
                 const graphqlFn = wfoGraphqlRequestBaseQuery(
                     {
                         url: customApi
@@ -166,6 +167,7 @@ export const orchestratorApi = createApi({
                     authActive,
                 );
                 return graphqlFn(args, api, {});
+            }
         }
     },
     endpoints: () => ({}),

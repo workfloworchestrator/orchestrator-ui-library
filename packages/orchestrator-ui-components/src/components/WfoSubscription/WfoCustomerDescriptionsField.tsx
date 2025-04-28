@@ -28,9 +28,8 @@ export const WfoCustomerDescriptionsField: FC<
         customerDescriptionsCustomerNameStyle,
         customerDescriptionsFormStyle,
     } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
-    const [updateCustomerDescription, {}] =
-        useUpdateCustomerDescriptionMutation();
-    const [setCustomerDescription, {}] = useSetCustomerDescriptionMutation();
+    const [updateCustomerDescription] = useUpdateCustomerDescriptionMutation();
+    const [setCustomerDescription] = useSetCustomerDescriptionMutation();
     const customerIds = customerDescriptions.map(
         (customerDescription) => customerDescription.customerId,
     );

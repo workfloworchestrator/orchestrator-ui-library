@@ -14,7 +14,7 @@ import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
 import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
 import { toOptionalArrayEntry } from '@/utils';
 
-export const WfoHamburgerMenu = ({}) => {
+export const WfoHamburgerMenu = () => {
     const t = useTranslations('hamburgerMenu');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
