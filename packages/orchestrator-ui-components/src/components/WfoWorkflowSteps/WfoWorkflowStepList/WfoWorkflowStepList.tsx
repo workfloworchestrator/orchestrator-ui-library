@@ -43,14 +43,12 @@ export const WfoProcessSubscriptionDelta = ({
 }) => {
     const { data, isFetching } = useGetRawProcessDetailQuery({ processId });
 
-    const subscriptionKey =
+    const subscriptionId =
         data?.current_state?.subscription?.subscription_id ?? '';
     const newText = data?.current_state?.subscription ?? null;
-    const oldText =
-        data?.current_state?.__old_subscriptions__ &&
-        subscriptionKey in data?.current_state?.__old_subscriptions__
-            ? data?.current_state?.__old_subscriptions__[subscriptionKey]
-            : null;
+    const oldSubscriptions = data?.current_state?.__old_subscriptions__ || {};
+    const oldSubscription = subscriptionId in oldSubscriptions;
+    const oldText = oldSubscription || null;
 
     return isFetching ? (
         <WfoLoading />

@@ -60,8 +60,10 @@ export const WfoStep = React.forwardRef(
             getStepToggleExpandStyle,
         } = useWithOrchestratorTheme(getWorkflowStepsStyles);
         const t = useTranslations('processes.steps');
-        const hasHtmlMail =
-            step.stateDelta?.hasOwnProperty('confirmation_mail');
+        const hasHtmlMail = Object.prototype.hasOwnProperty.call(
+            step.stateDelta,
+            'confirmation_mail',
+        );
 
         const stepContent = step.stateDelta
             ? getStepContent(step.stateDelta, showHiddenKeys)
