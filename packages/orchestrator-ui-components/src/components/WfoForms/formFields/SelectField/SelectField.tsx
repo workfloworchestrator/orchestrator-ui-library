@@ -101,7 +101,7 @@ export function UnconnectedSelectField({
         if (selectedValue && selectedValue.value !== 'undefined') {
             onChange(selectedValue.value);
         }
-    }, []);
+    }, [onChange, selectedValue]);
 
     if (fieldType === Array) {
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)

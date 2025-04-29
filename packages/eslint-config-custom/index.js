@@ -1,4 +1,5 @@
 import prettier from 'eslint-config-prettier';
+import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -28,5 +29,22 @@ export default defineConfig([
             'react-hooks/exhaustive-deps': 'warn', // Enforce exhaustive deps in effects
         },
     },
-    typescriptEslint.configs.recommended,
+    {
+        files: ['**/*.{ts,tsx}'],
+        plugins: { 'typescript-eslint': typescriptEslint },
+        extends: ['typescript-eslint/recommended'],
+        rules: {
+            '@typescript-eslint/ban-ts-comment': 'warn',
+        },
+    },
+    {
+        plugins: {
+            react,
+        },
+        rules: {
+            'react/react-in-jsx-scope': 'error',
+            'react/jsx-uses-react': 'error',
+        },
+    },
+    prettier,
 ]);
