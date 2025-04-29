@@ -31,8 +31,8 @@ export default defineConfig([
     },
     {
         files: ['**/*.{ts,tsx}'],
-        plugins: { 'typescript-eslint': typescriptEslint },
-        extends: ['typescript-eslint/recommended'],
+        plugins: { typescriptEslint },
+        extends: ['typescriptEslint/recommended'],
         rules: {
             '@typescript-eslint/ban-ts-comment': 'warn',
         },
