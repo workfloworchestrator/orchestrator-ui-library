@@ -1,13 +1,21 @@
 import prettier from 'eslint-config-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
 
 import js from '@eslint/js';
 
 export default defineConfig([
+    globalIgnores([
+        'node_modules',
+        'dist',
+        'build',
+        'coverage',
+        '.next',
+        'next.config.js',
+    ]),
     {
         files: ['**/*.{js,ts,jsx,tsx}'],
         plugins: { js },
