@@ -30,7 +30,7 @@
         "generate-version": "node -p \"'export const ORCHESTRATOR_UI_LIBRARY_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/configuration/version.ts && prettier --write src/configuration/version.ts",
         "build": "npm run generate-version && tsup src/index.ts",
         "tsc": "tsc --noEmit",
-        "lint": "eslint \"src/**/*.ts*\"",
+        "lint": "eslint",
         "dev": "npm run build -- --watch"
     },
     "dependencies": {
