@@ -165,7 +165,7 @@ function Vlan({
         ) {
             onChange('');
         }
-    }, [onChange, subscriptionId, isFetched, portIsTagged]);
+    }, [onChange, subscriptionId, isFetched, portIsTagged, value, disabled]);
 
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);

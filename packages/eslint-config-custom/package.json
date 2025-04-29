@@ -3,6 +3,8 @@
     "version": "1.4.1",
     "license": "Apache-2.0",
     "description": "Contains the eslint configuration used in the Workflow orchestrator frontend projects",
+    "main": "index.js",
+    "type": "module",
     "author": {
         "name": "Workflow Orchestrator Programme",
         "email": "workfloworchestrator.board@commonsconservancy.org",
@@ -24,24 +26,19 @@
         "dev": "npm run build -- --watch"
     },
     "dependencies": {
+        "@eslint/js": "^9.25.1",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@typescript-eslint/eslint-plugin": "^8.12.2",
+        "eslint": "^9.25.1",
         "eslint-config-next": "^15.0.1",
         "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^5.2.0",
-        "prettier": "^3.2.5"
+        "globals": "^14.0.0",
+        "typescript-eslint": "^8.31.0"
     },
-    "main": "index.js",
-    "type": "module",
     "publishConfig": {
         "access": "public",
         "provenance": true
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.25.1",
-        "eslint": "^9.25.1",
-        "eslint-plugin-react": "^7.37.5",
-        "globals": "^14.0.0",
-        "typescript-eslint": "^8.31.0"
     }
 }
