@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "storybook dev -p 6006",
-        "build:storybook": "storybook build"
+        "build:storybook": "storybook build",
+        "lint": "eslint"
     },
     "dependencies": {
         "@orchestrator-ui/orchestrator-ui-components": "*",
@@ -24,23 +25,16 @@
         "storybook": "^8.5.0"
     },
     "devDependencies": {
+        "@orchestrator-ui/eslint-config-custom": "*",
         "@chromatic-com/storybook": "^3.2.4",
-        "@eslint/js": "^8.57.1",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",
         "@vitejs/plugin-react": "^4.3.4",
         "eslint": "^9.25.1",
-        "eslint-plugin-react-hooks": "^5.0.0",
-        "eslint-plugin-react-refresh": "^0.4.16",
         "eslint-plugin-storybook": "^0.12.0",
         "globals": "^16.0.0",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.18.2",
         "vite": "^6.0.5"
-    },
-    "eslintConfig": {
-        "extends": [
-            "plugin:storybook/recommended"
-        ]
     }
 }

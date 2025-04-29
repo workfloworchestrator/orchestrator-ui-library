@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { WfoSubscriptionSyncStatusBadge } from '@orchestrator-ui/orchestrator-ui-components';
 import type { Meta } from '@storybook/react';
 
