@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { IntlProvider } from 'next-intl';
 
 import { WfoError } from '@orchestrator-ui/orchestrator-ui-components';
