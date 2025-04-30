@@ -1,25 +1,8 @@
 import { debounce } from 'lodash';
-import { getSession } from 'next-auth/react';
 
-import type { WfoSession } from '@/hooks';
+import { getWebSocket, orchestratorApi } from '@/rtk';
 import type { RootState } from '@/rtk/store';
 import { CacheTag, CacheTagType } from '@/types';
-
-import { orchestratorApi } from '../api';
-
-const getWebSocket = async (url: string) => {
-    const session = (await getSession()) as WfoSession;
-
-    if (session?.accessToken) {
-        // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459
-        return new WebSocket(url, [
-            'base64.bearer.token',
-            session?.accessToken,
-        ]);
-    } else {
-        return new WebSocket(url);
-    }
-};
 
 const PING_INTERVAL_MS = 30000;
 const NO_PONG_RECEIVED_TIMEOUT_MS = 35000;
