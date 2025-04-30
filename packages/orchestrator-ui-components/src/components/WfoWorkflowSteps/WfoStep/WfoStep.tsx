@@ -61,7 +61,7 @@ export const WfoStep = React.forwardRef(
         } = useWithOrchestratorTheme(getWorkflowStepsStyles);
         const t = useTranslations('processes.steps');
         const hasHtmlMail = Object.prototype.hasOwnProperty.call(
-            step.stateDelta,
+            step?.stateDelta || {},
             'confirmation_mail',
         );
 
