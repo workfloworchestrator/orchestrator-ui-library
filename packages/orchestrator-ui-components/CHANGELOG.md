@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.9.1
+
+### Patch Changes
+
+-   3f64535: 1337 Move getWebSocket to utils.ts
+
 ## 3.9.0
 
 ### Minor Changes
