@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import {
     EuiComment,
@@ -52,11 +53,11 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
         {
             label: t('id'),
             content: (
-                <a
+                <Link
                     href={`${processUrl}/${subscriptionDetailProcess.processId}`}
                 >
                     {subscriptionDetailProcess.processId}
-                </a>
+                </Link>
             ),
         },
         {
