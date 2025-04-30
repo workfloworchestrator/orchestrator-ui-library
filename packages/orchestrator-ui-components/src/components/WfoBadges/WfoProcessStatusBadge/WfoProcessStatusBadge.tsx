@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { ProcessStatus } from '../../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { ProcessStatus } from '@/types';
+
 import { WfoBadge } from '../WfoBadge';
 
 export type WfoProcessStatusBadgeProps = {

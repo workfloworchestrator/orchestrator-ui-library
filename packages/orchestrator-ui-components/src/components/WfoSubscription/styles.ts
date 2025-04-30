@@ -5,21 +5,23 @@ import { WfoTheme } from '@/hooks';
 export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
     const productBlockTreeWidth = theme.base * 28;
 
-    const contentCellStyle = css({
-        padding: (theme.base / 4) * 3,
+    const labelCellStyle = css({
+        marginLeft: theme.size.m,
+    });
+
+    const cellGroupStyle = css({
+        paddingBlock: theme.size.m,
+    });
+
+    const borderStyle = css({
         borderBottom: theme.border.thin,
-        borderBottomColor: theme.colors.lightShade,
     });
 
-    const headerCellStyle = css({
-        ...contentCellStyle,
-        paddingLeft: 0,
-        width: theme.base * 16,
-        fontWeight: theme.font.weight.medium,
-    });
-
-    const emptyCellStyle = css({
-        width: theme.base,
+    const rowStyle = css({
+        paddingInline: theme.size.m,
+        '&:last-of-type .border': {
+            borderBottom: 'none',
+        },
     });
 
     const tableStyle = css({
@@ -33,24 +35,6 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
         paddingLeft: theme.base / 2,
     });
     const workflowTargetStyle = css({ fontWeight: theme.font.weight.bold });
-
-    const lastContentCellStyle = css([
-        {
-            ...contentCellStyle,
-        },
-        {
-            borderBottom: 0,
-        },
-    ]);
-
-    const lastHeaderCellStyle = css([
-        {
-            ...headerCellStyle,
-        },
-        {
-            borderBottomWidth: 0,
-        },
-    ]);
 
     const inUseByRelationDetailsStyle = css({
         borderColor: theme.colors.lightShade,
@@ -71,14 +55,13 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
         alignItems: 'flex-start',
     });
     return {
-        contentCellStyle,
-        headerCellStyle,
+        rowStyle,
+        labelCellStyle,
+        cellGroupStyle,
+        borderStyle,
         tableStyle,
         timeLineStyle,
         workflowTargetStyle,
-        emptyCellStyle,
-        lastContentCellStyle,
-        lastHeaderCellStyle,
         inUseByRelationDetailsStyle,
         productBlockTreeWidth,
         customerDescriptionsCustomerNameStyle,

@@ -1,18 +1,25 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import {
     EuiComment,
     EuiCommentList,
     EuiFlexGroup,
+    EuiFlexItem,
     EuiSpacer,
     EuiText,
 } from '@elastic/eui';
 
-import { WfoLoading, WfoRadioDropdownOption } from '@/components';
-import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
-import { WfoRadioDropdown, sortProcessesByDate } from '@/components';
+import {
+    PATH_TASKS,
+    PATH_WORKFLOWS,
+    WfoLoading,
+    WfoRadioDropdown,
+    WfoRadioDropdownOption,
+    sortProcessesByDate,
+} from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder, SubscriptionDetailProcess } from '@/types';
 import {
@@ -33,65 +40,63 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
     const t = useTranslations('subscriptions.detail.processDetail');
     const {
         tableStyle,
-        contentCellStyle,
-        headerCellStyle,
-        emptyCellStyle,
-        lastContentCellStyle,
-        lastHeaderCellStyle,
+        labelCellStyle,
+        cellGroupStyle,
+        borderStyle,
+        rowStyle,
     } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
     const processUrl = subscriptionDetailProcess.isTask
         ? PATH_TASKS
         : PATH_WORKFLOWS;
 
+    const rows = [
+        {
+            label: t('id'),
+            content: (
+                <Link
+                    href={`${processUrl}/${subscriptionDetailProcess.processId}`}
+                >
+                    {subscriptionDetailProcess.processId}
+                </Link>
+            ),
+        },
+        {
+            label: t('status'),
+            content: (
+                <div>
+                    <WfoProcessStatusBadge
+                        processStatus={subscriptionDetailProcess.lastStatus}
+                    />
+                </div>
+            ),
+        },
+        {
+            label: t('startedAt'),
+            content: parseDateToLocaleDateTimeString(
+                parseDate(subscriptionDetailProcess.startedAt),
+            ),
+        },
+        {
+            label: t('startedBy'),
+            content: subscriptionDetailProcess.createdBy,
+        },
+    ];
+
     return (
-        <>
-            <table css={tableStyle}>
-                <tbody>
-                    <tr>
-                        <td css={emptyCellStyle}></td>
-                        <td css={headerCellStyle}>{t('id')}</td>
-                        <td css={contentCellStyle}>
-                            <a
-                                href={`${processUrl}/${subscriptionDetailProcess.processId}`}
-                            >
-                                {subscriptionDetailProcess.processId}
-                            </a>
-                        </td>
-                        <td css={emptyCellStyle}></td>
-                    </tr>
-                    <tr>
-                        <td css={emptyCellStyle}></td>
-                        <td css={headerCellStyle}>{t('status')}</td>
-                        <td css={contentCellStyle}>
-                            <WfoProcessStatusBadge
-                                processStatus={
-                                    subscriptionDetailProcess.lastStatus
-                                }
-                            />
-                        </td>
-                        <td css={emptyCellStyle}></td>
-                    </tr>
-                    <tr>
-                        <td css={emptyCellStyle}></td>
-                        <td css={headerCellStyle}>{t('startedAt')}</td>
-                        <td css={contentCellStyle}>
-                            {parseDateToLocaleDateTimeString(
-                                parseDate(subscriptionDetailProcess.startedAt),
-                            )}
-                        </td>
-                        <td css={emptyCellStyle}></td>
-                    </tr>
-                    <tr>
-                        <td css={emptyCellStyle}></td>
-                        <td css={lastHeaderCellStyle}>{t('startedBy')}</td>
-                        <td css={lastContentCellStyle}>
-                            {subscriptionDetailProcess.createdBy}
-                        </td>
-                        <td css={emptyCellStyle}></td>
-                    </tr>
-                </tbody>
-            </table>
-        </>
+        <div css={tableStyle}>
+            {rows.map(({ label, content }, idx) => (
+                <div key={idx} css={rowStyle}>
+                    <div className="border" css={borderStyle}>
+                        <EuiFlexGroup key={label} css={cellGroupStyle}>
+                            <EuiFlexItem css={labelCellStyle} grow={2}>
+                                {label}
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={9}>{content}</EuiFlexItem>
+                        </EuiFlexGroup>
+                    </div>
+                </div>
+            ))}
+        </div>
     );
 };
 
