@@ -1,5 +1,10 @@
 [
     {
+        "orchestratorUiVersion": "3.10.0",
+        "minimumOrchestratorCoreVersion": "4.0.0",
+        "changes": "Workflow description in BE is mandatory on metadata pages"
+    },
+    {
         "orchestratorUiVersion": "3.4.0",
         "minimumOrchestratorCoreVersion": "2.10.0",
         "changes": "Endpoints in BE to modify description on metadata pages"

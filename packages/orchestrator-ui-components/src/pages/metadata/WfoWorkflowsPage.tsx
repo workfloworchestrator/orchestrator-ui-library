@@ -131,19 +131,34 @@ export const WfoWorkflowsPage = () => {
             columnType: ColumnType.DATA,
             label: t('description'),
             width: '700px',
-            renderData: (value, row) =>
-                value ? (
-                    <WfoMetadataDescriptionField
-                        onSave={(updatedNote) =>
-                            updateWorkflow({
-                                id: row.workflowId,
-                                description: updatedNote,
-                            })
-                        }
-                        description={value}
-                    />
-                ) : null,
+            renderData: (value, row) => (
+                <WfoMetadataDescriptionField
+                    onSave={(updatedNote) =>
+                        updateWorkflow({
+                            id: row.workflowId,
+                            description: updatedNote,
+                        })
+                    }
+                    description={value}
+                />
+            ),
         },
+        // description: {
+        //     columnType: ColumnType.DATA,
+        //     label: t('description'),
+        //     width: '700px',
+        //     renderData: (value, row) => (
+        //         <WfoMetadataDescriptionField
+        //             onSave={(updatedNote) =>
+        //                 updateWorkflow({
+        //                     id: row.workflowId,
+        //                     description: updatedNote,
+        //                 })
+        //             }
+        //             description={value}
+        //         />
+        //         ),
+        // },
         target: {
             columnType: ColumnType.DATA,
             label: t('target'),
