@@ -304,7 +304,7 @@ export type GraphQLPageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
     startCursor: number | null;
-    totalItems: number | null;
+    totalItems: number;
     endCursor: number | null;
     sortFields: string[];
     filterFields: string[];
