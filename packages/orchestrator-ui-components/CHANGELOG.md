@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 3.10.0
+
+### Minor Changes
+
+-   2ae5b18: Replace hardcoded query params with constants and enums
+
+### Patch Changes
+
+-   4cefe05: 1858 Fix layout issue with workflows on subscription detail page
+
 ## 3.9.1
 
 ### Patch Changes
