@@ -18,3 +18,4 @@ export * from './toObjectWithSerializedValues';
 export * from './toObjectWithSortedKeys';
 export * from './uuid';
 export * from './cacheTag';
+export * from './getQueryParams';
