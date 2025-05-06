@@ -1,5 +1,3 @@
-import type { PydanticComponentMatcher } from 'pydantic-forms';
-
 import { configureStore } from '@reduxjs/toolkit';
 import type { EnhancedStore } from '@reduxjs/toolkit';
 import type { Dispatch, UnknownAction } from '@reduxjs/toolkit';
@@ -10,7 +8,7 @@ import {
     OrchestratorComponentOverride,
     getOrchestratorComponentOverrideSlice,
 } from '@/rtk/slices/orchestratorComponentOverride';
-import { getPydanticComponentMatcherSlice } from '@/rtk/slices/pydanticComponentMatcher';
+import { PydanticForm, getPydanticFormSlice } from '@/rtk/slices/pydanticForm';
 import type { OrchestratorConfig } from '@/types';
 
 import { orchestratorApi } from './api';
@@ -25,7 +23,7 @@ export type RootState = {
     toastMessages: ReturnType<typeof toastMessagesReducer>;
     orchestratorConfig: OrchestratorConfig;
     orchestratorComponentOverride?: OrchestratorComponentOverride;
-    pydanticComponentMatcher?: PydanticComponentMatcher;
+    pydanticForm?: PydanticForm;
     customApis: CustomApiConfig[];
 };
 
@@ -34,22 +32,20 @@ export type InitialOrchestratorStoreConfig = Pick<
     | 'orchestratorConfig'
     | 'customApis'
     | 'orchestratorComponentOverride'
-    | 'pydanticComponentMatcher'
+    | 'pydanticForm'
 >;
 
 export const getOrchestratorStore = ({
     orchestratorConfig,
     orchestratorComponentOverride = {},
-    pydanticComponentMatcher,
+    pydanticForm = {},
     customApis,
 }: InitialOrchestratorStoreConfig): EnhancedStore<RootState> => {
     const configSlice = getOrchestratorConfigSlice(orchestratorConfig);
     const orchestratorComponentOverrideSlice =
         getOrchestratorComponentOverrideSlice(orchestratorComponentOverride);
     const customApisSlice = getCustomApiSlice(customApis);
-    const pydanticComponentMatcherSlice = getPydanticComponentMatcherSlice(
-        pydanticComponentMatcher,
-    );
+    const componentMatcherSlice = getPydanticFormSlice(pydanticForm);
 
     const orchestratorStore = configureStore({
         reducer: {
@@ -59,7 +55,7 @@ export const getOrchestratorStore = ({
             orchestratorComponentOverride:
                 orchestratorComponentOverrideSlice.reducer,
             customApis: customApisSlice?.reducer,
-            pydanticComponentMatcher: pydanticComponentMatcherSlice?.reducer,
+            componentMatcher: componentMatcherSlice?.reducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware({

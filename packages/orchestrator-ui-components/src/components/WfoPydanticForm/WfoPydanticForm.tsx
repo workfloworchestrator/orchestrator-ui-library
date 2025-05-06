@@ -8,6 +8,7 @@ import {
     PydanticFormFieldType,
 } from 'pydantic-forms';
 import type {
+    ComponentMatcher,
     PydanticComponentMatcher,
     PydanticFormApiProvider,
     PydanticFormLabelProvider,
@@ -19,6 +20,7 @@ import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { HttpStatus } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
+import { useAppSelector } from '@/rtk/hooks';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
@@ -41,6 +43,10 @@ export const WfoPydanticForm = ({
 }: WfoPydanticFormProps) => {
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
+
+    const componentMatcher = useAppSelector(
+        (state) => state.pydanticForm?.componentMatcher,
+    );
 
     const translationMessages: AbstractIntlMessages = useMessages();
     const formTranslations =
@@ -106,10 +112,19 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     };
 
-    const componentMatcher = (
-        currentMatchers: PydanticComponentMatcher[],
-    ): PydanticComponentMatcher[] => {
-        return [
+    const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
+        return new Promise((resolve) => {
+            resolve({
+                labels: {
+                    ...(formTranslations as object),
+                },
+                data: {},
+            });
+        });
+    };
+
+    const wfoComponentMatcher: ComponentMatcher = (currentMatchers) => {
+        const wfoMatchers: PydanticComponentMatcher[] = [
             {
                 id: 'textarea',
                 ElementMatch: {
@@ -125,17 +140,8 @@ export const WfoPydanticForm = ({
             },
             ...currentMatchers,
         ];
-    };
 
-    const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
-        return new Promise((resolve) => {
-            resolve({
-                labels: {
-                    ...(formTranslations as object),
-                },
-                data: {},
-            });
-        });
+        return componentMatcher ? componentMatcher(wfoMatchers) : wfoMatchers;
     };
 
     return (
@@ -149,7 +155,7 @@ export const WfoPydanticForm = ({
                 allowUntouchedSubmit: true,
                 footerRenderer: Footer,
                 skipSuccessNotice: true,
-                componentMatcher: componentMatcher,
+                componentMatcher: wfoComponentMatcher,
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
             }}
