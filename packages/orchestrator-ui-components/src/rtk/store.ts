@@ -1,3 +1,5 @@
+import type { PydanticComponentMatcher } from 'pydantic-forms';
+
 import { configureStore } from '@reduxjs/toolkit';
 import type { EnhancedStore } from '@reduxjs/toolkit';
 import type { Dispatch, UnknownAction } from '@reduxjs/toolkit';
@@ -8,6 +10,7 @@ import {
     OrchestratorComponentOverride,
     getOrchestratorComponentOverrideSlice,
 } from '@/rtk/slices/orchestratorComponentOverride';
+import { getPydanticComponentMatcherSlice } from '@/rtk/slices/pydanticComponentMatcher';
 import type { OrchestratorConfig } from '@/types';
 
 import { orchestratorApi } from './api';
@@ -22,23 +25,31 @@ export type RootState = {
     toastMessages: ReturnType<typeof toastMessagesReducer>;
     orchestratorConfig: OrchestratorConfig;
     orchestratorComponentOverride?: OrchestratorComponentOverride;
+    pydanticComponentMatcher?: PydanticComponentMatcher;
     customApis: CustomApiConfig[];
 };
 
 export type InitialOrchestratorStoreConfig = Pick<
     RootState,
-    'orchestratorConfig' | 'customApis' | 'orchestratorComponentOverride'
+    | 'orchestratorConfig'
+    | 'customApis'
+    | 'orchestratorComponentOverride'
+    | 'pydanticComponentMatcher'
 >;
 
 export const getOrchestratorStore = ({
     orchestratorConfig,
     orchestratorComponentOverride = {},
+    pydanticComponentMatcher,
     customApis,
 }: InitialOrchestratorStoreConfig): EnhancedStore<RootState> => {
     const configSlice = getOrchestratorConfigSlice(orchestratorConfig);
     const orchestratorComponentOverrideSlice =
         getOrchestratorComponentOverrideSlice(orchestratorComponentOverride);
     const customApisSlice = getCustomApiSlice(customApis);
+    const pydanticComponentMatcherSlice = getPydanticComponentMatcherSlice(
+        pydanticComponentMatcher,
+    );
 
     const orchestratorStore = configureStore({
         reducer: {
@@ -48,6 +59,7 @@ export const getOrchestratorStore = ({
             orchestratorComponentOverride:
                 orchestratorComponentOverrideSlice.reducer,
             customApis: customApisSlice?.reducer,
+            pydanticComponentMatcher: pydanticComponentMatcherSlice?.reducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware({
