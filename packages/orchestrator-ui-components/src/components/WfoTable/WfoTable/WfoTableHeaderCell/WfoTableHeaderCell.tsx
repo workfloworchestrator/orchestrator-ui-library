@@ -1,9 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
 import {
     EuiFieldSearch,
+    EuiForm,
+    EuiFormRow,
     EuiHorizontalRule,
     EuiPopover,
     EuiText,
@@ -14,12 +16,8 @@ import { getUpdatedSortOrder } from '@/components/WfoTable/WfoTable/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
-import { WfoSortDirectionIcon } from './WfoSortDirectionIcon';
-import {
-    HEADER_CELL_SORT_BUTTON_CLASS,
-    HEADER_CELL_TITLE_BUTTON_CLASS,
-    getWfoBasicTableStyles,
-} from './styles';
+import { WfoSortDirectionIcon } from '@/components';
+import { getWfoBasicTableStyles, HEADER_CELL_SORT_BUTTON_CLASS, HEADER_CELL_TITLE_BUTTON_CLASS } from './styles';
 
 export type WfoTableHeaderCellProps = {
     fieldName: string;
@@ -28,6 +26,52 @@ export type WfoTableHeaderCellProps = {
     onSearch?: (searchText: string) => void;
     children: string;
 };
+
+interface WfoPopoverContentProps {
+    onSearch?: (searchText: string) => void;
+    closePopover: () => void;
+    fieldName: string;
+}
+
+export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
+    onSearch,
+    closePopover,
+    fieldName
+}) => {
+    const {
+        headerCellPopoverContentStyle,
+    } = useWithOrchestratorTheme(getWfoBasicTableStyles);
+    const t = useTranslations('common');
+
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newValue = inputRef.current?.value || '';
+        onSearch?.(newValue);
+        if (inputRef.current) inputRef.current.value = '';
+        closePopover();
+    };
+
+    return (
+        <div css={headerCellPopoverContentStyle}>
+            <EuiForm component="form" onSubmit={handleSubmit}>
+                <EuiFormRow>
+                    <EuiFieldSearch
+                        className={fieldName}
+                        placeholder={t('search')}
+                        inputRef={input => {
+                            inputRef.current = input;
+                        }}                            isClearable={false}
+                        name={`search-${fieldName}`}
+                    />
+                </EuiFormRow>
+            </EuiForm>
+        </div>
+    );
+};
+
 
 export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     fieldName,
@@ -41,11 +85,9 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
         getHeaderCellContentStyle,
         headerCellPopoverHeaderStyle,
         headerCellPopoverHeaderTitleStyle,
-        headerCellPopoverContentStyle,
         getTitleButtonStyle,
         sortButtonStyle,
     } = useWithOrchestratorTheme(getWfoBasicTableStyles);
-    const t = useTranslations('common');
 
     const isSortable = !!onSetSortOrder;
     const isFilterable = !!onSearch;
@@ -58,11 +100,6 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     const handleButtonClick = () => setPopover(!isPopoverOpen);
     const closePopover = () => setPopover(false);
 
-    const handleSearch = (searchText: string) => {
-        onSearch?.(searchText);
-        closePopover();
-    };
-
     const WfoHeaderCellContentButton = () => (
         <button onClick={handleButtonClick} disabled={!isFilterable}>
             <div css={getHeaderCellContentStyle(isFilterable)}>{children}</div>
@@ -74,17 +111,6 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
             <EuiText size="xs" css={headerCellPopoverHeaderTitleStyle}>
                 {children}
             </EuiText>
-        </div>
-    );
-
-    const WfoPopoverContent = () => (
-        <div css={headerCellPopoverContentStyle}>
-            <EuiFieldSearch
-                className={fieldName}
-                placeholder={t('search')}
-                onSearch={handleSearch}
-                isClearable={false}
-            />
         </div>
     );
 
@@ -103,7 +129,11 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
             >
                 <WfoPopoverHeader />
                 <EuiHorizontalRule margin="none" />
-                <WfoPopoverContent />
+                <WfoPopoverContent
+                    fieldName={fieldName}
+                    onSearch={onSearch}
+                    closePopover={closePopover}
+                />
             </EuiPopover>
 
             {isSortable && (

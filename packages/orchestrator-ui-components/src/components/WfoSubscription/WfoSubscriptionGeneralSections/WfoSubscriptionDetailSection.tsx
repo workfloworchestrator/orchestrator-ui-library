@@ -65,7 +65,6 @@ export const WfoSubscriptionDetailSection = ({
             value: (
                 <WfoInSyncField
                     subscriptionDetail={subscriptionDetail}
-                    isFetching={isFetching}
                 />
             ),
         },
