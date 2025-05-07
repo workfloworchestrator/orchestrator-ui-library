@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AbstractIntlMessages, useMessages } from 'next-intl';
+import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import {
     PydanticForm,
@@ -43,7 +43,7 @@ export const WfoPydanticForm = ({
 }: WfoPydanticFormProps) => {
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
-
+    const t = useTranslations('pydanticForms.userInputForm');
     const componentMatcher = useAppSelector(
         (state) => state.pydanticForm?.componentMatcher,
     );
@@ -158,6 +158,10 @@ export const WfoPydanticForm = ({
                 componentMatcher: wfoComponentMatcher,
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
+                customTranslations: {
+                    cancel: t('cancel'),
+                    startWorkflow: t('startWorkflow'),
+                },
             }}
         />
     );
