@@ -15,7 +15,7 @@ import { WfoPlayFill } from '@/icons';
 
 export const Footer = () => {
     const { theme } = useOrchestratorTheme();
-    const t = useTranslations('pydanticForms.userInputForm');
+    const t = useTranslations();
     const { rhf, onCancel, allowUntouchedSubmit, isLoading } =
         usePydanticFormContext();
 
