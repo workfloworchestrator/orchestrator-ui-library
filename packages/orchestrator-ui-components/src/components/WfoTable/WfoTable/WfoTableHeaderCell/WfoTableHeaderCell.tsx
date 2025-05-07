@@ -12,12 +12,16 @@ import {
     useGeneratedHtmlId,
 } from '@elastic/eui';
 
+import { WfoSortDirectionIcon } from '@/components';
 import { getUpdatedSortOrder } from '@/components/WfoTable/WfoTable/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { SortOrder } from '@/types';
 
-import { WfoSortDirectionIcon } from '@/components';
-import { getWfoBasicTableStyles, HEADER_CELL_SORT_BUTTON_CLASS, HEADER_CELL_TITLE_BUTTON_CLASS } from './styles';
+import {
+    HEADER_CELL_SORT_BUTTON_CLASS,
+    HEADER_CELL_TITLE_BUTTON_CLASS,
+    getWfoBasicTableStyles,
+} from './styles';
 
 export type WfoTableHeaderCellProps = {
     fieldName: string;
@@ -36,13 +40,12 @@ interface WfoPopoverContentProps {
 export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
     onSearch,
     closePopover,
-    fieldName
+    fieldName,
 }) => {
-    const {
-        headerCellPopoverContentStyle,
-    } = useWithOrchestratorTheme(getWfoBasicTableStyles);
+    const { headerCellPopoverContentStyle } = useWithOrchestratorTheme(
+        getWfoBasicTableStyles,
+    );
     const t = useTranslations('common');
-
 
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -61,9 +64,10 @@ export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
                     <EuiFieldSearch
                         className={fieldName}
                         placeholder={t('search')}
-                        inputRef={input => {
+                        inputRef={(input) => {
                             inputRef.current = input;
-                        }}                            isClearable={false}
+                        }}
+                        isClearable={false}
                         name={`search-${fieldName}`}
                     />
                 </EuiFormRow>
@@ -71,7 +75,6 @@ export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
         </div>
     );
 };
-
 
 export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
     fieldName,

@@ -13,12 +13,10 @@ import { SubscriptionDetail } from '@/types';
 import { formatDate } from '@/utils';
 
 interface WfoSubscriptionDetailSectionProps {
-    isFetching: boolean;
     subscriptionDetail: SubscriptionDetail;
 }
 
 export const WfoSubscriptionDetailSection = ({
-    isFetching,
     subscriptionDetail,
 }: WfoSubscriptionDetailSectionProps) => {
     const t = useTranslations('subscriptions.detail');
@@ -62,11 +60,7 @@ export const WfoSubscriptionDetailSection = ({
         },
         {
             key: t('insync'),
-            value: (
-                <WfoInSyncField
-                    subscriptionDetail={subscriptionDetail}
-                />
-            ),
+            value: <WfoInSyncField subscriptionDetail={subscriptionDetail} />,
         },
         {
             key: t('customer'),

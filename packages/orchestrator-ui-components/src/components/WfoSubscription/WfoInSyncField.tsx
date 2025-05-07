@@ -5,6 +5,9 @@ import Link from 'next/link';
 
 import { EuiButton } from '@elastic/eui';
 
+import { WfoIsAllowedToRender } from '@/components';
+import { WfoInsyncIcon } from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
@@ -12,18 +15,13 @@ import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
-import { WfoIsAllowedToRender } from '@/components';
-import { WfoInsyncIcon } from '@/components';
-import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
 }
 
-export const WfoInSyncField = ({
-    subscriptionDetail,
-}: WfoInSyncFieldProps) => {
+export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
     const [inSync, setInSync] = useState<boolean>(subscriptionDetail.insync);
@@ -33,7 +31,8 @@ export const WfoInSyncField = ({
     const lastUncompletedProcess = getLastUncompletedProcess(
         subscriptionDetail.processes.page,
     );
-    const [setSubscriptionInSync, {isLoading}] = useSetSubscriptionInSyncMutation();
+    const [setSubscriptionInSync, { isLoading }] =
+        useSetSubscriptionInSyncMutation();
     const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
 
@@ -41,7 +40,7 @@ export const WfoInSyncField = ({
         setSubscriptionInSync(subscriptionDetail.subscriptionId)
             .unwrap()
             .then(() => {
-                setInSync(true)
+                setInSync(true);
                 showToastMessage(
                     ToastTypes.SUCCESS,
                     t('setInSyncSuccess.text'),
