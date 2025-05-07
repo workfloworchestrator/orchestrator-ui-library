@@ -55,7 +55,7 @@ export const getOrchestratorStore = ({
             orchestratorComponentOverride:
                 orchestratorComponentOverrideSlice.reducer,
             customApis: customApisSlice?.reducer,
-            componentMatcher: componentMatcherSlice?.reducer,
+            pydanticForm: componentMatcherSlice?.reducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware({
