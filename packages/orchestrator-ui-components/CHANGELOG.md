@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 4.0.1
+
+### Patch Changes
+
+- 3332386: Fixates elastic/eui version
+
 ## 4.0.0
 
 ### Major Changes
