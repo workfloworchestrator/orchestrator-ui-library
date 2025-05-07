@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -35,6 +35,10 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         useSetSubscriptionInSyncMutation();
     const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+
+    useEffect(() => {
+        setInSync(subscriptionDetail.insync);
+    }, [subscriptionDetail.insync]);
 
     const setInSyncAction = () => {
         setSubscriptionInSync(subscriptionDetail.subscriptionId)
