@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 4.1.0
+
+### Minor Changes
+
+- a731291: Adds componentMatcher configuration option for pydantic forms
+- 17330a1: Adds some components to export that were missing
+
 ## 4.0.1
 
 ### Patch Changes

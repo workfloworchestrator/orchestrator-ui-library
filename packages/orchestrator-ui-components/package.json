@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "4.0.1",
+    "version": "4.1.0",
     "license": "Apache-2.0",
     "description": "Library of UI Components used to display the workflow orchestrator frontend",
     "author": {
