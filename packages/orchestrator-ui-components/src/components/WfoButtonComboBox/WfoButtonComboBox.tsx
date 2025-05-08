@@ -7,7 +7,7 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-import { getStyles } from '@/components/WfoStartButton/styles';
+import { getWfoButtonComboBoxStyles } from '@/components/WfoButtonComboBox/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export type WfoStartButtonComboBoxProps = {
@@ -27,8 +27,9 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
     const [optionsState, setOptionsState] =
         useState<EuiSelectableOption[]>(options);
 
-    // Todo move styles to current folder
-    const { selectableStyle } = useWithOrchestratorTheme(getStyles);
+    const { selectableStyle } = useWithOrchestratorTheme(
+        getWfoButtonComboBoxStyles,
+    );
 
     return (
         <EuiPopover
