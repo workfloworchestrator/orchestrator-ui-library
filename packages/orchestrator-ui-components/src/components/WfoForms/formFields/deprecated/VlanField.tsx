@@ -165,7 +165,9 @@ function Vlan({
         ) {
             onChange('');
         }
-    }, [onChange, subscriptionId, isFetched, portIsTagged, value, disabled]);
+        // Adding the missing dependencies to the dependency array leads to an infinite loop
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onChange, subscriptionId, isFetched, portIsTagged]);
 
     const [usedVlansInIms, setUsedVlansInIms] = useState<VlanRange[]>([]);
     const [missingInIms, setMissingInIms] = useState(false);
