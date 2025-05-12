@@ -1,11 +1,6 @@
-import React, { FC, useRef, useState } from 'react';
-
-import { useTranslations } from 'next-intl';
+import React, { FC, useState } from 'react';
 
 import {
-    EuiFieldSearch,
-    EuiForm,
-    EuiFormRow,
     EuiHorizontalRule,
     EuiPopover,
     EuiText,
