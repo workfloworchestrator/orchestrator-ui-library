@@ -144,6 +144,7 @@ export enum WorkflowTarget {
     MODIFY = 'modify',
     TERMINATE = 'terminate',
     SYSTEM = 'system',
+    VALIDATE = 'validate',
 }
 
 export type Process = {
@@ -260,6 +261,7 @@ export interface WorkflowDefinition {
     name: string;
     description?: string;
     target: WorkflowTarget;
+    isTask: boolean;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
 }
@@ -269,6 +271,7 @@ export interface TaskDefinition {
     name: string;
     description?: string;
     target: WorkflowTarget;
+    isTask: boolean;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
 }

@@ -68,6 +68,7 @@ export const getWorkflowTargetColor = (
         case WorkflowTarget.MODIFY:
             return theme.colors.primaryText;
         case WorkflowTarget.SYSTEM:
+        case WorkflowTarget.VALIDATE:
             return theme.colors.warning;
         case WorkflowTarget.TERMINATE:
             return theme.colors.danger;
@@ -84,6 +85,7 @@ export const getWorkflowTargetIconContent = (
         case WorkflowTarget.CREATE:
             return 'C';
         case WorkflowTarget.SYSTEM:
+        case WorkflowTarget.VALIDATE:
             return 'T';
         case WorkflowTarget.TERMINATE:
             return 'X';

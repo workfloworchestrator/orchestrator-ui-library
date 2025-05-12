@@ -25,7 +25,7 @@ const workflowOptionsQuery = `
 
 const taskOptionsQuery = `
     query StartOptions {
-        workflows(first: 1000000, after: 0, filterBy: [{ field: "target", value: "${WorkflowTarget.SYSTEM}"}]) {
+        workflows(first: 1000000, after: 0, filterBy: [{ field: "isTask", value: "true"}]) {
             page {
                 name
                 description
