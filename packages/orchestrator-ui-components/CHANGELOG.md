@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 4.1.1
+
+### Patch Changes
+
+- e90725b: Fixes depency array bug that breaks the app
+
 ## 4.1.0
 
 ### Minor Changes
