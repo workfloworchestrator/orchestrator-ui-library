@@ -101,7 +101,9 @@ export function UnconnectedSelectField({
         if (selectedValue && selectedValue.value !== 'undefined') {
             onChange(selectedValue.value);
         }
-    }, [onChange, selectedValue]);
+        // Adding the missing dependencies to the dependency array leads to an infinite loop
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (fieldType === Array) {
         // Avoid circular import with our own ListSelectField (instead of recursively trying to use SelectField)
