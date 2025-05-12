@@ -38,6 +38,7 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
                     textColor: primaryText,
                 };
             case WorkflowTarget.SYSTEM:
+            case WorkflowTarget.VALIDATE:
                 return {
                     badgeColor: toSecondaryColor(warning),
                     textColor: warningText,
