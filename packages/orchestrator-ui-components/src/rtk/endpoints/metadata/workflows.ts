@@ -42,6 +42,7 @@ query MetadataWorkflows(
             name
             description
             target
+            isTask
             products {
                 tag
             }
