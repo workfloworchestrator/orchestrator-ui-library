@@ -32,7 +32,7 @@ interface SubscriptionSummaryDisplayProps {
 const SubscriptionSummaryDisplay = ({
     subscriptionId,
 }: SubscriptionSummaryDisplayProps) => {
-    const { data, isFetching } = useGetSubscriptionDetailQuery({
+    const { data } = useGetSubscriptionDetailQuery({
         subscriptionId,
     });
     const subscriptionDetail = data?.subscription;
@@ -42,10 +42,7 @@ const SubscriptionSummaryDisplay = ({
     }
 
     return (
-        <WfoSubscriptionDetailSection
-            subscriptionDetail={subscriptionDetail}
-            isFetching={isFetching}
-        />
+        <WfoSubscriptionDetailSection subscriptionDetail={subscriptionDetail} />
     );
 };
 

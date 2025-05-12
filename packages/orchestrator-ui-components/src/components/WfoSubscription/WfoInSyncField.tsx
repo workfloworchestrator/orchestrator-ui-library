@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiButton } from '@elastic/eui';
 
+import { WfoIsAllowedToRender } from '@/components';
+import { WfoInsyncIcon } from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
@@ -12,37 +15,36 @@ import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
-import { WfoIsAllowedToRender } from '../WfoAuth/WfoIsAllowedToRender';
-import { WfoInsyncIcon } from '../WfoInsyncIcon/WfoInsyncIcon';
-import { PATH_TASKS, PATH_WORKFLOWS } from '../WfoPageTemplate';
 import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
-    isFetching: boolean;
 }
 
-export const WfoInSyncField = ({
-    subscriptionDetail,
-    isFetching,
-}: WfoInSyncFieldProps) => {
+export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const t = useTranslations('subscriptions.detail');
     const { theme } = useOrchestratorTheme();
-    const inSync = subscriptionDetail.insync;
+    const [inSync, setInSync] = useState<boolean>(subscriptionDetail.insync);
     const lastTaskRunDate = getLatestTaskDate(
         subscriptionDetail.processes.page,
     );
     const lastUncompletedProcess = getLastUncompletedProcess(
         subscriptionDetail.processes.page,
     );
-    const [setSubscriptionInSync] = useSetSubscriptionInSyncMutation();
+    const [setSubscriptionInSync, { isLoading }] =
+        useSetSubscriptionInSyncMutation();
     const { showToastMessage } = useShowToastMessage();
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
+
+    useEffect(() => {
+        setInSync(subscriptionDetail.insync);
+    }, [subscriptionDetail.insync]);
 
     const setInSyncAction = () => {
         setSubscriptionInSync(subscriptionDetail.subscriptionId)
             .unwrap()
             .then(() => {
+                setInSync(true);
                 showToastMessage(
                     ToastTypes.SUCCESS,
                     t('setInSyncSuccess.text'),
@@ -88,8 +90,8 @@ export const WfoInSyncField = ({
                 </Link>
                 <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
                     <EuiButton
-                        isLoading={isFetching}
-                        isDisabled={isFetching}
+                        isLoading={isLoading}
+                        isDisabled={isLoading}
                         color="danger"
                         size="s"
                         onClick={confirmSetInSync}
