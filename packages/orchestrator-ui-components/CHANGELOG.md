@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 4.2.0
+
+### Minor Changes
+
+- e799369: 1886 "Fix refresh affecting subscriptions search and in-sync button"
+
 ## 4.1.1
 
 ### Patch Changes
