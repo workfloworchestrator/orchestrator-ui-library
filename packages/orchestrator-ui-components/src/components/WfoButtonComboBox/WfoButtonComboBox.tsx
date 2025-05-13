@@ -44,6 +44,7 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
                 options={optionsState}
                 searchable
                 onChange={(options) => {
+                    // Todo: detect added/removed options
                     onOptionChange(options);
                     setOptionsState(options);
                 }}

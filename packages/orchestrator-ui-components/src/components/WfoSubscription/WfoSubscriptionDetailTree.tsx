@@ -10,7 +10,12 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, WfoLoading, WfoTextAnchor } from '@/components';
+import {
+    PATH_SUBSCRIPTIONS,
+    WfoLoading,
+    WfoTextAnchor,
+    getFieldFromProductBlockInstanceValues,
+} from '@/components';
 import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -45,8 +50,14 @@ export const WfoSubscriptionDetailTree = ({
     const { productBlockTreeWidth } = useWithOrchestratorTheme(
         getSubscriptionDetailStyles,
     );
-    const { selectedIds, expandAll, collapseAll, resetSelection, selectAll } =
-        React.useContext(TreeContext) as TreeContextType;
+    const {
+        selectedIds,
+        expandAll,
+        collapseAll,
+        resetSelection,
+        selectAll,
+        selectIds,
+    } = React.useContext(TreeContext) as TreeContextType;
 
     let tree: TreeBlock | null = null;
     const depthList: number[] = [];
@@ -137,22 +148,39 @@ export const WfoSubscriptionDetailTree = ({
 
     const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
 
-    const optionsForFilterBox: EuiSelectableOption[] = [
-        {
-            label: 'label1',
+    // Todo: not final code
+    type NameIdType = { name: string; ids: number[] };
+    const items2Map = productBlockInstances.reduce((acc, curr) => {
+        const name = getFieldFromProductBlockInstanceValues(
+            curr.productBlockInstanceValues,
+            'name',
+        ).toString();
+
+        if (!name) {
+            console.error('Name field is missing', curr);
+        }
+
+        if (acc.has(name)) {
+            acc.get(name)?.push(curr.id);
+        } else {
+            acc.set(name, [curr.id]);
+        }
+
+        return acc;
+    }, new Map<string, number[]>());
+    const items2: NameIdType[] = Array.from(items2Map).map(([name, ids]) => ({
+        name,
+        ids,
+    }));
+
+    const optionsForFilterBox: EuiSelectableOption[] = items2.map((item) => {
+        return {
+            label: item.name,
             data: {
-                id: 'label1',
+                ids: item.ids,
             },
-            // Todo: probably not needed, but this forces an item to be checked
-            // checked: 'on',
-        },
-        {
-            label: 'label1',
-            data: {
-                id: 'label1',
-            },
-        },
-    ];
+        };
+    });
 
     return (
         <EuiFlexGroup
@@ -194,12 +222,20 @@ export const WfoSubscriptionDetailTree = ({
                                     />
                                     <WfoButtonComboBox
                                         options={optionsForFilterBox}
-                                        onOptionChange={(selectedOption) =>
-                                            console.log(
-                                                'onOptionChange:',
-                                                selectedOption,
-                                            )
-                                        }
+                                        onOptionChange={(selectedOption) => {
+                                            selectIds(
+                                                selectedOption
+                                                    .filter(
+                                                        (option) =>
+                                                            option.checked ===
+                                                            'on',
+                                                    )
+                                                    .flatMap(
+                                                        (option) =>
+                                                            option.data?.ids,
+                                                    ),
+                                            );
+                                        }}
                                     >
                                         {(togglePopover) => (
                                             <WfoTextAnchor
