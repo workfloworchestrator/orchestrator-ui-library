@@ -12,6 +12,7 @@ export type TreeContextType = {
     collapseAll: () => void;
     resetSelection: () => void;
     selectAll: () => void;
+    selectIds: (ids: number[]) => void;
 };
 
 export const TreeContext = React.createContext<TreeContextType | null>(null);
@@ -37,6 +38,13 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
 
     const selectAll = () => {
         setSelectedIds(Array.from(Array(depths.length).keys()));
+    };
+
+    const selectIds = (ids: number[]) => {
+        setSelectedIds((prevSelectedIds) => {
+            // Todo: only adds new id's, need to implement the removal of id's too
+            return Array.from(new Set([...prevSelectedIds, ...ids]));
+        });
     };
 
     const expandAll = () => {
@@ -96,6 +104,7 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 collapseAll,
                 resetSelection,
                 selectAll,
+                selectIds,
             }}
         >
             {children}
