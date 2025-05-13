@@ -15,7 +15,6 @@ import { toOptionalArrayEntry } from '@/utils';
 
 interface WfoSubscriptionGeneralProps {
     subscriptionDetail: SubscriptionDetail;
-    isFetching: boolean;
 }
 
 export enum WfoSubscriptionGeneralSections {
@@ -27,7 +26,6 @@ export enum WfoSubscriptionGeneralSections {
 
 export const WfoSubscriptionGeneral = ({
     subscriptionDetail,
-    isFetching,
 }: WfoSubscriptionGeneralProps) => {
     const { overrideSections } =
         useSubscriptionDetailGeneralSectionConfigurationOverride();
@@ -43,7 +41,6 @@ export const WfoSubscriptionGeneral = ({
             node: (
                 <WfoSubscriptionDetailSection
                     subscriptionDetail={subscriptionDetail}
-                    isFetching={isFetching}
                 />
             ),
         },
