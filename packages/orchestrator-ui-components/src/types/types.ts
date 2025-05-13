@@ -258,7 +258,7 @@ export interface Step {
 export interface WorkflowDefinition {
     workflowId: string;
     name: string;
-    description?: string;
+    description: string;
     target: WorkflowTarget;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
@@ -267,7 +267,7 @@ export interface WorkflowDefinition {
 export interface TaskDefinition {
     workflowId: string;
     name: string;
-    description?: string;
+    description: string;
     target: WorkflowTarget;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
