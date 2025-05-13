@@ -54,6 +54,11 @@ export const WfoPydanticForm = ({
         typeof translationMessages?.pydanticForms !== 'string'
             ? translationMessages.pydanticForms.backendTranslations
             : {};
+    const widgetsTranslations =
+        translationMessages?.pydanticForms &&
+        typeof translationMessages?.pydanticForms !== 'string'
+            ? translationMessages.pydanticForms.widgets
+            : {};
 
     const onSuccess = (_fieldValues: object, req: object) => {
         const request = req as { response: StartProcessResponse };
@@ -112,11 +117,13 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     };
 
+    const orchestratorTranslations = formTranslations as object as unknown;
+
     const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
         return new Promise((resolve) => {
             resolve({
                 labels: {
-                    ...(formTranslations as object),
+                    ...(orchestratorTranslations as object),
                 },
                 data: {},
             });
@@ -161,6 +168,9 @@ export const WfoPydanticForm = ({
                 customTranslations: {
                     cancel: t('cancel'),
                     startWorkflow: t('startWorkflow'),
+                    widgets: {
+                        ...(widgetsTranslations as object),
+                    },
                 },
             }}
         />
