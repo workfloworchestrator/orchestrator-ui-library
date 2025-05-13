@@ -57,6 +57,7 @@ export const WfoSubscriptionDetailTree = ({
         resetSelection,
         selectAll,
         selectIds,
+        deselectIds,
     } = React.useContext(TreeContext) as TreeContextType;
 
     let tree: TreeBlock | null = null;
@@ -182,6 +183,17 @@ export const WfoSubscriptionDetailTree = ({
         };
     });
 
+    const handleOptionChange = (changedOption: EuiSelectableOption) => {
+        if (changedOption.data?.ids === undefined) {
+            return;
+        }
+
+        const { checked, data } = changedOption;
+        const shouldAdd = checked === 'on';
+
+        return shouldAdd ? selectIds(data.ids) : deselectIds(data.ids);
+    };
+
     return (
         <EuiFlexGroup
             css={{
@@ -222,20 +234,7 @@ export const WfoSubscriptionDetailTree = ({
                                     />
                                     <WfoButtonComboBox
                                         options={optionsForFilterBox}
-                                        onOptionChange={(selectedOption) => {
-                                            selectIds(
-                                                selectedOption
-                                                    .filter(
-                                                        (option) =>
-                                                            option.checked ===
-                                                            'on',
-                                                    )
-                                                    .flatMap(
-                                                        (option) =>
-                                                            option.data?.ids,
-                                                    ),
-                                            );
-                                        }}
+                                        onOptionChange={handleOptionChange}
                                     >
                                         {(togglePopover) => (
                                             <WfoTextAnchor
