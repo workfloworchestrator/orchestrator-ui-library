@@ -12,7 +12,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 export type WfoStartButtonComboBoxProps = {
     options: EuiSelectableOption[];
-    onOptionChange: (selectedOption: EuiSelectableOption[]) => void;
+    onOptionChange: (selectedOption: EuiSelectableOption) => void;
     children: (togglePopover: () => void) => React.ReactElement;
     className?: string;
 };
@@ -43,9 +43,8 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
                 css={selectableStyle}
                 options={optionsState}
                 searchable
-                onChange={(options) => {
-                    // Todo: detect added/removed options
-                    onOptionChange(options);
+                onChange={(options, _, changedOption) => {
+                    onOptionChange(changedOption);
                     setOptionsState(options);
                 }}
                 height={200}
