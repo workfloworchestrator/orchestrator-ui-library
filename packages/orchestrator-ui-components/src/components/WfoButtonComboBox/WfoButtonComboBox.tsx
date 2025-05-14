@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import {
     EuiPopover,
@@ -30,6 +30,12 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
     const { selectableStyle } = useWithOrchestratorTheme(
         getWfoButtonComboBoxStyles,
     );
+
+    useEffect(() => {
+        if (!isPopoverOpen) {
+            setOptionsState(options);
+        }
+    }, [isPopoverOpen, options]);
 
     return (
         <EuiPopover
