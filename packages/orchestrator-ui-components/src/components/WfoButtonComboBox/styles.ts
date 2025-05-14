@@ -17,7 +17,12 @@ export const getWfoButtonComboBoxStyles = ({ theme }: WfoTheme) => {
         },
     });
 
+    const titleStyle = css({
+        fontWeight: theme.font.weight.semiBold,
+    });
+
     return {
         selectableStyle,
+        titleStyle,
     };
 };

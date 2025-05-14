@@ -5,6 +5,7 @@ import {
     EuiSelectable,
     EuiSelectableOption,
     EuiSpacer,
+    EuiText,
 } from '@elastic/eui';
 
 import { getWfoButtonComboBoxStyles } from '@/components/WfoButtonComboBox/styles';
@@ -13,6 +14,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 export type WfoStartButtonComboBoxProps = {
     options: EuiSelectableOption[];
     onOptionChange: (selectedOption: EuiSelectableOption) => void;
+    title?: string;
     children: (togglePopover: () => void) => React.ReactElement;
     className?: string;
 };
@@ -20,6 +22,7 @@ export type WfoStartButtonComboBoxProps = {
 export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
     options,
     onOptionChange,
+    title,
     children,
     className,
 }) => {
@@ -27,7 +30,7 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
     const [optionsState, setOptionsState] =
         useState<EuiSelectableOption[]>(options);
 
-    const { selectableStyle } = useWithOrchestratorTheme(
+    const { selectableStyle, titleStyle } = useWithOrchestratorTheme(
         getWfoButtonComboBoxStyles,
     );
 
@@ -44,6 +47,14 @@ export const WfoButtonComboBox: FC<WfoStartButtonComboBoxProps> = ({
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
+            {title && (
+                <>
+                    <EuiText size="s" css={titleStyle}>
+                        {title}
+                    </EuiText>
+                    <EuiSpacer size="s"></EuiSpacer>
+                </>
+            )}
             <EuiSelectable
                 className={className}
                 css={selectableStyle}
