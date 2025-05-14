@@ -24,7 +24,7 @@ import { useAppSelector } from '@/rtk/hooks';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
-import { Text, TextArea } from './fields';
+import { Label, Text, TextArea } from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -142,6 +142,19 @@ export const WfoPydanticForm = ({
                     return (
                         field.type === PydanticFormFieldType.STRING &&
                         field.format === PydanticFormFieldFormat.LONG
+                    );
+                },
+            },
+            {
+                id: 'label',
+                ElementMatch: {
+                    Element: Label,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.format === PydanticFormFieldFormat.LABEL
                     );
                 },
             },
