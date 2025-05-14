@@ -234,11 +234,13 @@ export const WfoSubscriptionDetailTree = ({
                                     <WfoButtonComboBox
                                         options={optionsForFilterBox}
                                         onOptionChange={handleOptionChange}
-                                        title="Select all product blocks by name" // Todo Translate
+                                        title={t('selectByNameTitle')}
                                     >
                                         {(togglePopover) => (
                                             <WfoTextAnchor
-                                                text={'Filter'} // TODO Translate
+                                                text={t(
+                                                    'selectByNameButtonText',
+                                                )}
                                                 onClick={() => togglePopover()}
                                             />
                                         )}
