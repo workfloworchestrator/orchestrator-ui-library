@@ -53,7 +53,6 @@ export const WfoSubscriptionDetailTree = ({
     const {
         selectedIds,
         expandAll,
-        collapseAll,
         resetSelection,
         selectAll,
         selectIds,
@@ -118,7 +117,6 @@ export const WfoSubscriptionDetailTree = ({
     const toggleShowAll = () => {
         if (selectedIds.length === productBlockInstances.length) {
             resetSelection();
-            collapseAll();
         } else {
             selectAll();
             expandAll();
@@ -191,6 +189,7 @@ export const WfoSubscriptionDetailTree = ({
         const { checked, data } = changedOption;
         const shouldAdd = checked === 'on';
 
+        expandAll();
         return shouldAdd ? selectIds(data.ids) : deselectIds(data.ids);
     };
 
@@ -235,6 +234,7 @@ export const WfoSubscriptionDetailTree = ({
                                     <WfoButtonComboBox
                                         options={optionsForFilterBox}
                                         onOptionChange={handleOptionChange}
+                                        title="Select all product blocks by name" // Todo Translate
                                     >
                                         {(togglePopover) => (
                                             <WfoTextAnchor
