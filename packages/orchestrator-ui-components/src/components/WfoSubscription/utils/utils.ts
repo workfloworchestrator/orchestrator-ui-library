@@ -1,10 +1,10 @@
 import { TranslationValues } from 'next-intl';
 
-import { EuiThemeComputed } from '@elastic/eui';
+import { EuiSelectableOption, EuiThemeComputed } from '@elastic/eui';
 
 import {
     FieldValue,
-    ProcessStatus,
+    ProcessStatus, ProductBlockInstance,
     SortOrder,
     SubscriptionAction,
     SubscriptionDetailProcess,
@@ -143,3 +143,32 @@ export const sortProcessesByDate = (
         }
     });
 };
+
+export const mapProductBlockInstancesToEuiSelectableOptions = (productBlockInstances: ProductBlockInstance[]): EuiSelectableOption[] => {
+    const items2Map = productBlockInstances.reduce((acc, curr) => {
+        const name = getFieldFromProductBlockInstanceValues(
+            curr.productBlockInstanceValues,
+            'name',
+        ).toString();
+
+        if (!name) {
+            console.error('Name field is missing', curr);
+        }
+
+        if (acc.has(name)) {
+            acc.get(name)?.push(curr.id);
+        } else {
+            acc.set(name, [curr.id]);
+        }
+
+        return acc;
+    }, new Map<string, number[]>());
+
+    return Array.from(items2Map).map(([label, ids]) => ({
+        label,
+        data: {
+            ids,
+        },
+    }));
+}
+
