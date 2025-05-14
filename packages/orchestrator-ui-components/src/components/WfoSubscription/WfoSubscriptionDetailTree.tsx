@@ -11,10 +11,10 @@ import {
 } from '@elastic/eui';
 
 import {
-    mapProductBlockInstancesToEuiSelectableOptions,
     PATH_SUBSCRIPTIONS,
     WfoLoading,
     WfoTextAnchor,
+    mapProductBlockInstancesToEuiSelectableOptions,
 } from '@/components';
 import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
 import { TreeContext, TreeContextType } from '@/contexts';
@@ -147,7 +147,6 @@ export const WfoSubscriptionDetailTree = ({
 
     const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
 
-
     const handleOptionChange = (changedOption: EuiSelectableOption) => {
         if (changedOption.data?.ids === undefined) {
             return;
@@ -199,7 +198,9 @@ export const WfoSubscriptionDetailTree = ({
                                         onClick={toggleShowAll}
                                     />
                                     <WfoButtonComboBox
-                                        options={mapProductBlockInstancesToEuiSelectableOptions(productBlockInstances)}
+                                        options={mapProductBlockInstancesToEuiSelectableOptions(
+                                            productBlockInstances,
+                                        )}
                                         onOptionChange={handleOptionChange}
                                         title={t('selectByNameTitle')}
                                     >
