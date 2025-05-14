@@ -4,7 +4,8 @@ import { EuiSelectableOption, EuiThemeComputed } from '@elastic/eui';
 
 import {
     FieldValue,
-    ProcessStatus, ProductBlockInstance,
+    ProcessStatus,
+    ProductBlockInstance,
     SortOrder,
     SubscriptionAction,
     SubscriptionDetailProcess,
@@ -146,7 +147,9 @@ export const sortProcessesByDate = (
     });
 };
 
-export const mapProductBlockInstancesToEuiSelectableOptions = (productBlockInstances: ProductBlockInstance[]): EuiSelectableOption[] => {
+export const mapProductBlockInstancesToEuiSelectableOptions = (
+    productBlockInstances: ProductBlockInstance[],
+): EuiSelectableOption[] => {
     const items2Map = productBlockInstances.reduce((acc, curr) => {
         const name = getFieldFromProductBlockInstanceValues(
             curr.productBlockInstanceValues,
@@ -172,5 +175,4 @@ export const mapProductBlockInstancesToEuiSelectableOptions = (productBlockInsta
             ids,
         },
     }));
-}
-
+};
