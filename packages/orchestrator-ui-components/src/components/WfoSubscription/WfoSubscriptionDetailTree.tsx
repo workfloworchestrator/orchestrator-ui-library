@@ -11,10 +11,10 @@ import {
 } from '@elastic/eui';
 
 import {
+    mapProductBlockInstancesToEuiSelectableOptions,
     PATH_SUBSCRIPTIONS,
     WfoLoading,
     WfoTextAnchor,
-    getFieldFromProductBlockInstanceValues,
 } from '@/components';
 import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
 import { TreeContext, TreeContextType } from '@/contexts';
@@ -147,39 +147,6 @@ export const WfoSubscriptionDetailTree = ({
 
     const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
 
-    // Todo: not final code
-    type NameIdType = { name: string; ids: number[] };
-    const items2Map = productBlockInstances.reduce((acc, curr) => {
-        const name = getFieldFromProductBlockInstanceValues(
-            curr.productBlockInstanceValues,
-            'name',
-        ).toString();
-
-        if (!name) {
-            console.error('Name field is missing', curr);
-        }
-
-        if (acc.has(name)) {
-            acc.get(name)?.push(curr.id);
-        } else {
-            acc.set(name, [curr.id]);
-        }
-
-        return acc;
-    }, new Map<string, number[]>());
-    const items2: NameIdType[] = Array.from(items2Map).map(([name, ids]) => ({
-        name,
-        ids,
-    }));
-
-    const optionsForFilterBox: EuiSelectableOption[] = items2.map((item) => {
-        return {
-            label: item.name,
-            data: {
-                ids: item.ids,
-            },
-        };
-    });
 
     const handleOptionChange = (changedOption: EuiSelectableOption) => {
         if (changedOption.data?.ids === undefined) {
@@ -232,7 +199,7 @@ export const WfoSubscriptionDetailTree = ({
                                         onClick={toggleShowAll}
                                     />
                                     <WfoButtonComboBox
-                                        options={optionsForFilterBox}
+                                        options={mapProductBlockInstancesToEuiSelectableOptions(productBlockInstances)}
                                         onOptionChange={handleOptionChange}
                                         title={t('selectByNameTitle')}
                                     >
