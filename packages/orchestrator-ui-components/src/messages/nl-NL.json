@@ -360,6 +360,8 @@
             },
             "showAll": "Toon alles",
             "hideAll": "Verberg alles",
+            "selectByNameTitle": "Selecteer product blocks op naam",
+            "selectByNameButtonText": "Selecteer op naam",
             "see": "Bekijk",
             "setInSync": "Set in Sync",
             "setInSyncQuestion": "Weet je zeker dat je de subscription in-sync wilt zetten? Je gaat een subscription geforceerd in-sync zetten. Alleen als je zeker weet wat de reden is van out-of-sync kun je de actie uitvoeren, zodat je daarna wijzigingen kunt doorvoeren op deze subscription. Bij twijfel - check eerst bij de network automators of het in sync zetten van de subscription mogelijk schadelijke gevolgen kan hebben op het netwerk.",

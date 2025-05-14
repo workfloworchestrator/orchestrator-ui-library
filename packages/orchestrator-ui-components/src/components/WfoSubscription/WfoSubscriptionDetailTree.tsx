@@ -2,9 +2,21 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
+import {
+    EuiCallOut,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiSelectableOption,
+    EuiText,
+} from '@elastic/eui';
 
-import { PATH_SUBSCRIPTIONS, WfoLoading, WfoTextAnchor } from '@/components';
+import {
+    PATH_SUBSCRIPTIONS,
+    WfoLoading,
+    WfoTextAnchor,
+    mapProductBlockInstancesToEuiSelectableOptions,
+} from '@/components';
+import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import {
@@ -38,8 +50,14 @@ export const WfoSubscriptionDetailTree = ({
     const { productBlockTreeWidth } = useWithOrchestratorTheme(
         getSubscriptionDetailStyles,
     );
-    const { selectedIds, expandAll, collapseAll, resetSelection, selectAll } =
-        React.useContext(TreeContext) as TreeContextType;
+    const {
+        selectedIds,
+        expandAll,
+        resetSelection,
+        selectAll,
+        selectIds,
+        deselectIds,
+    } = React.useContext(TreeContext) as TreeContextType;
 
     let tree: TreeBlock | null = null;
     const depthList: number[] = [];
@@ -99,7 +117,6 @@ export const WfoSubscriptionDetailTree = ({
     const toggleShowAll = () => {
         if (selectedIds.length === productBlockInstances.length) {
             resetSelection();
-            collapseAll();
         } else {
             selectAll();
             expandAll();
@@ -130,6 +147,18 @@ export const WfoSubscriptionDetailTree = ({
 
     const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
 
+    const handleOptionChange = (changedOption: EuiSelectableOption) => {
+        if (changedOption.data?.ids === undefined) {
+            return;
+        }
+
+        const { checked, data } = changedOption;
+        const shouldAdd = checked === 'on';
+
+        expandAll();
+        return shouldAdd ? selectIds(data.ids) : deselectIds(data.ids);
+    };
+
     return (
         <EuiFlexGroup
             css={{
@@ -158,15 +187,33 @@ export const WfoSubscriptionDetailTree = ({
                                 </EuiText>
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <WfoTextAnchor
-                                    text={t(
-                                        selectedIds.length ===
-                                            productBlockInstances.length
-                                            ? 'hideAll'
-                                            : 'showAll',
-                                    )}
-                                    onClick={toggleShowAll}
-                                />
+                                <EuiFlexGroup>
+                                    <WfoTextAnchor
+                                        text={t(
+                                            selectedIds.length ===
+                                                productBlockInstances.length
+                                                ? 'hideAll'
+                                                : 'showAll',
+                                        )}
+                                        onClick={toggleShowAll}
+                                    />
+                                    <WfoButtonComboBox
+                                        options={mapProductBlockInstancesToEuiSelectableOptions(
+                                            productBlockInstances,
+                                        )}
+                                        onOptionChange={handleOptionChange}
+                                        title={t('selectByNameTitle')}
+                                    >
+                                        {(togglePopover) => (
+                                            <WfoTextAnchor
+                                                text={t(
+                                                    'selectByNameButtonText',
+                                                )}
+                                                onClick={() => togglePopover()}
+                                            />
+                                        )}
+                                    </WfoButtonComboBox>
+                                </EuiFlexGroup>
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFlexItem>

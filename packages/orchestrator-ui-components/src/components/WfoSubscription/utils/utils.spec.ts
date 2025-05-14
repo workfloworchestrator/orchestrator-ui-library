@@ -3,6 +3,7 @@ import { EuiThemeComputed } from '@elastic/eui';
 import {
     FieldValue,
     ProcessStatus,
+    ProductBlockInstance,
     SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
@@ -15,6 +16,7 @@ import {
     getProductBlockTitle,
     getWorkflowTargetColor,
     getWorkflowTargetIconContent,
+    mapProductBlockInstancesToEuiSelectableOptions,
 } from './utils';
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
@@ -345,5 +347,124 @@ describe('getLatestTaskDate', () => {
         const lastTaskDate = getLatestTaskDate(workflowsAndTask);
 
         expect(lastTaskDate).toBe('2021-04-01T00:00:00Z');
+    });
+});
+
+describe('mapProductBlockInstancesToEuiSelectableOptions', () => {
+    const baseProductBlockInstance: Omit<
+        ProductBlockInstance,
+        'id' | 'productBlockInstanceValues'
+    > = {
+        subscriptionInstanceId: '',
+        parent: null,
+        inUseByRelations: [],
+        subscription: {
+            subscriptionId: '',
+            description: '',
+        },
+    };
+
+    it('maps product block instances to EuiSelectableOptions', () => {
+        // Given
+        const productBlockInstances: ProductBlockInstance[] = [
+            {
+                ...baseProductBlockInstance,
+                id: 0,
+                productBlockInstanceValues: [
+                    {
+                        field: 'name',
+                        value: 'test1',
+                    },
+                ],
+            },
+            {
+                ...baseProductBlockInstance,
+                id: 1,
+                productBlockInstanceValues: [
+                    {
+                        field: 'name',
+                        value: 'test2',
+                    },
+                ],
+            },
+        ];
+
+        // When
+        const result = mapProductBlockInstancesToEuiSelectableOptions(
+            productBlockInstances,
+        );
+
+        // Then
+        expect(result).toEqual([
+            {
+                label: 'test1',
+                data: {
+                    ids: [0],
+                },
+            },
+            {
+                label: 'test2',
+                data: {
+                    ids: [1],
+                },
+            },
+        ]);
+    });
+
+    it('maps product block instances to EuiSelectableOptions and groups ids by name', () => {
+        // Given
+        const productBlockInstances: ProductBlockInstance[] = [
+            {
+                ...baseProductBlockInstance,
+                id: 0,
+                productBlockInstanceValues: [
+                    {
+                        field: 'name',
+                        value: 'test1',
+                    },
+                ],
+            },
+            {
+                ...baseProductBlockInstance,
+                id: 1,
+                productBlockInstanceValues: [
+                    {
+                        field: 'name',
+                        value: 'test2',
+                    },
+                ],
+            },
+            {
+                ...baseProductBlockInstance,
+                id: 2,
+                productBlockInstanceValues: [
+                    {
+                        field: 'name',
+                        value: 'test1',
+                    },
+                ],
+            },
+        ];
+
+        // When
+        const result = mapProductBlockInstancesToEuiSelectableOptions(
+            productBlockInstances,
+        );
+
+        // Then
+        expect(result).toEqual([
+            {
+                label: 'test1',
+                data: {
+                    ids: [0, 2],
+                },
+            },
+            {
+                label: 'test2',
+                data: {
+                    ids: [1],
+                },
+            },
+        ]);
     });
 });

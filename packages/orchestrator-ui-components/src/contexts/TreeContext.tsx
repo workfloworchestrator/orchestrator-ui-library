@@ -12,6 +12,8 @@ export type TreeContextType = {
     collapseAll: () => void;
     resetSelection: () => void;
     selectAll: () => void;
+    selectIds: (ids: number[]) => void;
+    deselectIds: (ids: number[]) => void;
 };
 
 export const TreeContext = React.createContext<TreeContextType | null>(null);
@@ -37,6 +39,18 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
 
     const selectAll = () => {
         setSelectedIds(Array.from(Array(depths.length).keys()));
+    };
+
+    const selectIds = (ids: number[]) => {
+        setSelectedIds((prevSelectedIds) =>
+            Array.from(new Set([...prevSelectedIds, ...ids])),
+        );
+    };
+
+    const deselectIds = (ids: number[]) => {
+        setSelectedIds((prevSelectedIds) =>
+            prevSelectedIds.filter((id) => !ids.includes(id)),
+        );
     };
 
     const expandAll = () => {
@@ -96,6 +110,8 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
                 collapseAll,
                 resetSelection,
                 selectAll,
+                selectIds,
+                deselectIds,
             }}
         >
             {children}
