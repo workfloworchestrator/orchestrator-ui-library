@@ -6,6 +6,7 @@ import {
     PydanticForm,
     PydanticFormFieldFormat,
     PydanticFormFieldType,
+    zodValidationPresets,
 } from 'pydantic-forms';
 import type {
     ComponentMatcher,
@@ -191,6 +192,7 @@ export const WfoPydanticForm = ({
                 matcher(field) {
                     return field.type === PydanticFormFieldType.STRING;
                 },
+                validator: zodValidationPresets.string,
             },
         ];
 
