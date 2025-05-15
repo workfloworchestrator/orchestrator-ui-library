@@ -603,6 +603,7 @@ export type SubscriptionActions = {
     modify: SubscriptionAction[];
     terminate: SubscriptionAction[];
     system: SubscriptionAction[];
+    validate: SubscriptionAction[];
 };
 
 export enum CacheTagType {
