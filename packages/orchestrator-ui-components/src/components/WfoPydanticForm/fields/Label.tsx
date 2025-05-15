@@ -8,14 +8,16 @@ export const Label: PydanticFormElement = ({ pydanticFormField }) => {
     const { theme } = useOrchestratorTheme();
 
     return (
-        <label
-            css={{ color: theme.colors.text }}
-            id={pydanticFormField.id}
-            className={`euiFormLabel euiFormRow__label${
-                pydanticFormField.default ? '__large' : ''
-            }`}
-        >
-            {pydanticFormField.default}
-        </label>
+        <div>
+            <label
+                css={{
+                    color: theme.colors.text,
+                    display: 'block',
+                }}
+                id={pydanticFormField.id}
+            >
+                {pydanticFormField.title}
+            </label>
+        </div>
     );
 };
