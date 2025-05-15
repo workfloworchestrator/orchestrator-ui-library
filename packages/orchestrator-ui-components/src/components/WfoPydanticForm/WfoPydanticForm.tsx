@@ -2,17 +2,17 @@ import React from 'react';
 
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import {
-    PydanticForm,
-    PydanticFormFieldFormat,
-    PydanticFormFieldType,
-    zodValidationPresets,
-} from 'pydantic-forms';
 import type {
     ComponentMatcher,
     PydanticComponentMatcher,
     PydanticFormApiProvider,
     PydanticFormLabelProvider,
+} from 'pydantic-forms';
+import {
+    PydanticForm,
+    PydanticFormFieldFormat,
+    PydanticFormFieldType,
+    zodValidationPresets,
 } from 'pydantic-forms';
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -22,6 +22,7 @@ import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { HttpStatus } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useAppSelector } from '@/rtk/hooks';
+import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
@@ -94,6 +95,18 @@ export const WfoPydanticForm = ({
                                         object | string
                                     >;
                                     resolve(data);
+                                } else if (
+                                    typeof error === 'object' &&
+                                    error !== null
+                                ) {
+                                    const validationError =
+                                        error as FormValidationError;
+                                    if (validationError?.status === 400) {
+                                        resolve({
+                                            ...validationError.data,
+                                            status: validationError.status.toString(),
+                                        });
+                                    }
                                 }
                             } else if (result.data) {
                                 resolve(result.data);
@@ -219,6 +232,7 @@ export const WfoPydanticForm = ({
                     widgets: {
                         ...(widgetsTranslations as object),
                     },
+                    ...translationMessages,
                 },
             }}
         />
