@@ -238,16 +238,16 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                             PolicyResource.SUBSCRIPTION_VALIDATE +
                                 subscriptionId,
                         ) &&
-                        subscriptionActions.system && (
+                        subscriptionActions.validate && (
                             <>
                                 <MenuBlock title={t('tasks')}></MenuBlock>
-                                {subscriptionActions.system.map(
+                                {subscriptionActions.validate.map(
                                     (action, index) => (
                                         <MenuItem
                                             key={`s_${index}`}
                                             action={action}
                                             index={index}
-                                            target={WorkflowTarget.SYSTEM}
+                                            target={WorkflowTarget.VALIDATE}
                                             isTask={true}
                                         />
                                     ),
