@@ -42,6 +42,7 @@ npm-debug.log*
 
 # ignore generated ui version file
 packages/orchestrator-ui-components/src/configuration/version.ts
+packages/pydantic-forms
 
 #storybook
 storybook-static
