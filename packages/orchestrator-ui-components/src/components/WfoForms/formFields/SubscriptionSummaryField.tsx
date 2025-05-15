@@ -29,7 +29,7 @@ interface SubscriptionSummaryDisplayProps {
     subscriptionId: string;
 }
 
-const SubscriptionSummaryDisplay = ({
+export const SubscriptionSummaryDisplay = ({
     subscriptionId,
 }: SubscriptionSummaryDisplayProps) => {
     const { data } = useGetSubscriptionDetailQuery({
