@@ -24,7 +24,7 @@ import { useAppSelector } from '@/rtk/hooks';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
-import { Label, Text, TextArea } from './fields';
+import { Checkbox, Divider, Label, Text, TextArea } from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -156,6 +156,29 @@ export const WfoPydanticForm = ({
                         field.type === PydanticFormFieldType.STRING &&
                         field.format === PydanticFormFieldFormat.LABEL
                     );
+                },
+            },
+            {
+                id: 'divider',
+                ElementMatch: {
+                    Element: Divider,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.format === PydanticFormFieldFormat.DIVIDER
+                    );
+                },
+            },
+            {
+                id: 'checkbox',
+                ElementMatch: {
+                    Element: Checkbox,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.BOOLEAN;
                 },
             },
             ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
