@@ -18,13 +18,14 @@ query MetadataWorkflows(
         after: $after
         sortBy: $sortBy
         query: $query
-        filterBy: { field: "target", value: "SYSTEM" }
+        filterBy: { field: "isTask", value: "true" }
     ) {
         page {
             workflowId
             name
             description
             target
+            isTask
             products {
                 tag
             }
