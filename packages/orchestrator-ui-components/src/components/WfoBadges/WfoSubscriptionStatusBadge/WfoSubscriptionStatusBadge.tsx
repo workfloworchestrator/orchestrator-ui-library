@@ -12,8 +12,9 @@ export const WfoSubscriptionStatusBadge: FC<
     WfoSubscriptionStatusBadgeProps
 > = ({ status }) => {
     const { theme, toSecondaryColor } = useOrchestratorTheme();
-    const getBadgeColorFromStatus = (status: string) => {
-        const lowerCaseStatus = status?.toLowerCase();
+    const lowerCaseStatus = status?.toLowerCase() || '';
+
+    const getBadgeColorFromStatus = () => {
         const {
             primary,
             darkestShade,
@@ -43,7 +44,7 @@ export const WfoSubscriptionStatusBadge: FC<
         }
     };
 
-    const { badgeColor, textColor } = getBadgeColorFromStatus(status);
+    const { badgeColor, textColor } = getBadgeColorFromStatus();
 
     return (
         <WfoBadge textColor={textColor} color={badgeColor}>
