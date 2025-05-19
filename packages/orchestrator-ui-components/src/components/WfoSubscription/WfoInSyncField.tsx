@@ -26,10 +26,10 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const { theme } = useOrchestratorTheme();
     const [inSync, setInSync] = useState<boolean>(subscriptionDetail.insync);
     const lastTaskRunDate = getLatestTaskDate(
-        subscriptionDetail.processes.page,
+        subscriptionDetail.processes?.page,
     );
     const lastUncompletedProcess = getLastUncompletedProcess(
-        subscriptionDetail.processes.page,
+        subscriptionDetail.processes?.page,
     );
     const [setSubscriptionInSync, { isLoading }] =
         useSetSubscriptionInSyncMutation();
