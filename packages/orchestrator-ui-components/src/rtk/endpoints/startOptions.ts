@@ -70,7 +70,7 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
             }),
             transformResponse: (response: WorkflowOptionsResult) => {
                 const startOptions: WorkflowOption[] = [];
-                const workflows = response.workflows?.page || [];
+                const workflows = response?.workflows?.page || [];
                 workflows.forEach((workflow) => {
                     const workflowName = workflow.name;
                     workflow.products.forEach((product) => {

@@ -60,8 +60,8 @@ const tasksApi = orchestratorApi.injectEndpoints({
             transformResponse: (
                 response: TaskDefinitionsResult,
             ): TasksResponse => {
-                const tasks = response.workflows.page || [];
-                const pageInfo = response.workflows.pageInfo || {};
+                const tasks = response?.workflows.page || [];
+                const pageInfo = response?.workflows.pageInfo || {};
 
                 return {
                     tasks,
