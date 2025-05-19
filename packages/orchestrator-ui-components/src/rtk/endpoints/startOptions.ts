@@ -16,6 +16,7 @@ const workflowOptionsQuery = `
                     productType
                     productId
                     name
+                    tag
                 }
             }
         }
@@ -38,6 +39,7 @@ type WorkflowOption = {
     productName: ProductDefinition['name'];
     productId: ProductDefinition['productId'];
     productType: ProductDefinition['productType'];
+    productTag: ProductDefinition['tag'];
 };
 
 type WorkflowOptionsResult = StartOptionsResult<{
@@ -46,6 +48,7 @@ type WorkflowOptionsResult = StartOptionsResult<{
         name: ProductDefinition['name'];
         productId: ProductDefinition['productId'];
         productType: ProductDefinition['productType'];
+        tag: ProductDefinition['tag'];
     }[];
 }>;
 
@@ -76,6 +79,7 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
                             productName: product.name,
                             productId: product.productId,
                             productType: product.productType,
+                            productTag: product.tag,
                         });
                     });
                 });
