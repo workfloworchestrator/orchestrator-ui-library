@@ -5,7 +5,7 @@ import { SubscriptionStatus } from '../../../types';
 import { WfoBadge } from '../WfoBadge';
 
 export type WfoSubscriptionStatusBadgeProps = {
-    status: SubscriptionStatus;
+    status?: SubscriptionStatus;
 };
 
 export const WfoSubscriptionStatusBadge: FC<
