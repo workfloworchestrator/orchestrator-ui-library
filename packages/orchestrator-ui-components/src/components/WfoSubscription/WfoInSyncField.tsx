@@ -29,7 +29,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
         subscriptionDetail.processes?.page,
     );
     const lastUncompletedProcess = getLastUncompletedProcess(
-        subscriptionDetail.processes?.page,
+        subscriptionDetail?.processes?.page,
     );
     const [setSubscriptionInSync, { isLoading }] =
         useSetSubscriptionInSyncMutation();

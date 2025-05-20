@@ -76,7 +76,7 @@ export type WorkflowsResponse = {
 const workflowsApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
         getWorkflows: builder.query<
-            WorkflowsResponse,
+            WorkflowsResponse | undefined,
             GraphqlQueryVariables<WorkflowDefinition>
         >({
             query: (variables) => ({
@@ -84,8 +84,12 @@ const workflowsApi = orchestratorApi.injectEndpoints({
                 variables,
             }),
             transformResponse: (
-                response: WorkflowDefinitionsResult,
-            ): WorkflowsResponse => {
+                response: WorkflowDefinitionsResult | undefined,
+            ): WorkflowsResponse | undefined => {
+                if (!response) {
+                    return undefined;
+                }
+
                 const workflows = response?.workflows.page || [];
                 const pageInfo = response?.workflows.pageInfo || {};
 

@@ -50,7 +50,7 @@ export type TasksResponse = {
 const tasksApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
         getTasks: builder.query<
-            TasksResponse,
+            TasksResponse | undefined,
             GraphqlQueryVariables<TaskDefinition>
         >({
             query: (variables) => ({
@@ -58,10 +58,14 @@ const tasksApi = orchestratorApi.injectEndpoints({
                 variables,
             }),
             transformResponse: (
-                response: TaskDefinitionsResult,
-            ): TasksResponse => {
-                const tasks = response?.workflows.page || [];
-                const pageInfo = response?.workflows.pageInfo || {};
+                response: TaskDefinitionsResult | undefined,
+            ): TasksResponse | undefined => {
+                if (!response) {
+                    return undefined;
+                }
+
+                const tasks = response.workflows.page || [];
+                const pageInfo = response.workflows.pageInfo || {};
 
                 return {
                     tasks,

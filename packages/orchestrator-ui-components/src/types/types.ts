@@ -514,7 +514,7 @@ export type SubscriptionDetail = {
 
     externalServices?: ExternalService[];
 
-    processes: GraphQlSinglePage<SubscriptionDetailProcess>;
+    processes?: GraphQlSinglePage<SubscriptionDetailProcess>;
 };
 
 export type SubscriptionDetailProcess = Pick<
