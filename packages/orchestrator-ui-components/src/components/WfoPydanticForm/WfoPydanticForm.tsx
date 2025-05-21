@@ -26,7 +26,7 @@ import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
-import { Checkbox, Divider, Label, Text, TextArea } from './fields';
+import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -131,7 +131,7 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     };
 
-    const orchestratorTranslations = formTranslations as object as unknown;
+    const orchestratorTranslations = formTranslations as unknown;
 
     const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
         return new Promise((resolve) => {
@@ -156,6 +156,19 @@ export const WfoPydanticForm = ({
                     return (
                         field.type === PydanticFormFieldType.STRING &&
                         field.format === PydanticFormFieldFormat.LONG
+                    );
+                },
+            },
+            {
+                id: 'summary',
+                ElementMatch: {
+                    Element: Summary,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        (field.format as string) === 'summary'
                     );
                 },
             },
