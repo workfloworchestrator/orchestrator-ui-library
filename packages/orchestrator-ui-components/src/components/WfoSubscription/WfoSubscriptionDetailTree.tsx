@@ -212,7 +212,7 @@ export const WfoSubscriptionDetailTree = ({
                                                 text={t(
                                                     'selectByNameButtonText',
                                                 )}
-                                                onClick={() => togglePopover()}
+                                                onClick={togglePopover}
                                             />
                                         )}
                                     </WfoButtonComboBox>
