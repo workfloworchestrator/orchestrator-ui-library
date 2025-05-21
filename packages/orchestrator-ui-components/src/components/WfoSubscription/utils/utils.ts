@@ -5,12 +5,15 @@ import { EuiSelectableOption, EuiThemeComputed } from '@elastic/eui';
 import {
     FieldValue,
     ProcessStatus,
+    ProductBlockDefinition,
     ProductBlockInstance,
     SortOrder,
     SubscriptionAction,
     SubscriptionDetailProcess,
     WorkflowTarget,
 } from '@/types';
+
+const PRODUCT_BLOCK_NAME_FIELD: keyof ProductBlockDefinition = 'name';
 
 export enum SubscriptionDetailTab {
     GENERAL_TAB = 'general',
@@ -151,7 +154,7 @@ export const mapProductBlockInstancesToEuiSelectableOptions = (
     const items2Map = productBlockInstances.reduce((acc, curr) => {
         const name = getFieldFromProductBlockInstanceValues(
             curr.productBlockInstanceValues,
-            'name',
+            PRODUCT_BLOCK_NAME_FIELD,
         ).toString();
 
         if (!name) {

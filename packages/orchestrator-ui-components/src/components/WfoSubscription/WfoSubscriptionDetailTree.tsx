@@ -9,6 +9,7 @@ import {
     EuiSelectableOption,
     EuiText,
 } from '@elastic/eui';
+import { EuiSelectableOptionCheckedType } from '@elastic/eui/src/components/selectable/selectable_option';
 
 import {
     PATH_SUBSCRIPTIONS,
@@ -32,6 +33,8 @@ import { getWfoTreeNodeDepth } from '../WfoTree';
 import { WfoSubscriptionProductBlock } from './WfoSubscriptionProductBlock';
 import { getSubscriptionDetailStyles } from './styles';
 import { getProductBlockTitle } from './utils';
+
+const EUI_OPTION_CHECKED_STATE_ON: EuiSelectableOptionCheckedType = 'on';
 
 interface WfoSubscriptionDetailTreeProps {
     productBlockInstances: ProductBlockInstance[];
@@ -153,10 +156,10 @@ export const WfoSubscriptionDetailTree = ({
         }
 
         const { checked, data } = changedOption;
-        const shouldAdd = checked === 'on';
+        const shouldAddIds = checked === EUI_OPTION_CHECKED_STATE_ON;
 
         expandAll();
-        return shouldAdd ? selectIds(data.ids) : deselectIds(data.ids);
+        return shouldAddIds ? selectIds(data.ids) : deselectIds(data.ids);
     };
 
     return (
