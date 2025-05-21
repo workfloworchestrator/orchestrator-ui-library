@@ -3,5 +3,10 @@
         "orchestratorUiVersion": "5.0.0",
         "minimumOrchestratorCoreVersion": "4.0.0",
         "changes": "Breaking Change on Workflow.target, added VALIDATION. Go over the manual and check if you need to update your workflows."
+    },
+    {
+        "orchestratorUiVersion": "3.4.0",
+        "minimumOrchestratorCoreVersion": "2.10.0",
+        "changes": "Endpoints in BE to modify description on metadata pages"
     }
 ]

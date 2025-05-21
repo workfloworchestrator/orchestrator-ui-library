@@ -259,7 +259,7 @@ export interface Step {
 export interface WorkflowDefinition {
     workflowId: string;
     name: string;
-    description?: string;
+    description: string;
     target: WorkflowTarget;
     isTask: boolean;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
@@ -269,7 +269,7 @@ export interface WorkflowDefinition {
 export interface TaskDefinition {
     workflowId: string;
     name: string;
-    description?: string;
+    description: string;
     target: WorkflowTarget;
     isTask: boolean;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
