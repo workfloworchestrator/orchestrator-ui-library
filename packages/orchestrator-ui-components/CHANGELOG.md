@@ -1,5 +1,20 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.0.0
+
+### Major Changes
+
+- 6b21307: Update target validation to isTask
+
+### Minor Changes
+
+- 0f648af: Adds some nullchecks that prevents the app from crashing on some errors
+- 0cab7d9: 326 Adds dropdown to product blocks section on subscription detail page to select all items with a given product block name
+
+### Patch Changes
+
+- a500bac: Add product tag to workflow options query
+
 ## 4.2.0
 
 ### Minor Changes
