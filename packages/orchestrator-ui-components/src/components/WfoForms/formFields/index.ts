@@ -20,7 +20,6 @@ export * from './LocationCodeField';
 export * from './deprecated';
 export * from './NestField';
 export * from './OptGroupField';
-export * from './SubscriptionField';
 export * from './SummaryField';
 export * from './CustomerField';
 export * from './ConnectedSelectField';

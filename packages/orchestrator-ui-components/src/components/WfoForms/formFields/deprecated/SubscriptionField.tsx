@@ -38,10 +38,10 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubscriptionDropdownOptions';
 import { SubscriptionDropdownOption } from '@/types';
 
-import { getSelectFieldStyles } from './SelectField/styles';
+import { getSelectFieldStyles } from '../SelectField/styles';
+import { FieldProps, Option } from '../types';
+import { getPortMode } from '../utils';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
-import { FieldProps, Option } from './types';
-import { getPortMode } from './utils';
 
 declare module 'uniforms' {
     interface FilterDOMProps {
