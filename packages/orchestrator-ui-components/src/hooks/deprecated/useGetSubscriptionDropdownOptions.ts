@@ -5,6 +5,8 @@ export const useGetSubscriptionDropdownOptions = (
     tags: string[] = [],
     statuses: string[] = ['active'],
 ) => {
+    // TODO remove
+
     // The way the graphql filterBy clause on the backend handled multiple AND values is by joining them with |
     const tagValue = tags.join('|');
     const statusValue = statuses.join('|');

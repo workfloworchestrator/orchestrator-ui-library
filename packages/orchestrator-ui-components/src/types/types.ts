@@ -623,3 +623,19 @@ export interface MappedVersion {
 export type CacheTag = { type: CacheTagType; id?: string };
 
 export const CACHETAG_TYPE_LIST = 'LIST';
+
+// export type DropdownOption = {
+//     label: string;
+//     value: string;
+// };
+
+export type FilterParams = {
+    product_tags?: string[];
+    product_ids?: string[];
+    statuses?: string[];
+    exclude_subscription_ids?: string[];
+    customer_ids?: string[];
+
+    port_modes?: string[];
+    port_speed_below?: number;
+};

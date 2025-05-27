@@ -61,6 +61,7 @@ export type UseQuery<T, U> = (
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
     apiName?: string;
+    paramsSerializer?: (params: Record<string, any>) => string;
 };
 
 export type WfoGraphqlError = {
@@ -131,7 +132,7 @@ export const catchErrorResponse = async (
 export const orchestratorApi = createApi({
     reducerPath: 'orchestratorApi',
     baseQuery: (args, api, extraOptions: ExtraOptions) => {
-        const { baseQueryType, apiName } = extraOptions || {};
+        const { baseQueryType, apiName, paramsSerializer } = extraOptions || {};
 
         const state = api.getState() as RootState;
         const { orchestratorApiBaseUrl, graphqlEndpointCore, authActive } =
@@ -148,6 +149,7 @@ export const orchestratorApi = createApi({
                         ? customApi.apiBaseUrl
                         : orchestratorApiBaseUrl,
                     prepareHeaders,
+                    paramsSerializer,
                     responseHandler: (response) =>
                         catchErrorResponse(response, authActive),
                 });
