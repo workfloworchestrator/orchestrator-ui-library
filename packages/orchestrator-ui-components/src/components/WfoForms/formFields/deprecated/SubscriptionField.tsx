@@ -12,6 +12,7 @@
  * limitations under the License.
  *
  */
+import React from 'react';
 import ReactSelect from 'react-select';
 
 import get from 'lodash/get';
