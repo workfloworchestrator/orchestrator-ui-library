@@ -61,7 +61,7 @@ export type UseQuery<T, U> = (
 type ExtraOptions = {
     baseQueryType?: BaseQueryTypes;
     apiName?: string;
-    paramsSerializer?: (params: Record<string, any>) => string;
+    paramsSerializer?: (params: Record<string, unknown>) => string;
 };
 
 export type WfoGraphqlError = {

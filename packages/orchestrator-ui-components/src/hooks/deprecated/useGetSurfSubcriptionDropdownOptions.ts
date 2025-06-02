@@ -1,26 +1,26 @@
 import { useGetSurfSubscriptionDropdownOptionsQuery } from '@/rtk/endpoints/surfSubscriptionDropdownOptions';
-import {
-    FilterParams,
-    GraphqlFilter,
-    SubscriptionDropdownOption,
-} from '@/types';
+import { FilterParams } from '@/types';
 
 export const useGetSurfSubscriptionDropdownOptions = (
     tags: string[] = [],
     statuses: string[] = ['active'],
     productIds: string[] = [],
-    // TODO other filters
+    excludeSubscriptionIds: string[] = [],
+    customerId?: string,
+    portModes: string[] = [],
+    bandwidth?: number,
 ) => {
-    const filter_params: FilterParams = {};
+    const filter_params: FilterParams = {
+        product_tags: tags,
+        statuses,
+        product_ids: productIds,
+        exclude_subscription_ids: excludeSubscriptionIds,
+        port_modes: portModes,
+        bandwidth,
+    };
 
-    if (tags) {
-        filter_params.product_tags = tags;
-    }
-    if (statuses) {
-        filter_params.statuses = statuses;
-    }
-    if (productIds) {
-        filter_params.product_ids = productIds;
+    if (customerId) {
+        filter_params.customer_ids = [customerId];
     }
 
     const { data, isFetching, refetch, isError } =

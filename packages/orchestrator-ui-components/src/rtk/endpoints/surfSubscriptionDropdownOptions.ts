@@ -13,7 +13,7 @@ import { FilterParams } from '@/types';
  * @param params Object with url parameters, values can be scalar or array, i.e. {a: [1, 2], b: [3], c: 4}
  * @returns the url parameter string, i.e. ?a=1&a=2&b=3&c=4
  */
-export function toUrlParams(params: Record<string, any>): string {
+export function toUrlParams(params: Record<string, unknown>): string {
     const urlParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
