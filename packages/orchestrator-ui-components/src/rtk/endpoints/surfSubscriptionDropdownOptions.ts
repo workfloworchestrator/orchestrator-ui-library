@@ -1,7 +1,7 @@
 import { Option } from '@/components/WfoForms/formFields/types';
 import { SUBSCRIPTION_DROPDOWN_OPTIONS_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { FilterParams } from '@/types';
+import { SurfSubscriptionDropdownOptionsFilterParams } from '@/types';
 
 // Custom endpoint used by the deprecated SubscriptionField formfield.
 // Has to be present in the library for now.
@@ -33,7 +33,7 @@ const surfSubscriptionDropdownOptionsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         getSurfSubscriptionDropdownOptions: build.query<
             Option<string>[],
-            { params: FilterParams }
+            { params: SurfSubscriptionDropdownOptionsFilterParams }
         >({
             query: ({ params }) => ({
                 url: SUBSCRIPTION_DROPDOWN_OPTIONS_ENDPOINT,

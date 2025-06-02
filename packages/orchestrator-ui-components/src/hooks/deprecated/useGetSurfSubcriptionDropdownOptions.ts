@@ -1,5 +1,5 @@
 import { useGetSurfSubscriptionDropdownOptionsQuery } from '@/rtk/endpoints/surfSubscriptionDropdownOptions';
-import { FilterParams } from '@/types';
+import { SurfSubscriptionDropdownOptionsFilterParams } from '@/types';
 
 export const useGetSurfSubscriptionDropdownOptions = (
     tags: string[] = [],
@@ -10,7 +10,7 @@ export const useGetSurfSubscriptionDropdownOptions = (
     portModes: string[] = [],
     bandwidth?: number,
 ) => {
-    const filter_params: FilterParams = {
+    const filter_params: SurfSubscriptionDropdownOptionsFilterParams = {
         product_tags: tags,
         statuses,
         product_ids: productIds,
