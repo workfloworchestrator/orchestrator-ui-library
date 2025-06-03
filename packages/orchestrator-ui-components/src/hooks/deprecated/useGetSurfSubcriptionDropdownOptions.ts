@@ -1,4 +1,4 @@
-import { useGetSurfSubscriptionDropdownOptionsQuery } from '@/rtk/endpoints/surfSubscriptionDropdownOptions';
+import { useGetSurfSubscriptionDropdownOptionsQuery } from '@/rtk/endpoints/deprecated/surfSubscriptionDropdownOptions';
 import { SurfSubscriptionDropdownOptionsFilterParams } from '@/types';
 
 export const useGetSurfSubscriptionDropdownOptions = (
