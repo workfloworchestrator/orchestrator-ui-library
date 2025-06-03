@@ -39,3 +39,4 @@ export * from './WfoActualWork';
 export * from './WfoMalfunction';
 export * from './WfoPlannedWork';
 export * from './WfoCubeFill';
+export * from './WfoExclamationTriangle';
