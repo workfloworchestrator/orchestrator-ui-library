@@ -1,13 +1,13 @@
 import React from 'react';
 
-import type { RowRenderer } from 'pydantic-forms';
+import type { RowRenderComponent } from 'pydantic-forms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
-export const Row: RowRenderer = ({
+export const Row: RowRenderComponent = ({
     title,
     description,
     error,

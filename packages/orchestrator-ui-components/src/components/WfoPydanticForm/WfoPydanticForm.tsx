@@ -230,6 +230,10 @@ export const WfoPydanticForm = ({
             title={''}
             id={processName}
             onSuccess={onSuccess}
+            onCancel={() => {
+                const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+                router.replace(pfBasePath);
+            }}
             loadingComponent={<WfoLoading />}
             config={{
                 apiProvider: getPydanticFormProvider(),
