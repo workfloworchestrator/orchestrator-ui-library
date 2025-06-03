@@ -11,13 +11,19 @@ import { usePydanticFormContext } from 'pydantic-forms';
 import { EuiButton, EuiHorizontalRule } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
-import { WfoPlayFill } from '@/icons';
 
 export const Footer = () => {
+    const {
+        rhf,
+        onCancel,
+        onPrevious,
+        allowUntouchedSubmit,
+        hasNext,
+        formInputData,
+    } = usePydanticFormContext();
+
     const { theme } = useOrchestratorTheme();
-    const t = useTranslations();
-    const { rhf, onCancel, allowUntouchedSubmit, isLoading } =
-        usePydanticFormContext();
+    const t = useTranslations('pydanticForms.userInputForm');
 
     const isDisabled: boolean =
         !rhf.formState.isValid ||
@@ -25,26 +31,50 @@ export const Footer = () => {
             !rhf.formState.isDirty &&
             !rhf.formState.isSubmitting);
 
+    const submitButtonLabel = hasNext ? t('next') : t('startWorkflow');
+
     return (
         <div>
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div
-                    onClick={() => {
-                        if (onCancel) {
-                            onCancel();
-                        }
-                    }}
-                    css={{
-                        cursor: 'pointer',
-                        color: theme.colors.link,
-                        fontWeight: theme.font.weight.bold,
-                        marginLeft: theme.base / 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}
-                >
-                    {t('cancel')}
+                <div>
+                    {(formInputData && formInputData.length > 0 && (
+                        <EuiButton
+                            id="button-submit-form-submit"
+                            tabIndex={0}
+                            fill
+                            onClick={() => {
+                                if (onPrevious) {
+                                    onPrevious();
+                                }
+                            }}
+                            color={'primary'}
+                            isLoading={false}
+                            iconSide="right"
+                            aria-label={t('previous')}
+                            disabled={isDisabled}
+                        >
+                            {t('previous')}
+                        </EuiButton>
+                    )) || (
+                        <div
+                            onClick={() => {
+                                if (onCancel) {
+                                    onCancel();
+                                }
+                            }}
+                            css={{
+                                cursor: 'pointer',
+                                color: theme.colors.link,
+                                fontWeight: theme.font.weight.bold,
+                                marginLeft: theme.base / 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                        >
+                            {t('cancel')}
+                        </div>
+                    )}
                 </div>
 
                 <EuiButton
@@ -52,14 +82,13 @@ export const Footer = () => {
                     tabIndex={0}
                     fill
                     color={'primary'}
-                    isLoading={isLoading}
+                    isLoading={false}
                     type="submit"
-                    iconType={() => <WfoPlayFill color="#FFF" />}
                     iconSide="right"
-                    aria-label={t('startWorkflow')}
+                    aria-label={submitButtonLabel}
                     disabled={isDisabled}
                 >
-                    {t('startWorkflow')}
+                    {submitButtonLabel}
                 </EuiButton>
             </div>
         </div>

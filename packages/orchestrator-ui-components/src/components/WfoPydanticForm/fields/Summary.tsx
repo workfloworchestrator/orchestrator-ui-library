@@ -57,8 +57,6 @@ export const Summary: PydanticFormElement = ({ pydanticFormField }) => {
     const { summaryFieldStyle } = useWithOrchestratorTheme(getStyles);
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    console.log('SummaryField', pydanticFormField);
-
     const { id, title, description } = pydanticFormField;
     const uniforms = pydanticFormField.schema.uniforms;
     const summaryData = uniforms?.data as unknown as {
