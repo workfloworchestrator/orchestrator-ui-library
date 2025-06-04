@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.1.0
+
+### Minor Changes
+
+- f3f1417: removes conditional render option to edit description on wf/task metadata page
+- 59c5109: Adds some fields to be used by workflows using pydantic forms
+
+### Patch Changes
+
+- c03d83a: Add Exclamation badge
+
 ## 5.0.0
 
 ### Major Changes
