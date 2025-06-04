@@ -225,15 +225,17 @@ export const WfoPydanticForm = ({
         return componentMatcher ? componentMatcher(wfoMatchers) : wfoMatchers;
     };
 
+    const handleCancel = () => {
+        const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+        router.replace(pfBasePath);
+    };
+
     return (
         <PydanticForm
             title={''}
             id={processName}
             onSuccess={onSuccess}
-            onCancel={() => {
-                const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-                router.replace(pfBasePath);
-            }}
+            onCancel={handleCancel}
             loadingComponent={<WfoLoading />}
             config={{
                 apiProvider: getPydanticFormProvider(),
