@@ -71,31 +71,27 @@ export const Summary: PydanticFormElement = ({ pydanticFormField }) => {
 
     const extraColumnsData = columns.filter((_, index) => index !== 0);
 
-    const rows =
-        columns &&
-        columns[0] &&
-        columns[0].map((row, index) => (
-            <tr key={index}>
-                {labels && <td className={`label`}>{labels[index]}</td>}
-                <td className={`value`}>
-                    {typeof row === 'string' &&
-                    row.includes('<!doctype html>') ? (
-                        <div
-                            className="emailMessage"
-                            dangerouslySetInnerHTML={{ __html: row }}
-                        ></div>
-                    ) : (
-                        row
-                    )}
-                </td>
-                {extraColumnsData &&
-                    extraColumnsData.map((_, idx) => (
-                        <td className={`value`} key={idx}>
-                            {extraColumnsData[idx][index]}
-                        </td>
-                    ))}
-            </tr>
-        ));
+    const rows = columns[0].map((row, index) => (
+        <tr key={index}>
+            {labels && <td className={`label`}>{labels[index]}</td>}
+            <td className={`value`}>
+                {typeof row === 'string' && row.includes('<!doctype html>') ? (
+                    <div
+                        className="emailMessage"
+                        dangerouslySetInnerHTML={{ __html: row }}
+                    ></div>
+                ) : (
+                    row
+                )}
+            </td>
+            {extraColumnsData &&
+                extraColumnsData.map((_, idx) => (
+                    <td className={`value`} key={idx}>
+                        {extraColumnsData[idx][index]}
+                    </td>
+                ))}
+        </tr>
+    ));
 
     const tableHeader =
         !headers || headers.length === 0 ? null : (

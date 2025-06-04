@@ -31,7 +31,65 @@ export const Footer = () => {
             !rhf.formState.isDirty &&
             !rhf.formState.isSubmitting);
 
-    const submitButtonLabel = hasNext ? t('next') : t('startWorkflow');
+    const handlePrevious = () => {
+        if (onCancel) {
+            onCancel();
+        }
+    };
+
+    const PreviousButton = () => (
+        <EuiButton
+            id="button-submit-form-submit"
+            tabIndex={0}
+            fill
+            onClick={() => {
+                if (onPrevious) {
+                    onPrevious();
+                }
+            }}
+            color={'primary'}
+            iconSide="right"
+            aria-label={t('previous')}
+            disabled={isDisabled}
+        >
+            {t('previous')}
+        </EuiButton>
+    );
+
+    const CancelButton = () => (
+        <div
+            onClick={handlePrevious}
+            css={{
+                cursor: 'pointer',
+                color: theme.colors.link,
+                fontWeight: theme.font.weight.bold,
+                marginLeft: theme.base / 2,
+                display: 'flex',
+                alignItems: 'center',
+            }}
+        >
+            {t('cancel')}
+        </div>
+    );
+
+    const SubmitButton = () => {
+        const submitButtonLabel = hasNext ? t('next') : t('startWorkflow');
+
+        return (
+            <EuiButton
+                id="button-submit-form-submit"
+                tabIndex={0}
+                fill
+                color={'primary'}
+                type="submit"
+                iconSide="right"
+                aria-label={submitButtonLabel}
+                disabled={isDisabled}
+            >
+                {submitButtonLabel}
+            </EuiButton>
+        );
+    };
 
     return (
         <div>
@@ -39,57 +97,11 @@ export const Footer = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                     {(formInputData && formInputData.length > 0 && (
-                        <EuiButton
-                            id="button-submit-form-submit"
-                            tabIndex={0}
-                            fill
-                            onClick={() => {
-                                if (onPrevious) {
-                                    onPrevious();
-                                }
-                            }}
-                            color={'primary'}
-                            isLoading={false}
-                            iconSide="right"
-                            aria-label={t('previous')}
-                            disabled={isDisabled}
-                        >
-                            {t('previous')}
-                        </EuiButton>
-                    )) || (
-                        <div
-                            onClick={() => {
-                                if (onCancel) {
-                                    onCancel();
-                                }
-                            }}
-                            css={{
-                                cursor: 'pointer',
-                                color: theme.colors.link,
-                                fontWeight: theme.font.weight.bold,
-                                marginLeft: theme.base / 2,
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {t('cancel')}
-                        </div>
-                    )}
+                        <PreviousButton />
+                    )) || <CancelButton />}
                 </div>
 
-                <EuiButton
-                    id="button-submit-form-submit"
-                    tabIndex={0}
-                    fill
-                    color={'primary'}
-                    isLoading={false}
-                    type="submit"
-                    iconSide="right"
-                    aria-label={submitButtonLabel}
-                    disabled={isDisabled}
-                >
-                    {submitButtonLabel}
-                </EuiButton>
+                <SubmitButton />
             </div>
         </div>
     );
