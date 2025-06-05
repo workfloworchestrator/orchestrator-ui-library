@@ -30,6 +30,7 @@ import { Row } from './Row';
 import {
     Checkbox,
     Divider,
+    Integer,
     Label,
     Radio,
     Summary,
@@ -231,6 +232,17 @@ export const WfoPydanticForm = ({
                         field.options.length <= 3
                     );
                 },
+            },
+            {
+                id: 'integerfield',
+                ElementMatch: {
+                    Element: Integer,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.INTEGER;
+                },
+                validator: zodValidationPresets.integer,
             },
             ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
             {
