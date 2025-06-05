@@ -7,3 +7,4 @@ export * from './Summary';
 export * from './WfoObjectField';
 export * from './WfoArrayField';
 export * from './Radio';
+export * from './Integer';
