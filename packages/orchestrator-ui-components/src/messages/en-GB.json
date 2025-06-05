@@ -130,6 +130,7 @@
             "nodePort": {
                 "loadingNodes": "Loading Node subscriptions...",
                 "loadingPorts": "Loading IMS ports...",
+                "noPorts": "NO PORTS FOUND FOR THIS NODE",
                 "selectNode": "Select node",
                 "selectPort": "Select port",
                 "selectNodeFirst": "Select a node first"
