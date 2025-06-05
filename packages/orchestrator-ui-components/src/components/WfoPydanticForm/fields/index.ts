@@ -8,5 +8,3 @@ export * from './WfoObjectField';
 export * from './WfoArrayField';
 export * from './Radio';
 export * from './Integer';
-export * from './WfoObjectField';
-export * from './WfoArrayField/WfoArrayField';
