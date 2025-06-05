@@ -5,3 +5,4 @@ export * from './Divider';
 export * from './Checkbox';
 export * from './Summary';
 export * from './Radio';
+export * from './Integer';
