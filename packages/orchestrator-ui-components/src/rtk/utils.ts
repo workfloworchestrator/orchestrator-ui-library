@@ -80,6 +80,26 @@ export const mapRtkErrorToWfoError = (
     return error;
 };
 
+export const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
+export const isFetchBaseQueryError = (
+    error: FetchBaseQueryError | GraphQLError[] | SerializedError | undefined,
+): error is FetchBaseQueryError => {
+    if (typeof error === 'object' && error !== null && 'status' in error) {
+        const status = error.status;
+        return (
+            typeof status === 'number' ||
+            status === 'FETCH_ERROR' ||
+            status === 'PARSING_ERROR' ||
+            status === 'TIMEOUT_ERROR' ||
+            status === 'CUSTOM_ERROR'
+        );
+    }
+    return false;
+};
+
 export const getWebSocket = async (url: string) => {
     const session = (await getSession()) as WfoSession;
 

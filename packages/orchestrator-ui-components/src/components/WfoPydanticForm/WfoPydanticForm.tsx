@@ -15,19 +15,16 @@ import {
     zodValidationPresets,
 } from 'pydantic-forms';
 
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-
 import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
-import { HttpStatus } from '@/rtk';
+import { HttpStatus, isFetchBaseQueryError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useAppSelector } from '@/rtk/hooks';
-import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Row } from './Row';
-import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
+import { Checkbox, Divider, Label, Summary, Text, TextArea, WfoObjectField, WfoArrayField} from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -82,40 +79,26 @@ export const WfoPydanticForm = ({
                 userInputs: [{ ...startProcessPayload }, ...requestBody],
             });
             return response
-                .then((result) => {
-                    return new Promise<Record<string, object | string>>(
-                        (resolve) => {
-                            if (result.error) {
-                                const error =
-                                    result.error as FetchBaseQueryError;
-                                if (
-                                    error.status === HttpStatus.FormNotComplete
-                                ) {
-                                    const data = error.data as Record<
-                                        string,
-                                        object | string
-                                    >;
-                                    resolve(data);
-                                } else if (
-                                    typeof error === 'object' &&
-                                    error !== null
-                                ) {
-                                    const validationError =
-                                        error as FormValidationError;
-                                    if (validationError?.status === 400) {
-                                        resolve({
-                                            ...validationError.data,
-                                            status: validationError.status.toString(),
-                                        });
-                                    }
-                                }
-                            } else if (result.data) {
-                                resolve(result.data);
+                .then(({ error, data }) => {
+                    return new Promise<Record<string, unknown>>((resolve) => {
+                        if (
+                            isFetchBaseQueryError(error) &&
+                            isRecord(error.data)
+                        ) {
+                            if (error.status === HttpStatus.FormNotComplete) {
+                                resolve(error.data);
+                            } else if (error.status === HttpStatus.BadRequest) {
+                                resolve({
+                                    ...error.data,
+                                    status: error.status,
+                                });
                             }
+                        } else if (data) {
+                            resolve(data);
+                        }
 
-                            resolve({});
-                        },
-                    );
+                        resolve({});
+                    });
                 })
                 .catch((error) => {
                     return new Promise<Record<string, object>>(
@@ -159,6 +142,26 @@ export const WfoPydanticForm = ({
                         field.format === PydanticFormFieldFormat.LONG
                     );
                 },
+            },
+            {
+                id: 'object',
+                ElementMatch: {
+                    isControlledElement: false,
+                    Element: WfoObjectField
+                },
+                matcher: (field) => {
+                    return (field.type === PydanticFormFieldType.OBJECT);
+                }
+            },
+            {
+                id: 'array',
+                ElementMatch: {
+                    isControlledElement: true,
+                    Element: WfoArrayField
+                },
+                matcher: (field) => {
+                    return (field.type === PydanticFormFieldType.ARRAY);
+                }
             },
             {
                 id: 'summary',
