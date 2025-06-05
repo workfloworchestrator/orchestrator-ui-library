@@ -2,16 +2,17 @@ import React from 'react';
 
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import {
-    PydanticForm,
-    PydanticFormFieldFormat,
-    PydanticFormFieldType,
-} from 'pydantic-forms';
 import type {
     ComponentMatcher,
     PydanticComponentMatcher,
     PydanticFormApiProvider,
     PydanticFormLabelProvider,
+} from 'pydantic-forms';
+import {
+    PydanticForm,
+    PydanticFormFieldFormat,
+    PydanticFormFieldType,
+    zodValidationPresets,
 } from 'pydantic-forms';
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -21,10 +22,11 @@ import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { HttpStatus } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useAppSelector } from '@/rtk/hooks';
+import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
 import { Row } from './Row';
-import { TextArea } from './fields/TextArea';
+import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -53,6 +55,11 @@ export const WfoPydanticForm = ({
         translationMessages?.pydanticForms &&
         typeof translationMessages?.pydanticForms !== 'string'
             ? translationMessages.pydanticForms.backendTranslations
+            : {};
+    const widgetsTranslations =
+        translationMessages?.pydanticForms &&
+        typeof translationMessages?.pydanticForms !== 'string'
+            ? translationMessages.pydanticForms.widgets
             : {};
 
     const onSuccess = (_fieldValues: object, req: object) => {
@@ -88,6 +95,18 @@ export const WfoPydanticForm = ({
                                         object | string
                                     >;
                                     resolve(data);
+                                } else if (
+                                    typeof error === 'object' &&
+                                    error !== null
+                                ) {
+                                    const validationError =
+                                        error as FormValidationError;
+                                    if (validationError?.status === 400) {
+                                        resolve({
+                                            ...validationError.data,
+                                            status: validationError.status.toString(),
+                                        });
+                                    }
                                 }
                             } else if (result.data) {
                                 resolve(result.data);
@@ -112,11 +131,13 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     };
 
+    const orchestratorTranslations = formTranslations as unknown;
+
     const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
         return new Promise((resolve) => {
             resolve({
                 labels: {
-                    ...(formTranslations as object),
+                    ...(orchestratorTranslations as object),
                 },
                 data: {},
             });
@@ -138,10 +159,75 @@ export const WfoPydanticForm = ({
                     );
                 },
             },
-            ...currentMatchers,
+            {
+                id: 'summary',
+                ElementMatch: {
+                    Element: Summary,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        (field.format as string) === 'summary'
+                    );
+                },
+            },
+            {
+                id: 'label',
+                ElementMatch: {
+                    Element: Label,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.format === PydanticFormFieldFormat.LABEL
+                    );
+                },
+            },
+            {
+                id: 'divider',
+                ElementMatch: {
+                    Element: Divider,
+                    isControlledElement: false,
+                },
+                matcher(field) {
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.format === PydanticFormFieldFormat.DIVIDER
+                    );
+                },
+            },
+            {
+                id: 'checkbox',
+                ElementMatch: {
+                    Element: Checkbox,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.BOOLEAN;
+                },
+            },
+            ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
+            {
+                id: 'text',
+                ElementMatch: {
+                    Element: Text,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.STRING;
+                },
+                validator: zodValidationPresets.string,
+            },
         ];
 
         return componentMatcher ? componentMatcher(wfoMatchers) : wfoMatchers;
+    };
+
+    const handleCancel = () => {
+        const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+        router.replace(pfBasePath);
     };
 
     return (
@@ -149,6 +235,7 @@ export const WfoPydanticForm = ({
             title={''}
             id={processName}
             onSuccess={onSuccess}
+            onCancel={handleCancel}
             loadingComponent={<WfoLoading />}
             config={{
                 apiProvider: getPydanticFormProvider(),
@@ -161,6 +248,10 @@ export const WfoPydanticForm = ({
                 customTranslations: {
                     cancel: t('cancel'),
                     startWorkflow: t('startWorkflow'),
+                    widgets: {
+                        ...(widgetsTranslations as object),
+                    },
+                    ...translationMessages,
                 },
             }}
         />

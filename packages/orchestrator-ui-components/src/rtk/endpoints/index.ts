@@ -18,3 +18,4 @@ export * from './subscriptionList';
 export * from './subscriptionListSummary';
 export * from './forms';
 export * from './deprecated';
+export * from './formFields';
