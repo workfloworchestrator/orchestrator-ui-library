@@ -28,6 +28,7 @@ import {
     Checkbox,
     Divider,
     Label,
+    Radio,
     Summary,
     Text,
     TextArea,
@@ -225,6 +226,21 @@ export const WfoPydanticForm = ({
                 },
                 matcher(field) {
                     return field.type === PydanticFormFieldType.BOOLEAN;
+                },
+            },
+            {
+                id: 'radio',
+                ElementMatch: {
+                    Element: Radio,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    // We are looking for a single value from a set list of options. With less than 4 options, use radio buttons.
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.options.length > 0 &&
+                        field.options.length <= 3
+                    );
                 },
             },
             {
