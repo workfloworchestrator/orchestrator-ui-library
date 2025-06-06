@@ -33,15 +33,12 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { PortMode, ProductTag } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { useGetSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSubscriptionDropdownOptions';
-import { SubscriptionDropdownOption } from '@/types';
+import { useGetSurfSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSurfSubcriptionDropdownOptions';
 
-import { getSelectFieldStyles } from './SelectField/styles';
+import { getSelectFieldStyles } from '../SelectField/styles';
+import { FieldProps, Option } from '../types';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
-import { FieldProps, Option } from './types';
-import { getPortMode } from './utils';
 
 declare module 'uniforms' {
     interface FilterDOMProps {
@@ -81,6 +78,18 @@ export type SubscriptionFieldProps = FieldProps<
     }
 >;
 
+function toPortModes(visiblePortMode: string): string[] {
+    if (visiblePortMode === 'all') {
+        return [];
+    }
+
+    if (visiblePortMode === 'normal') {
+        return ['tagged', 'untagged'];
+    }
+
+    return [visiblePortMode];
+}
+
 function SubscriptionFieldDefinition({
     disabled,
     id,
@@ -110,9 +119,6 @@ function SubscriptionFieldDefinition({
     const { reactSelectInnerComponentStyles } =
         useWithOrchestratorTheme(getSelectFieldStyles);
 
-    const { refetch, subscriptions, isFetching } =
-        useGetSubscriptionDropdownOptions(tags, statuses);
-
     const nameArray = joinName(null, name);
     let parentName = joinName(nameArray.slice(0, -1));
 
@@ -136,160 +142,50 @@ function SubscriptionFieldDefinition({
         ? get(model, customerKey, 'nonExistingOrgToFilterEverything')
         : customerId;
 
-    const makeLabel = (subscription: SubscriptionDropdownOption) => {
-        const description =
-            subscription.description ||
-            t('widgets.subscription.missingDescription');
-        const subscriptionSubstring = subscription.subscriptionId.substring(
-            0,
-            8,
-        );
+    const getFilteredOptions = (optionsInput: Option[]): Option[] => {
+        // Remnant of the old logic in which much more filtering happened clientside, which is now done
+        // server-side by setting the required URL parameters.
 
-        if (['Node'].includes(subscription.product.tag)) {
-            const description =
-                subscription.description ||
-                t('widgets.subscription.missingDescription');
-            return `${subscription.subscriptionId.substring(
-                0,
-                8,
-            )} ${description.trim()}`;
-        } else if (
-            [
-                ProductTag.SP,
-                ProductTag.SPNL,
-                ProductTag.AGGSP,
-                ProductTag.AGGSPNL,
-                ProductTag.MSC,
-                ProductTag.MSCNL,
-                ProductTag.IRBSP,
-            ].includes(subscription.product.tag as ProductTag)
+        // The 'uniqueItems' filter below should exclude options already chosen in other SubscriptionFields in the same parent Array.
+        // Although this partly relies on uniforms magic which will be reworked/replaced with pydantic-forms.
+        if (
+            parentName !== name &&
+            parent.fieldType === Array &&
+            // @ts-expect-error Parent field can have the uniqueItems boolean property but this is not part of JSONSchema6 type
+            // TODO: Figure out why this is so
+            parent.uniqueItems
         ) {
-            const portMode = getPortMode(subscription.productBlockInstances);
-            const subscriptionTitle =
-                subscription.productBlockInstances[0].productBlockInstanceValues.find(
-                    (item) => item.field === 'title',
-                );
-            if (subscriptionTitle) {
-                return `${subscriptionSubstring} - ${description.trim()} - ${
-                    subscriptionTitle.value
-                }`;
-            }
-            return `${subscriptionSubstring} ${portMode?.toUpperCase()} ${description.trim()} ${
-                subscription.customer?.fullname
-            }`;
+            const allValues: string[] = get(model, parentName, []);
+            const chosenValues = allValues.filter(
+                (_item, index) =>
+                    index.toString() !== nameArray[nameArray.length - 1],
+            );
+
+            return optionsInput.filter((option) =>
+                chosenValues.includes(option.value),
+            );
         } else {
-            return description.trim();
+            return optionsInput;
         }
     };
 
-    // Filter by product, needed because getSubscriptions might return more than we want
-    const getSubscriptionOptions = (): Option[] => {
-        const filteredSubscriptions = subscriptions?.filter((subscription) => {
-            // NOTE: useBandWith, productIds and tags need to be checked in this order as per the V1 logic
+    const excludeSubscriptionIds = excludedSubscriptionIds;
+    const portModes = toPortModes(visiblePortMode);
+    const {
+        refetch,
+        options: unfilteredOptions,
+        isFetching,
+    } = useGetSurfSubscriptionDropdownOptions(
+        tags,
+        statuses,
+        productIds,
+        excludeSubscriptionIds,
+        usedCustomerId,
+        portModes,
+        usedBandwidth,
+    );
 
-            // If a bandwidth filter is supplied it needs to be applied to the subscription product
-            if (usedBandwidth) {
-                const portSpeedInput = subscription.fixedInputs.find(
-                    (fixedInput) => fixedInput.field === 'port_speed',
-                );
-                if (
-                    portSpeedInput?.value &&
-                    parseInt(portSpeedInput.value.toString(), 10) <
-                        parseInt(usedBandwidth.toString(), 10)
-                ) {
-                    return false;
-                }
-            }
-
-            // If specific productIds are provided the subscriptions needs to have one of those
-            if (
-                !usedBandwidth &&
-                productIds &&
-                productIds.length > 0 &&
-                !productIds.includes(subscription.product.productId)
-            ) {
-                return false;
-            }
-
-            if (
-                !usedBandwidth &&
-                !productIds &&
-                tags &&
-                tags?.length > 0 &&
-                !tags.includes(subscription.product.tag)
-            ) {
-                return false;
-            }
-
-            // If specific subscriptionIds are excluded the subscription can't be one ot those
-            if (
-                excludedSubscriptionIds &&
-                excludedSubscriptionIds.length > 0 &&
-                excludedSubscriptionIds.includes(subscription.subscriptionId)
-            ) {
-                return false;
-            }
-
-            // If a Port mode filter is applied we need to filter on that
-            if (visiblePortMode !== 'all') {
-                const portMode = getPortMode(
-                    subscription.productBlockInstances,
-                );
-                // For normal mode filter out all subscriptions that don't have tagged or untagged ports
-                if (
-                    visiblePortMode === 'normal' &&
-                    ![PortMode.TAGGED, PortMode.UNTAGGED, undefined].includes(
-                        portMode,
-                    )
-                ) {
-                    return false;
-                } else if (
-                    portMode !== visiblePortMode &&
-                    visiblePortMode !== 'normal'
-                ) {
-                    return false;
-                }
-            }
-
-            // If a customer filter is applied we need to filter on that
-            if (
-                usedCustomerId &&
-                subscription.customer?.customerId !== usedCustomerId
-            ) {
-                return false;
-            }
-
-            if (parentName !== name) {
-                if (
-                    parent.fieldType === Array &&
-                    // @ts-expect-error Parent field can have the uniqueItems boolean property but this is not part of JSONSchema6 type
-                    // TODO: Figure out why this is so
-                    parent.uniqueItems
-                ) {
-                    const allValues: string[] = get(model, parentName, []);
-                    const chosenValues = allValues.filter(
-                        (_item, index) =>
-                            index.toString() !==
-                            nameArray[nameArray.length - 1],
-                    );
-                    if (!chosenValues.includes(subscription.subscriptionId)) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        });
-
-        return filteredSubscriptions
-            ? filteredSubscriptions.map((subscription) => ({
-                  label: makeLabel(subscription),
-                  value: subscription.subscriptionId,
-              }))
-            : [];
-    };
-
-    const options = getSubscriptionOptions();
+    const options = getFilteredOptions(unfilteredOptions);
 
     const selectedValue = options.find(
         (option: Option) => option.value === value,
