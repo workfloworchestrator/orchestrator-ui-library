@@ -16,7 +16,7 @@
         "@storybook/addon-onboarding": "^8.5.0",
         "@storybook/blocks": "^8.5.0",
         "@storybook/experimental-nextjs-vite": "^8.5.0",
-        "@storybook/react": "^8.5.0",
+        "@storybook/react": "^9.0.6",
         "@storybook/react-vite": "^8.5.0",
         "@storybook/test": "^8.5.0",
         "next-router-mock": "^0.9.13",
