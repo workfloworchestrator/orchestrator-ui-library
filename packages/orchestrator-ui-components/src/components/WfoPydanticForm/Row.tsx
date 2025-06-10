@@ -12,19 +12,31 @@ export const Row: RowRenderComponent = ({
     description,
     error,
     isInvalid,
+    required,
     children,
 }) => {
-    const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+    const { formRowStyle, errorStyle } = useWithOrchestratorTheme(
+        getCommonFormFieldStyles,
+    );
+
     return (
         <EuiFormRow
             css={formRowStyle}
-            label={title}
+            label={
+                title ? (
+                    <EuiText size="m">
+                        <div css={error && errorStyle}>
+                            {title} {required && '*'}
+                        </div>
+                    </EuiText>
+                ) : undefined
+            }
             labelAppend={<EuiText size="m">{description}</EuiText>}
             error={error}
             isInvalid={isInvalid}
             fullWidth
         >
-            <div>{children}</div>
+            <>{children}</>
         </EuiFormRow>
     );
 };
