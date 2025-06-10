@@ -232,7 +232,6 @@ export const WfoPydanticForm = ({
 
     return (
         <PydanticForm
-            title={''}
             id={processName}
             onSuccess={onSuccess}
             onCancel={handleCancel}
