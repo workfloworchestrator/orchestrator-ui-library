@@ -21,7 +21,11 @@ export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
         },
     });
 
+    const errorStyle = css({
+        color: theme.colors.dangerText,
+    });
     return {
+        errorStyle,
         formRowStyle,
     };
 };
