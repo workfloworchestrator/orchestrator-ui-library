@@ -25,6 +25,7 @@ import { useAppSelector } from '@/rtk/hooks';
 import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
+import { Header } from './Header';
 import { Row } from './Row';
 import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
 
@@ -240,6 +241,7 @@ export const WfoPydanticForm = ({
                 apiProvider: getPydanticFormProvider(),
                 allowUntouchedSubmit: true,
                 footerRenderer: Footer,
+                headerRenderer: Header,
                 skipSuccessNotice: true,
                 componentMatcher: wfoComponentMatcher,
                 labelProvider: pydanticLabelProvider,
