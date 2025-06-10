@@ -8,6 +8,6 @@ export const getWfoObjectFieldStyles = () => {
         },
     });
     return {
-        wfoObjectFieldStyles
+        wfoObjectFieldStyles,
     };
-}
+};
