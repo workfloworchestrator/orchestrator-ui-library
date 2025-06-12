@@ -14,5 +14,8 @@ const headerStyling = css`
 export const Header = () => {
     const { pydanticFormSchema } = usePydanticFormContext();
 
-    return <h3 css={headerStyling}>{pydanticFormSchema?.title}</h3>;
+    return pydanticFormSchema?.title &&
+        pydanticFormSchema.title !== 'unknown' ? (
+        <h3 css={headerStyling}>{pydanticFormSchema?.title}</h3>
+    ) : undefined;
 };
