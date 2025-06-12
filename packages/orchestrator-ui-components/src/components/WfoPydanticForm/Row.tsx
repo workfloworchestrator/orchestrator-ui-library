@@ -19,18 +19,20 @@ export const Row: RowRenderComponent = ({
         getCommonFormFieldStyles,
     );
 
+    const Label = () => {
+        return title ? (
+            <EuiText size="m">
+                <div css={error && errorStyle}>
+                    {title} {required && '*'}
+                </div>
+            </EuiText>
+        ) : undefined;
+    };
+
     return (
         <EuiFormRow
             css={formRowStyle}
-            label={
-                title ? (
-                    <EuiText size="m">
-                        <div css={error && errorStyle}>
-                            {title} {required && '*'}
-                        </div>
-                    </EuiText>
-                ) : undefined
-            }
+            label={<Label />}
             labelAppend={<EuiText size="m">{description}</EuiText>}
             error={error}
             isInvalid={isInvalid}
