@@ -21,11 +21,9 @@ export const Row: RowRenderComponent = ({
 
     const Label = () => {
         return title ? (
-            <EuiText size="m">
-                <div css={error && errorStyle}>
-                    {title} {required && '*'}
-                </div>
-            </EuiText>
+            <div css={error && errorStyle}>
+                {title} {required && '*'}
+            </div>
         ) : undefined;
     };
 
