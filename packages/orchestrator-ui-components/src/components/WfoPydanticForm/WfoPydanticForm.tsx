@@ -255,6 +255,26 @@ export const WfoPydanticForm = ({
                 },
                 validator: zodValidationPresets.integer,
             },
+            {
+                id: 'object',
+                ElementMatch: {
+                    isControlledElement: false,
+                    Element: WfoObjectField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.OBJECT;
+                },
+            },
+            {
+                id: 'array',
+                ElementMatch: {
+                    isControlledElement: true,
+                    Element: WfoArrayField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.ARRAY;
+                },
+            },
             ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
             {
                 id: 'text',
