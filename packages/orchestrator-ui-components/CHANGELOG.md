@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.2.0
+
+### Minor Changes
+
+- 7fa5828: SURF specific: Deprecate SubscriptionField and refactor it to use new REST endpoint with server-side filtering
+
+### Patch Changes
+
+- bbae7ad: Small improvements to forms
+
 ## 5.1.0
 
 ### Minor Changes
