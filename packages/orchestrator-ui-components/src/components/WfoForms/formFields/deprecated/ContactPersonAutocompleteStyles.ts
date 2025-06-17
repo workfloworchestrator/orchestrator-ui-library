@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getContactPersonStyles = ({ theme }: WfoTheme) => {
     const contactPersonAutocompleteStyling = css`
         .autocomplete-container {
             position: relative;

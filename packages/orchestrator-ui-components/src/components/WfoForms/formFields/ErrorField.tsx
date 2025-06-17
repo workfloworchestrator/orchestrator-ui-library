@@ -16,7 +16,7 @@ import React from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
-import { FieldProps } from '@/types';
+import { FieldProps } from '@/components';
 
 export type ErrorFieldProps = FieldProps<null>;
 
