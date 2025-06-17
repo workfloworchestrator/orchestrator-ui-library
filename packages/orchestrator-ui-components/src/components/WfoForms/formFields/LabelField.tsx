@@ -16,8 +16,8 @@ import React from 'react';
 
 import { connectField, filterDOMProps } from 'uniforms';
 
+import { FieldProps } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
-import { FieldProps } from '@/types';
 
 export type LabelFieldProps = FieldProps<null, object, null, HTMLDivElement>;
 

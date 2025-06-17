@@ -18,10 +18,10 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFieldNumber, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { FieldProps } from '@/components';
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { getFormFieldsBaseStyle } from '@/theme';
-import { FieldProps } from '@/types';
 
 export type NumFieldProps = FieldProps<
     number,
