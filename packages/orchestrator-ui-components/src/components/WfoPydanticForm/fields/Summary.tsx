@@ -5,10 +5,9 @@ import type { PydanticFormElement } from 'pydantic-forms';
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 import { tint } from '@elastic/eui';
 import { css } from '@emotion/react';
-import type { WfoTheme } from '@orchestrator-ui/orchestrator-ui-components';
 
-import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { getCommonFormFieldStyles } from '@/components';
+import { WfoTheme, useWithOrchestratorTheme } from '@/hooks';
 
 export const getStyles = ({ theme }: WfoTheme) => {
     const toShadeColor = (color: string) => tint(color, 0.9);

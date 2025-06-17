@@ -11,13 +11,10 @@ import {
 
 import { EuiIcon } from '@elastic/eui';
 
+import { getWfoArrayFieldStyles } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 
-import { getWfoArrayFieldStyles } from './styles';
-
-// adjust relative path accordingly
-
-const MinusButton = ({
+export const MinusButton = ({
     index,
     onRemove,
 }: {
@@ -34,7 +31,7 @@ const MinusButton = ({
     );
 };
 
-const PlusButton = ({ onClick }: { onClick: () => void }) => {
+export const PlusButton = ({ onClick }: { onClick: () => void }) => {
     const { theme } = useOrchestratorTheme();
     const { plusButtonWrapper } = getWfoArrayFieldStyles();
 
@@ -75,6 +72,9 @@ export const WfoArrayField = ({
     );
 
     const renderField = (field: Record<'id', string>, index: number) => {
+        //TODO: Temporary fix for wrapper showing in arrayItem when not necessary
+        delete arrayItem.description;
+        arrayItem.title = '';
         const arrayField = itemizeArrayItem(index, arrayItem);
 
         return (

@@ -21,7 +21,7 @@ import { EuiCheckbox, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
-import { getStyles } from './AcceptFieldStyling';
+import { getAcceptFieldStyles } from './AcceptFieldStyling';
 import { FieldProps } from './types';
 
 type AcceptItemType =
@@ -73,7 +73,7 @@ function Accept({
     ...props
 }: AcceptFieldProps) {
     const t = useTranslations();
-    const { acceptFieldStyle } = useWithOrchestratorTheme(getStyles);
+    const { acceptFieldStyle } = useWithOrchestratorTheme(getAcceptFieldStyles);
 
     const legacy = !data;
     const i18nBaseKey = data
