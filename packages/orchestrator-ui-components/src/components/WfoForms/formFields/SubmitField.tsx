@@ -16,7 +16,7 @@ import React from 'react';
 
 import { filterDOMProps, useForm } from 'uniforms';
 
-import { FieldProps } from '@/types';
+import { FieldProps } from '@/components';
 
 export type SubmitFieldProps = FieldProps<
     null,
