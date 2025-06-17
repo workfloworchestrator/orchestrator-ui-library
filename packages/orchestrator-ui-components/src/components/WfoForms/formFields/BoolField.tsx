@@ -18,9 +18,9 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiCheckbox, EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { FieldProps } from '@/components';
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { FieldProps } from '@/types';
 
 import { boolFieldStyling } from './BoolFieldStyling';
 

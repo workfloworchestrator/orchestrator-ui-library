@@ -18,7 +18,7 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFormRow, EuiText, EuiTextArea } from '@elastic/eui';
 
-import { FieldProps } from '@/types';
+import { FieldProps } from '@/components';
 
 export type LongTextFieldProps = FieldProps<
     string,
