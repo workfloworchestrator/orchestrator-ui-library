@@ -131,6 +131,7 @@
                 "loadingPorts": "IMS poorten laden...",
                 "selectNode": "Selecteer node",
                 "selectPort": "Selecteer poort",
+                "noPorts": "GEEN POORTEN GEVONDEN VOOR DEZE NODE",
                 "selectNodeFirst": "Selecteer eerst een node"
             },
             "fileUpload": {
