@@ -37,7 +37,7 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({
     const queryParams = {
         [WfoQueryParams.ACTIVE_TAB]: WfoWorkflowsListTabType.COMPLETED,
         [WfoQueryParams.SORT_BY]: 'field-lastModifiedAt_order-DESC',
-        [WfoQueryParams.QUERY_STRING]: `createdBy:"${username}`,
+        [WfoQueryParams.QUERY_STRING]: `createdBy:"${username}"`,
     };
 
     return (
