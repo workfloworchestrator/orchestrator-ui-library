@@ -52,7 +52,7 @@ export const WfoPydanticForm = ({
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
     const t = useTranslations('pydanticForms.userInputForm');
-    const componentMatcher = useAppSelector(
+    const componentMatcherExtender = useAppSelector(
         (state) => state.pydanticForm?.componentMatcher,
     );
 
@@ -138,6 +138,10 @@ export const WfoPydanticForm = ({
 
     const wfoComponentMatcher: ComponentMatcher = (currentMatchers) => {
         const wfoMatchers: PydanticComponentMatcher[] = [
+            ...currentMatchers
+                .filter((matcher) => matcher.id !== 'text')
+                .filter((matcher) => matcher.id !== 'array')
+                .filter((matcher) => matcher.id !== 'object'),
             {
                 id: 'textarea',
                 ElementMatch: {
@@ -220,7 +224,6 @@ export const WfoPydanticForm = ({
                     return field.type === PydanticFormFieldType.BOOLEAN;
                 },
             },
-            ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
             {
                 id: 'text',
                 ElementMatch: {
@@ -233,8 +236,9 @@ export const WfoPydanticForm = ({
                 validator: zodValidationPresets.string,
             },
         ];
-
-        return componentMatcher ? componentMatcher(wfoMatchers) : wfoMatchers;
+        return componentMatcherExtender
+            ? componentMatcherExtender(wfoMatchers)
+            : wfoMatchers;
     };
 
     const handleCancel = () => {

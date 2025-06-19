@@ -14,7 +14,7 @@ import { getOrchestratorStore } from './store';
 export type StoreProviderProps = {
     initialOrchestratorConfig: OrchestratorConfig | null;
     orchestratorComponentOverride?: OrchestratorComponentOverride;
-    componentMatcher?: ComponentMatcher;
+    componentMatcherExtender?: ComponentMatcher;
     customApis?: CustomApiConfig[];
     children: ReactNode;
 };
@@ -22,7 +22,7 @@ export type StoreProviderProps = {
 export const StoreProvider = ({
     initialOrchestratorConfig,
     orchestratorComponentOverride,
-    componentMatcher,
+    componentMatcherExtender,
     customApis = [],
     children,
 }: StoreProviderProps) => {
@@ -31,7 +31,7 @@ export const StoreProvider = ({
             initialOrchestratorConfig ?? emptyOrchestratorConfig,
         orchestratorComponentOverride,
         pydanticForm: {
-            componentMatcher: componentMatcher || undefined,
+            componentMatcher: componentMatcherExtender || undefined,
         },
         customApis,
     });
