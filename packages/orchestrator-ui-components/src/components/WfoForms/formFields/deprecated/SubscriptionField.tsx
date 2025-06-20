@@ -219,7 +219,6 @@ function SubscriptionFieldDefinition({
                                 <EuiButtonIcon
                                     className="reload-subscriptions-icon-button"
                                     id={`refresh-icon-${id}`}
-                                    aria-label={`reload-${label}`}
                                     iconType="refresh"
                                     iconSize="l"
                                     disabled={isDisabled}
