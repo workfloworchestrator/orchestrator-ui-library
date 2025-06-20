@@ -27,7 +27,18 @@ import { FormValidationError } from '@/types';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Row } from './Row';
-import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
+import {
+    Checkbox,
+    Divider,
+    Integer,
+    Label,
+    Radio,
+    Summary,
+    Text,
+    TextArea,
+    WfoArrayField,
+    WfoObjectField,
+} from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -207,6 +218,52 @@ export const WfoPydanticForm = ({
                 },
                 matcher(field) {
                     return field.type === PydanticFormFieldType.BOOLEAN;
+                },
+            },
+            {
+                id: 'radio',
+                ElementMatch: {
+                    Element: Radio,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    // We are looking for a single value from a set list of options. With less than 4 options, use radio buttons.
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.options.length > 0 &&
+                        field.options.length <= 3
+                    );
+                },
+            },
+            {
+                id: 'integerfield',
+                ElementMatch: {
+                    Element: Integer,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.INTEGER;
+                },
+                validator: zodValidationPresets.integer,
+            },
+            {
+                id: 'object',
+                ElementMatch: {
+                    isControlledElement: false,
+                    Element: WfoObjectField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.OBJECT;
+                },
+            },
+            {
+                id: 'array',
+                ElementMatch: {
+                    isControlledElement: true,
+                    Element: WfoArrayField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.ARRAY;
                 },
             },
             ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
