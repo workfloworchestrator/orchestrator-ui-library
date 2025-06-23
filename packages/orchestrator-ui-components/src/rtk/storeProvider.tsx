@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import type { ComponentMatcher } from 'pydantic-forms';
+import type { ComponentMatcherExtender } from 'pydantic-forms';
 
 import { emptyOrchestratorConfig } from '@/contexts';
 import { CustomApiConfig } from '@/rtk/slices/customApis';
@@ -14,7 +14,7 @@ import { getOrchestratorStore } from './store';
 export type StoreProviderProps = {
     initialOrchestratorConfig: OrchestratorConfig | null;
     orchestratorComponentOverride?: OrchestratorComponentOverride;
-    componentMatcherExtender?: ComponentMatcher;
+    componentMatcherExtender?: ComponentMatcherExtender;
     customApis?: CustomApiConfig[];
     children: ReactNode;
 };
@@ -31,7 +31,7 @@ export const StoreProvider = ({
             initialOrchestratorConfig ?? emptyOrchestratorConfig,
         orchestratorComponentOverride,
         pydanticForm: {
-            componentMatcher: componentMatcherExtender || undefined,
+            componentMatcherExtender: componentMatcherExtender || undefined,
         },
         customApis,
     });
