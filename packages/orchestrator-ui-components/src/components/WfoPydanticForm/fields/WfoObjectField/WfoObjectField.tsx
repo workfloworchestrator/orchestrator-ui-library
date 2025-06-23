@@ -18,7 +18,7 @@ export const WfoObjectField = ({
     const { wfoObjectFieldStyles } = getWfoObjectFieldStyles();
     const components = getPydanticFormComponents(
         pydanticFormField.properties || {},
-        config?.componentMatcher,
+        config?.componentMatcherExtender,
     );
 
     return (

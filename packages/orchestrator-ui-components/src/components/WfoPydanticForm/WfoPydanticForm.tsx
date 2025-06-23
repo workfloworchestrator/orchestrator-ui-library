@@ -3,7 +3,7 @@ import React from 'react';
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import type {
-    ComponentMatcher,
+    ComponentMatcherExtender,
     PydanticComponentMatcher,
     PydanticFormApiProvider,
     PydanticFormLabelProvider,
@@ -54,7 +54,7 @@ export const WfoPydanticForm = ({
     const router = useRouter();
     const t = useTranslations('pydanticForms.userInputForm');
     const componentMatcherExtender = useAppSelector(
-        (state) => state.pydanticForm?.componentMatcher,
+        (state) => state.pydanticForm?.componentMatcherExtender,
     );
 
     const translationMessages: AbstractIntlMessages = useMessages();
@@ -137,7 +137,9 @@ export const WfoPydanticForm = ({
         });
     };
 
-    const wfoComponentMatcher: ComponentMatcher = (currentMatchers) => {
+    const wfoComponentMatcherExtender: ComponentMatcherExtender = (
+        currentMatchers,
+    ) => {
         const wfoMatchers: PydanticComponentMatcher[] = [
             ...currentMatchers
                 .filter((matcher) => matcher.id !== 'text')
@@ -259,7 +261,7 @@ export const WfoPydanticForm = ({
                 footerRenderer: Footer,
                 headerRenderer: Header,
                 skipSuccessNotice: true,
-                componentMatcher: wfoComponentMatcher,
+                componentMatcherExtender: wfoComponentMatcherExtender,
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
                 customTranslations: {
