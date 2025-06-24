@@ -47,7 +47,10 @@ export const WfoProcessSubscriptionDelta = ({
         data?.current_state?.subscription?.subscription_id ?? '';
     const newText = data?.current_state?.subscription ?? null;
     const oldSubscriptions = data?.current_state?.__old_subscriptions__ || {};
-    const oldSubscription = subscriptionId in oldSubscriptions;
+    const oldSubscription =
+        subscriptionId in oldSubscriptions
+            ? oldSubscriptions[subscriptionId]
+            : null;
     const oldText = oldSubscription || null;
 
     return isFetching ? (
