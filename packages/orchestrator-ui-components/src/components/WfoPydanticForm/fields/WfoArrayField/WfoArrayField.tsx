@@ -72,9 +72,6 @@ export const WfoArrayField = ({
     );
 
     const renderField = (field: Record<'id', string>, index: number) => {
-        //TODO: Temporary fix for wrapper showing in arrayItem when not necessary
-        delete arrayItem.description;
-        arrayItem.title = '';
         const arrayField = itemizeArrayItem(index, arrayItem);
 
         return (
