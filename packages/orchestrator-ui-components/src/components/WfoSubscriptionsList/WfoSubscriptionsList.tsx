@@ -22,14 +22,12 @@ import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedT
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
-import { UseQuery } from '@/rtk';
 import {
-    SubscriptionListResponse,
     useGetSubscriptionListQuery,
     useLazyGetSubscriptionListQuery,
 } from '@/rtk/endpoints/subscriptionList';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { GraphqlQueryVariables, SortOrder, Subscription } from '@/types';
+import { GraphqlQueryVariables, SortOrder } from '@/types';
 import {
     getQueryVariablesForExport,
     getTypedFieldFromObject,
@@ -77,6 +75,22 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     const t = useTranslations('subscriptions.index');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
+
+    const { sortBy, queryString, pageIndex, pageSize } = dataDisplayParams;
+
+    const graphqlQueryVariables: GraphqlQueryVariables<SubscriptionListItem> = {
+        first: pageSize,
+        after: pageIndex * pageSize,
+        sortBy,
+        filterBy: alwaysOnFilters,
+        query: queryString || undefined,
+    };
+
+    const { data, isFetching, error, endpointName } =
+        useGetSubscriptionListQuery(graphqlQueryVariables);
+
+    const subscriptionList =
+        mapGraphQlSubscriptionsResultToSubscriptionListItems(data);
 
     const tableColumnConfig: WfoAdvancedTableColumnConfig<SubscriptionListItem> =
         {
@@ -155,15 +169,10 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 renderData: (cellValue, row) => {
                     return (
                         <WfoSubscriptionNoteEdit
-                            queryVariables={graphqlQueryVariables}
-                            subscriptionId={row.subscriptionId}
                             onlyShowOnHover={true}
-                            useQuery={
-                                useGetSubscriptionListQuery as UseQuery<
-                                    SubscriptionListResponse,
-                                    Subscription
-                                >
-                            }
+                            endpointName={endpointName}
+                            queryVariables={graphqlQueryVariables}
+                            subscription={row}
                         />
                     );
                 },
@@ -182,19 +191,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             },
         };
 
-    const { sortBy, queryString, pageIndex, pageSize } = dataDisplayParams;
-
-    const graphqlQueryVariables: GraphqlQueryVariables<SubscriptionListItem> = {
-        first: pageSize,
-        after: pageIndex * pageSize,
-        sortBy,
-        filterBy: alwaysOnFilters,
-        query: queryString || undefined,
-    };
-
-    const { data, isFetching, error } = useGetSubscriptionListQuery(
-        graphqlQueryVariables,
-    );
     const [getSubscriptionListTrigger, { isFetching: isFetchingCsv }] =
         useLazyGetSubscriptionListQuery();
     const getSubscriptionListForExport = () =>
@@ -217,35 +213,46 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     };
     const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
 
+    const pageChange =
+        getPageIndexChangeHandler<SubscriptionListItem>(setDataDisplayParam);
+    const pageSizeChange =
+        getPageSizeChangeHandler<SubscriptionListItem>(setDataDisplayParam);
+    const updateQuery =
+        getQueryStringHandler<SubscriptionListItem>(setDataDisplayParam);
+    const updateSorting =
+        getDataSortHandler<SubscriptionListItem>(setDataDisplayParam);
+
     const pagination: Pagination = {
         pageIndex: dataDisplayParams.pageIndex,
         pageSize: dataDisplayParams.pageSize,
         pageSizeOptions: DEFAULT_PAGE_SIZES,
         totalItemCount: totalItems ?? 0,
-        onChangePage:
-            getPageIndexChangeHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            ),
-        onChangeItemsPerPage:
-            getPageSizeChangeHandler<SubscriptionListItem>(setDataDisplayParam),
+        onChangePage: pageChange,
+        onChangeItemsPerPage: pageSizeChange,
     };
+
+    const exportData = csvDownloadHandler(
+        getSubscriptionListForExport,
+        mapGraphQlSubscriptionsResultToSubscriptionListItems,
+        mapGraphQlSubscriptionsResultToPageInfo,
+        Object.keys(tableColumnConfig),
+        getCsvFileNameWithDate('Subscriptions'),
+        showToastMessage,
+        tError,
+    );
+
+    const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig(
+        tableColumnConfig,
+        sortFields,
+        filterFields,
+    );
 
     return (
         <WfoAdvancedTable
             queryString={dataDisplayParams.queryString}
-            onUpdateQueryString={getQueryStringHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            )}
-            data={
-                data
-                    ? mapGraphQlSubscriptionsResultToSubscriptionListItems(data)
-                    : []
-            }
-            tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
-                tableColumnConfig,
-                sortFields,
-                filterFields,
-            )}
+            onUpdateQueryString={updateQuery}
+            data={subscriptionList}
+            tableColumnConfig={tableConfig}
             defaultHiddenColumns={hiddenColumns}
             dataSorting={[dataSorting]}
             isLoading={isFetching}
@@ -253,18 +260,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             detailModalTitle={'Details - Subscription'}
             pagination={pagination}
             error={mapRtkErrorToWfoError(error)}
-            onUpdateDataSorting={getDataSortHandler<SubscriptionListItem>(
-                setDataDisplayParam,
-            )}
-            onExportData={csvDownloadHandler(
-                getSubscriptionListForExport,
-                mapGraphQlSubscriptionsResultToSubscriptionListItems,
-                mapGraphQlSubscriptionsResultToPageInfo,
-                Object.keys(tableColumnConfig),
-                getCsvFileNameWithDate('Subscriptions'),
-                showToastMessage,
-                tError,
-            )}
+            onUpdateDataSorting={updateSorting}
+            onExportData={exportData}
             exportDataIsLoading={isFetchingCsv}
         />
     );

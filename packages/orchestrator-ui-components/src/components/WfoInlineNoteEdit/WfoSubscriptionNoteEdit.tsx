@@ -1,41 +1,32 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { ApiResult, SubscriptionListResponse, UseQuery } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useUpdateSubscriptionNoteOptimisticMutation } from '@/rtk/endpoints/subscriptionListMutation';
-import { Subscription } from '@/types';
 import { INVISIBLE_CHARACTER } from '@/utils';
 
 import { WfoInlineEdit } from '../WfoInlineEdit';
+import { SubscriptionListItem } from '../WfoSubscriptionsList';
 
 interface WfoSubscriptionNoteEditProps {
-    subscriptionId: Subscription['subscriptionId'];
     onlyShowOnHover?: boolean;
     queryVariables: Record<string, unknown>;
-    useQuery: UseQuery<SubscriptionListResponse, Subscription>;
+    endpointName: string | undefined;
+    subscription: SubscriptionListItem;
 }
 
 export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
-    subscriptionId,
     onlyShowOnHover = false,
     queryVariables,
-    useQuery,
+    endpointName,
+    subscription,
 }) => {
-    const { selectedItem } = useQuery(queryVariables, {
-        selectFromResult: (result: ApiResult<SubscriptionListResponse>) => ({
-            selectedItem: result?.data?.subscriptions?.find(
-                (sub) => sub.subscriptionId === subscriptionId,
-            ),
-        }),
-    });
-    const endpointName = useQuery().endpointName;
     const [startProcess] = useStartProcessMutation();
     const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
 
     const triggerNoteModifyWorkflow = (note: string) => {
         const noteModifyPayload = [
-            { subscription_id: subscriptionId },
+            { subscription_id: subscription.subscriptionId },
             { note: note === INVISIBLE_CHARACTER ? '' : note },
         ];
         startProcess({
@@ -45,7 +36,7 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
 
         updateSub({
             queryName: endpointName ?? '',
-            subscriptionId: subscriptionId,
+            subscriptionId: subscription.subscriptionId,
             graphQlQueryVariables: queryVariables,
             note: note,
         });
@@ -54,8 +45,8 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
     return (
         <WfoInlineEdit
             value={
-                selectedItem?.note?.trim()
-                    ? selectedItem.note
+                subscription?.note?.trim()
+                    ? subscription.note
                     : INVISIBLE_CHARACTER
             }
             onlyShowOnHover={onlyShowOnHover}

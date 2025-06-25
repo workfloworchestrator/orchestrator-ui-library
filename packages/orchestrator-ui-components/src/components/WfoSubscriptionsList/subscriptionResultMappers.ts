@@ -20,9 +20,10 @@ export const mapGraphQlSubscriptionsResultToPageInfo = (
 ) => graphqlResponse.pageInfo;
 
 export const mapGraphQlSubscriptionsResultToSubscriptionListItems = (
-    graphqlResponse: SubscriptionListResponse,
-): SubscriptionListItem[] =>
-    graphqlResponse.subscriptions.map((subscription) => {
+    graphqlResponse: SubscriptionListResponse | undefined,
+): SubscriptionListItem[] => {
+    if (!graphqlResponse) return [];
+    return graphqlResponse.subscriptions.map((subscription) => {
         const {
             description,
             insync,
@@ -55,3 +56,4 @@ export const mapGraphQlSubscriptionsResultToSubscriptionListItems = (
             metadata: Object.keys(metadata).length > 0 ? metadata : null,
         };
     });
+};
