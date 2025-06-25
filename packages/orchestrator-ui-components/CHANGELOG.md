@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.2.3
+
+### Patch Changes
+
+- c3e62c9: 2001 fix filter of summarycard
+
 ## 5.2.2
 
 ### Patch Changes
