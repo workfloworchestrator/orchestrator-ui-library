@@ -9,7 +9,7 @@ import {
 
 import { EuiFlexGroup } from '@elastic/eui';
 
-import { getWfoObjectFieldStyles } from '@/components';
+import { getWfoObjectFieldStyles } from './getWfoObjectFieldStyles';
 
 export const WfoObjectField = ({
     pydanticFormField,

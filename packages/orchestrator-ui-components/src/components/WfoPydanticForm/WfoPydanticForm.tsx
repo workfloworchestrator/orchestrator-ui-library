@@ -143,10 +143,6 @@ export const WfoPydanticForm = ({
         currentMatchers,
     ) => {
         const wfoMatchers: PydanticComponentMatcher[] = [
-            ...currentMatchers
-                .filter((matcher) => matcher.id !== 'text')
-                .filter((matcher) => matcher.id !== 'array')
-                .filter((matcher) => matcher.id !== 'object'),
             {
                 id: 'textarea',
                 ElementMatch: {
@@ -158,26 +154,6 @@ export const WfoPydanticForm = ({
                         field.type === PydanticFormFieldType.STRING &&
                         field.format === PydanticFormFieldFormat.LONG
                     );
-                },
-            },
-            {
-                id: 'object',
-                ElementMatch: {
-                    isControlledElement: false,
-                    Element: WfoObjectField,
-                },
-                matcher: (field) => {
-                    return field.type === PydanticFormFieldType.OBJECT;
-                },
-            },
-            {
-                id: 'array',
-                ElementMatch: {
-                    isControlledElement: true,
-                    Element: WfoArrayField,
-                },
-                matcher: (field) => {
-                    return field.type === PydanticFormFieldType.ARRAY;
                 },
             },
             {
@@ -255,6 +231,11 @@ export const WfoPydanticForm = ({
                 },
                 validator: zodValidationPresets.integer,
             },
+
+            ...currentMatchers
+                .filter((matcher) => matcher.id !== 'text')
+                .filter((matcher) => matcher.id !== 'array')
+                .filter((matcher) => matcher.id !== 'object'),
             {
                 id: 'object',
                 ElementMatch: {
@@ -275,7 +256,6 @@ export const WfoPydanticForm = ({
                     return field.type === PydanticFormFieldType.ARRAY;
                 },
             },
-            ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
             {
                 id: 'text',
                 ElementMatch: {
