@@ -50,7 +50,6 @@ export const Footer = () => {
             color={'primary'}
             iconSide="right"
             aria-label={t('previous')}
-            disabled={isDisabled}
         >
             {t('previous')}
         </EuiButton>
