@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.2.2
+
+### Patch Changes
+
+- 5fcb0c8: Fix regression in subscription delta
+
 ## 5.2.1
 
 ### Patch Changes
