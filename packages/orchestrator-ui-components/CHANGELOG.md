@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.3.0
+
+### Minor Changes
+
+- e3add00: 2021 Add new note field attributes
+
 ## 5.2.4
 
 ### Patch Changes
