@@ -1,32 +1,32 @@
 import type { FC } from 'react';
 import React from 'react';
 
+import { WfoInlineEdit } from '@/components';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useUpdateSubscriptionNoteOptimisticMutation } from '@/rtk/endpoints/subscriptionListMutation';
 import { INVISIBLE_CHARACTER } from '@/utils';
-
-import { WfoInlineEdit } from '../WfoInlineEdit';
-import { SubscriptionListItem } from '../WfoSubscriptionsList';
 
 interface WfoSubscriptionNoteEditProps {
     onlyShowOnHover?: boolean;
     queryVariables: Record<string, unknown>;
     endpointName: string | undefined;
-    subscription: SubscriptionListItem;
+    subscriptionId: string;
+    note: string | null;
 }
 
 export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
     onlyShowOnHover = false,
     queryVariables,
     endpointName,
-    subscription,
+    subscriptionId,
+    note,
 }) => {
     const [startProcess] = useStartProcessMutation();
     const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
 
     const triggerNoteModifyWorkflow = (note: string) => {
         const noteModifyPayload = [
-            { subscription_id: subscription.subscriptionId },
+            { subscription_id: subscriptionId },
             { note: note === INVISIBLE_CHARACTER ? '' : note },
         ];
         startProcess({
@@ -36,7 +36,7 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
 
         updateSub({
             queryName: endpointName ?? '',
-            subscriptionId: subscription.subscriptionId,
+            subscriptionId: subscriptionId,
             graphQlQueryVariables: queryVariables,
             note: note,
         });
@@ -44,11 +44,7 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
 
     return (
         <WfoInlineEdit
-            value={
-                subscription?.note?.trim()
-                    ? subscription.note
-                    : INVISIBLE_CHARACTER
-            }
+            value={note?.trim() ? note : INVISIBLE_CHARACTER}
             onlyShowOnHover={onlyShowOnHover}
             onSave={triggerNoteModifyWorkflow}
         />

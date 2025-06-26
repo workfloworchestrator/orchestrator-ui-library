@@ -5,21 +5,26 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
+    ColumnType,
     FilterQuery,
     PATH_SUBSCRIPTIONS,
     Pagination,
+    WfoAdvancedTable,
+    WfoAdvancedTableColumnConfig,
     WfoDateTime,
     WfoInlineJson,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
+    WfoSubscriptionNoteEdit,
     WfoSubscriptionStatusBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
 } from '@/components';
-import { WfoSubscriptionNoteEdit } from '@/components/WfoInlineNoteEdit/WfoSubscriptionNoteEdit';
-import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
-import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
-import { ColumnType } from '@/components/WfoTable/WfoTable';
+import {
+    SubscriptionListItem,
+    mapGraphQlSubscriptionsResultToPageInfo,
+    mapGraphQlSubscriptionsResultToSubscriptionListItems,
+} from '@/components';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { DataDisplayParams, useShowToastMessage } from '@/hooks';
 import {
@@ -47,11 +52,6 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '../WfoTable';
-import {
-    SubscriptionListItem,
-    mapGraphQlSubscriptionsResultToPageInfo,
-    mapGraphQlSubscriptionsResultToSubscriptionListItems,
-} from './subscriptionResultMappers';
 
 export type WfoSubscriptionsListProps = {
     alwaysOnFilters?: FilterQuery<SubscriptionListItem>[];
@@ -172,7 +172,8 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                             onlyShowOnHover={true}
                             endpointName={endpointName}
                             queryVariables={graphqlQueryVariables}
-                            subscription={row}
+                            subscriptionId={row.subscriptionId}
+                            note={cellValue}
                         />
                     );
                 },
