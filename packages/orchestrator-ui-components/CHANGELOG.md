@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.2.4
+
+### Patch Changes
+
+- 4ef58e0: 1994 Adds classnames to the key and value cells to support style adjustments by the consumer
+
 ## 5.2.3
 
 ### Patch Changes
