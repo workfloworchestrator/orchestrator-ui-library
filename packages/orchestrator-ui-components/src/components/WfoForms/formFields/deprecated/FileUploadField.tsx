@@ -19,10 +19,10 @@ import { connectField, filterDOMProps } from 'uniforms';
 
 import { EuiFilePicker, EuiFormRow, EuiText } from '@elastic/eui';
 
+import { FieldProps } from '@/components';
 import { getCommonFormFieldStyles } from '@/components/WfoForms/formFields/commonStyles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { useUploadFileMutation } from '@/rtk/endpoints/fileUpload';
-import { FieldProps } from '@/types';
 
 export type FileUploadProps = FieldProps<string>;
 

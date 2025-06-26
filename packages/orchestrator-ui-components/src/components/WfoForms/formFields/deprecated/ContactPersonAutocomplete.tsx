@@ -22,7 +22,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 import { ContactPerson } from '../types';
 import { isEmpty } from '../utils';
-import { getStyles } from './ContactPersonAutocompleteStyles';
+import { getContactPersonStyles } from './ContactPersonAutocompleteStyles';
 
 interface ContactPersonAutocompleteProps {
     query: string;
@@ -39,8 +39,9 @@ export const ContactPersonAutocomplete = ({
     itemSelected,
     suggestions,
 }: ContactPersonAutocompleteProps) => {
-    const { contactPersonAutocompleteStyling } =
-        useWithOrchestratorTheme(getStyles);
+    const { contactPersonAutocompleteStyling } = useWithOrchestratorTheme(
+        getContactPersonStyles,
+    );
 
     // Intentionally not done with state since we don't need a rerender
     // This is only to store a ref for the scroll into view part

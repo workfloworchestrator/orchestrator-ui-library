@@ -3,7 +3,7 @@ import React from 'react';
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import type {
-    ComponentMatcher,
+    ComponentMatcherExtender,
     PydanticComponentMatcher,
     PydanticFormApiProvider,
     PydanticFormLabelProvider,
@@ -15,19 +15,27 @@ import {
     zodValidationPresets,
 } from 'pydantic-forms';
 
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-
 import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
-import { HttpStatus } from '@/rtk';
+import { HttpStatus, isFetchBaseQueryError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { useAppSelector } from '@/rtk/hooks';
-import { FormValidationError } from '@/types';
 
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Row } from './Row';
-import { Checkbox, Divider, Label, Summary, Text, TextArea } from './fields';
+import {
+    Checkbox,
+    Divider,
+    Integer,
+    Label,
+    Radio,
+    Summary,
+    Text,
+    TextArea,
+    WfoArrayField,
+    WfoObjectField,
+} from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -47,8 +55,8 @@ export const WfoPydanticForm = ({
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
     const t = useTranslations('pydanticForms.userInputForm');
-    const componentMatcher = useAppSelector(
-        (state) => state.pydanticForm?.componentMatcher,
+    const componentMatcherExtender = useAppSelector(
+        (state) => state.pydanticForm?.componentMatcherExtender,
     );
 
     const translationMessages: AbstractIntlMessages = useMessages();
@@ -82,40 +90,26 @@ export const WfoPydanticForm = ({
                 userInputs: [{ ...startProcessPayload }, ...requestBody],
             });
             return response
-                .then((result) => {
-                    return new Promise<Record<string, object | string>>(
-                        (resolve) => {
-                            if (result.error) {
-                                const error =
-                                    result.error as FetchBaseQueryError;
-                                if (
-                                    error.status === HttpStatus.FormNotComplete
-                                ) {
-                                    const data = error.data as Record<
-                                        string,
-                                        object | string
-                                    >;
-                                    resolve(data);
-                                } else if (
-                                    typeof error === 'object' &&
-                                    error !== null
-                                ) {
-                                    const validationError =
-                                        error as FormValidationError;
-                                    if (validationError?.status === 400) {
-                                        resolve({
-                                            ...validationError.data,
-                                            status: validationError.status.toString(),
-                                        });
-                                    }
-                                }
-                            } else if (result.data) {
-                                resolve(result.data);
+                .then(({ error, data }) => {
+                    return new Promise<Record<string, unknown>>((resolve) => {
+                        if (
+                            isFetchBaseQueryError(error) &&
+                            isRecord(error.data)
+                        ) {
+                            if (error.status === HttpStatus.FormNotComplete) {
+                                resolve(error.data);
+                            } else if (error.status === HttpStatus.BadRequest) {
+                                resolve({
+                                    ...error.data,
+                                    status: error.status,
+                                });
                             }
+                        } else if (data) {
+                            resolve(data);
+                        }
 
-                            resolve({});
-                        },
-                    );
+                        resolve({});
+                    });
                 })
                 .catch((error) => {
                     return new Promise<Record<string, object>>(
@@ -145,7 +139,9 @@ export const WfoPydanticForm = ({
         });
     };
 
-    const wfoComponentMatcher: ComponentMatcher = (currentMatchers) => {
+    const wfoComponentMatcherExtender: ComponentMatcherExtender = (
+        currentMatchers,
+    ) => {
         const wfoMatchers: PydanticComponentMatcher[] = [
             {
                 id: 'textarea',
@@ -209,7 +205,57 @@ export const WfoPydanticForm = ({
                     return field.type === PydanticFormFieldType.BOOLEAN;
                 },
             },
-            ...currentMatchers.filter((matcher) => matcher.id !== 'text'),
+            {
+                id: 'radio',
+                ElementMatch: {
+                    Element: Radio,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    // We are looking for a single value from a set list of options. With less than 4 options, use radio buttons.
+                    return (
+                        field.type === PydanticFormFieldType.STRING &&
+                        field.options.length > 0 &&
+                        field.options.length <= 3
+                    );
+                },
+            },
+            {
+                id: 'integerfield',
+                ElementMatch: {
+                    Element: Integer,
+                    isControlledElement: true,
+                },
+                matcher(field) {
+                    return field.type === PydanticFormFieldType.INTEGER;
+                },
+                validator: zodValidationPresets.integer,
+            },
+
+            ...currentMatchers
+                .filter((matcher) => matcher.id !== 'text')
+                .filter((matcher) => matcher.id !== 'array')
+                .filter((matcher) => matcher.id !== 'object'),
+            {
+                id: 'object',
+                ElementMatch: {
+                    isControlledElement: false,
+                    Element: WfoObjectField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.OBJECT;
+                },
+            },
+            {
+                id: 'array',
+                ElementMatch: {
+                    isControlledElement: true,
+                    Element: WfoArrayField,
+                },
+                matcher: (field) => {
+                    return field.type === PydanticFormFieldType.ARRAY;
+                },
+            },
             {
                 id: 'text',
                 ElementMatch: {
@@ -222,8 +268,9 @@ export const WfoPydanticForm = ({
                 validator: zodValidationPresets.string,
             },
         ];
-
-        return componentMatcher ? componentMatcher(wfoMatchers) : wfoMatchers;
+        return componentMatcherExtender
+            ? componentMatcherExtender(wfoMatchers)
+            : wfoMatchers;
     };
 
     const handleCancel = () => {
@@ -243,7 +290,7 @@ export const WfoPydanticForm = ({
                 footerRenderer: Footer,
                 headerRenderer: Header,
                 skipSuccessNotice: true,
-                componentMatcher: wfoComponentMatcher,
+                componentMatcherExtender: wfoComponentMatcherExtender,
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
                 customTranslations: {

@@ -1,9 +1,9 @@
-import type { ComponentMatcher } from 'pydantic-forms';
+import type { ComponentMatcherExtender } from 'pydantic-forms';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
 export type PydanticForm = {
-    componentMatcher?: ComponentMatcher;
+    componentMatcherExtender?: ComponentMatcherExtender;
 };
 
 type PydanticFormComponentMatcherSlice = Slice<PydanticForm>;
