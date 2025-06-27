@@ -60,6 +60,7 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<
                             <Link
                                 css={linkStyle}
                                 href={`${PATH_SUBSCRIPTIONS}/${relation}`}
+                                target="_blank"
                                 onClick={() => onClickLockedRelation(relation)}
                             >
                                 {relation}
