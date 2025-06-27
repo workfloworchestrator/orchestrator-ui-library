@@ -55,7 +55,6 @@ export const WfoProcessListSubscriptionsCell: FC<
                         ? 'row'
                         : 'column'
                 }
-                alignItems="center"
                 gutterSize={
                     renderDirection === RenderDirection.HORIZONTAL ? 's' : 'xs'
                 }
