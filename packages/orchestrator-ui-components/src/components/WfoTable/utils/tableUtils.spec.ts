@@ -1,7 +1,10 @@
+import { Pagination } from '@/components';
+
 import { SortOrder } from '../../../types';
 import {
     determineNewSortOrder,
     determinePageIndex,
+    getPageCount,
     hasSpecialCharacterOrSpace,
 } from './tableUtils';
 
@@ -101,6 +104,32 @@ describe('tableUtils', () => {
 
         it('should return true for strings with only special characters', () => {
             expect(hasSpecialCharacterOrSpace('@#$%^&*')).toBe(true);
+        });
+    });
+
+    describe('getPageCount', () => {
+        it('returns the page count', () => {
+            const pagination: Pagination = {
+                pageIndex: 0,
+                pageSize: 10,
+                totalItemCount: 101,
+            };
+
+            const result = getPageCount(pagination);
+
+            expect(result).toEqual(11);
+        });
+
+        it('returns the current page as value when the current page is out of range', () => {
+            const pagination: Pagination = {
+                pageIndex: 50,
+                pageSize: 10,
+                totalItemCount: 101,
+            };
+
+            const result = getPageCount(pagination);
+
+            expect(result).toEqual(51);
         });
     });
 });
