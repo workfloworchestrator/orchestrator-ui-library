@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.3.1
+
+### Patch Changes
+
+- cd00d6f: 1953 Fix - Process detail page: left align of subscription descriptions in the related subscriptions cell
+- d7d4717: 2024 - Subscription Detail Page - action menu: opening linked subscriptions in a new tab
+
 ## 5.3.0
 
 ### Minor Changes
