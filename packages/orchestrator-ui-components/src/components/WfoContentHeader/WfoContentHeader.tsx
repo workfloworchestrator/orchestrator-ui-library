@@ -42,7 +42,10 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({
 
             {children && (
                 <EuiFlexItem grow={0}>
-                    <EuiFlexGroup justifyContent="flexEnd">
+                    <EuiFlexGroup
+                        justifyContent="flexEnd"
+                        alignItems="flexStart"
+                    >
                         <WfoRenderElementOrString>
                             {children}
                         </WfoRenderElementOrString>
