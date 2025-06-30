@@ -1,3 +1,4 @@
+import { Pagination } from '@/components';
 import type { DataDisplayReturnValues } from '@/hooks';
 import { SortOrder } from '@/types';
 
@@ -63,4 +64,12 @@ export const getQueryStringHandler =
                 ? `${queryString}*`
                 : queryString;
         setDataDisplayParam('queryString', query);
+        setDataDisplayParam('pageIndex', 0);
     };
+
+export const getPageCount = (pagination: Pagination) =>
+    // In case the pageIndex is out of range calculated by totalItemCount and pageSize, the pageIndex should be returned to be transparent to the user
+    Math.max(
+        Math.ceil(pagination.totalItemCount / pagination.pageSize),
+        pagination.pageIndex + 1,
+    );

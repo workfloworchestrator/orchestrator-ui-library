@@ -13,6 +13,7 @@ import {
     WfoDataSorting,
 } from '../utils/columns';
 import { DEFAULT_PAGE_SIZES } from '../utils/constants';
+import { getPageCount } from '../utils/tableUtils';
 import { WfoTableDataRows } from './WfoTableDataRows';
 import { WfoTableHeaderRow } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';
@@ -232,9 +233,7 @@ export const WfoTable = <T extends object>({
                 <div css={paginationStyle}>
                     <EuiSpacer size="xs" />
                     <EuiTablePagination
-                        pageCount={Math.ceil(
-                            pagination.totalItemCount / pagination.pageSize,
-                        )}
+                        pageCount={getPageCount(pagination)}
                         activePage={pagination.pageIndex}
                         itemsPerPage={pagination.pageSize}
                         itemsPerPageOptions={
