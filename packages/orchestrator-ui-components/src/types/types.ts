@@ -264,6 +264,7 @@ export interface WorkflowDefinition {
     description: string;
     target: WorkflowTarget;
     isTask: boolean;
+    isAllowed: boolean;
     products: Pick<ProductDefinition, 'tag' | 'productId' | 'name'>[];
     createdAt: string;
 }
@@ -407,6 +408,7 @@ export type StartComboBoxOption = {
         productId?: string;
     };
     label: string;
+    disabled?: boolean;
 };
 
 export interface GraphQlResultPage<T> {
