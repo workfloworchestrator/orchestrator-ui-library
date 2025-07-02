@@ -12,6 +12,7 @@ const workflowOptionsQuery = `
         workflows(first: 1000000, after: 0, filterBy: [{ field: "target", value: "${WorkflowTarget.CREATE}"}]) {
             page {
                 name
+                isAllowed
                 products {
                     productType
                     productId
@@ -36,6 +37,7 @@ const taskOptionsQuery = `
 
 type WorkflowOption = {
     workflowName: WorkflowDefinition['name'];
+    isAllowed: WorkflowDefinition['isAllowed'];
     productName: ProductDefinition['name'];
     productId: ProductDefinition['productId'];
     productType: ProductDefinition['productType'];
@@ -44,6 +46,7 @@ type WorkflowOption = {
 
 type WorkflowOptionsResult = StartOptionsResult<{
     name: WorkflowDefinition['name'];
+    isAllowed: WorkflowDefinition['isAllowed'];
     products: {
         name: ProductDefinition['name'];
         productId: ProductDefinition['productId'];
@@ -75,9 +78,11 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
                 const workflows = response?.workflows?.page || [];
                 workflows.forEach((workflow) => {
                     const workflowName = workflow.name;
+                    const workflowIsAllowed = workflow.isAllowed;
                     workflow.products.forEach((product) => {
                         startOptions.push({
                             workflowName,
+                            isAllowed: workflowIsAllowed,
                             productName: product.name,
                             productId: product.productId,
                             productType: product.productType,
