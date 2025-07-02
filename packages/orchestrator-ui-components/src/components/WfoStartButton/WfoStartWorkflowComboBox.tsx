@@ -28,6 +28,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
                 productId: option.productId,
             },
             label: option.productName || '',
+            disabled: !option.isAllowed,
         }));
 
     const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
