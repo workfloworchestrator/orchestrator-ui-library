@@ -578,6 +578,8 @@ export type OrchestratorConfig = {
     showWorkflowInformationLink: boolean;
     enableSupportMenuItem: boolean;
     supportMenuItemUrl: string;
+    enableAoStackStatus: boolean;
+    aoStackStatusUrl: string;
 };
 
 export enum ColorModes {

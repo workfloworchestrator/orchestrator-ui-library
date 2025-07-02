@@ -409,7 +409,9 @@
             "status": "Status",
             "numberOfQueuedJobs": "Number of queued jobs",
             "numberOfRunningJobs": "Number of running jobs",
-            "numberOfWorkersOnline": "Number of workers online"
+            "numberOfWorkersOnline": "Number of workers online",
+            "viewStatusPage": "View AO status page",
+            "aoStackStatus": "AO stack status"
         }
     },
     "startPage": {
@@ -447,6 +449,7 @@
         "openMenu": "Open menu",
         "support": "Support",
         "softwareVersions": "Software Versions",
-        "logout": "Logout"
+        "logout": "Logout",
+        "aoStatusPage": "A&O application status page"
     }
 }
