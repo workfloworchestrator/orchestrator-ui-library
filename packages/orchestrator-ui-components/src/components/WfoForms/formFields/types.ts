@@ -33,6 +33,7 @@ export type FieldProps<
 export interface ContactPerson {
     name: string;
     email: string;
+    phone?: string;
 }
 
 export interface Option<Value = string> {

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getAcceptFieldStyles = ({ theme }: WfoTheme) => {
     const acceptFieldStyle = css({
         '.acceptField': {
             'label.warning': {
