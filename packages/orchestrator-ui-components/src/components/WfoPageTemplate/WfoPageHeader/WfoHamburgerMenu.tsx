@@ -3,13 +3,18 @@ import React, { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
-import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 import type { EuiContextMenuPanelDescriptor } from '@elastic/eui';
+import { EuiButtonIcon, EuiContextMenu, EuiPopover } from '@elastic/eui';
 
 import { WfoLoading } from '@/components/WfoLoading';
 import { ORCHESTRATOR_UI_LIBRARY_VERSION } from '@/configuration';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
-import { WfoLogoutIcon, WfoSquareStack3dStack, WfoXCircleFill } from '@/icons';
+import {
+    WfoChartBar,
+    WfoLogoutIcon,
+    WfoSquareStack3dStack,
+    WfoXCircleFill,
+} from '@/icons';
 import { WfoQuestionCircle } from '@/icons/WfoQuestionCircle';
 import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
 import { toOptionalArrayEntry } from '@/utils';
@@ -18,14 +23,24 @@ export const WfoHamburgerMenu = () => {
     const t = useTranslations('hamburgerMenu');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
     const { theme, isDarkThemeActive } = useOrchestratorTheme();
-    const { enableSupportMenuItem, supportMenuItemUrl } =
-        useGetOrchestratorConfig();
+    const {
+        enableSupportMenuItem,
+        supportMenuItemUrl,
+        enableAoStackStatus,
+        aoStackStatusUrl,
+    } = useGetOrchestratorConfig();
     const closePopover = () => {
         setPopoverIsOpen(false);
     };
+
     const handleOpenSupport = async (): Promise<undefined> => {
         window.open(supportMenuItemUrl, '_blank');
     };
+
+    const handleOpenStatus = async (): Promise<undefined> => {
+        window.open(aoStackStatusUrl, '_blank');
+    };
+
     const {
         data,
         isFetching,
@@ -92,6 +107,12 @@ export const WfoHamburgerMenu = () => {
         onClick: handleOpenSupport,
     };
 
+    const aoStackStatusItem = {
+        name: t('aoStatusPage'),
+        icon: <WfoChartBar width={26} height={26} />,
+        onClick: handleOpenStatus,
+    };
+
     const versionItem = {
         name: t('softwareVersions'),
         icon: <WfoSquareStack3dStack width={24} height={24} />,
@@ -100,6 +121,7 @@ export const WfoHamburgerMenu = () => {
 
     const panelItems = [
         ...toOptionalArrayEntry(supportItem, enableSupportMenuItem),
+        ...toOptionalArrayEntry(aoStackStatusItem, enableAoStackStatus),
         versionItem,
         { ...logoutItem },
     ];

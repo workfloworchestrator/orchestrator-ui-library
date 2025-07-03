@@ -11,11 +11,13 @@ import {
     WfoWorkerStatus,
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
-import { useOrchestratorTheme } from '@/hooks';
+import { WfoAoStackStatus } from '@/components/WfoSettings/WfoAoStackStatus';
+import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 
 export const WfoSettingsPage = () => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('main');
+    const { enableAoStackStatus } = useGetOrchestratorConfig();
 
     return (
         <>
@@ -30,6 +32,12 @@ export const WfoSettingsPage = () => {
                 <WfoModifySettings />
                 <EuiSpacer />
                 <WfoEngineStatus />
+                {enableAoStackStatus && (
+                    <>
+                        <EuiSpacer />
+                        <WfoAoStackStatus />
+                    </>
+                )}
                 <EuiSpacer />
                 <WfoWorkerStatus />
             </div>

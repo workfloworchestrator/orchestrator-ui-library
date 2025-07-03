@@ -40,3 +40,4 @@ export * from './WfoMalfunction';
 export * from './WfoPlannedWork';
 export * from './WfoCubeFill';
 export * from './WfoExclamationTriangle';
+export * from './WfoChartBar';

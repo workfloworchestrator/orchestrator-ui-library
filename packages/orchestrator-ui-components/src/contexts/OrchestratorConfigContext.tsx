@@ -16,6 +16,8 @@ export const emptyOrchestratorConfig: OrchestratorConfig = {
     workflowInformationLinkUrl: '',
     enableSupportMenuItem: false,
     supportMenuItemUrl: '',
+    enableAoStackStatus: false,
+    aoStackStatusUrl: '',
 };
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>(
