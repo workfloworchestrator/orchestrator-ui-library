@@ -1,18 +1,15 @@
-import { tint } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
 export const getStyles = ({ theme }: WfoTheme) => {
-    const toShadeColor = (color: string) => tint(color, 0.9);
-
     const summaryFieldStyle = css({
         'div.emailMessage': {
             td: {
-                color: theme.colors.text,
+                color: theme.colors.textParagraph,
             },
             p: {
-                color: theme.colors.text,
+                color: theme.colors.textParagraph,
             },
             html: {
                 marginLeft: '-10px',
@@ -26,18 +23,18 @@ export const getStyles = ({ theme }: WfoTheme) => {
                 verticalAlign: 'top',
             },
             'td:not(:first-child):not(:last-child)': {
-                borderRight: `1px solid ${theme.colors.lightestShade}`,
+                borderRight: `1px solid ${theme.colors.borderBasePlain}`,
             },
             '.label': {
                 fontWeight: 'bold',
-                color: theme.colors.lightestShade,
+                color: theme.colors.backgroundBaseSubdued,
                 backgroundColor: theme.colors.primary,
-                borderRight: `2px solid ${theme.colors.lightestShade}`,
-                borderBottom: `1px solid ${theme.colors.lightestShade}`,
+                borderRight: `2px solid ${theme.colors.borderBasePlain}`,
+                borderBottom: `1px solid ${theme.colors.borderBasePlain}`,
             },
             '.value': {
-                backgroundColor: toShadeColor(theme.colors.primary),
-                borderBottom: `1px solid ${theme.colors.lightestShade}`,
+                backgroundColor: theme.colors.backgroundBasePrimary,
+                borderBottom: `1px solid ${theme.colors.borderBasePlain}`,
             },
         },
     });
