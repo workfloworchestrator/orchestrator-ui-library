@@ -413,6 +413,10 @@
             "numberOfWorkersOnline": "Number of workers online",
             "viewStatusPage": "View AO status page",
             "aoStackStatus": "AO stack status"
+        },
+        "tabs": {
+            "actions": "Actions",
+            "envSettings": "Environment Settings"
         }
     },
     "startPage": {

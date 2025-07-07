@@ -423,6 +423,17 @@ export interface CacheOption {
 
 export type CacheNames = { [key: string]: string };
 
+export type EnvironmentVariable = {
+    env_name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    env_value: any;
+};
+
+export type EnvironmentVariables = {
+    name: string;
+    variables: EnvironmentVariable[];
+};
+
 export enum Locale {
     enGB = 'en-GB',
     nlNL = 'nl-NL',
