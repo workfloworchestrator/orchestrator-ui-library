@@ -122,6 +122,7 @@ export const WfoProcessDetail = ({
 
     const retryButtonIsDisabled =
         buttonsAreDisabled ||
+        processDetail?.userPermissions!.retryAllowed === false ||
         !listIncludesStatus(
             [
                 ProcessStatus.FAILED,
@@ -133,12 +134,14 @@ export const WfoProcessDetail = ({
         );
     const abortButtonIsDisabled =
         buttonsAreDisabled ||
+        processDetail?.userPermissions!.abortAllowed === false ||
         listIncludesStatus(
             [ProcessStatus.COMPLETED, ProcessStatus.ABORTED],
             processDetail?.lastStatus,
         );
     const deleteButtonIsDisabled =
         buttonsAreDisabled ||
+        processDetail?.userPermissions!.abortAllowed === false ||
         listIncludesStatus([ProcessStatus.RUNNING], processDetail?.lastStatus);
 
     const processIsTask = processDetail?.isTask === true;
