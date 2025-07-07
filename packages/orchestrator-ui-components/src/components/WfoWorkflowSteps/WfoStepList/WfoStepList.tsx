@@ -3,6 +3,7 @@ import React, { Ref, useImperativeHandle, useRef } from 'react';
 import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
 import { getTimelineStyles } from '@/components/WfoTimeline/styles';
 import { useContentRef, useWithOrchestratorTheme } from '@/hooks';
+import { FormUserPermissions } from '@/types/forms';
 
 import { WfoStep } from '../WfoStep';
 import { getWorkflowStepsStyles } from '../styles';
@@ -19,6 +20,7 @@ export type WfoStepListProps = {
     onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
     isTask: boolean;
     processId: string;
+    userPermissions: FormUserPermissions;
 };
 
 export const WfoStepList = React.forwardRef(
@@ -30,6 +32,7 @@ export const WfoStepList = React.forwardRef(
             onTriggerExpandStepListItem,
             isTask,
             processId,
+            userPermissions,
         }: WfoStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
@@ -116,6 +119,7 @@ export const WfoStepList = React.forwardRef(
                             isStartStep={index === 0}
                             isTask={isTask}
                             processId={processId}
+                            userPermissions={userPermissions}
                         />
                     </div>
                 ))}

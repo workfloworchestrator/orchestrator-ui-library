@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
 
-import { InputForm } from './forms';
+import { FormUserPermissions, InputForm } from './forms';
 
 export type Nullable<T> = T | null;
 
@@ -198,6 +198,7 @@ export interface ProcessDetail {
     isTask: boolean;
     steps: Step[];
     traceback: string | null;
+    userPermissions: FormUserPermissions;
     subscriptions: {
         page: {
             product: Pick<ProductDefinition, 'name'>;

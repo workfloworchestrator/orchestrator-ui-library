@@ -13,7 +13,7 @@ import WfoDiff from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
 import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
 import { ProcessStatus, Step, StepStatus } from '@/types';
-import { InputForm } from '@/types/forms';
+import { FormUserPermissions, InputForm } from '@/types/forms';
 
 export type StepListItem = {
     step: Step;
@@ -29,6 +29,7 @@ export interface WfoWorkflowStepListProps {
     processId: string;
     isTask: boolean;
     userInputForm?: InputForm;
+    userPermissions: FormUserPermissions;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -73,6 +74,7 @@ export const WfoWorkflowStepList = React.forwardRef(
             processId,
             isTask,
             userInputForm,
+            userPermissions,
         }: WfoWorkflowStepListProps,
         reference: Ref<WfoStepListRef>,
     ) => {
@@ -212,6 +214,7 @@ export const WfoWorkflowStepList = React.forwardRef(
                         }
                         processId={processId}
                         onTriggerExpandStepListItem={handleExpandStepListItem}
+                        userPermissions={userPermissions}
                     />
                 )}
             </>
