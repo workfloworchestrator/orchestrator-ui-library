@@ -76,7 +76,6 @@ export const WfoEnvSettings = () => {
                     name: string;
                     variables: EnvironmentVariable[];
                 }) => {
-                    const settingName = name.replace('_', ' ').toUpperCase();
                     const showVariables = variables
                         .map(
                             ({ env_name, env_value }) =>
@@ -92,7 +91,11 @@ export const WfoEnvSettings = () => {
                                     paddingSize="l"
                                 >
                                     <EuiText size="s">
-                                        <h2>{settingName}</h2>
+                                        <h2>
+                                            {name
+                                                .replace('_', ' ')
+                                                .toUpperCase()}
+                                        </h2>
                                     </EuiText>
 
                                     <EuiSpacer />
@@ -114,7 +117,32 @@ export const WfoEnvSettings = () => {
         );
     };
 
-    return <div css={{ maxWidth: theme.base * 45 }}>{renderEnvSettings()}</div>;
+    const emptyEnvSettings = () => {
+        return (
+            <EuiFlexItem>
+                <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
+                    <EuiText size="s">
+                        <h2>
+                            No settings exposed by the backend, to enable this
+                            please refer to the{' '}
+                            <a
+                                href="https://workfloworchestrator.org/orchestrator-core/reference-docs/app/settings_overview/"
+                                target="_blank"
+                            >
+                                Settings Overview page in the documentation
+                            </a>
+                        </h2>
+                    </EuiText>
+                </EuiPanel>
+            </EuiFlexItem>
+        );
+    };
+
+    return (
+        <div css={{ maxWidth: theme.base * 45 }}>
+            {data?.length ? renderEnvSettings() : emptyEnvSettings()}
+        </div>
+    );
 };
 
 export const settingsTabs = [
