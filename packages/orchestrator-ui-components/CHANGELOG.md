@@ -1,5 +1,14 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.3.2
+
+### Patch Changes
+
+- 004fde2: 1935 Fixes style in WfoContentHeader. This makes the dropdown menu attached to the action button again
+- 067ef6d: 1952 WfoTable: Resets page index to 0 when search query is updated. Always shows the current page in the pagination section, even when it is out of range.
+- 77f941d: WfoArrayField, WfoObjectField, fix some import and types for the forms
+- 6b927ef: Add new EUI colors to theme and SummaryFieldStyling
+
 ## 5.3.1
 
 ### Patch Changes
