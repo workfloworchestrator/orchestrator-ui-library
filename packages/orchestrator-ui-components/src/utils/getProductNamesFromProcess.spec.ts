@@ -14,7 +14,6 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
         traceback: null,
         userPermissions: {
             retryAllowed: true,
-            abortAllowed: true,
             inputAllowed: true,
         },
         steps: [
