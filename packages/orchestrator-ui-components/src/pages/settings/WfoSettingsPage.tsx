@@ -29,7 +29,7 @@ import {
     useWithOrchestratorTheme,
 } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk';
-import { EnvironmentVariable } from '@/types';
+import { EnvironmentVariable, EnvironmentVariables } from '@/types';
 
 export enum WfoSettingsTab {
     ACTIONS = 'ACTIONS',
@@ -62,58 +62,53 @@ export const WfoActionSettings = () => {
 };
 
 export const WfoEnvSettings = () => {
+    const t = useTranslations('settings.page');
     const { theme } = useOrchestratorTheme();
     const { data } = useGetEnvironmentVariablesQuery();
+
+    const toRepresentableVariables = (variables: EnvironmentVariable[]) => {
+        return variables
+            .map(({ env_name, env_value }) => `${env_name}=${env_value}`)
+            .join('\n');
+    };
 
     const renderEnvSettings = () => {
         return (
             data &&
-            data.map(
-                ({
-                    name,
-                    variables,
-                }: {
-                    name: string;
-                    variables: EnvironmentVariable[];
-                }) => {
-                    const showVariables = variables
-                        .map(
-                            ({ env_name, env_value }) =>
-                                `${env_name}=${env_value}`,
-                        )
-                        .join('\n');
-                    return (
-                        <>
-                            <EuiFlexItem>
-                                <EuiPanel
-                                    hasShadow={false}
-                                    color="subdued"
-                                    paddingSize="l"
+            data.map(({ name, variables }: EnvironmentVariables) => {
+                const showVariables = toRepresentableVariables(variables);
+
+                return (
+                    <>
+                        <EuiFlexItem>
+                            <EuiPanel
+                                hasShadow={false}
+                                color="subdued"
+                                paddingSize="l"
+                            >
+                                <EuiText size="s">
+                                    <h2>
+                                        {name.replace('_', ' ').toUpperCase()}
+                                    </h2>
+                                </EuiText>
+
+                                <EuiSpacer />
+
+                                <EuiCodeBlock
+                                    fontSize="m"
+                                    paddingSize="m"
+                                    css={css({
+                                        background: theme.colors.lightShade,
+                                    })}
                                 >
-                                    <EuiText size="s">
-                                        <h2>
-                                            {name
-                                                .replace('_', ' ')
-                                                .toUpperCase()}
-                                        </h2>
-                                    </EuiText>
-
-                                    <EuiSpacer />
-
-                                    <EuiCodeBlock
-                                        fontSize="m"
-                                        paddingSize="m"
-                                        css={css({ background: '#EAEDF2' })}
-                                    >
-                                        {showVariables}
-                                    </EuiCodeBlock>
-                                </EuiPanel>
-                            </EuiFlexItem>
-                            <EuiSpacer />
-                        </>
-                    );
-                },
-            )
+                                    {showVariables}
+                                </EuiCodeBlock>
+                            </EuiPanel>
+                        </EuiFlexItem>
+                        <EuiSpacer />
+                    </>
+                );
+            })
         );
     };
 
@@ -123,13 +118,12 @@ export const WfoEnvSettings = () => {
                 <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
                     <EuiText size="s">
                         <h2>
-                            No settings exposed by the backend, to enable this
-                            please refer to the{' '}
+                            {t('noSettingsExposed')}{' '}
                             <a
                                 href="https://workfloworchestrator.org/orchestrator-core/reference-docs/app/settings_overview/"
                                 target="_blank"
                             >
-                                Settings Overview page in the documentation
+                                {t('settingsOverviewLink')}
                             </a>
                         </h2>
                     </EuiText>
