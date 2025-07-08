@@ -141,7 +141,7 @@ export const WfoPydanticForm = ({
 
     const wfoComponentMatcherExtender: ComponentMatcherExtender = (
         currentMatchers,
-    ) => {
+    ): PydanticComponentMatcher[] => {
         const wfoMatchers: PydanticComponentMatcher[] = [
             {
                 id: 'textarea',
