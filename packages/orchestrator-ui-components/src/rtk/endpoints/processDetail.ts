@@ -28,7 +28,6 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                 traceback
                 userPermissions {
                     retryAllowed
-                    abortAllowed
                     inputAllowed
                 }
                 steps {

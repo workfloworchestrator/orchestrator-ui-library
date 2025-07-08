@@ -40,6 +40,5 @@ export type FormValidationError = {
 
 export interface FormUserPermissions {
     retryAllowed: boolean;
-    abortAllowed: boolean;
     inputAllowed: boolean;
 }
