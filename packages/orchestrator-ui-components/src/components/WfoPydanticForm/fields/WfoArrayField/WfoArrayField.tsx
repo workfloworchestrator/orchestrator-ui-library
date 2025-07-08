@@ -72,7 +72,7 @@ export const WfoArrayField = ({
     );
 
     const renderField = (field: Record<'id', string>, index: number) => {
-        const arrayField = itemizeArrayItem(index, arrayItem);
+        const arrayField = itemizeArrayItem(index, arrayItem, arrayName);
 
         return (
             <div key={field.id} css={fieldWrapper}>
