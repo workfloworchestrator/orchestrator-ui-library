@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.3.3
+
+### Patch Changes
+
+- ca2460b: Updates to latest pydantic-form version
+
 ## 5.3.2
 
 ### Patch Changes
