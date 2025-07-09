@@ -59,7 +59,7 @@ export const WfoStepForm = ({
                     hasNext={false}
                     isTask={isTask}
                     isResuming={true}
-                    allowSubmit={userPermissions.inputAllowed}
+                    allowSubmit={userPermissions.resumeAllowed}
                 />
             )}
         </EuiFlexItem>

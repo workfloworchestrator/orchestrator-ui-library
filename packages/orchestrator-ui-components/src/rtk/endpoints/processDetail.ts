@@ -28,7 +28,7 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                 traceback
                 userPermissions {
                     retryAllowed
-                    inputAllowed
+                    resumeAllowed
                 }
                 steps {
                     name
