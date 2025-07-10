@@ -314,7 +314,8 @@
                     "no_validate_workflow": "Deze subscription kan niet worden gevalideerd omdat het product geen validate workflows heeft.",
                     "not_in_sync": "Deze subscription kan niet worden gewijzigd omdat het niet in-sync is. Dit betekent dat er een fout zit in de registratie van de subscription of dat het wordt gewijzigd door een andere workflow.",
                     "relations_not_in_sync": "Deze subscription kan niet worden gewijzigd omdat sommige gerelateerde subscriptions niet in-sync zijn. Geblokkeerde subscriptions: {locked_relations}",
-                    "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions: {unterminated_parents}"
+                    "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions: {unterminated_parents}",
+                    "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren"
                 }
             },
             "subscriptionInstanceId": "Instance ID",

@@ -26,6 +26,10 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                 isTask
                 form
                 traceback
+                userPermissions {
+                    retryAllowed
+                    resumeAllowed
+                }
                 steps {
                     name
                     status

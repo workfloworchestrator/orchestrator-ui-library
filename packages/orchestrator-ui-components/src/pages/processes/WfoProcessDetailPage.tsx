@@ -87,6 +87,7 @@ export const WfoProcessDetailPage = ({
                         userInputForm={processDetail.form}
                         startedAt={processDetail.startedAt}
                         isTask={isTask}
+                        userPermissions={processDetail.userPermissions}
                     />
                 )) || <h1>Invalid processId</h1>}
         </WfoProcessDetail>

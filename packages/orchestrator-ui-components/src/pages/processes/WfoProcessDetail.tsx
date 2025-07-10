@@ -122,6 +122,7 @@ export const WfoProcessDetail = ({
 
     const retryButtonIsDisabled =
         buttonsAreDisabled ||
+        processDetail?.userPermissions!.retryAllowed === false ||
         !listIncludesStatus(
             [
                 ProcessStatus.FAILED,

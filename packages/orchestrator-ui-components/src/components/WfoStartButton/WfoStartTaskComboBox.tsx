@@ -24,6 +24,7 @@ export const WfoStartTaskButtonComboBox = () => {
                 workflowName: option.name,
             },
             label: option.description ?? option.name,
+            disabled: option.isAllowed === false,
         }))
         .sort((taskA, taskB) => taskA.label.localeCompare(taskB.label));
 

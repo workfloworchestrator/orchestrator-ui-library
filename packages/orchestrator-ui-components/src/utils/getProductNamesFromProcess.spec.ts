@@ -12,6 +12,10 @@ const getProcessDetail = (data: Partial<ProcessDetail> = {}): ProcessDetail => {
         workflowName: 'workflowName',
         isTask: false,
         traceback: null,
+        userPermissions: {
+            retryAllowed: true,
+            resumeAllowed: true,
+        },
         steps: [
             {
                 name: 'step name',
