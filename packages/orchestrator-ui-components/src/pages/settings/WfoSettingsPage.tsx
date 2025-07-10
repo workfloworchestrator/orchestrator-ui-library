@@ -66,7 +66,7 @@ export const WfoEnvSettings = () => {
     const { theme } = useOrchestratorTheme();
     const { data } = useGetEnvironmentVariablesQuery();
 
-    const toRepresentableVariables = (variables: EnvironmentVariable[]) => {
+    const mapToRepresentableVariables = (variables: EnvironmentVariable[]) => {
         return variables
             .map(({ env_name, env_value }) => `${env_name}=${env_value}`)
             .join('\n');
@@ -76,7 +76,7 @@ export const WfoEnvSettings = () => {
         return (
             data &&
             data.map(({ name, variables }: EnvironmentVariables) => {
-                const showVariables = toRepresentableVariables(variables);
+                const showVariables = mapToRepresentableVariables(variables);
 
                 return (
                     <>
