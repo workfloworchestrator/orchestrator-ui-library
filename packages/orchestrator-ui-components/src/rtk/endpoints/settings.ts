@@ -2,11 +2,18 @@ import {
     SETTINGS_CACHE_ENDPOINT,
     SETTINGS_CACHE_NAMES_ENDPOINT,
     SETTINGS_ENGINE_STATUS_ENDPOINT,
+    SETTINGS_OVERVIEW,
     SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
     SETTINGS_WORKER_STATUS_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { CacheNames, CacheTagType, EngineStatus, WorkerTypes } from '@/types';
+import {
+    CacheNames,
+    CacheTagType,
+    EngineStatus,
+    EnvironmentVariables,
+    WorkerTypes,
+} from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 interface EngineStatusReturnValue {
@@ -112,6 +119,12 @@ const statusApi = orchestratorApi.injectEndpoints({
             },
             invalidatesTags: getCacheTag(CacheTagType.engineStatus),
         }),
+        getEnvironmentVariables: build.query<EnvironmentVariables[], void>({
+            query: () => SETTINGS_OVERVIEW,
+            extraOptions: {
+                baseQueryType: BaseQueryTypes.fetch,
+            },
+        }),
     }),
 });
 
@@ -122,4 +135,5 @@ export const {
     useResetTextSearchIndexMutation,
     useSetEngineStatusMutation,
     useGetWorkerStatusQuery,
+    useGetEnvironmentVariablesQuery,
 } = statusApi;

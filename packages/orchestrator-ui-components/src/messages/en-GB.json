@@ -412,7 +412,13 @@
             "numberOfRunningJobs": "Number of running jobs",
             "numberOfWorkersOnline": "Number of workers online",
             "viewStatusPage": "View AO status page",
-            "aoStackStatus": "AO stack status"
+            "aoStackStatus": "AO stack status",
+            "noSettingsExposed": "No settings exposed by the backend, to enable this, please refer to the",
+            "settingsOverviewLink": "Settings Overview page in the documentation"
+        },
+        "tabs": {
+            "actions": "Actions",
+            "envSettings": "Environment Settings"
         }
     },
     "startPage": {
