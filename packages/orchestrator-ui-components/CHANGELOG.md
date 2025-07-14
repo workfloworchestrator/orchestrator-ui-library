@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.3.4
+
+### Patch Changes
+
+- b2479fe: Always allows submit button on pydantic-forms
+
 ## 5.3.3
 
 ### Patch Changes
