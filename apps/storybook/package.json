@@ -26,7 +26,7 @@
     },
     "devDependencies": {
         "@orchestrator-ui/eslint-config-custom": "*",
-        "@chromatic-com/storybook": "^3.2.4",
+        "@chromatic-com/storybook": "^4.0.1",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",
         "@vitejs/plugin-react": "^4.3.4",
