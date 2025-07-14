@@ -52,7 +52,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const Summary: PydanticFormElement = ({ pydanticFormField }) => {
+export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
     const { summaryFieldStyle } = useWithOrchestratorTheme(getStyles);
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 

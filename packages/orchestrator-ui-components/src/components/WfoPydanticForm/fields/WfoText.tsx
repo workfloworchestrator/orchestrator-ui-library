@@ -7,7 +7,7 @@ import { EuiFieldText } from '@elastic/eui';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { getFormFieldsBaseStyle } from '@/theme';
 
-export const Text: PydanticFormControlledElement = ({
+export const WfoText: PydanticFormControlledElement = ({
     onChange,
     value,
     disabled,

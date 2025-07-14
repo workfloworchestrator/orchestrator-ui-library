@@ -4,7 +4,7 @@ import { PydanticFormElement } from 'pydantic-forms';
 
 import { useOrchestratorTheme } from '@/hooks';
 
-export const Label: PydanticFormElement = ({ pydanticFormField }) => {
+export const WfoLabel: PydanticFormElement = ({ pydanticFormField }) => {
     const { theme } = useOrchestratorTheme();
 
     return (

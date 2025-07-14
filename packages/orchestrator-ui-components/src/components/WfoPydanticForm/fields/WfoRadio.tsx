@@ -4,7 +4,7 @@ import type { PydanticFormControlledElement } from 'pydantic-forms';
 
 import { EuiRadioGroup } from '@elastic/eui';
 
-export const Radio: PydanticFormControlledElement = ({
+export const WfoRadio: PydanticFormControlledElement = ({
     pydanticFormField,
     onChange,
     value,

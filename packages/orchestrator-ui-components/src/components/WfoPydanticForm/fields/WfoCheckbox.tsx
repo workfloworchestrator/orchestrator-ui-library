@@ -4,7 +4,7 @@ import type { PydanticFormControlledElement } from 'pydantic-forms';
 
 import { EuiCheckbox } from '@elastic/eui';
 
-export const Checkbox: PydanticFormControlledElement = ({
+export const WfoCheckbox: PydanticFormControlledElement = ({
     pydanticFormField,
     onChange,
     value,

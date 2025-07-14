@@ -22,7 +22,7 @@ const getFormFieldsBaseStyle = ({ theme }: WfoTheme) => {
     };
 };
 
-export const Integer: PydanticFormControlledElement = ({
+export const WfoInteger: PydanticFormControlledElement = ({
     pydanticFormField,
     onChange,
     value,

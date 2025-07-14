@@ -25,16 +25,16 @@ import { Footer } from './Footer';
 import { Header } from './Header';
 import { Row } from './Row';
 import {
-    Checkbox,
-    Divider,
-    Integer,
-    Label,
-    Radio,
-    Summary,
-    Text,
-    TextArea,
     WfoArrayField,
+    WfoCheckbox,
+    WfoDivider,
+    WfoInteger,
+    WfoLabel,
     WfoObjectField,
+    WfoRadio,
+    WfoSummary,
+    WfoText,
+    WfoTextArea,
 } from './fields';
 
 interface WfoPydanticFormProps {
@@ -146,7 +146,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'textarea',
                 ElementMatch: {
-                    Element: TextArea,
+                    Element: WfoTextArea,
                     isControlledElement: true,
                 },
                 matcher(field) {
@@ -159,7 +159,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'summary',
                 ElementMatch: {
-                    Element: Summary,
+                    Element: WfoSummary,
                     isControlledElement: false,
                 },
                 matcher(field) {
@@ -172,7 +172,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'label',
                 ElementMatch: {
-                    Element: Label,
+                    Element: WfoLabel,
                     isControlledElement: false,
                 },
                 matcher(field) {
@@ -185,7 +185,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'divider',
                 ElementMatch: {
-                    Element: Divider,
+                    Element: WfoDivider,
                     isControlledElement: false,
                 },
                 matcher(field) {
@@ -198,7 +198,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'checkbox',
                 ElementMatch: {
-                    Element: Checkbox,
+                    Element: WfoCheckbox,
                     isControlledElement: true,
                 },
                 matcher(field) {
@@ -208,7 +208,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'radio',
                 ElementMatch: {
-                    Element: Radio,
+                    Element: WfoRadio,
                     isControlledElement: true,
                 },
                 matcher(field) {
@@ -223,7 +223,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'integerfield',
                 ElementMatch: {
-                    Element: Integer,
+                    Element: WfoInteger,
                     isControlledElement: true,
                 },
                 matcher(field) {
@@ -259,7 +259,7 @@ export const WfoPydanticForm = ({
             {
                 id: 'text',
                 ElementMatch: {
-                    Element: Text,
+                    Element: WfoText,
                     isControlledElement: true,
                 },
                 matcher(field) {
