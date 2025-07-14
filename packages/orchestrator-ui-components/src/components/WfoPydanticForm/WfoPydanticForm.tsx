@@ -47,19 +47,13 @@ interface StartProcessResponse {
     id: string;
 }
 
-export const WfoPydanticForm = ({
-    processName,
-    startProcessPayload,
-    isTask,
-}: WfoPydanticFormProps) => {
-    const [startProcess] = useStartProcessMutation();
-    const router = useRouter();
-    const t = useTranslations('pydanticForms.userInputForm');
+export const useWfoPydanticFormConfig = () => {
     const componentMatcherExtender = useAppSelector(
         (state) => state.pydanticForm?.componentMatcherExtender,
     );
-
+    const t = useTranslations('pydanticForms.userInputForm');
     const translationMessages: AbstractIntlMessages = useMessages();
+
     const formTranslations =
         translationMessages?.pydanticForms &&
         typeof translationMessages?.pydanticForms !== 'string'
@@ -70,61 +64,6 @@ export const WfoPydanticForm = ({
         typeof translationMessages?.pydanticForms !== 'string'
             ? translationMessages.pydanticForms.widgets
             : {};
-
-    const onSuccess = (_fieldValues: object, req: object) => {
-        const request = req as { response: StartProcessResponse };
-        const response = request ? request?.response : null;
-        if (response?.id) {
-            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-            router.replace(`${pfBasePath}/${response.id}`);
-        }
-    };
-
-    const getPydanticFormProvider = () => {
-        const pydanticFormProvider: PydanticFormApiProvider = async ({
-            requestBody = [],
-            formKey,
-        }) => {
-            const response = startProcess({
-                workflowName: formKey,
-                userInputs: [{ ...startProcessPayload }, ...requestBody],
-            });
-            return response
-                .then(({ error, data }) => {
-                    return new Promise<Record<string, unknown>>((resolve) => {
-                        if (
-                            isFetchBaseQueryError(error) &&
-                            isRecord(error.data)
-                        ) {
-                            if (error.status === HttpStatus.FormNotComplete) {
-                                resolve(error.data);
-                            } else if (error.status === HttpStatus.BadRequest) {
-                                resolve({
-                                    ...error.data,
-                                    status: error.status,
-                                });
-                            }
-                        } else if (data) {
-                            resolve(data);
-                        }
-
-                        resolve({});
-                    });
-                })
-                .catch((error) => {
-                    return new Promise<Record<string, object>>(
-                        (resolve, reject) => {
-                            if (error.status === HttpStatus.FormNotComplete) {
-                                resolve(error.data);
-                            }
-                            reject(error);
-                        },
-                    );
-                });
-        };
-
-        return pydanticFormProvider;
-    };
 
     const orchestratorTranslations = formTranslations as unknown;
 
@@ -137,6 +76,15 @@ export const WfoPydanticForm = ({
                 data: {},
             });
         });
+    };
+
+    const customTranslations = {
+        cancel: t('cancel'),
+        startWorkflow: t('startWorkflow'),
+        widgets: {
+            ...(widgetsTranslations as object),
+        },
+        ...translationMessages,
     };
 
     const wfoComponentMatcherExtender: ComponentMatcherExtender = (
@@ -212,7 +160,6 @@ export const WfoPydanticForm = ({
                     isControlledElement: true,
                 },
                 matcher(field) {
-                    // We are looking for a single value from a set list of options. With less than 4 options, use radio buttons.
                     return (
                         field.type === PydanticFormFieldType.STRING &&
                         field.options.length > 0 &&
@@ -268,9 +215,85 @@ export const WfoPydanticForm = ({
                 validator: zodValidationPresets.string,
             },
         ];
+
         return componentMatcherExtender
             ? componentMatcherExtender(wfoMatchers)
             : wfoMatchers;
+    };
+
+    return {
+        wfoComponentMatcherExtender,
+        pydanticLabelProvider,
+        customTranslations,
+    };
+};
+
+export const WfoPydanticForm = ({
+    processName,
+    startProcessPayload,
+    isTask,
+}: WfoPydanticFormProps) => {
+    const [startProcess] = useStartProcessMutation();
+    const router = useRouter();
+    const {
+        wfoComponentMatcherExtender,
+        pydanticLabelProvider,
+        customTranslations,
+    } = useWfoPydanticFormConfig();
+
+    const onSuccess = (_fieldValues: object, req: object) => {
+        const request = req as { response: StartProcessResponse };
+        const response = request ? request?.response : null;
+        if (response?.id) {
+            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+            router.replace(`${pfBasePath}/${response.id}`);
+        }
+    };
+
+    const getPydanticFormProvider = () => {
+        const pydanticFormProvider: PydanticFormApiProvider = async ({
+            requestBody = [],
+            formKey,
+        }) => {
+            const response = startProcess({
+                workflowName: formKey,
+                userInputs: [{ ...startProcessPayload }, ...requestBody],
+            });
+            return response
+                .then(({ error, data }) => {
+                    return new Promise<Record<string, unknown>>((resolve) => {
+                        if (
+                            isFetchBaseQueryError(error) &&
+                            isRecord(error.data)
+                        ) {
+                            if (error.status === HttpStatus.FormNotComplete) {
+                                resolve(error.data);
+                            } else if (error.status === HttpStatus.BadRequest) {
+                                resolve({
+                                    ...error.data,
+                                    status: error.status,
+                                });
+                            }
+                        } else if (data) {
+                            resolve(data);
+                        }
+
+                        resolve({});
+                    });
+                })
+                .catch((error) => {
+                    return new Promise<Record<string, object>>(
+                        (resolve, reject) => {
+                            if (error.status === HttpStatus.FormNotComplete) {
+                                resolve(error.data);
+                            }
+                            reject(error);
+                        },
+                    );
+                });
+        };
+
+        return pydanticFormProvider;
     };
 
     const handleCancel = () => {
@@ -293,14 +316,7 @@ export const WfoPydanticForm = ({
                 componentMatcherExtender: wfoComponentMatcherExtender,
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
-                customTranslations: {
-                    cancel: t('cancel'),
-                    startWorkflow: t('startWorkflow'),
-                    widgets: {
-                        ...(widgetsTranslations as object),
-                    },
-                    ...translationMessages,
-                },
+                customTranslations: customTranslations,
             }}
         />
     );
