@@ -13,23 +13,11 @@ import { EuiButton, EuiHorizontalRule } from '@elastic/eui';
 import { useOrchestratorTheme } from '@/hooks';
 
 export const Footer = () => {
-    const {
-        rhf,
-        onCancel,
-        onPrevious,
-        allowUntouchedSubmit,
-        hasNext,
-        formInputData,
-    } = usePydanticFormContext();
+    const { onCancel, onPrevious, hasNext, formInputData } =
+        usePydanticFormContext();
 
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('pydanticForms.userInputForm');
-
-    const isDisabled: boolean =
-        !rhf.formState.isValid ||
-        (!allowUntouchedSubmit &&
-            !rhf.formState.isDirty &&
-            !rhf.formState.isSubmitting);
 
     const handlePrevious = () => {
         if (onCancel) {
@@ -74,6 +62,15 @@ export const Footer = () => {
     const SubmitButton = () => {
         const submitButtonLabel = hasNext ? t('next') : t('startWorkflow');
 
+        /*
+         * The submit button is used to submit the form data.
+         * If there is a next step, it will be labeled as "Next".
+         * If there is no next step, it will be labeled as "Start Workflow".
+         * The button is styled with primary color and has an icon on the right side.
+         * We don't use the disable property based on the form valid state here. When calculating the form valid state
+         * react-hook-form might return a false negative - marking the form invalid - when not all fields have a defaultValue
+         * which is a valid use case. https://chatgpt.com/c/6874c574-0044-800c-8dda-04c8cc24b0a3
+         */
         return (
             <EuiButton
                 id="button-submit-form-submit"
@@ -83,7 +80,6 @@ export const Footer = () => {
                 type="submit"
                 iconSide="right"
                 aria-label={submitButtonLabel}
-                disabled={isDisabled}
             >
                 {submitButtonLabel}
             </EuiButton>
