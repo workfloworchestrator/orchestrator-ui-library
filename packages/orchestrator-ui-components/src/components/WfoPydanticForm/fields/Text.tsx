@@ -18,6 +18,7 @@ export const Text: PydanticFormControlledElement = ({
 
     return (
         <EuiFieldText
+            data-testid="text-field"
             css={formFieldBaseStyle}
             disabled={disabled}
             onChange={(event) => onChange(event.target.value)}

@@ -29,6 +29,7 @@ export const Row: RowRenderComponent = ({
 
     return (
         <EuiFormRow
+            data-testid="pydantic-form-row"
             css={formRowStyle}
             label={<Label />}
             labelAppend={<EuiText size="m">{description}</EuiText>}

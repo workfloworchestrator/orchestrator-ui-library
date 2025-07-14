@@ -8,7 +8,7 @@ export const Label: PydanticFormElement = ({ pydanticFormField }) => {
     const { theme } = useOrchestratorTheme();
 
     return (
-        <div>
+        <div data-testid={pydanticFormField.id}>
             <label
                 css={{
                     color: theme.colors.text,

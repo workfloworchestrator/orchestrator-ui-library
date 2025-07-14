@@ -103,7 +103,7 @@ export const Summary: PydanticFormElement = ({ pydanticFormField }) => {
         );
 
     return (
-        <EuiFlexItem css={[summaryFieldStyle, formRowStyle]}>
+        <EuiFlexItem data-testid={id} css={[summaryFieldStyle, formRowStyle]}>
             <section>
                 <EuiFormRow
                     label={description}

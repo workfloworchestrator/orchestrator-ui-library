@@ -17,6 +17,7 @@ export const Radio: PydanticFormControlledElement = ({
 
     return (
         <EuiRadioGroup
+            data-testid={pydanticFormField.id}
             options={radioOptions}
             idSelected={value}
             onChange={(id) => onChange(id)}

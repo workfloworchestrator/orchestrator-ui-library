@@ -22,7 +22,10 @@ export const WfoObjectField = ({
     );
 
     return (
-        <EuiFlexGroup css={wfoObjectFieldStyles}>
+        <EuiFlexGroup
+            data-testid={pydanticFormField.id}
+            css={wfoObjectFieldStyles}
+        >
             <RenderFields pydanticFormComponents={components} />
         </EuiFlexGroup>
     );
