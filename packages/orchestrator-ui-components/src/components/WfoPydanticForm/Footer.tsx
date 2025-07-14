@@ -29,6 +29,7 @@ export const Footer = () => {
 
     const PreviousButton = () => (
         <EuiButton
+            data-testid="button-submit-form-previous"
             id="button-submit-form-submit"
             tabIndex={0}
             fill
@@ -47,6 +48,7 @@ export const Footer = () => {
 
     const CancelButton = () => (
         <div
+            data-testid="button-submit-form-cancel"
             onClick={handlePrevious}
             css={{
                 cursor: 'pointer',
@@ -75,6 +77,7 @@ export const Footer = () => {
          */
         return (
             <EuiButton
+                data-testid="button-submit-form-submit"
                 id="button-submit-form-submit"
                 tabIndex={0}
                 fill
@@ -89,7 +92,7 @@ export const Footer = () => {
     };
 
     return (
-        <div>
+        <div data-testid="pydantic-form-footer">
             <RenderFormErrors />
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

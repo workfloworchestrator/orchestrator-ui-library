@@ -34,6 +34,7 @@ export const Integer: PydanticFormControlledElement = ({
 
     return (
         <EuiFieldNumber
+            data-testid={pydanticFormField.id}
             css={formFieldBaseStyle}
             name={pydanticFormField.id}
             onChange={(event) => onChange(parseInt(event.target.value))}

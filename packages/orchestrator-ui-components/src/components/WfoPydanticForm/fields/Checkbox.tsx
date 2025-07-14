@@ -12,6 +12,7 @@ export const Checkbox: PydanticFormControlledElement = ({
 }) => {
     return (
         <EuiCheckbox
+            data-testid={pydanticFormField.id}
             checked={value || false}
             disabled={disabled}
             id={pydanticFormField.id}

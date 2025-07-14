@@ -12,6 +12,7 @@ export const TextArea: PydanticFormControlledElement = ({
 }) => {
     return (
         <EuiTextArea
+            data-testid={pydanticFormField.id}
             disabled={disabled}
             name={pydanticFormField.id}
             onChange={(event) => onChange(event.target.value)}
