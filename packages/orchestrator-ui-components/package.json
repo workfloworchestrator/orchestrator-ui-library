@@ -52,7 +52,7 @@
         "react-diff-view": "^3.2.0",
         "react-draggable": "^4.4.6",
         "react-redux": "^9.1.2",
-        "react-select": "^5.8.0",
+        "react-select": "^5.10.2",
         "scroll-into-view": "^1.16.2",
         "unidiff": "^1.0.4",
         "uniforms": "^3.8.1",
