@@ -69,7 +69,7 @@ export const Footer = () => {
          * The button is styled with primary color and has an icon on the right side.
          * We don't use the disable property based on the form valid state here. When calculating the form valid state
          * react-hook-form might return a false negative - marking the form invalid - when not all fields have a defaultValue
-         * which is a valid use case. https://chatgpt.com/c/6874c574-0044-800c-8dda-04c8cc24b0a3
+         * which is a valid use case. https://chatgpt.com/share/6874ce66-35e8-800c-9434-725ff895ac44
          */
         return (
             <EuiButton
