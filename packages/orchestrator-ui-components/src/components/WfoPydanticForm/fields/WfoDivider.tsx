@@ -6,7 +6,7 @@ import { EuiHorizontalRule } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 
-export const Divider: PydanticFormElement = ({ pydanticFormField }) => {
+export const WfoDivider: PydanticFormElement = ({ pydanticFormField }) => {
     const { theme } = useOrchestratorTheme();
     return (
         <EuiHorizontalRule

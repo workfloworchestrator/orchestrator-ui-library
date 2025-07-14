@@ -4,7 +4,7 @@ import type { PydanticFormControlledElement } from 'pydantic-forms';
 
 import { EuiTextArea } from '@elastic/eui';
 
-export const TextArea: PydanticFormControlledElement = ({
+export const WfoTextArea: PydanticFormControlledElement = ({
     pydanticFormField,
     onChange,
     value,
