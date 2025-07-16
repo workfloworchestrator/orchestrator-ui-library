@@ -12,6 +12,8 @@ import { EuiButton, EuiHorizontalRule } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 
+import { RenderFormErrors } from './RenderFormErrors';
+
 export const Footer = () => {
     const { onCancel, onPrevious, hasNext, formInputData } =
         usePydanticFormContext();
@@ -88,6 +90,7 @@ export const Footer = () => {
 
     return (
         <div>
+            <RenderFormErrors />
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
