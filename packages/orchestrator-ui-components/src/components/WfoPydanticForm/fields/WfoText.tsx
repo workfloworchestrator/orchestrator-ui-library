@@ -19,7 +19,7 @@ export const WfoText: PydanticFormControlledElement = ({
 
     return (
         <EuiFieldText
-            data-testid="text-field"
+            data-testid={pydanticFormField.id}
             css={formFieldBaseStyle}
             disabled={disabled}
             onChange={(event) => onChange(event.target.value)}
