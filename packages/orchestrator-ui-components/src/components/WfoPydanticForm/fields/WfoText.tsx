@@ -11,6 +11,7 @@ export const WfoText: PydanticFormControlledElement = ({
     onChange,
     value,
     disabled,
+    pydanticFormField
 }) => {
     const { formFieldBaseStyle } = useWithOrchestratorTheme(
         getFormFieldsBaseStyle,
