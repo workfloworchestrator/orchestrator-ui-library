@@ -96,7 +96,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'textarea',
                     ElementMatch: {
-                        Element: TextArea,
+                        Element: WfoTextArea,
                         isControlledElement: true,
                     },
                     matcher(field) {
@@ -109,7 +109,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'summary',
                     ElementMatch: {
-                        Element: Summary,
+                        Element: WfoSummary,
                         isControlledElement: false,
                     },
                     matcher(field) {
@@ -122,7 +122,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'label',
                     ElementMatch: {
-                        Element: Label,
+                        Element: WfoLabel,
                         isControlledElement: false,
                     },
                     matcher(field) {
@@ -135,7 +135,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'divider',
                     ElementMatch: {
-                        Element: Divider,
+                        Element: WfoDivider,
                         isControlledElement: false,
                     },
                     matcher(field) {
@@ -148,7 +148,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'checkbox',
                     ElementMatch: {
-                        Element: Checkbox,
+                        Element: WfoCheckbox,
                         isControlledElement: true,
                     },
                     matcher(field) {
@@ -158,7 +158,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'radio',
                     ElementMatch: {
-                        Element: Radio,
+                        Element: WfoRadio,
                         isControlledElement: true,
                     },
                     matcher(field) {
@@ -172,7 +172,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'integerfield',
                     ElementMatch: {
-                        Element: Integer,
+                        Element: WfoInteger,
                         isControlledElement: true,
                     },
                     matcher(field) {
@@ -180,7 +180,6 @@ export const useWfoPydanticFormConfig = () => {
                     },
                     validator: zodValidationPresets.integer,
                 },
-
                 ...currentMatchers
                     .filter((matcher) => matcher.id !== 'text')
                     .filter((matcher) => matcher.id !== 'array')
@@ -206,7 +205,7 @@ export const useWfoPydanticFormConfig = () => {
                 {
                     id: 'text',
                     ElementMatch: {
-                        Element: Text,
+                        Element: WfoText,
                         isControlledElement: true,
                     },
                     matcher(field) {
