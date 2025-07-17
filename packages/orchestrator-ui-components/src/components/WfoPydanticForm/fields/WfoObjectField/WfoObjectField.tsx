@@ -26,7 +26,10 @@ export const WfoObjectField = ({
             data-testid={pydanticFormField.id}
             css={wfoObjectFieldStyles}
         >
-            <RenderFields pydanticFormComponents={components} />
+            <RenderFields
+                pydanticFormComponents={components}
+                idPrefix={pydanticFormField.id}
+            />
         </EuiFlexGroup>
     );
 };
