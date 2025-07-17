@@ -16,7 +16,7 @@ export const Header = () => {
 
     return pydanticFormSchema?.title &&
         pydanticFormSchema.title !== 'unknown' ? (
-        <h3 data-testid="pydantic-form-row" css={headerStyling}>
+        <h3 data-testid="pydantic-form-header" css={headerStyling}>
             {pydanticFormSchema?.title}
         </h3>
     ) : undefined;
