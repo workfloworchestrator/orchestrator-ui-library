@@ -91,7 +91,7 @@ export const WfoArrayField = ({
     };
 
     return (
-        <div data-test={arrayName} css={container}>
+        <div data-testid={arrayName} css={container}>
             {fields.map(renderField)}
 
             {showPlus && (
