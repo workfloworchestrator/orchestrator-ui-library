@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -59,6 +59,7 @@ export const useWfoPydanticFormConfig = () => {
         typeof translationMessages?.pydanticForms !== 'string'
             ? translationMessages.pydanticForms.backendTranslations
             : {};
+
     const widgetsTranslations =
         translationMessages?.pydanticForms &&
         typeof translationMessages?.pydanticForms !== 'string'
@@ -67,159 +68,160 @@ export const useWfoPydanticFormConfig = () => {
 
     const orchestratorTranslations = formTranslations as unknown;
 
-    const pydanticLabelProvider: PydanticFormLabelProvider = async () => {
-        return new Promise((resolve) => {
-            resolve({
+    const pydanticLabelProvider =
+        useCallback<PydanticFormLabelProvider>(async () => {
+            return {
                 labels: {
                     ...(orchestratorTranslations as object),
                 },
                 data: {},
-            });
-        });
-    };
+            };
+        }, [orchestratorTranslations]);
 
-    const customTranslations = {
-        cancel: t('cancel'),
-        startWorkflow: t('startWorkflow'),
-        widgets: {
-            ...(widgetsTranslations as object),
+    const customTranslations = useMemo(
+        () => ({
+            cancel: t('cancel'),
+            startWorkflow: t('startWorkflow'),
+            widgets: {
+                ...(widgetsTranslations as object),
+            },
+            ...translationMessages,
+        }),
+        [t, widgetsTranslations, translationMessages],
+    );
+
+    const wfoComponentMatcherExtender = useCallback<ComponentMatcherExtender>(
+        (currentMatchers) => {
+            const wfoMatchers: PydanticComponentMatcher[] = [
+                {
+                    id: 'textarea',
+                    ElementMatch: {
+                        Element: TextArea,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            field.format === PydanticFormFieldFormat.LONG
+                        );
+                    },
+                },
+                {
+                    id: 'summary',
+                    ElementMatch: {
+                        Element: Summary,
+                        isControlledElement: false,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            (field.format as string) === 'summary'
+                        );
+                    },
+                },
+                {
+                    id: 'label',
+                    ElementMatch: {
+                        Element: Label,
+                        isControlledElement: false,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            field.format === PydanticFormFieldFormat.LABEL
+                        );
+                    },
+                },
+                {
+                    id: 'divider',
+                    ElementMatch: {
+                        Element: Divider,
+                        isControlledElement: false,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            field.format === PydanticFormFieldFormat.DIVIDER
+                        );
+                    },
+                },
+                {
+                    id: 'checkbox',
+                    ElementMatch: {
+                        Element: Checkbox,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return field.type === PydanticFormFieldType.BOOLEAN;
+                    },
+                },
+                {
+                    id: 'radio',
+                    ElementMatch: {
+                        Element: Radio,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            field.options.length > 0 &&
+                            field.options.length <= 3
+                        );
+                    },
+                },
+                {
+                    id: 'integerfield',
+                    ElementMatch: {
+                        Element: Integer,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return field.type === PydanticFormFieldType.INTEGER;
+                    },
+                    validator: zodValidationPresets.integer,
+                },
+
+                ...currentMatchers
+                    .filter((matcher) => matcher.id !== 'text')
+                    .filter((matcher) => matcher.id !== 'array')
+                    .filter((matcher) => matcher.id !== 'object'),
+                {
+                    id: 'object',
+                    ElementMatch: {
+                        isControlledElement: false,
+                        Element: WfoObjectField,
+                    },
+                    matcher: (field) =>
+                        field.type === PydanticFormFieldType.OBJECT,
+                },
+                {
+                    id: 'array',
+                    ElementMatch: {
+                        isControlledElement: true,
+                        Element: WfoArrayField,
+                    },
+                    matcher: (field) =>
+                        field.type === PydanticFormFieldType.ARRAY,
+                },
+                {
+                    id: 'text',
+                    ElementMatch: {
+                        Element: Text,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return field.type === PydanticFormFieldType.STRING;
+                    },
+                    validator: zodValidationPresets.string,
+                },
+            ];
+
+            return componentMatcherExtender
+                ? componentMatcherExtender(wfoMatchers)
+                : wfoMatchers;
         },
-        ...translationMessages,
-    };
-
-    const wfoComponentMatcherExtender: ComponentMatcherExtender = (
-        currentMatchers,
-    ): PydanticComponentMatcher[] => {
-        const wfoMatchers: PydanticComponentMatcher[] = [
-            {
-                id: 'textarea',
-                ElementMatch: {
-                    Element: WfoTextArea,
-                    isControlledElement: true,
-                },
-                matcher(field) {
-                    return (
-                        field.type === PydanticFormFieldType.STRING &&
-                        field.format === PydanticFormFieldFormat.LONG
-                    );
-                },
-            },
-            {
-                id: 'summary',
-                ElementMatch: {
-                    Element: WfoSummary,
-                    isControlledElement: false,
-                },
-                matcher(field) {
-                    return (
-                        field.type === PydanticFormFieldType.STRING &&
-                        (field.format as string) === 'summary'
-                    );
-                },
-            },
-            {
-                id: 'label',
-                ElementMatch: {
-                    Element: WfoLabel,
-                    isControlledElement: false,
-                },
-                matcher(field) {
-                    return (
-                        field.type === PydanticFormFieldType.STRING &&
-                        field.format === PydanticFormFieldFormat.LABEL
-                    );
-                },
-            },
-            {
-                id: 'divider',
-                ElementMatch: {
-                    Element: WfoDivider,
-                    isControlledElement: false,
-                },
-                matcher(field) {
-                    return (
-                        field.type === PydanticFormFieldType.STRING &&
-                        field.format === PydanticFormFieldFormat.DIVIDER
-                    );
-                },
-            },
-            {
-                id: 'checkbox',
-                ElementMatch: {
-                    Element: WfoCheckbox,
-                    isControlledElement: true,
-                },
-                matcher(field) {
-                    return field.type === PydanticFormFieldType.BOOLEAN;
-                },
-            },
-            {
-                id: 'radio',
-                ElementMatch: {
-                    Element: WfoRadio,
-                    isControlledElement: true,
-                },
-                matcher(field) {
-                    return (
-                        field.type === PydanticFormFieldType.STRING &&
-                        field.options.length > 0 &&
-                        field.options.length <= 3
-                    );
-                },
-            },
-            {
-                id: 'integerfield',
-                ElementMatch: {
-                    Element: WfoInteger,
-                    isControlledElement: true,
-                },
-                matcher(field) {
-                    return field.type === PydanticFormFieldType.INTEGER;
-                },
-                validator: zodValidationPresets.integer,
-            },
-
-            ...currentMatchers
-                .filter((matcher) => matcher.id !== 'text')
-                .filter((matcher) => matcher.id !== 'array')
-                .filter((matcher) => matcher.id !== 'object'),
-            {
-                id: 'object',
-                ElementMatch: {
-                    isControlledElement: false,
-                    Element: WfoObjectField,
-                },
-                matcher: (field) => {
-                    return field.type === PydanticFormFieldType.OBJECT;
-                },
-            },
-            {
-                id: 'array',
-                ElementMatch: {
-                    isControlledElement: true,
-                    Element: WfoArrayField,
-                },
-                matcher: (field) => {
-                    return field.type === PydanticFormFieldType.ARRAY;
-                },
-            },
-            {
-                id: 'text',
-                ElementMatch: {
-                    Element: WfoText,
-                    isControlledElement: true,
-                },
-                matcher(field) {
-                    return field.type === PydanticFormFieldType.STRING;
-                },
-                validator: zodValidationPresets.string,
-            },
-        ];
-
-        return componentMatcherExtender
-            ? componentMatcherExtender(wfoMatchers)
-            : wfoMatchers;
-    };
+        [componentMatcherExtender],
+    );
 
     return {
         wfoComponentMatcherExtender,
