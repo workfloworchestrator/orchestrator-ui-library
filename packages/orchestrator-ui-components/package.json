@@ -38,7 +38,7 @@
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
-        "graphql-request": "^6.1.0",
+        "graphql-request": "^7.2.0",
         "invariant": "^2.2.4",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
