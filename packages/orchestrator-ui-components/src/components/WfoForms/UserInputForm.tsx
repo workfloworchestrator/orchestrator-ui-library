@@ -58,6 +58,7 @@ interface IProps {
     userInput: object;
     isTask?: boolean;
     isResuming?: boolean;
+    disabled?: boolean;
 }
 
 interface Buttons {
@@ -433,6 +434,7 @@ export function WfoUserInputForm({
     userInput,
     isTask = false,
     isResuming = false,
+    disabled = false,
 }: IProps) {
     const t = useTranslations('pydanticForms.userInputForm');
     const tDialog = useTranslations('confirmationDialog');
@@ -544,6 +546,7 @@ export function WfoUserInputForm({
                         openLeavePageDialog(previous, t('previousQuestion')),
                     );
                 }}
+                disabled={disabled}
             >
                 {buttons.previous.text ?? t('previous')}
             </EuiButton>
@@ -586,6 +589,7 @@ export function WfoUserInputForm({
                 color={buttons.next.color ?? 'primary'}
                 isLoading={processing}
                 type="submit"
+                disabled={disabled}
             >
                 {buttons.next.text ?? t('next')}
             </EuiButton>
@@ -603,6 +607,7 @@ export function WfoUserInputForm({
                         : () => <WfoPlayFill color="#FFF" />
                 }
                 iconSide="right"
+                disabled={disabled}
             >
                 {buttons.next.text ?? t(nextButtonTranslationKey)}
             </EuiButton>
@@ -653,6 +658,7 @@ export function WfoUserInputForm({
                             showInlineError={true}
                             validate="onSubmit"
                             model={userInput}
+                            disabled={disabled}
                         >
                             <AutoFields omitFields={['buttons']} />
                             {/* Show top level validation info about backend validation */}

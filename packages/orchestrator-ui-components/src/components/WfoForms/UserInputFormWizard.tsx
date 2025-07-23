@@ -35,6 +35,7 @@ interface UserInputFormWizardProps {
     isTask: boolean;
     hasNext?: boolean;
     isResuming?: boolean;
+    allowSubmit?: boolean;
 }
 
 function stop(e: React.SyntheticEvent) {
@@ -51,6 +52,7 @@ export const UserInputFormWizard = ({
     cancel,
     isTask,
     isResuming = false,
+    allowSubmit = true,
 }: UserInputFormWizardProps) => {
     const router = useRouter();
     const [forms, setForms] = useState<Form[]>([
@@ -119,6 +121,7 @@ export const UserInputFormWizard = ({
             userInput={currentUserInput}
             isTask={isTask}
             isResuming={isResuming}
+            disabled={!allowSubmit}
         />
     );
 };

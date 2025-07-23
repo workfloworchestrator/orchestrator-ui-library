@@ -6,18 +6,20 @@ import { UserInputFormWizard, WfoError, WfoLoading } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { HttpStatus } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
-import { InputForm } from '@/types/forms';
+import { FormUserPermissions, InputForm } from '@/types/forms';
 
 interface WfoStepFormProps {
     userInputForm: InputForm;
     isTask: boolean;
     processId?: string;
+    userPermissions: FormUserPermissions;
 }
 
 export const WfoStepForm = ({
     userInputForm,
     isTask,
     processId,
+    userPermissions,
 }: WfoStepFormProps) => {
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const [hasError, setHasError] = useState<boolean>(false);
@@ -57,6 +59,7 @@ export const WfoStepForm = ({
                     hasNext={false}
                     isTask={isTask}
                     isResuming={true}
+                    allowSubmit={userPermissions.resumeAllowed}
                 />
             )}
         </EuiFlexItem>
