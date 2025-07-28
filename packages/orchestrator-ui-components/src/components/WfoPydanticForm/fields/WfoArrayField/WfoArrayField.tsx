@@ -17,21 +17,34 @@ import { useOrchestratorTheme } from '@/hooks';
 export const MinusButton = ({
     index,
     onRemove,
+    testId,
 }: {
     index: number;
     onRemove: (index: number) => void;
+    testId: string;
 }) => {
     const { theme } = useOrchestratorTheme();
     const { minusButton } = getWfoArrayFieldStyles();
 
     return (
         <span css={minusButton} onClick={() => onRemove(index)}>
-            <EuiIcon type="minus" size="xxl" color={theme.colors.danger} />
+            <EuiIcon
+                type="minus"
+                size="xxl"
+                color={theme.colors.danger}
+                data-testid={testId}
+            />
         </span>
     );
 };
 
-export const PlusButton = ({ onClick }: { onClick: () => void }) => {
+export const PlusButton = ({
+    onClick,
+    testId,
+}: {
+    onClick: () => void;
+    testId: string;
+}) => {
     const { theme } = useOrchestratorTheme();
     const { plusButtonWrapper } = getWfoArrayFieldStyles();
 
@@ -42,6 +55,7 @@ export const PlusButton = ({ onClick }: { onClick: () => void }) => {
                 type="plus"
                 size="xxl"
                 color={theme.colors.success}
+                data-testid={testId}
             />
         </div>
     );
@@ -85,7 +99,13 @@ export const WfoArrayField = ({
                     ]}
                     extraTriggerFields={[arrayName]}
                 />
-                {showMinus && <MinusButton index={index} onRemove={remove} />}
+                {showMinus && (
+                    <MinusButton
+                        index={index}
+                        onRemove={remove}
+                        testId={`${arrayName}-minus-button-${index}`}
+                    />
+                )}
             </div>
         );
     };
@@ -101,6 +121,7 @@ export const WfoArrayField = ({
                             [arrayName]: arrayItem.default ?? undefined,
                         });
                     }}
+                    testId={`${arrayName}-plus-button`}
                 />
             )}
         </div>
