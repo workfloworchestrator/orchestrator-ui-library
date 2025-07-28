@@ -6,7 +6,7 @@
     },
     {
         "orchestratorUiVersion": "5.0.0",
-        "minimumOrchestratorCoreVersion": "4.2.0",
+        "minimumOrchestratorCoreVersion": "4.0.0",
         "changes": "Breaking Change on Workflow.target, added VALIDATION. Go over the manual and check if you need to update your workflows."
     },
     {
