@@ -70,7 +70,6 @@ export const WfoWorkflowStepList = React.forwardRef(
             steps = [],
             lastStatus,
             traceBack,
-            startedAt,
             processId,
             isTask,
             userInputForm,
