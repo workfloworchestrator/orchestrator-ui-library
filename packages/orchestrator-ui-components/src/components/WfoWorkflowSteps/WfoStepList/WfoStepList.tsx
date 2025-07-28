@@ -15,7 +15,6 @@ export type WfoStepListRef = {
 export type WfoStepListProps = {
     stepListItems: StepListItem[];
     showHiddenKeys: boolean;
-    startedAt: string;
     onToggleExpandStepListItem: (stepListItem: StepListItem) => void;
     onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
     isTask: boolean;
@@ -27,7 +26,6 @@ export const WfoStepList = React.forwardRef(
         {
             stepListItems,
             showHiddenKeys,
-            startedAt,
             onToggleExpandStepListItem,
             onTriggerExpandStepListItem,
             isTask,
@@ -51,8 +49,6 @@ export const WfoStepList = React.forwardRef(
         const stepReferences = useRef(new Map<string, HTMLDivElement>());
 
         const { contentRef } = useContentRef();
-
-        let stepStartTime = startedAt;
 
         useImperativeHandle(reference, () => ({
             scrollToStep: async (stepId: string) => {
@@ -103,32 +99,26 @@ export const WfoStepList = React.forwardRef(
 
         return (
             <>
-                {stepListItems.map((stepListItem, index) => {
-                    const stepComponent = (
-                        <div key={`step-${index}`}>
-                            {index !== 0 && <div css={stepSpacerStyle} />}
-                            <WfoStep
-                                ref={getReferenceCallbackForStepId(
-                                    stepListItem.step.stepId,
-                                )}
-                                onToggleStepDetail={() =>
-                                    onToggleExpandStepListItem(stepListItem)
-                                }
-                                stepListItem={stepListItem}
-                                startedAt={stepStartTime}
-                                showHiddenKeys={showHiddenKeys}
-                                isStartStep={index === 0}
-                                isTask={isTask}
-                                processId={processId}
-                            />
-                        </div>
-                    );
-
-                    if (index > 0) {
-                        stepStartTime = stepListItem.step.executed;
-                    }
-                    return stepComponent;
-                })}
+                {stepListItems.map((stepListItem, index) => (
+                    <div key={`step-${index}`}>
+                        {index !== 0 && <div css={stepSpacerStyle} />}
+                        <WfoStep
+                            ref={getReferenceCallbackForStepId(
+                                stepListItem.step.stepId,
+                            )}
+                            onToggleStepDetail={() =>
+                                onToggleExpandStepListItem(stepListItem)
+                            }
+                            stepListItem={stepListItem}
+                            startedAt={stepListItem.step.started}
+                            completedAt={stepListItem.step.completed}
+                            showHiddenKeys={showHiddenKeys}
+                            isStartStep={index === 0}
+                            isTask={isTask}
+                            processId={processId}
+                        />
+                    </div>
+                ))}
             </>
         );
     },

@@ -251,9 +251,10 @@ export interface Step {
     name: string;
     status: StepStatus;
     stepId: string; // sic backend
-    executed: string;
     state: StepState | undefined;
     stateDelta: StepState;
+    started: string;
+    completed: string;
 }
 
 export interface WorkflowDefinition {

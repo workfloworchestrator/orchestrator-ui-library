@@ -26,6 +26,7 @@ import { WfoStepForm } from './WfoStepForm';
 export interface WfoStepProps {
     stepListItem: StepListItem;
     startedAt: string;
+    completedAt: string;
     showHiddenKeys: boolean;
     onToggleStepDetail: () => void;
     isTask: boolean;
@@ -39,6 +40,7 @@ export const WfoStep = React.forwardRef(
             stepListItem,
             onToggleStepDetail,
             startedAt,
+            completedAt,
             showHiddenKeys,
             isStartStep = false,
             isTask,
@@ -130,13 +132,13 @@ export const WfoStep = React.forwardRef(
                             </EuiText>
                             <EuiText>
                                 {step.status}{' '}
-                                {step.executed &&
-                                    `- ${formatDate(step.executed)}`}
+                                {step.completed &&
+                                    `- ${formatDate(step.completed)}`}
                             </EuiText>
                         </EuiFlexItem>
 
                         <EuiFlexGroup css={stepRowStyle}>
-                            {step.executed && (
+                            {step.completed && (
                                 <>
                                     {isExpanded && (
                                         <EuiButton
@@ -165,7 +167,7 @@ export const WfoStep = React.forwardRef(
                                         <EuiText size="m">
                                             {calculateTimeDifference(
                                                 startedAt,
-                                                step.executed,
+                                                completedAt,
                                             )}
                                         </EuiText>
                                     </EuiFlexItem>
