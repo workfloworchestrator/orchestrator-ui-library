@@ -3,11 +3,9 @@ import ReactSelect, { components } from 'react-select';
 import type { GroupBase, InputProps } from 'react-select';
 
 import { EuiButtonIcon } from '@elastic/eui';
-import {
-    WfoError,
-    useWithOrchestratorTheme,
-} from '@orchestrator-ui/orchestrator-ui-components';
 
+import { WfoError } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
 import type { Option } from '@/types';
 
 import { getWfoReactSelectStyles } from './styles';
