@@ -9,6 +9,7 @@ import type {
     PydanticFormLabelProvider,
 } from 'pydantic-forms';
 import {
+    Locale,
     PydanticForm,
     PydanticFormFieldFormat,
     PydanticFormFieldType,
@@ -317,6 +318,13 @@ export const WfoPydanticForm = ({
         router.replace(pfBasePath);
     };
 
+    const getLocale = () => {
+        if (router.locale) {
+            return router.locale as Locale;
+        }
+        return Locale.enGB; // Default to enGB if no locale is set
+    };
+
     return (
         <PydanticForm
             id={processName}
@@ -333,6 +341,7 @@ export const WfoPydanticForm = ({
                 labelProvider: pydanticLabelProvider,
                 rowRenderer: Row,
                 customTranslations: customTranslations,
+                locale: getLocale(),
             }}
         />
     );
