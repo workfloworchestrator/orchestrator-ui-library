@@ -36,16 +36,6 @@ export interface ContactPerson {
     phone?: string;
 }
 
-export interface Option<Value = string> {
-    value: Value;
-    label: string;
-}
-
-export interface Option<Value = string> {
-    value: Value;
-    label: string;
-}
-
 export function prop<T, K extends keyof T>(obj: T, key: K): T[K] {
     return obj[key];
 }

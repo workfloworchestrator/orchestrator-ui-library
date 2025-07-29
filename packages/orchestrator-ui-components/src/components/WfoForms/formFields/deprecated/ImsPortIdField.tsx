@@ -25,9 +25,10 @@ import {
     useFreePortsByNodeSubscriptionIdAndSpeedQuery,
     useGetNodeSubscriptionOptionsQuery,
 } from '@/rtk/endpoints/formFields';
+import type { Option } from '@/types';
 
 import { getSelectFieldStyles } from '../SelectField/styles';
-import { FieldProps, Option } from '../types';
+import { FieldProps } from '../types';
 import { imsPortIdFieldStyling } from './ImsPortIdFieldStyling';
 import { ImsPort, NodeSubscriptionOption } from './types';
 
