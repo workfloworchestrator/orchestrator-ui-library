@@ -60,12 +60,6 @@ export const useWfoPydanticFormConfig = () => {
             ? translationMessages.pydanticForms.backendTranslations
             : {};
 
-    const widgetsTranslations =
-        translationMessages?.pydanticForms &&
-        typeof translationMessages?.pydanticForms !== 'string'
-            ? translationMessages.pydanticForms.widgets
-            : {};
-
     const orchestratorTranslations = formTranslations as unknown;
 
     const pydanticLabelProvider =
@@ -78,17 +72,22 @@ export const useWfoPydanticFormConfig = () => {
             };
         }, [orchestratorTranslations]);
 
-    const customTranslations = useMemo(
-        () => ({
+    const customTranslations = useMemo(() => {
+        const widgetsTranslations =
+            translationMessages?.pydanticForms &&
+            typeof translationMessages?.pydanticForms !== 'string'
+                ? translationMessages.pydanticForms.widgets
+                : {};
+
+        return {
             cancel: t('cancel'),
             startWorkflow: t('startWorkflow'),
             widgets: {
                 ...(widgetsTranslations as object),
             },
             ...translationMessages,
-        }),
-        [t, widgetsTranslations, translationMessages],
-    );
+        };
+    }, [t, translationMessages]);
 
     const wfoComponentMatcherExtender = useCallback<ComponentMatcherExtender>(
         (currentMatchers) => {
