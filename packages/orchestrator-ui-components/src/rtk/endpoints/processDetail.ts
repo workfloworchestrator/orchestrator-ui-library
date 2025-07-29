@@ -30,8 +30,9 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                     name
                     status
                     stepId
-                    executed
                     stateDelta
+                    started
+                    completed
                 }
                 customer {
                     fullname

@@ -1,5 +1,10 @@
 [
     {
+        "orchestratorUiVersion": "5.3.5",
+        "minimumOrchestratorCoreVersion": "4.2.0",
+        "changes": "Breaking Change on process.steps, using new props started and completed from graphql to improve the process detail timestamps."
+    },
+    {
         "orchestratorUiVersion": "5.0.0",
         "minimumOrchestratorCoreVersion": "4.0.0",
         "changes": "Breaking Change on Workflow.target, added VALIDATION. Go over the manual and check if you need to update your workflows."

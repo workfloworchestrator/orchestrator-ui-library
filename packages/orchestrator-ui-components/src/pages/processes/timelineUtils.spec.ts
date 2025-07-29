@@ -7,7 +7,8 @@ import {
 } from './timelineUtils';
 
 const baseStep: Step = {
-    executed: 'testExecuted',
+    started: 'testStarted',
+    completed: 'testCompleted',
     name: 'tesName',
     state: {
         testKey: 'testValue',
