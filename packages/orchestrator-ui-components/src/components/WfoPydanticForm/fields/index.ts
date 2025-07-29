@@ -8,3 +8,5 @@ export * from './WfoObjectField';
 export * from './WfoArrayField';
 export * from './WfoRadio';
 export * from './WfoInteger';
+export * from './WfoDropdown';
+export * from './WfoReactSelect';

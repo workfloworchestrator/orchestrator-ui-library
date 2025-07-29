@@ -1,2 +1,2 @@
 export * from './WfoObjectField';
-export * from './getWfoObjectFieldStyles';
+export * from './styles';
