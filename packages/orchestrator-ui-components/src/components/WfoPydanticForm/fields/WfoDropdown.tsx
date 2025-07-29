@@ -2,6 +2,24 @@ import React from 'react';
 
 import type { PydanticFormControlledElement } from 'pydantic-forms';
 
-export const WfoDropdown: PydanticFormControlledElement = () => {
-    return <div>DROPDOWN</div>;
+import { WfoReactSelect } from './WfoReactSelect';
+
+export const WfoDropdown: PydanticFormControlledElement = ({
+    onChange,
+    pydanticFormField,
+    value,
+}) => {
+    const dropDownOptions = pydanticFormField.options.map((option) => ({
+        value: option.value,
+        label: option.label,
+    }));
+
+    return (
+        <WfoReactSelect
+            options={dropDownOptions}
+            onChange={onChange}
+            id={pydanticFormField.id}
+            value={value}
+        />
+    );
 };
