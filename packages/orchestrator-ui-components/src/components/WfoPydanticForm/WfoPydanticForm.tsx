@@ -28,6 +28,7 @@ import {
     WfoArrayField,
     WfoCheckbox,
     WfoDivider,
+    WfoDropdown,
     WfoInteger,
     WfoLabel,
     WfoObjectField,
@@ -165,6 +166,21 @@ export const useWfoPydanticFormConfig = () => {
                             field.type === PydanticFormFieldType.STRING &&
                             field.options.length > 0 &&
                             field.options.length <= 3
+                        );
+                    },
+                },
+                {
+                    id: 'dropdown',
+                    ElementMatch: {
+                        Element: WfoDropdown,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        // We are looking for a single value from a set list of options. With more than 3 options use a dropdown.
+                        return (
+                            field.type === PydanticFormFieldType.STRING &&
+                            field.options.length > 0 &&
+                            field.options.length > 3
                         );
                     },
                 },

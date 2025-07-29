@@ -634,6 +634,11 @@ export interface MappedVersion {
     changes: string;
 }
 
+export interface Option<ValueType = string> {
+    value: ValueType;
+    label: string;
+}
+
 export type CacheTag = { type: CacheTagType; id?: string };
 
 export const CACHETAG_TYPE_LIST = 'LIST';

@@ -31,8 +31,9 @@ import {
 
 import { ipPrefixTableFieldStyling } from '@/components';
 import { useIpBlocksQuery, usePrefixFiltersQuery } from '@/rtk/endpoints/ipam';
+import type { Option } from '@/types';
 
-import { Option, prop } from '../types';
+import { prop } from '../types';
 import { IpBlock, IpPrefix, SortOption } from './types';
 import { ipamStates } from './utils';
 

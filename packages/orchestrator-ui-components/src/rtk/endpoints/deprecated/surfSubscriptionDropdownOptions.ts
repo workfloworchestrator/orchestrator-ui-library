@@ -1,6 +1,6 @@
-import { Option } from '@/components/WfoForms/formFields/types';
 import { SUBSCRIPTION_DROPDOWN_OPTIONS_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
+import { Option } from '@/types';
 import { SurfSubscriptionDropdownOptionsFilterParams } from '@/types';
 
 // Custom endpoint used by the deprecated SubscriptionField formfield.

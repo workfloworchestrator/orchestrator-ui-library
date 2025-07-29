@@ -11,8 +11,9 @@ import {
 
 import { EuiIcon } from '@elastic/eui';
 
-import { getWfoArrayFieldStyles } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
+
+import { getWfoArrayFieldStyles } from './styles';
 
 export const MinusButton = ({
     index,
