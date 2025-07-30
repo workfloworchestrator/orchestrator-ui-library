@@ -30,6 +30,7 @@ import {
     WfoDivider,
     WfoInteger,
     WfoLabel,
+    WfoMultiCheckboxField,
     WfoObjectField,
     WfoRadio,
     WfoSummary,
@@ -178,6 +179,21 @@ export const useWfoPydanticFormConfig = () => {
                         return field.type === PydanticFormFieldType.INTEGER;
                     },
                     validator: zodValidationPresets.integer,
+                },
+                {
+                    id: 'multicheckbox',
+                    ElementMatch: {
+                        Element: WfoMultiCheckboxField,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.ARRAY &&
+                            field.options?.length > 0 &&
+                            field.options?.length <= 5
+                        );
+                    },
+                    validator: zodValidationPresets.multiSelect,
                 },
                 ...currentMatchers
                     .filter((matcher) => matcher.id !== 'text')

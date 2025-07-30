@@ -8,3 +8,4 @@ export * from './WfoObjectField';
 export * from './WfoArrayField';
 export * from './WfoRadio';
 export * from './WfoInteger';
+export * from './WfoMultiCheckboxField';
