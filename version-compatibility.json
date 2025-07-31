@@ -2,7 +2,7 @@
     {
         "orchestratorUiVersion": "5.3.5",
         "minimumOrchestratorCoreVersion": "4.2.0",
-        "changes": "Breaking Change on process.steps, using new props started and completed from graphql to improve the process detail timestamps."
+        "changes": "Endpoints in BE to support RBAC on individual running workflows and usage new graphql props started and completed to improve the process detail timestamps."
     },
     {
         "orchestratorUiVersion": "5.0.0",

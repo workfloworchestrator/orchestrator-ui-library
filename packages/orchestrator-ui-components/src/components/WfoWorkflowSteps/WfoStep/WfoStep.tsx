@@ -15,6 +15,7 @@ import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
 import { StepStatus } from '@/types';
+import { FormUserPermissions } from '@/types/forms';
 import { calculateTimeDifference, formatDate } from '@/utils';
 
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
@@ -32,6 +33,7 @@ export interface WfoStepProps {
     isTask: boolean;
     isStartStep?: boolean;
     processId?: string;
+    userPermissions: FormUserPermissions;
 }
 
 export const WfoStep = React.forwardRef(
@@ -45,6 +47,7 @@ export const WfoStep = React.forwardRef(
             isStartStep = false,
             isTask,
             processId,
+            userPermissions,
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
@@ -211,6 +214,7 @@ export const WfoStep = React.forwardRef(
                             userInputForm={userInputForm}
                             isTask={isTask}
                             processId={processId}
+                            userPermissions={userPermissions}
                         />
                     )}
                 </EuiPanel>

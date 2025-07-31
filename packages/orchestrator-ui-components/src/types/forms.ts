@@ -37,3 +37,8 @@ export type FormValidationError = {
     data: ValidationErrorData;
     status: HttpStatus;
 };
+
+export interface FormUserPermissions {
+    retryAllowed: boolean;
+    resumeAllowed: boolean;
+}
