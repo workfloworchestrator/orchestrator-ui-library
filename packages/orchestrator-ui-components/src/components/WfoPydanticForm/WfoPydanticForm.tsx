@@ -274,16 +274,19 @@ export const WfoPydanticForm = ({
         customTranslations,
     } = useWfoPydanticFormConfig();
 
-    const onSuccess = (_fieldValues: object, req: object) => {
-        const request = req as { response: StartProcessResponse };
-        const response = request ? request?.response : null;
-        if (response?.id) {
-            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-            router.replace(`${pfBasePath}/${response.id}`);
-        }
-    };
+    const onSuccess = useCallback(
+        (_fieldValues: object, req: object) => {
+            const request = req as { response: StartProcessResponse };
+            const response = request ? request?.response : null;
+            if (response?.id) {
+                const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+                router.replace(`${pfBasePath}/${response.id}`);
+            }
+        },
+        [isTask, router],
+    );
 
-    const getPydanticFormProvider = () => {
+    const getPydanticFormProvider = useCallback(() => {
         const pydanticFormProvider: PydanticFormApiProvider = async ({
             requestBody = [],
             formKey,
@@ -327,19 +330,40 @@ export const WfoPydanticForm = ({
         };
 
         return pydanticFormProvider;
-    };
+    }, [startProcess, startProcessPayload]);
 
-    const handleCancel = () => {
+    const handleCancel = useCallback(() => {
         const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
         router.replace(pfBasePath);
-    };
+    }, [isTask, router]);
 
-    const getLocale = () => {
-        if (router.locale) {
-            return router.locale as Locale;
-        }
-        return Locale.enGB; // Default to enGB if no locale is set
-    };
+    const config = useMemo(() => {
+        const getLocale = () => {
+            if (router.locale) {
+                return router.locale as Locale;
+            }
+            return Locale.enGB; // Default to enGB if no locale is set
+        };
+
+        return {
+            apiProvider: getPydanticFormProvider(),
+            allowUntouchedSubmit: true,
+            footerRenderer: Footer,
+            headerRenderer: Header,
+            skipSuccessNotice: true,
+            componentMatcherExtender: wfoComponentMatcherExtender,
+            labelProvider: pydanticLabelProvider,
+            rowRenderer: Row,
+            customTranslations: customTranslations,
+            locale: getLocale(),
+        };
+    }, [
+        customTranslations,
+        getPydanticFormProvider,
+        pydanticLabelProvider,
+        router.locale,
+        wfoComponentMatcherExtender,
+    ]);
 
     return (
         <PydanticForm
@@ -347,18 +371,7 @@ export const WfoPydanticForm = ({
             onSuccess={onSuccess}
             onCancel={handleCancel}
             loadingComponent={<WfoLoading />}
-            config={{
-                apiProvider: getPydanticFormProvider(),
-                allowUntouchedSubmit: true,
-                footerRenderer: Footer,
-                headerRenderer: Header,
-                skipSuccessNotice: true,
-                componentMatcherExtender: wfoComponentMatcherExtender,
-                labelProvider: pydanticLabelProvider,
-                rowRenderer: Row,
-                customTranslations: customTranslations,
-                locale: getLocale(),
-            }}
+            config={config}
         />
     );
 };
