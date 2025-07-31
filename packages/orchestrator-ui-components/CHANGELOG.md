@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.4.0
+
+### Minor Changes
+
+- fb634ec: Improve Process Detail step timestamp using step started and completed datetime
+
+### Patch Changes
+
+- b604a46: Updates to latest version of pydantic forms
+- 796d299: Fixes for pydanticforms integration
+
 ## 5.3.4
 
 ### Patch Changes
