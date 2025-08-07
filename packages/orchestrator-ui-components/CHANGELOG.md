@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.4.0
+
+### Minor Changes
+
+- fb634ec: Improve Process Detail step timestamp using step started and completed datetime
+- b338d31: Reflect RBAC rules from backend in GUI, requires minimum backend version of 4.2.0
+
+### Patch Changes
+
+- b604a46: Updates to latest version of pydantic forms
+- 796d299: Fixes for pydanticforms integration
+
 ## 5.3.4
 
 ### Patch Changes
