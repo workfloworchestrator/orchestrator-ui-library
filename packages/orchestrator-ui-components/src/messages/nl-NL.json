@@ -138,7 +138,8 @@
                 "invalidFiletype": "Ongeldig bestandstype!",
                 "errorUploading": "Fout bij het upoaden van het bestand!",
                 "fileToBig": "Bestand te groot. Maximum bestand: {fileSizeLimit}",
-                "initialPromptText": "Selecteer een bestand of sleep het hierheen"
+                "initialPromptText": "Selecteer een bestand of sleep het hierheen",
+                "supportedFileTypes": "Ondersteunde bestandstypen: pdf"
             }
         }
     },

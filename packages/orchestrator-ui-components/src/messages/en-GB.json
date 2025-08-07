@@ -139,7 +139,8 @@
                 "invalidFiletype": "Invalid filetype!",
                 "errorUploading": "Error uploading file!",
                 "fileToBig": "File to large. Maximum file size: {fileSizeLimit}",
-                "initialPromptText": "Select or drag and drop a file"
+                "initialPromptText": "Select or drag and drop a file",
+                "supportedFileTypes": "Supported file types: pdf"
             }
         }
     },
