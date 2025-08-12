@@ -384,8 +384,8 @@
     "tasks": {
         "page": {
             "taskName": "Taak",
-            "rerunAll": "Alles opnieuw uitvoeren",
-            "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt uitvoeren?"
+            "rerunAll": "Alle taken herstarten",
+            "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt herstarten?"
         },
         "tabs": {
             "active": "Actief",
@@ -451,6 +451,7 @@
     "hamburgerMenu": {
         "support": "Support",
         "softwareVersions": "Software Versies",
-        "logout": "Logout"
+        "logout": "Logout",
+        "aoStatusPage": "A&O applicatie status pagina"
     }
 }
