@@ -388,8 +388,8 @@
     "tasks": {
         "page": {
             "taskName": "Task",
-            "rerunAll": "Rerun all",
-            "rerunAllQuestion": "Are you sure you want to rerun all failed tasks?"
+            "rerunAll": "Re-try all tasks",
+            "rerunAllQuestion": "Are you sure you want to re-try all failed tasks?"
         },
         "tabs": {
             "active": "Active",
