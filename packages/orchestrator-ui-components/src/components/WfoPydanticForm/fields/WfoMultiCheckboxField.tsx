@@ -62,7 +62,7 @@ export const WfoMultiCheckboxField: PydanticFormControlledElement = ({
             options={checkboxes}
             idToSelectedMap={checkboxIdToSelectedMap}
             onChange={(id) => handleCheckboxChange(id)}
-            date-test-id={id}
+            data-testid={id}
         />
     );
 };
