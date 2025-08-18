@@ -24,7 +24,7 @@ export const RenderFormErrors = () => {
     return (
         <em className="error backend-validation-metadata">
             {rootError && <div>{rootError.msg}</div>}
-            {otherErrors?.length &&
+            {otherErrors?.length >= 1 &&
                 t('inputFieldsHaveValidationErrors', {
                     nrOfValidationErrors: otherErrors.length,
                 })}
