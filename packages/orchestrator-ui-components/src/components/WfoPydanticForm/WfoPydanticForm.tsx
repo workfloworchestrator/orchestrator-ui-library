@@ -34,7 +34,6 @@ import {
     WfoLabel,
     WfoMultiCheckboxField,
     WfoObjectField,
-    WfoRadio,
     WfoSummary,
     WfoText,
     WfoTextArea,
@@ -158,31 +157,18 @@ export const useWfoPydanticFormConfig = () => {
                     },
                 },
                 {
-                    id: 'radio',
-                    ElementMatch: {
-                        Element: WfoRadio,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            field.options.length > 0 &&
-                            field.options.length <= 3
-                        );
-                    },
-                },
-                {
                     id: 'dropdown',
                     ElementMatch: {
                         Element: WfoDropdown,
                         isControlledElement: true,
                     },
                     matcher(field) {
-                        // We are looking for a single value from a set list of options. With more than 3 options use a dropdown.
+                        // We are looking for a single value from a set list of options.
+                        // We are not using a radio button component to maintain being able to deselect options
                         return (
                             field.type === PydanticFormFieldType.STRING &&
-                            field.options.length > 0 &&
-                            field.options.length > 3
+                            Array.isArray(field.options) &&
+                            field.options.length > 0
                         );
                     },
                 },
