@@ -19,3 +19,4 @@ export * from './subscriptionListSummary';
 export * from './forms';
 export * from './deprecated';
 export * from './formFields';
+export * from './ipam';
