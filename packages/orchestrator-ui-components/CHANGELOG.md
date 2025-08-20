@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.5.1
+
+### Patch Changes
+
+- 0c7ec24: Introduces some components for pydantic forms
+
 ## 5.5.0
 
 ### Minor Changes
