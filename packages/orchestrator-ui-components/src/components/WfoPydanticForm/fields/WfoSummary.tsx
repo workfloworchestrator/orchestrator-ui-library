@@ -1,59 +1,16 @@
 import React from 'react';
 
+import { capitalize } from 'lodash';
 import type { PydanticFormElement } from 'pydantic-forms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
-import { tint } from '@elastic/eui';
-import { css } from '@emotion/react';
 
-import { getCommonFormFieldStyles } from '@/components';
-import { WfoTheme, useWithOrchestratorTheme } from '@/hooks';
-
-export const getStyles = ({ theme }: WfoTheme) => {
-    const toShadeColor = (color: string) => tint(color, 0.9);
-
-    const summaryFieldStyle = css({
-        'div.emailMessage': {
-            td: {
-                color: theme.colors.text,
-            },
-            p: {
-                color: theme.colors.text,
-            },
-            html: {
-                marginLeft: '-10px',
-            },
-        },
-        'section.table-summary': {
-            marginTop: '20px',
-            width: '100%',
-            td: {
-                padding: '10px',
-                verticalAlign: 'top',
-            },
-            'td:not(:first-child):not(:last-child)': {
-                borderRight: `1px solid ${theme.colors.lightestShade}`,
-            },
-            '.label': {
-                fontWeight: 'bold',
-                color: theme.colors.lightestShade,
-                backgroundColor: theme.colors.primary,
-                borderRight: `2px solid ${theme.colors.lightestShade}`,
-                borderBottom: `1px solid ${theme.colors.lightestShade}`,
-            },
-            '.value': {
-                backgroundColor: toShadeColor(theme.colors.primary),
-                borderBottom: `1px solid ${theme.colors.lightestShade}`,
-            },
-        },
-    });
-    return {
-        summaryFieldStyle: summaryFieldStyle,
-    };
-};
+import { getCommonFormFieldStyles, summaryFieldStyles } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { snakeToHuman } from '@/utils';
 
 export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
-    const { summaryFieldStyle } = useWithOrchestratorTheme(getStyles);
+    const { summaryFieldStyle } = useWithOrchestratorTheme(summaryFieldStyles);
     const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
     const { id, title, description } = pydanticFormField;
@@ -102,12 +59,14 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
             </tr>
         );
 
+    const formattedTitle = snakeToHuman(capitalize(title ?? ''));
+
     return (
         <EuiFlexItem data-testid={id} css={[summaryFieldStyle, formRowStyle]}>
             <section>
                 <EuiFormRow
-                    label={description}
-                    labelAppend={<EuiText size="m">{title}</EuiText>}
+                    label={<p className="label">{formattedTitle}</p>}
+                    labelAppend={<EuiText size="m">{description}</EuiText>}
                     id={id}
                     fullWidth
                 >
