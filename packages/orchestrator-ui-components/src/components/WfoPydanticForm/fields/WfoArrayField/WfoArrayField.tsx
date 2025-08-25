@@ -66,9 +66,9 @@ export const PlusButton = ({
 export const WfoArrayField = ({
     pydanticFormField,
 }: PydanticFormElementProps) => {
-    const { config, rhf } = usePydanticFormContext();
+    const { config, reactHookForm } = usePydanticFormContext();
     const disabled = pydanticFormField.attributes?.disabled || false;
-    const { control } = rhf;
+    const { control } = reactHookForm;
     const { id: arrayName, arrayItem } = pydanticFormField;
     const { minItems, maxItems } = pydanticFormField.validations;
     const { container, fieldWrapper } = getWfoArrayFieldStyles();
