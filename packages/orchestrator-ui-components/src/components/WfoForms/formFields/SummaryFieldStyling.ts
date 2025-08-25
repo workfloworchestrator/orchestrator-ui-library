@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoTheme } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const summaryFieldStyles = ({ theme }: WfoTheme) => {
     const summaryFieldStyle = css({
         'div.emailMessage': {
             td: {
