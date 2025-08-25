@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.5.2
+
+### Patch Changes
+
+- 65c254d: Fix WfoSummary label styles
+- b4c8635: added translation aostatus menu, and made re-try all tasks consistent
+- 60f4ec4: Updates to latest version of pydantic forms
+
 ## 5.5.1
 
 ### Patch Changes
