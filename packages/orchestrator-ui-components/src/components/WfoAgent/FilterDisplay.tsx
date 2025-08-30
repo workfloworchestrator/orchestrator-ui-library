@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     EuiBadge,
     EuiFlexGroup,
@@ -116,6 +118,7 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
                 condition.value &&
                 typeof condition.value === 'object'
             ) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const { start, end, from, to } = condition.value as any;
                 const fromVal = start || from;
                 const toVal = end || to;

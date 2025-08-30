@@ -9,6 +9,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
     const [paths, setPaths] = useState<PathInfo[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [definitions, setDefinitions] = useState<Record<string, any>>({});
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
     EuiBadge,
@@ -58,7 +58,7 @@ export const WfoSearch = () => {
         setManualResults([]);
     };
 
-    const onSearchChange = ({ query, queryText }: EuiSearchBarOnChangeArgs) => {
+    const onSearchChange = ({ query }: EuiSearchBarOnChangeArgs) => {
         setQuery(query || EuiSearchBar.Query.MATCH_ALL);
         return true;
     };

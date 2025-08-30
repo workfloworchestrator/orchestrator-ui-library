@@ -47,7 +47,7 @@ export const useSearch = (query: Query | string, entityType: EntityKind) => {
 
                 const data = await response.json();
                 setResults(data.page || []);
-            } catch (error) {
+            } catch {
                 setError('Network error');
                 setResults([]);
             } finally {
@@ -56,7 +56,7 @@ export const useSearch = (query: Query | string, entityType: EntityKind) => {
         };
 
         performSearch();
-    }, [query, entityType]);
+    }, [query, entityType, orchestratorApiBaseUrl]);
 
     return { results, loading, error };
 };

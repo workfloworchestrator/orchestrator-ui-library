@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useCoAgent } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import {
@@ -29,7 +31,7 @@ type Row = Record<string, unknown>;
 function startCase(key: string) {
     return key
         .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-        .replace(/[_\-]+/g, ' ')
+        .replace(/[_-]+/g, ' ')
         .replace(/\s+/g, ' ')
         .replace(/^./, (c) => c.toUpperCase());
 }
@@ -45,14 +47,19 @@ function buildColumnConfig(rows: Row[]): WfoTableColumnConfig<Row> {
 function mapRows(entityType: EntityKind, results: AnySearchResult[]): Row[] {
     switch (entityType) {
         case 'SUBSCRIPTION':
-            return results.filter(isSubscriptionSearchResult).map((r) => ({
-                subscriptionId: (r.subscription as any)?.subscription_id ?? '—',
-                description: (r.subscription as any)?.description ?? null,
-                status: (r.subscription as any)?.status ?? null,
-                customerId: (r.subscription as any)?.customer_id ?? null,
-                productId: (r.subscription as any)?.product_id ?? null,
-                score: typeof r.score === 'number' ? r.score.toFixed(4) : null,
-            }));
+            return results.filter(isSubscriptionSearchResult).map((r) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const sub = r.subscription as any;
+                return {
+                    subscriptionId: sub?.subscription_id ?? '—',
+                    description: sub?.description ?? null,
+                    status: sub?.status ?? null,
+                    customerId: sub?.customer_id ?? null,
+                    productId: sub?.product_id ?? null,
+                    score:
+                        typeof r.score === 'number' ? r.score.toFixed(4) : null,
+                };
+            });
         case 'PROCESS':
             return results.filter(isProcessSearchResult).map((r) => ({
                 processId: r.processId,
