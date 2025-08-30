@@ -22,11 +22,12 @@ import { joinName, useField, useForm } from 'uniforms';
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
+import type { Option } from '@/types';
 
 import { ListField, ListFieldProps } from '../ListField';
 import { ListItemField } from '../ListItemField';
 import { ListSelectField } from '../ListSelectField';
-import { FieldProps, Option } from '../types';
+import { FieldProps } from '../types';
 import { getSelectFieldStyles } from './styles';
 
 export type SelectFieldProps = FieldProps<

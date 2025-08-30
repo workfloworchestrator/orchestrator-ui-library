@@ -35,9 +35,10 @@ import {
 
 import { useWithOrchestratorTheme } from '@/hooks';
 import { useGetSurfSubscriptionDropdownOptions } from '@/hooks/deprecated/useGetSurfSubcriptionDropdownOptions';
+import type { Option } from '@/types';
 
 import { getSelectFieldStyles } from '../SelectField/styles';
-import { FieldProps, Option } from '../types';
+import { FieldProps } from '../types';
 import { subscriptionFieldStyling } from './SubscriptionFieldStyling';
 
 declare module 'uniforms' {

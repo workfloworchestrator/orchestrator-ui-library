@@ -9,6 +9,7 @@ import type {
     PydanticFormLabelProvider,
 } from 'pydantic-forms';
 import {
+    Locale,
     PydanticForm,
     PydanticFormFieldFormat,
     PydanticFormFieldType,
@@ -28,10 +29,11 @@ import {
     WfoArrayField,
     WfoCheckbox,
     WfoDivider,
+    WfoDropdown,
     WfoInteger,
     WfoLabel,
+    WfoMultiCheckboxField,
     WfoObjectField,
-    WfoRadio,
     WfoSummary,
     WfoText,
     WfoTextArea,
@@ -155,16 +157,18 @@ export const useWfoPydanticFormConfig = () => {
                     },
                 },
                 {
-                    id: 'radio',
+                    id: 'dropdown',
                     ElementMatch: {
-                        Element: WfoRadio,
+                        Element: WfoDropdown,
                         isControlledElement: true,
                     },
                     matcher(field) {
+                        // We are looking for a single value from a set list of options.
+                        // We are not using a radio button component to maintain being able to deselect options
                         return (
                             field.type === PydanticFormFieldType.STRING &&
-                            field.options.length > 0 &&
-                            field.options.length <= 3
+                            Array.isArray(field.options) &&
+                            field.options.length > 0
                         );
                     },
                 },
@@ -178,6 +182,21 @@ export const useWfoPydanticFormConfig = () => {
                         return field.type === PydanticFormFieldType.INTEGER;
                     },
                     validator: zodValidationPresets.integer,
+                },
+                {
+                    id: 'multicheckbox',
+                    ElementMatch: {
+                        Element: WfoMultiCheckboxField,
+                        isControlledElement: true,
+                    },
+                    matcher(field) {
+                        return (
+                            field.type === PydanticFormFieldType.ARRAY &&
+                            field.options?.length > 0 &&
+                            field.options?.length <= 5
+                        );
+                    },
+                    validator: zodValidationPresets.multiSelect,
                 },
                 ...currentMatchers
                     .filter((matcher) => matcher.id !== 'text')
@@ -241,16 +260,19 @@ export const WfoPydanticForm = ({
         customTranslations,
     } = useWfoPydanticFormConfig();
 
-    const onSuccess = (_fieldValues: object, req: object) => {
-        const request = req as { response: StartProcessResponse };
-        const response = request ? request?.response : null;
-        if (response?.id) {
-            const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-            router.replace(`${pfBasePath}/${response.id}`);
-        }
-    };
+    const onSuccess = useCallback(
+        (_fieldValues: object, req: object) => {
+            const request = req as { response: StartProcessResponse };
+            const response = request ? request?.response : null;
+            if (response?.id) {
+                const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
+                router.replace(`${pfBasePath}/${response.id}`);
+            }
+        },
+        [isTask, router],
+    );
 
-    const getPydanticFormProvider = () => {
+    const getPydanticFormProvider = useCallback(() => {
         const pydanticFormProvider: PydanticFormApiProvider = async ({
             requestBody = [],
             formKey,
@@ -294,12 +316,40 @@ export const WfoPydanticForm = ({
         };
 
         return pydanticFormProvider;
-    };
+    }, [startProcess, startProcessPayload]);
 
-    const handleCancel = () => {
+    const handleCancel = useCallback(() => {
         const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
         router.replace(pfBasePath);
-    };
+    }, [isTask, router]);
+
+    const config = useMemo(() => {
+        const getLocale = () => {
+            if (router.locale) {
+                return router.locale as Locale;
+            }
+            return Locale.enGB; // Default to enGB if no locale is set
+        };
+
+        return {
+            apiProvider: getPydanticFormProvider(),
+            allowUntouchedSubmit: true,
+            footerRenderer: Footer,
+            headerRenderer: Header,
+            skipSuccessNotice: true,
+            componentMatcherExtender: wfoComponentMatcherExtender,
+            labelProvider: pydanticLabelProvider,
+            rowRenderer: Row,
+            customTranslations: customTranslations,
+            locale: getLocale(),
+        };
+    }, [
+        customTranslations,
+        getPydanticFormProvider,
+        pydanticLabelProvider,
+        router.locale,
+        wfoComponentMatcherExtender,
+    ]);
 
     return (
         <PydanticForm
@@ -307,17 +357,7 @@ export const WfoPydanticForm = ({
             onSuccess={onSuccess}
             onCancel={handleCancel}
             loadingComponent={<WfoLoading />}
-            config={{
-                apiProvider: getPydanticFormProvider(),
-                allowUntouchedSubmit: true,
-                footerRenderer: Footer,
-                headerRenderer: Header,
-                skipSuccessNotice: true,
-                componentMatcherExtender: wfoComponentMatcherExtender,
-                labelProvider: pydanticLabelProvider,
-                rowRenderer: Row,
-                customTranslations: customTranslations,
-            }}
+            config={config}
         />
     );
 };

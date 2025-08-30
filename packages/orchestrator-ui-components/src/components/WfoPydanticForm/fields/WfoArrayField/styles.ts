@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 export const getWfoArrayFieldStyles = () => {
     const container = css({
+        border: 'thin solid #eee',
         padding: '1rem',
         display: 'flex',
         flexDirection: 'column',
@@ -17,6 +18,7 @@ export const getWfoArrayFieldStyles = () => {
     const minusButton = css({
         width: '40px',
         cursor: 'pointer',
+        marginBottom: '12px',
     });
 
     const plusButtonWrapper = css({

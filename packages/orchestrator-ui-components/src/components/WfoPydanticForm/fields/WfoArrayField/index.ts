@@ -1,2 +1,2 @@
 export * from './WfoArrayField';
-export * from './arrayFieldStyles';
+export * from './styles';
