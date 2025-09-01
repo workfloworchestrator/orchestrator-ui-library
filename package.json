@@ -19,7 +19,7 @@
         "@changesets/cli": "^2.27.1",
         "@turbo/gen": "^2.5.2",
         "husky": "^9.0.11",
-        "turbo": "^2.2.3"
+        "turbo": "^2.5.6"
     },
     "name": "orchestrator-core-ui",
     "workspaces": [
