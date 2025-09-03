@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.5.3
+
+### Patch Changes
+
+- 19a7e45: Updates to pydantic form version 0.8.0
+
 ## 5.5.2
 
 ### Patch Changes
