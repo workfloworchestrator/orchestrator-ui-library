@@ -38,7 +38,7 @@ export const WfoReactSelect = <ValueType,>({
             (option: Option<ValueType>) => option.value === value,
         );
         setSelectedValue(selectedValue || null);
-    }, [value]);
+    }, [options, value]);
 
     const initialValue = options.find(
         (option: Option<ValueType>) => option.value === value,
