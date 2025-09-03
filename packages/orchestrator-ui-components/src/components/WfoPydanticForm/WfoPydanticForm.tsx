@@ -341,6 +341,7 @@ export const WfoPydanticForm = ({
             labelProvider: pydanticLabelProvider,
             rowRenderer: Row,
             customTranslations: customTranslations,
+            loadingComponent: <WfoLoading />,
             locale: getLocale(),
         };
     }, [
@@ -353,10 +354,9 @@ export const WfoPydanticForm = ({
 
     return (
         <PydanticForm
-            id={processName}
+            formKey={processName}
             onSuccess={onSuccess}
             onCancel={handleCancel}
-            loadingComponent={<WfoLoading />}
             config={config}
         />
     );
