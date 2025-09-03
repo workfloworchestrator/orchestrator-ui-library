@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactSelect, { components } from 'react-select';
 import type { GroupBase, InputProps } from 'react-select';
 
@@ -33,6 +33,13 @@ export const WfoReactSelect = <ValueType,>({
     hasError = false,
     refetch,
 }: WfoReactSelectProps<ValueType>) => {
+    useEffect(() => {
+        const selectedValue = options.find(
+            (option: Option<ValueType>) => option.value === value,
+        );
+        setSelectedValue(selectedValue || null);
+    }, [value]);
+
     const initialValue = options.find(
         (option: Option<ValueType>) => option.value === value,
     );
