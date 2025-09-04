@@ -37,6 +37,7 @@ export const StepFormFooter = ({
                     />
                 )}
                 iconSide="right"
+                type="submit"
                 aria-label={submitButtonLabel}
                 disabled={!isResumeAllowed}
             >
