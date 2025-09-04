@@ -11,6 +11,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
+import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
@@ -117,6 +118,11 @@ export const WfoStep = React.forwardRef(
             );
         };
 
+        const whitelist = ['confirm_corelink'];
+        const isCorelinkForm = whitelist.includes(
+            Object.keys(userInputForm?.properties ?? {})[0],
+        );
+
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -209,14 +215,23 @@ export const WfoStep = React.forwardRef(
                             )}
                         </div>
                     )}
-                    {step.status === StepStatus.SUSPEND && userInputForm && (
-                        <WfoStepForm
-                            userInputForm={userInputForm}
-                            isTask={isTask}
-                            processId={processId}
-                            userPermissions={userPermissions}
-                        />
-                    )}
+                    {step.status === StepStatus.SUSPEND &&
+                        userInputForm &&
+                        (isCorelinkForm ? (
+                            <WfoStepForm
+                                userInputForm={userInputForm}
+                                isTask={isTask}
+                                processId={processId ?? ''}
+                                userPermissions={userPermissions}
+                            />
+                        ) : (
+                            <WfoStepFormOld
+                                userInputForm={userInputForm}
+                                isTask={isTask}
+                                processId={processId}
+                                userPermissions={userPermissions}
+                            />
+                        ))}
                 </EuiPanel>
             </div>
         );

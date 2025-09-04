@@ -21,6 +21,11 @@ export const getAcceptFieldStyles = ({ theme }: WfoTheme) => {
                     marginTop: 0,
                 },
             },
+
+            '.labelTitle': {
+                fontWeight: '600',
+                color: theme.colors.text,
+            },
         },
     });
 

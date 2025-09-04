@@ -15,7 +15,6 @@ export const useGetTranslationMessages = (locale: string | undefined) => {
                 return enGB;
             case Locale.nlNL:
                 return nlNL;
-
             default:
                 return enGB;
         }

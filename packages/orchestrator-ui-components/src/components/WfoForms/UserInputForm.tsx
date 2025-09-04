@@ -686,7 +686,6 @@ export function WfoUserInputForm({
                                     </em>
                                 </section>
                             )}
-
                             {renderButtons(buttons)}
                         </AutoForm>
                     </AutoFieldProvider>

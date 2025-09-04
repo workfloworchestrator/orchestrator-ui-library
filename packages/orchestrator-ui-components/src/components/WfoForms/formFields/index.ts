@@ -27,3 +27,4 @@ export * from './deprecated/FileUploadField';
 export * from './commonStyles';
 export * from './types';
 export * from './SummaryFieldStyling';
+export * from './AcceptFieldStyling';
