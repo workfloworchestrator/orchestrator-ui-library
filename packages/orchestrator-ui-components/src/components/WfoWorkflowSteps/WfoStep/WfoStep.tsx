@@ -11,6 +11,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
+import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
@@ -23,7 +24,6 @@ import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
 import { WfoStepForm } from './WfoStepForm';
-import { WfoStepFormOld } from './WfoStepFormOld';
 
 export interface WfoStepProps {
     stepListItem: StepListItem;
@@ -118,6 +118,11 @@ export const WfoStep = React.forwardRef(
             );
         };
 
+        const whitelist = ['confirm_corelink'];
+        const isCorelinkForm = whitelist.includes(
+            Object.keys(userInputForm?.properties ?? {})[0],
+        );
+
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -210,23 +215,23 @@ export const WfoStep = React.forwardRef(
                             )}
                         </div>
                     )}
-                    {/* Add whitelisting */}
-                    {
-                        step.status === StepStatus.SUSPEND && userInputForm && (
+                    {step.status === StepStatus.SUSPEND &&
+                        userInputForm &&
+                        (isCorelinkForm ? (
                             <WfoStepForm
                                 userInputForm={userInputForm}
                                 isTask={isTask}
                                 processId={processId ?? ''}
                                 userPermissions={userPermissions}
                             />
-                        )
-                        // <WfoStepFormOld
-                        //     userInputForm={userInputForm}
-                        //     isTask={isTask}
-                        //     processId={processId}
-                        //     userPermissions={userPermissions}
-                        // />
-                    }
+                        ) : (
+                            <WfoStepFormOld
+                                userInputForm={userInputForm}
+                                isTask={isTask}
+                                processId={processId}
+                                userPermissions={userPermissions}
+                            />
+                        ))}
                 </EuiPanel>
             </div>
         );
