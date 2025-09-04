@@ -47,7 +47,7 @@ export const StepFormFooter = ({
     };
 
     return (
-        <div data-testid="pydantic-form-footer">
+        <div data-testid="pydantic-step-form-footer">
             <RenderFormErrors />
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
