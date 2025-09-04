@@ -23,6 +23,7 @@ import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
 import { WfoStepForm } from './WfoStepForm';
+import { WfoStepFormOld } from './WfoStepFormOld';
 
 export interface WfoStepProps {
     stepListItem: StepListItem;
@@ -209,14 +210,23 @@ export const WfoStep = React.forwardRef(
                             )}
                         </div>
                     )}
-                    {step.status === StepStatus.SUSPEND && userInputForm && (
-                        <WfoStepForm
-                            userInputForm={userInputForm}
-                            isTask={isTask}
-                            processId={processId}
-                            userPermissions={userPermissions}
-                        />
-                    )}
+                    {/* Add whitelisting */}
+                    {
+                        step.status === StepStatus.SUSPEND && userInputForm && (
+                            <WfoStepForm
+                                userInputForm={userInputForm}
+                                isTask={isTask}
+                                processId={processId ?? ''}
+                                userPermissions={userPermissions}
+                            />
+                        )
+                        // <WfoStepFormOld
+                        //     userInputForm={userInputForm}
+                        //     isTask={isTask}
+                        //     processId={processId}
+                        //     userPermissions={userPermissions}
+                        // />
+                    }
                 </EuiPanel>
             </div>
         );
