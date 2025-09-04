@@ -8,7 +8,12 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { usePydanticFormContext } from 'pydantic-forms';
 
+import { getCommonFormFieldStyles } from '@/components';
+import { useWithOrchestratorTheme } from '@/hooks';
+
 export const RenderFormErrors = () => {
+    const { errorStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+
     const { errorDetails } = usePydanticFormContext();
     const t = useTranslations('pydanticForms.userInputForm');
     if (!errorDetails) {
@@ -22,7 +27,7 @@ export const RenderFormErrors = () => {
     const otherErrors = errors.filter((err) => !err.loc.includes('__root__'));
 
     return (
-        <em className="error backend-validation-metadata">
+        <em css={errorStyle}>
             {rootError && <div>{rootError.msg}</div>}
             {otherErrors?.length >= 1 &&
                 t('inputFieldsHaveValidationErrors', {
