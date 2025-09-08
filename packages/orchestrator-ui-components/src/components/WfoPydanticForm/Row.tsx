@@ -4,7 +4,7 @@ import type { RowRenderComponent } from 'pydantic-forms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { getCommonFormFieldStyles } from '@/components';
+import { getCommonFormFieldStyles, getDataTestId } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export const Row: RowRenderComponent = ({
@@ -29,7 +29,7 @@ export const Row: RowRenderComponent = ({
 
     return (
         <EuiFormRow
-            data-testid="pydantic-form-row"
+            data-testid={getDataTestId('pydantic-form-row', title)}
             css={formRowStyle}
             label={<Label />}
             labelAppend={<EuiText size="m">{description}</EuiText>}
