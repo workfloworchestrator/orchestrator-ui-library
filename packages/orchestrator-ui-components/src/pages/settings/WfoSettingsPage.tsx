@@ -120,7 +120,7 @@ export const WfoEnvSettings = () => {
                         <h2>
                             {t('noSettingsExposed')}{' '}
                             <a
-                                href="https://workfloworchestrator.org/orchestrator-core/reference-docs/app/settings_overview/"
+                                href="https://workfloworchestrator.org/orchestrator-core/reference-docs/app/settings-overview/"
                                 target="_blank"
                             >
                                 {t('settingsOverviewLink')}
