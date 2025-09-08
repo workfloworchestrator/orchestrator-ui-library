@@ -17,3 +17,9 @@ export const getNestedSummaryLabel = (
     }
     return String(value);
 };
+
+export const getDataTestId = (base: string, title: string) => {
+    const dataTestId = base + title.toLowerCase().replace(/\s+/g, '-');
+    const generateRandomString = Math.random().toString(36).substring(2, 7);
+    return `${dataTestId}-${generateRandomString}`;
+};
