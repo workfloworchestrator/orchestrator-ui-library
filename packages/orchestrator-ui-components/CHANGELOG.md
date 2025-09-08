@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.6.0
+
+### Minor Changes
+
+- bb0264e: Migrate WfoStepForm to pydantic forms
+
+### Patch Changes
+
+- 516239f: Applies errorStyle to pydantic forms root errors
+
 ## 5.5.3
 
 ### Patch Changes
