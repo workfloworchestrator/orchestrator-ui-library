@@ -48,7 +48,7 @@
         "next-query-params": "^5.0.0",
         "object-hash": "^3.0.0",
         "prism-themes": "^1.9.0",
-        "pydantic-forms": "^0.8.0",
+        "pydantic-forms": "^0.8.1",
         "react-diff-view": "^3.2.0",
         "react-draggable": "^4.4.6",
         "react-redux": "^9.1.2",
