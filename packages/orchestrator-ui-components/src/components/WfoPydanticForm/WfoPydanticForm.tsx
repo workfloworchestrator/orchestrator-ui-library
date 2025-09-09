@@ -280,9 +280,13 @@ export const WfoPydanticForm = ({
             requestBody = [],
             formKey,
         }) => {
+            const userInputs = isTask
+                ? [...requestBody]
+                : [{ ...startProcessPayload }, ...requestBody];
+
             const response = startProcess({
                 workflowName: formKey,
-                userInputs: [{ ...startProcessPayload }, ...requestBody],
+                userInputs,
             });
             return response
                 .then(({ error, data }) => {
@@ -322,7 +326,7 @@ export const WfoPydanticForm = ({
         };
 
         return pydanticFormProvider;
-    }, [startProcess, startProcessPayload]);
+    }, [isTask, startProcess, startProcessPayload]);
 
     const handleCancel = useCallback(() => {
         const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
