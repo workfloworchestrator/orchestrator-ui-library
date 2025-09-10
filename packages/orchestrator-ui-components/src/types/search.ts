@@ -1,78 +1,73 @@
-// packages/orchestrator-ui-components/src/types.ts
-
-/** Entity kinds in the system */
 export type EntityKind = 'SUBSCRIPTION' | 'PRODUCT' | 'WORKFLOW' | 'PROCESS';
 
-/** Subscription entity */
-// export interface Subscription {
-//     subscription_id: string;
-//     description: string;
-//     customer_id: string;
-//     status:
-//         | 'initial'
-//         | 'active'
-//         | 'migrating'
-//         | 'disabled'
-//         | 'terminated'
-//         | 'provisioning';
-//     product_id?: string | null;
-//     insync: boolean;
-//     note?: string | null;
-//     name?: string | null;
-//     end_date?: string | null;
-//     start_date?: string | null;
-//     version: number;
-//     tag?: string | null;
-//     // keep this loose so the lib doesn’t break if backend adds fields
-//     [key: string]: unknown;
-// }
+export interface SubscriptionMatchingField {
+    text: string;
+    path: string;
+    highlight_indices: [number, number][];
+}
 
-/** Search result for subscriptions */
 export interface SubscriptionSearchResult {
     score: number;
-    highlight?: {
-        text: string;
-        indices: [number, number][];
-    } | null;
-    subscription: Record<string, unknown>;
+    perfect_match: number;
+    matching_field?: SubscriptionMatchingField | null;
+    subscription: {
+        subscription_id: string;
+        description: string;
+        product: {
+            name: string;
+            description: string;
+        };
+    };
 }
 
-/** Search result for processes */
 export interface ProcessSearchResult {
-    processId: string;
-    workflowName: string;
-    workflowId: string;
-    status: string;
-    isTask: boolean;
-    createdBy?: string | null;
-    startedAt: string;
-    lastModifiedAt: string;
-    lastStep?: string | null;
-    failedReason?: string | null;
-    subscriptionIds?: string[] | null;
+    score: number;
+    perfect_match: number;
+    matching_field?: SubscriptionMatchingField | null;
+    process: {
+        processId: string;
+        workflowName: string;
+        workflowId: string;
+        status: string;
+        isTask: boolean;
+        createdBy?: string | null;
+        startedAt: string;
+        lastModifiedAt: string;
+        lastStep?: string | null;
+        failedReason?: string | null;
+        subscriptionIds?: string[] | null;
+    };
 }
 
-/** Search result for products */
 export interface ProductSearchResult {
-    productId: string;
-    name: string;
-    productType: string;
-    tag?: string | null;
-    description?: string | null;
-    status?: string | null;
-    createdAt?: string | null;
+    score: number;
+    perfect_match: number;
+    matching_field?: SubscriptionMatchingField | null;
+    product: {
+        product_id: string;
+        name: string;
+        product_type: string;
+        tag?: string | null;
+        description?: string | null;
+        status?: string | null;
+        created_at?: string | null;
+    };
 }
 
-/** Search result for workflows */
 export interface WorkflowSearchResult {
-    name: string;
-    products: {
-        productType: string;
-        productId: string;
+    score: number;
+    perfect_match: number;
+    matching_field?: SubscriptionMatchingField | null;
+    workflow: {
         name: string;
-    }[];
-    description?: string | null;
-    createdAt?: string | null;
+        products: {
+            product_type: string;
+            product_id: string;
+            name: string;
+        }[];
+        description?: string | null;
+        created_at?: string | null;
+    };
 }
 
 /** Union of all search results */
@@ -82,11 +77,24 @@ export type AnySearchResult =
     | ProductSearchResult
     | WorkflowSearchResult;
 
+/** Paginated search results */
+export type PaginatedSearchResults = {
+    data: AnySearchResult[];
+    page_info: {
+        has_next_page: boolean;
+        next_page_cursor: number | null;
+    };
+    search_metadata: {
+        search_type: string | null;
+        description: string | null;
+    };
+};
+
 /** ---------- PathFilter & condition types ---------- */
 
 export type DateRange = {
-    from: string; // ISO date string
-    to: string; // ISO date string
+    from: string;
+    to: string;
 };
 
 export type DateEqFilter = { op: 'eq'; value: string };
@@ -107,9 +115,7 @@ export type LtreeAncestorFilter = { op: 'is_ancestor'; value: string };
 export type LtreeMatchesFilter = { op: 'matches_lquery'; value: string };
 
 export type PathFilter = {
-    /** Dot path to the field, e.g. "subscription.customer_id" */
     path: string;
-    /** One of the supported conditions (dates, strings, or ltree ops) */
     condition:
         | DateEqFilter
         | DateNeqFilter
@@ -161,6 +167,7 @@ export type AnySearchParameters =
 
 export type Condition = {
     path: string;
+    value_kind?: string;
     condition: { op: string; value?: unknown };
 };
 
@@ -175,25 +182,30 @@ export type ValueSchema = {
     fields?: Record<string, ValueSchema>;
 };
 
-// API response types (as returned by backend)
-export type BackendPathInfo = {
-    path: string;
-    type: 'string' | 'number' | 'datetime' | 'boolean';
+export type PathLeaf = {
+    name: string;
+    ui_types: string[];
 };
 
 export type PathAutocompleteResponse = {
-    prefix: string;
-    paths: BackendPathInfo[];
+    leaves: PathLeaf[];
+    components: PathLeaf[];
 };
 
-// Enhanced type used in the frontend after enrichment
+export type PathDataType =
+    | 'string'
+    | 'number'
+    | 'datetime'
+    | 'boolean'
+    | 'component';
+
 export type PathInfo = {
     path: string;
-    type: 'string' | 'number' | 'datetime' | 'boolean';
+    type: PathDataType;
     operators: string[];
     valueSchema: Record<string, ValueSchema>;
     example_values?: string[];
+    group: 'leaf' | 'component';
+    displayLabel?: string;
+    ui_types?: string[];
 };
-
-// Helper function type
-export type IsConditionHelper = (item: Group | Condition) => item is Condition;
