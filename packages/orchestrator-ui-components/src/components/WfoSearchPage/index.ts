@@ -1,4 +1,6 @@
 export * from './WfoSearch';
 export * from './WfoSearchResults';
-export * from './FilterGroup';
+export * from './WfoFilterGroup';
+export * from './WfoConditionRow';
+export * from './WfoValueControl';
 export * from './utils';

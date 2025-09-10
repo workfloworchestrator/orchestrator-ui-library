@@ -84,7 +84,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
             setError(null);
 
             try {
-                const url = `${orchestratorApiBaseUrl}/search/paths?prefix=${encodeURIComponent(debouncedPrefix)}&entity_type=${entityType}`;
+                const url = `${orchestratorApiBaseUrl}/search/paths?q=${encodeURIComponent(debouncedPrefix)}&entity_type=${entityType}`;
                 const response = await fetch(url);
 
                 if (!response.ok) {
@@ -103,14 +103,41 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
 
                 const data: PathAutocompleteResponse = await response.json();
 
-                const enrichedPaths = (data.paths || []).map((path) => {
-                    const typeDefinition = definitions[path.type];
+                const enrichedPaths: PathInfo[] = [];
 
-                    return {
-                        ...path,
+                // Process leaves first
+                (data.leaves || []).forEach((leaf) => {
+                    const primaryType = leaf.ui_types[0] || 'string';
+                    const typeDefinition = definitions[primaryType];
+
+                    enrichedPaths.push({
+                        path: leaf.name,
+                        type: primaryType as
+                            | 'string'
+                            | 'number'
+                            | 'datetime'
+                            | 'boolean',
                         operators: typeDefinition?.operators || [],
                         valueSchema: typeDefinition?.valueSchema || {},
-                    };
+                        group: 'leaf',
+                        displayLabel: leaf.name,
+                        ui_types: leaf.ui_types,
+                    });
+                });
+
+                (data.components || []).forEach((component) => {
+                    const primaryType = component.ui_types[0] || 'string';
+                    const typeDefinition = definitions[primaryType];
+
+                    enrichedPaths.push({
+                        path: component.name,
+                        type: 'component',
+                        operators: typeDefinition?.operators || [],
+                        valueSchema: typeDefinition?.valueSchema || {},
+                        group: 'component',
+                        displayLabel: component.name,
+                        ui_types: component.ui_types,
+                    });
                 });
 
                 setPaths(enrichedPaths);
