@@ -6,7 +6,7 @@ import { useOrchestratorTheme } from '@/hooks';
 
 export const WfoSearchLoadingState: React.FC = () => {
     const { theme } = useOrchestratorTheme();
-    
+
     return (
         <EuiPanel paddingSize="l" color="transparent" hasShadow={false}>
             <EuiFlexGroup justifyContent="center" alignItems="center">

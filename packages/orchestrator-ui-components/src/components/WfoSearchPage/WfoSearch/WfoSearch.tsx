@@ -41,7 +41,6 @@ import {
     SMALL_RESULT_THRESHOLD,
 } from '../constants';
 
-
 export const WfoSearch = () => {
     const { theme } = useOrchestratorTheme();
     const {
@@ -93,7 +92,6 @@ export const WfoSearch = () => {
         setResults,
     );
 
-
     const handleTabChange = (tabId: EntityKind) => {
         setSelectedEntityTab(tabId);
         setQuery(EuiSearchBar.Query.MATCH_ALL);
@@ -122,11 +120,9 @@ export const WfoSearch = () => {
         return true;
     };
 
-
     const currentTab = ENTITY_TABS.find((tab) => tab.id === selectedEntityTab);
 
     const isSearchActive = results.data.length > 0 || loading;
-
 
     React.useEffect(() => {
         if (results.data.length > 0) {
@@ -149,7 +145,13 @@ export const WfoSearch = () => {
                 }
             }
         }
-    }, [results.data, selectedRecordId, urlParams]);
+    }, [
+        results.data,
+        selectedRecordId,
+        urlParams,
+        setSelectedRecordId,
+        setSelectedRecordIndex,
+    ]);
 
     React.useEffect(() => {
         setShowDetailPanel(

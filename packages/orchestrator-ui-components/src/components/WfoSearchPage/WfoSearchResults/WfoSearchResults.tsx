@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { EuiFlexGroup, EuiPanel } from '@elastic/eui';
 
-import { AnySearchResult } from '@/types';
+import { AnySearchResult, SubscriptionMatchingField } from '@/types';
 
 import { WfoSearchEmptyState } from './WfoSearchEmptyState';
 import { WfoSearchLoadingState } from './WfoSearchLoadingState';
@@ -23,8 +23,15 @@ export const WfoSearchResults = ({
     onRecordSelect,
 }: WfoSearchResultsProps) => {
     const [modalData, setModalData] = useState<{
-        subscription: any;
-        matchingField?: any;
+        subscription: {
+            subscription_id: string;
+            description: string;
+            product: {
+                name: string;
+                description: string;
+            };
+        };
+        matchingField?: SubscriptionMatchingField;
     } | null>(null);
 
     const handleCloseModal = () => {

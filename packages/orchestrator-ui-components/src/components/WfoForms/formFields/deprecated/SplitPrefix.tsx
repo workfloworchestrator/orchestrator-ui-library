@@ -21,8 +21,7 @@ import { EuiFlexItem } from '@elastic/eui';
 
 import { splitPrefixStyling } from '@/components';
 import { useFreeSubnetsQuery } from '@/rtk/endpoints/ipam';
-
-import { Option } from '../types';
+import type { Option } from '@/types';
 
 interface IProps {
     id: string;

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useCoAgent } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
@@ -34,8 +36,9 @@ export function WfoAgent() {
         Array.isArray(state.parameters.filters) &&
         state.parameters.filters.length > 0
     );
-    
-    const isLoadingResults = hasStarted && (!state.results || state.results.length === 0);
+
+    const isLoadingResults =
+        hasStarted && (!state.results || state.results.length === 0);
 
     const displayParameters = parameters && {
         ...parameters,

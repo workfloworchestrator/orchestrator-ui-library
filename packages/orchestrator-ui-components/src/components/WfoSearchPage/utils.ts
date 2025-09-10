@@ -3,6 +3,7 @@ import {
     Condition,
     EntityKind,
     Group,
+    PathInfo,
     ProcessSearchResult,
     ProductSearchResult,
     SubscriptionSearchResult,
@@ -167,11 +168,6 @@ export const getTypeColor = (type: string, theme: Theme): string => {
     const colorKey = TYPE_COLOR_MAP[type.toLowerCase()];
     return colorKey ? theme.colors[colorKey] : theme.colors.textSubdued;
 };
-
-interface PathInfo {
-    type?: string;
-    [key: string]: any;
-}
 
 interface OperatorDisplay {
     symbol: string;

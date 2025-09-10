@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useRef } from 'react';
+import React, { FC, MouseEvent, useEffect, useRef } from 'react';
 
 import {
     EuiBadge,
@@ -132,7 +132,9 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                                 <EuiButtonIcon
                                     iconType="popout"
                                     aria-label="View details"
-                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                    onClick={(
+                                        e: MouseEvent<HTMLButtonElement>,
+                                    ) => {
                                         e.stopPropagation();
                                         window.open(detailUrl, '_blank');
                                     }}

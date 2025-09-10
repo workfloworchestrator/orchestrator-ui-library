@@ -29,7 +29,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
     onChange,
 }) => {
     const { theme } = useOrchestratorTheme();
-    
+
     if (!pathInfo || !operator) return null;
 
     const schema = pathInfo.valueSchema[operator];
@@ -86,7 +86,9 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                         />
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
-                        <EuiText size="s" color={theme.colors.textSubdued}>to</EuiText>
+                        <EuiText size="s" color={theme.colors.textSubdued}>
+                            to
+                        </EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiFieldNumber
@@ -141,7 +143,9 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                         />
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
-                        <EuiText size="s" color={theme.colors.textSubdued}>to</EuiText>
+                        <EuiText size="s" color={theme.colors.textSubdued}>
+                            to
+                        </EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiDatePicker
@@ -174,7 +178,6 @@ export const ValueControl: React.FC<ValueControlProps> = ({
             />
         );
     }
-
 
     return null;
 };

@@ -58,7 +58,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
     };
 
     const handleOperatorChange = (op: string) => {
-        let value: unknown = undefined;
+        const value: unknown = undefined;
 
         if (selectedPathInfo?.type === 'boolean') {
             // For boolean fields, we always use 'eq' operator
@@ -89,11 +89,13 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
     };
 
     const renderPathOption = (
-        option: any,
+        option: { label: string; value?: string },
         _searchValue: string,
         contentClassName?: string,
     ) => {
-        const pathInfo = paths.find((p) => p.path === option.value);
+        const pathInfo = option.value
+            ? paths.find((p) => p.path === option.value)
+            : null;
 
         if (!pathInfo) return option.label;
 

@@ -6,7 +6,6 @@ import { getEndpointPath } from '@/components/WfoSearchPage/utils';
 import { OrchestratorConfigContext } from '@/contexts/OrchestratorConfigContext';
 import { EntityKind, Group, PaginatedSearchResults } from '@/types';
 
-
 export const useSearch = (
     query: Query | string,
     entityType: EntityKind,

@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    EuiBadge,
-    EuiToolTip,
-} from '@elastic/eui';
+import { EuiBadge, EuiToolTip } from '@elastic/eui';
 
 interface WfoSearchMetadataHeaderProps {
     search_metadata: {

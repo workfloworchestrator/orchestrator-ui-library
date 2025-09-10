@@ -11,12 +11,20 @@ import {
 
 import { WfoSubscription } from '@/components';
 import { TreeProvider } from '@/contexts';
+import { SubscriptionMatchingField } from '@/types';
 
 interface WfoSubscriptionDetailModalProps {
     isVisible: boolean;
     onClose: () => void;
-    subscriptionData: any;
-    matchingField?: any;
+    subscriptionData?: {
+        subscription_id: string;
+        description: string;
+        product: {
+            name: string;
+            description: string;
+        };
+    };
+    matchingField?: SubscriptionMatchingField;
 }
 
 export const WfoSubscriptionDetailModal: React.FC<
@@ -29,9 +37,7 @@ export const WfoSubscriptionDetailModal: React.FC<
     return (
         <EuiModal onClose={onClose} maxWidth={800}>
             <EuiModalHeader>
-                <EuiModalHeaderTitle>
-                    Subscription Details
-                </EuiModalHeaderTitle>
+                <EuiModalHeaderTitle>Subscription Details</EuiModalHeaderTitle>
             </EuiModalHeader>
 
             <EuiModalBody>

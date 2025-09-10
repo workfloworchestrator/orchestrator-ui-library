@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
 

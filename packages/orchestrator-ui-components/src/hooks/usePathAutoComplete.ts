@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 
 import { OrchestratorConfigContext } from '@/contexts/OrchestratorConfigContext';
-import { EntityKind, PathAutocompleteResponse, PathInfo } from '@/types';
+import {
+    EntityKind,
+    PathAutocompleteResponse,
+    PathInfo,
+    ValueSchema,
+} from '@/types';
 
 import { useDebounce } from './useDebounce';
 
@@ -9,7 +14,15 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
     const [paths, setPaths] = useState<PathInfo[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [definitions, setDefinitions] = useState<Record<string, any>>({});
+    const [definitions, setDefinitions] = useState<
+        Record<
+            string,
+            {
+                operators: string[];
+                valueSchema: Record<string, ValueSchema>;
+            }
+        >
+    >({});
     const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
 
     const debouncedPrefix = useDebounce(prefix, 300);

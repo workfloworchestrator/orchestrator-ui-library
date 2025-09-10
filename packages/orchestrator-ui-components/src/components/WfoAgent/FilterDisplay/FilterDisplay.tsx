@@ -11,8 +11,11 @@ import {
 } from '@elastic/eui';
 
 import { WfoPathBreadcrumb } from '@/components/WfoSearchPage/WfoSearchResults/WfoPathBreadcrumb';
-import { getOperatorDisplay, isCondition } from '@/components/WfoSearchPage/utils';
-import { AnySearchParameters, Condition, Group } from '@/types';
+import {
+    getOperatorDisplay,
+    isCondition,
+} from '@/components/WfoSearchPage/utils';
+import { AnySearchParameters, Condition, Group, PathDataType } from '@/types';
 
 import { getFilterDisplayStyles } from './FilterDisplay.styles';
 
@@ -99,7 +102,20 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
                                         showArrows={true}
                                     />
                                     <EuiBadge color="hollow">
-                                        {getOperatorDisplay(child.condition.op, { type: child.value_kind }).symbol}
+                                        {
+                                            getOperatorDisplay(
+                                                child.condition.op,
+                                                child.value_kind
+                                                    ? {
+                                                          path: child.path,
+                                                          type: child.value_kind as PathDataType,
+                                                          operators: [],
+                                                          valueSchema: {},
+                                                          group: 'leaf' as const,
+                                                      }
+                                                    : undefined,
+                                            ).symbol
+                                        }
                                     </EuiBadge>
                                     <span css={styles.value}>
                                         {formatFilterValue(child.condition)}

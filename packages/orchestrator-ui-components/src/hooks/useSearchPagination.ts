@@ -14,7 +14,6 @@ import {
     PaginatedSearchResults,
 } from '@/types';
 
-
 interface PageHistoryItem {
     page: number;
     results: AnySearchResult[];
@@ -50,7 +49,7 @@ export const useSearchPagination = (
     const handleNextPage = useCallback(
         async (nextPageCursor: number) => {
             if (!nextPageCursor || isLoadingMore) return;
-            
+
             setIsLoadingMore(true);
 
             setPageHistory((prev) => [
