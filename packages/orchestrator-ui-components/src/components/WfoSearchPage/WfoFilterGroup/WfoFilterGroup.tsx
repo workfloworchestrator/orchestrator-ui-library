@@ -14,10 +14,10 @@ import {
 } from '@elastic/eui';
 
 import { isCondition } from '@/components/WfoSearchPage/utils';
-import { Condition, Group } from '@/types';
-import { EntityKind } from '@/types';
+import { useOrchestratorTheme } from '@/hooks';
+import { Condition, EntityKind, Group } from '@/types';
 
-import { ConditionRow } from './ConditionRow';
+import { ConditionRow } from '../WfoConditionRow';
 
 interface FilterGroupProps {
     group: Group;
@@ -36,6 +36,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
     depth = 0,
     isRoot = false,
 }) => {
+    const { theme } = useOrchestratorTheme();
     const MAX_DEPTH = 5;
     const canAddGroup = depth < MAX_DEPTH;
 
@@ -101,7 +102,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                     <EuiFlexGroup gutterSize="s" alignItems="center">
                         <EuiFlexItem grow={false}>
                             <EuiText size="s">
-                                <strong>{isRoot ? 'Filter' : 'Group'}:</strong>
+                                <strong>Group</strong>
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
@@ -179,7 +180,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                                         <EuiFlexItem grow={false}>
                                             <EuiText
                                                 size="s"
-                                                color="subdued"
+                                                color={theme.colors.textSubdued}
                                                 textAlign="center"
                                             >
                                                 <EuiCode>{group.op}</EuiCode>

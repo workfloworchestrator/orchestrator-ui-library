@@ -9,10 +9,10 @@ import {
     EuiFieldText,
     EuiFlexGroup,
     EuiFlexItem,
-    EuiSelect,
     EuiText,
 } from '@elastic/eui';
 
+import { useOrchestratorTheme } from '@/hooks';
 import { PathInfo } from '@/types';
 
 interface ValueControlProps {
@@ -28,6 +28,8 @@ export const ValueControl: React.FC<ValueControlProps> = ({
     value,
     onChange,
 }) => {
+    const { theme } = useOrchestratorTheme();
+    
     if (!pathInfo || !operator) return null;
 
     const schema = pathInfo.valueSchema[operator];
@@ -84,7 +86,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                         />
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
-                        <EuiText size="s">to</EuiText>
+                        <EuiText size="s" color={theme.colors.textSubdued}>to</EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiFieldNumber
@@ -139,7 +141,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                         />
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
-                        <EuiText size="s">to</EuiText>
+                        <EuiText size="s" color={theme.colors.textSubdued}>to</EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiDatePicker
@@ -173,28 +175,6 @@ export const ValueControl: React.FC<ValueControlProps> = ({
         );
     }
 
-    if (pathInfo.type === 'boolean') {
-        return (
-            <EuiSelect
-                options={[
-                    { value: '', text: 'Select...' },
-                    { value: 'true', text: 'True' },
-                    { value: 'false', text: 'False' },
-                ]}
-                value={typeof value === 'boolean' ? String(value) : ''}
-                onChange={(e) => {
-                    const val = e.target.value;
-                    onChange(
-                        val === 'true'
-                            ? true
-                            : val === 'false'
-                              ? false
-                              : undefined,
-                    );
-                }}
-            />
-        );
-    }
 
     return null;
 };
