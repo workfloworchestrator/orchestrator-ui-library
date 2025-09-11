@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactSelect, { components } from 'react-select';
 import type { GroupBase, InputProps } from 'react-select';
 
@@ -33,9 +33,19 @@ export const WfoReactSelect = <ValueType,>({
     hasError = false,
     refetch,
 }: WfoReactSelectProps<ValueType>) => {
-    const selectedValue = options.find(
+    useEffect(() => {
+        const selectedValue = options.find(
+            (option: Option<ValueType>) => option.value === value,
+        );
+        setSelectedValue(selectedValue || null);
+    }, [options, value]);
+
+    const initialValue = options.find(
         (option: Option<ValueType>) => option.value === value,
     );
+
+    const [selectedValue, setSelectedValue] =
+        React.useState<Option<ValueType> | null>(initialValue || null);
 
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
     const {
@@ -79,8 +89,17 @@ export const WfoReactSelect = <ValueType,>({
                 id={id}
                 inputId={`${id}.search`}
                 onChange={(option) => {
-                    const selectedValue = option?.value;
-                    onChange(selectedValue);
+                    if (option === null) {
+                        // By default reactSelect reverts to the initial option when cleared
+                        // this is to make sure we can also deselect the value after it is
+                        // initialized from error state for example.
+                        setSelectedValue(null);
+                        onChange(undefined);
+                    } else {
+                        const selectedValue = option?.value;
+                        setSelectedValue(option);
+                        onChange(selectedValue);
+                    }
                 }}
                 css={reactSelectStyle}
                 isLoading={isLoading}

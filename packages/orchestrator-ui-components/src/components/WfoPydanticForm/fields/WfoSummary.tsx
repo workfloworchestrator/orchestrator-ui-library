@@ -5,7 +5,11 @@ import type { PydanticFormElement } from 'pydantic-forms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
-import { getCommonFormFieldStyles, summaryFieldStyles } from '@/components';
+import {
+    getCommonFormFieldStyles,
+    getNestedSummaryLabel,
+    summaryFieldStyles,
+} from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { snakeToHuman } from '@/utils';
 
@@ -29,7 +33,11 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
 
     const rows = columns[0].map((row, index) => (
         <tr key={index}>
-            {labels && <td className={`label`}>{labels[index]}</td>}
+            {labels && (
+                <td className={`label`}>
+                    {getNestedSummaryLabel(labels, index)}
+                </td>
+            )}
             <td className={`value`}>
                 {typeof row === 'string' && row.includes('<!doctype html>') ? (
                     <div
@@ -43,7 +51,7 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
             {extraColumnsData &&
                 extraColumnsData.map((_, idx) => (
                     <td className={`value`} key={idx}>
-                        {extraColumnsData[idx][index]}
+                        {extraColumnsData[idx][index].toString()}
                     </td>
                 ))}
         </tr>
