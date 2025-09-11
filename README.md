@@ -1,34 +1,3 @@
-# Complete flow for working set up with this frontend
-
-core package: git clone `https://github.com/workfloworchestrator/orchestrator-core`
-switch to branch `llm-integration`
-
-backend: git clone: `https://github.com/workfloworchestrator/example-orchestrator`
-
-1. Create .env in backend root (example-orchestrator): with: CORE_DIR=../orchestrator-core (or absolute path to the core package on the `llm-integration` branch)
-
-2. Add `OPENAI_API_KEY` to `orchestrator.env`
-
-3. in docker-compose, replace image with image: "pgvector/pgvector:pg14"
-
-4. run `docker compose up --build orchestrator`
-
-5. Verify logs say: `Use editable install of orchestrator-core with dev and test dependencies` , after running step 2.
-
-6. Verify api is running:
-
-```bash
-curl -v http://localhost:8080/api/products/
-```
-
-or go to `http://localhost:8080/api/docs/`
-
-7. git clone private repo for frontend, follow steps below for Orchetrator UI library:
-
-8. switch to branch: pr-2123
-
-Note: Skip agent page for now as it has conflicting packages, focus on search page.
-
 # Orchestrator ui library
 
 This repo contains the generally reusable parts of the orchestrator ui grouped and exposed as pages, components and elements such as icons.
@@ -37,9 +6,8 @@ It is meant to be used together with an app that includes this library through N
 To install and run the app:
 
 ```
-git clone git@github.com:timfdev/orchestrator_ui_private.git
-cd orchestrator_ui_private
-git checkout pr-2123
+git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git
+cd orchestrator-ui-library
 git submodule init
 git submodule update
 # Optionally: to update to the latest version of the git submodule instead of the ones currently pinned to the repo run
@@ -51,100 +19,93 @@ npm install
 npm run dev
 ```
 
-Set `OAUTH2_ACTIVE`=False
-
 This makes the orchestrator ui run on http://localhost:3000
 
-We will work on branch pr-2123, there is already a PR open.
+## Websocket
 
-# Inside apps/wfo-ui
+Using websockets is controlled by NEXT_PUBLIC_USE_WEBSOCKET, when set to 'true' the application tries to open a websocket to ORCHESTRATOR_WEBSOCKET_URL that defaults to ws://localhost:8080 to get updates as they happen. The messages received through this endpoint are used to invalidate the frontend cache that triggers a refetch of data were needed.
 
-We still need the new pages for search/agent as well as route.
+# Authentication
 
-Create app/wfo/pages/api/copilotkit.ts with:
+- set `AUTH_ACTIVE` env variable to false or use setup below with auth.
 
-```typescript
-import { HttpAgent } from '@ag-ui/client';
-import { CopilotRuntime, ExperimentalEmptyAdapter, config as copilotConfig, copilotRuntimeNextJSPagesRouterEndpoint } from '@copilotkit/runtime';
+## AUTH with NextAuth and keycloak
 
-export const config = copilotConfig;
+Setup auth with keycloak in docker.
 
-const runtime = new CopilotRuntime({
-    agents: {
-        query_agent: new HttpAgent({
-            url: process.env.AGENT_URL || 'http://localhost:8080/agent/',
-        }),
+- copy apps env: `cp apps/wfo-ui/.env.example apps/wfo-ui/.env`.
+    - change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
+    - `NEXTAUTH_SECRET`: is NextAuth internal for JWT encryption and easily created with command `openssl rand -base64 32`.
+    - `NEXTAUTH_URL`: should be the base url to the auth page: `${FRONTEND_URL}/api/auth`.
+    - `NEXTAUTH_ID`: name of the provider which is shown in the `Sign in with {NEXTAUTH_ID}`, default is `keycloak`.
+- run `docker compose up -d` to start keycloak.
+- log into keycloak at http://localhost:8085
+- keycloak setup (use the `apps/{folder}` env):
+    - follow the [keycloak docs](https://www.keycloak.org/getting-started/getting-started-docker#_secure_the_first_application) to create a new realm and at least one user.
+    - after creating the realm, copy paste the url of the realm `http://{YOUR_KEYCLOAK_DOMAIN}/realms/{YOUR_REALM}` in your env as variable `NEXTAUTH_ISSUER`.
+    - Create a client.
+        - first page: fill in a name for `ClientID`. (`.env.example` default is `orchestrator-client`)
+        - second page: enable `Client authentication` and `Authorization`.
+        - third page fill in `Valid redirect URIs` and `Web Origins`:
+            - `Valid redirect URIs` with `{FRONTEND_URL}/api/auth/callback/{PROVIDER}`, with default provider its env variable `NEXTAUTH_ID`. (eg `http://localhost:3000/api/auth/callback/keycloak`)
+            - `Web Origins` with `{FRONTEND_URL}`. (eg `http://localhost:3000/`)
+    - go to the client details and go to tab `Credentials` and copy the Client secret and paste it into your env file. (`NEXTAUTH_CLIENT_SECRET`)
+    - run the app with `turbo dev`.
+- keycloak backend setup:
+    - Create another client in the same realm.
+        - first page: fill in a name for `ClientID`. (set the client id in your env (`OAUTH2_RESOURCE_SERVER_ID`)).
+        - second page: enable `Client authentication` and `Authorization`.
+        - third page: does not need any config.
+    - go to the client details and go to tab `Credentials` and copy the Client secret and pase it into your env file. (`OAUTH2_RESOURCE_SERVER_SECRET`)
+    - if you don't use authorization and only use authentication set `OAUTH2_AUTHORIZATION_ACTIVE` to `False`. if you do have authentication, you should set `OAUTH2_TOKEN_URL` to the inspection endpoint of your auth provider.
+    - run the backend.
+
+# Contributing
+
+Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
+
+# Release and publish
+
+## Preparing the release
+
+```bash
+npm run packages:changeset
+```
+
+- Include the changes made by this command in pull requests to the main branch
+- Selecting packages that will get a version bump
+- Specifies per selected package the type of version bump (`major`, `minor` or `patch`)
+- Adds a description or release notes for the release
+- All entries will be saved in a `.md` file in the `.changeset` folder
+
+Once the pull-request with a changeset file is merged to the main branch another PR is opened by the Changesets-bot to update the version numbers of the packages. When this pull request gets merged to main an automatic publish to NPM will be performed.
+
+## Release to NPM
+
+Just merge the `Version Packages` PR into main, and the packages will be published to npm automatically.
+
+## Frontend-Backend versioning dependency
+
+The file `version-compatibility.json` in the root of the orchestrator-ui-library is used to define the minimum backend version that is required for a specific frontend version.
+In the UI a check is added to validate whether the UI matches a minimum release of the backend.
+
+```
+[
+    {
+        "orchestratorUiVersion": "3.4.0",
+        "minimumOrchestratorCoreVersion": "2.10.0",
+        "changes": "Endpoints in BE to modify description on metadata pages"
     },
-});
-
-const serviceAdapter = new ExperimentalEmptyAdapter();
-
-export default copilotRuntimeNextJSPagesRouterEndpoint({
-    runtime,
-    serviceAdapter,
-    endpoint: '/api/copilotkit',
-});
+    ...
+]
 ```
 
-Create apps/wfo-ui/pages/agent.tsx:
+## Storybook
 
-```typescript
-import { CopilotKit } from '@copilotkit/react-core';
-import '@copilotkit/react-ui/styles.css';
-import { WfoAgent } from '@orchestrator-ui/orchestrator-ui-components';
+The storybook can be run from the packages/orchestrator-ui-components/ folder, run:
 
-export default function SearchPage() {
-    return (
-        <CopilotKit runtimeUrl="/api/copilotkit" agent="query_agent">
-            <WfoAgent />
-        </CopilotKit>
-    );
-}
-
+```bash
+npx storybook dev
 ```
 
-Create apps/wfo-ui/pages/search.tsx:
-
-```typescript
-import { WfoSearch } from '@orchestrator-ui/orchestrator-ui-components';
-
-export default function SearchPage() {
-    return <WfoSearch />;
-}
-
-```
-
-Add them to apps/wfo-ui/pages/\_app.tsx
-
-```typescript
-        {
-            name: 'Search',
-            id: '10',
-            isSelected: router.pathname === '/search',
-            href: '/search',
-            renderItem: () => (
-                <WfoMenuItemLink
-                    path={'/search'}
-                    translationString="Search"
-                    isSelected={router.pathname === '/search'}
-                />
-            ),
-        },
-        {
-            name: 'Agent',
-            id: '10',
-            isSelected: router.pathname === '/agent',
-            href: '/agent',
-            renderItem: () => (
-                <WfoMenuItemLink
-                    path={'/agent'}
-                    translationString="Agent"
-                    isSelected={router.pathname === '/agent'}
-                />
-            ),
-        },
-```
-
-# Data
-
-For some seed data , just import the dump that includes a few records and embeddings.
+Story book can be inspected on [http://localhost:61834/](http://localhost:61834/).
