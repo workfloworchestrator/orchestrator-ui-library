@@ -36,3 +36,5 @@ export * from './WfoInlineNoteEdit';
 export * from './WfoTableCodeBlock';
 export * from './WfoInlineEdit';
 export * from './WfoPydanticForm';
+export * from './WfoSearchPage';
+export * from './WfoAgent';
