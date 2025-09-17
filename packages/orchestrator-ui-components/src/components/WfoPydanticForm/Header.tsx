@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePydanticFormContext } from 'pydantic-forms';
+import type { PydanticFormHeaderProps } from 'pydantic-forms';
 
 import { css } from '@emotion/react';
 
@@ -11,9 +11,7 @@ const headerStyling = css`
     margin-bottom: 15px;
 `;
 
-export const Header = () => {
-    const { pydanticFormSchema } = usePydanticFormContext();
-
+export const Header = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
     return pydanticFormSchema?.title &&
         pydanticFormSchema.title !== 'unknown' ? (
         <h3 data-testid="pydantic-form-header" css={headerStyling}>

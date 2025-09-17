@@ -11,6 +11,7 @@ import type {
 import {
     Locale,
     PydanticForm,
+    PydanticFormConfig,
     PydanticFormFieldFormat,
     PydanticFormFieldType,
     zodValidationPresets,
@@ -262,11 +263,13 @@ export const WfoPydanticForm = ({
 
     const onSuccess = useCallback(
         (_fieldValues: object, req: object) => {
-            const request = req as { response: StartProcessResponse };
-            const response = request ? request?.response : null;
-            if (response?.id) {
+            const request = req as {
+                status: HttpStatus;
+                data: StartProcessResponse;
+            };
+            if (request?.data?.id) {
                 const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
-                router.replace(`${pfBasePath}/${response.id}`);
+                router.replace(`${pfBasePath}/${request.data.id}`);
             }
         },
         [isTask, router],
@@ -297,13 +300,18 @@ export const WfoPydanticForm = ({
                                 });
                             }
                         } else if (data) {
-                            resolve(data);
+                            resolve({
+                                data,
+                                status: HttpStatus.Created,
+                            });
                         }
 
                         resolve({});
                     });
                 })
                 .catch((error) => {
+                    console.log('CATCH: Error starting process:', error);
+
                     return new Promise<Record<string, object>>(
                         (resolve, reject) => {
                             if (error.status === HttpStatus.FormNotComplete) {
@@ -323,7 +331,7 @@ export const WfoPydanticForm = ({
         router.replace(pfBasePath);
     }, [isTask, router]);
 
-    const config = useMemo(() => {
+    const config = useMemo((): PydanticFormConfig => {
         const getLocale = () => {
             if (router.locale) {
                 return router.locale as Locale;
@@ -333,10 +341,8 @@ export const WfoPydanticForm = ({
 
         return {
             apiProvider: getPydanticFormProvider(),
-            allowUntouchedSubmit: true,
             footerRenderer: Footer,
             headerRenderer: Header,
-            skipSuccessNotice: true,
             componentMatcherExtender: wfoComponentMatcherExtender,
             labelProvider: pydanticLabelProvider,
             rowRenderer: Row,
