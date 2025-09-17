@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
 import {
@@ -7,7 +7,8 @@ import {
     disableField,
     fieldToComponentMatcher,
     itemizeArrayItem,
-    usePydanticFormContext,
+    useGetConfig,
+    useGetForm,
 } from 'pydantic-forms';
 
 import { EuiIcon } from '@elastic/eui';
@@ -66,7 +67,9 @@ export const PlusButton = ({
 export const WfoArrayField = ({
     pydanticFormField,
 }: PydanticFormElementProps) => {
-    const { config, reactHookForm } = usePydanticFormContext();
+    const config = useGetConfig();
+    const reactHookForm = useGetForm();
+
     const disabled = pydanticFormField.attributes?.disabled || false;
     const { control } = reactHookForm;
     const { id: arrayName, arrayItem } = pydanticFormField;

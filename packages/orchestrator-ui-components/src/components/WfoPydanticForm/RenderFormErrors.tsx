@@ -6,7 +6,7 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
-import { usePydanticFormContext } from 'pydantic-forms';
+import { useGetValidationErrors } from 'pydantic-forms';
 
 import { getCommonFormFieldStyles } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -14,7 +14,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 export const RenderFormErrors = () => {
     const { errorStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
 
-    const { errorDetails } = usePydanticFormContext();
+    const errorDetails = useGetValidationErrors();
     const t = useTranslations('pydanticForms.userInputForm');
     if (!errorDetails) {
         return <></>;

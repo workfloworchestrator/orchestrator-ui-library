@@ -5,7 +5,7 @@ import {
     RenderFields,
     disableField,
     getPydanticFormComponents,
-    usePydanticFormContext,
+    useGetConfig,
 } from 'pydantic-forms';
 
 import { EuiFlexGroup } from '@elastic/eui';
@@ -15,7 +15,7 @@ import { getWfoObjectFieldStyles } from './styles';
 export const WfoObjectField = ({
     pydanticFormField,
 }: PydanticFormElementProps) => {
-    const { config } = usePydanticFormContext();
+    const config = useGetConfig();
     const disabled = pydanticFormField.attributes?.disabled || false;
     const { wfoObjectFieldStyles } = getWfoObjectFieldStyles();
     const components = getPydanticFormComponents(

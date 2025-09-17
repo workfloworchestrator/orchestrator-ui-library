@@ -6,7 +6,7 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
-import { usePydanticFormContext } from 'pydantic-forms';
+import type { PydanticFormFooterProps } from 'pydantic-forms';
 
 import { EuiButton, EuiHorizontalRule } from '@elastic/eui';
 
@@ -14,10 +14,12 @@ import { useOrchestratorTheme } from '@/hooks';
 
 import { RenderFormErrors } from './RenderFormErrors';
 
-export const Footer = () => {
-    const { onCancel, onPrevious, hasNext, formInputData } =
-        usePydanticFormContext();
-
+export const Footer = ({
+    onCancel,
+    onPrevious,
+    hasNext,
+    hasPrevious,
+}: PydanticFormFooterProps) => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('pydanticForms.userInputForm');
 
@@ -97,9 +99,7 @@ export const Footer = () => {
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
-                    {(formInputData && formInputData.length > 0 && (
-                        <PreviousButton />
-                    )) || <CancelButton />}
+                    {(hasPrevious && <PreviousButton />) || <CancelButton />}
                 </div>
 
                 <SubmitButton />

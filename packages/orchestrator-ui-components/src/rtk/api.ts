@@ -26,6 +26,7 @@ export enum HttpStatus {
     Unauthorized = 401,
     Forbidden = 403,
     Ok = 200,
+    Created = 201,
     NoContent = 204,
     MultipleChoices = 300,
 }
