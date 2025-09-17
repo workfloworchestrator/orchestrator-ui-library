@@ -310,8 +310,6 @@ export const WfoPydanticForm = ({
                     });
                 })
                 .catch((error) => {
-                    console.log('CATCH: Error starting process:', error);
-
                     return new Promise<Record<string, object>>(
                         (resolve, reject) => {
                             if (error.status === HttpStatus.FormNotComplete) {
