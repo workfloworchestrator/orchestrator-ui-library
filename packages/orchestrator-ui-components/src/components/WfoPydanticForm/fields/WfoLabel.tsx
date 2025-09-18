@@ -16,7 +16,7 @@ export const WfoLabel: PydanticFormElement = ({ pydanticFormField }) => {
                 }}
                 id={pydanticFormField.id}
             >
-                {pydanticFormField.title}
+                {pydanticFormField.default || pydanticFormField.title}
             </label>
         </div>
     );
