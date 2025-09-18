@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.7.0
+
+### Minor Changes
+
+- 3fab97c: Updates to latest pydantic forms version
+
+### Patch Changes
+
+- 370492a: Allows task to start with pydantic forms
+- 38e73a8: Fix link to settings-overview documentation
+
 ## 5.6.1
 
 ### Patch Changes
