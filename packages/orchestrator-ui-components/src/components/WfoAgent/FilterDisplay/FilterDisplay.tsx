@@ -110,7 +110,7 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
                                                           path: child.path,
                                                           type: child.value_kind as PathDataType,
                                                           operators: [],
-                                                          valueSchema: {},
+                                                          value_schema: {},
                                                           group: 'leaf' as const,
                                                       }
                                                     : undefined,

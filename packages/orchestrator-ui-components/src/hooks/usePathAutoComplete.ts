@@ -5,7 +5,7 @@ import {
     EntityKind,
     PathAutocompleteResponse,
     PathInfo,
-    ValueSchema,
+    value_schema,
 } from '@/types';
 
 import { useDebounce } from './useDebounce';
@@ -19,7 +19,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
             string,
             {
                 operators: string[];
-                valueSchema: Record<string, ValueSchema>;
+                value_schema: Record<string, value_schema>;
             }
         >
     >({});
@@ -47,14 +47,14 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
                     setDefinitions({
                         string: {
                             operators: ['eq', 'neq'],
-                            valueSchema: {
+                            value_schema: {
                                 eq: { kind: 'string' },
                                 neq: { kind: 'string' },
                             },
                         },
                         number: {
                             operators: ['eq', 'neq', 'lt', 'lte', 'gt', 'gte'],
-                            valueSchema: {
+                            value_schema: {
                                 eq: { kind: 'number' },
                                 neq: { kind: 'number' },
                                 lt: { kind: 'number' },
@@ -65,14 +65,14 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
                         },
                         boolean: {
                             operators: ['eq', 'neq'],
-                            valueSchema: {
+                            value_schema: {
                                 eq: { kind: 'boolean' },
                                 neq: { kind: 'boolean' },
                             },
                         },
                         datetime: {
                             operators: ['eq', 'neq', 'lt', 'lte', 'gt', 'gte'],
-                            valueSchema: {
+                            value_schema: {
                                 eq: { kind: 'datetime' },
                                 neq: { kind: 'datetime' },
                                 lt: { kind: 'datetime' },
@@ -131,7 +131,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
                             | 'datetime'
                             | 'boolean',
                         operators: typeDefinition?.operators || [],
-                        valueSchema: typeDefinition?.valueSchema || {},
+                        value_schema: typeDefinition?.value_schema || {},
                         group: 'leaf',
                         displayLabel: leaf.name,
                         ui_types: leaf.ui_types,
@@ -146,7 +146,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
                         path: component.name,
                         type: 'component',
                         operators: typeDefinition?.operators || [],
-                        valueSchema: typeDefinition?.valueSchema || {},
+                        value_schema: typeDefinition?.value_schema || {},
                         group: 'component',
                         displayLabel: component.name,
                         ui_types: component.ui_types,

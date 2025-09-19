@@ -32,7 +32,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
 
     if (!pathInfo || !operator) return null;
 
-    const schema = pathInfo.valueSchema[operator];
+    const schema = pathInfo.value_schema[operator];
     if (!schema || schema.kind === 'none') return null;
 
     if (pathInfo.type === 'string') {

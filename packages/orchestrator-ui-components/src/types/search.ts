@@ -176,10 +176,10 @@ export type Group = {
     children: Array<Group | Condition>;
 };
 
-export type ValueSchema = {
+export type value_schema = {
     kind: 'string' | 'number' | 'datetime' | 'boolean' | 'object' | 'none';
     format?: string;
-    fields?: Record<string, ValueSchema>;
+    fields?: Record<string, value_schema>;
 };
 
 export type PathLeaf = {
@@ -203,7 +203,7 @@ export type PathInfo = {
     path: string;
     type: PathDataType;
     operators: string[];
-    valueSchema: Record<string, ValueSchema>;
+    value_schema: Record<string, value_schema>;
     example_values?: string[];
     group: 'leaf' | 'component';
     displayLabel?: string;
