@@ -1,20 +1,25 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
-    EuiBadge,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
     EuiSpacer,
     EuiText,
-    useEuiTheme,
 } from '@elastic/eui';
 
+import { WfoBadge } from '@/components/WfoBadges';
 import { WfoPathBreadcrumb } from '@/components/WfoSearchPage/WfoSearchResults/WfoPathBreadcrumb';
-import { getOperatorDisplay, isCondition } from '@/components/WfoSearchPage/utils';
-import { AnySearchParameters, Condition, Group } from '@/types';
+import {
+    getOperatorDisplay,
+    isCondition,
+} from '@/components/WfoSearchPage/utils';
+import { useWithOrchestratorTheme } from '@/index';
+import { AnySearchParameters, Condition, Group, PathDataType } from '@/types';
 
-import { getFilterDisplayStyles } from './FilterDisplay.styles';
+import { getFilterDisplayStyles } from './styles';
 
 const DEPTH_INDENT = 16;
 
@@ -35,12 +40,19 @@ interface BetweenValue {
 }
 
 export function FilterDisplay({ parameters }: FilterDisplayProps) {
-    const { euiTheme } = useEuiTheme();
+    const t = useTranslations('agent.page');
+
+    const {
+        wrapStyle,
+        columnGroupWrapStyle,
+        chipStyle,
+        groupStyle,
+        operatorStyle,
+        valueStyle,
+    } = useWithOrchestratorTheme(getFilterDisplayStyles);
     const { action, entity_type, filters, query } = parameters ?? {};
 
     if (!parameters || Object.keys(parameters).length === 0) return null;
-
-    const styles = getFilterDisplayStyles(euiTheme);
 
     const sectionTitle = (text: string) => (
         <EuiText size="xs" color="subdued">
@@ -70,7 +82,7 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
         if (!group.children || group.children.length === 0) {
             return (
                 <EuiText size="s" color="subdued">
-                    <em>Empty group</em>
+                    <em>{t('emptyGroup')}</em>
                 </EuiText>
             );
         }
@@ -79,29 +91,38 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
             group.children.length > 0 && !isCondition(group.children[0]);
 
         return (
-            <div
-                css={styles.group}
-                style={{ marginLeft: depth * DEPTH_INDENT }}
-            >
-                <div css={styles.operator}>{group.op}</div>
-                <div
-                    css={
-                        areChildrenGroups ? styles.columnGroupWrap : styles.wrap
-                    }
-                >
+            <div css={groupStyle} style={{ marginLeft: depth * DEPTH_INDENT }}>
+                <div css={operatorStyle}>{group.op}</div>
+                <div css={areChildrenGroups ? columnGroupWrapStyle : wrapStyle}>
                     {group.children.map((child, i) => (
                         <div key={i}>
                             {isCondition(child) ? (
-                                <div css={styles.chip}>
+                                <div css={chipStyle}>
                                     <WfoPathBreadcrumb
                                         path={child.path}
                                         size="s"
                                         showArrows={true}
                                     />
-                                    <EuiBadge color="hollow">
-                                        {getOperatorDisplay(child.condition.op, { type: child.value_kind }).symbol}
-                                    </EuiBadge>
-                                    <span css={styles.value}>
+                                    <WfoBadge
+                                        textColor="default"
+                                        color="hollow"
+                                    >
+                                        {
+                                            getOperatorDisplay(
+                                                child.condition.op,
+                                                child.value_kind
+                                                    ? {
+                                                          path: child.path,
+                                                          type: child.value_kind as PathDataType,
+                                                          operators: [],
+                                                          value_schema: {},
+                                                          group: 'leaf' as const,
+                                                      }
+                                                    : undefined,
+                                            ).symbol
+                                        }
+                                    </WfoBadge>
+                                    <span css={valueStyle}>
                                         {formatFilterValue(child.condition)}
                                     </span>
                                 </div>
@@ -119,20 +140,24 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
         <EuiPanel hasBorder paddingSize="m">
             <EuiFlexGroup gutterSize="m" wrap responsive>
                 <EuiFlexItem grow={false}>
-                    {sectionTitle('Action')}
+                    {sectionTitle(t('action'))}
                     <EuiSpacer size="xs" />
-                    <EuiBadge color="hollow">{action || 'N/A'}</EuiBadge>
+                    <WfoBadge textColor="default" color="hollow">
+                        {action || 'N/A'}
+                    </WfoBadge>
                 </EuiFlexItem>
 
                 <EuiFlexItem grow={false}>
-                    {sectionTitle('Entity Type')}
+                    {sectionTitle(t('entityType'))}
                     <EuiSpacer size="xs" />
-                    <EuiBadge color="hollow">{entity_type || 'N/A'}</EuiBadge>
+                    <WfoBadge textColor="default" color="hollow">
+                        {entity_type || 'N/A'}
+                    </WfoBadge>
                 </EuiFlexItem>
 
                 {query ? (
                     <EuiFlexItem grow={false}>
-                        {sectionTitle('Search Query')}
+                        {sectionTitle(t('searchQuery'))}
                         <EuiSpacer size="xs" />
                         <EuiText size="s">
                             <em>"{query}"</em>
@@ -142,14 +167,14 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
             </EuiFlexGroup>
 
             <EuiSpacer size="m" />
-            {sectionTitle('Active Filters')}
+            {sectionTitle(t('activeFilters'))}
             <EuiSpacer size="s" />
 
             {filters && filters.children && filters.children.length > 0 ? (
                 renderFilterGroup(filters)
             ) : (
                 <EuiText size="s" color="subdued">
-                    <em>No filters applied.</em>
+                    <em>{t('noFiltersApplied')}</em>
                 </EuiText>
             )}
         </EuiPanel>
