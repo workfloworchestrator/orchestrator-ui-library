@@ -307,6 +307,7 @@
                 "modify": "Modify workflow",
                 "tasks": "Tasks",
                 "terminate": "Terminate workflow",
+                "reconcile": "Reconcile workflow",
                 "actions": "Actions",
                 "lockedBySubscriptions": "This action is locked by the following subscriptions:",
                 "subscription": {

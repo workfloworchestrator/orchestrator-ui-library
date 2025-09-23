@@ -13,6 +13,7 @@ export enum PolicyResource {
     SUBSCRIPTION_CREATE = '/orchestrator/processes/create/process/menu',
     SUBSCRIPTION_MODIFY = '/orchestrator/subscriptions/modify/',
     SUBSCRIPTION_TERMINATE = '/orchestrator/subscriptions/terminate/',
+    SUBSCRIPTION_RECONCILE = '/orchestrator/subscriptions/reconcile/',
     SUBSCRIPTION_VALIDATE = '/orchestrator/subscriptions/validate/',
     TASKS_CREATE = '/orchestrator/processes/create/task',
     TASKS_RETRY_ALL = '/orchestrator/processes/all-tasks/retry',

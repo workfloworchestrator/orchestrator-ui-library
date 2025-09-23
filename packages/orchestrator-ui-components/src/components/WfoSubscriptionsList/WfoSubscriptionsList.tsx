@@ -15,6 +15,7 @@ import {
     WfoInlineJson,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
+    WfoRowContextMenu,
     WfoSubscriptionNoteEdit,
     WfoSubscriptionStatusBadge,
     getPageIndexChangeHandler,
@@ -177,6 +178,32 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                         />
                     );
                 },
+            },
+            actions: {
+                columnType: ColumnType.CONTROL,
+                label: t('actions'),
+                width: '80px',
+                renderControl: (row) => (
+                    <WfoRowContextMenu
+                        items={[
+                            {
+                                id: 0,
+                                content: (
+                                    <>
+                                        <p>Re-deploy subscription</p>
+                                        <p>Validate subscription</p>
+                                    </>
+                                ),
+                            },
+                        ]}
+                        onOpenContextMenu={() =>
+                            console.log(
+                                'open context menu for',
+                                row.subscriptionId,
+                            )
+                        }
+                    />
+                ),
             },
             metadata: {
                 columnType: ColumnType.DATA,

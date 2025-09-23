@@ -37,6 +37,7 @@ type MenuItemProps = {
     index: number;
     target: WorkflowTarget;
     isTask?: boolean;
+    isDisabled?: boolean;
 };
 
 type MenuBlockProps = {
@@ -90,6 +91,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         action,
         target,
         isTask = false,
+        isDisabled = false,
     }) => {
         // Change icon to include x if there's a reason
         // Add tooltip with reason
@@ -254,6 +256,41 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                 )}
                             </>
                         )}
+
+                    {subscriptionActions &&
+                    isAllowed(
+                        PolicyResource.SUBSCRIPTION_RECONCILE + subscriptionId,
+                    ) &&
+                    subscriptionActions.reconcile ? (
+                        <>
+                            <MenuBlock title={t('reconcile')}></MenuBlock>
+                            {subscriptionActions.reconcile.map(
+                                (action, index) => (
+                                    <MenuItem
+                                        key={`r_${index}`}
+                                        action={action}
+                                        index={index}
+                                        target={WorkflowTarget.RECONCILE}
+                                    />
+                                ),
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            <MenuBlock title={t('reconcile')}></MenuBlock>
+                            <MenuItem
+                                key={`r_${1}`}
+                                action={{
+                                    name: 'AAAA',
+                                    reason: 'This workflow doesnt have reconcile',
+                                    description:
+                                        'This workflow doesnt have reconcile',
+                                }}
+                                index={1}
+                                target={WorkflowTarget.RECONCILE}
+                            />
+                        </>
+                    )}
 
                     {subscriptionActions &&
                         isAllowed(
