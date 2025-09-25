@@ -9,6 +9,7 @@ import {
     EuiButtonIcon,
     EuiContextMenuItem,
     EuiContextMenuPanel,
+    EuiLoadingSpinner,
     EuiPanel,
     EuiPopover,
     EuiTitle,
@@ -54,13 +55,13 @@ const MenuBlock: FC<MenuBlockProps> = ({ title }) => (
 export type WfoSubscriptionActionsProps = {
     subscriptionId: string;
     isLoading?: boolean;
-    shortListOnly?: boolean; // NEW PROP
+    compactMode?: boolean;
 };
 
 export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     subscriptionId,
     isLoading,
-    shortListOnly = false, // defaults to full list
+    compactMode = false,
 }) => {
     const { theme } = useOrchestratorTheme();
     const {
@@ -74,9 +75,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
-    const { data: subscriptionActions } = useGetSubscriptionActionsQuery(
+    const disableQuery = isLoading || (!isPopoverOpen && compactMode);
+    const {
+        data: subscriptionActions,
+        isLoading: subscriptionActionsIsLoading,
+    } = useGetSubscriptionActionsQuery(
         { subscriptionId },
-        { skip: isLoading || !isPopoverOpen },
+        { skip: disableQuery },
     );
     const { isEngineRunningNow } = useCheckEngineStatus();
     const { isAllowed } = usePolicy();
@@ -158,7 +163,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             : linkIt(<ActionItem />);
     };
 
-    const button = shortListOnly ? (
+    const button = compactMode ? (
         <EuiButtonIcon
             iconType={() => <WfoDotsHorizontal />}
             onClick={onButtonClick}
@@ -176,6 +181,83 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         </EuiButton>
     );
 
+    const {
+        SUBSCRIPTION_VALIDATE,
+        SUBSCRIPTION_RECONCILE,
+        SUBSCRIPTION_MODIFY,
+        SUBSCRIPTION_TERMINATE,
+    } = PolicyResource;
+    const compactItems = (
+        <>
+            {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) &&
+                subscriptionActions?.validate && (
+                    <>
+                        {!compactMode && <MenuBlock title={t('tasks')} />}
+                        {subscriptionActions.validate.map((action, index) => (
+                            <MenuItem
+                                key={`s_${index}`}
+                                action={action}
+                                index={index}
+                                target={WorkflowTarget.VALIDATE}
+                                isTask
+                            />
+                        ))}
+                    </>
+                )}
+
+            {isAllowed(SUBSCRIPTION_RECONCILE + subscriptionId) &&
+                (subscriptionActions?.reconcile?.length ?? 0) > 0 && (
+                    <>
+                        {!compactMode && <MenuBlock title={t('reconcile')} />}
+                        {subscriptionActions?.reconcile.map((action, index) => (
+                            <MenuItem
+                                key={`r_${index}`}
+                                action={action}
+                                index={index}
+                                target={WorkflowTarget.RECONCILE}
+                            />
+                        ))}
+                    </>
+                )}
+        </>
+    );
+
+    const fullItems = (
+        <>
+            {isAllowed(SUBSCRIPTION_MODIFY + subscriptionId) &&
+                subscriptionActions?.modify && (
+                    <>
+                        <MenuBlock title={t('modify')} />
+                        {subscriptionActions.modify.map((action, index) => (
+                            <MenuItem
+                                key={`m_${index}`}
+                                action={action}
+                                index={index}
+                                target={WorkflowTarget.MODIFY}
+                            />
+                        ))}
+                    </>
+                )}
+            {compactItems}
+            {isAllowed(SUBSCRIPTION_TERMINATE + subscriptionId) &&
+                subscriptionActions?.terminate && (
+                    <>
+                        <MenuBlock title={t('terminate')} />
+                        {subscriptionActions.terminate.map((action, index) => (
+                            <MenuItem
+                                key={`t_${index}`}
+                                action={action}
+                                index={index}
+                                target={WorkflowTarget.TERMINATE}
+                            />
+                        ))}
+                    </>
+                )}
+        </>
+    );
+
+    const MenuItemsList = () => (compactMode ? compactItems : fullItems);
+
     return (
         <EuiPopover
             id="subscriptionActionPopover"
@@ -187,116 +269,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         >
             <EuiContextMenuPanel>
                 <EuiPanel color="transparent" paddingSize="s">
-                    {/* FULL LIST MODE */}
-                    {!shortListOnly && subscriptionActions && (
-                        <>
-                            {isAllowed(
-                                PolicyResource.SUBSCRIPTION_MODIFY +
-                                    subscriptionId,
-                            ) &&
-                                subscriptionActions.modify && (
-                                    <>
-                                        <MenuBlock title={t('modify')} />
-                                        {subscriptionActions.modify.map(
-                                            (action, index) => (
-                                                <MenuItem
-                                                    key={`m_${index}`}
-                                                    action={action}
-                                                    index={index}
-                                                    target={
-                                                        WorkflowTarget.MODIFY
-                                                    }
-                                                />
-                                            ),
-                                        )}
-                                    </>
-                                )}
-                        </>
-                    )}
-
-                    {/* VALIDATE (Always included) */}
-                    {subscriptionActions &&
-                        isAllowed(
-                            PolicyResource.SUBSCRIPTION_VALIDATE +
-                                subscriptionId,
-                        ) &&
-                        subscriptionActions.validate && (
-                            <>
-                                <MenuBlock title={t('tasks')} />
-                                {subscriptionActions.validate.map(
-                                    (action, index) => (
-                                        <MenuItem
-                                            key={`s_${index}`}
-                                            action={action}
-                                            index={index}
-                                            target={WorkflowTarget.VALIDATE}
-                                            isTask
-                                        />
-                                    ),
-                                )}
-                            </>
-                        )}
-
-                    {/* RECONCILE (Always included) */}
-                    {subscriptionActions &&
-                    isAllowed(
-                        PolicyResource.SUBSCRIPTION_RECONCILE + subscriptionId,
-                    ) &&
-                    subscriptionActions.reconcile.length > 0 ? (
-                        <>
-                            <MenuBlock title={t('reconcile')} />
-                            {subscriptionActions.reconcile.map(
-                                (action, index) => (
-                                    <MenuItem
-                                        key={`r_${index}`}
-                                        action={action}
-                                        index={index}
-                                        target={WorkflowTarget.RECONCILE}
-                                    />
-                                ),
-                            )}
-                        </>
+                    {subscriptionActionsIsLoading ? (
+                        <EuiLoadingSpinner />
                     ) : (
-                        <>
-                            <MenuBlock title={t('reconcile')} />
-                            <MenuItem
-                                key={`r_0`}
-                                action={{
-                                    name: t('reconcile'),
-                                    reason: 'notAvailableForWorkflow',
-                                    description: t('reconcile'),
-                                }}
-                                index={0}
-                                target={WorkflowTarget.RECONCILE}
-                            />
-                        </>
-                    )}
-
-                    {/* FULL LIST MODE */}
-                    {!shortListOnly && subscriptionActions && (
-                        <>
-                            {isAllowed(
-                                PolicyResource.SUBSCRIPTION_TERMINATE +
-                                    subscriptionId,
-                            ) &&
-                                subscriptionActions.terminate && (
-                                    <>
-                                        <MenuBlock title={t('terminate')} />
-                                        {subscriptionActions.terminate.map(
-                                            (action, index) => (
-                                                <MenuItem
-                                                    key={`t_${index}`}
-                                                    action={action}
-                                                    index={index}
-                                                    target={
-                                                        WorkflowTarget.TERMINATE
-                                                    }
-                                                />
-                                            ),
-                                        )}
-                                    </>
-                                )}
-                        </>
+                        <MenuItemsList />
                     )}
                 </EuiPanel>
             </EuiContextMenuPanel>
