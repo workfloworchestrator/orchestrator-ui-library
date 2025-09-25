@@ -41,6 +41,7 @@
         "@elastic/eui": "101.3.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
+        "@monaco-editor/react": "^4.7.0",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
         "graphql-request": "^6.1.0",
         "invariant": "^2.2.4",
