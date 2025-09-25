@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
+    EuiButtonEmpty,
+    EuiContextMenuPanelDescriptor,
+    EuiContextMenuPanelItemDescriptor,
+} from '@elastic/eui';
+
+import {
     ColumnType,
     FilterQuery,
     PATH_SUBSCRIPTIONS,
@@ -16,6 +22,7 @@ import {
     WfoInsyncIcon,
     WfoJsonCodeBlock,
     WfoRowContextMenu,
+    WfoSubscriptionActions,
     WfoSubscriptionNoteEdit,
     WfoSubscriptionStatusBadge,
     getPageIndexChangeHandler,
@@ -92,6 +99,66 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
 
     const subscriptionList =
         mapGraphQlSubscriptionsResultToSubscriptionListItems(data);
+
+    type WfoSubscriptionContextMenuProps = {
+        subscriptionId: SubscriptionListItem['subscriptionId'];
+        productTag: SubscriptionListItem['tag'];
+    };
+
+    const WfoSubscriptionContextMenu: FC<WfoSubscriptionContextMenuProps> = ({
+        subscriptionId,
+        productTag,
+    }) => {
+        const productTagsWithReconcileWorkflows = ['LIR_PREFIX'];
+        const t = useTranslations('subscriptions.detail.actions');
+        const ReconcileSubscriptionButton = () => {
+            return (
+                <EuiButtonEmpty
+                    color="text"
+                    onClick={() => {}}
+                    disabled={
+                        !productTagsWithReconcileWorkflows.includes(
+                            productTag ?? '',
+                        )
+                    }
+                >
+                    {t('reconcileSubscription')}
+                </EuiButtonEmpty>
+            );
+        };
+        const ValidateSubscriptionButton = () => {
+            return (
+                <EuiButtonEmpty color="text" onClick={() => {}}>
+                    {t('validateSubscription')}
+                </EuiButtonEmpty>
+            );
+        };
+
+        const items: EuiContextMenuPanelItemDescriptor[] = [
+            {
+                name: <ReconcileSubscriptionButton />,
+                onClick: () => console.log('Re-deploy clicked'),
+            },
+            {
+                name: <ValidateSubscriptionButton />,
+                onClick: () => console.log('Validate clicked'),
+            },
+        ];
+
+        const panels: EuiContextMenuPanelDescriptor[] = [
+            {
+                id: '0',
+                items: items,
+            },
+        ];
+
+        return (
+            <WfoRowContextMenu
+                items={panels}
+                onOpenContextMenu={() => console.log('openContextMenu')}
+            />
+        );
+    };
 
     const tableColumnConfig: WfoAdvancedTableColumnConfig<SubscriptionListItem> =
         {
@@ -183,25 +250,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                 columnType: ColumnType.CONTROL,
                 label: t('actions'),
                 width: '80px',
+                // renderControl: (row) => <WfoSubscriptionContextMenu productTag={row.tag}  subscriptionId={row.subscriptionId}/>
                 renderControl: (row) => (
-                    <WfoRowContextMenu
-                        items={[
-                            {
-                                id: 0,
-                                content: (
-                                    <>
-                                        <p>Re-deploy subscription</p>
-                                        <p>Validate subscription</p>
-                                    </>
-                                ),
-                            },
-                        ]}
-                        onOpenContextMenu={() =>
-                            console.log(
-                                'open context menu for',
-                                row.subscriptionId,
-                            )
-                        }
+                    <WfoSubscriptionActions
+                        shortListOnly={true}
+                        subscriptionId={row.subscriptionId}
                     />
                 ),
             },

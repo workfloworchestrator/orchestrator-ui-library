@@ -305,6 +305,10 @@
                 "tasks": "Taken",
                 "terminate": "Terminate workflow",
                 "reconcile": "Reconcile workflow",
+                "notAvailable": "Niet beschikbaar",
+                "notAvailableForWorkflow": "Niet beschikbaar voor deze workflow",
+                "reconcileSubscription": "Reconcile subscription",
+                "validateSubscription": "Validate subscription",
                 "actions": "Acties",
                 "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
                 "subscription": {
