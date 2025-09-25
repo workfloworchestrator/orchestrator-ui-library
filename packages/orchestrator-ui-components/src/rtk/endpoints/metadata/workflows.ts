@@ -35,7 +35,7 @@ query MetadataWorkflows(
         after: $after
         sortBy: $sortBy
         query: $query
-        filterBy: { field: "target", value: "CREATE|MODIFY|TERMINATE" }
+        filterBy: { field: "target", value: "CREATE|MODIFY|TERMINATE|RECONCILE" }
     ) {
         page {
             workflowId
