@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 
-import { EuiCodeBlock } from '@elastic/eui';
+import Editor, { Monaco } from "@monaco-editor/react";
+import { editor } from "monaco-editor";
 
 import { useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme } from '@/hooks';
 
 import { getStyles } from './styles';
 
@@ -21,19 +23,39 @@ export const WfoJsonCodeBlock: FC<WfoJsonCodeBlockProps> = ({
     data,
     isBasicStyle = false,
 }) => {
+    const { isDarkThemeActive } = useOrchestratorTheme();
     const { euiCodeBlockStyle, euiBasicCodeBlockStyle } =
         useWithOrchestratorTheme(getStyles);
 
     const json = JSON.stringify(data, null, 4);
 
+    const [editorHeight, setEditorHeight] = React.useState(0);
+
+    function editorDidMount(
+        editor: editor.IStandaloneCodeEditor,
+        monaco: Monaco
+    ) {
+        const scrollHeight = editor.getScrollHeight();
+        setEditorHeight(Math.min(scrollHeight, 500));
+    }
+
     return (
-        <EuiCodeBlock
+        <Editor
+            height={editorHeight}
             css={isBasicStyle ? euiBasicCodeBlockStyle : euiCodeBlockStyle}
-            isCopyable={true}
+            theme={isDarkThemeActive ? "vs-dark" : "light"}
+            options={{
+                readOnly: true,
+                lineNumbers: isBasicStyle ? "off" : "on",
+                scrollBeyondLastLine: false,
+                contextmenu: false,
+                minimap: { enabled: false },
+                mouseWheelZoom: true,
+                mouseStyle: "copy",
+            }}
+            onMount={editorDidMount}
             language="json"
-            lineNumbers={!isBasicStyle}
-        >
-            {json}
-        </EuiCodeBlock>
+            value={json}
+        />
     );
 };
