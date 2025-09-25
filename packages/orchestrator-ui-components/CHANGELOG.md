@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.7.1
+
+### Patch Changes
+
+- ae225ce: Updates to latest version of pydantic-forms-ui
+- cd5436e: 2159 Fix labels for Endpoint description
+
 ## 5.7.0
 
 ### Minor Changes
