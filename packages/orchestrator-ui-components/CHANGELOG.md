@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.8.0
+
+### Minor Changes
+
+- 982df15: 2081 Add support for workflows with target Reconcile
+
 ## 5.7.1
 
 ### Patch Changes
