@@ -307,8 +307,13 @@
                 "modify": "Modify workflow",
                 "tasks": "Tasks",
                 "terminate": "Terminate workflow",
+                "reconcile": "Reconcile workflow",
                 "actions": "Actions",
                 "lockedBySubscriptions": "This action is locked by the following subscriptions:",
+                "notAvailable": "Not available",
+                "notAvailableForWorkflow": "Not available for this workflow",
+                "reconcileSubscription": "Reconcile subscription",
+                "validateSubscription": "Validate subscription",
                 "subscription": {
                     "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
                     "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions: {unterminated_in_use_by_subscriptions}",

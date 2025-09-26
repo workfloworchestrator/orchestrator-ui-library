@@ -24,6 +24,8 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
             successText,
             warning,
             warningText,
+            accent,
+            accentText,
         } = theme.colors;
 
         switch (_target?.toLowerCase()) {
@@ -47,6 +49,11 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
                 return {
                     badgeColor: toSecondaryColor(danger),
                     textColor: dangerText,
+                };
+            case WorkflowTarget.RECONCILE:
+                return {
+                    badgeColor: toSecondaryColor(accent),
+                    textColor: accentText,
                 };
             default:
                 return {

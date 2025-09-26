@@ -15,6 +15,7 @@ import {
     WfoInlineJson,
     WfoInsyncIcon,
     WfoJsonCodeBlock,
+    WfoSubscriptionActions,
     WfoSubscriptionNoteEdit,
     WfoSubscriptionStatusBadge,
     getPageIndexChangeHandler,
@@ -177,6 +178,17 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
                         />
                     );
                 },
+            },
+            actions: {
+                columnType: ColumnType.CONTROL,
+                label: t('actions'),
+                width: '80px',
+                renderControl: (row) => (
+                    <WfoSubscriptionActions
+                        compactMode={true}
+                        subscriptionId={row.subscriptionId}
+                    />
+                ),
             },
             metadata: {
                 columnType: ColumnType.DATA,

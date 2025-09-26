@@ -74,6 +74,8 @@ export const getWorkflowTargetColor = (
         case WorkflowTarget.SYSTEM:
         case WorkflowTarget.VALIDATE:
             return theme.colors.warning;
+        case WorkflowTarget.RECONCILE:
+            return theme.colors.accent;
         case WorkflowTarget.TERMINATE:
             return theme.colors.danger;
     }
@@ -93,6 +95,8 @@ export const getWorkflowTargetIconContent = (
             return 'T';
         case WorkflowTarget.TERMINATE:
             return 'X';
+        case WorkflowTarget.RECONCILE:
+            return 'R';
         default:
             return 'M';
     }

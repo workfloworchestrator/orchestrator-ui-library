@@ -145,6 +145,7 @@ export enum WorkflowTarget {
     TERMINATE = 'terminate',
     SYSTEM = 'system',
     VALIDATE = 'validate',
+    RECONCILE = 'reconcile',
 }
 
 export type Process = {
@@ -621,6 +622,7 @@ export type SubscriptionActions = {
     terminate: SubscriptionAction[];
     system: SubscriptionAction[];
     validate: SubscriptionAction[];
+    reconcile: SubscriptionAction[];
 };
 
 export enum CacheTagType {
