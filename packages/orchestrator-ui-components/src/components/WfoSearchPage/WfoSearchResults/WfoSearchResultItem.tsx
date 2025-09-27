@@ -1,7 +1,8 @@
 import React, { FC, MouseEvent, useEffect, useRef } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import {
-    EuiBadge,
     EuiButtonIcon,
     EuiFlexGroup,
     EuiFlexItem,
@@ -10,6 +11,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 
+import { WfoBadge } from '@/components/WfoBadges';
 import { useOrchestratorTheme } from '@/hooks';
 import { AnySearchResult } from '@/types';
 
@@ -32,6 +34,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
     onPositionChange,
     index,
 }) => {
+    const t = useTranslations('search.page');
     const matchingField = result.matching_field;
     const { theme } = useOrchestratorTheme();
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
@@ -73,7 +76,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                                 <EuiText
                                     size="m"
                                     style={{
-                                        fontWeight: 600,
+                                        fontWeight: theme.font.weight.semiBold,
                                     }}
                                 >
                                     {getDescription(result)}
@@ -122,16 +125,19 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                             gutterSize="xs"
                         >
                             <EuiFlexItem>
-                                <EuiBadge color={theme.colors.primary}>
+                                <WfoBadge
+                                    color={theme.colors.primary}
+                                    textColor={theme.colors.ghost}
+                                >
                                     {'score' in result && result.score
                                         ? result.score.toFixed(4)
                                         : 'N/A'}
-                                </EuiBadge>
+                                </WfoBadge>
                             </EuiFlexItem>
                             <EuiFlexItem>
                                 <EuiButtonIcon
                                     iconType="popout"
-                                    aria-label="View details"
+                                    aria-label={t('viewDetails')}
                                     onClick={(
                                         e: MouseEvent<HTMLButtonElement>,
                                     ) => {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import {
-    EuiBadge,
     EuiButton,
     EuiButtonIcon,
     EuiComboBox,
@@ -10,9 +11,9 @@ import {
     EuiFormRow,
     EuiPanel,
     EuiText,
-    EuiToolTip,
 } from '@elastic/eui';
 
+import { WfoBadge, WfoToolTip } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { usePathAutocomplete } from '@/hooks/usePathAutoComplete';
 import { Condition, EntityKind } from '@/types';
@@ -32,12 +33,13 @@ interface ConditionRowProps {
     onRemove: () => void;
 }
 
-export const ConditionRow: React.FC<ConditionRowProps> = ({
+export const ConditionRow: FC<ConditionRowProps> = ({
     condition,
     entityType,
     onChange,
     onRemove,
 }) => {
+    const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
     const [searchValue, setSearchValue] = useState(condition.path);
     const { paths, loading, error } = usePathAutocomplete(
@@ -46,10 +48,10 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
     );
 
     const selectedPathInfo =
-        paths.find((p) => p.path === condition.path) || null;
+        paths.find(({ path }) => path === condition.path) || null;
 
     const handlePathChange = (newPath: string) => {
-        const pathInfo = paths.find((p) => p.path === newPath);
+        const pathInfo = paths.find(({ path }) => path === newPath);
         onChange({
             path: newPath,
             value_kind: pathInfo?.type,
@@ -63,7 +65,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
         if (selectedPathInfo?.type === 'boolean') {
             // For boolean fields, we always use 'eq' operator
             const actualOp = 'eq';
-            const booleanValue = op === 'eq' ? true : false; // ✓ = true, ✗ = false
+            const booleanValue = op === 'eq' ? true : false;
 
             onChange({
                 ...condition,
@@ -94,7 +96,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
         contentClassName?: string,
     ) => {
         const pathInfo = option.value
-            ? paths.find((p) => p.path === option.value)
+            ? paths.find(({ path }) => path === option.value)
             : null;
 
         if (!pathInfo) return option.label;
@@ -119,15 +121,13 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                     >
                         {pathInfo.ui_types?.map((type, index) => (
                             <EuiFlexItem key={index} grow={false}>
-                                <EuiBadge
+                                <WfoBadge
                                     color={getTypeColor(type, theme)}
-                                    style={{
-                                        fontSize: '10px',
-                                        padding: '2px 6px',
-                                    }}
+                                    textColor={theme.colors.ink}
+                                    size="xs"
                                 >
                                     {type}
-                                </EuiBadge>
+                                </WfoBadge>
                             </EuiFlexItem>
                         ))}
                     </EuiFlexGroup>
@@ -137,21 +137,21 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
     };
 
     const leavesOptions = paths
-        .filter((p) => p.group === 'leaf')
-        .map((p) => ({
-            label: p.displayLabel || p.path,
-            value: p.path,
-            'data-type': p.type,
-            'data-operators': p.operators?.join(', ') || '',
+        .filter(({ group }) => group === 'leaf')
+        .map(({ displayLabel, path, type, operators }) => ({
+            label: displayLabel || path,
+            value: path,
+            'data-type': type,
+            'data-operators': operators?.join(', ') || '',
         }));
 
     const componentsOptions = paths
-        .filter((p) => p.group === 'component')
-        .map((p) => ({
-            label: p.displayLabel || p.path,
-            value: p.path,
-            'data-type': p.type,
-            'data-operators': p.operators?.join(', ') || '',
+        .filter(({ group }) => group === 'component')
+        .map(({ displayLabel, path, type, operators }) => ({
+            label: displayLabel || path,
+            value: path,
+            'data-type': type,
+            'data-operators': operators?.join(', ') || '',
         }));
 
     const pathOptions = [
@@ -173,7 +173,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
             : []),
     ];
 
-    const shouldHideValueInput = () => {
+    const shouldHideValueInput = (): boolean => {
         // Hide value input if no path is selected yet
         if (!selectedPathInfo || !condition.condition.op) return true;
 
@@ -203,7 +203,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                         <EuiFlexGroup gutterSize="s" alignItems="center">
                             <EuiFlexItem>
                                 <EuiComboBox
-                                    placeholder="Type to search fields..."
+                                    placeholder={t('fieldSearchPlaceholder')}
                                     options={pathOptions}
                                     selectedOptions={selectedPathOptions}
                                     onChange={(selected) =>
@@ -236,19 +236,18 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                                                         key={index}
                                                         grow={false}
                                                     >
-                                                        <EuiBadge
+                                                        <WfoBadge
                                                             color={getTypeColor(
                                                                 type,
                                                                 theme,
                                                             )}
-                                                            style={{
-                                                                fontSize: '9px',
-                                                                padding:
-                                                                    '1px 4px',
-                                                            }}
+                                                            textColor={
+                                                                theme.colors.ink
+                                                            }
+                                                            size="s"
                                                         >
                                                             {type}
-                                                        </EuiBadge>
+                                                        </WfoBadge>
                                                     </EuiFlexItem>
                                                 ),
                                             )}
@@ -272,8 +271,8 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                                             );
                                         return (
                                             <EuiFlexItem key={op} grow={false}>
-                                                <EuiToolTip
-                                                    content={description}
+                                                <WfoToolTip
+                                                    tooltipContent={description}
                                                 >
                                                     <EuiButton
                                                         size="s"
@@ -293,14 +292,19 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                                                             )
                                                         }
                                                         style={{
-                                                            minWidth: '36px',
-                                                            fontSize: '16px',
-                                                            fontWeight: 'bold',
+                                                            minWidth:
+                                                                theme.size.xxl,
+                                                            fontSize:
+                                                                theme.size.base,
+                                                            fontWeight:
+                                                                theme.font
+                                                                    .weight
+                                                                    .bold,
                                                         }}
                                                     >
                                                         {symbol}
                                                     </EuiButton>
-                                                </EuiToolTip>
+                                                </WfoToolTip>
                                             </EuiFlexItem>
                                         );
                                     })}
@@ -312,7 +316,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                                                 size="s"
                                                 color={theme.colors.textSubdued}
                                             >
-                                                Select a field first
+                                                {t('selectFieldFirst')}
                                             </EuiText>
                                         </EuiFlexItem>
                                     )}
@@ -338,7 +342,7 @@ export const ConditionRow: React.FC<ConditionRowProps> = ({
                                 iconType="trash"
                                 color="danger"
                                 onClick={onRemove}
-                                aria-label="Remove condition"
+                                aria-label={t('removeConditionAriaLabel')}
                                 size="m"
                             />
                         </EuiFlexItem>

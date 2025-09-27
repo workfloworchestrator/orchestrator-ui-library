@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import moment from 'moment';
+import { useTranslations } from 'next-intl';
 
 import {
     EuiComboBox,
@@ -22,12 +23,13 @@ interface ValueControlProps {
     onChange: (value: unknown) => void;
 }
 
-export const ValueControl: React.FC<ValueControlProps> = ({
+export const ValueControl: FC<ValueControlProps> = ({
     pathInfo,
     operator,
     value,
     onChange,
 }) => {
+    const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
 
     if (!pathInfo || !operator) return null;
@@ -43,7 +45,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
             }));
             return (
                 <EuiComboBox
-                    placeholder="Select or type value"
+                    placeholder={t('selectOrEnterValue')}
                     options={options}
                     selectedOptions={
                         value
@@ -58,9 +60,9 @@ export const ValueControl: React.FC<ValueControlProps> = ({
         }
         return (
             <EuiFieldText
-                placeholder="Enter value"
+                placeholder={t('enterValue')}
                 value={String(value || '')}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(event) => onChange(event.target.value)}
             />
         );
     }
@@ -75,12 +77,12 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                 <EuiFlexGroup gutterSize="s" alignItems="center">
                     <EuiFlexItem>
                         <EuiFieldNumber
-                            placeholder="From"
+                            placeholder={t('fromNumber')}
                             value={betweenValue.start}
-                            onChange={(e) =>
+                            onChange={(event) =>
                                 onChange({
                                     ...betweenValue,
-                                    start: parseFloat(e.target.value) || '',
+                                    start: parseFloat(event.target.value) || '',
                                 })
                             }
                         />
@@ -92,12 +94,12 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                     </EuiFlexItem>
                     <EuiFlexItem>
                         <EuiFieldNumber
-                            placeholder="To"
+                            placeholder={t('toNumber')}
                             value={betweenValue.end}
-                            onChange={(e) =>
+                            onChange={(event) =>
                                 onChange({
                                     ...betweenValue,
-                                    end: parseFloat(e.target.value) || '',
+                                    end: parseFloat(event.target.value) || '',
                                 })
                             }
                         />
@@ -107,11 +109,13 @@ export const ValueControl: React.FC<ValueControlProps> = ({
         }
         return (
             <EuiFieldNumber
-                placeholder="Enter number"
+                placeholder={t('enterNumber')}
                 value={
                     value !== undefined && value !== null ? Number(value) : ''
                 }
-                onChange={(e) => onChange(parseFloat(e.target.value) || '')}
+                onChange={(event) =>
+                    onChange(parseFloat(event.target.value) || '')
+                }
             />
         );
     }
@@ -139,12 +143,12 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                             }
                             showTimeSelect
                             dateFormat="yyyy-MM-dd HH:mm"
-                            placeholderText="From date"
+                            placeholderText={t('fromDate')}
                         />
                     </EuiFlexItem>
                     <EuiFlexItem grow={false}>
                         <EuiText size="s" color={theme.colors.textSubdued}>
-                            to
+                            {t('valueControlTo')}
                         </EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem>
@@ -162,7 +166,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                             }
                             showTimeSelect
                             dateFormat="yyyy-MM-dd HH:mm"
-                            placeholderText="To date"
+                            placeholderText={t('toDate')}
                         />
                     </EuiFlexItem>
                 </EuiFlexGroup>
@@ -174,7 +178,7 @@ export const ValueControl: React.FC<ValueControlProps> = ({
                 onChange={(date) => onChange(date?.toISOString())}
                 showTimeSelect
                 dateFormat="yyyy-MM-dd HH:mm"
-                placeholderText="Select date"
+                placeholderText={t('selectDateAndTime')}
             />
         );
     }

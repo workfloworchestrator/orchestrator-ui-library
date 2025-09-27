@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import {
-    EuiBadge,
     EuiButton,
     EuiCallOut,
     EuiFlexGroup,
@@ -16,6 +17,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoSubscription } from '@/components';
+import { WfoBadge } from '@/components/WfoBadges';
 import {
     ENTITY_TABS,
     findResultIndexById,
@@ -42,6 +44,7 @@ import {
 } from '../constants';
 
 export const WfoSearch = () => {
+    const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
     const {
         urlParams,
@@ -59,13 +62,12 @@ export const WfoSearch = () => {
 
     const pageSize = DEFAULT_PAGE_SIZE;
 
-    const [filterGroup, setFilterGroup] = React.useState<Group>({
+    const [filterGroup, setFilterGroup] = useState<Group>({
         op: 'AND',
         children: [],
     });
 
-    const [showDetailPanel, setShowDetailPanel] =
-        React.useState<boolean>(false);
+    const [showDetailPanel, setShowDetailPanel] = useState<boolean>(false);
 
     const debouncedQuery = useDebounce(query, DEFAULT_DEBOUNCE_DELAY);
     const { results, loading, setResults } = useSearch(
@@ -124,7 +126,7 @@ export const WfoSearch = () => {
 
     const isSearchActive = results.data.length > 0 || loading;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (results.data.length > 0) {
             if (selectedRecordId) {
                 const foundIndex = findResultIndexById(
@@ -153,13 +155,13 @@ export const WfoSearch = () => {
         setSelectedRecordIndex,
     ]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setShowDetailPanel(
             results?.data?.length > 0 && selectedRecordIndex >= 0,
         );
     }, [results?.data?.length, selectedRecordIndex]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         resetPagination();
     }, [debouncedQuery, selectedEntityTab, filterGroup, resetPagination]);
 
@@ -182,7 +184,9 @@ export const WfoSearch = () => {
 
             <EuiSearchBar
                 box={{
-                    placeholder: `Search for ${currentTab?.label.toLowerCase()}…`,
+                    placeholder: t('searchPlaceholder', {
+                        entityType: currentTab?.label.toLowerCase(),
+                    }),
                     incremental: true,
                 }}
                 query={query}
@@ -198,7 +202,7 @@ export const WfoSearch = () => {
                         size="s"
                         onClick={() => setShowFilters(!showFilters)}
                     >
-                        {showFilters ? 'Hide Filters' : 'Show Filters'}
+                        {showFilters ? t('hideFilters') : t('showFilters')}
                     </EuiButton>
                 </EuiFlexItem>
             </EuiFlexGroup>
@@ -208,7 +212,7 @@ export const WfoSearch = () => {
                     <EuiSpacer size="m" />
                     <EuiPanel hasBorder paddingSize="m">
                         <EuiText>
-                            <h4>Structured Filters</h4>
+                            <h4>{t('structuredFilters')}</h4>
                         </EuiText>
                         <EuiSpacer size="s" />
                         <FilterGroup
@@ -226,7 +230,7 @@ export const WfoSearch = () => {
             {error && (
                 <>
                     <EuiCallOut
-                        title="Error"
+                        title={t('searchError')}
                         color="danger"
                         iconType="alert"
                         size="s"
@@ -237,7 +241,7 @@ export const WfoSearch = () => {
                             color="danger"
                             onClick={() => setError(null)}
                         >
-                            Dismiss
+                            {t('dismiss')}
                         </EuiButton>
                     </EuiCallOut>
                     <EuiSpacer size="m" />
@@ -335,28 +339,38 @@ export const WfoSearch = () => {
                                     ) : (
                                         <>
                                             <EuiText>
-                                                <h4>Details</h4>
+                                                <h4>{t('details')}</h4>
                                             </EuiText>
                                             <EuiSpacer size="m" />
                                             <EuiText
                                                 color={theme.colors.textSubdued}
                                             >
                                                 <p>
-                                                    Showing details for result #
-                                                    {selectedRecordIndex + 1}
+                                                    {t(
+                                                        'showingDetailsForResult',
+                                                        {
+                                                            resultNumber:
+                                                                selectedRecordIndex +
+                                                                1,
+                                                        },
+                                                    )}
                                                 </p>
                                                 <EuiSpacer size="s" />
-                                                <EuiBadge
+                                                <WfoBadge
                                                     color={theme.colors.primary}
+                                                    textColor={
+                                                        theme.colors.ghost
+                                                    }
                                                 >
                                                     {selectedEntityTab} #
                                                     {selectedRecordIndex + 1}
-                                                </EuiBadge>
+                                                </WfoBadge>
                                                 <EuiSpacer size="m" />
                                                 <p>
                                                     <em>
-                                                        Detail content will be
-                                                        implemented here...
+                                                        {t(
+                                                            'selectResultInstruction',
+                                                        )}
                                                     </em>
                                                 </p>
                                             </EuiText>

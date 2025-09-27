@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { css } from '@emotion/react';
 
@@ -9,7 +9,7 @@ interface WfoHighlightedTextProps {
     highlight_indices: [number, number][];
 }
 
-export const WfoHighlightedText: React.FC<WfoHighlightedTextProps> = ({
+export const WfoHighlightedText: FC<WfoHighlightedTextProps> = ({
     text,
     highlight_indices,
 }) => {
