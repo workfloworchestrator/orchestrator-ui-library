@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import {
     EuiButton,
@@ -10,9 +12,9 @@ import {
     EuiPanel,
     EuiSpacer,
     EuiText,
-    EuiToolTip,
 } from '@elastic/eui';
 
+import { WfoToolTip } from '@/components';
 import { isCondition } from '@/components/WfoSearchPage/utils';
 import { useOrchestratorTheme } from '@/hooks';
 import { Condition, EntityKind, Group } from '@/types';
@@ -28,7 +30,7 @@ interface FilterGroupProps {
     isRoot?: boolean;
 }
 
-export const FilterGroup: React.FC<FilterGroupProps> = ({
+export const FilterGroup: FC<FilterGroupProps> = ({
     group,
     entityType,
     onChange,
@@ -36,6 +38,8 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
     depth = 0,
     isRoot = false,
 }) => {
+    const t = useTranslations('search.page');
+
     const { theme } = useOrchestratorTheme();
     const MAX_DEPTH = 5;
     const canAddGroup = depth < MAX_DEPTH;
@@ -102,7 +106,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                     <EuiFlexGroup gutterSize="s" alignItems="center">
                         <EuiFlexItem grow={false}>
                             <EuiText size="s">
-                                <strong>Group</strong>
+                                <strong>{t('groupLabel')}</strong>
                             </EuiText>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
@@ -126,15 +130,15 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                                 iconType="plusInCircle"
                                 onClick={addCondition}
                             >
-                                Add Condition
+                                {t('addCondition')}
                             </EuiButton>
                         </EuiFlexItem>
                         <EuiFlexItem grow={false}>
-                            <EuiToolTip
-                                content={
+                            <WfoToolTip
+                                tooltipContent={
                                     !canAddGroup
-                                        ? 'Maximum nesting depth reached'
-                                        : 'Add nested group'
+                                        ? t('maxNestingDepth')
+                                        : t('addNestedGroup')
                                 }
                             >
                                 <EuiButton
@@ -143,9 +147,9 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                                     onClick={addGroup}
                                     disabled={!canAddGroup}
                                 >
-                                    Add Group
+                                    {t('addGroup')}
                                 </EuiButton>
-                            </EuiToolTip>
+                            </WfoToolTip>
                         </EuiFlexItem>
                         {!isRoot && onRemove && (
                             <EuiFlexItem grow={false}>
@@ -153,7 +157,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                                     iconType="trash"
                                     color="danger"
                                     onClick={onRemove}
-                                    aria-label="Remove group"
+                                    aria-label={t('removeGroup')}
                                 />
                             </EuiFlexItem>
                         )}
@@ -220,15 +224,12 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                 <>
                     <EuiSpacer size="s" />
                     <EuiCallOut
-                        title="Empty group"
+                        title={t('emptyGroupTitle')}
                         color="primary"
                         iconType="iInCircle"
                         size="s"
                     >
-                        <p>
-                            Add conditions or nested groups to build your
-                            filter.
-                        </p>
+                        <p>{t('emptyGroupDescription')}</p>
                     </EuiCallOut>
                 </>
             )}

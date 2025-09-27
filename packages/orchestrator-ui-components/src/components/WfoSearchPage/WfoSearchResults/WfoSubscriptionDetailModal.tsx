@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import {
     EuiButton,
@@ -19,9 +21,10 @@ interface WfoSubscriptionDetailModalProps {
     matchingField?: any;
 }
 
-export const WfoSubscriptionDetailModal: React.FC<
+export const WfoSubscriptionDetailModal: FC<
     WfoSubscriptionDetailModalProps
 > = ({ isVisible, onClose, subscriptionData }) => {
+    const t = useTranslations('search.page');
     if (!isVisible || !subscriptionData) return null;
 
     const subscriptionId = subscriptionData.subscription_id;
@@ -30,7 +33,7 @@ export const WfoSubscriptionDetailModal: React.FC<
         <EuiModal onClose={onClose} maxWidth={800}>
             <EuiModalHeader>
                 <EuiModalHeaderTitle>
-                    Subscription Details
+                    {t('subscriptionDetails')}
                 </EuiModalHeaderTitle>
             </EuiModalHeader>
 
@@ -42,7 +45,7 @@ export const WfoSubscriptionDetailModal: React.FC<
 
             <EuiModalFooter>
                 <EuiButton onClick={onClose} fill>
-                    Close
+                    {t('closeButton')}
                 </EuiButton>
             </EuiModalFooter>
         </EuiModal>

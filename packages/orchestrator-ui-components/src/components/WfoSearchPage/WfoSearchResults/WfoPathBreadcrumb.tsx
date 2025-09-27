@@ -1,7 +1,8 @@
-import { Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 
-import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
 
+import { WfoBadge } from '@/components/WfoBadges';
 import { useOrchestratorTheme } from '@/hooks';
 
 interface WfoPathBreadcrumbProps {
@@ -13,7 +14,7 @@ interface WfoPathBreadcrumbProps {
     stripFirstSegment?: boolean;
 }
 
-export const WfoPathBreadcrumb: React.FC<WfoPathBreadcrumbProps> = ({
+export const WfoPathBreadcrumb: FC<WfoPathBreadcrumbProps> = ({
     path,
     size = 'm',
     maxSegments,
@@ -55,7 +56,13 @@ export const WfoPathBreadcrumb: React.FC<WfoPathBreadcrumbProps> = ({
             {displaySegments.map((segment, index) => (
                 <Fragment key={index}>
                     <EuiFlexItem grow={false}>
-                        <EuiBadge color={badgeColor}>{segment}</EuiBadge>
+                        <WfoBadge
+                            color={badgeColor}
+                            textColor={theme.colors.ghost}
+                            size={size}
+                        >
+                            {segment}
+                        </WfoBadge>
                     </EuiFlexItem>
                     {showArrows && index < displaySegments.length - 1 && (
                         <EuiFlexItem grow={false}>

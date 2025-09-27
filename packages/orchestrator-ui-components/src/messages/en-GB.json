@@ -465,5 +465,70 @@
         "softwareVersions": "Software Versions",
         "logout": "Logout",
         "aoStatusPage": "A&O application status page"
+    },
+    "agent": {
+        "title": "Search results",
+        "page": {
+            "filledParameters": "Filled parameters",
+            "results": "Results",
+            "emptyGroup": "Empty group",
+            "searchQuery": "Search query",
+            "activeFilters": "Active filters",
+            "noFiltersApplied": "No filters applied",
+            "entityType": "Entity type",
+            "action": "Action",
+            "copilot": {
+                "title": "Database assistant",
+                "initial": "Ask me things such as:\n• *Find active subscriptions for Surf*\n• *Show terminated workflows”*\n\nThe filled template and results will appear on the left."
+            }
+        }
+    },
+    "search": {
+        "page": {
+            "selectFieldFirst": "Select a field first",
+            "maxNestingDepth": "Maximum nesting depth reached",
+            "addNestedGroup": "Add nested group",
+            "addCondition": "Add condition",
+            "addGroup": "Add group",
+            "removeGroup": "Remove group",
+            "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
+            "emptyGroupTitle": "Empty group",
+            "fieldSearchPlaceholder": "Type to search fields...",
+            "removeConditionAriaLabel": "Remove condition",
+            "groupLabel": "Group",
+            "hideFilters": "Hide filters",
+            "showFilters": "Show filters",
+            "structuredFilters": "Structured filters",
+            "searchError": "Error",
+            "selectResultInstruction": "Detail content will be implemented here...",
+            "showingDetailsForResult": "Showing details for result #{resultNumber}",
+            "details": "Details",
+            "dismiss": "Dismiss",
+            "searchPlaceholder": "Search for {entityType}…",
+            "noResultsFound": "No results found for your search.",
+            "loadingSearchResults": "Loading search results...",
+            "previousPage": "Previous page",
+            "page": "Page",
+            "nextPage": "Next page",
+            "resultsOnPage": "{resultCount} result(s) on this page",
+            "searchResultsPagination": "Search results pagination",
+            "viewDetails": "View details",
+            "closeButton": "Close",
+            "selectOrEnterValue": "Select or type value",
+            "enterValue": "Enter value",
+            "fromNumber": "From",
+            "toNumber": "To",
+            "fromDate": "From date",
+            "toDate": "To date",
+            "enterNumber": "Enter number",
+            "selectDateAndTime": "Select date",
+            "valueControlTo": "to"
+        },
+        "tabs": {
+            "subscriptions": "Subscriptions",
+            "products": "Products",
+            "workflows": "Workflows",
+            "processes": "Processes"
+        }
     }
 }

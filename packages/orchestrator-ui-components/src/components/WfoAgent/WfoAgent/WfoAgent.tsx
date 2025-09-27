@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
 import { useCoAgent } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
@@ -23,6 +27,9 @@ const initialState: SearchState = {
 };
 
 export function WfoAgent() {
+    const t = useTranslations('agent');
+    const tPage = useTranslations('agent.page');
+
     const { state } = useCoAgent<SearchState>({
         name: 'query_agent',
         initialState,
@@ -34,8 +41,9 @@ export function WfoAgent() {
         Array.isArray(state.parameters.filters) &&
         state.parameters.filters.length > 0
     );
-    
-    const isLoadingResults = hasStarted && (!state.results || state.results.length === 0);
+
+    const isLoadingResults =
+        hasStarted && (!state.results || state.results.length === 0);
 
     const displayParameters = parameters && {
         ...parameters,
@@ -48,12 +56,12 @@ export function WfoAgent() {
         <EuiFlexGroup gutterSize="l" alignItems="stretch">
             <EuiFlexItem grow={2}>
                 <EuiText>
-                    <h1>Search results</h1>
+                    <h1>{t('title')}</h1>
                 </EuiText>
 
                 <EuiSpacer size="m" />
                 <EuiText size="s">
-                    <h2>Filled parameters</h2>
+                    <h2>{tPage('filledParameters')}</h2>
                 </EuiText>
                 <EuiSpacer size="s" />
                 {displayParameters && (
@@ -62,7 +70,10 @@ export function WfoAgent() {
 
                 <EuiSpacer size="m" />
                 <EuiText size="s">
-                    <h2>Results {results ? `(${results.length})` : ''}</h2>
+                    <h2>
+                        {tPage('results')}{' '}
+                        {results ? `(${results.length})` : ''}
+                    </h2>
                 </EuiText>
                 <EuiSpacer size="s" />
 
@@ -79,12 +90,8 @@ export function WfoAgent() {
                     defaultOpen
                     clickOutsideToClose={false}
                     labels={{
-                        title: 'Database assistant',
-                        initial:
-                            'Ask me things such as:\n' +
-                            '• *Find active subscriptions for Surf*\n' +
-                            '• *Show terminated workflows”*\n\n' +
-                            'The filled template and results will appear on the left.',
+                        title: tPage('copilot.title'),
+                        initial: tPage('copilot.initial'),
                     }}
                 />
             </EuiFlexItem>

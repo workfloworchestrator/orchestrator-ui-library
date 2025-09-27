@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 
-export const WfoSearchEmptyState: React.FC = () => {
+export const WfoSearchEmptyState: FC = () => {
+    const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
 
     return (
@@ -12,7 +15,7 @@ export const WfoSearchEmptyState: React.FC = () => {
             <EuiFlexGroup justifyContent="center" alignItems="center">
                 <EuiFlexItem grow={false}>
                     <EuiText size="m" color={theme.colors.textSubdued}>
-                        No results found for your search.
+                        {t('noResultsFound')}
                     </EuiText>
                 </EuiFlexItem>
             </EuiFlexGroup>
