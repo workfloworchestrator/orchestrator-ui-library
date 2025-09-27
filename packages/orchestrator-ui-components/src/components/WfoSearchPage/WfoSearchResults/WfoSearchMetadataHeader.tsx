@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-import {
-    EuiBadge,
-    EuiToolTip,
-} from '@elastic/eui';
+import { WfoBadge, WfoToolTip } from '@/components';
 
 interface WfoSearchMetadataHeaderProps {
     search_metadata: {
@@ -12,16 +9,16 @@ interface WfoSearchMetadataHeaderProps {
     };
 }
 
-export const WfoSearchMetadataHeader: React.FC<
-    WfoSearchMetadataHeaderProps
-> = ({ search_metadata }) => {
+export const WfoSearchMetadataHeader: FC<WfoSearchMetadataHeaderProps> = ({
+    search_metadata,
+}) => {
     if (!search_metadata.search_type) return null;
 
     return (
-        <EuiToolTip content={search_metadata.description || ''}>
-            <EuiBadge color="hollow" iconType="search">
+        <WfoToolTip tooltipContent={search_metadata.description || ''}>
+            <WfoBadge color="hollow" iconType="search" textColor="default">
                 {search_metadata.search_type}
-            </EuiBadge>
-        </EuiToolTip>
+            </WfoBadge>
+        </WfoToolTip>
     );
 };
