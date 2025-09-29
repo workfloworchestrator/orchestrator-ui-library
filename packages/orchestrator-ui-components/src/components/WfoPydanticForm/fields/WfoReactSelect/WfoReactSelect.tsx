@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactSelect, { components } from 'react-select';
 import type { GroupBase, InputProps } from 'react-select';
 
@@ -13,7 +13,7 @@ import { getWfoReactSelectStyles } from './styles';
 interface WfoReactSelectProps<ValueType> {
     options: Option<ValueType>[];
     id: string;
-    onChange: (value: ValueType | undefined) => void;
+    onChange: (value: ValueType | undefined | null) => void;
     value: ValueType;
     disabled?: boolean;
     isLoading?: boolean;
@@ -33,19 +33,21 @@ export const WfoReactSelect = <ValueType,>({
     hasError = false,
     refetch,
 }: WfoReactSelectProps<ValueType>) => {
-    useEffect(() => {
-        const selectedValue = options.find(
-            (option: Option<ValueType>) => option.value === value,
-        );
-        setSelectedValue(selectedValue || null);
-    }, [options, value]);
-
     const initialValue = options.find(
         (option: Option<ValueType>) => option.value === value,
     );
 
     const [selectedValue, setSelectedValue] =
-        React.useState<Option<ValueType> | null>(initialValue || null);
+        useState<Option<ValueType> | null>(initialValue || null);
+
+    useEffect(() => {
+        const preSelectedValue = options.find(
+            (option: Option<ValueType>) => option.value === value,
+        );
+        if (preSelectedValue !== selectedValue) {
+            setSelectedValue(preSelectedValue || null);
+        }
+    }, [options, selectedValue, value]);
 
     // React select allows callbacks to supply style for innercomponents: https://react-select.com/styles#inner-components
     const {
@@ -89,12 +91,12 @@ export const WfoReactSelect = <ValueType,>({
                 id={id}
                 inputId={`${id}.search`}
                 onChange={(option) => {
+                    // By default reactSelect reverts to the initial option when cleared.
+                    // This is to make sure we can also deselect the value after it is
+                    // initialized from error state that sets it to the latest value.
                     if (option === null) {
-                        // By default reactSelect reverts to the initial option when cleared
-                        // this is to make sure we can also deselect the value after it is
-                        // initialized from error state for example.
                         setSelectedValue(null);
-                        onChange(undefined);
+                        onChange(null);
                     } else {
                         const selectedValue = option?.value;
                         setSelectedValue(option);
