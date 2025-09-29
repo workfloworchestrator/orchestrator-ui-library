@@ -10,7 +10,7 @@ export const WfoRadio: PydanticFormControlledElement = ({
     value,
     disabled,
 }) => {
-    const radioOptions = pydanticFormField.options.map((option) => ({
+    const radioOptions = pydanticFormField.options?.map((option) => ({
         id: option.value,
         label: option.label,
     }));
@@ -18,7 +18,7 @@ export const WfoRadio: PydanticFormControlledElement = ({
     return (
         <EuiRadioGroup
             data-testid={pydanticFormField.id}
-            options={radioOptions}
+            options={radioOptions || []}
             idSelected={value}
             onChange={(id) => onChange(id)}
             name={pydanticFormField.id}

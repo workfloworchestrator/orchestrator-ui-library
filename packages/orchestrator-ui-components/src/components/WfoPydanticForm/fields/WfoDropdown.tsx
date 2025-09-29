@@ -9,14 +9,14 @@ export const WfoDropdown: PydanticFormControlledElement = ({
     pydanticFormField,
     value,
 }) => {
-    const dropDownOptions = pydanticFormField.options.map((option) => ({
+    const dropDownOptions = pydanticFormField.options?.map((option) => ({
         value: option.value,
         label: option.label,
     }));
 
     return (
         <WfoReactSelect
-            options={dropDownOptions}
+            options={dropDownOptions || []}
             onChange={onChange}
             id={pydanticFormField.id}
             value={value}

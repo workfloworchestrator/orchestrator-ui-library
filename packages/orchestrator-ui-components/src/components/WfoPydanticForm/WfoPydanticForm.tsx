@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 
+import _ from 'lodash';
 import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import type {
@@ -168,7 +169,7 @@ export const useWfoPydanticFormConfig = () => {
                         // We are not using a radio button component to maintain being able to deselect options
                         return (
                             field.type === PydanticFormFieldType.STRING &&
-                            Array.isArray(field.options) &&
+                            _.isArray(field.options) &&
                             field.options.length > 0
                         );
                     },
@@ -193,6 +194,7 @@ export const useWfoPydanticFormConfig = () => {
                     matcher(field) {
                         return (
                             field.type === PydanticFormFieldType.ARRAY &&
+                            _.isArray(field.options) &&
                             field.options?.length > 0 &&
                             field.options?.length <= 5
                         );

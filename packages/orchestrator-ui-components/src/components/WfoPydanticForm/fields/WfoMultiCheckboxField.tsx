@@ -35,7 +35,7 @@ export const WfoMultiCheckboxField: PydanticFormControlledElement = ({
 
     const { options, id } = pydanticFormField;
 
-    const checkboxes = options.map((option, index) => ({
+    const checkboxes = options?.map((option, index) => ({
         label: option.label,
         id: option.value,
         'data-test-id': `${id}-${index}`,
@@ -59,7 +59,7 @@ export const WfoMultiCheckboxField: PydanticFormControlledElement = ({
 
     return (
         <EuiCheckboxGroup
-            options={checkboxes}
+            options={checkboxes || []}
             idToSelectedMap={checkboxIdToSelectedMap}
             onChange={(id) => handleCheckboxChange(id)}
             data-testid={id}
