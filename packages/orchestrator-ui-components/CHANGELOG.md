@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 5.8.1
+
+### Patch Changes
+
+- dde87d4: Fixes removing values in WFOReactSelect element
+- 2f54f2b: Updates to latest version of pydantic-forms
+
 ## 5.8.0
 
 ### Minor Changes
