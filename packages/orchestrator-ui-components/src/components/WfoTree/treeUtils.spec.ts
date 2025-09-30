@@ -115,9 +115,9 @@ describe('getWfoTreeNodeDepth', () => {
             },
         };
 
-        expect(() =>
-            getWfoTreeNodeDepth(invalidNode, idToNodeMap),
-        ).toThrowError('Parent node for 1 not found.');
+        expect(() => getWfoTreeNodeDepth(invalidNode, idToNodeMap)).toThrow(
+            'Parent node for 1 not found.',
+        );
     });
 });
 

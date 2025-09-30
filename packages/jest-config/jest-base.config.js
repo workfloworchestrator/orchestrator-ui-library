@@ -1,3 +1,4 @@
+/** @jest-config-loader ts-node */
 module.exports = {
     resetMocks: true,
     coveragePathIgnorePatterns: [],
