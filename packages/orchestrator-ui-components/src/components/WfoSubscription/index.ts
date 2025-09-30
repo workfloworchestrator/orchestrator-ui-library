@@ -5,7 +5,7 @@ export * from './overrides';
 export * from './WfoSubscriptionGeneralSections';
 
 export * from './SubscriptionKeyValueBlock';
-export * from './WfoInSyncField';
+export * from './WfoInSyncField/WfoInSyncField';
 export * from './WfoProcessesTimeline';
 export * from './WfoRelatedSubscriptions';
 export * from './WfoSubscription';
