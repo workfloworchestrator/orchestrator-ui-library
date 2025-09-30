@@ -117,7 +117,7 @@ export const WfoProcessDetail = ({
     const [retryProcess] = useRetryProcessMutation();
     const [deleteProcess] = useDeleteProcessMutation();
     const [abortProcess] = useAbortProcessMutation();
-    const hasPrev = useHasPreviousRoute();
+    const hasPreviousRoute = useHasPreviousRoute();
 
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
