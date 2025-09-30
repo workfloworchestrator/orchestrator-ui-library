@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { EuiButton } from '@elastic/eui';
 
-import { WfoIsAllowedToRender } from '@/components';
+import { WfoIsAllowedToRender, getErrorToastMessage } from '@/components';
 import { WfoInsyncIcon } from '@/components';
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -31,6 +31,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const lastUncompletedProcess = getLastUncompletedProcess(
         subscriptionDetail?.processes?.page,
     );
+
     const [setSubscriptionInSync, { isLoading }] =
         useSetSubscriptionInSyncMutation();
     const { showToastMessage } = useShowToastMessage();
@@ -52,11 +53,13 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
                 );
             })
             .catch((error) => {
+                const errorToastMessage = error?.data?.detail
+                    ? getErrorToastMessage(error?.data?.detail)
+                    : t('setInSyncFailed.text').toString();
+
                 showToastMessage(
                     ToastTypes.ERROR,
-                    error?.data?.detail
-                        ? error.data.detail
-                        : t('setInSyncFailed.text').toString,
+                    errorToastMessage,
                     t('setInSyncFailed.title'),
                 );
                 console.error('Failed to set subscription in sync.', error);
