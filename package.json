@@ -16,10 +16,10 @@
         "postinstall": "husky && turbo run build --filter=./packages/*"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.27.1",
-        "@turbo/gen": "^2.5.2",
+        "@changesets/cli": "^2.29.7",
+        "@turbo/gen": "^2.5.8",
         "husky": "^9.0.11",
-        "turbo": "^2.2.3"
+        "turbo": "^2.5.8"
     },
     "name": "orchestrator-core-ui",
     "workspaces": [
