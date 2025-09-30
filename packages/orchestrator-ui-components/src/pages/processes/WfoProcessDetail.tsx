@@ -191,7 +191,7 @@ export const WfoProcessDetail = ({
                     abortProcess({ processId: processDetail.processId });
                 }
 
-                if (hasPrev) {
+                if (hasPreviousRoute) {
                     router.back();
                 } else {
                     router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
