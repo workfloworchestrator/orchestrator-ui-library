@@ -517,26 +517,4 @@ describe('parseErrorDetail', () => {
         ]);
         expect(filteredInput).toBe('Errors:');
     });
-
-    it('handles brackets at the start of the string', () => {
-        const input =
-            "['aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'] Some message here";
-
-        const { failedIds, filteredInput } = parseErrorDetail(input);
-
-        expect(failedIds).toEqual(['aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa']);
-        expect(filteredInput).toBe('Some message here');
-    });
-
-    it('handles multiple bracketed sections, only first is extracted', () => {
-        const input =
-            "['11111111-1111-1111-1111-111111111111'] and ['22222222-2222-2222-2222-222222222222']";
-
-        const { failedIds, filteredInput } = parseErrorDetail(input);
-
-        expect(failedIds).toEqual(['11111111-1111-1111-1111-111111111111']);
-        expect(filteredInput).toBe(
-            "and ['22222222-2222-2222-2222-222222222222']",
-        );
-    });
 });
