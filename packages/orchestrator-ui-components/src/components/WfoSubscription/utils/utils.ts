@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { EuiSelectableOption, EuiThemeComputed } from '@elastic/eui';
 
-import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
+import { PATH_WORKFLOWS } from '@/components';
 import {
     FieldValue,
     ProcessStatus,
@@ -126,35 +126,14 @@ export const getLastUncompletedProcess = (
         : undefined;
 };
 
-// export const getFailedProcesses = (processes?: SubscriptionDetailProcess[]) => processes?.filter(
-//     (process) => process.lastStatus.toLowerCase() === ProcessStatus.FAILED,
-// );
-
-export const getErrorToastMessage = (errorDetail: string) => {
-    console.log('getErrorToastMessage errorDetail', errorDetail);
-    // console.log("getErrorToastMessage failedProcesses", failedProcesses);
-    // if (!failedProcesses || failedProcesses.length === 0) {
-    //     return errorDetail;
-    // }
+export function parseErrorDetail(errorDetail: string) {
     const failedIds =
         errorDetail.match(/\[([^\]]+)\]/)?.[1].match(/[0-9a-f-]{36}/g) || [];
-    // const parts = errorDetail.split(/\[[^\]]+\]/);
-    const filteredInput = errorDetail.replace(/\[.*\]/, '').trim();
 
-    return (
-        <div css={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
-            <div>{filteredInput}</div>
-            {failedIds.map((processId) => {
-                const processUrl = `${PATH_WORKFLOWS}/${processId}`;
-                return (
-                    <div key={processId}>
-                        <Link href={processUrl}>{processId}</Link>
-                    </div>
-                );
-            })}
-        </div>
-    );
-};
+    const filteredInput = errorDetail.replace(/\[[^\]]*\]/, '').trim();
+
+    return { failedIds, filteredInput };
+}
 
 export const getLatestTaskDate = (processes?: SubscriptionDetailProcess[]) => {
     if (!processes || processes.length === 0) {
