@@ -19,7 +19,7 @@
         "tsconfig"
     ],
     "scripts": {
-        "build": "ts-node base.json nextjs.json tsconfig.json --format esm --dts",
+        "build": "tsup base.json nextjs.json tsconfig.json --format esm --dts",
         "dev": "npm run build -- --watch"
     },
     "main": "./dist/",
@@ -30,6 +30,6 @@
         "provenance": true
     },
     "dependencies": {
-        "ts-node": "^10.9.2"
+        "tsup": "^8.5.0"
     }
 }

@@ -24,7 +24,7 @@
         "jest"
     ],
     "scripts": {
-        "build": "ts-node jest-base.config.js --format esm",
+        "build": "tsup jest-base.config.js --format esm",
         "dev": "npm run build -- --watch"
     },
     "main": "./dist/",
@@ -37,6 +37,6 @@
         "jest": "^30.2.0",
         "jest-environment-jsdom": "^30.2.0",
         "jest-watch-typeahead": "^3.0.1",
-        "ts-node": "^10.9.2"
+        "tsup": "^8.5.0"
     }
 }
