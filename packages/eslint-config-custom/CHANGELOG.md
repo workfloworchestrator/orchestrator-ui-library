@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 2.1.0
+
+### Minor Changes
+
+- e732016: Updates depencencies to latest minor versions
+
 ## 2.0.0
 
 ### Major Changes
