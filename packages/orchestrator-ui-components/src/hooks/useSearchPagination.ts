@@ -1,12 +1,9 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Query } from '@elastic/eui';
 
-import {
-    buildSearchParams,
-    getEndpointPath,
-} from '@/components/WfoSearchPage/utils';
-import { OrchestratorConfigContext } from '@/contexts/OrchestratorConfigContext';
+import { buildSearchParams } from '@/components/WfoSearchPage/utils';
+import { useSearchWithPaginationMutation } from '@/rtk/endpoints';
 import {
     AnySearchResult,
     EntityKind,
@@ -44,7 +41,7 @@ export const useSearchPagination = (
     const [error, setError] = useState<string | null>(null);
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const [triggerSearchPagination] = useSearchWithPaginationMutation();
 
     const handleNextPage = useCallback(
         async (nextPageCursor: number) => {
@@ -70,22 +67,10 @@ export const useSearchPagination = (
                     pageSize,
                 );
 
-                const endpointPath = getEndpointPath(selectedEntityTab);
-                const endpoint = `${orchestratorApiBaseUrl}/search/${endpointPath}?cursor=${nextPageCursor}`;
-
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(searchParams),
-                });
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Failed to load next page (${response.status}). Please try again.`,
-                    );
-                }
-
-                const res = await response.json();
+                const res = await triggerSearchPagination({
+                    ...searchParams,
+                    cursor: nextPageCursor,
+                }).unwrap();
 
                 setResults({
                     data: res.data || [],
@@ -121,7 +106,7 @@ export const useSearchPagination = (
             filterGroup,
             pageSize,
             setResults,
-            orchestratorApiBaseUrl,
+            triggerSearchPagination,
         ],
     );
 
