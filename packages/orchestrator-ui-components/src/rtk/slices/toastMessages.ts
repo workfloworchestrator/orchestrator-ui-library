@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction, Reducer, Slice } from '@reduxjs/toolkit';
 
-import { Toast } from '@/types';
+import type { Toast } from '@/types';
 
 export type ToastState = {
     messages: Toast[];
@@ -20,7 +20,7 @@ type ToastMessagesSlice = Slice<
         ) => ToastState;
         removeToastMessage: (
             state: ToastState,
-            action: PayloadAction<Toast['id']>,
+            action: PayloadAction<string>,
         ) => ToastState;
     },
     'toastMessages',
