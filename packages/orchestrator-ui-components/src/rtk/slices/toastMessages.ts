@@ -20,7 +20,7 @@ type ToastMessagesSlice = Slice<
         ) => ToastState;
         removeToastMessage: (
             state: ToastState,
-            action: PayloadAction<string>,
+            action: PayloadAction<Toast['id']>,
         ) => ToastState;
     },
     'toastMessages',
