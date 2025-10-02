@@ -1,5 +1,5 @@
-import { ToastTypes } from '../types';
-import type { Toast } from '../types';
+import { ToastTypes } from '@/types';
+import type { Toast } from '@/types';
 
 export const getToastMessage = (
     type: ToastTypes,
