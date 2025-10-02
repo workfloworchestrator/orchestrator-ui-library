@@ -28,5 +28,8 @@
     "publishConfig": {
         "access": "public",
         "provenance": true
+    },
+    "dependencies": {
+        "tsup": "^8.5.0"
     }
 }
