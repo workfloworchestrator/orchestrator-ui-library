@@ -34,7 +34,7 @@ export const WfoJsonCodeBlock: FC<WfoJsonCodeBlockProps> = ({
 
     function editorDidMount(editor: editor.IStandaloneCodeEditor) {
         const scrollHeight = editor.getScrollHeight();
-        setEditorHeight(Math.min(scrollHeight, 500));
+        setEditorHeight(Math.min(scrollHeight, 750));
     }
 
     return (
@@ -49,7 +49,7 @@ export const WfoJsonCodeBlock: FC<WfoJsonCodeBlockProps> = ({
                 contextmenu: false,
                 minimap: { enabled: false },
                 mouseWheelZoom: true,
-                mouseStyle: 'copy',
+                renderLineHighlight: 'none',
             }}
             onMount={editorDidMount}
             language="json"
