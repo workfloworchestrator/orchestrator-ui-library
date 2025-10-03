@@ -20,3 +20,4 @@ export * from './forms';
 export * from './deprecated';
 export * from './formFields';
 export * from './fileUpload';
+export * from './search';

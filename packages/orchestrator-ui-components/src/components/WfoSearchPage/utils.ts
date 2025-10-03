@@ -260,7 +260,7 @@ export const buildSearchParams = (
     return {
         action: 'select' as const,
         entity_type: selectedEntityTab,
-        query: queryText || undefined,
+        query: queryText || '*',
         filters: filterGroup?.children.length > 0 ? filterGroup : undefined,
         limit: pageSize,
     };
