@@ -16,7 +16,7 @@ import {
 import { WfoBadge, WfoToolTip } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { usePathAutocomplete } from '@/hooks/usePathAutoComplete';
-import { Condition, EntityKind } from '@/types';
+import { Condition, EntityKind, PathInfo } from '@/types';
 
 import { ValueControl } from '../WfoValueControl';
 import {
@@ -42,16 +42,17 @@ export const ConditionRow: FC<ConditionRowProps> = ({
     const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
     const [searchValue, setSearchValue] = useState(condition.path);
+    const [selectedPathInfo, setSelectedPathInfo] = useState<PathInfo | null>(
+        null,
+    );
     const { paths, loading, error } = usePathAutocomplete(
         searchValue,
         entityType,
     );
 
-    const selectedPathInfo =
-        paths.find(({ path }) => path === condition.path) || null;
-
     const handlePathChange = (newPath: string) => {
         const pathInfo = paths.find(({ path }) => path === newPath);
+        setSelectedPathInfo(pathInfo || null);
         onChange({
             path: newPath,
             value_kind: pathInfo?.type,
