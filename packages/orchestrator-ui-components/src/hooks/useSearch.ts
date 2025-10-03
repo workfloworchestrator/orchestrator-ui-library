@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Query } from '@elastic/eui';
 
-import { getEndpointPath } from '@/components/WfoSearchPage/utils';
-import { OrchestratorConfigContext } from '@/contexts/OrchestratorConfigContext';
+import { useSearchMutation } from '@/rtk/endpoints';
 import { EntityKind, Group, PaginatedSearchResults } from '@/types';
 
 
@@ -18,10 +17,8 @@ export const useSearch = (
         page_info: { has_next_page: false, next_page_cursor: null },
         search_metadata: { search_type: null, description: null },
     });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    const { orchestratorApiBaseUrl } = useContext(OrchestratorConfigContext);
+    const [triggerSearch, { isLoading, isError }] = useSearchMutation();
 
     useEffect(() => {
         const queryText =
@@ -35,75 +32,53 @@ export const useSearch = (
                 page_info: { has_next_page: false, next_page_cursor: null },
                 search_metadata: { search_type: null, description: null },
             });
-            setError(null);
             return;
         }
 
         const performSearch = async () => {
-            setLoading(true);
-            setError(null);
-
             try {
-                const endpoint = `${orchestratorApiBaseUrl}/search/${getEndpointPath(entityType)}`;
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'select',
-                        entity_type: entityType,
-                        query: queryText,
-                        filters:
-                            filterGroup && filterGroup.children.length > 0
-                                ? filterGroup
-                                : undefined,
-                        limit: limit,
-                    }),
-                });
+                const result = await triggerSearch({
+                    action: 'select',
+                    entity_type: entityType,
+                    query: queryText,
+                    filters:
+                        filterGroup && filterGroup.children.length > 0
+                            ? filterGroup
+                            : undefined,
+                    limit: limit,
+                }).unwrap();
 
-                if (!response.ok) {
-                    setError('Search failed');
-                    setResults({
-                        data: [],
-                        page_info: {
-                            has_next_page: false,
-                            next_page_cursor: null,
-                        },
-                        search_metadata: {
-                            search_type: null,
-                            description: null,
-                        },
-                    });
-                    return;
-                }
-
-                const res = await response.json();
                 setResults({
-                    data: res.data || [],
+                    data: result.data || [],
                     page_info: {
-                        has_next_page: res.page_info?.has_next_page || false,
+                        has_next_page: result.page_info?.has_next_page || false,
                         next_page_cursor:
-                            res.page_info?.next_page_cursor || null,
+                            result.page_info?.next_page_cursor || null,
                     },
                     search_metadata: {
-                        search_type: res.search_metadata?.search_type || null,
-                        description: res.search_metadata?.description || null,
+                        search_type:
+                            result.search_metadata?.search_type || null,
+                        description:
+                            result.search_metadata?.description || null,
                     },
                 });
             } catch (error) {
                 console.error('Search error:', error);
-                setError('Network error');
                 setResults({
                     data: [],
                     page_info: { has_next_page: false, next_page_cursor: null },
                     search_metadata: { search_type: null, description: null },
                 });
-            } finally {
-                setLoading(false);
             }
         };
 
         performSearch();
-    }, [query, entityType, filterGroup, limit, orchestratorApiBaseUrl]);
+    }, [query, entityType, filterGroup, limit, triggerSearch]);
 
-    return { results, loading, error, setResults };
+    return {
+        results,
+        loading: isLoading,
+        error: isError ? 'Search failed' : null,
+        setResults,
+    };
 };
