@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction, Reducer, Slice } from '@reduxjs/toolkit';
 
-import { Toast } from '@/types';
+import type { Toast } from '@/types';
 
 export type ToastState = {
     messages: Toast[];
