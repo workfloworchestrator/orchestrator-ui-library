@@ -30,7 +30,7 @@ export const useUrlParams = (): UseUrlParamsReturn => {
 
     const [query, setQuery] = useState<Query | string>(() => {
         const queryParam = urlParams.get('q');
-        return queryParam || '*';
+        return queryParam || '';
     });
 
     const [selectedEntityTab, setSelectedEntityTab] = useState<EntityKind>(() => {
