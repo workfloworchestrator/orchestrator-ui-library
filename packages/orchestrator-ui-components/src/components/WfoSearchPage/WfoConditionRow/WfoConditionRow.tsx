@@ -3,28 +3,32 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
-    EuiButton,
     EuiButtonIcon,
-    EuiComboBox,
     EuiFlexGroup,
     EuiFlexItem,
     EuiFormRow,
     EuiPanel,
-    EuiText,
 } from '@elastic/eui';
 
-import { WfoBadge, WfoToolTip } from '@/components';
+import { WfoBadge } from '@/components';
 import { useOrchestratorTheme } from '@/hooks';
 import { usePathAutocomplete } from '@/hooks/usePathAutoComplete';
 import { Condition, EntityKind, PathInfo } from '@/types';
 
 import { ValueControl } from '../WfoValueControl';
+import { getTypeColor } from '../utils';
+import { WfoFieldSelector } from './WfoFieldSelector';
+import { WfoOperatorSelector } from './WfoOperatorSelector';
+import { WfoPathChips } from './WfoPathChips';
+import { WfoPathSelector } from './WfoPathSelector';
+import { WfoRenderPathOption } from './WfoRenderFunctions';
+import { WfoSelectedPathDisplay } from './WfoSelectedPathDisplay';
 import {
-    getButtonColor,
-    getButtonFill,
-    getOperatorDisplay,
-    getTypeColor,
-} from '../utils';
+    createOptionsFromPaths,
+    getPathSelectionOptions,
+    isFullPathSelected,
+    shouldHideValueInput,
+} from './utils';
 
 interface ConditionRowProps {
     condition: Condition;
@@ -42,29 +46,102 @@ export const ConditionRow: FC<ConditionRowProps> = ({
     const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
     const [searchValue, setSearchValue] = useState(condition.path);
-    const [selectedPathInfo, setSelectedPathInfo] = useState<PathInfo | null>(
-        null,
-    );
+    const [showPathSelection, setShowPathSelection] = useState(false);
+    const [selectedFieldName, setSelectedFieldName] = useState<string>('');
     const { paths, loading, error } = usePathAutocomplete(
         searchValue,
         entityType,
     );
 
-    const handlePathChange = (newPath: string) => {
-        const pathInfo = paths.find(({ path }) => path === newPath);
-        setSelectedPathInfo(pathInfo || null);
-        onChange({
-            path: newPath,
-            value_kind: pathInfo?.type,
-            condition: { op: '', value: undefined },
-        });
+    const selectedPathInfo: PathInfo | null = (() => {
+        if (!condition.path) return null;
+
+        const exactMatch = paths.find(({ path, fullPath }) =>
+            fullPath ? fullPath === condition.path : path === condition.path,
+        );
+        if (exactMatch) return exactMatch;
+
+        if (condition.path.includes('.')) {
+            const fieldName = condition.path.split('.').pop();
+            if (fieldName) {
+                const fieldMatch = paths.find(
+                    ({ path, availablePaths }) =>
+                        path === fieldName &&
+                        availablePaths &&
+                        availablePaths.includes(condition.path),
+                );
+                if (fieldMatch) return fieldMatch;
+            }
+        } else {
+            const fieldMatch = paths.find(
+                ({ path }) => path === condition.path,
+            );
+            if (fieldMatch) return fieldMatch;
+        }
+
+        return null;
+    })();
+
+    const handleFieldSelection = (fieldName: string) => {
+        const fieldInfo = paths.find(({ path }) => path === fieldName);
+
+        if (fieldInfo && fieldInfo.group === 'component') {
+            onChange({
+                path: fieldName,
+                value_kind: fieldInfo.type,
+                condition: { op: '', value: undefined },
+            });
+            return;
+        }
+
+        if (
+            fieldInfo &&
+            fieldInfo.availablePaths &&
+            fieldInfo.availablePaths.length === 1
+        ) {
+            const singlePath = fieldInfo.availablePaths[0];
+            onChange({
+                path: singlePath,
+                value_kind: fieldInfo.type,
+                condition: { op: '', value: undefined },
+            });
+            return;
+        }
+
+        setSelectedFieldName(fieldName);
+        setShowPathSelection(true);
+    };
+
+    const handlePathSelection = (selectedOption: {
+        label: string;
+        value: string;
+        fullPath: string;
+        isAnyPath?: boolean;
+    }) => {
+        const fieldInfo = paths.find(({ path }) => path === selectedFieldName);
+        if (fieldInfo) {
+            if (selectedOption.isAnyPath) {
+                onChange({
+                    path: selectedFieldName,
+                    value_kind: fieldInfo.type,
+                    condition: { op: '', value: undefined },
+                });
+            } else {
+                onChange({
+                    path: selectedOption.value,
+                    value_kind: fieldInfo.type,
+                    condition: { op: '', value: undefined },
+                });
+            }
+        }
+        setShowPathSelection(false);
+        setSelectedFieldName('');
     };
 
     const handleOperatorChange = (op: string) => {
-        let value: unknown = undefined;
+        const value: unknown = undefined;
 
         if (selectedPathInfo?.type === 'boolean') {
-            // For boolean fields, we always use 'eq' operator
             const actualOp = 'eq';
             const booleanValue = op === 'eq' ? true : false;
 
@@ -91,75 +168,14 @@ export const ConditionRow: FC<ConditionRowProps> = ({
         });
     };
 
-    const renderPathOption = (
-        option: any,
-        _searchValue: string,
-        contentClassName?: string,
-    ) => {
-        const pathInfo = option.value
-            ? paths.find(({ path }) => path === option.value)
-            : null;
-
-        if (!pathInfo) return option.label;
-
-        return (
-            <EuiFlexGroup
-                alignItems="center"
-                gutterSize="s"
-                responsive={false}
-                className={contentClassName}
-            >
-                <EuiFlexItem grow={true}>
-                    <EuiText size="s">
-                        {pathInfo.displayLabel || pathInfo.path}
-                    </EuiText>
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiFlexGroup
-                        gutterSize="xs"
-                        alignItems="center"
-                        responsive={false}
-                    >
-                        {pathInfo.ui_types?.map((type, index) => (
-                            <EuiFlexItem key={index} grow={false}>
-                                <WfoBadge
-                                    color={getTypeColor(type, theme)}
-                                    textColor={theme.colors.ink}
-                                    size="xs"
-                                >
-                                    {type}
-                                </WfoBadge>
-                            </EuiFlexItem>
-                        ))}
-                    </EuiFlexGroup>
-                </EuiFlexItem>
-            </EuiFlexGroup>
-        );
-    };
-
-    const leavesOptions = paths
-        .filter(({ group }) => group === 'leaf')
-        .map(({ displayLabel, path, type, operators }) => ({
-            label: displayLabel || path,
-            value: path,
-            'data-type': type,
-            'data-operators': operators?.join(', ') || '',
-        }));
-
-    const componentsOptions = paths
-        .filter(({ group }) => group === 'component')
-        .map(({ displayLabel, path, type, operators }) => ({
-            label: displayLabel || path,
-            value: path,
-            'data-type': type,
-            'data-operators': operators?.join(', ') || '',
-        }));
+    const leavesOptions = createOptionsFromPaths(paths, 'leaf');
+    const componentsOptions = createOptionsFromPaths(paths, 'component');
 
     const pathOptions = [
         ...(leavesOptions.length > 0
             ? [
                   {
-                      label: 'Fields',
+                      label: t('fieldsGroupLabel'),
                       options: leavesOptions,
                   },
               ]
@@ -167,63 +183,136 @@ export const ConditionRow: FC<ConditionRowProps> = ({
         ...(componentsOptions.length > 0
             ? [
                   {
-                      label: 'Components',
+                      label: t('componentsGroupLabel'),
                       options: componentsOptions,
                   },
               ]
             : []),
     ];
 
-    const shouldHideValueInput = (): boolean => {
-        // Hide value input if no path is selected yet
-        if (!selectedPathInfo || !condition.condition.op) return true;
+    const hideValueInput = shouldHideValueInput(
+        selectedPathInfo,
+        !!condition.condition.op,
+    );
+    const fullPathSelected = isFullPathSelected(
+        condition.path,
+        selectedPathInfo,
+    );
+    const pathSelectionOptions = (() => {
+        const baseOptions = getPathSelectionOptions(selectedFieldName, paths);
 
-        // Component operators don't need values
-        if (selectedPathInfo.group === 'component') return true;
+        // Add "Any path" option at the top if there are multiple paths
+        const fieldInfo = paths.find(({ path }) => path === selectedFieldName);
+        if (fieldInfo?.availablePaths && fieldInfo.availablePaths.length > 1) {
+            return [
+                {
+                    label: t('anyPathOption'),
+                    value: selectedFieldName,
+                    fullPath: selectedFieldName,
+                    isAnyPath: true,
+                },
+                ...baseOptions,
+            ];
+        }
 
-        // Boolean operators don't need values
-        if (selectedPathInfo.type === 'boolean') return true;
+        return baseOptions;
+    })();
 
-        return false;
+    // Create render functions with theme
+    const renderPathOption = (
+        option: { label: string; value?: string },
+        searchValue: string,
+        contentClassName?: string,
+    ) => (
+        <WfoRenderPathOption
+            option={option}
+            searchValue={searchValue}
+            contentClassName={contentClassName}
+            paths={paths}
+        />
+    );
+
+    const renderPathSelectionOption = (option: {
+        label: string;
+        value?: string;
+        fullPath?: string;
+        isAnyPath?: boolean;
+    }) => {
+        // Get the field type from the selected field info
+        const fieldInfo = paths.find(({ path }) => path === selectedFieldName);
+        const fieldType = fieldInfo?.type || 'string';
+
+        return (
+            <WfoPathChips
+                fullPath={option.fullPath || ''}
+                label={option.label}
+                fieldType={fieldType}
+                isAnyPath={option.isAnyPath}
+            />
+        );
     };
-
-    const selectedPathOptions = condition.path
-        ? [
-              {
-                  label: selectedPathInfo?.displayLabel || condition.path,
-                  value: condition.path,
-              },
-          ]
-        : [];
 
     return (
         <EuiPanel paddingSize="m" color="subdued">
             <EuiFlexGroup direction="column" gutterSize="m">
                 <EuiFlexItem>
-                    <EuiFormRow label="Field" error={error} isInvalid={!!error}>
+                    <EuiFormRow
+                        label={t('fieldLabel')}
+                        error={error}
+                        isInvalid={!!error}
+                    >
                         <EuiFlexGroup gutterSize="s" alignItems="center">
                             <EuiFlexItem>
-                                <EuiComboBox
-                                    placeholder={t('fieldSearchPlaceholder')}
-                                    options={pathOptions}
-                                    selectedOptions={selectedPathOptions}
-                                    onChange={(selected) =>
-                                        handlePathChange(
-                                            selected[0]?.value || '',
-                                        )
-                                    }
-                                    onSearchChange={(value) =>
-                                        setSearchValue(value)
-                                    }
-                                    singleSelection={{ asPlainText: true }}
-                                    isLoading={loading}
-                                    isClearable
-                                    isInvalid={!!error}
-                                    renderOption={renderPathOption}
-                                    rowHeight={30}
-                                />
+                                {showPathSelection ? (
+                                    <WfoPathSelector
+                                        selectedFieldName={selectedFieldName}
+                                        pathOptions={pathSelectionOptions}
+                                        onPathSelection={handlePathSelection}
+                                        onClear={() => {
+                                            setShowPathSelection(false);
+                                            setSelectedFieldName('');
+                                        }}
+                                        renderOption={renderPathSelectionOption}
+                                    />
+                                ) : condition.path && fullPathSelected ? (
+                                    <WfoSelectedPathDisplay
+                                        condition={condition}
+                                        selectedPathInfo={selectedPathInfo}
+                                        onEdit={() => {
+                                            onChange({
+                                                path: '',
+                                                value_kind: undefined,
+                                                condition: {
+                                                    op: '',
+                                                    value: undefined,
+                                                },
+                                            });
+                                        }}
+                                    />
+                                ) : (
+                                    <WfoFieldSelector
+                                        pathOptions={pathOptions}
+                                        loading={loading}
+                                        error={error}
+                                        searchValue={searchValue}
+                                        onFieldSelection={handleFieldSelection}
+                                        onSearchChange={setSearchValue}
+                                        onClear={() => {
+                                            onChange({
+                                                path: '',
+                                                value_kind: undefined,
+                                                condition: {
+                                                    op: '',
+                                                    value: undefined,
+                                                },
+                                            });
+                                        }}
+                                        renderPathOption={renderPathOption}
+                                    />
+                                )}
                             </EuiFlexItem>
-                            {selectedPathInfo?.ui_types &&
+                            {condition.path &&
+                                selectedPathInfo?.ui_types &&
                                 selectedPathInfo.ui_types.length > 0 && (
                                     <EuiFlexItem grow={false}>
                                         <EuiFlexGroup
@@ -262,72 +351,16 @@ export const ConditionRow: FC<ConditionRowProps> = ({
                 <EuiFlexItem>
                     <EuiFlexGroup gutterSize="s" alignItems="flexEnd">
                         <EuiFlexItem>
-                            <EuiFormRow label="Operator">
-                                <EuiFlexGroup gutterSize="xs" wrap>
-                                    {selectedPathInfo?.operators?.map((op) => {
-                                        const { symbol, description } =
-                                            getOperatorDisplay(
-                                                op,
-                                                selectedPathInfo,
-                                            );
-                                        return (
-                                            <EuiFlexItem key={op} grow={false}>
-                                                <WfoToolTip
-                                                    tooltipContent={description}
-                                                >
-                                                    <EuiButton
-                                                        size="s"
-                                                        color={getButtonColor(
-                                                            op,
-                                                            selectedPathInfo,
-                                                            condition,
-                                                        )}
-                                                        fill={getButtonFill(
-                                                            op,
-                                                            selectedPathInfo,
-                                                            condition,
-                                                        )}
-                                                        onClick={() =>
-                                                            handleOperatorChange(
-                                                                op,
-                                                            )
-                                                        }
-                                                        style={{
-                                                            minWidth:
-                                                                theme.size.xxl,
-                                                            fontSize:
-                                                                theme.size.base,
-                                                            fontWeight:
-                                                                theme.font
-                                                                    .weight
-                                                                    .bold,
-                                                        }}
-                                                    >
-                                                        {symbol}
-                                                    </EuiButton>
-                                                </WfoToolTip>
-                                            </EuiFlexItem>
-                                        );
-                                    })}
-                                    {(!selectedPathInfo ||
-                                        selectedPathInfo.operators.length ===
-                                            0) && (
-                                        <EuiFlexItem grow={false}>
-                                            <EuiText
-                                                size="s"
-                                                color={theme.colors.textSubdued}
-                                            >
-                                                {t('selectFieldFirst')}
-                                            </EuiText>
-                                        </EuiFlexItem>
-                                    )}
-                                </EuiFlexGroup>
-                            </EuiFormRow>
+                            <WfoOperatorSelector
+                                selectedPathInfo={selectedPathInfo}
+                                condition={condition}
+                                onOperatorChange={handleOperatorChange}
+                            />
                         </EuiFlexItem>
 
-                        {!shouldHideValueInput() && (
+                        {!hideValueInput && (
                             <EuiFlexItem>
-                                <EuiFormRow label="Value">
+                                <EuiFormRow label={t('valueLabel')}>
                                     <ValueControl
                                         pathInfo={selectedPathInfo}
                                         operator={condition.condition.op}

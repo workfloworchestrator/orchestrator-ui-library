@@ -185,6 +185,7 @@ export type value_schema = {
 export type PathLeaf = {
     name: string;
     ui_types: string[];
+    paths?: string[];
 };
 
 export type PathAutocompleteResponse = {
@@ -208,4 +209,7 @@ export type PathInfo = {
     group: 'leaf' | 'component';
     displayLabel?: string;
     ui_types?: string[];
+    fullPath?: string;
+    availablePaths?: string[];
+    pathCount?: number;
 };

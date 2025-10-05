@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl';
 import {
     EuiButton,
     EuiCallOut,
+    EuiFieldSearch,
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
-    EuiSearchBar,
-    EuiSearchBarOnChangeArgs,
     EuiSpacer,
     EuiTab,
     EuiTabs,
@@ -77,6 +76,22 @@ export const WfoSearch = () => {
         pageSize,
     );
 
+    const [hasSearchBeenAttempted, setHasSearchBeenAttempted] = useState(false);
+
+    useEffect(() => {
+        const queryText =
+            typeof debouncedQuery === 'string'
+                ? debouncedQuery
+                : debouncedQuery?.text?.trim() || '';
+        const hasFilters = filterGroup && filterGroup.children.length > 0;
+
+        if (queryText.length >= 2 || hasFilters) {
+            setHasSearchBeenAttempted(true);
+        } else if (queryText === '' || queryText === '*') {
+            setHasSearchBeenAttempted(false);
+        }
+    }, [debouncedQuery, filterGroup]);
+
     const {
         currentPage,
         error,
@@ -94,9 +109,19 @@ export const WfoSearch = () => {
         setResults,
     );
 
+    const [searchValue, setSearchValue] = useState(() => {
+        // For EuiSearchBar, we need to preserve the original query structure
+        if (typeof query === 'string') {
+            return query;
+        }
+        const queryText = query.text || '';
+        return queryText;
+    });
+
     const handleTabChange = (tabId: EntityKind) => {
         setSelectedEntityTab(tabId);
-        setQuery(EuiSearchBar.Query.MATCH_ALL);
+        setQuery('');
+        setSearchValue('');
         setFilterGroup({
             op: 'AND',
             children: [],
@@ -117,14 +142,34 @@ export const WfoSearch = () => {
         resetPagination();
     };
 
-    const onSearchChange = ({ query }: EuiSearchBarOnChangeArgs) => {
-        setQuery(query || EuiSearchBar.Query.MATCH_ALL);
-        return true;
+    const onSearchChange = (searchText: string) => {
+        const cleanedText = searchText.replace(/[=><[\]{}\\/#$%^&+]/g, '');
+
+        setSearchValue(cleanedText);
+        setQuery(cleanedText.trim() || '');
     };
+
+    useEffect(() => {
+        if (typeof query === 'string') {
+            if (query !== searchValue) {
+                setSearchValue(query);
+            }
+        } else {
+            const queryText = query.text || '';
+            if (queryText !== searchValue) {
+                setSearchValue(queryText);
+            }
+        }
+    }, [query, searchValue]);
 
     const currentTab = ENTITY_TABS.find((tab) => tab.id === selectedEntityTab);
 
     const isSearchActive = results.data.length > 0 || loading;
+
+    const shouldShowNoResults = (() => {
+        // Only show no results banner if a search was actually attempted
+        return hasSearchBeenAttempted && !loading && results.data.length === 0;
+    })();
 
     useEffect(() => {
         if (results.data.length > 0) {
@@ -176,15 +221,19 @@ export const WfoSearch = () => {
             </EuiTabs>
             <EuiSpacer size="m" />
 
-            <EuiSearchBar
-                box={{
-                    placeholder: t('searchPlaceholder', {
-                        entityType: currentTab?.label.toLowerCase(),
-                    }),
-                    incremental: true,
+            <EuiFieldSearch
+                placeholder={t('searchPlaceholder', {
+                    entityType: currentTab?.label.toLowerCase(),
+                })}
+                value={searchValue || ''}
+                onChange={(event) => {
+                    onSearchChange(event.target.value);
                 }}
-                query={query}
-                onChange={onSearchChange}
+                onSearch={(value) => {
+                    onSearchChange(value);
+                }}
+                incremental={true}
+                fullWidth
             />
 
             <EuiSpacer size="s" />
@@ -239,6 +288,29 @@ export const WfoSearch = () => {
                         </EuiButton>
                     </EuiCallOut>
                     <EuiSpacer size="m" />
+                </>
+            )}
+
+            {shouldShowNoResults && (
+                <>
+                    <EuiSpacer size="l" />
+                    <EuiCallOut
+                        title={t('noResults')}
+                        color="primary"
+                        iconType="search"
+                        size="m"
+                    >
+                        <p>
+                            {t('noResultsMessage', {
+                                entityType: currentTab?.label.toLowerCase(),
+                            })}
+                        </p>
+                        <EuiSpacer size="s" />
+                        <EuiText size="s" color="subdued">
+                            <p>{t('noResultsSuggestions')}</p>
+                        </EuiText>
+                    </EuiCallOut>
+                    <EuiSpacer size="l" />
                 </>
             )}
 

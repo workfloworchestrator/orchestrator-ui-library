@@ -505,6 +505,9 @@
             "details": "Details",
             "dismiss": "Dismiss",
             "searchPlaceholder": "Search for {entityType}…",
+            "noResults": "No Results",
+            "noResultsMessage": "No {entityType} found matching your search criteria.",
+            "noResultsSuggestions": "Try adjusting your search terms, removing filters, or searching for different keywords.",
             "noResultsFound": "No results found for your search.",
             "loadingSearchResults": "Loading search results...",
             "previousPage": "Previous page",
@@ -522,7 +525,16 @@
             "toDate": "To date",
             "enterNumber": "Enter number",
             "selectDateAndTime": "Select date",
-            "valueControlTo": "to"
+            "valueControlTo": "to",
+            "searchFieldsPlaceholder": "Search fields...",
+            "selectSpecificPathPlaceholder": "Select a specific path...",
+            "anyPathOption": "Any path",
+            "operatorLabel": "Operator",
+            "fieldLabel": "Field",
+            "valueLabel": "Value",
+            "fieldsGroupLabel": "Fields",
+            "componentsGroupLabel": "Components",
+            "pathsCount": "{count} paths"
         },
         "tabs": {
             "subscriptions": "Subscriptions",

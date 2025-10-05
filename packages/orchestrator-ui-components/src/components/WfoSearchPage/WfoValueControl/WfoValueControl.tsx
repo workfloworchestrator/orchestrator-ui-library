@@ -10,6 +10,8 @@ import {
     EuiFieldText,
     EuiFlexGroup,
     EuiFlexItem,
+    EuiFormHelpText,
+    EuiIcon,
     EuiText,
 } from '@elastic/eui';
 
@@ -38,6 +40,64 @@ export const ValueControl: FC<ValueControlProps> = ({
     if (!schema || schema.kind === 'none') return null;
 
     if (pathInfo.type === 'string') {
+        if (operator === 'like') {
+            const handleLikeChange = (newValue: string) => {
+                onChange(newValue);
+            };
+
+            const ensureWildcards = (inputValue: string) => {
+                if (!inputValue) return inputValue;
+                if (!inputValue.includes('%') && !inputValue.includes('_')) {
+                    return `%${inputValue}%`;
+                }
+                return inputValue;
+            };
+
+            const currentValue = String(value || '');
+            const hasWildcards =
+                currentValue.includes('%') || currentValue.includes('_');
+
+            return (
+                <>
+                    <EuiFieldText
+                        placeholder="Enter pattern (% = any chars, _ = single char)"
+                        value={currentValue}
+                        onChange={(event) =>
+                            handleLikeChange(event.target.value)
+                        }
+                        onBlur={(event) => {
+                            const finalValue = ensureWildcards(
+                                event.target.value,
+                            );
+                            if (finalValue !== event.target.value) {
+                                handleLikeChange(finalValue);
+                            }
+                        }}
+                        prepend={<EuiIcon type="search" />}
+                    />
+                    <EuiFormHelpText>
+                        {hasWildcards ? (
+                            <span>
+                                <EuiIcon
+                                    type="checkInCircleFilled"
+                                    color="success"
+                                    size="s"
+                                />{' '}
+                                Pattern with wildcards:{' '}
+                                <strong>{currentValue}</strong>
+                            </span>
+                        ) : (
+                            <span>
+                                Will search for:{' '}
+                                <strong>%{currentValue || 'your-text'}%</strong>{' '}
+                                (auto-wrapped with wildcards)
+                            </span>
+                        )}
+                    </EuiFormHelpText>
+                </>
+            );
+        }
+
         if (pathInfo.example_values && pathInfo.example_values.length > 0) {
             const options = pathInfo.example_values.map((val) => ({
                 label: val,
