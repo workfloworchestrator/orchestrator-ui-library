@@ -170,7 +170,7 @@ export const getTypeColor = (type: string, theme: Theme): string => {
 
 interface PathInfo {
     type?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 interface OperatorDisplay {

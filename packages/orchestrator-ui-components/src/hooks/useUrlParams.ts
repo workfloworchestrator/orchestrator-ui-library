@@ -4,7 +4,10 @@ import { Query } from '@elastic/eui';
 
 import { EntityKind } from '@/types';
 
-import { DEFAULT_ENTITY_TAB, VALID_ENTITY_TYPES } from '../components/WfoSearchPage/constants';
+import {
+    DEFAULT_ENTITY_TAB,
+    VALID_ENTITY_TYPES,
+} from '../components/WfoSearchPage/constants';
 
 interface UseUrlParamsReturn {
     urlParams: URLSearchParams;
@@ -33,25 +36,31 @@ export const useUrlParams = (): UseUrlParamsReturn => {
         return queryParam || '';
     });
 
-    const [selectedEntityTab, setSelectedEntityTab] = useState<EntityKind>(() => {
-        const tabParam = urlParams.get('tab') as EntityKind;
-        return tabParam && VALID_ENTITY_TYPES.includes(tabParam)
-            ? tabParam
-            : DEFAULT_ENTITY_TAB;
-    });
+    const [selectedEntityTab, setSelectedEntityTab] = useState<EntityKind>(
+        () => {
+            const tabParam = urlParams.get('tab') as EntityKind;
+            return tabParam && VALID_ENTITY_TYPES.includes(tabParam)
+                ? tabParam
+                : DEFAULT_ENTITY_TAB;
+        },
+    );
 
     const [showFilters, setShowFilters] = useState<boolean>(() => {
         return urlParams.get('filters') === 'true';
     });
 
-    const [selectedRecordIndex, setSelectedRecordIndex] = useState<number>(() => {
-        const indexParam = urlParams.get('selected');
-        return indexParam ? parseInt(indexParam, 10) || 0 : 0;
-    });
+    const [selectedRecordIndex, setSelectedRecordIndex] = useState<number>(
+        () => {
+            const indexParam = urlParams.get('selected');
+            return indexParam ? parseInt(indexParam, 10) || 0 : 0;
+        },
+    );
 
-    const [selectedRecordId, setSelectedRecordId] = useState<string | null>(() => {
-        return urlParams.get('id') || null;
-    });
+    const [selectedRecordId, setSelectedRecordId] = useState<string | null>(
+        () => {
+            return urlParams.get('id') || null;
+        },
+    );
 
     const updateUrl = useCallback(() => {
         const newParams = new URLSearchParams();
@@ -83,7 +92,13 @@ export const useUrlParams = (): UseUrlParamsReturn => {
 
         window.history.replaceState({}, '', newUrl);
         setUrlParams(newParams);
-    }, [query, selectedEntityTab, showFilters, selectedRecordIndex, selectedRecordId]);
+    }, [
+        query,
+        selectedEntityTab,
+        showFilters,
+        selectedRecordIndex,
+        selectedRecordId,
+    ]);
 
     useEffect(() => {
         updateUrl();

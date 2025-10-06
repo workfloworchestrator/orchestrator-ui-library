@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { EuiFlexGroup, EuiPanel } from '@elastic/eui';
 
@@ -23,8 +23,8 @@ export const WfoSearchResults = ({
     onRecordSelect,
 }: WfoSearchResultsProps) => {
     const [modalData, setModalData] = useState<{
-        subscription: any;
-        matchingField?: any;
+        subscription: unknown;
+        matchingField?: unknown;
     } | null>(null);
 
     const handleCloseModal = () => {
