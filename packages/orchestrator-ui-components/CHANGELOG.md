@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.0.0
+
+### Major Changes
+
+- 7408909: UI Components for the new search and agent page, integrating with the search/agent endpoints in the core package.
+
 ## 5.9.0
 
 ### Minor Changes
