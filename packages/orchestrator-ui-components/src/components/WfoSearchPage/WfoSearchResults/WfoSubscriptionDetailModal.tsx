@@ -17,8 +17,8 @@ import { TreeProvider } from '@/contexts';
 interface WfoSubscriptionDetailModalProps {
     isVisible: boolean;
     onClose: () => void;
-    subscriptionData: any;
-    matchingField?: any;
+    subscriptionData: unknown | null;
+    matchingField?: unknown;
 }
 
 export const WfoSubscriptionDetailModal: FC<
@@ -27,7 +27,9 @@ export const WfoSubscriptionDetailModal: FC<
     const t = useTranslations('search.page');
     if (!isVisible || !subscriptionData) return null;
 
-    const subscriptionId = subscriptionData.subscription_id;
+    const subscriptionId =
+        subscriptionData &&
+        (subscriptionData as { subscription_id: string }).subscription_id;
 
     return (
         <EuiModal onClose={onClose} maxWidth={800}>

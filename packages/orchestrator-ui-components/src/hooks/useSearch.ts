@@ -5,7 +5,6 @@ import { Query } from '@elastic/eui';
 import { useSearchMutation } from '@/rtk/endpoints';
 import { EntityKind, Group, PaginatedSearchResults } from '@/types';
 
-
 export const useSearch = (
     query: Query | string,
     entityType: EntityKind,

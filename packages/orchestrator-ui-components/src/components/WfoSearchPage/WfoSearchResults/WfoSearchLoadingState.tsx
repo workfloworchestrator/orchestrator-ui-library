@@ -9,7 +9,7 @@ import { useOrchestratorTheme } from '@/hooks';
 export const WfoSearchLoadingState: FC = () => {
     const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
-    
+
     return (
         <EuiPanel paddingSize="l" color="transparent" hasShadow={false}>
             <EuiFlexGroup justifyContent="center" alignItems="center">
