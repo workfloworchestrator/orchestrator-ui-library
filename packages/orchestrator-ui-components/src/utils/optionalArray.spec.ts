@@ -1,3 +1,5 @@
+import { toOptionalObjectProperty } from 'pydantic-forms';
+
 import {
     optionalArrayMapper,
     toOptionalArrayEntries,
@@ -68,5 +70,30 @@ describe('optionalArrayMapper', () => {
         const result = optionalArrayMapper(undefined, () => 'test');
 
         expect(result).toEqual([]);
+    });
+});
+
+describe('toOptionalObjectProperty', () => {
+    const flatSchema = { const: 'CONST_VAL' };
+    function withSpread(addConstValue: boolean) {
+        return {
+            ...(addConstValue && { const: flatSchema.const }),
+        };
+    }
+    function withHelper(addConstValue: boolean) {
+        return {
+            ...toOptionalObjectProperty(
+                { const: flatSchema.const },
+                addConstValue,
+            ),
+        };
+    }
+    it('adds const when addConstValue = true', () => {
+        expect(withSpread(true)).toEqual(withHelper(true));
+        expect(withSpread(true)).toHaveProperty('const', 'CONST_VAL');
+    });
+    it('omits const when addConstValue = false', () => {
+        expect(withSpread(false)).toEqual(withHelper(false));
+        expect(withSpread(false)).not.toHaveProperty('const');
     });
 });
