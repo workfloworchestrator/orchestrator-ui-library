@@ -291,7 +291,8 @@
             "metadata": "Metadata",
             "note": "Note",
             "customerFullname": "Customer",
-            "customerShortcode": "Customer abbr"
+            "customerShortcode": "Customer abbr",
+            "actions": "Actions"
         },
         "detail": {
             "title": "Subscriptions",
