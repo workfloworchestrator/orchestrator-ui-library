@@ -36,5 +36,9 @@ export * from './WfoInlineNoteEdit';
 export * from './WfoTableCodeBlock';
 export * from './WfoInlineEdit';
 export * from './WfoPydanticForm';
+<<<<<<< HEAD
 export * from './WfoSearchPage';
 export * from './WfoAgent';
+=======
+export * from './WfoMonacoCodeBlock';
+>>>>>>> eed74dca (Make monaco editor a separate component)
