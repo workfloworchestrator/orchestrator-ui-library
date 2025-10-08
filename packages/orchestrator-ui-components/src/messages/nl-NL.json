@@ -288,7 +288,8 @@
             "note": "Notitie",
             "metadata": "Metadata",
             "customerFullname": "Klant",
-            "customerShortcode": "Klantafkorting"
+            "customerShortcode": "Klantafkorting",
+            "actions": "Acties"
         },
         "detail": {
             "title": "Subscriptions",
