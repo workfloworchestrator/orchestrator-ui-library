@@ -143,10 +143,8 @@ export const WfoSearch = () => {
     };
 
     const onSearchChange = (searchText: string) => {
-        const cleanedText = searchText.replace(/[=><[\]{}\\/#$%^&+]/g, '');
-
-        setSearchValue(cleanedText);
-        setQuery(cleanedText.trim() || '');
+        setSearchValue(searchText);
+        setQuery(searchText);
     };
 
     useEffect(() => {
