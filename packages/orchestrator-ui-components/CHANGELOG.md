@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.1.1
+
+### Patch Changes
+
+- ad4727a: Remove space trimming and special character removal from the searchbar.
+
 ## 6.1.0
 
 ### Minor Changes
