@@ -10,7 +10,7 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
+import { WfoMonacoCodeBlock, WfoTableCodeBlock } from '@/components';
 import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
@@ -206,7 +206,7 @@ export const WfoStep = React.forwardRef(
                         (tableView ? (
                             <WfoTableCodeBlock stepState={stepContent} />
                         ) : (
-                            <WfoJsonCodeBlock data={stepContent} />
+                            <WfoMonacoCodeBlock data={stepContent} />
                         ))}
                     {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>
