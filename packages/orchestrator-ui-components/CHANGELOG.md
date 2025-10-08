@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.1.0
+
+### Minor Changes
+
+- 8963f5c: Added toOptionalObjectProperty function, new compact pencil icon
+
 ## 6.0.0
 
 ### Major Changes
