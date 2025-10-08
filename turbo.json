@@ -1,0 +1,50 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": ["**/.env.*local"],
+    "globalEnv": [
+        "ENVIRONMENT_NAME",
+        "PROCESS_DETAIL_REFETCH_INTERVAL",
+        "ORCHESTRATOR_API_HOST",
+        "ORCHESTRATOR_API_PATH",
+        "ORCHESTRATOR_GRAPHQL_HOST",
+        "ORCHESTRATOR_GRAPHQL_PATH",
+        "NEXT_PUBLIC_ENVIRONMENT_NAME",
+        "NEXT_PUBLIC_PROCESS_DETAIL_REFETCH_INTERVAL",
+        "NEXTAUTH_ID",
+        "NEXTAUTH_CLIENT_ID",
+        "NEXTAUTH_CLIENT_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_ISSUER",
+        "NEXTAUTH_URL",
+        "NEXTAUTH_WELL_KNOWN_OVERRIDE",
+        "NEXTAUTH_AUTHORIZATION_SCOPE_OVERRIDE",
+        "AUTH_ACTIVE"
+    ],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["$TURBO_DEFAULT$", "!**/*.stories.{tsx,jsx,mdx}"],
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "!.next/cache/**",
+                "storybook-static/**"
+            ]
+        },
+        "build:storybook": {},
+        "test": {},
+        "lint": {
+            "dependsOn": ["^build"]
+        },
+        "tsc": {
+            "dependsOn": ["^build"]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "reset": {
+            "dependsOn": ["^reset"]
+        }
+    }
+}

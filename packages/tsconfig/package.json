@@ -1,0 +1,35 @@
+{
+    "name": "@orchestrator-ui/tsconfig",
+    "description": "Contains the tsconfig configuration used in the Workflow orchestrator frontend projects",
+    "author": {
+        "name": "Workflow Orchestrator Programme",
+        "email": "workfloworchestrator.board@commonsconservancy.org",
+        "url": "https://www.workfloworchestrator.org"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+    },
+    "homepage": "https://www.workfloworchestrator.org",
+    "keywords": [
+        "orchestrator",
+        "workflow",
+        "workflow orchestrator",
+        "typescript",
+        "tsconfig"
+    ],
+    "scripts": {
+        "build": "tsup base.json nextjs.json tsconfig.json --format esm --dts",
+        "dev": "npm run build -- --watch"
+    },
+    "main": "./dist/",
+    "version": "1.3.0",
+    "license": "Apache-2.0",
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "dependencies": {
+        "tsup": "^8.5.0"
+    }
+}

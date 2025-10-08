@@ -1,0 +1,18 @@
+{
+    "extends": "@orchestrator-ui/tsconfig/base.json",
+    "compilerOptions": {
+        "strictNullChecks": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": [
+        "node_modules",
+        "**/*.stories.ts",
+        "**/*.stories.js",
+        "**/*.stories.jsx",
+        "**/*.stories.tsx"
+    ]
+}

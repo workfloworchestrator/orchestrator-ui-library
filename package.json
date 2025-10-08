@@ -1,0 +1,30 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "turbo run dev --filter=wfo-ui...",
+        "dev:surf": "turbo run dev --filter=wfo-ui-surf...",
+        "dev:storybook": "turbo run dev --filter=storybook...",
+        "dev:all": "turbo run dev",
+        "test": "turbo run test",
+        "tsc": "turbo run tsc",
+        "lint": "turbo run lint",
+        "prettier": "prettier -c \"{**/*,*}.{ts,tsx,json,js,md}\"",
+        "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
+        "build": "turbo run build",
+        "packages:changeset": "changeset",
+        "packages:publish": "turbo run build lint test && changeset publish",
+        "postinstall": "husky && turbo run build --filter=./packages/*"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.27.1",
+        "@turbo/gen": "^2.5.2",
+        "husky": "^9.0.11",
+        "turbo": "^2.2.3"
+    },
+    "name": "orchestrator-core-ui",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "packageManager": "npm@10.9.0"
+}

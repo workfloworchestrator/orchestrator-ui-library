@@ -1,0 +1,5 @@
+mkdocs-awesome-pages-plugin
+mkdocs-material
+pystache~=0.6.0
+recommonmark~=0.7.1
+termynal
