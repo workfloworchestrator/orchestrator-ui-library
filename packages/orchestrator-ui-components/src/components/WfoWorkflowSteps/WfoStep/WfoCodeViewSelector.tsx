@@ -1,10 +1,8 @@
 import React, { useCallback } from 'react';
 
 import { useTranslations } from 'next-intl';
-import css from 'styled-jsx/css';
 
 import { EuiButtonGroup } from '@elastic/eui';
-import { ICON_SIDES } from '@elastic/eui/src/components/badge/badge';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoBracketSquare, WfoCommandLine, WfoTableCells } from '@/icons';

@@ -53,9 +53,6 @@ export const WfoStep = React.forwardRef(
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
         const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
-        const handleCodeViewChange = (newCodeView: CodeView) => {
-            setCodeView(newCodeView);
-        };
 
         const { theme } = useOrchestratorTheme();
         const {
@@ -126,8 +123,10 @@ export const WfoStep = React.forwardRef(
         );
 
         const handle = useCallback(
-            (id: string) => handleCodeViewChange(id as CodeView),
-            [handleCodeViewChange],
+            (newCodeView: string) => {
+                setCodeView(newCodeView as CodeView);
+            },
+            [setCodeView],
         );
 
         return (

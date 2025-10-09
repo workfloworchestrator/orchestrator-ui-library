@@ -26,4 +26,4 @@ export const WfoCommandLineSvg: FC<WfoIconProps> = ({
     </svg>
 );
 
-export const WfoCommandLine = WfoCommandLineSvg;
+export const WfoCommandLine = withWfoHeroIconsWrapper(WfoCommandLineSvg);
