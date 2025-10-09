@@ -10,7 +10,11 @@ import {
     EuiText,
 } from '@elastic/eui';
 
-import { WfoMonacoCodeBlock, WfoTableCodeBlock } from '@/components';
+import {
+    WfoJsonCodeBlock,
+    WfoMonacoCodeBlock,
+    WfoTableCodeBlock,
+} from '@/components';
 import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
@@ -23,6 +27,7 @@ import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
+import { CodeView, WfoCodeViewSelector } from './WfoCodeViewSelector';
 import { WfoStepForm } from './WfoStepForm';
 
 export interface WfoStepProps {
@@ -53,7 +58,7 @@ export const WfoStep = React.forwardRef(
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
-        const [tableView, setTableView] = useState<boolean>(false);
+        const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
 
         const { theme } = useOrchestratorTheme();
         const {
@@ -150,21 +155,10 @@ export const WfoStep = React.forwardRef(
                             {step.completed && (
                                 <>
                                     {isExpanded && (
-                                        <EuiButton
-                                            onClick={(
-                                                event: React.MouseEvent<HTMLButtonElement>,
-                                            ) => {
-                                                setTableView(!tableView);
-                                                event.stopPropagation();
-                                            }}
-                                            size="s"
-                                        >
-                                            {t(
-                                                tableView
-                                                    ? 'jsonView'
-                                                    : 'tableView',
-                                            )}
-                                        </EuiButton>
+                                        <WfoCodeViewSelector
+                                            codeView={codeView}
+                                            setCodeView={setCodeView}
+                                        />
                                     )}
                                     <EuiFlexItem
                                         grow={0}
@@ -203,8 +197,10 @@ export const WfoStep = React.forwardRef(
                     {hasStepContent &&
                         !hasHtmlMail &&
                         isExpanded &&
-                        (tableView ? (
+                        (codeView === CodeView.TABLE ? (
                             <WfoTableCodeBlock stepState={stepContent} />
+                        ) : codeView === CodeView.RAW ? (
+                            <WfoJsonCodeBlock data={stepContent} />
                         ) : (
                             <WfoMonacoCodeBlock data={stepContent} />
                         ))}
