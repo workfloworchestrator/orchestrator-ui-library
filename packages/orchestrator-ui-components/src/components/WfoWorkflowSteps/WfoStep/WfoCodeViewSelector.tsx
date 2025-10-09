@@ -109,6 +109,9 @@ export const WfoCodeViewSelector = ({
             idSelected={codeView}
             isIconOnly={true}
             onChange={handle}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
             type="single"
         />
     );
