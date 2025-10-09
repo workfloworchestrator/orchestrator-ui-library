@@ -1,14 +1,8 @@
-import React, { LegacyRef, useState } from 'react';
+import React, { LegacyRef, useCallback, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 import {
     WfoJsonCodeBlock,
@@ -59,6 +53,9 @@ export const WfoStep = React.forwardRef(
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
         const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
+        const handleCodeViewChange = (newCodeView: CodeView) => {
+            setCodeView(newCodeView);
+        };
 
         const { theme } = useOrchestratorTheme();
         const {
@@ -128,6 +125,11 @@ export const WfoStep = React.forwardRef(
             Object.keys(userInputForm?.properties ?? {})[0],
         );
 
+        const handle = useCallback(
+            (id: string) => handleCodeViewChange(id as CodeView),
+            [handleCodeViewChange],
+        );
+
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -157,7 +159,7 @@ export const WfoStep = React.forwardRef(
                                     {isExpanded && (
                                         <WfoCodeViewSelector
                                             codeView={codeView}
-                                            setCodeView={setCodeView}
+                                            handleCodeViewChange={handle}
                                         />
                                     )}
                                     <EuiFlexItem

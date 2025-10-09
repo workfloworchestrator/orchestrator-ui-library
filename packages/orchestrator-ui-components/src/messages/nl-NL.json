@@ -249,8 +249,11 @@
             "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
             "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
             "traceback": "Traceback",
-            "tableView": "Tabelweergave",
-            "jsonView": "JSON weergave"
+            "codeView": {
+                "json": "JSON",
+                "table": "Tab",
+                "raw": "Raw"
+            }
         },
         "delta": {
             "title": "Subscription delta",
