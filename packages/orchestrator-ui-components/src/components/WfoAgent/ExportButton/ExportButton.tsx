@@ -12,9 +12,6 @@ import { csvDownloadHandler } from '@/utils/csvDownload';
 
 export type ExportData = {
     action: string;
-    token: string;
-    count: number;
-    entity_type: string;
     download_url: string;
     message: string;
 };
@@ -53,9 +50,7 @@ export function ExportButton({ exportData }: ExportButtonProps) {
                     filterFields: [],
                 },
             keyOrder,
-            getCsvFileNameWithDate(
-                `${exportData.entity_type.toLowerCase()}_export`,
-            ),
+            getCsvFileNameWithDate(`export`),
             showToastMessage,
             tError,
         );
