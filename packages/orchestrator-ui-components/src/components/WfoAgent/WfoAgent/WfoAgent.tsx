@@ -2,18 +2,20 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useCoAgent } from '@copilotkit/react-core';
+import { useCoAgent, useCoAgentStateRender } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
 import { AnySearchParameters, AnySearchResult, PathFilter } from '@/types';
 
+import { ExportButton, ExportData } from '../ExportButton';
 import { FilterDisplay } from '../FilterDisplay';
 
 type SearchState = {
     parameters: AnySearchParameters;
     results: AnySearchResult[];
+    export_data?: ExportData | null;
 };
 
 const initialState: SearchState = {
@@ -24,6 +26,7 @@ const initialState: SearchState = {
         query: null,
     },
     results: [],
+    export_data: null,
 };
 
 export function WfoAgent() {
@@ -35,6 +38,16 @@ export function WfoAgent() {
         initialState,
     });
     const { parameters, results } = state;
+
+    useCoAgentStateRender<SearchState>({
+        name: 'query_agent',
+        render: ({ state }) => {
+            if (!state.export_data || state.export_data.action !== 'export') {
+                return null;
+            }
+            return <ExportButton exportData={state.export_data} />;
+        },
+    });
 
     const hasStarted = !!(
         state.parameters &&
