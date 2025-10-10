@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.2.0
+
+### Minor Changes
+
+- 06a3114: Use monaco-editor in WfoJsonCodeBlock
+
+### Patch Changes
+
+- 94955b0: 1951 Added link for workflow in toast
+
 ## 6.1.1
 
 ### Patch Changes
