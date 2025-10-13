@@ -92,5 +92,8 @@
     "type": "module",
     "main": "./dist/index.js",
     "browser": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "overrides": {
+        "@monaco-editor/loader": "1.5.0"
+    }
 }
