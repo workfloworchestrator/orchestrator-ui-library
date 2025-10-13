@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.2.1
+
+### Patch Changes
+
+- db5c529: Fixes monaco loader to version 1.5.0
+
 ## 6.2.0
 
 ### Minor Changes
