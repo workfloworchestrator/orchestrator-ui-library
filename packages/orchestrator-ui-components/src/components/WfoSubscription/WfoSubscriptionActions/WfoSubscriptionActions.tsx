@@ -13,9 +13,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoInSyncField } from '@/components';
-import {
-    WfoSubscriptionActionsMenuItem,
-} from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
+import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
