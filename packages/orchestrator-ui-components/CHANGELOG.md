@@ -1,5 +1,33 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.2.1
+
+### Patch Changes
+
+- db5c529: Fixes monaco loader to version 1.5.0
+
+## 6.2.0
+
+### Minor Changes
+
+- 06a3114: Use monaco-editor in WfoJsonCodeBlock
+
+### Patch Changes
+
+- 94955b0: 1951 Added link for workflow in toast
+
+## 6.1.1
+
+### Patch Changes
+
+- ad4727a: Remove space trimming and special character removal from the searchbar.
+
+## 6.1.0
+
+### Minor Changes
+
+- 8963f5c: Added toOptionalObjectProperty function, new compact pencil icon
+
 ## 6.0.0
 
 ### Major Changes

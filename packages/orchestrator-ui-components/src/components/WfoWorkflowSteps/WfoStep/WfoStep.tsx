@@ -1,16 +1,14 @@
-import React, { LegacyRef, useState } from 'react';
+import React, { LegacyRef, useCallback, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiButton,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
-import { WfoJsonCodeBlock, WfoTableCodeBlock } from '@/components';
+import {
+    WfoJsonCodeBlock,
+    WfoMonacoCodeBlock,
+    WfoTableCodeBlock,
+} from '@/components';
 import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
@@ -23,6 +21,7 @@ import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
 import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
+import { CodeView, WfoCodeViewSelector } from './WfoCodeViewSelector';
 import { WfoStepForm } from './WfoStepForm';
 
 export interface WfoStepProps {
@@ -53,7 +52,7 @@ export const WfoStep = React.forwardRef(
         ref: LegacyRef<HTMLDivElement>,
     ) => {
         const { isExpanded, step, userInputForm } = stepListItem;
-        const [tableView, setTableView] = useState<boolean>(false);
+        const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
 
         const { theme } = useOrchestratorTheme();
         const {
@@ -123,6 +122,13 @@ export const WfoStep = React.forwardRef(
             Object.keys(userInputForm?.properties ?? {})[0],
         );
 
+        const handle = useCallback(
+            (newCodeView: string) => {
+                setCodeView(newCodeView as CodeView);
+            },
+            [setCodeView],
+        );
+
         return (
             <div ref={ref}>
                 <EuiPanel>
@@ -150,21 +156,10 @@ export const WfoStep = React.forwardRef(
                             {step.completed && (
                                 <>
                                     {isExpanded && (
-                                        <EuiButton
-                                            onClick={(
-                                                event: React.MouseEvent<HTMLButtonElement>,
-                                            ) => {
-                                                setTableView(!tableView);
-                                                event.stopPropagation();
-                                            }}
-                                            size="s"
-                                        >
-                                            {t(
-                                                tableView
-                                                    ? 'jsonView'
-                                                    : 'tableView',
-                                            )}
-                                        </EuiButton>
+                                        <WfoCodeViewSelector
+                                            codeView={codeView}
+                                            handleCodeViewChange={handle}
+                                        />
                                     )}
                                     <EuiFlexItem
                                         grow={0}
@@ -203,10 +198,12 @@ export const WfoStep = React.forwardRef(
                     {hasStepContent &&
                         !hasHtmlMail &&
                         isExpanded &&
-                        (tableView ? (
+                        (codeView === CodeView.TABLE ? (
                             <WfoTableCodeBlock stepState={stepContent} />
-                        ) : (
+                        ) : codeView === CodeView.RAW ? (
                             <WfoJsonCodeBlock data={stepContent} />
+                        ) : (
+                            <WfoMonacoCodeBlock data={stepContent} />
                         ))}
                     {isExpanded && hasHtmlMail && (
                         <div css={stepEmailContainerStyle}>

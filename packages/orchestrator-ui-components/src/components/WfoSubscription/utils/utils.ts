@@ -122,6 +122,28 @@ export const getLastUncompletedProcess = (
         : undefined;
 };
 
+const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const extractUUIDsFromBrackets = (input: string) => {
+    const start = input.indexOf('[');
+    const end = input.indexOf(']', start);
+    if (start === -1 || end === -1) return [];
+    const content = input.slice(start + 1, end).trim();
+    if (!content) return [];
+
+    return content
+        .split(',')
+        .map((s) => s.trim().replace(/^['"]|['"]$/g, '')) // remove surrounding ' or "
+        .filter((s) => uuidRegex.test(s));
+};
+
+export function parseErrorDetail(errorDetail: string) {
+    const failedIds = extractUUIDsFromBrackets(errorDetail);
+    const filteredInput = errorDetail.split('[')[0].trim();
+    return { failedIds, filteredInput };
+}
+
 export const getLatestTaskDate = (processes?: SubscriptionDetailProcess[]) => {
     if (!processes || processes.length === 0) {
         return '';

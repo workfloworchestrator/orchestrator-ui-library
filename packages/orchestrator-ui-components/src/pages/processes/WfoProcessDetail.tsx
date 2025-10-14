@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -88,6 +88,18 @@ interface ProcessDetailProps {
     hasError?: boolean;
 }
 
+function useHasPreviousRoute() {
+    const hasPrev = useRef(false);
+
+    useEffect(() => {
+        if (document.referrer && document.referrer !== window.location.href) {
+            hasPrev.current = true;
+        }
+    }, []);
+
+    return hasPrev.current;
+}
+
 export const WfoProcessDetail = ({
     children,
     processDetail,
@@ -105,6 +117,7 @@ export const WfoProcessDetail = ({
     const [retryProcess] = useRetryProcessMutation();
     const [deleteProcess] = useDeleteProcessMutation();
     const [abortProcess] = useAbortProcessMutation();
+    const hasPreviousRoute = useHasPreviousRoute();
 
     const router = useRouter();
     const { isEngineRunningNow } = useCheckEngineStatus();
@@ -177,7 +190,12 @@ export const WfoProcessDetail = ({
                 if (processDetail?.processId) {
                     abortProcess({ processId: processDetail.processId });
                 }
-                router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
+
+                if (hasPreviousRoute) {
+                    router.back();
+                } else {
+                    router.push(processIsTask ? PATH_TASKS : PATH_WORKFLOWS);
+                }
             },
         });
 

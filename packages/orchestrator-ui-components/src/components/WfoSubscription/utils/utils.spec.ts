@@ -17,6 +17,7 @@ import {
     getWorkflowTargetColor,
     getWorkflowTargetIconContent,
     mapProductBlockInstancesToEuiSelectableOptions,
+    parseErrorDetail,
 } from './utils';
 
 describe('getFieldFromProductBlockInstanceValues()', () => {
@@ -466,5 +467,54 @@ describe('mapProductBlockInstancesToEuiSelectableOptions', () => {
                 },
             },
         ]);
+    });
+});
+
+describe('parseErrorDetail', () => {
+    it('parses a single UUID inside brackets', () => {
+        const input =
+            "Subscription 123 has still failed processes with id's: ['11111111-1111-1111-1111-111111111111']";
+
+        const { failedIds, filteredInput } = parseErrorDetail(input);
+
+        expect(failedIds).toEqual(['11111111-1111-1111-1111-111111111111']);
+        expect(filteredInput).toBe(
+            "Subscription 123 has still failed processes with id's:",
+        );
+    });
+
+    it('parses multiple UUIDs inside brackets', () => {
+        const input =
+            "Failed processes: ['11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222']";
+
+        const { failedIds, filteredInput } = parseErrorDetail(input);
+
+        expect(failedIds).toEqual([
+            '11111111-1111-1111-1111-111111111111',
+            '22222222-2222-2222-2222-222222222222',
+        ]);
+        expect(filteredInput).toBe('Failed processes:');
+    });
+
+    it('returns empty array when no brackets present', () => {
+        const input = 'No failed processes.';
+
+        const { failedIds, filteredInput } = parseErrorDetail(input);
+
+        expect(failedIds).toEqual([]);
+        expect(filteredInput).toBe('No failed processes.');
+    });
+
+    it('ignores extra spaces or commas inside brackets', () => {
+        const input =
+            "Errors: [ '11111111-1111-1111-1111-111111111111' , '22222222-2222-2222-2222-222222222222' ]";
+
+        const { failedIds, filteredInput } = parseErrorDetail(input);
+
+        expect(failedIds).toEqual([
+            '11111111-1111-1111-1111-111111111111',
+            '22222222-2222-2222-2222-222222222222',
+        ]);
+        expect(filteredInput).toBe('Errors:');
     });
 });

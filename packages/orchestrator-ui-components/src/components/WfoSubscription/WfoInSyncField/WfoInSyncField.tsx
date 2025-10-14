@@ -8,6 +8,7 @@ import { EuiButton } from '@elastic/eui';
 import { WfoIsAllowedToRender } from '@/components';
 import { WfoInsyncIcon } from '@/components';
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
+import { WfoInSyncErrorToastMessage } from '@/components/WfoSubscription/WfoInSyncField/WfoInSyncErrorToastMessage';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
@@ -15,7 +16,7 @@ import { useSetSubscriptionInSyncMutation } from '@/rtk/endpoints';
 import { SubscriptionDetail, ToastTypes } from '@/types';
 import { formatDate } from '@/utils';
 
-import { getLastUncompletedProcess, getLatestTaskDate } from './utils';
+import { getLastUncompletedProcess, getLatestTaskDate } from '../utils';
 
 interface WfoInSyncFieldProps {
     subscriptionDetail: SubscriptionDetail;
@@ -31,6 +32,7 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
     const lastUncompletedProcess = getLastUncompletedProcess(
         subscriptionDetail?.processes?.page,
     );
+
     const [setSubscriptionInSync, { isLoading }] =
         useSetSubscriptionInSyncMutation();
     const { showToastMessage } = useShowToastMessage();
@@ -52,11 +54,17 @@ export const WfoInSyncField = ({ subscriptionDetail }: WfoInSyncFieldProps) => {
                 );
             })
             .catch((error) => {
+                const errorToastMessage = error?.data?.detail ? (
+                    <WfoInSyncErrorToastMessage
+                        errorDetail={error.data?.detail}
+                    />
+                ) : (
+                    t('setInSyncFailed.text').toString()
+                );
+
                 showToastMessage(
                     ToastTypes.ERROR,
-                    error?.data?.detail
-                        ? error.data.detail
-                        : t('setInSyncFailed.text').toString,
+                    errorToastMessage,
                     t('setInSyncFailed.title'),
                 );
                 console.error('Failed to set subscription in sync.', error);

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { useAppDispatch } from '@/rtk/hooks';
 import { addToastMessage } from '@/rtk/slices/toastMessages';
 import { ToastTypes } from '@/types';
@@ -8,7 +10,7 @@ export const useShowToastMessage = () => {
 
     const showToastMessage = (
         type: ToastTypes,
-        text: string, // We use string here instead of Toast['text'] because we want to prevent passing in react component because they trigger an "unsynchronizable values in payload detected" error',
+        text: ReactNode,
         title: string, // same as above for string instead of Toast['title'],
     ) => {
         const toastMessage = getToastMessage(type, text, title);

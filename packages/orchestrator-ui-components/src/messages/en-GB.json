@@ -252,8 +252,11 @@
             "submitTaskFormLabel": "Please submit the form to start this task",
             "submitWorkflowFormLabel": "Please submit the form to start this workflow",
             "traceback": "Traceback",
-            "tableView": "Table view",
-            "jsonView": "JSON view"
+            "codeView": {
+                "json": "JSON",
+                "table": "Tab",
+                "raw": "Raw"
+            }
         },
         "delta": {
             "title": "Subscription delta",
@@ -291,7 +294,8 @@
             "metadata": "Metadata",
             "note": "Note",
             "customerFullname": "Customer",
-            "customerShortcode": "Customer abbr"
+            "customerShortcode": "Customer abbr",
+            "actions": "Actions"
         },
         "detail": {
             "title": "Subscriptions",
