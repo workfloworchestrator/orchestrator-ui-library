@@ -379,6 +379,7 @@
             "selectByNameButtonText": "Select by name",
             "see": "See",
             "setInSync": "Set in Sync",
+            "subscriptionIsInSync": "Subscription is in sync",
             "setInSyncQuestion": "Are you sure you want to do this? You're about to force a subscription in sync. When it's clear why the subscription is out of sync this could enable you to start or finish a change on this subscription. When you're in doubt, please consult the network automators first as running workflows on subscriptions that are not in sync can potentially do great harm to the network.",
             "setInSyncFailed": {
                 "title": "Set in sync failed",
