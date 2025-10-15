@@ -595,6 +595,7 @@ export type OrchestratorConfig = {
     supportMenuItemUrl: string;
     enableAoStackStatus: boolean;
     aoStackStatusUrl: string;
+    activatePydanticForms: boolean;
 };
 
 export enum ColorModes {
