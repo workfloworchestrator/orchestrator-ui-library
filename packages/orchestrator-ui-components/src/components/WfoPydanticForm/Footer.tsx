@@ -3,13 +3,14 @@
  *
  * Form footer component
  */
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useTranslations } from 'next-intl';
 import type { PydanticFormFooterProps } from 'pydantic-forms';
 
-import { EuiButton, EuiHorizontalRule } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiHorizontalRule } from '@elastic/eui';
 
+import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
 
 import { RenderFormErrors } from './RenderFormErrors';
@@ -22,10 +23,14 @@ export const Footer = ({
 }: PydanticFormFooterProps) => {
     const { theme } = useOrchestratorTheme();
     const t = useTranslations('pydanticForms.userInputForm');
+    const { showConfirmDialog } = useContext(ConfirmationDialogContext);
 
     const handlePrevious = () => {
         if (onCancel) {
-            onCancel();
+            showConfirmDialog({
+                question: t('previousQuestion'),
+                onConfirm: onCancel,
+            });
         }
     };
 
@@ -93,13 +98,24 @@ export const Footer = ({
         );
     };
 
+    const PreviousCancelButtonGroup = () => {
+        return (
+            <EuiFlexGroup gutterSize="xl">
+                <PreviousButton />
+                <CancelButton />
+            </EuiFlexGroup>
+        );
+    };
+
     return (
         <div data-testid="pydantic-form-footer">
             <RenderFormErrors />
             <EuiHorizontalRule />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
-                    {(hasPrevious && <PreviousButton />) || <CancelButton />}
+                    {(hasPrevious && <PreviousCancelButtonGroup />) || (
+                        <CancelButton />
+                    )}
                 </div>
 
                 <SubmitButton />
