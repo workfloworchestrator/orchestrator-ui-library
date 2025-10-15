@@ -51,7 +51,7 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
             {extraColumnsData &&
                 extraColumnsData.map((_, idx) => (
                     <td className={`value`} key={idx}>
-                        {extraColumnsData[idx][index].toString()}
+                        {extraColumnsData[idx][index]?.toString()}
                     </td>
                 ))}
         </tr>
