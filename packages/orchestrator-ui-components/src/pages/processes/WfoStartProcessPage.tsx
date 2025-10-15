@@ -18,6 +18,7 @@ import { WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig } from '@/hooks';
 import {
     HttpStatus,
     handlePromiseErrorWithCallback,
@@ -88,6 +89,8 @@ export const WfoStartProcessPage = ({
     processName,
     isTask = false,
 }: WfoStartProcessPageProps) => {
+    const config = useGetOrchestratorConfig();
+    const usePydanticForms: boolean = config.activatePydanticForms ?? false;
     const t = useTranslations('processes.steps');
     const router = useRouter();
     const [hasError, setHasError] = useState<boolean>(false);
@@ -194,7 +197,7 @@ export const WfoStartProcessPage = ({
     );
 
     useEffect(() => {
-        if (processName && processName !== 'modify_note') {
+        if (processName && !usePydanticForms) {
             const clientResultCallback = (json: FormNotCompleteResponse) => {
                 setForm({
                     stepUserInput: json.form,
@@ -210,7 +213,7 @@ export const WfoStartProcessPage = ({
                 setForm({});
             };
         }
-    }, [submit, processName]);
+    }, [submit, processName, usePydanticForms]);
 
     const processDetail: Partial<ProcessDetail> = {
         lastStatus: ProcessStatus.CREATE,
@@ -264,7 +267,7 @@ export const WfoStartProcessPage = ({
                 </EuiFlexGroup>
                 <EuiHorizontalRule />
                 {(hasError && <WfoError />) ||
-                    (processName === 'modify_note' && (
+                    (usePydanticForms && (
                         <WfoPydanticForm
                             processName={processName}
                             startProcessPayload={startProcessPayload}
