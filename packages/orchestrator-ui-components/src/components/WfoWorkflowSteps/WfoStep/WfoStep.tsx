@@ -10,7 +10,11 @@ import {
     WfoTableCodeBlock,
 } from '@/components';
 import { WfoStepFormOld } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormOld';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import {
+    useGetOrchestratorConfig,
+    useOrchestratorTheme,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState } from '@/types';
 import { StepStatus } from '@/types';
@@ -51,6 +55,8 @@ export const WfoStep = React.forwardRef(
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
+        const config = useGetOrchestratorConfig();
+        const usePydanticForms: boolean = config.activatePydanticForms ?? false;
         const { isExpanded, step, userInputForm } = stepListItem;
         const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
 
@@ -116,11 +122,6 @@ export const WfoStep = React.forwardRef(
                 </EuiText>
             );
         };
-
-        const whitelist = ['confirm_corelink'];
-        const isCorelinkForm = whitelist.includes(
-            Object.keys(userInputForm?.properties ?? {})[0],
-        );
 
         const handle = useCallback(
             (newCodeView: string) => {
@@ -214,7 +215,7 @@ export const WfoStep = React.forwardRef(
                     )}
                     {step.status === StepStatus.SUSPEND &&
                         userInputForm &&
-                        (isCorelinkForm ? (
+                        (usePydanticForms ? (
                             <WfoStepForm
                                 userInputForm={userInputForm}
                                 isTask={isTask}
