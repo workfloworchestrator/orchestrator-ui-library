@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.3.1
+
+### Patch Changes
+
+- 53f510f: 2208 Add confirmation popup/dialog when navigating back or canceling form
+
 ## 6.3.0
 
 ### Minor Changes
