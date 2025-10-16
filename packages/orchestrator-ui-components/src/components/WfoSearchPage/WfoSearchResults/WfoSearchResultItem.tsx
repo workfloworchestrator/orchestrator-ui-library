@@ -79,7 +79,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                                         fontWeight: theme.font.weight.semiBold,
                                     }}
                                 >
-                                    {result.title}
+                                    {result.entity_title}
                                 </EuiText>
                             </EuiFlexItem>
                             {matchingField && (

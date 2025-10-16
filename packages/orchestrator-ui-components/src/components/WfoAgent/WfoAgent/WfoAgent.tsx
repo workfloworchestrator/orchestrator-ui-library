@@ -7,25 +7,33 @@ import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
-import { AnySearchParameters, PathFilter, SearchResult } from '@/types';
+import { AnySearchParameters, Group, PathFilter, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { FilterDisplay } from '../FilterDisplay';
 
-type SearchState = {
-    parameters: AnySearchParameters;
+type SearchResultsData = {
+    action: string;
+    query_id: string;
+    results_url: string;
+    total_count: number;
+    message: string;
     results: SearchResult[];
+};
+
+type SearchState = {
+    run_id?: string | null;
+    query_id?: string | null;
+    parameters: AnySearchParameters | null;
+    results_data?: SearchResultsData | null;
     export_data?: ExportData | null;
 };
 
 const initialState: SearchState = {
-    parameters: {
-        action: 'select',
-        entity_type: 'SUBSCRIPTION',
-        filters: [] as PathFilter[],
-        query: null,
-    },
-    results: [],
+    run_id: null,
+    query_id: null,
+    parameters: null,
+    results_data: null,
     export_data: null,
 };
 
@@ -37,7 +45,7 @@ export function WfoAgent() {
         name: 'query_agent',
         initialState,
     });
-    const { parameters, results } = state;
+    const { parameters, results_data } = state;
 
     useCoAgentStateRender<SearchState>({
         name: 'query_agent',
@@ -49,21 +57,14 @@ export function WfoAgent() {
         },
     });
 
-    const hasStarted = !!(
-        state.parameters &&
-        Array.isArray(state.parameters.filters) &&
-        state.parameters.filters.length > 0
-    );
-
-    const isLoadingResults =
-        hasStarted && (!state.results || state.results.length === 0);
-
-    const displayParameters = parameters && {
-        ...parameters,
-        filters: Array.isArray(parameters.filters)
-            ? { op: 'AND' as const, children: parameters.filters }
-            : parameters.filters,
-    };
+    const displayParameters = parameters
+        ? {
+              ...parameters,
+              filters: Array.isArray(parameters.filters)
+                  ? ({ op: 'AND' as const, children: parameters.filters } as Group)
+                  : parameters.filters || undefined,
+          }
+        : undefined;
 
     return (
         <EuiFlexGroup gutterSize="l" alignItems="stretch">
@@ -82,20 +83,31 @@ export function WfoAgent() {
                 )}
 
                 <EuiSpacer size="m" />
-                <EuiText size="s">
-                    <h2>
-                        {tPage('results')}{' '}
-                        {results ? `(${results.length})` : ''}
-                    </h2>
-                </EuiText>
-                <EuiSpacer size="s" />
 
-                <WfoSearchResults
-                    results={results ?? []}
-                    loading={isLoadingResults}
-                    selectedRecordIndex={-1}
-                    onRecordSelect={() => {}}
-                />
+                {results_data && results_data.action === 'view_results' && (
+                    <>
+                        <EuiText size="s">
+                            <h2>
+                                {tPage('results')} ({results_data.total_count})
+                            </h2>
+                        </EuiText>
+                        <EuiSpacer size="s" />
+                        {results_data.message && (
+                            <>
+                                <EuiText size="s">
+                                    <p>{results_data.message}</p>
+                                </EuiText>
+                                <EuiSpacer size="s" />
+                            </>
+                        )}
+                        <WfoSearchResults
+                            results={results_data.results}
+                            loading={false}
+                            selectedRecordIndex={-1}
+                            onRecordSelect={() => {}}
+                        />
+                    </>
+                )}
             </EuiFlexItem>
 
             <EuiFlexItem grow={1}>

@@ -9,7 +9,7 @@ export interface MatchingField {
 export interface SearchResult {
     entity_id: string;
     entity_type: EntityKind;
-    title: string;
+    entity_title: string;
     score: number;
     perfect_match: number;
     matching_field?: MatchingField | null;
@@ -76,7 +76,7 @@ type ActionType = 'select';
 type BaseSearchParameters = {
     query?: string | null;
 
-    filters?: PathFilter[] | null;
+    filters?: PathFilter[] | Group | null;
 
     action: ActionType;
 };
