@@ -39,3 +39,4 @@ export * from './WfoPydanticForm';
 export * from './WfoSearchPage';
 export * from './WfoAgent';
 export * from './WfoMonacoCodeBlock';
+export * from './WfoLogoSpinner';
