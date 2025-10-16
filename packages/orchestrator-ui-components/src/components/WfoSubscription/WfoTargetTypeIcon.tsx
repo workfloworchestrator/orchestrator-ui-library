@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { EuiAvatar } from '@elastic/eui';
 
@@ -12,15 +12,30 @@ interface WfoTargetTypeIconProps {
     disabled?: boolean;
 }
 
-export const WfoTargetTypeIcon = ({
+interface WfoInSyncCompactIconProps {
+    disabled?: boolean;
+    isLoading?: boolean;
+}
+
+export const WfoTargetTypeIcon: FC<WfoTargetTypeIconProps> = ({
     target,
     disabled = false,
-}: WfoTargetTypeIconProps) => {
+}) => {
     const { theme } = useOrchestratorTheme();
 
     const color = disabled
         ? theme.colors.lightShade
         : getWorkflowTargetColor(target, theme);
     const name = getWorkflowTargetIconContent(target);
+    return <EuiAvatar name={name} size="s" color={color} />;
+};
+
+export const WfoInSyncCompactIcon: FC<WfoInSyncCompactIconProps> = ({
+    disabled,
+}) => {
+    const { theme } = useOrchestratorTheme();
+
+    const color = disabled ? theme.colors.lightShade : theme.colors.danger;
+    const name = 'S';
     return <EuiAvatar name={name} size="s" color={color} />;
 };

@@ -1,47 +1,25 @@
 import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import {
     EuiButton,
     EuiButtonIcon,
-    EuiContextMenuItem,
     EuiContextMenuPanel,
     EuiLoadingSpinner,
     EuiPanel,
     EuiPopover,
     EuiTitle,
-    EuiToolTip,
 } from '@elastic/eui';
 
-import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW } from '@/components';
+import { WfoInSyncField } from '@/components';
+import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { PolicyResource } from '@/configuration/policy-resources';
-import {
-    useCheckEngineStatus,
-    useOrchestratorTheme,
-    usePolicy,
-    useWithOrchestratorTheme,
-} from '@/hooks';
-import { WfoXCircleFill } from '@/icons';
+import { usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
+import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { useGetSubscriptionActionsQuery } from '@/rtk/endpoints/subscriptionActions';
-import { SubscriptionAction, WorkflowTarget } from '@/types';
-
-import { WfoTargetTypeIcon } from '../WfoTargetTypeIcon';
-import { flattenArrayProps } from '../utils';
-import { WfoSubscriptionActionExpandableMenuItem } from './WfoSubscriptionActionExpandableMenuItem';
-import { getSubscriptionActionStyles } from './styles';
-
-type MenuItemProps = {
-    key: string;
-    action: SubscriptionAction;
-    index: number;
-    target: WorkflowTarget;
-    isTask?: boolean;
-    isDisabled?: boolean;
-};
+import { WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
     title: string;
@@ -63,16 +41,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     isLoading,
     compactMode = false,
 }) => {
-    const { theme } = useOrchestratorTheme();
-    const {
-        linkMenuItemStyle,
-        tooltipMenuItemStyle,
-        disabledIconStyle,
-        iconStyle,
-        secondaryIconStyle,
-    } = useWithOrchestratorTheme(getSubscriptionActionStyles);
-
-    const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
     const disableQuery = isLoading || (!isPopoverOpen && compactMode);
@@ -83,85 +51,18 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         { subscriptionId },
         { skip: disableQuery },
     );
-    const { isEngineRunningNow } = useCheckEngineStatus();
+
+    const { data: subscriptionDetail } = useGetSubscriptionDetailQuery(
+        {
+            subscriptionId,
+        },
+        { skip: !isPopoverOpen && compactMode },
+    );
+
     const { isAllowed } = usePolicy();
 
     const onButtonClick = () => setPopover(!isPopoverOpen);
     const closePopover = () => setPopover(false);
-
-    const MenuItem: FC<MenuItemProps> = ({
-        action,
-        target,
-        isTask = false,
-    }) => {
-        const linkIt = (actionItem: React.ReactNode) => {
-            const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
-            const url = {
-                pathname: `${path}/${action.name}`,
-                query: { subscriptionId },
-            };
-
-            const handleLinkClick = async (e: React.MouseEvent) => {
-                e.preventDefault();
-                setPopover(false);
-                if (await isEngineRunningNow()) {
-                    router.push(url);
-                }
-            };
-
-            return (
-                <Link href={url} onClick={handleLinkClick}>
-                    <div css={linkMenuItemStyle}>{actionItem}</div>
-                </Link>
-            );
-        };
-
-        const tooltipIt = (actionItem: React.ReactNode) => {
-            if (!action.reason) return actionItem;
-            const tooltipContent = t(action.reason, flattenArrayProps(action));
-
-            return (
-                <div css={tooltipMenuItemStyle}>
-                    <EuiToolTip position="top" content={tooltipContent}>
-                        <WfoSubscriptionActionExpandableMenuItem
-                            subscriptionAction={action}
-                            onClickLockedRelation={() => setPopover(false)}
-                        >
-                            {actionItem}
-                        </WfoSubscriptionActionExpandableMenuItem>
-                    </EuiToolTip>
-                </div>
-            );
-        };
-
-        const getIcon = () =>
-            action.reason ? (
-                <div css={disabledIconStyle}>
-                    <WfoTargetTypeIcon target={target} disabled />
-                    <div css={secondaryIconStyle}>
-                        <WfoXCircleFill
-                            width={20}
-                            height={20}
-                            color={theme.colors.danger}
-                        />
-                    </div>
-                </div>
-            ) : (
-                <div css={iconStyle}>
-                    <WfoTargetTypeIcon target={target} />
-                </div>
-            );
-
-        const ActionItem = () => (
-            <EuiContextMenuItem icon={getIcon()} disabled={!!action.reason}>
-                {action.description}
-            </EuiContextMenuItem>
-        );
-
-        return action?.reason
-            ? tooltipIt(<ActionItem />)
-            : linkIt(<ActionItem />);
-    };
 
     const button = compactMode ? (
         <EuiButtonIcon
@@ -186,6 +87,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         SUBSCRIPTION_RECONCILE,
         SUBSCRIPTION_MODIFY,
         SUBSCRIPTION_TERMINATE,
+        SET_IN_SYNC,
     } = PolicyResource;
     const compactItems = (
         <>
@@ -194,12 +96,14 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     <>
                         {!compactMode && <MenuBlock title={t('tasks')} />}
                         {subscriptionActions.validate.map((action, index) => (
-                            <MenuItem
+                            <WfoSubscriptionActionsMenuItem
                                 key={`s_${index}`}
                                 action={action}
                                 index={index}
                                 target={WorkflowTarget.VALIDATE}
                                 isTask
+                                subscriptionId={subscriptionId}
+                                setPopover={setPopover}
                             />
                         ))}
                     </>
@@ -210,15 +114,27 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     <>
                         {!compactMode && <MenuBlock title={t('reconcile')} />}
                         {subscriptionActions?.reconcile.map((action, index) => (
-                            <MenuItem
+                            <WfoSubscriptionActionsMenuItem
                                 key={`r_${index}`}
                                 action={action}
                                 index={index}
                                 target={WorkflowTarget.RECONCILE}
+                                subscriptionId={subscriptionId}
+                                setPopover={setPopover}
                             />
                         ))}
                     </>
                 )}
+
+            {isAllowed(SET_IN_SYNC) && compactMode && subscriptionDetail && (
+                <div>
+                    <WfoInSyncField
+                        compactMode={true}
+                        subscriptionDetail={subscriptionDetail?.subscription}
+                        setPopover={setPopover}
+                    />
+                </div>
+            )}
         </>
     );
 
@@ -229,11 +145,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     <>
                         <MenuBlock title={t('modify')} />
                         {subscriptionActions.modify.map((action, index) => (
-                            <MenuItem
+                            <WfoSubscriptionActionsMenuItem
                                 key={`m_${index}`}
                                 action={action}
                                 index={index}
                                 target={WorkflowTarget.MODIFY}
+                                subscriptionId={subscriptionId}
+                                setPopover={setPopover}
                             />
                         ))}
                     </>
@@ -244,11 +162,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     <>
                         <MenuBlock title={t('terminate')} />
                         {subscriptionActions.terminate.map((action, index) => (
-                            <MenuItem
+                            <WfoSubscriptionActionsMenuItem
                                 key={`t_${index}`}
                                 action={action}
                                 index={index}
                                 target={WorkflowTarget.TERMINATE}
+                                subscriptionId={subscriptionId}
+                                setPopover={setPopover}
                             />
                         ))}
                     </>

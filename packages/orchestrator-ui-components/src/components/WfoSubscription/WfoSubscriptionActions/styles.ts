@@ -36,6 +36,9 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
             backgroundColor: theme.colors.lightestShade,
             borderRadius: theme.border.radius.medium,
         },
+        '.euiToolTipAnchor': {
+            width: '100%',
+        },
     });
 
     const tooltipMenuItemStyle = css([
@@ -60,6 +63,14 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
         transform: 'translate(-11px, -8px);',
     });
 
+    const spinnerSecondaryIconStyle = css({
+        transform: 'translate(-8px, -6px);',
+    });
+
+    const disabledTextStyle = css({
+        color: theme.colors.textDisabled,
+    });
+
     return {
         clickableStyle,
         expandableMenuItemStyle,
@@ -71,5 +82,7 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
         disabledIconStyle,
         iconStyle,
         secondaryIconStyle,
+        disabledTextStyle,
+        spinnerSecondaryIconStyle,
     };
 };
