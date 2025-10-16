@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.3.0
+
+### Minor Changes
+
+- eb164ba: 2189 Add set in-sync to the subscription list page
+
+### Patch Changes
+
+- 0fbdf28: Fixes bug in Summaryfield
+- fb3e48c: Adds pydantic forms feature toggle
+
 ## 6.2.1
 
 ### Patch Changes
