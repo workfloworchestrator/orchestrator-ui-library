@@ -5,7 +5,7 @@ import { Query } from '@elastic/eui';
 import { buildSearchParams } from '@/components/WfoSearchPage/utils';
 import { useSearchWithPaginationMutation } from '@/rtk/endpoints';
 import {
-    AnySearchResult,
+    SearchResult,
     EntityKind,
     Group,
     PaginatedSearchResults,
@@ -13,7 +13,7 @@ import {
 
 interface PageHistoryItem {
     page: number;
-    results: AnySearchResult[];
+    results: SearchResult[];
     cursor: number | null;
 }
 

@@ -17,19 +17,17 @@ import { TreeProvider } from '@/contexts';
 interface WfoSubscriptionDetailModalProps {
     isVisible: boolean;
     onClose: () => void;
-    subscriptionData: unknown | null;
-    matchingField?: unknown;
+    resultData?: unknown;
 }
 
 export const WfoSubscriptionDetailModal: FC<
     WfoSubscriptionDetailModalProps
-> = ({ isVisible, onClose, subscriptionData }) => {
+> = ({ isVisible, onClose, resultData }) => {
     const t = useTranslations('search.page');
-    if (!isVisible || !subscriptionData) return null;
+    if (!isVisible || !resultData) return null;
 
     const subscriptionId =
-        subscriptionData &&
-        (subscriptionData as { subscription_id: string }).subscription_id;
+        (resultData as { entity_id: string } | undefined)?.entity_id || '';
 
     return (
         <EuiModal onClose={onClose} maxWidth={800}>

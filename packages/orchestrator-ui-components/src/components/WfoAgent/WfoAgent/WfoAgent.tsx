@@ -7,14 +7,14 @@ import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
-import { AnySearchParameters, AnySearchResult, PathFilter } from '@/types';
+import { AnySearchParameters, PathFilter, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { FilterDisplay } from '../FilterDisplay';
 
 type SearchState = {
     parameters: AnySearchParameters;
-    results: AnySearchResult[];
+    results: SearchResult[];
     export_data?: ExportData | null;
 };
 

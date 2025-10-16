@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { EuiFlexGroup, EuiPanel } from '@elastic/eui';
 
-import { AnySearchResult } from '@/types';
+import { SearchResult } from '@/types';
 
 import { WfoSearchEmptyState } from './WfoSearchEmptyState';
 import { WfoSearchLoadingState } from './WfoSearchLoadingState';
@@ -10,7 +10,7 @@ import { WfoSearchResultItem } from './WfoSearchResultItem';
 import { WfoSubscriptionDetailModal } from './WfoSubscriptionDetailModal';
 
 interface WfoSearchResultsProps {
-    results: AnySearchResult[];
+    results: SearchResult[];
     loading: boolean;
     selectedRecordIndex?: number;
     onRecordSelect?: (index: number) => void;
@@ -22,10 +22,7 @@ export const WfoSearchResults = ({
     selectedRecordIndex = 0,
     onRecordSelect,
 }: WfoSearchResultsProps) => {
-    const [modalData, setModalData] = useState<{
-        subscription: unknown;
-        matchingField?: unknown;
-    } | null>(null);
+    const [modalData, setModalData] = useState<unknown | null>(null);
 
     const handleCloseModal = () => {
         setModalData(null);
@@ -49,7 +46,9 @@ export const WfoSearchResults = ({
                             result={result}
                             index={idx}
                             isSelected={idx === selectedRecordIndex}
-                            onSelect={() => onRecordSelect?.(idx)}
+                            onSelect={() => {
+                                onRecordSelect?.(idx);
+                            }}
                         />
                     ))}
                 </EuiFlexGroup>
@@ -57,8 +56,7 @@ export const WfoSearchResults = ({
             <WfoSubscriptionDetailModal
                 isVisible={!!modalData}
                 onClose={handleCloseModal}
-                subscriptionData={modalData?.subscription}
-                matchingField={modalData?.matchingField}
+                resultData={modalData}
             />
         </>
     );

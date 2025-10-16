@@ -1,36 +1,32 @@
 import {
-    AnySearchResult,
+    SearchResult,
     Condition,
     EntityKind,
     Group,
-    ProcessSearchResult,
-    ProductSearchResult,
-    SubscriptionSearchResult,
-    WorkflowSearchResult,
 } from '@/types';
 
 export function isSubscriptionSearchResult(
-    item: AnySearchResult,
-): item is SubscriptionSearchResult {
-    return 'subscription' in item && typeof item.subscription === 'object';
+    item: SearchResult,
+): boolean {
+    return item.entity_type === 'SUBSCRIPTION';
 }
 
 export function isProcessSearchResult(
-    item: AnySearchResult,
-): item is ProcessSearchResult {
-    return 'process' in item && typeof item.process === 'object';
+    item: SearchResult,
+): boolean {
+    return item.entity_type === 'PROCESS';
 }
 
 export function isProductSearchResult(
-    item: AnySearchResult,
-): item is ProductSearchResult {
-    return 'product' in item && typeof item.product === 'object';
+    item: SearchResult,
+): boolean {
+    return item.entity_type === 'PRODUCT';
 }
 
 export function isWorkflowSearchResult(
-    item: AnySearchResult,
-): item is WorkflowSearchResult {
-    return 'workflow' in item && typeof item.workflow === 'object';
+    item: SearchResult,
+): boolean {
+    return item.entity_type === 'WORKFLOW';
 }
 
 export const isCondition = (item: Group | Condition): item is Condition => {
@@ -48,92 +44,12 @@ export const getEndpointPath = (entityType: EntityKind): string => {
     return ENDPOINT_PATHS[entityType] || ENDPOINT_PATHS.SUBSCRIPTION;
 };
 
-export const getDisplayText = (item: AnySearchResult): string => {
-    if (isSubscriptionSearchResult(item)) {
-        return item.subscription.description || 'Subscription';
-    }
-    if (isProcessSearchResult(item)) {
-        return item.process.workflowName;
-    }
-    if (isProductSearchResult(item)) {
-        return item.product.name;
-    }
-    if (isWorkflowSearchResult(item)) {
-        return item.workflow.name;
-    }
-    return 'Unknown result type';
-};
-
-export const getRecordId = (result: AnySearchResult): string => {
-    if (isSubscriptionSearchResult(result)) {
-        return result.subscription.subscription_id;
-    }
-    if (isProductSearchResult(result)) {
-        return result.product.product_id;
-    }
-    if (isProcessSearchResult(result)) {
-        return result.process.processId;
-    }
-    if (isWorkflowSearchResult(result)) {
-        return result.workflow.name;
-    }
-    return '';
-};
-
-export const findResultIndexById = (
-    results: AnySearchResult[],
-    recordId: string,
-): number => {
-    return results.findIndex((result) => {
-        if (isSubscriptionSearchResult(result)) {
-            return result.subscription.subscription_id === recordId;
-        }
-        if (isProductSearchResult(result)) {
-            return result.product.product_id === recordId;
-        }
-        if (isProcessSearchResult(result)) {
-            return result.process.processId === recordId;
-        }
-        if (isWorkflowSearchResult(result)) {
-            return result.workflow.name === recordId;
-        }
-        return false;
-    });
-};
-
 export const getDetailUrl = (
-    result: AnySearchResult,
+    result: SearchResult,
     baseUrl: string,
 ): string => {
-    if (isSubscriptionSearchResult(result)) {
-        return `${baseUrl}/subscriptions/${result.subscription.subscription_id}`;
-    }
-    if (isProductSearchResult(result)) {
-        return `${baseUrl}/products/${result.product.product_id}`;
-    }
-    if (isProcessSearchResult(result)) {
-        return `${baseUrl}/processes/${result.process.processId}`;
-    }
-    if (isWorkflowSearchResult(result)) {
-        return `${baseUrl}/workflows/${result.workflow.name}`;
-    }
-    return '#';
-};
-
-export const getDescription = (result: AnySearchResult): string => {
-    if (isSubscriptionSearchResult(result)) {
-        return result.subscription.description;
-    }
-    if (isProductSearchResult(result)) {
-        return result.product.description || result.product.name;
-    }
-    if (isWorkflowSearchResult(result)) {
-        return result.workflow.description || result.workflow.name;
-    }
-    if (isProcessSearchResult(result)) {
-        return result.process.workflowName;
-    }
-    return 'Unknown';
+    const endpointPath = getEndpointPath(result.entity_type);
+    return `${baseUrl}/${endpointPath}/${result.entity_id}`;
 };
 
 export const ENTITY_TABS = [
