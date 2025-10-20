@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { EuiContextMenuItem, EuiToolTip } from '@elastic/eui';
+import { css } from '@emotion/react';
 
 import { flattenArrayProps } from '@/components';
 import {
@@ -113,7 +114,13 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
         );
 
     const ActionItem = () => (
-        <EuiContextMenuItem icon={getIcon()} disabled={!!action.reason}>
+        <EuiContextMenuItem
+            icon={getIcon()}
+            disabled={!!action.reason}
+            css={{
+                whiteSpace: 'nowrap',
+            }}
+        >
             {action.description}
         </EuiContextMenuItem>
     );
