@@ -16,6 +16,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoSubscription } from '@/components';
+import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { WfoBadge } from '@/components/WfoBadges';
 import {
     ENTITY_TABS,
@@ -25,6 +26,7 @@ import {
 } from '@/components/WfoSearchPage/utils';
 import { TreeProvider } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
+import { useSearchAvailability } from '@/hooks/useBackendAvailability';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
 import { useSearchPagination } from '@/hooks/useSearchPagination';
@@ -45,6 +47,8 @@ import {
 export const WfoSearch = () => {
     const t = useTranslations('search.page');
     const { theme } = useOrchestratorTheme();
+    const searchAvailability = useSearchAvailability();
+
     const {
         urlParams,
         query,
@@ -205,7 +209,10 @@ export const WfoSearch = () => {
     const { RESULTS_GROW, DETAIL_GROW } = LAYOUT_RATIOS;
 
     return (
-        <>
+        <WfoAvailabilityCheck
+            featureType="search"
+            availability={searchAvailability}
+        >
             <EuiTabs>
                 {ENTITY_TABS.map((tab) => (
                     <EuiTab
@@ -446,6 +453,6 @@ export const WfoSearch = () => {
                     </EuiFlexGroup>
                 </>
             )}
-        </>
+        </WfoAvailabilityCheck>
     );
 };
