@@ -282,7 +282,7 @@ export const WfoPydanticForm = ({
             requestBody = [],
             formKey,
         }) => {
-            const userInputs = isTask
+            const userInputs = _.isEmpty(startProcessPayload)
                 ? [...requestBody]
                 : [{ ...startProcessPayload }, ...requestBody];
 
