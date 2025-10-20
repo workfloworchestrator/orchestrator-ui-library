@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.4.0
+
+### Minor Changes
+
+- 59cab89: Adds WfoLogoSpinner to use as initial loading component
+
 ## 6.3.2
 
 ### Patch Changes
