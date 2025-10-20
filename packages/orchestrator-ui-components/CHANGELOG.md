@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.3.2
+
+### Patch Changes
+
+- ecd6594: Fixes starting tasks with pydantic forms component
+
 ## 6.3.1
 
 ### Patch Changes
