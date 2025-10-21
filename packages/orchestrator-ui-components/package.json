@@ -1,6 +1,6 @@
 {
     "name": "@orchestrator-ui/orchestrator-ui-components",
-    "version": "6.2.1",
+    "version": "6.4.0",
     "license": "Apache-2.0",
     "description": "Library of UI Components used to display the workflow orchestrator frontend",
     "author": {
@@ -92,8 +92,5 @@
     "type": "module",
     "main": "./dist/index.js",
     "browser": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "overrides": {
-        "@monaco-editor/loader": "1.5.0"
-    }
+    "types": "./dist/index.d.ts"
 }

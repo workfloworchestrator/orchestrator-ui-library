@@ -1,5 +1,34 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.4.0
+
+### Minor Changes
+
+- 59cab89: Adds WfoLogoSpinner to use as initial loading component
+
+## 6.3.2
+
+### Patch Changes
+
+- ecd6594: Fixes starting tasks with pydantic forms component
+
+## 6.3.1
+
+### Patch Changes
+
+- 53f510f: 2208 Add confirmation popup/dialog when navigating back or canceling form
+
+## 6.3.0
+
+### Minor Changes
+
+- eb164ba: 2189 Add set in-sync to the subscription list page
+
+### Patch Changes
+
+- 0fbdf28: Fixes bug in Summaryfield
+- fb3e48c: Adds pydantic forms feature toggle
+
 ## 6.2.1
 
 ### Patch Changes

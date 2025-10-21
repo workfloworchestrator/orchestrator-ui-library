@@ -7,7 +7,7 @@ import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
-import { AnySearchParameters, Group, PathFilter, SearchResult } from '@/types';
+import { AnySearchParameters, Group, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { FilterDisplay } from '../FilterDisplay';
@@ -61,7 +61,10 @@ export function WfoAgent() {
         ? {
               ...parameters,
               filters: Array.isArray(parameters.filters)
-                  ? ({ op: 'AND' as const, children: parameters.filters } as Group)
+                  ? ({
+                        op: 'AND' as const,
+                        children: parameters.filters,
+                    } as Group)
                   : parameters.filters || undefined,
           }
         : undefined;

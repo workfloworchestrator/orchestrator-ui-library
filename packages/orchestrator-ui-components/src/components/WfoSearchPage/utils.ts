@@ -1,31 +1,18 @@
-import {
-    SearchResult,
-    Condition,
-    EntityKind,
-    Group,
-} from '@/types';
+import { Condition, EntityKind, Group, SearchResult } from '@/types';
 
-export function isSubscriptionSearchResult(
-    item: SearchResult,
-): boolean {
+export function isSubscriptionSearchResult(item: SearchResult): boolean {
     return item.entity_type === 'SUBSCRIPTION';
 }
 
-export function isProcessSearchResult(
-    item: SearchResult,
-): boolean {
+export function isProcessSearchResult(item: SearchResult): boolean {
     return item.entity_type === 'PROCESS';
 }
 
-export function isProductSearchResult(
-    item: SearchResult,
-): boolean {
+export function isProductSearchResult(item: SearchResult): boolean {
     return item.entity_type === 'PRODUCT';
 }
 
-export function isWorkflowSearchResult(
-    item: SearchResult,
-): boolean {
+export function isWorkflowSearchResult(item: SearchResult): boolean {
     return item.entity_type === 'WORKFLOW';
 }
 
@@ -44,10 +31,7 @@ export const getEndpointPath = (entityType: EntityKind): string => {
     return ENDPOINT_PATHS[entityType] || ENDPOINT_PATHS.SUBSCRIPTION;
 };
 
-export const getDetailUrl = (
-    result: SearchResult,
-    baseUrl: string,
-): string => {
+export const getDetailUrl = (result: SearchResult, baseUrl: string): string => {
     const endpointPath = getEndpointPath(result.entity_type);
     return `${baseUrl}/${endpointPath}/${result.entity_id}`;
 };

@@ -5,10 +5,10 @@ import { Query } from '@elastic/eui';
 import { buildSearchParams } from '@/components/WfoSearchPage/utils';
 import { useSearchWithPaginationMutation } from '@/rtk/endpoints';
 import {
-    SearchResult,
     EntityKind,
     Group,
     PaginatedSearchResults,
+    SearchResult,
 } from '@/types';
 
 interface PageHistoryItem {

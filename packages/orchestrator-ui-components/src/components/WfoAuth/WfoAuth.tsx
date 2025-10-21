@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react';
 
-import { WfoLoading } from '@/components';
+import { WfoLogoSpinner } from '@/components';
 import { OrchestratorConfigContext } from '@/contexts';
 import { PolicyContextProvider } from '@/contexts/PolicyContext';
 import { useWfoSession } from '@/hooks';
@@ -39,7 +39,7 @@ export const WfoAuth = ({
     });
 
     if (status === 'loading') {
-        return <WfoLoading />;
+        return <WfoLogoSpinner />;
     }
 
     return (

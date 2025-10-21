@@ -365,7 +365,9 @@ export const WfoSearch = () => {
                                         setSelectedRecordIndex(index);
                                         const record = results.data[index];
                                         if (record) {
-                                            setSelectedRecordId(record.entity_id);
+                                            setSelectedRecordId(
+                                                record.entity_id,
+                                            );
                                         }
                                     }}
                                 />
