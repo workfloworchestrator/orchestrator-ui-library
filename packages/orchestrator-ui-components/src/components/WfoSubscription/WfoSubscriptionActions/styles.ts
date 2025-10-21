@@ -60,7 +60,8 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
     });
 
     const secondaryIconStyle = css({
-        transform: 'translate(-11px, -8px);',
+        position: 'absolute',
+        transform: 'translate(13px, -8px);',
     });
 
     const spinnerSecondaryIconStyle = css({

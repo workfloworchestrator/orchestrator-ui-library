@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { EuiContextMenuItem, EuiToolTip } from '@elastic/eui';
-import { css } from '@emotion/react';
 
 import { flattenArrayProps } from '@/components';
 import {
