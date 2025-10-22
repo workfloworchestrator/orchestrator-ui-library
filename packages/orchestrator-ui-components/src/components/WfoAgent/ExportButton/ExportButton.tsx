@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton } from '@elastic/eui';
+import { EuiButton, EuiText } from '@elastic/eui';
 
-import { useOrchestratorTheme, useShowToastMessage } from '@/hooks';
+import { useShowToastMessage } from '@/hooks';
 import { useLazyGetAgentExportQuery } from '@/rtk/endpoints/agentExport';
 import { GraphQLPageInfo } from '@/types';
 import { getCsvFileNameWithDate } from '@/utils';
@@ -27,7 +27,6 @@ type ExportApiResponse = {
 
 export function ExportButton({ exportData }: ExportButtonProps) {
     const { showToastMessage } = useShowToastMessage();
-    const { theme } = useOrchestratorTheme();
     const tError = useTranslations('errors');
     const [triggerExport, { isFetching }] = useLazyGetAgentExportQuery();
 
@@ -64,23 +63,20 @@ export function ExportButton({ exportData }: ExportButtonProps) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
-                gap: theme.size.s,
-                width: '100%',
+                gap: '12px',
             }}
         >
             <EuiButton
                 onClick={onDownloadClick}
                 isLoading={isFetching}
-                fill
                 iconType="download"
-                size="m"
-                css={{
-                    borderRadius: theme.border.radius.medium,
-                    boxShadow: `0 ${theme.size.xs} ${theme.size.base} ${theme.colors.primary}35`,
-                }}
+                fill
             >
-                {isFetching ? 'Downloading...' : 'Download CSV'}
+                {exportData.message && (
+                    <EuiText size="s" textAlign="center">
+                        {exportData.message}
+                    </EuiText>
+                )}
             </EuiButton>
         </div>
     );

@@ -484,7 +484,7 @@
             "action": "Action",
             "copilot": {
                 "title": "Database assistant",
-                "initial": "Ask me things such as:\n• *Find active subscriptions for Surf*\n• *Show terminated workflows”*\n\nThe filled template and results will appear on the left."
+                "initial": "Ask me things such as:\n• *Find active subscriptions*\n• *Show terminated workflows”*\n\nThe filled template and results will appear on the left."
             }
         }
     },

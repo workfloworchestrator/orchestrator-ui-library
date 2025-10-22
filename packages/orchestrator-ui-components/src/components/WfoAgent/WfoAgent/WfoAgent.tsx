@@ -2,7 +2,12 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useCoAgent, useCoAgentStateRender } from '@copilotkit/react-core';
+import {
+    CatchAllActionRenderProps,
+    useCoAgent,
+    useCoAgentStateRender,
+    useCopilotAction,
+} from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
@@ -11,6 +16,7 @@ import { AnySearchParameters, Group, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { FilterDisplay } from '../FilterDisplay';
+import { ToolProgress } from '../ToolProgress';
 
 type SearchResultsData = {
     action: string;
@@ -22,11 +28,11 @@ type SearchResultsData = {
 };
 
 type SearchState = {
-    run_id?: string | null;
-    query_id?: string | null;
+    run_id: string | null;
+    query_id: string | null;
     parameters: AnySearchParameters | null;
-    results_data?: SearchResultsData | null;
-    export_data?: ExportData | null;
+    results_data: SearchResultsData | null;
+    export_data: ExportData | null;
 };
 
 const initialState: SearchState = {
@@ -47,10 +53,19 @@ export function WfoAgent() {
     });
     const { parameters, results_data } = state;
 
+    // Automatically render all tool calls
+    useCopilotAction({
+        name: '*',
+        render: ({ name, status }: CatchAllActionRenderProps<[]>) => {
+            return <ToolProgress name={name} status={status} />;
+        },
+    });
+
+    // Render export button from state
     useCoAgentStateRender<SearchState>({
         name: 'query_agent',
         render: ({ state }) => {
-            if (!state.export_data || state.export_data.action !== 'export') {
+            if (!state?.export_data || state.export_data.action !== 'export') {
                 return null;
             }
             return <ExportButton exportData={state.export_data} />;
