@@ -21,3 +21,4 @@ export * from './deprecated';
 export * from './formFields';
 export * from './fileUpload';
 export * from './search';
+export * from './availability';

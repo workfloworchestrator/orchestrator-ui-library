@@ -11,20 +11,12 @@ import {
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
+import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
-import { AnySearchParameters, SearchResult } from '@/types';
+import { useAgentAvailability } from '@/hooks/useBackendAvailability';
+import { AnySearchParameters, AnySearchResult, PathFilter } from '@/types';
 
-import { ExportButton, ExportData } from '../ExportButton';
-import { ToolProgress } from '../ToolProgress';
-
-type SearchResultsData = {
-    action: string;
-    query_id: string;
-    results_url: string;
-    total_count: number;
-    message: string;
-    results: SearchResult[];
-};
+import { FilterDisplay } from '../FilterDisplay';
 
 type SearchState = {
     run_id: string | null;
@@ -45,6 +37,8 @@ const initialState: SearchState = {
 export function WfoAgent() {
     const t = useTranslations('agent');
     const tPage = useTranslations('agent.page');
+
+    const agentAvailability = useAgentAvailability();
 
     const { state } = useCoAgent<SearchState>({
         name: 'query_agent',
@@ -84,44 +78,53 @@ export function WfoAgent() {
     });
 
     return (
-        <EuiFlexGroup gutterSize="l" alignItems="stretch">
-            <EuiFlexItem grow={2}>
-                <EuiText>
-                    <h1>{t('title')}</h1>
-                </EuiText>
+        <WfoAvailabilityCheck
+            featureType="agent"
+            availability={agentAvailability}
+        >
+            <EuiFlexGroup gutterSize="l" alignItems="stretch">
+                <EuiFlexItem grow={2}>
+                    <EuiText>
+                        <h1>{t('title')}</h1>
+                    </EuiText>
 
-                <EuiSpacer size="m" />
+                    <EuiSpacer size="m" />
+                    <EuiText size="s">
+                        <h2>{tPage('filledParameters')}</h2>
+                    </EuiText>
+                    <EuiSpacer size="s" />
+                    {displayParameters && (
+                        <FilterDisplay parameters={displayParameters} />
+                    )}
 
-                {results_data && results_data.action === 'view_results' && (
-                    <>
-                        {results_data.message && (
-                            <>
-                                <EuiText size="s">
-                                    <p>{results_data.message}</p>
-                                </EuiText>
-                                <EuiSpacer size="s" />
-                            </>
-                        )}
-                        <WfoSearchResults
-                            results={results_data.results}
-                            loading={false}
-                            selectedRecordIndex={-1}
-                            onRecordSelect={() => {}}
-                        />
-                    </>
-                )}
-            </EuiFlexItem>
+                    <EuiSpacer size="m" />
+                    <EuiText size="s">
+                        <h2>
+                            {tPage('results')}{' '}
+                            {results ? `(${results.length})` : ''}
+                        </h2>
+                    </EuiText>
+                    <EuiSpacer size="s" />
 
-            <EuiFlexItem grow={1}>
-                <CopilotSidebar
-                    defaultOpen
-                    clickOutsideToClose={false}
-                    labels={{
-                        title: tPage('copilot.title'),
-                        initial: tPage('copilot.initial'),
-                    }}
-                />
-            </EuiFlexItem>
-        </EuiFlexGroup>
+                    <WfoSearchResults
+                        results={results ?? []}
+                        loading={isLoadingResults}
+                        selectedRecordIndex={-1}
+                        onRecordSelect={() => {}}
+                    />
+                </EuiFlexItem>
+
+                <EuiFlexItem grow={1}>
+                    <CopilotSidebar
+                        defaultOpen
+                        clickOutsideToClose={false}
+                        labels={{
+                            title: tPage('copilot.title'),
+                            initial: tPage('copilot.initial'),
+                        }}
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </WfoAvailabilityCheck>
     );
 }
