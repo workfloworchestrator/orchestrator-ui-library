@@ -13,14 +13,14 @@ import {
 
 import { WfoBadge } from '@/components/WfoBadges';
 import { useOrchestratorTheme } from '@/hooks';
-import { AnySearchResult } from '@/types';
+import { SearchResult } from '@/types';
 
-import { getDescription, getDetailUrl } from '../utils';
+import { getDetailUrl } from '../utils';
 import { WfoHighlightedText } from './WfoHighlightedText';
 import { WfoPathBreadcrumb } from './WfoPathBreadcrumb';
 
 interface WfoSearchResultItemProps {
-    result: AnySearchResult;
+    result: SearchResult;
     index: number;
     isSelected?: boolean;
     onSelect?: () => void;
@@ -79,7 +79,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                                         fontWeight: theme.font.weight.semiBold,
                                     }}
                                 >
-                                    {getDescription(result)}
+                                    {result.entity_title}
                                 </EuiText>
                             </EuiFlexItem>
                             {matchingField && (

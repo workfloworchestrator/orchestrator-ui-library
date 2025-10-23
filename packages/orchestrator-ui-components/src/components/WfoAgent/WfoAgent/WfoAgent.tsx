@@ -2,7 +2,12 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useCoAgent } from '@copilotkit/react-core';
+import {
+    CatchAllActionRenderProps,
+    useCoAgent,
+    useCoAgentStateRender,
+    useCopilotAction,
+} from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
@@ -14,18 +19,19 @@ import { AnySearchParameters, AnySearchResult, PathFilter } from '@/types';
 import { FilterDisplay } from '../FilterDisplay';
 
 type SearchState = {
-    parameters: AnySearchParameters;
-    results: AnySearchResult[];
+    run_id: string | null;
+    query_id: string | null;
+    parameters: AnySearchParameters | null;
+    results_data: SearchResultsData | null;
+    export_data: ExportData | null;
 };
 
 const initialState: SearchState = {
-    parameters: {
-        action: 'select',
-        entity_type: 'SUBSCRIPTION',
-        filters: [] as PathFilter[],
-        query: null,
-    },
-    results: [],
+    run_id: null,
+    query_id: null,
+    parameters: null,
+    results_data: null,
+    export_data: null,
 };
 
 export function WfoAgent() {
@@ -38,23 +44,38 @@ export function WfoAgent() {
         name: 'query_agent',
         initialState,
     });
-    const { parameters, results } = state;
+    const { results_data } = state;
 
-    const hasStarted = !!(
-        state.parameters &&
-        Array.isArray(state.parameters.filters) &&
-        state.parameters.filters.length > 0
-    );
+    // Automatically render all tool calls
+    useCopilotAction({
+        name: '*',
+        render: ({
+            name,
+            status,
+            args,
+            result,
+        }: CatchAllActionRenderProps<[]>) => {
+            return (
+                <ToolProgress
+                    name={name}
+                    status={status}
+                    args={args}
+                    result={result}
+                />
+            );
+        },
+    });
 
-    const isLoadingResults =
-        hasStarted && (!state.results || state.results.length === 0);
-
-    const displayParameters = parameters && {
-        ...parameters,
-        filters: Array.isArray(parameters.filters)
-            ? { op: 'AND' as const, children: parameters.filters }
-            : parameters.filters,
-    };
+    // Render export button from state
+    useCoAgentStateRender<SearchState>({
+        name: 'query_agent',
+        render: ({ state }) => {
+            if (!state?.export_data || state.export_data.action !== 'export') {
+                return null;
+            }
+            return <ExportButton exportData={state.export_data} />;
+        },
+    });
 
     return (
         <WfoAvailabilityCheck
