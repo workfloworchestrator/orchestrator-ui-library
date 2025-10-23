@@ -12,7 +12,7 @@ import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
-import { AnySearchParameters, Group, SearchResult } from '@/types';
+import { AnySearchParameters, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { ToolProgress } from '../ToolProgress';
@@ -55,8 +55,20 @@ export function WfoAgent() {
     // Automatically render all tool calls
     useCopilotAction({
         name: '*',
-        render: ({ name, status, args, result }: CatchAllActionRenderProps<[]>) => {
-            return <ToolProgress name={name} status={status} args={args} result={result} />;
+        render: ({
+            name,
+            status,
+            args,
+            result,
+        }: CatchAllActionRenderProps<[]>) => {
+            return (
+                <ToolProgress
+                    name={name}
+                    status={status}
+                    args={args}
+                    result={result}
+                />
+            );
         },
     });
 

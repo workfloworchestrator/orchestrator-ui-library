@@ -21,19 +21,27 @@ import { getToolProgressStyles } from './styles';
 type ToolProgressProps = {
     name: string;
     status: 'executing' | 'inProgress' | 'complete' | 'failed';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result?: any;
 };
 
 // Mapping of tool names to their display components
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TOOL_DISPLAY_COMPONENTS: Record<string, React.ComponentType<any>> = {
-    'set_filter_tree': SetFilterTreeDisplay,
-    'start_new_search': StartNewSearchDisplay,
-    'run_search': RunSearchDisplay,
-    'discover_filter_paths': DiscoverFilterPathsDisplay,
+    set_filter_tree: SetFilterTreeDisplay,
+    start_new_search: StartNewSearchDisplay,
+    run_search: RunSearchDisplay,
+    discover_filter_paths: DiscoverFilterPathsDisplay,
 };
 
-export const ToolProgress = ({ name, status, args, result }: ToolProgressProps) => {
+export const ToolProgress = ({
+    name,
+    status,
+    args,
+    result,
+}: ToolProgressProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const {
@@ -82,7 +90,11 @@ export const ToolProgress = ({ name, status, args, result }: ToolProgressProps) 
                 css={hasArgs && containerClickableStyle}
                 onClick={() => hasArgs && setIsExpanded(!isExpanded)}
             >
-                <EuiFlexGroup gutterSize="m" alignItems="center" css={headerStyle}>
+                <EuiFlexGroup
+                    gutterSize="m"
+                    alignItems="center"
+                    css={headerStyle}
+                >
                     <EuiFlexItem grow={false}>
                         <div css={iconStyle}>
                             <WfoWrench width={iconSize} height={iconSize} />
@@ -91,15 +103,27 @@ export const ToolProgress = ({ name, status, args, result }: ToolProgressProps) 
                     <EuiFlexItem grow={true}>
                         <span css={nameStyle}>{name}</span>
                     </EuiFlexItem>
-                    <EuiFlexItem grow={false} style={{ minWidth: `${iconSize}px` }}>
+                    <EuiFlexItem
+                        grow={false}
+                        style={{ minWidth: `${iconSize}px` }}
+                    >
                         {renderStatus()}
                     </EuiFlexItem>
-                    <EuiFlexItem grow={false} style={{ minWidth: `${iconSize}px` }}>
+                    <EuiFlexItem
+                        grow={false}
+                        style={{ minWidth: `${iconSize}px` }}
+                    >
                         {hasArgs &&
                             (isExpanded ? (
-                                <WfoChevronUp width={iconSize} height={iconSize} />
+                                <WfoChevronUp
+                                    width={iconSize}
+                                    height={iconSize}
+                                />
                             ) : (
-                                <WfoChevronDown width={iconSize} height={iconSize} />
+                                <WfoChevronDown
+                                    width={iconSize}
+                                    height={iconSize}
+                                />
                             ))}
                     </EuiFlexItem>
                 </EuiFlexGroup>

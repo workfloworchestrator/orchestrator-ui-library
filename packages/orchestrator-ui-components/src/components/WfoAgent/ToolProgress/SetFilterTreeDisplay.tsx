@@ -25,7 +25,9 @@ interface BetweenValue {
 }
 
 type SetFilterTreeDisplayProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parameters: any;
 };
 
@@ -52,7 +54,8 @@ export const SetFilterTreeDisplay = ({
                 condition.value &&
                 typeof condition.value === 'object'
             ) {
-                const { start, end, from, to } = condition.value as BetweenValue;
+                const { start, end, from, to } =
+                    condition.value as BetweenValue;
                 const fromVal = start || from;
                 const toVal = end || to;
                 return `${fromVal} … ${toVal}`;

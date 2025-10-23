@@ -74,7 +74,9 @@ export function ExportButton({ exportData }: ExportButtonProps) {
     return (
         <div css={containerStyle}>
             <div css={buttonWrapperStyle}>
-                {exportData.message && <div css={titleStyle}>{exportData.message}</div>}
+                {exportData.message && (
+                    <div css={titleStyle}>{exportData.message}</div>
+                )}
                 <div css={fileRowStyle} onClick={onDownloadClick}>
                     <div css={fileInfoStyle}>
                         <EuiIcon type="document" size="m" />

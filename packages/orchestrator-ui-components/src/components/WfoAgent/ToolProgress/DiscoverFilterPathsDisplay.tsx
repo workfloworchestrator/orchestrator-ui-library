@@ -5,7 +5,16 @@ import { EuiSpacer, EuiText } from '@elastic/eui';
 import { WfoBadge } from '@/components/WfoBadges';
 import { WfoPathBreadcrumb } from '@/components/WfoSearchPage/WfoSearchResults/WfoPathBreadcrumb';
 
+interface DiscoverFilterPathsResult {
+    status?: string;
+    leaves?: Array<{
+        paths?: string[];
+        name?: string;
+    }>;
+}
+
 type DiscoverFilterPathsDisplayProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result?: any;
     parameters: {
         field_names?: string[];
@@ -17,20 +26,20 @@ export const DiscoverFilterPathsDisplay = ({
     parameters,
     result,
 }: DiscoverFilterPathsDisplayProps) => {
-    const { field_names = [], entity_type } = parameters;
+    const { field_names = [] } = parameters;
 
-    const foundFields = result
-        ? Object.entries(result).filter(
-              ([_, fieldResult]: [string, any]) =>
-                  fieldResult.status !== 'NOT_FOUND',
-          )
+    const foundFields: [string, DiscoverFilterPathsResult][] = result
+        ? Object.entries(
+              result as Record<string, DiscoverFilterPathsResult>,
+          ).filter(([, fieldResult]) => fieldResult.status !== 'NOT_FOUND')
         : [];
 
     // Count total paths across all found fields
-    const totalPaths = foundFields.reduce((count, [_, fieldResult]: [string, any]) => {
-        const pathCount = fieldResult.leaves?.reduce((leafCount: number, leaf: any) => {
-            return leafCount + (leaf.paths?.length || 1);
-        }, 0) || 0;
+    const totalPaths = foundFields.reduce((count, [, fieldResult]) => {
+        const pathCount =
+            fieldResult.leaves?.reduce((leafCount: number, leaf) => {
+                return leafCount + (leaf.paths?.length || 1);
+            }, 0) || 0;
         return count + pathCount;
     }, 0);
 
@@ -62,47 +71,42 @@ export const DiscoverFilterPathsDisplay = ({
                         </strong>
                     </EuiText>
                     <EuiSpacer size="xs" />
-                    {foundFields.map(
-                        ([fieldName, fieldResult]: [string, any]) => (
-                            <div
-                                key={fieldName}
-                                style={{ marginBottom: '8px' }}
-                            >
-                                {fieldResult.leaves &&
-                                    fieldResult.leaves.length > 0 &&
-                                    fieldResult.leaves.map(
-                                        (leaf: any, leafIdx: number) => {
-                                            const paths = leaf.paths || [
-                                                leaf.name,
-                                            ];
-                                            return (
-                                                <React.Fragment key={leafIdx}>
-                                                    {paths.map(
-                                                        (
-                                                            path: string,
-                                                            pathIdx: number,
-                                                        ) => (
-                                                            <div
-                                                                key={pathIdx}
-                                                                style={{
-                                                                    marginBottom:
-                                                                        '4px',
-                                                                }}
-                                                            >
-                                                                <WfoPathBreadcrumb
-                                                                    path={path}
-                                                                    size="s"
-                                                                />
-                                                            </div>
-                                                        ),
-                                                    )}
-                                                </React.Fragment>
-                                            );
-                                        },
-                                    )}
-                            </div>
-                        ),
-                    )}
+                    {foundFields.map(([fieldName, fieldResult]) => (
+                        <div key={fieldName} style={{ marginBottom: '8px' }}>
+                            {fieldResult.leaves &&
+                                fieldResult.leaves.length > 0 &&
+                                fieldResult.leaves.map(
+                                    (leaf, leafIdx: number) => {
+                                        const paths =
+                                            leaf.paths ||
+                                            (leaf.name ? [leaf.name] : []);
+                                        return (
+                                            <React.Fragment key={leafIdx}>
+                                                {paths.map(
+                                                    (
+                                                        path: string,
+                                                        pathIdx: number,
+                                                    ) => (
+                                                        <div
+                                                            key={pathIdx}
+                                                            style={{
+                                                                marginBottom:
+                                                                    '4px',
+                                                            }}
+                                                        >
+                                                            <WfoPathBreadcrumb
+                                                                path={path}
+                                                                size="s"
+                                                            />
+                                                        </div>
+                                                    ),
+                                                )}
+                                            </React.Fragment>
+                                        );
+                                    },
+                                )}
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

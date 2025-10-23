@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 import { WfoBadge } from '@/components/WfoBadges';
 
 type RunSearchDisplayProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result?: any;
     parameters: {
         limit?: number;

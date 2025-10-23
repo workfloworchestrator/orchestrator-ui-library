@@ -5,6 +5,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 import { WfoBadge } from '@/components/WfoBadges';
 
 type StartNewSearchDisplayProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result?: any;
     parameters: {
         entity_type?: string;
