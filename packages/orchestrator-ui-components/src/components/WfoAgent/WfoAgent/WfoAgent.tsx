@@ -15,7 +15,6 @@ import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
 import { AnySearchParameters, Group, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
-import { FilterDisplay } from '../FilterDisplay';
 import { ToolProgress } from '../ToolProgress';
 
 type SearchResultsData = {
@@ -51,13 +50,13 @@ export function WfoAgent() {
         name: 'query_agent',
         initialState,
     });
-    const { parameters, results_data } = state;
+    const { results_data } = state;
 
     // Automatically render all tool calls
     useCopilotAction({
         name: '*',
-        render: ({ name, status }: CatchAllActionRenderProps<[]>) => {
-            return <ToolProgress name={name} status={status} />;
+        render: ({ name, status, args, result }: CatchAllActionRenderProps<[]>) => {
+            return <ToolProgress name={name} status={status} args={args} result={result} />;
         },
     });
 
@@ -72,18 +71,6 @@ export function WfoAgent() {
         },
     });
 
-    const displayParameters = parameters
-        ? {
-              ...parameters,
-              filters: Array.isArray(parameters.filters)
-                  ? ({
-                        op: 'AND' as const,
-                        children: parameters.filters,
-                    } as Group)
-                  : parameters.filters || undefined,
-          }
-        : undefined;
-
     return (
         <EuiFlexGroup gutterSize="l" alignItems="stretch">
             <EuiFlexItem grow={2}>
@@ -92,24 +79,9 @@ export function WfoAgent() {
                 </EuiText>
 
                 <EuiSpacer size="m" />
-                <EuiText size="s">
-                    <h2>{tPage('filledParameters')}</h2>
-                </EuiText>
-                <EuiSpacer size="s" />
-                {displayParameters && (
-                    <FilterDisplay parameters={displayParameters} />
-                )}
-
-                <EuiSpacer size="m" />
 
                 {results_data && results_data.action === 'view_results' && (
                     <>
-                        <EuiText size="s">
-                            <h2>
-                                {tPage('results')} ({results_data.total_count})
-                            </h2>
-                        </EuiText>
-                        <EuiSpacer size="s" />
                         {results_data.message && (
                             <>
                                 <EuiText size="s">

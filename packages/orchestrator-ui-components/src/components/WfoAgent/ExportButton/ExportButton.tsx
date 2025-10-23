@@ -2,13 +2,15 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiText } from '@elastic/eui';
+import { EuiIcon, EuiLoadingSpinner } from '@elastic/eui';
 
-import { useShowToastMessage } from '@/hooks';
+import { useShowToastMessage, useWithOrchestratorTheme } from '@/hooks';
 import { useLazyGetAgentExportQuery } from '@/rtk/endpoints/agentExport';
 import { GraphQLPageInfo } from '@/types';
 import { getCsvFileNameWithDate } from '@/utils';
 import { csvDownloadHandler } from '@/utils/csvDownload';
+
+import { getExportButtonStyles } from './styles';
 
 export type ExportData = {
     action: string;
@@ -30,6 +32,18 @@ export function ExportButton({ exportData }: ExportButtonProps) {
     const tError = useTranslations('errors');
     const [triggerExport, { isFetching }] = useLazyGetAgentExportQuery();
 
+    const {
+        containerStyle,
+        buttonWrapperStyle,
+        titleStyle,
+        fileRowStyle,
+        fileInfoStyle,
+        filenameStyle,
+        downloadButtonStyle,
+    } = useWithOrchestratorTheme(getExportButtonStyles);
+
+    const filename = getCsvFileNameWithDate('export');
+
     const onDownloadClick = async () => {
         const data = await triggerExport(exportData.download_url).unwrap();
 
@@ -49,7 +63,7 @@ export function ExportButton({ exportData }: ExportButtonProps) {
                     filterFields: [],
                 },
             keyOrder,
-            getCsvFileNameWithDate(`export`),
+            filename,
             showToastMessage,
             tError,
         );
@@ -58,26 +72,23 @@ export function ExportButton({ exportData }: ExportButtonProps) {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '12px',
-            }}
-        >
-            <EuiButton
-                onClick={onDownloadClick}
-                isLoading={isFetching}
-                iconType="download"
-                fill
-            >
-                {exportData.message && (
-                    <EuiText size="s" textAlign="center">
-                        {exportData.message}
-                    </EuiText>
-                )}
-            </EuiButton>
+        <div css={containerStyle}>
+            <div css={buttonWrapperStyle}>
+                {exportData.message && <div css={titleStyle}>{exportData.message}</div>}
+                <div css={fileRowStyle} onClick={onDownloadClick}>
+                    <div css={fileInfoStyle}>
+                        <EuiIcon type="document" size="m" />
+                        <span css={filenameStyle}>{filename}</span>
+                    </div>
+                    <div css={downloadButtonStyle}>
+                        {isFetching ? (
+                            <EuiLoadingSpinner size="m" />
+                        ) : (
+                            <EuiIcon type="download" size="m" />
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

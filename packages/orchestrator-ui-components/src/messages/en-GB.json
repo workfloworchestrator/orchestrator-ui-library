@@ -475,7 +475,6 @@
         "title": "Search results",
         "page": {
             "filledParameters": "Filled parameters",
-            "results": "Results",
             "emptyGroup": "Empty group",
             "searchQuery": "Search query",
             "activeFilters": "Active filters",
