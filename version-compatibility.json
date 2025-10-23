@@ -1,5 +1,10 @@
 [
     {
+        "orchestratorUiVersion": "6.5.0",
+        "minimumOrchestratorCoreVersion": "4.6.0",
+        "changes": "To support new functionality in the FE for the Agent and LLM, the BE endpoints have changed."
+    },
+    {
         "orchestratorUiVersion": "5.3.5",
         "minimumOrchestratorCoreVersion": "4.2.0",
         "changes": "Endpoints in BE to support RBAC on individual running workflows and usage new graphql props started and completed to improve the process detail timestamps."
