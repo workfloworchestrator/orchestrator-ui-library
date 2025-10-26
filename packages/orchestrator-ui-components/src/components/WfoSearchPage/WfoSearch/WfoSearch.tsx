@@ -20,8 +20,6 @@ import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { WfoBadge } from '@/components/WfoBadges';
 import {
     ENTITY_TABS,
-    findResultIndexById,
-    getRecordId,
     isSubscriptionSearchResult,
 } from '@/components/WfoSearchPage/utils';
 import { TreeProvider } from '@/contexts';
@@ -176,9 +174,8 @@ export const WfoSearch = () => {
     useEffect(() => {
         if (results.data.length > 0) {
             if (selectedRecordId) {
-                const foundIndex = findResultIndexById(
-                    results.data,
-                    selectedRecordId,
+                const foundIndex = results.data.findIndex(
+                    (result) => result.entity_id === selectedRecordId,
                 );
 
                 if (foundIndex !== -1) {
@@ -375,9 +372,9 @@ export const WfoSearch = () => {
                                         setSelectedRecordIndex(index);
                                         const record = results.data[index];
                                         if (record) {
-                                            const recordId =
-                                                getRecordId(record);
-                                            setSelectedRecordId(recordId);
+                                            setSelectedRecordId(
+                                                record.entity_id,
+                                            );
                                         }
                                     }}
                                 />
@@ -402,8 +399,7 @@ export const WfoSearch = () => {
                                                 subscriptionId={
                                                     results.data[
                                                         selectedRecordIndex
-                                                    ].subscription
-                                                        .subscription_id
+                                                    ].entity_id
                                                 }
                                             />
                                         </TreeProvider>

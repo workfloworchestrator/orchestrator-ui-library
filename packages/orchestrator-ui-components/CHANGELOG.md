@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.5.0
+
+### Minor Changes
+
+- 61c8550: Added tool calling chain component to agent and made it possible to export to CSV
+
 ## 6.4.0
 
 ### Minor Changes

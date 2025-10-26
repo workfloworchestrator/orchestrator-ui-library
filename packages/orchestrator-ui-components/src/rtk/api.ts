@@ -149,12 +149,6 @@ export const orchestratorApi = createApi({
                     ? customApi.apiBaseUrl
                     : orchestratorApiBaseUrl;
 
-                if (apiName === 'agent') {
-                    if (baseUrl.endsWith('/api')) {
-                        baseUrl = baseUrl.slice(0, -4);
-                    }
-                }
-
                 const fetchFn = fetchBaseQuery({
                     baseUrl,
                     prepareHeaders,

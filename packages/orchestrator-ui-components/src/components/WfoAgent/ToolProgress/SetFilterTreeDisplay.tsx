@@ -2,13 +2,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiPanel,
-    EuiSpacer,
-    EuiText,
-} from '@elastic/eui';
+import { EuiText } from '@elastic/eui';
 
 import { WfoBadge } from '@/components/WfoBadges';
 import { WfoPathBreadcrumb } from '@/components/WfoSearchPage/WfoSearchResults/WfoPathBreadcrumb';
@@ -16,21 +10,12 @@ import {
     getOperatorDisplay,
     isCondition,
 } from '@/components/WfoSearchPage/utils';
-import { useWithOrchestratorTheme } from '@/index';
-import { AnySearchParameters, Condition, Group, PathDataType } from '@/types';
+import { useWithOrchestratorTheme } from '@/hooks';
+import { Condition, Group, PathDataType } from '@/types';
 
-import { getFilterDisplayStyles } from './styles';
+import { getFilterDisplayStyles } from './SetFilterTreeDisplay.styles';
 
 const DEPTH_INDENT = 16;
-
-type FilterDisplayProps = {
-    parameters: {
-        action?: AnySearchParameters['action'] | string;
-        entity_type?: AnySearchParameters['entity_type'] | string;
-        filters?: Group | null;
-        query?: string | null;
-    };
-};
 
 interface BetweenValue {
     start?: string | number;
@@ -39,9 +24,17 @@ interface BetweenValue {
     to?: string | number;
 }
 
-export function FilterDisplay({ parameters }: FilterDisplayProps) {
-    const t = useTranslations('agent.page');
+type SetFilterTreeDisplayProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    result?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parameters: any;
+};
 
+export const SetFilterTreeDisplay = ({
+    parameters,
+}: SetFilterTreeDisplayProps) => {
+    const t = useTranslations('agent.page');
     const {
         wrapStyle,
         columnGroupWrapStyle,
@@ -50,15 +43,9 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
         operatorStyle,
         valueStyle,
     } = useWithOrchestratorTheme(getFilterDisplayStyles);
-    const { action, entity_type, filters, query } = parameters ?? {};
 
-    if (!parameters || Object.keys(parameters).length === 0) return null;
-
-    const sectionTitle = (text: string) => (
-        <EuiText size="xs" color="subdued">
-            <strong>{text}</strong>
-        </EuiText>
-    );
+    // Parameters might be the Group directly, or wrapped in a filters property
+    const filters = (parameters?.filters || parameters) as Group;
 
     const formatFilterValue = (condition: Condition['condition']): string => {
         if ('value' in condition && condition.value !== undefined) {
@@ -136,47 +123,13 @@ export function FilterDisplay({ parameters }: FilterDisplayProps) {
         );
     };
 
-    return (
-        <EuiPanel hasBorder paddingSize="m">
-            <EuiFlexGroup gutterSize="m" wrap responsive>
-                <EuiFlexItem grow={false}>
-                    {sectionTitle(t('action'))}
-                    <EuiSpacer size="xs" />
-                    <WfoBadge textColor="default" color="hollow">
-                        {action || 'N/A'}
-                    </WfoBadge>
-                </EuiFlexItem>
+    if (!filters || !filters.children || filters.children.length === 0) {
+        return (
+            <EuiText size="s" color="subdued">
+                <em>{t('noFiltersApplied')}</em>
+            </EuiText>
+        );
+    }
 
-                <EuiFlexItem grow={false}>
-                    {sectionTitle(t('entityType'))}
-                    <EuiSpacer size="xs" />
-                    <WfoBadge textColor="default" color="hollow">
-                        {entity_type || 'N/A'}
-                    </WfoBadge>
-                </EuiFlexItem>
-
-                {query ? (
-                    <EuiFlexItem grow={false}>
-                        {sectionTitle(t('searchQuery'))}
-                        <EuiSpacer size="xs" />
-                        <EuiText size="s">
-                            <em>"{query}"</em>
-                        </EuiText>
-                    </EuiFlexItem>
-                ) : null}
-            </EuiFlexGroup>
-
-            <EuiSpacer size="m" />
-            {sectionTitle(t('activeFilters'))}
-            <EuiSpacer size="s" />
-
-            {filters && filters.children && filters.children.length > 0 ? (
-                renderFilterGroup(filters)
-            ) : (
-                <EuiText size="s" color="subdued">
-                    <em>{t('noFiltersApplied')}</em>
-                </EuiText>
-            )}
-        </EuiPanel>
-    );
-}
+    return <div>{renderFilterGroup(filters)}</div>;
+};

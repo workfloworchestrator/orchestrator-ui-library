@@ -1,85 +1,23 @@
 export type EntityKind = 'SUBSCRIPTION' | 'PRODUCT' | 'WORKFLOW' | 'PROCESS';
 
-export interface SubscriptionMatchingField {
+export interface MatchingField {
     text: string;
     path: string;
     highlight_indices: [number, number][];
 }
 
-export interface SubscriptionSearchResult {
+export interface SearchResult {
+    entity_id: string;
+    entity_type: EntityKind;
+    entity_title: string;
     score: number;
     perfect_match: number;
-    matching_field?: SubscriptionMatchingField | null;
-    subscription: {
-        subscription_id: string;
-        description: string;
-        product: {
-            name: string;
-            description: string;
-        };
-    };
+    matching_field?: MatchingField | null;
 }
-
-export interface ProcessSearchResult {
-    score: number;
-    perfect_match: number;
-    matching_field?: SubscriptionMatchingField | null;
-    process: {
-        processId: string;
-        workflowName: string;
-        workflowId: string;
-        status: string;
-        isTask: boolean;
-        createdBy?: string | null;
-        startedAt: string;
-        lastModifiedAt: string;
-        lastStep?: string | null;
-        failedReason?: string | null;
-        subscriptionIds?: string[] | null;
-    };
-}
-
-export interface ProductSearchResult {
-    score: number;
-    perfect_match: number;
-    matching_field?: SubscriptionMatchingField | null;
-    product: {
-        product_id: string;
-        name: string;
-        product_type: string;
-        tag?: string | null;
-        description?: string | null;
-        status?: string | null;
-        created_at?: string | null;
-    };
-}
-
-export interface WorkflowSearchResult {
-    score: number;
-    perfect_match: number;
-    matching_field?: SubscriptionMatchingField | null;
-    workflow: {
-        name: string;
-        products: {
-            product_type: string;
-            product_id: string;
-            name: string;
-        }[];
-        description?: string | null;
-        created_at?: string | null;
-    };
-}
-
-/** Union of all search results */
-export type AnySearchResult =
-    | SubscriptionSearchResult
-    | ProcessSearchResult
-    | ProductSearchResult
-    | WorkflowSearchResult;
 
 /** Paginated search results */
 export type PaginatedSearchResults = {
-    data: AnySearchResult[];
+    data: SearchResult[];
     page_info: {
         has_next_page: boolean;
         next_page_cursor: number | null;
@@ -138,7 +76,7 @@ type ActionType = 'select';
 type BaseSearchParameters = {
     query?: string | null;
 
-    filters?: PathFilter[] | null;
+    filters?: PathFilter[] | Group | null;
 
     action: ActionType;
 };
