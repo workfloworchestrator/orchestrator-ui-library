@@ -35,6 +35,7 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
         '&>:hover': {
             backgroundColor: theme.colors.lightestShade,
             borderRadius: theme.border.radius.medium,
+            cursor: 'pointer',
         },
         '.euiToolTipAnchor': {
             width: '100%',

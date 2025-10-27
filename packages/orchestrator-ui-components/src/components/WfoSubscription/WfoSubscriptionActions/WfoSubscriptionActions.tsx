@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import {
     EuiButton,
@@ -12,14 +13,21 @@ import {
     EuiTitle,
 } from '@elastic/eui';
 
-import { WfoInSyncField } from '@/components';
+import {
+    PATH_START_NEW_TASK,
+    PATH_START_NEW_WORKFLOW,
+    WfoInSyncField,
+} from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy } from '@/hooks';
+import { usePolicy, useShowToastMessage } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
-import { useGetSubscriptionDetailQuery } from '@/rtk';
-import { useGetSubscriptionActionsQuery } from '@/rtk/endpoints/subscriptionActions';
-import { WorkflowTarget } from '@/types';
+import {
+    useGetSubscriptionActionsQuery,
+    useGetSubscriptionDetailQuery,
+    useStartProcessMutation,
+} from '@/rtk';
+import { ToastTypes, WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
     title: string;
@@ -43,6 +51,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 }) => {
     const t = useTranslations('subscriptions.detail.actions');
     const [isPopoverOpen, setPopover] = useState(false);
+    const router = useRouter();
     const disableQuery = isLoading || (!isPopoverOpen && compactMode);
     const {
         data: subscriptionActions,
@@ -51,6 +60,8 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         { subscriptionId },
         { skip: disableQuery },
     );
+    const { showToastMessage } = useShowToastMessage();
+    const [startProcess] = useStartProcessMutation();
 
     const { data: subscriptionDetail } = useGetSubscriptionDetailQuery(
         {
@@ -89,23 +100,81 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         SUBSCRIPTION_TERMINATE,
         SET_IN_SYNC,
     } = PolicyResource;
+
+    const redirectToUrl = (workflowName: string, isTask: boolean = false) => {
+        const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
+
+        const url = {
+            pathname: `${path}/${workflowName}`,
+            query: {
+                subscriptionId,
+            },
+        };
+        router.push(url);
+    };
+
+    const silentlyStartWorkflow = (workflowName: string) => {
+        startProcess({
+            workflowName,
+            userInputs: [
+                {
+                    subscription_id: subscriptionId,
+                },
+            ],
+        })
+            .unwrap()
+            .then(() => {
+                closePopover();
+                showToastMessage(
+                    ToastTypes.SUCCESS,
+                    t('setInSyncSuccess.text'),
+                    t('setInSyncSuccess.title'),
+                );
+            })
+            .catch((error) => {
+                const errorToastMessage = error?.data?.detail ? (
+                    <WfoInSyncErrorToastMessage
+                        errorDetail={error.data?.detail}
+                    />
+                ) : (
+                    t('setInSyncFailed.text').toString()
+                );
+
+                showToastMessage(
+                    ToastTypes.ERROR,
+                    errorToastMessage,
+                    t('setInSyncFailed.title'),
+                );
+                console.error('Failed to set subscription in sync.', error);
+            });
+    };
+
     const compactItems = (
         <>
             {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) &&
                 subscriptionActions?.validate && (
                     <>
                         {!compactMode && <MenuBlock title={t('tasks')} />}
-                        {subscriptionActions.validate.map((action, index) => (
-                            <WfoSubscriptionActionsMenuItem
-                                key={`s_${index}`}
-                                action={action}
-                                index={index}
-                                target={WorkflowTarget.VALIDATE}
-                                isTask
-                                subscriptionId={subscriptionId}
-                                setPopover={setPopover}
-                            />
-                        ))}
+                        {subscriptionActions.validate.map(
+                            (subscriptionAction, index) => (
+                                <WfoSubscriptionActionsMenuItem
+                                    key={`s_${index}`}
+                                    subscriptionAction={subscriptionAction}
+                                    target={WorkflowTarget.VALIDATE}
+                                    setPopover={setPopover}
+                                    onClick={() => {
+                                        if (compactMode) {
+                                            console.log('AAAAAA');
+                                        } else {
+                                            redirectToUrl(
+                                                subscriptionAction.name,
+                                                true,
+                                            );
+                                        }
+                                    }}
+                                />
+                            ),
+                        )}
                     </>
                 )}
 
@@ -113,16 +182,25 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                 (subscriptionActions?.reconcile?.length ?? 0) > 0 && (
                     <>
                         {!compactMode && <MenuBlock title={t('reconcile')} />}
-                        {subscriptionActions?.reconcile.map((action, index) => (
-                            <WfoSubscriptionActionsMenuItem
-                                key={`r_${index}`}
-                                action={action}
-                                index={index}
-                                target={WorkflowTarget.RECONCILE}
-                                subscriptionId={subscriptionId}
-                                setPopover={setPopover}
-                            />
-                        ))}
+                        {subscriptionActions?.reconcile.map(
+                            (subscriptionAction, index) => (
+                                <WfoSubscriptionActionsMenuItem
+                                    key={`r_${index}`}
+                                    subscriptionAction={subscriptionAction}
+                                    target={WorkflowTarget.RECONCILE}
+                                    setPopover={setPopover}
+                                    onClick={() => {
+                                        if (compactMode) {
+                                            console.log('HHHHHH');
+                                        } else {
+                                            redirectToUrl(
+                                                subscriptionAction.name,
+                                            );
+                                        }
+                                    }}
+                                />
+                            ),
+                        )}
                     </>
                 )}
 
@@ -144,16 +222,19 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                 subscriptionActions?.modify && (
                     <>
                         <MenuBlock title={t('modify')} />
-                        {subscriptionActions.modify.map((action, index) => (
-                            <WfoSubscriptionActionsMenuItem
-                                key={`m_${index}`}
-                                action={action}
-                                index={index}
-                                target={WorkflowTarget.MODIFY}
-                                subscriptionId={subscriptionId}
-                                setPopover={setPopover}
-                            />
-                        ))}
+                        {subscriptionActions.modify.map(
+                            (subscriptionAction, index) => (
+                                <WfoSubscriptionActionsMenuItem
+                                    key={`m_${index}`}
+                                    subscriptionAction={subscriptionAction}
+                                    target={WorkflowTarget.MODIFY}
+                                    setPopover={setPopover}
+                                    onClick={() => {
+                                        redirectToUrl(subscriptionAction.name);
+                                    }}
+                                />
+                            ),
+                        )}
                     </>
                 )}
             {compactItems}
@@ -161,16 +242,19 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                 subscriptionActions?.terminate && (
                     <>
                         <MenuBlock title={t('terminate')} />
-                        {subscriptionActions.terminate.map((action, index) => (
-                            <WfoSubscriptionActionsMenuItem
-                                key={`t_${index}`}
-                                action={action}
-                                index={index}
-                                target={WorkflowTarget.TERMINATE}
-                                subscriptionId={subscriptionId}
-                                setPopover={setPopover}
-                            />
-                        ))}
+                        {subscriptionActions.terminate.map(
+                            (subscriptionAction, index) => (
+                                <WfoSubscriptionActionsMenuItem
+                                    key={`t_${index}`}
+                                    subscriptionAction={subscriptionAction}
+                                    target={WorkflowTarget.TERMINATE}
+                                    setPopover={setPopover}
+                                    onClick={() => {
+                                        redirectToUrl(subscriptionAction.name);
+                                    }}
+                                />
+                            ),
+                        )}
                     </>
                 )}
         </>
