@@ -116,7 +116,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         router.push(url);
     };
 
-    const silentlyStartWorkflow = (
+    const silentlyStartAction = (
         workflowName: string,
         isTask: boolean = false,
     ) => {
@@ -164,7 +164,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     setPopover={setPopover}
                                     onClick={() => {
                                         if (compactMode) {
-                                            silentlyStartWorkflow(
+                                            silentlyStartAction(
                                                 subscriptionAction.name,
                                                 true,
                                             );
@@ -194,7 +194,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     setPopover={setPopover}
                                     onClick={() => {
                                         if (compactMode) {
-                                            silentlyStartWorkflow(
+                                            silentlyStartAction(
                                                 subscriptionAction.name,
                                                 false,
                                             );
