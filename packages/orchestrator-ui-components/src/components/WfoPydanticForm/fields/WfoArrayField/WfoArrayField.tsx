@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
 import {
@@ -11,7 +11,7 @@ import {
     useGetForm,
 } from 'pydantic-forms';
 
-import { EuiIcon } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 
@@ -74,12 +74,25 @@ export const WfoArrayField = ({
     const { control } = reactHookForm;
     const { id: arrayName, arrayItem } = pydanticFormField;
     const { minItems, maxItems } = pydanticFormField.validations;
+    const { theme } = useOrchestratorTheme();
     const { container, fieldWrapper } = getWfoArrayFieldStyles();
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: arrayName,
     });
+
+    useEffect(() => {
+        if (arrayName && arrayItem && minItems && minItems > 0 && fields) {
+            for (let i = 0; i < minItems; i++) {
+                if (fields.length < minItems) {
+                    append({
+                        [arrayName]: arrayItem.default ?? undefined,
+                    });
+                }
+            }
+        }
+    }, [minItems, append, remove, arrayItem, arrayName, fields]);
 
     const showMinus = (!minItems || fields.length > minItems) && !disabled;
     const showPlus = (!maxItems || fields.length < maxItems) && !disabled;
@@ -122,19 +135,39 @@ export const WfoArrayField = ({
     };
 
     return (
-        <div data-testid={arrayName} css={container}>
-            {fields.map(renderField)}
-
-            {showPlus && (
-                <PlusButton
-                    onClick={() => {
-                        append({
-                            [arrayName]: arrayItem.default ?? undefined,
-                        });
-                    }}
-                    testId={`${arrayName}-plus-button`}
-                />
-            )}
-        </div>
+        <>
+            <div data-testid={arrayName} css={container}>
+                {fields.map(renderField)}
+                <EuiFlexGroup
+                    justifyContent="spaceBetween"
+                    alignItems="center"
+                    gutterSize="none"
+                >
+                    <EuiFlexItem grow={false}>
+                        {minItems && fields.length <= minItems && (
+                            <EuiText
+                                color={theme.colors.borderBasePlain}
+                                size="xs"
+                            >
+                                *Min items: {minItems}
+                            </EuiText>
+                        )}
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        {showPlus && (
+                            <PlusButton
+                                onClick={() =>
+                                    append({
+                                        [arrayName]:
+                                            arrayItem.default ?? undefined,
+                                    })
+                                }
+                                testId={`${arrayName}-plus-button`}
+                            />
+                        )}
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+            </div>
+        </>
     );
 };
