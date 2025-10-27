@@ -312,6 +312,8 @@
                 "tasks": "Tasks",
                 "terminate": "Terminate workflow",
                 "reconcile": "Reconcile workflow",
+                "actionStarted": "Action started",
+                "actionStartFailed": "Action failed",
                 "actions": "Actions",
                 "lockedBySubscriptions": "This action is locked by the following subscriptions:",
                 "notAvailable": "Not available",

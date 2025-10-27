@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
@@ -16,6 +17,8 @@ import {
 import {
     PATH_START_NEW_TASK,
     PATH_START_NEW_WORKFLOW,
+    PATH_TASKS,
+    PATH_WORKFLOWS,
     WfoInSyncField,
 } from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
@@ -113,7 +116,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         router.push(url);
     };
 
-    const silentlyStartWorkflow = (workflowName: string) => {
+    const silentlyStartWorkflow = (
+        workflowName: string,
+        isTask: boolean = false,
+    ) => {
         startProcess({
             workflowName,
             userInputs: [
@@ -123,27 +129,21 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             ],
         })
             .unwrap()
-            .then(() => {
+            .then((result) => {
                 closePopover();
+                const processUrl = `${isTask ? PATH_TASKS : PATH_WORKFLOWS}/${result.id}`;
+
                 showToastMessage(
                     ToastTypes.SUCCESS,
-                    t('setInSyncSuccess.text'),
-                    t('setInSyncSuccess.title'),
+                    <Link href={processUrl}>{processUrl}</Link>,
+                    t('actionStarted'),
                 );
             })
             .catch((error) => {
-                const errorToastMessage = error?.data?.detail ? (
-                    <WfoInSyncErrorToastMessage
-                        errorDetail={error.data?.detail}
-                    />
-                ) : (
-                    t('setInSyncFailed.text').toString()
-                );
-
                 showToastMessage(
                     ToastTypes.ERROR,
-                    errorToastMessage,
-                    t('setInSyncFailed.title'),
+                    t('actionStartFailed'),
+                    t('actionStartFailed'),
                 );
                 console.error('Failed to set subscription in sync.', error);
             });
@@ -164,7 +164,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     setPopover={setPopover}
                                     onClick={() => {
                                         if (compactMode) {
-                                            console.log('AAAAAA');
+                                            silentlyStartWorkflow(
+                                                subscriptionAction.name,
+                                                true,
+                                            );
                                         } else {
                                             redirectToUrl(
                                                 subscriptionAction.name,
@@ -191,7 +194,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     setPopover={setPopover}
                                     onClick={() => {
                                         if (compactMode) {
-                                            console.log('HHHHHH');
+                                            silentlyStartWorkflow(
+                                                subscriptionAction.name,
+                                                false,
+                                            );
                                         } else {
                                             redirectToUrl(
                                                 subscriptionAction.name,
