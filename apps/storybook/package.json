@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@orchestrator-ui/orchestrator-ui-components": "*",
-        "@rollup/plugin-commonjs": "^28.0.2",
+        "@rollup/plugin-commonjs": "^28.0.9",
         "@storybook/addon-essentials": "^8.5.0",
         "@storybook/addon-interactions": "^8.5.0",
         "@storybook/addon-onboarding": "^8.5.0",
