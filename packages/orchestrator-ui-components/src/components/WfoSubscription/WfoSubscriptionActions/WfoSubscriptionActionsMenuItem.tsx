@@ -1,16 +1,10 @@
 import React, { FC } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import { EuiContextMenuItem, EuiToolTip } from '@elastic/eui';
 
 import { flattenArrayProps } from '@/components';
-import {
-    PATH_START_NEW_TASK,
-    PATH_START_NEW_WORKFLOW,
-} from '@/components/WfoPageTemplate';
 import { WfoSubscriptionActionExpandableMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionExpandableMenuItem';
 import { getSubscriptionActionStyles } from '@/components/WfoSubscription/WfoSubscriptionActions/styles';
 import {
@@ -24,21 +18,16 @@ import { SubscriptionAction, WorkflowTarget } from '@/types';
 import { WfoTargetTypeIcon } from '../WfoTargetTypeIcon';
 
 interface MenuItemProps {
-    key: string;
-    action: SubscriptionAction;
-    index: number;
+    subscriptionAction: SubscriptionAction;
     target: WorkflowTarget;
-    isTask?: boolean;
-    isDisabled?: boolean;
-    subscriptionId: string;
     setPopover: (isOpen: boolean) => void;
+    onClick: () => void;
 }
 
 export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
-    action,
+    subscriptionAction,
+    onClick,
     target,
-    isTask = false,
-    subscriptionId,
     setPopover,
 }) => {
     const {
@@ -50,41 +39,38 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     } = useWithOrchestratorTheme(getSubscriptionActionStyles);
 
     const { isEngineRunningNow } = useCheckEngineStatus();
-    const router = useRouter();
     const t = useTranslations('subscriptions.detail.actions');
     const { theme } = useOrchestratorTheme();
 
     const linkIt = (actionItem: React.ReactNode) => {
-        const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
-        const url = {
-            pathname: `${path}/${action.name}`,
-            query: { subscriptionId },
-        };
-
         const handleLinkClick = async (e: React.MouseEvent) => {
             e.preventDefault();
             setPopover(false);
+
             if (await isEngineRunningNow()) {
-                router.push(url);
+                onClick();
             }
         };
 
         return (
-            <Link href={url} onClick={handleLinkClick}>
-                <div css={linkMenuItemStyle}>{actionItem}</div>
-            </Link>
+            <div css={linkMenuItemStyle} onClick={handleLinkClick}>
+                {actionItem}
+            </div>
         );
     };
 
     const tooltipIt = (actionItem: React.ReactNode) => {
-        if (!action.reason) return actionItem;
-        const tooltipContent = t(action.reason, flattenArrayProps(action));
+        if (!subscriptionAction.reason) return actionItem;
+        const tooltipContent = t(
+            subscriptionAction.reason,
+            flattenArrayProps(subscriptionAction),
+        );
 
         return (
             <div css={tooltipMenuItemStyle}>
                 <EuiToolTip position="top" content={tooltipContent}>
                     <WfoSubscriptionActionExpandableMenuItem
-                        subscriptionAction={action}
+                        subscriptionAction={subscriptionAction}
                         onClickLockedRelation={() => setPopover(false)}
                     >
                         {actionItem}
@@ -95,7 +81,7 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     };
 
     const getIcon = () =>
-        action.reason ? (
+        subscriptionAction.reason ? (
             <div css={disabledIconStyle}>
                 <WfoTargetTypeIcon target={target} disabled />
                 <div css={secondaryIconStyle}>
@@ -115,14 +101,16 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     const ActionItem = () => (
         <EuiContextMenuItem
             icon={getIcon()}
-            disabled={!!action.reason}
+            disabled={!!subscriptionAction.reason}
             css={{
                 whiteSpace: 'nowrap',
             }}
         >
-            {action.description}
+            {subscriptionAction.description}
         </EuiContextMenuItem>
     );
 
-    return action?.reason ? tooltipIt(<ActionItem />) : linkIt(<ActionItem />);
+    return subscriptionAction?.reason
+        ? tooltipIt(<ActionItem />)
+        : linkIt(<ActionItem />);
 };
