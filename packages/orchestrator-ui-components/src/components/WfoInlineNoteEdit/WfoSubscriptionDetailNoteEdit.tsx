@@ -28,7 +28,7 @@ export const WfoSubscriptionDetailNoteEdit: FC<
     const triggerNoteModifyWorkflow = (note: string) => {
         const noteModifyPayload = [
             { subscription_id: subscriptionId },
-            { note: note === INVISIBLE_CHARACTER ? '' : note },
+            { note: note },
         ];
         startProcess({
             workflowName: 'modify_note',
