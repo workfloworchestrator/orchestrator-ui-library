@@ -145,7 +145,7 @@ export const orchestratorApi = createApi({
 
         switch (baseQueryType) {
             case BaseQueryTypes.fetch: {
-                let baseUrl = customApi
+                const baseUrl = customApi
                     ? customApi.apiBaseUrl
                     : orchestratorApiBaseUrl;
 
