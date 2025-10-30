@@ -70,7 +70,7 @@ export const WfoCustomerDescriptionsField: FC<
                 {fullname ?? customerId} {`${shortcode ?? customerId}`}:
             </div>
             <WfoInlineEdit
-                value={description}
+                value={description || INVISIBLE_CHARACTER}
                 onSave={(value) =>
                     updateCustomerDescription({
                         id: id,

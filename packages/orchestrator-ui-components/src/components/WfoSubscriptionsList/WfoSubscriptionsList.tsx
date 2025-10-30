@@ -167,6 +167,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
             note: {
                 columnType: ColumnType.DATA,
                 label: t('note'),
+                width: '300px',
                 renderData: (cellValue, row) => {
                     return (
                         <WfoSubscriptionNoteEdit
