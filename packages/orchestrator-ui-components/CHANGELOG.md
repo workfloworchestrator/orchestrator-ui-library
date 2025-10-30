@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.6.0
+
+### Minor Changes
+
+- e2f91b1: 2257 Show the minimum items in array field and min items number
+
+### Patch Changes
+
+- aa16445: 2213 Remove border, fix opacity for WfoReactSelect
+- f9ca18f: Improves subscription list menu actions
+- 9fc90c1: 2236 Added width parameter to note column
+
 ## 6.5.0
 
 ### Minor Changes
