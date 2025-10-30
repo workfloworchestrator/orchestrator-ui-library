@@ -104,11 +104,11 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         SET_IN_SYNC,
     } = PolicyResource;
 
-    const redirectToUrl = (workflowName: string, isTask: boolean = false) => {
+    const redirectToUrl = (actionName: string, isTask: boolean = false) => {
         const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
 
         const url = {
-            pathname: `${path}/${workflowName}`,
+            pathname: `${path}/${actionName}`,
             query: {
                 subscriptionId,
             },
@@ -117,11 +117,11 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     };
 
     const silentlyStartAction = (
-        workflowName: string,
+        actionName: string,
         isTask: boolean = false,
     ) => {
         startProcess({
-            workflowName,
+            workflowName: actionName,
             userInputs: [
                 {
                     subscription_id: subscriptionId,
@@ -149,6 +149,18 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             });
     };
 
+    const handleActionClick = (
+        actionName: string,
+        compactMode: boolean,
+        isTask: boolean = false,
+    ) => {
+        if (compactMode) {
+            silentlyStartAction(actionName, isTask);
+        } else {
+            redirectToUrl(actionName, isTask);
+        }
+    };
+
     const compactItems = (
         <>
             {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) &&
@@ -162,19 +174,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     subscriptionAction={subscriptionAction}
                                     target={WorkflowTarget.VALIDATE}
                                     setPopover={setPopover}
-                                    onClick={() => {
-                                        if (compactMode) {
-                                            silentlyStartAction(
-                                                subscriptionAction.name,
-                                                true,
-                                            );
-                                        } else {
-                                            redirectToUrl(
-                                                subscriptionAction.name,
-                                                true,
-                                            );
-                                        }
-                                    }}
+                                    onClick={() =>
+                                        handleActionClick(
+                                            subscriptionAction.name,
+                                            compactMode,
+                                            true,
+                                        )
+                                    }
                                 />
                             ),
                         )}
@@ -192,18 +198,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                                     subscriptionAction={subscriptionAction}
                                     target={WorkflowTarget.RECONCILE}
                                     setPopover={setPopover}
-                                    onClick={() => {
-                                        if (compactMode) {
-                                            silentlyStartAction(
-                                                subscriptionAction.name,
-                                                false,
-                                            );
-                                        } else {
-                                            redirectToUrl(
-                                                subscriptionAction.name,
-                                            );
-                                        }
-                                    }}
+                                    onClick={() =>
+                                        handleActionClick(
+                                            subscriptionAction.name,
+                                            compactMode,
+                                            false,
+                                        )
+                                    }
                                 />
                             ),
                         )}
