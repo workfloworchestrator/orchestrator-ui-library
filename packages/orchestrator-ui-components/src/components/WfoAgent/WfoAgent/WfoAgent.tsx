@@ -11,7 +11,9 @@ import {
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
+import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { WfoSearchResults } from '@/components/WfoSearchPage/WfoSearchResults';
+import { useAgentAvailability } from '@/hooks/useBackendAvailability';
 import { AnySearchParameters, SearchResult } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
@@ -45,6 +47,8 @@ const initialState: SearchState = {
 export function WfoAgent() {
     const t = useTranslations('agent');
     const tPage = useTranslations('agent.page');
+
+    const agentAvailability = useAgentAvailability();
 
     const { state } = useCoAgent<SearchState>({
         name: 'query_agent',
@@ -84,44 +88,49 @@ export function WfoAgent() {
     });
 
     return (
-        <EuiFlexGroup gutterSize="l" alignItems="stretch">
-            <EuiFlexItem grow={2}>
-                <EuiText>
-                    <h1>{t('title')}</h1>
-                </EuiText>
+        <WfoAvailabilityCheck
+            featureType="agent"
+            availability={agentAvailability}
+        >
+            <EuiFlexGroup gutterSize="l" alignItems="stretch">
+                <EuiFlexItem grow={2}>
+                    <EuiText>
+                        <h1>{t('title')}</h1>
+                    </EuiText>
 
-                <EuiSpacer size="m" />
+                    <EuiSpacer size="m" />
 
-                {results_data && results_data.action === 'view_results' && (
-                    <>
-                        {results_data.message && (
-                            <>
-                                <EuiText size="s">
-                                    <p>{results_data.message}</p>
-                                </EuiText>
-                                <EuiSpacer size="s" />
-                            </>
-                        )}
-                        <WfoSearchResults
-                            results={results_data.results}
-                            loading={false}
-                            selectedRecordIndex={-1}
-                            onRecordSelect={() => {}}
-                        />
-                    </>
-                )}
-            </EuiFlexItem>
+                    {results_data && results_data.action === 'view_results' && (
+                        <>
+                            {results_data.message && (
+                                <>
+                                    <EuiText size="s">
+                                        <p>{results_data.message}</p>
+                                    </EuiText>
+                                    <EuiSpacer size="s" />
+                                </>
+                            )}
+                            <WfoSearchResults
+                                results={results_data.results}
+                                loading={false}
+                                selectedRecordIndex={-1}
+                                onRecordSelect={() => {}}
+                            />
+                        </>
+                    )}
+                </EuiFlexItem>
 
-            <EuiFlexItem grow={1}>
-                <CopilotSidebar
-                    defaultOpen
-                    clickOutsideToClose={false}
-                    labels={{
-                        title: tPage('copilot.title'),
-                        initial: tPage('copilot.initial'),
-                    }}
-                />
-            </EuiFlexItem>
-        </EuiFlexGroup>
+                <EuiFlexItem grow={1}>
+                    <CopilotSidebar
+                        defaultOpen
+                        clickOutsideToClose={false}
+                        labels={{
+                            title: tPage('copilot.title'),
+                            initial: tPage('copilot.initial'),
+                        }}
+                    />
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </WfoAvailabilityCheck>
     );
 }
