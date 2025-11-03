@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.0.0
+
+### Major Changes
+
+- 600e5c0: Detect if search and agent endpoints are available. Show a message showing how to setup the routes correctly if they are not available.
+
+### Patch Changes
+
+- 4fbc794: Updates to latest pydantic forms version. Fixes double onSuccess calls
+
 ## 6.6.1
 
 ### Patch Changes
