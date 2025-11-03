@@ -130,9 +130,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         })
             .unwrap()
             .then((result) => {
-                closePopover();
                 const processUrl = `${isTask ? PATH_TASKS : PATH_WORKFLOWS}/${result.id}`;
-
                 showToastMessage(
                     ToastTypes.SUCCESS,
                     <Link href={processUrl}>{processUrl}</Link>,
@@ -145,7 +143,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
                     t('actionStartFailed'),
                     t('actionStartFailed'),
                 );
-                console.error('Failed to set subscription in sync.', error);
+                console.error(`Failed to start action:`, error);
+            })
+            .finally(() => {
+                closePopover();
             });
     };
 
