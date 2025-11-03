@@ -1,8 +1,8 @@
 # @orchestrator-ui/orchestrator-ui-components
 
-## 7.0.0
+## 6.7.0
 
-### Major Changes
+### Minor Changes
 
 - 600e5c0: Detect if search and agent endpoints are available. Show a message showing how to setup the routes correctly if they are not available.
 
