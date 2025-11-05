@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
@@ -17,20 +16,18 @@ import {
 import {
     PATH_START_NEW_TASK,
     PATH_START_NEW_WORKFLOW,
-    PATH_TASKS,
-    PATH_WORKFLOWS,
     WfoInSyncField,
 } from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy, useShowToastMessage } from '@/hooks';
+import { usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import {
     useGetSubscriptionActionsQuery,
     useGetSubscriptionDetailQuery,
     useStartProcessMutation,
 } from '@/rtk';
-import { ToastTypes, WorkflowTarget } from '@/types';
+import { WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
     title: string;
@@ -63,7 +60,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         { subscriptionId },
         { skip: disableQuery },
     );
-    const { showToastMessage } = useShowToastMessage();
     const [startProcess] = useStartProcessMutation();
 
     const { data: subscriptionDetail } = useGetSubscriptionDetailQuery(
@@ -116,10 +112,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         router.push(url);
     };
 
-    const silentlyStartAction = (
-        actionName: string,
-        isTask: boolean = false,
-    ) => {
+    const silentlyStartAction = (actionName: string) => {
         startProcess({
             workflowName: actionName,
             userInputs: [
@@ -129,20 +122,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             ],
         })
             .unwrap()
-            .then((result) => {
-                const processUrl = `${isTask ? PATH_TASKS : PATH_WORKFLOWS}/${result.id}`;
-                showToastMessage(
-                    ToastTypes.SUCCESS,
-                    <Link href={processUrl}>{processUrl}</Link>,
-                    t('actionStarted'),
-                );
-            })
             .catch((error) => {
-                showToastMessage(
-                    ToastTypes.ERROR,
-                    t('actionStartFailed'),
-                    t('actionStartFailed'),
-                );
                 console.error(`Failed to start action:`, error);
             })
             .finally(() => {
