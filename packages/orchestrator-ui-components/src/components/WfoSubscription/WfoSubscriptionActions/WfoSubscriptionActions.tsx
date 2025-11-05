@@ -136,7 +136,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         isTask: boolean = false,
     ) => {
         if (compactMode) {
-            silentlyStartAction(actionName, isTask);
+            silentlyStartAction(actionName);
         } else {
             redirectToUrl(actionName, isTask);
         }
