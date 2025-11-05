@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.7.1
+
+### Patch Changes
+
+- d85e90e: Reverts toastMessages in subscription list actions
+
 ## 6.7.0
 
 ### Minor Changes
