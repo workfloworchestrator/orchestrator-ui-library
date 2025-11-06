@@ -1,4 +1,6 @@
 export * from './WfoBadges';
+export * from './WfoBackendUnavailable';
+export * from './WfoAvailabilityCheck';
 export * from './WfoContentHeader';
 export * from './WfoExpandableField';
 export * from './WfoPageTemplate/WfoBreadcrumbs';

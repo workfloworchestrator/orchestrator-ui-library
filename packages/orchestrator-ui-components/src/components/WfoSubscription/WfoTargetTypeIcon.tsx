@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { EuiAvatar } from '@elastic/eui';
+import { css } from '@emotion/css';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WorkflowTarget } from '@/types';
@@ -17,17 +17,48 @@ interface WfoInSyncCompactIconProps {
     isLoading?: boolean;
 }
 
+interface IconProps {
+    targetLetter: string;
+    backgroundColor: string;
+}
+const Icon = ({ targetLetter, backgroundColor }: IconProps) => {
+    const { theme } = useOrchestratorTheme();
+    const size = theme.size.l;
+    return (
+        <div
+            aria-label={targetLetter}
+            role="img"
+            title={targetLetter}
+            className={css({
+                backgroundColor: backgroundColor,
+                borderRadius: '50%',
+                color: theme.colors.ghost,
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 500,
+                fontSize: theme.size.m,
+                display: 'flex',
+                height: size,
+                width: size,
+            })}
+        >
+            {targetLetter}
+        </div>
+    );
+};
+
 export const WfoTargetTypeIcon: FC<WfoTargetTypeIconProps> = ({
     target,
     disabled = false,
 }) => {
     const { theme } = useOrchestratorTheme();
-
-    const color = disabled
+    const backGroundColor = disabled
         ? theme.colors.lightShade
         : getWorkflowTargetColor(target, theme);
-    const name = getWorkflowTargetIconContent(target);
-    return <EuiAvatar name={name} size="s" color={color} />;
+    const targetLetter = getWorkflowTargetIconContent(target);
+    return (
+        <Icon targetLetter={targetLetter} backgroundColor={backGroundColor} />
+    );
 };
 
 export const WfoInSyncCompactIcon: FC<WfoInSyncCompactIconProps> = ({
@@ -37,5 +68,5 @@ export const WfoInSyncCompactIcon: FC<WfoInSyncCompactIconProps> = ({
 
     const color = disabled ? theme.colors.lightShade : theme.colors.danger;
     const name = 'S';
-    return <EuiAvatar name={name} size="s" color={color} />;
+    return <Icon targetLetter={name} backgroundColor={color} />;
 };

@@ -26,6 +26,10 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
                     : theme.colors.lightestShade,
                 color: theme.colors.text,
                 border: `1px solid ${theme.colors.lightShade}`,
+                borderColor: 'none',
+                '&:hover': {
+                    borderColor: 'none',
+                },
             };
         },
         input: (baseStyles: object) => ({
@@ -33,7 +37,7 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
             color: theme.colors.text,
         }),
         singleValue: (baseStyles: object, state: { isDisabled: boolean }) => {
-            const opacity = state.isDisabled ? 0.3 : 1;
+            const opacity = state.isDisabled ? 0.6 : 1;
             const transition = 'opacity 300ms';
             return {
                 ...baseStyles,

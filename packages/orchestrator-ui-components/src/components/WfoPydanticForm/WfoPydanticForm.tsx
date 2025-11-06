@@ -55,6 +55,7 @@ export const useWfoPydanticFormConfig = () => {
     const componentMatcherExtender = useAppSelector(
         (state) => state.pydanticForm?.componentMatcherExtender,
     );
+
     const t = useTranslations('pydanticForms.userInputForm');
     const translationMessages: AbstractIntlMessages = useMessages();
 
@@ -255,6 +256,10 @@ export const WfoPydanticForm = ({
     startProcessPayload,
     isTask,
 }: WfoPydanticFormProps) => {
+    const generateFormId = useMemo(() => {
+        return `${JSON.stringify(startProcessPayload)}`;
+    }, [startProcessPayload]);
+
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
     const {
@@ -328,7 +333,7 @@ export const WfoPydanticForm = ({
         };
 
         return pydanticFormProvider;
-    }, [isTask, startProcess, startProcessPayload]);
+    }, [startProcess, startProcessPayload]);
 
     const handleCancel = useCallback(() => {
         const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
@@ -365,6 +370,7 @@ export const WfoPydanticForm = ({
     return (
         <PydanticForm
             formKey={processName}
+            formId={generateFormId}
             onSuccess={onSuccess}
             onCancel={handleCancel}
             config={config}

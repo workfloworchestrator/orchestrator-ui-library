@@ -314,6 +314,8 @@
                 "reconcileSubscription": "Reconcile subscription",
                 "validateSubscription": "Validate subscription",
                 "actions": "Acties",
+                "actionStarted": "Actie gestart",
+                "actionStartFailed": "Actie mislukt",
                 "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
                 "subscription": {
                     "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",

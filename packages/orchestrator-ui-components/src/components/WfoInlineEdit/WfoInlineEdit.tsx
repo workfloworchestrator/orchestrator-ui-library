@@ -21,7 +21,11 @@ export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
     const handleSave = () => {
-        onSave(note);
+        onSave(
+            note.startsWith(INVISIBLE_CHARACTER)
+                ? note.replace(INVISIBLE_CHARACTER, '')
+                : note,
+        );
         setIsTooltipVisible(true);
     };
 

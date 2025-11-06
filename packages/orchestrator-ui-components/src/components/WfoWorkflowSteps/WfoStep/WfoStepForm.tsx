@@ -69,6 +69,7 @@ export const WfoStepForm = ({
         <EuiFlexItem css={{ margin: theme.size.m }}>
             <PydanticForm
                 formKey={processId}
+                formId="wfo-step-form"
                 config={{
                     apiProvider: getStepFormProvider(),
                     footerRenderer: () => (

@@ -12,6 +12,8 @@ import { CopilotChat } from '@copilotkit/react-ui';
 import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { AggregationResultsData } from '@/types';
+import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
+import { useAgentAvailability } from '@/hooks/useBackendAvailability';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { ToolProgress } from '../ToolProgress';
@@ -23,6 +25,7 @@ export function WfoAgent() {
     const { NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
         getPageTemplateStyles,
     );
+    const agentAvailability = useAgentAvailability();
 
     useRenderToolCall({
         name: 'run_aggregation',
@@ -69,46 +72,55 @@ export function WfoAgent() {
     });
 
     return (
-        <div style={{ height: `calc(90vh - ${NAVIGATION_HEIGHT}px)` }}>
-            <style>{`
+        <WfoAvailabilityCheck
+            featureType="agent"
+            availability={agentAvailability}
+        >
+            <div style={{ height: `calc(90vh - ${NAVIGATION_HEIGHT}px)` }}>
+                <style>{`
                 .copilotKitChat {
                     height: 100%;
                     display: flex;
                     flex-direction: column;
                 }
             `}</style>
-            <CopilotChat
-                labels={{
-                    title: tPage('copilot.title'),
-                    initial: tPage('copilot.initial'),
-                }}
-                suggestions={[
-                    {
-                        title: tPage('suggestions.findActiveSubscriptions'),
-                        message: tPage('suggestions.findActiveSubscriptions'),
-                    },
-                    {
-                        title: tPage('suggestions.showTerminatedWorkflows'),
-                        message: tPage('suggestions.showTerminatedWorkflows'),
-                    },
-                    {
-                        title: tPage(
-                            'suggestions.listAllSubscriptionsAndExport',
-                        ),
-                        message: tPage(
-                            'suggestions.listAllSubscriptionsAndExport',
-                        ),
-                    },
-                    {
-                        title: tPage(
-                            'suggestions.showActiveSubscriptionsPerMonth',
-                        ),
-                        message: tPage(
-                            'suggestions.showActiveSubscriptionsPerMonth',
-                        ),
-                    },
-                ]}
-            />
-        </div>
+                <CopilotChat
+                    labels={{
+                        title: tPage('copilot.title'),
+                        initial: tPage('copilot.initial'),
+                    }}
+                    suggestions={[
+                        {
+                            title: tPage('suggestions.findActiveSubscriptions'),
+                            message: tPage(
+                                'suggestions.findActiveSubscriptions',
+                            ),
+                        },
+                        {
+                            title: tPage('suggestions.showTerminatedWorkflows'),
+                            message: tPage(
+                                'suggestions.showTerminatedWorkflows',
+                            ),
+                        },
+                        {
+                            title: tPage(
+                                'suggestions.listAllSubscriptionsAndExport',
+                            ),
+                            message: tPage(
+                                'suggestions.listAllSubscriptionsAndExport',
+                            ),
+                        },
+                        {
+                            title: tPage(
+                                'suggestions.showActiveSubscriptionsPerMonth',
+                            ),
+                            message: tPage(
+                                'suggestions.showActiveSubscriptionsPerMonth',
+                            ),
+                        },
+                    ]}
+                />
+            </div>
+        </WfoAvailabilityCheck>
     );
 }

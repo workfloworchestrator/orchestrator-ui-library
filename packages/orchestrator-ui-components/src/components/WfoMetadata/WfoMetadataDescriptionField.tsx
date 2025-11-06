@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { INVISIBLE_CHARACTER } from '@/utils';
+
 import { WfoInlineEdit } from '../WfoInlineEdit';
 
 interface WfoMetadataDescriptionFieldProps {
@@ -13,7 +15,7 @@ export const WfoMetadataDescriptionField: FC<
     return (
         <div>
             <WfoInlineEdit
-                value={description}
+                value={description || INVISIBLE_CHARACTER}
                 onlyShowOnHover={true}
                 onSave={onSave}
             />

@@ -312,6 +312,8 @@
                 "tasks": "Tasks",
                 "terminate": "Terminate workflow",
                 "reconcile": "Reconcile workflow",
+                "actionStarted": "Action started",
+                "actionStartFailed": "Action failed",
                 "actions": "Actions",
                 "lockedBySubscriptions": "This action is locked by the following subscriptions:",
                 "notAvailable": "Not available",
@@ -473,6 +475,27 @@
     },
     "agent": {
         "title": "Wfo Agent",
+        "availability": {
+            "unavailable": {
+                "title": "Agent Service Not Available",
+                "instructions": {
+                    "setAgentEnvironment": {
+                        "before": "Set ",
+                        "after": " in your service environment variables"
+                    },
+                    "setSearchEnvironment": {
+                        "before": "Set ",
+                        "after": " (agent functionality requires search)"
+                    },
+                    "checkVersion": "Ensure your orchestrator-core version supports agent functionality",
+                    "configureOpenAI": "Configure your OpenAI API key if using OpenAI models",
+                    "restartService": "Restart your service",
+                    "checkDockerConfig": "If using Docker, make sure the environment variables are set in docker-compose.yml"
+                },
+                "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
+                "retryButton": "Retry Connection"
+            }
+        },
         "page": {
             "filledParameters": "Filled parameters",
             "emptyGroup": "Empty group",
@@ -508,6 +531,22 @@
         }
     },
     "search": {
+        "availability": {
+            "unavailable": {
+                "title": "Search Service Not Available",
+                "instructions": {
+                    "setEnvironmentVariable": {
+                        "before": "Set ",
+                        "after": " in your service environment variables"
+                    },
+                    "checkVersion": "Ensure your orchestrator-core version supports search functionality",
+                    "restartService": "Restart your service",
+                    "checkDockerConfig": "If using Docker, make sure the environment variable is set in docker-compose.yml"
+                },
+                "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
+                "retryButton": "Retry Connection"
+            }
+        },
         "page": {
             "selectFieldFirst": "Select a field first",
             "maxNestingDepth": "Maximum nesting depth reached",
