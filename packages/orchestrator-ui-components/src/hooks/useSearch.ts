@@ -37,7 +37,6 @@ export const useSearch = (
         const performSearch = async () => {
             try {
                 const result = await triggerSearch({
-                    action: 'select',
                     entity_type: entityType,
                     query: queryText,
                     filters:

@@ -8,6 +8,8 @@ export const getToolProgressStyles = ({ theme }: WfoTheme) => {
         borderRadius: theme.border.radius.medium,
         backgroundColor: theme.colors.emptyShade,
         transition: `all ${theme.animation.normal} ease`,
+        maxWidth: '50%',
+        marginRight: 'auto',
     });
 
     const containerClickableStyle = css({

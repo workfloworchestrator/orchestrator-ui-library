@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -43,6 +45,7 @@ export const ToolProgress = ({
     result,
 }: ToolProgressProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const tPage = useTranslations('agent.page');
 
     const {
         containerStyle,
@@ -55,6 +58,13 @@ export const ToolProgress = ({
     } = useWithOrchestratorTheme(getToolProgressStyles);
 
     const { theme } = useOrchestratorTheme();
+
+    const getToolLabel = (toolName: string) => {
+        const toolKey = `tools.${toolName}`;
+        const translated = tPage(toolKey);
+        const fullKey = `agent.page.${toolKey}`;
+        return translated === fullKey ? toolName : translated;
+    };
 
     const renderStatus = () => {
         if (status === 'complete') {
@@ -82,13 +92,13 @@ export const ToolProgress = ({
     };
 
     const DisplayComponent = TOOL_DISPLAY_COMPONENTS[name];
-    const hasArgs = DisplayComponent && args;
+    const hasContent = DisplayComponent && (args || result);
 
     return (
         <div css={containerStyle}>
             <div
-                css={hasArgs && containerClickableStyle}
-                onClick={() => hasArgs && setIsExpanded(!isExpanded)}
+                css={hasContent && containerClickableStyle}
+                onClick={() => hasContent && setIsExpanded(!isExpanded)}
             >
                 <EuiFlexGroup
                     gutterSize="m"
@@ -101,7 +111,7 @@ export const ToolProgress = ({
                         </div>
                     </EuiFlexItem>
                     <EuiFlexItem grow={true}>
-                        <span css={nameStyle}>{name}</span>
+                        <span css={nameStyle}>{getToolLabel(name)}</span>
                     </EuiFlexItem>
                     <EuiFlexItem
                         grow={false}
@@ -113,7 +123,7 @@ export const ToolProgress = ({
                         grow={false}
                         style={{ minWidth: `${iconSize}px` }}
                     >
-                        {hasArgs &&
+                        {hasContent &&
                             (isExpanded ? (
                                 <WfoChevronUp
                                     width={iconSize}
@@ -128,7 +138,7 @@ export const ToolProgress = ({
                     </EuiFlexItem>
                 </EuiFlexGroup>
             </div>
-            {hasArgs && isExpanded && (
+            {hasContent && isExpanded && (
                 <div css={expandedContentStyle}>
                     <DisplayComponent parameters={args} result={result} />
                 </div>

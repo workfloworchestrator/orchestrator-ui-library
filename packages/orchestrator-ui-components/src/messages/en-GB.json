@@ -472,7 +472,7 @@
         "aoStatusPage": "A&O application status page"
     },
     "agent": {
-        "title": "Search results",
+        "title": "Wfo Agent",
         "page": {
             "filledParameters": "Filled parameters",
             "emptyGroup": "Empty group",
@@ -483,7 +483,27 @@
             "action": "Action",
             "copilot": {
                 "title": "Database assistant",
-                "initial": "Ask me things such as:\n• *Find active subscriptions*\n• *Show terminated workflows”*\n\nThe filled template and results will appear on the left."
+                "initial": "What can I help you with?"
+            },
+            "suggestions": {
+                "findActiveSubscriptions": "Find active subscriptions",
+                "showTerminatedWorkflows": "Show terminated workflows",
+                "listAllSubscriptionsAndExport": "List all subscriptions and export them",
+                "showActiveSubscriptionsPerMonth": "Show the number of active subscriptions per month"
+            },
+            "tools": {
+                "set_filter_tree": "I'm setting up filters",
+                "start_new_search": "I'm starting a new search",
+                "run_search": "I'm executing a search",
+                "discover_filter_paths": "I'm discovering available filters",
+                "run_aggregation": "I'm running aggregations",
+                "prepare_export": "I'm preparing the export",
+                "get_valid_operators": "I'm getting valid operators",
+                "set_temporal_grouping": "I'm setting temporal grouping"
+            },
+            "visualization": {
+                "noDataAvailable": "No data available for visualization.",
+                "invalidDataStructure": "Invalid data structure."
             }
         }
     },
