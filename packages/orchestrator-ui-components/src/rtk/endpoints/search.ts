@@ -62,7 +62,9 @@ const searchApi = orchestratorApi.injectEndpoints({
             { q: string; entity_type: EntityKind }
         >({
             query: ({ q, entity_type }) => ({
-                url: `search/paths?q=${encodeURIComponent(q)}&entity_type=${entity_type}`,
+                url: `search/paths?q=${encodeURIComponent(
+                    q,
+                )}&entity_type=${entity_type}`,
                 method: 'GET',
             }),
             extraOptions: {

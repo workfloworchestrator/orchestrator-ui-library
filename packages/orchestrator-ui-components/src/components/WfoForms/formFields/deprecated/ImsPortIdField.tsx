@@ -141,8 +141,8 @@ function ImsPortId({
     const portPlaceholder = loading
         ? t('widgets.nodePort.loadingPorts')
         : nodeId
-          ? t('widgets.nodePort.selectPort')
-          : t('widgets.nodePort.selectNodeFirst');
+        ? t('widgets.nodePort.selectPort')
+        : t('widgets.nodePort.selectNodeFirst');
 
     const nodeOptions: Option[] =
         nodeSubscriptionOptions?.map(nodeToOptionCorelink) || [];

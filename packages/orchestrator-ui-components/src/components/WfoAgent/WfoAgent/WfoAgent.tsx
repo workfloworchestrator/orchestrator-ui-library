@@ -28,6 +28,20 @@ export function WfoAgent() {
     const agentAvailability = useAgentAvailability();
 
     useRenderToolCall({
+        name: 'run_search',
+        render: ({ result }) => {
+            if (!result) {
+                return '';
+            }
+            return (
+                <WfoAgentVisualization
+                    aggregationData={result as AggregationResultsData}
+                />
+            );
+        },
+    });
+
+    useRenderToolCall({
         name: 'run_aggregation',
         render: ({ result }) => {
             if (!result) {
