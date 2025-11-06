@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.6.1
+
+### Patch Changes
+
+- 7e81964: Switch to Trusted publishers
+
 ## 1.6.0
 
 ### Minor Changes

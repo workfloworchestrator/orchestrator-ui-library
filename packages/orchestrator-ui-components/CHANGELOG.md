@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.7.2
+
+### Patch Changes
+
+- 7e81964: Switch to Trusted publishers
+
 ## 6.7.1
 
 ### Patch Changes

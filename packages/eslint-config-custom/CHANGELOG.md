@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 2.1.1
+
+### Patch Changes
+
+- 7e81964: Switch to Trusted publishers
+
 ## 2.1.0
 
 ### Minor Changes
