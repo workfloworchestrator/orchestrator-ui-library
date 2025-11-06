@@ -26,8 +26,10 @@ jobs:
 
             - name: Update npm
               run: npm install -g npm@latest && npm --version
+
             - name: Installing dependencies
-              run: cd frontend && npm ci && pwd
+              run: npm ci && pwd
+
             - name: Create Release Pull Request or Publish
               id: changesets
               uses: changesets/action@e0538e686673de0265c8a3e2904b8c76beaa43fd
