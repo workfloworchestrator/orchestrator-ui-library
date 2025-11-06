@@ -9,11 +9,11 @@ import {
 } from '@copilotkit/react-core';
 import { CopilotChat } from '@copilotkit/react-ui';
 
+import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { AggregationResultsData } from '@/types';
-import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { useAgentAvailability } from '@/hooks/useBackendAvailability';
+import { AggregationResultsData } from '@/types';
 
 import { ExportButton, ExportData } from '../ExportButton';
 import { ToolProgress } from '../ToolProgress';
