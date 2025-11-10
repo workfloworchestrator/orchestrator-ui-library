@@ -151,3 +151,30 @@ export type PathInfo = {
     availablePaths?: string[];
     pathCount?: number;
 };
+
+/** ---------- Agent visualization types ---------- */
+
+export type AggregationResult = {
+    group_values: Record<string, string>;
+    aggregations: Record<string, number>;
+};
+
+export type SearchMetadata = {
+    search_type: string;
+    description?: string;
+};
+
+export enum VisualizationType {
+    PIE = 'pie',
+    LINE = 'line',
+    TABLE = 'table',
+}
+
+export type AggregationResultsData = {
+    results: AggregationResult[];
+    total_groups: number;
+    metadata: SearchMetadata;
+    visualization_type: {
+        type: VisualizationType;
+    };
+};

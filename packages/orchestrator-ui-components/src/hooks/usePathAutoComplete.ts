@@ -126,8 +126,8 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
     const errorMessage = isError
         ? 'Failed to load paths'
         : defError
-          ? 'Failed to load definitions'
-          : null;
+        ? 'Failed to load definitions'
+        : null;
 
     return { paths, loading: isLoading, error: errorMessage };
 };

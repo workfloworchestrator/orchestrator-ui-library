@@ -9,7 +9,6 @@ import {
 } from '@/types';
 
 export interface SearchPayload {
-    action: 'select';
     entity_type: EntityKind;
     query: string;
     filters?: Group;
@@ -30,10 +29,10 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         search: build.mutation<PaginatedSearchResults, SearchPayload>({
-            query: (payload) => ({
-                url: `search/${getEndpointPath(payload.entity_type)}`,
+            query: ({ entity_type, query, filters, limit }) => ({
+                url: `search/${getEndpointPath(entity_type)}`,
                 method: 'POST',
-                body: payload,
+                body: { query, filters, limit },
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -46,10 +45,10 @@ const searchApi = orchestratorApi.injectEndpoints({
             PaginatedSearchResults,
             SearchPaginationPayload
         >({
-            query: ({ cursor, ...payload }) => ({
-                url: `search/${getEndpointPath(payload.entity_type)}?cursor=${cursor}`,
+            query: ({ cursor, entity_type, query, filters, limit }) => ({
+                url: `search/${getEndpointPath(entity_type)}?cursor=${cursor}`,
                 method: 'POST',
-                body: payload,
+                body: { query, filters, limit },
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -63,7 +62,9 @@ const searchApi = orchestratorApi.injectEndpoints({
             { q: string; entity_type: EntityKind }
         >({
             query: ({ q, entity_type }) => ({
-                url: `search/paths?q=${encodeURIComponent(q)}&entity_type=${entity_type}`,
+                url: `search/paths?q=${encodeURIComponent(
+                    q,
+                )}&entity_type=${entity_type}`,
                 method: 'GET',
             }),
             extraOptions: {

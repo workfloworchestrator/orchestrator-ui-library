@@ -6,7 +6,7 @@ export const getExportButtonStyles = ({ theme }: WfoTheme) => {
     const containerStyle = css({
         marginTop: theme.size.xl,
         marginBottom: theme.size.xl,
-        width: '100%',
+        width: '50%',
     });
 
     const buttonWrapperStyle = css({
