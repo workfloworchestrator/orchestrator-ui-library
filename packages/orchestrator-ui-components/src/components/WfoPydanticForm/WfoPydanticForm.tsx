@@ -18,7 +18,12 @@ import {
     zodValidationPresets,
 } from 'pydantic-forms';
 
-import { PATH_TASKS, PATH_WORKFLOWS, WfoLoading } from '@/components';
+import {
+    PATH_TASKS,
+    PATH_WORKFLOWS,
+    WfoCallout,
+    WfoLoading,
+} from '@/components';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { HttpStatus, isFetchBaseQueryError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
@@ -234,6 +239,19 @@ export const useWfoPydanticFormConfig = () => {
                         return field.type === PydanticFormFieldType.STRING;
                     },
                     validator: zodValidationPresets.string,
+                },
+                {
+                    id: 'callout',
+                    ElementMatch: {
+                        isControlledElement: false,
+                        Element: WfoCallout,
+                    },
+                    matcher: ({ type, format }) => {
+                        return (
+                            type === PydanticFormFieldType.STRING &&
+                            format === ('callout' as PydanticFormFieldFormat)
+                        );
+                    },
                 },
             ];
 
