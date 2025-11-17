@@ -207,6 +207,19 @@ export const useWfoPydanticFormConfig = () => {
                     },
                     validator: zodValidationPresets.multiSelect,
                 },
+                {
+                    id: 'callout',
+                    ElementMatch: {
+                        isControlledElement: false,
+                        Element: WfoCallout,
+                    },
+                    matcher: ({ type, format }) => {
+                        return (
+                            type === PydanticFormFieldType.STRING &&
+                            format === ('callout' as PydanticFormFieldFormat)
+                        );
+                    },
+                },
                 ...currentMatchers
                     .filter((matcher) => matcher.id !== 'text')
                     .filter((matcher) => matcher.id !== 'array')
@@ -239,19 +252,6 @@ export const useWfoPydanticFormConfig = () => {
                         return field.type === PydanticFormFieldType.STRING;
                     },
                     validator: zodValidationPresets.string,
-                },
-                {
-                    id: 'callout',
-                    ElementMatch: {
-                        isControlledElement: false,
-                        Element: WfoCallout,
-                    },
-                    matcher: ({ type, format }) => {
-                        return (
-                            type === PydanticFormFieldType.STRING &&
-                            format === ('callout' as PydanticFormFieldFormat)
-                        );
-                    },
                 },
             ];
 
