@@ -9,6 +9,8 @@ import {
     Position,
     Settings,
 } from '@elastic/charts';
+import '@elastic/charts/dist/theme_only_dark.css';
+import '@elastic/charts/dist/theme_only_light.css';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { AggregationResultsData } from '@/types';
