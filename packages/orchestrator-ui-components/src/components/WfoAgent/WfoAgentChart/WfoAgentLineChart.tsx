@@ -1,6 +1,7 @@
 import React from 'react';
 
 import '@elastic/charts/dist/theme_only_light.css';
+import '@elastic/charts/dist/theme_only_dark.css';
 import {
     Axis,
     Chart,
