@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.7.5
+
+### Patch Changes
+
+-   738ff82: 2039 Callout component for pydantic-forms
+-   12de731: 2256 Fix tooltip visible after clicking
+-   ce03410: Include css theme import for eui charts in components
+
 ## 6.7.4
 
 ### Patch Changes
