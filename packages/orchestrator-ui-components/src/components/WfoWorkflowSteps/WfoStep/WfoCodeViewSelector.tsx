@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -27,22 +27,26 @@ export const WfoCodeViewSelector = ({
 
     const isSelected = (buttonView: CodeView): boolean =>
         buttonView === codeView;
+    const [showTooltips, setShowTooltips] = useState<boolean>(true);
 
     const codeViewOptions = [
         {
             id: CodeView.JSON,
             label: t('codeView.json'),
+            onMouseLeave: () => setShowTooltips(true),
             iconType: () => (
-                <WfoBracketSquare
-                    color={
-                        isSelected(CodeView.JSON)
-                            ? theme.colors.ghost
-                            : theme.colors.textPrimary
-                    }
-                />
+                <div onClick={() => setShowTooltips(false)}>
+                    <WfoBracketSquare
+                        color={
+                            isSelected(CodeView.JSON)
+                                ? theme.colors.ghost
+                                : theme.colors.textPrimary
+                        }
+                    />
+                </div>
             ),
             'data-test-id': 'jsonCodeViewButton',
-            toolTipContent: t('codeView.json'),
+            toolTipContent: showTooltips ? t('codeView.json') : undefined,
             style: {
                 backgroundColor: isSelected(CodeView.JSON)
                     ? theme.colors.textPrimary
@@ -52,17 +56,20 @@ export const WfoCodeViewSelector = ({
         {
             id: CodeView.TABLE,
             label: t('codeView.table'),
+            onMouseLeave: () => setShowTooltips(true),
             iconType: () => (
-                <WfoTableCells
-                    color={
-                        isSelected(CodeView.TABLE)
-                            ? theme.colors.ghost
-                            : theme.colors.textPrimary
-                    }
-                />
+                <div onClick={() => setShowTooltips(false)}>
+                    <WfoTableCells
+                        color={
+                            isSelected(CodeView.TABLE)
+                                ? theme.colors.ghost
+                                : theme.colors.textPrimary
+                        }
+                    />
+                </div>
             ),
             'data-test-id': 'tableCodeViewButton',
-            toolTipContent: t('codeView.table'),
+            toolTipContent: showTooltips ? t('codeView.table') : undefined,
             style: {
                 backgroundColor: isSelected(CodeView.TABLE)
                     ? theme.colors.textPrimary
@@ -72,17 +79,20 @@ export const WfoCodeViewSelector = ({
         {
             id: CodeView.RAW,
             label: t('codeView.raw'),
+            onMouseLeave: () => setShowTooltips(true),
             iconType: () => (
-                <WfoCommandLine
-                    color={
-                        isSelected(CodeView.RAW)
-                            ? theme.colors.ghost
-                            : theme.colors.textPrimary
-                    }
-                />
+                <div onClick={() => setShowTooltips(false)}>
+                    <WfoCommandLine
+                        color={
+                            isSelected(CodeView.RAW)
+                                ? theme.colors.ghost
+                                : theme.colors.textPrimary
+                        }
+                    />
+                </div>
             ),
             'data-test-id': 'rawCodeViewButton',
-            toolTipContent: t('codeView.raw'),
+            toolTipContent: showTooltips ? t('codeView.raw') : undefined,
             style: {
                 backgroundColor: isSelected(CodeView.RAW)
                     ? theme.colors.textPrimary

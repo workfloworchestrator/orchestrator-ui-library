@@ -254,7 +254,7 @@
             "traceback": "Traceback",
             "codeView": {
                 "json": "JSON",
-                "table": "Tab",
+                "table": "Table",
                 "raw": "Raw"
             }
         },
