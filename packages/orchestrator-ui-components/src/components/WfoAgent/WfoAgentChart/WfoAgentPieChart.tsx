@@ -1,7 +1,5 @@
 import React from 'react';
 
-import '@elastic/charts/dist/theme_only_light.css';
-import '@elastic/charts/dist/theme_only_dark.css';
 import {
     Chart,
     DARK_THEME,
@@ -11,6 +9,8 @@ import {
     Position,
     Settings,
 } from '@elastic/charts';
+import '@elastic/charts/dist/theme_only_dark.css';
+import '@elastic/charts/dist/theme_only_light.css';
 
 import { AggregationResultsData } from '@/types';
 
