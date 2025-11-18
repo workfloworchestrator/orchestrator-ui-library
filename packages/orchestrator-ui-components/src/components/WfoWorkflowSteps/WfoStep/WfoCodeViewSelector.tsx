@@ -27,7 +27,7 @@ export const WfoCodeViewSelector = ({
 
     const isSelected = (buttonView: CodeView): boolean =>
         buttonView === codeView;
-    const [showTooltips, setShowTooltips] = useState(true);
+    const [showTooltips, setShowTooltips] = useState<boolean>(true);
 
     const codeViewOptions = [
         {
