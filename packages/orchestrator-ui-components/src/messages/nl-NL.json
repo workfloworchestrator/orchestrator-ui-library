@@ -428,7 +428,7 @@
             "viewStatusPage": "Kekijk AO status pagina",
             "aoStackStatus": "AO stack status",
             "noSettingsExposed": "Er zijn geen instellingen beschikbaar vanuit de backend. Om dit in te schakelen, raadpleeg de ",
-            "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie",
+            "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie"
         },
         "tabs": {
             "actions": "Acties",
