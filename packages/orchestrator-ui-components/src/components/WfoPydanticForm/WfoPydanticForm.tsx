@@ -368,7 +368,7 @@ export const WfoPydanticForm = ({
 
         return {
             apiProvider: getPydanticFormProvider(),
-            footerRenderer: Footer,
+            footerRenderer: (props) => <Footer {...props} isTask={isTask} />,
             headerRenderer: Header,
             componentMatcherExtender: wfoComponentMatcherExtender,
             labelProvider: pydanticLabelProvider,
@@ -380,6 +380,7 @@ export const WfoPydanticForm = ({
     }, [
         customTranslations,
         getPydanticFormProvider,
+        isTask,
         pydanticLabelProvider,
         router.locale,
         wfoComponentMatcherExtender,
