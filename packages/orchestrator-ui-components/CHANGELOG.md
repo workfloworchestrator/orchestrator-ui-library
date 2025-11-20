@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.7.6
+
+### Patch Changes
+
+-   2125cee: 2246 Show 'Start task' button instead of 'Start workflow' for tasks + custom button texts and colors
+
 ## 6.7.5
 
 ### Patch Changes
