@@ -27,6 +27,7 @@
         "tableSettings": "Tabel instellingen",
         "openMenu": "Open menu",
         "incompatibleVersion": "Incompatibele versie",
+        "incompatibleVersionText": "De versie van de WFO UI is incompatibel met de version van orchestrator-core.",
         "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core"
     },
     "common": {
@@ -182,6 +183,7 @@
             "usedInProductBlocks": "Gebruikt in product blocks"
         },
         "workflows": {
+            "workflowId": "ID",
             "name": "Workflow",
             "description": "Workflow beschrijving",
             "target": "Target",
@@ -189,6 +191,7 @@
             "createdAt": "Aangemaakt"
         },
         "tasks": {
+            "workflowId": "ID",
             "name": "Taak",
             "description": "Taak beschrijving",
             "target": "Target",
@@ -407,10 +410,10 @@
     },
     "settings": {
         "page": {
-            "engineStatusTitle": "Workflow engine status",
-            "workerStatusTitle": "Worker status",
             "flushButton": "Flush",
             "flushCacheSettingsTitle": "Flush cache instellingen",
+            "engineStatusTitle": "Workflow engine status",
+            "workerStatusTitle": "Worker status",
             "modifyEngine": "Wijzig engine status",
             "pauseEngine": "Pauseer  workflow engine",
             "runningProcesses": "Lopende processen",
@@ -422,8 +425,10 @@
             "numberOfQueuedJobs": "Aantal queued jobs",
             "numberOfRunningJobs": "Aantal running jobs",
             "numberOfWorkersOnline": "Aantal workers online",
+            "viewStatusPage": "Kekijk AO status pagina",
+            "aoStackStatus": "AO stack status",
             "noSettingsExposed": "Er zijn geen instellingen beschikbaar vanuit de backend. Om dit in te schakelen, raadpleeg de ",
-            "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie"
+            "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie",
         },
         "tabs": {
             "actions": "Acties",
@@ -462,9 +467,11 @@
         }
     },
     "hamburgerMenu": {
+        "openMenu": "Open menu",
         "support": "Support",
         "softwareVersions": "Software Versies",
         "logout": "Logout",
+        "aoStatusPage": "A&O application status page",
         "aoStatusPage": "A&O applicatie status pagina"
     }
 }
