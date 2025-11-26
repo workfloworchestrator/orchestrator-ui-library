@@ -1,10 +1,14 @@
 import { defineConfig } from 'tsup';
 
-export default defineConfig({
-    target: 'es2020',
-    format: ['esm'],
-    splitting: false,
+export default defineConfig((opts) => ({
+    entry: ['src/index.ts'],
     sourcemap: true,
-    dts: true,
-    tsconfig: 'tsconfig.build.json',
-});
+    splitting: false,
+    clean: !opts.watch,
+    dts: !opts.watch,
+    outDir: 'dist',
+    format: ['esm'],
+    platform: 'node',
+    target: 'es2022',
+    skipNodeModulesBundle: true,
+}));
