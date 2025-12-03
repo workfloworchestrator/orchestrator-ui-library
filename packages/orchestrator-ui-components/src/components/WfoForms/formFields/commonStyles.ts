@@ -10,7 +10,7 @@ export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
             color: theme.colors.text,
         },
         '.euiFormLabel': {
-            color: theme.colors.text,
+            cursor: 'text',
             '&.euiFormLabel-isFocused': {
                 color: theme.colors.primaryText,
             },
