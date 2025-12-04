@@ -17,6 +17,7 @@ import { getMenuStyles } from '@/components/WfoPageTemplate/WfoSidebar/styles';
 import { WfoStartWorkflowButtonComboBox } from '@/components/WfoStartButton/WfoStartWorkflowComboBox';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { usePolicy, useWithOrchestratorTheme } from '@/hooks';
+import { ProductLifecycleStatus } from '@/types';
 
 import {
     PATH_METADATA,
@@ -51,9 +52,13 @@ export type WfoSidebarProps = {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
+    overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
 };
 
-export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
+export const WfoSidebar: FC<WfoSidebarProps> = ({
+    overrideMenuItems,
+    overrideStartWorkflowFilters,
+}) => {
     const { menuStyle } = useWithOrchestratorTheme(getMenuStyles);
 
     const t = useTranslations('main');
@@ -243,7 +248,9 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     <WfoIsAllowedToRender
                         resource={PolicyResource.SUBSCRIPTION_CREATE}
                     >
-                        <WfoStartWorkflowButtonComboBox />
+                        <WfoStartWorkflowButtonComboBox
+                            startWorkflowFilters={overrideStartWorkflowFilters}
+                        />
                     </WfoIsAllowedToRender>
                     <EuiSpacer size="xl" />
                     <WfoCopyright />
