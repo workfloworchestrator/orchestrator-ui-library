@@ -5,17 +5,24 @@ import { useRouter } from 'next/router';
 
 import { useCheckEngineStatus } from '@/hooks';
 import { useGetWorkflowOptionsQuery } from '@/rtk';
-import { StartComboBoxOption } from '@/types';
+import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
 import { PATH_START_NEW_WORKFLOW } from '../WfoPageTemplate';
 import { WfoStartButtonComboBox } from './WfoStartButtonComboBox';
 
-export const WfoStartWorkflowButtonComboBox = () => {
+interface WfoStartWorkflowButtonComboBoxProps {
+    startWorkflowFilters?: (ProductLifecycleStatus | string)[];
+}
+
+export const WfoStartWorkflowButtonComboBox = ({
+    startWorkflowFilters
+}: WfoStartWorkflowButtonComboBoxProps) => {
     const router = useRouter();
     const t = useTranslations('common');
     const { isEngineRunningNow } = useCheckEngineStatus();
+    const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus | string>(ProductLifecycleStatus.ACTIVE);
 
-    const { data } = useGetWorkflowOptionsQuery();
+    const { data } = useGetWorkflowOptionsQuery(selectedProductStatus);
     const workflowOptions = data?.startOptions || [];
 
     const comboBoxOptions: StartComboBoxOption[] = [...workflowOptions]
@@ -48,6 +55,9 @@ export const WfoStartWorkflowButtonComboBox = () => {
             onOptionChange={handleOptionChange}
             isProcess
             css={{ width: '300px' }}
+            selectedProductStatus={selectedProductStatus}
+            setSelectedProductStatus={setSelectedProductStatus}
+            startWorkflowFilters={startWorkflowFilters}
         />
     );
 };

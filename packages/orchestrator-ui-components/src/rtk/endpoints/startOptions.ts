@@ -1,5 +1,5 @@
 import {
-    ProductDefinition,
+    ProductDefinition, ProductLifecycleStatus,
     StartOptionsResult,
     WorkflowDefinition,
     WorkflowTarget,
@@ -18,6 +18,7 @@ const workflowOptionsQuery = `
                     productId
                     name
                     tag
+                    status
                 }
             }
         }
@@ -53,6 +54,7 @@ type WorkflowOptionsResult = StartOptionsResult<{
         productId: ProductDefinition['productId'];
         productType: ProductDefinition['productType'];
         tag: ProductDefinition['tag'];
+        status: ProductDefinition['status'];
     }[];
 }>;
 
@@ -70,19 +72,21 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         getWorkflowOptions: build.query<
             StartOptionsResponse<WorkflowOption>,
-            void
+            ProductLifecycleStatus | string
         >({
             query: () => ({
                 document: workflowOptionsQuery,
             }),
-            transformResponse: (
-                response: WorkflowOptionsResult | undefined,
-            ) => {
+            transformResponse: (response: WorkflowOptionsResult | undefined, _, productStatus) => {
+                const statusToMatch = (productStatus ?? ProductLifecycleStatus.ACTIVE).toLowerCase();
                 const startOptions: WorkflowOption[] = [];
                 const workflows = response?.workflows?.page || [];
-                workflows.forEach((workflow) => {
+                workflows
+                    .forEach((workflow) => {
                     const workflowName = workflow.name;
-                    workflow.products.forEach((product) => {
+                    workflow.products
+                        .filter((product) => product.status.toLowerCase() === statusToMatch)
+                        .forEach((product) => {
                         startOptions.push({
                             workflowName,
                             isAllowed: workflow.isAllowed,

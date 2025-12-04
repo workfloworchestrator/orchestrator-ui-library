@@ -32,6 +32,7 @@ import {
     PATH_WORKFLOWS,
 } from '../paths';
 import { WfoCopyright } from './WfoCopyright';
+import { ProductLifecycleStatus } from '@/types';
 
 export const urlPolicyMap = new Map<string, PolicyResource>([
     [PATH_WORKFLOWS, PolicyResource.NAVIGATION_WORKFLOWS],
@@ -51,9 +52,10 @@ export type WfoSidebarProps = {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
+    overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
 };
 
-export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
+export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems, overrideStartWorkflowFilters }) => {
     const { menuStyle } = useWithOrchestratorTheme(getMenuStyles);
 
     const t = useTranslations('main');
@@ -243,7 +245,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({ overrideMenuItems }) => {
                     <WfoIsAllowedToRender
                         resource={PolicyResource.SUBSCRIPTION_CREATE}
                     >
-                        <WfoStartWorkflowButtonComboBox />
+                        <WfoStartWorkflowButtonComboBox startWorkflowFilters={overrideStartWorkflowFilters} />
                     </WfoIsAllowedToRender>
                     <EuiSpacer size="xl" />
                     <WfoCopyright />
