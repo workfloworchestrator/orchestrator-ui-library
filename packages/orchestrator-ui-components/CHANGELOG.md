@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.7.8
+
+### Patch Changes
+
+-   81e8278: Updates to latest nextjs version in response to CVE CVE-2025-55182
+
 ## 6.7.7
 
 ### Patch Changes
