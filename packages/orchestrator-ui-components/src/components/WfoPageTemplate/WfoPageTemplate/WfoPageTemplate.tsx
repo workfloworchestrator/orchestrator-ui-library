@@ -5,10 +5,10 @@ import { EuiPageTemplate, EuiSideNavItemType } from '@elastic/eui';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { ProductLifecycleStatus } from '@/types';
 
 import { ContentContextProvider } from './ContentContext';
 import { getPageTemplateStyles } from './styles';
-import { ProductLifecycleStatus } from '@/types';
 
 export interface WfoPageTemplateProps {
     getAppLogo: (navigationHeight: number) => ReactElement;
@@ -53,7 +53,12 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     <EuiPageTemplate.Sidebar
                         css={getSidebarStyle(NAVIGATION_HEIGHT)}
                     >
-                        <WfoSidebar overrideMenuItems={overrideMenuItems} overrideStartWorkflowFilters={overrideStartWorkflowFilters} />
+                        <WfoSidebar
+                            overrideMenuItems={overrideMenuItems}
+                            overrideStartWorkflowFilters={
+                                overrideStartWorkflowFilters
+                            }
+                        />
                     </EuiPageTemplate.Sidebar>
                 )}
 

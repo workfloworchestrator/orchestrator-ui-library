@@ -1,5 +1,6 @@
 import {
-    ProductDefinition, ProductLifecycleStatus,
+    ProductDefinition,
+    ProductLifecycleStatus,
     StartOptionsResult,
     WorkflowDefinition,
     WorkflowTarget,
@@ -77,25 +78,33 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
             query: () => ({
                 document: workflowOptionsQuery,
             }),
-            transformResponse: (response: WorkflowOptionsResult | undefined, _, productStatus) => {
-                const statusToMatch = (productStatus ?? ProductLifecycleStatus.ACTIVE).toLowerCase();
+            transformResponse: (
+                response: WorkflowOptionsResult | undefined,
+                _,
+                productStatus,
+            ) => {
+                const statusToMatch = (
+                    productStatus ?? ProductLifecycleStatus.ACTIVE
+                ).toLowerCase();
                 const startOptions: WorkflowOption[] = [];
                 const workflows = response?.workflows?.page || [];
-                workflows
-                    .forEach((workflow) => {
+                workflows.forEach((workflow) => {
                     const workflowName = workflow.name;
                     workflow.products
-                        .filter((product) => product.status.toLowerCase() === statusToMatch)
+                        .filter(
+                            (product) =>
+                                product.status.toLowerCase() === statusToMatch,
+                        )
                         .forEach((product) => {
-                        startOptions.push({
-                            workflowName,
-                            isAllowed: workflow.isAllowed,
-                            productName: product.name,
-                            productId: product.productId,
-                            productType: product.productType,
-                            productTag: product.tag,
+                            startOptions.push({
+                                workflowName,
+                                isAllowed: workflow.isAllowed,
+                                productName: product.name,
+                                productId: product.productId,
+                                productType: product.productType,
+                                productTag: product.tag,
+                            });
                         });
-                    });
                 });
 
                 return { startOptions };

@@ -15,12 +15,14 @@ interface WfoStartWorkflowButtonComboBoxProps {
 }
 
 export const WfoStartWorkflowButtonComboBox = ({
-    startWorkflowFilters
+    startWorkflowFilters,
 }: WfoStartWorkflowButtonComboBoxProps) => {
     const router = useRouter();
     const t = useTranslations('common');
     const { isEngineRunningNow } = useCheckEngineStatus();
-    const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus | string>(ProductLifecycleStatus.ACTIVE);
+    const [selectedProductStatus, setSelectedProductStatus] = React.useState<
+        ProductLifecycleStatus | string
+    >(ProductLifecycleStatus.ACTIVE);
 
     const { data } = useGetWorkflowOptionsQuery(selectedProductStatus);
     const workflowOptions = data?.startOptions || [];

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { capitalize } from 'lodash';
+
 import {
     EuiButton,
     EuiButtonEmpty,
@@ -14,7 +16,6 @@ import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
 import { getStyles } from './styles';
-import { capitalize } from 'lodash';
 
 export type WfoStartButtonComboBoxProps = {
     buttonText: string;
@@ -22,8 +23,10 @@ export type WfoStartButtonComboBoxProps = {
     onOptionChange: (selectedOption: StartComboBoxOption) => void;
     isProcess: boolean;
     className?: string;
-    selectedProductStatus: ProductLifecycleStatus | string;
-    setSelectedProductStatus: (status: ProductLifecycleStatus | string) => void;
+    selectedProductStatus?: ProductLifecycleStatus | string;
+    setSelectedProductStatus?: (
+        status: ProductLifecycleStatus | string,
+    ) => void;
     startWorkflowFilters?: (ProductLifecycleStatus | string)[];
 };
 
@@ -59,13 +62,13 @@ export const WfoStartButtonComboBox = ({
     const [isFilterPopoverOpen, setFilterPopoverOpen] = React.useState(false);
 
     const ProductStatePicker = () => {
-        return (
+        return setSelectedProductStatus ? (
             <EuiFlexGroup justifyContent="flexEnd" gutterSize="none">
                 <EuiPopover
                     button={
                         <EuiButtonEmpty
                             css={{
-                                ".euiButtonEmpty__content": {
+                                '.euiButtonEmpty__content': {
                                     gap: theme.size.xxs,
                                 },
                             }}
@@ -103,9 +106,10 @@ export const WfoStartButtonComboBox = ({
                     ))}
                 </EuiPopover>
             </EuiFlexGroup>
-
-        )
-    }
+        ) : (
+            <></>
+        );
+    };
 
     return (
         <EuiPopover
@@ -114,25 +118,25 @@ export const WfoStartButtonComboBox = ({
             isOpen={isPopoverOpen}
             closePopover={() => setPopoverOpen(false)}
         >
-                {startWorkflowFilters && <ProductStatePicker/>}
-                <EuiSelectable<StartComboBoxOption>
-                    className={className}
-                    css={selectableStyle}
-                    searchable
-                    options={options}
-                    onChange={(_, __, changedOption) =>
-                        onOptionChange(changedOption)
-                    }
-                    height={200}
-                >
-                    {(list, search) => (
-                        <>
-                            {search}
-                            <EuiSpacer size="s" />
-                            {list}
-                        </>
-                    )}
-                </EuiSelectable>
+            {startWorkflowFilters && <ProductStatePicker />}
+            <EuiSelectable<StartComboBoxOption>
+                className={className}
+                css={selectableStyle}
+                searchable
+                options={options}
+                onChange={(_, __, changedOption) =>
+                    onOptionChange(changedOption)
+                }
+                height={200}
+            >
+                {(list, search) => (
+                    <>
+                        {search}
+                        <EuiSpacer size="s" />
+                        {list}
+                    </>
+                )}
+            </EuiSelectable>
         </EuiPopover>
     );
 };
