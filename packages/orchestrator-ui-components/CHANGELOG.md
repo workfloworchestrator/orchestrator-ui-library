@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 6.8.0
+
+### Minor Changes
+
+-   1b94ebc: 2160 Add filter for create worklows combobox and override filters
+
 ## 6.7.8
 
 ### Patch Changes
