@@ -30,6 +30,6 @@
         "provenance": true
     },
     "dependencies": {
-        "tsup": "^8.5.0"
+        "tsup": "^8.5.1"
     }
 }
