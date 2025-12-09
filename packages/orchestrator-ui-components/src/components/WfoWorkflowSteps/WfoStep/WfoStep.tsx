@@ -9,15 +9,10 @@ import {
     WfoMonacoCodeBlock,
     WfoTableCodeBlock,
 } from '@/components';
-import {
-    useGetOrchestratorConfig,
-    useOrchestratorTheme,
-    useWithOrchestratorTheme,
-} from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
-import type { EmailState } from '@/types';
+import type { EmailState, FormUserPermissions } from '@/types';
 import { StepStatus } from '@/types';
-import { FormUserPermissions } from '@/types/forms';
 import { calculateTimeDifference, formatDate } from '@/utils';
 
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
@@ -54,8 +49,6 @@ export const WfoStep = React.forwardRef(
         }: WfoStepProps,
         ref: LegacyRef<HTMLDivElement>,
     ) => {
-        const config = useGetOrchestratorConfig();
-        const usePydanticForms: boolean = config.activatePydanticForms ?? false;
         const { isExpanded, step, userInputForm } = stepListItem;
         const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
 
