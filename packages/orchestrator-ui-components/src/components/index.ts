@@ -14,7 +14,6 @@ export * from './WfoTable';
 export * from './WfoTimeline';
 export * from './WfoLoading';
 export * from './WfoToastsList';
-export * from './WfoForms';
 export * from './WfoDateTime';
 export * from './WfoAuth';
 export * from './WfoDropdownButton';
