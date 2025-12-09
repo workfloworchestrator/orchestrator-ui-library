@@ -18,7 +18,6 @@ export const emptyOrchestratorConfig: OrchestratorConfig = {
     supportMenuItemUrl: '',
     enableAoStackStatus: false,
     aoStackStatusUrl: '',
-    activatePydanticForms: false,
 };
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>(
