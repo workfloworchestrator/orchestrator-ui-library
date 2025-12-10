@@ -3,7 +3,7 @@
  *
  * Form footer component
  */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { useTranslations } from 'next-intl';
 import type { PydanticFormFooterProps } from 'pydantic-forms';
@@ -20,6 +20,10 @@ import { RenderFormErrors } from './RenderFormErrors';
 type FooterProps = PydanticFormFooterProps & {
     isTask?: boolean;
 };
+
+const submitButtonId = 'button-submit-form-submit';
+const previousButtonId = 'button-submit-form-previous';
+const cancelButtonId = 'button-submit-form-cancel';
 
 export const Footer = ({
     onCancel,
@@ -44,6 +48,29 @@ export const Footer = ({
 
     const { next, previous } = buttons || {};
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const isPrimary = event.metaKey || event.ctrlKey;
+
+            if (isPrimary && event.key === 'ArrowLeft') {
+                event.preventDefault();
+
+                if (hasPrevious) {
+                    onPrevious?.();
+                } else {
+                    handlePrevious();
+                }
+            }
+
+            if (isPrimary && event.key === 'ArrowRight') {
+                event.preventDefault();
+                document.getElementById(submitButtonId)?.click();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [hasPrevious, hasNext, onPrevious, onCancel, handlePrevious]);
+
     const PreviousButton = () => {
         const previousButtonColor =
             theme.colors[
@@ -53,8 +80,8 @@ export const Footer = ({
 
         return (
             <EuiButton
-                data-testid="button-submit-form-previous"
-                id="button-submit-form-submit"
+                data-testid={previousButtonId}
+                id={previousButtonId}
                 tabIndex={0}
                 fill
                 onClick={() => {
@@ -76,7 +103,7 @@ export const Footer = ({
 
     const CancelButton = () => (
         <div
-            data-testid="button-submit-form-cancel"
+            data-testid={cancelButtonId}
             onClick={handlePrevious}
             css={{
                 cursor: 'pointer',
@@ -120,8 +147,8 @@ export const Footer = ({
 
         return (
             <EuiButton
-                data-testid="button-submit-form-submit"
-                id="button-submit-form-submit"
+                data-testid={submitButtonId}
+                id={submitButtonId}
                 tabIndex={0}
                 fill
                 css={{
