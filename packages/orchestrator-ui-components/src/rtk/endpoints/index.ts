@@ -17,8 +17,6 @@ export * from './subscriptionInUseByRelationsList';
 export * from './subscriptionList';
 export * from './subscriptionListSummary';
 export * from './forms';
-export * from './deprecated';
-export * from './formFields';
 export * from './fileUpload';
 export * from './search';
 export * from './availability';

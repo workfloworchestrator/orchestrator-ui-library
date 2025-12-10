@@ -5,13 +5,11 @@ import type { PydanticFormElement } from 'pydantic-forms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
-import {
-    getCommonFormFieldStyles,
-    getNestedSummaryLabel,
-    summaryFieldStyles,
-} from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { snakeToHuman } from '@/utils';
+
+import { getCommonFormFieldStyles, summaryFieldStyles } from './styles';
+import { getNestedSummaryLabel } from './wfoPydanticFormUtils';
 
 export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
     const { summaryFieldStyle } = useWithOrchestratorTheme(summaryFieldStyles);

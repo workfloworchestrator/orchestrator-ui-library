@@ -61,9 +61,6 @@
         "react-select": "^5.8.0",
         "scroll-into-view": "^1.16.2",
         "unidiff": "^1.0.4",
-        "uniforms": "^3.8.1",
-        "uniforms-bridge-json-schema": "^3.8.1",
-        "uniforms-unstyled": "^3.8.1",
         "use-query-params": "2.2.1"
     },
     "devDependencies": {
@@ -82,8 +79,7 @@
         "jest-environment-jsdom": "^30.2.0",
         "jest-watch-typeahead": "^3.0.1",
         "tsup": "^8.5.0",
-        "typescript": "^5.5.2",
-        "uniforms-bridge-simple-schema-2": "^3.8.1"
+        "typescript": "^5.5.2"
     },
     "peerDependencies": {
         "next": "^15.5.7",

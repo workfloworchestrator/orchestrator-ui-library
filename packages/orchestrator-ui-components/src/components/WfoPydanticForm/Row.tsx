@@ -4,8 +4,10 @@ import type { RowRenderComponent } from 'pydantic-forms';
 
 import { EuiFormRow, EuiText } from '@elastic/eui';
 
-import { getCommonFormFieldStyles, getDataTestId } from '@/components';
+import { getDataTestId } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
+
+import { getCommonFormFieldStyles } from './fields/styles';
 
 export const Row: RowRenderComponent = ({
     title,

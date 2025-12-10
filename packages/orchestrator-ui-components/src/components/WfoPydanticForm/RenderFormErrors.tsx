@@ -8,8 +8,9 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useGetValidationErrors } from 'pydantic-forms';
 
-import { getCommonFormFieldStyles } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
+
+import { getCommonFormFieldStyles } from './fields/styles';
 
 export const RenderFormErrors = () => {
     const { errorStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);

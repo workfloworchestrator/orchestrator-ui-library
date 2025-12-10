@@ -9,7 +9,7 @@ import { StepFormFooter } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFor
 import { useOrchestratorTheme } from '@/hooks';
 import { HttpStatus } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
-import { FormUserPermissions, InputForm } from '@/types/forms';
+import { FormUserPermissions, InputForm } from '@/types';
 
 interface WfoStepFormProps {
     userInputForm: InputForm;
