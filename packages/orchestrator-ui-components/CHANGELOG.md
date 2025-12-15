@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.0.0
+
+### Major Changes
+
+-   87f9e22: Removes uniforms in favor of PydanticForms form handling library
+
+### Patch Changes
+
+-   ba5bafc: Update to latest pydantic-forms version
+
 ## 6.8.0
 
 ### Minor Changes
