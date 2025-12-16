@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.0.1
+
+### Patch Changes
+
+-   4cdef68: 2361 Make it possible as prepend field to be cleared
+-   fe2e8d0: 2355 Enable Ctrl/Cmd + Arrows to control form pages
+
 ## 7.0.0
 
 ### Major Changes
