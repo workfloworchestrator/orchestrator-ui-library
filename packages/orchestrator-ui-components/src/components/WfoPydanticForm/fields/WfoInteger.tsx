@@ -47,7 +47,11 @@ export const WfoInteger: PydanticFormControlledElement = ({
             data-testid={pydanticFormField.id}
             css={formFieldBaseStyle}
             name={pydanticFormField.id}
-            onChange={(event) => onChange(parseInt(event.target.value))}
+            onChange={(event) =>
+                onChange(
+                    event.target.value ? parseInt(event.target.value) : null,
+                )
+            }
             value={fieldValue}
             disabled={disabled}
         />
