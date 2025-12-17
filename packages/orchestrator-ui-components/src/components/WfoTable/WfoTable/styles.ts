@@ -41,9 +41,13 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const headerStyle = css({
+        position: 'sticky',
+        top: 0,
+        zIndex: 3,
         backgroundColor: theme.colors.lightShade,
         fontSize: theme.size.m,
         textAlign: 'left',
+
         'tr>:first-child': {
             borderTopLeftRadius: radius,
         },
@@ -85,7 +89,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
 
     const sortableHeaderCellStyle = css({
         paddingRight: 0,
-        [`&:hover`]: {
+        '&:hover': {
             [`.${SORTABLE_ICON_CLASS}`]: {
                 visibility: 'visible',
             },
