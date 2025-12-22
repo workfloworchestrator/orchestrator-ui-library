@@ -22,7 +22,7 @@
         "next-router-mock": "^0.9.13",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "storybook": "^8.5.0"
+        "storybook": "^10.1.10"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
