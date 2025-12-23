@@ -1,5 +1,7 @@
 export type EntityKind = 'SUBSCRIPTION' | 'PRODUCT' | 'WORKFLOW' | 'PROCESS';
 
+export type RetrieverType = 'auto' | 'fuzzy' | 'semantic' | 'hybrid';
+
 export interface MatchingField {
     text: string;
     path: string;

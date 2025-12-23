@@ -1,4 +1,10 @@
-import { Condition, EntityKind, Group, SearchResult } from '@/types';
+import {
+    Condition,
+    EntityKind,
+    Group,
+    RetrieverType,
+    SearchResult,
+} from '@/types';
 
 export function isSubscriptionSearchResult(item: SearchResult): boolean {
     return item.entity_type === 'SUBSCRIPTION';
@@ -155,6 +161,7 @@ export const buildSearchParams = (
     selectedEntityTab: EntityKind,
     filterGroup: Group,
     pageSize: number,
+    retriever?: Exclude<RetrieverType, 'auto'>,
 ) => {
     const queryText =
         typeof debouncedQuery === 'string'
@@ -167,5 +174,6 @@ export const buildSearchParams = (
         query: queryText || '',
         filters: filterGroup?.children.length > 0 ? filterGroup : undefined,
         limit: pageSize,
+        retriever,
     };
 };
