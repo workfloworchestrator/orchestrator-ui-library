@@ -5,6 +5,7 @@ import {
     Group,
     PaginatedSearchResults,
     PathAutocompleteResponse,
+    RetrieverType,
     value_schema,
 } from '@/types';
 
@@ -13,6 +14,7 @@ export interface SearchPayload {
     query: string;
     filters?: Group;
     limit?: number;
+    retriever?: Exclude<RetrieverType, 'auto'>;
 }
 
 export interface SearchPaginationPayload extends SearchPayload {
@@ -29,10 +31,10 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
     endpoints: (build) => ({
         search: build.mutation<PaginatedSearchResults, SearchPayload>({
-            query: ({ entity_type, query, filters, limit }) => ({
+            query: ({ entity_type, query, filters, limit, retriever }) => ({
                 url: `search/${getEndpointPath(entity_type)}`,
                 method: 'POST',
-                body: { query, filters, limit },
+                body: { query, filters, limit, retriever },
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -45,10 +47,10 @@ const searchApi = orchestratorApi.injectEndpoints({
             PaginatedSearchResults,
             SearchPaginationPayload
         >({
-            query: ({ cursor, entity_type, query, filters, limit }) => ({
+            query: ({ cursor, entity_type, query, filters, limit, retriever }) => ({
                 url: `search/${getEndpointPath(entity_type)}?cursor=${cursor}`,
                 method: 'POST',
-                body: { query, filters, limit },
+                body: { query, filters, limit, retriever },
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -3,13 +3,19 @@ import { useEffect, useState } from 'react';
 import { Query } from '@elastic/eui';
 
 import { useSearchMutation } from '@/rtk/endpoints';
-import { EntityKind, Group, PaginatedSearchResults } from '@/types';
+import {
+    EntityKind,
+    Group,
+    PaginatedSearchResults,
+    RetrieverType,
+} from '@/types';
 
 export const useSearch = (
     query: Query | string,
     entityType: EntityKind,
     filterGroup?: Group,
     limit?: number,
+    retriever: RetrieverType = 'auto',
 ) => {
     const [results, setResults] = useState<PaginatedSearchResults>({
         data: [],
@@ -44,6 +50,7 @@ export const useSearch = (
                             ? filterGroup
                             : undefined,
                     limit: limit,
+                    retriever: retriever === 'auto' ? undefined : retriever,
                 }).unwrap();
 
                 setResults({
@@ -71,7 +78,7 @@ export const useSearch = (
         };
 
         performSearch();
-    }, [query, entityType, filterGroup, limit, triggerSearch]);
+    }, [query, entityType, filterGroup, limit, retriever, triggerSearch]);
 
     return {
         results,
