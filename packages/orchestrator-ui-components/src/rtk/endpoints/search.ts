@@ -47,7 +47,14 @@ const searchApi = orchestratorApi.injectEndpoints({
             PaginatedSearchResults,
             SearchPaginationPayload
         >({
-            query: ({ cursor, entity_type, query, filters, limit, retriever }) => ({
+            query: ({
+                cursor,
+                entity_type,
+                query,
+                filters,
+                limit,
+                retriever,
+            }) => ({
                 url: `search/${getEndpointPath(entity_type)}?cursor=${cursor}`,
                 method: 'POST',
                 body: { query, filters, limit, retriever },
