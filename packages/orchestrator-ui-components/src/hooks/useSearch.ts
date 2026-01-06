@@ -51,7 +51,9 @@ export const useSearch = (
                             : undefined,
                     limit: limit,
                     retriever:
-                        retriever === RetrieverType.Auto ? undefined : retriever,
+                        retriever === RetrieverType.Auto
+                            ? undefined
+                            : retriever,
                 }).unwrap();
 
                 setResults({
