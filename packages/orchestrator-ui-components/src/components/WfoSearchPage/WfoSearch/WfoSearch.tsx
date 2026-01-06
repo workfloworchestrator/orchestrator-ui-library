@@ -17,13 +17,8 @@ import {
 
 import { WfoSubscription } from '@/components';
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
-import { WfoBadge } from '@/components/WfoBadges';
-import {
-    ENTITY_TABS,
-    isSubscriptionSearchResult,
-} from '@/components/WfoSearchPage/utils';
+import { ENTITY_TABS } from '@/components/WfoSearchPage/utils';
 import { TreeProvider } from '@/contexts';
-import { useOrchestratorTheme } from '@/hooks';
 import { useSearchAvailability } from '@/hooks/useBackendAvailability';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
@@ -44,7 +39,6 @@ import {
 
 export const WfoSearch = () => {
     const t = useTranslations('search.page');
-    const { theme } = useOrchestratorTheme();
     const searchAvailability = useSearchAvailability();
 
     const {
@@ -195,9 +189,11 @@ export const WfoSearch = () => {
 
     useEffect(() => {
         setShowDetailPanel(
-            results?.data?.length > 0 && selectedRecordIndex >= 0,
+            results?.data?.length > 0 &&
+                selectedRecordIndex >= 0 &&
+                selectedEntityTab === 'SUBSCRIPTION',
         );
-    }, [results?.data?.length, selectedRecordIndex]);
+    }, [results?.data?.length, selectedRecordIndex, selectedEntityTab]);
 
     useEffect(() => {
         resetPagination();
@@ -389,11 +385,7 @@ export const WfoSearch = () => {
                                     hasShadow={false}
                                     color="transparent"
                                 >
-                                    {selectedEntityTab === 'SUBSCRIPTION' &&
-                                    results.data[selectedRecordIndex] &&
-                                    isSubscriptionSearchResult(
-                                        results.data[selectedRecordIndex],
-                                    ) ? (
+                                    {results.data[selectedRecordIndex] && (
                                         <TreeProvider>
                                             <WfoSubscription
                                                 subscriptionId={
@@ -403,45 +395,6 @@ export const WfoSearch = () => {
                                                 }
                                             />
                                         </TreeProvider>
-                                    ) : (
-                                        <>
-                                            <EuiText>
-                                                <h4>{t('details')}</h4>
-                                            </EuiText>
-                                            <EuiSpacer size="m" />
-                                            <EuiText
-                                                color={theme.colors.textSubdued}
-                                            >
-                                                <p>
-                                                    {t(
-                                                        'showingDetailsForResult',
-                                                        {
-                                                            resultNumber:
-                                                                selectedRecordIndex +
-                                                                1,
-                                                        },
-                                                    )}
-                                                </p>
-                                                <EuiSpacer size="s" />
-                                                <WfoBadge
-                                                    color={theme.colors.primary}
-                                                    textColor={
-                                                        theme.colors.ghost
-                                                    }
-                                                >
-                                                    {selectedEntityTab} #
-                                                    {selectedRecordIndex + 1}
-                                                </WfoBadge>
-                                                <EuiSpacer size="m" />
-                                                <p>
-                                                    <em>
-                                                        {t(
-                                                            'selectResultInstruction',
-                                                        )}
-                                                    </em>
-                                                </p>
-                                            </EuiText>
-                                        </>
                                     )}
                                 </EuiPanel>
                             </EuiFlexItem>
