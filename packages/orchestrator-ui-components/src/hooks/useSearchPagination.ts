@@ -36,7 +36,7 @@ export const useSearchPagination = (
     pageSize: number,
     results: PaginatedSearchResults,
     setResults: (results: PaginatedSearchResults) => void,
-    retriever?: Exclude<RetrieverType, 'auto'>,
+    retriever?: RetrieverType,
 ): UseSearchPaginationReturn => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageHistory, setPageHistory] = useState<PageHistoryItem[]>([]);
@@ -67,7 +67,7 @@ export const useSearchPagination = (
                     selectedEntityTab,
                     filterGroup,
                     pageSize,
-                    retriever,
+                    retriever === RetrieverType.Auto ? undefined : retriever,
                 );
 
                 const res = await triggerSearchPagination({

@@ -14,7 +14,7 @@ export interface SearchPayload {
     query: string;
     filters?: Group;
     limit?: number;
-    retriever?: Exclude<RetrieverType, 'auto'>;
+    retriever?: RetrieverType;
 }
 
 export interface SearchPaginationPayload extends SearchPayload {

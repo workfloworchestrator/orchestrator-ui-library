@@ -1,6 +1,11 @@
 export type EntityKind = 'SUBSCRIPTION' | 'PRODUCT' | 'WORKFLOW' | 'PROCESS';
 
-export type RetrieverType = 'auto' | 'fuzzy' | 'semantic' | 'hybrid';
+export enum RetrieverType {
+    Auto = 'auto',
+    Fuzzy = 'fuzzy',
+    Semantic = 'semantic',
+    Hybrid = 'hybrid',
+}
 
 export interface MatchingField {
     text: string;

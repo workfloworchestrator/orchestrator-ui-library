@@ -70,7 +70,9 @@ export const WfoSearch = () => {
     });
 
     const [showDetailPanel, setShowDetailPanel] = useState<boolean>(false);
-    const [retrieverType, setRetrieverType] = useState<RetrieverType>('auto');
+    const [retrieverType, setRetrieverType] = useState<RetrieverType>(
+        RetrieverType.Auto,
+    );
 
     const debouncedQuery = useDebounce(query, DEFAULT_DEBOUNCE_DELAY);
     const { results, loading, setResults } = useSearch(
@@ -112,7 +114,7 @@ export const WfoSearch = () => {
         pageSize,
         results,
         setResults,
-        retrieverType === 'auto' ? undefined : retrieverType,
+        retrieverType,
     );
 
     const [searchValue, setSearchValue] = useState(() => {
@@ -258,10 +260,22 @@ export const WfoSearch = () => {
                 <EuiFlexItem grow={false}>
                     <EuiSelect
                         options={[
-                            { value: 'auto', text: t('retrieverAuto') },
-                            { value: 'fuzzy', text: t('retrieverFuzzy') },
-                            { value: 'semantic', text: t('retrieverSemantic') },
-                            { value: 'hybrid', text: t('retrieverHybrid') },
+                            {
+                                value: RetrieverType.Auto,
+                                text: t('retrieverAuto'),
+                            },
+                            {
+                                value: RetrieverType.Fuzzy,
+                                text: t('retrieverFuzzy'),
+                            },
+                            {
+                                value: RetrieverType.Semantic,
+                                text: t('retrieverSemantic'),
+                            },
+                            {
+                                value: RetrieverType.Hybrid,
+                                text: t('retrieverHybrid'),
+                            },
                         ]}
                         value={retrieverType}
                         onChange={(e) =>

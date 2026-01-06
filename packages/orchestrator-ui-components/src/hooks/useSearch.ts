@@ -15,7 +15,7 @@ export const useSearch = (
     entityType: EntityKind,
     filterGroup?: Group,
     limit?: number,
-    retriever: RetrieverType = 'auto',
+    retriever: RetrieverType = RetrieverType.Auto,
 ) => {
     const [results, setResults] = useState<PaginatedSearchResults>({
         data: [],
@@ -50,7 +50,8 @@ export const useSearch = (
                             ? filterGroup
                             : undefined,
                     limit: limit,
-                    retriever: retriever === 'auto' ? undefined : retriever,
+                    retriever:
+                        retriever === RetrieverType.Auto ? undefined : retriever,
                 }).unwrap();
 
                 setResults({
