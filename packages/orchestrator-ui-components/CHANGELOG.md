@@ -1,5 +1,14 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.0.1
+
+### Patch Changes
+
+-   4cdef68: 2361 Make it possible as prepend field to be cleared
+-   fe2e8d0: 2355 Enable Ctrl/Cmd + Arrows to control form pages
+-   bc36592: Add option to overwrite the retriever type in the FE
+-   8e1cbd0: Change the processes search results to use the whole div
+
 ## 7.0.0
 
 ### Major Changes
