@@ -1,17 +1,19 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 import { getFormFieldsBaseStyle } from '@/theme';
 
-export const getWfoTableSettingsModalStyles = (wfoTheme: WfoTheme) => {
-    const { formFieldBaseStyle } = getFormFieldsBaseStyle(wfoTheme);
-
-    const { theme } = wfoTheme;
+export const getWfoTableSettingsModalStyles = (
+    useOrchestratorThemeProps: UseOrchestratorThemeProps,
+) => {
+    const { formFieldBaseStyle } = getFormFieldsBaseStyle(
+        useOrchestratorThemeProps,
+    );
 
     const formRowStyle = css({
         justifyContent: 'space-between',
         '.euiFormLabel': {
-            color: theme.colors.text,
+            color: useOrchestratorThemeProps.theme.colors.text,
         },
     });
 

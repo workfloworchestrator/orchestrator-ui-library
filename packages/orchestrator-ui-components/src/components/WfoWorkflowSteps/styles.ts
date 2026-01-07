@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
 export const getWorkflowStepsStyles = ({
     theme,
     toSecondaryColor,
-}: WfoTheme) => {
+}: UseOrchestratorThemeProps) => {
     const SPACE_BETWEEN_STEPS = theme.base * 1.5;
 
     const stepSpacerStyle = css({

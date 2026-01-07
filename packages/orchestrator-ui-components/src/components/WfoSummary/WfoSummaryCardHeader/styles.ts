@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoSummaryCardHeaderStyles = ({ theme }: WfoTheme) => {
+export const getWfoSummaryCardHeaderStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const avatarStyle = css({
         maxHeight: theme.base * 3,
         maxWidth: theme.base * 3,

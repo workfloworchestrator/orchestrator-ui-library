@@ -22,7 +22,7 @@ import { toOptionalArrayEntry } from '@/utils';
 export const WfoHamburgerMenu = () => {
     const t = useTranslations('hamburgerMenu');
     const [isPopoverOpen, setPopoverIsOpen] = useState(false);
-    const { theme, isDarkThemeActive } = useOrchestratorTheme();
+    const { theme, isDarkModeActive } = useOrchestratorTheme();
     const {
         enableSupportMenuItem,
         supportMenuItemUrl,
@@ -87,9 +87,7 @@ export const WfoHamburgerMenu = () => {
         name: t('logout'),
         icon: (
             <WfoLogoutIcon
-                color={
-                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
-                }
+                color={isDarkModeActive ? theme.colors.ghost : theme.colors.ink}
             />
         ),
         onClick: () => signOut(),
@@ -99,9 +97,7 @@ export const WfoHamburgerMenu = () => {
         name: t('support'),
         icon: (
             <WfoQuestionCircle
-                color={
-                    isDarkThemeActive ? theme.colors.ghost : theme.colors.ink
-                }
+                color={isDarkModeActive ? theme.colors.ghost : theme.colors.ink}
             />
         ),
         onClick: handleOpenSupport,

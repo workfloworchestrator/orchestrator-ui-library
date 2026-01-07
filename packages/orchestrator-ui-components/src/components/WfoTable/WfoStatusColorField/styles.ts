@@ -2,9 +2,11 @@ import { tint } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { TABLE_ROW_HEIGHT } from '@/components';
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoStatusColorFieldStyles = ({ theme }: WfoTheme) => {
+export const getWfoStatusColorFieldStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
 
     const getStatusColorFieldStyle = (color: string) =>

@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
 export const getPageTemplateStyles = ({
     theme,
     multiplyByBaseUnit,
-}: WfoTheme) => {
+}: UseOrchestratorThemeProps) => {
     const NAVIGATION_HEIGHT = multiplyByBaseUnit(3);
 
     const getSidebarStyle = (navigationHeight: number) =>
