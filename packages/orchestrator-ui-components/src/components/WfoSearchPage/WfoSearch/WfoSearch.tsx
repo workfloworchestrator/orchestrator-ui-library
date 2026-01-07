@@ -9,6 +9,7 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiPanel,
+    EuiSelect,
     EuiSpacer,
     EuiTab,
     EuiTabs,
@@ -29,7 +30,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
 import { useSearchPagination } from '@/hooks/useSearchPagination';
 import { useUrlParams } from '@/hooks/useUrlParams';
-import { EntityKind, Group } from '@/types';
+import { EntityKind, Group, RetrieverType } from '@/types';
 
 import { FilterGroup } from '../WfoFilterGroup';
 import { WfoSearchResults } from '../WfoSearchResults';
@@ -69,6 +70,9 @@ export const WfoSearch = () => {
     });
 
     const [showDetailPanel, setShowDetailPanel] = useState<boolean>(false);
+    const [retrieverType, setRetrieverType] = useState<RetrieverType>(
+        RetrieverType.Auto,
+    );
 
     const debouncedQuery = useDebounce(query, DEFAULT_DEBOUNCE_DELAY);
     const { results, loading, setResults } = useSearch(
@@ -76,6 +80,7 @@ export const WfoSearch = () => {
         selectedEntityTab,
         filterGroup,
         pageSize,
+        retrieverType,
     );
 
     const [hasSearchBeenAttempted, setHasSearchBeenAttempted] = useState(false);
@@ -109,6 +114,7 @@ export const WfoSearch = () => {
         pageSize,
         results,
         setResults,
+        retrieverType,
     );
 
     const [searchValue, setSearchValue] = useState(() => {
@@ -249,6 +255,35 @@ export const WfoSearch = () => {
                     >
                         {showFilters ? t('hideFilters') : t('showFilters')}
                     </EuiButton>
+                </EuiFlexItem>
+                <EuiFlexItem grow={true} />
+                <EuiFlexItem grow={false}>
+                    <EuiSelect
+                        options={[
+                            {
+                                value: RetrieverType.Auto,
+                                text: t('retrieverAuto'),
+                            },
+                            {
+                                value: RetrieverType.Fuzzy,
+                                text: t('retrieverFuzzy'),
+                            },
+                            {
+                                value: RetrieverType.Semantic,
+                                text: t('retrieverSemantic'),
+                            },
+                            {
+                                value: RetrieverType.Hybrid,
+                                text: t('retrieverHybrid'),
+                            },
+                        ]}
+                        value={retrieverType}
+                        onChange={(e) =>
+                            setRetrieverType(e.target.value as RetrieverType)
+                        }
+                        compressed
+                        prepend={t('retrieval')}
+                    />
                 </EuiFlexItem>
             </EuiFlexGroup>
 
