@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getFilterDisplayStyles = ({ theme }: WfoTheme) => {
+export const getFilterDisplayStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const wrapStyle = css({
         display: 'flex',
         flexWrap: 'wrap',

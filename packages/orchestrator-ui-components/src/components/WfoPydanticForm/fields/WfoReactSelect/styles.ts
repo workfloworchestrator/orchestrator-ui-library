@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import type { WfoTheme } from '@/hooks';
+import type { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
+export const getWfoReactSelectStyles = (
+    wfoTheme: UseOrchestratorThemeProps,
+) => {
     const { theme } = wfoTheme;
 
     const reactSelectInnerComponentStyles = {

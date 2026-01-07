@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getToolProgressStyles = ({ theme }: WfoTheme) => {
+export const getToolProgressStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const containerStyle = css({
         border: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
         borderRadius: theme.border.radius.medium,

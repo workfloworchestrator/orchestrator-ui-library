@@ -21,8 +21,8 @@ export type WfoAgentLineChartProps = {
 
 export function WfoAgentLineChart({ aggregationData }: WfoAgentLineChartProps) {
     const { results } = aggregationData;
-    const { isDarkThemeActive, multiplyByBaseUnit } = useOrchestratorTheme();
-    const chartBaseTheme = isDarkThemeActive ? DARK_THEME : LIGHT_THEME;
+    const { isDarkModeActive, multiplyByBaseUnit } = useOrchestratorTheme();
+    const chartBaseTheme = isDarkModeActive ? DARK_THEME : LIGHT_THEME;
 
     const firstResult = results[0];
     const groupKeys = Object.keys(firstResult.group_values);

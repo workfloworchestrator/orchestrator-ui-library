@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
 import {
     HEADER_CELL_TITLE_BUTTON_CLASS,
@@ -10,7 +10,10 @@ import {
 } from './WfoTableHeaderCell/styles';
 import { TABLE_ROW_HEIGHT } from './constants';
 
-export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
+export const getWfoTableStyles = ({
+    theme,
+    isDarkModeActive,
+}: UseOrchestratorThemeProps) => {
     const radius = theme.border.radius.medium;
 
     const tableLoadingLineKeyframes = keyframes({
@@ -142,7 +145,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         zIndex: theme.levels.menu,
         '&:active, &:focus': {
             transition: 'background-color 0.15s',
-            backgroundColor: isDarkThemeActive
+            backgroundColor: isDarkModeActive
                 ? theme.colors.mediumShade
                 : theme.colors.header,
         },

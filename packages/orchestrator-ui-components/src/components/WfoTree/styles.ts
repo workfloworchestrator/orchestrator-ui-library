@@ -1,7 +1,9 @@
-import type { WfoTheme } from '@/hooks';
+import type { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getStyles = (wfoTheme: WfoTheme) => {
-    const { theme, toSecondaryColor } = wfoTheme;
+export const getStyles = ({
+    theme,
+    toSecondaryColor,
+}: UseOrchestratorThemeProps) => {
     const expandIconContainerStyle = {
         cursor: 'pointer',
     };

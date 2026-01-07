@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const panelStyle = css({
         display: 'flex',
         padding: theme.base * 2,

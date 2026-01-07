@@ -26,7 +26,7 @@ const MONACO_THEME: { light: editor.BuiltinTheme; dark: editor.BuiltinTheme } =
  * @constructor
  */
 export const WfoMonacoCodeBlock: FC<WfoMonacoCodeBlockProps> = ({ data }) => {
-    const { theme, isDarkThemeActive } = useOrchestratorTheme();
+    const { theme, isDarkModeActive } = useOrchestratorTheme();
     const { monacoEditorStyle } = useWithOrchestratorTheme(getStyles);
     const [monacoInstance, setMonacoInstance] = useState<Monaco | undefined>(
         undefined,
@@ -38,9 +38,7 @@ export const WfoMonacoCodeBlock: FC<WfoMonacoCodeBlockProps> = ({ data }) => {
     const addThemeToEditor = useCallback(
         (monaco: Monaco) => {
             monaco.editor.defineTheme('wfoTheme', {
-                base: isDarkThemeActive
-                    ? MONACO_THEME.dark
-                    : MONACO_THEME.light,
+                base: isDarkModeActive ? MONACO_THEME.dark : MONACO_THEME.light,
                 inherit: true,
                 rules: [],
                 colors: {
@@ -49,14 +47,14 @@ export const WfoMonacoCodeBlock: FC<WfoMonacoCodeBlockProps> = ({ data }) => {
             });
             monaco.editor.setTheme('wfoTheme');
         },
-        [theme, isDarkThemeActive],
+        [theme, isDarkModeActive],
     );
 
     useEffect(() => {
         if (monacoInstance) {
             addThemeToEditor(monacoInstance);
         }
-    }, [addThemeToEditor, isDarkThemeActive, monacoInstance]);
+    }, [addThemeToEditor, isDarkModeActive, monacoInstance]);
 
     function editorDidMount(
         editor: editor.IStandaloneCodeEditor,

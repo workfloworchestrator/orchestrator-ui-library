@@ -60,7 +60,7 @@ export default function WfoConfirmationDialog({
                     <EuiModal
                         css={confirmationDialogStyling}
                         className="confirm-modal"
-                        onClose={onCancel}
+                        onClose={() => onCancel}
                         initialFocus="[name=popfirst]"
                     >
                         <EuiModalHeader>

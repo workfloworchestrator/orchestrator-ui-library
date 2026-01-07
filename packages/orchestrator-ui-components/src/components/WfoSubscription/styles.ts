@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getSubscriptionDetailStyles = ({ theme }: WfoTheme) => {
+export const getSubscriptionDetailStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const productBlockTreeWidth = theme.base * 28;
 
     const labelCellStyle = css({

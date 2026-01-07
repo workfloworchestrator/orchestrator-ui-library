@@ -1,10 +1,15 @@
 import React, { FC, ReactElement, ReactNode, useRef, useState } from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
-import { EuiPageTemplate, EuiSideNavItemType } from '@elastic/eui';
+import {
+    EuiPageTemplate,
+    EuiSideNavItemType,
+    EuiThemeProvider,
+} from '@elastic/eui';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { wfoThemeModifications } from '@/theme';
 import { ProductLifecycleStatus } from '@/types';
 
 import { ContentContextProvider } from './ContentContext';
@@ -30,13 +35,13 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
     const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
         getPageTemplateStyles,
     );
-
+    const { colorMode } = useOrchestratorTheme();
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
 
     const headerRowRef = useRef<HTMLDivElement>(null);
 
     return (
-        <>
+        <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={NAVIGATION_HEIGHT}
@@ -80,6 +85,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     </EuiPageTemplate.Section>
                 </ContentContextProvider>
             </EuiPageTemplate>
-        </>
+        </EuiThemeProvider>
     );
 };

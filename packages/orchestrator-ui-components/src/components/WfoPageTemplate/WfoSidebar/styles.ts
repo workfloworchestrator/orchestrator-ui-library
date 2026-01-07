@@ -1,8 +1,8 @@
 import { CSSObject, css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getCopyrightStyles = ({ theme }: WfoTheme) => {
+export const getCopyrightStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const copyrightStyle = css({
         position: 'fixed',
         bottom: 0,
@@ -17,7 +17,7 @@ export const getCopyrightStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuStyles = ({ theme }: WfoTheme) => {
+export const getMenuStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const menuStyle = css({
         '.euiSideNavItem--branch': {
             '&:after': {
@@ -37,7 +37,10 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
+export const getMenuItemStyles = ({
+    theme,
+    isDarkModeActive,
+}: UseOrchestratorThemeProps) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',
@@ -74,7 +77,7 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const selectedMenuItemBaseStyle = {
         ...baseStyles,
         height: `${theme.base * 2.25}px`,
-        backgroundColor: isDarkThemeActive
+        backgroundColor: isDarkModeActive
             ? theme.colors.mediumShade
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,
@@ -94,7 +97,7 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const selectedSubMenuItem = css({
         ...baseSubMenuStyles,
         height: `${theme.base * 2.25}px`,
-        backgroundColor: isDarkThemeActive
+        backgroundColor: isDarkModeActive
             ? theme.colors.mediumShade
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,

@@ -1,14 +1,16 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoPageHeaderStyles = ({ theme }: WfoTheme) => {
+export const getWfoPageHeaderStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const appNameStyle = css({
         paddingRight: theme.base,
         marginRight: theme.base,
         borderRight: `${theme.border.width.thick} solid ${theme.colors.subduedText}`,
     });
-
+    console.log('theme in header', theme);
     const getHeaderStyle = (navigationHeight: number) => {
         return css({
             backgroundColor: theme.colors.header,

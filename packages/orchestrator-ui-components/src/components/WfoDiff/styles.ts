@@ -1,23 +1,23 @@
 import { shade, tint } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
 export const getWfoDiffStyles = ({
     theme,
     toSecondaryColor,
-    isDarkThemeActive,
-}: WfoTheme) => {
+    isDarkModeActive,
+}: UseOrchestratorThemeProps) => {
     const SHADE_FACTOR = 0.5;
     const TINT_FACTOR = 0.65;
 
     const insertGutterColor = toSecondaryColor(theme.colors.success);
-    const insertCodeColor = isDarkThemeActive
+    const insertCodeColor = isDarkModeActive
         ? shade(insertGutterColor, SHADE_FACTOR)
         : tint(insertGutterColor, TINT_FACTOR);
 
     const deleteColor = toSecondaryColor(theme.colors.danger);
-    const deleteSecondaryColor = isDarkThemeActive
+    const deleteSecondaryColor = isDarkModeActive
         ? shade(deleteColor, SHADE_FACTOR)
         : tint(deleteColor, TINT_FACTOR);
 

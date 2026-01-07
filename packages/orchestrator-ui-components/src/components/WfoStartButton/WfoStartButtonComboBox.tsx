@@ -41,7 +41,7 @@ export const WfoStartButtonComboBox = ({
     startWorkflowFilters,
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-    const { theme, isDarkThemeActive } = useOrchestratorTheme();
+    const { theme, isDarkModeActive } = useOrchestratorTheme();
     const { selectableStyle } = useWithOrchestratorTheme(getStyles);
 
     const Button = (
@@ -53,7 +53,7 @@ export const WfoStartButtonComboBox = ({
                     : () => <WfoPlusCircleFill color={theme.colors.ghost} />
             }
             fullWidth={isProcess}
-            fill={!isProcess || isDarkThemeActive}
+            fill={!isProcess || isDarkModeActive}
         >
             {buttonText}
         </EuiButton>
