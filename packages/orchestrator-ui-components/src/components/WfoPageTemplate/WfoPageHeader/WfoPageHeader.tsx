@@ -37,13 +37,13 @@ export interface WfoPageHeaderProps {
     // todo: should be part of theme!
     navigationHeight: number;
     getAppLogo: (navigationHeight: number) => ReactElement;
-    onThemeSwitch: (theme: EuiThemeColorMode) => void;
+    onColorModeSwitch: (newColorMode: EuiThemeColorMode) => void;
 }
 
 export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
     navigationHeight,
     getAppLogo,
-    onThemeSwitch,
+    onColorModeSwitch,
 }) => {
     const t = useTranslations('main');
     const { multiplyByBaseUnit, colorMode, theme } = useOrchestratorTheme();
@@ -107,13 +107,13 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                                     ? 'darkMode'
                                     : 'lightMode',
                             )}
-                            onClick={() =>
-                                onThemeSwitch(
+                            onClick={() => {
+                                onColorModeSwitch(
                                     colorMode === ColorModes.LIGHT
                                         ? ColorModes.DARK
                                         : ColorModes.LIGHT,
-                                )
-                            }
+                                );
+                            }}
                         />
                     )}
 
