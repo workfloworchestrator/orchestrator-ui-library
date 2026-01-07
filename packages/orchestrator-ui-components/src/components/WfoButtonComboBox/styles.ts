@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoButtonComboBoxStyles = ({ theme }: WfoTheme) => {
+export const getWfoButtonComboBoxStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const selectableStyle = css({
         '.euiFieldSearch': {
             backgroundColor: theme.colors.body,

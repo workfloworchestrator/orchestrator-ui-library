@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoSummaryCardListStyles = ({ theme }: WfoTheme) => {
+export const getWfoSummaryCardListStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const listContainerStyle = css({
         display: 'flex',
         flexDirection: 'column',

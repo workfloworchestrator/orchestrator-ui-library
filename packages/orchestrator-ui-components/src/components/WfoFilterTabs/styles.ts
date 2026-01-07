@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const tabStyle = css({
         gap: `${theme.size.xxs}`,
         '.euiTab__prepend': {

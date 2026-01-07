@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getWfoGroupedTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoGroupedTableStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     // Matches the default width of a EuiButtonIcon component
     const expandRowButtonWidth = '24px';
     const marginBetweenButtonAndGroupLabel = theme.size.m;

@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 
-export const getFormFieldsBaseStyle = ({ theme }: WfoTheme) => {
+export const getFormFieldsBaseStyle = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const formFieldBaseStyle = css({
         backgroundColor: theme.colors.body,
         color: theme.colors.text,

@@ -1,2 +1,2 @@
 export * from './baseStyles';
-export * from './defaultOrchestratorTheme';
+export * from './wfoThemeModifications';

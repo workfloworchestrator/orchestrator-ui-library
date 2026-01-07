@@ -1,13 +1,15 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { UseOrchestratorThemeProps } from '@/hooks';
 import { SortOrder } from '@/types';
 
 export const HEADER_CELL_TITLE_BUTTON_CLASS = 'headerCellTitleButton';
 export const HEADER_CELL_SORT_BUTTON_CLASS = 'headerCellSortButton';
 export const SORTABLE_ICON_CLASS = 'sortableIcon';
 
-export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoBasicTableStyles = ({
+    theme,
+}: UseOrchestratorThemeProps) => {
     const radius = theme.border.radius.medium;
 
     const basicTableStyle = css({
