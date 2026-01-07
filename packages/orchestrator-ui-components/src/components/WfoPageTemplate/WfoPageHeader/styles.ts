@@ -10,7 +10,7 @@ export const getWfoPageHeaderStyles = ({
         marginRight: theme.base,
         borderRight: `${theme.border.width.thick} solid ${theme.colors.subduedText}`,
     });
-    console.log('theme in header', theme);
+
     const getHeaderStyle = (navigationHeight: number) => {
         return css({
             backgroundColor: theme.colors.header,
