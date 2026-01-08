@@ -14,20 +14,20 @@ export const getWfoReactSelectStyles = (
         ) => ({
             ...baseStyles,
             borderBottom: theme.border.thin,
-            borderColor: theme.colors.lightShade,
-            backgroundColor: theme.colors.lightestShade,
+            borderColor: theme.colors.borderBaseSubdued,
+            backgroundColor: theme.colors.backgroundBasePlain,
             color: state.isSelected
-                ? theme.colors.primaryText
-                : theme.colors.text,
+                ? theme.colors.textPrimary
+                : theme.colors.textParagraph,
         }),
         control: (baseStyles: object, state: { isFocused: boolean }) => {
             return {
                 ...baseStyles,
                 backgroundColor: state.isFocused
-                    ? theme.colors.emptyShade
-                    : theme.colors.lightestShade,
-                color: theme.colors.text,
-                border: `1px solid ${theme.colors.lightShade}`,
+                    ? theme.colors.plainLight
+                    : theme.colors.backgroundBasePlain,
+                color: theme.colors.textParagraph,
+                border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 borderColor: 'none',
                 '&:hover': {
                     borderColor: 'none',
@@ -36,7 +36,7 @@ export const getWfoReactSelectStyles = (
         },
         input: (baseStyles: object) => ({
             ...baseStyles,
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         }),
         singleValue: (baseStyles: object, state: { isDisabled: boolean }) => {
             const opacity = state.isDisabled ? 0.6 : 1;
@@ -45,12 +45,12 @@ export const getWfoReactSelectStyles = (
                 ...baseStyles,
                 opacity,
                 transition,
-                color: theme.colors.text,
+                color: theme.colors.textParagraph,
             };
         },
         menu: (baseStyles: object) => ({
             ...baseStyles,
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         }),
     };
 
