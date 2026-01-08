@@ -37,7 +37,7 @@ export const getToolProgressStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const iconSize = 18;
 
     const iconStyle = css({
-        color: theme.colors.subduedText,
+        color: theme.colors.textSubdued,
     });
 
     return {

@@ -21,10 +21,10 @@ export const getCommonFormFieldStyles = ({
         marginBottom: theme.base * 2,
 
         '.euiText': {
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         },
         '.euiFormLabel': {
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
             cursor: 'text',
             '&.euiFormLabel-isFocused': {
                 color: theme.colors.textPrimary,

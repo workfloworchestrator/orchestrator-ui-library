@@ -13,7 +13,7 @@ export const getWfoTableSettingsModalStyles = (
     const formRowStyle = css({
         justifyContent: 'space-between',
         '.euiFormLabel': {
-            color: useOrchestratorThemeProps.theme.colors.text,
+            color: useOrchestratorThemeProps.theme.colors.textParagraph,
         },
     });
 

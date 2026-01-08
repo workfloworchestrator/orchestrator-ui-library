@@ -13,7 +13,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 const getFormFieldsBaseStyle = ({ theme }: UseOrchestratorThemeProps) => {
     const formFieldBaseStyle = css({
         backgroundColor: theme.colors.backgroundBasePlain,
-        color: theme.colors.text,
+        color: theme.colors.textParagraph,
         '&:focus': {
             backgroundColor: theme.colors.backgroundBaseNeutral,
         },

@@ -116,7 +116,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                         <WfoCode
                             color={
                                 isRunningWorkflow
-                                    ? theme.colors.disabledText
+                                    ? theme.colors.backgroundBaseDisabled
                                     : theme.colors.link
                             }
                         />

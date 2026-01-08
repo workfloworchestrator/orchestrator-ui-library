@@ -67,7 +67,7 @@ export const WfoSelectedPathDisplay: FC<SelectedPathDisplayProps> = ({
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     ) : (
-                        <EuiText size="s" color={theme.colors.text}>
+                        <EuiText size="s" color={theme.colors.textParagraph}>
                             {condition.path}
                         </EuiText>
                     )}

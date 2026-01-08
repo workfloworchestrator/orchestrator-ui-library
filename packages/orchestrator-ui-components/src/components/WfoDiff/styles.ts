@@ -36,7 +36,7 @@ export const getWfoDiffStyles = ({
         },
 
         '.operator, .punctuation': {
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         },
     });
 

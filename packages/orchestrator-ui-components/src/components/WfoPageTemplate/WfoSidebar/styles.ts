@@ -108,7 +108,7 @@ export const getMenuItemStyles = ({
 
     const subMenuHeaderStyle = css({
         ...baseStyles,
-        color: theme.colors.text,
+        color: theme.colors.textParagraph,
     });
     return {
         menuItemStyle,

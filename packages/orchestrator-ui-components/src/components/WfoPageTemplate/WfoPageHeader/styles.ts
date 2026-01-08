@@ -8,7 +8,7 @@ export const getWfoPageHeaderStyles = ({
     const appNameStyle = css({
         paddingRight: theme.base,
         marginRight: theme.base,
-        borderRight: `${theme.border.width.thick} solid ${theme.colors.subduedText}`,
+        borderRight: `${theme.border.width.thick} solid ${theme.colors.textSubdued}`,
     });
 
     const getHeaderStyle = (navigationHeight: number) => {

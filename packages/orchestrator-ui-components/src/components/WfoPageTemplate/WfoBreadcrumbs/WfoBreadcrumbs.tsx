@@ -78,7 +78,7 @@ export const WfoBreadcrumbs = ({
                         aria-label={t('ariaLabelToggleSideMenu')}
                         display="empty"
                         iconType={() => (
-                            <WfoSideMenu color={theme.colors.subduedText} />
+                            <WfoSideMenu color={theme.colors.textSubdued} />
                         )}
                         color="text"
                         css={{

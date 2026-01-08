@@ -26,7 +26,7 @@ export const WfoSortButton: FC<WfoSortButtonProps> = ({
             <WfoIconComponent
                 color={
                     isActive
-                        ? theme.colors.title
+                        ? theme.colors.textHeading
                         : theme.colors.borderBaseSubdued
                 }
             />

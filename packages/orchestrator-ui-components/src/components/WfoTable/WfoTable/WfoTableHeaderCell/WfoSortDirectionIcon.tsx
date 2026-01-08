@@ -22,14 +22,14 @@ export const WfoSortDirectionIcon: FC<WfoSortDirectionIconProps> = ({
                 width={16}
                 className={SORTABLE_ICON_CLASS}
                 css={{ visibility: 'hidden' }}
-                color={theme.colors.subduedText}
+                color={theme.colors.textSubdued}
             />
         );
     }
 
     return sortDirection === SortOrder.ASC ? (
-        <WfoArrowUp color={theme.colors.subduedText} />
+        <WfoArrowUp color={theme.colors.textSubdued} />
     ) : (
-        <WfoArrowDown color={theme.colors.subduedText} />
+        <WfoArrowDown color={theme.colors.textSubdued} />
     );
 };
