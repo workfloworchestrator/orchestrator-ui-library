@@ -35,7 +35,7 @@ export const getSubscriptionActionStyles = ({
 
     const linkMenuItemStyle = css({
         '&>:hover': {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
             borderRadius: theme.border.radius.medium,
             cursor: 'pointer',
         },

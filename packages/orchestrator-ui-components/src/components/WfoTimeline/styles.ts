@@ -30,7 +30,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
             case StepStatus.RUNNING:
             case StepStatus.PENDING:
             default:
-                return theme.colors.mediumShade;
+                return theme.colors.backgroundBaseDisabled;
         }
     };
 
@@ -44,7 +44,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
     };
 
     const timelinePanelStyle = css({
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBasePlain,
         borderRadius: theme.border.radius.medium,
         outline: `${timelineOutlineWidthPx} solid ${theme.colors.backgroundBaseNeutral}`,
         height: timelineHeightPx,
@@ -90,7 +90,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
                     return theme.colors.primary;
                 case TimelinePosition.FUTURE:
                 default:
-                    return theme.colors.lightShade;
+                    return theme.colors.borderBaseSubdued;
             }
         };
 
@@ -101,7 +101,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
                 case TimelinePosition.CURRENT:
                 case TimelinePosition.FUTURE:
                 default:
-                    return theme.colors.lightShade;
+                    return theme.colors.borderBaseSubdued;
             }
         };
 

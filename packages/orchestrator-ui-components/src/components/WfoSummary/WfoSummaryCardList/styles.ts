@@ -10,7 +10,7 @@ export const getWfoSummaryCardListStyles = ({
         flexDirection: 'column',
         justifyContent: 'space-between',
         flexGrow: 1,
-        borderColor: theme.colors.lightShade,
+        borderColor: theme.colors.borderBaseSubdued,
     });
 
     const listHeaderStyle = css({

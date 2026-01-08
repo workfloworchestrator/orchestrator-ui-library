@@ -34,7 +34,7 @@ export const WfoFirstPartUUID: FC<WfoFirstUUIDPartProps> = ({
                             <WfoClipboardCopy
                                 width={16}
                                 height={16}
-                                color={theme.colors.mediumShade}
+                                color={theme.colors.backgroundBaseDisabled}
                             />
                         </div>
                     )}
