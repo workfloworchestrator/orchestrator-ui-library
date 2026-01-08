@@ -173,7 +173,7 @@ export const WfoAdvancedTable = <T extends object>({
                         <EuiButtonIcon
                             onClick={() => setShowSearchModal(true)}
                             iconSize={'xl'}
-                            iconType={'iInCircle'}
+                            iconType={'info'}
                             aria-label={t('searchModalTitle')}
                         />
                     )}
