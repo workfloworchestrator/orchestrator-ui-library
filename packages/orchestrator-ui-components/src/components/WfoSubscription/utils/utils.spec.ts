@@ -115,15 +115,15 @@ describe('getWorkflowTargetColor', () => {
         );
     });
 
-    it('should return primaryText color for MODIFY', () => {
+    it('should return textPrimary color for MODIFY', () => {
         const theme = {
             colors: {
-                primaryText: 'primaryTextColor',
+                textPrimary: 'textPrimaryColor',
             },
         } as EuiThemeComputed;
 
         expect(getWorkflowTargetColor(WorkflowTarget.MODIFY, theme)).toBe(
-            'primaryTextColor',
+            'textPrimaryColor',
         );
     });
 

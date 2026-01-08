@@ -17,29 +17,29 @@ export const WfoSubscriptionStatusBadge: FC<
     const getBadgeColorFromStatus = () => {
         const {
             primary,
-            darkestShade,
-            lightShade,
-            primaryText,
+            borderBaseSubdued,
+            textParagraph,
+            textPrimary,
             success,
-            successText,
+            textSuccess,
         } = theme.colors;
 
         switch (lowerCaseStatus) {
             case SubscriptionStatus.ACTIVE:
                 return {
                     badgeColor: toSecondaryColor(success),
-                    textColor: successText,
+                    textColor: textSuccess,
                 };
             case SubscriptionStatus.TERMINATED:
                 return {
-                    badgeColor: lightShade,
-                    textColor: darkestShade,
+                    badgeColor: borderBaseSubdued,
+                    textColor: textParagraph,
                 };
 
             default:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
         }
     };

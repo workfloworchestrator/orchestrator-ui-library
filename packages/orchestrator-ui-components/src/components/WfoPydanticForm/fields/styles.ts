@@ -27,7 +27,7 @@ export const getCommonFormFieldStyles = ({
             color: theme.colors.text,
             cursor: 'text',
             '&.euiFormLabel-isFocused': {
-                color: theme.colors.primaryText,
+                color: theme.colors.textPrimary,
             },
         },
         '.euiFormRow__labelWrapper': {
@@ -37,7 +37,7 @@ export const getCommonFormFieldStyles = ({
     });
 
     const errorStyle = css({
-        color: theme.colors.dangerText,
+        color: theme.colors.textDanger,
     });
     return {
         errorStyle,
