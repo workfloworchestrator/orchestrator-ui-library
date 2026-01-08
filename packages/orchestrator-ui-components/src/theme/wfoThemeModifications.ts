@@ -50,76 +50,55 @@ export const wfoThemeModifications: WfoThemeModifications = {
     colors: {
         DARK: {
             accent: '#E67300',
+            backgroundBaseAccent: '#64758B',
+            backgroundBaseDisabled: '#4B5563',
+            backgroundBaseNeutral: '#101827',
+            backgroundBasePlain: '#1F2937',
+            borderBasePlain: '#4B5563',
+            borderBaseSubdued: '#374151',
             danger: '#FF4F46',
+            header: '#04385F',
+            highlight: '#51482F',
+            link: '#1F8DD8',
             primary: '#0077C8',
+            shadow: '#000000',
             success: '#13B054',
             textAccent: '#E67300',
             textDanger: '#FF4F46',
+            textDisabled: '#4B5563',
+            textHeading: '#ffffff',
+            textParagraph: '#9CA3AF',
             textPrimary: '#1F8DD8',
+            textSubdued: '#9CA3AF',
             textSuccess: '#13B054',
             textWarning: '#FFC514',
             warning: '#FFC514',
-
-            borderBaseSubdued: '#374151',
-            borderBasePlain: '#4B5563',
-
-            backgroundBasePlain: '#1F2937',
-            backgroundBaseNeutral: '#101827',
-
-            backgroundBaseDisabled: '#4B5563',
-            backgroundBaseAccent: '#64758B',
-
-            text: '#9CA3AF', //
-            textParagraph: '#9CA3AF',
-            title: '#ffffff', //
-            textHeading: '#ffffff',
-            subduedText: '#9CA3AF', //
-            textSubdued: '#9CA3AF',
-            link: '#1F8DD8', //
-            highlight: '#51482F',
-            disabled: '#4B5563', //
-
-            disabledText: '#4B5563', //
-            textDisabled: '#4B5563',
-            shadow: '#000000',
-            header: '#04385F',
         },
         LIGHT: {
             accent: '#E67300',
+            backgroundBaseAccent: '#64758B',
+            backgroundBaseDisabled: '#94A4B8',
+            backgroundBaseNeutral: '#FFFFFF',
+            backgroundBasePlain: '#F1F5F9',
+            borderBasePlain: '#94A4B8',
+            borderBaseSubdued: '#CCD5E2',
             danger: '#BD271F',
+            header: '#04385F',
+            highlight: '#FFF6DE',
+            link: '#0067AC',
             primary: '#0077C8',
+            shadow: '#000000',
             success: '#008939',
             textAccent: '#B05200',
             textDanger: '#AC0A01',
+            textDisabled: '#94A4B8',
+            textHeading: '#0F172B',
+            textParagraph: '#334255',
             textPrimary: '#0067AC',
+            textSubdued: '#64758B',
             textSuccess: '#007832',
             textWarning: '#8E6A00',
             warning: '#FFC514',
-
-            backgroundBasePlain: '#F1F5F9',
-            backgroundBaseNeutral: '#FFFFFF',
-
-            borderBaseSubdued: '#CCD5E2',
-            borderBasePlain: '#94A4B8',
-
-            backgroundBaseAccent: '#64758B',
-            backgroundBaseDisabled: '#94A4B8',
-
-            text: '#334255', //
-            textParagraph: '#334255',
-            title: '#0F172B', //
-            textHeading: '#0F172B',
-            subduedText: '#64758B', //
-            textSubdued: '#64758B',
-            link: '#0067AC',
-
-            highlight: '#FFF6DE',
-            disabled: '#94A4B8', //
-
-            disabledText: '#94A4B8', //
-            textDisabled: '#94A4B8',
-            shadow: '#000000',
-            header: '#04385F',
         },
     },
 };

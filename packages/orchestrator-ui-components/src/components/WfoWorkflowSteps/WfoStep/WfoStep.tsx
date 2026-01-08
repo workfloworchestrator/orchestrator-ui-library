@@ -176,11 +176,15 @@ export const WfoStep = React.forwardRef(
                                     >
                                         {(isExpanded && (
                                             <WfoChevronUp
-                                                color={theme.colors.text}
+                                                color={
+                                                    theme.colors.textParagraph
+                                                }
                                             />
                                         )) || (
                                             <WfoChevronDown
-                                                color={theme.colors.text}
+                                                color={
+                                                    theme.colors.textParagraph
+                                                }
                                             />
                                         )}
                                     </EuiFlexItem>

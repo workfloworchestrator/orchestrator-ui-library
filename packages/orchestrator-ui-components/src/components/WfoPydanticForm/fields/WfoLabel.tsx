@@ -11,7 +11,7 @@ export const WfoLabel: PydanticFormElement = ({ pydanticFormField }) => {
         <div data-testid={pydanticFormField.id}>
             <label
                 css={{
-                    color: theme.colors.text,
+                    color: theme.colors.textParagraph,
                     display: 'block',
                 }}
                 id={pydanticFormField.id}

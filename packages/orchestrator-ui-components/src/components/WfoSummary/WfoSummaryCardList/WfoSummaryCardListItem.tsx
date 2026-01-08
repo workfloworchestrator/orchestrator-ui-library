@@ -37,7 +37,9 @@ export const WfoSummaryCardListItem: FC<WfoSummaryCardListItemProps> = ({
             <EuiFlexGroup css={listItemContainerStyle} gutterSize="none">
                 <EuiFlexItem>
                     <EuiTextColor
-                        color={url ? theme.colors.link : theme.colors.title}
+                        color={
+                            url ? theme.colors.link : theme.colors.textHeading
+                        }
                         css={listItemTitleStyle}
                     >
                         {title}

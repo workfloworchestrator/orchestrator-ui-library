@@ -60,7 +60,7 @@ export const getWorkflowStepsStyles = ({
 
     const stepDurationStyle = {
         fontSize: theme.size.m,
-        color: theme.colors.disabled,
+        color: theme.colors.backgroundBaseDisabled,
         fontWeight: theme.font.weight.semiBold,
     };
 
