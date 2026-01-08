@@ -167,8 +167,9 @@ export const WfoAdvancedTable = <T extends object>({
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
                         onClick={() => setShowSearchModal(true)}
-                        iconSize={'xl'}
-                        iconType={'iInCircle'}
+                        iconType={'info'}
+                        iconSize="xl"
+                        style={{ blockSize: '32px', inlineSize: '32px' }}
                         aria-label={t('searchModalTitle')}
                     />
                 </EuiFlexItem>
