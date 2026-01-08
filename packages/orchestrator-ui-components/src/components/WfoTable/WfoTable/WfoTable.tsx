@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
 import { EuiSpacer, EuiTablePagination, useEuiScrollBar } from '@elastic/eui';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { useWithOrchestratorTheme } from '@/hooks';
 
@@ -26,6 +27,10 @@ export type Pagination = {
     pageSizeOptions?: number[];
     onChangeItemsPerPage?: (pageSize: number) => void;
     onChangePage?: (pageIndex: number) => void;
+};
+
+export type LocalColumnWidths = {
+    [key: string]: string;
 };
 
 export enum ColumnType {
@@ -102,11 +107,11 @@ export type WfoTableProps<T extends object> = {
     onUpdateDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
     appendFillerColumn?: boolean;
     className?: string;
+    isVirtualized?: boolean;
+    height?: number;
 };
 
-export type LocalColumnWidths = {
-    [key: string]: string;
-};
+const ROW_HEIGHT = 44;
 
 export const WfoTable = <T extends object>({
     data,
@@ -123,9 +128,13 @@ export const WfoTable = <T extends object>({
     onRowClick,
     appendFillerColumn = true,
     className,
+    isVirtualized = false,
+    height,
 }: WfoTableProps<T>) => {
     const [localColumnWidths, setLocalColumnWidths] =
         useState<LocalColumnWidths>(getColumnWidthsFromConfig(columnConfig));
+
+    const parentRef = useRef<HTMLDivElement>(null);
 
     const columnConfigWithFiller: WfoTableColumnConfig<T> = appendFillerColumn
         ? {
@@ -181,9 +190,29 @@ export const WfoTable = <T extends object>({
         return mergedConfig;
     }, {} as WfoTableColumnConfig<T>);
 
+    const rowVirtualizer = useVirtualizer({
+        count: data.length,
+        getScrollElement: () => parentRef.current,
+        estimateSize: () => ROW_HEIGHT,
+        overscan: 10,
+    });
+
+    const virtualItems = rowVirtualizer.getVirtualItems();
+    const totalSize = rowVirtualizer.getTotalSize();
+    const lastVirtualItemEnd =
+        virtualItems.length > 0 ? virtualItems[virtualItems.length - 1].end : 0;
+
     return (
         <>
-            <div css={[tableContainerStyle, useEuiScrollBar()]}>
+            <div
+                ref={parentRef}
+                css={[tableContainerStyle, useEuiScrollBar()]}
+                style={
+                    isVirtualized && height
+                        ? { maxHeight: height, overflow: 'auto' }
+                        : {}
+                }
+            >
                 <table className={className} css={tableStyle}>
                     {overrideHeader ? (
                         overrideHeader(sortedVisibleColumns)
@@ -212,6 +241,33 @@ export const WfoTable = <T extends object>({
                                         : t('noItemsFound')}
                                 </td>
                             </tr>
+                        </tbody>
+                    ) : isVirtualized && height ? (
+                        <tbody>
+                            <tr
+                                style={{
+                                    height: virtualItems[0]?.start ?? 0,
+                                }}
+                            />
+
+                            {virtualItems.map((virtualRow) => (
+                                <WfoTableDataRows
+                                    key={virtualRow.key}
+                                    data={[data[virtualRow.index]]}
+                                    columnConfig={configWithLocalWidths}
+                                    hiddenColumns={hiddenColumns}
+                                    columnOrder={columnOrder}
+                                    rowExpandingConfiguration={
+                                        rowExpandingConfiguration
+                                    }
+                                    onRowClick={onRowClick}
+                                />
+                            ))}
+                            <tr
+                                style={{
+                                    height: totalSize - lastVirtualItemEnd,
+                                }}
+                            />
                         </tbody>
                     ) : (
                         <tbody css={isLoading && bodyLoadingStyle}>
