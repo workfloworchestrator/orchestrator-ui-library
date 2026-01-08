@@ -70,7 +70,7 @@ export const summaryFieldStyles = ({ theme }: UseOrchestratorThemeProps) => {
             },
             '.label': {
                 fontWeight: 'bold',
-                color: theme.colors.backgroundBaseSubdued,
+                color: theme.colors.backgroundBaseNeutral,
                 backgroundColor: theme.colors.primary,
                 borderRight: `2px solid ${theme.colors.borderBasePlain}`,
                 borderBottom: `1px solid ${theme.colors.borderBasePlain}`,

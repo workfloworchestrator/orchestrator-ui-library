@@ -9,13 +9,13 @@ export const getWfoFlushSettingsStyle = ({
         // .euiComboBox is needed to override eui styling (more specific)
         '&.euiComboBox': {
             '.euiComboBox__inputWrap': {
-                border: `1px solid ${theme.colors.lightShade}`,
+                border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 boxShadow: 'none',
                 backgroundColor: theme.colors.body,
             },
             '&.euiComboBox-isOpen': {
                 '.euiComboBox__inputWrap': {
-                    backgroundColor: theme.colors.emptyShade,
+                    backgroundColor: theme.colors.backgroundBaseNeutral,
                 },
             },
         },

@@ -50,10 +50,7 @@ export const wfoThemeModifications: WfoThemeModifications = {
     colors: {
         DARK: {
             accent: '#E67300',
-            accentText: '#E67300', //
             danger: '#FF4F46',
-            dangerText: '#FF4F46', //
-            emptyShade: '#101827', //
             primary: '#0077C8',
             success: '#13B054',
             successText: '#13B054', //
@@ -65,10 +62,13 @@ export const wfoThemeModifications: WfoThemeModifications = {
             warning: '#FFC514',
             warningText: '#FFC514', //
 
-            backgroundBaseSubdued: '#1F2937',
             borderBaseSubdued: '#374151',
             borderBasePlain: '#4B5563',
+
+            body: '#1F2937',
             backgroundBasePlain: '#1F2937',
+            backgroundBaseNeutral: '#101827',
+
             backgroundBaseDisabled: '#4B5563',
             backgroundBaseAccent: '#64758B',
 
@@ -84,6 +84,7 @@ export const wfoThemeModifications: WfoThemeModifications = {
             text: '#9CA3AF', //
             textParagraph: '#9CA3AF',
             title: '#ffffff', //
+            textHeading: '#ffffff',
             subduedText: '#9CA3AF', //
             textSubdued: '#9CA3AF',
             link: '#1F8DD8', //
@@ -110,12 +111,14 @@ export const wfoThemeModifications: WfoThemeModifications = {
             textWarning: '#8E6A00',
             dangerText: '#AC0A01', //
             textDanger: '#AC0A01',
-            emptyShade: '#FFFFFF', //
 
-            backgroundBaseSubdued: '#F1F5F9',
+            body: '#F1F5F9',
+            backgroundBasePlain: '#F1F5F9',
+            backgroundBaseNeutral: '#FFFFFF',
+
             borderBaseSubdued: '#CCD5E2',
             borderBasePlain: '#94A4B8',
-            backgroundBasePlain: '#F1F5F9',
+
             backgroundBaseAccent: '#64758B',
             backgroundBaseDisabled: '#94A4B8',
 
@@ -129,6 +132,7 @@ export const wfoThemeModifications: WfoThemeModifications = {
             text: '#334255', //
             textParagraph: '#334255',
             title: '#0F172B', //
+            textHeading: '#0F172B',
             subduedText: '#64758B', //
             textSubdued: '#64758B',
             link: '#0067AC',

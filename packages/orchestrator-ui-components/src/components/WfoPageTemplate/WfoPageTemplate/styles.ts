@@ -10,14 +10,14 @@ export const getPageTemplateStyles = ({
 
     const getSidebarStyle = (navigationHeight: number) =>
         css({
-            backgroundColor: theme.colors.body,
+            backgroundColor: theme.colors.backgroundBasePlain,
             overflowY: 'auto',
             maxHeight: `calc(100vh - ${navigationHeight}px)`,
         });
 
     const getContentStyle = (navigationHeight: number) =>
         css({
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
             overflowY: 'auto',
             maxHeight: `calc(100vh - ${navigationHeight}px)`,
         });

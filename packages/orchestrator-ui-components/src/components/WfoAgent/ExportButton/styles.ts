@@ -10,7 +10,7 @@ export const getExportButtonStyles = ({ theme }: UseOrchestratorThemeProps) => {
     });
 
     const buttonWrapperStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
         padding: `${theme.size.xl} ${theme.size.xl}`,
         border: `${theme.border.width.thin} solid transparent`,
         display: 'flex',
@@ -21,7 +21,7 @@ export const getExportButtonStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const titleStyle = css({
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.semiBold,
-        color: theme.colors.darkestShade,
+        color: theme.colors.textParagraph,
     });
 
     const fileRowStyle = css({
@@ -29,10 +29,10 @@ export const getExportButtonStyles = ({ theme }: UseOrchestratorThemeProps) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: theme.size.m,
-        border: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
+        border: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
         borderRadius: theme.border.radius.medium,
         padding: `${theme.size.m} ${theme.size.l}`,
-        backgroundColor: theme.colors.emptyShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
         cursor: 'pointer',
     });
 
@@ -41,20 +41,20 @@ export const getExportButtonStyles = ({ theme }: UseOrchestratorThemeProps) => {
         alignItems: 'center',
         gap: theme.size.m,
         flex: 1,
-        color: theme.colors.darkestShade,
+        color: theme.colors.textParagraph,
     });
 
     const filenameStyle = css({
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.medium,
-        color: theme.colors.darkestShade,
+        color: theme.colors.textParagraph,
     });
 
     const downloadButtonStyle = css({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: theme.colors.darkestShade,
+        color: theme.colors.textParagraph,
     });
 
     return {

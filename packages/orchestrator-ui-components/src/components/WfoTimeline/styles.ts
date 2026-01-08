@@ -46,7 +46,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const timelinePanelStyle = css({
         backgroundColor: theme.colors.body,
         borderRadius: theme.border.radius.medium,
-        outline: `${timelineOutlineWidthPx} solid ${theme.colors.emptyShade}`,
+        outline: `${timelineOutlineWidthPx} solid ${theme.colors.backgroundBaseNeutral}`,
         height: timelineHeightPx,
         marginTop: timelineOutlineWidthPx,
         marginBottom: timelineOutlineWidthPx,
@@ -129,7 +129,7 @@ export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '50%',
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
             height: hasContent
                 ? stepWithValueOuterDiameter
                 : emptyStepOuterDiameter,
