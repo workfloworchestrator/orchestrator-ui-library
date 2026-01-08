@@ -49,21 +49,21 @@ export const wfoThemeModifications: WfoThemeModifications = {
     },
     colors: {
         DARK: {
-            primary: '#0077C8',
             accent: '#E67300',
-            success: '#13B054',
-            warning: '#FFC514',
-            danger: '#FF4F46',
-            textPrimary: '#1F8DD8',
             accentText: '#E67300', //
-            textAccent: '#E67300',
-            successText: '#13B054', //
-            textSuccess: '#13B054',
-            warningText: '#FFC514', //
-            textWarning: '#FFC514',
+            danger: '#FF4F46',
             dangerText: '#FF4F46', //
-            textDanger: '#FF4F46',
             emptyShade: '#101827', //
+            primary: '#0077C8',
+            success: '#13B054',
+            successText: '#13B054', //
+            textAccent: '#E67300',
+            textDanger: '#FF4F46',
+            textPrimary: '#1F8DD8',
+            textSuccess: '#13B054',
+            textWarning: '#FFC514',
+            warning: '#FFC514',
+            warningText: '#FFC514', //
 
             backgroundBaseSubdued: '#1F2937',
             borderBaseSubdued: '#374151',
