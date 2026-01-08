@@ -4,9 +4,9 @@ import { UseOrchestratorThemeProps } from '@/hooks';
 
 export const getToolProgressStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const containerStyle = css({
-        border: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
+        border: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
         borderRadius: theme.border.radius.medium,
-        backgroundColor: theme.colors.emptyShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
         transition: `all ${theme.animation.normal} ease`,
         maxWidth: '50%',
         marginRight: 'auto',
@@ -16,7 +16,7 @@ export const getToolProgressStyles = ({ theme }: UseOrchestratorThemeProps) => {
         cursor: 'pointer',
         '&:hover': {
             borderColor: theme.colors.primary,
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
@@ -30,7 +30,7 @@ export const getToolProgressStyles = ({ theme }: UseOrchestratorThemeProps) => {
     });
 
     const expandedContentStyle = css({
-        borderTop: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
+        borderTop: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
         padding: `${theme.size.base} ${theme.size.l}`,
     });
 

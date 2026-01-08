@@ -14,20 +14,20 @@ export const getWfoBasicTableStyles = ({
 
     const basicTableStyle = css({
         table: {
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
         },
 
         // The lines between rows
         'tr>td': {
-            borderColor: theme.colors.lightShade,
+            borderColor: theme.colors.borderBaseSubdued,
         },
 
         '.euiTableCellContent__text': {
             display: 'flex',
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         },
         thead: {
-            backgroundColor: theme.colors.lightShade,
+            backgroundColor: theme.colors.borderBaseSubdued,
             'tr>:first-child': {
                 borderTopLeftRadius: radius,
             },
@@ -37,7 +37,7 @@ export const getWfoBasicTableStyles = ({
         },
         tbody: {
             'tr.euiTableRow:hover': {
-                backgroundColor: theme.colors.lightestShade,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
         },
     });
@@ -57,7 +57,7 @@ export const getWfoBasicTableStyles = ({
 
     const dropDownTableStyle = css({
         thead: {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
             'tr>:first-child': {
                 borderTopLeftRadius: 0,
             },
@@ -66,7 +66,7 @@ export const getWfoBasicTableStyles = ({
             },
         },
         tbody: {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
@@ -74,7 +74,7 @@ export const getWfoBasicTableStyles = ({
         basicTableStyle,
         {
             'tr.euiTableRow-isExpandedRow': {
-                backgroundColor: theme.colors.lightestShade,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
         },
     ]);

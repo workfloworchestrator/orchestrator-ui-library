@@ -25,11 +25,11 @@ export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
     });
 
     const lightBackground = css({
-        backgroundColor: theme.colors.emptyShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
     });
 
     const darkBackground = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBasePlain,
     });
 
     const getBackgroundColorStyleForRow = (rowNumber: number) =>
@@ -56,12 +56,12 @@ export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
 
     const keyCellStyle = css({
         fontWeight: theme.font.weight.medium,
-        color: theme.colors.title,
+        color: theme.colors.textHeading,
     });
 
     const valueCellStyle = css({
         fontWeight: theme.font.weight.regular,
-        color: theme.colors.text,
+        color: theme.colors.textParagraph,
         display: 'flex',
         alignItems: 'center',
         overflowWrap: 'anywhere',
