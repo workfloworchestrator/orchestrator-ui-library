@@ -53,33 +53,21 @@ export const wfoThemeModifications: WfoThemeModifications = {
             danger: '#FF4F46',
             primary: '#0077C8',
             success: '#13B054',
-            successText: '#13B054', //
             textAccent: '#E67300',
             textDanger: '#FF4F46',
             textPrimary: '#1F8DD8',
             textSuccess: '#13B054',
             textWarning: '#FFC514',
             warning: '#FFC514',
-            warningText: '#FFC514', //
 
             borderBaseSubdued: '#374151',
             borderBasePlain: '#4B5563',
 
-            body: '#1F2937',
             backgroundBasePlain: '#1F2937',
             backgroundBaseNeutral: '#101827',
 
             backgroundBaseDisabled: '#4B5563',
             backgroundBaseAccent: '#64758B',
-
-            /*
-            darkShade: '#64758B', //
-            darkestShade: '#F1F5F9', //
-            fullShade: '#ffffff', //
-            lightestShade: '#1F2937', //
-            lightShade: '#374151', //
-            mediumShade: '#4B5563', //
-            */
 
             text: '#9CA3AF', //
             textParagraph: '#9CA3AF',
@@ -97,22 +85,17 @@ export const wfoThemeModifications: WfoThemeModifications = {
             header: '#04385F',
         },
         LIGHT: {
-            primary: '#0077C8',
             accent: '#E67300',
-            success: '#008939',
-            warning: '#FFC514',
             danger: '#BD271F',
-            textPrimary: '#0067AC',
-            accentText: '#B05200', //
+            primary: '#0077C8',
+            success: '#008939',
             textAccent: '#B05200',
-            successText: '#007832', //
-            textSuccess: '#007832',
-            warningText: '#8E6A00', //
-            textWarning: '#8E6A00',
-            dangerText: '#AC0A01', //
             textDanger: '#AC0A01',
+            textPrimary: '#0067AC',
+            textSuccess: '#007832',
+            textWarning: '#8E6A00',
+            warning: '#FFC514',
 
-            body: '#F1F5F9',
             backgroundBasePlain: '#F1F5F9',
             backgroundBaseNeutral: '#FFFFFF',
 
@@ -121,13 +104,6 @@ export const wfoThemeModifications: WfoThemeModifications = {
 
             backgroundBaseAccent: '#64758B',
             backgroundBaseDisabled: '#94A4B8',
-
-            // lightestShade: '#F1F5F9', //
-            // lightShade: '#CCD5E2', //
-            // mediumShade: '#94A4B8',
-            // darkShade: '#64758B', //
-            // darkestShade: '#334255', //
-            // fullShade: '#0F172B', //
 
             text: '#334255', //
             textParagraph: '#334255',

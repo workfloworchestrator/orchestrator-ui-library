@@ -11,7 +11,7 @@ export const getWfoFlushSettingsStyle = ({
             '.euiComboBox__inputWrap': {
                 border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 boxShadow: 'none',
-                backgroundColor: theme.colors.body,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
             '&.euiComboBox-isOpen': {
                 '.euiComboBox__inputWrap': {

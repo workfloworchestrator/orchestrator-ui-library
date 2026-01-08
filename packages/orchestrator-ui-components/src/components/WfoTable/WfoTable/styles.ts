@@ -44,13 +44,9 @@ export const getWfoTableStyles = ({
     });
 
     const headerStyle = css({
-        position: 'sticky',
-        top: 0,
-        zIndex: 3,
-        backgroundColor: theme.colors.lightShade,
+        backgroundColor: theme.colors.backgroundBasePlain,
         fontSize: theme.size.m,
         textAlign: 'left',
-
         'tr>:first-child': {
             borderTopLeftRadius: radius,
         },
@@ -76,23 +72,23 @@ export const getWfoTableStyles = ({
         height: TABLE_ROW_HEIGHT,
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
-        borderColor: theme.colors.lightShade,
+        borderColor: theme.colors.borderBaseSubdued,
         position: 'relative',
     });
 
     const dataRowStyle = css({
         '&:hover': {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
     const expandedRowStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBasePlain,
     });
 
     const sortableHeaderCellStyle = css({
         paddingRight: 0,
-        '&:hover': {
+        [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
                 visibility: 'visible',
             },
@@ -146,7 +142,7 @@ export const getWfoTableStyles = ({
         '&:active, &:focus': {
             transition: 'background-color 0.15s',
             backgroundColor: isDarkModeActive
-                ? theme.colors.mediumShade
+                ? theme.colors.backgroundBaseDisabled
                 : theme.colors.header,
         },
         '&::after': {
@@ -154,7 +150,7 @@ export const getWfoTableStyles = ({
             paddingTop: theme.base - (theme.base / 16) * 2,
             content: `"|"`, // Inserts a vertical line
             fontSize: theme.size.m,
-            color: theme.colors.mediumShade,
+            color: theme.colors.borderBasePlain,
             cursor: 'col-resize',
             opacity: 0.6,
             zIndex: theme.levels.navigation,

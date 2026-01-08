@@ -10,7 +10,7 @@ export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: theme.base / 2,
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBasePlain,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.link,
         fontFamily: theme.font.family,
