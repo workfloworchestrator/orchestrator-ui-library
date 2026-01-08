@@ -34,7 +34,7 @@ export const WfoErrorWithMessage = ({ error }: WfoErrorWithMessageProps) => {
         <>
             <EuiFlexGroup direction="row" alignItems="center" gutterSize="s">
                 <WfoXCircleFill color={theme.colors.danger} />
-                <EuiText color={theme.colors.dangerText}>
+                <EuiText color={theme.colors.textDanger}>
                     {t('errorMessage')} ({message})
                 </EuiText>
             </EuiFlexGroup>

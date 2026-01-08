@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useOrchestratorTheme } from '../../../hooks';
+import { useOrchestratorTheme } from '@/hooks';
+
 import { WfoBadge } from '../WfoBadge';
 
 export type WfoSubscriptionSyncStatusBadgeProps = {
@@ -17,18 +18,18 @@ export const WfoSubscriptionSyncStatusBadge: FC<
     const t = useTranslations('common');
 
     const getBadgePropertiesFromStatus = (insync: boolean) => {
-        const { danger, dangerText, success, successText } = theme.colors;
+        const { danger, textDanger, success, textSuccess } = theme.colors;
 
         if (insync) {
             return {
                 badgeColor: toSecondaryColor(success),
-                textColor: successText,
+                textColor: textSuccess,
                 insyncText: t('insyncTrue'),
             };
         } else {
             return {
                 badgeColor: toSecondaryColor(danger),
-                textColor: dangerText,
+                textColor: textDanger,
                 insyncText: t('insyncFalse'),
             };
         }
