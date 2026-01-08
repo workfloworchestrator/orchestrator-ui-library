@@ -27,7 +27,7 @@ export const getSubscriptionDetailStyles = ({
     });
 
     const tableStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBasePlain,
         width: '100%',
         borderRadius: theme.border.radius.medium,
         marginTop: theme.base / 2,
@@ -39,7 +39,7 @@ export const getSubscriptionDetailStyles = ({
     const workflowTargetStyle = css({ fontWeight: theme.font.weight.bold });
 
     const inUseByRelationDetailsStyle = css({
-        borderColor: theme.colors.lightShade,
+        borderColor: theme.colors.borderBaseSubdued,
         borderStyle: 'solid',
         borderWidth: 'thin',
         marginBottom: theme.base / 4,

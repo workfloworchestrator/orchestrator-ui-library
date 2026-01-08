@@ -12,7 +12,7 @@ export const getWfoGroupedTableStyles = ({
     const innerTableHeaderStyle = css({
         fontSize: theme.size.m,
         textAlign: 'left',
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBasePlain,
     });
 
     const expandableRowContainerStyle = css({

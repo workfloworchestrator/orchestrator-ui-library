@@ -6,7 +6,7 @@ export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const monacoEditorStyle = css({
         marginTop: 10,
         padding: 10,
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBasePlain,
         borderRadius: theme.border.radius.medium,
     });
 

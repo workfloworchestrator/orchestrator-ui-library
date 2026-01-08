@@ -42,7 +42,7 @@ export const WfoMonacoCodeBlock: FC<WfoMonacoCodeBlockProps> = ({ data }) => {
                 inherit: true,
                 rules: [],
                 colors: {
-                    'editor.background': theme.colors.body,
+                    'editor.background': theme.colors.backgroundBasePlain,
                 },
             });
             monaco.editor.setTheme('wfoTheme');

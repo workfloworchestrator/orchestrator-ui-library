@@ -80,7 +80,7 @@ export const getWorkflowTargetColor = (
             return theme.colors.danger;
     }
 
-    return theme.colors.body;
+    return theme.colors.backgroundBasePlain;
 };
 
 export const getWorkflowTargetIconContent = (

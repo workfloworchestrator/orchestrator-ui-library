@@ -103,15 +103,15 @@ describe('flattenArrayProps', () => {
 });
 
 describe('getWorkflowTargetColor', () => {
-    it('should return successText color for CREATE', () => {
+    it('should return textSuccess color for CREATE', () => {
         const theme = {
             colors: {
-                successText: 'successTextColor',
+                textSuccess: 'textSuccessColor',
             },
         } as EuiThemeComputed;
 
         expect(getWorkflowTargetColor(WorkflowTarget.CREATE, theme)).toBe(
-            'successTextColor',
+            'textSuccessColor',
         );
     });
 

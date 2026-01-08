@@ -9,7 +9,7 @@ export const getWorkflowStepsStyles = ({
     const SPACE_BETWEEN_STEPS = theme.base * 1.5;
 
     const stepSpacerStyle = css({
-        borderLeft: `1px solid ${theme.colors.darkShade}`,
+        borderLeft: `1px solid ${theme.colors.backgroundBaseAccent}`,
         height: `${SPACE_BETWEEN_STEPS}px`,
         marginLeft: '36px',
     });
@@ -76,7 +76,7 @@ export const getWorkflowStepsStyles = ({
 
     const stepStatePendingIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: toSecondaryColor(theme.colors.darkShade),
+        backgroundColor: toSecondaryColor(theme.colors.backgroundBaseAccent),
     });
     const stepStateFailedIconStyle = css({
         ...stepStateIcon,
