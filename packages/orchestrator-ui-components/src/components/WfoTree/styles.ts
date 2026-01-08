@@ -27,7 +27,7 @@ export const getStyles = ({
                 textDecoration: 'underline',
             },
             border: isOutsideCurrentSubscription
-                ? `1px dashed ${theme.colors.lightShade}`
+                ? `1px dashed ${theme.colors.borderBaseSubdued}`
                 : 'none',
         };
     };
@@ -36,9 +36,9 @@ export const getStyles = ({
         return {
             ...treeItemStyle(isOutsideCurrentSubscription),
             backgroundColor: isOutsideCurrentSubscription
-                ? theme.colors.lightShade
+                ? theme.colors.borderBaseSubdued
                 : toSecondaryColor(theme.colors.primary),
-            color: theme.colors.primaryText,
+            color: theme.colors.textPrimary,
         };
     };
 

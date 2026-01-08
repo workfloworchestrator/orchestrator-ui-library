@@ -9,7 +9,7 @@ export const getCopyrightStyles = ({ theme }: UseOrchestratorThemeProps) => {
         left: 0,
         padding: 10,
         fontSize: theme.size.s,
-        color: theme.colors.primaryText,
+        color: theme.colors.textPrimary,
     });
 
     return {
@@ -21,7 +21,7 @@ export const getMenuStyles = ({ theme }: UseOrchestratorThemeProps) => {
     const menuStyle = css({
         '.euiSideNavItem--branch': {
             '&:after': {
-                backgroundColor: theme.colors.lightShade,
+                backgroundColor: theme.colors.borderBaseSubdued,
                 height: '100%',
             },
             ':last-child': {
@@ -48,7 +48,7 @@ export const getMenuItemStyles = ({
         ':hover': {
             textDecoration: 'underline',
         },
-        color: theme.colors.subduedText,
+        color: theme.colors.borderBaseSubdued,
         padding: `${theme.base * 0.5}px ${theme.base * 0.75}px`,
     };
 
@@ -60,7 +60,7 @@ export const getMenuItemStyles = ({
             left: 0,
             width: '4px',
             height: '1px',
-            backgroundColor: theme.colors.lightShade,
+            backgroundColor: theme.colors.borderBaseSubdued,
             position: 'absolute',
         },
         ':last-child': {
@@ -78,7 +78,7 @@ export const getMenuItemStyles = ({
         ...baseStyles,
         height: `${theme.base * 2.25}px`,
         backgroundColor: isDarkModeActive
-            ? theme.colors.mediumShade
+            ? theme.colors.backgroundBaseDisabled
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.ghost,
@@ -98,7 +98,7 @@ export const getMenuItemStyles = ({
         ...baseSubMenuStyles,
         height: `${theme.base * 2.25}px`,
         backgroundColor: isDarkModeActive
-            ? theme.colors.mediumShade
+            ? theme.colors.backgroundBaseDisabled
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.ghost,

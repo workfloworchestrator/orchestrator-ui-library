@@ -54,37 +54,43 @@ export const wfoThemeModifications: WfoThemeModifications = {
             success: '#13B054',
             warning: '#FFC514',
             danger: '#FF4F46',
-            primaryText: '#1F8DD8',
             textPrimary: '#1F8DD8',
-            accentText: '#E67300',
+            accentText: '#E67300', //
             textAccent: '#E67300',
-            successText: '#13B054',
+            successText: '#13B054', //
             textSuccess: '#13B054',
-            warningText: '#FFC514',
+            warningText: '#FFC514', //
             textWarning: '#FFC514',
-            dangerText: '#FF4F46',
+            dangerText: '#FF4F46', //
             textDanger: '#FF4F46',
-            emptyShade: '#101827',
-            backgroundBasePlain: '#101827',
-            lightestShade: '#1F2937',
+            emptyShade: '#101827', //
+
             backgroundBaseSubdued: '#1F2937',
-            lightShade: '#374151',
             borderBaseSubdued: '#374151',
-            mediumShade: '#4B5563',
             borderBasePlain: '#4B5563',
-            darkShade: '#64758B',
-            darkestShade: '#F1F5F9',
-            fullShade: '#ffffff',
-            text: '#9CA3AF',
-            title: '#ffffff',
-            subduedText: '#9CA3AF',
-            textSubdued: '#9CA3AF',
-            link: '#1F8DD8',
-            body: '#1F2937',
-            highlight: '#51482F',
-            disabled: '#4B5563',
+            backgroundBasePlain: '#1F2937',
             backgroundBaseDisabled: '#4B5563',
-            disabledText: '#4B5563',
+            backgroundBaseAccent: '#64758B',
+
+            /*
+            darkShade: '#64758B', //
+            darkestShade: '#F1F5F9', //
+            fullShade: '#ffffff', //
+            lightestShade: '#1F2937', //
+            lightShade: '#374151', //
+            mediumShade: '#4B5563', //
+            */
+
+            text: '#9CA3AF', //
+            textParagraph: '#9CA3AF',
+            title: '#ffffff', //
+            subduedText: '#9CA3AF', //
+            textSubdued: '#9CA3AF',
+            link: '#1F8DD8', //
+            highlight: '#51482F',
+            disabled: '#4B5563', //
+
+            disabledText: '#4B5563', //
             textDisabled: '#4B5563',
             shadow: '#000000',
             header: '#04385F',
@@ -95,38 +101,42 @@ export const wfoThemeModifications: WfoThemeModifications = {
             success: '#008939',
             warning: '#FFC514',
             danger: '#BD271F',
-            primaryText: '#0067AC',
             textPrimary: '#0067AC',
-            accentText: '#B05200',
+            accentText: '#B05200', //
             textAccent: '#B05200',
-            successText: '#007832',
+            successText: '#007832', //
             textSuccess: '#007832',
-            warningText: '#8E6A00',
+            warningText: '#8E6A00', //
             textWarning: '#8E6A00',
-            dangerText: '#AC0A01',
+            dangerText: '#AC0A01', //
             textDanger: '#AC0A01',
-            emptyShade: '#FFFFFF',
-            backgroundBasePlain: '#FFFFFF',
-            lightestShade: '#F1F5F9',
+            emptyShade: '#FFFFFF', //
+
             backgroundBaseSubdued: '#F1F5F9',
-            lightShade: '#CCD5E2',
             borderBaseSubdued: '#CCD5E2',
-            mediumShade: '#94A4B8',
             borderBasePlain: '#94A4B8',
-            darkShade: '#64758B',
-            darkestShade: '#334255',
-            fullShade: '#0F172B',
-            text: '#334255',
+            backgroundBasePlain: '#F1F5F9',
+            backgroundBaseAccent: '#64758B',
+            backgroundBaseDisabled: '#94A4B8',
+
+            // lightestShade: '#F1F5F9', //
+            // lightShade: '#CCD5E2', //
+            // mediumShade: '#94A4B8',
+            // darkShade: '#64758B', //
+            // darkestShade: '#334255', //
+            // fullShade: '#0F172B', //
+
+            text: '#334255', //
             textParagraph: '#334255',
-            title: '#0F172B',
-            subduedText: '#64758B',
+            title: '#0F172B', //
+            subduedText: '#64758B', //
             textSubdued: '#64758B',
             link: '#0067AC',
-            body: '#F1F5F9',
+
             highlight: '#FFF6DE',
-            disabled: '#94A4B8',
-            backgroundBaseDisabled: '#94A4B8',
-            disabledText: '#94A4B8',
+            disabled: '#94A4B8', //
+
+            disabledText: '#94A4B8', //
             textDisabled: '#94A4B8',
             shadow: '#000000',
             header: '#04385F',

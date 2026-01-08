@@ -151,7 +151,7 @@ export const WfoTasksListPage = () => {
                     <EuiButton
                         onClick={handleRerunAllButtonClick}
                         iconType={() => (
-                            <WfoRefresh color={theme.colors.primaryText} />
+                            <WfoRefresh color={theme.colors.textPrimary} />
                         )}
                     >
                         {t('rerunAll')}

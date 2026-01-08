@@ -23,46 +23,46 @@ export function WfoProductBlockBadge({
     const getBadgeColorFromType = (badgeType: BadgeType) => {
         const {
             danger,
-            dangerText,
-            lightShade,
+            textDanger,
+            borderBaseSubdued,
             primary,
-            primaryText,
+            textPrimary,
             success,
-            successText,
-            text,
+            textSuccess,
             warning,
-            warningText,
+            textWarning,
+            textParagraph,
         } = theme.colors;
 
         switch (badgeType) {
             case BadgeType.RESOURCE_TYPE:
                 return {
                     badgeColor: toSecondaryColor(success),
-                    textColor: successText,
+                    textColor: textSuccess,
                 };
             case BadgeType.PRODUCT_BLOCK_TAG:
             case BadgeType.PRODUCT_BLOCK:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
             case BadgeType.WORKFLOW:
             case BadgeType.TASK:
             case BadgeType.PRODUCT:
                 return {
                     badgeColor: toSecondaryColor(danger),
-                    textColor: dangerText,
+                    textColor: textDanger,
                 };
             case BadgeType.FIXED_INPUT:
                 return {
                     badgeColor: toSecondaryColor(warning),
-                    textColor: warningText,
+                    textColor: textWarning,
                 };
             case BadgeType.PRODUCT_TAG:
             default:
                 return {
-                    badgeColor: lightShade,
-                    textColor: text,
+                    badgeColor: borderBaseSubdued,
+                    textColor: textParagraph,
                 };
         }
     };
