@@ -44,6 +44,7 @@
         "@emotion/react": "^11.11.4",
         "@monaco-editor/react": "^4.7.0",
         "@rtk-query/graphql-request-base-query": "^2.3.1",
+        "@tanstack/react-virtual": "^3.13.13",
         "graphql-request": "^6.1.0",
         "invariant": "^2.2.4",
         "lodash": "^4.17.21",
