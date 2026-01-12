@@ -8,6 +8,9 @@ type Props<T> = {
     renderRow: (row: T, index: number) => React.ReactNode;
 };
 
+const ESTIMATED_ROW_HEIGHT = 44;
+const OVERSCAN_COUNT = 10;
+
 export const WfoVirtualizedTableBody = <T,>({
     data,
     height,
@@ -18,8 +21,8 @@ export const WfoVirtualizedTableBody = <T,>({
     const rowVirtualizer = useVirtualizer({
         count: data.length,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 44,
-        overscan: 10,
+        estimateSize: () => ESTIMATED_ROW_HEIGHT,
+        overscan: OVERSCAN_COUNT,
     });
 
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -27,6 +30,8 @@ export const WfoVirtualizedTableBody = <T,>({
 
     const lastVirtualItemEnd =
         virtualItems.length > 0 ? virtualItems[virtualItems.length - 1].end : 0;
+    const virtualTopSpacerHeight = virtualItems[0]?.start ?? 0;
+    const bottomSpacerHeight = totalSize - lastVirtualItemEnd;
 
     return (
         <div
@@ -39,7 +44,7 @@ export const WfoVirtualizedTableBody = <T,>({
         >
             <table style={{ width: '100%' }}>
                 <tbody style={{ position: 'relative' }}>
-                    <tr style={{ height: virtualItems[0]?.start ?? 0 }} />
+                    <tr style={{ height: virtualTopSpacerHeight }} />
 
                     {virtualItems.map((virtualRow) =>
                         renderRow(data[virtualRow.index], virtualRow.index),
@@ -47,7 +52,7 @@ export const WfoVirtualizedTableBody = <T,>({
 
                     <tr
                         style={{
-                            height: totalSize - lastVirtualItemEnd,
+                            height: bottomSpacerHeight,
                         }}
                     />
                 </tbody>

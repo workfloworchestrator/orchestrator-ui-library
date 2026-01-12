@@ -201,6 +201,8 @@ export const WfoTable = <T extends object>({
     const totalSize = rowVirtualizer.getTotalSize();
     const lastVirtualItemEnd =
         virtualItems.length > 0 ? virtualItems[virtualItems.length - 1].end : 0;
+    const virtualTrHeight = virtualItems[0]?.start ?? 0;
+    const bottomSpacerHeight = totalSize - lastVirtualItemEnd;
 
     return (
         <>
@@ -246,7 +248,7 @@ export const WfoTable = <T extends object>({
                         <tbody>
                             <tr
                                 style={{
-                                    height: virtualItems[0]?.start ?? 0,
+                                    height: virtualTrHeight,
                                 }}
                             />
 
@@ -265,7 +267,7 @@ export const WfoTable = <T extends object>({
                             ))}
                             <tr
                                 style={{
-                                    height: totalSize - lastVirtualItemEnd,
+                                    height: bottomSpacerHeight,
                                 }}
                             />
                         </tbody>
