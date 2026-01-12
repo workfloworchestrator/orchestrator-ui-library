@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.1.0
+
+### Minor Changes
+
+-   f47c7ba: Adds react-virtual and virualized WfoTable feature
+
 ## 7.0.1
 
 ### Patch Changes
