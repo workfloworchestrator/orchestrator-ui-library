@@ -45,6 +45,11 @@ export const metaDataTabs: MetaDataTab[] = [
         translationKey: 'tasks',
         path: '/metadata/tasks',
     },
+    {
+        id: 6,
+        translationKey: 'scheduledTasks',
+        path: '/metadata/scheduled-tasks',
+    },
 ];
 
 export const WfoMetadataPageLayout = ({

@@ -7,7 +7,7 @@ import {
 } from '@/types';
 
 export const tasksQuery = `
-query MetadataWorkflows(
+query MetadataTasks(
     $first: Int!
     $after: Int!
     $sortBy: [GraphqlSort!]
