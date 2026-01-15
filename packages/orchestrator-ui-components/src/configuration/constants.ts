@@ -36,3 +36,4 @@ export const METADATA_PRODUCT_ENDPOINT = 'products';
 export const METADATA_PRODUCT_BLOCK_ENDPOINT = 'product_blocks';
 export const METADATA_RESOURCE_TYPE_ENDPOINT = 'resource_types';
 export const METADATA_WORKFLOWS_ENDPOINT = 'workflows';
+export const METADATA_SCHEDULE_ENDPOINT = 'schedule';

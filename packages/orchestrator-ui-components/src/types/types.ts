@@ -278,7 +278,20 @@ export interface TaskDefinition {
     createdAt: string;
 }
 
+export interface ScheduledTaskDefinition {
+    id: string;
+    name: string;
+    nextRunTime: string;
+    trigger: string;
+    workflowId: string;
+}
+
 //// Utility types
+
+export enum ScheduleType {
+    RECURRING = 'RECURRING',
+    ONCE = 'ONCE',
+}
 
 export enum SortOrder {
     ASC = 'ASC',
@@ -322,7 +335,9 @@ export type BaseGraphQlResult = {
 export interface SubscriptionsResult<T = Subscription> {
     subscriptions: GraphQlResultPage<T>;
 }
-
+export interface ProductDefinitionsResult<T = ProductDefinition> {
+    products: GraphQlResultPage<T>;
+}
 export interface SubscriptionDropdownOptionsResult {
     subscriptions: GraphQlSinglePage<SubscriptionDropdownOption>;
 }
@@ -331,8 +346,8 @@ export interface SubscriptionDetailResult {
     subscriptions: GraphQlResultPage<SubscriptionDetail>;
 }
 
-export interface ProductDefinitionsResult<T = ProductDefinition> {
-    products: GraphQlResultPage<T>;
+export interface ScheduledTasksDefinitionsResult<T = ScheduledTaskDefinition> {
+    scheduledTasks: GraphQlResultPage<T>;
 }
 export interface StartProcessStep {
     name: Step['name'];
