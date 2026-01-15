@@ -151,7 +151,8 @@
             "productBlocks": "Product blocks",
             "resourceTypes": "Resource types",
             "workflows": "Workflows",
-            "tasks": "Tasks"
+            "tasks": "Tasks",
+            "scheduledTasks": "Scheduled tasks"
         },
         "products": {
             "id": "ID",
@@ -197,6 +198,13 @@
             "target": "Target",
             "productTags": "Product tags",
             "createdAt": "Created"
+        },
+        "scheduledTasks": {
+            "task": "Task",
+            "taskDescription": "Task description",
+            "nextRuntime": "Next runtime",
+            "trigger": "trigger",
+            "interval": "interval"
         }
     },
     "processes": {
