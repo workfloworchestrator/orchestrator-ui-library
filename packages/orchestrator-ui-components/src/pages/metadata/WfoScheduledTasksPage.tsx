@@ -126,6 +126,7 @@ export const WfoScheduledTasksPage = () => {
                 columnType: ColumnType.DATA,
                 label: t('schedule'),
                 width: '255px',
+                isSortable: false,
                 renderData: (trigger) => (
                     <EuiFlexGroup
                         gutterSize="s"
@@ -215,6 +216,7 @@ export const WfoScheduledTasksPage = () => {
                     tError,
                 )}
                 exportDataIsLoading={isFetchingCsv}
+                disableSearch={true}
             />
         </WfoMetadataPageLayout>
     );
