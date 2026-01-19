@@ -198,6 +198,13 @@
             "productTags": "Product tags",
             "createdAt": "Aangemaakt",
             "scheduled": "Schedule"
+        },
+        "scheduledTasks": {
+            "task": "Taak",
+            "taskDescription": "Taak beschrijving",
+            "nextRuntime": "Volgende runtime",
+            "schedule": "Schedule",
+            "interval": "interval"
         }
     },
     "processes": {

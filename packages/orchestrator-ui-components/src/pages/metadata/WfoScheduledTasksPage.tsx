@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+
 import {
     WfoDataSorting,
+    WfoScheduledTasksBadges,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
 } from '@/components';
@@ -12,7 +15,6 @@ import {
     DEFAULT_PAGE_SIZES,
     METADATA_SCHEDULES_LOCAL_STORAGE_KEY,
     StoredTableConfig,
-    WfoDateTime,
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
@@ -33,6 +35,7 @@ import {
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, ScheduledTaskDefinition } from '@/types';
 import { SortOrder } from '@/types';
+import { formatDate } from '@/utils';
 import {
     getQueryVariablesForExport,
     parseDateToLocaleDateTimeString,
@@ -96,16 +99,30 @@ export const WfoScheduledTasksPage = () => {
             nextRunTime: {
                 columnType: ColumnType.DATA,
                 label: t('nextRuntime'),
-                width: '90px',
-                renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
+                width: '180px',
+                renderData: (date) => formatDate(date),
                 renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
                 clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
                 renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
             },
             trigger: {
                 columnType: ColumnType.DATA,
-                label: t('trigger'),
-                width: '90px',
+                label: t('schedule'),
+                width: '255px',
+                renderData: (trigger) => (
+                    <EuiFlexGroup
+                        gutterSize="s"
+                        justifyContent="flexStart"
+                        alignItems="center"
+                    >
+                        <EuiFlexItem grow={0}>
+                            <WfoScheduledTasksBadges
+                                workflowSchedules={[trigger]}
+                            />
+                        </EuiFlexItem>
+                        <EuiFlexItem> {trigger}</EuiFlexItem>
+                    </EuiFlexGroup>
+                ),
             },
         };
 
