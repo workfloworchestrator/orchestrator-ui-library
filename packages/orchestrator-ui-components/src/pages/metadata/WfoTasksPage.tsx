@@ -7,6 +7,7 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import {
     PATH_METADATA_PRODUCTS,
     WfoFirstPartUUID,
+    WfoScheduledTasksBadges,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -42,7 +43,7 @@ import {
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, TaskDefinition } from '@/types';
-import { BadgeType, SortOrder } from '@/types';
+import { BadgeType, ScheduleFrequency, SortOrder } from '@/types';
 import {
     getConcatenatedResult,
     getQueryUrl,
@@ -67,9 +68,13 @@ export type TaskListItem = Pick<
     'workflowId' | 'name' | 'description' | 'target' | 'createdAt'
 > & {
     productTags: string[];
+    scheduleFrequency: ScheduleFrequency[];
 };
 
-type TaskListExportItem = Omit<TaskListItem, 'productTags'> & {
+export type TaskListExportItem = Omit<
+    TaskListItem,
+    'productTags' | 'scheduleFrequency'
+> & {
     productTags: string;
 };
 
@@ -195,6 +200,14 @@ export const WfoTasksPage = () => {
                     ));
             },
         },
+        scheduleFrequency: {
+            columnType: ColumnType.DATA,
+            label: t('scheduled'),
+            renderData: (_, taskListItem) => (
+                <WfoScheduledTasksBadges workflowId={taskListItem.workflowId} />
+            ),
+            width: '80px',
+        },
         createdAt: {
             columnType: ColumnType.DATA,
             label: t('createdAt'),
@@ -214,6 +227,7 @@ export const WfoTasksPage = () => {
         sortBy: graphQlTaskListMapper(sortBy),
         query: queryString || undefined,
     };
+
     const { data, isFetching, error } = useGetTasksQuery(
         taskListQueryVariables,
     );
@@ -246,6 +260,7 @@ export const WfoTasksPage = () => {
         tasksResponse: TasksResponse,
     ): TaskListExportItem[] => {
         const { tasks } = tasksResponse;
+
         return tasks.map(
             ({
                 workflowId,
