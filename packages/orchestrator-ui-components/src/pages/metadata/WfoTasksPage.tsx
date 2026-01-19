@@ -7,7 +7,7 @@ import { EuiBadgeGroup } from '@elastic/eui';
 import {
     PATH_METADATA_PRODUCTS,
     WfoFirstPartUUID,
-    WfoScheduledTasksBadges,
+    WfoScheduledTasksBadgesContainer,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -114,7 +114,7 @@ export const WfoTasksPage = () => {
         workflowId: {
             columnType: ColumnType.DATA,
             label: t('workflowId'),
-            width: '90px',
+            width: '95px',
             renderData: (value) => <WfoFirstPartUUID UUID={value} />,
             renderDetails: (value) => value,
             renderTooltip: (value) => value,
@@ -204,7 +204,9 @@ export const WfoTasksPage = () => {
             columnType: ColumnType.DATA,
             label: t('scheduled'),
             renderData: (_, taskListItem) => (
-                <WfoScheduledTasksBadges workflowId={taskListItem.workflowId} />
+                <WfoScheduledTasksBadgesContainer
+                    workflowId={taskListItem.workflowId}
+                />
             ),
             width: '80px',
         },
