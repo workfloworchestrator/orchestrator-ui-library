@@ -1,17 +1,17 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 import { getFormFieldsBaseStyle } from '@/theme';
 
-export const getWfoTableSettingsModalStyles = (wfoTheme: WfoTheme) => {
-    const { formFieldBaseStyle } = getFormFieldsBaseStyle(wfoTheme);
-
-    const { theme } = wfoTheme;
+export const getWfoTableSettingsModalStyles = (
+    wfoThemeHelpers: WfoThemeHelpers,
+) => {
+    const { formFieldBaseStyle } = getFormFieldsBaseStyle(wfoThemeHelpers);
 
     const formRowStyle = css({
         justifyContent: 'space-between',
         '.euiFormLabel': {
-            color: theme.colors.text,
+            color: wfoThemeHelpers.theme.colors.textParagraph,
         },
     });
 

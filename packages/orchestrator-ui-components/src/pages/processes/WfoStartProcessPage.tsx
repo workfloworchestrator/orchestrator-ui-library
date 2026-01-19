@@ -160,7 +160,12 @@ export const WfoStartProcessPage = ({
             timelineItems={timeLineItems}
             isLoading={isLoading}
         >
-            <EuiPanel css={{ marginTop: theme.base * 3 }}>
+            <EuiPanel
+                css={{
+                    backgroundColor: theme.colors.backgroundBaseNeutral,
+                    marginTop: theme.base * 3,
+                }}
+            >
                 <EuiFlexGroup css={getStepHeaderStyle(false)}>
                     <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
 

@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getFilterDisplayStyles = ({ theme }: WfoTheme) => {
+export const getFilterDisplayStyles = ({ theme }: WfoThemeHelpers) => {
     const wrapStyle = css({
         display: 'flex',
         flexWrap: 'wrap',
@@ -21,18 +21,18 @@ export const getFilterDisplayStyles = ({ theme }: WfoTheme) => {
         alignItems: 'center',
         borderRadius: theme.size.xl,
         border: `1px solid ${theme.border.color}`,
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBasePlain,
         padding: `${theme.size.s} ${theme.size.m}`,
         lineHeight: 1.1,
         gap: theme.size.s,
     });
 
     const groupStyle = css({
-        border: `1px solid ${theme.colors.lightShade}`,
+        border: `1px solid ${theme.colors.borderBaseSubdued}`,
         borderRadius: theme.border.radius.medium,
         padding: theme.size.s,
         margin: theme.size.xs,
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBasePlain,
     });
 
     const operatorStyle = css({

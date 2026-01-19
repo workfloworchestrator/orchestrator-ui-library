@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const connectedStyle = css({
         paddingLeft: theme.base / 2,
         cursor: 'default',

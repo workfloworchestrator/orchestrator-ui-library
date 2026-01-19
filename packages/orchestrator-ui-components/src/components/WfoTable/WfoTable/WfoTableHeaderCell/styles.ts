@@ -1,31 +1,31 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 import { SortOrder } from '@/types';
 
 export const HEADER_CELL_TITLE_BUTTON_CLASS = 'headerCellTitleButton';
 export const HEADER_CELL_SORT_BUTTON_CLASS = 'headerCellSortButton';
 export const SORTABLE_ICON_CLASS = 'sortableIcon';
 
-export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoBasicTableStyles = ({ theme }: WfoThemeHelpers) => {
     const radius = theme.border.radius.medium;
 
     const basicTableStyle = css({
         table: {
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
         },
 
         // The lines between rows
         'tr>td': {
-            borderColor: theme.colors.lightShade,
+            borderColor: theme.colors.borderBaseSubdued,
         },
 
         '.euiTableCellContent__text': {
             display: 'flex',
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         },
         thead: {
-            backgroundColor: theme.colors.lightShade,
+            backgroundColor: theme.colors.borderBaseSubdued,
             'tr>:first-child': {
                 borderTopLeftRadius: radius,
             },
@@ -35,7 +35,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         },
         tbody: {
             'tr.euiTableRow:hover': {
-                backgroundColor: theme.colors.lightestShade,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
         },
     });
@@ -55,7 +55,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
 
     const dropDownTableStyle = css({
         thead: {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
             'tr>:first-child': {
                 borderTopLeftRadius: 0,
             },
@@ -64,7 +64,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
             },
         },
         tbody: {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
@@ -72,7 +72,7 @@ export const getWfoBasicTableStyles = ({ theme }: WfoTheme) => {
         basicTableStyle,
         {
             'tr.euiTableRow-isExpandedRow': {
-                backgroundColor: theme.colors.lightestShade,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
         },
     ]);

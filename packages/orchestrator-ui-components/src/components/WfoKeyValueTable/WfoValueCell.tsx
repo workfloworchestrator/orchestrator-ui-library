@@ -55,7 +55,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({
                                 <WfoClipboardCopy
                                     width={clipboardIconSize}
                                     height={clipboardIconSize}
-                                    color={theme.colors.mediumShade}
+                                    color={theme.colors.backgroundBaseDisabled}
                                 />
                             </div>
                         )}

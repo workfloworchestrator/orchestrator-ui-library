@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const euiCodeBlockStyle = css({
         marginTop: 10,
         borderRadius: theme.border.radius.medium,

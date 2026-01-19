@@ -13,7 +13,7 @@ import { EuiButton, EuiFlexGroup, EuiHorizontalRule } from '@elastic/eui';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoPlayCircle } from '@/icons';
-import { WfoThemeExtraColors } from '@/theme';
+import { WfoComputedTheme } from '@/theme';
 
 import { RenderFormErrors } from './RenderFormErrors';
 
@@ -74,8 +74,8 @@ export const Footer = ({
     const PreviousButton = () => {
         const previousButtonColor =
             theme.colors[
-                (previous?.color as keyof WfoThemeExtraColors['colors']) ??
-                    'primary'
+                (previous?.color as keyof WfoComputedTheme['colors']) ??
+                    ('primary' as keyof WfoComputedTheme['colors'])
             ];
 
         return (
@@ -90,7 +90,7 @@ export const Footer = ({
                     }
                 }}
                 css={{
-                    backgroundColor: previousButtonColor,
+                    backgroundColor: previousButtonColor.toString(),
                     padding: '12px',
                 }}
                 iconSide="right"
@@ -142,7 +142,7 @@ export const Footer = ({
                 ? () => <WfoPlayCircle color="currentColor" />
                 : undefined;
         const submitButtonColor = next?.color
-            ? (next?.color as keyof WfoThemeExtraColors['colors'])
+            ? (next?.color as keyof WfoComputedTheme['colors'])
             : 'primary';
 
         return (

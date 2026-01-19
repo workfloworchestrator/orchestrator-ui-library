@@ -1,19 +1,19 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const selectableStyle = css({
         '.euiFieldSearch': {
-            backgroundColor: theme.colors.body,
-            color: theme.colors.text,
+            backgroundColor: theme.colors.backgroundBasePlain,
+            color: theme.colors.textParagraph,
             '&:focus': {
-                backgroundColor: theme.colors.emptyShade,
+                backgroundColor: theme.colors.backgroundBaseNeutral,
             },
         },
 
         '.euiSelectableList .euiSelectableListItem': {
-            borderColor: theme.colors.lightShade,
+            borderColor: theme.colors.borderBaseSubdued,
         },
     });
 

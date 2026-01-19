@@ -1,7 +1,6 @@
-import type { WfoTheme } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = (wfoTheme: WfoTheme) => {
-    const { theme, toSecondaryColor } = wfoTheme;
+export const getStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
     const expandIconContainerStyle = {
         cursor: 'pointer',
     };
@@ -25,7 +24,7 @@ export const getStyles = (wfoTheme: WfoTheme) => {
                 textDecoration: 'underline',
             },
             border: isOutsideCurrentSubscription
-                ? `1px dashed ${theme.colors.lightShade}`
+                ? `1px dashed ${theme.colors.borderBaseSubdued}`
                 : 'none',
         };
     };
@@ -34,9 +33,9 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         return {
             ...treeItemStyle(isOutsideCurrentSubscription),
             backgroundColor: isOutsideCurrentSubscription
-                ? theme.colors.lightShade
+                ? theme.colors.borderBaseSubdued
                 : toSecondaryColor(theme.colors.primary),
-            color: theme.colors.primaryText,
+            color: theme.colors.textPrimary,
         };
     };
 

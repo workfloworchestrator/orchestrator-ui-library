@@ -1,9 +1,9 @@
 import { useOrchestratorTheme } from './useOrchestratorTheme';
-import type { WfoTheme } from './useOrchestratorTheme';
+import type { WfoThemeHelpers } from './useOrchestratorTheme';
 
 export function useWithOrchestratorTheme<T>(
-    getStylesFunction: (theme: WfoTheme) => T,
+    getStylesFunction: (wfoThemeHelpers: WfoThemeHelpers) => T,
 ) {
-    const wfoTheme = useOrchestratorTheme();
-    return getStylesFunction(wfoTheme);
+    const wfoThemeHelpers = useOrchestratorTheme();
+    return getStylesFunction(wfoThemeHelpers);
 }

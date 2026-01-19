@@ -74,7 +74,7 @@ export const WfoProcessListSubscriptionsCell: FC<
 
                 {numberOfNotVisibleSubscriptions > 0 && (
                     <WfoBadge
-                        textColor={theme.colors.primaryText}
+                        textColor={theme.colors.textPrimary}
                         color={toSecondaryColor(theme.colors.primary)}
                         onClick={() => onMoreSubscriptionsClick()}
                         iconOnClick={() => onMoreSubscriptionsClick()}

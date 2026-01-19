@@ -1,15 +1,15 @@
 import { CSSObject, css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getCopyrightStyles = ({ theme }: WfoTheme) => {
+export const getCopyrightStyles = ({ theme }: WfoThemeHelpers) => {
     const copyrightStyle = css({
         position: 'fixed',
         bottom: 0,
         left: 0,
         padding: 10,
         fontSize: theme.size.s,
-        color: theme.colors.primaryText,
+        color: theme.colors.textPrimary,
     });
 
     return {
@@ -17,11 +17,12 @@ export const getCopyrightStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuStyles = ({ theme }: WfoTheme) => {
+export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
     const menuStyle = css({
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         '.euiSideNavItem--branch': {
             '&:after': {
-                backgroundColor: theme.colors.lightShade,
+                backgroundColor: theme.colors.borderBaseSubdued,
                 height: '100%',
             },
             ':last-child': {
@@ -37,7 +38,10 @@ export const getMenuStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
+export const getMenuItemStyles = ({
+    theme,
+    isDarkModeActive,
+}: WfoThemeHelpers) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',
@@ -45,7 +49,7 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         ':hover': {
             textDecoration: 'underline',
         },
-        color: theme.colors.subduedText,
+        color: theme.colors.textSubdued,
         padding: `${theme.base * 0.5}px ${theme.base * 0.75}px`,
     };
 
@@ -57,7 +61,7 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
             left: 0,
             width: '4px',
             height: '1px',
-            backgroundColor: theme.colors.lightShade,
+            backgroundColor: theme.colors.borderBaseSubdued,
             position: 'absolute',
         },
         ':last-child': {
@@ -74,8 +78,8 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const selectedMenuItemBaseStyle = {
         ...baseStyles,
         height: `${theme.base * 2.25}px`,
-        backgroundColor: isDarkThemeActive
-            ? theme.colors.mediumShade
+        backgroundColor: isDarkModeActive
+            ? theme.colors.backgroundBaseDisabled
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.ghost,
@@ -94,8 +98,8 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     const selectedSubMenuItem = css({
         ...baseSubMenuStyles,
         height: `${theme.base * 2.25}px`,
-        backgroundColor: isDarkThemeActive
-            ? theme.colors.mediumShade
+        backgroundColor: isDarkModeActive
+            ? theme.colors.backgroundBaseDisabled
             : theme.colors.header,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.ghost,
@@ -105,7 +109,7 @@ export const getMenuItemStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
 
     const subMenuHeaderStyle = css({
         ...baseStyles,
-        color: theme.colors.text,
+        color: theme.colors.textParagraph,
     });
     return {
         menuItemStyle,

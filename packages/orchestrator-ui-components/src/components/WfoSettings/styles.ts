@@ -1,20 +1,19 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoFlushSettingsStyle = (wfoTheme: WfoTheme) => {
-    const { theme } = wfoTheme;
+export const getWfoFlushSettingsStyle = ({ theme }: WfoThemeHelpers) => {
     const comboboxStyle = css({
         // .euiComboBox is needed to override eui styling (more specific)
         '&.euiComboBox': {
             '.euiComboBox__inputWrap': {
-                border: `1px solid ${theme.colors.lightShade}`,
+                border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 boxShadow: 'none',
-                backgroundColor: theme.colors.body,
+                backgroundColor: theme.colors.backgroundBasePlain,
             },
             '&.euiComboBox-isOpen': {
                 '.euiComboBox__inputWrap': {
-                    backgroundColor: theme.colors.emptyShade,
+                    backgroundColor: theme.colors.backgroundBaseNeutral,
                 },
             },
         },

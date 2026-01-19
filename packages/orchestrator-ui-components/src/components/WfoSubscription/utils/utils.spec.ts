@@ -103,27 +103,27 @@ describe('flattenArrayProps', () => {
 });
 
 describe('getWorkflowTargetColor', () => {
-    it('should return successText color for CREATE', () => {
+    it('should return textSuccess color for CREATE', () => {
         const theme = {
             colors: {
-                successText: 'successTextColor',
+                textSuccess: 'textSuccessColor',
             },
         } as EuiThemeComputed;
 
         expect(getWorkflowTargetColor(WorkflowTarget.CREATE, theme)).toBe(
-            'successTextColor',
+            'textSuccessColor',
         );
     });
 
-    it('should return primaryText color for MODIFY', () => {
+    it('should return textPrimary color for MODIFY', () => {
         const theme = {
             colors: {
-                primaryText: 'primaryTextColor',
+                textPrimary: 'textPrimaryColor',
             },
         } as EuiThemeComputed;
 
         expect(getWorkflowTargetColor(WorkflowTarget.MODIFY, theme)).toBe(
-            'primaryTextColor',
+            'textPrimaryColor',
         );
     });
 
@@ -154,14 +154,14 @@ describe('getWorkflowTargetColor', () => {
     it('should return body color for unknown targets', () => {
         const theme = {
             colors: {
-                body: 'bodyColor',
+                backgroundBaseDisabled: 'gray',
             },
         } as EuiThemeComputed;
 
         // Test with an unknown target
         expect(
             getWorkflowTargetColor('UNKNOWN_TARGET' as WorkflowTarget, theme),
-        ).toBe('bodyColor');
+        ).toBe('gray');
     });
 });
 
