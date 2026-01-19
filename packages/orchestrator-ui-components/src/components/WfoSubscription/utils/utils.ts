@@ -78,9 +78,9 @@ export const getWorkflowTargetColor = (
             return theme.colors.accent;
         case WorkflowTarget.TERMINATE:
             return theme.colors.danger;
+        default:
+            return theme.colors.backgroundBaseDisabled;
     }
-
-    return theme.colors.backgroundBasePlain;
 };
 
 export const getWorkflowTargetIconContent = (

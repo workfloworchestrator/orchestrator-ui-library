@@ -154,14 +154,14 @@ describe('getWorkflowTargetColor', () => {
     it('should return body color for unknown targets', () => {
         const theme = {
             colors: {
-                body: 'bodyColor',
+                backgroundBaseDisabled: 'gray',
             },
         } as EuiThemeComputed;
 
         // Test with an unknown target
         expect(
             getWorkflowTargetColor('UNKNOWN_TARGET' as WorkflowTarget, theme),
-        ).toBe('bodyColor');
+        ).toBe('gray');
     });
 });
 
