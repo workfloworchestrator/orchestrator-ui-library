@@ -24,6 +24,7 @@ import {
     PATH_METADATA_PRODUCTS,
     PATH_METADATA_PRODUCT_BLOCKS,
     PATH_METADATA_RESOURCE_TYPES,
+    PATH_METADATA_SCHEDULED_TASKS,
     PATH_METADATA_TASKS,
     PATH_METADATA_WORKFLOWS,
     PATH_SETTINGS,
@@ -216,6 +217,24 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({
                             path={PATH_METADATA_TASKS}
                             translationString="metadataTasks"
                             isSelected={router.pathname === PATH_METADATA_TASKS}
+                            isSubItem={true}
+                        />
+                    ),
+                },
+                {
+                    name: t('metadataScheduledTasks'),
+                    id: 'metadata-tasks',
+                    isSelected:
+                        router.pathname === PATH_METADATA_SCHEDULED_TASKS,
+                    href: PATH_METADATA_SCHEDULED_TASKS,
+                    renderItem: () => (
+                        <WfoMenuItemLink
+                            path={PATH_METADATA_SCHEDULED_TASKS}
+                            translationString="metadataScheduledTasks"
+                            isSelected={
+                                router.pathname ===
+                                PATH_METADATA_SCHEDULED_TASKS
+                            }
                             isSubItem={true}
                         />
                     ),
