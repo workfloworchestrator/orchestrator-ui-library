@@ -50,6 +50,7 @@ export type WfoAdvancedTableProps<T extends object> = Omit<
     error?: WfoGraphqlError[];
     onUpdateQueryString: (queryString: string) => void;
     onExportData?: () => void;
+    disableSearch?: boolean;
 };
 
 export const WfoAdvancedTable = <T extends object>({
@@ -63,6 +64,7 @@ export const WfoAdvancedTable = <T extends object>({
     error,
     onUpdateQueryString,
     onExportData,
+    disableSearch = false,
     ...tableProps
 }: WfoAdvancedTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
@@ -159,10 +161,12 @@ export const WfoAdvancedTable = <T extends object>({
         <>
             <EuiFlexGroup alignItems="center">
                 <EuiFlexItem>
-                    <WfoSearchField
-                        queryString={queryString}
-                        onUpdateQueryString={onUpdateQueryString}
-                    />
+                    {!disableSearch && (
+                        <WfoSearchField
+                            queryString={queryString}
+                            onUpdateQueryString={onUpdateQueryString}
+                        />
+                    )}
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
                     <EuiButtonIcon
