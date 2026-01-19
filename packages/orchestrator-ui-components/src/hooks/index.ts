@@ -12,3 +12,4 @@ export * from './useWfoSession';
 export * from './useGetOrchestratorConfig';
 export * from './useBackendAvailability';
 export * from './useGetSchedulesForWorkflow';
+export * from './useGetWorkflowNameById';
