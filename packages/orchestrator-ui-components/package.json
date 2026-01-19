@@ -39,7 +39,6 @@
         "@copilotkit/react-ui": "1.10.6",
         "@copilotkit/runtime": "1.10.6",
         "@elastic/charts": "^64.1.0",
-        "@elastic/eui": "^111.0.0",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.4",
         "@monaco-editor/react": "^4.7.0",
@@ -80,12 +79,14 @@
         "jest-environment-jsdom": "^30.2.0",
         "jest-watch-typeahead": "^3.0.1",
         "tsup": "^8.5.0",
-        "typescript": "^5.5.2"
+        "typescript": "^5.5.2",
+        "@elastic/eui": "^111.0.0"
     },
     "peerDependencies": {
         "next": "^15.5.9",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "@elastic/eui": "^111.0.0"
     },
     "type": "module",
     "main": "./dist/index.js",

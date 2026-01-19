@@ -1,10 +1,8 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoSummaryCardsStyles = ({
-    theme,
-}: UseOrchestratorThemeProps) => {
+export const getWfoSummaryCardsStyles = ({ theme }: WfoThemeHelpers) => {
     const cardContainerStyle = css({
         height: theme.base * 36,
         minWidth: theme.base * 25,

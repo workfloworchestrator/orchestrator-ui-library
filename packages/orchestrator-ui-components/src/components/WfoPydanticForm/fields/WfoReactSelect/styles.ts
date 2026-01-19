@@ -1,10 +1,8 @@
 import { css } from '@emotion/react';
 
-import type { UseOrchestratorThemeProps } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoReactSelectStyles = (
-    wfoTheme: UseOrchestratorThemeProps,
-) => {
+export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
     const { theme } = wfoTheme;
 
     const reactSelectInnerComponentStyles = {
@@ -15,7 +13,7 @@ export const getWfoReactSelectStyles = (
             ...baseStyles,
             borderBottom: theme.border.thin,
             borderColor: theme.colors.borderBaseSubdued,
-            backgroundColor: theme.colors.backgroundBasePlain,
+            backgroundColor: theme.colors.backgroundBaseSubdued,
             color: state.isSelected
                 ? theme.colors.textPrimary
                 : theme.colors.textParagraph,
@@ -24,8 +22,8 @@ export const getWfoReactSelectStyles = (
             return {
                 ...baseStyles,
                 backgroundColor: state.isFocused
-                    ? theme.colors.plainLight
-                    : theme.colors.backgroundBasePlain,
+                    ? theme.colors.backgroundBaseNeutral
+                    : theme.colors.backgroundBaseSubdued,
                 color: theme.colors.textParagraph,
                 border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 borderColor: 'none',

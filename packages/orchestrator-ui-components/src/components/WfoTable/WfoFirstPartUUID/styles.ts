@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 export const COPY_ICON_CLASS = 'copyIcon';
 
-export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const uuidFieldStyle = css({
         fontWeight: theme.font.weight.medium,
         display: 'flex',

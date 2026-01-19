@@ -29,16 +29,14 @@ export interface WfoPageTemplateProps {
     ) => EuiSideNavItemType<object>[];
     overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
     children: ReactNode;
+    colorModeState: [
+        EuiThemeColorMode,
+        React.Dispatch<React.SetStateAction<EuiThemeColorMode>>,
+    ];
 }
 
-export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
-    children,
-    getAppLogo,
-    overrideMenuItems,
-    overrideStartWorkflowFilters,
-}) => {
-    const [colorMode, setColorMode] = useState<EuiThemeColorMode>();
-
+export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
+    const [colorMode, setColorMode] = props.colorModeState;
     const handleColorModeSwitch = (newColorMode: EuiThemeColorMode) => {
         setColorMode(newColorMode);
         localStorage.setItem('colorMode', newColorMode);
@@ -48,9 +46,8 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
         // Initialize theme mode from localStorage or set it to 'light' if not present
         const storedColorMode = localStorage.getItem('colorMode');
         if (
-            !storedColorMode ||
-            (storedColorMode !== ColorModes.LIGHT &&
-                storedColorMode !== ColorModes.DARK)
+            storedColorMode !== ColorModes.LIGHT &&
+            storedColorMode !== ColorModes.DARK
         ) {
             handleColorModeSwitch(ColorModes.LIGHT);
         } else {
@@ -58,16 +55,36 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
         }
     }, []);
 
+    return (
+        <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
+            <WfoPageTemplateContent
+                {...props}
+                handleColorModeSwitch={handleColorModeSwitch}
+            />
+        </EuiThemeProvider>
+    );
+};
+
+const WfoPageTemplateContent: FC<
+    WfoPageTemplateProps & {
+        handleColorModeSwitch: (mode: EuiThemeColorMode) => void;
+    }
+> = ({
+    children,
+    getAppLogo,
+    overrideMenuItems,
+    overrideStartWorkflowFilters,
+    handleColorModeSwitch,
+}) => {
     const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
         getPageTemplateStyles,
     );
 
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
-
     const headerRowRef = useRef<HTMLDivElement>(null);
 
     return (
-        <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
+        <>
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={NAVIGATION_HEIGHT}
@@ -111,6 +128,6 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
                     </EuiPageTemplate.Section>
                 </ContentContextProvider>
             </EuiPageTemplate>
-        </EuiThemeProvider>
+        </>
     );
 };

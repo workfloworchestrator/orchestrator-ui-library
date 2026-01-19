@@ -1,10 +1,8 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoFlushSettingsStyle = ({
-    theme,
-}: UseOrchestratorThemeProps) => {
+export const getWfoFlushSettingsStyle = ({ theme }: WfoThemeHelpers) => {
     const comboboxStyle = css({
         // .euiComboBox is needed to override eui styling (more specific)
         '&.euiComboBox': {

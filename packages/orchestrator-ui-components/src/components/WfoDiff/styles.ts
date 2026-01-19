@@ -1,13 +1,13 @@
 import { shade, tint } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 export const getWfoDiffStyles = ({
     theme,
     toSecondaryColor,
     isDarkModeActive,
-}: UseOrchestratorThemeProps) => {
+}: WfoThemeHelpers) => {
     const SHADE_FACTOR = 0.5;
     const TINT_FACTOR = 0.65;
 

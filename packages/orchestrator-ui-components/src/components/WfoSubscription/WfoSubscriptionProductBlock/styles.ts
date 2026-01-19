@@ -1,11 +1,8 @@
 import { css } from '@emotion/react';
 
-import type { UseOrchestratorThemeProps } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({
-    theme,
-    toSecondaryColor,
-}: UseOrchestratorThemeProps) => {
+export const getStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
     const iconStyle = css({
         width: 45,
         height: 45,

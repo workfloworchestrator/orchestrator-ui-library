@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getExportButtonStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getExportButtonStyles = ({ theme }: WfoThemeHelpers) => {
     const containerStyle = css({
         marginTop: theme.size.xl,
         marginBottom: theme.size.xl,
