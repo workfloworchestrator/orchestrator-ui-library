@@ -6,6 +6,7 @@ import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import {
     WfoDataSorting,
+    WfoProductBlockBadge,
     WfoScheduledTasksBadges,
     getPageIndexChangeHandler,
     getPageSizeChangeHandler,
@@ -24,6 +25,7 @@ import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import {
     useDataDisplayParams,
+    useGetWorkflowNameById,
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
@@ -33,6 +35,7 @@ import {
     useLazyGetScheduledTasksQuery,
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
+import { BadgeType } from '@/types';
 import type { GraphqlQueryVariables, ScheduledTaskDefinition } from '@/types';
 import { SortOrder } from '@/types';
 import { formatDate } from '@/utils';
@@ -51,6 +54,17 @@ import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 const TASK_NAME_FIELD: keyof ScheduledTaskDefinition = 'name';
 
 type ScheduledTasksDefinitionExportItem = ScheduledTaskDefinition;
+
+const WfoWorkflowNameById = ({ workflowId }: { workflowId: string }) => {
+    const { workflowName } = useGetWorkflowNameById(workflowId);
+    return workflowName ? (
+        <WfoProductBlockBadge badgeType={BadgeType.TASK}>
+            {workflowName}
+        </WfoProductBlockBadge>
+    ) : (
+        ''
+    );
+};
 
 export const WfoScheduledTasksPage = () => {
     const t = useTranslations('metadata.scheduledTasks');
@@ -89,7 +103,10 @@ export const WfoScheduledTasksPage = () => {
             workflowId: {
                 columnType: ColumnType.DATA,
                 label: t('task'),
-                width: '90px',
+                width: '180px',
+                renderData: (workflowId) => (
+                    <WfoWorkflowNameById workflowId={workflowId} />
+                ),
             },
             name: {
                 columnType: ColumnType.DATA,
