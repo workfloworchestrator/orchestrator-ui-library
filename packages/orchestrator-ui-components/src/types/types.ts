@@ -288,7 +288,7 @@ export interface ScheduledTaskDefinition {
 
 //// Utility types
 
-export enum ScheduleType {
+export enum ScheduleFrequency {
     RECURRING = 'RECURRING',
     ONCE = 'ONCE',
 }

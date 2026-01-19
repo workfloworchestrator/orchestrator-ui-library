@@ -37,9 +37,9 @@ export type ScheduledTasksResponse = {
     schedules: ScheduledTaskDefinition[];
 } & BaseGraphQlResult;
 
-const schedulesApi = orchestratorApi.injectEndpoints({
+const scheduledTasksApi = orchestratorApi.injectEndpoints({
     endpoints: (builder) => ({
-        getSchedules: builder.query<
+        getScheduledTasks: builder.query<
             ScheduledTasksResponse,
             GraphqlQueryVariables<ScheduledTaskDefinition>
         >({
@@ -62,4 +62,5 @@ const schedulesApi = orchestratorApi.injectEndpoints({
     }),
 });
 
-export const { useGetSchedulesQuery, useLazyGetSchedulesQuery } = schedulesApi;
+export const { useGetScheduledTasksQuery, useLazyGetScheduledTasksQuery } =
+    scheduledTasksApi;

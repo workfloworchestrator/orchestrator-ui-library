@@ -18,6 +18,7 @@ export const mapTaskDefinitionToTaskListItem = (
             target,
             createdAt,
             productTags,
+            scheduleFrequency: [],
         };
     });
 
@@ -27,6 +28,8 @@ export const taskFieldMapper = (
     switch (field) {
         case 'productTags':
             return 'productTag' as keyof TaskDefinition;
+        case 'scheduleFrequency':
+            return 'scheduleFrequency' as keyof TaskDefinition;
         default:
             return field;
     }

@@ -196,7 +196,8 @@
             "description": "Taak beschrijving",
             "target": "Target",
             "productTags": "Product tags",
-            "createdAt": "Aangemaakt"
+            "createdAt": "Aangemaakt",
+            "scheduled": "Schedule"
         }
     },
     "processes": {
