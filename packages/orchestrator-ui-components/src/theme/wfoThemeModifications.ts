@@ -1,5 +1,10 @@
 import type { EuiThemeComputed, EuiThemeModifications } from '@elastic/eui';
 
+import {
+    shadeOrchestratorColor,
+    tintOrchestratorColor,
+} from '../hooks/useOrchestratorTheme';
+
 type WfoThemeExtraColors = {
     colors: {
         LIGHT: {
@@ -50,7 +55,7 @@ export const wfoThemeModifications: WfoThemeModifications = {
     colors: {
         DARK: {
             accent: '#E67300',
-            backgroundBaseAccent: '#64758B',
+            backgroundBaseAccent: '#9CA3AF',
             backgroundBaseDisabled: '#4B5563',
             backgroundBaseNeutral: '#101827',
             backgroundBasePlain: '#1F2937',
@@ -61,37 +66,43 @@ export const wfoThemeModifications: WfoThemeModifications = {
             highlight: '#51482F',
             link: '#1F8DD8',
             primary: '#0077C8',
+            backgroundLightPrimary: shadeOrchestratorColor('#0077C8'),
+            backgroundFilledPrimary: '#0077C8',
             shadow: '#000000',
             success: '#13B054',
             textAccent: '#E67300',
             textDanger: '#FF4F46',
-            textDisabled: '#4B5563',
+            textDisabled: '#9CA3AF',
             textHeading: '#ffffff',
-            textParagraph: '#9CA3AF',
+            textParagraph: '#FFFFFF',
             textPrimary: '#1F8DD8',
             textSubdued: '#9CA3AF',
             textSuccess: '#13B054',
             textWarning: '#FFC514',
             warning: '#FFC514',
+            textInverse: '#FFFFFF',
         },
         LIGHT: {
             accent: '#E67300',
             backgroundBaseAccent: '#64758B',
-            backgroundBaseDisabled: '#94A4B8',
+            backgroundBaseDisabled: '#CCD5E2',
             backgroundBaseNeutral: '#FFFFFF',
-            backgroundBasePlain: '#F1F5F9',
-            borderBasePlain: '#94A4B8',
+            backgroundBaseSubdued: '#f4f7fd',
+            backgroundBasePlain: '#FFFFFF',
+            borderBasePlain: '#CCD5E2',
             borderBaseSubdued: '#CCD5E2',
             danger: '#BD271F',
             header: '#04385F',
             highlight: '#FFF6DE',
             link: '#0067AC',
             primary: '#0077C8',
+            backgroundLightPrimary: tintOrchestratorColor('#0077C8'),
+            backgroundFilledPrimary: '#0077C8',
             shadow: '#000000',
             success: '#008939',
             textAccent: '#B05200',
             textDanger: '#AC0A01',
-            textDisabled: '#94A4B8',
+            textDisabled: '#64758B',
             textHeading: '#0F172B',
             textParagraph: '#334255',
             textPrimary: '#0067AC',

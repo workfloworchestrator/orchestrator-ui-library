@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 import {
     HEADER_CELL_TITLE_BUTTON_CLASS,
@@ -13,7 +13,7 @@ import { TABLE_ROW_HEIGHT } from './constants';
 export const getWfoTableStyles = ({
     theme,
     isDarkModeActive,
-}: UseOrchestratorThemeProps) => {
+}: WfoThemeHelpers) => {
     const radius = theme.border.radius.medium;
 
     const tableLoadingLineKeyframes = keyframes({
@@ -44,7 +44,7 @@ export const getWfoTableStyles = ({
     });
 
     const headerStyle = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseDisabled,
         fontSize: theme.size.m,
         textAlign: 'left',
         'tr>:first-child': {
@@ -142,7 +142,7 @@ export const getWfoTableStyles = ({
         '&:active, &:focus': {
             transition: 'background-color 0.15s',
             backgroundColor: isDarkModeActive
-                ? theme.colors.backgroundBaseDisabled
+                ? theme.colors.textHeading
                 : theme.colors.header,
         },
         '&::after': {
@@ -150,7 +150,7 @@ export const getWfoTableStyles = ({
             paddingTop: theme.base - (theme.base / 16) * 2,
             content: `"|"`, // Inserts a vertical line
             fontSize: theme.size.m,
-            color: theme.colors.borderBasePlain,
+            color: theme.colors.backgroundBaseAccent,
             cursor: 'col-resize',
             opacity: 0.6,
             zIndex: theme.levels.navigation,

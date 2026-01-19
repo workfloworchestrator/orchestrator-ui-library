@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 const EXPANDED_CONTENT_LEFT_MARGIN = '52px';
 
-export const getSubscriptionActionStyles = ({
-    theme,
-}: UseOrchestratorThemeProps) => {
+export const getSubscriptionActionStyles = ({ theme }: WfoThemeHelpers) => {
     const clickableStyle = css({
         '&:hover, & :hover': {
             cursor: 'pointer',

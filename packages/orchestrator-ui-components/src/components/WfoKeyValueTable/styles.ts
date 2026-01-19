@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const padding = theme.font.baseline * 2.5;
     const clipboardIconMargin = theme.font.baseline * 2;
     const keyColumnWidth = theme.base * 12;

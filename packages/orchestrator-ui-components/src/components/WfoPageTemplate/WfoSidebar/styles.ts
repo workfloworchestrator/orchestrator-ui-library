@@ -1,8 +1,8 @@
 import { CSSObject, css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getCopyrightStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getCopyrightStyles = ({ theme }: WfoThemeHelpers) => {
     const copyrightStyle = css({
         position: 'fixed',
         bottom: 0,
@@ -17,8 +17,9 @@ export const getCopyrightStyles = ({ theme }: UseOrchestratorThemeProps) => {
     };
 };
 
-export const getMenuStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
     const menuStyle = css({
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         '.euiSideNavItem--branch': {
             '&:after': {
                 backgroundColor: theme.colors.borderBaseSubdued,
@@ -40,7 +41,7 @@ export const getMenuStyles = ({ theme }: UseOrchestratorThemeProps) => {
 export const getMenuItemStyles = ({
     theme,
     isDarkModeActive,
-}: UseOrchestratorThemeProps) => {
+}: WfoThemeHelpers) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
         display: 'flex',
@@ -48,7 +49,7 @@ export const getMenuItemStyles = ({
         ':hover': {
             textDecoration: 'underline',
         },
-        color: theme.colors.borderBaseSubdued,
+        color: theme.colors.textSubdued,
         padding: `${theme.base * 0.5}px ${theme.base * 0.75}px`,
     };
 

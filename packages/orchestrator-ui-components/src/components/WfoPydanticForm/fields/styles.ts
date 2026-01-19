@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { UseOrchestratorThemeProps } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
 export const getWfoObjectFieldStyles = () => {
     const wfoObjectFieldStyles = css({
@@ -14,9 +14,7 @@ export const getWfoObjectFieldStyles = () => {
     };
 };
 
-export const getCommonFormFieldStyles = ({
-    theme,
-}: UseOrchestratorThemeProps) => {
+export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
     const formRowStyle = css({
         marginBottom: theme.base * 2,
 
@@ -45,7 +43,7 @@ export const getCommonFormFieldStyles = ({
     };
 };
 
-export const summaryFieldStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const summaryFieldStyles = ({ theme }: WfoThemeHelpers) => {
     const summaryFieldStyle = css({
         'div.emailMessage': {
             td: {

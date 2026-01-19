@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 import { StepStatus } from '@/types';
 
 import { TimelinePosition } from './WfoTimeline';
 
-export const getTimelineStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     const TIMELINE_HEIGHT = theme.base * 2.5;
     const TIMELINE_OUTLINE_WIDTH = theme.base * 0.75;
 

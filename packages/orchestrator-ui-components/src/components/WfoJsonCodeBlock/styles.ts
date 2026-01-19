@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { UseOrchestratorThemeProps } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: UseOrchestratorThemeProps) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const euiCodeBlockStyle = css({
         marginTop: 10,
         borderRadius: theme.border.radius.medium,
