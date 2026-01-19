@@ -18,7 +18,6 @@ import {
 } from '@/components';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
-import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import {
@@ -28,8 +27,8 @@ import {
 } from '@/hooks';
 import {
     ScheduledTasksResponse,
-    useGetSchedulesQuery,
-    useLazyGetSchedulesQuery,
+    useGetScheduledTasksQuery,
+    useLazyGetScheduledTasksQuery,
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import type { GraphqlQueryVariables, ScheduledTaskDefinition } from '@/types';
@@ -108,11 +107,6 @@ export const WfoScheduledTasksPage = () => {
                 label: t('trigger'),
                 width: '90px',
             },
-            trigger: {
-                columnType: ColumnType.DATA,
-                label: t('interval'),
-                width: '90px',
-            },
         };
 
     const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
@@ -123,11 +117,11 @@ export const WfoScheduledTasksPage = () => {
             sortBy: sortBy,
             query: queryString || undefined,
         };
-    const { data, isFetching, error } = useGetSchedulesQuery(
+    const { data, isFetching, error } = useGetScheduledTasksQuery(
         graphqlQueryVariables,
     );
     const [getSchedulesTrigger, { isFetching: isFetchingCsv }] =
-        useLazyGetSchedulesQuery();
+        useLazyGetScheduledTasksQuery();
     const getSchedulesForExport = () =>
         getSchedulesTrigger(
             getQueryVariablesForExport(graphqlQueryVariables),

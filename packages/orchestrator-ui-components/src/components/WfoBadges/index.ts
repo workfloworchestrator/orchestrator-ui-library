@@ -10,3 +10,4 @@ export * from './WfoHeaderBadge';
 export * from './WfoProductStatusBadge';
 export * from './WfoWorkflowTargetBadge';
 export * from './WfoWebsocketStatusBadge';
+export * from './WfoScheduledTasksBadges';

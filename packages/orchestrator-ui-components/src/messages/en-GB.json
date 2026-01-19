@@ -197,6 +197,7 @@
             "description": "Task description",
             "target": "Target",
             "productTags": "Product tags",
+            "scheduled": "Scheduled",
             "createdAt": "Created"
         },
         "scheduledTasks": {
