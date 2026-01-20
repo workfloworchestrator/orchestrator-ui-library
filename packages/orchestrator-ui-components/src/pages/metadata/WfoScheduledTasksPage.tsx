@@ -138,7 +138,7 @@ export const WfoScheduledTasksPage = () => {
                                 workflowSchedules={[trigger]}
                             />
                         </EuiFlexItem>
-                        <EuiFlexItem> {trigger}</EuiFlexItem>
+                        <EuiFlexItem>{trigger}</EuiFlexItem>
                     </EuiFlexGroup>
                 ),
             },
