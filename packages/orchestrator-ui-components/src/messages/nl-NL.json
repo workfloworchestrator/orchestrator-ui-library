@@ -205,7 +205,7 @@
             "taskDescription": "Taak beschrijving",
             "nextRuntime": "Volgende runtime",
             "schedule": "Schedule",
-            "interval": "interval"
+            "interval": "Interval"
         }
     },
     "processes": {
