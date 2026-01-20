@@ -31,7 +31,7 @@ Using websockets is controlled by NEXT_PUBLIC_USE_WEBSOCKET, when set to 'true' 
 
 ## AUTH with NextAuth and keycloak
 
-Setup auth with keycloak in docker.
+Setup auth with keycloak in docker
 
 -   copy apps env: `cp apps/wfo-ui/.env.example apps/wfo-ui/.env`.
     -   change `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` to your own values.
