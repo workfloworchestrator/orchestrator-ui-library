@@ -206,7 +206,7 @@
             "taskDescription": "Task description",
             "nextRuntime": "Next runtime",
             "schedule": "Schedule",
-            "interval": "interval"
+            "interval": "Interval"
         }
     },
     "processes": {
