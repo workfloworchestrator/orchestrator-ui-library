@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.1.1
+
+### Patch Changes
+
+-   cca7628: Updates pydantic-forms to version 1.0.1
+
 ## 7.1.0
 
 ### Minor Changes
