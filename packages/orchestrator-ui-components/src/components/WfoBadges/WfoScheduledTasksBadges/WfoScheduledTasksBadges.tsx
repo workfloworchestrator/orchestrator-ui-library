@@ -24,11 +24,10 @@ export const WfoScheduledTasksBadges = ({
         <EuiFlexGroup gutterSize="s" justifyContent="flexStart">
             {workflowSchedules?.map((workflowSchedule) => {
                 return (
-                    <EuiFlexItem grow={0}>
+                    <EuiFlexItem grow={0} key={workflowSchedule}>
                         <EuiToolTip content={workflowSchedule}>
                             <WfoWorkflowScheduleIcon
                                 workflowSchedule={workflowSchedule}
-                                key={workflowSchedule}
                             />
                         </EuiToolTip>
                     </EuiFlexItem>
