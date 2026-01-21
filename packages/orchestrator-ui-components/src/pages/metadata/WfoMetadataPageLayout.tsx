@@ -75,7 +75,7 @@ export const WfoMetadataPageLayout = ({
                     </EuiTab>
                 ))}
             </EuiTabs>
-            <EuiSpacer size="xxl" />
+            <EuiSpacer size="l" />
             {children}
         </>
     );
