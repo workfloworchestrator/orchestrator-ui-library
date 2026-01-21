@@ -223,7 +223,7 @@ export const WfoSidebar: FC<WfoSidebarProps> = ({
                 },
                 {
                     name: t('metadataScheduledTasks'),
-                    id: 'metadata-tasks',
+                    id: 'metadata-scheduled-tasks',
                     isSelected:
                         router.pathname === PATH_METADATA_SCHEDULED_TASKS,
                     href: PATH_METADATA_SCHEDULED_TASKS,
