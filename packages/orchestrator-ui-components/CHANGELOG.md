@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.2.0
+
+### Minor Changes
+
+-   31f9ab1: Adds metadata scheduled tasks page
+
 ## 7.1.1
 
 ### Patch Changes
