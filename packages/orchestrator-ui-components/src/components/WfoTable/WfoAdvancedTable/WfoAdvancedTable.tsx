@@ -169,12 +169,14 @@ export const WfoAdvancedTable = <T extends object>({
                     )}
                 </EuiFlexItem>
                 <EuiFlexItem grow={false}>
-                    <EuiButtonIcon
-                        onClick={() => setShowSearchModal(true)}
-                        iconSize={'xl'}
-                        iconType={'iInCircle'}
-                        aria-label={t('searchModalTitle')}
-                    />
+                    {!disableSearch && (
+                        <EuiButtonIcon
+                            onClick={() => setShowSearchModal(true)}
+                            iconSize={'xl'}
+                            iconType={'iInCircle'}
+                            aria-label={t('searchModalTitle')}
+                        />
+                    )}
                 </EuiFlexItem>
                 <EuiButton onClick={() => setShowSettingsModal(true)}>
                     {t('editColumns')}
