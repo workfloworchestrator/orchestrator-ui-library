@@ -70,7 +70,8 @@
         "notAllowedWhenEngineIsNotRunningMessage": "This action is not allowed when the Workflow Engine is not running",
         "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is not running",
         "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
-        "retrieve_stored_settings_title": "Error retrieving settings"
+        "retrieve_stored_settings_title": "Error retrieving settings",
+        "failedDeletingScheduledTask": "Error deleting scheduled task"
     },
     "pydanticForms": {
         "userInputForm": {

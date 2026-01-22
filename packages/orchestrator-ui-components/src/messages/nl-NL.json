@@ -70,7 +70,8 @@
         "notAllowedWhenEngineIsNotRunningMessage": "Deze actie is niet toegestaan als de Workflow Engine niet is gestart.",
         "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is niet gestart.",
         "retrieve_stored_settings": "Er ging iets fout tijdens het laden van de instellingen. Hersteld naar standaard waardes",
-        "retrieve_stored_settings_title": "Fout tijdens het ophalen van instellingen."
+        "retrieve_stored_settings_title": "Fout tijdens het ophalen van instellingen.",
+        "failedDeletingScheduledTask": "Fout bij het verwijderen de scheduled task"
     },
     "pydanticForms": {
         "userInputForm": {
@@ -203,7 +204,7 @@
         },
         "scheduledTasks": {
             "task": "Taak",
-            "taskDescription": "Taak beschrijving",
+            "taskDecription": "Taak beschrijving",
             "nextRuntime": "Volgende runtime",
             "schedule": "Schedule",
             "interval": "Interval",
