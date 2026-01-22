@@ -209,7 +209,8 @@
             "schedule": "Schedule",
             "interval": "Interval",
             "ariaLabelDeleteButton": "Schema verwijderen",
-            "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema"
+            "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
+            "addSchedule": "Plan een taak"
         }
     },
     "processes": {

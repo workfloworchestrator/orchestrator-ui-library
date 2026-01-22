@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import {
     WfoButtonWithConfirm,
@@ -20,6 +21,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
+import { PATH_METADATA_ADD_SCHEDULED_TASK_FORM } from '@/components';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -72,6 +74,7 @@ export const WfoScheduledTasksPage = () => {
     const t = useTranslations('metadata.scheduledTasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
+    const router = useRouter();
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ScheduledTaskDefinition>>();
     const [deleteScheduledTask, mutationState] =
@@ -245,6 +248,15 @@ export const WfoScheduledTasksPage = () => {
                 )}
                 exportDataIsLoading={isFetchingCsv}
                 disableSearch={true}
+                extraButtons={
+                    <EuiButton
+                        onClick={() => {
+                            router.push(PATH_METADATA_ADD_SCHEDULED_TASK_FORM);
+                        }}
+                    >
+                        {t('addSchedule')}
+                    </EuiButton>
+                }
             />
         </WfoMetadataPageLayout>
     );
