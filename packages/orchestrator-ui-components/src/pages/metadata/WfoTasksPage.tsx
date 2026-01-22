@@ -37,7 +37,6 @@ import {
     useStoredTableConfig,
 } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
-import { useGetTranslationMessages } from '@/messages';
 import {
     TasksResponse,
     useGetTasksQuery,
@@ -130,8 +129,8 @@ const SetScheduleButton = ({
                 whiteSpace: 'nowrap',
             }}
             onClick={() => {
-                console.log('workflowId', workflowId);
                 closePopover();
+                console.error(workflowId);
             }}
         >
             {t('addSchedule')}
