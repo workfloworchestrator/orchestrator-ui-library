@@ -32,11 +32,12 @@ import {
 } from '@/hooks';
 import {
     ScheduledTasksResponse,
+    useDeleteScheduledTaskMutation,
     useGetScheduledTasksQuery,
     useLazyGetScheduledTasksQuery,
 } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { BadgeType } from '@/types';
+import { BadgeType, ToastTypes } from '@/types';
 import type { GraphqlQueryVariables, ScheduledTaskDefinition } from '@/types';
 import { SortOrder } from '@/types';
 import { formatDate } from '@/utils';
@@ -73,10 +74,20 @@ export const WfoScheduledTasksPage = () => {
     const { showToastMessage } = useShowToastMessage();
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<ScheduledTaskDefinition>>();
-
+    const [deleteScheduledTask, mutationState] =
+        useDeleteScheduledTaskMutation();
     const getStoredTableConfig = useStoredTableConfig<ScheduledTaskDefinition>(
         METADATA_SCHEDULES_LOCAL_STORAGE_KEY,
     );
+
+    if (mutationState.isError) {
+        showToastMessage(
+            ToastTypes.ERROR,
+            '',
+            tError('failedDeletingScheduledTask'),
+        );
+        console.error('Failed to delete scheduled task.', mutationState.error);
+    }
 
     useEffect(() => {
         const storedConfig = getStoredTableConfig();
@@ -150,7 +161,10 @@ export const WfoScheduledTasksPage = () => {
                     <WfoButtonWithConfirm
                         question={t('deleteConfirmationQuestion')}
                         onConfirm={() => {
-                            console.log('tli', taskListItem);
+                            deleteScheduledTask({
+                                workflowId: taskListItem.workflowId,
+                                scheduleId: taskListItem.id,
+                            });
                         }}
                         ariaLabel={t('ariaLabelDeleteButton')}
                     />
