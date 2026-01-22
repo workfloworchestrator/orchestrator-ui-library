@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiBadgeGroup } from '@elastic/eui';
+import { EuiBadgeGroup, EuiButtonIcon, EuiContextMenuItem } from '@elastic/eui';
 
 import {
     PATH_METADATA_PRODUCTS,
     WfoFirstPartUUID,
+    WfoPopover,
     WfoScheduledTasksBadgesContainer,
     WfoWorkflowTargetBadge,
     getPageIndexChangeHandler,
@@ -35,6 +36,8 @@ import {
     useShowToastMessage,
     useStoredTableConfig,
 } from '@/hooks';
+import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
+import { useGetTranslationMessages } from '@/messages';
 import {
     TasksResponse,
     useGetTasksQuery,
@@ -76,6 +79,64 @@ export type TaskListExportItem = Omit<
     'productTags' | 'scheduleFrequency'
 > & {
     productTags: string;
+};
+
+interface ScheduleTaskPopoverMenuProps {
+    workflowId: string;
+}
+
+const ScheduleTaskPopoverMenu = ({
+    workflowId,
+}: ScheduleTaskPopoverMenuProps) => {
+    const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+    const button = (
+        <EuiButtonIcon
+            iconType={() => <WfoDotsHorizontal />}
+            onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+            aria-label="Schedule task popover menu"
+            isLoading={false}
+        />
+    );
+
+    return (
+        <WfoPopover
+            id="schedule-task-popover-menu"
+            isLoading={false}
+            PopoverContent={() => (
+                <SetScheduleButton
+                    workflowId={workflowId}
+                    closePopover={() => setIsPopoverOpen(false)}
+                />
+            )}
+            button={button}
+            isPopoverOpen={isPopoverOpen}
+            closePopover={() => setIsPopoverOpen(false)}
+        />
+    );
+};
+
+const SetScheduleButton = ({
+    workflowId,
+    closePopover,
+}: {
+    workflowId: string;
+    closePopover: () => void;
+}) => {
+    const t = useTranslations('metadata.tasks');
+    return (
+        <EuiContextMenuItem
+            icon="gear"
+            css={{
+                whiteSpace: 'nowrap',
+            }}
+            onClick={() => {
+                console.log('workflowId', workflowId);
+                closePopover();
+            }}
+        >
+            {t('addSchedule')}
+        </EuiContextMenuItem>
+    );
 };
 
 export const WfoTasksPage = () => {
@@ -218,6 +279,13 @@ export const WfoTasksPage = () => {
             renderDetails: parseIsoString(parseDateToLocaleDateTimeString),
             clipboardText: parseIsoString(parseDateToLocaleDateTimeString),
             renderTooltip: parseIsoString(parseDateToLocaleDateTimeString),
+        },
+        addSchedule: {
+            columnType: ColumnType.CONTROL,
+            width: '80px',
+            renderControl: (taskListItem) => (
+                <ScheduleTaskPopoverMenu workflowId={taskListItem.workflowId} />
+            ),
         },
     };
 

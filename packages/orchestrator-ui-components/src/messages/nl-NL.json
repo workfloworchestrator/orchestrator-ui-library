@@ -198,7 +198,8 @@
             "target": "Target",
             "productTags": "Product tags",
             "createdAt": "Aangemaakt",
-            "scheduled": "Schedule"
+            "scheduled": "Schedule",
+            "addSchedule": "Plan een taak"
         },
         "scheduledTasks": {
             "task": "Taak",

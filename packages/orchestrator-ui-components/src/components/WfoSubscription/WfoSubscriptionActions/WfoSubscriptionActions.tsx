@@ -3,16 +3,9 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import {
-    EuiButton,
-    EuiButtonIcon,
-    EuiContextMenuPanel,
-    EuiLoadingSpinner,
-    EuiPanel,
-    EuiPopover,
-    EuiTitle,
-} from '@elastic/eui';
+import { EuiButton, EuiButtonIcon, EuiTitle } from '@elastic/eui';
 
+import { WfoPopover } from '@/components';
 import {
     PATH_START_NEW_TASK,
     PATH_START_NEW_WORKFLOW,
@@ -50,7 +43,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     compactMode = false,
 }) => {
     const t = useTranslations('subscriptions.detail.actions');
-    const [isPopoverOpen, setPopover] = useState(false);
+    const [isPopoverOpen, setPopover] = useState<boolean>(false);
     const router = useRouter();
     const disableQuery = isLoading || (!isPopoverOpen && compactMode);
     const {
@@ -251,23 +244,13 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     const MenuItemsList = () => (compactMode ? compactItems : fullItems);
 
     return (
-        <EuiPopover
-            id="subscriptionActionPopover"
+        <WfoPopover
+            id={'subscriptionActionPopover'}
+            isLoading={subscriptionActionsIsLoading || isLoading || false}
             button={button}
-            isOpen={isPopoverOpen}
-            closePopover={closePopover}
-            panelPaddingSize="none"
-            anchorPosition="downLeft"
-        >
-            <EuiContextMenuPanel>
-                <EuiPanel color="transparent" paddingSize="s">
-                    {subscriptionActionsIsLoading ? (
-                        <EuiLoadingSpinner />
-                    ) : (
-                        <MenuItemsList />
-                    )}
-                </EuiPanel>
-            </EuiContextMenuPanel>
-        </EuiPopover>
+            PopoverContent={MenuItemsList}
+            isPopoverOpen={isPopoverOpen}
+            closePopover={() => setPopover(false)}
+        />
     );
 };
