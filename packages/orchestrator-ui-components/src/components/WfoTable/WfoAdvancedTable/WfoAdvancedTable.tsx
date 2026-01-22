@@ -51,6 +51,7 @@ export type WfoAdvancedTableProps<T extends object> = Omit<
     onUpdateQueryString: (queryString: string) => void;
     onExportData?: () => void;
     disableSearch?: boolean;
+    extraButtons?: React.ReactNode;
 };
 
 export const WfoAdvancedTable = <T extends object>({
@@ -65,6 +66,7 @@ export const WfoAdvancedTable = <T extends object>({
     onUpdateQueryString,
     onExportData,
     disableSearch = false,
+    extraButtons,
     ...tableProps
 }: WfoAdvancedTableProps<T>) => {
     const { theme } = useOrchestratorTheme();
@@ -189,6 +191,7 @@ export const WfoAdvancedTable = <T extends object>({
                         {t('export')}
                     </EuiButton>
                 )}
+                {extraButtons}
             </EuiFlexGroup>
             {error && <WfoErrorWithMessage error={error} />}
             <EuiSpacer size="m" />

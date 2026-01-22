@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import { EuiBadgeGroup, EuiButtonIcon, EuiContextMenuItem } from '@elastic/eui';
 
@@ -22,6 +23,7 @@ import {
     WfoProductBlockBadge,
 } from '@/components';
 import { getDataSortHandler, getQueryStringHandler } from '@/components';
+import { PATH_METADATA_ADD_SCHEDULED_TASK_FORM } from '@/components';
 import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
 import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
@@ -122,6 +124,7 @@ const SetScheduleButton = ({
     closePopover: () => void;
 }) => {
     const t = useTranslations('metadata.tasks');
+    const router = useRouter();
     return (
         <EuiContextMenuItem
             icon="gear"
@@ -130,7 +133,9 @@ const SetScheduleButton = ({
             }}
             onClick={() => {
                 closePopover();
-                console.error(workflowId);
+                router.push(
+                    `${PATH_METADATA_ADD_SCHEDULED_TASK_FORM}/${workflowId}`,
+                );
             }}
         >
             {t('addSchedule')}
@@ -142,6 +147,7 @@ export const WfoTasksPage = () => {
     const t = useTranslations('metadata.tasks');
     const tError = useTranslations('errors');
     const { showToastMessage } = useShowToastMessage();
+
     const [tableDefaults, setTableDefaults] =
         useState<StoredTableConfig<TaskListItem>>();
     const getStoredTableConfig = useStoredTableConfig<TaskListItem>(
