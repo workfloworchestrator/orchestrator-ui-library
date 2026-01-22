@@ -1,4 +1,6 @@
-import { LocalColumnWidths, TableColumnKeys } from '@/components';
+import { useEffect } from 'react';
+
+import { LocalColumnWidths, Pagination, TableColumnKeys } from '@/components';
 import { SortOrder } from '@/types';
 import { toObjectWithSortedKeys } from '@/utils';
 
@@ -92,4 +94,30 @@ export const getColumnWidthsFromConfig = <T extends object>(
         }
         return columnWidths;
     }, {} as LocalColumnWidths);
+};
+
+export const usePageIndexBoundsGuard = ({
+    dataLength,
+    isLoading,
+    pagination,
+}: {
+    dataLength: number;
+    isLoading: boolean;
+    pagination?: Pagination;
+}) => {
+    useEffect(() => {
+        if (!pagination) return;
+
+        const { pageIndex, pageSize, totalItemCount, onChangePage } =
+            pagination;
+
+        const maxPage = Math.max(
+            0,
+            Math.floor(((totalItemCount ?? 1) - 1) / pageSize),
+        );
+
+        if (!isLoading && dataLength === 0 && pageIndex > maxPage) {
+            onChangePage?.(maxPage);
+        }
+    }, [dataLength, isLoading, pagination]);
 };

@@ -18,7 +18,11 @@ import { getPageCount } from '../utils/tableUtils';
 import { WfoTableDataRows } from './WfoTableDataRows';
 import { WfoTableHeaderRow } from './WfoTableHeaderRow';
 import { getWfoTableStyles } from './styles';
-import { getColumnWidthsFromConfig, getSortedVisibleColumns } from './utils';
+import {
+    getColumnWidthsFromConfig,
+    getSortedVisibleColumns,
+    usePageIndexBoundsGuard,
+} from './utils';
 
 export type Pagination = {
     pageSize: number;
@@ -133,6 +137,8 @@ export const WfoTable = <T extends object>({
 }: WfoTableProps<T>) => {
     const [localColumnWidths, setLocalColumnWidths] =
         useState<LocalColumnWidths>(getColumnWidthsFromConfig(columnConfig));
+    const dataLength = data.length;
+    usePageIndexBoundsGuard({ dataLength, isLoading, pagination });
 
     const parentRef = useRef<HTMLDivElement>(null);
 
@@ -191,7 +197,7 @@ export const WfoTable = <T extends object>({
     }, {} as WfoTableColumnConfig<T>);
 
     const rowVirtualizer = useVirtualizer({
-        count: data.length,
+        count: dataLength,
         getScrollElement: () => parentRef.current,
         estimateSize: () => ROW_HEIGHT,
         overscan: 10,
@@ -231,7 +237,7 @@ export const WfoTable = <T extends object>({
                             />
                         </thead>
                     )}
-                    {data.length === 0 ? (
+                    {dataLength === 0 ? (
                         <tbody css={isLoading && bodyLoadingStyle}>
                             <tr css={rowStyle}>
                                 <td
