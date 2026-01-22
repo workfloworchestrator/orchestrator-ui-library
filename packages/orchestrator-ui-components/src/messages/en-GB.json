@@ -199,7 +199,8 @@
             "target": "Target",
             "productTags": "Product tags",
             "scheduled": "Scheduled",
-            "createdAt": "Created"
+            "createdAt": "Created",
+            "addSchedule": "Schedule task"
         },
         "scheduledTasks": {
             "task": "Task",
