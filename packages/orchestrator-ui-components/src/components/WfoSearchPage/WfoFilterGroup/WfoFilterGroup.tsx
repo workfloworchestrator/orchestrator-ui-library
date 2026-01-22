@@ -226,7 +226,7 @@ export const FilterGroup: FC<FilterGroupProps> = ({
                     <EuiCallOut
                         title={t('emptyGroupTitle')}
                         color="primary"
-                        iconType="iInCircle"
+                        iconType="info"
                         size="s"
                     >
                         <p>{t('emptyGroupDescription')}</p>
