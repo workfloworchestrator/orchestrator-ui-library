@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import {
+    WfoButtonWithConfirm,
     WfoDataSorting,
     WfoProductBlockBadge,
     WfoScheduledTasksBadges,
@@ -140,6 +141,19 @@ export const WfoScheduledTasksPage = () => {
                         </EuiFlexItem>
                         <EuiFlexItem>{trigger}</EuiFlexItem>
                     </EuiFlexGroup>
+                ),
+            },
+            deleteSchedule: {
+                columnType: ColumnType.CONTROL,
+                width: '80px',
+                renderControl: (taskListItem) => (
+                    <WfoButtonWithConfirm
+                        question={t('deleteConfirmationQuestion')}
+                        onConfirm={() => {
+                            console.log('tli', taskListItem);
+                        }}
+                        ariaLabel={t('ariaLabelDeleteButton')}
+                    />
                 ),
             },
         };

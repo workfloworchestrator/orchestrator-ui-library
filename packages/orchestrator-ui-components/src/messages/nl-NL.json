@@ -206,7 +206,9 @@
             "taskDescription": "Taak beschrijving",
             "nextRuntime": "Volgende runtime",
             "schedule": "Schedule",
-            "interval": "Interval"
+            "interval": "Interval",
+            "ariaLabelDeleteButton": "Schema verwijderen",
+            "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema"
         }
     },
     "processes": {

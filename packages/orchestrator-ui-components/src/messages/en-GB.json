@@ -207,7 +207,9 @@
             "taskDescription": "Task description",
             "nextRuntime": "Next runtime",
             "schedule": "Schedule",
-            "interval": "Interval"
+            "interval": "Interval",
+            "ariaLabelDeleteButton": "Delete task schedule",
+            "deleteConfirmationQuestion": "Confirm deleting this schedule task"
         }
     },
     "processes": {
