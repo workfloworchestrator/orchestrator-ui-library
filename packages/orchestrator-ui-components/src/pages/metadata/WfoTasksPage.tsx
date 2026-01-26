@@ -23,7 +23,7 @@ import {
     WfoProductBlockBadge,
 } from '@/components';
 import { getDataSortHandler, getQueryStringHandler } from '@/components';
-import { PATH_METADATA_ADD_SCHEDULED_TASK_FORM } from '@/components';
+import { PATH_METADATA_ADD_SCHEDULE_TASK_FORM } from '@/components';
 import { WfoDateTime } from '@/components/WfoDateTime/WfoDateTime';
 import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
@@ -134,7 +134,7 @@ const SetScheduleButton = ({
             onClick={() => {
                 closePopover();
                 router.push(
-                    `${PATH_METADATA_ADD_SCHEDULED_TASK_FORM}/${workflowId}`,
+                    `${PATH_METADATA_ADD_SCHEDULE_TASK_FORM}/${workflowId}`,
                 );
             }}
         >

@@ -21,7 +21,7 @@ import {
     getDataSortHandler,
     getQueryStringHandler,
 } from '@/components';
-import { PATH_METADATA_ADD_SCHEDULED_TASK_FORM } from '@/components';
+import { PATH_METADATA_ADD_SCHEDULE_TASK_FORM } from '@/components';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
@@ -251,7 +251,7 @@ export const WfoScheduledTasksPage = () => {
                 extraButtons={
                     <EuiButton
                         onClick={() => {
-                            router.push(PATH_METADATA_ADD_SCHEDULED_TASK_FORM);
+                            router.push(PATH_METADATA_ADD_SCHEDULE_TASK_FORM);
                         }}
                     >
                         {t('addSchedule')}
