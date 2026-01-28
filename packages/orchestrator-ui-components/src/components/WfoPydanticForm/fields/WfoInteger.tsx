@@ -12,7 +12,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
     const formFieldBaseStyle = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         color: theme.colors.textParagraph,
         '&:focus': {
             backgroundColor: theme.colors.backgroundBaseNeutral,

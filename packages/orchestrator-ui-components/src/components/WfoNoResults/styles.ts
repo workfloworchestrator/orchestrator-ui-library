@@ -10,7 +10,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: theme.base / 2,
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.link,
         fontFamily: theme.font.family,

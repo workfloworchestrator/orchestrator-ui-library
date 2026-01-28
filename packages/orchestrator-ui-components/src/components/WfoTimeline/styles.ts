@@ -30,7 +30,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
             case StepStatus.RUNNING:
             case StepStatus.PENDING:
             default:
-                return theme.colors.backgroundBaseDisabled;
+                return theme.colors.textDisabled;
         }
     };
 
@@ -44,7 +44,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     };
 
     const timelinePanelStyle = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         borderRadius: theme.border.radius.medium,
         outline: `${timelineOutlineWidthPx} solid ${theme.colors.backgroundBaseNeutral}`,
         height: timelineHeightPx,
