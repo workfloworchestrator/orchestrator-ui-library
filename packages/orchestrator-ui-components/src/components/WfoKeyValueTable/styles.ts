@@ -29,7 +29,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     });
 
     const darkBackground = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
     });
 
     const getBackgroundColorStyleForRow = (rowNumber: number) =>

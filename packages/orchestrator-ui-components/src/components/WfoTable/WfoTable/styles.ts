@@ -44,7 +44,7 @@ export const getWfoTableStyles = ({
     });
 
     const headerStyle = css({
-        backgroundColor: theme.colors.backgroundBaseDisabled,
+        backgroundColor: theme.colors.borderBaseSubdued,
         fontSize: theme.size.m,
         textAlign: 'left',
         'tr>:first-child': {
@@ -83,7 +83,7 @@ export const getWfoTableStyles = ({
     });
 
     const expandedRowStyle = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
     });
 
     const sortableHeaderCellStyle = css({

@@ -2,7 +2,10 @@ import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
-export const getSubscriptionDetailStyles = ({ theme }: WfoThemeHelpers) => {
+export const getSubscriptionDetailStyles = ({
+    theme,
+    isDarkModeActive,
+}: WfoThemeHelpers) => {
     const productBlockTreeWidth = theme.base * 28;
 
     const labelCellStyle = css({
@@ -25,7 +28,9 @@ export const getSubscriptionDetailStyles = ({ theme }: WfoThemeHelpers) => {
     });
 
     const tableStyle = css({
-        backgroundColor: theme.colors.backgroundBasePlain,
+        backgroundColor: isDarkModeActive
+            ? theme.colors.backgroundBasePlain
+            : theme.colors.backgroundBaseSubdued,
         width: '100%',
         borderRadius: theme.border.radius.medium,
         marginTop: theme.base / 2,
