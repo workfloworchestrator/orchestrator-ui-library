@@ -64,7 +64,6 @@ export const getQueryStringHandler =
                 ? `${queryString}*`
                 : queryString;
         setDataDisplayParam('queryString', query);
-        setDataDisplayParam('pageIndex', 0);
     };
 
 export const getPageCount = (pagination: Pagination) =>
