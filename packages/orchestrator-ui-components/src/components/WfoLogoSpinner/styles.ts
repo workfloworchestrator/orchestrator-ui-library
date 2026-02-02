@@ -1,12 +1,18 @@
 import { css } from '@emotion/react';
 
 export const getWfoLogoSpinnerStyles = () => {
+    const isDark =
+        typeof window !== 'undefined' &&
+        localStorage?.getItem('colorMode') === 'DARK';
+
     const spinCenteringCss = css({
         width: '100vw',
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+
+        backgroundColor: isDark ? '#101827' : '#FFFFFF',
     });
 
     const spinContainerCss = css({

@@ -47,13 +47,9 @@ export const WfoStartButtonComboBox = ({
     const Button = (
         <EuiButton
             onClick={() => setPopoverOpen(!isPopoverOpen)}
-            iconType={
-                isProcess
-                    ? 'plus'
-                    : () => <WfoPlusCircleFill color={theme.colors.ghost} />
-            }
+            iconType={() => <WfoPlusCircleFill color={theme.colors.ghost} />}
             fullWidth={isProcess}
-            fill={!isProcess || isDarkModeActive}
+            fill
         >
             {buttonText}
         </EuiButton>
@@ -113,6 +109,7 @@ export const WfoStartButtonComboBox = ({
 
     return (
         <EuiPopover
+            css={{ display: 'flex' }}
             initialFocus={`.euiSelectable .euiFieldSearch`}
             button={Button}
             isOpen={isPopoverOpen}

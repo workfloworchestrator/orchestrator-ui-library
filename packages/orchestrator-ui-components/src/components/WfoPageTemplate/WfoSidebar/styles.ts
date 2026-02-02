@@ -32,7 +32,6 @@ export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
             },
         },
     });
-
     return {
         menuStyle,
     };
@@ -41,6 +40,7 @@ export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
 export const getMenuItemStyles = ({
     theme,
     isDarkModeActive,
+    toSecondaryColor,
 }: WfoThemeHelpers) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
@@ -57,17 +57,13 @@ export const getMenuItemStyles = ({
         ...baseStyles,
         ':after': {
             content: "''",
-            top: '16px',
+            top: '50%',
             left: 0,
             width: '4px',
             height: '1px',
             backgroundColor: theme.colors.borderBaseSubdued,
             position: 'absolute',
-        },
-        ':last-child': {
-            ':after': {
-                top: '18px',
-            },
+            transform: 'translateY(-50%)',
         },
     };
 
@@ -79,10 +75,11 @@ export const getMenuItemStyles = ({
         ...baseStyles,
         height: `${theme.base * 2.25}px`,
         backgroundColor: isDarkModeActive
-            ? theme.colors.backgroundBaseDisabled
-            : theme.colors.header,
+            ? theme.colors.header
+            : theme.colors.backgroundLightPrimary,
         borderRadius: theme.border.radius.medium,
-        color: theme.colors.ghost,
+        color: isDarkModeActive ? theme.colors.ghost : theme.colors.textPrimary,
+        fontWeight: theme.font.weight.medium,
     };
 
     const selectedMenuItem = css({
@@ -99,17 +96,19 @@ export const getMenuItemStyles = ({
         ...baseSubMenuStyles,
         height: `${theme.base * 2.25}px`,
         backgroundColor: isDarkModeActive
-            ? theme.colors.backgroundBaseDisabled
-            : theme.colors.header,
+            ? theme.colors.header
+            : theme.colors.backgroundLightPrimary,
         borderRadius: theme.border.radius.medium,
-        color: theme.colors.ghost,
+        color: isDarkModeActive ? theme.colors.ghost : theme.colors.textPrimary,
+        fontWeight: theme.font.weight.medium,
         marginLeft: `${theme.size.xs}`,
         paddingLeft: `${theme.size.s}`,
     });
 
     const subMenuHeaderStyle = css({
         ...baseStyles,
-        color: theme.colors.textParagraph,
+        color: theme.colors.link,
+        fontWeight: theme.font.weight.medium,
     });
     return {
         menuItemStyle,

@@ -30,6 +30,7 @@ const getTaskCountsSummary = (
         processStatusCounts?.task_counts.inconsistent_data || 0;
     const apiUnavailable =
         processStatusCounts?.task_counts.api_unavailable || 0;
+
     return {
         failed,
         inconsistentData,
@@ -40,7 +41,7 @@ const getTaskCountsSummary = (
 
 const WfoTasksLink = ({ children }: { children: ReactNode }) => (
     <Link
-        href={`${PATH_TASKS}`}
+        href={PATH_TASKS}
         onClick={(e) => {
             e.currentTarget.blur();
         }}
@@ -78,8 +79,8 @@ export const WfoFailedTasksBadge = () => {
                 <WfoTasksLink>
                     <WfoHeaderBadge
                         css={failedTaskBadgeStyle}
-                        color={theme.colors.ghost}
-                        textColor={theme.colors.shadow}
+                        color={theme.colors.backgroundBaseNeutral}
+                        textColor={theme.colors.textParagraph}
                         iconType={() => (
                             <WfoXCircleFill color={theme.colors.danger} />
                         )}
@@ -89,31 +90,22 @@ export const WfoFailedTasksBadge = () => {
                 </WfoTasksLink>
             </EuiToolTip>
         );
-    } else {
-        return (
-            <EuiToolTip
-                position="bottom"
-                content={
-                    <>
-                        <div>{t('noFailedTasks')}</div>
-                    </>
-                }
-            >
-                <WfoTasksLink>
-                    <WfoHeaderBadge
-                        css={failedTaskBadgeStyle}
-                        color={theme.colors.ghost}
-                        textColor={theme.colors.shadow}
-                        iconType={() => (
-                            <WfoCheckmarkCircleFill
-                                color={theme.colors.success}
-                            />
-                        )}
-                    >
-                        0
-                    </WfoHeaderBadge>
-                </WfoTasksLink>
-            </EuiToolTip>
-        );
     }
+
+    return (
+        <EuiToolTip position="bottom" content={<div>{t('noFailedTasks')}</div>}>
+            <WfoTasksLink>
+                <WfoHeaderBadge
+                    css={failedTaskBadgeStyle}
+                    color={theme.colors.backgroundBaseNeutral}
+                    textColor={theme.colors.textParagraph}
+                    iconType={() => (
+                        <WfoCheckmarkCircleFill color={theme.colors.success} />
+                    )}
+                >
+                    0
+                </WfoHeaderBadge>
+            </WfoTasksLink>
+        </EuiToolTip>
+    );
 };

@@ -27,7 +27,7 @@ export const MinusButton = ({
     testId: string;
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { minusButton } = getWfoArrayFieldStyles();
+    const { minusButton } = getWfoArrayFieldStyles(theme);
 
     return (
         <span css={minusButton} onClick={() => onRemove(index)}>
@@ -49,7 +49,7 @@ export const PlusButton = ({
     testId: string;
 }) => {
     const { theme } = useOrchestratorTheme();
-    const { plusButtonWrapper } = getWfoArrayFieldStyles();
+    const { plusButtonWrapper } = getWfoArrayFieldStyles(theme);
 
     return (
         <div css={plusButtonWrapper}>
@@ -74,7 +74,8 @@ export const WfoArrayField = ({
     const { control } = reactHookForm;
     const { id: arrayName, arrayItem } = pydanticFormField;
     const { minItems, maxItems } = pydanticFormField.validations;
-    const { container, fieldWrapper } = getWfoArrayFieldStyles();
+    const { theme } = useOrchestratorTheme();
+    const { container, fieldWrapper } = getWfoArrayFieldStyles(theme);
 
     const { fields, append, remove } = useFieldArray({
         control,

@@ -5,6 +5,7 @@ import { WfoThemeHelpers } from '@/hooks';
 export const getWorkflowStepsStyles = ({
     theme,
     toSecondaryColor,
+    isDarkModeActive,
 }: WfoThemeHelpers) => {
     const SPACE_BETWEEN_STEPS = theme.base * 1.5;
 
@@ -60,13 +61,15 @@ export const getWorkflowStepsStyles = ({
 
     const stepDurationStyle = {
         fontSize: theme.size.m,
-        color: theme.colors.backgroundBaseDisabled,
+        color: theme.colors.textSubdued,
         fontWeight: theme.font.weight.semiBold,
     };
 
     const stepStateSuccessIconStyle = css({
         ...stepStateIcon,
-        backgroundColor: toSecondaryColor(theme.colors.primary),
+        backgroundColor: isDarkModeActive
+            ? toSecondaryColor(theme.colors.link)
+            : theme.colors.backgroundLightPrimary,
     });
 
     const stepStateSuspendIconStyle = css({

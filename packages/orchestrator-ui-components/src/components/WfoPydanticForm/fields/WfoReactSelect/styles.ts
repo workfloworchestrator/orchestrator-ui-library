@@ -1,3 +1,5 @@
+import { CSSObjectWithLabel } from 'react-select';
+
 import { css } from '@emotion/react';
 
 import type { WfoThemeHelpers } from '@/hooks';
@@ -17,6 +19,9 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
             color: state.isSelected
                 ? theme.colors.textPrimary
                 : theme.colors.textParagraph,
+            '&:active': {
+                backgroundColor: theme.colors.backgroundLightPrimary,
+            },
         }),
         control: (baseStyles: object, state: { isFocused: boolean }) => {
             return {
@@ -49,6 +54,24 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
         menu: (baseStyles: object) => ({
             ...baseStyles,
             backgroundColor: theme.colors.backgroundBasePlain,
+        }),
+        dropdownIndicator: (
+            base: CSSObjectWithLabel,
+            state: { isDisabled: boolean },
+        ) => ({
+            ...base,
+            color: state.isDisabled
+                ? theme.colors.borderBaseSubdued
+                : theme.colors.textDisabled,
+        }),
+        indicatorSeparator: (
+            base: CSSObjectWithLabel,
+            state: { isDisabled: boolean },
+        ) => ({
+            ...base,
+            backgroundColor: state.isDisabled
+                ? theme.colors.borderBaseSubdued
+                : theme.colors.textDisabled,
         }),
     };
 

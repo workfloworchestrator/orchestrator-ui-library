@@ -94,9 +94,7 @@ export const WfoAdvancedTable = <T extends object>({
                     css={{ cursor: 'pointer' }}
                     onClick={() => setSelectedDataForDetailModal(row)}
                 >
-                    <WfoArrowsExpand
-                        color={theme.colors.backgroundBaseDisabled}
-                    />
+                    <WfoArrowsExpand color={theme.colors.borderBasePlain} />
                 </EuiFlexItem>
             ),
         },
