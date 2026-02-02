@@ -211,6 +211,23 @@
             "ariaLabelDeleteButton": "Schema verwijderen",
             "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
             "addSchedule": "Plan een taak"
+        },
+        "scheduleTaskForm": {
+            "newSchedule": "Plan een nieuwe taak",
+            "selectTask": "Kies de taak om te plannen",
+            "selectTaskType": "Taak type",
+            "taskTypeInterval": "Interval",
+            "taskTypeCron": "Cron",
+            "taskTypeDate": "Eenmalig",
+            "firstRunDate": "Start datum",
+            "1hour": "1 uur",
+            "2hours": "2 uur",
+            "4hours": "4 uur",
+            "12hours": "12 uur",
+            "24hours": "24 uur",
+            "1week": "1 week",
+            "2weeks": "2 weken",
+            "1month": "1 maand"
         }
     },
     "processes": {

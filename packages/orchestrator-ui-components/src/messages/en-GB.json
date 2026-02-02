@@ -212,6 +212,23 @@
             "ariaLabelDeleteButton": "Delete task schedule",
             "deleteConfirmationQuestion": "Confirm deleting this schedule task",
             "addSchedule": "Schedule task"
+        },
+        "scheduleTaskForm": {
+            "newSchedule": "Create new schedule",
+            "selectTask": "Select the task you want to schedule",
+            "selectTaskType": "What type of schedule do you need?",
+            "taskTypeInterval": "Interval",
+            "taskTypeCron": "Cron",
+            "taskTypeDate": "Once",
+            "firstRunDate": "Start date",
+            "1hour": "1 hour",
+            "2hours": "2 hours",
+            "4hours": "4 hours",
+            "12hours": "12 hours",
+            "24hours": "24 hours",
+            "1week": "1 week",
+            "2weeks": "2 weeks",
+            "1month": "1 month"
         }
     },
     "processes": {
