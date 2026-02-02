@@ -1,50 +1,16 @@
 import React, { useCallback, useMemo } from 'react';
 
 import _ from 'lodash';
-import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import type {
-    ComponentMatcherExtender,
-    PydanticComponentMatcher,
-    PydanticFormApiProvider,
-    PydanticFormLabelProvider,
-} from 'pydantic-forms';
-import {
-    Locale,
-    PydanticForm,
-    PydanticFormConfig,
-    PydanticFormFieldFormat,
-    PydanticFormFieldType,
-    zodValidationPresets,
-} from 'pydantic-forms';
+import type { PydanticFormApiProvider } from 'pydantic-forms';
+import { PydanticForm } from 'pydantic-forms';
 
-import {
-    PATH_TASKS,
-    PATH_WORKFLOWS,
-    WfoCallout,
-    WfoLoading,
-} from '@/components';
+import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
+import { Footer } from '@/components/WfoPydanticForm/Footer';
+import { useGetPydanticFormsConfig } from '@/hooks/useGetPydanticFormsConfig';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
 import { HttpStatus, isFetchBaseQueryError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
-import { useAppSelector } from '@/rtk/hooks';
-
-import { Footer } from './Footer';
-import { Header } from './Header';
-import { Row } from './Row';
-import {
-    WfoArrayField,
-    WfoCheckbox,
-    WfoDivider,
-    WfoDropdown,
-    WfoInteger,
-    WfoLabel,
-    WfoMultiCheckboxField,
-    WfoObjectField,
-    WfoSummary,
-    WfoText,
-    WfoTextArea,
-} from './fields';
 
 interface WfoPydanticFormProps {
     processName: string;
@@ -55,219 +21,6 @@ interface WfoPydanticFormProps {
 interface StartProcessResponse {
     id: string;
 }
-
-export const useWfoPydanticFormConfig = () => {
-    const componentMatcherExtender = useAppSelector(
-        (state) => state.pydanticForm?.componentMatcherExtender,
-    );
-
-    const t = useTranslations('pydanticForms.userInputForm');
-    const translationMessages: AbstractIntlMessages = useMessages();
-
-    const formTranslations =
-        translationMessages?.pydanticForms &&
-        typeof translationMessages?.pydanticForms !== 'string'
-            ? translationMessages.pydanticForms.backendTranslations
-            : {};
-
-    const orchestratorTranslations = formTranslations as unknown;
-
-    const pydanticLabelProvider =
-        useCallback<PydanticFormLabelProvider>(async () => {
-            return {
-                labels: {
-                    ...(orchestratorTranslations as object),
-                },
-                data: {},
-            };
-        }, [orchestratorTranslations]);
-
-    const customTranslations = useMemo(() => {
-        const widgetsTranslations =
-            translationMessages?.pydanticForms &&
-            typeof translationMessages?.pydanticForms !== 'string'
-                ? translationMessages.pydanticForms.widgets
-                : {};
-
-        return {
-            cancel: t('cancel'),
-            startWorkflow: t('startWorkflow'),
-            widgets: {
-                ...(widgetsTranslations as object),
-            },
-            ...translationMessages,
-        };
-    }, [t, translationMessages]);
-
-    const wfoComponentMatcherExtender = useCallback<ComponentMatcherExtender>(
-        (currentMatchers) => {
-            const wfoMatchers: PydanticComponentMatcher[] = [
-                {
-                    id: 'textarea',
-                    ElementMatch: {
-                        Element: WfoTextArea,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            field.format === PydanticFormFieldFormat.LONG
-                        );
-                    },
-                },
-                {
-                    id: 'summary',
-                    ElementMatch: {
-                        Element: WfoSummary,
-                        isControlledElement: false,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            (field.format as string) === 'summary'
-                        );
-                    },
-                },
-                {
-                    id: 'label',
-                    ElementMatch: {
-                        Element: WfoLabel,
-                        isControlledElement: false,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            field.format === PydanticFormFieldFormat.LABEL
-                        );
-                    },
-                },
-                {
-                    id: 'divider',
-                    ElementMatch: {
-                        Element: WfoDivider,
-                        isControlledElement: false,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            field.format === PydanticFormFieldFormat.DIVIDER
-                        );
-                    },
-                },
-                {
-                    id: 'checkbox',
-                    ElementMatch: {
-                        Element: WfoCheckbox,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return field.type === PydanticFormFieldType.BOOLEAN;
-                    },
-                },
-                {
-                    id: 'dropdown',
-                    ElementMatch: {
-                        Element: WfoDropdown,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        // We are looking for a single value from a set list of options.
-                        // We are not using a radio button component to maintain being able to deselect options
-                        return (
-                            field.type === PydanticFormFieldType.STRING &&
-                            _.isArray(field.options) &&
-                            field.options.length > 0
-                        );
-                    },
-                },
-                {
-                    id: 'integerfield',
-                    ElementMatch: {
-                        Element: WfoInteger,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return field.type === PydanticFormFieldType.INTEGER;
-                    },
-                    validator: zodValidationPresets.integer,
-                },
-                {
-                    id: 'multicheckbox',
-                    ElementMatch: {
-                        Element: WfoMultiCheckboxField,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return (
-                            field.type === PydanticFormFieldType.ARRAY &&
-                            _.isArray(field.options) &&
-                            field.options?.length > 0 &&
-                            field.options?.length <= 5
-                        );
-                    },
-                    validator: zodValidationPresets.multiSelect,
-                },
-                {
-                    id: 'callout',
-                    ElementMatch: {
-                        isControlledElement: false,
-                        Element: WfoCallout,
-                    },
-                    matcher: ({ type, format }) => {
-                        return (
-                            type === PydanticFormFieldType.STRING &&
-                            format === ('callout' as PydanticFormFieldFormat)
-                        );
-                    },
-                },
-                ...currentMatchers
-                    .filter((matcher) => matcher.id !== 'text')
-                    .filter((matcher) => matcher.id !== 'array')
-                    .filter((matcher) => matcher.id !== 'object'),
-                {
-                    id: 'object',
-                    ElementMatch: {
-                        isControlledElement: false,
-                        Element: WfoObjectField,
-                    },
-                    matcher: (field) =>
-                        field.type === PydanticFormFieldType.OBJECT,
-                },
-                {
-                    id: 'array',
-                    ElementMatch: {
-                        isControlledElement: true,
-                        Element: WfoArrayField,
-                    },
-                    matcher: (field) =>
-                        field.type === PydanticFormFieldType.ARRAY,
-                },
-                {
-                    id: 'text',
-                    ElementMatch: {
-                        Element: WfoText,
-                        isControlledElement: true,
-                    },
-                    matcher(field) {
-                        return field.type === PydanticFormFieldType.STRING;
-                    },
-                    validator: zodValidationPresets.string,
-                },
-            ];
-
-            return componentMatcherExtender
-                ? componentMatcherExtender(wfoMatchers)
-                : wfoMatchers;
-        },
-        [componentMatcherExtender],
-    );
-
-    return {
-        wfoComponentMatcherExtender,
-        pydanticLabelProvider,
-        customTranslations,
-    };
-};
 
 export const WfoPydanticForm = ({
     processName,
@@ -280,11 +33,6 @@ export const WfoPydanticForm = ({
 
     const [startProcess] = useStartProcessMutation();
     const router = useRouter();
-    const {
-        wfoComponentMatcherExtender,
-        pydanticLabelProvider,
-        customTranslations,
-    } = useWfoPydanticFormConfig();
 
     const onSuccess = useCallback(
         (_fieldValues: object, req: object) => {
@@ -353,38 +101,15 @@ export const WfoPydanticForm = ({
         return pydanticFormProvider;
     }, [startProcess, startProcessPayload]);
 
+    const config = useGetPydanticFormsConfig(
+        getPydanticFormProvider,
+        (props) => <Footer {...props} isTask={isTask} />,
+    );
+
     const handleCancel = useCallback(() => {
         const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
         router.replace(pfBasePath);
     }, [isTask, router]);
-
-    const config = useMemo((): PydanticFormConfig => {
-        const getLocale = () => {
-            if (router.locale) {
-                return router.locale as Locale;
-            }
-            return Locale.enGB; // Default to enGB if no locale is set
-        };
-
-        return {
-            apiProvider: getPydanticFormProvider(),
-            footerRenderer: (props) => <Footer {...props} isTask={isTask} />,
-            headerRenderer: Header,
-            componentMatcherExtender: wfoComponentMatcherExtender,
-            labelProvider: pydanticLabelProvider,
-            rowRenderer: Row,
-            customTranslations: customTranslations,
-            loadingComponent: <WfoLoading />,
-            locale: getLocale(),
-        };
-    }, [
-        customTranslations,
-        getPydanticFormProvider,
-        isTask,
-        pydanticLabelProvider,
-        router.locale,
-        wfoComponentMatcherExtender,
-    ]);
 
     return (
         <PydanticForm
