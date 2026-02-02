@@ -4,9 +4,8 @@ import { PydanticForm, PydanticFormApiProvider } from 'pydantic-forms';
 
 import { EuiFlexItem } from '@elastic/eui';
 
-import { Header, Row, useWfoPydanticFormConfig } from '@/components';
 import { StepFormFooter } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormFooter';
-import { useOrchestratorTheme } from '@/hooks';
+import { useGetPydanticFormsConfig, useOrchestratorTheme } from '@/hooks';
 import { HttpStatus } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
 import { FormUserPermissions, InputForm } from '@/types';
@@ -25,11 +24,7 @@ export const WfoStepForm = ({
     userPermissions,
 }: WfoStepFormProps) => {
     const { theme } = useOrchestratorTheme();
-    const {
-        wfoComponentMatcherExtender,
-        pydanticLabelProvider,
-        customTranslations,
-    } = useWfoPydanticFormConfig();
+
     const [resumeProcess] = useResumeProcessMutation();
 
     const getInitialStepInput = useMemo(() => userInputForm, [userInputForm]);
@@ -65,25 +60,21 @@ export const WfoStepForm = ({
         [getInitialStepInput, processId, resumeProcess],
     );
 
+    const Footer = () => (
+        <StepFormFooter
+            isTask={isTask}
+            isResumeAllowed={userPermissions.resumeAllowed}
+        />
+    );
+
+    const config = useGetPydanticFormsConfig(getStepFormProvider, Footer);
+
     return (
         <EuiFlexItem css={{ margin: theme.size.m }}>
             <PydanticForm
                 formKey={processId}
                 formId="wfo-step-form"
-                config={{
-                    apiProvider: getStepFormProvider(),
-                    footerRenderer: () => (
-                        <StepFormFooter
-                            isTask={isTask}
-                            isResumeAllowed={userPermissions.resumeAllowed}
-                        />
-                    ),
-                    headerRenderer: Header,
-                    componentMatcherExtender: wfoComponentMatcherExtender,
-                    rowRenderer: Row,
-                    labelProvider: pydanticLabelProvider,
-                    customTranslations: customTranslations,
-                }}
+                config={config}
             />
         </EuiFlexItem>
     );
