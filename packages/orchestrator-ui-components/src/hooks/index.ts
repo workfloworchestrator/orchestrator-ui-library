@@ -1,3 +1,4 @@
+export * from './useAgentGraphEvents';
 export * from './useCheckEngineStatus';
 export * from './useContentRef';
 export * from './useOrchestratorConfig';
