@@ -41,7 +41,7 @@ export const WfoStartButtonComboBox = ({
     startWorkflowFilters,
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-    const { theme, isDarkModeActive } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const { selectableStyle } = useWithOrchestratorTheme(getStyles);
 
     const Button = (

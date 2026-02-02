@@ -40,7 +40,6 @@ export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
 export const getMenuItemStyles = ({
     theme,
     isDarkModeActive,
-    toSecondaryColor,
 }: WfoThemeHelpers) => {
     const baseStyles: CSSObject = {
         lineHeight: `${theme.base * 1.25}px`,
