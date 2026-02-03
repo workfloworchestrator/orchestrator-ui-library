@@ -182,6 +182,7 @@ export const orchestratorApi = createApi({
         CacheTagType.processes,
         CacheTagType.processStatusCounts,
         CacheTagType.subscriptions,
+        CacheTagType.scheduledTasks,
     ],
     keepUnusedDataFor:
         process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60 * 1000,

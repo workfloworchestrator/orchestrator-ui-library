@@ -1,6 +1,7 @@
 import { orchestratorApi } from '@/rtk';
 import {
     BaseGraphQlResult,
+    CacheTagType,
     GraphqlQueryVariables,
     TaskDefinition,
     TaskDefinitionsResult,
@@ -73,6 +74,7 @@ const tasksApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
+            providesTags: [CacheTagType.scheduledTasks],
         }),
     }),
 });
