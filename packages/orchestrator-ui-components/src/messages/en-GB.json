@@ -217,6 +217,7 @@
             "newSchedule": "Create new schedule",
             "selectTask": "Select the task you want to schedule",
             "selectTaskType": "What type of schedule do you need?",
+            "selectInterval": "Choose the schedule interval",
             "taskTypeInterval": "Interval",
             "taskTypeCron": "Cron",
             "taskTypeDate": "Once",

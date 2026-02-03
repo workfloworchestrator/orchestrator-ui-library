@@ -216,6 +216,7 @@
             "newSchedule": "Plan een nieuwe taak",
             "selectTask": "Kies de taak om te plannen",
             "selectTaskType": "Taak type",
+            "selectInterval": "Kies de taak interval",
             "taskTypeInterval": "Interval",
             "taskTypeCron": "Cron",
             "taskTypeDate": "Eenmalig",
