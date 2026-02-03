@@ -179,6 +179,7 @@ const scheduledTasksApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
+            invalidatesTags: [CacheTagType.scheduledTasks],
         }),
     }),
 });
