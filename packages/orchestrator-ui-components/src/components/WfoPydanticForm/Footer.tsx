@@ -3,7 +3,7 @@
  *
  * Form footer component
  */
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 
 import { useTranslations } from 'next-intl';
 import type { PydanticFormFooterProps } from 'pydantic-forms';
@@ -37,14 +37,14 @@ export const Footer = ({
     const t = useTranslations('pydanticForms.userInputForm');
     const { showConfirmDialog } = useContext(ConfirmationDialogContext);
 
-    const handlePrevious = () => {
+    const handlePrevious = useCallback(() => {
         if (onCancel) {
             showConfirmDialog({
                 question: t('previousQuestion'),
                 onConfirm: onCancel,
             });
         }
-    };
+    }, [onCancel, showConfirmDialog, t]);
 
     const { next, previous } = buttons || {};
 

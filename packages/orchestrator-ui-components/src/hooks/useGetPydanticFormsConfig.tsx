@@ -121,6 +121,24 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
                     },
                 },
                 {
+                    id: 'buttonTypes',
+                    ElementMatch: {
+                        isControlledElement: false,
+                        Element: () => null,
+                    },
+                    matcher: ({ type, title }) => {
+                        return (
+                            [
+                                PydanticFormFieldType.STRING,
+                                PydanticFormFieldType.OBJECT,
+                            ].includes(type) &&
+                            ['ButtonConfig', 'Buttons', 'ButtonColor'].includes(
+                                title,
+                            )
+                        );
+                    },
+                },
+                {
                     id: 'dropdown',
                     ElementMatch: {
                         Element: WfoDropdown,

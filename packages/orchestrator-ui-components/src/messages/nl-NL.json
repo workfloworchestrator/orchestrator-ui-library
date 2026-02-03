@@ -228,7 +228,8 @@
             "24hours": "24 uur",
             "1week": "1 week",
             "2weeks": "2 weken",
-            "1month": "1 maand"
+            "1month": "1 maand",
+            "createScheduleButton": "Maak schema"
         }
     },
     "processes": {

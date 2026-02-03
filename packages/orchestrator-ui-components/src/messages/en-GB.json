@@ -229,7 +229,8 @@
             "24hours": "24 hours",
             "1week": "1 week",
             "2weeks": "2 weeks",
-            "1month": "1 month"
+            "1month": "1 month",
+            "createScheduleButton": "Create schedule"
         }
     },
     "processes": {
