@@ -661,3 +661,20 @@ export interface Option<ValueType = string> {
 export type CacheTag = { type: CacheTagType; id?: string };
 
 export const CACHETAG_TYPE_LIST = 'LIST';
+
+export enum TaskType {
+    DATE = 'date',
+    INTERVAL = 'interval',
+    CRON = 'cron',
+}
+
+export enum Intervals {
+    ONE_HOUR = '1hour',
+    TWO_HOURS = '2hours',
+    FOUR_HOURS = '4hours',
+    TWELVE_HOURS = '12hours',
+    TWENTY4_HOURS = '24hours',
+    ONE_WEEK = '1week',
+    TWO_WEEKS = '2weeks',
+    ONE_MONTH = '1months',
+}
