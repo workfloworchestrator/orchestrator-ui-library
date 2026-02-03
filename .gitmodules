@@ -1,6 +1,3 @@
 [submodule "apps/wfo-ui"]
 	path = apps/wfo-ui
 	url = git@github.com:workfloworchestrator/example-orchestrator-ui.git
-[submodule "apps/wfo-ui-surf"]
-    path = apps/wfo-ui-surf
-    url = git@git.ia.surfsara.nl:netdev/automation/projects/orchestrator-ui.git
