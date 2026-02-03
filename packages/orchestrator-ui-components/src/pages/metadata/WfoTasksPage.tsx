@@ -134,7 +134,7 @@ const SetScheduleButton = ({
             onClick={() => {
                 closePopover();
                 router.push(
-                    `${PATH_METADATA_ADD_SCHEDULE_TASK_FORM}/${workflowId}`,
+                    `${PATH_METADATA_ADD_SCHEDULE_TASK_FORM}/?workflowId=${workflowId}`,
                 );
             }}
         >
