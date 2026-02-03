@@ -3,6 +3,7 @@ import { orchestratorApi } from '@/rtk';
 import { BaseQueryTypes } from '@/rtk';
 import {
     BaseGraphQlResult,
+    CacheTagType,
     GraphqlQueryVariables,
     ScheduledTaskDefinition,
     ScheduledTasksDefinitionsResult,
@@ -129,6 +130,7 @@ const scheduledTasksApi = orchestratorApi.injectEndpoints({
                     pageInfo,
                 };
             },
+            providesTags: [CacheTagType.scheduledTasks],
         }),
         deleteScheduledTask: builder.mutation<
             unknown,
@@ -149,6 +151,7 @@ const scheduledTasksApi = orchestratorApi.injectEndpoints({
             extraOptions: {
                 baseQueryType: BaseQueryTypes.fetch,
             },
+            invalidatesTags: [CacheTagType.scheduledTasks],
         }),
         createScheduledTask: builder.mutation<
             unknown,
