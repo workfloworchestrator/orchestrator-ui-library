@@ -152,6 +152,7 @@ export const WfoScheduleTaskFormPage = () => {
             meta: {
                 hasNext: false,
             },
+            status: 510,
         };
         return formStep2;
     };
@@ -324,6 +325,7 @@ export const WfoScheduleTaskFormPage = () => {
         meta: {
             hasNext: true,
         },
+        status: 510,
     };
 
     const getApiProvider = (): PydanticFormApiProvider => {
