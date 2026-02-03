@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.2.1
+
+### Patch Changes
+
+-   a976e7c: Update Elastic UI to v111.0.0
+-   a86e5fb: Fix resetting page index to 0 when reloading, add page index bounds guard
+
 ## 7.2.0
 
 ### Minor Changes
