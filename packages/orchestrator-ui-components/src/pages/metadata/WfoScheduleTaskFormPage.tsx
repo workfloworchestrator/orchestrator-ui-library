@@ -61,6 +61,7 @@ type CreateScheduleFormInput = [
 export const WfoScheduleTaskFormPage = () => {
     const t = useTranslations('metadata.scheduleTaskForm');
     const { showToastMessage } = useShowToastMessage();
+
     const [createScheduledTask, mutationState] =
         useCreateScheduledTaskMutation();
     const { data, isLoading } = useGetTasksQuery({
@@ -68,7 +69,7 @@ export const WfoScheduleTaskFormPage = () => {
         after: 0,
     });
     const router = useRouter();
-
+    const { workflowId } = router.query;
     const getFormStep2 = (
         userInput: CreateScheduleFormInput,
     ): PydanticFormDefinitionResponse => {
@@ -310,6 +311,7 @@ export const WfoScheduleTaskFormPage = () => {
                     type: PydanticFormFieldType.STRING,
                     format: PydanticFormFieldFormat.DROPDOWN,
                     $ref: '#/$defs/TasksEnum',
+                    default: workflowId as string,
                 },
                 taskType: {
                     type: PydanticFormFieldType.STRING,
