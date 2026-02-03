@@ -222,6 +222,10 @@ export const WfoScheduleTaskFormPage = () => {
         router.replace(PATH_METADATA_SCHEDULED_TASKS);
     };
 
+    const onCancel = () => {
+        router.replace(PATH_METADATA_SCHEDULED_TASKS);
+    };
+
     const createTask = (
         userInput: CreateScheduleFormInput,
     ): PydanticFormSuccessResponse => {
@@ -435,6 +439,7 @@ export const WfoScheduleTaskFormPage = () => {
                     formKey="add-schedule-key"
                     formId="add-schedule-id"
                     onSuccess={onSuccess}
+                    onCancel={onCancel}
                     config={config}
                 />
             )}
