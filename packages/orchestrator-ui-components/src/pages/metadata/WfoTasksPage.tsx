@@ -275,6 +275,7 @@ export const WfoTasksPage = () => {
                 />
             ),
             width: '80px',
+            isSortable: false,
         },
         createdAt: {
             columnType: ColumnType.DATA,
