@@ -163,7 +163,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({
                                     key={`arrow-${index}`}
                                     type="arrowRight"
                                     size="s"
-                                    color={theme.colors.mediumShade}
+                                    color={theme.colors.backgroundBaseDisabled}
                                     title=""
                                     style={{
                                         flexShrink: 0,

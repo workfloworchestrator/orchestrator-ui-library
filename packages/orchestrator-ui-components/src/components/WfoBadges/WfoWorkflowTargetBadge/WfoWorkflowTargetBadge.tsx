@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import { useOrchestratorTheme } from '../../../hooks';
-import { WorkflowTarget } from '../../../types';
+import { useOrchestratorTheme } from '@/hooks';
+import { WorkflowTarget } from '@/types';
+
 import { WfoBadge } from '../WfoBadge';
 
 export type WfoWorkflowTargetBadgeProps = {
@@ -18,47 +19,47 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({
         const {
             primary,
             danger,
-            dangerText,
-            primaryText,
+            textDanger,
+            textPrimary,
             success,
-            successText,
+            textSuccess,
             warning,
-            warningText,
+            textWarning,
             accent,
-            accentText,
+            textAccent,
         } = theme.colors;
 
         switch (_target?.toLowerCase()) {
             case WorkflowTarget.CREATE:
                 return {
                     badgeColor: toSecondaryColor(success),
-                    textColor: successText,
+                    textColor: textSuccess,
                 };
             case WorkflowTarget.MODIFY:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
             case WorkflowTarget.SYSTEM:
             case WorkflowTarget.VALIDATE:
                 return {
                     badgeColor: toSecondaryColor(warning),
-                    textColor: warningText,
+                    textColor: textWarning,
                 };
             case WorkflowTarget.TERMINATE:
                 return {
                     badgeColor: toSecondaryColor(danger),
-                    textColor: dangerText,
+                    textColor: textDanger,
                 };
             case WorkflowTarget.RECONCILE:
                 return {
                     badgeColor: toSecondaryColor(accent),
-                    textColor: accentText,
+                    textColor: textAccent,
                 };
             default:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
         }
     };

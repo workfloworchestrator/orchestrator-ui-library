@@ -53,7 +53,7 @@ export const WfoTargetTypeIcon: FC<WfoTargetTypeIconProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
     const backGroundColor = disabled
-        ? theme.colors.lightShade
+        ? theme.colors.borderBaseSubdued
         : getWorkflowTargetColor(target, theme);
     const targetLetter = getWorkflowTargetIconContent(target);
     return (
@@ -66,7 +66,9 @@ export const WfoInSyncCompactIcon: FC<WfoInSyncCompactIconProps> = ({
 }) => {
     const { theme } = useOrchestratorTheme();
 
-    const color = disabled ? theme.colors.lightShade : theme.colors.danger;
+    const color = disabled
+        ? theme.colors.borderBaseSubdued
+        : theme.colors.danger;
     const name = 'S';
     return <Icon targetLetter={name} backgroundColor={color} />;
 };

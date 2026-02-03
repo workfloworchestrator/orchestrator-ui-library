@@ -94,7 +94,7 @@ export const WfoAdvancedTable = <T extends object>({
                     css={{ cursor: 'pointer' }}
                     onClick={() => setSelectedDataForDetailModal(row)}
                 >
-                    <WfoArrowsExpand color={theme.colors.mediumShade} />
+                    <WfoArrowsExpand color={theme.colors.borderBasePlain} />
                 </EuiFlexItem>
             ),
         },
@@ -173,7 +173,7 @@ export const WfoAdvancedTable = <T extends object>({
                         <EuiButtonIcon
                             onClick={() => setShowSearchModal(true)}
                             iconSize={'xl'}
-                            iconType={'iInCircle'}
+                            iconType={'info'}
                             aria-label={t('searchModalTitle')}
                         />
                     )}

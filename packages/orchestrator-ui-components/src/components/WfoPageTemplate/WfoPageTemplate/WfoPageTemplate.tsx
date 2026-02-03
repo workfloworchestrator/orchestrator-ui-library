@@ -1,11 +1,23 @@
-import React, { FC, ReactElement, ReactNode, useRef, useState } from 'react';
+import React, {
+    FC,
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
-import { EuiPageTemplate, EuiSideNavItemType } from '@elastic/eui';
+import {
+    EuiPageTemplate,
+    EuiSideNavItemType,
+    EuiThemeProvider,
+} from '@elastic/eui';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { ProductLifecycleStatus } from '@/types';
+import { wfoThemeModifications } from '@/theme';
+import { ColorModes, ProductLifecycleStatus } from '@/types';
 
 import { ContentContextProvider } from './ContentContext';
 import { getPageTemplateStyles } from './styles';
@@ -16,23 +28,59 @@ export interface WfoPageTemplateProps {
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
     overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
-    onThemeSwitch: (theme: EuiThemeColorMode) => void;
     children: ReactNode;
+    colorModeState: [
+        EuiThemeColorMode,
+        React.Dispatch<React.SetStateAction<EuiThemeColorMode>>,
+    ];
 }
 
-export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
+export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
+    const [colorMode, setColorMode] = props.colorModeState;
+    const handleColorModeSwitch = (newColorMode: EuiThemeColorMode) => {
+        setColorMode(newColorMode);
+        localStorage.setItem('colorMode', newColorMode);
+    };
+
+    useEffect(() => {
+        // Initialize theme mode from localStorage or set it to 'light' if not present
+        const storedColorMode = localStorage.getItem('colorMode');
+        if (
+            storedColorMode !== ColorModes.LIGHT &&
+            storedColorMode !== ColorModes.DARK
+        ) {
+            handleColorModeSwitch(ColorModes.LIGHT);
+        } else {
+            handleColorModeSwitch(storedColorMode);
+        }
+    }, []);
+
+    return (
+        <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
+            <WfoPageTemplateContent
+                {...props}
+                handleColorModeSwitch={handleColorModeSwitch}
+            />
+        </EuiThemeProvider>
+    );
+};
+
+const WfoPageTemplateContent: FC<
+    WfoPageTemplateProps & {
+        handleColorModeSwitch: (mode: EuiThemeColorMode) => void;
+    }
+> = ({
     children,
     getAppLogo,
     overrideMenuItems,
     overrideStartWorkflowFilters,
-    onThemeSwitch,
+    handleColorModeSwitch,
 }) => {
     const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
         getPageTemplateStyles,
     );
 
     const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
-
     const headerRowRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -40,7 +88,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = ({
             <WfoPageHeader
                 getAppLogo={getAppLogo}
                 navigationHeight={NAVIGATION_HEIGHT}
-                onThemeSwitch={onThemeSwitch}
+                onColorModeSwitch={handleColorModeSwitch}
             />
             {/* Sidebar and content area */}
             <EuiPageTemplate

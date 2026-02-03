@@ -1,8 +1,10 @@
+import { CSSObjectWithLabel } from 'react-select';
+
 import { css } from '@emotion/react';
 
-import type { WfoTheme } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
+export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
     const { theme } = wfoTheme;
 
     const reactSelectInnerComponentStyles = {
@@ -12,20 +14,23 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
         ) => ({
             ...baseStyles,
             borderBottom: theme.border.thin,
-            borderColor: theme.colors.lightShade,
-            backgroundColor: theme.colors.lightestShade,
+            borderColor: theme.colors.borderBaseSubdued,
+            backgroundColor: theme.colors.backgroundBaseSubdued,
             color: state.isSelected
-                ? theme.colors.primaryText
-                : theme.colors.text,
+                ? theme.colors.textPrimary
+                : theme.colors.textParagraph,
+            '&:active': {
+                backgroundColor: theme.colors.backgroundLightPrimary,
+            },
         }),
         control: (baseStyles: object, state: { isFocused: boolean }) => {
             return {
                 ...baseStyles,
                 backgroundColor: state.isFocused
-                    ? theme.colors.emptyShade
-                    : theme.colors.lightestShade,
-                color: theme.colors.text,
-                border: `1px solid ${theme.colors.lightShade}`,
+                    ? theme.colors.backgroundBaseNeutral
+                    : theme.colors.backgroundBaseSubdued,
+                color: theme.colors.textParagraph,
+                border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 borderColor: 'none',
                 '&:hover': {
                     borderColor: 'none',
@@ -34,7 +39,7 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
         },
         input: (baseStyles: object) => ({
             ...baseStyles,
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         }),
         singleValue: (baseStyles: object, state: { isDisabled: boolean }) => {
             const opacity = state.isDisabled ? 0.6 : 1;
@@ -43,12 +48,30 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoTheme) => {
                 ...baseStyles,
                 opacity,
                 transition,
-                color: theme.colors.text,
+                color: theme.colors.textParagraph,
             };
         },
         menu: (baseStyles: object) => ({
             ...baseStyles,
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
+        }),
+        dropdownIndicator: (
+            base: CSSObjectWithLabel,
+            state: { isDisabled: boolean },
+        ) => ({
+            ...base,
+            color: state.isDisabled
+                ? theme.colors.borderBaseSubdued
+                : theme.colors.textDisabled,
+        }),
+        indicatorSeparator: (
+            base: CSSObjectWithLabel,
+            state: { isDisabled: boolean },
+        ) => ({
+            ...base,
+            backgroundColor: state.isDisabled
+                ? theme.colors.borderBaseSubdued
+                : theme.colors.textDisabled,
         }),
     };
 

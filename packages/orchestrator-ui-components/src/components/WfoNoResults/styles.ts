@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const panelStyle = css({
         display: 'flex',
         padding: theme.base * 2,
@@ -10,7 +10,7 @@ export const getStyles = ({ theme }: WfoTheme) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: theme.base / 2,
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         borderRadius: theme.border.radius.medium,
         color: theme.colors.link,
         fontFamily: theme.font.family,

@@ -24,7 +24,11 @@ export const WfoSortButton: FC<WfoSortButtonProps> = ({
             onClick={() => isActive && onClick?.()}
         >
             <WfoIconComponent
-                color={isActive ? theme.colors.title : theme.colors.lightShade}
+                color={
+                    isActive
+                        ? theme.colors.textHeading
+                        : theme.colors.borderBaseSubdued
+                }
             />
         </button>
     );

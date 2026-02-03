@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = ({ theme }: WfoTheme) => {
+export const getStyles = ({ theme }: WfoThemeHelpers) => {
     const padding = theme.font.baseline * 2.5;
     const clipboardIconMargin = theme.font.baseline * 2;
     const keyColumnWidth = theme.base * 12;
@@ -25,11 +25,11 @@ export const getStyles = ({ theme }: WfoTheme) => {
     });
 
     const lightBackground = css({
-        backgroundColor: theme.colors.emptyShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
     });
 
     const darkBackground = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
     });
 
     const getBackgroundColorStyleForRow = (rowNumber: number) =>
@@ -56,12 +56,12 @@ export const getStyles = ({ theme }: WfoTheme) => {
 
     const keyCellStyle = css({
         fontWeight: theme.font.weight.medium,
-        color: theme.colors.title,
+        color: theme.colors.textHeading,
     });
 
     const valueCellStyle = css({
         fontWeight: theme.font.weight.regular,
-        color: theme.colors.text,
+        color: theme.colors.textParagraph,
         display: 'flex',
         alignItems: 'center',
         overflowWrap: 'anywhere',

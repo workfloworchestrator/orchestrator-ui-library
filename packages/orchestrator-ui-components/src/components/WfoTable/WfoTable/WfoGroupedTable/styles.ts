@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoGroupedTableStyles = ({ theme }: WfoTheme) => {
+export const getWfoGroupedTableStyles = ({ theme }: WfoThemeHelpers) => {
     // Matches the default width of a EuiButtonIcon component
     const expandRowButtonWidth = '24px';
     const marginBetweenButtonAndGroupLabel = theme.size.m;
@@ -10,7 +10,7 @@ export const getWfoGroupedTableStyles = ({ theme }: WfoTheme) => {
     const innerTableHeaderStyle = css({
         fontSize: theme.size.m,
         textAlign: 'left',
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
     });
 
     const expandableRowContainerStyle = css({

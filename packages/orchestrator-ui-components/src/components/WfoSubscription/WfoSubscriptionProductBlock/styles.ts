@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 
-import type { WfoTheme } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
-export const getStyles = (wfoTheme: WfoTheme) => {
-    const { theme, toSecondaryColor } = wfoTheme;
+export const getStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
     const iconStyle = css({
         width: 45,
         height: 45,
@@ -17,8 +16,8 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     const iconOutsideCurrentSubscriptionStyle = css([
         iconStyle,
         {
-            backgroundColor: theme.colors.lightShade,
-            color: theme.colors.darkestShade,
+            backgroundColor: theme.colors.borderBaseSubdued,
+            color: theme.colors.textParagraph,
         },
     ]);
 
@@ -30,8 +29,8 @@ export const getStyles = (wfoTheme: WfoTheme) => {
     });
 
     const panelStyleOutsideCurrentSubscription = css({
-        backgroundColor: toSecondaryColor(theme.colors.emptyShade),
-        border: `dashed 1px ${theme.colors.lightShade}`,
+        backgroundColor: toSecondaryColor(theme.colors.backgroundBaseNeutral),
+        border: `dashed 1px ${theme.colors.borderBaseSubdued}`,
     });
 
     const rowStyle = css({
@@ -39,9 +38,9 @@ export const getStyles = (wfoTheme: WfoTheme) => {
         flexDirection: 'row',
         alignItems: 'flex-start',
         padding: `${theme.base / 2}px 0`,
-        borderBottom: `solid 1px ${theme.colors.lightShade}`,
+        borderBottom: `solid 1px ${theme.colors.borderBaseSubdued}`,
         '&:first-child': {
-            borderTop: `solid 1px ${theme.colors.lightShade}`,
+            borderTop: `solid 1px ${theme.colors.borderBaseSubdued}`,
         },
         '&:last-child': {
             borderBottom: 'none',

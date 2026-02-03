@@ -230,7 +230,7 @@ export const WfoProcessDetail = ({
                             <WfoRefresh
                                 color={
                                     retryButtonIsDisabled
-                                        ? theme.colors.subduedText
+                                        ? theme.colors.textSubdued
                                         : theme.colors.link
                                 }
                             />
@@ -247,7 +247,7 @@ export const WfoProcessDetail = ({
                             <WfoXCircleFill
                                 color={
                                     abortButtonIsDisabled
-                                        ? theme.colors.subduedText
+                                        ? theme.colors.textSubdued
                                         : theme.colors.danger
                                 }
                             />
@@ -269,7 +269,7 @@ export const WfoProcessDetail = ({
                                     <WfoXCircleFill
                                         color={
                                             deleteButtonIsDisabled
-                                                ? theme.colors.subduedText
+                                                ? theme.colors.textSubdued
                                                 : theme.colors.danger
                                         }
                                     />

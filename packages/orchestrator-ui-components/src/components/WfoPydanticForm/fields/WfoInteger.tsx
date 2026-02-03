@@ -7,15 +7,15 @@ import { getFormFieldIdWithPath } from 'pydantic-forms';
 import { EuiFieldNumber } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-import type { WfoTheme } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 import { useWithOrchestratorTheme } from '@/hooks';
 
-const getFormFieldsBaseStyle = ({ theme }: WfoTheme) => {
+const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
     const formFieldBaseStyle = css({
-        backgroundColor: theme.colors.body,
-        color: theme.colors.text,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
+        color: theme.colors.textParagraph,
         '&:focus': {
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
         },
     });
 

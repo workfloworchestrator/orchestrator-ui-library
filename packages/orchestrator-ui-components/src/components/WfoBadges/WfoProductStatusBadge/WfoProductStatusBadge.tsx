@@ -16,29 +16,29 @@ export const WfoProductStatusBadge: FC<WfoProductStatusBadgeProps> = ({
     const getBadgeColorFromStatus = (status: string) => {
         const {
             primary,
-            darkestShade,
-            lightShade,
-            primaryText,
+            borderBaseSubdued,
+            textPrimary,
+            textParagraph,
             success,
-            successText,
+            textSuccess,
         } = theme.colors;
 
         switch (status.toLowerCase()) {
             case ProductLifecycleStatus.ACTIVE:
                 return {
                     badgeColor: toSecondaryColor(success),
-                    textColor: successText,
+                    textColor: textSuccess,
                 };
             case ProductLifecycleStatus.END_OF_LIFE:
                 return {
-                    badgeColor: lightShade,
-                    textColor: darkestShade,
+                    badgeColor: borderBaseSubdued,
+                    textColor: textParagraph,
                 };
 
             default:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
         }
     };

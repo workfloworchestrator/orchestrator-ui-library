@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getToolProgressStyles = ({ theme }: WfoTheme) => {
+export const getToolProgressStyles = ({ theme }: WfoThemeHelpers) => {
     const containerStyle = css({
-        border: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
+        border: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
         borderRadius: theme.border.radius.medium,
-        backgroundColor: theme.colors.emptyShade,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
         transition: `all ${theme.animation.normal} ease`,
         maxWidth: '50%',
         marginRight: 'auto',
@@ -16,7 +16,7 @@ export const getToolProgressStyles = ({ theme }: WfoTheme) => {
         cursor: 'pointer',
         '&:hover': {
             borderColor: theme.colors.primary,
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
@@ -30,14 +30,14 @@ export const getToolProgressStyles = ({ theme }: WfoTheme) => {
     });
 
     const expandedContentStyle = css({
-        borderTop: `${theme.border.width.thin} solid ${theme.colors.lightShade}`,
+        borderTop: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
         padding: `${theme.size.base} ${theme.size.l}`,
     });
 
     const iconSize = 18;
 
     const iconStyle = css({
-        color: theme.colors.subduedText,
+        color: theme.colors.textSubdued,
     });
 
     return {

@@ -20,10 +20,10 @@ export const WfoSelectedPathDisplay: FC<SelectedPathDisplayProps> = ({
             onClick={onEdit}
             style={{
                 cursor: 'pointer',
-                border: `1px solid ${theme.colors.lightShade}`,
+                border: `1px solid ${theme.colors.borderBaseSubdued}`,
                 borderRadius: theme.border.radius.medium,
                 padding: `${theme.size.s} ${theme.size.m}`,
-                backgroundColor: theme.colors.emptyShade,
+                backgroundColor: theme.colors.backgroundBaseNeutral,
                 minHeight: '40px',
                 display: 'flex',
                 alignItems: 'center',
@@ -43,7 +43,10 @@ export const WfoSelectedPathDisplay: FC<SelectedPathDisplayProps> = ({
                             responsive={false}
                         >
                             <EuiFlexItem grow={false}>
-                                <EuiText size="s" color={theme.colors.text}>
+                                <EuiText
+                                    size="s"
+                                    color={theme.colors.textParagraph}
+                                >
                                     {getFieldNameFromFullPath(condition.path)}:
                                 </EuiText>
                             </EuiFlexItem>
@@ -52,7 +55,7 @@ export const WfoSelectedPathDisplay: FC<SelectedPathDisplayProps> = ({
                                     size="s"
                                     style={{
                                         backgroundColor:
-                                            theme.colors.lightestShade,
+                                            theme.colors.backgroundBasePlain,
                                         color: theme.colors.primary,
                                         padding: `${theme.size.xxs} ${theme.size.xs}`,
                                         borderRadius: theme.border.radius.small,
@@ -64,7 +67,7 @@ export const WfoSelectedPathDisplay: FC<SelectedPathDisplayProps> = ({
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     ) : (
-                        <EuiText size="s" color={theme.colors.text}>
+                        <EuiText size="s" color={theme.colors.textParagraph}>
                             {condition.path}
                         </EuiText>
                     )}

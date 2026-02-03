@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { css, keyframes } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 import {
     HEADER_CELL_TITLE_BUTTON_CLASS,
@@ -10,7 +10,10 @@ import {
 } from './WfoTableHeaderCell/styles';
 import { TABLE_ROW_HEIGHT } from './constants';
 
-export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
+export const getWfoTableStyles = ({
+    theme,
+    isDarkModeActive,
+}: WfoThemeHelpers) => {
     const radius = theme.border.radius.medium;
 
     const tableLoadingLineKeyframes = keyframes({
@@ -41,13 +44,9 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
     });
 
     const headerStyle = css({
-        position: 'sticky',
-        top: 0,
-        zIndex: 3,
-        backgroundColor: theme.colors.lightShade,
+        backgroundColor: theme.colors.borderBaseSubdued,
         fontSize: theme.size.m,
         textAlign: 'left',
-
         'tr>:first-child': {
             borderTopLeftRadius: radius,
         },
@@ -73,23 +72,23 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         height: TABLE_ROW_HEIGHT,
         borderStyle: 'solid',
         borderWidth: '0 0 1px 0',
-        borderColor: theme.colors.lightShade,
+        borderColor: theme.colors.borderBaseSubdued,
         position: 'relative',
     });
 
     const dataRowStyle = css({
         '&:hover': {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
         },
     });
 
     const expandedRowStyle = css({
-        backgroundColor: theme.colors.lightestShade,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
     });
 
     const sortableHeaderCellStyle = css({
         paddingRight: 0,
-        '&:hover': {
+        [`&:hover`]: {
             [`.${SORTABLE_ICON_CLASS}`]: {
                 visibility: 'visible',
             },
@@ -142,8 +141,8 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
         zIndex: theme.levels.menu,
         '&:active, &:focus': {
             transition: 'background-color 0.15s',
-            backgroundColor: isDarkThemeActive
-                ? theme.colors.mediumShade
+            backgroundColor: isDarkModeActive
+                ? theme.colors.textHeading
                 : theme.colors.header,
         },
         '&::after': {
@@ -151,7 +150,7 @@ export const getWfoTableStyles = ({ theme, isDarkThemeActive }: WfoTheme) => {
             paddingTop: theme.base - (theme.base / 16) * 2,
             content: `"|"`, // Inserts a vertical line
             fontSize: theme.size.m,
-            color: theme.colors.mediumShade,
+            color: theme.colors.backgroundBaseAccent,
             cursor: 'col-resize',
             opacity: 0.6,
             zIndex: theme.levels.navigation,

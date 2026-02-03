@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 import { StepStatus } from '@/types';
 
 import { TimelinePosition } from './WfoTimeline';
 
-export const getTimelineStyles = ({ theme }: WfoTheme) => {
+export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     const TIMELINE_HEIGHT = theme.base * 2.5;
     const TIMELINE_OUTLINE_WIDTH = theme.base * 0.75;
 
@@ -30,7 +30,7 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
             case StepStatus.RUNNING:
             case StepStatus.PENDING:
             default:
-                return theme.colors.mediumShade;
+                return theme.colors.textDisabled;
         }
     };
 
@@ -44,9 +44,9 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
     };
 
     const timelinePanelStyle = css({
-        backgroundColor: theme.colors.body,
+        backgroundColor: theme.colors.backgroundBaseSubdued,
         borderRadius: theme.border.radius.medium,
-        outline: `${timelineOutlineWidthPx} solid ${theme.colors.emptyShade}`,
+        outline: `${timelineOutlineWidthPx} solid ${theme.colors.backgroundBaseNeutral}`,
         height: timelineHeightPx,
         marginTop: timelineOutlineWidthPx,
         marginBottom: timelineOutlineWidthPx,
@@ -90,7 +90,7 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
                     return theme.colors.primary;
                 case TimelinePosition.FUTURE:
                 default:
-                    return theme.colors.lightShade;
+                    return theme.colors.borderBaseSubdued;
             }
         };
 
@@ -101,7 +101,7 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
                 case TimelinePosition.CURRENT:
                 case TimelinePosition.FUTURE:
                 default:
-                    return theme.colors.lightShade;
+                    return theme.colors.borderBaseSubdued;
             }
         };
 
@@ -129,7 +129,7 @@ export const getTimelineStyles = ({ theme }: WfoTheme) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '50%',
-            backgroundColor: theme.colors.emptyShade,
+            backgroundColor: theme.colors.backgroundBaseNeutral,
             height: hasContent
                 ? stepWithValueOuterDiameter
                 : emptyStepOuterDiameter,

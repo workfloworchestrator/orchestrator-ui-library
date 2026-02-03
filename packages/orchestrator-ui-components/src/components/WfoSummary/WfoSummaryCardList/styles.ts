@@ -1,14 +1,15 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoSummaryCardListStyles = ({ theme }: WfoTheme) => {
+export const getWfoSummaryCardListStyles = ({ theme }: WfoThemeHelpers) => {
     const listContainerStyle = css({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         flexGrow: 1,
-        borderColor: theme.colors.lightShade,
+        borderColor: theme.colors.borderBaseSubdued,
+        backgroundColor: theme.colors.backgroundBaseNeutral,
     });
 
     const listHeaderStyle = css({

@@ -18,37 +18,37 @@ export const WfoProcessStatusBadge: FC<WfoProcessStatusBadgeProps> = ({
         const {
             primary,
             danger,
-            dangerText,
-            lightShade,
-            primaryText,
+            textDanger,
+            borderBaseSubdued,
+            textPrimary,
             success,
-            successText,
-            text,
+            textSuccess,
+            textParagraph,
             warning,
-            warningText,
+            textWarning,
         } = theme.colors;
 
         switch (status.toLowerCase()) {
             case ProcessStatus.COMPLETED:
                 return {
                     badgeColor: toSecondaryColor(success),
-                    textColor: successText,
+                    textColor: textSuccess,
                 };
             case ProcessStatus.FAILED:
             case ProcessStatus.ABORTED:
                 return {
                     badgeColor: toSecondaryColor(danger),
-                    textColor: dangerText,
+                    textColor: textDanger,
                 };
             case ProcessStatus.SUSPENDED:
                 return {
                     badgeColor: toSecondaryColor(warning),
-                    textColor: warningText,
+                    textColor: textWarning,
                 };
             case ProcessStatus.CREATED:
                 return {
-                    badgeColor: lightShade,
-                    textColor: text,
+                    badgeColor: borderBaseSubdued,
+                    textColor: textParagraph,
                 };
             case ProcessStatus.WAITING:
             case ProcessStatus.RESUMED:
@@ -58,7 +58,7 @@ export const WfoProcessStatusBadge: FC<WfoProcessStatusBadgeProps> = ({
             default:
                 return {
                     badgeColor: toSecondaryColor(primary),
-                    textColor: primaryText,
+                    textColor: textPrimary,
                 };
         }
     };

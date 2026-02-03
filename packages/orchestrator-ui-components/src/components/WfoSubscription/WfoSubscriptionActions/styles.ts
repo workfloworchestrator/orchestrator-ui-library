@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 
-import { WfoTheme } from '@/hooks';
+import { WfoThemeHelpers } from '@/hooks';
 
 const EXPANDED_CONTENT_LEFT_MARGIN = '52px';
 
-export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
+export const getSubscriptionActionStyles = ({ theme }: WfoThemeHelpers) => {
     const clickableStyle = css({
         '&:hover, & :hover': {
             cursor: 'pointer',
@@ -33,7 +33,7 @@ export const getSubscriptionActionStyles = ({ theme }: WfoTheme) => {
 
     const linkMenuItemStyle = css({
         '&>:hover': {
-            backgroundColor: theme.colors.lightestShade,
+            backgroundColor: theme.colors.backgroundBasePlain,
             borderRadius: theme.border.radius.medium,
             cursor: 'pointer',
         },

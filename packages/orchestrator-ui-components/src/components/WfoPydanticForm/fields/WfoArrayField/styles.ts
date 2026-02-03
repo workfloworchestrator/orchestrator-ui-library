@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
-export const getWfoArrayFieldStyles = () => {
+import { WfoComputedTheme } from '@/theme';
+
+export const getWfoArrayFieldStyles = (theme: WfoComputedTheme) => {
     const container = css({
-        border: 'thin solid #eee',
+        border: 'thin solid ' + theme.colors.borderBaseSubdued,
         padding: '1rem',
         display: 'flex',
         flexDirection: 'column',

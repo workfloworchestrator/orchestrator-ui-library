@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { WfoTheme } from '@/hooks';
+import type { WfoThemeHelpers } from '@/hooks';
 
 export const getWfoObjectFieldStyles = () => {
     const wfoObjectFieldStyles = css({
@@ -14,18 +14,18 @@ export const getWfoObjectFieldStyles = () => {
     };
 };
 
-export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
+export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
     const formRowStyle = css({
         marginBottom: theme.base * 2,
 
         '.euiText': {
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
         },
         '.euiFormLabel': {
-            color: theme.colors.text,
+            color: theme.colors.textParagraph,
             cursor: 'text',
             '&.euiFormLabel-isFocused': {
-                color: theme.colors.primaryText,
+                color: theme.colors.textPrimary,
             },
         },
         '.euiFormRow__labelWrapper': {
@@ -35,7 +35,7 @@ export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
     });
 
     const errorStyle = css({
-        color: theme.colors.dangerText,
+        color: theme.colors.textDanger,
     });
     return {
         errorStyle,
@@ -43,7 +43,7 @@ export const getCommonFormFieldStyles = ({ theme }: WfoTheme) => {
     };
 };
 
-export const summaryFieldStyles = ({ theme }: WfoTheme) => {
+export const summaryFieldStyles = ({ theme }: WfoThemeHelpers) => {
     const summaryFieldStyle = css({
         'div.emailMessage': {
             td: {
@@ -68,7 +68,7 @@ export const summaryFieldStyles = ({ theme }: WfoTheme) => {
             },
             '.label': {
                 fontWeight: 'bold',
-                color: theme.colors.backgroundBaseSubdued,
+                color: theme.colors.backgroundBaseNeutral,
                 backgroundColor: theme.colors.primary,
                 borderRight: `2px solid ${theme.colors.borderBasePlain}`,
                 borderBottom: `1px solid ${theme.colors.borderBasePlain}`,

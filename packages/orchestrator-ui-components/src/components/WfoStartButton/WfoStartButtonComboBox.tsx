@@ -41,19 +41,15 @@ export const WfoStartButtonComboBox = ({
     startWorkflowFilters,
 }: WfoStartButtonComboBoxProps) => {
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-    const { theme, isDarkThemeActive } = useOrchestratorTheme();
+    const { theme } = useOrchestratorTheme();
     const { selectableStyle } = useWithOrchestratorTheme(getStyles);
 
     const Button = (
         <EuiButton
             onClick={() => setPopoverOpen(!isPopoverOpen)}
-            iconType={
-                isProcess
-                    ? 'plus'
-                    : () => <WfoPlusCircleFill color={theme.colors.ghost} />
-            }
+            iconType={() => <WfoPlusCircleFill color={theme.colors.ghost} />}
             fullWidth={isProcess}
-            fill={!isProcess || isDarkThemeActive}
+            fill
         >
             {buttonText}
         </EuiButton>
@@ -113,6 +109,7 @@ export const WfoStartButtonComboBox = ({
 
     return (
         <EuiPopover
+            css={{ display: 'flex' }}
             initialFocus={`.euiSelectable .euiFieldSearch`}
             button={Button}
             isOpen={isPopoverOpen}

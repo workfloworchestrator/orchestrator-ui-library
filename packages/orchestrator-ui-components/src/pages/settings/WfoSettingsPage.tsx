@@ -98,7 +98,8 @@ export const WfoEnvSettings = () => {
                                     fontSize="m"
                                     paddingSize="m"
                                     css={css({
-                                        background: theme.colors.lightShade,
+                                        background:
+                                            theme.colors.borderBaseSubdued,
                                     })}
                                 >
                                     {showVariables}
