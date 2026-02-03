@@ -3,7 +3,6 @@ import React from 'react';
 import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-// import { useRouter } from 'next/router';
 import {
     PydanticForm,
     PydanticFormApiResponseType,
@@ -61,7 +60,6 @@ type CreateScheduleFormInput = [
 
 export const WfoScheduleTaskFormPage = () => {
     const t = useTranslations('metadata.scheduleTaskForm');
-
     const { showToastMessage } = useShowToastMessage();
     const [createScheduledTask, mutationState] =
         useCreateScheduledTaskMutation();
@@ -71,112 +69,185 @@ export const WfoScheduleTaskFormPage = () => {
     });
     const router = useRouter();
 
+    const getFormStep2 = (
+        userInput: CreateScheduleFormInput,
+    ): PydanticFormDefinitionResponse => {
+        const getStep2Defs = () => ({
+            IntervalEnum: {
+                enum: [
+                    Intervals.ONE_HOUR,
+                    Intervals.TWO_HOURS,
+                    Intervals.FOUR_HOURS,
+                    Intervals.TWELVE_HOURS,
+                    Intervals.TWENTY4_HOURS,
+                    Intervals.ONE_WEEK,
+                    Intervals.TWO_WEEKS,
+                    Intervals.ONE_MONTH,
+                ],
+                options: {
+                    [Intervals.ONE_HOUR]: t('1hour'),
+                    [Intervals.TWO_HOURS]: t('2hours'),
+                    [Intervals.FOUR_HOURS]: t('4hours'),
+                    [Intervals.TWELVE_HOURS]: t('12hours'),
+                    [Intervals.TWENTY4_HOURS]: t('24hours'),
+                    [Intervals.ONE_WEEK]: t('1week'),
+                    [Intervals.TWO_WEEKS]: t('2weeks'),
+                    [Intervals.ONE_MONTH]: t('1month'),
+                },
+                title: t('selectTaskType'),
+                type: PydanticFormFieldType.STRING,
+            },
+        });
+
+        const getStep2Properties = (
+            userInput: CreateScheduleFormInput,
+        ): RawJsonProperties => {
+            const step1UserInput = userInput[0];
+
+            const step2Properties: RawJsonProperties = {
+                startDate: {
+                    type: PydanticFormFieldType.NUMBER,
+                    format: PydanticFormFieldFormat.DATETIME,
+                    title: t('firstRunDate'),
+                    $ref: '',
+                    uniforms: {
+                        showTimeSelect: true,
+                    },
+                },
+            };
+
+            if (step1UserInput.taskType === TaskType.INTERVAL) {
+                step2Properties.interval = {
+                    type: PydanticFormFieldType.STRING,
+                    format: PydanticFormFieldFormat.DROPDOWN,
+                    title: t('selectInterval'),
+                    $ref: '#/$defs/IntervalEnum',
+                };
+            }
+            if (step1UserInput.taskType === TaskType.CRON) {
+                const cronRegex =
+                    '^(?:(\\*|([0-5]?\\d))(?:\\/(\\d+))?\\s+){4}(?:(\\*|([0-5]?\\d))(?:\\/(\\d+))?\\s+)?(?:([0-9,/*\\-?LW#]+)(?:\\s+([0-9,/*\\-?LW#]+))?(?:\\s+([0-9,/*\\-?LW#]+))?)$';
+
+                step2Properties.cron = {
+                    type: PydanticFormFieldType.STRING,
+                    format: PydanticFormFieldFormat.DEFAULT,
+                    pattern: cronRegex,
+                    $ref: '',
+                };
+            }
+
+            return step2Properties;
+        };
+
+        const step2Properties = getStep2Properties(userInput);
+        const form2Defs = getStep2Defs();
+        const formStep2: PydanticFormDefinitionResponse = {
+            type: PydanticFormApiResponseType.FORM_DEFINITION,
+            form: {
+                type: PydanticFormFieldType.OBJECT,
+                properties: { ...step2Properties },
+                $defs: { ...form2Defs },
+            },
+            meta: {
+                hasNext: false,
+            },
+        };
+        return formStep2;
+    };
+
     const onSuccess = () => {
         router.replace(PATH_METADATA_SCHEDULED_TASKS);
     };
 
-    if (mutationState.isError) {
-        showToastMessage(
-            ToastTypes.ERROR,
-            '',
-            'Error while saving scheduled task',
-        );
-        console.error('Error saving scheduled task', mutationState);
-        return undefined;
-    }
-
-    const getIntervalArg = (interval: Intervals) => {
-        const intervalMap = new Map([
-            [Intervals.ONE_HOUR, { hours: 1 }],
-            [Intervals.TWO_HOURS, { hours: 2 }],
-            [Intervals.FOUR_HOURS, { hours: 4 }],
-            [Intervals.TWELVE_HOURS, { hours: 12 }],
-            [Intervals.TWENTY4_HOURS, { hours: 24 }],
-            [Intervals.ONE_WEEK, { weeks: 1 }],
-            [Intervals.TWO_WEEKS, { weeks: 2 }],
-            [Intervals.ONE_MONTH, { weeks: 4 }],
-        ]);
-        return intervalMap.has(interval)
-            ? intervalMap.get(interval)
-            : undefined;
-    };
-
-    const getCronKwargs = (cron: string, startDate: string): CronKwargs => {
-        const [minute, hour, day, month, day_of_week] = cron.split(' ');
-
-        return {
-            start_date: startDate,
-            minute: parseInt(minute, 10),
-            hour: parseInt(hour, 10),
-            day: parseInt(day, 10),
-            month: parseInt(month, 10),
-            day_of_week: parseInt(day_of_week, 10),
-        };
-    };
-
-    const getCreateTaskPayload = (
-        userInput: CreateScheduleFormInput,
-    ): ScheduledTaskPostPayload => {
-        const userInputStep1 = userInput[0];
-        const userInputStep2 = userInput[1];
-
-        if (!userInputStep1 || !userInputStep2) {
-            throw new Error('Unknown or missing form input');
-        }
-
-        const startTimestampMilliseconds = parseInt(
-            userInputStep2.startDate,
-            10,
-        );
-        const startDate = new Date(
-            startTimestampMilliseconds * 1000,
-        ).toISOString();
-
-        if (userInputStep1.taskType === TaskType.DATE) {
-            return {
-                type: userInputStep1.taskType,
-                workflowId: userInputStep1.workflowId,
-                kwargs: {
-                    run_date: startDate,
-                },
-            };
-        } else if (userInputStep1.taskType === TaskType.INTERVAL) {
-            const step2Input =
-                userInputStep2 as CreateScheduleFormStep2Interval;
-            const intervalArg = getIntervalArg(step2Input.interval);
-
-            if (!intervalArg) {
-                throw new Error('Unknown or missing task interval');
-            }
-
-            return {
-                type: userInputStep1.taskType,
-                workflowId: userInputStep1.workflowId,
-                kwargs: {
-                    start_date: startDate,
-                    ...intervalArg,
-                },
-            };
-        } else if (userInputStep1.taskType === TaskType.CRON) {
-            const step2Input = userInputStep2 as CreateScheduleFormStep2Cron;
-
-            console.log('step1Input', step2Input);
-
-            // minute hour day month weekday
-            return {
-                type: userInputStep1.taskType,
-                workflowId: userInputStep1.workflowId,
-                kwargs: getCronKwargs(step2Input.cron, startDate),
-            };
-        }
-        throw new Error('Unknown or missing task type');
-    };
-
     const createTask = (
         userInput: CreateScheduleFormInput,
-    ): PydanticFormSuccessResponse | undefined => {
+    ): PydanticFormSuccessResponse => {
+        const getIntervalArg = (interval: Intervals) => {
+            const intervalMap = new Map([
+                [Intervals.ONE_HOUR, { hours: 1 }],
+                [Intervals.TWO_HOURS, { hours: 2 }],
+                [Intervals.FOUR_HOURS, { hours: 4 }],
+                [Intervals.TWELVE_HOURS, { hours: 12 }],
+                [Intervals.TWENTY4_HOURS, { hours: 24 }],
+                [Intervals.ONE_WEEK, { weeks: 1 }],
+                [Intervals.TWO_WEEKS, { weeks: 2 }],
+                [Intervals.ONE_MONTH, { weeks: 4 }],
+            ]);
+            return intervalMap.has(interval)
+                ? intervalMap.get(interval)
+                : undefined;
+        };
+
+        const getCronKwargs = (cron: string, startDate: string): CronKwargs => {
+            const [minute, hour, day, month, day_of_week] = cron.split(' ');
+
+            return {
+                start_date: startDate,
+                minute: parseInt(minute, 10),
+                hour: parseInt(hour, 10),
+                day: parseInt(day, 10),
+                month: parseInt(month, 10),
+                day_of_week: parseInt(day_of_week, 10),
+            };
+        };
+
+        const getCreateTaskPayload = (
+            userInput: CreateScheduleFormInput,
+        ): ScheduledTaskPostPayload => {
+            const userInputStep1 = userInput[0];
+            const userInputStep2 = userInput[1];
+
+            if (!userInputStep1 || !userInputStep2) {
+                throw new Error('Unknown or missing form input');
+            }
+
+            const startTimestampMilliseconds = parseInt(
+                userInputStep2.startDate,
+                10,
+            );
+            const startDate = new Date(
+                startTimestampMilliseconds * 1000,
+            ).toISOString();
+
+            if (userInputStep1.taskType === TaskType.DATE) {
+                return {
+                    type: userInputStep1.taskType,
+                    workflowId: userInputStep1.workflowId,
+                    kwargs: {
+                        run_date: startDate,
+                    },
+                };
+            } else if (userInputStep1.taskType === TaskType.INTERVAL) {
+                const step2Input =
+                    userInputStep2 as CreateScheduleFormStep2Interval;
+                const intervalArg = getIntervalArg(step2Input.interval);
+
+                if (!intervalArg) {
+                    throw new Error('Unknown or missing task interval');
+                }
+
+                return {
+                    type: userInputStep1.taskType,
+                    workflowId: userInputStep1.workflowId,
+                    kwargs: {
+                        start_date: startDate,
+                        ...intervalArg,
+                    },
+                };
+            } else if (userInputStep1.taskType === TaskType.CRON) {
+                const step2Input =
+                    userInputStep2 as CreateScheduleFormStep2Cron;
+                // minute hour day month weekday
+                return {
+                    type: userInputStep1.taskType,
+                    workflowId: userInputStep1.workflowId,
+                    kwargs: getCronKwargs(step2Input.cron, startDate),
+                };
+            }
+            throw new Error('Unknown or missing task type');
+        };
+
         const createSchedulePayload = getCreateTaskPayload(userInput);
-        console.log('ss', createSchedulePayload);
         createScheduledTask(createSchedulePayload);
 
         return {
@@ -253,73 +324,6 @@ export const WfoScheduleTaskFormPage = () => {
         },
     };
 
-    const getStep2Defs = () => ({
-        IntervalEnum: {
-            enum: [
-                Intervals.ONE_HOUR,
-                Intervals.TWO_HOURS,
-                Intervals.FOUR_HOURS,
-                Intervals.TWELVE_HOURS,
-                Intervals.TWENTY4_HOURS,
-                Intervals.ONE_WEEK,
-                Intervals.TWO_WEEKS,
-                Intervals.ONE_MONTH,
-            ],
-            options: {
-                [Intervals.ONE_HOUR]: t('1hour'),
-                [Intervals.TWO_HOURS]: t('2hours'),
-                [Intervals.FOUR_HOURS]: t('4hours'),
-                [Intervals.TWELVE_HOURS]: t('12hours'),
-                [Intervals.TWENTY4_HOURS]: t('24hours'),
-                [Intervals.ONE_WEEK]: t('1week'),
-                [Intervals.TWO_WEEKS]: t('2weeks'),
-                [Intervals.ONE_MONTH]: t('1month'),
-            },
-            title: t('selectTaskType'),
-            type: PydanticFormFieldType.STRING,
-        },
-    });
-
-    const getStep2Properties = (
-        userInput: CreateScheduleFormInput,
-    ): RawJsonProperties => {
-        const step1UserInput = userInput[0];
-
-        const step2Properties: RawJsonProperties = {
-            startDate: {
-                type: PydanticFormFieldType.NUMBER,
-                format: PydanticFormFieldFormat.DATETIME,
-                title: t('firstRunDate'),
-                $ref: '',
-                uniforms: {
-                    showTimeSelect: true,
-                },
-            },
-        };
-
-        if (step1UserInput.taskType === TaskType.INTERVAL) {
-            step2Properties.interval = {
-                type: PydanticFormFieldType.STRING,
-                format: PydanticFormFieldFormat.DROPDOWN,
-                title: t('selectInterval'),
-                $ref: '#/$defs/IntervalEnum',
-            };
-        }
-        if (step1UserInput.taskType === TaskType.CRON) {
-            const cronRegex =
-                '^(?:(\\*|([0-5]?\\d))(?:\\/(\\d+))?\\s+){4}(?:(\\*|([0-5]?\\d))(?:\\/(\\d+))?\\s+)?(?:([0-9,/*\\-?LW#]+)(?:\\s+([0-9,/*\\-?LW#]+))?(?:\\s+([0-9,/*\\-?LW#]+))?)$';
-
-            step2Properties.cron = {
-                type: PydanticFormFieldType.STRING,
-                format: PydanticFormFieldFormat.DEFAULT,
-                pattern: cronRegex,
-                $ref: '',
-            };
-        }
-
-        return step2Properties;
-    };
-
     const getApiProvider = (): PydanticFormApiProvider => {
         return ({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -335,19 +339,7 @@ export const WfoScheduleTaskFormPage = () => {
                     const successResponse = createTask(userInput);
                     return resolve(successResponse);
                 } else if (validateStep1(userInput[0])) {
-                    const step2Properties = getStep2Properties(userInput);
-                    const form2Defs = getStep2Defs();
-                    const formStep2: PydanticFormDefinitionResponse = {
-                        type: PydanticFormApiResponseType.FORM_DEFINITION,
-                        form: {
-                            type: PydanticFormFieldType.OBJECT,
-                            properties: { ...step2Properties },
-                            $defs: { ...form2Defs },
-                        },
-                        meta: {
-                            hasNext: false,
-                        },
-                    };
+                    const formStep2 = getFormStep2(userInput);
                     resolve(formStep2);
                 }
 
@@ -359,6 +351,16 @@ export const WfoScheduleTaskFormPage = () => {
     };
 
     const config = useGetPydanticFormsConfig(getApiProvider, Footer);
+
+    if (mutationState.isError) {
+        showToastMessage(
+            ToastTypes.ERROR,
+            '',
+            'Error while saving scheduled task',
+        );
+        console.error('Error saving scheduled task', mutationState);
+        return undefined;
+    }
 
     return (
         <>
