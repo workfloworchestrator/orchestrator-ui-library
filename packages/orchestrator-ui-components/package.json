@@ -46,7 +46,7 @@
         "@tanstack/react-virtual": "^3.13.13",
         "graphql-request": "^6.1.0",
         "invariant": "^2.2.4",
-        "lodash": "^4.17.21",
+        "lodash": "^4.17.23",
         "moment": "^2.29.4",
         "moment-timezone": "^0.5.32",
         "next-auth": "^4.24.5",
