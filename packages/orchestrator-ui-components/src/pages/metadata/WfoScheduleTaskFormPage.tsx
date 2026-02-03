@@ -98,6 +98,56 @@ export const WfoScheduleTaskFormPage = () => {
                 title: t('selectTaskType'),
                 type: PydanticFormFieldType.STRING,
             },
+            ButtonColor: {
+                enum: [
+                    'primary',
+                    'accent',
+                    'success',
+                    'warning',
+                    'danger',
+                    'ghost',
+                    'text',
+                ],
+                options: {},
+                title: 'ButtonColor',
+                type: PydanticFormFieldType.STRING,
+            },
+            ButtonConfig: {
+                additionalProperties: false,
+                properties: {
+                    text: {
+                        title: 'Text',
+                        type: PydanticFormFieldType.STRING,
+                    },
+                    dialog: {
+                        title: 'Dialog',
+                        type: PydanticFormFieldType.STRING,
+                    },
+                    color: {
+                        $ref: '#/$defs/ButtonColor',
+                    },
+                },
+                enum: [],
+                title: 'ButtonConfig',
+                options: {},
+                type: PydanticFormFieldType.OBJECT,
+            },
+            Buttons: {
+                additionalProperties: false,
+                title: 'Buttons',
+                type: PydanticFormFieldType.OBJECT,
+                properties: {
+                    previous: {
+                        $ref: '#/$defs/ButtonConfig',
+                    },
+                    next: {
+                        $ref: '#/$defs/ButtonConfig',
+                    },
+                },
+                required: ['previous', 'next'],
+                enum: [],
+                options: {},
+            },
         });
 
         const getStep2Properties = (
@@ -146,7 +196,18 @@ export const WfoScheduleTaskFormPage = () => {
             type: PydanticFormApiResponseType.FORM_DEFINITION,
             form: {
                 type: PydanticFormFieldType.OBJECT,
-                properties: { ...step2Properties },
+                properties: {
+                    buttons: {
+                        $ref: '#/$defs/Buttons',
+                        default: {
+                            previous: {},
+                            next: { text: t('createScheduleButton') },
+                        },
+                        type: PydanticFormFieldType.OBJECT,
+                        format: PydanticFormFieldFormat.HIDDEN,
+                    },
+                    ...step2Properties,
+                },
                 $defs: { ...form2Defs },
             },
             meta: {
