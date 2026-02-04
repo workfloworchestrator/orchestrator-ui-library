@@ -106,6 +106,8 @@ type Kwargs = DateKwargs | InterValKwargs | CronKwargs;
 
 export type ScheduledTaskPostPayload = {
     workflowId: string;
+    workflowName: string;
+    workflowDescription: string;
     type: TaskType;
     kwargs: Kwargs;
 };
@@ -160,8 +162,8 @@ const scheduledTasksApi = orchestratorApi.injectEndpoints({
             query: (payload) => {
                 const scheduleTaskPayload = {
                     scheduled_type: 'create',
-                    name: 'Test name 123',
-                    workflow_name: 'Test workflow name 1234',
+                    name: payload.workflowDescription,
+                    workflow_name: payload.workflowName,
                     workflow_id: payload.workflowId,
                     trigger: payload.type,
                     trigger_kwargs: payload.kwargs,
