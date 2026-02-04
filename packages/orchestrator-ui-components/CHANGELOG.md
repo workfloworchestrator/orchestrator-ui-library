@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.3.0
+
+### Minor Changes
+
+-   67ce439: Adds create scheduled task form
+
 ## 7.2.1
 
 ### Patch Changes
