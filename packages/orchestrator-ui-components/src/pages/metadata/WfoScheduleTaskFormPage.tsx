@@ -26,10 +26,10 @@ import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { useGetPydanticFormsConfig, useShowToastMessage } from '@/hooks';
 import type { CronKwargs, ScheduledTaskPostPayload } from '@/rtk';
 import { useCreateScheduledTaskMutation, useGetTasksQuery } from '@/rtk';
-import { Intervals, TaskType, ToastTypes } from '@/types';
+import { Intervals, TaskDefinition, TaskType, ToastTypes } from '@/types';
 
 type CreateScheduleFormStep1 = {
-    workflowId: string;
+    workflowId: TaskDefinition['workflowId'];
     taskType: TaskType;
 };
 
@@ -226,6 +226,10 @@ export const WfoScheduleTaskFormPage = () => {
         router.replace(PATH_METADATA_SCHEDULED_TASKS);
     };
 
+    const getTaskByWorkflowId = (workflowId: TaskDefinition['workflowId']) => {
+        return data?.tasks.find((task) => task.workflowId === workflowId);
+    };
+
     const createTask = (
         userInput: CreateScheduleFormInput,
     ): PydanticFormSuccessResponse => {
@@ -276,10 +280,18 @@ export const WfoScheduleTaskFormPage = () => {
                 startTimestampMilliseconds * 1000,
             ).toISOString();
 
+            const task = getTaskByWorkflowId(userInputStep1.workflowId);
+
+            if (!task) {
+                throw Error('No task found with id');
+            }
+
             if (userInputStep1.taskType === TaskType.DATE) {
                 return {
                     type: userInputStep1.taskType,
-                    workflowId: userInputStep1.workflowId,
+                    workflowId: task.workflowId,
+                    workflowDescription: task.description,
+                    workflowName: task.name,
                     kwargs: {
                         run_date: startDate,
                     },
@@ -295,7 +307,9 @@ export const WfoScheduleTaskFormPage = () => {
 
                 return {
                     type: userInputStep1.taskType,
-                    workflowId: userInputStep1.workflowId,
+                    workflowId: task.workflowId,
+                    workflowDescription: task.description,
+                    workflowName: task.name,
                     kwargs: {
                         start_date: startDate,
                         ...intervalArg,
@@ -307,7 +321,9 @@ export const WfoScheduleTaskFormPage = () => {
                 // minute hour day month weekday
                 return {
                     type: userInputStep1.taskType,
-                    workflowId: userInputStep1.workflowId,
+                    workflowId: task.workflowId,
+                    workflowDescription: task.description,
+                    workflowName: task.name,
                     kwargs: getCronKwargs(step2Input.cron, startDate),
                 };
             }
