@@ -29,14 +29,12 @@ export interface WfoPageTemplateProps {
     ) => EuiSideNavItemType<object>[];
     overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
     children: ReactNode;
-    colorModeState: [
-        EuiThemeColorMode,
-        React.Dispatch<React.SetStateAction<EuiThemeColorMode>>,
-    ];
+    colorMode: EuiThemeColorMode;
+    setColorMode: React.Dispatch<React.SetStateAction<EuiThemeColorMode>>;
 }
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
-    const [colorMode, setColorMode] = props.colorModeState;
+    const { colorMode, setColorMode } = props;
     const handleColorModeSwitch = (newColorMode: EuiThemeColorMode) => {
         setColorMode(newColorMode);
         localStorage.setItem('colorMode', newColorMode);
