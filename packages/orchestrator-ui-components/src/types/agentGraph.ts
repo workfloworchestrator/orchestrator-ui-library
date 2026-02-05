@@ -73,8 +73,26 @@ export interface NodeExecutionState {
     exitTime?: number;
 }
 
+export interface NodeVisit {
+    nodeId: string; // Original node ID from graph structure
+    visitIndex: number; // Sequential visit number (0, 1, 2...)
+    iterationIndex: number; // Which graph iteration (0, 1, 2...)
+    timestamp: number;
+    isActive: boolean;
+}
+
+export interface GraphIteration {
+    index: number;
+    visitedNodeIds: Set<string>; // Which nodes were visited in this iteration
+    isActive: boolean; // Is this the current iteration
+}
+
 export interface GraphExecutionState {
     nodes: Map<string, NodeExecutionState>;
     executionPath: string[];
     currentActiveNode: string | null;
+    // New: track visits for duplication
+    visits: NodeVisit[];
+    iterations: GraphIteration[];
+    currentIterationIndex: number;
 }
