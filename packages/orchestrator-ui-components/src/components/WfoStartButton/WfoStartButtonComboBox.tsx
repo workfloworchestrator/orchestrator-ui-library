@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { capitalize } from 'lodash';
 
@@ -11,8 +11,11 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-import { OrchestratorConfigContext } from '@/contexts';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import {
+    useGetOrchestratorConfig,
+    useOrchestratorTheme,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
@@ -39,7 +42,7 @@ export const WfoStartButtonComboBox = ({
     selectedProductStatus,
     setSelectedProductStatus,
 }: WfoStartButtonComboBoxProps) => {
-    const { startWorkflowFilters } = useContext(OrchestratorConfigContext);
+    const { startWorkflowFilters } = useGetOrchestratorConfig();
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { theme } = useOrchestratorTheme();
     const { selectableStyle } = useWithOrchestratorTheme(getStyles);
