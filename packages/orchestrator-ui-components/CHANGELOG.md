@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.4.0
+
+### Minor Changes
+
+-   70c36b5: Add start workflow filters to the library and refactor to read from OrchestratorConfigContext instead of prop drilling
+
 ## 7.3.1
 
 ### Patch Changes
