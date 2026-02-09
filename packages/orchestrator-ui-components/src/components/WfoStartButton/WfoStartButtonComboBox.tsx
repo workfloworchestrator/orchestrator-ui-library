@@ -11,7 +11,11 @@ import {
     EuiSpacer,
 } from '@elastic/eui';
 
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import {
+    useGetOrchestratorConfig,
+    useOrchestratorTheme,
+    useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
@@ -27,7 +31,6 @@ export type WfoStartButtonComboBoxProps = {
     setSelectedProductStatus?: (
         status: ProductLifecycleStatus | string,
     ) => void;
-    startWorkflowFilters?: (ProductLifecycleStatus | string)[];
 };
 
 export const WfoStartButtonComboBox = ({
@@ -38,8 +41,8 @@ export const WfoStartButtonComboBox = ({
     className,
     selectedProductStatus,
     setSelectedProductStatus,
-    startWorkflowFilters,
 }: WfoStartButtonComboBoxProps) => {
+    const { startWorkflowFilters } = useGetOrchestratorConfig();
     const [isPopoverOpen, setPopoverOpen] = useState(false);
     const { theme } = useOrchestratorTheme();
     const { selectableStyle } = useWithOrchestratorTheme(getStyles);

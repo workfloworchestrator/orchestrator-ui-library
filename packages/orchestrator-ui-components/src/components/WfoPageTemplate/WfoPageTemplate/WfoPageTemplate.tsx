@@ -17,7 +17,7 @@ import {
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { wfoThemeModifications } from '@/theme';
-import { ColorModes, ProductLifecycleStatus } from '@/types';
+import { ColorModes } from '@/types';
 
 import { ContentContextProvider } from './ContentContext';
 import { getPageTemplateStyles } from './styles';
@@ -27,7 +27,6 @@ export interface WfoPageTemplateProps {
     overrideMenuItems?: (
         defaultMenuItems: EuiSideNavItemType<object>[],
     ) => EuiSideNavItemType<object>[];
-    overrideStartWorkflowFilters?: (ProductLifecycleStatus | string)[];
     children: ReactNode;
     colorMode: EuiThemeColorMode;
     setColorMode: React.Dispatch<React.SetStateAction<EuiThemeColorMode>>;
@@ -67,13 +66,7 @@ const WfoPageTemplateContent: FC<
     WfoPageTemplateProps & {
         handleColorModeSwitch: (mode: EuiThemeColorMode) => void;
     }
-> = ({
-    children,
-    getAppLogo,
-    overrideMenuItems,
-    overrideStartWorkflowFilters,
-    handleColorModeSwitch,
-}) => {
+> = ({ children, getAppLogo, overrideMenuItems, handleColorModeSwitch }) => {
     const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(
         getPageTemplateStyles,
     );
@@ -99,12 +92,7 @@ const WfoPageTemplateContent: FC<
                     <EuiPageTemplate.Sidebar
                         css={getSidebarStyle(NAVIGATION_HEIGHT)}
                     >
-                        <WfoSidebar
-                            overrideMenuItems={overrideMenuItems}
-                            overrideStartWorkflowFilters={
-                                overrideStartWorkflowFilters
-                            }
-                        />
+                        <WfoSidebar overrideMenuItems={overrideMenuItems} />
                     </EuiPageTemplate.Sidebar>
                 )}
 

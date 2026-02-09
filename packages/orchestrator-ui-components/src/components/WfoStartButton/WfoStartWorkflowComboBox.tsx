@@ -10,13 +10,7 @@ import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 import { PATH_START_NEW_WORKFLOW } from '../WfoPageTemplate';
 import { WfoStartButtonComboBox } from './WfoStartButtonComboBox';
 
-interface WfoStartWorkflowButtonComboBoxProps {
-    startWorkflowFilters?: (ProductLifecycleStatus | string)[];
-}
-
-export const WfoStartWorkflowButtonComboBox = ({
-    startWorkflowFilters,
-}: WfoStartWorkflowButtonComboBoxProps) => {
+export const WfoStartWorkflowButtonComboBox = () => {
     const router = useRouter();
     const t = useTranslations('common');
     const { isEngineRunningNow } = useCheckEngineStatus();
@@ -59,7 +53,6 @@ export const WfoStartWorkflowButtonComboBox = ({
             css={{ width: '300px' }}
             selectedProductStatus={selectedProductStatus}
             setSelectedProductStatus={setSelectedProductStatus}
-            startWorkflowFilters={startWorkflowFilters}
         />
     );
 };
