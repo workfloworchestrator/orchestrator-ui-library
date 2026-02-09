@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.3.1
+
+### Patch Changes
+
+-   a092d98: Changes how colorMode state is passed up
+
 ## 7.3.0
 
 ### Minor Changes
