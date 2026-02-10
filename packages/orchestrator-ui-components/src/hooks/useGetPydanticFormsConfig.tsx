@@ -165,7 +165,8 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
 
                         return (
                             type === PydanticFormFieldType.NUMBER &&
-                            (format === PydanticFormFieldFormat.DATETIME || format === PydanticFormFieldFormat.TIMESTAMP)
+                            (format === PydanticFormFieldFormat.DATETIME ||
+                                format === PydanticFormFieldFormat.TIMESTAMP)
                         );
                     },
                 },
