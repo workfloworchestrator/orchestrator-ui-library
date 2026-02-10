@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.4.1
+
+### Patch Changes
+
+-   83904e8: Fixes datepicker field matching
+
 ## 7.4.0
 
 ### Minor Changes
