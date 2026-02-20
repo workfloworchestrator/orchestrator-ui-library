@@ -21,11 +21,7 @@ export function WfoAgentVisualization({
     const t = useTranslations('agent.page.visualization');
 
     if (!results || results.length === 0) {
-        return (
-            <EuiText size="s">
-                <p>{t('noDataAvailable')}</p>
-            </EuiText>
-        );
+        return null;
     }
 
     // For charts (pie/line), validate data structure
@@ -39,11 +35,7 @@ export function WfoAgentVisualization({
         const aggKeys = Object.keys(firstResult.aggregations);
 
         if (groupKeys.length === 0 || aggKeys.length === 0) {
-            return (
-                <EuiText size="s">
-                    <p>{t('invalidDataStructure')}</p>
-                </EuiText>
-            );
+            return null;
         }
     }
 

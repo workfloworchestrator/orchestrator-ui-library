@@ -26,6 +26,7 @@ export interface GraphNodeActiveEvent {
     value: {
         node: string;
         step_type: string;
+        reasoning?: string;
     };
 }
 
@@ -71,6 +72,7 @@ export interface NodeExecutionState {
     toolCalls: ToolCall[];
     enterTime?: number;
     exitTime?: number;
+    reasoning?: string;
 }
 
 export interface NodeVisit {

@@ -61,6 +61,7 @@ export function useAgentGraphEvents(agentId: string = 'query_agent') {
                             isActive: true,
                             wasVisited: true,
                             enterTime: timestamp,
+                            reasoning: event.value?.reasoning, // Capture reasoning from graph event
                         });
 
                         const newPath = prev.executionPath.includes(nodeId)
