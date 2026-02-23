@@ -632,7 +632,12 @@
             "valueLabel": "Value",
             "fieldsGroupLabel": "Fields",
             "componentsGroupLabel": "Components",
-            "pathsCount": "{count} paths"
+            "pathsCount": "{count} paths",
+            "id": "Id",
+            "type": "Entity type",
+            "title": "Title",
+            "score": "Score",
+            "matchingField": "Matching field"
         },
         "tabs": {
             "subscriptions": "Subscriptions",
