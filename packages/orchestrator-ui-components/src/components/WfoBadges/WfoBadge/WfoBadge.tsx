@@ -16,10 +16,16 @@ export const WfoBadge: FC<WfoBadgeProps> = ({
     children,
     size,
     ...restProps
-}) => (
-    <EuiBadge title="" {...restProps}>
-        <EuiText color={textColor} size={size ?? 'xs'}>
-            <b>{children}</b>
-        </EuiText>
-    </EuiBadge>
-);
+}) => {
+    return (
+        <EuiBadge
+            title=""
+            {...restProps}
+            css={{ borderRadius: '2px', backgroundColor: '' }}
+        >
+            <EuiText color={textColor} size={size ?? 'xs'}>
+                <b>{children}</b>
+            </EuiText>
+        </EuiBadge>
+    );
+};
