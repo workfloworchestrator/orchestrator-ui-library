@@ -174,7 +174,7 @@ export const WfoAdvancedTable = <T extends object>({
                     {!disableSearch && (
                         <EuiButtonIcon
                             onClick={() => setShowSearchModal(true)}
-                            iconSize={'xl'}
+                            iconSize={'l'}
                             iconType={'info'}
                             aria-label={t('searchModalTitle')}
                         />
