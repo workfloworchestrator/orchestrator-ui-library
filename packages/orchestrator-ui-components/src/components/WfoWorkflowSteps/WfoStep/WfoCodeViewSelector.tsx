@@ -39,7 +39,7 @@ export const WfoCodeViewSelector = ({
                     <WfoBracketSquare
                         color={
                             isSelected(CodeView.JSON)
-                                ? theme.colors.ghost
+                                ? theme.colors.textGhost
                                 : theme.colors.textPrimary
                         }
                     />
@@ -62,7 +62,7 @@ export const WfoCodeViewSelector = ({
                     <WfoTableCells
                         color={
                             isSelected(CodeView.TABLE)
-                                ? theme.colors.ghost
+                                ? theme.colors.textGhost
                                 : theme.colors.textPrimary
                         }
                     />
@@ -85,7 +85,7 @@ export const WfoCodeViewSelector = ({
                     <WfoCommandLine
                         color={
                             isSelected(CodeView.RAW)
-                                ? theme.colors.ghost
+                                ? theme.colors.textGhost
                                 : theme.colors.textPrimary
                         }
                     />

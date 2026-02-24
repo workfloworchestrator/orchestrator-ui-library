@@ -39,7 +39,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
             case StepStatus.SUSPEND:
                 return theme.colors.ink;
             default:
-                return theme.colors.ghost;
+                return theme.colors.textGhost;
         }
     };
 

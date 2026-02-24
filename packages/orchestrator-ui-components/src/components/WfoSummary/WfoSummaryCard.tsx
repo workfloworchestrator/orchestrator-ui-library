@@ -57,7 +57,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                         <WfoCheckmarkCircleFill
                             width={32}
                             height={32}
-                            color={theme.colors.ghost}
+                            color={theme.colors.textGhost}
                         />
                     ),
                     iconColor: theme.colors.success,
@@ -68,7 +68,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                         <WfoXCircleFill
                             width={32}
                             height={32}
-                            color={theme.colors.ghost}
+                            color={theme.colors.textGhost}
                         />
                     ),
                     iconColor: theme.colors.danger,
@@ -79,7 +79,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                         <WfoCubeFill
                             width={32}
                             height={32}
-                            color={theme.colors.ghost}
+                            color={theme.colors.textGhost}
                         />
                     ),
                     iconColor: theme.colors.primary,
@@ -91,7 +91,7 @@ export const WfoSummaryCard: FC<WfoSummaryCardProps> = ({
                             <WfoCubeFill
                                 width={32}
                                 height={32}
-                                color={theme.colors.ghost}
+                                color={theme.colors.textGhost}
                             />
                         ),
                         iconColor: theme.colors.primary,

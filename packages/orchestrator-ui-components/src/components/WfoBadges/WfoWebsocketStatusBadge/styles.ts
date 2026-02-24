@@ -8,7 +8,7 @@ export const getStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) => {
         cursor: 'default',
         backgroundColor: isDarkModeActive
             ? theme.colors.backgroundBaseNeutral
-            : theme.colors.ghost,
+            : theme.colors.textGhost,
     });
 
     const disconnectedStyle = css({

@@ -100,7 +100,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
                             css={{
                                 width: theme.base * 3,
                                 height: theme.base * 3,
-                                color: theme.colors.ghost,
+                                color: theme.colors.textGhost,
                             }}
                             title={t(
                                 colorMode === ColorModes.LIGHT

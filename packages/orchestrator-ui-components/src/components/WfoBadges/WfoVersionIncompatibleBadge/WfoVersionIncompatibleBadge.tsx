@@ -50,7 +50,7 @@ export const WfoVersionIncompatibleBadge: FC<
         >
             <WfoHeaderBadge
                 color="danger"
-                textColor={theme.colors.ghost}
+                textColor={theme.colors.textGhost}
                 css={{
                     marginLeft: theme.size.s,
                     visibility: minimumOrchestratorCoreVersion

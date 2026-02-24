@@ -50,7 +50,9 @@ export const WfoStartButtonComboBox = ({
     const Button = (
         <EuiButton
             onClick={() => setPopoverOpen(!isPopoverOpen)}
-            iconType={() => <WfoPlusCircleFill color={theme.colors.ghost} />}
+            iconType={() => (
+                <WfoPlusCircleFill color={theme.colors.textGhost} />
+            )}
             fullWidth={isProcess}
             fill
         >
