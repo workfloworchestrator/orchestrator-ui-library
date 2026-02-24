@@ -48,7 +48,7 @@ export const WfoRenderPathOption: FC<PathOptionRenderProps> = ({
                             <EuiFlexItem grow={false}>
                                 <WfoBadge
                                     color="default"
-                                    textColor={theme.colors.ink}
+                                    textColor={theme.colors.textInk}
                                     size="xs"
                                 >
                                     {t('pathsCount', {
@@ -62,7 +62,7 @@ export const WfoRenderPathOption: FC<PathOptionRenderProps> = ({
                             <EuiFlexItem key={index} grow={false}>
                                 <WfoBadge
                                     color={getTypeColor(type, theme)}
-                                    textColor={theme.colors.ink}
+                                    textColor={theme.colors.textInk}
                                     size="xs"
                                 >
                                     {type}
@@ -95,7 +95,7 @@ export const WfoRenderPathSelectionOption: FC<
                 <EuiFlexItem grow={false}>
                     <WfoBadge
                         color={getTypeColor(fieldType, theme)}
-                        textColor={theme.colors.ink}
+                        textColor={theme.colors.textInk}
                         size="xs"
                     >
                         {fieldType}

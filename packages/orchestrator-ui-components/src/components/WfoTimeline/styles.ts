@@ -37,7 +37,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     const getTextColorForStepStatusIcon = (processStepStatus: StepStatus) => {
         switch (processStepStatus) {
             case StepStatus.SUSPEND:
-                return theme.colors.ink;
+                return theme.colors.textInk;
             default:
                 return theme.colors.textGhost;
         }
