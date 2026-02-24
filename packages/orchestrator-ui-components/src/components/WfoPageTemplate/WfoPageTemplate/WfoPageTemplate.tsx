@@ -2,6 +2,7 @@ import React, {
     FC,
     ReactElement,
     ReactNode,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -34,10 +35,13 @@ export interface WfoPageTemplateProps {
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
     const { colorMode, setColorMode } = props;
-    const handleColorModeSwitch = (newColorMode: EuiThemeColorMode) => {
-        setColorMode(newColorMode);
-        localStorage.setItem('colorMode', newColorMode);
-    };
+    const handleColorModeSwitch = useCallback(
+        (newColorMode: EuiThemeColorMode) => {
+            setColorMode(newColorMode);
+            localStorage.setItem('colorMode', newColorMode);
+        },
+        [setColorMode],
+    );
 
     useEffect(() => {
         // Initialize theme mode from localStorage or set it to 'light' if not present
@@ -50,7 +54,7 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
         } else {
             handleColorModeSwitch(storedColorMode);
         }
-    }, []);
+    }, [handleColorModeSwitch]);
 
     return (
         <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
