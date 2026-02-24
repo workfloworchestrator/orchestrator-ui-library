@@ -12,7 +12,11 @@ export const WfoEnvironmentBadge = () => {
 
     if (environmentName !== Environment.PRODUCTION) {
         return (
-            <WfoHeaderBadge color="warning" textColor={theme.colors.shadow}>
+            <WfoHeaderBadge
+                color="warning"
+                fill={true}
+                textColor={theme.colors.shadow}
+            >
                 {environmentName}
             </WfoHeaderBadge>
         );
