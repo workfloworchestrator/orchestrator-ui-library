@@ -34,7 +34,7 @@
         "dev": "tsup --watch"
     },
     "dependencies": {
-        "@ag-ui/client": "0.0.39",
+        "@ag-ui/client": "^0.0.45",
         "@copilotkit/react-core": "1.10.6",
         "@copilotkit/react-ui": "1.10.6",
         "@copilotkit/runtime": "1.10.6",
@@ -64,6 +64,7 @@
         "use-query-params": "2.2.1"
     },
     "devDependencies": {
+        "@elastic/eui": "^111.0.0",
         "@orchestrator-ui/eslint-config-custom": "*",
         "@orchestrator-ui/jest-config": "*",
         "@reduxjs/toolkit": "^2.0.1",
@@ -79,14 +80,13 @@
         "jest-environment-jsdom": "^30.2.0",
         "jest-watch-typeahead": "^3.0.1",
         "tsup": "^8.5.0",
-        "typescript": "^5.5.2",
-        "@elastic/eui": "^111.0.0"
+        "typescript": "^5.5.2"
     },
     "peerDependencies": {
+        "@elastic/eui": "^111.0.0",
         "next": "^15.5.9",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "@elastic/eui": "^111.0.0"
+        "react-dom": "^18.3.1"
     },
     "type": "module",
     "main": "./dist/index.js",
