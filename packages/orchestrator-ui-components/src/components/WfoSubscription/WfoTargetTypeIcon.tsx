@@ -32,7 +32,7 @@ const Icon = ({ targetLetter, backgroundColor }: IconProps) => {
             className={css({
                 backgroundColor: backgroundColor,
                 borderRadius: '50%',
-                color: theme.colors.ghost,
+                color: theme.colors.textGhost,
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: 500,

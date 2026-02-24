@@ -40,7 +40,7 @@ export const getFilterDisplayStyles = ({ theme }: WfoThemeHelpers) => {
         padding: `${theme.size.xs}px ${theme.size.s}px`,
         borderRadius: theme.size.s,
         backgroundColor: theme.colors.primary,
-        color: theme.colors.ghost,
+        color: theme.colors.textGhost,
         fontSize: theme.size.m,
         fontWeight: theme.font.weight.bold,
         margin: `${theme.size.xs} 0`,

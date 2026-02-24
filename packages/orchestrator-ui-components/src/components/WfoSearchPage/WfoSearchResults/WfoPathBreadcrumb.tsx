@@ -58,7 +58,7 @@ export const WfoPathBreadcrumb: FC<WfoPathBreadcrumbProps> = ({
                     <EuiFlexItem grow={false}>
                         <WfoBadge
                             color={badgeColor}
-                            textColor={theme.colors.ghost}
+                            textColor={theme.colors.textGhost}
                             size={size}
                         >
                             {segment}

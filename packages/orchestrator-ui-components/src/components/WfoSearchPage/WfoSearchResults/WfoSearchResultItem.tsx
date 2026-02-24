@@ -127,7 +127,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                             <EuiFlexItem>
                                 <WfoBadge
                                     color={theme.colors.primary}
-                                    textColor={theme.colors.ghost}
+                                    textColor={theme.colors.textGhost}
                                 >
                                     {'score' in result && result.score
                                         ? result.score.toFixed(4)

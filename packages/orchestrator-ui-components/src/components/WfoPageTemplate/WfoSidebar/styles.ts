@@ -77,7 +77,9 @@ export const getMenuItemStyles = ({
             ? theme.colors.header
             : theme.colors.backgroundLightPrimary,
         borderRadius: theme.border.radius.medium,
-        color: isDarkModeActive ? theme.colors.ghost : theme.colors.textPrimary,
+        color: isDarkModeActive
+            ? theme.colors.textGhost
+            : theme.colors.textPrimary,
         fontWeight: theme.font.weight.medium,
     };
 
@@ -98,7 +100,9 @@ export const getMenuItemStyles = ({
             ? theme.colors.header
             : theme.colors.backgroundLightPrimary,
         borderRadius: theme.border.radius.medium,
-        color: isDarkModeActive ? theme.colors.ghost : theme.colors.textPrimary,
+        color: isDarkModeActive
+            ? theme.colors.textGhost
+            : theme.colors.textPrimary,
         fontWeight: theme.font.weight.medium,
         marginLeft: `${theme.size.xs}`,
         paddingLeft: `${theme.size.s}`,

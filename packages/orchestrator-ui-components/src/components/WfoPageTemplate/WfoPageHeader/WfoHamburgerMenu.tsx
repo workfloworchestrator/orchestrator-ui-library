@@ -87,7 +87,9 @@ export const WfoHamburgerMenu = () => {
         name: t('logout'),
         icon: (
             <WfoLogoutIcon
-                color={isDarkModeActive ? theme.colors.ghost : theme.colors.ink}
+                color={
+                    isDarkModeActive ? theme.colors.textGhost : theme.colors.ink
+                }
             />
         ),
         onClick: () => signOut(),
@@ -97,7 +99,9 @@ export const WfoHamburgerMenu = () => {
         name: t('support'),
         icon: (
             <WfoQuestionCircle
-                color={isDarkModeActive ? theme.colors.ghost : theme.colors.ink}
+                color={
+                    isDarkModeActive ? theme.colors.textGhost : theme.colors.ink
+                }
             />
         ),
         onClick: handleOpenSupport,
@@ -140,7 +144,7 @@ export const WfoHamburgerMenu = () => {
             button={
                 <EuiButtonIcon
                     iconType="menu"
-                    css={{ color: theme.colors.ghost }}
+                    css={{ color: theme.colors.textGhost }}
                     onClick={() => setPopoverIsOpen(!isPopoverOpen)}
                     aria-label={t('openMenu')}
                 />

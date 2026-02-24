@@ -58,7 +58,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({
                         >
                             <WfoBadge
                                 color="primary"
-                                textColor={theme.colors.ghost}
+                                textColor={theme.colors.textGhost}
                                 size="xs"
                             >
                                 <span
@@ -142,7 +142,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({
                             >
                                 <WfoBadge
                                     color="primary"
-                                    textColor={theme.colors.ghost}
+                                    textColor={theme.colors.textGhost}
                                     size="xs"
                                 >
                                     <span

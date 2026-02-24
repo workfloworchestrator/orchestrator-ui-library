@@ -48,7 +48,7 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
                         name={text}
                         css={avatarStyle}
                         iconType={iconType}
-                        iconColor={theme.colors.ghost}
+                        iconColor={theme.colors.textGhost}
                         color={iconColor}
                     />
                     <div css={totalSectionStyle}>
