@@ -31,7 +31,7 @@ export function WfoAgent() {
         name: 'run_search',
         render: ({ result }) => {
             if (!result) {
-                return '';
+                return <div></div>;
             }
             return (
                 <WfoAgentVisualization
@@ -45,7 +45,7 @@ export function WfoAgent() {
         name: 'run_aggregation',
         render: ({ result }) => {
             if (!result) {
-                return '';
+                return <div></div>;
             }
             return (
                 <WfoAgentVisualization
@@ -59,7 +59,7 @@ export function WfoAgent() {
         name: 'prepare_export',
         render: ({ result }) => {
             if (!result) {
-                return '';
+                return <div></div>;
             }
             return <ExportButton exportData={result as ExportData} />;
         },
