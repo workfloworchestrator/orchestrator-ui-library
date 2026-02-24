@@ -332,7 +332,8 @@ export const ConditionRow: FC<ConditionRowProps> = ({
                                                                 theme,
                                                             )}
                                                             textColor={
-                                                                theme.colors.ink
+                                                                theme.colors
+                                                                    .textInk
                                                             }
                                                             size="s"
                                                         >

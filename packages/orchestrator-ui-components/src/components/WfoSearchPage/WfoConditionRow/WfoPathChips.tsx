@@ -79,7 +79,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({
                         <div style={{ flexShrink: 0 }}>
                             <WfoBadge
                                 color={getTypeColor(fieldType, theme)}
-                                textColor={theme.colors.ink}
+                                textColor={theme.colors.textInk}
                                 size="xs"
                             >
                                 <span style={{ textDecoration: 'none' }}>
@@ -178,7 +178,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({
                     <div style={{ flexShrink: 0 }}>
                         <WfoBadge
                             color={getTypeColor(fieldType, theme)}
-                            textColor={theme.colors.ink}
+                            textColor={theme.colors.textInk}
                             size="xs"
                         >
                             <span style={{ textDecoration: 'none' }}>

@@ -88,7 +88,9 @@ export const WfoHamburgerMenu = () => {
         icon: (
             <WfoLogoutIcon
                 color={
-                    isDarkModeActive ? theme.colors.textGhost : theme.colors.ink
+                    isDarkModeActive
+                        ? theme.colors.textGhost
+                        : theme.colors.textInk
                 }
             />
         ),
@@ -100,7 +102,9 @@ export const WfoHamburgerMenu = () => {
         icon: (
             <WfoQuestionCircle
                 color={
-                    isDarkModeActive ? theme.colors.textGhost : theme.colors.ink
+                    isDarkModeActive
+                        ? theme.colors.textGhost
+                        : theme.colors.textInk
                 }
             />
         ),
