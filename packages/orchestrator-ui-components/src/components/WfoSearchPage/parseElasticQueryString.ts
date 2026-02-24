@@ -79,6 +79,7 @@ interface Tok {
 }
 
 // Characters that end a word token (excluding '-' so hyphenated fields work).
+// eslint-disable-next-line
 const WORD_BREAK = /[\s()\[\]{}":!+|&<>=~^]/;
 
 function tokenize(input: string): Tok[] {
@@ -443,7 +444,8 @@ function coerce(value: string): unknown {
     return value;
 }
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/;
+const ISO_DATE_RE =
+    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/;
 
 /** Infer value_kind from the already-coerced JS value. */
 function inferValueKind(value: unknown): string {

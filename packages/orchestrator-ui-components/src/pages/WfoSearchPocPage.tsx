@@ -3,7 +3,13 @@ import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiFlexItem, EuiSearchBar, EuiSpacer, Query } from '@elastic/eui';
+import {
+    EuiFlexItem,
+    EuiSearchBar,
+    EuiSpacer,
+    Query,
+    SearchFilterConfig,
+} from '@elastic/eui';
 import { EuiSearchBarOnChangeArgs } from '@elastic/eui/src/components/search_bar/search_bar';
 
 import {
@@ -18,15 +24,6 @@ import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { SearchPayload } from '@/rtk';
 import { useSearchMutation } from '@/rtk';
 import { SearchResult } from '@/types';
-
-/*
-entity_id: string;
-entity_type: EntityKind;
-entity_title: string;
-score: number;
-perfect_match: number;
-matching_field?: MatchingField | null;
-*/
 
 export const WfoSearchPocPage = () => {
     const t = useTranslations('search.page');
@@ -107,6 +104,64 @@ export const WfoSearchPocPage = () => {
         },
     };
 
+    const filters: SearchFilterConfig[] = [
+        {
+            type: 'field_value_toggle_group',
+            field: 'subscription.product.status',
+            items: [
+                {
+                    value: 'open',
+                    name: 'Open',
+                },
+                {
+                    value: 'closed',
+                    name: 'Closed',
+                },
+            ],
+        },
+        {
+            type: 'is',
+            field: 'active',
+            name: 'Active',
+            negatedName: 'Inactive',
+        },
+        {
+            type: 'field_value_toggle',
+            name: 'Owned by me',
+            field: 'subscription.customer',
+            value: 'surf',
+        },
+        {
+            type: 'field_value_toggle',
+            name: 'Newest',
+            field: 'subscription.fromData',
+            value: new Date().toISOString(),
+            operator: 'gt',
+        },
+        {
+            type: 'field_value_selection',
+            field: 'title',
+            name: 'Product',
+            multiSelect: 'or',
+            operator: 'exact',
+            cache: 10000, // will cache the loaded tags for 10 sec
+            options: [
+                {
+                    field: 'subscription.product',
+                    value: 'L2VPN',
+                },
+                {
+                    field: 'subscription.product',
+                    value: 'L3VPN',
+                },
+                {
+                    field: 'subscription.product',
+                    value: 'Lightpath',
+                },
+            ],
+        },
+    ];
+
     return (
         <>
             <WfoContentHeader title="Search page POC" />
@@ -115,7 +170,9 @@ export const WfoSearchPocPage = () => {
                     onChange={(onChangeArgs) => {
                         onSearch(onChangeArgs);
                     }}
+                    filters={filters}
                 />
+
                 {searchBarError && (
                     <EuiFlexItem style={{ margin: '10px 0', color: 'red' }}>
                         {searchBarError?.message}
