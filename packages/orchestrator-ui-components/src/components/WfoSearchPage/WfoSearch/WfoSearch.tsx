@@ -17,6 +17,10 @@ import {
 } from '@elastic/eui';
 
 import { WfoSubscription } from '@/components';
+import { FilterGroup } from '@/components';
+import { WfoSearchResults } from '@/components';
+import { WfoSearchMetadataHeader } from '@/components';
+import { WfoSearchPaginationInfo } from '@/components';
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { ENTITY_TABS } from '@/components/WfoSearchPage/utils';
 import { TreeProvider } from '@/contexts';
@@ -27,10 +31,6 @@ import { useSearchPagination } from '@/hooks/useSearchPagination';
 import { useUrlParams } from '@/hooks/useUrlParams';
 import { EntityKind, Group, RetrieverType } from '@/types';
 
-import { FilterGroup } from '../WfoFilterGroup';
-import { WfoSearchResults } from '../WfoSearchResults';
-import { WfoSearchMetadataHeader } from '../WfoSearchResults/WfoSearchMetadataHeader';
-import { WfoSearchPaginationInfo } from '../WfoSearchResults/WfoSearchPaginationInfo';
 import {
     DEFAULT_DEBOUNCE_DELAY,
     DEFAULT_PAGE_SIZE,
@@ -116,8 +116,8 @@ export const WfoSearch = () => {
         if (typeof query === 'string') {
             return query;
         }
-        const queryText = query.text || '';
-        return queryText;
+
+        return query.text || '';
     });
 
     const handleTabChange = (tabId: EntityKind) => {
@@ -191,7 +191,13 @@ export const WfoSearch = () => {
                 }
             }
         }
-    }, [results.data, selectedRecordId, urlParams]);
+    }, [
+        results.data,
+        selectedRecordId,
+        setSelectedRecordId,
+        setSelectedRecordIndex,
+        urlParams,
+    ]);
 
     useEffect(() => {
         setShowDetailPanel(

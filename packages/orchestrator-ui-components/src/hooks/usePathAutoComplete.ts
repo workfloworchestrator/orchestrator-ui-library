@@ -121,7 +121,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
         });
 
         setPaths(enrichedPaths);
-    }, [pathData, definitions]);
+    }, [pathData, definitions, debouncedPrefix.length]);
 
     const errorMessage = isError
         ? 'Failed to load paths'
