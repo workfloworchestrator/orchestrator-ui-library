@@ -12,7 +12,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
     "lib": ["ES2019"],
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "preserveWatchOutput": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

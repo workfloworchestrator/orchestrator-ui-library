@@ -2,12 +2,12 @@ import { METADATA_SCHEDULES_ENDPOINT } from '@/configuration/constants';
 import { orchestratorApi } from '@/rtk';
 import { BaseQueryTypes } from '@/rtk';
 import {
-    BaseGraphQlResult,
-    CacheTagType,
-    GraphqlQueryVariables,
-    ScheduledTaskDefinition,
-    ScheduledTasksDefinitionsResult,
-    TaskType,
+  BaseGraphQlResult,
+  CacheTagType,
+  GraphqlQueryVariables,
+  ScheduledTaskDefinition,
+  ScheduledTasksDefinitionsResult,
+  TaskType,
 } from '@/types';
 
 export const scheduledTasks = `
@@ -38,7 +38,7 @@ export const scheduledTasks = `
 `;
 
 export type ScheduledTasksResponse = {
-    schedules: ScheduledTaskDefinition[];
+  schedules: ScheduledTaskDefinition[];
 } & BaseGraphQlResult;
 
 /* 
@@ -56,10 +56,10 @@ jitter (int|None) – delay the job execution by jitter seconds at most
 */
 
 export type InterValKwargs = {
-    weeks?: number;
-    days?: number;
-    hours?: number;
-    start_date: string;
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  start_date: string;
 };
 
 /*
@@ -69,7 +69,7 @@ run_date (datetime|str) – the date/time to run the job at
 timezone (datetime.tzinfo|str) – time zone for run_date if it doesn’t have one already
 */
 export type DateKwargs = {
-    run_date: string;
+  run_date: string;
 };
 
 /*
@@ -91,104 +91,93 @@ timezone (datetime.tzinfo|str) – time zone to use for the date/time calculatio
 jitter (int|None) – delay the job execution by jitter seconds at most
 */
 export type CronKwargs = {
-    year?: number;
-    month?: number;
-    day?: number;
-    week?: number;
-    day_of_week?: number;
-    hour?: number;
-    minute?: number;
-    second?: number;
-    start_date: string;
+  year?: number;
+  month?: number;
+  day?: number;
+  week?: number;
+  day_of_week?: number;
+  hour?: number;
+  minute?: number;
+  second?: number;
+  start_date: string;
 };
 
 type Kwargs = DateKwargs | InterValKwargs | CronKwargs;
 
 export type ScheduledTaskPostPayload = {
-    workflowId: string;
-    workflowName: string;
-    workflowDescription: string;
-    type: TaskType;
-    kwargs: Kwargs;
+  workflowId: string;
+  workflowName: string;
+  workflowDescription: string;
+  type: TaskType;
+  kwargs: Kwargs;
 };
 
 const scheduledTasksApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getScheduledTasks: builder.query<
-            ScheduledTasksResponse,
-            GraphqlQueryVariables<ScheduledTaskDefinition>
-        >({
-            query: (variables) => ({
-                document: scheduledTasks,
-                variables,
-            }),
-            transformResponse: (
-                response: ScheduledTasksDefinitionsResult,
-            ): ScheduledTasksResponse => {
-                const schedules = response.scheduledTasks.page || [];
-                const pageInfo = response.scheduledTasks.pageInfo || {};
-                return {
-                    schedules,
-                    pageInfo,
-                };
-            },
-            providesTags: [CacheTagType.scheduledTasks],
-        }),
-        deleteScheduledTask: builder.mutation<
-            unknown,
-            { workflowId: string; scheduleId: string }
-        >({
-            query: ({ workflowId, scheduleId }) => ({
-                url: METADATA_SCHEDULES_ENDPOINT,
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: {
-                    scheduled_type: 'delete',
-                    workflow_id: workflowId,
-                    schedule_id: scheduleId,
-                },
-            }),
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
-            invalidatesTags: [CacheTagType.scheduledTasks],
-        }),
-        createScheduledTask: builder.mutation<
-            unknown,
-            ScheduledTaskPostPayload
-        >({
-            query: (payload) => {
-                const scheduleTaskPayload = {
-                    scheduled_type: 'create',
-                    name: payload.workflowDescription,
-                    workflow_name: payload.workflowName,
-                    workflow_id: payload.workflowId,
-                    trigger: payload.type,
-                    trigger_kwargs: payload.kwargs,
-                };
-
-                return {
-                    url: METADATA_SCHEDULES_ENDPOINT,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: scheduleTaskPayload,
-                };
-            },
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
-            invalidatesTags: [CacheTagType.scheduledTasks],
-        }),
+  endpoints: (builder) => ({
+    getScheduledTasks: builder.query<ScheduledTasksResponse, GraphqlQueryVariables<ScheduledTaskDefinition>>({
+      query: (variables) => ({
+        document: scheduledTasks,
+        variables,
+      }),
+      transformResponse: (response: ScheduledTasksDefinitionsResult): ScheduledTasksResponse => {
+        const schedules = response.scheduledTasks.page || [];
+        const pageInfo = response.scheduledTasks.pageInfo || {};
+        return {
+          schedules,
+          pageInfo,
+        };
+      },
+      providesTags: [CacheTagType.scheduledTasks],
     }),
+    deleteScheduledTask: builder.mutation<unknown, { workflowId: string; scheduleId: string }>({
+      query: ({ workflowId, scheduleId }) => ({
+        url: METADATA_SCHEDULES_ENDPOINT,
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          scheduled_type: 'delete',
+          workflow_id: workflowId,
+          schedule_id: scheduleId,
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+      invalidatesTags: [CacheTagType.scheduledTasks],
+    }),
+    createScheduledTask: builder.mutation<unknown, ScheduledTaskPostPayload>({
+      query: (payload) => {
+        const scheduleTaskPayload = {
+          scheduled_type: 'create',
+          name: payload.workflowDescription,
+          workflow_name: payload.workflowName,
+          workflow_id: payload.workflowId,
+          trigger: payload.type,
+          trigger_kwargs: payload.kwargs,
+        };
+
+        return {
+          url: METADATA_SCHEDULES_ENDPOINT,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: scheduleTaskPayload,
+        };
+      },
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+      invalidatesTags: [CacheTagType.scheduledTasks],
+    }),
+  }),
 });
 
 export const {
-    useGetScheduledTasksQuery,
-    useLazyGetScheduledTasksQuery,
-    useDeleteScheduledTaskMutation,
-    useCreateScheduledTaskMutation,
+  useGetScheduledTasksQuery,
+  useLazyGetScheduledTasksQuery,
+  useDeleteScheduledTaskMutation,
+  useCreateScheduledTaskMutation,
 } = scheduledTasksApi;

@@ -7,27 +7,20 @@ import { useOrchestratorTheme } from '../../../hooks/useOrchestratorTheme';
 import { WfoHeaderBadge } from '../WfoHeaderBadge/WfoHeaderBadge';
 
 export const WfoEnvironmentBadge = () => {
-    const { environmentName } = useContext(OrchestratorConfigContext);
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+  const { environmentName } = useContext(OrchestratorConfigContext);
+  const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    if (environmentName !== Environment.PRODUCTION) {
-        return (
-            <WfoHeaderBadge
-                color="warning"
-                fill={true}
-                textColor={theme.colors.shadow}
-            >
-                {environmentName}
-            </WfoHeaderBadge>
-        );
-    }
-
+  if (environmentName !== Environment.PRODUCTION) {
     return (
-        <WfoHeaderBadge
-            color={toSecondaryColor(theme.colors.primary)}
-            textColor={theme.colors.primary}
-        >
-            {environmentName}
-        </WfoHeaderBadge>
+      <WfoHeaderBadge color="warning" fill={true} textColor={theme.colors.shadow}>
+        {environmentName}
+      </WfoHeaderBadge>
     );
+  }
+
+  return (
+    <WfoHeaderBadge color={toSecondaryColor(theme.colors.primary)} textColor={theme.colors.primary}>
+      {environmentName}
+    </WfoHeaderBadge>
+  );
 };

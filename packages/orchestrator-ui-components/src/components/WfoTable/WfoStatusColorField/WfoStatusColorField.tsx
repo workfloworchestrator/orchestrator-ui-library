@@ -4,13 +4,11 @@ import { getWfoStatusColorFieldStyles } from '@/components/WfoTable/WfoStatusCol
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export type WfoStatusColorFieldProps = {
-    color: string;
+  color: string;
 };
 
 export const WfoStatusColorField = ({ color }: WfoStatusColorFieldProps) => {
-    const { getStatusColorFieldStyle } = useWithOrchestratorTheme(
-        getWfoStatusColorFieldStyles,
-    );
+  const { getStatusColorFieldStyle } = useWithOrchestratorTheme(getWfoStatusColorFieldStyles);
 
-    return <div css={getStatusColorFieldStyle(color)}></div>;
+  return <div css={getStatusColorFieldStyle(color)}></div>;
 };

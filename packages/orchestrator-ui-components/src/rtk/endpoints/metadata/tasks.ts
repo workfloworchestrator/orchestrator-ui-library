@@ -1,11 +1,5 @@
 import { orchestratorApi } from '@/rtk';
-import {
-    BaseGraphQlResult,
-    CacheTagType,
-    GraphqlQueryVariables,
-    TaskDefinition,
-    TaskDefinitionsResult,
-} from '@/types';
+import { BaseGraphQlResult, CacheTagType, GraphqlQueryVariables, TaskDefinition, TaskDefinitionsResult } from '@/types';
 
 export const tasksQuery = `
 query MetadataTasks(
@@ -46,37 +40,32 @@ query MetadataTasks(
 `;
 
 export type TasksResponse = {
-    tasks: TaskDefinition[];
+  tasks: TaskDefinition[];
 } & BaseGraphQlResult;
 
 const tasksApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getTasks: builder.query<
-            TasksResponse | undefined,
-            GraphqlQueryVariables<TaskDefinition>
-        >({
-            query: (variables) => ({
-                document: tasksQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: TaskDefinitionsResult | undefined,
-            ): TasksResponse | undefined => {
-                if (!response) {
-                    return undefined;
-                }
+  endpoints: (builder) => ({
+    getTasks: builder.query<TasksResponse | undefined, GraphqlQueryVariables<TaskDefinition>>({
+      query: (variables) => ({
+        document: tasksQuery,
+        variables,
+      }),
+      transformResponse: (response: TaskDefinitionsResult | undefined): TasksResponse | undefined => {
+        if (!response) {
+          return undefined;
+        }
 
-                const tasks = response.workflows.page || [];
-                const pageInfo = response.workflows.pageInfo || {};
+        const tasks = response.workflows.page || [];
+        const pageInfo = response.workflows.pageInfo || {};
 
-                return {
-                    tasks,
-                    pageInfo,
-                };
-            },
-            providesTags: [CacheTagType.scheduledTasks],
-        }),
+        return {
+          tasks,
+          pageInfo,
+        };
+      },
+      providesTags: [CacheTagType.scheduledTasks],
     }),
+  }),
 });
 
 export const { useGetTasksQuery, useLazyGetTasksQuery } = tasksApi;

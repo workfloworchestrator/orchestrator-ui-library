@@ -1,644 +1,644 @@
 {
-    "main": {
-        "start": "Start",
-        "ariaLabelToggleSideMenu": "Show/Hide side menu",
-        "ariaLabelCurrentPage": "Current page",
-        "metadata": "Metadata",
-        "metadataProducts": "Products",
-        "metadataProductblocks": "Product blocks",
-        "metadataResourceTypes": "Resource types",
-        "metadataWorkflows": "Workflows",
-        "metadataTasks": "Tasks",
-        "metadataScheduledTasks": "Scheduled tasks",
-        "mobileTitle": "Main menu",
-        "settings": "Settings",
-        "subscriptions": "Subscriptions",
-        "tasks": "Tasks",
-        "title": "Workflow Orchestrator",
-        "welcome": "Welcome",
-        "workflows": "Workflows",
-        "darkMode": "Dark mode",
-        "lightMode": "Light mode",
-        "websocketConnected": "This page receives live updates from the server",
-        "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
-        "websocketDisconnectedShort": "WebSocket disconnected, click the icon to reconnect",
-        "resetToDefault": "Reset to default",
-        "savePreferences": "Save preferences",
-        "numberOfRows": "Number of rows",
-        "tableSettings": "Table settings",
-        "openMenu": "Open menu",
-        "incompatibleVersion": "Incompatible version",
-        "incompatibleVersionText": "The version of the WFO UI is incompatible with this version of orchestrator-core.",
-        "minimumOrchestratorCoreVersion": "Minimum orchestrator-core version"
+  "main": {
+    "start": "Start",
+    "ariaLabelToggleSideMenu": "Show/Hide side menu",
+    "ariaLabelCurrentPage": "Current page",
+    "metadata": "Metadata",
+    "metadataProducts": "Products",
+    "metadataProductblocks": "Product blocks",
+    "metadataResourceTypes": "Resource types",
+    "metadataWorkflows": "Workflows",
+    "metadataTasks": "Tasks",
+    "metadataScheduledTasks": "Scheduled tasks",
+    "mobileTitle": "Main menu",
+    "settings": "Settings",
+    "subscriptions": "Subscriptions",
+    "tasks": "Tasks",
+    "title": "Workflow Orchestrator",
+    "welcome": "Welcome",
+    "workflows": "Workflows",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "websocketConnected": "This page receives live updates from the server",
+    "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
+    "websocketDisconnectedShort": "WebSocket disconnected, click the icon to reconnect",
+    "resetToDefault": "Reset to default",
+    "savePreferences": "Save preferences",
+    "numberOfRows": "Number of rows",
+    "tableSettings": "Table settings",
+    "openMenu": "Open menu",
+    "incompatibleVersion": "Incompatible version",
+    "incompatibleVersionText": "The version of the WFO UI is incompatible with this version of orchestrator-core.",
+    "minimumOrchestratorCoreVersion": "Minimum orchestrator-core version"
+  },
+  "common": {
+    "product": "Product",
+    "deselect": "Deselect",
+    "close": "Close",
+    "editColumns": "Edit columns",
+    "loading": "Loading",
+    "newSubscription": "New subscription",
+    "newTask": "New task",
+    "noFailedTasks": "No failed tasks!",
+    "noItemsFound": "No items found",
+    "search": "Search",
+    "errorMessage": "An error occurred",
+    "unknownError": "Unknown error",
+    "export": "Export",
+    "unauthorizedPage": "You are not authorized to see this page",
+    "insyncTrue": "in-sync",
+    "insyncFalse": "out-of-sync",
+    "searchModalTitle": "Search string options",
+    "searchModalText": "<p>Different options are available from free text search covering all data columns, or column specific filtering. Note that: <p></p><ul><li>Hidden columns are included</li> <li>Searching is case-insensitive</li> <li>Ordering of words does not matter (unless it is a Phrase)</li> <li>TSV (text search vector) search only available for subscriptions table</li></ul></p> <p>For example:</p> <li><b>\"l2vpn\"</b> – free text search</li> <li><b>tag:l2vpn</b> – search in a specific column</li><li><b>tag:lp description:test</b> – search in multiple columns</li><li><b>tag:(lp|lr)</b> – multiselect within 1 column</li><li><b>-tag:lp</b> – negated filter</li><li><b>test*</b> – prefix filter</li> <p></p><p><b>Note:</b> Search words containing characters `|-*():\"` may not be valid, as they are part of the search query grammar</p><p>Invalid search strings are for example:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(planned)\"</li> <li>\"node123|planned\"</li></ul>"
+  },
+  "confirmationDialog": {
+    "title": "Please confirm",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "leavePage": "Do you really want to leave this page?",
+    "leavePageSub": "Changes that you made will not be saved.",
+    "stay": "Stay",
+    "leave": "Leave"
+  },
+  "workflow": {
+    "start_workflow_title": "Start workflow"
+  },
+  "errors": {
+    "notAllResultsExported": "The current query returned {totalResults} results. Only the first {maximumExportedResults} rows will be exported",
+    "notAllResultsExportedTitle": "Not all items exported",
+    "invalidQueryParts": "The query contains invalid parts",
+    "notAllowedWhenEngineIsNotRunningMessage": "This action is not allowed when the Workflow Engine is not running",
+    "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is not running",
+    "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
+    "retrieve_stored_settings_title": "Error retrieving settings",
+    "failedDeletingScheduledTask": "Error deleting scheduled task"
+  },
+  "pydanticForms": {
+    "userInputForm": {
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "previous": "Previous",
+      "next": "Next",
+      "previousQuestion": "Are you sure you want to leave this page? Any filled form data will be lost",
+      "startTask": "Start task",
+      "startWorkflow": "Start workflow",
+      "resumeTask": "Resume task",
+      "resumeWorkflow": "Resume workflow",
+      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
     },
-    "common": {
-        "product": "Product",
-        "deselect": "Deselect",
-        "close": "Close",
-        "editColumns": "Edit columns",
-        "loading": "Loading",
-        "newSubscription": "New subscription",
-        "newTask": "New task",
-        "noFailedTasks": "No failed tasks!",
-        "noItemsFound": "No items found",
-        "search": "Search",
-        "errorMessage": "An error occurred",
-        "unknownError": "Unknown error",
-        "export": "Export",
-        "unauthorizedPage": "You are not authorized to see this page",
-        "insyncTrue": "in-sync",
-        "insyncFalse": "out-of-sync",
-        "searchModalTitle": "Search string options",
-        "searchModalText": "<p>Different options are available from free text search covering all data columns, or column specific filtering. Note that: <p></p><ul><li>Hidden columns are included</li> <li>Searching is case-insensitive</li> <li>Ordering of words does not matter (unless it is a Phrase)</li> <li>TSV (text search vector) search only available for subscriptions table</li></ul></p> <p>For example:</p> <li><b>\"l2vpn\"</b> – free text search</li> <li><b>tag:l2vpn</b> – search in a specific column</li><li><b>tag:lp description:test</b> – search in multiple columns</li><li><b>tag:(lp|lr)</b> – multiselect within 1 column</li><li><b>-tag:lp</b> – negated filter</li><li><b>test*</b> – prefix filter</li> <p></p><p><b>Note:</b> Search words containing characters `|-*():\"` may not be valid, as they are part of the search query grammar</p><p>Invalid search strings are for example:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(planned)\"</li> <li>\"node123|planned\"</li></ul>"
+    "widgets": {
+      "customer": {
+        "placeholder": "Search and select a customer...",
+        "loading": "Loading customers..."
+      },
+      "contactPersonName": {
+        "placeholder": "Search and add contact persons..."
+      },
+      "ipvAnyNetworkField": {
+        "manuallySelectedPrefix": "Manually selected prefix"
+      },
+      "node_select": {
+        "nodes_loading": "Nodes loading",
+        "select_node": "Select node",
+        "no_nodes_placeholder": "No nodes"
+      },
+      "locationCode": {
+        "placeholder": "Search and select a location code..."
+      },
+      "product": {
+        "placeholder": "Choose product"
+      },
+      "select": {
+        "placeholder": "Search and select a value..."
+      },
+      "vlan": {
+        "vlansInUseError": "VLAN range {vlans} are already in use for the selected service port",
+        "vlansInUse": "Already used VLAN ranges for this service port: {vlans}",
+        "missingInIms": "This service port can not be found in IMS. It may be deleted or in an initial state.",
+        "nsiVlansAvailable": "Available NSI VLAN ranges for this service port: {vlans}",
+        "nsiNoPortsAvailable": "This service port has no available NSI reserved VLANs (yet).",
+        "allPortsAvailable": "This service port has no VLANs in use (yet).",
+        "placeholder": "Enter a valid VLAN range...",
+        "placeholderNoServicePort": "First select a Service Port...",
+        "invalidVlan": "Invalid VLAN - must be a range of valid [2-4094] VLAN integers, for example '2, 5-6, 1048-1052'",
+        "untaggedPortInUse": "This service port is already in use and cannot be chosen",
+        "taggedOnly": "VLAN is only relevant for service ports in tagged mode, not for link_member or untagged ports.",
+        "loadingIms": "Loading VLAN info from IMS"
+      },
+      "subscription": {
+        "placeholder": "Choose a subscription",
+        "loading": "Loading subscriptions..."
+      },
+      "nodePort": {
+        "loadingNodes": "Loading Node subscriptions...",
+        "loadingPorts": "Loading IMS ports...",
+        "noPorts": "NO PORTS FOUND FOR THIS NODE",
+        "selectNode": "Select node",
+        "selectPort": "Select port",
+        "selectNodeFirst": "Select a node first"
+      },
+      "fileUpload": {
+        "invalidFiletype": "Invalid filetype!",
+        "errorUploading": "Error uploading file!",
+        "fileToBig": "File to large. Maximum file size: {fileSizeLimit}",
+        "initialPromptText": "Select or drag and drop a file",
+        "supportedFileTypes": "Supported file types: pdf"
+      }
+    }
+  },
+  "metadata": {
+    "title": "Metadata",
+    "tabs": {
+      "products": "Products",
+      "productBlocks": "Product blocks",
+      "resourceTypes": "Resource types",
+      "workflows": "Workflows",
+      "tasks": "Tasks",
+      "scheduledTasks": "Scheduled tasks"
     },
-    "confirmationDialog": {
-        "title": "Please confirm",
-        "confirm": "Confirm",
-        "cancel": "Cancel",
-        "leavePage": "Do you really want to leave this page?",
-        "leavePageSub": "Changes that you made will not be saved.",
-        "stay": "Stay",
-        "leave": "Leave"
+    "products": {
+      "id": "ID",
+      "name": "Product",
+      "tag": "Tag",
+      "description": "Product description",
+      "productType": "Type",
+      "status": "Status",
+      "productBlocks": "Product blocks",
+      "fixedInputs": "Fixed inputs",
+      "createdAt": "Created"
     },
-    "workflow": {
-        "start_workflow_title": "Start workflow"
+    "productBlocks": {
+      "id": "ID",
+      "name": "Product block",
+      "description": "Product block description",
+      "tag": "Tag",
+      "status": "Status",
+      "resourceTypes": "Resource types",
+      "dependingProductBlocks": "Depending product blocks",
+      "createdAt": "Created",
+      "endDate": "End date",
+      "parentIds": "Parents"
     },
-    "errors": {
-        "notAllResultsExported": "The current query returned {totalResults} results. Only the first {maximumExportedResults} rows will be exported",
-        "notAllResultsExportedTitle": "Not all items exported",
-        "invalidQueryParts": "The query contains invalid parts",
-        "notAllowedWhenEngineIsNotRunningMessage": "This action is not allowed when the Workflow Engine is not running",
-        "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is not running",
-        "retrieve_stored_settings": "Something went wrong restoring your settings. Falling back to default settings",
-        "retrieve_stored_settings_title": "Error retrieving settings",
-        "failedDeletingScheduledTask": "Error deleting scheduled task"
-    },
-    "pydanticForms": {
-        "userInputForm": {
-            "cancel": "Cancel",
-            "submit": "Submit",
-            "previous": "Previous",
-            "next": "Next",
-            "previousQuestion": "Are you sure you want to leave this page? Any filled form data will be lost",
-            "startTask": "Start task",
-            "startWorkflow": "Start workflow",
-            "resumeTask": "Resume task",
-            "resumeWorkflow": "Resume workflow",
-            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
-        },
-        "widgets": {
-            "customer": {
-                "placeholder": "Search and select a customer...",
-                "loading": "Loading customers..."
-            },
-            "contactPersonName": {
-                "placeholder": "Search and add contact persons..."
-            },
-            "ipvAnyNetworkField": {
-                "manuallySelectedPrefix": "Manually selected prefix"
-            },
-            "node_select": {
-                "nodes_loading": "Nodes loading",
-                "select_node": "Select node",
-                "no_nodes_placeholder": "No nodes"
-            },
-            "locationCode": {
-                "placeholder": "Search and select a location code..."
-            },
-            "product": {
-                "placeholder": "Choose product"
-            },
-            "select": {
-                "placeholder": "Search and select a value..."
-            },
-            "vlan": {
-                "vlansInUseError": "VLAN range {vlans} are already in use for the selected service port",
-                "vlansInUse": "Already used VLAN ranges for this service port: {vlans}",
-                "missingInIms": "This service port can not be found in IMS. It may be deleted or in an initial state.",
-                "nsiVlansAvailable": "Available NSI VLAN ranges for this service port: {vlans}",
-                "nsiNoPortsAvailable": "This service port has no available NSI reserved VLANs (yet).",
-                "allPortsAvailable": "This service port has no VLANs in use (yet).",
-                "placeholder": "Enter a valid VLAN range...",
-                "placeholderNoServicePort": "First select a Service Port...",
-                "invalidVlan": "Invalid VLAN - must be a range of valid [2-4094] VLAN integers, for example '2, 5-6, 1048-1052'",
-                "untaggedPortInUse": "This service port is already in use and cannot be chosen",
-                "taggedOnly": "VLAN is only relevant for service ports in tagged mode, not for link_member or untagged ports.",
-                "loadingIms": "Loading VLAN info from IMS"
-            },
-            "subscription": {
-                "placeholder": "Choose a subscription",
-                "loading": "Loading subscriptions..."
-            },
-            "nodePort": {
-                "loadingNodes": "Loading Node subscriptions...",
-                "loadingPorts": "Loading IMS ports...",
-                "noPorts": "NO PORTS FOUND FOR THIS NODE",
-                "selectNode": "Select node",
-                "selectPort": "Select port",
-                "selectNodeFirst": "Select a node first"
-            },
-            "fileUpload": {
-                "invalidFiletype": "Invalid filetype!",
-                "errorUploading": "Error uploading file!",
-                "fileToBig": "File to large. Maximum file size: {fileSizeLimit}",
-                "initialPromptText": "Select or drag and drop a file",
-                "supportedFileTypes": "Supported file types: pdf"
-            }
-        }
-    },
-    "metadata": {
-        "title": "Metadata",
-        "tabs": {
-            "products": "Products",
-            "productBlocks": "Product blocks",
-            "resourceTypes": "Resource types",
-            "workflows": "Workflows",
-            "tasks": "Tasks",
-            "scheduledTasks": "Scheduled tasks"
-        },
-        "products": {
-            "id": "ID",
-            "name": "Product",
-            "tag": "Tag",
-            "description": "Product description",
-            "productType": "Type",
-            "status": "Status",
-            "productBlocks": "Product blocks",
-            "fixedInputs": "Fixed inputs",
-            "createdAt": "Created"
-        },
-        "productBlocks": {
-            "id": "ID",
-            "name": "Product block",
-            "description": "Product block description",
-            "tag": "Tag",
-            "status": "Status",
-            "resourceTypes": "Resource types",
-            "dependingProductBlocks": "Depending product blocks",
-            "createdAt": "Created",
-            "endDate": "End date",
-            "parentIds": "Parents"
-        },
-        "resourceTypes": {
-            "type": "Resource type",
-            "description": "Resource type description",
-            "resourceId": "ID",
-            "usedInProductBlocks": "Used in product blocks"
-        },
-        "workflows": {
-            "workflowId": "ID",
-            "name": "Workflow",
-            "description": "Workflow description",
-            "target": "Target",
-            "productTags": "Product tags",
-            "createdAt": "Created"
-        },
-        "tasks": {
-            "workflowId": "ID",
-            "name": "Task",
-            "description": "Task description",
-            "target": "Target",
-            "productTags": "Product tags",
-            "scheduled": "Scheduled",
-            "createdAt": "Created",
-            "addSchedule": "Schedule task"
-        },
-        "scheduledTasks": {
-            "task": "Task",
-            "taskDescription": "Task description",
-            "nextRuntime": "Next runtime",
-            "schedule": "Schedule",
-            "interval": "Interval",
-            "ariaLabelDeleteButton": "Delete task schedule",
-            "deleteConfirmationQuestion": "Confirm deleting this schedule task",
-            "addSchedule": "Schedule task"
-        },
-        "scheduleTaskForm": {
-            "newSchedule": "Create new schedule",
-            "selectTask": "Select the task you want to schedule",
-            "selectTaskType": "What type of schedule do you need?",
-            "selectInterval": "Choose the schedule interval",
-            "taskTypeInterval": "Interval",
-            "taskTypeCron": "Cron",
-            "taskTypeDate": "Once",
-            "firstRunDate": "Start date",
-            "1hour": "1 hour",
-            "2hours": "2 hours",
-            "4hours": "4 hours",
-            "12hours": "12 hours",
-            "24hours": "24 hours",
-            "1week": "1 week",
-            "2weeks": "2 weeks",
-            "1month": "1 month",
-            "createScheduleButton": "Create schedule"
-        }
-    },
-    "processes": {
-        "index": {
-            "workflowName": "Workflow",
-            "step": "Current step",
-            "status": "Status",
-            "product": "Product",
-            "customer": "Customer",
-            "customerAbbreviation": "Customer abbr",
-            "subscriptions": "Subscriptions",
-            "createdBy": "Created by",
-            "assignee": "Assignee",
-            "processId": "Process ID",
-            "started": "Started",
-            "lastModified": "Last modified",
-            "workflowTarget": "Target",
-            "productTag": "Product tag",
-            "showAllRelatedSubscriptions": "Show all related subscriptions"
-        },
-        "detail": {
-            "retry": "Retry",
-            "resume": "Resume",
-            "abort": "Abort",
-            "delete": "Delete",
-            "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
-            "abortTaskQuestion": "Are you sure you want to abort the {workflowName} task?",
-            "abortWorkflowQuestion": "Are you sure you want to abort the {workflowName} workflow?",
-            "retryTaskQuestion": "Are you sure you want to retry the {workflowName} task?",
-            "retryWorkflowQuestion": "Are you sure you want to retry the {workflowName} workflow?",
-            "status": "Status",
-            "startedBy": "Started by",
-            "lastStep": "Current step",
-            "startedOn": "Started on",
-            "lastUpdate": "Last update",
-            "relatedSubscriptions": "Related subscriptions",
-            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
-            "customer": "Customer",
-            "openWorkflowTaskInfo": "open workflow/task information in a new tab"
-        },
-        "steps": {
-            "taskSteps": "Task steps",
-            "workflowSteps": "Workflow steps",
-            "showDelta": "Show subscription delta",
-            "hideDelta": "Hide subscription delta",
-            "showTraceback": "Show traceback",
-            "hideTraceback": "Hide traceback",
-            "viewOptions": "Options",
-            "expandAll": "Expand all",
-            "collapseAll": "collapse all",
-            "duration": "Duration",
-            "userInput": "User input",
-            "submitTaskFormLabel": "Please submit the form to start this task",
-            "submitWorkflowFormLabel": "Please submit the form to start this workflow",
-            "traceback": "Traceback",
-            "codeView": {
-                "json": "JSON",
-                "table": "Table",
-                "raw": "Raw"
-            }
-        },
-        "delta": {
-            "title": "Subscription delta",
-            "fullScreenExit": "Exit full-screen mode",
-            "fullScreen": "Full-screen mode",
-            "continuityAboveBelow": "Continuity above below",
-            "continuityWithin": "Continuity within"
-        }
+    "resourceTypes": {
+      "type": "Resource type",
+      "description": "Resource type description",
+      "resourceId": "ID",
+      "usedInProductBlocks": "Used in product blocks"
     },
     "workflows": {
-        "tabs": {
-            "active": "Active",
-            "completed": "Completed"
-        },
-        "index": {
-            "title": "Workflows"
-        }
-    },
-    "subscriptions": {
-        "tabs": {
-            "active": "Active",
-            "terminated": "Terminated",
-            "transient": "Transient",
-            "all": "All"
-        },
-        "index": {
-            "id": "ID",
-            "description": "Description",
-            "status": "Status",
-            "insync": "In Sync",
-            "product": "Product",
-            "tag": "Product tag",
-            "startDate": "Start date",
-            "endDate": "End date",
-            "metadata": "Metadata",
-            "note": "Note",
-            "customerFullname": "Customer",
-            "customerShortcode": "Customer abbr",
-            "actions": "Actions"
-        },
-        "detail": {
-            "title": "Subscriptions",
-            "tabs": {
-                "general": "General",
-                "serviceConfiguration": "Service configuration",
-                "workflows": "Workflows",
-                "relatedSubscriptions": "Related subscriptions"
-            },
-            "loadingStatus": "Loading status",
-            "actions": {
-                "create": "Create workflow",
-                "modify": "Modify workflow",
-                "tasks": "Tasks",
-                "terminate": "Terminate workflow",
-                "reconcile": "Reconcile workflow",
-                "actionStarted": "Action started",
-                "actionStartFailed": "Action failed",
-                "actions": "Actions",
-                "lockedBySubscriptions": "This action is locked by the following subscriptions:",
-                "notAvailable": "Not available",
-                "notAvailableForWorkflow": "Not available for this workflow",
-                "reconcileSubscription": "Reconcile subscription",
-                "validateSubscription": "Validate subscription",
-                "subscription": {
-                    "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
-                    "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions: {unterminated_in_use_by_subscriptions}",
-                    "no_modify_invalid_status": "This subscription can not be modified because of the status: {status}. Only subscriptions with status {usable_when} can be {action}.",
-                    "no_modify_workflow": "This subscription can not be modified as the product has no modify workflows.",
-                    "no_termination_workflow": "This subscription can not be terminated as the product has no termination workflows.",
-                    "no_validate_workflow": "This subscription can not be validated as the product has no validate workflows.",
-                    "not_in_sync": "This subscription can not be modified because it is not in-sync. This means there is some error in the registration of the subscription or that it is being modified by another workflow.",
-                    "relations_not_in_sync": "This subscription can not be modified because some related subscriptions are not in-sync. Locked subscriptions: {locked_relations}",
-                    "no_modify_subscription_in_use_by_others": "This subscription can not be modified because it is in use by one or more other subscriptions: {unterminated_parents}",
-                    "insufficient_workflow_permissions": "Insufficient user permissions to run this workflow"
-                }
-            },
-            "subscriptionInstanceId": "Instance ID",
-            "ownerSubscriptionId": "Owner subscription ID",
-            "inUseByRelations": "In-use by subscription(s)",
-            "showDetails": "Show details",
-            "self": "Current subscription",
-            "hideDetails": "Hide details",
-            "subscriptionDetails": "Subscription details",
-            "productName": "Product name",
-            "fixedInputs": "Fixed inputs",
-            "productInfo": "Product info",
-            "noProductBlockSelected": "No product block selected",
-            "productBlocks": "Product blocks",
-            "ctaSelectProductBlock": "Select one or more product blocks to view their details",
-            "startedBy": "Started by",
-            "startedAt": "Started at",
-            "status": "Status",
-            "id": "ID",
-            "blockTitleSubscriptionDetails": "Subscription details",
-            "blockTitleFixedInputs": "Fixed inputs",
-            "blockTitleProductInfo": "Product Info",
-            "subscriptionId": "Subscription ID",
-            "description": "Description",
-            "startDate": "Start date",
-            "insync": "In sync",
-            "customer": "Customer",
-            "customerUuid": "Customer UUID",
-            "customerDescriptions": "Customer descriptions",
-            "name": "Name",
-            "productType": "Product type",
-            "tag": "Tag",
-            "created": "Created",
-            "endDate": "End date",
-            "metadata": "Metadata",
-            "note": "Note",
-            "noRelatedSubscriptions": "No related subscriptions found",
-            "hideTerminatedRelatedSubscriptions": "Hide terminated subscriptions",
-            "processDetail": {
-                "id": "ID",
-                "status": "Status",
-                "startedAt": "Started at",
-                "startedBy": "Started by"
-            },
-            "showAll": "Show all",
-            "hideAll": "Hide all",
-            "selectByNameTitle": "Select product blocks by name",
-            "selectByNameButtonText": "Select by name",
-            "see": "See",
-            "setInSync": "Set in Sync",
-            "subscriptionIsInSync": "Subscription is in sync",
-            "setInSyncQuestion": "Are you sure you want to do this? You're about to force a subscription in sync. When it's clear why the subscription is out of sync this could enable you to start or finish a change on this subscription. When you're in doubt, please consult the network automators first as running workflows on subscriptions that are not in sync can potentially do great harm to the network.",
-            "setInSyncFailed": {
-                "title": "Set in sync failed",
-                "text": "The subscription could not be set in sync. Please try again later."
-            },
-            "setInSyncSuccess": {
-                "title": "Subscription set in sync",
-                "text": "The subscription was successfully set in sync."
-            },
-            "workflowsTab": {
-                "startWithOldestLabel": "Start with oldest first",
-                "startWithNewestLabel": "Start with newest first"
-            }
-        }
+      "workflowId": "ID",
+      "name": "Workflow",
+      "description": "Workflow description",
+      "target": "Target",
+      "productTags": "Product tags",
+      "createdAt": "Created"
     },
     "tasks": {
-        "page": {
-            "taskName": "Task",
-            "rerunAll": "Re-try all tasks",
-            "rerunAllQuestion": "Are you sure you want to re-try all failed tasks?"
-        },
-        "tabs": {
-            "active": "Active",
-            "completed": "Completed"
-        }
+      "workflowId": "ID",
+      "name": "Task",
+      "description": "Task description",
+      "target": "Target",
+      "productTags": "Product tags",
+      "scheduled": "Scheduled",
+      "createdAt": "Created",
+      "addSchedule": "Schedule task"
     },
-    "settings": {
-        "page": {
-            "flushButton": "Flush",
-            "flushCacheSettingsTitle": "Flush cache settings",
-            "engineStatusTitle": "Workflow engine status",
-            "workerStatusTitle": "Worker status",
-            "modifyEngine": "Modify the engine settings",
-            "pauseEngine": "Pause workflow engine",
-            "runningProcesses": "Running processes",
-            "selectSettings": "Select cache",
-            "startEngine": "Start workflow engine",
-            "resetTextSearchIndex": "Reset text search index",
-            "resetTextSearchIndexButton": "Reset",
-            "status": "Status",
-            "numberOfQueuedJobs": "Number of queued jobs",
-            "numberOfRunningJobs": "Number of running jobs",
-            "numberOfWorkersOnline": "Number of workers online",
-            "viewStatusPage": "View AO status page",
-            "aoStackStatus": "AO stack status",
-            "noSettingsExposed": "No settings exposed by the backend, to enable this, please refer to the",
-            "settingsOverviewLink": "Settings Overview page in the documentation"
-        },
-        "tabs": {
-            "actions": "Actions",
-            "envSettings": "Environment Settings"
-        }
+    "scheduledTasks": {
+      "task": "Task",
+      "taskDescription": "Task description",
+      "nextRuntime": "Next runtime",
+      "schedule": "Schedule",
+      "interval": "Interval",
+      "ariaLabelDeleteButton": "Delete task schedule",
+      "deleteConfirmationQuestion": "Confirm deleting this schedule task",
+      "addSchedule": "Schedule task"
     },
-    "startPage": {
-        "myWorkflows": {
-            "buttonText": "Show my completed workflows",
-            "headerTitle": "My completed workflows",
-            "listTitle": "My most recent workflows"
-        },
-        "activeSubscriptions": {
-            "buttonText": "Show all active subscriptions",
-            "headerTitle": "Total active subscriptions",
-            "listTitle": "Most recent subscriptions"
-        },
-        "outOfSyncSubscriptions": {
-            "buttonText": "Show all active out-of-sync subscriptions",
-            "headerTitle": "Total active out-of-sync subscriptions",
-            "listTitle": "Most recent active out-of-sync subscriptions"
-        },
-        "activeWorkflows": {
-            "buttonText": "Show all active workflows",
-            "headerTitle": "Total active workflows",
-            "listTitle": "Most recent active workflows"
-        },
-        "failedTasks": {
-            "buttonText": "Show all failed tasks",
-            "headerTitle": "Total failed tasks",
-            "listTitle": "Most recent failed tasks"
-        },
-        "products": {
-            "headerTitle": "Total number of products",
-            "listTitle": "Total number of product instances"
-        }
-    },
-    "hamburgerMenu": {
-        "openMenu": "Open menu",
-        "support": "Support",
-        "softwareVersions": "Software Versions",
-        "logout": "Logout",
-        "aoStatusPage": "A&O application status page"
-    },
-    "agent": {
-        "title": "Wfo Agent",
-        "availability": {
-            "unavailable": {
-                "title": "Agent Service Not Available",
-                "instructions": {
-                    "setAgentEnvironment": {
-                        "before": "Set ",
-                        "after": " in your service environment variables"
-                    },
-                    "setSearchEnvironment": {
-                        "before": "Set ",
-                        "after": " (agent functionality requires search)"
-                    },
-                    "checkVersion": "Ensure your orchestrator-core version supports agent functionality",
-                    "configureOpenAI": "Configure your OpenAI API key if using OpenAI models",
-                    "restartService": "Restart your service",
-                    "checkDockerConfig": "If using Docker, make sure the environment variables are set in docker-compose.yml"
-                },
-                "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
-                "retryButton": "Retry Connection"
-            }
-        },
-        "page": {
-            "filledParameters": "Filled parameters",
-            "emptyGroup": "Empty group",
-            "searchQuery": "Search query",
-            "activeFilters": "Active filters",
-            "noFiltersApplied": "No filters applied",
-            "entityType": "Entity type",
-            "action": "Action",
-            "copilot": {
-                "title": "Database assistant",
-                "initial": "What can I help you with?"
-            },
-            "suggestions": {
-                "findActiveSubscriptions": "Find active subscriptions",
-                "showTerminatedWorkflows": "Show terminated workflows",
-                "listAllSubscriptionsAndExport": "List all subscriptions and export them",
-                "showActiveSubscriptionsPerMonth": "Show the number of active subscriptions per month"
-            },
-            "tools": {
-                "set_filter_tree": "I'm setting up filters",
-                "start_new_search": "I'm starting a new search",
-                "run_search": "I'm executing a search",
-                "discover_filter_paths": "I'm discovering available filters",
-                "run_aggregation": "I'm running aggregations",
-                "prepare_export": "I'm preparing the export",
-                "get_valid_operators": "I'm getting valid operators",
-                "set_temporal_grouping": "I'm setting temporal grouping"
-            },
-            "visualization": {
-                "noDataAvailable": "No data available for visualization.",
-                "invalidDataStructure": "Invalid data structure."
-            }
-        }
-    },
-    "search": {
-        "availability": {
-            "unavailable": {
-                "title": "Search Service Not Available",
-                "instructions": {
-                    "setEnvironmentVariable": {
-                        "before": "Set ",
-                        "after": " in your service environment variables"
-                    },
-                    "checkVersion": "Ensure your orchestrator-core version supports search functionality",
-                    "restartService": "Restart your service",
-                    "checkDockerConfig": "If using Docker, make sure the environment variable is set in docker-compose.yml"
-                },
-                "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
-                "retryButton": "Retry Connection"
-            }
-        },
-        "page": {
-            "selectFieldFirst": "Select a field first",
-            "maxNestingDepth": "Maximum nesting depth reached",
-            "addNestedGroup": "Add nested group",
-            "addCondition": "Add condition",
-            "addGroup": "Add group",
-            "removeGroup": "Remove group",
-            "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
-            "emptyGroupTitle": "Empty group",
-            "fieldSearchPlaceholder": "Type to search fields...",
-            "removeConditionAriaLabel": "Remove condition",
-            "groupLabel": "Group",
-            "hideFilters": "Hide filters",
-            "showFilters": "Show filters",
-            "structuredFilters": "Structured filters",
-            "retrieval": "Retrieval",
-            "retrieverAuto": "Auto",
-            "retrieverFuzzy": "Fuzzy",
-            "retrieverSemantic": "Semantic",
-            "retrieverHybrid": "Hybrid",
-            "searchError": "Error",
-            "dismiss": "Dismiss",
-            "searchPlaceholder": "Search for {entityType}…",
-            "noResults": "No Results",
-            "noResultsMessage": "No {entityType} found matching your search criteria.",
-            "noResultsSuggestions": "Try adjusting your search terms, removing filters, or searching for different keywords.",
-            "noResultsFound": "No results found for your search.",
-            "loadingSearchResults": "Loading search results...",
-            "previousPage": "Previous page",
-            "page": "Page",
-            "nextPage": "Next page",
-            "resultsOnPage": "{resultCount} result(s) on this page",
-            "searchResultsPagination": "Search results pagination",
-            "viewDetails": "View details",
-            "selectOrEnterValue": "Select or type value",
-            "enterValue": "Enter value",
-            "fromNumber": "From",
-            "toNumber": "To",
-            "fromDate": "From date",
-            "toDate": "To date",
-            "enterNumber": "Enter number",
-            "selectDateAndTime": "Select date",
-            "valueControlTo": "to",
-            "searchFieldsPlaceholder": "Search fields...",
-            "selectSpecificPathPlaceholder": "Select a specific path...",
-            "anyPathOption": "Any path",
-            "operatorLabel": "Operator",
-            "fieldLabel": "Field",
-            "valueLabel": "Value",
-            "fieldsGroupLabel": "Fields",
-            "componentsGroupLabel": "Components",
-            "pathsCount": "{count} paths"
-        },
-        "tabs": {
-            "subscriptions": "Subscriptions",
-            "products": "Products",
-            "workflows": "Workflows",
-            "processes": "Processes"
-        }
+    "scheduleTaskForm": {
+      "newSchedule": "Create new schedule",
+      "selectTask": "Select the task you want to schedule",
+      "selectTaskType": "What type of schedule do you need?",
+      "selectInterval": "Choose the schedule interval",
+      "taskTypeInterval": "Interval",
+      "taskTypeCron": "Cron",
+      "taskTypeDate": "Once",
+      "firstRunDate": "Start date",
+      "1hour": "1 hour",
+      "2hours": "2 hours",
+      "4hours": "4 hours",
+      "12hours": "12 hours",
+      "24hours": "24 hours",
+      "1week": "1 week",
+      "2weeks": "2 weeks",
+      "1month": "1 month",
+      "createScheduleButton": "Create schedule"
     }
+  },
+  "processes": {
+    "index": {
+      "workflowName": "Workflow",
+      "step": "Current step",
+      "status": "Status",
+      "product": "Product",
+      "customer": "Customer",
+      "customerAbbreviation": "Customer abbr",
+      "subscriptions": "Subscriptions",
+      "createdBy": "Created by",
+      "assignee": "Assignee",
+      "processId": "Process ID",
+      "started": "Started",
+      "lastModified": "Last modified",
+      "workflowTarget": "Target",
+      "productTag": "Product tag",
+      "showAllRelatedSubscriptions": "Show all related subscriptions"
+    },
+    "detail": {
+      "retry": "Retry",
+      "resume": "Resume",
+      "abort": "Abort",
+      "delete": "Delete",
+      "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
+      "abortTaskQuestion": "Are you sure you want to abort the {workflowName} task?",
+      "abortWorkflowQuestion": "Are you sure you want to abort the {workflowName} workflow?",
+      "retryTaskQuestion": "Are you sure you want to retry the {workflowName} task?",
+      "retryWorkflowQuestion": "Are you sure you want to retry the {workflowName} workflow?",
+      "status": "Status",
+      "startedBy": "Started by",
+      "lastStep": "Current step",
+      "startedOn": "Started on",
+      "lastUpdate": "Last update",
+      "relatedSubscriptions": "Related subscriptions",
+      "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
+      "customer": "Customer",
+      "openWorkflowTaskInfo": "open workflow/task information in a new tab"
+    },
+    "steps": {
+      "taskSteps": "Task steps",
+      "workflowSteps": "Workflow steps",
+      "showDelta": "Show subscription delta",
+      "hideDelta": "Hide subscription delta",
+      "showTraceback": "Show traceback",
+      "hideTraceback": "Hide traceback",
+      "viewOptions": "Options",
+      "expandAll": "Expand all",
+      "collapseAll": "collapse all",
+      "duration": "Duration",
+      "userInput": "User input",
+      "submitTaskFormLabel": "Please submit the form to start this task",
+      "submitWorkflowFormLabel": "Please submit the form to start this workflow",
+      "traceback": "Traceback",
+      "codeView": {
+        "json": "JSON",
+        "table": "Table",
+        "raw": "Raw"
+      }
+    },
+    "delta": {
+      "title": "Subscription delta",
+      "fullScreenExit": "Exit full-screen mode",
+      "fullScreen": "Full-screen mode",
+      "continuityAboveBelow": "Continuity above below",
+      "continuityWithin": "Continuity within"
+    }
+  },
+  "workflows": {
+    "tabs": {
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "index": {
+      "title": "Workflows"
+    }
+  },
+  "subscriptions": {
+    "tabs": {
+      "active": "Active",
+      "terminated": "Terminated",
+      "transient": "Transient",
+      "all": "All"
+    },
+    "index": {
+      "id": "ID",
+      "description": "Description",
+      "status": "Status",
+      "insync": "In Sync",
+      "product": "Product",
+      "tag": "Product tag",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "metadata": "Metadata",
+      "note": "Note",
+      "customerFullname": "Customer",
+      "customerShortcode": "Customer abbr",
+      "actions": "Actions"
+    },
+    "detail": {
+      "title": "Subscriptions",
+      "tabs": {
+        "general": "General",
+        "serviceConfiguration": "Service configuration",
+        "workflows": "Workflows",
+        "relatedSubscriptions": "Related subscriptions"
+      },
+      "loadingStatus": "Loading status",
+      "actions": {
+        "create": "Create workflow",
+        "modify": "Modify workflow",
+        "tasks": "Tasks",
+        "terminate": "Terminate workflow",
+        "reconcile": "Reconcile workflow",
+        "actionStarted": "Action started",
+        "actionStartFailed": "Action failed",
+        "actions": "Actions",
+        "lockedBySubscriptions": "This action is locked by the following subscriptions:",
+        "notAvailable": "Not available",
+        "notAvailableForWorkflow": "Not available for this workflow",
+        "reconcileSubscription": "Reconcile subscription",
+        "validateSubscription": "Validate subscription",
+        "subscription": {
+          "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
+          "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions: {unterminated_in_use_by_subscriptions}",
+          "no_modify_invalid_status": "This subscription can not be modified because of the status: {status}. Only subscriptions with status {usable_when} can be {action}.",
+          "no_modify_workflow": "This subscription can not be modified as the product has no modify workflows.",
+          "no_termination_workflow": "This subscription can not be terminated as the product has no termination workflows.",
+          "no_validate_workflow": "This subscription can not be validated as the product has no validate workflows.",
+          "not_in_sync": "This subscription can not be modified because it is not in-sync. This means there is some error in the registration of the subscription or that it is being modified by another workflow.",
+          "relations_not_in_sync": "This subscription can not be modified because some related subscriptions are not in-sync. Locked subscriptions: {locked_relations}",
+          "no_modify_subscription_in_use_by_others": "This subscription can not be modified because it is in use by one or more other subscriptions: {unterminated_parents}",
+          "insufficient_workflow_permissions": "Insufficient user permissions to run this workflow"
+        }
+      },
+      "subscriptionInstanceId": "Instance ID",
+      "ownerSubscriptionId": "Owner subscription ID",
+      "inUseByRelations": "In-use by subscription(s)",
+      "showDetails": "Show details",
+      "self": "Current subscription",
+      "hideDetails": "Hide details",
+      "subscriptionDetails": "Subscription details",
+      "productName": "Product name",
+      "fixedInputs": "Fixed inputs",
+      "productInfo": "Product info",
+      "noProductBlockSelected": "No product block selected",
+      "productBlocks": "Product blocks",
+      "ctaSelectProductBlock": "Select one or more product blocks to view their details",
+      "startedBy": "Started by",
+      "startedAt": "Started at",
+      "status": "Status",
+      "id": "ID",
+      "blockTitleSubscriptionDetails": "Subscription details",
+      "blockTitleFixedInputs": "Fixed inputs",
+      "blockTitleProductInfo": "Product Info",
+      "subscriptionId": "Subscription ID",
+      "description": "Description",
+      "startDate": "Start date",
+      "insync": "In sync",
+      "customer": "Customer",
+      "customerUuid": "Customer UUID",
+      "customerDescriptions": "Customer descriptions",
+      "name": "Name",
+      "productType": "Product type",
+      "tag": "Tag",
+      "created": "Created",
+      "endDate": "End date",
+      "metadata": "Metadata",
+      "note": "Note",
+      "noRelatedSubscriptions": "No related subscriptions found",
+      "hideTerminatedRelatedSubscriptions": "Hide terminated subscriptions",
+      "processDetail": {
+        "id": "ID",
+        "status": "Status",
+        "startedAt": "Started at",
+        "startedBy": "Started by"
+      },
+      "showAll": "Show all",
+      "hideAll": "Hide all",
+      "selectByNameTitle": "Select product blocks by name",
+      "selectByNameButtonText": "Select by name",
+      "see": "See",
+      "setInSync": "Set in Sync",
+      "subscriptionIsInSync": "Subscription is in sync",
+      "setInSyncQuestion": "Are you sure you want to do this? You're about to force a subscription in sync. When it's clear why the subscription is out of sync this could enable you to start or finish a change on this subscription. When you're in doubt, please consult the network automators first as running workflows on subscriptions that are not in sync can potentially do great harm to the network.",
+      "setInSyncFailed": {
+        "title": "Set in sync failed",
+        "text": "The subscription could not be set in sync. Please try again later."
+      },
+      "setInSyncSuccess": {
+        "title": "Subscription set in sync",
+        "text": "The subscription was successfully set in sync."
+      },
+      "workflowsTab": {
+        "startWithOldestLabel": "Start with oldest first",
+        "startWithNewestLabel": "Start with newest first"
+      }
+    }
+  },
+  "tasks": {
+    "page": {
+      "taskName": "Task",
+      "rerunAll": "Re-try all tasks",
+      "rerunAllQuestion": "Are you sure you want to re-try all failed tasks?"
+    },
+    "tabs": {
+      "active": "Active",
+      "completed": "Completed"
+    }
+  },
+  "settings": {
+    "page": {
+      "flushButton": "Flush",
+      "flushCacheSettingsTitle": "Flush cache settings",
+      "engineStatusTitle": "Workflow engine status",
+      "workerStatusTitle": "Worker status",
+      "modifyEngine": "Modify the engine settings",
+      "pauseEngine": "Pause workflow engine",
+      "runningProcesses": "Running processes",
+      "selectSettings": "Select cache",
+      "startEngine": "Start workflow engine",
+      "resetTextSearchIndex": "Reset text search index",
+      "resetTextSearchIndexButton": "Reset",
+      "status": "Status",
+      "numberOfQueuedJobs": "Number of queued jobs",
+      "numberOfRunningJobs": "Number of running jobs",
+      "numberOfWorkersOnline": "Number of workers online",
+      "viewStatusPage": "View AO status page",
+      "aoStackStatus": "AO stack status",
+      "noSettingsExposed": "No settings exposed by the backend, to enable this, please refer to the",
+      "settingsOverviewLink": "Settings Overview page in the documentation"
+    },
+    "tabs": {
+      "actions": "Actions",
+      "envSettings": "Environment Settings"
+    }
+  },
+  "startPage": {
+    "myWorkflows": {
+      "buttonText": "Show my completed workflows",
+      "headerTitle": "My completed workflows",
+      "listTitle": "My most recent workflows"
+    },
+    "activeSubscriptions": {
+      "buttonText": "Show all active subscriptions",
+      "headerTitle": "Total active subscriptions",
+      "listTitle": "Most recent subscriptions"
+    },
+    "outOfSyncSubscriptions": {
+      "buttonText": "Show all active out-of-sync subscriptions",
+      "headerTitle": "Total active out-of-sync subscriptions",
+      "listTitle": "Most recent active out-of-sync subscriptions"
+    },
+    "activeWorkflows": {
+      "buttonText": "Show all active workflows",
+      "headerTitle": "Total active workflows",
+      "listTitle": "Most recent active workflows"
+    },
+    "failedTasks": {
+      "buttonText": "Show all failed tasks",
+      "headerTitle": "Total failed tasks",
+      "listTitle": "Most recent failed tasks"
+    },
+    "products": {
+      "headerTitle": "Total number of products",
+      "listTitle": "Total number of product instances"
+    }
+  },
+  "hamburgerMenu": {
+    "openMenu": "Open menu",
+    "support": "Support",
+    "softwareVersions": "Software Versions",
+    "logout": "Logout",
+    "aoStatusPage": "A&O application status page"
+  },
+  "agent": {
+    "title": "Wfo Agent",
+    "availability": {
+      "unavailable": {
+        "title": "Agent Service Not Available",
+        "instructions": {
+          "setAgentEnvironment": {
+            "before": "Set ",
+            "after": " in your service environment variables"
+          },
+          "setSearchEnvironment": {
+            "before": "Set ",
+            "after": " (agent functionality requires search)"
+          },
+          "checkVersion": "Ensure your orchestrator-core version supports agent functionality",
+          "configureOpenAI": "Configure your OpenAI API key if using OpenAI models",
+          "restartService": "Restart your service",
+          "checkDockerConfig": "If using Docker, make sure the environment variables are set in docker-compose.yml"
+        },
+        "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
+        "retryButton": "Retry Connection"
+      }
+    },
+    "page": {
+      "filledParameters": "Filled parameters",
+      "emptyGroup": "Empty group",
+      "searchQuery": "Search query",
+      "activeFilters": "Active filters",
+      "noFiltersApplied": "No filters applied",
+      "entityType": "Entity type",
+      "action": "Action",
+      "copilot": {
+        "title": "Database assistant",
+        "initial": "What can I help you with?"
+      },
+      "suggestions": {
+        "findActiveSubscriptions": "Find active subscriptions",
+        "showTerminatedWorkflows": "Show terminated workflows",
+        "listAllSubscriptionsAndExport": "List all subscriptions and export them",
+        "showActiveSubscriptionsPerMonth": "Show the number of active subscriptions per month"
+      },
+      "tools": {
+        "set_filter_tree": "I'm setting up filters",
+        "start_new_search": "I'm starting a new search",
+        "run_search": "I'm executing a search",
+        "discover_filter_paths": "I'm discovering available filters",
+        "run_aggregation": "I'm running aggregations",
+        "prepare_export": "I'm preparing the export",
+        "get_valid_operators": "I'm getting valid operators",
+        "set_temporal_grouping": "I'm setting temporal grouping"
+      },
+      "visualization": {
+        "noDataAvailable": "No data available for visualization.",
+        "invalidDataStructure": "Invalid data structure."
+      }
+    }
+  },
+  "search": {
+    "availability": {
+      "unavailable": {
+        "title": "Search Service Not Available",
+        "instructions": {
+          "setEnvironmentVariable": {
+            "before": "Set ",
+            "after": " in your service environment variables"
+          },
+          "checkVersion": "Ensure your orchestrator-core version supports search functionality",
+          "restartService": "Restart your service",
+          "checkDockerConfig": "If using Docker, make sure the environment variable is set in docker-compose.yml"
+        },
+        "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
+        "retryButton": "Retry Connection"
+      }
+    },
+    "page": {
+      "selectFieldFirst": "Select a field first",
+      "maxNestingDepth": "Maximum nesting depth reached",
+      "addNestedGroup": "Add nested group",
+      "addCondition": "Add condition",
+      "addGroup": "Add group",
+      "removeGroup": "Remove group",
+      "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
+      "emptyGroupTitle": "Empty group",
+      "fieldSearchPlaceholder": "Type to search fields...",
+      "removeConditionAriaLabel": "Remove condition",
+      "groupLabel": "Group",
+      "hideFilters": "Hide filters",
+      "showFilters": "Show filters",
+      "structuredFilters": "Structured filters",
+      "retrieval": "Retrieval",
+      "retrieverAuto": "Auto",
+      "retrieverFuzzy": "Fuzzy",
+      "retrieverSemantic": "Semantic",
+      "retrieverHybrid": "Hybrid",
+      "searchError": "Error",
+      "dismiss": "Dismiss",
+      "searchPlaceholder": "Search for {entityType}…",
+      "noResults": "No Results",
+      "noResultsMessage": "No {entityType} found matching your search criteria.",
+      "noResultsSuggestions": "Try adjusting your search terms, removing filters, or searching for different keywords.",
+      "noResultsFound": "No results found for your search.",
+      "loadingSearchResults": "Loading search results...",
+      "previousPage": "Previous page",
+      "page": "Page",
+      "nextPage": "Next page",
+      "resultsOnPage": "{resultCount} result(s) on this page",
+      "searchResultsPagination": "Search results pagination",
+      "viewDetails": "View details",
+      "selectOrEnterValue": "Select or type value",
+      "enterValue": "Enter value",
+      "fromNumber": "From",
+      "toNumber": "To",
+      "fromDate": "From date",
+      "toDate": "To date",
+      "enterNumber": "Enter number",
+      "selectDateAndTime": "Select date",
+      "valueControlTo": "to",
+      "searchFieldsPlaceholder": "Search fields...",
+      "selectSpecificPathPlaceholder": "Select a specific path...",
+      "anyPathOption": "Any path",
+      "operatorLabel": "Operator",
+      "fieldLabel": "Field",
+      "valueLabel": "Value",
+      "fieldsGroupLabel": "Fields",
+      "componentsGroupLabel": "Components",
+      "pathsCount": "{count} paths"
+    },
+    "tabs": {
+      "subscriptions": "Subscriptions",
+      "products": "Products",
+      "workflows": "Workflows",
+      "processes": "Processes"
+    }
+  }
 }

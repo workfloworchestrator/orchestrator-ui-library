@@ -9,19 +9,19 @@ const versionsQuery = `
 `;
 
 export type VersionsResponse = {
-    version: {
-        applicationVersions: [string];
-    };
+  version: {
+    applicationVersions: [string];
+  };
 };
 
 const versionsApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        getVersions: build.query<VersionsResponse, void>({
-            query: () => ({
-                document: versionsQuery,
-            }),
-        }),
+  endpoints: (build) => ({
+    getVersions: build.query<VersionsResponse, void>({
+      query: () => ({
+        document: versionsQuery,
+      }),
     }),
+  }),
 });
 
 export const { useGetVersionsQuery } = versionsApi;

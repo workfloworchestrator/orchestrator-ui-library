@@ -2,10 +2,10 @@ import { METADATA_PRODUCT_BLOCK_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import { MetadataDescriptionParams } from '@/types';
 import {
-    BaseGraphQlResult,
-    GraphqlQueryVariables,
-    ProductBlockDefinition,
-    ProductBlockDefinitionsResult,
+  BaseGraphQlResult,
+  GraphqlQueryVariables,
+  ProductBlockDefinition,
+  ProductBlockDefinitionsResult,
 } from '@/types';
 
 export const productBlocksQuery = `
@@ -58,55 +58,49 @@ export const productBlocksQuery = `
 `;
 
 export type ProductBlocksResponse = {
-    productBlocks: ProductBlockDefinition[];
+  productBlocks: ProductBlockDefinition[];
 } & BaseGraphQlResult;
 
 const productBlocksApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getProductBlocks: builder.query<
-            ProductBlocksResponse,
-            GraphqlQueryVariables<ProductBlockDefinition>
-        >({
-            query: (variables) => ({
-                document: productBlocksQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: ProductBlockDefinitionsResult,
-            ): ProductBlocksResponse => {
-                const productBlocks = response.productBlocks.page || [];
-                const pageInfo = response.productBlocks.pageInfo || {};
+  endpoints: (builder) => ({
+    getProductBlocks: builder.query<ProductBlocksResponse, GraphqlQueryVariables<ProductBlockDefinition>>({
+      query: (variables) => ({
+        document: productBlocksQuery,
+        variables,
+      }),
+      transformResponse: (response: ProductBlockDefinitionsResult): ProductBlocksResponse => {
+        const productBlocks = response.productBlocks.page || [];
+        const pageInfo = response.productBlocks.pageInfo || {};
 
-                return {
-                    productBlocks,
-                    pageInfo,
-                };
-            },
-        }),
+        return {
+          productBlocks,
+          pageInfo,
+        };
+      },
     }),
+  }),
 });
 
-export const { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } =
-    productBlocksApi;
+export const { useGetProductBlocksQuery, useLazyGetProductBlocksQuery } = productBlocksApi;
 
 const productBlocksRestApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        updateProductBlock: build.mutation<null, MetadataDescriptionParams>({
-            query: (productBlock) => ({
-                url: `${METADATA_PRODUCT_BLOCK_ENDPOINT}/${productBlock.id}`,
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: {
-                    description: productBlock.description,
-                },
-            }),
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
-        }),
+  endpoints: (build) => ({
+    updateProductBlock: build.mutation<null, MetadataDescriptionParams>({
+      query: (productBlock) => ({
+        url: `${METADATA_PRODUCT_BLOCK_ENDPOINT}/${productBlock.id}`,
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          description: productBlock.description,
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
     }),
+  }),
 });
 
 export const { useUpdateProductBlockMutation } = productBlocksRestApi;

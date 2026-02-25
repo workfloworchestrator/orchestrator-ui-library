@@ -1,10 +1,10 @@
 import {
-    BaseGraphQlResult,
-    GraphqlFilter,
-    GraphqlQueryVariables,
-    RelatedSubscription,
-    RelatedSubscriptionsResult,
-    Subscription,
+  BaseGraphQlResult,
+  GraphqlFilter,
+  GraphqlQueryVariables,
+  RelatedSubscription,
+  RelatedSubscriptionsResult,
+  Subscription,
 } from '@/types';
 
 import { orchestratorApi } from '../api';
@@ -57,44 +57,33 @@ query RelatedSubscriptions(
 `;
 
 export type RelatedSubscriptionsResponse = {
-    relatedSubscriptions: RelatedSubscription[];
+  relatedSubscriptions: RelatedSubscription[];
 } & BaseGraphQlResult;
 
-export type RelatedSubscriptionVariables =
-    GraphqlQueryVariables<RelatedSubscription> &
-        Pick<Subscription, 'subscriptionId'> & {
-            terminatedSubscriptionFilter?: GraphqlFilter<RelatedSubscription>;
-        };
+export type RelatedSubscriptionVariables = GraphqlQueryVariables<RelatedSubscription>
+  & Pick<Subscription, 'subscriptionId'> & {
+    terminatedSubscriptionFilter?: GraphqlFilter<RelatedSubscription>;
+  };
 
 const relatedSubscriptionsApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        getRelatedSubscriptions: build.query<
-            RelatedSubscriptionsResponse,
-            RelatedSubscriptionVariables
-        >({
-            query: (variables) => ({
-                document: RelatedSubscriptionsQuery,
-                variables,
-            }),
-            transformResponse: (
-                result: RelatedSubscriptionsResult,
-            ): RelatedSubscriptionsResponse => {
-                const relatedSubscriptionResultForSubscription =
-                    result.subscriptions.page[0] || [];
-                const relatedSubscriptions =
-                    relatedSubscriptionResultForSubscription
-                        .inUseBySubscriptions.page || [];
-                const pageInfo =
-                    relatedSubscriptionResultForSubscription
-                        .inUseBySubscriptions.pageInfo || {};
+  endpoints: (build) => ({
+    getRelatedSubscriptions: build.query<RelatedSubscriptionsResponse, RelatedSubscriptionVariables>({
+      query: (variables) => ({
+        document: RelatedSubscriptionsQuery,
+        variables,
+      }),
+      transformResponse: (result: RelatedSubscriptionsResult): RelatedSubscriptionsResponse => {
+        const relatedSubscriptionResultForSubscription = result.subscriptions.page[0] || [];
+        const relatedSubscriptions = relatedSubscriptionResultForSubscription.inUseBySubscriptions.page || [];
+        const pageInfo = relatedSubscriptionResultForSubscription.inUseBySubscriptions.pageInfo || {};
 
-                return {
-                    relatedSubscriptions,
-                    pageInfo,
-                };
-            },
-        }),
+        return {
+          relatedSubscriptions,
+          pageInfo,
+        };
+      },
     }),
+  }),
 });
 
 export const { useGetRelatedSubscriptionsQuery } = relatedSubscriptionsApi;
