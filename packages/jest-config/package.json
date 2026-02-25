@@ -1,42 +1,42 @@
 {
-    "name": "@orchestrator-ui/jest-config",
-    "version": "1.6.1",
-    "license": "Apache-2.0",
-    "publishConfig": {
-        "access": "public",
-        "provenance": true
-    },
-    "description": "Contains the jest configuration used in the Workflow orchestrator frontend projects",
-    "author": {
-        "name": "Workflow Orchestrator Programme",
-        "email": "workfloworchestrator.board@commonsconservancy.org",
-        "url": "https://www.workfloworchestrator.org"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
-    },
-    "homepage": "https://www.workfloworchestrator.org",
-    "keywords": [
-        "orchestrator",
-        "workflow",
-        "workflow orchestrator",
-        "jest"
-    ],
-    "scripts": {
-        "build": "tsup jest-base.config.js --format esm",
-        "dev": "npm run build -- --watch"
-    },
-    "main": "./dist/",
-    "dependencies": {
-        "@testing-library/jest-dom": "^6.6.2",
-        "@testing-library/react": "^16.0.1",
-        "@testing-library/user-event": "^14.5.2",
-        "@types/jest": "^30.0.0",
-        "babel-jest": "^30.2.0",
-        "jest": "^30.2.0",
-        "jest-environment-jsdom": "^30.2.0",
-        "jest-watch-typeahead": "^3.0.1",
-        "tsup": "^8.5.0"
-    }
+  "name": "@orchestrator-ui/jest-config",
+  "version": "1.6.1",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "description": "Contains the jest configuration used in the Workflow orchestrator frontend projects",
+  "author": {
+    "name": "Workflow Orchestrator Programme",
+    "email": "workfloworchestrator.board@commonsconservancy.org",
+    "url": "https://www.workfloworchestrator.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+  },
+  "homepage": "https://www.workfloworchestrator.org",
+  "keywords": [
+    "orchestrator",
+    "workflow",
+    "workflow orchestrator",
+    "jest"
+  ],
+  "scripts": {
+    "build": "tsup jest-base.config.js --format esm",
+    "dev": "npm run build -- --watch"
+  },
+  "main": "./dist/",
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.6.2",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^30.0.0",
+    "babel-jest": "^30.2.0",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jest-watch-typeahead": "^3.0.1",
+    "tsup": "^8.5.0"
+  }
 }

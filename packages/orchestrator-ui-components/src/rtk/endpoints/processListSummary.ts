@@ -1,10 +1,5 @@
 import { orchestratorApi } from '@/rtk';
-import {
-    BaseGraphQlResult,
-    GraphqlQueryVariables,
-    Process,
-    ProcessListResult,
-} from '@/types';
+import { BaseGraphQlResult, GraphqlQueryVariables, Process, ProcessListResult } from '@/types';
 import { CACHETAG_TYPE_LIST, CacheTagType } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
@@ -37,41 +32,30 @@ export const processListSummaryQuery = `
     }
 `;
 
-export type ProcessSummary = Pick<
-    Process,
-    'processId' | 'workflowName' | 'startedAt'
->;
+export type ProcessSummary = Pick<Process, 'processId' | 'workflowName' | 'startedAt'>;
 
 export type ProcessListSummaryResponse = {
-    processes: ProcessSummary[];
+  processes: ProcessSummary[];
 } & BaseGraphQlResult;
 
 const processApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        getProcessListSummary: build.query<
-            ProcessListSummaryResponse,
-            GraphqlQueryVariables<Process>
-        >({
-            query: (variables) => ({
-                document: processListSummaryQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: ProcessListResult<ProcessSummary>,
-            ): ProcessListSummaryResponse => {
-                const processes = response.processes.page || [];
+  endpoints: (build) => ({
+    getProcessListSummary: build.query<ProcessListSummaryResponse, GraphqlQueryVariables<Process>>({
+      query: (variables) => ({
+        document: processListSummaryQuery,
+        variables,
+      }),
+      transformResponse: (response: ProcessListResult<ProcessSummary>): ProcessListSummaryResponse => {
+        const processes = response.processes.page || [];
 
-                return {
-                    processes,
-                    pageInfo: response.processes?.pageInfo || {},
-                };
-            },
-            providesTags: getCacheTag(
-                CacheTagType.processes,
-                CACHETAG_TYPE_LIST,
-            ),
-        }),
+        return {
+          processes,
+          pageInfo: response.processes?.pageInfo || {},
+        };
+      },
+      providesTags: getCacheTag(CacheTagType.processes, CACHETAG_TYPE_LIST),
     }),
+  }),
 });
 
 export const { useGetProcessListSummaryQuery } = processApi;

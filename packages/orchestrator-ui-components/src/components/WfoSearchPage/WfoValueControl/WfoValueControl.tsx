@@ -4,244 +4,210 @@ import moment from 'moment';
 import { useTranslations } from 'next-intl';
 
 import {
-    EuiComboBox,
-    EuiDatePicker,
-    EuiFieldNumber,
-    EuiFieldText,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiFormHelpText,
-    EuiIcon,
-    EuiText,
+  EuiComboBox,
+  EuiDatePicker,
+  EuiFieldNumber,
+  EuiFieldText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormHelpText,
+  EuiIcon,
+  EuiText,
 } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { PathInfo } from '@/types';
 
 interface ValueControlProps {
-    pathInfo: PathInfo | null;
-    operator: string;
-    value: unknown;
-    onChange: (value: unknown) => void;
+  pathInfo: PathInfo | null;
+  operator: string;
+  value: unknown;
+  onChange: (value: unknown) => void;
 }
 
-export const ValueControl: FC<ValueControlProps> = ({
-    pathInfo,
-    operator,
-    value,
-    onChange,
-}) => {
-    const t = useTranslations('search.page');
-    const { theme } = useOrchestratorTheme();
+export const ValueControl: FC<ValueControlProps> = ({ pathInfo, operator, value, onChange }) => {
+  const t = useTranslations('search.page');
+  const { theme } = useOrchestratorTheme();
 
-    if (!pathInfo || !operator) return null;
+  if (!pathInfo || !operator) return null;
 
-    const schema = pathInfo.value_schema[operator];
-    if (!schema || schema.kind === 'none') return null;
+  const schema = pathInfo.value_schema[operator];
+  if (!schema || schema.kind === 'none') return null;
 
-    if (pathInfo.type === 'string') {
-        if (operator === 'like') {
-            const handleLikeChange = (newValue: string) => {
-                onChange(newValue);
-            };
+  if (pathInfo.type === 'string') {
+    if (operator === 'like') {
+      const handleLikeChange = (newValue: string) => {
+        onChange(newValue);
+      };
 
-            const ensureWildcards = (inputValue: string) => {
-                if (!inputValue) return inputValue;
-                if (!inputValue.includes('%') && !inputValue.includes('_')) {
-                    return `%${inputValue}%`;
-                }
-                return inputValue;
-            };
-
-            const currentValue = String(value || '');
-            const hasWildcards =
-                currentValue.includes('%') || currentValue.includes('_');
-
-            return (
-                <>
-                    <EuiFieldText
-                        placeholder="Enter pattern (% = any chars, _ = single char)"
-                        value={currentValue}
-                        onChange={(event) =>
-                            handleLikeChange(event.target.value)
-                        }
-                        onBlur={(event) => {
-                            const finalValue = ensureWildcards(
-                                event.target.value,
-                            );
-                            if (finalValue !== event.target.value) {
-                                handleLikeChange(finalValue);
-                            }
-                        }}
-                        prepend={<EuiIcon type="search" />}
-                    />
-                    <EuiFormHelpText>
-                        {hasWildcards ? (
-                            <span>
-                                <EuiIcon
-                                    type="checkInCircleFilled"
-                                    color="success"
-                                    size="s"
-                                />{' '}
-                                Pattern with wildcards:{' '}
-                                <strong>{currentValue}</strong>
-                            </span>
-                        ) : (
-                            <span>
-                                Will search for:{' '}
-                                <strong>%{currentValue || 'your-text'}%</strong>{' '}
-                                (auto-wrapped with wildcards)
-                            </span>
-                        )}
-                    </EuiFormHelpText>
-                </>
-            );
+      const ensureWildcards = (inputValue: string) => {
+        if (!inputValue) return inputValue;
+        if (!inputValue.includes('%') && !inputValue.includes('_')) {
+          return `%${inputValue}%`;
         }
+        return inputValue;
+      };
 
-        if (pathInfo.example_values && pathInfo.example_values.length > 0) {
-            const options = pathInfo.example_values.map((val) => ({
-                label: val,
-                value: val,
-            }));
-            return (
-                <EuiComboBox
-                    placeholder={t('selectOrEnterValue')}
-                    options={options}
-                    selectedOptions={
-                        value
-                            ? [{ label: String(value), value: String(value) }]
-                            : []
-                    }
-                    onChange={(selected) => onChange(selected[0]?.value || '')}
-                    singleSelection={{ asPlainText: true }}
-                    isClearable
-                />
-            );
-        }
-        return (
-            <EuiFieldText
-                placeholder={t('enterValue')}
-                value={String(value || '')}
-                onChange={(event) => onChange(event.target.value)}
-            />
-        );
+      const currentValue = String(value || '');
+      const hasWildcards = currentValue.includes('%') || currentValue.includes('_');
+
+      return (
+        <>
+          <EuiFieldText
+            placeholder="Enter pattern (% = any chars, _ = single char)"
+            value={currentValue}
+            onChange={(event) => handleLikeChange(event.target.value)}
+            onBlur={(event) => {
+              const finalValue = ensureWildcards(event.target.value);
+              if (finalValue !== event.target.value) {
+                handleLikeChange(finalValue);
+              }
+            }}
+            prepend={<EuiIcon type="search" />}
+          />
+          <EuiFormHelpText>
+            {hasWildcards ?
+              <span>
+                <EuiIcon type="checkInCircleFilled" color="success" size="s" /> Pattern with wildcards:{' '}
+                <strong>{currentValue}</strong>
+              </span>
+            : <span>
+                Will search for: <strong>%{currentValue || 'your-text'}%</strong> (auto-wrapped with wildcards)
+              </span>
+            }
+          </EuiFormHelpText>
+        </>
+      );
     }
 
-    if (pathInfo.type === 'number') {
-        if (operator === 'between') {
-            const betweenValue = (value as {
-                start: number | string;
-                end: number | string;
-            }) || { start: '', end: '' };
-            return (
-                <EuiFlexGroup gutterSize="s" alignItems="center">
-                    <EuiFlexItem>
-                        <EuiFieldNumber
-                            placeholder={t('fromNumber')}
-                            value={betweenValue.start}
-                            onChange={(event) =>
-                                onChange({
-                                    ...betweenValue,
-                                    start: parseFloat(event.target.value) || '',
-                                })
-                            }
-                        />
-                    </EuiFlexItem>
-                    <EuiFlexItem grow={false}>
-                        <EuiText size="s" color={theme.colors.textSubdued}>
-                            to
-                        </EuiText>
-                    </EuiFlexItem>
-                    <EuiFlexItem>
-                        <EuiFieldNumber
-                            placeholder={t('toNumber')}
-                            value={betweenValue.end}
-                            onChange={(event) =>
-                                onChange({
-                                    ...betweenValue,
-                                    end: parseFloat(event.target.value) || '',
-                                })
-                            }
-                        />
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-            );
-        }
-        return (
+    if (pathInfo.example_values && pathInfo.example_values.length > 0) {
+      const options = pathInfo.example_values.map((val) => ({
+        label: val,
+        value: val,
+      }));
+      return (
+        <EuiComboBox
+          placeholder={t('selectOrEnterValue')}
+          options={options}
+          selectedOptions={value ? [{ label: String(value), value: String(value) }] : []}
+          onChange={(selected) => onChange(selected[0]?.value || '')}
+          singleSelection={{ asPlainText: true }}
+          isClearable
+        />
+      );
+    }
+    return (
+      <EuiFieldText
+        placeholder={t('enterValue')}
+        value={String(value || '')}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    );
+  }
+
+  if (pathInfo.type === 'number') {
+    if (operator === 'between') {
+      const betweenValue = (value as {
+        start: number | string;
+        end: number | string;
+      }) || { start: '', end: '' };
+      return (
+        <EuiFlexGroup gutterSize="s" alignItems="center">
+          <EuiFlexItem>
             <EuiFieldNumber
-                placeholder={t('enterNumber')}
-                value={
-                    value !== undefined && value !== null ? Number(value) : ''
-                }
-                onChange={(event) =>
-                    onChange(parseFloat(event.target.value) || '')
-                }
+              placeholder={t('fromNumber')}
+              value={betweenValue.start}
+              onChange={(event) =>
+                onChange({
+                  ...betweenValue,
+                  start: parseFloat(event.target.value) || '',
+                })
+              }
             />
-        );
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiText size="s" color={theme.colors.textSubdued}>
+              to
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFieldNumber
+              placeholder={t('toNumber')}
+              value={betweenValue.end}
+              onChange={(event) =>
+                onChange({
+                  ...betweenValue,
+                  end: parseFloat(event.target.value) || '',
+                })
+              }
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      );
     }
+    return (
+      <EuiFieldNumber
+        placeholder={t('enterNumber')}
+        value={value !== undefined && value !== null ? Number(value) : ''}
+        onChange={(event) => onChange(parseFloat(event.target.value) || '')}
+      />
+    );
+  }
 
-    if (pathInfo.type === 'datetime') {
-        if (operator === 'between') {
-            const betweenValue = (value as {
-                start: string | null;
-                end: string | null;
-            }) || { start: null, end: null };
-            return (
-                <EuiFlexGroup gutterSize="s" alignItems="center">
-                    <EuiFlexItem>
-                        <EuiDatePicker
-                            selected={
-                                betweenValue.start
-                                    ? moment(betweenValue.start)
-                                    : null
-                            }
-                            onChange={(date) =>
-                                onChange({
-                                    ...betweenValue,
-                                    start: date?.toISOString(),
-                                })
-                            }
-                            showTimeSelect
-                            dateFormat="yyyy-MM-dd HH:mm"
-                            placeholderText={t('fromDate')}
-                        />
-                    </EuiFlexItem>
-                    <EuiFlexItem grow={false}>
-                        <EuiText size="s" color={theme.colors.textSubdued}>
-                            {t('valueControlTo')}
-                        </EuiText>
-                    </EuiFlexItem>
-                    <EuiFlexItem>
-                        <EuiDatePicker
-                            selected={
-                                betweenValue.end
-                                    ? moment(betweenValue.end)
-                                    : null
-                            }
-                            onChange={(date) =>
-                                onChange({
-                                    ...betweenValue,
-                                    end: date?.toISOString(),
-                                })
-                            }
-                            showTimeSelect
-                            dateFormat="yyyy-MM-dd HH:mm"
-                            placeholderText={t('toDate')}
-                        />
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-            );
-        }
-        return (
+  if (pathInfo.type === 'datetime') {
+    if (operator === 'between') {
+      const betweenValue = (value as {
+        start: string | null;
+        end: string | null;
+      }) || { start: null, end: null };
+      return (
+        <EuiFlexGroup gutterSize="s" alignItems="center">
+          <EuiFlexItem>
             <EuiDatePicker
-                selected={value ? moment(String(value)) : null}
-                onChange={(date) => onChange(date?.toISOString())}
-                showTimeSelect
-                dateFormat="yyyy-MM-dd HH:mm"
-                placeholderText={t('selectDateAndTime')}
+              selected={betweenValue.start ? moment(betweenValue.start) : null}
+              onChange={(date) =>
+                onChange({
+                  ...betweenValue,
+                  start: date?.toISOString(),
+                })
+              }
+              showTimeSelect
+              dateFormat="yyyy-MM-dd HH:mm"
+              placeholderText={t('fromDate')}
             />
-        );
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiText size="s" color={theme.colors.textSubdued}>
+              {t('valueControlTo')}
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiDatePicker
+              selected={betweenValue.end ? moment(betweenValue.end) : null}
+              onChange={(date) =>
+                onChange({
+                  ...betweenValue,
+                  end: date?.toISOString(),
+                })
+              }
+              showTimeSelect
+              dateFormat="yyyy-MM-dd HH:mm"
+              placeholderText={t('toDate')}
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      );
     }
+    return (
+      <EuiDatePicker
+        selected={value ? moment(String(value)) : null}
+        onChange={(date) => onChange(date?.toISOString())}
+        showTimeSelect
+        dateFormat="yyyy-MM-dd HH:mm"
+        placeholderText={t('selectDateAndTime')}
+      />
+    );
+  }
 
-    return null;
+  return null;
 };

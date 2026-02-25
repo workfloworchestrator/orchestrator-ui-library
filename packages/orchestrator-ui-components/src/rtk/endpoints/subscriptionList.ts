@@ -1,12 +1,6 @@
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { orchestratorApi } from '@/rtk';
-import {
-    BaseGraphQlResult,
-    CacheTagType,
-    GraphqlQueryVariables,
-    Subscription,
-    SubscriptionsResult,
-} from '@/types';
+import { BaseGraphQlResult, CacheTagType, GraphqlQueryVariables, Subscription, SubscriptionsResult } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 export const subscriptionListQuery = `query SubscriptionsList(
@@ -56,34 +50,28 @@ export const subscriptionListQuery = `query SubscriptionsList(
 `;
 
 export type SubscriptionListResponse = {
-    subscriptions: Subscription[];
+  subscriptions: Subscription[];
 } & BaseGraphQlResult;
 
 const subscriptionListApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getSubscriptionList: builder.query<
-            SubscriptionListResponse,
-            GraphqlQueryVariables<SubscriptionListItem>
-        >({
-            query: (variables) => ({
-                document: subscriptionListQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: SubscriptionsResult,
-            ): SubscriptionListResponse => {
-                const subscriptions = response.subscriptions.page || [];
-                const pageInfo = response.subscriptions.pageInfo || {};
+  endpoints: (builder) => ({
+    getSubscriptionList: builder.query<SubscriptionListResponse, GraphqlQueryVariables<SubscriptionListItem>>({
+      query: (variables) => ({
+        document: subscriptionListQuery,
+        variables,
+      }),
+      transformResponse: (response: SubscriptionsResult): SubscriptionListResponse => {
+        const subscriptions = response.subscriptions.page || [];
+        const pageInfo = response.subscriptions.pageInfo || {};
 
-                return {
-                    subscriptions,
-                    pageInfo,
-                };
-            },
-            providesTags: getCacheTag(CacheTagType.subscriptions),
-        }),
+        return {
+          subscriptions,
+          pageInfo,
+        };
+      },
+      providesTags: getCacheTag(CacheTagType.subscriptions),
     }),
+  }),
 });
 
-export const { useGetSubscriptionListQuery, useLazyGetSubscriptionListQuery } =
-    subscriptionListApi;
+export const { useGetSubscriptionListQuery, useLazyGetSubscriptionListQuery } = subscriptionListApi;

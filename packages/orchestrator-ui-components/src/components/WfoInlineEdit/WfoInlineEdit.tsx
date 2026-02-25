@@ -7,126 +7,113 @@ import { WfoToolTip } from '@/components';
 import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoInlineEditProps {
-    value: string;
-    onlyShowOnHover?: boolean;
-    onSave?: (note: string) => void;
+  value: string;
+  onlyShowOnHover?: boolean;
+  onSave?: (note: string) => void;
 }
 
-export const WfoInlineEdit: FC<WfoInlineEditProps> = ({
-    value,
-    onlyShowOnHover = false,
-    onSave = () => {},
-}) => {
-    const [note, setValue] = useState<string>(value);
-    const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
+export const WfoInlineEdit: FC<WfoInlineEditProps> = ({ value, onlyShowOnHover = false, onSave = () => {} }) => {
+  const [note, setValue] = useState<string>(value);
+  const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(true);
 
-    const handleSave = () => {
-        onSave(
-            note.startsWith(INVISIBLE_CHARACTER)
-                ? note.replace(INVISIBLE_CHARACTER, '')
-                : note,
-        );
-        setIsTooltipVisible(true);
-    };
+  const handleSave = () => {
+    onSave(note.startsWith(INVISIBLE_CHARACTER) ? note.replace(INVISIBLE_CHARACTER, '') : note);
+    setIsTooltipVisible(true);
+  };
 
-    const handleCancel = () => {
-        setValue(value);
-        setIsTooltipVisible(true);
-    };
+  const handleCancel = () => {
+    setValue(value);
+    setIsTooltipVisible(true);
+  };
 
-    // This useEffect makes sure the note is updated when a new value property is passed in
-    // for example by a parent component that is update through a websocket event
-    useEffect(() => {
-        setValue(value);
-    }, [value]);
+  // This useEffect makes sure the note is updated when a new value property is passed in
+  // for example by a parent component that is update through a websocket event
+  useEffect(() => {
+    setValue(value);
+  }, [value]);
 
-    return (
-        <div
-            css={{
-                width: '100%',
-                ':hover': {
-                    '.euiIcon': {
-                        visibility: 'visible',
-                    },
-                },
-                '& > .euiToolTipAnchor': {
-                    width: '100%',
-                },
+  return (
+    <div
+      css={{
+        width: '100%',
+        ':hover': {
+          '.euiIcon': {
+            visibility: 'visible',
+          },
+        },
+        '& > .euiToolTipAnchor': {
+          width: '100%',
+        },
+      }}
+    >
+      <WfoToolTip
+        css={{
+          visibility: isTooltipVisible && note !== INVISIBLE_CHARACTER ? 'visible' : 'hidden',
+        }}
+        tooltipContent={note}
+      >
+        <span>
+          <EuiInlineEditText
+            inputAriaLabel="Edit field"
+            value={note}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setValue(e.target.value);
             }}
-        >
-            <WfoToolTip
-                css={{
-                    visibility:
-                        isTooltipVisible && note !== INVISIBLE_CHARACTER
-                            ? 'visible'
-                            : 'hidden',
-                }}
-                tooltipContent={note}
-            >
-                <span>
-                    <EuiInlineEditText
-                        inputAriaLabel="Edit field"
-                        value={note}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setValue(e.target.value);
-                        }}
-                        onCancel={handleCancel}
-                        onSave={handleSave}
-                        size={'s'}
-                        css={{
-                            '.euiFlexItem:nth-of-type(2)': {
-                                justifyContent: 'center',
-                            },
-                            '.euiButtonEmpty__content': {
-                                justifyContent: 'left',
-                            },
-                        }}
-                        readModeProps={{
-                            onClick: () => setIsTooltipVisible(false),
-                            title: '',
-                            css: {
-                                minWidth: '100%',
-                                '.euiIcon': {
-                                    visibility: onlyShowOnHover
-                                        ? 'hidden'
-                                        : 'visible',
-                                },
-                            },
-                        }}
-                        editModeProps={{
-                            saveButtonProps: {
-                                color: 'primary',
-                                size: 'xs',
-                            },
-                            cancelButtonProps: {
-                                color: 'danger',
-                                size: 'xs',
-                            },
-                            inputProps: {
-                                css: {
-                                    justifyContent: 'left',
-                                    height: '32px',
-                                    paddingLeft: '4px',
-                                    margin: '0',
-                                },
-                            },
-                            formRowProps: {
-                                css: {
-                                    padding: 0,
-                                    margin: 0,
-                                    height: '32px',
-                                    '.euiFormRow__fieldWrapper': {
-                                        minHeight: '32px',
-                                        height: '32px',
-                                        padding: 0,
-                                        margin: 0,
-                                    },
-                                },
-                            },
-                        }}
-                    />
-                </span>
-            </WfoToolTip>
-        </div>
-    );
+            onCancel={handleCancel}
+            onSave={handleSave}
+            size={'s'}
+            css={{
+              '.euiFlexItem:nth-of-type(2)': {
+                justifyContent: 'center',
+              },
+              '.euiButtonEmpty__content': {
+                justifyContent: 'left',
+              },
+            }}
+            readModeProps={{
+              onClick: () => setIsTooltipVisible(false),
+              title: '',
+              css: {
+                minWidth: '100%',
+                '.euiIcon': {
+                  visibility: onlyShowOnHover ? 'hidden' : 'visible',
+                },
+              },
+            }}
+            editModeProps={{
+              saveButtonProps: {
+                color: 'primary',
+                size: 'xs',
+              },
+              cancelButtonProps: {
+                color: 'danger',
+                size: 'xs',
+              },
+              inputProps: {
+                css: {
+                  justifyContent: 'left',
+                  height: '32px',
+                  paddingLeft: '4px',
+                  margin: '0',
+                },
+              },
+              formRowProps: {
+                css: {
+                  padding: 0,
+                  margin: 0,
+                  height: '32px',
+                  '.euiFormRow__fieldWrapper': {
+                    minHeight: '32px',
+                    height: '32px',
+                    padding: 0,
+                    margin: 0,
+                  },
+                },
+              },
+            }}
+          />
+        </span>
+      </WfoToolTip>
+    </div>
+  );
 };

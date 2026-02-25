@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 
 export type WfoInlineJsonProps = {
-    data: object | null;
+  data: object | null;
 };
 
 export const WfoInlineJson: FC<WfoInlineJsonProps> = ({ data }) => {
-    if (!data) {
-        return null;
-    }
+  if (!data) {
+    return null;
+  }
 
-    const valueAsString = JSON.stringify(data);
-    return <span>{valueAsString}</span>;
+  const valueAsString = JSON.stringify(data);
+  return <span>{valueAsString}</span>;
 };

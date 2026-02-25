@@ -13,177 +13,158 @@ import { CacheTagType, GraphqlQueryVariables } from '@/types';
 import type { RootState } from './store';
 
 export enum BaseQueryTypes {
-    fetch = 'fetch',
-    graphql = 'graphql',
-    custom = 'custom',
+  fetch = 'fetch',
+  graphql = 'graphql',
+  custom = 'custom',
 }
 
 export enum HttpStatus {
-    FormNotComplete = 510,
-    BadGateway = 502,
-    BadRequest = 400,
-    ServiceUnavailable = 503,
-    Unauthorized = 401,
-    Forbidden = 403,
-    Ok = 200,
-    Created = 201,
-    NoContent = 204,
-    MultipleChoices = 300,
+  FormNotComplete = 510,
+  BadGateway = 502,
+  BadRequest = 400,
+  ServiceUnavailable = 503,
+  Unauthorized = 401,
+  Forbidden = 403,
+  Ok = 200,
+  Created = 201,
+  NoContent = 204,
+  MultipleChoices = 300,
 }
 
 export interface ApiResult<T> {
-    data?: T;
-    error?: ErrorResponse;
-    isLoading: boolean;
-    isFetching: boolean;
-    isError: boolean;
-    refetch?: () => void;
-    selectFromResult?: (result: T) => T;
-    endpointName?: string;
+  data?: T;
+  error?: ErrorResponse;
+  isLoading: boolean;
+  isFetching: boolean;
+  isError: boolean;
+  refetch?: () => void;
+  selectFromResult?: (result: T) => T;
+  endpointName?: string;
 }
 
 interface UseQueryOptions<T, U> {
-    selectFromResult?: (
-        result: ApiResult<T>,
-    ) => Partial<ApiResult<T>> & { selectedItem?: U };
-    subscriptionId?: string;
+  selectFromResult?: (result: ApiResult<T>) => Partial<ApiResult<T>> & { selectedItem?: U };
+  subscriptionId?: string;
 }
 
 interface UseQueryReturn<T, U> extends ApiResult<T> {
-    selectedItem?: U;
-    endpointName?: string;
+  selectedItem?: U;
+  endpointName?: string;
 }
 
 export type UseQuery<T, U> = (
-    queryVariables?: GraphqlQueryVariables<SubscriptionListItem>,
-    options?: UseQueryOptions<T, U>,
+  queryVariables?: GraphqlQueryVariables<SubscriptionListItem>,
+  options?: UseQueryOptions<T, U>,
 ) => UseQueryReturn<T, U>;
 
 type ExtraOptions = {
-    baseQueryType?: BaseQueryTypes;
-    apiName?: string;
-    paramsSerializer?: (params: Record<string, unknown>) => string;
+  baseQueryType?: BaseQueryTypes;
+  apiName?: string;
+  paramsSerializer?: (params: Record<string, unknown>) => string;
 };
 
 export type WfoGraphqlError = {
-    extensions: GraphQLErrorExtensions;
-    message: string;
+  extensions: GraphQLErrorExtensions;
+  message: string;
 };
 
 export type WfoGraphqlErrorsMeta = {
-    errors: WfoGraphqlError[];
+  errors: WfoGraphqlError[];
 };
 
 export const prepareHeaders = async (headers: Headers) => {
-    const session = (await getSession()) as WfoSession;
-    if (session?.accessToken) {
-        headers.set('Authorization', `Bearer ${session.accessToken}`);
-    }
-    return headers;
+  const session = (await getSession()) as WfoSession;
+  if (session?.accessToken) {
+    headers.set('Authorization', `Bearer ${session.accessToken}`);
+  }
+  return headers;
 };
 
 export const handlePromiseErrorWithCallback = <T>(
-    promise: Promise<unknown>,
-    status: HttpStatus,
-    callbackAction: (json: T) => void,
+  promise: Promise<unknown>,
+  status: HttpStatus,
+  callbackAction: (json: T) => void,
 ) => {
-    return promise.catch((err) => {
-        if (err.data && err.status === status) {
-            callbackAction(err.data);
-        } else {
-            throw err;
-        }
-    });
+  return promise.catch((err) => {
+    if (err.data && err.status === status) {
+      callbackAction(err.data);
+    } else {
+      throw err;
+    }
+  });
 };
 
 // There are cases where a GraphQL endpoint return both data and errors
 // Only throwing the error when the data is not there or invalid
-export const handleGraphqlMetaErrors = (
-    meta: WfoGraphqlErrorsMeta,
-    responseHasInvalidData?: boolean,
-) => {
-    if (responseHasInvalidData && meta.errors && meta.errors.length > 0) {
-        throw meta.errors[0];
-    }
+export const handleGraphqlMetaErrors = (meta: WfoGraphqlErrorsMeta, responseHasInvalidData?: boolean) => {
+  if (responseHasInvalidData && meta.errors && meta.errors.length > 0) {
+    throw meta.errors[0];
+  }
 };
 
-const isUnauthorized = (status: HttpStatus) =>
-    status === HttpStatus.Unauthorized || status === HttpStatus.Forbidden;
-const isNotSuccessful = (status: HttpStatus) =>
-    status < HttpStatus.Ok || status >= HttpStatus.MultipleChoices;
+const isUnauthorized = (status: HttpStatus) => status === HttpStatus.Unauthorized || status === HttpStatus.Forbidden;
+const isNotSuccessful = (status: HttpStatus) => status < HttpStatus.Ok || status >= HttpStatus.MultipleChoices;
 
-export const catchErrorResponse = async (
-    response: Response,
-    authActive: boolean,
-) => {
-    const status = response.status;
+export const catchErrorResponse = async (response: Response, authActive: boolean) => {
+  const status = response.status;
 
-    if (isNotSuccessful(status)) {
-        console.error(status, response.body);
-    }
-    if (isUnauthorized(status) && authActive) {
-        signOut();
-    } else if (status === HttpStatus.NoContent) {
-        return {};
-    } else {
-        return response.json();
-    }
+  if (isNotSuccessful(status)) {
+    console.error(status, response.body);
+  }
+  if (isUnauthorized(status) && authActive) {
+    signOut();
+  } else if (status === HttpStatus.NoContent) {
+    return {};
+  } else {
+    return response.json();
+  }
 };
 
 export const orchestratorApi = createApi({
-    reducerPath: 'orchestratorApi',
-    baseQuery: (args, api, extraOptions: ExtraOptions) => {
-        const { baseQueryType, apiName, paramsSerializer } = extraOptions || {};
+  reducerPath: 'orchestratorApi',
+  baseQuery: (args, api, extraOptions: ExtraOptions) => {
+    const { baseQueryType, apiName, paramsSerializer } = extraOptions || {};
 
-        const state = api.getState() as RootState;
-        const { orchestratorApiBaseUrl, graphqlEndpointCore, authActive } =
-            state.orchestratorConfig;
+    const state = api.getState() as RootState;
+    const { orchestratorApiBaseUrl, graphqlEndpointCore, authActive } = state.orchestratorConfig;
 
-        const customApi = state.customApis?.find(
-            (query) => query.apiName === apiName,
+    const customApi = state.customApis?.find((query) => query.apiName === apiName);
+
+    switch (baseQueryType) {
+      case BaseQueryTypes.fetch: {
+        const baseUrl = customApi ? customApi.apiBaseUrl : orchestratorApiBaseUrl;
+
+        const fetchFn = fetchBaseQuery({
+          baseUrl,
+          prepareHeaders,
+          paramsSerializer,
+          responseHandler: (response) => catchErrorResponse(response, authActive),
+        });
+        return fetchFn(args, api, {});
+      }
+      default: {
+        const graphqlFn = wfoGraphqlRequestBaseQuery(
+          {
+            url: customApi ? customApi.apiBaseUrl : graphqlEndpointCore,
+            prepareHeaders,
+            customErrors: (args: ClientError) => {
+              return args.response?.errors;
+            },
+          },
+          authActive,
         );
-
-        switch (baseQueryType) {
-            case BaseQueryTypes.fetch: {
-                const baseUrl = customApi
-                    ? customApi.apiBaseUrl
-                    : orchestratorApiBaseUrl;
-
-                const fetchFn = fetchBaseQuery({
-                    baseUrl,
-                    prepareHeaders,
-                    paramsSerializer,
-                    responseHandler: (response) =>
-                        catchErrorResponse(response, authActive),
-                });
-                return fetchFn(args, api, {});
-            }
-            default: {
-                const graphqlFn = wfoGraphqlRequestBaseQuery(
-                    {
-                        url: customApi
-                            ? customApi.apiBaseUrl
-                            : graphqlEndpointCore,
-                        prepareHeaders,
-                        customErrors: (args: ClientError) => {
-                            return args.response?.errors;
-                        },
-                    },
-                    authActive,
-                );
-                return graphqlFn(args, api, {});
-            }
-        }
-    },
-    endpoints: () => ({}),
-    tagTypes: [
-        CacheTagType.engineStatus,
-        CacheTagType.workerStatus,
-        CacheTagType.processes,
-        CacheTagType.processStatusCounts,
-        CacheTagType.subscriptions,
-        CacheTagType.scheduledTasks,
-    ],
-    keepUnusedDataFor:
-        process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60 * 1000,
+        return graphqlFn(args, api, {});
+      }
+    }
+  },
+  endpoints: () => ({}),
+  tagTypes: [
+    CacheTagType.engineStatus,
+    CacheTagType.workerStatus,
+    CacheTagType.processes,
+    CacheTagType.processStatusCounts,
+    CacheTagType.subscriptions,
+    CacheTagType.scheduledTasks,
+  ],
+  keepUnusedDataFor: process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60 * 1000,
 });

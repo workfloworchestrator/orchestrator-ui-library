@@ -6,31 +6,28 @@ import { WfoSortButton } from './WfoSortButton';
 import { getStyles } from './styles';
 
 export type WfoSortButtonsProps = {
-    sortOrder?: SortOrder;
-    onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
+  sortOrder?: SortOrder;
+  onChangeSortOrder: (updatedSortOrder: SortOrder) => void;
 };
 
 /**
  * @deprecated This component is not used anymore and will be removed in the next major version.
  */
-export const WfoSortButtons: FC<WfoSortButtonsProps> = ({
-    sortOrder,
-    onChangeSortOrder,
-}) => {
-    const { sortButtonsContainerStyle } = getStyles();
+export const WfoSortButtons: FC<WfoSortButtonsProps> = ({ sortOrder, onChangeSortOrder }) => {
+  const { sortButtonsContainerStyle } = getStyles();
 
-    return (
-        <div css={sortButtonsContainerStyle}>
-            <WfoSortButton
-                WfoIconComponent={WfoSortAsc}
-                isActive={sortOrder !== SortOrder.ASC}
-                onClick={() => onChangeSortOrder(SortOrder.ASC)}
-            />
-            <WfoSortButton
-                WfoIconComponent={WfoSortDesc}
-                isActive={sortOrder !== SortOrder.DESC}
-                onClick={() => onChangeSortOrder(SortOrder.DESC)}
-            />
-        </div>
-    );
+  return (
+    <div css={sortButtonsContainerStyle}>
+      <WfoSortButton
+        WfoIconComponent={WfoSortAsc}
+        isActive={sortOrder !== SortOrder.ASC}
+        onClick={() => onChangeSortOrder(SortOrder.ASC)}
+      />
+      <WfoSortButton
+        WfoIconComponent={WfoSortDesc}
+        isActive={sortOrder !== SortOrder.DESC}
+        onClick={() => onChangeSortOrder(SortOrder.DESC)}
+      />
+    </div>
+  );
 };

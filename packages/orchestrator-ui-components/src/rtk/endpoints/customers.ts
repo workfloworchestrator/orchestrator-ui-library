@@ -1,10 +1,10 @@
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import {
-    Customer,
-    CustomerWithSubscriptionCount,
-    CustomersResult,
-    CustomersWithSubscriptionCountResult,
-    SubscriptionStatus,
+  Customer,
+  CustomerWithSubscriptionCount,
+  CustomersResult,
+  CustomersWithSubscriptionCountResult,
+  SubscriptionStatus,
 } from '@/types';
 
 import { orchestratorApi } from '../api';
@@ -51,41 +51,27 @@ const customerQuery = `query Customer(
 }`;
 
 const customersApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        getCustomersWithSubscriptionCount: build.query<
-            CustomerWithSubscriptionCount[],
-            void
-        >({
-            query: () => ({ document: customersWithSubscriptionCountQuery }),
-            transformResponse: (
-                response: CustomersWithSubscriptionCountResult,
-            ): CustomerWithSubscriptionCount[] =>
-                response.customers.page.filter(
-                    (customer) =>
-                        customer.subscriptions.pageInfo.totalItems > 0,
-                ),
-        }),
-        getCustomers: build.query<Customer[], void>({
-            query: () => ({ document: customersQuery }),
-            transformResponse: (response: CustomersResult): Customer[] =>
-                response?.customers?.page || [],
-        }),
-        getCustomer: build.query<Customer[], { customerIds: string[] }>({
-            query: ({ customerIds }) => ({
-                document: customerQuery,
-                variables: {
-                    customerId: customerIds.join('|'),
-                    first: customerIds.length,
-                },
-            }),
-            transformResponse: (response: CustomersResult): Customer[] =>
-                response?.customers?.page || [],
-        }),
+  endpoints: (build) => ({
+    getCustomersWithSubscriptionCount: build.query<CustomerWithSubscriptionCount[], void>({
+      query: () => ({ document: customersWithSubscriptionCountQuery }),
+      transformResponse: (response: CustomersWithSubscriptionCountResult): CustomerWithSubscriptionCount[] =>
+        response.customers.page.filter((customer) => customer.subscriptions.pageInfo.totalItems > 0),
     }),
+    getCustomers: build.query<Customer[], void>({
+      query: () => ({ document: customersQuery }),
+      transformResponse: (response: CustomersResult): Customer[] => response?.customers?.page || [],
+    }),
+    getCustomer: build.query<Customer[], { customerIds: string[] }>({
+      query: ({ customerIds }) => ({
+        document: customerQuery,
+        variables: {
+          customerId: customerIds.join('|'),
+          first: customerIds.length,
+        },
+      }),
+      transformResponse: (response: CustomersResult): Customer[] => response?.customers?.page || [],
+    }),
+  }),
 });
 
-export const {
-    useGetCustomersQuery,
-    useGetCustomerQuery,
-    useGetCustomersWithSubscriptionCountQuery,
-} = customersApi;
+export const { useGetCustomersQuery, useGetCustomerQuery, useGetCustomersWithSubscriptionCountQuery } = customersApi;

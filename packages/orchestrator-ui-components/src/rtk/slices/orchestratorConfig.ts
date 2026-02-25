@@ -7,15 +7,12 @@ import { RootState } from '../store';
 
 type OrchestratorConfigSlice = Slice<OrchestratorConfig>;
 
-export const getOrchestratorConfigSlice = (
-    config: OrchestratorConfig,
-): OrchestratorConfigSlice => {
-    return createSlice({
-        name: 'orchestrator',
-        initialState: config,
-        reducers: {},
-    });
+export const getOrchestratorConfigSlice = (config: OrchestratorConfig): OrchestratorConfigSlice => {
+  return createSlice({
+    name: 'orchestrator',
+    initialState: config,
+    reducers: {},
+  });
 };
 
-export const selectOrchestratorConfig = (state: RootState) =>
-    state.orchestratorConfig;
+export const selectOrchestratorConfig = (state: RootState) => state.orchestratorConfig;

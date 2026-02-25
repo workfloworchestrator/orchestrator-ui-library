@@ -6,8 +6,8 @@ import { PolicyContextProvider } from '@/contexts/PolicyContext';
 import { useWfoSession } from '@/hooks';
 
 interface AuthProps {
-    children: ReactNode;
-    isAllowedHandler?: (routerPath: string, resource?: string) => boolean;
+  children: ReactNode;
+  isAllowedHandler?: (routerPath: string, resource?: string) => boolean;
 }
 
 /**
@@ -29,22 +29,15 @@ interface AuthProps {
  *     // The useWfoSession hook can be used to get the current user profile
  * }
  */
-export const WfoAuth = ({
-    children,
-    isAllowedHandler = () => true,
-}: AuthProps) => {
-    const { authActive } = useContext(OrchestratorConfigContext);
-    const { status } = useWfoSession({
-        required: authActive,
-    });
+export const WfoAuth = ({ children, isAllowedHandler = () => true }: AuthProps) => {
+  const { authActive } = useContext(OrchestratorConfigContext);
+  const { status } = useWfoSession({
+    required: authActive,
+  });
 
-    if (status === 'loading') {
-        return <WfoLogoSpinner />;
-    }
+  if (status === 'loading') {
+    return <WfoLogoSpinner />;
+  }
 
-    return (
-        <PolicyContextProvider isAllowedHandler={isAllowedHandler}>
-            {children}
-        </PolicyContextProvider>
-    );
+  return <PolicyContextProvider isAllowedHandler={isAllowedHandler}>{children}</PolicyContextProvider>;
 };

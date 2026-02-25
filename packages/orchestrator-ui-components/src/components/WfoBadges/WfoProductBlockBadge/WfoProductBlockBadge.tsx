@@ -8,76 +8,70 @@ import { BadgeType } from '@/types';
 import { WfoBadge } from '../WfoBadge';
 
 export type WfoProductBlockBadgeProps = {
-    children: string;
-    link?: string;
-    badgeType: BadgeType;
+  children: string;
+  link?: string;
+  badgeType: BadgeType;
 };
 
-export function WfoProductBlockBadge({
-    children,
-    link,
-    badgeType,
-}: WfoProductBlockBadgeProps) {
-    const { theme, toSecondaryColor } = useOrchestratorTheme();
+export function WfoProductBlockBadge({ children, link, badgeType }: WfoProductBlockBadgeProps) {
+  const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-    const getBadgeColorFromType = (badgeType: BadgeType) => {
-        const {
-            danger,
-            textDanger,
-            borderBaseSubdued,
-            primary,
-            textPrimary,
-            success,
-            textSuccess,
-            warning,
-            textWarning,
-            textParagraph,
-        } = theme.colors;
+  const getBadgeColorFromType = (badgeType: BadgeType) => {
+    const {
+      danger,
+      textDanger,
+      borderBaseSubdued,
+      primary,
+      textPrimary,
+      success,
+      textSuccess,
+      warning,
+      textWarning,
+      textParagraph,
+    } = theme.colors;
 
-        switch (badgeType) {
-            case BadgeType.RESOURCE_TYPE:
-                return {
-                    badgeColor: toSecondaryColor(success),
-                    textColor: textSuccess,
-                };
-            case BadgeType.PRODUCT_BLOCK_TAG:
-            case BadgeType.PRODUCT_BLOCK:
-                return {
-                    badgeColor: toSecondaryColor(primary),
-                    textColor: textPrimary,
-                };
-            case BadgeType.WORKFLOW:
-            case BadgeType.TASK:
-            case BadgeType.PRODUCT:
-                return {
-                    badgeColor: toSecondaryColor(danger),
-                    textColor: textDanger,
-                };
-            case BadgeType.FIXED_INPUT:
-                return {
-                    badgeColor: toSecondaryColor(warning),
-                    textColor: textWarning,
-                };
-            case BadgeType.PRODUCT_TAG:
-            default:
-                return {
-                    badgeColor: borderBaseSubdued,
-                    textColor: textParagraph,
-                };
-        }
-    };
+    switch (badgeType) {
+      case BadgeType.RESOURCE_TYPE:
+        return {
+          badgeColor: toSecondaryColor(success),
+          textColor: textSuccess,
+        };
+      case BadgeType.PRODUCT_BLOCK_TAG:
+      case BadgeType.PRODUCT_BLOCK:
+        return {
+          badgeColor: toSecondaryColor(primary),
+          textColor: textPrimary,
+        };
+      case BadgeType.WORKFLOW:
+      case BadgeType.TASK:
+      case BadgeType.PRODUCT:
+        return {
+          badgeColor: toSecondaryColor(danger),
+          textColor: textDanger,
+        };
+      case BadgeType.FIXED_INPUT:
+        return {
+          badgeColor: toSecondaryColor(warning),
+          textColor: textWarning,
+        };
+      case BadgeType.PRODUCT_TAG:
+      default:
+        return {
+          badgeColor: borderBaseSubdued,
+          textColor: textParagraph,
+        };
+    }
+  };
 
-    const { badgeColor, textColor } = getBadgeColorFromType(badgeType);
+  const { badgeColor, textColor } = getBadgeColorFromType(badgeType);
 
-    return (
-        <WfoBadge textColor={textColor} color={badgeColor}>
-            {link ? (
-                <Link css={{ color: textColor }} href={link}>
-                    {children}
-                </Link>
-            ) : (
-                children
-            )}
-        </WfoBadge>
-    );
+  return (
+    <WfoBadge textColor={textColor} color={badgeColor}>
+      {link ?
+        <Link css={{ color: textColor }} href={link}>
+          {children}
+        </Link>
+      : children}
+    </WfoBadge>
+  );
 }

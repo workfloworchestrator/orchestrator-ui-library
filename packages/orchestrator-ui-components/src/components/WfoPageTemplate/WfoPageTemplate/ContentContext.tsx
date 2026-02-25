@@ -4,25 +4,19 @@ import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTempl
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export type ContentType = {
-    contentRef: React.RefObject<HTMLDivElement>;
+  contentRef: React.RefObject<HTMLDivElement>;
 };
 export const ContentContext = createContext<ContentType | undefined>(undefined);
 export type ContentContextProviderProps = ContentType & {
-    navigationHeight: number;
-    children: ReactNode;
+  navigationHeight: number;
+  children: ReactNode;
 };
-export const ContentContextProvider: FC<ContentContextProviderProps> = ({
-    contentRef,
-    navigationHeight,
-    children,
-}) => {
-    const { getContentStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
+export const ContentContextProvider: FC<ContentContextProviderProps> = ({ contentRef, navigationHeight, children }) => {
+  const { getContentStyle } = useWithOrchestratorTheme(getPageTemplateStyles);
 
-    return (
-        <div ref={contentRef} css={getContentStyle(navigationHeight)}>
-            <ContentContext.Provider value={{ contentRef }}>
-                {children}
-            </ContentContext.Provider>
-        </div>
-    );
+  return (
+    <div ref={contentRef} css={getContentStyle(navigationHeight)}>
+      <ContentContext.Provider value={{ contentRef }}>{children}</ContentContext.Provider>
+    </div>
+  );
 };

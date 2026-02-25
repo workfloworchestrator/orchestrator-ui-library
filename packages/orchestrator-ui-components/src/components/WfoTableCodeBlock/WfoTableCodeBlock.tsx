@@ -10,33 +10,26 @@ import type { StepState } from '@/types';
 import { getStyles } from './styles';
 
 export type WfoTableCodeBlockProps = {
-    stepState: StepState;
+  stepState: StepState;
 };
 
-export const WfoTableCodeBlock: FC<WfoTableCodeBlockProps> = ({
-    stepState: data,
-}) => {
-    const { tableCodeBlockMarginStyle } = useWithOrchestratorTheme(getStyles);
+export const WfoTableCodeBlock: FC<WfoTableCodeBlockProps> = ({ stepState: data }) => {
+  const { tableCodeBlockMarginStyle } = useWithOrchestratorTheme(getStyles);
 
-    const keyValues: WfoKeyValueTableDataType[] = Object.entries(data).map(
-        (entry) => {
-            const key = entry[0];
-            const value = entry[1] as string;
+  const keyValues: WfoKeyValueTableDataType[] = Object.entries(data).map((entry) => {
+    const key = entry[0];
+    const value = entry[1] as string;
 
-            return {
-                key,
-                value,
-                textToCopy: value,
-            };
-        },
-    );
+    return {
+      key,
+      value,
+      textToCopy: value,
+    };
+  });
 
-    return (
-        <EuiFlexItem css={tableCodeBlockMarginStyle}>
-            <WfoKeyValueTable
-                keyValues={keyValues}
-                showCopyToClipboardIcon={true}
-            />
-        </EuiFlexItem>
-    );
+  return (
+    <EuiFlexItem css={tableCodeBlockMarginStyle}>
+      <WfoKeyValueTable keyValues={keyValues} showCopyToClipboardIcon={true} />
+    </EuiFlexItem>
+  );
 };

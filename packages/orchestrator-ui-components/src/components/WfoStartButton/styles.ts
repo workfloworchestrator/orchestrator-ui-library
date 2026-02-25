@@ -3,21 +3,21 @@ import { css } from '@emotion/react';
 import { WfoThemeHelpers } from '@/hooks';
 
 export const getStyles = ({ theme }: WfoThemeHelpers) => {
-    const selectableStyle = css({
-        '.euiFieldSearch': {
-            backgroundColor: theme.colors.backgroundBasePlain,
-            color: theme.colors.textParagraph,
-            '&:focus': {
-                backgroundColor: theme.colors.backgroundBaseNeutral,
-            },
-        },
+  const selectableStyle = css({
+    '.euiFieldSearch': {
+      backgroundColor: theme.colors.backgroundBasePlain,
+      color: theme.colors.textParagraph,
+      '&:focus': {
+        backgroundColor: theme.colors.backgroundBaseNeutral,
+      },
+    },
 
-        '.euiSelectableList .euiSelectableListItem': {
-            borderColor: theme.colors.borderBaseSubdued,
-        },
-    });
+    '.euiSelectableList .euiSelectableListItem': {
+      borderColor: theme.colors.borderBaseSubdued,
+    },
+  });
 
-    return {
-        selectableStyle,
-    };
+  return {
+    selectableStyle,
+  };
 };

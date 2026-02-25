@@ -1,44 +1,44 @@
 {
-    "name": "@orchestrator-ui/eslint-config-custom",
-    "version": "2.1.1",
-    "license": "Apache-2.0",
-    "description": "Contains the eslint configuration used in the Workflow orchestrator frontend projects",
-    "main": "index.js",
-    "type": "module",
-    "author": {
-        "name": "Workflow Orchestrator Programme",
-        "email": "workfloworchestrator.board@commonsconservancy.org",
-        "url": "https://www.workfloworchestrator.org"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
-    },
-    "homepage": "https://www.workfloworchestrator.org",
-    "keywords": [
-        "orchestrator",
-        "workflow",
-        "workflow orchestrator",
-        "eslint"
-    ],
-    "scripts": {
-        "build": "tsup index.js --format esm",
-        "dev": "npm run build -- --watch"
-    },
-    "dependencies": {
-        "@eslint/js": "^9.36.0",
-        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-        "eslint": "^9.36.0",
-        "eslint-config-next": "^15.5.4",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-react": "^7.37.5",
-        "eslint-plugin-react-hooks": "^5.2.0",
-        "globals": "^16.4.0",
-        "tsup": "^8.5.0",
-        "typescript-eslint": "^8.45.0"
-    },
-    "publishConfig": {
-        "access": "public",
-        "provenance": true
-    }
+  "name": "@orchestrator-ui/eslint-config-custom",
+  "version": "2.1.1",
+  "license": "Apache-2.0",
+  "description": "Contains the eslint configuration used in the Workflow orchestrator frontend projects",
+  "main": "index.js",
+  "type": "module",
+  "author": {
+    "name": "Workflow Orchestrator Programme",
+    "email": "workfloworchestrator.board@commonsconservancy.org",
+    "url": "https://www.workfloworchestrator.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+  },
+  "homepage": "https://www.workfloworchestrator.org",
+  "keywords": [
+    "orchestrator",
+    "workflow",
+    "workflow orchestrator",
+    "eslint"
+  ],
+  "scripts": {
+    "build": "tsup index.js --format esm",
+    "dev": "npm run build -- --watch"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "eslint": "^10.0.2",
+    "eslint-config-next": "^16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.3.0",
+    "tsup": "^8.5.0",
+    "typescript-eslint": "^8.45.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }
