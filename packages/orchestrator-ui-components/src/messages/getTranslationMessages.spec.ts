@@ -1,7 +1,7 @@
 describe('getTransalationMessages', () => {
-    it('Makes jest stop complaining about an empty test file', () => {
-        expect(true).toEqual(true);
-    });
+  it('Makes jest stop complaining about an empty test file', () => {
+    expect(true).toEqual(true);
+  });
 });
 
 export {};

@@ -7,16 +7,16 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { getStyles } from './styles';
 
 interface WfoNoResultsProps {
-    text: string;
-    icon: ReactNode;
+  text: string;
+  icon: ReactNode;
 }
 
 export const WfoNoResults = ({ text, icon }: WfoNoResultsProps) => {
-    const { panelStyle } = useWithOrchestratorTheme(getStyles);
+  const { panelStyle } = useWithOrchestratorTheme(getStyles);
 
-    return (
-        <EuiFlexGroup css={panelStyle}>
-            {icon} {text}
-        </EuiFlexGroup>
-    );
+  return (
+    <EuiFlexGroup css={panelStyle}>
+      {icon} {text}
+    </EuiFlexGroup>
+  );
 };

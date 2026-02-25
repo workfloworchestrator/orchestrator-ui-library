@@ -6,14 +6,14 @@ import { WfoSubscription } from '@/components';
 import { TreeProvider } from '@/contexts';
 
 export const WfoSubscriptionDetailPage = () => {
-    const router = useRouter();
-    const { subscriptionId } = router.query;
+  const router = useRouter();
+  const { subscriptionId } = router.query;
 
-    return (
-        (subscriptionId && (
-            <TreeProvider>
-                <WfoSubscription subscriptionId={subscriptionId as string} />
-            </TreeProvider>
-        )) || <></>
-    );
+  return (
+    (subscriptionId && (
+      <TreeProvider>
+        <WfoSubscription subscriptionId={subscriptionId as string} />
+      </TreeProvider>
+    )) || <></>
+  );
 };

@@ -11,49 +11,35 @@ import type { WfoThemeHelpers } from '@/hooks';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
-    const formFieldBaseStyle = css({
-        backgroundColor: theme.colors.backgroundBaseSubdued,
-        color: theme.colors.textParagraph,
-        '&:focus': {
-            backgroundColor: theme.colors.backgroundBaseNeutral,
-        },
-    });
+  const formFieldBaseStyle = css({
+    backgroundColor: theme.colors.backgroundBaseSubdued,
+    color: theme.colors.textParagraph,
+    '&:focus': {
+      backgroundColor: theme.colors.backgroundBaseNeutral,
+    },
+  });
 
-    return {
-        formFieldBaseStyle,
-    };
+  return {
+    formFieldBaseStyle,
+  };
 };
 
-export const WfoInteger: PydanticFormControlledElement = ({
-    pydanticFormField,
-    onChange,
-    value,
-    disabled,
-}) => {
-    const { formFieldBaseStyle } = useWithOrchestratorTheme(
-        getFormFieldsBaseStyle,
-    );
+export const WfoInteger: PydanticFormControlledElement = ({ pydanticFormField, onChange, value, disabled }) => {
+  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
 
-    // If the field is part of an array the value is passed in as an object with the field name as key
-    // this is imposed by react-hook-form. We try to detect this and extract the actual value
-    const fieldName = getFormFieldIdWithPath(pydanticFormField.id);
-    const fieldValue =
-        _.isObject(value) && _.has(value, fieldName)
-            ? _.get(value, fieldName)
-            : value;
+  // If the field is part of an array the value is passed in as an object with the field name as key
+  // this is imposed by react-hook-form. We try to detect this and extract the actual value
+  const fieldName = getFormFieldIdWithPath(pydanticFormField.id);
+  const fieldValue = _.isObject(value) && _.has(value, fieldName) ? _.get(value, fieldName) : value;
 
-    return (
-        <EuiFieldNumber
-            data-testid={pydanticFormField.id}
-            css={formFieldBaseStyle}
-            name={pydanticFormField.id}
-            onChange={(event) =>
-                onChange(
-                    event.target.value ? parseInt(event.target.value) : null,
-                )
-            }
-            value={fieldValue}
-            disabled={disabled}
-        />
-    );
+  return (
+    <EuiFieldNumber
+      data-testid={pydanticFormField.id}
+      css={formFieldBaseStyle}
+      name={pydanticFormField.id}
+      onChange={(event) => onChange(event.target.value ? parseInt(event.target.value) : null)}
+      value={fieldValue}
+      disabled={disabled}
+    />
+  );
 };

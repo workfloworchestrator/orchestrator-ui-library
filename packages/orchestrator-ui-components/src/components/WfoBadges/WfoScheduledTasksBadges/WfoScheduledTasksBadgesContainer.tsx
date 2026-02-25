@@ -8,20 +8,19 @@ import { ScheduledTaskDefinition } from '@/types';
 import { WfoScheduledTasksBadges } from './WfoScheduledTasksBadges';
 
 export const WfoScheduledTasksBadgesContainer = ({
-    workflowId,
+  workflowId,
 }: {
-    workflowId: ScheduledTaskDefinition['workflowId'];
+  workflowId: ScheduledTaskDefinition['workflowId'];
 }) => {
-    const { workflowSchedules, isFetching, isError } =
-        useGetSchedulesForWorkflow(workflowId);
+  const { workflowSchedules, isFetching, isError } = useGetSchedulesForWorkflow(workflowId);
 
-    if (isFetching) {
-        return <WfoLoading />;
-    }
+  if (isFetching) {
+    return <WfoLoading />;
+  }
 
-    if (isError) {
-        return <WfoError />;
-    }
+  if (isError) {
+    return <WfoError />;
+  }
 
-    return <WfoScheduledTasksBadges workflowSchedules={workflowSchedules} />;
+  return <WfoScheduledTasksBadges workflowSchedules={workflowSchedules} />;
 };

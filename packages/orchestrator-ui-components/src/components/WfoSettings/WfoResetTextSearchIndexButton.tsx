@@ -7,16 +7,13 @@ import { EuiButton } from '@elastic/eui';
 import { useResetTextSearchIndexMutation } from '@/rtk';
 
 export const WfoResetTextSearchIndexButton = () => {
-    const [resetTextSearchIndex] = useResetTextSearchIndexMutation();
+  const [resetTextSearchIndex] = useResetTextSearchIndexMutation();
 
-    const t = useTranslations('settings.page');
+  const t = useTranslations('settings.page');
 
-    return (
-        <EuiButton
-            onClick={() => resetTextSearchIndex(null)}
-            iconType="refresh"
-        >
-            {t('resetTextSearchIndexButton')}
-        </EuiButton>
-    );
+  return (
+    <EuiButton onClick={() => resetTextSearchIndex(null)} iconType="refresh">
+      {t('resetTextSearchIndexButton')}
+    </EuiButton>
+  );
 };

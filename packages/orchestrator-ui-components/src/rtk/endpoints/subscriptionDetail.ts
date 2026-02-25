@@ -1,11 +1,7 @@
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { orchestratorApi } from '@/rtk';
 import { CacheTagType } from '@/types';
-import {
-    BaseGraphQlResult,
-    SubscriptionDetail,
-    SubscriptionDetailResult,
-} from '@/types';
+import { BaseGraphQlResult, SubscriptionDetail, SubscriptionDetailResult } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 export const subscriptionDetailFragment = `
@@ -79,41 +75,33 @@ export const subscriptionDetailQuery = `
 `;
 
 export type SubscriptionDetailResponse = {
-    subscription: SubscriptionDetail;
+  subscription: SubscriptionDetail;
 } & BaseGraphQlResult;
 
 const subscriptionDetailApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getSubscriptionDetail: builder.query<
-            SubscriptionDetailResponse,
-            { subscriptionId: string }
-        >({
-            query: (variables) => ({
-                document: subscriptionDetailQuery + subscriptionDetailFragment,
-                variables,
-            }),
-            transformResponse: (
-                response: SubscriptionDetailResult,
-            ): SubscriptionDetailResponse => {
-                const subscription = response.subscriptions.page[0] || [];
-                const pageInfo = response.subscriptions.pageInfo || {};
+  endpoints: (builder) => ({
+    getSubscriptionDetail: builder.query<SubscriptionDetailResponse, { subscriptionId: string }>({
+      query: (variables) => ({
+        document: subscriptionDetailQuery + subscriptionDetailFragment,
+        variables,
+      }),
+      transformResponse: (response: SubscriptionDetailResult): SubscriptionDetailResponse => {
+        const subscription = response.subscriptions.page[0] || [];
+        const pageInfo = response.subscriptions.pageInfo || {};
 
-                return {
-                    subscription,
-                    pageInfo,
-                };
-            },
-            providesTags: (result, error, queryArguments) => {
-                if (!error && result) {
-                    return getCacheTag(
-                        CacheTagType.subscriptions,
-                        queryArguments.subscriptionId,
-                    );
-                }
-                return [];
-            },
-        }),
+        return {
+          subscription,
+          pageInfo,
+        };
+      },
+      providesTags: (result, error, queryArguments) => {
+        if (!error && result) {
+          return getCacheTag(CacheTagType.subscriptions, queryArguments.subscriptionId);
+        }
+        return [];
+      },
     }),
+  }),
 });
 
 export const { useGetSubscriptionDetailQuery } = subscriptionDetailApi;

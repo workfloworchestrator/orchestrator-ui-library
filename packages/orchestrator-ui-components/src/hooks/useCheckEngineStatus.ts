@@ -5,27 +5,27 @@ import { useGetEngineStatusQuery } from '@/rtk/endpoints';
 import { EngineStatus, ToastTypes } from '@/types';
 
 export const useCheckEngineStatus = () => {
-    const { data, isLoading, refetch } = useGetEngineStatusQuery();
-    const { engineStatus } = data || {};
-    const tErrors = useTranslations('errors');
-    const { showToastMessage } = useShowToastMessage();
+  const { data, isLoading, refetch } = useGetEngineStatusQuery();
+  const { engineStatus } = data || {};
+  const tErrors = useTranslations('errors');
+  const { showToastMessage } = useShowToastMessage();
 
-    const isEngineRunningNow = async () => {
-        await refetch();
-        const isEngineRunning = engineStatus === EngineStatus.RUNNING;
+  const isEngineRunningNow = async () => {
+    await refetch();
+    const isEngineRunning = engineStatus === EngineStatus.RUNNING;
 
-        if (!isEngineRunning && !isLoading) {
-            showToastMessage(
-                ToastTypes.ERROR,
-                tErrors('notAllowedWhenEngineIsNotRunningMessage'),
-                tErrors('notAllowedWhenEngineIsNotRunningTitle'),
-            );
-        }
+    if (!isEngineRunning && !isLoading) {
+      showToastMessage(
+        ToastTypes.ERROR,
+        tErrors('notAllowedWhenEngineIsNotRunningMessage'),
+        tErrors('notAllowedWhenEngineIsNotRunningTitle'),
+      );
+    }
 
-        return isEngineRunning;
-    };
+    return isEngineRunning;
+  };
 
-    return {
-        isEngineRunningNow,
-    };
+  return {
+    isEngineRunningNow,
+  };
 };

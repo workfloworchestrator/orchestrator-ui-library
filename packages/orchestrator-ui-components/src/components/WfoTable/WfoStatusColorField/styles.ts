@@ -5,16 +5,16 @@ import { TABLE_ROW_HEIGHT } from '@/components';
 import { WfoThemeHelpers } from '@/hooks';
 
 export const getWfoStatusColorFieldStyles = ({ theme }: WfoThemeHelpers) => {
-    const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
+  const toStatusColorFieldColor = (color: string) => tint(color, 0.3);
 
-    const getStatusColorFieldStyle = (color: string) =>
-        css({
-            backgroundColor: toStatusColorFieldColor(color),
-            height: TABLE_ROW_HEIGHT,
-            width: theme.size.xs,
-        });
+  const getStatusColorFieldStyle = (color: string) =>
+    css({
+      backgroundColor: toStatusColorFieldColor(color),
+      height: TABLE_ROW_HEIGHT,
+      width: theme.size.xs,
+    });
 
-    return {
-        getStatusColorFieldStyle,
-    };
+  return {
+    getStatusColorFieldStyle,
+  };
 };

@@ -3,126 +3,121 @@ import { FieldValue, TreeBlock, WfoTreeNodeMap } from '@/types';
 import { getPositionInTree, getWfoTreeNodeDepth } from './treeUtils';
 
 describe('getWfoTreeNodeDepth', () => {
-    const field: FieldValue = { field: 'test', value: 'test' };
-    const sampleTree: TreeBlock = {
-        id: 1,
-        subscriptionInstanceId: 'subscription-1',
-        parent: null,
-        icon: 'folder',
-        label: 'Root',
+  const field: FieldValue = { field: 'test', value: 'test' };
+  const sampleTree: TreeBlock = {
+    id: 1,
+    subscriptionInstanceId: 'subscription-1',
+    parent: null,
+    icon: 'folder',
+    label: 'Root',
+    callback: jest.fn(),
+    productBlockInstanceValues: [field],
+    inUseByRelations: [],
+    isOutsideCurrentSubscription: false,
+    subscription: {
+      subscriptionId: 'subscription-1',
+      description: 'Subscription 1',
+    },
+    children: [
+      {
+        id: 2,
+        subscriptionInstanceId: 'subscription-2',
+        parent: 1,
+        icon: 'file',
+        label: 'File 1',
+        callback: jest.fn(),
+        productBlockInstanceValues: [field],
+        inUseByRelations: [],
+        children: [],
+        isOutsideCurrentSubscription: false,
+        subscription: {
+          subscriptionId: 'subscription-2',
+          description: 'Subscription 2',
+        },
+      },
+      {
+        id: 3,
+        subscriptionInstanceId: 'subscription-3',
+        parent: 1,
+        icon: 'file',
+        label: 'File 2',
         callback: jest.fn(),
         productBlockInstanceValues: [field],
         inUseByRelations: [],
         isOutsideCurrentSubscription: false,
         subscription: {
-            subscriptionId: 'subscription-1',
-            description: 'Subscription 1',
+          subscriptionId: 'subscription-3',
+          description: 'Subscription 3',
         },
         children: [
-            {
-                id: 2,
-                subscriptionInstanceId: 'subscription-2',
-                parent: 1,
-                icon: 'file',
-                label: 'File 1',
-                callback: jest.fn(),
-                productBlockInstanceValues: [field],
-                inUseByRelations: [],
-                children: [],
-                isOutsideCurrentSubscription: false,
-                subscription: {
-                    subscriptionId: 'subscription-2',
-                    description: 'Subscription 2',
-                },
-            },
-            {
-                id: 3,
-                subscriptionInstanceId: 'subscription-3',
-                parent: 1,
-                icon: 'file',
-                label: 'File 2',
-                callback: jest.fn(),
-                productBlockInstanceValues: [field],
-                inUseByRelations: [],
-                isOutsideCurrentSubscription: false,
-                subscription: {
-                    subscriptionId: 'subscription-3',
-                    description: 'Subscription 3',
-                },
-                children: [
-                    {
-                        id: 4,
-                        subscriptionInstanceId: 'subscription-4',
-                        parent: 3,
-                        icon: 'file',
-                        label: 'File 2.1',
-                        callback: jest.fn(),
-                        productBlockInstanceValues: [field],
-                        inUseByRelations: [],
-                        children: [],
-                        isOutsideCurrentSubscription: false,
-                        subscription: {
-                            subscriptionId: 'subscription-4',
-                            description: 'Subscription 4',
-                        },
-                    },
-                ],
-            },
-        ],
-    };
-
-    const idToNodeMap: WfoTreeNodeMap = {
-        1: sampleTree,
-        2: sampleTree.children[0],
-        3: sampleTree.children[1],
-        4: sampleTree.children[1].children[0],
-    };
-
-    it('should return 0 for the root node', () => {
-        const rootDepth = getWfoTreeNodeDepth(sampleTree, idToNodeMap);
-        expect(rootDepth).toBe(0);
-    });
-
-    it('should return the correct depth for a child node', () => {
-        const depth2 = getWfoTreeNodeDepth(sampleTree.children[0], idToNodeMap);
-        const depth3 = getWfoTreeNodeDepth(sampleTree.children[1], idToNodeMap);
-        const depth4 = getWfoTreeNodeDepth(
-            sampleTree.children[1].children[0],
-            idToNodeMap,
-        );
-
-        expect(depth2).toBe(1);
-        expect(depth3).toBe(1);
-        expect(depth4).toBe(2);
-    });
-
-    it('should throw an error if the parent node is not found', () => {
-        const invalidNode = {
-            id: 1,
-            ownerSubscriptionId: 'subscription-1',
-            subscriptionInstanceId: 'subscription-1',
-            parent: 99, // Parent ID that does not exist
+          {
+            id: 4,
+            subscriptionInstanceId: 'subscription-4',
+            parent: 3,
             icon: 'file',
-            label: 'Invalid Node',
+            label: 'File 2.1',
             callback: jest.fn(),
             productBlockInstanceValues: [field],
             inUseByRelations: [],
             children: [],
             isOutsideCurrentSubscription: false,
             subscription: {
-                subscriptionId: 'subscription-1',
-                description: 'Subscription 1',
+              subscriptionId: 'subscription-4',
+              description: 'Subscription 4',
             },
-        };
+          },
+        ],
+      },
+    ],
+  };
 
-        expect(() => getWfoTreeNodeDepth(invalidNode, idToNodeMap)).toThrow(
-            'Parent node for 1 not found.',
-        );
-    });
+  const idToNodeMap: WfoTreeNodeMap = {
+    1: sampleTree,
+    2: sampleTree.children[0],
+    3: sampleTree.children[1],
+    4: sampleTree.children[1].children[0],
+  };
+
+  it('should return 0 for the root node', () => {
+    const rootDepth = getWfoTreeNodeDepth(sampleTree, idToNodeMap);
+    expect(rootDepth).toBe(0);
+  });
+
+  it('should return the correct depth for a child node', () => {
+    const depth2 = getWfoTreeNodeDepth(sampleTree.children[0], idToNodeMap);
+    const depth3 = getWfoTreeNodeDepth(sampleTree.children[1], idToNodeMap);
+    const depth4 = getWfoTreeNodeDepth(sampleTree.children[1].children[0], idToNodeMap);
+
+    expect(depth2).toBe(1);
+    expect(depth3).toBe(1);
+    expect(depth4).toBe(2);
+  });
+
+  it('should throw an error if the parent node is not found', () => {
+    const invalidNode = {
+      id: 1,
+      ownerSubscriptionId: 'subscription-1',
+      subscriptionInstanceId: 'subscription-1',
+      parent: 99, // Parent ID that does not exist
+      icon: 'file',
+      label: 'Invalid Node',
+      callback: jest.fn(),
+      productBlockInstanceValues: [field],
+      inUseByRelations: [],
+      children: [],
+      isOutsideCurrentSubscription: false,
+      subscription: {
+        subscriptionId: 'subscription-1',
+        description: 'Subscription 1',
+      },
+    };
+
+    expect(() => getWfoTreeNodeDepth(invalidNode, idToNodeMap)).toThrow('Parent node for 1 not found.');
+  });
 });
 
 describe('getPositionInTree', () => {
-    const json = `{
+  const json = `{
         "id": 0,
         "subscription": {
             "subscriptionId": "556facd3-6399-4c76-aeb1-114849da2f96",
@@ -299,60 +294,60 @@ describe('getPositionInTree', () => {
         "isOutsideCurrentSubscription": false
     }`;
 
-    const tree = JSON.parse(json) as TreeBlock;
+  const tree = JSON.parse(json) as TreeBlock;
 
-    it('should return 1 for the root node', () => {
-        const rootDepth = getPositionInTree(tree, 0);
-        expect(rootDepth).toBe(1);
-    });
+  it('should return 1 for the root node', () => {
+    const rootDepth = getPositionInTree(tree, 0);
+    expect(rootDepth).toBe(1);
+  });
 
-    it('should return 2 for the first node', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 2);
-        expect(positionOfFirstLevelChild).toBe(2);
-    });
+  it('should return 2 for the first node', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 2);
+    expect(positionOfFirstLevelChild).toBe(2);
+  });
 
-    it('should return correct node at position 3', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 3);
-        expect(positionOfFirstLevelChild).toBe(3);
-    });
+  it('should return correct node at position 3', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 3);
+    expect(positionOfFirstLevelChild).toBe(3);
+  });
 
-    it('should return correct node at position 4', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 4);
-        expect(positionOfFirstLevelChild).toBe(4);
-    });
+  it('should return correct node at position 4', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 4);
+    expect(positionOfFirstLevelChild).toBe(4);
+  });
 
-    it('should return correct node at position 5', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 5);
-        expect(positionOfFirstLevelChild).toBe(5);
-    });
+  it('should return correct node at position 5', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 5);
+    expect(positionOfFirstLevelChild).toBe(5);
+  });
 
-    it('should return correct node at position 6', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 6);
-        expect(positionOfFirstLevelChild).toBe(6);
-    });
+  it('should return correct node at position 6', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 6);
+    expect(positionOfFirstLevelChild).toBe(6);
+  });
 
-    it('should return correct node at position 7', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 7);
-        expect(positionOfFirstLevelChild).toBe(7);
-    });
+  it('should return correct node at position 7', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 7);
+    expect(positionOfFirstLevelChild).toBe(7);
+  });
 
-    it('should return correct node at position 8', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 8);
-        expect(positionOfFirstLevelChild).toBe(8);
-    });
+  it('should return correct node at position 8', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 8);
+    expect(positionOfFirstLevelChild).toBe(8);
+  });
 
-    it('should return correct node at position 9', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 9);
-        expect(positionOfFirstLevelChild).toBe(9);
-    });
+  it('should return correct node at position 9', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 9);
+    expect(positionOfFirstLevelChild).toBe(9);
+  });
 
-    it('should return correct node at position 10', () => {
-        const positionOfFirstLevelChild = getPositionInTree(tree, 1);
-        expect(positionOfFirstLevelChild).toBe(10);
-    });
+  it('should return correct node at position 10', () => {
+    const positionOfFirstLevelChild = getPositionInTree(tree, 1);
+    expect(positionOfFirstLevelChild).toBe(10);
+  });
 
-    it('should return undefined if the id is not found', () => {
-        const positionOfUndefined = getPositionInTree(tree, 9999);
-        expect(positionOfUndefined).toBeUndefined();
-    });
+  it('should return undefined if the id is not found', () => {
+    const positionOfUndefined = getPositionInTree(tree, 9999);
+    expect(positionOfUndefined).toBeUndefined();
+  });
 });

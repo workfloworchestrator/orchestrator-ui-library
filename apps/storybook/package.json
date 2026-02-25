@@ -1,40 +1,40 @@
 {
-    "name": "orchestrator-ui-storybook",
-    "private": true,
-    "version": "0.2.0",
-    "type": "module",
-    "scripts": {
-        "dev": "storybook dev -p 6006",
-        "build:storybook": "storybook build",
-        "lint": "eslint"
-    },
-    "dependencies": {
-        "@orchestrator-ui/orchestrator-ui-components": "*",
-        "@rollup/plugin-commonjs": "^29.0.0",
-        "@storybook/addon-essentials": "^8.5.0",
-        "@storybook/addon-interactions": "^8.5.0",
-        "@storybook/addon-onboarding": "^8.5.0",
-        "@storybook/blocks": "^8.5.0",
-        "@storybook/experimental-nextjs-vite": "^8.5.0",
-        "@storybook/react": "^8.6.14",
-        "@storybook/react-vite": "^8.6.14",
-        "@storybook/test": "^8.5.0",
-        "next-router-mock": "^1.0.5",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "storybook": "^8.5.0"
-    },
-    "devDependencies": {
-        "@chromatic-com/storybook": "^3.2.4",
-        "@orchestrator-ui/eslint-config-custom": "*",
-        "@types/react": "^18.3.18",
-        "@types/react-dom": "^18.3.5",
-        "@vitejs/plugin-react": "^4.7.0",
-        "eslint": "^10.0.2",
-        "eslint-plugin-storybook": "^0.12.0",
-        "globals": "^17.3.0",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.18.2",
-        "vite": "^6.0.5"
-    }
+  "name": "orchestrator-ui-storybook",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build:storybook": "storybook build",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@orchestrator-ui/orchestrator-ui-components": "*",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@storybook/addon-essentials": "^8.5.0",
+    "@storybook/addon-interactions": "^8.5.0",
+    "@storybook/addon-onboarding": "^8.5.0",
+    "@storybook/blocks": "^8.5.0",
+    "@storybook/experimental-nextjs-vite": "^8.5.0",
+    "@storybook/react": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "@storybook/test": "^8.5.0",
+    "next-router-mock": "^1.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.5.0"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.4",
+    "@orchestrator-ui/eslint-config-custom": "*",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^10.0.2",
+    "eslint-plugin-storybook": "^0.12.0",
+    "globals": "^17.3.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.5"
+  }
 }

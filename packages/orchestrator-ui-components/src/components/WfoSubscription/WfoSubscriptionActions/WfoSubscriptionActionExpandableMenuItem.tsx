@@ -12,63 +12,57 @@ import { SubscriptionAction } from '@/types';
 import { getSubscriptionActionStyles } from './styles';
 
 export type WfoSubscriptionActionExpandableMenuItemProps = {
-    subscriptionAction: SubscriptionAction;
-    onClickLockedRelation: (relation: string) => void;
-    children: React.ReactNode;
+  subscriptionAction: SubscriptionAction;
+  onClickLockedRelation: (relation: string) => void;
+  children: React.ReactNode;
 };
 
-export const WfoSubscriptionActionExpandableMenuItem: FC<
-    WfoSubscriptionActionExpandableMenuItemProps
-> = ({ subscriptionAction, onClickLockedRelation, children }) => {
-    const t = useTranslations('subscriptions.detail.actions');
+export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionExpandableMenuItemProps> = ({
+  subscriptionAction,
+  onClickLockedRelation,
+  children,
+}) => {
+  const t = useTranslations('subscriptions.detail.actions');
 
-    const {
-        clickableStyle,
-        expandableMenuItemStyle,
-        expandButtonStyle,
-        expandedContentStyle,
-        linkStyle,
-    } = useWithOrchestratorTheme(getSubscriptionActionStyles);
-    const [isExpanded, setIsExpanded] = useState(false);
+  const { clickableStyle, expandableMenuItemStyle, expandButtonStyle, expandedContentStyle, linkStyle } =
+    useWithOrchestratorTheme(getSubscriptionActionStyles);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-    const { locked_relations: lockedRelations } = subscriptionAction;
+  const { locked_relations: lockedRelations } = subscriptionAction;
 
-    return (
-        <div>
-            <div
-                css={[
-                    expandableMenuItemStyle,
-                    lockedRelations && clickableStyle,
-                ]}
-                onClick={() => setIsExpanded(!isExpanded)}
-            >
-                <div>{children}</div>
-                {lockedRelations && (
-                    <EuiButtonIcon
-                        css={expandButtonStyle}
-                        iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        aria-label={t('expand')}
-                    />
-                )}
-            </div>
-            {lockedRelations && isExpanded && (
-                <div css={expandedContentStyle}>
-                    <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
-                    {lockedRelations.map((relation) => (
-                        <EuiText key={relation} size="xs">
-                            <Link
-                                css={linkStyle}
-                                href={`${PATH_SUBSCRIPTIONS}/${relation}`}
-                                target="_blank"
-                                onClick={() => onClickLockedRelation(relation)}
-                            >
-                                {relation}
-                            </Link>
-                        </EuiText>
-                    ))}
-                </div>
-            )}
+  return (
+    <div>
+      <div
+        css={[expandableMenuItemStyle, lockedRelations && clickableStyle]}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div>{children}</div>
+        {lockedRelations && (
+          <EuiButtonIcon
+            css={expandButtonStyle}
+            iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-label={t('expand')}
+          />
+        )}
+      </div>
+      {lockedRelations && isExpanded && (
+        <div css={expandedContentStyle}>
+          <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
+          {lockedRelations.map((relation) => (
+            <EuiText key={relation} size="xs">
+              <Link
+                css={linkStyle}
+                href={`${PATH_SUBSCRIPTIONS}/${relation}`}
+                target="_blank"
+                onClick={() => onClickLockedRelation(relation)}
+              >
+                {relation}
+              </Link>
+            </EuiText>
+          ))}
         </div>
-    );
+      )}
+    </div>
+  );
 };

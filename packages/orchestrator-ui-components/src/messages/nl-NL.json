@@ -1,509 +1,509 @@
 {
-    "main": {
-        "start": "Start",
-        "ariaLabelToggleSideMenu": "Toon/Verberg menu",
-        "ariaLabelCurrentPage": "Huidige pagina",
-        "metadata": "Metadata",
-        "metadataProducts": "Products",
-        "metadataProductblocks": "Product blocks",
-        "metadataResourceTypes": "Resource types",
-        "metadataWorkflows": "Workflows",
-        "metadataTasks": "Taken",
-        "metadataScheduledTasks": "Scheduled tasks",
-        "mobileTitle": "Hoofdmenu",
-        "settings": "Settings",
-        "subscriptions": "Subscriptions",
-        "tasks": "Taken",
-        "title": "Workflow Orchestrator",
-        "welcome": "Welkom",
-        "workflows": "Workflows",
-        "darkMode": "Dark mode",
-        "lightMode": "Light mode",
-        "websocketConnected": "De pagina ontvangt live updates van de server",
-        "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina.",
-        "websocketDisconnectedShort": "WebSocket verbroken, klik op het icoon om opnieuw te verbinden.",
-        "resetToDefault": "Reset naar standaard",
-        "savePreferences": "Voorkeuren opslaan",
-        "numberOfRows": "Aantal rijen",
-        "tableSettings": "Tabel instellingen",
-        "openMenu": "Open menu",
-        "incompatibleVersion": "Incompatibele versie",
-        "incompatibleVersionText": "De versie van de WFO UI is incompatibel met de version van orchestrator-core.",
-        "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core"
+  "main": {
+    "start": "Start",
+    "ariaLabelToggleSideMenu": "Toon/Verberg menu",
+    "ariaLabelCurrentPage": "Huidige pagina",
+    "metadata": "Metadata",
+    "metadataProducts": "Products",
+    "metadataProductblocks": "Product blocks",
+    "metadataResourceTypes": "Resource types",
+    "metadataWorkflows": "Workflows",
+    "metadataTasks": "Taken",
+    "metadataScheduledTasks": "Scheduled tasks",
+    "mobileTitle": "Hoofdmenu",
+    "settings": "Settings",
+    "subscriptions": "Subscriptions",
+    "tasks": "Taken",
+    "title": "Workflow Orchestrator",
+    "welcome": "Welkom",
+    "workflows": "Workflows",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "websocketConnected": "De pagina ontvangt live updates van de server",
+    "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina.",
+    "websocketDisconnectedShort": "WebSocket verbroken, klik op het icoon om opnieuw te verbinden.",
+    "resetToDefault": "Reset naar standaard",
+    "savePreferences": "Voorkeuren opslaan",
+    "numberOfRows": "Aantal rijen",
+    "tableSettings": "Tabel instellingen",
+    "openMenu": "Open menu",
+    "incompatibleVersion": "Incompatibele versie",
+    "incompatibleVersionText": "De versie van de WFO UI is incompatibel met de version van orchestrator-core.",
+    "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core"
+  },
+  "common": {
+    "product": "Produkt",
+    "deselect": "Deselecteer",
+    "close": "Sluiten",
+    "editColumns": "Wijzig kolommen",
+    "loading": "Laden",
+    "newSubscription": "Nieuwe subscription",
+    "newTask": "Nieuwe task",
+    "noFailedTasks": "Geen gefaalde taken!",
+    "noItemsFound": "Geen items gevonden",
+    "search": "Zoeken",
+    "errorMessage": "Er is een fout opgetreden",
+    "unknownError": "Onbekende error",
+    "export": "Exporteren",
+    "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
+    "insyncTrue": "in-sync",
+    "insyncFalse": "out-of-sync",
+    "searchModalTitle": "Zoekwoorden opties",
+    "searchModalText": "<p>Er zijn verschillende opties beschikbaar: zoeken in vrije tekst voor alle datakolommen en specifiek per kolom te filteren. Houd er rekening mee dat: </p><p></p><ul><li>Verborgen kolommen zijn inbegrepen</li> <li>Zoeken is niet hoofdlettergevoelig</li> <li>De volgorde van woorden doet er niet toe (tenzij het een quote)</li> <li>TSV (text search vector) zoekactie alleen beschikbaar voor subscription tabel</li></ul><p>Bijvoorbeeld:</p> <li><b>\"l2vpn\"</b> – vrije tekst search</li> <li><b>tag:l2vpn</b> – zoeken in een specifieke kolom</li> <li><b>tag:lp beschrijving: test</b> – zoeken in meerdere kolommen</li><li><b>tag:(lp|lr)</b> – multi select binnen 1 kolom</li> <li><b>-tag:lp</b> – omgekeerd filteren</li> <li><b>test*</b> – prefix filter</li> <p></p><p><b>Opmerking:</b> Zoeken op woorden die tekens `|-*():\"` bevatten, zijn mogelijk niet geldig, omdat ze deel uitmaken van de grammatica van de zoekfunctie</p><p>Ongeldige zoekwoorden zijn bijvoorbeeld:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(gepland)\"</li> <li>\"node123|gepland\"</li></ul>"
+  },
+  "confirmationDialog": {
+    "title": "Graag bevestigen",
+    "confirm": "Bevestigen",
+    "cancel": "Annuleren",
+    "leavePage": "Wil je deze pagina verlaten?",
+    "leavePageSub": "Veranderingen die je hebt gemaakt worden niet opgeslagen.",
+    "stay": "Blijven",
+    "leave": "Verlaten"
+  },
+  "workflow": {
+    "start_workflow_title": "Start workflow"
+  },
+  "errors": {
+    "notAllResultsExported": "De huidige query resulteert in {totalResults} resultaten. Alleen de eerste {maximumExportedResults} resultaten worden geexporteerd",
+    "notAllResultsExportedTitle": "Niet alle items geexporteerd",
+    "invalidQueryParts": "De query bevat ongeldige onderdelen",
+    "notAllowedWhenEngineIsNotRunningMessage": "Deze actie is niet toegestaan als de Workflow Engine niet is gestart.",
+    "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is niet gestart.",
+    "retrieve_stored_settings": "Er ging iets fout tijdens het laden van de instellingen. Hersteld naar standaard waardes",
+    "retrieve_stored_settings_title": "Fout tijdens het ophalen van instellingen.",
+    "failedDeletingScheduledTask": "Fout bij het verwijderen de scheduled task"
+  },
+  "pydanticForms": {
+    "userInputForm": {
+      "cancel": "Annuleren",
+      "submit": "Verstuur",
+      "previous": "Vorige",
+      "next": "Volgende",
+      "startTask": "Start taak",
+      "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
+      "startWorkflow": "Start workflow",
+      "resumeTask": "Hervat task",
+      "resumeWorkflow": "Hervat workflow",
+      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten"
     },
-    "common": {
-        "product": "Produkt",
-        "deselect": "Deselecteer",
-        "close": "Sluiten",
-        "editColumns": "Wijzig kolommen",
-        "loading": "Laden",
-        "newSubscription": "Nieuwe subscription",
-        "newTask": "Nieuwe task",
-        "noFailedTasks": "Geen gefaalde taken!",
-        "noItemsFound": "Geen items gevonden",
-        "search": "Zoeken",
-        "errorMessage": "Er is een fout opgetreden",
-        "unknownError": "Onbekende error",
-        "export": "Exporteren",
-        "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
-        "insyncTrue": "in-sync",
-        "insyncFalse": "out-of-sync",
-        "searchModalTitle": "Zoekwoorden opties",
-        "searchModalText": "<p>Er zijn verschillende opties beschikbaar: zoeken in vrije tekst voor alle datakolommen en specifiek per kolom te filteren. Houd er rekening mee dat: </p><p></p><ul><li>Verborgen kolommen zijn inbegrepen</li> <li>Zoeken is niet hoofdlettergevoelig</li> <li>De volgorde van woorden doet er niet toe (tenzij het een quote)</li> <li>TSV (text search vector) zoekactie alleen beschikbaar voor subscription tabel</li></ul><p>Bijvoorbeeld:</p> <li><b>\"l2vpn\"</b> – vrije tekst search</li> <li><b>tag:l2vpn</b> – zoeken in een specifieke kolom</li> <li><b>tag:lp beschrijving: test</b> – zoeken in meerdere kolommen</li><li><b>tag:(lp|lr)</b> – multi select binnen 1 kolom</li> <li><b>-tag:lp</b> – omgekeerd filteren</li> <li><b>test*</b> – prefix filter</li> <p></p><p><b>Opmerking:</b> Zoeken op woorden die tekens `|-*():\"` bevatten, zijn mogelijk niet geldig, omdat ze deel uitmaken van de grammatica van de zoekfunctie</p><p>Ongeldige zoekwoorden zijn bijvoorbeeld:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(gepland)\"</li> <li>\"node123|gepland\"</li></ul>"
+    "widgets": {
+      "customer": {
+        "placeholder": "Zoek en selecteer een klant...",
+        "loading": "Klanten laden..."
+      },
+      "contactPersonName": {
+        "placeholder": "Zoek en voeg contactpersonen toe..."
+      },
+      "ipvAnyNetworkField": {
+        "manuallySelectedPrefix": "Manually selected prefix"
+      },
+      "node_select": {
+        "nodes_loading": "Nodes laden...",
+        "select_node": "Selecteer node",
+        "no_nodes_placeholder": "Geen nodes"
+      },
+      "locationCode": {
+        "placeholder": "Zoek en selecteer een locatie code..."
+      },
+      "product": {
+        "placeholder": "Kies product"
+      },
+      "select": {
+        "placeholder": "Zoek en selecteer een waarde..."
+      },
+      "vlan": {
+        "vlansInUseError": "VLAN range {vlans} is al in gebruik door geslecteerde service port",
+        "vlansInUse": "VLAN ranges in gebruik bij deze service port: {vlans}",
+        "missingInIms": "Service port niet gevonden in IMS. De poort is mogelijk verwijder of in initial state.",
+        "nsiVlansAvailable": "Beschikbare NSI VLAN ranges voor deze service port: {vlans}",
+        "nsiNoPortsAvailable": "Deze service port heeft (nog) geen beschikbare NSI reserved VLANs.",
+        "allPortsAvailable": "Deze service port heeft (nog) geen VLANs in gebruik.",
+        "placeholder": "Voer een geldige VLAN range in...",
+        "placeholderNoServicePort": "Selecteer eerst een Service Port...",
+        "invalidVlan": "Invalid VLAN - Voer een range of geldige [2-4094] VLAN integers in, bijvoorbeeld: '2, 5-6, 1048-1052'",
+        "untaggedPortInUse": "Deze service port is al in gebruik en kan niet worden gekozen",
+        "taggedOnly": "VLAN is alleen relevant voor service poorten in tagged mode, niet voor link_member of untagged ports.",
+        "loadingIms": "VLAN informatie aan het laden uit IMS..."
+      },
+      "subscription": {
+        "placeholder": "Kies een subscription",
+        "loading": "Subscriptions ophalen..."
+      },
+      "nodePort": {
+        "loadingNodes": "Node subscriptions laden...",
+        "loadingPorts": "IMS poorten laden...",
+        "selectNode": "Selecteer node",
+        "selectPort": "Selecteer poort",
+        "noPorts": "GEEN POORTEN GEVONDEN VOOR DEZE NODE",
+        "selectNodeFirst": "Selecteer eerst een node"
+      },
+      "fileUpload": {
+        "invalidFiletype": "Ongeldig bestandstype!",
+        "errorUploading": "Fout bij het upoaden van het bestand!",
+        "fileToBig": "Bestand te groot. Maximum bestand: {fileSizeLimit}",
+        "initialPromptText": "Selecteer een bestand of sleep het hierheen",
+        "supportedFileTypes": "Ondersteunde bestandstypen: pdf"
+      }
+    }
+  },
+  "metadata": {
+    "title": "Metadata",
+    "tabs": {
+      "products": "Producten",
+      "productBlocks": "Product blocks",
+      "resourceTypes": "Resource types",
+      "workflows": "Workflows",
+      "tasks": "Taken"
     },
-    "confirmationDialog": {
-        "title": "Graag bevestigen",
-        "confirm": "Bevestigen",
-        "cancel": "Annuleren",
-        "leavePage": "Wil je deze pagina verlaten?",
-        "leavePageSub": "Veranderingen die je hebt gemaakt worden niet opgeslagen.",
-        "stay": "Blijven",
-        "leave": "Verlaten"
+    "products": {
+      "id": "ID",
+      "name": "Product",
+      "description": "Product beschrijving",
+      "tag": "Product tag",
+      "productType": "Type",
+      "status": "Status",
+      "productBlocks": "Product blocks",
+      "fixedInputs": "Fixed inputs",
+      "createdAt": "Aangemaakt"
     },
-    "workflow": {
-        "start_workflow_title": "Start workflow"
+    "productBlocks": {
+      "id": "ID",
+      "name": "Product block",
+      "description": "Product block beschrijving",
+      "tag": "Tag",
+      "status": "Status",
+      "resourceTypes": "Resource types",
+      "dependingProductBlocks": "Onderliggende product blocks",
+      "createdAt": "Aangemaakt",
+      "endDate": "Einddatum",
+      "parentIds": "Parents"
     },
-    "errors": {
-        "notAllResultsExported": "De huidige query resulteert in {totalResults} resultaten. Alleen de eerste {maximumExportedResults} resultaten worden geexporteerd",
-        "notAllResultsExportedTitle": "Niet alle items geexporteerd",
-        "invalidQueryParts": "De query bevat ongeldige onderdelen",
-        "notAllowedWhenEngineIsNotRunningMessage": "Deze actie is niet toegestaan als de Workflow Engine niet is gestart.",
-        "notAllowedWhenEngineIsNotRunningTitle": "Workflow Engine is niet gestart.",
-        "retrieve_stored_settings": "Er ging iets fout tijdens het laden van de instellingen. Hersteld naar standaard waardes",
-        "retrieve_stored_settings_title": "Fout tijdens het ophalen van instellingen.",
-        "failedDeletingScheduledTask": "Fout bij het verwijderen de scheduled task"
-    },
-    "pydanticForms": {
-        "userInputForm": {
-            "cancel": "Annuleren",
-            "submit": "Verstuur",
-            "previous": "Vorige",
-            "next": "Volgende",
-            "startTask": "Start taak",
-            "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
-            "startWorkflow": "Start workflow",
-            "resumeTask": "Hervat task",
-            "resumeWorkflow": "Hervat workflow",
-            "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten"
-        },
-        "widgets": {
-            "customer": {
-                "placeholder": "Zoek en selecteer een klant...",
-                "loading": "Klanten laden..."
-            },
-            "contactPersonName": {
-                "placeholder": "Zoek en voeg contactpersonen toe..."
-            },
-            "ipvAnyNetworkField": {
-                "manuallySelectedPrefix": "Manually selected prefix"
-            },
-            "node_select": {
-                "nodes_loading": "Nodes laden...",
-                "select_node": "Selecteer node",
-                "no_nodes_placeholder": "Geen nodes"
-            },
-            "locationCode": {
-                "placeholder": "Zoek en selecteer een locatie code..."
-            },
-            "product": {
-                "placeholder": "Kies product"
-            },
-            "select": {
-                "placeholder": "Zoek en selecteer een waarde..."
-            },
-            "vlan": {
-                "vlansInUseError": "VLAN range {vlans} is al in gebruik door geslecteerde service port",
-                "vlansInUse": "VLAN ranges in gebruik bij deze service port: {vlans}",
-                "missingInIms": "Service port niet gevonden in IMS. De poort is mogelijk verwijder of in initial state.",
-                "nsiVlansAvailable": "Beschikbare NSI VLAN ranges voor deze service port: {vlans}",
-                "nsiNoPortsAvailable": "Deze service port heeft (nog) geen beschikbare NSI reserved VLANs.",
-                "allPortsAvailable": "Deze service port heeft (nog) geen VLANs in gebruik.",
-                "placeholder": "Voer een geldige VLAN range in...",
-                "placeholderNoServicePort": "Selecteer eerst een Service Port...",
-                "invalidVlan": "Invalid VLAN - Voer een range of geldige [2-4094] VLAN integers in, bijvoorbeeld: '2, 5-6, 1048-1052'",
-                "untaggedPortInUse": "Deze service port is al in gebruik en kan niet worden gekozen",
-                "taggedOnly": "VLAN is alleen relevant voor service poorten in tagged mode, niet voor link_member of untagged ports.",
-                "loadingIms": "VLAN informatie aan het laden uit IMS..."
-            },
-            "subscription": {
-                "placeholder": "Kies een subscription",
-                "loading": "Subscriptions ophalen..."
-            },
-            "nodePort": {
-                "loadingNodes": "Node subscriptions laden...",
-                "loadingPorts": "IMS poorten laden...",
-                "selectNode": "Selecteer node",
-                "selectPort": "Selecteer poort",
-                "noPorts": "GEEN POORTEN GEVONDEN VOOR DEZE NODE",
-                "selectNodeFirst": "Selecteer eerst een node"
-            },
-            "fileUpload": {
-                "invalidFiletype": "Ongeldig bestandstype!",
-                "errorUploading": "Fout bij het upoaden van het bestand!",
-                "fileToBig": "Bestand te groot. Maximum bestand: {fileSizeLimit}",
-                "initialPromptText": "Selecteer een bestand of sleep het hierheen",
-                "supportedFileTypes": "Ondersteunde bestandstypen: pdf"
-            }
-        }
-    },
-    "metadata": {
-        "title": "Metadata",
-        "tabs": {
-            "products": "Producten",
-            "productBlocks": "Product blocks",
-            "resourceTypes": "Resource types",
-            "workflows": "Workflows",
-            "tasks": "Taken"
-        },
-        "products": {
-            "id": "ID",
-            "name": "Product",
-            "description": "Product beschrijving",
-            "tag": "Product tag",
-            "productType": "Type",
-            "status": "Status",
-            "productBlocks": "Product blocks",
-            "fixedInputs": "Fixed inputs",
-            "createdAt": "Aangemaakt"
-        },
-        "productBlocks": {
-            "id": "ID",
-            "name": "Product block",
-            "description": "Product block beschrijving",
-            "tag": "Tag",
-            "status": "Status",
-            "resourceTypes": "Resource types",
-            "dependingProductBlocks": "Onderliggende product blocks",
-            "createdAt": "Aangemaakt",
-            "endDate": "Einddatum",
-            "parentIds": "Parents"
-        },
-        "resourceTypes": {
-            "type": "Resource type",
-            "description": "Resource type beschrijving",
-            "resourceId": "ID",
-            "usedInProductBlocks": "Gebruikt in product blocks"
-        },
-        "workflows": {
-            "workflowId": "ID",
-            "name": "Workflow",
-            "description": "Workflow beschrijving",
-            "target": "Target",
-            "productTags": "Product tags",
-            "createdAt": "Aangemaakt"
-        },
-        "tasks": {
-            "workflowId": "ID",
-            "name": "Taak",
-            "description": "Taak beschrijving",
-            "target": "Target",
-            "productTags": "Product tags",
-            "createdAt": "Aangemaakt",
-            "scheduled": "Schedule",
-            "addSchedule": "Plan een taak"
-        },
-        "scheduledTasks": {
-            "task": "Taak",
-            "taskDecription": "Taak beschrijving",
-            "nextRuntime": "Volgende runtime",
-            "schedule": "Schedule",
-            "interval": "Interval",
-            "ariaLabelDeleteButton": "Schema verwijderen",
-            "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
-            "addSchedule": "Plan een taak"
-        },
-        "scheduleTaskForm": {
-            "newSchedule": "Plan een nieuwe taak",
-            "selectTask": "Kies de taak om te plannen",
-            "selectTaskType": "Taak type",
-            "selectInterval": "Kies de taak interval",
-            "taskTypeInterval": "Interval",
-            "taskTypeCron": "Cron",
-            "taskTypeDate": "Eenmalig",
-            "firstRunDate": "Start datum",
-            "1hour": "1 uur",
-            "2hours": "2 uur",
-            "4hours": "4 uur",
-            "12hours": "12 uur",
-            "24hours": "24 uur",
-            "1week": "1 week",
-            "2weeks": "2 weken",
-            "1month": "1 maand",
-            "createScheduleButton": "Maak schema"
-        }
-    },
-    "processes": {
-        "index": {
-            "workflowName": "Workflow naam",
-            "step": "Huidige stap",
-            "status": "Status",
-            "product": "Product",
-            "customer": "Klant",
-            "customerAbbreviation": "Klantafkorting",
-            "subscriptions": "Subscriptions",
-            "createdBy": "Aangemaakt door",
-            "assignee": "Assignee",
-            "processId": "Proces ID",
-            "started": "Starttijd",
-            "lastModified": "Aangepast op",
-            "workflowTarget": "Target",
-            "productTag": "Product tag",
-            "showAllRelatedSubscriptions": "Toon alle gerelateerde subscriptions"
-        },
-        "detail": {
-            "retry": "Probeer opnieuw",
-            "resume": "Ga verder",
-            "abort": "Stop",
-            "delete": "Verwijder",
-            "deleteQuestion": "Weet je zeker dat je de {workflowName} taak wilt verwijderen?",
-            "abortTaskQuestion": "Weet je zeker dat je de {workflowName} taak wilt stoppen?",
-            "abortWorkflowQuestion": "Weet je zeker dat je de {workflowName} workflow wilt stoppen?",
-            "retryTaskQuestion": "Weet je zeker dat je de {workflowName} taak opnieuw wilt proberen?",
-            "retryWorkflowQuestion": "Weet je zeker dat je de {workflowName} workflow opnieuw wilt proberen?",
-            "status": "Status",
-            "startedBy": "Gestart door",
-            "lastStep": "Huidige stap",
-            "startedOn": "Gestart op",
-            "lastUpdate": "Laatste update",
-            "relatedSubscriptions": "Gerelateerde subscriptions",
-            "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscriptie} other {# subscriptions}}",
-            "customer": "Customer",
-            "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad"
-        },
-        "steps": {
-            "taskSteps": "Taak stappen",
-            "workflowSteps": "Workflow stappen",
-            "showDelta": "Toon subscription delta",
-            "hideDelta": "Verberg subscription delta",
-            "showTraceback": "Toon traceback",
-            "hideTraceback": "Verberg traceback",
-            "viewOptions": "Opties",
-            "expandAll": "klap alles uit",
-            "collapseAll": "klap alles in",
-            "duration": "Looptijd",
-            "userInput": "Invoer gebruiker",
-            "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
-            "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
-            "traceback": "Traceback",
-            "codeView": {
-                "json": "JSON",
-                "table": "Table",
-                "raw": "Raw"
-            }
-        },
-        "delta": {
-            "title": "Subscription delta",
-            "fullScreenExit": "Exit full-screen mode",
-            "fullScreen": "Full-screen mode",
-            "continuityAboveBelow": "Continuity above below",
-            "continuityWithin": "Continuity within"
-        }
+    "resourceTypes": {
+      "type": "Resource type",
+      "description": "Resource type beschrijving",
+      "resourceId": "ID",
+      "usedInProductBlocks": "Gebruikt in product blocks"
     },
     "workflows": {
-        "tabs": {
-            "active": "Actief",
-            "completed": "Voltooid"
-        },
-        "index": {
-            "title": "Workflows"
-        }
-    },
-    "subscriptions": {
-        "tabs": {
-            "active": "Actief",
-            "terminated": "Beëindigd",
-            "transient": "In uitvoering",
-            "all": "Alles"
-        },
-        "index": {
-            "id": "ID",
-            "description": "Beschrijving",
-            "status": "Status",
-            "insync": "In sync",
-            "product": "Produkt",
-            "tag": "Tag",
-            "startDate": "Startdatum",
-            "endDate": "Einddatum",
-            "note": "Notitie",
-            "metadata": "Metadata",
-            "customerFullname": "Klant",
-            "customerShortcode": "Klantafkorting",
-            "actions": "Acties"
-        },
-        "detail": {
-            "title": "Subscriptions",
-            "tabs": {
-                "general": "Algemeen",
-                "serviceConfiguration": "Service configuratie",
-                "workflows": "Workflows",
-                "relatedSubscriptions": "Gerelateerde subscriptions"
-            },
-            "loadingStatus": "Laden",
-            "actions": {
-                "create": "Create workflow",
-                "modify": "Modify workflow",
-                "tasks": "Taken",
-                "terminate": "Terminate workflow",
-                "reconcile": "Reconcile workflow",
-                "notAvailable": "Niet beschikbaar",
-                "notAvailableForWorkflow": "Niet beschikbaar voor deze workflow",
-                "reconcileSubscription": "Reconcile subscription",
-                "validateSubscription": "Validate subscription",
-                "actions": "Acties",
-                "actionStarted": "Actie gestart",
-                "actionStartFailed": "Actie mislukt",
-                "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
-                "subscription": {
-                    "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
-                    "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions: {unterminated_in_use_by_subscriptions}",
-                    "no_modify_invalid_status": "Deze subscription kan niet worden gewijzigd vanwege de status: {status}. Alleen abonnementen met de status {usable_when} kunnen worden {action}.",
-                    "no_modify_workflow": "Deze subscription kan niet worden gewijzigd omdat het product geen modify workflows heeft.",
-                    "no_termination_workflow": "Deze subscription kan niet worden beëindigd omdat het product geen termination workflows heeft.",
-                    "no_validate_workflow": "Deze subscription kan niet worden gevalideerd omdat het product geen validate workflows heeft.",
-                    "not_in_sync": "Deze subscription kan niet worden gewijzigd omdat het niet in-sync is. Dit betekent dat er een fout zit in de registratie van de subscription of dat het wordt gewijzigd door een andere workflow.",
-                    "relations_not_in_sync": "Deze subscription kan niet worden gewijzigd omdat sommige gerelateerde subscriptions niet in-sync zijn. Geblokkeerde subscriptions: {locked_relations}",
-                    "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions: {unterminated_parents}",
-                    "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren"
-                }
-            },
-            "subscriptionInstanceId": "Instance ID",
-            "ownerSubscriptionId": "Owner subscription ID",
-            "inUseByRelations": "In gebruik door subscription(s)",
-            "showDetails": "Toon details",
-            "hideDetails": "Verberg details",
-            "self": "Huidige subscription",
-            "subscriptionDetails": "Subscription detail",
-            "productName": "Produkt",
-            "fixedInputs": "Fixed inputs",
-            "productInfo": "Product info",
-            "noProductBlockSelected": "Geen product block geselecteerd",
-            "productBlocks": "Product blocks",
-            "ctaSelectProductBlock": "Selecteer één of meer product blocks om de details te bekijken",
-            "startedBy": "Aangemaakt door",
-            "startedAt": "Starttijd",
-            "status": "Status",
-            "id": "ID",
-            "blockTitleSubscriptionDetails": "Subscription details",
-            "blockTitleFixedInputs": "Fixed inputs",
-            "blockTitleProductInfo": "Produktinfo",
-            "subscriptionId": "Subscription ID",
-            "description": "Beschrijving",
-            "startDate": "Startdatum",
-            "insync": "In sync",
-            "customer": "Klant",
-            "customerUuid": "Klant UUID",
-            "customerDescriptions": "Klant beschrijvingen",
-            "metadata": "Metadata",
-            "name": "Naam",
-            "productType": "Produkttype",
-            "tag": "Tag",
-            "created": "Aangemaakt",
-            "endDate": "Einddatum",
-            "note": "Notitie",
-            "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden",
-            "hideTerminatedRelatedSubscriptions": "Verberg beëindigde subscriptions",
-            "processDetail": {
-                "id": "ID",
-                "status": "Status",
-                "startedAt": "Started at",
-                "startedBy": "Started by"
-            },
-            "showAll": "Toon alles",
-            "hideAll": "Verberg alles",
-            "selectByNameTitle": "Selecteer product blocks op naam",
-            "selectByNameButtonText": "Selecteer op naam",
-            "see": "Bekijk",
-            "setInSync": "Set in Sync",
-            "subscriptionIsInSync": "De subscription staat in sync",
-            "setInSyncQuestion": "Weet je zeker dat je de subscription in-sync wilt zetten? Je gaat een subscription geforceerd in-sync zetten. Alleen als je zeker weet wat de reden is van out-of-sync kun je de actie uitvoeren, zodat je daarna wijzigingen kunt doorvoeren op deze subscription. Bij twijfel - check eerst bij de network automators of het in sync zetten van de subscription mogelijk schadelijke gevolgen kan hebben op het netwerk.",
-            "setInSyncFailed": {
-                "title": "In sync zetten mislukt",
-                "text": "De subscription kon niet inSync worden gezet. Probeer het opnieuw."
-            },
-            "setInSyncSuccess": {
-                "title": "Subscription inSync",
-                "text": "De subscription is in sync gezet."
-            },
-            "workflowsTab": {
-                "startWithOldestLabel": "Start met oudste eerst",
-                "startWithNewestLabel": "Start met nieuwste eerst"
-            }
-        }
+      "workflowId": "ID",
+      "name": "Workflow",
+      "description": "Workflow beschrijving",
+      "target": "Target",
+      "productTags": "Product tags",
+      "createdAt": "Aangemaakt"
     },
     "tasks": {
-        "page": {
-            "taskName": "Taak",
-            "rerunAll": "Alle taken herstarten",
-            "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt herstarten?"
-        },
-        "tabs": {
-            "active": "Actief",
-            "completed": "Voltooid"
-        }
+      "workflowId": "ID",
+      "name": "Taak",
+      "description": "Taak beschrijving",
+      "target": "Target",
+      "productTags": "Product tags",
+      "createdAt": "Aangemaakt",
+      "scheduled": "Schedule",
+      "addSchedule": "Plan een taak"
     },
-    "settings": {
-        "page": {
-            "flushButton": "Flush",
-            "flushCacheSettingsTitle": "Flush cache instellingen",
-            "engineStatusTitle": "Workflow engine status",
-            "workerStatusTitle": "Worker status",
-            "modifyEngine": "Wijzig engine status",
-            "pauseEngine": "Pauseer  workflow engine",
-            "runningProcesses": "Lopende processen",
-            "selectSettings": "Kies cache",
-            "startEngine": "Start workflow engine",
-            "resetTextSearchIndex": "Reset text search index",
-            "resetTextSearchIndexButton": "Reset",
-            "status": "Status",
-            "numberOfQueuedJobs": "Aantal queued jobs",
-            "numberOfRunningJobs": "Aantal running jobs",
-            "numberOfWorkersOnline": "Aantal workers online",
-            "viewStatusPage": "Bekijk AO status pagina",
-            "aoStackStatus": "AO stack status",
-            "noSettingsExposed": "Er zijn geen instellingen beschikbaar vanuit de backend. Om dit in te schakelen, raadpleeg de ",
-            "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie"
-        },
-        "tabs": {
-            "actions": "Acties",
-            "envSettings": "Environment Settings"
-        }
+    "scheduledTasks": {
+      "task": "Taak",
+      "taskDecription": "Taak beschrijving",
+      "nextRuntime": "Volgende runtime",
+      "schedule": "Schedule",
+      "interval": "Interval",
+      "ariaLabelDeleteButton": "Schema verwijderen",
+      "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
+      "addSchedule": "Plan een taak"
     },
-    "startPage": {
-        "myWorkflows": {
-            "buttonText": "Toon mijn afgeronde workflows",
-            "headerTitle": "Mijn afgeronde workflows",
-            "listTitle": "Mijn recente afgeronde workflows"
-        },
-        "activeSubscriptions": {
-            "buttonText": "Toon alle actieve subscriptions",
-            "headerTitle": "Totaal aantal actieve subscriptions",
-            "listTitle": "Meest recente subscriptions"
-        },
-        "outOfSyncSubscriptions": {
-            "buttonText": "Toon alle actieve out-of-sync subscriptions",
-            "headerTitle": "Totaal aantal actieve out-of-sync subscriptions",
-            "listTitle": "Meest recente actieve out-of-sync subscriptions"
-        },
-        "activeWorkflows": {
-            "buttonText": "Toon alle actieve workflows",
-            "headerTitle": "Totaal aantal actieve workflows",
-            "listTitle": "Meest recente actieve workflows"
-        },
-        "failedTasks": {
-            "buttonText": "Toon alle gefaalde taken",
-            "headerTitle": "Totaal aantal gefaalde taken",
-            "listTitle": "Meest recente gefaalde taken"
-        },
-        "products": {
-            "headerTitle": "Totaal aantal producten",
-            "listTitle": "Totaal aantal productinstanties"
-        }
-    },
-    "hamburgerMenu": {
-        "openMenu": "Open menu",
-        "support": "Support",
-        "softwareVersions": "Software Versies",
-        "logout": "Logout",
-        "aoStatusPage": "A&O applicatie status pagina"
+    "scheduleTaskForm": {
+      "newSchedule": "Plan een nieuwe taak",
+      "selectTask": "Kies de taak om te plannen",
+      "selectTaskType": "Taak type",
+      "selectInterval": "Kies de taak interval",
+      "taskTypeInterval": "Interval",
+      "taskTypeCron": "Cron",
+      "taskTypeDate": "Eenmalig",
+      "firstRunDate": "Start datum",
+      "1hour": "1 uur",
+      "2hours": "2 uur",
+      "4hours": "4 uur",
+      "12hours": "12 uur",
+      "24hours": "24 uur",
+      "1week": "1 week",
+      "2weeks": "2 weken",
+      "1month": "1 maand",
+      "createScheduleButton": "Maak schema"
     }
+  },
+  "processes": {
+    "index": {
+      "workflowName": "Workflow naam",
+      "step": "Huidige stap",
+      "status": "Status",
+      "product": "Product",
+      "customer": "Klant",
+      "customerAbbreviation": "Klantafkorting",
+      "subscriptions": "Subscriptions",
+      "createdBy": "Aangemaakt door",
+      "assignee": "Assignee",
+      "processId": "Proces ID",
+      "started": "Starttijd",
+      "lastModified": "Aangepast op",
+      "workflowTarget": "Target",
+      "productTag": "Product tag",
+      "showAllRelatedSubscriptions": "Toon alle gerelateerde subscriptions"
+    },
+    "detail": {
+      "retry": "Probeer opnieuw",
+      "resume": "Ga verder",
+      "abort": "Stop",
+      "delete": "Verwijder",
+      "deleteQuestion": "Weet je zeker dat je de {workflowName} taak wilt verwijderen?",
+      "abortTaskQuestion": "Weet je zeker dat je de {workflowName} taak wilt stoppen?",
+      "abortWorkflowQuestion": "Weet je zeker dat je de {workflowName} workflow wilt stoppen?",
+      "retryTaskQuestion": "Weet je zeker dat je de {workflowName} taak opnieuw wilt proberen?",
+      "retryWorkflowQuestion": "Weet je zeker dat je de {workflowName} workflow opnieuw wilt proberen?",
+      "status": "Status",
+      "startedBy": "Gestart door",
+      "lastStep": "Huidige stap",
+      "startedOn": "Gestart op",
+      "lastUpdate": "Laatste update",
+      "relatedSubscriptions": "Gerelateerde subscriptions",
+      "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscriptie} other {# subscriptions}}",
+      "customer": "Customer",
+      "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad"
+    },
+    "steps": {
+      "taskSteps": "Taak stappen",
+      "workflowSteps": "Workflow stappen",
+      "showDelta": "Toon subscription delta",
+      "hideDelta": "Verberg subscription delta",
+      "showTraceback": "Toon traceback",
+      "hideTraceback": "Verberg traceback",
+      "viewOptions": "Opties",
+      "expandAll": "klap alles uit",
+      "collapseAll": "klap alles in",
+      "duration": "Looptijd",
+      "userInput": "Invoer gebruiker",
+      "submitTaskFormLabel": "Verstuur het formulier om deze taak te starten",
+      "submitWorkflowFormLabel": "Verstuur het formulier om deze workflow te starten",
+      "traceback": "Traceback",
+      "codeView": {
+        "json": "JSON",
+        "table": "Table",
+        "raw": "Raw"
+      }
+    },
+    "delta": {
+      "title": "Subscription delta",
+      "fullScreenExit": "Exit full-screen mode",
+      "fullScreen": "Full-screen mode",
+      "continuityAboveBelow": "Continuity above below",
+      "continuityWithin": "Continuity within"
+    }
+  },
+  "workflows": {
+    "tabs": {
+      "active": "Actief",
+      "completed": "Voltooid"
+    },
+    "index": {
+      "title": "Workflows"
+    }
+  },
+  "subscriptions": {
+    "tabs": {
+      "active": "Actief",
+      "terminated": "Beëindigd",
+      "transient": "In uitvoering",
+      "all": "Alles"
+    },
+    "index": {
+      "id": "ID",
+      "description": "Beschrijving",
+      "status": "Status",
+      "insync": "In sync",
+      "product": "Produkt",
+      "tag": "Tag",
+      "startDate": "Startdatum",
+      "endDate": "Einddatum",
+      "note": "Notitie",
+      "metadata": "Metadata",
+      "customerFullname": "Klant",
+      "customerShortcode": "Klantafkorting",
+      "actions": "Acties"
+    },
+    "detail": {
+      "title": "Subscriptions",
+      "tabs": {
+        "general": "Algemeen",
+        "serviceConfiguration": "Service configuratie",
+        "workflows": "Workflows",
+        "relatedSubscriptions": "Gerelateerde subscriptions"
+      },
+      "loadingStatus": "Laden",
+      "actions": {
+        "create": "Create workflow",
+        "modify": "Modify workflow",
+        "tasks": "Taken",
+        "terminate": "Terminate workflow",
+        "reconcile": "Reconcile workflow",
+        "notAvailable": "Niet beschikbaar",
+        "notAvailableForWorkflow": "Niet beschikbaar voor deze workflow",
+        "reconcileSubscription": "Reconcile subscription",
+        "validateSubscription": "Validate subscription",
+        "actions": "Acties",
+        "actionStarted": "Actie gestart",
+        "actionStartFailed": "Actie mislukt",
+        "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
+        "subscription": {
+          "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
+          "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions: {unterminated_in_use_by_subscriptions}",
+          "no_modify_invalid_status": "Deze subscription kan niet worden gewijzigd vanwege de status: {status}. Alleen abonnementen met de status {usable_when} kunnen worden {action}.",
+          "no_modify_workflow": "Deze subscription kan niet worden gewijzigd omdat het product geen modify workflows heeft.",
+          "no_termination_workflow": "Deze subscription kan niet worden beëindigd omdat het product geen termination workflows heeft.",
+          "no_validate_workflow": "Deze subscription kan niet worden gevalideerd omdat het product geen validate workflows heeft.",
+          "not_in_sync": "Deze subscription kan niet worden gewijzigd omdat het niet in-sync is. Dit betekent dat er een fout zit in de registratie van de subscription of dat het wordt gewijzigd door een andere workflow.",
+          "relations_not_in_sync": "Deze subscription kan niet worden gewijzigd omdat sommige gerelateerde subscriptions niet in-sync zijn. Geblokkeerde subscriptions: {locked_relations}",
+          "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions: {unterminated_parents}",
+          "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren"
+        }
+      },
+      "subscriptionInstanceId": "Instance ID",
+      "ownerSubscriptionId": "Owner subscription ID",
+      "inUseByRelations": "In gebruik door subscription(s)",
+      "showDetails": "Toon details",
+      "hideDetails": "Verberg details",
+      "self": "Huidige subscription",
+      "subscriptionDetails": "Subscription detail",
+      "productName": "Produkt",
+      "fixedInputs": "Fixed inputs",
+      "productInfo": "Product info",
+      "noProductBlockSelected": "Geen product block geselecteerd",
+      "productBlocks": "Product blocks",
+      "ctaSelectProductBlock": "Selecteer één of meer product blocks om de details te bekijken",
+      "startedBy": "Aangemaakt door",
+      "startedAt": "Starttijd",
+      "status": "Status",
+      "id": "ID",
+      "blockTitleSubscriptionDetails": "Subscription details",
+      "blockTitleFixedInputs": "Fixed inputs",
+      "blockTitleProductInfo": "Produktinfo",
+      "subscriptionId": "Subscription ID",
+      "description": "Beschrijving",
+      "startDate": "Startdatum",
+      "insync": "In sync",
+      "customer": "Klant",
+      "customerUuid": "Klant UUID",
+      "customerDescriptions": "Klant beschrijvingen",
+      "metadata": "Metadata",
+      "name": "Naam",
+      "productType": "Produkttype",
+      "tag": "Tag",
+      "created": "Aangemaakt",
+      "endDate": "Einddatum",
+      "note": "Notitie",
+      "noRelatedSubscriptions": "Geen gerelateerde subscriptions gevonden",
+      "hideTerminatedRelatedSubscriptions": "Verberg beëindigde subscriptions",
+      "processDetail": {
+        "id": "ID",
+        "status": "Status",
+        "startedAt": "Started at",
+        "startedBy": "Started by"
+      },
+      "showAll": "Toon alles",
+      "hideAll": "Verberg alles",
+      "selectByNameTitle": "Selecteer product blocks op naam",
+      "selectByNameButtonText": "Selecteer op naam",
+      "see": "Bekijk",
+      "setInSync": "Set in Sync",
+      "subscriptionIsInSync": "De subscription staat in sync",
+      "setInSyncQuestion": "Weet je zeker dat je de subscription in-sync wilt zetten? Je gaat een subscription geforceerd in-sync zetten. Alleen als je zeker weet wat de reden is van out-of-sync kun je de actie uitvoeren, zodat je daarna wijzigingen kunt doorvoeren op deze subscription. Bij twijfel - check eerst bij de network automators of het in sync zetten van de subscription mogelijk schadelijke gevolgen kan hebben op het netwerk.",
+      "setInSyncFailed": {
+        "title": "In sync zetten mislukt",
+        "text": "De subscription kon niet inSync worden gezet. Probeer het opnieuw."
+      },
+      "setInSyncSuccess": {
+        "title": "Subscription inSync",
+        "text": "De subscription is in sync gezet."
+      },
+      "workflowsTab": {
+        "startWithOldestLabel": "Start met oudste eerst",
+        "startWithNewestLabel": "Start met nieuwste eerst"
+      }
+    }
+  },
+  "tasks": {
+    "page": {
+      "taskName": "Taak",
+      "rerunAll": "Alle taken herstarten",
+      "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt herstarten?"
+    },
+    "tabs": {
+      "active": "Actief",
+      "completed": "Voltooid"
+    }
+  },
+  "settings": {
+    "page": {
+      "flushButton": "Flush",
+      "flushCacheSettingsTitle": "Flush cache instellingen",
+      "engineStatusTitle": "Workflow engine status",
+      "workerStatusTitle": "Worker status",
+      "modifyEngine": "Wijzig engine status",
+      "pauseEngine": "Pauseer  workflow engine",
+      "runningProcesses": "Lopende processen",
+      "selectSettings": "Kies cache",
+      "startEngine": "Start workflow engine",
+      "resetTextSearchIndex": "Reset text search index",
+      "resetTextSearchIndexButton": "Reset",
+      "status": "Status",
+      "numberOfQueuedJobs": "Aantal queued jobs",
+      "numberOfRunningJobs": "Aantal running jobs",
+      "numberOfWorkersOnline": "Aantal workers online",
+      "viewStatusPage": "Bekijk AO status pagina",
+      "aoStackStatus": "AO stack status",
+      "noSettingsExposed": "Er zijn geen instellingen beschikbaar vanuit de backend. Om dit in te schakelen, raadpleeg de ",
+      "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie"
+    },
+    "tabs": {
+      "actions": "Acties",
+      "envSettings": "Environment Settings"
+    }
+  },
+  "startPage": {
+    "myWorkflows": {
+      "buttonText": "Toon mijn afgeronde workflows",
+      "headerTitle": "Mijn afgeronde workflows",
+      "listTitle": "Mijn recente afgeronde workflows"
+    },
+    "activeSubscriptions": {
+      "buttonText": "Toon alle actieve subscriptions",
+      "headerTitle": "Totaal aantal actieve subscriptions",
+      "listTitle": "Meest recente subscriptions"
+    },
+    "outOfSyncSubscriptions": {
+      "buttonText": "Toon alle actieve out-of-sync subscriptions",
+      "headerTitle": "Totaal aantal actieve out-of-sync subscriptions",
+      "listTitle": "Meest recente actieve out-of-sync subscriptions"
+    },
+    "activeWorkflows": {
+      "buttonText": "Toon alle actieve workflows",
+      "headerTitle": "Totaal aantal actieve workflows",
+      "listTitle": "Meest recente actieve workflows"
+    },
+    "failedTasks": {
+      "buttonText": "Toon alle gefaalde taken",
+      "headerTitle": "Totaal aantal gefaalde taken",
+      "listTitle": "Meest recente gefaalde taken"
+    },
+    "products": {
+      "headerTitle": "Totaal aantal producten",
+      "listTitle": "Totaal aantal productinstanties"
+    }
+  },
+  "hamburgerMenu": {
+    "openMenu": "Open menu",
+    "support": "Support",
+    "softwareVersions": "Software Versies",
+    "logout": "Logout",
+    "aoStatusPage": "A&O applicatie status pagina"
+  }
 }
