@@ -25,7 +25,7 @@
     ],
     "scripts": {
         "build": "tsup jest-base.config.js --format esm",
-        "dev": "npm run build -- --watch"
+        "dev": "pnpm run build -- --watch"
     },
     "main": "./dist/",
     "dependencies": {

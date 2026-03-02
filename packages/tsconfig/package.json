@@ -20,7 +20,7 @@
     ],
     "scripts": {
         "build": "tsup base.json nextjs.json tsconfig.json --format esm --dts",
-        "dev": "npm run build -- --watch"
+        "dev": "pnpm run build -- --watch"
     },
     "main": "./dist/",
     "version": "1.3.1",

@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { SerializedStyles, css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
@@ -6,7 +6,25 @@ export const getWorkflowStepsStyles = ({
     theme,
     toSecondaryColor,
     isDarkModeActive,
-}: WfoThemeHelpers) => {
+}: WfoThemeHelpers): {
+    SPACE_BETWEEN_STEPS: number;
+    stepDurationStyle: Record<string, string | number | undefined>;
+    stepEmailContainerStyle: SerializedStyles;
+    stepHeaderRightStyle: SerializedStyles;
+    stepListContentAnchorStyle: SerializedStyles;
+    stepListContentBoldTextStyle: SerializedStyles;
+    stepListContentStyle: SerializedStyles;
+    stepListHeaderStyle: SerializedStyles;
+    stepListOptionsContainerStyle: SerializedStyles;
+    stepRowStyle: SerializedStyles;
+    stepSpacerStyle: SerializedStyles;
+    stepStateFailedIconStyle: SerializedStyles;
+    stepStatePendingIconStyle: SerializedStyles;
+    stepStateSuccessIconStyle: SerializedStyles;
+    stepStateSuspendIconStyle: SerializedStyles;
+    getStepHeaderStyle: (isClickable: boolean) => SerializedStyles;
+    getStepToggleExpandStyle: (isVisible: boolean) => SerializedStyles;
+} => {
     const SPACE_BETWEEN_STEPS = theme.base * 1.5;
 
     const stepSpacerStyle = css({

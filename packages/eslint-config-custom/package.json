@@ -23,7 +23,7 @@
     ],
     "scripts": {
         "build": "tsup index.js --format esm",
-        "dev": "npm run build -- --watch"
+        "dev": "pnpm run build -- --watch"
     },
     "dependencies": {
         "@eslint/js": "^9.36.0",

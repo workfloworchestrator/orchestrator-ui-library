@@ -15,8 +15,8 @@ git submodule update --remote
 cp apps/wfo-ui/.env.example apps/wfo-iu/.env
 # change the values in the env file to point to your orchestrator backend
 # set auth=false or follow the directions below this sections
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 This makes the orchestrator ui run on http://localhost:3000
@@ -69,7 +69,7 @@ Each PR, which typically addresses an existing ticket from the issue list, shoul
 ## Preparing the release
 
 ```bash
-npm run packages:changeset
+pnpm run packages:changeset
 ```
 
 -   Include the changes made by this command in pull requests to the main branch
@@ -105,7 +105,7 @@ In the UI a check is added to validate whether the UI matches a minimum release 
 The storybook can be run from the packages/orchestrator-ui-components/ folder, run:
 
 ```bash
-npx storybook dev
+pnpm dlx storybook dev
 ```
 
 Story book can be inspected on [http://localhost:61834/](http://localhost:61834/).
