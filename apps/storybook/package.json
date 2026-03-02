@@ -9,7 +9,7 @@
         "lint": "eslint"
     },
     "dependencies": {
-        "@orchestrator-ui/orchestrator-ui-components": "*",
+        "@orchestrator-ui/orchestrator-ui-components": "workspace:*",
         "@rollup/plugin-commonjs": "^28.0.2",
         "@storybook/addon-essentials": "^8.5.0",
         "@storybook/addon-interactions": "^8.5.0",
@@ -26,7 +26,7 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
-        "@orchestrator-ui/eslint-config-custom": "*",
+        "@orchestrator-ui/eslint-config-custom": "workspace:*",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",
         "@vitejs/plugin-react": "^4.3.4",

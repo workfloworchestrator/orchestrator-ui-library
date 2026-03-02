@@ -1,8 +1,8 @@
 echo "---------- Running TSC ----------"
-npm run tsc
+pnpm run tsc
 
 echo "---------- Running Linter ----------"
-npm run lint
+pnpm run lint
 
 echo "---------- Running Prettier ----------"
-npm run prettier
+pnpm run prettier

@@ -1,10 +1,20 @@
 import { CSSObjectWithLabel } from 'react-select';
 
-import { css } from '@emotion/react';
+import { SerializedStyles, css } from '@emotion/react';
 
 import type { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
+export const getWfoReactSelectStyles = (
+    wfoTheme: WfoThemeHelpers,
+): {
+    reactSelectInnerComponentStyles: Record<
+        string,
+        (...args: never[]) => Record<string, unknown>
+    >;
+    refreshButtonStyle: SerializedStyles;
+    containerStyle: SerializedStyles;
+    reactSelectStyle: SerializedStyles;
+} => {
     const { theme } = wfoTheme;
 
     const reactSelectInnerComponentStyles = {
