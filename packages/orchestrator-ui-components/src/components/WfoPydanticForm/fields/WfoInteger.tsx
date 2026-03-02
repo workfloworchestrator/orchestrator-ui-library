@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import _ from 'lodash';
 import type { PydanticFormControlledElement } from 'pydantic-forms';
@@ -25,11 +25,11 @@ const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
 };
 
 export const WfoInteger: PydanticFormControlledElement = ({
-    pydanticFormField,
-    onChange,
-    value,
-    disabled,
-}) => {
+                                                              pydanticFormField,
+                                                              onChange,
+                                                              value,
+                                                              disabled,
+                                                          }) => {
     const { formFieldBaseStyle } = useWithOrchestratorTheme(
         getFormFieldsBaseStyle,
     );
@@ -41,18 +41,30 @@ export const WfoInteger: PydanticFormControlledElement = ({
         _.isObject(value) && _.has(value, fieldName)
             ? _.get(value, fieldName)
             : value;
+    const [userInput, setUserInput] = React.useState<string>(
+        fieldValue !== undefined && fieldValue !== null ? String(fieldValue) : '',
+    );
+    const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        if (value === null && newValue !== value) {
+            onChange(parseInt(newValue));
+        }
+        setUserInput(newValue);
+    }
 
     return (
         <EuiFieldNumber
+            placeholder="Enter a number"
             data-testid={pydanticFormField.id}
             css={formFieldBaseStyle}
             name={pydanticFormField.id}
-            onChange={(event) =>
+            onBlur={(event) =>
                 onChange(
                     event.target.value ? parseInt(event.target.value) : null,
                 )
             }
-            value={fieldValue}
+            onChange={handleOnChange}
+            value={userInput}
             disabled={disabled}
         />
     );
