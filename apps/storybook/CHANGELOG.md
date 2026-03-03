@@ -1,5 +1,16 @@
 # orchestrator-ui-storybook
 
+## 0.3.0
+
+### Minor Changes
+
+- 4eb77d6: Updates npm dependencies
+
+### Patch Changes
+
+- Updated dependencies [4eb77d6]
+  - @orchestrator-ui/orchestrator-ui-components@7.5.0
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 2.2.0
+
+### Minor Changes
+
+- 4eb77d6: Updates npm dependencies
+
 ## 2.1.1
 
 ### Patch Changes
