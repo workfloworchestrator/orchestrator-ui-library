@@ -24,8 +24,6 @@ export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
   isSubItem,
   hasSubItems,
 }) => {
-  console.log({ path, target, translationString, isSelected, isSubItem, hasSubItems });
-
   const {
     menuItemStyle,
     selectedMenuItem,
