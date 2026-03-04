@@ -24,14 +24,22 @@ export const WfoMenuItemLink: FC<WfoMenuItemLinkProps> = ({
   isSubItem,
   hasSubItems,
 }) => {
-  const { menuItemStyle, selectedMenuItem, selectedSubMenuItem, subMenuHeaderStyle, subMenuItemStyle } =
-    useWithOrchestratorTheme(getMenuItemStyles);
+  console.log({ path, target, translationString, isSelected, isSubItem, hasSubItems });
+
+  const {
+    menuItemStyle,
+    selectedMenuItem,
+    selectedSubMenuItem,
+    subMenuHeaderStyle,
+    subMenuItemStyle,
+    subMenuSubItemHeaderStyle,
+  } = useWithOrchestratorTheme(getMenuItemStyles);
 
   const getMenuItemStyle = () => {
-    if (isSubItem) {
+    if (isSubItem && (!hasSubItems || !isSelected)) {
       return isSelected ? selectedSubMenuItem : subMenuItemStyle;
     } else if (isSelected && hasSubItems) {
-      return subMenuHeaderStyle;
+      return isSubItem ? subMenuSubItemHeaderStyle : subMenuHeaderStyle;
     } else {
       return isSelected ? selectedMenuItem : menuItemStyle;
     }

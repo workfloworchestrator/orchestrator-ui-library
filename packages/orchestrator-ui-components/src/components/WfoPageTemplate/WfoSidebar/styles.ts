@@ -20,6 +20,9 @@ export const getCopyrightStyles = ({ theme }: WfoThemeHelpers) => {
 export const getMenuStyles = ({ theme }: WfoThemeHelpers) => {
   const menuStyle = css({
     backgroundColor: theme.colors.backgroundBaseSubdued,
+    '.euiSideNavItem--trunk > .euiSideNavItem__items': {
+      marginInline: theme.base,
+    },
     '.euiSideNavItem--branch': {
       '&:after': {
         backgroundColor: theme.colors.borderBaseSubdued,
@@ -49,8 +52,7 @@ export const getMenuItemStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     padding: `${theme.base * 0.5}px ${theme.base * 0.75}px`,
   };
 
-  const baseSubMenuStyles: CSSObject = {
-    ...baseStyles,
+  const subItemDash: CSSObject = {
     ':after': {
       content: "''",
       top: '50%',
@@ -61,6 +63,11 @@ export const getMenuItemStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
       position: 'absolute',
       transform: 'translateY(-50%)',
     },
+  };
+
+  const baseSubMenuStyles: CSSObject = {
+    ...baseStyles,
+    ...subItemDash,
   };
 
   const menuItemStyle = css({
@@ -97,10 +104,27 @@ export const getMenuItemStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     paddingLeft: `${theme.size.s}`,
   });
 
-  const subMenuHeaderStyle = css({
+  const subMenuHeader: CSSObject = {
     ...baseStyles,
     color: theme.colors.link,
     fontWeight: theme.font.weight.medium,
+  };
+  const subMenuHeaderStyle = css({
+    ...subMenuHeader,
+  });
+
+  const subMenuSubItemHeaderStyle = css({
+    ...subMenuHeader,
+    ...{
+      ':after': {
+        content: "''",
+        left: 0,
+        width: '4px',
+        height: '1px',
+        backgroundColor: theme.colors.borderBaseSubdued,
+        position: 'absolute',
+      },
+    },
   });
   return {
     menuItemStyle,
@@ -108,5 +132,6 @@ export const getMenuItemStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     selectedSubMenuItem,
     subMenuItemStyle,
     subMenuHeaderStyle,
+    subMenuSubItemHeaderStyle,
   };
 };
