@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.5.1
+
+### Patch Changes
+
+- 74b893a: Submenu in submenu menu layout fix
+
 ## 7.5.0
 
 ### Minor Changes
