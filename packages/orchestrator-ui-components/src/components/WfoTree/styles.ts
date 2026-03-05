@@ -6,7 +6,7 @@ export const getStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
   };
 
   const treeContainerStyle = {
-    width: 0,
+    width: theme.size.m,
     marginTop: theme.size.s,
     marginRight: `-${theme.size.s}`,
   };
