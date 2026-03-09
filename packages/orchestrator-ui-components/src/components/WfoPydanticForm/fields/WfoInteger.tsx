@@ -25,11 +25,11 @@ const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
 };
 
 export const WfoInteger: PydanticFormControlledElement = ({
-                                                              pydanticFormField,
-                                                              onChange,
-                                                              value,
-                                                              disabled,
-                                                          }) => {
+    pydanticFormField,
+    onChange,
+    value,
+    disabled,
+}) => {
     const { formFieldBaseStyle } = useWithOrchestratorTheme(
         getFormFieldsBaseStyle,
     );
@@ -41,16 +41,23 @@ export const WfoInteger: PydanticFormControlledElement = ({
         _.isObject(value) && _.has(value, fieldName)
             ? _.get(value, fieldName)
             : value;
-    const [userInput, setUserInput] = React.useState<string>(
-        fieldValue !== undefined && fieldValue !== null ? String(fieldValue) : '',
-    );
+    const [userInput, setUserInput] = React.useState<string>();
+
+    useEffect(() => {
+        if (fieldValue !== undefined && fieldValue !== null) {
+            setUserInput(fieldValue);
+        } else {
+            setUserInput('');
+        }
+    }, [fieldValue, value]);
+
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value;
         if (value === null && newValue !== value) {
             onChange(parseInt(newValue));
         }
         setUserInput(newValue);
-    }
+    };
 
     return (
         <EuiFieldNumber

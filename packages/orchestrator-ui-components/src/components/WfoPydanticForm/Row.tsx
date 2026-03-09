@@ -29,8 +29,6 @@ export const Row: RowRenderComponent = ({
         ) : undefined;
     };
 
-    console.log("Props in Row component:", { title, description, error, isInvalid, required });
-
     return (
         <EuiFormRow
             data-testid={getDataTestId('pydantic-form-row', title)}
