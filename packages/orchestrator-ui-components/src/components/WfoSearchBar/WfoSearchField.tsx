@@ -39,7 +39,6 @@ export const WfoSearchField = ({ queryString, queryIsValid = true, onUpdateQuery
         placeholder={`${t('search')}...`}
         onChange={(event) => setCurrentQuery(event.target.value)}
         onSearch={handleSearch.current}
-        onBlur={(event) => handleSearch.current(event.target.value)}
         isInvalid={!queryIsValid}
         fullWidth
       />
