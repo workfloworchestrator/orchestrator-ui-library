@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react';
 // import { QueryBuilder } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { StoredTableConfig, WfoContentHeader, WfoStructuredSearchTable } from '@/components';
-import type { WfoTableColumnConfig } from '@/components';
+import { StoredTableConfig, WfoContentHeader, WfoFirstPartUUID, WfoStructuredSearchTable } from '@/components';
+import type { WfoStructuredSearchTableDataColumnConfig } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload } from '@/rtk';
 import { useSearchMutation } from '@/rtk';
-import { type ProductDefinition, SearchResult } from '@/types';
+import { SearchResult } from '@/types';
 
 /*
 entity_id: string;
@@ -33,13 +34,12 @@ export const WfoSearchPocPage = () => {
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
-    console.log('restored config', storedConfig);
     if (storedConfig) {
       setTableDefaults(storedConfig);
     }
   }, [getStoredTableConfig]);
 
-  const onSearch = (query: unknown, queryText: string) => {
+  const onSearch = (queryText: string) => {
     const searchPayload: SearchPayload = {
       query: queryText,
       entity_type: 'SUBSCRIPTION',
@@ -47,12 +47,14 @@ export const WfoSearchPocPage = () => {
     triggerSearch(searchPayload);
   };
 
-  const tableColumnConfig: WfoTableColumnConfig<SearchResult> = {
+  const tableColumnConfig: WfoStructuredSearchTableDataColumnConfig<SearchResult> = {
     entity_id: {
       columnType: ColumnType.DATA,
       label: t('id'),
       width: '90px',
-      renderData: (value) => <div>{value}</div>,
+      renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+      renderDetails: (value) => value,
+      renderTooltip: (value) => value,
     },
     entity_type: {
       columnType: ColumnType.DATA,
@@ -64,7 +66,8 @@ export const WfoSearchPocPage = () => {
       columnType: ColumnType.DATA,
       label: t('title'),
       width: '450px',
-      renderData: (value) => <div>{value}</div>,
+      renderData: (value, record) => <Link href={`/subscriptions/${record.entity_id}`}>{value}</Link>,
+      renderTooltip: (value) => value,
     },
     score: {
       columnType: ColumnType.DATA,
@@ -78,6 +81,12 @@ export const WfoSearchPocPage = () => {
       width: '120px',
       renderData: (matchingField) => <div>{matchingField?.text}</div>,
     },
+    perfect_match: {
+      columnType: ColumnType.DATA,
+      label: t('perfectMatch'),
+      width: '120px',
+      renderData: (perfectMatch) => <div>{perfectMatch}</div>,
+    },
   };
 
   return (
@@ -88,8 +97,8 @@ export const WfoSearchPocPage = () => {
         data={data?.data || []}
         isLoading={isLoading}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
-        onUpdateQueryString={(queryString) => {
-          console.log('queryString', queryString);
+        onUpdateQueryString={(queryText) => {
+          onSearch(queryText);
         }}
         tableColumnConfig={tableColumnConfig}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}

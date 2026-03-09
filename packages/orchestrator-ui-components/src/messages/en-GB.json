@@ -637,7 +637,8 @@
       "type": "Entity type",
       "title": "Title",
       "score": "Score",
-      "matchingField": "Matching field"
+      "matchingField": "Matching field",
+      "perfectMatch": "Perfect match"
     },
     "tabs": {
       "subscriptions": "Subscriptions",
