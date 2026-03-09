@@ -561,6 +561,11 @@
       "visualization": {
         "noDataAvailable": "No data available for visualization.",
         "invalidDataStructure": "Invalid data structure."
+      },
+      "planProgress": {
+        "planning": "Planning...",
+        "completed": "Plan completed",
+        "executing": "Executing plan ({completed}/{total})"
       }
     }
   },

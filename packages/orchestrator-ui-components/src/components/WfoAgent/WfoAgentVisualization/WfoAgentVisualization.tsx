@@ -4,14 +4,14 @@ import { useTranslations } from 'next-intl';
 
 import { EuiText } from '@elastic/eui';
 
-import { AggregationResultsData, VisualizationType } from '@/types';
+import { QueryResultsData, VisualizationType } from '@/types';
 
 import { WfoAgentLineChart } from '../WfoAgentChart/WfoAgentLineChart';
 import { WfoAgentPieChart } from '../WfoAgentChart/WfoAgentPieChart';
 import { WfoAgentTable } from '../WfoAgentTable';
 
 export type WfoAgentVisualizationProps = {
-  aggregationData: AggregationResultsData;
+  aggregationData: QueryResultsData;
 };
 
 export function WfoAgentVisualization({ aggregationData }: WfoAgentVisualizationProps) {

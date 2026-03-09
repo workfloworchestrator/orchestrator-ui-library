@@ -5,10 +5,10 @@ import '@elastic/charts/dist/theme_only_dark.css';
 import '@elastic/charts/dist/theme_only_light.css';
 
 import { useOrchestratorTheme } from '@/hooks';
-import { AggregationResultsData } from '@/types';
+import { QueryResultsData } from '@/types';
 
 export type WfoAgentLineChartProps = {
-  aggregationData: AggregationResultsData;
+  aggregationData: QueryResultsData;
 };
 
 export function WfoAgentLineChart({ aggregationData }: WfoAgentLineChartProps) {

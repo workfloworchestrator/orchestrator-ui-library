@@ -2,10 +2,10 @@ import React from 'react';
 
 import { EuiBasicTable, EuiBasicTableColumn } from '@elastic/eui';
 
-import { AggregationResult, AggregationResultsData } from '@/types';
+import { QueryResultsData, ResultRow } from '@/types';
 
 export type WfoAgentTableProps = {
-  aggregationData: AggregationResultsData;
+  aggregationData: QueryResultsData;
 };
 
 const formatColumnName = (key: string) => key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
@@ -15,23 +15,23 @@ export function WfoAgentTable({ aggregationData }: WfoAgentTableProps) {
   const [pageIndex, setPageIndex] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(5);
 
-  const columns: EuiBasicTableColumn<AggregationResult>[] = React.useMemo(() => {
+  const columns: EuiBasicTableColumn<ResultRow>[] = React.useMemo(() => {
     if (results.length === 0) return [];
 
     const firstResult = results[0];
     const groupKeys = Object.keys(firstResult.group_values);
     const aggKeys = Object.keys(firstResult.aggregations);
 
-    const groupColumns: EuiBasicTableColumn<AggregationResult>[] = groupKeys.map((key) => ({
-      field: 'group_values' as keyof AggregationResult,
+    const groupColumns: EuiBasicTableColumn<ResultRow>[] = groupKeys.map((key) => ({
+      field: 'group_values' as keyof ResultRow,
       name: formatColumnName(key),
-      render: (_: unknown, record: AggregationResult) => record.group_values[key],
+      render: (_: unknown, record: ResultRow) => record.group_values[key],
     }));
 
-    const aggColumns: EuiBasicTableColumn<AggregationResult>[] = aggKeys.map((key) => ({
-      field: 'aggregations' as keyof AggregationResult,
+    const aggColumns: EuiBasicTableColumn<ResultRow>[] = aggKeys.map((key) => ({
+      field: 'aggregations' as keyof ResultRow,
       name: formatColumnName(key),
-      render: (_: unknown, record: AggregationResult) => record.aggregations[key],
+      render: (_: unknown, record: ResultRow) => record.aggregations[key],
     }));
 
     return [...groupColumns, ...aggColumns];
