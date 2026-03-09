@@ -7,7 +7,6 @@ import { EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_SIZES,
-  METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
   TableColumnKeys,
   TableSettingsColumnConfig,
   TableSettingsConfig,
