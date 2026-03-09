@@ -10,32 +10,30 @@ import { QueryArtifact } from '@/types';
 import { WfoAgentVisualization } from '../WfoAgentVisualization';
 
 export type WfoQueryArtifactProps = {
-    artifact: QueryArtifact;
+  artifact: QueryArtifact;
 };
 
 export function WfoQueryArtifact({ artifact }: WfoQueryArtifactProps) {
-    const t = useTranslations('agent.page.visualization');
-    const { data, isLoading, isError } = useGetAgentQueryResultsQuery(
-        artifact.query_id,
+  const t = useTranslations('agent.page.visualization');
+  const { data, isLoading, isError } = useGetAgentQueryResultsQuery(artifact.query_id);
+
+  if (isLoading) {
+    return <EuiLoadingSpinner size="m" />;
+  }
+
+  if (isError || !data) {
+    return (
+      <EuiText size="s" color="danger">
+        <p>{t('noDataAvailable')}</p>
+      </EuiText>
     );
+  }
 
-    if (isLoading) {
-        return <EuiLoadingSpinner size="m" />;
-    }
+  // Use the visualization_type from the artifact (set by the LLM) rather than the response
+  const aggregationData = {
+    ...data,
+    visualization_type: artifact.visualization_type,
+  };
 
-    if (isError || !data) {
-        return (
-            <EuiText size="s" color="danger">
-                <p>{t('noDataAvailable')}</p>
-            </EuiText>
-        );
-    }
-
-    // Use the visualization_type from the artifact (set by the LLM) rather than the response
-    const aggregationData = {
-        ...data,
-        visualization_type: artifact.visualization_type,
-    };
-
-    return <WfoAgentVisualization aggregationData={aggregationData} />;
+  return <WfoAgentVisualization aggregationData={aggregationData} />;
 }
