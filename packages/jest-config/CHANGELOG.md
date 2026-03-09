@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.7.0
+
+### Minor Changes
+
+- 4eb77d6: Updates npm dependencies
+
 ## 1.6.1
 
 ### Patch Changes

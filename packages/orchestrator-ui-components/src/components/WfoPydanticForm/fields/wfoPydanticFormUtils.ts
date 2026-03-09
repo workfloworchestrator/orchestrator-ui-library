@@ -1,25 +1,18 @@
 import { capitalize } from 'lodash';
 
-export type SummaryFormLabel =
-    | string
-    | null
-    | undefined
-    | Record<string, unknown>;
+export type SummaryFormLabel = string | null | undefined | Record<string, unknown>;
 
-export const getNestedSummaryLabel = (
-    labels: SummaryFormLabel[],
-    index: number,
-): string => {
-    const value = labels[index];
-    if (typeof value === 'object' && value !== null) {
-        const firstKey: string = Object.keys(value)[0] ?? '';
-        return capitalize(firstKey);
-    }
-    return String(value);
+export const getNestedSummaryLabel = (labels: SummaryFormLabel[], index: number): string => {
+  const value = labels[index];
+  if (typeof value === 'object' && value !== null) {
+    const firstKey: string = Object.keys(value)[0] ?? '';
+    return capitalize(firstKey);
+  }
+  return String(value);
 };
 
 export const getDataTestId = (base: string, title: string) => {
-    const dataTestId = base + title.toLowerCase().replace(/\s+/g, '-');
-    const generateRandomString = Math.random().toString(36).substring(2, 7);
-    return `${dataTestId}-${generateRandomString}`;
+  const dataTestId = base + title.toLowerCase().replace(/\s+/g, '-');
+  const generateRandomString = Math.random().toString(36).substring(2, 7);
+  return `${dataTestId}-${generateRandomString}`;
 };

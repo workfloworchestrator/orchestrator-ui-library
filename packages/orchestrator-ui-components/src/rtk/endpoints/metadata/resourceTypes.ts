@@ -1,11 +1,11 @@
 import { METADATA_RESOURCE_TYPE_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
-    BaseGraphQlResult,
-    GraphqlQueryVariables,
-    MetadataDescriptionParams,
-    ResourceTypeDefinition,
-    ResourceTypeDefinitionsResult,
+  BaseGraphQlResult,
+  GraphqlQueryVariables,
+  MetadataDescriptionParams,
+  ResourceTypeDefinition,
+  ResourceTypeDefinitionsResult,
 } from '@/types';
 
 export const resourceTypesQuery = `
@@ -48,55 +48,49 @@ query MetadataResourceTypes(
 `;
 
 export type ResourceTypesResponse = {
-    resourceTypes: ResourceTypeDefinition[];
+  resourceTypes: ResourceTypeDefinition[];
 } & BaseGraphQlResult;
 
 const resourceTypesApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getResourceTypes: builder.query<
-            ResourceTypesResponse,
-            GraphqlQueryVariables<ResourceTypeDefinition>
-        >({
-            query: (variables) => ({
-                document: resourceTypesQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: ResourceTypeDefinitionsResult,
-            ): ResourceTypesResponse => {
-                const resourceTypes = response.resourceTypes.page || [];
-                const pageInfo = response.resourceTypes.pageInfo || {};
+  endpoints: (builder) => ({
+    getResourceTypes: builder.query<ResourceTypesResponse, GraphqlQueryVariables<ResourceTypeDefinition>>({
+      query: (variables) => ({
+        document: resourceTypesQuery,
+        variables,
+      }),
+      transformResponse: (response: ResourceTypeDefinitionsResult): ResourceTypesResponse => {
+        const resourceTypes = response.resourceTypes.page || [];
+        const pageInfo = response.resourceTypes.pageInfo || {};
 
-                return {
-                    resourceTypes,
-                    pageInfo,
-                };
-            },
-        }),
+        return {
+          resourceTypes,
+          pageInfo,
+        };
+      },
     }),
+  }),
 });
 
-export const { useGetResourceTypesQuery, useLazyGetResourceTypesQuery } =
-    resourceTypesApi;
+export const { useGetResourceTypesQuery, useLazyGetResourceTypesQuery } = resourceTypesApi;
 
 const resourceTypesRestApi = orchestratorApi.injectEndpoints({
-    endpoints: (build) => ({
-        updateResourceType: build.mutation<null, MetadataDescriptionParams>({
-            query: (resourceType) => ({
-                url: `${METADATA_RESOURCE_TYPE_ENDPOINT}/${resourceType.id}`,
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: {
-                    description: resourceType.description,
-                },
-            }),
-            extraOptions: {
-                baseQueryType: BaseQueryTypes.fetch,
-            },
-        }),
+  endpoints: (build) => ({
+    updateResourceType: build.mutation<null, MetadataDescriptionParams>({
+      query: (resourceType) => ({
+        url: `${METADATA_RESOURCE_TYPE_ENDPOINT}/${resourceType.id}`,
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          description: resourceType.description,
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
     }),
+  }),
 });
 
 export const { useUpdateResourceTypeMutation } = resourceTypesRestApi;

@@ -1,13 +1,13 @@
 export const menuItemIsAllowed = (
-    url: string | undefined,
-    urlPolicyMap: Map<string, string>,
-    isAllowedHandler: (resource?: string) => boolean,
+  url: string | undefined,
+  urlPolicyMap: Map<string, string>,
+  isAllowedHandler: (resource?: string) => boolean,
 ) => {
-    if (!url) {
-        return true;
-    }
+  if (!url) {
+    return true;
+  }
 
-    const policyResource = urlPolicyMap.get(url);
+  const policyResource = urlPolicyMap.get(url);
 
-    return policyResource ? isAllowedHandler(policyResource) : true;
+  return policyResource ? isAllowedHandler(policyResource) : true;
 };

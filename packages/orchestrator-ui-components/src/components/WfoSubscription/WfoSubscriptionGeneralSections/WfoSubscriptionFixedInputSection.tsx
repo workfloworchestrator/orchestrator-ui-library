@@ -6,23 +6,16 @@ import { SubscriptionKeyValueBlock } from '@/components';
 import { SubscriptionDetail } from '@/types';
 
 interface WfoSubscriptionFixedInputSectionProps {
-    fixedInputs: SubscriptionDetail['fixedInputs'];
+  fixedInputs: SubscriptionDetail['fixedInputs'];
 }
 
-export const WfoSubscriptionFixedInputSection = ({
-    fixedInputs,
-}: WfoSubscriptionFixedInputSectionProps) => {
-    const t = useTranslations('subscriptions.detail');
+export const WfoSubscriptionFixedInputSection = ({ fixedInputs }: WfoSubscriptionFixedInputSectionProps) => {
+  const t = useTranslations('subscriptions.detail');
 
-    const fixedInputBlockData = fixedInputs.map((fixedInput) => ({
-        key: fixedInput.field,
-        value: fixedInput.value,
-    }));
+  const fixedInputBlockData = fixedInputs.map((fixedInput) => ({
+    key: fixedInput.field,
+    value: fixedInput.value,
+  }));
 
-    return (
-        <SubscriptionKeyValueBlock
-            title={t('blockTitleFixedInputs')}
-            keyValues={fixedInputBlockData}
-        />
-    );
+  return <SubscriptionKeyValueBlock title={t('blockTitleFixedInputs')} keyValues={fixedInputBlockData} />;
 };

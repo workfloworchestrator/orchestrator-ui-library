@@ -4,193 +4,161 @@ import { JSONSchema6 } from 'json-schema';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiHorizontalRule,
-    EuiPanel,
-    EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiText } from '@elastic/eui';
 
 import { WfoError, WfoLoading } from '@/components';
 import { WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import {
-    useGetDescriptionForWorkflowNameQuery,
-    useGetTimeLineItemsQuery,
-} from '@/rtk';
+import { useGetDescriptionForWorkflowNameQuery, useGetTimeLineItemsQuery } from '@/rtk';
 import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
 
 import { WfoProcessDetail } from './WfoProcessDetail';
 
 type PreselectedInput = {
-    prefix?: string;
-    prefixlen?: string;
+  prefix?: string;
+  prefixlen?: string;
 };
 
 type StartCreateWorkflowPayload = {
-    product: string;
+  product: string;
 } & PreselectedInput;
 
 type StartModifyWorkflowPayload = {
-    subscription_id: string;
+  subscription_id: string;
 };
 
-export type StartWorkflowPayload =
-    | StartCreateWorkflowPayload
-    | StartModifyWorkflowPayload;
+export type StartWorkflowPayload = StartCreateWorkflowPayload | StartModifyWorkflowPayload;
 
 type StartProcessPageQuery = {
-    productId?: string;
-    subscriptionId?: string;
+  productId?: string;
+  subscriptionId?: string;
 } & PreselectedInput;
 
 interface WfoStartProcessPageProps {
-    processName: string;
-    isTask?: boolean;
+  processName: string;
+  isTask?: boolean;
 }
 
 export interface UserInputForm {
-    stepUserInput?: JSONSchema6;
-    hasNext?: boolean;
+  stepUserInput?: JSONSchema6;
+  hasNext?: boolean;
 }
 
 const getInitialProcessPayload = ({
-    productId,
-    subscriptionId,
+  productId,
+  subscriptionId,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
-    if (subscriptionId) {
-        return {
-            subscription_id: subscriptionId,
-        };
-    } else if (productId) {
-        return {
-            product: productId,
-        };
-    }
-    return undefined;
+  if (subscriptionId) {
+    return {
+      subscription_id: subscriptionId,
+    };
+  } else if (productId) {
+    return {
+      product: productId,
+    };
+  }
+  return undefined;
 };
 
-export const WfoStartProcessPage = ({
-    processName,
-    isTask = false,
-}: WfoStartProcessPageProps) => {
-    const t = useTranslations('processes.steps');
-    const router = useRouter();
-    const [hasError, setHasError] = useState<boolean>(false);
-    const { theme } = useOrchestratorTheme();
-    const { productId, subscriptionId } = router.query as StartProcessPageQuery;
+export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartProcessPageProps) => {
+  const t = useTranslations('processes.steps');
+  const router = useRouter();
+  const [hasError, setHasError] = useState<boolean>(false);
+  const { theme } = useOrchestratorTheme();
+  const { productId, subscriptionId } = router.query as StartProcessPageQuery;
 
-    const {
-        data: subscriptionDetail,
-        isLoading: isLoadingSubscriptionDetail,
-        isError: isErrorSubscriptionDetail,
-    } = useGetSubscriptionDetailQuery(
-        {
-            subscriptionId: subscriptionId || '',
-        },
-        { skip: !subscriptionId },
-    );
+  const {
+    data: subscriptionDetail,
+    isLoading: isLoadingSubscriptionDetail,
+    isError: isErrorSubscriptionDetail,
+  } = useGetSubscriptionDetailQuery(
+    {
+      subscriptionId: subscriptionId || '',
+    },
+    { skip: !subscriptionId },
+  );
 
-    const { data: workflowMetadata, isError: isErrorWorkflowDescription } =
-        useGetDescriptionForWorkflowNameQuery({
-            workflowName: processName,
-        });
+  const { data: workflowMetadata, isError: isErrorWorkflowDescription } = useGetDescriptionForWorkflowNameQuery({
+    workflowName: processName,
+  });
 
-    const startProcessPayload = useMemo(
-        () =>
-            getInitialProcessPayload({
-                productId,
-                subscriptionId,
-            }),
-        [productId, subscriptionId],
-    );
+  const startProcessPayload = useMemo(
+    () =>
+      getInitialProcessPayload({
+        productId,
+        subscriptionId,
+      }),
+    [productId, subscriptionId],
+  );
 
-    const { getStepHeaderStyle, stepListContentBoldTextStyle } =
-        useWithOrchestratorTheme(getWorkflowStepsStyles);
+  const { getStepHeaderStyle, stepListContentBoldTextStyle } = useWithOrchestratorTheme(getWorkflowStepsStyles);
 
-    const {
-        data: timeLineItems = [],
-        isError: isErrorTimeLineItems,
-        isLoading: isLoadingTimeLineItems,
-    } = useGetTimeLineItemsQuery(processName);
+  const {
+    data: timeLineItems = [],
+    isError: isErrorTimeLineItems,
+    isLoading: isLoadingTimeLineItems,
+  } = useGetTimeLineItemsQuery(processName);
 
-    const isLoading = isLoadingSubscriptionDetail || isLoadingTimeLineItems;
-    const isError = isErrorSubscriptionDetail || isErrorTimeLineItems;
+  const isLoading = isLoadingSubscriptionDetail || isLoadingTimeLineItems;
+  const isError = isErrorSubscriptionDetail || isErrorTimeLineItems;
 
-    if (isError) {
-        if (!hasError) {
-            setHasError(true);
-        }
+  if (isError) {
+    if (!hasError) {
+      setHasError(true);
     }
+  }
 
-    const processDetail: Partial<ProcessDetail> = {
-        lastStatus: ProcessStatus.CREATE,
-        lastStep: StepStatus.FORM,
-        workflowName: processName,
-        createdBy: '-',
-        subscriptions: subscriptionDetail && {
-            page: [
-                {
-                    product: {
-                        name: subscriptionDetail.subscription.product.name,
-                    },
-                    description: subscriptionDetail.subscription.description,
-                    subscriptionId:
-                        subscriptionDetail.subscription.subscriptionId,
-                },
-            ],
+  const processDetail: Partial<ProcessDetail> = {
+    lastStatus: ProcessStatus.CREATE,
+    lastStep: StepStatus.FORM,
+    workflowName: processName,
+    createdBy: '-',
+    subscriptions: subscriptionDetail && {
+      page: [
+        {
+          product: {
+            name: subscriptionDetail.subscription.product.name,
+          },
+          description: subscriptionDetail.subscription.description,
+          subscriptionId: subscriptionDetail.subscription.subscriptionId,
         },
-    };
+      ],
+    },
+  };
 
-    const pageTitle =
-        workflowMetadata?.description ||
-        (isErrorWorkflowDescription && processDetail?.workflowName) ||
-        '';
+  const pageTitle = workflowMetadata?.description || (isErrorWorkflowDescription && processDetail?.workflowName) || '';
 
-    return (
-        <WfoProcessDetail
-            pageTitle={pageTitle}
-            productNames={''}
-            buttonsAreDisabled={true}
-            processDetail={processDetail}
-            timelineItems={timeLineItems}
-            isLoading={isLoading}
-        >
-            <EuiPanel
-                css={{
-                    backgroundColor: theme.colors.backgroundBaseNeutral,
-                    marginTop: theme.base * 3,
-                }}
-            >
-                <EuiFlexGroup css={getStepHeaderStyle(false)}>
-                    <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
+  return (
+    <WfoProcessDetail
+      pageTitle={pageTitle}
+      productNames={''}
+      buttonsAreDisabled={true}
+      processDetail={processDetail}
+      timelineItems={timeLineItems}
+      isLoading={isLoading}
+    >
+      <EuiPanel
+        css={{
+          backgroundColor: theme.colors.backgroundBaseNeutral,
+          marginTop: theme.base * 3,
+        }}
+      >
+        <EuiFlexGroup css={getStepHeaderStyle(false)}>
+          <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
 
-                    <EuiFlexItem grow={0}>
-                        <EuiText css={stepListContentBoldTextStyle}>
-                            {t('userInput')}
-                        </EuiText>
-                        <EuiText>
-                            {t(
-                                isTask
-                                    ? 'submitTaskFormLabel'
-                                    : 'submitWorkflowFormLabel',
-                            )}
-                        </EuiText>
-                    </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiHorizontalRule />
-                {(hasError && <WfoError />) || (
-                        <WfoPydanticForm
-                            processName={processName}
-                            startProcessPayload={startProcessPayload}
-                            isTask={isTask}
-                        />
-                    ) || <WfoLoading />}
-            </EuiPanel>
-        </WfoProcessDetail>
-    );
+          <EuiFlexItem grow={0}>
+            <EuiText css={stepListContentBoldTextStyle}>{t('userInput')}</EuiText>
+            <EuiText>{t(isTask ? 'submitTaskFormLabel' : 'submitWorkflowFormLabel')}</EuiText>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule />
+        {(hasError && <WfoError />) || (
+            <WfoPydanticForm processName={processName} startProcessPayload={startProcessPayload} isTask={isTask} />
+          ) || <WfoLoading />}
+      </EuiPanel>
+    </WfoProcessDetail>
+  );
 };

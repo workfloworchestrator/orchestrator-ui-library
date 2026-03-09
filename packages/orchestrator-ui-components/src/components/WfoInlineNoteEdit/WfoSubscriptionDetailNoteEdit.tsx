@@ -10,47 +10,41 @@ import { INVISIBLE_CHARACTER } from '@/utils';
 import { WfoInlineEdit } from '../WfoInlineEdit';
 
 interface WfoSubscriptionDetailNoteEditProps {
-    subscriptionId: SubscriptionDetail['subscriptionId'];
-    onlyShowOnHover?: boolean;
+  subscriptionId: SubscriptionDetail['subscriptionId'];
+  onlyShowOnHover?: boolean;
 }
 
-export const WfoSubscriptionDetailNoteEdit: FC<
-    WfoSubscriptionDetailNoteEditProps
-> = ({ subscriptionId, onlyShowOnHover = false }) => {
-    const { data, endpointName } = useGetSubscriptionDetailQuery({
-        subscriptionId,
+export const WfoSubscriptionDetailNoteEdit: FC<WfoSubscriptionDetailNoteEditProps> = ({
+  subscriptionId,
+  onlyShowOnHover = false,
+}) => {
+  const { data, endpointName } = useGetSubscriptionDetailQuery({
+    subscriptionId,
+  });
+
+  const selectedItem = data?.subscription ?? { note: '' };
+  const [startProcess] = useStartProcessMutation();
+  const [updateSub] = useUpdateSubscriptionDetailNoteOptimisticMutation();
+
+  const triggerNoteModifyWorkflow = (note: string) => {
+    const noteModifyPayload = [{ subscription_id: subscriptionId }, { note: note }];
+    startProcess({
+      workflowName: 'modify_note',
+      userInputs: noteModifyPayload,
     });
 
-    const selectedItem = data?.subscription ?? { note: '' };
-    const [startProcess] = useStartProcessMutation();
-    const [updateSub] = useUpdateSubscriptionDetailNoteOptimisticMutation();
+    updateSub({
+      queryName: endpointName ?? '',
+      subscriptionId: subscriptionId,
+      note: note,
+    });
+  };
 
-    const triggerNoteModifyWorkflow = (note: string) => {
-        const noteModifyPayload = [
-            { subscription_id: subscriptionId },
-            { note: note },
-        ];
-        startProcess({
-            workflowName: 'modify_note',
-            userInputs: noteModifyPayload,
-        });
-
-        updateSub({
-            queryName: endpointName ?? '',
-            subscriptionId: subscriptionId,
-            note: note,
-        });
-    };
-
-    return (
-        <WfoInlineEdit
-            value={
-                selectedItem?.note?.trim()
-                    ? selectedItem.note
-                    : INVISIBLE_CHARACTER
-            }
-            onlyShowOnHover={onlyShowOnHover}
-            onSave={triggerNoteModifyWorkflow}
-        />
-    );
+  return (
+    <WfoInlineEdit
+      value={selectedItem?.note?.trim() ? selectedItem.note : INVISIBLE_CHARACTER}
+      onlyShowOnHover={onlyShowOnHover}
+      onSave={triggerNoteModifyWorkflow}
+    />
+  );
 };

@@ -7,46 +7,43 @@ import { useUpdateSubscriptionNoteOptimisticMutation } from '@/rtk/endpoints/sub
 import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoSubscriptionNoteEditProps {
-    onlyShowOnHover?: boolean;
-    queryVariables: Record<string, unknown>;
-    endpointName: string | undefined;
-    subscriptionId: string;
-    note: string | null;
+  onlyShowOnHover?: boolean;
+  queryVariables: Record<string, unknown>;
+  endpointName: string | undefined;
+  subscriptionId: string;
+  note: string | null;
 }
 
 export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
-    onlyShowOnHover = false,
-    queryVariables,
-    endpointName,
-    subscriptionId,
-    note,
+  onlyShowOnHover = false,
+  queryVariables,
+  endpointName,
+  subscriptionId,
+  note,
 }) => {
-    const [startProcess] = useStartProcessMutation();
-    const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
+  const [startProcess] = useStartProcessMutation();
+  const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
 
-    const triggerNoteModifyWorkflow = (note: string) => {
-        const noteModifyPayload = [
-            { subscription_id: subscriptionId },
-            { note: note === INVISIBLE_CHARACTER ? '' : note },
-        ];
-        startProcess({
-            workflowName: 'modify_note',
-            userInputs: noteModifyPayload,
-        });
+  const triggerNoteModifyWorkflow = (note: string) => {
+    const noteModifyPayload = [{ subscription_id: subscriptionId }, { note: note === INVISIBLE_CHARACTER ? '' : note }];
+    startProcess({
+      workflowName: 'modify_note',
+      userInputs: noteModifyPayload,
+    });
 
-        updateSub({
-            queryName: endpointName ?? '',
-            subscriptionId: subscriptionId,
-            graphQlQueryVariables: queryVariables,
-            note: note,
-        });
-    };
+    updateSub({
+      queryName: endpointName ?? '',
+      subscriptionId: subscriptionId,
+      graphQlQueryVariables: queryVariables,
+      note: note,
+    });
+  };
 
-    return (
-        <WfoInlineEdit
-            value={note?.trim() ? note : INVISIBLE_CHARACTER}
-            onlyShowOnHover={onlyShowOnHover}
-            onSave={triggerNoteModifyWorkflow}
-        />
-    );
+  return (
+    <WfoInlineEdit
+      value={note?.trim() ? note : INVISIBLE_CHARACTER}
+      onlyShowOnHover={onlyShowOnHover}
+      onSave={triggerNoteModifyWorkflow}
+    />
+  );
 };

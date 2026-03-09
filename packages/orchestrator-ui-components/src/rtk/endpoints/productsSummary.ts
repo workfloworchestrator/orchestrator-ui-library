@@ -1,10 +1,10 @@
 import { orchestratorApi } from '@/rtk';
 import {
-    BaseGraphQlResult,
-    GraphqlQueryVariables,
-    ProductDefinitionsResult,
-    ProductsSummary,
-    Subscription,
+  BaseGraphQlResult,
+  GraphqlQueryVariables,
+  ProductDefinitionsResult,
+  ProductsSummary,
+  Subscription,
 } from '@/types';
 
 export const productsSummary = `
@@ -33,32 +33,27 @@ export const productsSummary = `
 `;
 
 export type ProductsSummaryResponse = {
-    products: ProductsSummary[];
+  products: ProductsSummary[];
 } & BaseGraphQlResult;
 
 const productsSummaryApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getProductsSummary: builder.query<
-            ProductsSummaryResponse,
-            GraphqlQueryVariables<ProductsSummary & Subscription>
-        >({
-            query: (variables) => ({
-                document: productsSummary,
-                variables,
-            }),
-            transformResponse: (
-                response: ProductDefinitionsResult<ProductsSummary>,
-            ): ProductsSummaryResponse => {
-                const products = response.products.page || [];
-                const pageInfo = response.products.pageInfo || {};
+  endpoints: (builder) => ({
+    getProductsSummary: builder.query<ProductsSummaryResponse, GraphqlQueryVariables<ProductsSummary & Subscription>>({
+      query: (variables) => ({
+        document: productsSummary,
+        variables,
+      }),
+      transformResponse: (response: ProductDefinitionsResult<ProductsSummary>): ProductsSummaryResponse => {
+        const products = response.products.page || [];
+        const pageInfo = response.products.pageInfo || {};
 
-                return {
-                    products,
-                    pageInfo,
-                };
-            },
-        }),
+        return {
+          products,
+          pageInfo,
+        };
+      },
     }),
+  }),
 });
 
 export const { useGetProductsSummaryQuery } = productsSummaryApi;

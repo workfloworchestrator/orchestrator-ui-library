@@ -6,18 +6,18 @@ import { ToastTypes } from '@/types';
 import { getToastMessage } from '@/utils/getToastMessage';
 
 export const useShowToastMessage = () => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-    const showToastMessage = (
-        type: ToastTypes,
-        text: ReactNode,
-        title: string, // same as above for string instead of Toast['title'],
-    ) => {
-        const toastMessage = getToastMessage(type, text, title);
-        dispatch(addToastMessage(toastMessage));
-    };
+  const showToastMessage = (
+    type: ToastTypes,
+    text: ReactNode,
+    title: string, // same as above for string instead of Toast['title'],
+  ) => {
+    const toastMessage = getToastMessage(type, text, title);
+    dispatch(addToastMessage(toastMessage));
+  };
 
-    return {
-        showToastMessage,
-    };
+  return {
+    showToastMessage,
+  };
 };

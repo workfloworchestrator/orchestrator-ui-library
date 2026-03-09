@@ -12,54 +12,51 @@ import { getOrchestratorCoreVersionIfNotCompatible } from '@/utils/compareVersio
 import versionCompatibility from '../../../../../../version-compatibility.json';
 
 interface WfoVersionIncompatibleBadgeProps {
-    orchestratorUiVersion: string;
-    orchestratorCoreVersion: string;
+  orchestratorUiVersion: string;
+  orchestratorCoreVersion: string;
 }
 
-export const WfoVersionIncompatibleBadge: FC<
-    WfoVersionIncompatibleBadgeProps
-> = ({ orchestratorUiVersion, orchestratorCoreVersion }) => {
-    const t = useTranslations('main');
-    const { theme } = useOrchestratorTheme();
-    const mappedVersions: MappedVersion[] = versionCompatibility;
-    const minimumOrchestratorCoreVersion =
-        getOrchestratorCoreVersionIfNotCompatible(
-            orchestratorUiVersion,
-            orchestratorCoreVersion,
-            mappedVersions,
-        );
+export const WfoVersionIncompatibleBadge: FC<WfoVersionIncompatibleBadgeProps> = ({
+  orchestratorUiVersion,
+  orchestratorCoreVersion,
+}) => {
+  const t = useTranslations('main');
+  const { theme } = useOrchestratorTheme();
+  const mappedVersions: MappedVersion[] = versionCompatibility;
+  const minimumOrchestratorCoreVersion = getOrchestratorCoreVersionIfNotCompatible(
+    orchestratorUiVersion,
+    orchestratorCoreVersion,
+    mappedVersions,
+  );
 
-    return (
-        <EuiToolTip
-            content={
-                <>
-                    <p>{t('incompatibleVersionText')}</p>
-                    <EuiSpacer size="s" />
-                    <p>
-                        WFO UI: <b>{orchestratorUiVersion}</b>
-                    </p>
-                    <p>
-                        orchestrator-core: <b>{orchestratorCoreVersion}</b>
-                    </p>
-                    <p>
-                        {t('minimumOrchestratorCoreVersion')}:{' '}
-                        <b>{minimumOrchestratorCoreVersion}</b>
-                    </p>
-                </>
-            }
-        >
-            <WfoHeaderBadge
-                color="danger"
-                textColor={theme.colors.ghost}
-                css={{
-                    marginLeft: theme.size.s,
-                    visibility: minimumOrchestratorCoreVersion
-                        ? 'visible'
-                        : 'hidden',
-                }}
-            >
-                {t('incompatibleVersion')}
-            </WfoHeaderBadge>
-        </EuiToolTip>
-    );
+  return (
+    <EuiToolTip
+      content={
+        <>
+          <p>{t('incompatibleVersionText')}</p>
+          <EuiSpacer size="s" />
+          <p>
+            WFO UI: <b>{orchestratorUiVersion}</b>
+          </p>
+          <p>
+            orchestrator-core: <b>{orchestratorCoreVersion}</b>
+          </p>
+          <p>
+            {t('minimumOrchestratorCoreVersion')}: <b>{minimumOrchestratorCoreVersion}</b>
+          </p>
+        </>
+      }
+    >
+      <WfoHeaderBadge
+        color="danger"
+        textColor={theme.colors.textGhost}
+        css={{
+          marginLeft: theme.size.s,
+          visibility: minimumOrchestratorCoreVersion ? 'visible' : 'hidden',
+        }}
+      >
+        {t('incompatibleVersion')}
+      </WfoHeaderBadge>
+    </EuiToolTip>
+  );
 };

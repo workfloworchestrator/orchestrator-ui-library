@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 1.4.0
+
+### Minor Changes
+
+- 4eb77d6: Updates npm dependencies
+
 ## 1.3.1
 
 ### Patch Changes

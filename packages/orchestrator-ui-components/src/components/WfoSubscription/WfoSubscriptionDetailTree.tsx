@@ -2,30 +2,19 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    EuiCallOut,
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiSelectableOption,
-    EuiText,
-} from '@elastic/eui';
+import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSelectableOption, EuiText } from '@elastic/eui';
 import { EuiSelectableOptionCheckedType } from '@elastic/eui/src/components/selectable/selectable_option';
 
 import {
-    PATH_SUBSCRIPTIONS,
-    WfoLoading,
-    WfoTextAnchor,
-    mapProductBlockInstancesToEuiSelectableOptions,
+  PATH_SUBSCRIPTIONS,
+  WfoLoading,
+  WfoTextAnchor,
+  mapProductBlockInstancesToEuiSelectableOptions,
 } from '@/components';
 import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import {
-    ProductBlockInstance,
-    Subscription,
-    TreeBlock,
-    WfoTreeNodeMap,
-} from '@/types';
+import { ProductBlockInstance, Subscription, TreeBlock, WfoTreeNodeMap } from '@/types';
 
 import { getTokenName } from '../../utils/getTokenName';
 import { WfoTree, getPositionInTree, sortTreeBlockByLabel } from '../WfoTree';
@@ -37,237 +26,196 @@ import { getProductBlockTitle } from './utils';
 const EUI_OPTION_CHECKED_STATE_ON: EuiSelectableOptionCheckedType = 'on';
 
 interface WfoSubscriptionDetailTreeProps {
-    productBlockInstances: ProductBlockInstance[];
-    subscriptionId: Subscription['subscriptionId'];
-    subscriptionPath?: string;
+  productBlockInstances: ProductBlockInstance[];
+  subscriptionId: Subscription['subscriptionId'];
+  subscriptionPath?: string;
 }
 
 export const WfoSubscriptionDetailTree = ({
-    productBlockInstances,
-    subscriptionId,
-    subscriptionPath = PATH_SUBSCRIPTIONS,
+  productBlockInstances,
+  subscriptionId,
+  subscriptionPath = PATH_SUBSCRIPTIONS,
 }: WfoSubscriptionDetailTreeProps) => {
-    const t = useTranslations('subscriptions.detail');
-    const { theme } = useOrchestratorTheme();
-    const [, setSelectedTreeNode] = useState(-1);
-    const { productBlockTreeWidth } = useWithOrchestratorTheme(
-        getSubscriptionDetailStyles,
-    );
-    const {
-        selectedIds,
-        expandAll,
-        resetSelection,
-        selectAll,
-        selectIds,
-        deselectIds,
-    } = React.useContext(TreeContext) as TreeContextType;
+  const t = useTranslations('subscriptions.detail');
+  const { theme } = useOrchestratorTheme();
+  const [, setSelectedTreeNode] = useState(-1);
+  const { productBlockTreeWidth } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
+  const { selectedIds, expandAll, resetSelection, selectAll, selectIds, deselectIds } = React.useContext(
+    TreeContext,
+  ) as TreeContextType;
 
-    let tree: TreeBlock | null = null;
-    const depthList: number[] = [];
+  let tree: TreeBlock | null = null;
+  const depthList: number[] = [];
 
-    const idToNodeMap: WfoTreeNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
+  const idToNodeMap: WfoTreeNodeMap = {}; // Keeps track of nodes using id as key, for fast lookup
 
-    productBlockInstances.forEach((productBlockInstance) => {
-        const shallowCopy: TreeBlock = {
-            ...productBlockInstance,
-            icon: '',
-            label: '',
-            callback: () => {},
-            children: [],
-            isOutsideCurrentSubscription:
-                productBlockInstance.subscription.subscriptionId !==
-                subscriptionId,
-        };
-
-        // Does this node have a parent?
-        if (shallowCopy.parent === null) {
-            // Doesn't look like it, so this node is the root of the tree
-            shallowCopy.label = getProductBlockTitle(
-                shallowCopy.productBlockInstanceValues,
-            );
-            shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
-            depthList.push(0); // First id is on root
-            tree = shallowCopy;
-        } else {
-            // This node has a parent, so let's look it up using the id
-            depthList.push(getWfoTreeNodeDepth(shallowCopy, idToNodeMap));
-            const parentNode = idToNodeMap[shallowCopy.parent];
-            shallowCopy.label = getProductBlockTitle(
-                shallowCopy.productBlockInstanceValues,
-            );
-            shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
-
-            if (
-                !productBlockInstances.find((i) => i.parent === shallowCopy.id)
-            ) {
-                shallowCopy.icon = getTokenName(shallowCopy.label);
-            }
-
-            // Let's add the current node as a child of the parent node.
-            // We want them to be in order, so we'll sort them by label.
-            if (parentNode.children && Array.isArray(parentNode.children)) {
-                parentNode.children = [
-                    ...parentNode.children,
-                    shallowCopy,
-                ].sort(sortTreeBlockByLabel);
-            }
-        }
-
-        // Add an entry for this node to the map so that any future children can look up the parent
-        idToNodeMap[shallowCopy.id] = shallowCopy;
-    });
-
-    const toggleShowAll = () => {
-        if (selectedIds.length === productBlockInstances.length) {
-            resetSelection();
-        } else {
-            selectAll();
-            expandAll();
-        }
+  productBlockInstances.forEach((productBlockInstance) => {
+    const shallowCopy: TreeBlock = {
+      ...productBlockInstance,
+      icon: '',
+      label: '',
+      callback: () => {},
+      children: [],
+      isOutsideCurrentSubscription: productBlockInstance.subscription.subscriptionId !== subscriptionId,
     };
 
-    if (!tree) return null;
+    // Does this node have a parent?
+    if (shallowCopy.parent === null) {
+      // Doesn't look like it, so this node is the root of the tree
+      shallowCopy.label = getProductBlockTitle(shallowCopy.productBlockInstanceValues);
+      shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
+      depthList.push(0); // First id is on root
+      tree = shallowCopy;
+    } else {
+      // This node has a parent, so let's look it up using the id
+      depthList.push(getWfoTreeNodeDepth(shallowCopy, idToNodeMap));
+      const parentNode = idToNodeMap[shallowCopy.parent];
+      shallowCopy.label = getProductBlockTitle(shallowCopy.productBlockInstanceValues);
+      shallowCopy.callback = () => setSelectedTreeNode(shallowCopy.id);
 
-    /*
-     * The order of displayed product blocks should be the same as the order in the tree. Because we sort the tree
-     * alphabetically per level we can not depend on the order of product block ids anymore so we sort by the position in the tree.
-     */
-    const sortByTree = (idA: number, idB: number) => {
-        if (!tree) return 0;
+      if (!productBlockInstances.find((i) => i.parent === shallowCopy.id)) {
+        shallowCopy.icon = getTokenName(shallowCopy.label);
+      }
 
-        const positionA = getPositionInTree(tree, idA);
-        const positionB = getPositionInTree(tree, idB);
-        if (!positionA || !positionB) return 0;
+      // Let's add the current node as a child of the parent node.
+      // We want them to be in order, so we'll sort them by label.
+      if (parentNode.children && Array.isArray(parentNode.children)) {
+        parentNode.children = [...parentNode.children, shallowCopy].sort(sortTreeBlockByLabel);
+      }
+    }
 
-        if (positionA < positionB) {
-            return -1;
-        }
-        if (positionA > positionB) {
-            return 1;
-        }
-        return 0;
-    };
+    // Add an entry for this node to the map so that any future children can look up the parent
+    idToNodeMap[shallowCopy.id] = shallowCopy;
+  });
 
-    const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
+  const toggleShowAll = () => {
+    if (selectedIds.length === productBlockInstances.length) {
+      resetSelection();
+    } else {
+      selectAll();
+      expandAll();
+    }
+  };
 
-    const handleOptionChange = (changedOption: EuiSelectableOption) => {
-        if (changedOption.data?.ids === undefined) {
-            return;
-        }
+  if (!tree) return null;
 
-        const { checked, data } = changedOption;
-        const shouldAddIds = checked === EUI_OPTION_CHECKED_STATE_ON;
+  /*
+   * The order of displayed product blocks should be the same as the order in the tree. Because we sort the tree
+   * alphabetically per level we can not depend on the order of product block ids anymore so we sort by the position in the tree.
+   */
+  const sortByTree = (idA: number, idB: number) => {
+    if (!tree) return 0;
 
-        expandAll();
-        return shouldAddIds ? selectIds(data.ids) : deselectIds(data.ids);
-    };
+    const positionA = getPositionInTree(tree, idA);
+    const positionB = getPositionInTree(tree, idB);
+    if (!positionA || !positionB) return 0;
 
-    return (
-        <EuiFlexGroup
-            css={{
-                marginTop: 15,
-                height: `calc(100vh - ${headerHeight}px)`,
-            }}
-        >
-            <EuiFlexItem
-                style={{
-                    minWidth: productBlockTreeWidth,
-                    maxWidth: productBlockTreeWidth,
-                    overflowX: 'hidden',
-                    overflowY: 'auto',
-                }}
-                grow={true}
-            >
-                <EuiFlexGroup direction={'column'}>
-                    <EuiFlexItem grow={false}>
-                        <EuiFlexGroup
-                            justifyContent="spaceBetween"
-                            alignItems="center"
-                        >
-                            <EuiFlexItem>
-                                <EuiText>
-                                    <h3>{t('productBlocks')}</h3>
-                                </EuiText>
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiFlexGroup>
-                                    <WfoTextAnchor
-                                        text={t(
-                                            selectedIds.length ===
-                                                productBlockInstances.length
-                                                ? 'hideAll'
-                                                : 'showAll',
-                                        )}
-                                        onClick={toggleShowAll}
-                                    />
-                                    <WfoButtonComboBox
-                                        options={mapProductBlockInstancesToEuiSelectableOptions(
-                                            productBlockInstances,
-                                        )}
-                                        onOptionChange={handleOptionChange}
-                                        title={t('selectByNameTitle')}
-                                    >
-                                        {(togglePopover) => (
-                                            <WfoTextAnchor
-                                                text={t(
-                                                    'selectByNameButtonText',
-                                                )}
-                                                onClick={togglePopover}
-                                            />
-                                        )}
-                                    </WfoButtonComboBox>
-                                </EuiFlexGroup>
-                            </EuiFlexItem>
-                        </EuiFlexGroup>
-                    </EuiFlexItem>
-                    <EuiFlexItem grow={true}>
-                        {!tree && <WfoLoading />}
-                        {tree && (
-                            <WfoTree
-                                treeBlocks={[tree]}
-                                depthList={depthList}
-                            />
-                        )}
-                    </EuiFlexItem>
+    if (positionA < positionB) {
+      return -1;
+    }
+    if (positionA > positionB) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const headerHeight = 265; // The height of the header part of the page that needs to be subtracted from 100vh to fit the page
+
+  const handleOptionChange = (changedOption: EuiSelectableOption) => {
+    if (changedOption.data?.ids === undefined) {
+      return;
+    }
+
+    const { checked, data } = changedOption;
+    const shouldAddIds = checked === EUI_OPTION_CHECKED_STATE_ON;
+
+    expandAll();
+    return shouldAddIds ? selectIds(data.ids) : deselectIds(data.ids);
+  };
+
+  return (
+    <EuiFlexGroup
+      css={{
+        marginTop: 15,
+        height: `calc(100vh - ${headerHeight}px)`,
+      }}
+    >
+      <EuiFlexItem
+        style={{
+          minWidth: productBlockTreeWidth,
+          maxWidth: productBlockTreeWidth,
+          overflowX: 'hidden',
+          overflowY: 'auto',
+        }}
+        grow={true}
+      >
+        <EuiFlexGroup direction={'column'}>
+          <EuiFlexItem grow={false}>
+            <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+              <EuiFlexItem>
+                <EuiText>
+                  <h3>{t('productBlocks')}</h3>
+                </EuiText>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup>
+                  <WfoTextAnchor
+                    text={t(selectedIds.length === productBlockInstances.length ? 'hideAll' : 'showAll')}
+                    onClick={toggleShowAll}
+                  />
+                  <WfoButtonComboBox
+                    options={mapProductBlockInstancesToEuiSelectableOptions(productBlockInstances)}
+                    onOptionChange={handleOptionChange}
+                    title={t('selectByNameTitle')}
+                  >
+                    {(togglePopover) => <WfoTextAnchor text={t('selectByNameButtonText')} onClick={togglePopover} />}
+                  </WfoButtonComboBox>
                 </EuiFlexGroup>
-            </EuiFlexItem>
-            <EuiFlexItem
-                css={{
-                    overflow: 'auto',
-                    minWidth: 350,
-                }}
-                grow={true}
-            >
-                <div>
-                    <div>&nbsp;</div>{' '}
-                    {/* This is a placeholder for the searchbar */}
-                    {selectedIds.length === 0 && (
-                        <EuiCallOut
-                            css={{
-                                marginTop: theme.size.m,
-                                textAlign: 'center',
-                            }}
-                            size="m"
-                            title={t('noProductBlockSelected')}
-                            iconType="inspect"
-                        >
-                            <EuiText>{t('ctaSelectProductBlock')} </EuiText>
-                        </EuiCallOut>
-                    )}
-                    {selectedIds.length !== 0 &&
-                        selectedIds.sort(sortByTree).map((id) => {
-                            const block = idToNodeMap[id];
-                            return (
-                                <WfoSubscriptionProductBlock
-                                    key={id}
-                                    subscriptionId={subscriptionId}
-                                    productBlock={block}
-                                    subscriptionPath={subscriptionPath}
-                                />
-                            );
-                        })}
-                </div>
-            </EuiFlexItem>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiFlexItem>
+          <EuiFlexItem grow={true}>
+            {!tree && <WfoLoading />}
+            {tree && <WfoTree treeBlocks={[tree]} depthList={depthList} />}
+          </EuiFlexItem>
         </EuiFlexGroup>
-    );
+      </EuiFlexItem>
+      <EuiFlexItem
+        css={{
+          overflow: 'auto',
+          minWidth: 350,
+        }}
+        grow={true}
+      >
+        <div>
+          <div>&nbsp;</div> {/* This is a placeholder for the searchbar */}
+          {selectedIds.length === 0 && (
+            <EuiCallOut
+              css={{
+                marginTop: theme.size.m,
+                textAlign: 'center',
+              }}
+              size="m"
+              title={t('noProductBlockSelected')}
+              iconType="inspect"
+            >
+              <EuiText>{t('ctaSelectProductBlock')} </EuiText>
+            </EuiCallOut>
+          )}
+          {selectedIds.length !== 0
+            && selectedIds.sort(sortByTree).map((id) => {
+              const block = idToNodeMap[id];
+              return (
+                <WfoSubscriptionProductBlock
+                  key={id}
+                  subscriptionId={subscriptionId}
+                  productBlock={block}
+                  subscriptionPath={subscriptionPath}
+                />
+              );
+            })}
+        </div>
+      </EuiFlexItem>
+    </EuiFlexGroup>
+  );
 };

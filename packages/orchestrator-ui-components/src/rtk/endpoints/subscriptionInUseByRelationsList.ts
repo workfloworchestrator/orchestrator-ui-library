@@ -1,19 +1,15 @@
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
 import { orchestratorApi } from '@/rtk';
 import { CacheTagType } from '@/types';
-import {
-    InUseByRelationDetail,
-    InUseByRelationsDetailResult,
-    SubscriptionStatus,
-} from '@/types';
+import { InUseByRelationDetail, InUseByRelationsDetailResult, SubscriptionStatus } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 const nonTerminalSubscriptionStatuses = [
-    SubscriptionStatus.INITIAL,
-    SubscriptionStatus.ACTIVE,
-    SubscriptionStatus.MIGRATING,
-    SubscriptionStatus.DISABLED,
-    SubscriptionStatus.PROVISIONING,
+  SubscriptionStatus.INITIAL,
+  SubscriptionStatus.ACTIVE,
+  SubscriptionStatus.MIGRATING,
+  SubscriptionStatus.DISABLED,
+  SubscriptionStatus.PROVISIONING,
 ].join('|');
 
 export const subscriptionInUseByRelationQuery = `
@@ -38,32 +34,26 @@ export const subscriptionInUseByRelationQuery = `
 `;
 
 export type InUseByRelationsDetailResponse = {
-    inUseByRelationDetails: InUseByRelationDetail[];
+  inUseByRelationDetails: InUseByRelationDetail[];
 };
 
 const subscriptionInUseByRelationsListApi = orchestratorApi.injectEndpoints({
-    endpoints: (builder) => ({
-        getInUseByRelationDetails: builder.query<
-            InUseByRelationsDetailResponse,
-            { subscriptionIds: string }
-        >({
-            query: (variables) => ({
-                document: subscriptionInUseByRelationQuery,
-                variables,
-            }),
-            transformResponse: (
-                response: InUseByRelationsDetailResult,
-            ): InUseByRelationsDetailResponse => {
-                const subscriptions = response.subscriptions.page || [];
+  endpoints: (builder) => ({
+    getInUseByRelationDetails: builder.query<InUseByRelationsDetailResponse, { subscriptionIds: string }>({
+      query: (variables) => ({
+        document: subscriptionInUseByRelationQuery,
+        variables,
+      }),
+      transformResponse: (response: InUseByRelationsDetailResult): InUseByRelationsDetailResponse => {
+        const subscriptions = response.subscriptions.page || [];
 
-                return {
-                    inUseByRelationDetails: subscriptions,
-                };
-            },
-            providesTags: getCacheTag(CacheTagType.subscriptions),
-        }),
+        return {
+          inUseByRelationDetails: subscriptions,
+        };
+      },
+      providesTags: getCacheTag(CacheTagType.subscriptions),
     }),
+  }),
 });
 
-export const { useGetInUseByRelationDetailsQuery } =
-    subscriptionInUseByRelationsListApi;
+export const { useGetInUseByRelationDetailsQuery } = subscriptionInUseByRelationsListApi;
