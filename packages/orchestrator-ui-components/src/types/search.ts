@@ -161,7 +161,7 @@ export type PathInfo = {
 
 /** ---------- Agent visualization types ---------- */
 
-export type AggregationResult = {
+export type ResultRow = {
     group_values: Record<string, string>;
     aggregations: Record<string, number>;
 };
@@ -177,11 +177,26 @@ export enum VisualizationType {
     TABLE = 'table',
 }
 
-export type AggregationResultsData = {
-    results: AggregationResult[];
-    total_groups: number;
+export type QueryResultsData = {
+    results: ResultRow[];
+    total_results: number;
     metadata: SearchMetadata;
     visualization_type: {
         type: VisualizationType;
     };
+};
+
+export type QueryArtifact = {
+    query_id: string;
+    total_results: number;
+    visualization_type: {
+        type: VisualizationType;
+    };
+    description: string;
+};
+
+export type ExportArtifact = {
+    query_id: string;
+    download_url: string;
+    description: string;
 };

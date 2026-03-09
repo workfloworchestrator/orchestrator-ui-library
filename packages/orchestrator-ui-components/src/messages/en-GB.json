@@ -558,6 +558,11 @@
                 "get_valid_operators": "I'm getting valid operators",
                 "set_temporal_grouping": "I'm setting temporal grouping"
             },
+            "planProgress": {
+                "planning": "Planning...",
+                "completed": "Plan completed",
+                "executing": "Executing plan ({completed}/{total})"
+            },
             "visualization": {
                 "noDataAvailable": "No data available for visualization.",
                 "invalidDataStructure": "Invalid data structure."

@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import {
-    CatchAllActionRenderProps,
-    useCopilotAction,
-    useRenderToolCall,
-} from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 import { CopilotChat } from '@copilotkit/react-ui';
+import type { RenderMessageProps } from '@copilotkit/react-ui';
 
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
 import { getPageTemplateStyles } from '@/components/WfoPageTemplate/WfoPageTemplate/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import {
+    type PlanExecutionState,
+    useAgentPlanEvents,
+} from '@/hooks/useAgentPlanEvents';
 import { useAgentAvailability } from '@/hooks/useBackendAvailability';
-import { AggregationResultsData } from '@/types';
+import { ExportArtifact, QueryArtifact } from '@/types';
 
-import { ExportButton, ExportData } from '../ExportButton';
-import { ToolProgress } from '../ToolProgress';
-import { WfoAgentVisualization } from '../WfoAgentVisualization';
+import { ExportButton } from '../ExportButton';
+import { WfoPlanProgress } from '../WfoPlanProgress';
+import { WfoQueryArtifact } from '../WfoQueryArtifact';
 
 export function WfoAgent() {
     const tPage = useTranslations('agent.page');
@@ -26,62 +27,109 @@ export function WfoAgent() {
         getPageTemplateStyles,
     );
     const agentAvailability = useAgentAvailability();
+    const planProgress = useAgentPlanEvents();
 
-    useRenderToolCall({
-        name: 'run_search',
-        render: ({ result }) => {
-            if (!result) {
-                return '';
-            }
-            return (
-                <WfoAgentVisualization
-                    aggregationData={result as AggregationResultsData}
-                />
-            );
-        },
-    });
+    // Use a ref so the RenderMessage callback stays stable (no blink)
+    // while always reading the latest plan progress
+    const planProgressRef = useRef<PlanExecutionState>(planProgress);
+    planProgressRef.current = planProgress;
 
-    useRenderToolCall({
-        name: 'run_aggregation',
-        render: ({ result }) => {
-            if (!result) {
-                return '';
+    const RenderMessage = useCallback(
+        ({
+            message,
+            messages,
+            inProgress,
+            index,
+            isCurrentMessage,
+            AssistantMessage,
+            UserMessage,
+            ImageRenderer,
+            onRegenerate,
+            ...rest
+        }: RenderMessageProps) => {
+            if (message.role === 'user') {
+                return UserMessage ? (
+                    <UserMessage
+                        key={index}
+                        rawData={message}
+                        message={message}
+                        ImageRenderer={ImageRenderer!}
+                    />
+                ) : null;
             }
-            return (
-                <WfoAgentVisualization
-                    aggregationData={result as AggregationResultsData}
-                />
-            );
+
+            if (message.role === 'assistant') {
+                const progress = planProgressRef.current;
+
+                // Show plan progress on the first assistant message
+                // after the last user message (the active response)
+                const lastUserIndex = [...messages]
+                    .reverse()
+                    .findIndex((m) => m.role === 'user');
+                const firstAssistantAfterUser =
+                    lastUserIndex >= 0 ? messages.length - lastUserIndex : -1;
+                const showPlanProgress =
+                    index === firstAssistantAfterUser &&
+                    (progress.planning || progress.steps.length > 0);
+
+                return (
+                    <>
+                        {showPlanProgress && (
+                            <WfoPlanProgress executionState={progress} />
+                        )}
+                        {AssistantMessage && (
+                            <AssistantMessage
+                                key={index}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generativeUI is an internal CopilotKit property not in public types
+                                subComponent={(message as any).generativeUI?.()}
+                                rawData={message}
+                                message={message}
+                                messages={messages}
+                                isLoading={
+                                    inProgress &&
+                                    isCurrentMessage &&
+                                    !message.content
+                                }
+                                isGenerating={
+                                    inProgress &&
+                                    isCurrentMessage &&
+                                    !!message.content
+                                }
+                                isCurrentMessage={isCurrentMessage}
+                                onRegenerate={() => onRegenerate?.(message.id)}
+                                feedback={
+                                    rest.messageFeedback?.[message.id] || null
+                                }
+                                ImageRenderer={ImageRenderer!}
+                                {...rest}
+                            />
+                        )}
+                    </>
+                );
+            }
+
+            return null;
         },
-    });
+        [],
+    );
+
+    const renderQueryResult = ({ result }: { result?: unknown }) => {
+        if (!result) {
+            return <></>;
+        }
+        return <WfoQueryArtifact artifact={result as QueryArtifact} />;
+    };
+
+    useRenderToolCall({ name: 'run_search', render: renderQueryResult });
+    useRenderToolCall({ name: 'run_aggregation', render: renderQueryResult });
 
     useRenderToolCall({
         name: 'prepare_export',
         render: ({ result }) => {
             if (!result) {
-                return '';
+                return <></>;
             }
-            return <ExportButton exportData={result as ExportData} />;
-        },
-    });
-
-    // Automatically render all other tool calls
-    useCopilotAction({
-        name: '*',
-        render: ({
-            name,
-            status,
-            args,
-            result,
-        }: CatchAllActionRenderProps<[]>) => {
-            return (
-                <ToolProgress
-                    name={name}
-                    status={status}
-                    args={args}
-                    result={result}
-                />
-            );
+            return <ExportButton artifact={result as ExportArtifact} />;
         },
     });
 
@@ -99,6 +147,7 @@ export function WfoAgent() {
                 }
             `}</style>
                 <CopilotChat
+                    RenderMessage={RenderMessage}
                     labels={{
                         title: tPage('copilot.title'),
                         initial: tPage('copilot.initial'),

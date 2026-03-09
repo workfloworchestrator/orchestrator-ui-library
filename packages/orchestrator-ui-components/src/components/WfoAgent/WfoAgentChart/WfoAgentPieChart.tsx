@@ -12,13 +12,13 @@ import {
 import '@elastic/charts/dist/theme_only_dark.css';
 import '@elastic/charts/dist/theme_only_light.css';
 
-import { AggregationResultsData } from '@/types';
+import { QueryResultsData } from '@/types';
 
 import { useOrchestratorTheme } from '../../../hooks';
 import { containerStyle } from './styles';
 
 export type WfoAgentPieChartProps = {
-    aggregationData: AggregationResultsData;
+    aggregationData: QueryResultsData;
 };
 
 export function WfoAgentPieChart({ aggregationData }: WfoAgentPieChartProps) {

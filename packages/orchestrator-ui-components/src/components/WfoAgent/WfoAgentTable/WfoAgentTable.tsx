@@ -2,10 +2,10 @@ import React from 'react';
 
 import { EuiBasicTable, EuiBasicTableColumn } from '@elastic/eui';
 
-import { AggregationResult, AggregationResultsData } from '@/types';
+import { QueryResultsData, ResultRow } from '@/types';
 
 export type WfoAgentTableProps = {
-    aggregationData: AggregationResultsData;
+    aggregationData: QueryResultsData;
 };
 
 const formatColumnName = (key: string) =>
@@ -16,32 +16,33 @@ export function WfoAgentTable({ aggregationData }: WfoAgentTableProps) {
     const [pageIndex, setPageIndex] = React.useState(0);
     const [pageSize, setPageSize] = React.useState(5);
 
-    const columns: EuiBasicTableColumn<AggregationResult>[] =
-        React.useMemo(() => {
-            if (results.length === 0) return [];
+    const columns: EuiBasicTableColumn<ResultRow>[] = React.useMemo(() => {
+        if (results.length === 0) return [];
 
-            const firstResult = results[0];
-            const groupKeys = Object.keys(firstResult.group_values);
-            const aggKeys = Object.keys(firstResult.aggregations);
+        const firstResult = results[0];
+        const groupKeys = Object.keys(firstResult.group_values);
+        const aggKeys = Object.keys(firstResult.aggregations);
 
-            const groupColumns: EuiBasicTableColumn<AggregationResult>[] =
-                groupKeys.map((key) => ({
-                    field: 'group_values' as keyof AggregationResult,
-                    name: formatColumnName(key),
-                    render: (_: unknown, record: AggregationResult) =>
-                        record.group_values[key],
-                }));
+        const groupColumns: EuiBasicTableColumn<ResultRow>[] = groupKeys.map(
+            (key) => ({
+                field: 'group_values' as keyof ResultRow,
+                name: formatColumnName(key),
+                render: (_: unknown, record: ResultRow) =>
+                    record.group_values[key],
+            }),
+        );
 
-            const aggColumns: EuiBasicTableColumn<AggregationResult>[] =
-                aggKeys.map((key) => ({
-                    field: 'aggregations' as keyof AggregationResult,
-                    name: formatColumnName(key),
-                    render: (_: unknown, record: AggregationResult) =>
-                        record.aggregations[key],
-                }));
+        const aggColumns: EuiBasicTableColumn<ResultRow>[] = aggKeys.map(
+            (key) => ({
+                field: 'aggregations' as keyof ResultRow,
+                name: formatColumnName(key),
+                render: (_: unknown, record: ResultRow) =>
+                    record.aggregations[key],
+            }),
+        );
 
-            return [...groupColumns, ...aggColumns];
-        }, [results]);
+        return [...groupColumns, ...aggColumns];
+    }, [results]);
 
     const startIndex = pageIndex * pageSize;
     const paginatedItems = results.slice(startIndex, startIndex + pageSize);
