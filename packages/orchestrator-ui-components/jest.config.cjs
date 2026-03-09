@@ -11,7 +11,10 @@ const createJestConfig = nextJest({
 const customJestConfig = {
     ...base,
     displayName: 'Wfo-UI Tests',
-    moduleNameMapper: { '^uuid$': 'uuid' },
+    moduleNameMapper: {
+        '^uuid$': 'uuid',
+        '^@copilotkit/react-core/v2$': '<rootDir>/__mocks__/@copilotkit/react-core.js',
+    },
 };
 
 module.exports = createJestConfig(customJestConfig);
