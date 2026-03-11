@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-// import { QueryBuilder } from 'react-querybuilder';
-
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { StoredTableConfig, WfoContentHeader, WfoFirstPartUUID, WfoStructuredSearchTable } from '@/components';
 import type { WfoStructuredSearchTableDataColumnConfig } from '@/components';
+import { StoredTableConfig, WfoContentHeader, WfoFirstPartUUID, WfoStructuredSearchTable } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
-import { SearchPayload } from '@/rtk';
-import { useSearchMutation } from '@/rtk';
-import { SearchResult } from '@/types';
-
-/*
-entity_id: string;
-entity_type: EntityKind;
-entity_title: string;
-score: number;
-perfect_match: number;
-matching_field?: MatchingField | null;
-*/
+import { SearchPayload, useSearchMutation } from '@/rtk';
+import { Filter, RetrieverType, SearchResult } from '@/types';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 export const WfoSearchPocPage = () => {
   const t = useTranslations('search.page');
+  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
+  const [queryText, setQueryText] = useState<string>();
+  const [filter, setFilter] = useState<Filter>();
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
   const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResult>>();
@@ -38,14 +29,6 @@ export const WfoSearchPocPage = () => {
       setTableDefaults(storedConfig);
     }
   }, [getStoredTableConfig]);
-
-  const onSearch = (queryText: string) => {
-    const searchPayload: SearchPayload = {
-      query: queryText,
-      entity_type: 'SUBSCRIPTION',
-    };
-    triggerSearch(searchPayload);
-  };
 
   const tableColumnConfig: WfoStructuredSearchTableDataColumnConfig<SearchResult> = {
     entity_id: {
@@ -89,6 +72,34 @@ export const WfoSearchPocPage = () => {
     },
   };
 
+  const search = (searchParams: { queryText?: string; retrieverType?: RetrieverType; filters?: Filter }) => {
+    const retriever = searchParams.retrieverType || retrieverType;
+    const query = searchParams.queryText || queryText || '';
+    const filters = searchParams.filters;
+    const searchPayload: SearchPayload = {
+      query,
+      entity_type: 'SUBSCRIPTION',
+      ...(retriever !== RetrieverType.Auto && { retriever }),
+      ...(filters && { filters }),
+    };
+    triggerSearch(searchPayload);
+  };
+
+  const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
+    setRetrieverType(retrieverType);
+    search({ retrieverType });
+  };
+
+  const onUpdateQueryText = (queryText: string) => {
+    setQueryText(queryText);
+    search({ queryText });
+  };
+
+  const onUpdateFilter = (filter: Filter) => {
+    setFilter(filter);
+    search({ filters: filter });
+  };
+
   return (
     <>
       <WfoContentHeader title="Search page POC" />
@@ -97,53 +108,15 @@ export const WfoSearchPocPage = () => {
         data={data?.data || []}
         isLoading={isLoading}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
-        onUpdateQueryString={(queryText) => {
-          onSearch(queryText);
-        }}
+        onUpdateQueryText={onUpdateQueryText}
         tableColumnConfig={tableColumnConfig}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
+        queryText={queryText}
+        retrieverType={retrieverType}
+        onUpdateRetrieverType={onUpdateRetrieverType}
+        filter={filter}
+        onUpdateFilter={onUpdateFilter}
       />
     </>
   );
 };
-
-/*
-*
-* export type WfoTableProps<T extends object> = {
-  data: T[];
-   // Ommited in parent type columnConfig: WfoTableColumnConfig<T>;
-  hiddenColumns?: TableColumnKeys<T>;
-  columnOrder?: TableColumnKeys<T>;
-  isLoading?: boolean;
-  dataSorting?: WfoDataSorting<T>[];
-  rowExpandingConfiguration?: {
-    uniqueRowId: keyof WfoTableColumnConfig<T>;
-    uniqueRowIdToExpandedRowMap: Record<string, ReactNode>;
-  };
-  pagination?: Pagination;
-  overrideHeader?: (
-    tableHeaderEntries: Array<[string, WfoTableControlColumnConfigItem<T> | WfoTableDataColumnConfigItem<T, keyof T>]>,
-  ) => ReactNode;
-  onRowClick?: (row: T) => void;
-  onUpdateDataSorting?: (updatedDataSorting: WfoDataSorting<T>) => void;
-  onUpdateDataSearch?: (updatedDataSearch: WfoDataSearch<T>) => void;
-  appendFillerColumn?: boolean;
-  className?: string;
-  isVirtualized?: boolean;
-  height?: number;
-};
-*
-*   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
-  defaultHiddenColumns?: TableColumnKeys<T>;
-  queryString?: string;
-  localStorageKey: string;
-  detailModal?: boolean;
-  detailModalTitle?: string;
-  exportDataIsLoading?: boolean;
-  error?: WfoGraphqlError[];
-  onUpdateQueryString: (queryString: string) => void;
-  onExportData?: () => void;
-*
-*
-*
-* */
