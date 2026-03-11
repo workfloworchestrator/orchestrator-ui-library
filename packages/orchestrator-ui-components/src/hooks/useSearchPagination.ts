@@ -4,7 +4,7 @@ import { Query } from '@elastic/eui';
 
 import { buildSearchParams } from '@/components/WfoSearchPage/utils';
 import { useSearchWithPaginationMutation } from '@/rtk/endpoints';
-import { EntityKind, Group, PaginatedSearchResults, RetrieverType, SearchResult } from '@/types';
+import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SearchResult } from '@/types';
 
 interface PageHistoryItem {
   page: number;
@@ -26,7 +26,7 @@ interface UseSearchPaginationReturn {
 export const useSearchPagination = (
   debouncedQuery: Query | string,
   selectedEntityTab: EntityKind,
-  filterGroup: Group,
+  filterGroup: Filter,
   pageSize: number,
   results: PaginatedSearchResults,
   setResults: (results: PaginatedSearchResults) => void,

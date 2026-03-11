@@ -2,7 +2,7 @@ import { getEndpointPath } from '@/components/WfoSearchPage/utils';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   EntityKind,
-  Group,
+  Filter,
   PaginatedSearchResults,
   PathAutocompleteResponse,
   RetrieverType,
@@ -12,7 +12,7 @@ import {
 export interface SearchPayload {
   entity_type: EntityKind;
   query: string;
-  filters?: Group;
+  filters?: Filter;
   limit?: number;
   retriever?: RetrieverType;
 }

@@ -1,4 +1,4 @@
-import { Condition, EntityKind, Group, RetrieverType, SearchResult } from '@/types';
+import { Condition, EntityKind, Filter, RetrieverType, SearchResult } from '@/types';
 
 export function isSubscriptionSearchResult(item: SearchResult): boolean {
   return item.entity_type === 'SUBSCRIPTION';
@@ -16,7 +16,7 @@ export function isWorkflowSearchResult(item: SearchResult): boolean {
   return item.entity_type === 'WORKFLOW';
 }
 
-export const isCondition = (item: Group | Condition): item is Condition => {
+export const isCondition = (item: Filter | Condition): item is Condition => {
   return 'path' in item && 'condition' in item;
 };
 
@@ -117,7 +117,7 @@ export const getButtonFill = (op: string, pathInfo: PathInfo | null, condition: 
   return condition.condition.op === op;
 };
 
-export const isFilterValid = (group: Group): boolean => {
+export const isFilterValid = (group: Filter): boolean => {
   return group.children.every((child) => {
     if (isCondition(child)) {
       return child.path && child.condition.op && child.condition.value !== undefined;
@@ -133,7 +133,7 @@ interface SearchQuery {
 export const buildSearchParams = (
   debouncedQuery: SearchQuery | string,
   selectedEntityTab: EntityKind,
-  filterGroup: Group,
+  filterGroup: Filter,
   pageSize: number,
   retriever?: Exclude<RetrieverType, 'auto'>,
 ) => {

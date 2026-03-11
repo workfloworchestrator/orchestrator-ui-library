@@ -83,7 +83,7 @@ type ActionType = 'select';
 type BaseSearchParameters = {
   query?: string | null;
 
-  filters?: PathFilter[] | Group | null;
+  filters?: PathFilter[] | Filter | null;
 
   action: ActionType;
 };
@@ -116,9 +116,9 @@ export type Condition = {
   condition: { op: string; value?: unknown };
 };
 
-export type Group = {
+export type Filter = {
   op: 'AND' | 'OR';
-  children: Array<Group | Condition>;
+  children: Array<Filter | Condition>;
 };
 
 export type value_schema = {
