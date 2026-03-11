@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiButtonIcon,
+  EuiFieldSearch,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiSelect,
+  EuiSpacer,
+  EuiText,
+} from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -15,7 +25,6 @@ import {
   WfoInformationModal,
   WfoKeyValueTable,
   WfoKeyValueTableDataType,
-  WfoSearchField,
   clearTableConfigFromLocalStorage,
   setTableConfigToLocalStorage,
 } from '@/components';
@@ -25,13 +34,15 @@ import {
   WfoTableControlColumnConfigItem,
   WfoTableDataColumnConfigItem,
 } from '@/components/WfoTable/WfoTable';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
+import { getFormFieldsBaseStyle } from '@/theme';
+import { Filter, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
-import { updateQueryString } from '../WfoTableWithFilter/updateQueryString';
+import { WfoFilterBuilder } from './WfoFilterBuilder';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -53,23 +64,31 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
 > & {
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
   defaultHiddenColumns?: TableColumnKeys<T>;
-  queryString?: string;
+  queryText?: string;
   localStorageKey: string;
   exportDataIsLoading?: boolean;
   error?: WfoGraphqlError[];
-  onUpdateQueryString: (queryString: string) => void;
+  onUpdateQueryText: (queryString: string) => void;
   onExportData?: () => void;
+  retrieverType: RetrieverType;
+  onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
+  filter?: Filter;
+  onUpdateFilter: (filter: Filter) => void;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
-  queryString,
+  queryText,
   localStorageKey,
   exportDataIsLoading,
   error,
-  onUpdateQueryString,
+  onUpdateQueryText,
   onExportData,
+  retrieverType,
+  onUpdateRetrieverType,
+  filter,
+  onUpdateFilter,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -143,12 +162,53 @@ export const WfoStructuredSearchTable = <T extends object>({
     pagination?.onChangeItemsPerPage?.(defaultTableConfig.selectedPageSize ?? DEFAULT_PAGE_SIZE);
     pagination?.onChangePage?.(0);
   };
+  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
 
   return (
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <WfoSearchField queryString={queryString} onUpdateQueryString={onUpdateQueryString} />
+          <WfoFilterBuilder filter={filter} onUpdateFilter={onUpdateFilter} />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiFlexGroup alignItems="center">
+        <EuiFlexItem>
+          <EuiFormRow fullWidth>
+            <EuiFieldSearch
+              css={formFieldBaseStyle}
+              value={queryText}
+              placeholder={`${t('search')}...`}
+              onSearch={(queryText) => onUpdateQueryText(queryText)}
+              fullWidth
+            />
+          </EuiFormRow>
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiSelect
+            options={[
+              {
+                value: RetrieverType.Auto,
+                text: t('retrieverAuto'),
+              },
+              {
+                value: RetrieverType.Fuzzy,
+                text: t('retrieverFuzzy'),
+              },
+              {
+                value: RetrieverType.Semantic,
+                text: t('retrieverSemantic'),
+              },
+              {
+                value: RetrieverType.Hybrid,
+                text: t('retrieverHybrid'),
+              },
+            ]}
+            value={retrieverType}
+            onChange={(e) => onUpdateRetrieverType(e.target.value as RetrieverType)}
+            compressed
+            prepend={t('retrieval')}
+          />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiButtonIcon
@@ -167,14 +227,7 @@ export const WfoStructuredSearchTable = <T extends object>({
       </EuiFlexGroup>
       {error && <WfoErrorWithMessage error={error} />}
       <EuiSpacer size="m" />
-      <WfoTable
-        columnConfig={tableColumnsWithControlColumns}
-        hiddenColumns={hiddenColumns}
-        onUpdateDataSearch={({ field, searchText }) =>
-          onUpdateQueryString(updateQueryString(queryString ?? '', field.toString(), searchText))
-        }
-        {...tableProps}
-      />
+      <WfoTable columnConfig={tableColumnsWithControlColumns} hiddenColumns={hiddenColumns} {...tableProps} />
 
       {showTableSettingsModal && (
         <TableSettingsModal
