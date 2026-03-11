@@ -8,7 +8,7 @@ import { WfoBadge } from '@/components/WfoBadges';
 import { WfoPathBreadcrumb } from '@/components/WfoSearchPage/WfoSearchResults/WfoPathBreadcrumb';
 import { getOperatorDisplay, isCondition } from '@/components/WfoSearchPage/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { Condition, Group, PathDataType } from '@/types';
+import { Condition, Filter, PathDataType } from '@/types';
 
 import { getFilterDisplayStyles } from './SetFilterTreeDisplay.styles';
 
@@ -34,7 +34,7 @@ export const SetFilterTreeDisplay = ({ parameters }: SetFilterTreeDisplayProps) 
     useWithOrchestratorTheme(getFilterDisplayStyles);
 
   // Parameters might be the Group directly, or wrapped in a filters property
-  const filters = (parameters?.filters || parameters) as Group;
+  const filters = (parameters?.filters || parameters) as Filter;
 
   const formatFilterValue = (condition: Condition['condition']): string => {
     if ('value' in condition && condition.value !== undefined) {
@@ -49,7 +49,7 @@ export const SetFilterTreeDisplay = ({ parameters }: SetFilterTreeDisplayProps) 
     return '—';
   };
 
-  const renderFilterGroup = (group: Group, depth = 0): React.ReactNode => {
+  const renderFilterGroup = (group: Filter, depth = 0): React.ReactNode => {
     if (!group.children || group.children.length === 0) {
       return (
         <EuiText size="s" color="subdued">
