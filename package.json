@@ -25,7 +25,7 @@
   },
   "name": "orchestrator-core-ui",
   "workspaces": [
-    "apps/*",
+    "apps/storybook",
     "packages/*"
   ],
   "packageManager": "npm@10.9.0"
