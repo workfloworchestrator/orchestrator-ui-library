@@ -2,8 +2,9 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiLoadingSpinner, EuiText } from '@elastic/eui';
+import { EuiText } from '@elastic/eui';
 
+import { WfoLoading } from '@/components';
 import { useGetAgentQueryResultsQuery } from '@/rtk/endpoints/agentQueryResults';
 import { QueryArtifact } from '@/types';
 
@@ -18,7 +19,7 @@ export function WfoQueryArtifact({ artifact }: WfoQueryArtifactProps) {
   const { data, isLoading, isError } = useGetAgentQueryResultsQuery(artifact.query_id);
 
   if (isLoading) {
-    return <EuiLoadingSpinner size="m" />;
+    return <WfoLoading />;
   }
 
   if (isError || !data) {
