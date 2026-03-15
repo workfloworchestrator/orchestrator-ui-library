@@ -35,9 +35,9 @@
   },
   "dependencies": {
     "@ag-ui/client": "^0.0.47",
-    "@copilotkit/react-core": "1.53.1-next.2",
-    "@copilotkit/react-ui": "1.53.1-next.2",
-    "@copilotkit/runtime": "1.53.1-next.2",
+    "@copilotkit/react-core": "1.54.0",
+    "@copilotkit/react-ui": "1.54.0",
+    "@copilotkit/runtime": "1.54.0",
     "@elastic/charts": "^64.1.0",
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.4",
@@ -83,8 +83,6 @@
     "typescript": "^5.5.2"
   },
   "peerDependencies": {
-    "@copilotkit/react-core": "1.53.1-next.2",
-    "@copilotkit/react-ui": "1.53.1-next.2",
     "@elastic/eui": "^113.1.0",
     "next": "^15.5.9",
     "react": "^18.3.1",
