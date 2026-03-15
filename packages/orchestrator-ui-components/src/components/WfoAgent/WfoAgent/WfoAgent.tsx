@@ -53,7 +53,7 @@ export function WfoAgent() {
 
         // Show plan progress on the first assistant message
         // after the last user message (the active response)
-        const lastUserIndex = [...messages].reverse().findIndex((m) => m.role === 'user');
+        const lastUserIndex = [...messages].reverse().findIndex((msg) => msg.role === 'user');
         const firstAssistantAfterUser = lastUserIndex >= 0 ? messages.length - lastUserIndex : -1;
         const showPlanProgress = index === firstAssistantAfterUser && (progress.planning || progress.steps.length > 0);
 

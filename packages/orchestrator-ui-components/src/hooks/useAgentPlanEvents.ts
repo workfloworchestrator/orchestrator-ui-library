@@ -5,10 +5,10 @@ import type { AgentSubscriber } from '@ag-ui/client';
 import { useAgent } from '@copilotkit/react-core/v2';
 
 /** AG-UI custom event names emitted by the backend agent. */
-const AGENT_EVENT = {
-  PLAN_CREATED: 'PLAN_CREATED',
-  STEP_ACTIVE: 'AGENT_STEP_ACTIVE',
-} as const;
+enum AgentEvent {
+  PLAN_CREATED = 'PLAN_CREATED',
+  STEP_ACTIVE = 'AGENT_STEP_ACTIVE',
+}
 
 /** The backend step name used for the planning phase (not a real task). */
 const PLANNER_STEP_NAME = 'Planner';
@@ -40,7 +40,7 @@ const updateSteps = (
   steps: PlanStep[],
   predicate: (step: PlanStep) => boolean,
   updater: (step: PlanStep) => PlanStep,
-): PlanStep[] => steps.map((s) => (predicate(s) ? updater(s) : s));
+): PlanStep[] => steps.map((step) => (predicate(step) ? updater(step) : step));
 
 export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecutionState {
   const { agent } = useAgent({ agentId });
@@ -56,7 +56,7 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
         const event = params?.event;
         if (!event) return;
 
-        if (event.name === AGENT_EVENT.PLAN_CREATED) {
+        if (event.name === AgentEvent.PLAN_CREATED) {
           const tasks = event.value as Array<{
             skillName: string;
             reasoning: string;
@@ -75,7 +75,7 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
           return;
         }
 
-        if (event.name === AGENT_EVENT.STEP_ACTIVE) {
+        if (event.name === AgentEvent.STEP_ACTIVE) {
           const stepName = event.value?.step;
           if (!stepName) return;
 
@@ -93,12 +93,12 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
             // Mark previous active step as completed
             const steps = updateSteps(
               prev.steps,
-              (s) => s.status === 'active',
-              (s) => ({ ...s, status: 'completed' as const }),
+              (step) => step.status === 'active',
+              (step) => ({ ...step, status: 'completed' as const }),
             );
 
             // If step already exists (from PLAN_CREATED), activate it
-            const existingIndex = steps.findIndex((s) => s.step_name === stepName);
+            const existingIndex = steps.findIndex((step) => step.step_name === stepName);
             if (existingIndex >= 0) {
               steps[existingIndex] = {
                 ...steps[existingIndex],
@@ -121,18 +121,18 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
 
       onToolCallStartEvent: ({ event }) => {
         setExecutionState((prev) => {
-          const currentStep = prev.steps.find((s) => s.status === 'active');
+          const currentStep = prev.steps.find((step) => step.status === 'active');
           if (!currentStep) return prev;
 
           return {
             ...prev,
             steps: updateSteps(
               prev.steps,
-              (s) => s.step_name === currentStep.step_name,
-              (s) => ({
-                ...s,
+              (step) => step.step_name === currentStep.step_name,
+              (step) => ({
+                ...step,
                 tool_calls: [
-                  ...s.tool_calls,
+                  ...step.tool_calls,
                   {
                     id: event.toolCallId,
                     name: event.toolCallName,
@@ -150,11 +150,11 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
           ...prev,
           steps: updateSteps(
             prev.steps,
-            (s) => s.tool_calls.some((tc) => tc.id === event.toolCallId),
-            (s) => ({
-              ...s,
-              tool_calls: s.tool_calls.map((tc) =>
-                tc.id === event.toolCallId ? { ...tc, status: 'complete' as const } : tc,
+            (step) => step.tool_calls.some((toolCall) => toolCall.id === event.toolCallId),
+            (step) => ({
+              ...step,
+              tool_calls: step.tool_calls.map((toolCall) =>
+                toolCall.id === event.toolCallId ? { ...toolCall, status: 'complete' as const } : toolCall,
               ),
             }),
           ),
@@ -170,8 +170,8 @@ export function useAgentPlanEvents(agentId: string = 'query_agent'): PlanExecuti
           planning: false,
           steps: updateSteps(
             prev.steps,
-            (s) => s.status === 'active',
-            (s) => ({ ...s, status: 'completed' as const }),
+            (step) => step.status === 'active',
+            (step) => ({ ...step, status: 'completed' as const }),
           ),
         }));
       },
