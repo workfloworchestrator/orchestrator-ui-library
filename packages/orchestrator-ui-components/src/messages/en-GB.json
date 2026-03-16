@@ -54,7 +54,10 @@
     "retrieverAuto": "Auto",
     "retrieverFuzzy": "Fuzzy",
     "retrieverSemantic": "Semantic",
-    "retrieverHybrid": "Hybrid"
+    "retrieverHybrid": "Hybrid",
+    "createFilter": "Create a filter",
+    "applyFilter": "Apply filter",
+    "cancel": "Cancel"
   },
   "confirmationDialog": {
     "title": "Please confirm",
