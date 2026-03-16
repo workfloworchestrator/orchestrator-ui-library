@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import type { RuleGroupType } from 'react-querybuilder';
+import { formatQuery } from 'react-querybuilder/formatQuery';
+import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -16,9 +19,14 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 export const WfoSearchPocPage = () => {
   const t = useTranslations('search.page');
-  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
+  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
+
+  // Part of the search endpoint payload that is passed in the q parameter
   const [queryText, setQueryText] = useState<string>();
-  const [filter, setFilter] = useState<Filter>();
+  // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
+  const [filterString, setFilterString] = useState<string>();
+  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType>();
+
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
   const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResult>>();
@@ -72,10 +80,15 @@ export const WfoSearchPocPage = () => {
     },
   };
 
-  const search = (searchParams: { queryText?: string; retrieverType?: RetrieverType; filters?: Filter }) => {
+  const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
+    return ruleGroup as unknown as Filter;
+  };
+
+  const search = (searchParams: { queryText?: string; retrieverType?: RetrieverType; ruleGroup?: RuleGroupType }) => {
     const retriever = searchParams.retrieverType || retrieverType;
     const query = searchParams.queryText || queryText || '';
-    const filters = searchParams.filters;
+    const filters = parseRuleGroupToFilters(searchParams.ruleGroup || queryBuilderRuleGroup);
+
     const searchPayload: SearchPayload = {
       query,
       entity_type: 'SUBSCRIPTION',
@@ -95,11 +108,17 @@ export const WfoSearchPocPage = () => {
     search({ queryText });
   };
 
-  const onUpdateFilter = (filter: Filter) => {
-    setFilter(filter);
-    search({ filters: filter });
+  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
+    setQueryBuilderRuleGroup({ ...ruleGroup });
+    const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel' });
+    setFilterString(celQuery);
   };
 
+  const onUpdateFilterString = (filterString: string) => {
+    setFilterString(filterString);
+    const ruleGroup: RuleGroupType = parseCEL(filterString);
+    setQueryBuilderRuleGroup(ruleGroup);
+  };
   return (
     <>
       <WfoContentHeader title="Search page POC" />
@@ -114,8 +133,10 @@ export const WfoSearchPocPage = () => {
         queryText={queryText}
         retrieverType={retrieverType}
         onUpdateRetrieverType={onUpdateRetrieverType}
-        filter={filter}
-        onUpdateFilter={onUpdateFilter}
+        queryBuilderRuleGroup={queryBuilderRuleGroup}
+        onUpdateQueryBuilder={onUpdateQueryBuilder}
+        filterString={filterString}
+        onUpdateFilterString={onUpdateFilterString}
       />
     </>
   );
