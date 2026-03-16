@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
@@ -38,7 +39,7 @@ import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 import { getFormFieldsBaseStyle } from '@/theme';
-import { Filter, RetrieverType } from '@/types';
+import { RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
@@ -72,8 +73,11 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onExportData?: () => void;
   retrieverType: RetrieverType;
   onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
-  filter?: Filter;
-  onUpdateFilter: (filter: Filter) => void;
+  filterString?: string;
+  onUpdateFilterString: (filterString: string) => void;
+  isValidFilterString?: boolean;
+  queryBuilderRuleGroup?: RuleGroupType;
+  onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -87,8 +91,11 @@ export const WfoStructuredSearchTable = <T extends object>({
   onExportData,
   retrieverType,
   onUpdateRetrieverType,
-  filter,
-  onUpdateFilter,
+  filterString,
+  onUpdateFilterString,
+  isValidFilterString,
+  queryBuilderRuleGroup,
+  onUpdateQueryBuilder,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -168,7 +175,13 @@ export const WfoStructuredSearchTable = <T extends object>({
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <WfoFilterBuilder filter={filter} onUpdateFilter={onUpdateFilter} />
+          <WfoFilterBuilder
+            filterString={filterString}
+            onUpdateFilterString={onUpdateFilterString}
+            isValidFilterString={isValidFilterString}
+            queryBuilderRuleGroup={queryBuilderRuleGroup}
+            onUpdateQueryBuilder={onUpdateQueryBuilder}
+          />
         </EuiFlexItem>
       </EuiFlexGroup>
 
