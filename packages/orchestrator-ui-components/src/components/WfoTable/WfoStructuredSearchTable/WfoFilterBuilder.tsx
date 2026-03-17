@@ -43,7 +43,12 @@ export const WfoFilterBuilder = ({
       {(isFilterBuilderVisible && (
         <EuiFlexGroup direction={'column'}>
           <EuiFlexItem>
-            <QueryBuilder query={queryBuilderRuleGroup} onQueryChange={onUpdateQueryBuilder} fields={fields} />
+            <QueryBuilder
+              query={queryBuilderRuleGroup}
+              onQueryChange={onUpdateQueryBuilder}
+              fields={fields}
+              disabled={!isValidFilterString}
+            />
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiTextArea
