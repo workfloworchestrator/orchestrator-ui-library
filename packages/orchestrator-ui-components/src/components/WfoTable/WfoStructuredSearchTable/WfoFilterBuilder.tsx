@@ -64,7 +64,6 @@ export const WfoFilterBuilder = ({
               resize={'vertical'}
               isInvalid={!isValidFilterString}
             />
-            {isValidFilterString ? 'valid' : 'error'}
           </EuiFlexItem>
 
           <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>

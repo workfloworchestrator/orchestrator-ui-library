@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
-import { defaultValidator } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
@@ -116,27 +115,25 @@ export const WfoSearchPocPage = () => {
     setFilterString(celQuery);
   };
 
-  const safeCelParse = (celString: string): RuleGroupType | null => {
+  const safeCelParse = (celString: string) => {
     try {
-      const query = parseCEL(celString);
-      // Optionally also check structural validity after parsing
-      const isValid = defaultValidator(query);
-      if (isValid === false) return null;
-      setIsValidFilterString(true);
-      return query;
-    } catch (e) {
+      const ruleGroup = parseCEL(celString);
+
+      // parseCEL returns a query object — check if it has any rules
+
+      if (ruleGroup.rules.length > 0) {
+        setIsValidFilterString(true);
+        setQueryBuilderRuleGroup(ruleGroup);
+      } else {
+        setIsValidFilterString(false);
+      }
+    } catch {
       setIsValidFilterString(false);
-      console.error('Invalid CEL expression:', e);
-      return null;
     }
   };
-
   const onUpdateFilterString = (filterString: string) => {
     setFilterString(filterString);
-    const ruleGroup: RuleGroupType | null = safeCelParse(filterString);
-    if (ruleGroup && isValidFilterString) {
-      setQueryBuilderRuleGroup(ruleGroup);
-    }
+    safeCelParse(filterString);
   };
 
   return (
