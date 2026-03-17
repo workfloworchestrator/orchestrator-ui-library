@@ -4,7 +4,6 @@ import { defaultValidator } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
-import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -120,15 +119,12 @@ export const WfoSearchPocPage = () => {
   const safeCelParse = (celString: string): RuleGroupType | null => {
     try {
       const query = parseCEL(celString);
-      console.log('try....', celString, query);
       // Optionally also check structural validity after parsing
       const isValid = defaultValidator(query);
-      console.log('isValid', isValid, _.isEmpty(isValid));
       if (isValid === false) return null;
       setIsValidFilterString(true);
       return query;
     } catch (e) {
-      console.log('..and fail..');
       setIsValidFilterString(false);
       console.error('Invalid CEL expression:', e);
       return null;
