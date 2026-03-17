@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
+import { defaultValidator } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
+import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -26,6 +28,7 @@ export const WfoSearchPocPage = () => {
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
   const [filterString, setFilterString] = useState<string>();
   const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType>();
+  const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
   const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
@@ -114,11 +117,32 @@ export const WfoSearchPocPage = () => {
     setFilterString(celQuery);
   };
 
+  const safeCelParse = (celString: string): RuleGroupType | null => {
+    try {
+      const query = parseCEL(celString);
+      console.log('try....', celString, query);
+      // Optionally also check structural validity after parsing
+      const isValid = defaultValidator(query);
+      console.log('isValid', isValid, _.isEmpty(isValid));
+      if (isValid === false) return null;
+      setIsValidFilterString(true);
+      return query;
+    } catch (e) {
+      console.log('..and fail..');
+      setIsValidFilterString(false);
+      console.error('Invalid CEL expression:', e);
+      return null;
+    }
+  };
+
   const onUpdateFilterString = (filterString: string) => {
     setFilterString(filterString);
-    const ruleGroup: RuleGroupType = parseCEL(filterString);
-    setQueryBuilderRuleGroup(ruleGroup);
+    const ruleGroup: RuleGroupType | null = safeCelParse(filterString);
+    if (ruleGroup && isValidFilterString) {
+      setQueryBuilderRuleGroup(ruleGroup);
+    }
   };
+
   return (
     <>
       <WfoContentHeader title="Search page POC" />
@@ -126,6 +150,7 @@ export const WfoSearchPocPage = () => {
       <WfoStructuredSearchTable<SearchResult>
         data={data?.data || []}
         isLoading={isLoading}
+        isValidFilterString={isValidFilterString}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         onUpdateQueryText={onUpdateQueryText}
         tableColumnConfig={tableColumnConfig}
