@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FieldSelectorProps } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
@@ -37,6 +37,22 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
   const { paths, loading: isLoading, error: errorMessage } = usePathAutocomplete(selectedValue, 'SUBSCRIPTION');
   const options = getOptionsFromPathInfo(paths);
 
+  const storeFieldOperators = (selectedValue: string) => {
+    const matchingPath =
+      paths.find((path) => path.path === selectedValue)
+      ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
+    context?.onFieldSelected?.(selectedValue, matchingPath?.operators ?? []);
+  };
+
+  const handleFieldSelection = (selectedOptions: EuiComboBoxOptionOption<string>[]) => {
+    const selectedOption = selectedOptions[0];
+    const selectedValue = selectedOption?.value || '';
+    setSelectedValue(selectedValue);
+    storeFieldOperators(selectedValue);
+
+    handleOnChange(selectedValue);
+  };
+
   return (
     <EuiComboBox
       placeholder={t('searchFieldsPlaceholder')}
@@ -44,11 +60,7 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
       fullWidth={true}
       selectedOptions={options.filter((option) => option.value === selectedValue)}
       onChange={(selectedOptions) => {
-        const selectedOption = selectedOptions[0];
-        const selectedValue = selectedOption?.value || '';
-        context = { ...context, field: selectedValue };
-        setSelectedValue(selectedValue);
-        handleOnChange(selectedValue);
+        handleFieldSelection(selectedOptions);
       }}
       onSearchChange={(inputValue) => {
         if (inputValue.length > 0) {

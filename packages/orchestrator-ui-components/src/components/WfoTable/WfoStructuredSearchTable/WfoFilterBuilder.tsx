@@ -13,6 +13,8 @@ import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { getWfoStructuredSearchTableStyles } from './styles';
 
+type FieldOperatorsMap = Record<string, string[]>;
+
 interface WfoFilterBuilderProps {
   filterString?: string;
   onUpdateFilterString: (filterString: string) => void;
@@ -34,6 +36,11 @@ export const WfoFilterBuilder = ({
     getWfoStructuredSearchTableStyles,
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(true);
+  const [fieldOperatorsMap, setFieldOperatorsMap] = useState<FieldOperatorsMap>({});
+
+  const handleFieldSelected = (field: string, operators: string[]) => {
+    setFieldOperatorsMap((prev) => ({ ...prev, [field]: operators }));
+  };
 
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
@@ -44,7 +51,9 @@ export const WfoFilterBuilder = ({
               query={queryBuilderRuleGroup}
               onQueryChange={onUpdateQueryBuilder}
               disabled={!isValidFilterString}
-              controlElHoements={{ fieldSelector: WfoFieldSelector, operatorSelector: WfoOperatorSelector }}
+              context={{ onFieldSelected: handleFieldSelected }}
+              // getOperators={(field) => (fieldOperatorsMap[field] ?? []).map((op) => ({ name: op, label: op }))}
+              controlElements={{ fieldSelector: WfoFieldSelector, operatorSelector: WfoOperatorSelector }}
             />
           </EuiFlexItem>
           <EuiFlexItem>
