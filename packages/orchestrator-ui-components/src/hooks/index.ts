@@ -13,4 +13,5 @@ export * from './useGetOrchestratorConfig';
 export * from './useBackendAvailability';
 export * from './useGetSchedulesForWorkflow';
 export * from './useGetWorkflowNameById';
+export * from './usePathAutoComplete';
 export * from './useGetPydanticFormsConfig';

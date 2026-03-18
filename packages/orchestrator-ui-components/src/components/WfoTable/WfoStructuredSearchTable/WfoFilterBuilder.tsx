@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type Field, QueryBuilder, type RuleGroupType } from 'react-querybuilder';
+import { QueryBuilder, type RuleGroupType } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
@@ -9,6 +9,8 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui'
 import { WfoTextAnchor } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
 
+import { WfoFieldSelector } from './WfoFieldSelector';
+import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { getWfoStructuredSearchTableStyles } from './styles';
 
 interface WfoFilterBuilderProps {
@@ -33,11 +35,6 @@ export const WfoFilterBuilder = ({
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(true);
 
-  const fields: Field[] = [
-    { name: 'firstName', label: 'First Name' },
-    { name: 'lastName', label: 'Last Name' },
-  ];
-
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
       {(isFilterBuilderVisible && (
@@ -46,8 +43,8 @@ export const WfoFilterBuilder = ({
             <QueryBuilder
               query={queryBuilderRuleGroup}
               onQueryChange={onUpdateQueryBuilder}
-              fields={fields}
               disabled={!isValidFilterString}
+              controlElHoements={{ fieldSelector: WfoFieldSelector, operatorSelector: WfoOperatorSelector }}
             />
           </EuiFlexItem>
           <EuiFlexItem>
