@@ -18,6 +18,19 @@ export type WfoProductBlockKeyValueRowProps = {
   className?: string;
 };
 
+const WfoProductBlockValue: FC<{
+  value: RenderableFieldValue['value'];
+}> = ({ value }) => {
+  if (typeof value === 'boolean') {
+    return <EuiBadge>{value.toString()}</EuiBadge>;
+  } else if (Array.isArray(value)) {
+    const result = value.join(', ');
+    return <>{result}</>;
+  } else {
+    return <>{value}</>;
+  }
+};
+
 export const WfoProductBlockKeyValueRow: FC<WfoProductBlockKeyValueRowProps> = ({
   fieldValue,
   allFieldValues,
@@ -27,19 +40,6 @@ export const WfoProductBlockKeyValueRow: FC<WfoProductBlockKeyValueRowProps> = (
   const { getOverriddenValue } = useSubscriptionDetailValueOverride();
 
   const { field, value } = fieldValue;
-
-  const WfoProductBlockValue: FC<{
-    value: RenderableFieldValue['value'];
-  }> = ({ value }) => {
-    if (typeof value === 'boolean') {
-      return <EuiBadge>{value.toString()}</EuiBadge>;
-    } else if (Array.isArray(value)) {
-      const result = value.join(', ');
-      return <>{result}</>;
-    } else {
-      return <>{value}</>;
-    }
-  };
 
   return (
     <tr className={className} css={rowStyle}>
