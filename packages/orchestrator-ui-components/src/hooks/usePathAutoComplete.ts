@@ -53,7 +53,6 @@ const FALLBACK_DEFINITIONS: Record<
 export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
   const [paths, setPaths] = useState<PathInfo[]>([]);
   const debouncedPrefix = useDebounce(prefix, 300);
-
   const { data: definitions = FALLBACK_DEFINITIONS, isError: defError } = useSearchDefinitionsQuery();
 
   const {
@@ -88,7 +87,7 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
         displayLabel: leaf.name,
         ui_types: leaf.ui_types,
         availablePaths: leaf.paths || [],
-        pathCount: leaf.paths ? leaf.paths.length : 0,
+        pathCount: leaf.paths ? leaf.paths?.length : 0,
       });
     });
 
@@ -105,12 +104,12 @@ export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
         displayLabel: component.name,
         ui_types: component.ui_types,
         availablePaths: component.paths || [],
-        pathCount: component.paths ? component.paths.length : 0,
+        pathCount: component.paths ? component.paths?.length : 0,
       });
     });
 
     setPaths(enrichedPaths);
-  }, [pathData, definitions, debouncedPrefix.length]);
+  }, [pathData, definitions, debouncedPrefix?.length]);
 
   const errorMessage =
     isError ? 'Failed to load paths'
