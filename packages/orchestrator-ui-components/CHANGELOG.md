@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.6.0
+
+### Minor Changes
+
+- 57220a3: Add event-driven agent plan progress rendering and artifact-based query result fetching
+
 ## 7.5.1
 
 ### Patch Changes
