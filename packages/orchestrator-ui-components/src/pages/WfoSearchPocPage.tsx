@@ -82,7 +82,8 @@ export const WfoSearchPocPage = () => {
   };
 
   const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
-    return ruleGroup as unknown as Filter;
+    const elasticQuery = ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch' }) : undefined;
+    return elasticQuery as unknown as Filter;
   };
 
   const search = (searchParams: { queryText?: string; retrieverType?: RetrieverType; ruleGroup?: RuleGroupType }) => {
@@ -131,6 +132,7 @@ export const WfoSearchPocPage = () => {
       setIsValidFilterString(false);
     }
   };
+
   const onUpdateFilterString = (filterString: string) => {
     setFilterString(filterString);
     safeCelParse(filterString);
