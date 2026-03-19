@@ -16,7 +16,6 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
   const getOption = (path: string) => ({
     value: path,
     label: path,
-    operators: ['a', 'b', 'c'],
   });
   const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] => {
     const pathOptions: EuiComboBoxOptionOption<string>[] = [];
@@ -41,7 +40,7 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     const matchingPath =
       paths.find((path) => path.path === selectedValue)
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
-    context?.onFieldSelected?.(selectedValue, matchingPath?.operators ?? []);
+    context?.onFieldSelected?.(selectedValue, matchingPath);
   };
 
   const handleFieldSelection = (selectedOptions: EuiComboBoxOptionOption<string>[]) => {
