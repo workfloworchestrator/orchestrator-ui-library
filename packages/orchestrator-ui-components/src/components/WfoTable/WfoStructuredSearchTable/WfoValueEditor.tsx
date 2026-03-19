@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import type { ChangeEventHandler } from 'react';
 import type { ValueEditorProps } from 'react-querybuilder';
 
 import { EuiFieldText } from '@elastic/eui';
@@ -17,20 +18,18 @@ export const WfoValueEditor = (props: ValueEditorProps) => {
 
   const uiFieldType = fieldInfo?.uiField || UiFieldType.text;
 
-  const handleOnChange = (e) => {
-    const newValue = e.target.value;
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const newValue = e.target.value || '';
     props.handleOnChange(newValue);
     setValue(newValue);
   };
 
   const displayField = () => {
     switch (uiFieldType) {
-        default:
-          return (
-            <EuiFieldText value={value} onChange={handleOnChange} />;
-          )
+      default:
+        return <EuiFieldText value={value} onChange={handleOnChange} />;
     }
-  }
+  };
 
   return displayField();
 };

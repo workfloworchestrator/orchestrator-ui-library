@@ -7,13 +7,32 @@ import { useTranslations } from 'next-intl';
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui';
 
 import { WfoTextAnchor } from '@/components';
+import { getOperatorDisplay } from '@/components/WfoSearchPage/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { PathInfo } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
+import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
 
-type FieldOperatorsMap = Record<string, string[]>;
+// Maps PathInfo operator names to react-querybuilder's native operator names,
+// which is what parseCEL produces and formatQuery(cel) expects.
+const PATH_OP_TO_RQB_OP: Record<string, string> = {
+  eq: '=',
+  neq: '!=',
+  lt: '<',
+  lte: '<=',
+  gt: '>',
+  gte: '>=',
+  between: 'between',
+};
+/* TODO: Add the missing operators
+['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between'];
+['has_component', 'not_has_component'];
+['eq', 'neq', 'like']
+ */
+type FieldPathInfoMap = Map<string, PathInfo>;
 
 interface WfoFilterBuilderProps {
   filterString?: string;
@@ -36,10 +55,14 @@ export const WfoFilterBuilder = ({
     getWfoStructuredSearchTableStyles,
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(true);
-  const [fieldOperatorsMap, setFieldOperatorsMap] = useState<FieldOperatorsMap>({});
+  const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
 
-  const handleFieldSelected = (field: string, operators: string[]) => {
-    setFieldOperatorsMap((prev) => ({ ...prev, [field]: operators }));
+  const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
+    if (pathInfo) {
+      setFieldPathInfoMap((previousMap) => {
+        return new Map(previousMap).set(field, pathInfo);
+      });
+    }
   };
 
   return (
@@ -51,9 +74,19 @@ export const WfoFilterBuilder = ({
               query={queryBuilderRuleGroup}
               onQueryChange={onUpdateQueryBuilder}
               disabled={!isValidFilterString}
-              context={{ onFieldSelected: handleFieldSelected }}
-              // getOperators={(field) => (fieldOperatorsMap[field] ?? []).map((op) => ({ name: op, label: op }))}
-              controlElements={{ fieldSelector: WfoFieldSelector, operatorSelector: WfoOperatorSelector }}
+              context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
+              getOperators={(field) => {
+                const fieldInfo = fieldPathInfoMap.get(field);
+                return (fieldInfo?.operators ?? []).map((op) => {
+                  const { symbol, description } = getOperatorDisplay(op, fieldInfo);
+                  return { name: PATH_OP_TO_RQB_OP[op] ?? op, label: `${symbol} ${description}` };
+                });
+              }}
+              controlElements={{
+                fieldSelector: WfoFieldSelector,
+                operatorSelector: WfoOperatorSelector,
+                valueEditor: WfoValueEditor,
+              }}
             />
           </EuiFlexItem>
           <EuiFlexItem>
