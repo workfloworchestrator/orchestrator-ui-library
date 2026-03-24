@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QueryBuilder, type RuleGroupType } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -19,7 +19,7 @@ import { getWfoStructuredSearchTableStyles } from './styles';
 // Maps PathInfo operator names to react-querybuilder's native operator names,
 // which is what parseCEL produces and formatQuery(cel) expects.
 const PATH_OP_TO_RQB_OP: Record<string, string> = {
-  eq: '=',
+  eq: '==',
   neq: '!=',
   lt: '<',
   lte: '<=',
@@ -57,6 +57,16 @@ export const WfoFilterBuilder = ({
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(true);
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
 
+  const [filterData, setFilterData] = useState<RuleGroupType>({} as RuleGroupType);
+
+  const handleFilterData = (data: RuleGroupType) => {
+    setFilterData(data);
+  };
+
+  const submitFilter = () => {
+    onUpdateQueryBuilder(filterData);
+  };
+
   const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
     if (pathInfo) {
       setFieldPathInfoMap((previousMap) => {
@@ -65,6 +75,12 @@ export const WfoFilterBuilder = ({
     }
   };
 
+  useEffect(() => {
+    if (queryBuilderRuleGroup && queryBuilderRuleGroup != filterData) {
+      setFilterData(queryBuilderRuleGroup);
+    }
+  }, [queryBuilderRuleGroup]);
+
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
       {(isFilterBuilderVisible && (
@@ -72,7 +88,7 @@ export const WfoFilterBuilder = ({
           <EuiFlexItem>
             <QueryBuilder
               query={queryBuilderRuleGroup}
-              onQueryChange={onUpdateQueryBuilder}
+              onQueryChange={handleFilterData}
               disabled={!isValidFilterString}
               context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
               getOperators={(field) => {
@@ -108,7 +124,7 @@ export const WfoFilterBuilder = ({
           <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
             <EuiButton
               css={toggleButtonStyles}
-              onClick={() => setIsFilterBuilderVisible(true)}
+              onClick={submitFilter}
               id={'button-apply-filter'}
               data-test-id={'button-apply-filter'}
               fill

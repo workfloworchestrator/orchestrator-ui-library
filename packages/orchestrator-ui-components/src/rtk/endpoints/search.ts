@@ -6,6 +6,7 @@ import {
   PaginatedSearchResults,
   PathAutocompleteResponse,
   RetrieverType,
+  SearchResult,
   value_schema,
 } from '@/types';
 
@@ -14,7 +15,9 @@ export interface SearchPayload {
   query: string;
   filters?: Filter;
   limit?: number;
+  cursor?: number;
   retriever?: RetrieverType;
+  response_columns?: string[];
 }
 
 export interface SearchPaginationPayload extends SearchPayload {
@@ -28,17 +31,73 @@ export interface SearchDefinitionsResponse {
   };
 }
 
+export type SearchResultResponse = {
+  subscriptionId: string;
+  description: string;
+  status: string;
+  insync: string;
+  productName: string;
+  tag: string;
+  customerFullname: string;
+  customerShortcode: string;
+  startDate: string;
+  endDate: string;
+  note: string;
+} & SearchResult;
+
+export type PaginatedSearchResultsResponse = {
+  data: SearchResultResponse[];
+} & PaginatedSearchResults;
+
+export const response_column_by_table_column = {
+  subscriptionId: 'subscription.subscription_id',
+  description: 'subscription.description',
+  status: 'subscription.status',
+  insync: 'subscription.insync',
+  productName: 'subscription.product.name',
+  customerName: 'subscription.customer_name',
+  customerShortcode: 'subscription.customer_abbreviation',
+  startDate: 'subscription.start_date',
+  endDate: 'subscription.end_date',
+  note: 'subscription.note',
+};
+export const subscription_response_columns = Object.keys(response_column_by_table_column);
+
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever }) => ({
+      query: ({ entity_type, query, filters, limit, retriever, response_columns }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
-        body: { query, filters, limit, retriever },
+        body: {
+          query,
+          filters,
+          limit,
+          retriever,
+          response_columns,
+          order_by: query ? undefined : { element: 'subscription.start_date', direction: 'desc' },
+        },
         headers: {
           'Content-Type': 'application/json',
         },
       }),
+      transformResponse: (response: PaginatedSearchResults): PaginatedSearchResults => {
+        return {
+          ...response,
+          data: response.data.map((v) =>
+            v.response_columns ?
+              {
+                ...v,
+                ...Object.fromEntries(
+                  Object.entries(response_column_by_table_column)
+                    .filter(([, responseCol]) => responseCol in v.response_columns)
+                    .map(([tableCol, responseCol]) => [tableCol, v.response_columns[responseCol]]),
+                ),
+              }
+            : v,
+          ),
+        };
+      },
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },

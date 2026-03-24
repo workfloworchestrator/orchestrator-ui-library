@@ -20,6 +20,7 @@ export interface SearchResult {
   score: number;
   perfect_match: number;
   matching_field?: MatchingField | null;
+  response_columns?: Record<string, string>;
 }
 
 /** Paginated search results */
@@ -32,6 +33,11 @@ export type PaginatedSearchResults = {
   search_metadata: {
     search_type: string | null;
     description: string | null;
+  };
+  cursor?: {
+    total_items: number;
+    start_cursor: number;
+    end_cursor: number;
   };
 };
 
