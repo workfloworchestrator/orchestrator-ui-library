@@ -3,6 +3,7 @@ import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   EntityKind,
   Filter,
+  GraphQLSort,
   PaginatedSearchResults,
   PathAutocompleteResponse,
   RetrieverType,
@@ -18,6 +19,7 @@ export interface SearchPayload {
   cursor?: number;
   retriever?: RetrieverType;
   response_columns?: string[];
+  sort_by: GraphQLSort<SearchResultResponse>;
 }
 
 export interface SearchPaginationPayload extends SearchPayload {
@@ -55,18 +57,19 @@ export const response_column_by_table_column = {
   status: 'subscription.status',
   insync: 'subscription.insync',
   productName: 'subscription.product.name',
-  customerName: 'subscription.customer_name',
+  tag: 'subscription.product.tag',
+  customerFullname: 'subscription.customer_name',
   customerShortcode: 'subscription.customer_abbreviation',
   startDate: 'subscription.start_date',
   endDate: 'subscription.end_date',
   note: 'subscription.note',
 };
-export const subscription_response_columns = Object.keys(response_column_by_table_column);
+export const subscription_response_columns = Object.values(response_column_by_table_column);
 
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever, response_columns }) => ({
+    search: build.mutation<PaginatedSearchResultsResponse, SearchPayload>({
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, sort_by }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
         body: {
@@ -75,13 +78,20 @@ const searchApi = orchestratorApi.injectEndpoints({
           limit,
           retriever,
           response_columns,
-          order_by: query ? undefined : { element: 'subscription.start_date', direction: 'desc' },
+          order_by:
+            query ? undefined : (
+              {
+                field: sort_by.field,
+                element: response_column_by_table_column[sort_by.field],
+                direction: sort_by.order.toLowerCase(),
+              }
+            ),
         },
         headers: {
           'Content-Type': 'application/json',
         },
       }),
-      transformResponse: (response: PaginatedSearchResults): PaginatedSearchResults => {
+      transformResponse: (response: PaginatedSearchResults): PaginatedSearchResultsResponse => {
         return {
           ...response,
           data: response.data.map((v) =>

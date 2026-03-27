@@ -5,14 +5,13 @@ import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import type { WfoStructuredSearchTableDataColumnConfig } from '@/components';
+import type { WfoDataSorting, WfoStructuredSearchTableDataColumnConfig } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
-  DEFAULT_PAGE_SIZES,
-  Pagination,
   StoredTableConfig,
   WfoContentHeader,
   WfoDateTime,
@@ -20,25 +19,20 @@ import {
   WfoInsyncIcon,
   WfoStructuredSearchTable,
   WfoSubscriptionStatusBadge,
-  getPageIndexChangeHandler,
-  getPageSizeChangeHandler,
+  getDataSortHandler,
 } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
-import { useDataDisplayParams, useStoredTableConfig } from '@/hooks';
+import { DataDisplayParams, useDataDisplayParams, useStoredTableConfig } from '@/hooks';
 import { SearchPayload, SearchResultResponse, useSearchMutation } from '@/rtk';
 import { subscription_response_columns } from '@/rtk/endpoints/search';
-import { Filter, RetrieverType, SearchResult } from '@/types';
-import { parseDateToLocaleDateTimeString } from '@/utils';
+import { Filter, RetrieverType, SortOrder } from '@/types';
+import { getTypedFieldFromObject, parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
-enum SortOrder {
-  ASC = 'asc',
-  DESC = 'desc',
-}
-
 export const WfoSearchPocPage = () => {
-  const t = useTranslations('search.page');
+  const router = useRouter();
+  // const t = useTranslations('search.page');
   const tableTranslations = useTranslations('subscriptions.index');
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
 
@@ -53,12 +47,9 @@ export const WfoSearchPocPage = () => {
   const getStoredTableConfig = useStoredTableConfig<SearchResultResponse>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResultResponse>>();
 
-  const { dataDisplayParams, setDataDisplayParam } = useDataDisplayParams({
+  const { dataDisplayParams, setDataDisplayParam } = useDataDisplayParams<SearchResultResponse>({
     pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
-    sortBy: {
-      field: 'start_date',
-      order: SortOrder.DESC,
-    },
+    sortBy: { field: 'startDate', order: SortOrder.DESC },
   });
 
   useEffect(() => {
@@ -197,7 +188,8 @@ export const WfoSearchPocPage = () => {
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
       response_columns: query ? undefined : subscription_response_columns,
-      limit: query ? undefined : dataDisplayParams.pageSize,
+      limit: query ? undefined : dataDisplayParams.pageSize * (dataDisplayParams.pageIndex + 1),
+      sort_by: dataDisplayParams.sortBy,
     };
     triggerSearch(searchPayload);
   };
@@ -211,6 +203,7 @@ export const WfoSearchPocPage = () => {
     setQueryText(queryText);
     search({ queryText });
   };
+  const updateSorting = getDataSortHandler<SearchResultResponse>(setDataDisplayParam);
 
   const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
     search({ ruleGroup: ruleGroup });
@@ -239,17 +232,24 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
-  const pageChange = getPageIndexChangeHandler<SearchResultResponse>(setDataDisplayParam);
-  const pageSizeChange = getPageSizeChangeHandler<SearchResultResponse>(setDataDisplayParam);
+  useEffect(() => {
+    if (queryText || queryBuilderRuleGroup) search({});
+  }, [JSON.stringify(dataDisplayParams)]);
 
-  const pagination: Pagination = {
-    pageIndex: dataDisplayParams.pageIndex,
-    pageSize: dataDisplayParams.pageSize,
-    pageSizeOptions: DEFAULT_PAGE_SIZES,
-    totalItemCount: data?.cursor?.total_items ?? 0,
-    onChangePage: pageChange,
-    onChangeItemsPerPage: pageSizeChange,
+  const sortedColumnId = getTypedFieldFromObject(dataDisplayParams?.sortBy.field, tableColumnConfig);
+  if (!sortedColumnId) {
+    router.replace('/search-poc');
+    return null;
+  }
+
+  const dataSorting: WfoDataSorting<SearchResultResponse> = {
+    field: sortedColumnId,
+    sortOrder: dataDisplayParams.sortBy?.order ?? SortOrder.ASC,
   };
+
+  const tableColumnConfigWithSortable = Object.fromEntries(
+    Object.entries(tableColumnConfig).map(([key, value]) => [key, { ...value, isSortable: true }]),
+  );
 
   return (
     <>
@@ -261,7 +261,7 @@ export const WfoSearchPocPage = () => {
         isValidFilterString={isValidFilterString}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         onUpdateQueryText={onUpdateQueryText}
-        tableColumnConfig={tableColumnConfig}
+        tableColumnConfig={tableColumnConfigWithSortable}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
         queryText={queryText}
         retrieverType={retrieverType}
@@ -270,7 +270,8 @@ export const WfoSearchPocPage = () => {
         onUpdateQueryBuilder={onUpdateQueryBuilder}
         filterString={filterString}
         onUpdateFilterString={onUpdateFilterString}
-        pagination={queryText ? undefined : pagination}
+        dataSorting={[dataSorting]}
+        onUpdateDataSorting={updateSorting}
       />
     </>
   );
