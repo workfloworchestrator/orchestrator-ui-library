@@ -7,11 +7,12 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { EuiSpacer } from '@elastic/eui';
+import { EuiButton, EuiSelect, EuiSpacer } from '@elastic/eui';
 
 import type { WfoDataSorting, WfoStructuredSearchTableDataColumnConfig } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZES,
   StoredTableConfig,
   WfoContentHeader,
   WfoDateTime,
@@ -21,8 +22,9 @@ import {
   WfoSubscriptionStatusBadge,
   getDataSortHandler,
 } from '@/components';
-import { ColumnType } from '@/components/WfoTable/WfoTable';
-import { DataDisplayParams, useDataDisplayParams, useStoredTableConfig } from '@/hooks';
+import { ColumnType, WfoTable, WfoTableColumnConfig } from '@/components/WfoTable/WfoTable';
+import { getWfoTableSettingsModalStyles } from '@/components/WfoTable/WfoTableSettingsModal/styles';
+import { useDataDisplayParams, useStoredTableConfig, useWithOrchestratorTheme } from '@/hooks';
 import { SearchPayload, SearchResultResponse, useSearchMutation } from '@/rtk';
 import { subscription_response_columns } from '@/rtk/endpoints/search';
 import { Filter, RetrieverType, SortOrder } from '@/types';
@@ -30,9 +32,65 @@ import { getTypedFieldFromObject, parseDateToLocaleDateTimeString } from '@/util
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
+export type SurfSearchPocExpandData = {
+  entity_id: string;
+  entity_type: string;
+  entity_title: string;
+  score: number;
+  matching_field: { text: string; path: string; highlight_indices: number[] };
+  perfect_match: number;
+};
+
+export const SurfSearchPocExpandData = (data: SurfSearchPocExpandData) => {
+  const t = useTranslations('search.page');
+
+  const columnConfig: WfoTableColumnConfig<SurfSearchPocExpandData> = {
+    entity_id: {
+      columnType: ColumnType.DATA,
+      label: t('id'),
+      width: '90px',
+      renderData: (value) => <WfoFirstPartUUID UUID={value} />,
+      renderDetails: (value) => value,
+      renderTooltip: (value) => value,
+    },
+    entity_type: {
+      columnType: ColumnType.DATA,
+      label: t('type'),
+      width: '90px',
+      renderData: (value) => <div>{value}</div>,
+    },
+    entity_title: {
+      columnType: ColumnType.DATA,
+      label: t('title'),
+      width: '450px',
+      renderData: (value, record) => <Link href={`/subscriptions/${record.entity_id}`}>{value}</Link>,
+      renderTooltip: (value) => value,
+    },
+    score: {
+      columnType: ColumnType.DATA,
+      label: t('score'),
+      width: '90px',
+      renderData: (value) => <div>{value}</div>,
+    },
+    matching_field: {
+      columnType: ColumnType.DATA,
+      label: t('matchingField'),
+      width: '120px',
+      renderData: (matchingField) => <div>{matchingField?.text}</div>,
+    },
+    perfect_match: {
+      columnType: ColumnType.DATA,
+      label: t('perfectMatch'),
+      width: '120px',
+      renderData: (perfectMatch) => <div>{perfectMatch}</div>,
+    },
+  };
+
+  return <WfoTable data={[data]} columnConfig={columnConfig} />;
+};
+
 export const WfoSearchPocPage = () => {
   const router = useRouter();
-  // const t = useTranslations('search.page');
   const tableTranslations = useTranslations('subscriptions.index');
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
 
@@ -47,6 +105,11 @@ export const WfoSearchPocPage = () => {
   const getStoredTableConfig = useStoredTableConfig<SearchResultResponse>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResultResponse>>();
 
+  const [displayData, setDisplayData] = useState<NonNullable<typeof data>>({
+    data: [],
+    page_info: { has_next_page: false, next_page_cursor: null },
+    search_metadata: { search_type: null, description: null },
+  });
   const { dataDisplayParams, setDataDisplayParam } = useDataDisplayParams<SearchResultResponse>({
     pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
     sortBy: { field: 'startDate', order: SortOrder.DESC },
@@ -60,45 +123,6 @@ export const WfoSearchPocPage = () => {
   }, [getStoredTableConfig]);
 
   const tableColumnConfig: WfoStructuredSearchTableDataColumnConfig<SearchResultResponse> = {
-    // entity_id: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('id'),
-    //   width: '90px',
-    //   renderData: (value) => <WfoFirstPartUUID UUID={value} />,
-    //   renderDetails: (value) => value,
-    //   renderTooltip: (value) => value,
-    // },
-    // entity_type: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('type'),
-    //   width: '90px',
-    //   renderData: (value) => <div>{value}</div>,
-    // },
-    // entity_title: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('title'),
-    //   width: '450px',
-    //   renderData: (value, record) => <Link href={`/subscriptions/${record.entity_id}`}>{value}</Link>,
-    //   renderTooltip: (value) => value,
-    // },
-    // score: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('score'),
-    //   width: '90px',
-    //   renderData: (value) => <div>{value}</div>,
-    // },
-    // matching_field: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('matchingField'),
-    //   width: '120px',
-    //   renderData: (matchingField) => <div>{matchingField?.text}</div>,
-    // },
-    // perfect_match: {
-    //   columnType: ColumnType.DATA,
-    //   label: t('perfectMatch'),
-    //   width: '120px',
-    //   renderData: (perfectMatch) => <div>{perfectMatch}</div>,
-    // },
     subscriptionId: {
       columnType: ColumnType.DATA,
       label: tableTranslations('id'),
@@ -166,7 +190,7 @@ export const WfoSearchPocPage = () => {
       columnType: ColumnType.DATA,
       label: tableTranslations('note'),
       width: '300px',
-      renderData: (cellValue, row) => {
+      renderData: (cellValue) => {
         return <div>{cellValue}</div>;
       },
     },
@@ -187,25 +211,28 @@ export const WfoSearchPocPage = () => {
       entity_type: 'SUBSCRIPTION',
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
-      response_columns: query ? undefined : subscription_response_columns,
-      limit: query ? undefined : dataDisplayParams.pageSize * (dataDisplayParams.pageIndex + 1),
+      response_columns: subscription_response_columns,
+      limit: query ? 10 : dataDisplayParams.pageSize * (dataDisplayParams.pageIndex + 1),
       sort_by: dataDisplayParams.sortBy,
     };
     triggerSearch(searchPayload);
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
+    setDataDisplayParam('pageIndex', 0);
     setRetrieverType(retrieverType);
     search({ retrieverType });
   };
 
   const onUpdateQueryText = (queryText: string) => {
+    setDataDisplayParam('pageIndex', 0);
     setQueryText(queryText);
     search({ queryText });
   };
   const updateSorting = getDataSortHandler<SearchResultResponse>(setDataDisplayParam);
 
   const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
+    setDataDisplayParam('pageIndex', 0);
     search({ ruleGroup: ruleGroup });
     setQueryBuilderRuleGroup({ ...ruleGroup });
   };
@@ -233,6 +260,10 @@ export const WfoSearchPocPage = () => {
   };
 
   useEffect(() => {
+    if (data) setDisplayData(data);
+  }, [data]);
+
+  useEffect(() => {
     if (queryText || queryBuilderRuleGroup) search({});
   }, [JSON.stringify(dataDisplayParams)]);
 
@@ -251,12 +282,29 @@ export const WfoSearchPocPage = () => {
     Object.entries(tableColumnConfig).map(([key, value]) => [key, { ...value, isSortable: true }]),
   );
 
+  const options = DEFAULT_PAGE_SIZES.map((pageSizeOption) => ({
+    value: pageSizeOption,
+    text: pageSizeOption.toString(),
+  }));
+
+  const loadedItemsCount = dataDisplayParams.pageSize * (dataDisplayParams.pageIndex + 1);
+  const totalItems = displayData.cursor?.total_items || 0;
+  const showLoadedItemCount = loadedItemsCount < totalItems ? loadedItemsCount : totalItems;
+  const { selectFieldStyle } = useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
+
+  const updatePage = () => {
+    setDataDisplayParam('pageIndex', dataDisplayParams.pageIndex + 1);
+  };
+  const updatePageSize = (size: number) => {
+    setDataDisplayParam('pageSize', size);
+  };
+
   return (
     <>
       <WfoContentHeader title="Search page POC" />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SearchResultResponse>
-        data={data?.data || []}
+        data={displayData.data}
         isLoading={isLoading}
         isValidFilterString={isValidFilterString}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
@@ -273,6 +321,30 @@ export const WfoSearchPocPage = () => {
         dataSorting={[dataSorting]}
         onUpdateDataSorting={updateSorting}
       />
+      <div
+        style={{
+          marginTop: '10px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 5,
+        }}
+      >
+        <div style={{ width: '70px' }}>
+          <EuiSelect
+            css={selectFieldStyle}
+            compressed
+            onChange={(event) => updatePageSize(parseInt(event.target.value))}
+            value={queryText ? 10 : dataDisplayParams.pageSize}
+            options={options}
+            disabled={!!queryText}
+          />
+        </div>
+        <EuiButton onClick={updatePage} disabled={displayData.data.length === 0}>
+          Load More
+        </EuiButton>
+        {totalItems ? ` ${showLoadedItemCount} / ${totalItems}` : ` ${showLoadedItemCount}`}
+      </div>
     </>
   );
 };
