@@ -98,7 +98,10 @@ export const WfoSearchPocPage = () => {
   const [queryText, setQueryText] = useState<string>();
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
   const [filterString, setFilterString] = useState<string>();
-  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType>();
+  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType>({
+    combinator: 'and',
+    rules: [{ field: 'subscription.status', operator: '=', value: 'active' }],
+  });
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
@@ -298,6 +301,9 @@ export const WfoSearchPocPage = () => {
   const updatePageSize = (size: number) => {
     setDataDisplayParam('pageSize', size);
   };
+  useEffect(() => {
+    search({});
+  }, []);
 
   return (
     <>
