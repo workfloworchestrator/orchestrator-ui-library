@@ -47,7 +47,7 @@ const findMinimumOrchestratorCoreVersion = (
   orchestratorUiVersion: string,
   versionMappings: MappedVersion[],
 ): string | null => {
-  // sort mappings descending by UI version
+  // sort mappings descending by UI version. This is done just in case the input versionMappings are not sorted
   const sorted = [...versionMappings].sort((a, b) => compareVersions(b.orchestratorUiVersion, a.orchestratorUiVersion));
 
   for (const mapping of sorted) {
