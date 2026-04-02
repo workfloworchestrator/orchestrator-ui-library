@@ -80,6 +80,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
   const subscriptionList = mapGraphQlSubscriptionsResultToSubscriptionListItems(data);
 
   const tableColumnConfig: WfoAdvancedTableColumnConfig<SubscriptionListItem> = {
+    actions: {
+      columnType: ColumnType.CONTROL,
+      width: '50px',
+      renderControl: (row) => <WfoSubscriptionActions compactMode={true} subscriptionId={row.subscriptionId} />,
+    },
     subscriptionId: {
       columnType: ColumnType.DATA,
       label: t('id'),
@@ -104,11 +109,12 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     insync: {
       columnType: ColumnType.DATA,
       label: t('insync'),
-      width: '80px',
+      width: '75px',
       renderData: (value) => <WfoInsyncIcon inSync={value} />,
     },
     productName: {
       columnType: ColumnType.DATA,
+      width: '260px',
       label: t('product'),
     },
     tag: {
@@ -128,7 +134,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     startDate: {
       columnType: ColumnType.DATA,
       label: t('startDate'),
-      width: '120px',
+      width: '100px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
@@ -137,7 +143,7 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
     endDate: {
       columnType: ColumnType.DATA,
       label: t('endDate'),
-      width: '120px',
+      width: '100px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
@@ -158,12 +164,6 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
           />
         );
       },
-    },
-    actions: {
-      columnType: ColumnType.CONTROL,
-      label: t('actions'),
-      width: '80px',
-      renderControl: (row) => <WfoSubscriptionActions compactMode={true} subscriptionId={row.subscriptionId} />,
     },
     metadata: {
       columnType: ColumnType.DATA,
