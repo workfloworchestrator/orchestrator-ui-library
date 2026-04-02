@@ -45,7 +45,7 @@ export const WfoValueCell: FC<WfoValueCellProps> = ({ value, textToCopy, rowNumb
                 <WfoClipboardCopy
                   width={clipboardIconSize}
                   height={clipboardIconSize}
-                  color={theme.colors.backgroundBaseDisabled}
+                  color={theme.colors.backgroundBaseAccent}
                 />
               </div>
             )}
