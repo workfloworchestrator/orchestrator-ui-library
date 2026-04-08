@@ -1,33 +1,62 @@
 import { MappedVersion } from '@/types';
 
-const compareVersions = (versionString1: string, versionString2: string): number => {
-  const splittedVersion1 = versionString1.split('.');
-  const splittedVersion2 = versionString2.split('.');
+const compareVersions = (v1: string, v2: string): number => {
+  const parse = (v: string) => {
+    const parts = v.split('.');
 
-  for (let i = 0; i < splittedVersion1.length; i++) {
-    if (parseInt(splittedVersion1[i]) > parseInt(splittedVersion2[i])) {
-      return 1;
-    } else if (parseInt(splittedVersion1[i]) < parseInt(splittedVersion2[i])) {
-      return -1;
+    const major = parseInt(parts[0]);
+    const minor = parseInt(parts[1]);
+
+    const patchPart = parts[2] ?? '';
+
+    let patch = 0;
+    let suffix = '';
+
+    // extract numeric patch and suffix manually
+    for (let i = 0; i < patchPart.length; i++) {
+      const char = patchPart[i];
+
+      if (char >= '0' && char <= '9') {
+        patch = patch * 10 + Number(char);
+      } else {
+        suffix = patchPart.slice(i);
+        break;
+      }
     }
-  }
-  return 0;
+
+    return { major, minor, patch, suffix };
+  };
+
+  const a = parse(v1);
+  const b = parse(v2);
+
+  // compare numeric parts
+  if (a.major !== b.major) return a.major > b.major ? 1 : -1;
+  if (a.minor !== b.minor) return a.minor > b.minor ? 1 : -1;
+  if (a.patch !== b.patch) return a.patch > b.patch ? 1 : -1;
+
+  // compare suffix
+  if (a.suffix === b.suffix) return 0;
+  if (!a.suffix) return 1; // stable > pre-release
+  if (!b.suffix) return -1;
+
+  return a.suffix > b.suffix ? 1 : -1;
 };
 
 const findMinimumOrchestratorCoreVersion = (
   orchestratorUiVersion: string,
   versionMappings: MappedVersion[],
-): string => {
-  const orchestratorUiVersions = versionMappings.map((version) => version.orchestratorUiVersion);
-  let mappedVersion = versionMappings[0];
+): string | null => {
+  // sort mappings descending by UI version. This is done just in case the input versionMappings are not sorted
+  const sorted = [...versionMappings].sort((a, b) => compareVersions(b.orchestratorUiVersion, a.orchestratorUiVersion));
 
-  for (let i = 0; i < orchestratorUiVersions.length; i++) {
-    if ([0, 1].includes(compareVersions(orchestratorUiVersion, orchestratorUiVersions[i]))) {
-      mappedVersion = versionMappings[i];
+  for (const mapping of sorted) {
+    if (compareVersions(orchestratorUiVersion, mapping.orchestratorUiVersion) >= 0) {
+      return mapping.minimumOrchestratorCoreVersion;
     }
   }
 
-  return mappedVersion.minimumOrchestratorCoreVersion;
+  return sorted[sorted.length - 1]?.minimumOrchestratorCoreVersion ?? null;
 };
 
 export const getOrchestratorCoreVersionIfNotCompatible = (
@@ -35,10 +64,13 @@ export const getOrchestratorCoreVersionIfNotCompatible = (
   orchestratorCoreVersion: string,
   versionMappings: MappedVersion[],
 ): string | null => {
-  const minimumOrchestratorCoreVersion = findMinimumOrchestratorCoreVersion(orchestratorUiVersion, versionMappings);
-  const comparison = compareVersions(orchestratorCoreVersion, minimumOrchestratorCoreVersion);
-  if (comparison === -1) {
-    return minimumOrchestratorCoreVersion;
+  const minimumVersion = findMinimumOrchestratorCoreVersion(orchestratorUiVersion, versionMappings);
+
+  if (!minimumVersion) {
+    return null;
   }
-  return null;
+
+  const isCompatible = compareVersions(orchestratorCoreVersion, minimumVersion) !== -1;
+
+  return isCompatible ? null : minimumVersion;
 };

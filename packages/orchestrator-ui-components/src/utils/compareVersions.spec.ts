@@ -48,4 +48,9 @@ describe('isOrchestratorUiVersionCompatible', () => {
     expect(getOrchestratorCoreVersionIfNotCompatible('1.0.0', '2.10.0', TEST_VERSIONS)).toBe(null); // falls back to first MAPPED_VERSION
     expect(getOrchestratorCoreVersionIfNotCompatible('1.0.0', '2.9.9', TEST_VERSIONS)).toBe('2.10.0');
   });
+
+  test('handles prerelease orchestratorCoreVersion (e.g. 5.0.0a7)', () => {
+    expect(getOrchestratorCoreVersionIfNotCompatible('3.10.0', '5.0.0a7', TEST_VERSIONS)).toBe(null);
+    expect(getOrchestratorCoreVersionIfNotCompatible('3.10.0', '3.1.1a1', TEST_VERSIONS)).toBe('3.1.1');
+  });
 });

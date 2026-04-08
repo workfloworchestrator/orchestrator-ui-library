@@ -23,11 +23,12 @@ export const WfoVersionIncompatibleBadge: FC<WfoVersionIncompatibleBadgeProps> =
   const t = useTranslations('main');
   const { theme } = useOrchestratorTheme();
   const mappedVersions: MappedVersion[] = versionCompatibility;
-  const minimumOrchestratorCoreVersion = getOrchestratorCoreVersionIfNotCompatible(
-    orchestratorUiVersion,
-    orchestratorCoreVersion,
-    mappedVersions,
-  );
+  const isReady = orchestratorCoreVersion && orchestratorUiVersion;
+
+  const minimumOrchestratorCoreVersion =
+    isReady ?
+      getOrchestratorCoreVersionIfNotCompatible(orchestratorUiVersion, orchestratorCoreVersion, mappedVersions)
+    : null;
 
   return (
     <EuiToolTip
@@ -52,7 +53,7 @@ export const WfoVersionIncompatibleBadge: FC<WfoVersionIncompatibleBadgeProps> =
         textColor={theme.colors.textGhost}
         css={{
           marginLeft: theme.size.s,
-          visibility: minimumOrchestratorCoreVersion ? 'visible' : 'hidden',
+          display: minimumOrchestratorCoreVersion ? 'block' : 'none',
         }}
       >
         {t('incompatibleVersion')}
