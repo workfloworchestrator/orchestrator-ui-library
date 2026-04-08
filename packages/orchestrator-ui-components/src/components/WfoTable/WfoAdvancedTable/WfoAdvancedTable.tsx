@@ -81,7 +81,7 @@ export const WfoAdvancedTable = <T extends object>({
       width: '36px',
       renderControl: (row) => (
         <EuiFlexItem css={{ cursor: 'pointer' }} onClick={() => setSelectedDataForDetailModal(row)}>
-          <WfoArrowsExpand color={theme.colors.borderBasePlain} />
+          <WfoArrowsExpand color={theme.colors.textDisabled} />
         </EuiFlexItem>
       ),
     },
