@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.6.0
+
+### Minor Changes
+
+- 57220a3: Add event-driven agent plan progress rendering and artifact-based query result fetching
+- 490fdb2: Fix onChange behaviour for number field and update pydantic forms version.
+
+### Patch Changes
+
+- 0a0eb0f: Fix pipeline for installing NPM due to module 'promise-retry'
+- 746e439: Fix compatibility badge being invisible, add check for alpha pre-releases
+- e8c4e14: 118 Reorder action column and optimize width of columns
+- cf1bd85: WfoClipboardCopy icon darker to improve visibility
+
 ## 7.5.1
 
 ### Patch Changes
