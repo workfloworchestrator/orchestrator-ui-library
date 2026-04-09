@@ -50,7 +50,6 @@ export const SurfSearchPocExpandData = (data: SurfSearchPocExpandData) => {
       label: t('id'),
       width: '90px',
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
-      renderDetails: (value) => value,
       renderTooltip: (value) => value,
     },
     entity_type: {
