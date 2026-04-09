@@ -25,7 +25,10 @@ jobs:
                   registry-url: 'https://registry.npmjs.org'
 
             - name: Update npm
-              run: npm install -g npm@latest && npm --version
+              run: |
+                  npm install -g npm@11.11.0
+                  npm install -g npm@latest
+                  npm --version
 
             - name: Installing dependencies
               run: npm ci && pwd
