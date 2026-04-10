@@ -7,15 +7,16 @@ import { useGetOrchestratorConfig } from '@/hooks';
 
 interface WfoTitleWithWebsocketBadgeProps {
   title: string;
+  wsUrl?: string;
 }
 
-export const WfoTitleWithWebsocketBadge = ({ title }: WfoTitleWithWebsocketBadgeProps) => {
+export const WfoTitleWithWebsocketBadge = ({ title, wsUrl = undefined }: WfoTitleWithWebsocketBadgeProps) => {
   const { useWebSockets } = useGetOrchestratorConfig();
 
   const pageTitle =
     useWebSockets ?
       <>
-        {title} <WfoWebsocketStatusBadge />
+        {title} <WfoWebsocketStatusBadge wsUrl={wsUrl} />
       </>
     : title;
 

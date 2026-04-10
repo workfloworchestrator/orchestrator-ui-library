@@ -1,8 +1,7 @@
 import { debounce } from 'lodash';
 
 import { getWebSocket, orchestratorApi } from '@/rtk';
-import type { RootState } from '@/rtk/store';
-import { CacheTag, CacheTagType } from '@/types';
+import { CacheTag } from '@/types';
 
 const PING_INTERVAL_MS = 30000;
 const NO_PONG_RECEIVED_TIMEOUT_MS = 35000;
@@ -29,32 +28,27 @@ enum MessageTypes {
  * - It invalidates the cache entry with the tag received in the message event
  * - WfoWebsocketStatusBadge contains logic that handles automatic reconnection and their circumstances
  */
+
 const streamMessagesApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    streamMessages: build.query<boolean, void>({
+    streamMessages: build.query<boolean, string>({
       queryFn: () => {
         return { data: true };
       },
-      async onCacheEntryAdded(_, { cacheDataLoaded, cacheEntryRemoved, dispatch, getState, updateCachedData }) {
+      async onCacheEntryAdded(wsEndpoint, { cacheDataLoaded, cacheEntryRemoved, dispatch, updateCachedData }) {
         const cleanUp = () => {
           clearInterval(pingInterval);
           updateCachedData(() => false);
         };
 
+        // const validCacheTags = Object.values(CacheTagType);
         const invalidateTag = (cacheTag: CacheTag) => {
-          if (validCacheTags.includes(cacheTag.type)) {
-            const cacheInvalidationAction = orchestratorApi.util.invalidateTags([cacheTag]);
-            dispatch(cacheInvalidationAction);
-          } else {
-            console.error(`Trying to invalidate a cache entry with an unknown tag: ${cacheTag.type}`);
-          }
+          const cacheInvalidationAction = orchestratorApi.util.invalidateTags([cacheTag]);
+          dispatch(cacheInvalidationAction);
         };
 
         await cacheDataLoaded;
         let initialConnection = true;
-        const state = getState() as RootState;
-        const { orchestratorWebsocketUrl } = state.orchestratorConfig;
-        const validCacheTags = Object.values(CacheTagType);
 
         const getDebounce = (delay: number) => {
           return debounce(() => {
@@ -68,8 +62,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
         const closeConnectionAfterFirstPing = getDebounce(INITIAL_CONNECTION_CHECK_INTERVAL_MS);
         const debounceClosingConnection = getDebounce(NO_PONG_RECEIVED_TIMEOUT_MS);
 
-        // Starts the websocket
-        const webSocket = await getWebSocket(orchestratorWebsocketUrl);
+        const webSocket = await getWebSocket(wsEndpoint);
 
         const sendPing = () => {
           if (webSocket.readyState === WebSocket.OPEN) {
@@ -82,9 +75,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
         // run less frequently at the discretion of the browser causing the websocket to disconnect
         // sometimes. WfoWebsocketStatusBadge contains logic to reconnect based on the pageVisibility api
         // to handle that situation.
-        const pingInterval = setInterval(() => {
-          sendPing();
-        }, PING_INTERVAL_MS);
+        const pingInterval = setInterval(sendPing, PING_INTERVAL_MS);
 
         webSocket.onopen = () => {
           // Check the connection right after it is established
@@ -100,12 +91,13 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
           if (data === '__pong__') {
             debounceClosingConnection();
-            if (initialConnection && closeConnectionAfterFirstPing) {
+            if (initialConnection) {
               initialConnection = false;
               closeConnectionAfterFirstPing.cancel();
             }
             return;
           }
+
           const message = JSON.parse(data) as WebSocketMessage;
           if (message.name === MessageTypes.invalidateCache) {
             invalidateTag(message.value);
@@ -114,17 +106,13 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
           }
         });
 
-        webSocket.onerror = (event) => {
-          console.error('WebSocket error', event);
-        };
-
+        webSocket.onerror = (event) => console.error('WebSocket error', event);
         webSocket.onclose = () => {
           console.error('WebSocket closed');
           cleanUp();
         };
 
         await cacheEntryRemoved;
-
         webSocket.close();
       },
     }),

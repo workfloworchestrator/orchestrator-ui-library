@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
+import { OrchestratorConfigContext } from '@/contexts';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoStatusDotIcon } from '@/icons/WfoStatusDotIcon';
 import { useGetEngineStatusQuery } from '@/rtk';
@@ -13,10 +14,12 @@ export const WfoEngineStatusBadge = () => {
   const { data } = useGetEngineStatusQuery();
   const { engineStatus } = data || {};
   const { useWebSockets } = useGetOrchestratorConfig();
+
+  const { orchestratorWebsocketUrl } = useContext(OrchestratorConfigContext);
   const [websocketTrigger, { isUninitialized }] = useLazyStreamMessagesQuery();
 
   if (useWebSockets && isUninitialized) {
-    websocketTrigger();
+    websocketTrigger(orchestratorWebsocketUrl);
   }
 
   const engineStatusText: string = engineStatus ? `Engine is ${engineStatus}` : 'Engine status is unavailable';
