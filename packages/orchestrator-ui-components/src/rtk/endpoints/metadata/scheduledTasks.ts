@@ -7,7 +7,6 @@ import {
   GraphqlQueryVariables,
   ScheduledTaskDefinition,
   ScheduledTasksDefinitionsResult,
-  TaskType,
 } from '@/types';
 
 export const scheduledTasks = `
@@ -108,7 +107,6 @@ export type ScheduledTaskPostPayload = {
   workflow_id: string;
   workflow_name: string;
   name: string;
-  type: TaskType;
   trigger: string;
   trigger_kwargs: Kwargs;
   scheduled_type: string;
