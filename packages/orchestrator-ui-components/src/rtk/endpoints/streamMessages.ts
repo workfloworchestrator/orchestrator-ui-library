@@ -41,7 +41,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
           updateCachedData(() => false);
         };
 
-        // const validCacheTags = Object.values(CacheTagType);
+        
         const invalidateTag = (cacheTag: CacheTag) => {
           const cacheInvalidationAction = orchestratorApi.util.invalidateTags([cacheTag]);
           dispatch(cacheInvalidationAction);
