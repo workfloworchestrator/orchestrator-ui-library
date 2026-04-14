@@ -16,7 +16,7 @@ cp apps/wfo-ui/.env.example apps/wfo-iu/.env
 # change the values in the env file to point to your orchestrator backend
 # set auth=false or follow the directions below this sections
 npm install
-npm run dev
+npm run dev..
 ```
 
 This makes the orchestrator ui run on http://localhost:3000
