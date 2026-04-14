@@ -138,7 +138,9 @@ export const WfoStep = React.forwardRef(
                   )}
                 </EuiFlexGroup>
               </EuiFlexItem>
-              <EuiFlexItem>{overrideStepDetail?.stepHeader && overrideStepDetail?.stepHeader}</EuiFlexItem>
+              <EuiFlexItem>
+                {overrideStepDetail?.stepHeader && <overrideStepDetail.stepHeader step={step} />}
+              </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexGroup>
           {hasStepContent

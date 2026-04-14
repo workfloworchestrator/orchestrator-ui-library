@@ -2,7 +2,7 @@ import { ReactElement, ReactNode } from 'react';
 
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-import { FieldValue, RenderableFieldValue, SubscriptionDetail } from '@/types';
+import { FieldValue, RenderableFieldValue, Step, SubscriptionDetail } from '@/types';
 
 export type ValueOverrideFunction = (
   fieldValue: FieldValue | RenderableFieldValue,
@@ -20,7 +20,7 @@ export type OrchestratorComponentOverride = {
     summaryCardConfigurationOverride?: (defaultItems: ReactElement[]) => ReactElement[];
   };
   stepDetail?: {
-    stepHeader?: ReactElement;
+    stepHeader?: React.JSXElementConstructor<{ step?: Step }>;
     stepBody?: ReactElement;
   };
   subscriptionDetail?: {
