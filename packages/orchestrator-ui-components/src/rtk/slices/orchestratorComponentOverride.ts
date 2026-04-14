@@ -21,7 +21,7 @@ export type OrchestratorComponentOverride = {
   };
   stepDetail?: {
     stepHeader?: React.JSXElementConstructor<{ step?: Step }>;
-    stepBody?: ReactElement;
+    stepBody?: React.JSXElementConstructor<{ step?: Step }>;
   };
   subscriptionDetail?: {
     valueOverrides?: ValueOverrideConfiguration;
