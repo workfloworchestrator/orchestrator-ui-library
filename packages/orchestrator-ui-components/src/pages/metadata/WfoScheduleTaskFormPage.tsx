@@ -161,6 +161,8 @@ export const WfoScheduleTaskFormPage = () => {
         step2Properties.cron = {
           type: PydanticFormFieldType.STRING,
           format: PydanticFormFieldFormat.DEFAULT,
+          title: t('cronInputLabel'),
+          description: t('cronInputDescription'),
           pattern: cronRegex,
           $ref: '',
         };
