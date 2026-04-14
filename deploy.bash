@@ -45,6 +45,18 @@ fi
 echo "==> Creating branch ${BRANCH}"
 git checkout -b "${BRANCH}"
 
+
+echo "==> Initializing and updating submodules"
+git submodule init
+git submodule update
+git submodule update --remote
+
+# Verify submodule was actually updated and exists
+if [ ! -d "${SUBMODULE_PATH}" ] || [ -z "$(ls -A "${SUBMODULE_PATH}")" ]; then
+  echo "Error: Submodule ${SUBMODULE_PATH} failed to initialize or is empty" >&2
+  exit 1
+fi
+
 echo "==> Ensuring ${SUBMODULE_PATH} is clean"
 
 if [ -d "${SUBMODULE_PATH}" ]; then
@@ -58,17 +70,6 @@ if [ -d "${SUBMODULE_PATH}" ]; then
 fi
 
 mkdir -p "${SUBMODULE_PATH}"
-
-echo "==> Initializing and updating submodules"
-git submodule init
-git submodule update
-git submodule update --remote
-
-# Verify submodule was actually updated and exists
-if [ ! -d "${SUBMODULE_PATH}" ] || [ -z "$(ls -A "${SUBMODULE_PATH}")" ]; then
-  echo "Error: Submodule ${SUBMODULE_PATH} failed to initialize or is empty" >&2
-  exit 1
-fi
 
 echo "==> Removing submodule git metadata"
 find "${SUBMODULE_PATH}" -name ".git" -exec rm -rf {} + 2>/dev/null || true
