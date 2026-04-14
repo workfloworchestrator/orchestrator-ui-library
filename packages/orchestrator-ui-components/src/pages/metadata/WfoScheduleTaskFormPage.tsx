@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import {
-  PydanticForm,
-  PydanticFormApiResponseType,
-  PydanticFormFieldFormat,
-  PydanticFormFieldType,
-} from 'pydantic-forms';
-import type {
-  PydanticFormApiProvider,
-  PydanticFormDefinitionResponse,
-  PydanticFormSuccessResponse,
-  RawJsonProperties,
-} from 'pydantic-forms';
+import { PydanticForm } from 'pydantic-forms';
+import type { PydanticFormApiProvider } from 'pydantic-forms';
+import { PydanticFormApiResponseType, PydanticFormFieldFormat, PydanticFormFieldType } from 'pydantic-forms';
+import type { PydanticFormDefinitionResponse, PydanticFormSuccessResponse, RawJsonProperties } from 'pydantic-forms';
 
-import { Footer, PATH_METADATA_SCHEDULED_TASKS, WfoContentHeader, WfoLoading } from '@/components';
+import { PATH_METADATA_SCHEDULED_TASKS } from '@/components';
+import { WfoContentHeader, WfoLoading } from '@/components';
+import { Footer } from '@/components/WfoPydanticForm/Footer';
 import { NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS } from '@/configuration';
-import { useGetPydanticFormsConfig, useShowToastMessage } from '@/hooks';
-import type { CronKwargs, ScheduledTaskPostPayload } from '@/rtk';
-import { useCreateScheduledTaskMutation, useGetTasksQuery } from '@/rtk';
-import { Intervals, TaskDefinition, TaskType, ToastTypes } from '@/types';
+import { useShowToastMessage } from '@/hooks';
+import { useGetPydanticFormsConfig } from '@/hooks/useGetPydanticFormsConfig';
+import {
+  HttpStatus,
+  ScheduledTaskPostPayload,
+  isFetchBaseQueryError,
+  isRecord,
+  useCreateScheduledTaskMutation,
+} from '@/rtk';
+import type { CronKwargs } from '@/rtk';
+import { useGetTasksQuery } from '@/rtk';
+import { useStartFormMutation } from '@/rtk/endpoints/forms';
+import { useGetVersionsQuery } from '@/rtk/endpoints/versions';
+import { ToastTypes } from '@/types';
+import { Intervals, TaskDefinition, TaskType } from '@/types';
+import { compareVersions } from '@/utils/compareVersions';
 
 type CreateScheduleFormStep1 = {
   workflowId: TaskDefinition['workflowId'];
@@ -50,7 +56,8 @@ type CreateScheduleFormStep2 =
 
 type CreateScheduleFormInput = [CreateScheduleFormStep1, CreateScheduleFormStep2];
 
-export const WfoScheduleTaskFormPage = () => {
+// TODO: remove after 5.0.0 releases and rename WfoScheduleTaskFormPageBackend to WfoScheduleTaskFormPage
+export const WfoScheduleTaskFormPageHardCoded = () => {
   const t = useTranslations('metadata.scheduleTaskForm');
   const { showToastMessage } = useShowToastMessage();
 
@@ -256,13 +263,15 @@ export const WfoScheduleTaskFormPage = () => {
 
       if (userInputStep1.taskType === TaskType.DATE) {
         return {
-          type: userInputStep1.taskType,
-          workflowId: task.workflowId,
-          workflowDescription: task.description,
-          workflowName: task.name,
-          kwargs: {
+          scheduled_type: 'create',
+          workflow_id: task.workflowId,
+          workflow_name: task.name,
+          name: task.description,
+          trigger: userInputStep1.taskType,
+          trigger_kwargs: {
             run_date: startDate,
           },
+          user_inputs: [],
         };
       } else if (userInputStep1.taskType === TaskType.INTERVAL) {
         const step2Input = userInputStep2 as CreateScheduleFormStep2Interval;
@@ -273,24 +282,28 @@ export const WfoScheduleTaskFormPage = () => {
         }
 
         return {
-          type: userInputStep1.taskType,
-          workflowId: task.workflowId,
-          workflowDescription: task.description,
-          workflowName: task.name,
-          kwargs: {
+          scheduled_type: 'create',
+          workflow_id: task.workflowId,
+          workflow_name: task.name,
+          name: task.description,
+          trigger: userInputStep1.taskType,
+          trigger_kwargs: {
             start_date: startDate,
             ...intervalArg,
           },
+          user_inputs: [],
         };
       } else if (userInputStep1.taskType === TaskType.CRON) {
         const step2Input = userInputStep2 as CreateScheduleFormStep2Cron;
         // minute hour day month weekday
         return {
-          type: userInputStep1.taskType,
-          workflowId: task.workflowId,
-          workflowDescription: task.description,
-          workflowName: task.name,
-          kwargs: getCronKwargs(step2Input.cron, startDate),
+          scheduled_type: 'create',
+          workflow_id: task.workflowId,
+          workflow_name: task.name,
+          name: task.description,
+          trigger: userInputStep1.taskType,
+          trigger_kwargs: getCronKwargs(step2Input.cron, startDate),
+          user_inputs: [],
         };
       }
       throw new Error('Unknown or missing task type');
@@ -419,4 +432,109 @@ export const WfoScheduleTaskFormPage = () => {
       )}
     </>
   );
+};
+
+const START_SCHEDULE_PAYLOAD = {};
+
+export const WfoScheduleTaskFormPageBackend = () => {
+  const { showToastMessage } = useShowToastMessage();
+
+  const generateFormId = useMemo(() => {
+    return `${JSON.stringify(START_SCHEDULE_PAYLOAD)}`;
+  }, []);
+
+  const [startForm] = useStartFormMutation();
+  const [createScheduledTask, mutationState] = useCreateScheduledTaskMutation();
+  const router = useRouter();
+
+  const onSuccess = useCallback(
+    async (_fieldValues: object, req: object) => {
+      const request = req as {
+        status: HttpStatus;
+        data: ScheduledTaskPostPayload;
+      };
+      if (request?.data?.workflow_id) {
+        const resp = await createScheduledTask(request.data);
+        if (!resp?.error) {
+          router.replace(PATH_METADATA_SCHEDULED_TASKS);
+        }
+      }
+    },
+    [router, createScheduledTask],
+  );
+
+  const getPydanticFormProvider = useCallback(() => {
+    const pydanticFormProvider: PydanticFormApiProvider = async ({ requestBody = [], formKey }) => {
+      const userInputs =
+        _.isEmpty(START_SCHEDULE_PAYLOAD) ? [...requestBody] : [{ ...START_SCHEDULE_PAYLOAD }, ...requestBody];
+
+      const response = startForm({
+        formKey,
+        userInputs,
+      });
+      return response
+        .then(({ error, data }) => {
+          return new Promise<Record<string, unknown>>((resolve) => {
+            if (isFetchBaseQueryError(error) && isRecord(error.data)) {
+              if (error.status === HttpStatus.FormNotComplete) {
+                resolve(error.data);
+              } else if (error.status === HttpStatus.BadRequest) {
+                resolve({
+                  ...error.data,
+                  status: error.status,
+                });
+              }
+            } else if (data) {
+              resolve({
+                data,
+                status: HttpStatus.Created,
+              });
+            }
+
+            resolve({});
+          });
+        })
+        .catch((error) => {
+          return new Promise<Record<string, object>>((resolve, reject) => {
+            if (error.status === HttpStatus.FormNotComplete) {
+              resolve(error.data);
+            }
+            reject(error);
+          });
+        });
+    };
+
+    return pydanticFormProvider;
+  }, [startForm]);
+
+  const config = useGetPydanticFormsConfig(getPydanticFormProvider, (props) => <Footer {...props} />);
+
+  const handleCancel = useCallback(() => {
+    const pfBasePath = PATH_METADATA_SCHEDULED_TASKS;
+    router.replace(pfBasePath);
+  }, [router]);
+
+  if (mutationState.isError) {
+    showToastMessage(ToastTypes.ERROR, '', 'Error while saving scheduled task');
+    console.error('Error saving scheduled task', mutationState);
+    return undefined;
+  }
+
+  return (
+    <PydanticForm
+      formKey="configure_schedule"
+      formId={generateFormId}
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+      config={config}
+    />
+  );
+};
+
+export const WfoScheduleTaskFormPage = () => {
+  const { data } = useGetVersionsQuery();
+  const coreVersion = data?.version.applicationVersions[0].split(' ')[1] ?? '';
+
+  const isCompatible = compareVersions(coreVersion, '5.0.0a7') !== -1;
+  return isCompatible ? <WfoScheduleTaskFormPageBackend /> : <WfoScheduleTaskFormPageHardCoded />;
 };

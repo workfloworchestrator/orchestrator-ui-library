@@ -7,7 +7,6 @@ import {
   GraphqlQueryVariables,
   ScheduledTaskDefinition,
   ScheduledTasksDefinitionsResult,
-  TaskType,
 } from '@/types';
 
 export const scheduledTasks = `
@@ -41,7 +40,7 @@ export type ScheduledTasksResponse = {
   schedules: ScheduledTaskDefinition[];
 } & BaseGraphQlResult;
 
-/* 
+/*
 https://apscheduler.readthedocs.io/en/3.x/modules/triggers/interval.html#module-apscheduler.triggers.interval
 Possible parameters:
 weeks (int) – number of weeks to wait
@@ -105,11 +104,13 @@ export type CronKwargs = {
 type Kwargs = DateKwargs | InterValKwargs | CronKwargs;
 
 export type ScheduledTaskPostPayload = {
-  workflowId: string;
-  workflowName: string;
-  workflowDescription: string;
-  type: TaskType;
-  kwargs: Kwargs;
+  workflow_id: string;
+  workflow_name: string;
+  name: string;
+  trigger: string;
+  trigger_kwargs: Kwargs;
+  scheduled_type: string;
+  user_inputs: object[];
 };
 
 const scheduledTasksApi = orchestratorApi.injectEndpoints({
@@ -149,22 +150,13 @@ const scheduledTasksApi = orchestratorApi.injectEndpoints({
     }),
     createScheduledTask: builder.mutation<unknown, ScheduledTaskPostPayload>({
       query: (payload) => {
-        const scheduleTaskPayload = {
-          scheduled_type: 'create',
-          name: payload.workflowDescription,
-          workflow_name: payload.workflowName,
-          workflow_id: payload.workflowId,
-          trigger: payload.type,
-          trigger_kwargs: payload.kwargs,
-        };
-
         return {
           url: METADATA_SCHEDULES_ENDPOINT,
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: scheduleTaskPayload,
+          body: payload,
         };
       },
       extraOptions: {
