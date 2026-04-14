@@ -106,6 +106,7 @@ export const WfoStep = React.forwardRef(
       },
       [setCodeView],
     );
+    const shouldExpand: boolean = isExpanded && hasStepContent;
     return (
       <div ref={ref}>
         <EuiPanel>
@@ -143,24 +144,32 @@ export const WfoStep = React.forwardRef(
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexGroup>
-          {hasStepContent
-            && !hasHtmlMail
-            && isExpanded
-            && (codeView === CodeView.TABLE ? <WfoTableCodeBlock stepState={stepContent} />
-            : codeView === CodeView.RAW ? <WfoJsonCodeBlock data={stepContent} />
-            : <WfoMonacoCodeBlock data={stepContent} />)}
-          {isExpanded && hasHtmlMail && (
-            <div css={stepEmailContainerStyle}>
-              {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
-            </div>
-          )}
-          {step.status === StepStatus.SUSPEND && userInputForm && (
-            <WfoStepForm
-              userInputForm={userInputForm}
-              isTask={isTask}
-              processId={processId ?? ''}
-              userPermissions={userPermissions}
-            />
+          {shouldExpand && (
+            <EuiFlexGroup direction="column" gutterSize="none">
+              <EuiFlexItem grow={1}>
+                {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}
+              </EuiFlexItem>
+              <EuiFlexItem>
+                {shouldExpand
+                  && !hasHtmlMail
+                  && (codeView === CodeView.TABLE ? <WfoTableCodeBlock stepState={stepContent} />
+                  : codeView === CodeView.RAW ? <WfoJsonCodeBlock data={stepContent} />
+                  : <WfoMonacoCodeBlock data={stepContent} />)}
+                {isExpanded && hasHtmlMail && (
+                  <div css={stepEmailContainerStyle}>
+                    {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
+                  </div>
+                )}
+                {step.status === StepStatus.SUSPEND && userInputForm && (
+                  <WfoStepForm
+                    userInputForm={userInputForm}
+                    isTask={isTask}
+                    processId={processId ?? ''}
+                    userPermissions={userPermissions}
+                  />
+                )}
+              </EuiFlexItem>
+            </EuiFlexGroup>
           )}
         </EuiPanel>
       </div>
