@@ -19,6 +19,10 @@ export type OrchestratorComponentOverride = {
   startPage?: {
     summaryCardConfigurationOverride?: (defaultItems: ReactElement[]) => ReactElement[];
   };
+  stepDetail?: {
+    stepHeader?: ReactElement;
+    stepBody?: ReactElement;
+  };
   subscriptionDetail?: {
     valueOverrides?: ValueOverrideConfiguration;
     generalSectionConfigurationOverride?: (
