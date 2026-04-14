@@ -20,11 +20,11 @@ theme:
   features:
     - search.suggest
     - search.highlight
-    - navigation.tabs
+    # - navigation.tabs
     - navigation.sections
-    - navigation.expand
-    - navigation.tracking
-    - content.code.annotate
+    # - navigation.expand
+    # - navigation.tracking
+    # - content.code.annotate
 plugins:
   - termynal
   - search
