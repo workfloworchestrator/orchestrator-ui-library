@@ -24,7 +24,7 @@ export const WfoFirstPartUUID: FC<WfoFirstUUIDPartProps> = ({ UUID, showCopyIcon
         <EuiCopy textToCopy={UUID}>
           {(copy) => (
             <div className={COPY_ICON_CLASS} onClick={copy} css={clickable}>
-              <WfoClipboardCopy width={16} height={16} color={theme.colors.backgroundBaseDisabled} />
+              <WfoClipboardCopy width={16} height={16} color={theme.colors.backgroundBaseAccent} />
             </div>
           )}
         </EuiCopy>

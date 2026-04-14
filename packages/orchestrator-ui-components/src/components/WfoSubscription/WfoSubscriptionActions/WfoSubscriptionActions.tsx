@@ -9,7 +9,7 @@ import { WfoPopover } from '@/components';
 import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW, WfoInSyncField } from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { usePolicy } from '@/hooks';
+import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
 import { WorkflowTarget } from '@/types';
@@ -35,6 +35,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   compactMode = false,
 }) => {
   const t = useTranslations('subscriptions.detail.actions');
+  const { theme } = useOrchestratorTheme();
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
   const router = useRouter();
   const disableQuery = isLoading || (!isPopoverOpen && compactMode);
@@ -59,7 +60,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   const button =
     compactMode ?
       <EuiButtonIcon
-        iconType={() => <WfoDotsHorizontal />}
+        iconType={() => <WfoDotsHorizontal color={theme.colors.textDisabled} />}
         onClick={onButtonClick}
         aria-label="Row context menu"
         isLoading={isLoading}
