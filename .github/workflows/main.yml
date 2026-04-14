@@ -1,0 +1,25 @@
+name: Block deploy branches from merging to main
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - ready_for_review
+
+jobs:
+  block-deploy-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject deploy-* branches
+        run: |
+          echo "Source branch: ${{ github.head_ref }}"
+          if [[ "${{ github.head_ref }}" =~ ^deploy- ]]; then
+            echo "::error::Branches matching deploy-* may not be merged into main."
+            exit 1
+          fi
+          echo "Allowed"
