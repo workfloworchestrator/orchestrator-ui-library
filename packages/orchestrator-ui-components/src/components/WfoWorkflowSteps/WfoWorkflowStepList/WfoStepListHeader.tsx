@@ -69,7 +69,6 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
         <EuiText css={stepListContentBoldTextStyle}>{t(isTask ? 'taskSteps' : 'workflowSteps')}</EuiText>
         {!showRaw && <WfoTextAnchor text={allDetailToggleText} onClick={onToggleAllDetailsIsOpen} />}
       </EuiFlexGroup>
-
       {/* Right side: view options */}
       <EuiFlexGroup justifyContent="flexEnd" direction="row" css={stepListOptionsContainerStyle} gutterSize="s">
         {showTracebackButton && (
