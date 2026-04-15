@@ -67,7 +67,7 @@ export const WfoSubscriptionDetailSection = ({ subscriptionDetail }: WfoSubscrip
       key: t('lastRunValidation'),
       value: (() => {
         const lastValidate = processes?.page
-          ?.filter((p) => p.workflowTarget.toLowerCase() === WorkflowTarget.VALIDATE.toLowerCase())
+          ?.filter((process) => process.workflowTarget.toLowerCase() === WorkflowTarget.VALIDATE.toLowerCase())
           .slice(-1)[0];
 
         if (!lastValidate) {
