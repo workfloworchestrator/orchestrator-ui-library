@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import {
   PATH_TASKS,
-  PATH_WORKFLOWS,
   SubscriptionKeyValueBlock,
   WfoCustomerDescriptionsField,
   WfoInSyncField,
