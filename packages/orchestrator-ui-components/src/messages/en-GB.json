@@ -407,7 +407,8 @@
         "id": "ID",
         "status": "Status",
         "startedAt": "Started at",
-        "startedBy": "Started by"
+        "startedBy": "Started by",
+        "note": "Note"
       },
       "showAll": "Show all",
       "hideAll": "Hide all",

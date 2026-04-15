@@ -502,6 +502,11 @@ export type MetadataDescriptionParams = {
   description: string;
 };
 
+export type ProcessPatchParams = {
+  id: string;
+  note: string | null;
+};
+
 // export type Workflow = {
 //     workflow_id: string;
 //     description: string;
