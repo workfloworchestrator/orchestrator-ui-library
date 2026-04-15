@@ -75,7 +75,7 @@ export const WfoSubscriptionDetailSection = ({ subscriptionDetail }: WfoSubscrip
           return t('noValidateWorkflows');
         }
 
-        const processUrl = `${lastValidate.isTask ? PATH_TASKS : PATH_WORKFLOWS}/${lastValidate.processId}`;
+        const processUrl = `${PATH_TASKS}/${lastValidate.processId}`;
 
         return (
           <Link href={processUrl}>
