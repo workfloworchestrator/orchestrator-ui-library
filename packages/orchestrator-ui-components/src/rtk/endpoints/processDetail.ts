@@ -5,7 +5,13 @@ import {
   PROCESS_RESUME_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
-import { CacheTagType, ProcessDetail, ProcessDetailResultRaw, ProcessesDetailResult } from '@/types';
+import {
+  CacheTagType,
+  ProcessDetail,
+  ProcessDetailResultRaw,
+  ProcessPatchParams,
+  ProcessesDetailResult,
+} from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
 export const processDetailQuery = `query ProcessDetail($processId: String!) {
@@ -131,6 +137,21 @@ const processDetailApi = orchestratorApi.injectEndpoints({
       },
       invalidatesTags: getCacheTag(CacheTagType.processes),
     }),
+    patchProcess: builder.mutation<void, ProcessPatchParams>({
+      query: (process) => ({
+        url: `${PROCESSES_ENDPOINT}/${process.id}`,
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          note: process.note,
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+    }),
   }),
 });
 
@@ -141,4 +162,5 @@ export const {
   useRetryProcessMutation,
   useDeleteProcessMutation,
   useAbortProcessMutation,
+  usePatchProcessMutation,
 } = processDetailApi;

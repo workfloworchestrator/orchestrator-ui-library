@@ -9,6 +9,7 @@ import {
   PATH_TASKS,
   PATH_WORKFLOWS,
   WfoLoading,
+  WfoProcessTimelineNoteEdit,
   WfoRadioDropdown,
   WfoRadioDropdownOption,
   sortProcessesByDate,
@@ -53,6 +54,10 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
     {
       label: t('startedBy'),
       content: subscriptionDetailProcess.createdBy,
+    },
+    {
+      label: t('note'),
+      content: <WfoProcessTimelineNoteEdit processId={subscriptionDetailProcess.processId} />,
     },
   ];
 
