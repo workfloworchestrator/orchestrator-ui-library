@@ -204,6 +204,7 @@ export interface ProcessDetail {
   customer: {
     fullname: string;
   };
+  note: string | null;
 }
 
 // From backend
