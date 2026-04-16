@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import {
+  PATH_TASKS,
   SubscriptionKeyValueBlock,
   WfoCustomerDescriptionsField,
   WfoInSyncField,
   WfoSubscriptionDetailNoteEdit,
   WfoSubscriptionStatusBadge,
 } from '@/components';
-import { SubscriptionDetail } from '@/types';
+import { SubscriptionDetail, WorkflowTarget } from '@/types';
 import { formatDate } from '@/utils';
 
 interface WfoSubscriptionDetailSectionProps {
@@ -19,8 +21,17 @@ interface WfoSubscriptionDetailSectionProps {
 export const WfoSubscriptionDetailSection = ({ subscriptionDetail }: WfoSubscriptionDetailSectionProps) => {
   const t = useTranslations('subscriptions.detail');
 
-  const { subscriptionId, product, description, startDate, endDate, status, customer, customerDescriptions } =
-    subscriptionDetail;
+  const {
+    subscriptionId,
+    product,
+    description,
+    startDate,
+    endDate,
+    status,
+    customer,
+    customerDescriptions,
+    processes,
+  } = subscriptionDetail;
 
   const subscriptionDetailBlockData = [
     {
@@ -51,6 +62,26 @@ export const WfoSubscriptionDetailSection = ({ subscriptionDetail }: WfoSubscrip
     {
       key: t('insync'),
       value: <WfoInSyncField subscriptionDetail={subscriptionDetail} />,
+    },
+    {
+      key: t('lastRunValidation'),
+      value: (() => {
+        const lastValidate = processes?.page
+          ?.filter((process) => process.workflowTarget.toLowerCase() === WorkflowTarget.VALIDATE.toLowerCase())
+          .slice(-1)[0];
+
+        if (!lastValidate) {
+          return t('noValidateWorkflows');
+        }
+
+        const processUrl = `${PATH_TASKS}/${lastValidate.processId}`;
+
+        return (
+          <Link href={processUrl}>
+            {lastValidate.lastStatus} ({formatDate(lastValidate.startedAt)})
+          </Link>
+        );
+      })(),
     },
     {
       key: t('customer'),

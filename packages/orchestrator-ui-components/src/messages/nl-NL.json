@@ -389,6 +389,8 @@
       "subscriptionId": "Subscription ID",
       "description": "Beschrijving",
       "startDate": "Startdatum",
+      "lastRunValidation": "Meest recente validate",
+      "noValidateWorkflows": "Er zijn recentelijk geen validate workflows uitgevoerd",
       "insync": "In sync",
       "customer": "Klant",
       "customerUuid": "Klant UUID",
