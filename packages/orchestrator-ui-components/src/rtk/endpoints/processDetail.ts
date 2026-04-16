@@ -151,6 +151,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },
+      invalidatesTags: [CacheTagType.processes, CacheTagType.subscriptions],
     }),
   }),
 });

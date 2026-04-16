@@ -50,6 +50,7 @@ export const processListQuery = `
                         description
                     }
                 }
+                note
             }
             pageInfo {
                 hasNextPage

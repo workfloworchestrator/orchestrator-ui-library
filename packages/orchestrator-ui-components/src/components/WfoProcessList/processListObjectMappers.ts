@@ -23,6 +23,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (processes: Process
       product,
       customer,
       isTask,
+      note,
     } = process;
 
     return {
@@ -41,6 +42,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (processes: Process
       tag: product?.tag,
       customer: customer.fullname,
       customerAbbreviation: customer.shortcode,
+      note,
     };
   });
 
@@ -62,6 +64,7 @@ export const mapGraphQlProcessListExportResultToProcessListItems = (
       product,
       customer,
       isTask,
+      note,
     } = process;
 
     return {
@@ -83,6 +86,7 @@ export const mapGraphQlProcessListExportResultToProcessListItems = (
       productTag: product?.tag,
       customer: customer.fullname,
       customerAbbreviation: customer.shortcode,
+      note,
     };
   });
 

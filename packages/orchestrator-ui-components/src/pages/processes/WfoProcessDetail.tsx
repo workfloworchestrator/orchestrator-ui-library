@@ -11,7 +11,7 @@ import {
   TimelineItem,
   WfoIsAllowedToRender,
   WfoLoading,
-  WfoProcessDetailNoteEdit,
+  WfoProcessListNoteEdit,
   WfoTimeline,
   WfoTitleWithWebsocketBadge,
 } from '@/components';
@@ -184,7 +184,7 @@ export const WfoProcessDetail = ({
         title={<WfoTitleWithWebsocketBadge title={pageTitle} />}
         subtitle={
           <>
-            <WfoProcessDetailNoteEdit processId={processDetail?.processId} />
+            <WfoProcessListNoteEdit processId={processDetail?.processId || ''} note={processDetail?.note || ''} />
             <WfoProductInformationWithLink
               productNames={productNames}
               workflowName={processDetail?.workflowName ?? ''}
