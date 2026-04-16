@@ -40,6 +40,7 @@ interface WfoFilterBuilderProps {
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
+  handleSearch: () => void;
 }
 
 export const WfoFilterBuilder = ({
@@ -48,6 +49,7 @@ export const WfoFilterBuilder = ({
   isValidFilterString = true,
   queryBuilderRuleGroup,
   onUpdateQueryBuilder,
+  handleSearch,
 }: WfoFilterBuilderProps) => {
   const t = useTranslations('common');
 
@@ -108,7 +110,9 @@ export const WfoFilterBuilder = ({
           <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
             <EuiButton
               css={toggleButtonStyles}
-              onClick={() => setIsFilterBuilderVisible(true)}
+              onClick={() => {
+                handleSearch();
+              }}
               id={'button-apply-filter'}
               data-test-id={'button-apply-filter'}
               fill
