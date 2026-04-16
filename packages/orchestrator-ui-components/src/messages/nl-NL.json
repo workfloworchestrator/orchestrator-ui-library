@@ -248,7 +248,8 @@
       "lastModified": "Aangepast op",
       "workflowTarget": "Target",
       "productTag": "Product tag",
-      "showAllRelatedSubscriptions": "Toon alle gerelateerde subscriptions"
+      "showAllRelatedSubscriptions": "Toon alle gerelateerde subscriptions",
+      "note": "Note"
     },
     "detail": {
       "retry": "Probeer opnieuw",

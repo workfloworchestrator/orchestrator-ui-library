@@ -171,6 +171,7 @@ const testProcess: SubscriptionDetailProcess = {
   processId: 'testProcessId 1',
   startedAt: '2021-01-01T00:00:00Z',
   isTask: false,
+  note: 'testNote',
 };
 
 describe('getLastUncompletedProcess', () => {

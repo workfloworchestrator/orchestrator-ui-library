@@ -9,7 +9,7 @@ import {
   PATH_TASKS,
   PATH_WORKFLOWS,
   WfoLoading,
-  WfoProcessTimelineNoteEdit,
+  WfoProcessListNoteEdit,
   WfoRadioDropdown,
   WfoRadioDropdownOption,
   sortProcessesByDate,
@@ -57,7 +57,9 @@ const WfoProcessCard = ({ subscriptionDetailProcess }: WfoProcessCardProps) => {
     },
     {
       label: t('note'),
-      content: <WfoProcessTimelineNoteEdit processId={subscriptionDetailProcess.processId} />,
+      content: (
+        <WfoProcessListNoteEdit processId={subscriptionDetailProcess.processId} note={subscriptionDetailProcess.note} />
+      ),
     },
   ];
 
