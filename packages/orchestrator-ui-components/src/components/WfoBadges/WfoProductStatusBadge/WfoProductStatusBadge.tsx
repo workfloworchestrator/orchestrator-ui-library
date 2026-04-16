@@ -8,13 +8,16 @@ export type WfoProductStatusBadgeProps = {
   status: ProductLifecycleStatus;
 };
 
+const normalizedStatus = (status: ProductLifecycleStatus): string => status.toLowerCase().replace(/_/g, ' ');
+
 export const WfoProductStatusBadge: FC<WfoProductStatusBadgeProps> = ({ status }) => {
   const { theme, toSecondaryColor } = useOrchestratorTheme();
 
-  const getBadgeColorFromStatus = (status: string) => {
+  const productLifeCycleStatus = normalizedStatus(status);
+  const getBadgeColorFromStatus = () => {
     const { primary, borderBaseSubdued, textPrimary, textParagraph, success, textSuccess } = theme.colors;
 
-    switch (status.toLowerCase()) {
+    switch (productLifeCycleStatus) {
       case ProductLifecycleStatus.ACTIVE:
         return {
           badgeColor: toSecondaryColor(success),
@@ -34,11 +37,11 @@ export const WfoProductStatusBadge: FC<WfoProductStatusBadgeProps> = ({ status }
     }
   };
 
-  const { badgeColor, textColor } = getBadgeColorFromStatus(status);
+  const { badgeColor, textColor } = getBadgeColorFromStatus();
 
   return (
     <WfoBadge textColor={textColor} color={badgeColor}>
-      {status.toLowerCase()}
+      {productLifeCycleStatus}
     </WfoBadge>
   );
 };
