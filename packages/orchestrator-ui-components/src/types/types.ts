@@ -164,6 +164,7 @@ export type Process = {
   subscriptions: {
     page: Pick<Subscription, 'subscriptionId' | 'description'>[];
   };
+  note: string | null;
 };
 
 // These step statusses match the ones in the backend
@@ -204,6 +205,7 @@ export interface ProcessDetail {
   customer: {
     fullname: string;
   };
+  note: string | null;
 }
 
 // From backend
@@ -501,6 +503,11 @@ export type MetadataDescriptionParams = {
   description: string;
 };
 
+export type ProcessPatchParams = {
+  id: string;
+  note: string | null;
+};
+
 // export type Workflow = {
 //     workflow_id: string;
 //     description: string;
@@ -535,7 +542,7 @@ export type SubscriptionDetail = {
 
 export type SubscriptionDetailProcess = Pick<
   Process,
-  'processId' | 'lastStatus' | 'startedAt' | 'createdBy' | 'workflowTarget' | 'workflowName' | 'isTask'
+  'processId' | 'lastStatus' | 'startedAt' | 'createdBy' | 'workflowTarget' | 'workflowName' | 'isTask' | 'note'
 >;
 
 export type RelatedSubscription = Pick<

@@ -249,7 +249,8 @@
       "lastModified": "Last modified",
       "workflowTarget": "Target",
       "productTag": "Product tag",
-      "showAllRelatedSubscriptions": "Show all related subscriptions"
+      "showAllRelatedSubscriptions": "Show all related subscriptions",
+      "note": "Note"
     },
     "detail": {
       "retry": "Retry",
@@ -409,7 +410,8 @@
         "id": "ID",
         "status": "Status",
         "startedAt": "Started at",
-        "startedBy": "Started by"
+        "startedBy": "Started by",
+        "note": "Note"
       },
       "showAll": "Show all",
       "hideAll": "Hide all",
