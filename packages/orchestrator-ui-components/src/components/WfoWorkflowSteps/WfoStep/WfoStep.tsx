@@ -17,6 +17,7 @@ import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
 import { CodeView, WfoCodeViewSelector } from './WfoCodeViewSelector';
 import { WfoStepForm } from './WfoStepForm';
+import { useStepDetailOverride } from './useStepDetailOverride';
 
 export interface WfoStepProps {
   stepListItem: StepListItem;
@@ -58,6 +59,7 @@ export const WfoStep = React.forwardRef(
       stepRowStyle,
       getStepToggleExpandStyle,
     } = useWithOrchestratorTheme(getWorkflowStepsStyles);
+    const { overrideStepDetail } = useStepDetailOverride();
     const t = useTranslations('processes.steps');
     const hasHtmlMail = Object.prototype.hasOwnProperty.call(step?.stateDelta || {}, 'confirmation_mail');
 
@@ -104,55 +106,70 @@ export const WfoStep = React.forwardRef(
       },
       [setCodeView],
     );
-
+    const shouldExpand: boolean = isExpanded && hasStepContent;
     return (
       <div ref={ref}>
         <EuiPanel>
           <EuiFlexGroup css={getStepHeaderStyle(hasStepContent)} onClick={() => hasStepContent && onToggleStepDetail()}>
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} />
 
-            <EuiFlexItem grow={0}>
-              <EuiText css={stepListContentBoldTextStyle}>{step.name}</EuiText>
-              <EuiText>
-                {step.status} {step.completed && `- ${formatDate(step.completed)}`}
-              </EuiText>
-            </EuiFlexItem>
+            <EuiFlexGroup direction="column" gutterSize="none">
+              <EuiFlexItem css={{ flexDirection: 'row' }}>
+                <EuiFlexItem grow={0}>
+                  <EuiText css={stepListContentBoldTextStyle}>{step.name}</EuiText>
+                  <EuiText>
+                    {step.status} {step.completed && `- ${formatDate(step.completed)}`}
+                  </EuiText>
+                </EuiFlexItem>
 
-            <EuiFlexGroup css={stepRowStyle}>
-              {step.completed && (
-                <>
-                  {isExpanded && <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handle} />}
-                  <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
-                    <EuiText css={stepDurationStyle}>{t('duration')}</EuiText>
-                    <EuiText size="m">{calculateTimeDifference(startedAt, completedAt)}</EuiText>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={0} css={getStepToggleExpandStyle(hasStepContent)}>
-                    {(isExpanded && <WfoChevronUp color={theme.colors.textParagraph} />) || (
-                      <WfoChevronDown color={theme.colors.textParagraph} />
-                    )}
-                  </EuiFlexItem>
-                </>
-              )}
+                <EuiFlexGroup css={stepRowStyle}>
+                  {step.completed && (
+                    <>
+                      {isExpanded && <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handle} />}
+                      <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
+                        <EuiText css={stepDurationStyle}>{t('duration')}</EuiText>
+                        <EuiText size="m">{calculateTimeDifference(startedAt, completedAt)}</EuiText>
+                      </EuiFlexItem>
+                      <EuiFlexItem grow={0} css={getStepToggleExpandStyle(hasStepContent)}>
+                        {(isExpanded && <WfoChevronUp color={theme.colors.textParagraph} />) || (
+                          <WfoChevronDown color={theme.colors.textParagraph} />
+                        )}
+                      </EuiFlexItem>
+                    </>
+                  )}
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                {overrideStepDetail?.stepHeader && <overrideStepDetail.stepHeader step={step} />}
+              </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexGroup>
-          {hasStepContent
-            && !hasHtmlMail
-            && isExpanded
-            && (codeView === CodeView.TABLE ? <WfoTableCodeBlock stepState={stepContent} />
-            : codeView === CodeView.RAW ? <WfoJsonCodeBlock data={stepContent} />
-            : <WfoMonacoCodeBlock data={stepContent} />)}
-          {isExpanded && hasHtmlMail && (
-            <div css={stepEmailContainerStyle}>
-              {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
-            </div>
-          )}
-          {step.status === StepStatus.SUSPEND && userInputForm && (
-            <WfoStepForm
-              userInputForm={userInputForm}
-              isTask={isTask}
-              processId={processId ?? ''}
-              userPermissions={userPermissions}
-            />
+          {shouldExpand && (
+            <EuiFlexGroup direction="column" gutterSize="none">
+              <EuiFlexItem grow={1}>
+                {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}
+              </EuiFlexItem>
+              <EuiFlexItem>
+                {shouldExpand
+                  && !hasHtmlMail
+                  && (codeView === CodeView.TABLE ? <WfoTableCodeBlock stepState={stepContent} />
+                  : codeView === CodeView.RAW ? <WfoJsonCodeBlock data={stepContent} />
+                  : <WfoMonacoCodeBlock data={stepContent} />)}
+                {isExpanded && hasHtmlMail && (
+                  <div css={stepEmailContainerStyle}>
+                    {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
+                  </div>
+                )}
+                {step.status === StepStatus.SUSPEND && userInputForm && (
+                  <WfoStepForm
+                    userInputForm={userInputForm}
+                    isTask={isTask}
+                    processId={processId ?? ''}
+                    userPermissions={userPermissions}
+                  />
+                )}
+              </EuiFlexItem>
+            </EuiFlexGroup>
           )}
         </EuiPanel>
       </div>

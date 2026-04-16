@@ -1,6 +1,6 @@
 import { MappedVersion } from '@/types';
 
-const compareVersions = (v1: string, v2: string): number => {
+export const compareVersions = (v1: string, v2: string): number => {
   const parse = (v: string) => {
     const parts = v.split('.');
 

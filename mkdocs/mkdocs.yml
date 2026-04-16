@@ -1,4 +1,5 @@
-site_name: Orchestrator UI docs
+# workfloworchestrator.github.io uses site_name in the URL, don't change it
+site_name: Orchestrator UI Library
 site_description: Orchestrator UI developers documentation
 repo_url: 'https://github.com/workfloworchestrator/orchestrator-ui'
 repo_name: 'orchestrator-ui'
@@ -20,11 +21,11 @@ theme:
   features:
     - search.suggest
     - search.highlight
-    - navigation.tabs
+    # - navigation.tabs
     - navigation.sections
-    - navigation.expand
-    - navigation.tracking
-    - content.code.annotate
+    # - navigation.expand
+    # - navigation.tracking
+    # - content.code.annotate
 plugins:
   - termynal
   - search

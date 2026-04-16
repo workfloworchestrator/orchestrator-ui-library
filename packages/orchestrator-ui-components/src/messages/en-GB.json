@@ -391,6 +391,8 @@
       "subscriptionId": "Subscription ID",
       "description": "Description",
       "startDate": "Start date",
+      "lastRunValidation": "Most recent validate",
+      "noValidateWorkflows": "No validate workflows have been run recently",
       "insync": "In sync",
       "customer": "Customer",
       "customerUuid": "Customer UUID",
