@@ -20,6 +20,7 @@ export interface SearchResult {
   score: number;
   perfect_match: number;
   matching_field?: MatchingField | null;
+  response_columns?: Record<string, string>;
 }
 
 /** Paginated search results */
@@ -32,6 +33,11 @@ export type PaginatedSearchResults = {
   search_metadata: {
     search_type: string | null;
     description: string | null;
+  };
+  cursor?: {
+    total_items: number;
+    start_cursor: number;
+    end_cursor: number;
   };
 };
 
@@ -83,7 +89,7 @@ type ActionType = 'select';
 type BaseSearchParameters = {
   query?: string | null;
 
-  filters?: PathFilter[] | Group | null;
+  filters?: PathFilter[] | Filter | null;
 
   action: ActionType;
 };
@@ -116,9 +122,9 @@ export type Condition = {
   condition: { op: string; value?: unknown };
 };
 
-export type Group = {
+export type Filter = {
   op: 'AND' | 'OR';
-  children: Array<Group | Condition>;
+  children: Array<Filter | Condition>;
 };
 
 export type value_schema = {

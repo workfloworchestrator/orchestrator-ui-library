@@ -31,13 +31,14 @@ export const WfoTableDataRows = <T extends object>({
     useWithOrchestratorTheme(getWfoTableStyles);
 
   const sortedVisibleColumns = getSortedVisibleColumns(columnConfig, columnOrder, hiddenColumns);
+  const rowClassName = className ? className : '';
 
   return (
     <>
       {data.map((row, index) => (
         <Fragment key={`table-data-row-${index}`}>
           <tr
-            className={`${className} ${DATA_ROW_CLASS}`}
+            className={`${rowClassName} ${DATA_ROW_CLASS}`}
             css={[rowStyle, dataRowStyle, onRowClick && clickableStyle]}
             onClick={() => onRowClick?.(row)}
           >

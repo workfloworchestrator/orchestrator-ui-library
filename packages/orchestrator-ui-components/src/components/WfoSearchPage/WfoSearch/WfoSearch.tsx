@@ -29,7 +29,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
 import { useSearchPagination } from '@/hooks/useSearchPagination';
 import { useUrlParams } from '@/hooks/useUrlParams';
-import { EntityKind, Group, RetrieverType } from '@/types';
+import { EntityKind, Filter, RetrieverType } from '@/types';
 
 import { DEFAULT_DEBOUNCE_DELAY, DEFAULT_PAGE_SIZE, LAYOUT_RATIOS, SMALL_RESULT_THRESHOLD } from '../constants';
 
@@ -53,7 +53,7 @@ export const WfoSearch = () => {
 
   const pageSize = DEFAULT_PAGE_SIZE;
 
-  const [filterGroup, setFilterGroup] = useState<Group>({
+  const [filterGroup, setFilterGroup] = useState<Filter>({
     op: 'AND',
     children: [],
   });

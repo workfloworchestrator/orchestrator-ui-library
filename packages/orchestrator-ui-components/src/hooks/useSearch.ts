@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { Query } from '@elastic/eui';
 
 import { useSearchMutation } from '@/rtk/endpoints';
-import { EntityKind, Group, PaginatedSearchResults, RetrieverType } from '@/types';
+import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
 
 export const useSearch = (
   query: Query | string,
   entityType: EntityKind,
-  filterGroup?: Group,
+  filterGroup?: Filter,
   limit?: number,
   retriever: RetrieverType = RetrieverType.Auto,
 ) => {
