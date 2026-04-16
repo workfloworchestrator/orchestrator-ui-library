@@ -13,10 +13,12 @@ export const WfoEngineStatusBadge = () => {
   const { data } = useGetEngineStatusQuery();
   const { engineStatus } = data || {};
   const { useWebSockets } = useGetOrchestratorConfig();
+
+  const { orchestratorWebsocketUrl } = useGetOrchestratorConfig();
   const [websocketTrigger, { isUninitialized }] = useLazyStreamMessagesQuery();
 
   if (useWebSockets && isUninitialized) {
-    websocketTrigger();
+    websocketTrigger(orchestratorWebsocketUrl);
   }
 
   const engineStatusText: string = engineStatus ? `Engine is ${engineStatus}` : 'Engine status is unavailable';
