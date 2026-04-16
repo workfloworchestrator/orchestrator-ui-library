@@ -78,6 +78,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
+  handleSearch: () => void;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -96,6 +97,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   isValidFilterString,
   queryBuilderRuleGroup,
   onUpdateQueryBuilder,
+  handleSearch,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -181,6 +183,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             isValidFilterString={isValidFilterString}
             queryBuilderRuleGroup={queryBuilderRuleGroup}
             onUpdateQueryBuilder={onUpdateQueryBuilder}
+            handleSearch={handleSearch}
           />
         </EuiFlexItem>
       </EuiFlexGroup>

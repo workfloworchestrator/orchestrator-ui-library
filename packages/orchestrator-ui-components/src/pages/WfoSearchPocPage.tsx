@@ -86,10 +86,14 @@ export const WfoSearchPocPage = () => {
     return elasticQuery as unknown as Filter;
   };
 
-  const search = (searchParams: { queryText?: string; retrieverType?: RetrieverType; ruleGroup?: RuleGroupType }) => {
-    const retriever = searchParams.retrieverType || retrieverType;
-    const query = searchParams.queryText || queryText || '';
-    const filters = parseRuleGroupToFilters(searchParams.ruleGroup || queryBuilderRuleGroup);
+  const handleSearch = (searchParams?: {
+    queryText?: string;
+    retrieverType?: RetrieverType;
+    ruleGroup?: RuleGroupType;
+  }) => {
+    const retriever = searchParams?.retrieverType || retrieverType;
+    const query = searchParams?.queryText || queryText || '';
+    const filters = parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup);
 
     const searchPayload: SearchPayload = {
       query,
@@ -100,14 +104,14 @@ export const WfoSearchPocPage = () => {
     triggerSearch(searchPayload);
   };
 
-  const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
-    setRetrieverType(retrieverType);
-    search({ retrieverType });
-  };
-
   const onUpdateQueryText = (queryText: string) => {
     setQueryText(queryText);
-    search({ queryText });
+    handleSearch({ queryText });
+  };
+
+  const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
+    setRetrieverType(retrieverType);
+    handleSearch({ retrieverType });
   };
 
   const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
@@ -144,19 +148,20 @@ export const WfoSearchPocPage = () => {
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SearchResult>
         data={data?.data || []}
+        defaultHiddenColumns={tableDefaults?.hiddenColumns}
+        filterString={filterString}
+        handleSearch={handleSearch}
         isLoading={isLoading}
         isValidFilterString={isValidFilterString}
-        defaultHiddenColumns={tableDefaults?.hiddenColumns}
-        onUpdateQueryText={onUpdateQueryText}
-        tableColumnConfig={tableColumnConfig}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
-        queryText={queryText}
-        retrieverType={retrieverType}
+        onUpdateFilterString={onUpdateFilterString}
+        onUpdateQueryBuilder={onUpdateQueryBuilder}
+        onUpdateQueryText={onUpdateQueryText}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
-        onUpdateQueryBuilder={onUpdateQueryBuilder}
-        filterString={filterString}
-        onUpdateFilterString={onUpdateFilterString}
+        queryText={queryText}
+        retrieverType={retrieverType}
+        tableColumnConfig={tableColumnConfig}
       />
     </>
   );
