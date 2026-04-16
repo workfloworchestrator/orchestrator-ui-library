@@ -8,6 +8,7 @@ import {
   FilterQuery,
   PATH_WORKFLOWS,
   WfoDateTime,
+  WfoProcessListNoteEdit,
   WfoProcessStatusBadge,
   WfoWorkflowTargetBadge,
   getPageIndexChangeHandler,
@@ -53,6 +54,7 @@ export type ProcessListItem = Pick<
   | 'assignee'
   | 'processId'
   | 'subscriptions'
+  | 'note'
 > & {
   startedAt: Date;
   lastModifiedAt: Date;
@@ -137,6 +139,12 @@ export const WfoProcessesList = ({
       columnType: ColumnType.DATA,
       label: t('customerAbbreviation'),
       width: '125px',
+    },
+    note: {
+      columnType: ColumnType.DATA,
+      label: t('note'),
+      width: '250px',
+      renderData: (note, { processId }) => <WfoProcessListNoteEdit processId={processId} note={note} />,
     },
     subscriptions: {
       columnType: ColumnType.DATA,

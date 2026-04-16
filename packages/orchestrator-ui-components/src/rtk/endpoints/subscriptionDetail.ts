@@ -57,6 +57,7 @@ fragment SubscriptionDetail on SubscriptionInterface {
             workflowTarget
             workflowName
             isTask
+            note
         }
     }
 }
