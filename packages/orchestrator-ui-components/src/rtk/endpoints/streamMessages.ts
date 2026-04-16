@@ -90,7 +90,7 @@ const streamMessagesApi = orchestratorApi.injectEndpoints({
 
           if (data === '__pong__') {
             debounceClosingConnection();
-            if (initialConnection) {
+            if (initialConnection && closeConnectionAfterFirstPing) {
               initialConnection = false;
               closeConnectionAfterFirstPing.cancel();
             }

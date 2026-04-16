@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useTranslations } from 'next-intl';
@@ -6,8 +6,7 @@ import { useTranslations } from 'next-intl';
 import { EuiToolTip } from '@elastic/eui';
 
 import { WfoHeaderBadge } from '@/components';
-import { OrchestratorConfigContext } from '@/contexts';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig, useWithOrchestratorTheme } from '@/hooks';
 import { useOrchestratorTheme } from '@/hooks/useOrchestratorTheme';
 import { WfoBoltFill, WfoBoltSlashFill } from '@/icons';
 import { orchestratorApi } from '@/rtk';
@@ -30,7 +29,7 @@ export const WfoWebsocketStatusBadge: FC<WfoWebsocketStatusBadgeProps> = ({
   const t = useTranslations('main');
   const { theme } = useOrchestratorTheme();
 
-  const { orchestratorWebsocketUrl } = useContext(OrchestratorConfigContext);
+  const { orchestratorWebsocketUrl } = useGetOrchestratorConfig();
   const { data: websocketConnected } = useStreamMessagesQuery(wsUrl || orchestratorWebsocketUrl);
 
   const showBadge = !(websocketConnected && hideWhenConnected);
