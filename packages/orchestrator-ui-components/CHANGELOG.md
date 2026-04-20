@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.7.0
+
+### Minor Changes
+
+- d40df81: Add overridable components to Step entries
+- ef68a85: Change RTK streamMessages to be re-usable with other websocket endpoints
+- 2d7ff7a: Change Schedule Task Form to use form data from backend when backend version is 5.0.0a7 or higher
+
+### Patch Changes
+
+- 2b0cdf5: Add direct link to latest validate workflow in SubscriptionDetail (#2490)
+
 ## 7.6.0
 
 ### Minor Changes
