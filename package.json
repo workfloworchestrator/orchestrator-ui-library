@@ -5,6 +5,8 @@
     "dev:surf": "turbo run dev --filter=wfo-ui-surf...",
     "dev:storybook": "turbo run dev --filter=storybook...",
     "dev:all": "turbo run dev",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:quick": "node scripts/deploy.mjs --quick",
     "test": "turbo run test",
     "tsc": "turbo run tsc",
     "lint": "turbo run lint",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@inquirer/prompts": "^7.10.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@turbo/gen": "^2.5.2",
     "husky": "^9.0.11",
