@@ -10,6 +10,8 @@ import {
 } from '@/types';
 
 export interface SearchPayload {
+  order_by?: string | undefined;
+  response_columns: string[];
   entity_type: EntityKind;
   query: string;
   filters?: Filter;
@@ -31,10 +33,10 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever }) => ({
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
-        body: { query, filters, limit, retriever },
+        body: { query, filters, limit, retriever, order_by: order_by || undefined, response_columns },
         headers: {
           'Content-Type': 'application/json',
         },
