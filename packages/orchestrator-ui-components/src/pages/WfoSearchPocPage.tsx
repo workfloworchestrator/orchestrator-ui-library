@@ -8,14 +8,37 @@ import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import type { WfoStructuredSearchTableDataColumnConfig } from '@/components';
+import {
+  WfoDateTime,
+  WfoInlineJson,
+  WfoInsyncIcon,
+  WfoJsonCodeBlock,
+  WfoSubscriptionActions,
+  WfoSubscriptionNoteEdit,
+  WfoSubscriptionStatusBadge,
+} from '@/components';
+import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
 import { StoredTableConfig, WfoContentHeader, WfoFirstPartUUID, WfoStructuredSearchTable } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
 import { Filter, RetrieverType, SearchResult } from '@/types';
+import { parseDateToLocaleDateTimeString } from '@/utils';
+
+import type {} from './subscriptions';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
+
+const getResponseColumnsFromTableConfig = <T extends object>(tableConfig: WfoStructuredSearchTableColumnConfig<T>) => {
+  const responseColumns: string[] = [];
+  Object.entries(tableConfig).map(([key, columnConfig]) => {
+    if (columnConfig && columnConfig.columnType === ColumnType.DATA) {
+      responseColumns.push(key);
+    }
+  });
+
+  return responseColumns;
+};
 
 export const WfoSearchPocPage = () => {
   const t = useTranslations('search.page');
@@ -29,6 +52,8 @@ export const WfoSearchPocPage = () => {
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
+  console.log('data', data);
+
   const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResult>>();
 
@@ -39,45 +64,99 @@ export const WfoSearchPocPage = () => {
     }
   }, [getStoredTableConfig]);
 
-  const tableColumnConfig: WfoStructuredSearchTableDataColumnConfig<SearchResult> = {
-    entity_id: {
+  const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
+    actions: {
+      columnType: ColumnType.CONTROL,
+      width: '50px',
+      renderControl: (row) => <WfoSubscriptionActions compactMode={true} subscriptionId={row.subscriptionId} />,
+    },
+    subscriptionId: {
       columnType: ColumnType.DATA,
       label: t('id'),
-      width: '90px',
+      width: '100px',
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
     },
-    entity_type: {
+    description: {
       columnType: ColumnType.DATA,
-      label: t('type'),
-      width: '90px',
-      renderData: (value) => <div>{value}</div>,
-    },
-    entity_title: {
-      columnType: ColumnType.DATA,
-      label: t('title'),
-      width: '450px',
-      renderData: (value, record) => <Link href={`/subscriptions/${record.entity_id}`}>{value}</Link>,
+      label: t('description'),
+      width: '500px',
+      renderData: (value, record) => <Link href={`/subscriptions/${record.subscriptionId}`}>{value}</Link>,
       renderTooltip: (value) => value,
     },
-    score: {
+    status: {
       columnType: ColumnType.DATA,
-      label: t('score'),
-      width: '90px',
-      renderData: (value) => <div>{value}</div>,
-    },
-    matching_field: {
-      columnType: ColumnType.DATA,
-      label: t('matchingField'),
+      label: t('status'),
       width: '120px',
-      renderData: (matchingField) => <div>{matchingField?.text}</div>,
+      renderData: (value) => <WfoSubscriptionStatusBadge status={value} />,
     },
-    perfect_match: {
+    insync: {
       columnType: ColumnType.DATA,
-      label: t('perfectMatch'),
-      width: '120px',
-      renderData: (perfectMatch) => <div>{perfectMatch}</div>,
+      label: t('insync'),
+      width: '75px',
+      renderData: (value) => <WfoInsyncIcon inSync={value} />,
+    },
+    productName: {
+      columnType: ColumnType.DATA,
+      width: '260px',
+      label: t('product'),
+    },
+    tag: {
+      columnType: ColumnType.DATA,
+      label: t('tag'),
+      width: '100px',
+    },
+    customerFullname: {
+      columnType: ColumnType.DATA,
+      label: t('customerFullname'),
+    },
+    customerShortcode: {
+      columnType: ColumnType.DATA,
+      label: t('customerShortcode'),
+      width: '150px',
+    },
+    startDate: {
+      columnType: ColumnType.DATA,
+      label: t('startDate'),
+      width: '100px',
+      renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
+      renderDetails: parseDateToLocaleDateTimeString,
+      clipboardText: parseDateToLocaleDateTimeString,
+      renderTooltip: (cellValue) => cellValue?.toString(),
+    },
+    endDate: {
+      columnType: ColumnType.DATA,
+      label: t('endDate'),
+      width: '100px',
+      renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
+      renderDetails: parseDateToLocaleDateTimeString,
+      clipboardText: parseDateToLocaleDateTimeString,
+      renderTooltip: (cellValue) => cellValue?.toString(),
+    },
+    note: {
+      columnType: ColumnType.DATA,
+      label: t('note'),
+      width: '300px',
+      renderData: (cellValue, row) => {
+        return (
+          <WfoSubscriptionNoteEdit
+            onlyShowOnHover={true}
+            endpointName={''}
+            queryVariables={{}}
+            subscriptionId={row.subscriptionId}
+            note={cellValue}
+          />
+        );
+      },
+    },
+    metadata: {
+      columnType: ColumnType.DATA,
+      label: t('metadata'),
+      width: '100px',
+      renderData: (value) => <WfoInlineJson data={value} />,
+      renderDetails: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle />,
+      renderTooltip: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle={false} />,
     },
   };
 
@@ -94,10 +173,12 @@ export const WfoSearchPocPage = () => {
     const retriever = searchParams?.retrieverType || retrieverType;
     const query = searchParams?.queryText || queryText || '';
     const filters = parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup);
-
+    const requestColumns = getResponseColumnsFromTableConfig<SubscriptionListItem>(tableColumnConfig);
+    console.log('requestColumns', requestColumns, tableColumnConfig);
     const searchPayload: SearchPayload = {
       query,
       entity_type: 'SUBSCRIPTION',
+      response_columns: requestColumns,
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
     };
@@ -146,7 +227,7 @@ export const WfoSearchPocPage = () => {
     <>
       <WfoContentHeader title="Search page POC" />
       <EuiSpacer size="l" />
-      <WfoStructuredSearchTable<SearchResult>
+      <WfoStructuredSearchTable<SubscriptionListItem>
         data={data?.data || []}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
