@@ -1,5 +1,10 @@
 [
   {
+    "orchestratorUiVersion": "7.7.0",
+    "minimumOrchestratorCoreVersion": "5.0.0",
+    "changes": "A note field was added to a process"
+  },
+  {
     "orchestratorUiVersion": "6.5.0",
     "minimumOrchestratorCoreVersion": "4.6.0",
     "changes": "To support new functionality in the FE for the Agent and LLM, the BE endpoints have changed."
