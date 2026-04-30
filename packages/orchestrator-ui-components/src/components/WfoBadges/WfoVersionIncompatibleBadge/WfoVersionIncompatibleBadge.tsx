@@ -21,7 +21,7 @@ export const WfoVersionIncompatibleBadge: FC<WfoVersionIncompatibleBadgeProps> =
   orchestratorCoreVersion,
 }) => {
   const t = useTranslations('main');
-  const { theme } = useOrchestratorTheme();
+  const { theme, isDarkModeActive } = useOrchestratorTheme();
   const mappedVersions: MappedVersion[] = versionCompatibility;
   const isReady = orchestratorCoreVersion && orchestratorUiVersion;
 
@@ -50,10 +50,11 @@ export const WfoVersionIncompatibleBadge: FC<WfoVersionIncompatibleBadgeProps> =
     >
       <WfoHeaderBadge
         color="danger"
-        textColor={theme.colors.textGhost}
+        textColor={isDarkModeActive ? theme.colors.textGhost : theme.colors.textInk}
         css={{
           marginLeft: theme.size.s,
-          display: minimumOrchestratorCoreVersion ? 'block' : 'none',
+          display: minimumOrchestratorCoreVersion ? 'flex' : 'none',
+          cursor: 'default',
         }}
       >
         {t('incompatibleVersion')}
