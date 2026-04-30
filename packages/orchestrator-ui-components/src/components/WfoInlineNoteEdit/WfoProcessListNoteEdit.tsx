@@ -19,13 +19,13 @@ export const WfoProcessListNoteEdit: FC<WfoProcessDetailNoteEditProps> = ({ proc
     if (note !== noteValue) {
       setNoteValue(note);
     }
-  }, [note]);
+  }, [note, noteValue]);
 
-  const postProcessNoteChange = async (note: string) => {
+  const onSaveNote = async (note: string) => {
     const noteModifyPayload = { id: processId, note: note };
     patchProcess(noteModifyPayload);
     return note;
   };
 
-  return <WfoInlineEdit value={noteValue?.trim() || ''} onSave={postProcessNoteChange} />;
+  return <WfoInlineEdit value={noteValue?.trim() || ''} onSave={onSaveNote} />;
 };
