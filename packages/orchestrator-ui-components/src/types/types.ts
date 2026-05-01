@@ -508,10 +508,10 @@ export type ProcessPatchParams = {
   note: string | null;
 };
 
-// export type Workflow = {
-//     workflow_id: string;
-//     description: string;
-// };
+export type MetadataStatusParams = {
+  id: string;
+  status: ProductLifecycleStatus;
+};
 
 export type SubscriptionDetail = {
   subscriptionId: string;

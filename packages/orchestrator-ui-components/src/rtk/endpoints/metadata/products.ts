@@ -4,6 +4,7 @@ import {
   BaseGraphQlResult,
   GraphqlQueryVariables,
   MetadataDescriptionParams,
+  MetadataStatusParams,
   ProductDefinition,
   ProductDefinitionsResult,
 } from '@/types';
@@ -74,7 +75,7 @@ export const { useGetProductsQuery, useLazyGetProductsQuery } = productsApi;
 
 const productRestApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    updateProduct: build.mutation<null, MetadataDescriptionParams>({
+    updateProductDescription: build.mutation<null, MetadataDescriptionParams>({
       query: (product) => ({
         url: `${METADATA_PRODUCT_ENDPOINT}/${product.id}`,
         method: 'PATCH',
@@ -89,7 +90,22 @@ const productRestApi = orchestratorApi.injectEndpoints({
         baseQueryType: BaseQueryTypes.fetch,
       },
     }),
+    updateProductStatus: build.mutation<null, MetadataStatusParams>({
+      query: (product) => ({
+        url: `${METADATA_PRODUCT_ENDPOINT}/${product.id}`,
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          status: product.status,
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+    }),
   }),
 });
 
-export const { useUpdateProductMutation } = productRestApi;
+export const { useUpdateProductDescriptionMutation, useUpdateProductStatusMutation } = productRestApi;
