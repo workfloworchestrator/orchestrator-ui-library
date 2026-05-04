@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.0.0
+
+### Major Changes
+
+- 70ef6eb: Updates to verion pydantic-forms-ui 2.\*. Adds override step header and step details option.
+
 ## 7.7.0
 
 ### Minor Changes
