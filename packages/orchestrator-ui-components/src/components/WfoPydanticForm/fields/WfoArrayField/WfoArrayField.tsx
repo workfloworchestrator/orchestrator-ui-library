@@ -81,7 +81,7 @@ export const WfoArrayField = ({ pydanticFormField }: PydanticFormElementProps) =
 
   if (!arrayItem) return null;
 
-  const component = fieldToComponentMatcher(arrayItem, config?.componentMatcherExtender);
+  const component = fieldToComponentMatcher(arrayItem, config?.componentMatcher);
 
   const renderField = (field: Record<'id', string>, index: number) => {
     const itemizedField = itemizeArrayItem(index, arrayItem, arrayName);

@@ -16,7 +16,7 @@ export const WfoObjectField = ({ pydanticFormField }: PydanticFormElementProps) 
   const config = useGetConfig();
   const disabled = pydanticFormField.attributes?.disabled || false;
   const { wfoObjectFieldStyles } = getWfoObjectFieldStyles();
-  const components = getPydanticFormComponents(pydanticFormField.properties || {}, config?.componentMatcherExtender);
+  const components = getPydanticFormComponents(pydanticFormField.properties || {}, config?.componentMatcher);
 
   // We have decided - for now - on the convention that all descendants of disabled fields will be disabled as well
   // so we will not displaying any interactive elements inside a disabled element
