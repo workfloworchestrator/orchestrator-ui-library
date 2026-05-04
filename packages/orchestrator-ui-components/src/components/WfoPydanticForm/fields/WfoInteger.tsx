@@ -31,20 +31,22 @@ export const WfoInteger: PydanticFormControlledElement = ({ pydanticFormField, o
   // this is imposed by react-hook-form. We try to detect this and extract the actual value
   const fieldName = getFormFieldIdWithPath(pydanticFormField.id);
   const fieldValue = _.isObject(value) && _.has(value, fieldName) ? _.get(value, fieldName) : value;
-  const [userInput, setUserInput] = React.useState<string>();
+  const [userInput, setUserInput] = React.useState<string>('');
 
   useEffect(() => {
     if (fieldValue !== undefined && fieldValue !== null) {
       setUserInput(fieldValue);
-    } else {
-      setUserInput('');
     }
   }, [fieldValue, value]);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    if (value === null && newValue !== value) {
-      onChange(parseInt(newValue));
+    const newValue = event.target.value || '';
+    if (value === null || newValue !== value) {
+      if (!isNaN(parseInt(newValue))) {
+        onChange(parseInt(newValue));
+      } else {
+        onChange('');
+      }
     }
     setUserInput(newValue);
   };
