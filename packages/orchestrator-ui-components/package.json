@@ -64,7 +64,7 @@
     "use-query-params": "^2.2.2"
   },
   "devDependencies": {
-    "@elastic/eui": "^113.1.0",
+    "@elastic/eui": "^113.3.0",
     "@orchestrator-ui/eslint-config-custom": "*",
     "@orchestrator-ui/jest-config": "*",
     "@reduxjs/toolkit": "^2.0.1",
