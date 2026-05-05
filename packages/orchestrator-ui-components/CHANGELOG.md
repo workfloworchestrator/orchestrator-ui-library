@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.1.0
+
+### Minor Changes
+
+- 16e1ab1: Added 'note' field to graphql queries and a WfoInlineEdit field to multiple places. **NOTE** Requires PATCH /processes/{process_id} endpoint in WFO backend
+- fdb4364: Makes product metadata status and descriptio editable
+
+### Patch Changes
+
+- 7c4b366: Updates compatability matrix
+
 ## 8.0.0
 
 ### Major Changes
