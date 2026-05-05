@@ -15,10 +15,10 @@ import {
   StoredTableConfig,
   WfoDateTime,
   WfoProductBlockBadge,
-  WfoProductStatusBadge,
   getDataSortHandler,
   getQueryStringHandler,
 } from '@/components';
+import { WfoMetadataStatusField } from '@/components/WfoMetadata';
 import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
 import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
@@ -26,10 +26,15 @@ import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useDataDisplayParams, useShowToastMessage, useStoredTableConfig } from '@/hooks';
-import { useGetProductsQuery, useLazyGetProductsQuery, useUpdateProductMutation } from '@/rtk';
+import {
+  useGetProductsQuery,
+  useLazyGetProductsQuery,
+  useUpdateProductDescriptionMutation,
+  useUpdateProductStatusMutation,
+} from '@/rtk';
 import { ProductsResponse } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import type { GraphqlQueryVariables, ProductDefinition } from '@/types';
+import type { GraphqlQueryVariables, ProductDefinition, ProductLifecycleStatus } from '@/types';
 import { BadgeType, SortOrder } from '@/types';
 import {
   getConcatenatedResult,
@@ -56,7 +61,8 @@ export const WfoProductsPage = () => {
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<ProductDefinition>>();
 
   const getStoredTableConfig = useStoredTableConfig<ProductDefinition>(METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY);
-  const [updateProduct] = useUpdateProductMutation();
+  const [updateProductDescription] = useUpdateProductDescriptionMutation();
+  const [updateProductStatus] = useUpdateProductStatusMutation();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -106,7 +112,7 @@ export const WfoProductsPage = () => {
       renderData: (value, row) => (
         <WfoMetadataDescriptionField
           onSave={(updatedNote) =>
-            updateProduct({
+            updateProductDescription({
               id: row.productId,
               description: updatedNote,
             })
@@ -123,8 +129,18 @@ export const WfoProductsPage = () => {
     status: {
       columnType: ColumnType.DATA,
       label: t('status'),
-      width: '90px',
-      renderData: (value) => <WfoProductStatusBadge status={value} />,
+      width: '150px',
+      renderData: (value, row) => (
+        <WfoMetadataStatusField
+          onSave={(updatedStatus: ProductLifecycleStatus) =>
+            updateProductStatus({
+              id: row.productId,
+              status: updatedStatus,
+            })
+          }
+          currentStatus={value}
+        />
+      ),
     },
     fixedInputs: {
       columnType: ColumnType.DATA,
