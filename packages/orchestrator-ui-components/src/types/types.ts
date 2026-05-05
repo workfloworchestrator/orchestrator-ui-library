@@ -629,6 +629,7 @@ export enum CacheTagType {
   processStatusCounts = 'processStatusCounts',
   subscriptions = 'subscriptions',
   scheduledTasks = 'scheduledTags',
+  metadataProducts = 'metadataProducts',
 }
 
 export interface MappedVersion {

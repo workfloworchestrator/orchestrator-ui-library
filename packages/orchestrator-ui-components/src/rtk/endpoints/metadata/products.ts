@@ -2,12 +2,14 @@ import { METADATA_PRODUCT_ENDPOINT } from '@/configuration/constants';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   BaseGraphQlResult,
+  CacheTagType,
   GraphqlQueryVariables,
   MetadataDescriptionParams,
   MetadataStatusParams,
   ProductDefinition,
   ProductDefinitionsResult,
 } from '@/types';
+import { getCacheTag } from '@/utils';
 
 export const products = `
     query MetadataProducts(
@@ -67,6 +69,7 @@ const productsApi = orchestratorApi.injectEndpoints({
           pageInfo,
         };
       },
+      providesTags: getCacheTag(CacheTagType.metadataProducts),
     }),
   }),
 });
@@ -89,6 +92,7 @@ const productRestApi = orchestratorApi.injectEndpoints({
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },
+      invalidatesTags: getCacheTag(CacheTagType.metadataProducts),
     }),
     updateProductStatus: build.mutation<null, MetadataStatusParams>({
       query: (product) => ({
@@ -104,6 +108,7 @@ const productRestApi = orchestratorApi.injectEndpoints({
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },
+      invalidatesTags: getCacheTag(CacheTagType.metadataProducts),
     }),
   }),
 });
