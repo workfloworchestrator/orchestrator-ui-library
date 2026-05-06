@@ -34,10 +34,10 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@ag-ui/client": "^0.0.47",
-    "@copilotkit/react-core": "1.54.0",
-    "@copilotkit/react-ui": "1.54.0",
-    "@copilotkit/runtime": "1.54.0",
+    "@ag-ui/client": "^0.0.53",
+    "@copilotkit/react-core": "^1.57.0",
+    "@copilotkit/react-ui": "^1.57.0",
+    "@copilotkit/runtime": "^1.57.0",
     "@elastic/charts": "^64.1.0",
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.4",

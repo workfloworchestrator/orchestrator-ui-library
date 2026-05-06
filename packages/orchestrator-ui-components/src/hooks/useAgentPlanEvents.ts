@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import type { AgentSubscriber } from '@ag-ui/client';
-// @ts-expect-error - v2 subpath exists but TypeScript moduleResolution doesn't recognize it
 import { useAgent } from '@copilotkit/react-core/v2';
 
 /** AG-UI custom event names emitted by the backend agent. */
