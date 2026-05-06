@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.1.1
+
+### Patch Changes
+
+- dc7bddb: Updates npm dependencies
+
 ## 8.1.0
 
 ### Minor Changes
