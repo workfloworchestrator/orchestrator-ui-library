@@ -4,17 +4,17 @@ import { PydanticFormElementProps } from 'pydantic-forms';
 
 import { EuiCallOut, EuiMarkdownFormat } from '@elastic/eui';
 
-import { CALLOUT_COLORS } from './WfoCallout';
+import { CALLOUT_COLORS, CalloutColor } from './WfoCallout';
 
-type MarkdownFieldDefault = string | { content: string; color?: string };
+type MarkdownFieldDefault = string | { content: string; color: CalloutColor };
 
 export const WfoMarkdownField = ({ pydanticFormField }: PydanticFormElementProps) => {
-  const raw: MarkdownFieldDefault = pydanticFormField.default;
-  const content = typeof raw === 'string' ? raw : (raw?.content ?? '');
+  const markdownValue: MarkdownFieldDefault = pydanticFormField.default;
+  const content = typeof markdownValue === 'string' ? markdownValue : (markdownValue?.content ?? '');
   const color =
-    typeof raw === 'object' && CALLOUT_COLORS.includes(raw?.color ?? '') ?
-      (raw.color as 'primary' | 'success' | 'warning' | 'danger' | 'accent')
-    : 'primary';
+    typeof markdownValue === 'object' && CALLOUT_COLORS.includes(markdownValue?.color) ?
+      markdownValue?.color
+    : undefined;
 
   return (
     <div data-testid={pydanticFormField.id} css={{ marginBottom: '2rem' }}>

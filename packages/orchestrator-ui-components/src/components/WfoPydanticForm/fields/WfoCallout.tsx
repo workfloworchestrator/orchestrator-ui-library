@@ -4,7 +4,8 @@ import { PydanticFormElementProps } from 'pydantic-forms';
 
 import { EuiCallOut } from '@elastic/eui';
 
-export const CALLOUT_COLORS = ['primary', 'success', 'warning', 'danger', 'accent'];
+export const CALLOUT_COLORS = ['primary', 'success', 'warning', 'danger', 'accent'] as const;
+export type CalloutColor = (typeof CALLOUT_COLORS)[number];
 
 export const WfoCallout = ({ pydanticFormField }: PydanticFormElementProps) => {
   const { header, message, icon_type, message_type } = pydanticFormField.default;
