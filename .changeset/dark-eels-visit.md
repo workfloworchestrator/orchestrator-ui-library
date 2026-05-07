@@ -1,5 +1,5 @@
 ---
-'@orchestrator-ui/orchestrator-ui-components': patch
+'@orchestrator-ui/orchestrator-ui-components': minor
 ---
 
 Export const for callout colors
