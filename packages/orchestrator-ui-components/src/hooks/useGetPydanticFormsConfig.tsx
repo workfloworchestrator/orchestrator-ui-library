@@ -21,11 +21,13 @@ import { Header } from '@/components/WfoPydanticForm/Header';
 import { Row } from '@/components/WfoPydanticForm/Row';
 import {
   WfoArrayField,
+  WfoCallout,
   WfoCheckbox,
   WfoDivider,
   WfoDropdown,
   WfoInteger,
   WfoLabel,
+  WfoMarkdownField,
   WfoMultiCheckboxField,
   WfoObjectField,
   WfoRadio,
@@ -34,7 +36,6 @@ import {
   WfoTextArea,
   WfoTimestampField,
 } from '@/components/WfoPydanticForm/fields';
-import { WfoCallout } from '@/components/WfoPydanticForm/fields';
 import { useAppSelector } from '@/rtk/hooks';
 
 const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
@@ -178,6 +179,16 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
           },
           matcher: ({ type, format }) => {
             return type === PydanticFormFieldType.STRING && format === ('callout' as PydanticFormFieldFormat);
+          },
+        },
+        {
+          id: 'markdownField',
+          ElementMatch: {
+            isControlledElement: false,
+            Element: WfoMarkdownField,
+          },
+          matcher: ({ format }) => {
+            return format === PydanticFormFieldFormat.MARKDOWN;
           },
         },
         ...currentMatchers
