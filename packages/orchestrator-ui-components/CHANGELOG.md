@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.2.0
+
+### Minor Changes
+
+- 1c8d848: Export const for callout colors
+
 ## 8.1.1
 
 ### Patch Changes
