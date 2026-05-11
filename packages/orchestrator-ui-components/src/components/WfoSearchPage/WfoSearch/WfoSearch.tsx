@@ -105,6 +105,11 @@ export const WfoSearch = () => {
     });
     setResults({
       data: [],
+      cursor: {
+        total_items: 0,
+        start_cursor: 0,
+        end_cursor: 0,
+      },
       page_info: {
         has_next_page: false,
         next_page_cursor: null,
@@ -304,7 +309,9 @@ export const WfoSearch = () => {
                 <EuiFlexItem grow={false}>
                   <WfoSearchPaginationInfo
                     has_next_page={results.page_info.has_next_page}
-                    next_page_cursor={results.page_info.next_page_cursor}
+                    next_page_cursor={
+                      results.page_info.next_page_cursor ? parseInt(results.page_info.next_page_cursor, 0) : null
+                    }
                     onNextPage={handleNextPage}
                     onPrevPage={handlePrevPage}
                     isLoading={isLoadingMore}
