@@ -60,8 +60,8 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.insync', 'insync'],
   ['subscription.product.name', 'productName'],
   ['subscription.tag', 'tag'],
-  ['subscription.customer.fullname', 'customerFullname'],
-  ['subscription.customer.shortcode', 'customerShortcode'],
+  ['subscription.customer_name', 'customerFullname'],
+  ['subscription.customer_abbreviation', 'customerShortcode'],
   ['subscription.start_date', 'startDate'],
   ['subscription.end_date', 'endDate'],
   ['subscription.note', 'note'],
@@ -69,7 +69,7 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
 ]);
 
 export const WfoSearchPocPage = () => {
-  const t = useTranslations('search.page');
+  const t = useTranslations('subscriptions.index');
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
 
   // Part of the search endpoint payload that is passed in the q parameter
