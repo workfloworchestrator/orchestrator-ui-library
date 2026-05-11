@@ -1,3 +1,4 @@
+import { SearchPaginationPayload } from '@/rtk';
 import { Condition, EntityKind, Filter, RetrieverType, SearchResult } from '@/types';
 
 export function isSubscriptionSearchResult(item: SearchResult): boolean {
@@ -37,10 +38,10 @@ export const getDetailUrl = (result: SearchResult, baseUrl: string): string => {
 };
 
 export const ENTITY_TABS = [
-  { id: 'SUBSCRIPTION' as const, label: 'Subscriptions' },
-  { id: 'PRODUCT' as const, label: 'Products' },
-  { id: 'WORKFLOW' as const, label: 'Workflows' },
-  { id: 'PROCESS' as const, label: 'Processes' },
+  { id: EntityKind.SUBSCRIPTION, label: 'Subscriptions' },
+  { id: EntityKind.PRODUCT, label: 'Products' },
+  { id: EntityKind.WORKFLOW, label: 'Workflows' },
+  { id: EntityKind.PROCESS, label: 'Processes' },
 ];
 
 interface ThemeColors {
@@ -135,16 +136,18 @@ export const buildSearchParams = (
   selectedEntityTab: EntityKind,
   filterGroup: Filter,
   pageSize: number,
+  cursor: number,
   retriever?: Exclude<RetrieverType, 'auto'>,
-) => {
+): SearchPaginationPayload => {
   const queryText = typeof debouncedQuery === 'string' ? debouncedQuery : debouncedQuery?.text?.trim() || '';
 
   return {
-    action: 'select' as const,
     entity_type: selectedEntityTab,
     query: queryText || '',
     filters: filterGroup?.children.length > 0 ? filterGroup : undefined,
     limit: pageSize,
     retriever,
+    cursor,
+    response_columns: [],
   };
 };
