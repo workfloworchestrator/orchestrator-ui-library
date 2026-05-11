@@ -1,4 +1,9 @@
-export type EntityKind = 'SUBSCRIPTION' | 'PRODUCT' | 'WORKFLOW' | 'PROCESS';
+export enum EntityKind {
+  SUBSCRIPTION = 'SUBSCRIPTION',
+  PRODUCT = 'PRODUCT',
+  WORKFLOW = 'WORKFLOW',
+  PROCESS = 'PROCESS',
+}
 
 export enum RetrieverType {
   Auto = 'auto',
@@ -20,14 +25,20 @@ export interface SearchResult {
   score: number;
   perfect_match: number;
   matching_field?: MatchingField | null;
+  response_columns: Record<string, string | number | null>;
 }
 
 /** Paginated search results */
 export type PaginatedSearchResults = {
   data: SearchResult[];
+  cursor: {
+    total_items: number;
+    start_cursor: number;
+    end_cursor: number;
+  };
   page_info: {
     has_next_page: boolean;
-    next_page_cursor: number | null;
+    next_page_cursor: string | null;
   };
   search_metadata: {
     search_type: string | null;
