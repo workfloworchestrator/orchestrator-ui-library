@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { Query } from '@elastic/eui';
 
@@ -29,7 +30,7 @@ export const useSearchPagination = (
   filterGroup: Filter,
   pageSize: number,
   results: PaginatedSearchResults,
-  setResults: (results: PaginatedSearchResults) => void,
+  setResults: Dispatch<SetStateAction<PaginatedSearchResults>>,
   retriever?: RetrieverType,
 ): UseSearchPaginationReturn => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,7 +51,7 @@ export const useSearchPagination = (
         {
           page: currentPage,
           results: results.data,
-          cursor: results.page_info.next_page_cursor,
+          cursor: results.cursor.start_cursor,
         },
       ]);
 
@@ -61,12 +62,12 @@ export const useSearchPagination = (
           selectedEntityTab,
           filterGroup,
           pageSize,
+          nextPageCursor,
           retriever === RetrieverType.Auto ? undefined : retriever,
         );
 
         const res = await triggerSearchPagination({
           ...searchParams,
-          cursor: nextPageCursor,
         }).unwrap();
 
         setResults({
@@ -79,6 +80,7 @@ export const useSearchPagination = (
             search_type: res.search_metadata.search_type,
             description: res.search_metadata.description,
           },
+          cursor: res.cursor,
         });
 
         setCurrentPage((prev) => prev + 1);
@@ -94,7 +96,6 @@ export const useSearchPagination = (
     [
       currentPage,
       results.data,
-      results.page_info.next_page_cursor,
       isLoadingMore,
       debouncedQuery,
       selectedEntityTab,
@@ -103,6 +104,7 @@ export const useSearchPagination = (
       retriever,
       setResults,
       triggerSearchPagination,
+      results.cursor,
     ],
   );
 
@@ -113,16 +115,17 @@ export const useSearchPagination = (
         data: previousPage.results,
         page_info: {
           has_next_page: true,
-          next_page_cursor: previousPage.cursor,
+          next_page_cursor: `'${previousPage.cursor}'`,
         },
         search_metadata: results.search_metadata,
+        cursor: results.cursor,
       });
 
       setCurrentPage((prev) => prev - 1);
 
       setPageHistory((prev) => prev.filter((p) => p.page < currentPage));
     }
-  }, [currentPage, pageHistory, results.search_metadata, setResults]);
+  }, [currentPage, pageHistory, results.search_metadata, setResults, results.cursor]);
 
   const resetPagination = useCallback(() => {
     setCurrentPage(1);

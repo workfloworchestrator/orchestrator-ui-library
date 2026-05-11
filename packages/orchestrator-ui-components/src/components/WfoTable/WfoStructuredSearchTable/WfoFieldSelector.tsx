@@ -3,11 +3,11 @@ import { FieldSelectorProps } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiComboBox } from '@elastic/eui';
 import type { EuiComboBoxOptionOption } from '@elastic/eui';
+import { EuiComboBox } from '@elastic/eui';
 
 import { usePathAutocomplete } from '@/hooks';
-import { PathInfo } from '@/types';
+import { EntityKind, PathInfo } from '@/types';
 
 export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
   const { field } = rule;
@@ -33,7 +33,11 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
       : []
     );
   };
-  const { paths, loading: isLoading, error: errorMessage } = usePathAutocomplete(selectedValue, 'SUBSCRIPTION');
+  const {
+    paths,
+    loading: isLoading,
+    error: errorMessage,
+  } = usePathAutocomplete(selectedValue, EntityKind.SUBSCRIPTION);
   const options = getOptionsFromPathInfo(paths);
 
   const storeFieldOperators = (selectedValue: string) => {
