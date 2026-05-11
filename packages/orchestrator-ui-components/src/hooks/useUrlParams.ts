@@ -4,8 +4,6 @@ import { Query } from '@elastic/eui';
 
 import { EntityKind } from '@/types';
 
-import { DEFAULT_ENTITY_TAB, VALID_ENTITY_TYPES } from '../components/WfoSearchPage/constants';
-
 interface UseUrlParamsReturn {
   urlParams: URLSearchParams;
   query: Query | string;
@@ -34,8 +32,8 @@ export const useUrlParams = (): UseUrlParamsReturn => {
   });
 
   const [selectedEntityTab, setSelectedEntityTab] = useState<EntityKind>(() => {
-    const tabParam = urlParams.get('tab') as EntityKind;
-    return tabParam && VALID_ENTITY_TYPES.includes(tabParam) ? tabParam : DEFAULT_ENTITY_TAB;
+    const entityKind = urlParams.get('tab') as EntityKind;
+    return entityKind && Object.values(EntityKind).includes(entityKind) ? entityKind : EntityKind.SUBSCRIPTION;
   });
 
   const [showFilters, setShowFilters] = useState<boolean>(() => {
@@ -59,7 +57,7 @@ export const useUrlParams = (): UseUrlParamsReturn => {
       newParams.set('q', queryText);
     }
 
-    if (selectedEntityTab !== DEFAULT_ENTITY_TAB) {
+    if (selectedEntityTab !== EntityKind.SUBSCRIPTION) {
       newParams.set('tab', selectedEntityTab);
     }
 
