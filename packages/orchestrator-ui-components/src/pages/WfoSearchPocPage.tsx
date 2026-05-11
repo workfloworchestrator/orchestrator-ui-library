@@ -25,32 +25,35 @@ import {
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
-import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SearchResult } from '@/types';
+import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
-const getDataFromResponse = (data, fieldMap) => {
-  const getResponseColumns = (data?: PaginatedSearchResults): Record<string, string | number | null>[] => {
-    return data?.data?.map(({ response_columns }) => response_columns) || [];
-  };
+type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
-  const responseColumns = getResponseColumns(data);
+const getDataFromResponse = <T,>(
+  data: PaginatedSearchResults,
+  resultColumToPropertyMap: ResultColumToPropertyMap<T>,
+) => {
+  const responseColumns: Record<string, string | number | null>[] =
+    data?.data?.map(({ response_columns }) => response_columns) || [];
 
-  const subscriptionListItems: SubscriptionListItem[] = responseColumns.map((responseColumn) => {
-    const subscriptionListItem: SubscriptionListItem;
-    Object.entries(responseColumn).forEach(([key, value]) => {
-      const listItemKey = columnToFieldMap.get(key);
-      if (listItemKey && valuew) {
-        subscriptionListItem[listItemKey] = value;
+  const items: T[] = responseColumns.map((responseColumn) => {
+    const item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
+      const itemKey = resultColumToPropertyMap.get(key);
+      if (itemKey) {
+        acc[itemKey] = value as unknown as T[keyof T];
       }
-    });
-    return subscriptionListItem;
+      return acc;
+    }, {} as T);
+    return item;
   });
-  console.log('subscriptionListItems', subscriptionListItems);
+
+  return items;
 };
 
-const columnToFieldMap: Map<string, keyof SubscriptionListItem> = new Map([
+const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
   ['subscription.subscription_id', 'subscriptionId'],
   ['subscription.description', 'description'],
   ['subscription.status', 'status'],
@@ -78,8 +81,8 @@ export const WfoSearchPocPage = () => {
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
 
-  const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
-  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResult>>();
+  const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
+  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -201,7 +204,7 @@ export const WfoSearchPocPage = () => {
     const searchPayload: SearchPayload = {
       query,
       entity_type: EntityKind.SUBSCRIPTION,
-      response_columns: Array.from(columnToFieldMap.keys()),
+      response_columns: Array.from(resultColumToPropertyMap.keys()),
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
     };
@@ -244,12 +247,14 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
+  const subscriptionListItems: SubscriptionListItem[] =
+    data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap) : [];
   return (
     <>
       <WfoContentHeader title="Search page POC" />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
-        data={[]}
+        data={subscriptionListItems}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
         handleSearch={handleSearch}
