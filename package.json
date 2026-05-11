@@ -18,7 +18,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@turbo/gen": "^2.5.2",
+    "@turbo/gen": "^2.9.12",
     "husky": "^9.0.11",
     "prettier": "^3.8.1",
     "turbo": "^2.6.1"
