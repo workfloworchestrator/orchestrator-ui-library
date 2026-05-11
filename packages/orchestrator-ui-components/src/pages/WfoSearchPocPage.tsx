@@ -8,37 +8,62 @@ import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
+import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
 import {
+  StoredTableConfig,
+  WfoContentHeader,
   WfoDateTime,
+  WfoFirstPartUUID,
   WfoInlineJson,
   WfoInsyncIcon,
   WfoJsonCodeBlock,
+  WfoStructuredSearchTable,
   WfoSubscriptionActions,
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
 } from '@/components';
-import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
-import { StoredTableConfig, WfoContentHeader, WfoFirstPartUUID, WfoStructuredSearchTable } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
-import { Filter, RetrieverType, SearchResult } from '@/types';
+import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SearchResult } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
-
-import type {} from './subscriptions';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
-const getResponseColumnsFromTableConfig = <T extends object>(tableConfig: WfoStructuredSearchTableColumnConfig<T>) => {
-  const responseColumns: string[] = [];
-  Object.entries(tableConfig).map(([key, columnConfig]) => {
-    if (columnConfig && columnConfig.columnType === ColumnType.DATA) {
-      responseColumns.push(key);
-    }
-  });
+const getDataFromResponse = (data, fieldMap) => {
+  const getResponseColumns = (data?: PaginatedSearchResults): Record<string, string | number | null>[] => {
+    return data?.data?.map(({ response_columns }) => response_columns) || [];
+  };
 
-  return responseColumns;
+  const responseColumns = getResponseColumns(data);
+
+  const subscriptionListItems: SubscriptionListItem[] = responseColumns.map((responseColumn) => {
+    const subscriptionListItem: SubscriptionListItem;
+    Object.entries(responseColumn).forEach(([key, value]) => {
+      const listItemKey = columnToFieldMap.get(key);
+      if (listItemKey && valuew) {
+        subscriptionListItem[listItemKey] = value;
+      }
+    });
+    return subscriptionListItem;
+  });
+  console.log('subscriptionListItems', subscriptionListItems);
 };
+
+const columnToFieldMap: Map<string, keyof SubscriptionListItem> = new Map([
+  ['subscription.subscription_id', 'subscriptionId'],
+  ['subscription.description', 'description'],
+  ['subscription.status', 'status'],
+  ['subscription.insync', 'insync'],
+  ['subscription.product.name', 'productName'],
+  ['subscription.tag', 'tag'],
+  ['subscription.customer.fullname', 'customerFullname'],
+  ['subscription.customer.shortcode', 'customerShortcode'],
+  ['subscription.start_date', 'startDate'],
+  ['subscription.end_date', 'endDate'],
+  ['subscription.note', 'note'],
+  ['subscription.metadata', 'metadata'],
+]);
 
 export const WfoSearchPocPage = () => {
   const t = useTranslations('search.page');
@@ -52,7 +77,6 @@ export const WfoSearchPocPage = () => {
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
-  console.log('data', data);
 
   const getStoredTableConfig = useStoredTableConfig<SearchResult>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SearchResult>>();
@@ -173,12 +197,11 @@ export const WfoSearchPocPage = () => {
     const retriever = searchParams?.retrieverType || retrieverType;
     const query = searchParams?.queryText || queryText || '';
     const filters = parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup);
-    const requestColumns = getResponseColumnsFromTableConfig<SubscriptionListItem>(tableColumnConfig);
-    console.log('requestColumns', requestColumns, tableColumnConfig);
+
     const searchPayload: SearchPayload = {
       query,
-      entity_type: 'SUBSCRIPTION',
-      response_columns: requestColumns,
+      entity_type: EntityKind.SUBSCRIPTION,
+      response_columns: Array.from(columnToFieldMap.keys()),
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
     };
@@ -200,7 +223,6 @@ export const WfoSearchPocPage = () => {
     const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel' });
     setFilterString(celQuery);
   };
-
   const safeCelParse = (celString: string) => {
     try {
       const ruleGroup = parseCEL(celString);
@@ -217,7 +239,6 @@ export const WfoSearchPocPage = () => {
       setIsValidFilterString(false);
     }
   };
-
   const onUpdateFilterString = (filterString: string) => {
     setFilterString(filterString);
     safeCelParse(filterString);
@@ -228,7 +249,7 @@ export const WfoSearchPocPage = () => {
       <WfoContentHeader title="Search page POC" />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
-        data={data?.data || []}
+        data={[]}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
         handleSearch={handleSearch}
