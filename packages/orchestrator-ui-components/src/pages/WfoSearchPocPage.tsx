@@ -211,7 +211,11 @@ export const WfoSearchPocPage = () => {
     triggerSearch(searchPayload);
   };
 
-  const onUpdateQueryText = (queryText: string) => {
+  const onChangeQueryText = (queryText: string) => {
+    setQueryText(queryText);
+  };
+
+  const onSearchQueryText = (queryText: string) => {
     setQueryText(queryText);
     handleSearch({ queryText });
   };
@@ -268,7 +272,8 @@ export const WfoSearchPocPage = () => {
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
         onUpdateFilterString={onUpdateFilterString}
         onUpdateQueryBuilder={onUpdateQueryBuilder}
-        onUpdateQueryText={onUpdateQueryText}
+        onChangeQueryText={onChangeQueryText}
+        onSearchQueryText={onSearchQueryText}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryText={queryText}

@@ -69,7 +69,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   localStorageKey: string;
   exportDataIsLoading?: boolean;
   error?: WfoGraphqlError[];
-  onUpdateQueryText: (queryString: string) => void;
+  onChangeQueryText: (queryString: string) => void;
+  onSearchQueryText: (queryString: string) => void;
   onExportData?: () => void;
   retrieverType: RetrieverType;
   onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
@@ -88,7 +89,8 @@ export const WfoStructuredSearchTable = <T extends object>({
   localStorageKey,
   exportDataIsLoading,
   error,
-  onUpdateQueryText,
+  onChangeQueryText,
+  onSearchQueryText,
   onExportData,
   retrieverType,
   onUpdateRetrieverType,
@@ -195,7 +197,8 @@ export const WfoStructuredSearchTable = <T extends object>({
               css={formFieldBaseStyle}
               value={queryText}
               placeholder={`${t('search')}...`}
-              onSearch={(queryText) => onUpdateQueryText(queryText)}
+              onChange={(e) => onChangeQueryText(e.target.value)}
+              onSearch={(queryText) => onSearchQueryText(queryText)}
               fullWidth
             />
           </EuiFormRow>
