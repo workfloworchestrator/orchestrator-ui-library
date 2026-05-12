@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { QueryBuilder, type RuleGroupType } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -56,8 +56,9 @@ export const WfoFilterBuilder = ({
   const { queryBuilderContainerStyles, toggleButtonStyles, textAreaStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
-  const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(true);
+  const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
+  const isInitialRender = useRef(true);
 
   const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
     if (pathInfo) {
@@ -74,14 +75,19 @@ export const WfoFilterBuilder = ({
           <EuiFlexItem>
             <QueryBuilder
               query={queryBuilderRuleGroup}
-              onQueryChange={onUpdateQueryBuilder}
-              disabled={!isValidFilterString}
+              onQueryChange={(ruleGroup: RuleGroupType) => {
+                if (isInitialRender.current) {
+                  isInitialRender.current = false;
+                  return;
+                }
+                onUpdateQueryBuilder(ruleGroup);
+              }}
               context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
               getOperators={(field) => {
                 const fieldInfo = fieldPathInfoMap.get(field);
-                return (fieldInfo?.operators ?? []).map((op) => {
-                  const { symbol, description } = getOperatorDisplay(op, fieldInfo);
-                  return { name: PATH_OP_TO_RQB_OP[op] ?? op, label: `${symbol} ${description}` };
+                return (fieldInfo?.operators ?? []).map((operator) => {
+                  const { symbol, description } = getOperatorDisplay(operator, fieldInfo);
+                  return { name: PATH_OP_TO_RQB_OP[operator] ?? operator, label: `${symbol} ${description}` };
                 });
               }}
               controlElements={{
@@ -103,7 +109,7 @@ export const WfoFilterBuilder = ({
               fullWidth={true}
               isClearable={true}
               resize={'vertical'}
-              isInvalid={!isValidFilterString}
+              isInvalid={isValidFilterString}
             />
           </EuiFlexItem>
 
@@ -118,10 +124,17 @@ export const WfoFilterBuilder = ({
               fill
               type="submit"
               aria-label={t('applyFilter')}
+              disabled={!isValidFilterString}
             >
               {t('applyFilter')}
             </EuiButton>{' '}
-            <WfoTextAnchor text={t('cancel')} onClick={() => setIsFilterBuilderVisible(false)} />
+            <WfoTextAnchor
+              text={t('removeFilter')}
+              onClick={() => {
+                onUpdateFilterString('');
+                setIsFilterBuilderVisible(false);
+              }}
+            />
           </EuiFlexGroup>
         </EuiFlexGroup>
       )) || (

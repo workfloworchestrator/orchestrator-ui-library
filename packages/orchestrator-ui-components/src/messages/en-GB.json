@@ -57,6 +57,7 @@
     "retrieverHybrid": "Hybrid",
     "createFilter": "Create a filter",
     "applyFilter": "Apply filter",
+    "removeFilter": "Remove filter",
     "cancel": "Cancel"
   },
   "confirmationDialog": {

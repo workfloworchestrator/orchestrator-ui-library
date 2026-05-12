@@ -225,23 +225,27 @@ export const WfoSearchPocPage = () => {
     setQueryBuilderRuleGroup({ ...ruleGroup });
     const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel' });
     setFilterString(celQuery);
+    setIsValidFilterString(true);
   };
+
   const safeCelParse = (celString: string) => {
     try {
       const ruleGroup = parseCEL(celString);
-
       // parseCEL returns a query object — check if it has any rules
-
       if (ruleGroup.rules.length > 0) {
         setIsValidFilterString(true);
         setQueryBuilderRuleGroup(ruleGroup);
       } else {
+        // If there are no rules created based on this string then
+        // we assume the string is not valid. In any case it will not do anything
+        // to the search results
         setIsValidFilterString(false);
       }
     } catch {
       setIsValidFilterString(false);
     }
   };
+
   const onUpdateFilterString = (filterString: string) => {
     setFilterString(filterString);
     safeCelParse(filterString);
@@ -249,9 +253,10 @@ export const WfoSearchPocPage = () => {
 
   const subscriptionListItems: SubscriptionListItem[] =
     data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap) : [];
+
   return (
     <>
-      <WfoContentHeader title="Search page POC" />
+      <WfoContentHeader title="Subscriptions (POC)" />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
         data={subscriptionListItems}

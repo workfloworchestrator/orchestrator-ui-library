@@ -49,7 +49,16 @@
     "insyncTrue": "in-sync",
     "insyncFalse": "out-of-sync",
     "searchModalTitle": "Zoekwoorden opties",
-    "searchModalText": "<p>Er zijn verschillende opties beschikbaar: zoeken in vrije tekst voor alle datakolommen en specifiek per kolom te filteren. Houd er rekening mee dat: </p><p></p><ul><li>Verborgen kolommen zijn inbegrepen</li> <li>Zoeken is niet hoofdlettergevoelig</li> <li>De volgorde van woorden doet er niet toe (tenzij het een quote)</li> <li>TSV (text search vector) zoekactie alleen beschikbaar voor subscription tabel</li></ul><p>Bijvoorbeeld:</p> <li><b>\"l2vpn\"</b> – vrije tekst search</li> <li><b>tag:l2vpn</b> – zoeken in een specifieke kolom</li> <li><b>tag:lp beschrijving: test</b> – zoeken in meerdere kolommen</li><li><b>tag:(lp|lr)</b> – multi select binnen 1 kolom</li> <li><b>-tag:lp</b> – omgekeerd filteren</li> <li><b>test*</b> – prefix filter</li> <p></p><p><b>Opmerking:</b> Zoeken op woorden die tekens `|-*():\"` bevatten, zijn mogelijk niet geldig, omdat ze deel uitmaken van de grammatica van de zoekfunctie</p><p>Ongeldige zoekwoorden zijn bijvoorbeeld:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(gepland)\"</li> <li>\"node123|gepland\"</li></ul>"
+    "searchModalText": "<p>Er zijn verschillende opties beschikbaar: zoeken in vrije tekst voor alle datakolommen en specifiek per kolom te filteren. Houd er rekening mee dat: </p><p></p><ul><li>Verborgen kolommen zijn inbegrepen</li> <li>Zoeken is niet hoofdlettergevoelig</li> <li>De volgorde van woorden doet er niet toe (tenzij het een quote)</li> <li>TSV (text search vector) zoekactie alleen beschikbaar voor subscription tabel</li></ul><p>Bijvoorbeeld:</p> <li><b>\"l2vpn\"</b> – vrije tekst search</li> <li><b>tag:l2vpn</b> – zoeken in een specifieke kolom</li> <li><b>tag:lp beschrijving: test</b> – zoeken in meerdere kolommen</li><li><b>tag:(lp|lr)</b> – multi select binnen 1 kolom</li> <li><b>-tag:lp</b> – omgekeerd filteren</li> <li><b>test*</b> – prefix filter</li> <p></p><p><b>Opmerking:</b> Zoeken op woorden die tekens `|-*():\"` bevatten, zijn mogelijk niet geldig, omdat ze deel uitmaken van de grammatica van de zoekfunctie</p><p>Ongeldige zoekwoorden zijn bijvoorbeeld:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(gepland)\"</li> <li>\"node123|gepland\"</li></ul>",
+    "retrieval": "Retrieval",
+    "retrieverAuto": "Auto",
+    "retrieverFuzzy": "Fuzzy",
+    "retrieverSemantic": "Semantic",
+    "retrieverHybrid": "Hybride",
+    "createFilter": "Filter",
+    "applyFilter": "Pas filter tpe",
+    "removeFilter": "Verwijder filter",
+    "cancel": "Cancel"
   },
   "confirmationDialog": {
     "title": "Graag bevestigen",
