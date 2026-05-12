@@ -109,7 +109,7 @@ export const WfoFilterBuilder = ({
               fullWidth={true}
               isClearable={true}
               resize={'vertical'}
-              isInvalid={isValidFilterString}
+              isInvalid={!isValidFilterString}
             />
           </EuiFlexItem>
 
