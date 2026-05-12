@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { type KeyboardEventHandler, useState } from 'react';
 import type { ChangeEventHandler } from 'react';
 import type { ValueEditorProps } from 'react-querybuilder';
 
@@ -19,15 +19,23 @@ export const WfoValueEditor = (props: ValueEditorProps) => {
   const uiFieldType = fieldInfo?.uiField || UiFieldType.text;
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newValue = e.target.value || '';
-    props.handleOnChange(newValue);
-    setValue(newValue);
+    setValue(e.target.value || '');
+  };
+
+  const handleOnBlur = () => {
+    props.handleOnChange(value);
+  };
+
+  const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+    }
   };
 
   const displayField = () => {
     switch (uiFieldType) {
       default:
-        return <EuiFieldText value={value} onChange={handleOnChange} />;
+        return <EuiFieldText value={value} onChange={handleOnChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
     }
   };
 
