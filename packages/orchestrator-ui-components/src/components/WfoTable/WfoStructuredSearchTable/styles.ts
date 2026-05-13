@@ -22,9 +22,14 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     maxInlineSize: '100%',
   });
 
+  const buttonGroupStyles = css({
+    height: '100%',
+  });
+
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
     textAreaStyles,
+    buttonGroupStyles,
   };
 };
