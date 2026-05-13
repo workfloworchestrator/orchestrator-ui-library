@@ -17,6 +17,8 @@ import { WfoCombinatorSelector } from './WfoCombinatorSelector';
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
+import { WfoRemoveRuleAction } from './WfoRemoveRuleAction';
+import { WfoRule } from './WfoRule';
 import { WfoRuleGroup } from './WfoRuleGroup';
 import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
@@ -100,10 +102,12 @@ export const WfoFilterBuilder = ({
                 operatorSelector: WfoOperatorSelector,
                 valueEditor: WfoValueEditor,
                 ruleGroup: WfoRuleGroup,
+                rule: WfoRule,
                 addRuleAction: WfoAddRuleAction,
                 addGroupAction: WfoAddGroupAction,
                 combinatorSelector: WfoCombinatorSelector,
                 removeGroupAction: WfoRemoveGroupAction,
+                removeRuleAction: WfoRemoveRuleAction,
               }}
             />
           </EuiFlexItem>
