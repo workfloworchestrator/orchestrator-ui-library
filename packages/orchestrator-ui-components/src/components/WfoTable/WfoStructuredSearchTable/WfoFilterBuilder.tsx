@@ -49,12 +49,17 @@ interface WfoFilterBuilderProps {
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
   handleSearch: () => void;
 }
+const emtpyRuleGroup: RuleGroupType = {
+  id: 'root',
+  rules: [],
+  combinator: 'and',
+};
 
 export const WfoFilterBuilder = ({
   filterString,
   onUpdateFilterString,
   isValidFilterString = true,
-  queryBuilderRuleGroup,
+  queryBuilderRuleGroup = emtpyRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
 }: WfoFilterBuilderProps) => {

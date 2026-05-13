@@ -38,12 +38,22 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     },
   });
 
-  const ruleGroupContainerStyles = css({
+  const ruleGroupContainerBase = {
     padding: theme.base / 2,
     marginTop: theme.base / 4,
-    background: theme.colors.backgroundLightPrimary,
     border: `thin solid ${theme.colors.primary}`,
     borderRadius: theme.border.radius.small,
+    backgroundColor: theme.colors.backgroundLightPrimary,
+  };
+
+  const ruleGroupContainerBlueStyles = css({
+    ...ruleGroupContainerBase,
+    backgroundColor: theme.colors.backgroundLightPrimary,
+  });
+
+  const ruleGroupContainerWhiteStyles = css({
+    ...ruleGroupContainerBase,
+    backgroundColor: theme.colors.backgroundBasePlain,
   });
 
   const removeGroupActionStyles = css({
@@ -57,7 +67,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     textAreaStyles,
     buttonGroupStyles,
     ruleContainerStyles,
-    ruleGroupContainerStyles,
+    ruleGroupContainerBlueStyles,
+    ruleGroupContainerWhiteStyles,
     removeGroupActionStyles,
   };
 };
