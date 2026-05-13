@@ -25,11 +25,20 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const buttonGroupStyles = css({
     height: '100%',
   });
+  const ruleContainerStyles = css({
+    '& > .rule': {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.base / 2,
+      alignItems: 'center',
+    },
+  });
 
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
     textAreaStyles,
     buttonGroupStyles,
+    ruleContainerStyles,
   };
 };
