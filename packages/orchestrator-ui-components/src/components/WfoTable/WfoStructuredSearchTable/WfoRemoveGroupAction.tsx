@@ -3,9 +3,17 @@ import type { ActionProps } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButtonIcon } from '@elastic/eui';
+import { EuiButtonIcon, EuiFlexItem } from '@elastic/eui';
+
+import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 export const WfoRemoveGroupAction = (props: ActionProps) => {
+  const { removeGroupActionStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const t = useTranslations('search.page');
-  return <EuiButtonIcon onClick={props.handleOnClick} iconType="trash" color="danger" aria-label={t('removeGroup')} />;
+  return (
+    <EuiFlexItem css={removeGroupActionStyles}>
+      <EuiButtonIcon onClick={props.handleOnClick} iconType="trash" color="danger" aria-label={t('removeGroup')} />
+    </EuiFlexItem>
+  );
 };

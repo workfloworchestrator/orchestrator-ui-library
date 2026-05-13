@@ -1,4 +1,3 @@
-//import { tint } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
@@ -13,7 +12,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   });
   const toggleButtonStyles = css({
     backgroundColor: 'primary',
-    padding: '12px',
+    padding: theme.base * 0.75,
     marginLeft: theme.base,
   });
 
@@ -23,15 +22,33 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   });
 
   const buttonGroupStyles = css({
+    backgroundColor: theme.colors.textGhost,
     height: '100%',
+    borderRadius: theme.border.radius.small,
   });
+
   const ruleContainerStyles = css({
     '& > .rule': {
       display: 'flex',
       flexDirection: 'row',
       gap: theme.base / 2,
       alignItems: 'center',
+      marginBottom: theme.base / 4,
+      marginTop: theme.base / 4,
     },
+  });
+
+  const ruleGroupContainerStyles = css({
+    padding: theme.base / 2,
+    marginTop: theme.base / 4,
+    background: theme.colors.backgroundLightPrimary,
+    border: `thin solid ${theme.colors.primary}`,
+    borderRadius: theme.border.radius.small,
+  });
+
+  const removeGroupActionStyles = css({
+    justifyContent: 'center',
+    marginLeft: theme.base / 2,
   });
 
   return {
@@ -40,5 +57,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     textAreaStyles,
     buttonGroupStyles,
     ruleContainerStyles,
+    ruleGroupContainerStyles,
+    removeGroupActionStyles,
   };
 };
