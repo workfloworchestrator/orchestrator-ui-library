@@ -657,7 +657,7 @@
       "score": "Score",
       "matchingField": "Matching field",
       "perfectMatch": "Perfect match",
-      "removeGroup": "Remove group"
+      "removeRule": "Remove rule"
     },
     "tabs": {
       "subscriptions": "Subscriptions",
