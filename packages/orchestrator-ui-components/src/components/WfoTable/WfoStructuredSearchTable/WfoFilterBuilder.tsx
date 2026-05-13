@@ -11,8 +11,13 @@ import { getOperatorDisplay } from '@/components/WfoSearchPage/utils';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { PathInfo } from '@/types';
 
+import { WfoAddGroupAction } from './WfoAddGroupAction';
+import { WfoAddRuleAction } from './WfoAddRuleAction';
+import { WfoCombinatorSelector } from './WfoCombinatorSelector';
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
+import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
+import { WfoRuleGroup } from './WfoRuleGroup';
 import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
 
@@ -94,6 +99,11 @@ export const WfoFilterBuilder = ({
                 fieldSelector: WfoFieldSelector,
                 operatorSelector: WfoOperatorSelector,
                 valueEditor: WfoValueEditor,
+                ruleGroup: WfoRuleGroup,
+                addRuleAction: WfoAddRuleAction,
+                addGroupAction: WfoAddGroupAction,
+                combinatorSelector: WfoCombinatorSelector,
+                removeGroupAction: WfoRemoveGroupAction,
               }}
             />
           </EuiFlexItem>
@@ -115,7 +125,6 @@ export const WfoFilterBuilder = ({
 
           <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
             <EuiButton
-              css={toggleButtonStyles}
               onClick={() => {
                 handleSearch();
               }}
@@ -127,7 +136,7 @@ export const WfoFilterBuilder = ({
               disabled={!isValidFilterString}
             >
               {t('applyFilter')}
-            </EuiButton>{' '}
+            </EuiButton>
             <WfoTextAnchor
               text={t('removeFilter')}
               onClick={() => {
