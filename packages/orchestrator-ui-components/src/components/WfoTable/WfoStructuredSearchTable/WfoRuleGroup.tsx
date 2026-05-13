@@ -9,9 +9,16 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 export const WfoRuleGroup = (props: RuleGroupProps) => {
   const ruleGroupProps = useRuleGroup(props);
-  const { ruleGroupContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
+  const { ruleGroupContainerBlueStyles, ruleGroupContainerWhiteStyles } = useWithOrchestratorTheme(
+    getWfoStructuredSearchTableStyles,
+  );
+
   return (
-    <EuiFlexGroup direction="column" gutterSize="s" css={ruleGroupContainerStyles}>
+    <EuiFlexGroup
+      direction="column"
+      gutterSize="s"
+      css={ruleGroupProps.path.length % 2 ? ruleGroupContainerWhiteStyles : ruleGroupContainerBlueStyles}
+    >
       <EuiFlexItem>
         <EuiFlexGroup gutterSize="none">
           <RuleGroupHeaderComponents {...ruleGroupProps} />
