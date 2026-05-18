@@ -33,17 +33,20 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
       : []
     );
   };
+
   const {
     paths,
     loading: isLoading,
     error: errorMessage,
   } = usePathAutocomplete(selectedValue, EntityKind.SUBSCRIPTION);
+
   const options = getOptionsFromPathInfo(paths);
 
   const storeFieldOperators = (selectedValue: string) => {
     const matchingPath =
       paths.find((path) => path.path === selectedValue)
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
+
     context?.onFieldSelected?.(selectedValue, matchingPath);
   };
 

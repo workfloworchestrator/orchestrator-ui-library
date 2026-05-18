@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { QueryBuilder, type RuleGroupType } from 'react-querybuilder';
+import { FullOperator, QueryBuilder, type RuleGroupType } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
@@ -7,13 +7,12 @@ import { useTranslations } from 'next-intl';
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui';
 
 import { WfoTextAnchor } from '@/components';
-import { getOperatorDisplay } from '@/components/WfoSearchPage/utils';
+import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { PathInfo } from '@/types';
+import { OperatorDisplay, PathInfo } from '@/types';
 
 import { WfoAddGroupAction } from './WfoAddGroupAction';
 import { WfoAddRuleAction } from './WfoAddRuleAction';
-import { WfoCombinatorSelector } from './WfoCombinatorSelector';
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
@@ -25,7 +24,7 @@ import { getWfoStructuredSearchTableStyles } from './styles';
 
 // Maps PathInfo operator names to react-querybuilder's native operator names,
 // which is what parseCEL produces and formatQuery(cel) expects.
-const PATH_OP_TO_RQB_OP: Record<string, string> = {
+const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   eq: '=',
   neq: '!=',
   lt: '<',
@@ -33,11 +32,24 @@ const PATH_OP_TO_RQB_OP: Record<string, string> = {
   gt: '>',
   gte: '>=',
   between: 'between',
+  like: 'contains',
 };
+
+const OPERATOR_MAP: Record<string, OperatorDisplay> = {
+  eq: { symbol: '=', description: 'equals' },
+  neq: { symbol: '≠', description: 'not equals' },
+  lt: { symbol: '<', description: 'less than' },
+  lte: { symbol: '≤', description: 'less than or equal to' },
+  gt: { symbol: '>', description: 'greater than' },
+  gte: { symbol: '≥', description: 'greater than or equal to' },
+  between: { symbol: '⟷', description: 'between (range)' },
+  has_component: { symbol: '✓', description: 'has component' },
+  not_has_component: { symbol: '✗', description: 'does not have component' },
+  like: { symbol: '', description: 'contains' },
+};
+
 /* TODO: Add the missing operators
-['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between'];
 ['has_component', 'not_has_component'];
-['eq', 'neq', 'like']
  */
 type FieldPathInfoMap = Map<string, PathInfo>;
 
@@ -63,8 +75,15 @@ export const WfoFilterBuilder = ({
   onUpdateQueryBuilder,
   handleSearch,
 }: WfoFilterBuilderProps) => {
-  const t = useTranslations('common');
+  const getOperatorsFromPathInfo = (fieldInfo?: PathInfo): FullOperator[] => {
+    return (fieldInfo?.operators ?? []).map((operator) => {
+      const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
+      const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
+      return { name: rqbOperator, label: `${symbol} ${description}`, value: rqbOperator };
+    });
+  };
 
+  const t = useTranslations('common');
   const { queryBuilderContainerStyles, toggleButtonStyles, textAreaStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
@@ -89,6 +108,7 @@ export const WfoFilterBuilder = ({
               query={queryBuilderRuleGroup}
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 if (isInitialRender.current) {
+                  // this prevents the textarea from displaying '1==1' on initial render
                   isInitialRender.current = false;
                   return;
                 }
@@ -96,11 +116,8 @@ export const WfoFilterBuilder = ({
               }}
               context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
               getOperators={(field) => {
-                const fieldInfo = fieldPathInfoMap.get(field);
-                return (fieldInfo?.operators ?? []).map((operator) => {
-                  const { symbol, description } = getOperatorDisplay(operator, fieldInfo);
-                  return { name: PATH_OP_TO_RQB_OP[operator] ?? operator, label: `${symbol} ${description}` };
-                });
+                const pathInfo = fieldPathInfoMap.get(field);
+                return getOperatorsFromPathInfo(pathInfo);
               }}
               controlElements={{
                 fieldSelector: WfoFieldSelector,
@@ -108,12 +125,13 @@ export const WfoFilterBuilder = ({
                 valueEditor: WfoValueEditor,
                 ruleGroup: WfoRuleGroup,
                 rule: WfoRule,
+                combinatorSelector: WfoCombinatorSelector,
                 addRuleAction: WfoAddRuleAction,
                 addGroupAction: WfoAddGroupAction,
-                combinatorSelector: WfoCombinatorSelector,
                 removeGroupAction: WfoRemoveGroupAction,
                 removeRuleAction: WfoRemoveRuleAction,
               }}
+              maxLevels={5}
             />
           </EuiFlexItem>
           <EuiFlexItem>
