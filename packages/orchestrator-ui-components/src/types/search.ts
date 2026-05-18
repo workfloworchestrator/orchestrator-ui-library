@@ -89,6 +89,11 @@ export type PathFilter = {
     | LtreeMatchesFilter;
 };
 
+export interface OperatorDisplay {
+  symbol: string;
+  description: string;
+}
+
 type ActionType = 'select';
 
 type BaseSearchParameters = {
