@@ -1,5 +1,5 @@
 import { SearchPaginationPayload } from '@/rtk';
-import { Condition, EntityKind, Filter, RetrieverType, SearchResult } from '@/types';
+import { Condition, EntityKind, Filter, OperatorDisplay, PathInfo, RetrieverType, SearchResult } from '@/types';
 
 export function isSubscriptionSearchResult(item: SearchResult): boolean {
   return item.entity_type === 'SUBSCRIPTION';
@@ -69,16 +69,6 @@ export const getTypeColor = (type: string, theme: Theme): string => {
   return colorKey ? theme.colors[colorKey] : theme.colors.textSubdued;
 };
 
-interface PathInfo {
-  type?: string;
-  [key: string]: unknown;
-}
-
-interface OperatorDisplay {
-  symbol: string;
-  description: string;
-}
-
 const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   eq: { symbol: '=', description: 'equals' },
   neq: { symbol: '≠', description: 'not equals' },
@@ -89,6 +79,7 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   between: { symbol: '⟷', description: 'between (range)' },
   has_component: { symbol: '✓', description: 'has component' },
   not_has_component: { symbol: '✗', description: 'does not have component' },
+  like: { symbol: '', description: 'contains' },
 };
 
 const BOOLEAN_OPERATOR_MAP: Record<string, OperatorDisplay> = {
