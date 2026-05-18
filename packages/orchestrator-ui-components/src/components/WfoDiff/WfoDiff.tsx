@@ -14,6 +14,7 @@ import { EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@e
 
 import { getWfoDiffStyles } from '@/components/WfoDiff/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { ProcessDetailResultRaw } from '@/types';
 
 const EMPTY_HUNKS: never[] = [];
 
@@ -30,6 +31,20 @@ interface WfoDiffProps {
   newText: string;
   syntax?: 'javascript' | 'python';
 }
+
+export const stringifyDiffText = (text?: unknown) => (text ? JSON.stringify(text, null, 2) : '');
+
+export const getSubscriptionDiffTexts = (data?: ProcessDetailResultRaw) => {
+  const subscriptionId = data?.current_state?.subscription?.subscription_id ?? '';
+  const newSubscription = data?.current_state?.subscription ?? null;
+  const oldSubscriptions = data?.current_state?.__old_subscriptions__ || {};
+  const oldSubscription =
+    subscriptionId && subscriptionId in oldSubscriptions ? oldSubscriptions[subscriptionId] : null;
+  return {
+    oldText: stringifyDiffText(oldSubscription),
+    newText: stringifyDiffText(newSubscription),
+  };
+};
 
 const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
   const t = useTranslations('processes.delta');

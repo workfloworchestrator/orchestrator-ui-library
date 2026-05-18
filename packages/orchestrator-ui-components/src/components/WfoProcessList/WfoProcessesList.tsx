@@ -36,6 +36,7 @@ import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
 import { csvDownloadHandler, getCsvFileNameWithDate } from '@/utils/csvDownload';
 
+import { WfoProcessListDeltaPopover } from './WfoProcessListDeltaPopover';
 import {
   graphQlProcessFilterMapper,
   graphQlProcessSortMapper,
@@ -96,6 +97,11 @@ export const WfoProcessesList = ({
   const router = useRouter();
 
   const defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> = {
+    delta: {
+      columnType: ColumnType.CONTROL,
+      width: '50px',
+      renderControl: (row) => <WfoProcessListDeltaPopover processListItem={row} />,
+    },
     workflowName: {
       columnType: ColumnType.DATA,
       label: t('workflowName'),
