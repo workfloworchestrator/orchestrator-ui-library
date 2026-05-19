@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.2.0
+
+### Minor Changes
+
+- 1c8d848: Export const for callout colors
+
+### Patch Changes
+
+- ecaa4d2: Track workflow status from action menu to prevent a double workflow run
+- 5cb7c21: 2637 Show workflow changes (subscription delta) in workflow list page
+
 ## 8.1.1
 
 ### Patch Changes
