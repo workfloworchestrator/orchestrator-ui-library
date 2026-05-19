@@ -365,7 +365,8 @@
           "not_in_sync": "This subscription can not be modified because it is not in-sync. This means there is some error in the registration of the subscription or that it is being modified by another workflow.",
           "relations_not_in_sync": "This subscription can not be modified because some related subscriptions are not in-sync. Locked subscriptions: {locked_relations}",
           "no_modify_subscription_in_use_by_others": "This subscription can not be modified because it is in use by one or more other subscriptions: {unterminated_parents}",
-          "insufficient_workflow_permissions": "Insufficient user permissions to run this workflow"
+          "insufficient_workflow_permissions": "Insufficient user permissions to run this workflow",
+          "running_process": "This action cannot be started because this subscription already has a running process or task."
         }
       },
       "subscriptionInstanceId": "Instance ID",

@@ -3,11 +3,11 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiButton, EuiButtonIcon, EuiTitle } from '@elastic/eui';
+import { EuiButton, EuiButtonIcon, EuiLoadingSpinner, EuiTitle } from '@elastic/eui';
 
-import { WfoPopover } from '@/components';
-import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW, WfoInSyncField } from '@/components';
+import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW, WfoInSyncField, WfoPopover } from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
+import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
@@ -39,20 +39,24 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
   const router = useRouter();
   const disableQuery = isLoading || (!isPopoverOpen && compactMode);
+  const { isAllowed } = usePolicy();
   const { data: subscriptionActions, isLoading: subscriptionActionsIsLoading } = useGetSubscriptionActionsQuery(
     { subscriptionId },
     { skip: disableQuery },
   );
   const [startProcess] = useStartProcessMutation();
 
-  const { data: subscriptionDetail } = useGetSubscriptionDetailQuery(
+  const { data: subscriptionDetail, isLoading: subscriptionDetailIsLoading } = useGetSubscriptionDetailQuery(
     {
       subscriptionId,
     },
-    { skip: !isPopoverOpen && compactMode },
+    { skip: !isPopoverOpen && compactMode, refetchOnMountOrArgChange: true },
   );
 
-  const { isAllowed } = usePolicy();
+  const processes = subscriptionDetail?.subscription?.processes?.page;
+  const { hasActiveProcess, isCompleted, setProcessId } = useActiveProcess(processes);
+
+  const buttonIsLoading = isCompleted ? !isCompleted : hasActiveProcess;
 
   const onButtonClick = () => setPopover(!isPopoverOpen);
   const closePopover = () => setPopover(false);
@@ -60,7 +64,9 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   const button =
     compactMode ?
       <EuiButtonIcon
-        iconType={() => <WfoDotsHorizontal color={theme.colors.textDisabled} />}
+        iconType={() =>
+          buttonIsLoading ? <EuiLoadingSpinner /> : <WfoDotsHorizontal color={theme.colors.textDisabled} />
+        }
         onClick={onButtonClick}
         aria-label="Row context menu"
         isLoading={isLoading}
@@ -94,6 +100,11 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
       ],
     })
       .unwrap()
+      .then((response) => {
+        if (response?.id) {
+          setProcessId(response.id);
+        }
+      })
       .catch((error) => {
         console.error(`Failed to start action:`, error);
       })
@@ -122,6 +133,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
               target={WorkflowTarget.VALIDATE}
               setPopover={setPopover}
               onClick={() => handleActionClick(subscriptionAction.name, compactMode, true)}
+              isLoading={buttonIsLoading}
             />
           ))}
         </>
@@ -133,10 +145,15 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
           {subscriptionActions?.reconcile.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`r_${index}`}
-              subscriptionAction={subscriptionAction}
+              subscriptionAction={
+                buttonIsLoading && !subscriptionAction.reason ?
+                  { ...subscriptionAction, reason: 'subscription.running_process' }
+                : subscriptionAction
+              }
               target={WorkflowTarget.RECONCILE}
               setPopover={setPopover}
               onClick={() => handleActionClick(subscriptionAction.name, compactMode, false)}
+              isLoading={buttonIsLoading}
             />
           ))}
         </>
@@ -197,7 +214,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   return (
     <WfoPopover
       id={'subscriptionActionPopover'}
-      isLoading={subscriptionActionsIsLoading || isLoading || false}
+      isLoading={subscriptionActionsIsLoading || (compactMode && subscriptionDetailIsLoading) || isLoading || false}
       button={button}
       PopoverContent={MenuItemsList}
       isPopoverOpen={isPopoverOpen}
