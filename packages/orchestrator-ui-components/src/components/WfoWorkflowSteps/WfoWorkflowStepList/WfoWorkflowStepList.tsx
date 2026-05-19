@@ -3,7 +3,7 @@ import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { WfoJsonCodeBlock, WfoLoading, WfoStepList, WfoStepListHeader, WfoStepListRef } from '@/components';
-import WfoDiff from '@/components/WfoDiff/WfoDiff';
+import WfoDiff, { getSubscriptionDiffTexts } from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
 import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
 import { ProcessStatus, Step, StepStatus } from '@/types';
@@ -33,20 +33,9 @@ export const WfoProcessRawData = ({ processId }: { processId: string }) => {
 
 export const WfoProcessSubscriptionDelta = ({ processId }: { processId: string }) => {
   const { data, isFetching } = useGetRawProcessDetailQuery({ processId });
+  const { oldText, newText } = getSubscriptionDiffTexts(data);
 
-  const subscriptionId = data?.current_state?.subscription?.subscription_id ?? '';
-  const newText = data?.current_state?.subscription ?? null;
-  const oldSubscriptions = data?.current_state?.__old_subscriptions__ || {};
-  const oldSubscription = subscriptionId in oldSubscriptions ? oldSubscriptions[subscriptionId] : null;
-  const oldText = oldSubscription || null;
-
-  return isFetching ?
-      <WfoLoading />
-    : <WfoDiff
-        oldText={oldText ? JSON.stringify(oldText, null, 2) : ''}
-        newText={newText ? JSON.stringify(newText, null, 2) : ''}
-        syntax="javascript"
-      />;
+  return isFetching ? <WfoLoading /> : <WfoDiff oldText={oldText} newText={newText} syntax="javascript" />;
 };
 
 export const WfoWorkflowStepList = React.forwardRef(
