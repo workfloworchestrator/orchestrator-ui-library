@@ -5,7 +5,7 @@ import type { ValueEditorProps } from 'react-querybuilder';
 import moment from 'moment';
 import { useTranslations } from 'next-intl';
 
-import { EuiButtonGroup, EuiDatePicker, EuiFieldText } from '@elastic/eui';
+import { EuiButtonGroup, EuiDatePicker, EuiFieldText, EuiFlexGroup } from '@elastic/eui';
 
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -17,20 +17,19 @@ enum UiFieldType {
   datetime = 'datetime',
 }
 
-interface EditorProps<T = boolean> {
+interface EditorProps {
   handleOnChange: (value: unknown) => void;
-  currentValue?: T;
   operator?: string;
 }
 
-const BooleanEditor = ({ handleOnChange, currentValue }: EditorProps<boolean>) => {
+const BooleanEditor = ({ handleOnChange }: EditorProps) => {
   const [value, setValue] = useState<string>('true');
 
   useEffect(() => {
-    if (!currentValue && currentValue !== false) {
-      handleOnChange(true);
-    }
-  }, [currentValue, handleOnChange]);
+    handleOnChange(true);
+    // Sets the initial value to true so we allow empty dep array here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { buttonGroupStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const options = [
@@ -61,8 +60,8 @@ const BooleanEditor = ({ handleOnChange, currentValue }: EditorProps<boolean>) =
   );
 };
 
-const TextEditor = ({ handleOnChange, currentValue }: EditorProps<string>) => {
-  const [value, setValue] = useState<string>(currentValue || '');
+const TextEditor = ({ handleOnChange }: EditorProps) => {
+  const [value, setValue] = useState<string>('');
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value || '');
@@ -81,13 +80,13 @@ const TextEditor = ({ handleOnChange, currentValue }: EditorProps<string>) => {
   return <EuiFieldText value={value} onChange={handleTextChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
 };
 
-interface DatePickerProps {
-  value: string;
-  handleOnChange: (value: string | undefined) => void;
-  // rangeIndex: number;
-}
-const DatePicker = ({ value, handleOnChange }: DatePickerProps) => {
-  const [date, setDate] = useState<string | undefined>(value);
+type DatePickerProps = {
+  handleOnChange: (selectedDate: string | undefined, rangeIndex?: number) => void;
+  rangeIndex?: number;
+};
+
+const DatePicker = ({ handleOnChange, rangeIndex }: DatePickerProps) => {
+  const [date, setDate] = useState<string | undefined>(undefined);
   const t = useTranslations('search.page');
 
   return (
@@ -96,8 +95,9 @@ const DatePicker = ({ value, handleOnChange }: DatePickerProps) => {
       onChange={(date) => {
         const utcDate = date ? moment.utc(date) : null;
         setDate(utcDate?.toISOString() || undefined);
-        handleOnChange(utcDate?.toISOString() || undefined);
+        handleOnChange(utcDate?.toISOString() || undefined, rangeIndex);
       }}
+      id={rangeIndex ? `date-range-${rangeIndex}` : 'date-range'}
       css={{ width: '330px' }}
       showTimeSelect
       dateFormat="yyyy-MM-dd HH:mm"
@@ -108,34 +108,48 @@ const DatePicker = ({ value, handleOnChange }: DatePickerProps) => {
   );
 };
 
-/*
-const DatetimeEditor = ({ currentValue, handleOnChange, operator }: EditorProps<string>) => {
-  const [value, setValue] = useState<[string|undefined][]>(currentValue || []);
+const DatetimeEditor = ({ handleOnChange, operator }: EditorProps) => {
+  useEffect(() => {
+    setValue([]);
+  }, [operator]);
 
-  const onChange = (value: string, rangeIndex: number = 0) => {
+  const [, setValue] = useState<string[]>([]);
+
+  const handleChange = (selectedDate: string | undefined, rangeIndex: number = 0) => {
     if (operator === 'between') {
-      setValue((currentValue) => {
+      setValue((currentDates) => {
+        // remove value if set to undefined
+        if (selectedDate === undefined) {
+          return currentDates.filter((v, index) => index !== rangeIndex);
+        }
+        // add value at supplied index
+        currentDates[rangeIndex] = selectedDate;
 
+        // call the parent if 2 values are present
+        if (currentDates.length === 2) {
+          handleOnChange(`${currentDates[0]},${currentDates[1]}`);
+        }
+
+        return currentDates;
       });
     } else {
-      setValue(value);
-      handleOnChange(value);
+      handleOnChange(selectedDate);
     }
   };
 
   if (operator === 'between') {
     return (
-      <div>
-        <DatePicker value={value} onChange={onChange} rangeIndex={0} />;
-        <DatePicker value={value} onChange={onChange} rangeIndex={1} />;
-      </div>
+      <EuiFlexGroup direction="row" gutterSize="s">
+        <DatePicker handleOnChange={handleChange} rangeIndex={0} />
+        <DatePicker handleOnChange={handleChange} rangeIndex={1} />
+      </EuiFlexGroup>
     );
   }
 
-  return <DatePicker value={value} onChange={onChange} rangeIndex={0} />;
+  return <DatePicker handleOnChange={handleOnChange} />;
 };
-*/
-export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, value }: ValueEditorProps) => {
+
+export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, operator }: ValueEditorProps) => {
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
@@ -146,7 +160,7 @@ export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, valu
   }
 
   if (uiFieldType === UiFieldType.datetime) {
-    return <DatePicker handleOnChange={handleOnChange} value={value as string} />;
+    return <DatetimeEditor handleOnChange={handleOnChange} operator={operator} />;
   }
 
   return <TextEditor handleOnChange={handleOnChange} />;
