@@ -21,6 +21,23 @@ export const WfoMetadataStatusField: FC<WfoMetadataStatusFieldProps> = ({ onSave
     </EuiButtonEmpty>
   );
 
+  const wrappedButton = (
+    <div
+      css={{
+        ':hover': {
+          '.euiIcon': {
+            visibility: 'visible',
+          },
+        },
+        '.euiIcon': {
+          visibility: isPopoverOpen ? 'visible' : 'hidden',
+        },
+      }}
+    >
+      {button}
+    </div>
+  );
+
   const handleOnSelectOption = (updatedStatus: ProductLifecycleStatus) => {
     setPopover(false);
     onSave(updatedStatus);
@@ -37,7 +54,7 @@ export const WfoMetadataStatusField: FC<WfoMetadataStatusFieldProps> = ({ onSave
     <WfoPopover
       id={'productStatusPopover'}
       isLoading={false}
-      button={button}
+      button={wrappedButton}
       isPopoverOpen={isPopoverOpen}
       closePopover={() => setPopover(false)}
       PopoverContent={setNewStatusBadges}
