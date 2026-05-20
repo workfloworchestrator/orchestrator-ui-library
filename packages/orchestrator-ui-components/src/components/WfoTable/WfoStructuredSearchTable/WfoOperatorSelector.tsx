@@ -7,7 +7,6 @@ const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): oper
   'options' in operator;
 
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
-
   const flatOptions = (props.options as Array<FullOperator | OptionGroup<FullOperator>>).flatMap((option) =>
     isOptionGroup(option) ? option.options : [option],
   );
