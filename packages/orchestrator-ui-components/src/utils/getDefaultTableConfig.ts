@@ -42,7 +42,7 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
       return getTableConfig<T>(resourceTypeColumns as (keyof T)[]);
     }
     case METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY: {
-      const productColumns: (keyof ProductDefinition)[] = ['productId', 'productType', 'status', 'createdAt'];
+      const productColumns: (keyof ProductDefinition)[] = ['productId', 'createdAt'];
       return getTableConfig<T>(productColumns as (keyof T)[]);
     }
     case METADATA_WORKFLOWS_TABLE_LOCAL_STORAGE_KEY: {

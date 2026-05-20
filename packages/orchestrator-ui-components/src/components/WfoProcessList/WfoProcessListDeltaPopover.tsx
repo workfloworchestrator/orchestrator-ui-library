@@ -36,7 +36,7 @@ export const WfoProcessListDeltaPopover: FC<WfoProcessListDeltaPopoverProps> = (
 
   const iconButton = (
     <EuiButtonIcon
-      iconType={() => <WfoCode color={theme.colors.primary} />}
+      iconType={() => <WfoCode color={theme.colors.textDisabled} />}
       onClick={() => setPopoverOpen(!isPopoverOpen)}
       aria-label={t('showDelta')}
       isLoading={isFetching}

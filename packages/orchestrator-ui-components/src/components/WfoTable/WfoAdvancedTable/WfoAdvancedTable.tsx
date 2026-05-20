@@ -16,6 +16,7 @@ import {
   WfoKeyValueTable,
   WfoKeyValueTableDataType,
   WfoSearchField,
+  WfoToolTip,
   clearTableConfigFromLocalStorage,
   setTableConfigToLocalStorage,
 } from '@/components';
@@ -60,7 +61,6 @@ export const WfoAdvancedTable = <T extends object>({
   ...tableProps
 }: WfoAdvancedTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
-
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [selectedDataForDetailModal, setSelectedDataForDetailModal] = useState<T | undefined>(undefined);
@@ -80,9 +80,13 @@ export const WfoAdvancedTable = <T extends object>({
       columnType: ColumnType.CONTROL,
       width: '36px',
       renderControl: (row) => (
-        <EuiFlexItem css={{ cursor: 'pointer' }} onClick={() => setSelectedDataForDetailModal(row)}>
-          <WfoArrowsExpand color={theme.colors.textDisabled} />
-        </EuiFlexItem>
+        <WfoToolTip tooltipContent={t('showAllColumnsInDetailView')}>
+          <EuiButtonIcon
+            iconType={() => <WfoArrowsExpand color={theme.colors.textDisabled} />}
+            onClick={() => setSelectedDataForDetailModal(row)}
+            aria-label={t('showAllColumnsInDetailView')}
+          />
+        </WfoToolTip>
       ),
     },
   };
