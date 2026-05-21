@@ -85,15 +85,15 @@ const TextEditor = ({ handleOnChange }: EditorProps<string>) => {
 };
 
 const NumberEditor = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
-  const [value, setValue] = useState<number | null>(null);
+  const [value, setValue] = useState<string>('');
 
   const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = e.target.value === '' ? null : Number(e.target.value);
-    setValue(value);
+    setValue(e.target.value || '');
   };
 
   const handleOnBlur = () => {
-    handleOnChange(value, rangeIndex);
+    const numberValue = parseFloat(value);
+    handleOnChange(numberValue, rangeIndex);
   };
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
