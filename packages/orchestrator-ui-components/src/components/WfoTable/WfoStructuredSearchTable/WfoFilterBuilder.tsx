@@ -63,7 +63,7 @@ interface WfoFilterBuilderProps {
 }
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
-  rules: [{ field: '~', operator: '=', value: '' }],
+  rules: [{ id: 'rule-0', field: '~', operator: '=', value: '' }],
   combinator: 'and',
 };
 
