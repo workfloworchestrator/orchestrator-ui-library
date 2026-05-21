@@ -3,20 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { EuiFlexGroup } from '@elastic/eui';
 
 export interface WfoRangeElementProps {
-  handleOnChange: (value: string | number | boolean | null, rangeIndex?: number) => void;
+  handleOnChange: (value: string | number | undefined, rangeIndex?: number) => void;
+  value: string;
   operator?: string;
   rangeIndex?: number;
 }
 
 interface WfoRangeEditorProps {
-  handleOnChange: (value: string | number | boolean | null, rangeIndex?: number) => void;
+  handleOnChange: (value: string | number | undefined, rangeIndex?: number) => void;
   operator: string;
+  value: string;
   Element: React.ComponentType<WfoRangeElementProps>;
 }
 
-export const WfoRangeEditor = ({ handleOnChange, operator, Element }: WfoRangeEditorProps) => {
+export const WfoRangeEditor = ({ handleOnChange, operator, Element, value: currentValue }: WfoRangeEditorProps) => {
   const [currentOperator, setCurrentOperator] = useState(operator);
-  const [, setValue] = useState<string[]>([]);
+  const startValue = currentValue ? currentValue?.toString().split(',') : [];
+  const [value, setValue] = useState<string[]>(startValue);
 
   useEffect(() => {
     if (operator !== currentOperator && (operator === 'between' || currentOperator === 'between')) {
@@ -26,7 +29,7 @@ export const WfoRangeEditor = ({ handleOnChange, operator, Element }: WfoRangeEd
     }
   }, [currentOperator, handleOnChange, operator]);
 
-  const handleChange = (value: string | number | boolean | null, rangeIndex: number = 0) => {
+  const handleChange = (value: string | number | undefined, rangeIndex: number = 0) => {
     if (operator === 'between') {
       setValue((currentDates) => {
         // remove value if set to undefined
@@ -51,11 +54,11 @@ export const WfoRangeEditor = ({ handleOnChange, operator, Element }: WfoRangeEd
   if (operator === 'between') {
     return (
       <EuiFlexGroup direction="row" gutterSize="s">
-        <Element handleOnChange={handleChange} rangeIndex={0} />
-        <Element handleOnChange={handleChange} rangeIndex={1} />
+        <Element handleOnChange={handleChange} rangeIndex={0} value={value[0]} />
+        <Element handleOnChange={handleChange} rangeIndex={1} value={value[1]} />
       </EuiFlexGroup>
     );
   }
 
-  return <Element handleOnChange={handleOnChange} />;
+  return <Element handleOnChange={handleOnChange} value={value[0]} />;
 };

@@ -23,11 +23,12 @@ export type HandleOnChange<T> = (value: T | undefined, rangeIndex?: number) => v
 
 export interface EditorProps<T> {
   handleOnChange: HandleOnChange<T>;
+  value: T;
   operator?: string;
 }
 
-const BooleanEditor = ({ handleOnChange }: EditorProps<boolean>) => {
-  const [value, setValue] = useState<string>('true');
+const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorProps<boolean>) => {
+  const [value, setValue] = useState<string>(currentValue.toString());
 
   useEffect(() => {
     handleOnChange(true);
@@ -64,8 +65,8 @@ const BooleanEditor = ({ handleOnChange }: EditorProps<boolean>) => {
   );
 };
 
-const TextEditor = ({ handleOnChange }: EditorProps<string>) => {
-  const [value, setValue] = useState<string>('');
+const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorProps<string>) => {
+  const [value, setValue] = useState<string>(currentValue);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value || '');
@@ -84,8 +85,8 @@ const TextEditor = ({ handleOnChange }: EditorProps<string>) => {
   return <EuiFieldText value={value} onChange={handleTextChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
 };
 
-const NumberEditor = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
-  const [value, setValue] = useState<string>('');
+const NumberEditor = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRangeElementProps) => {
+  const [value, setValue] = useState<string>(currentValue?.toString() || '');
 
   const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value || '');
@@ -112,8 +113,8 @@ const NumberEditor = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
   );
 };
 
-const DatePicker = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
-  const [date, setDate] = useState<string | undefined>(undefined);
+const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRangeElementProps) => {
+  const [date, setDate] = useState<string>(currentValue || '');
   const t = useTranslations('search.page');
 
   return (
@@ -121,8 +122,8 @@ const DatePicker = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
       selected={date ? moment.utc(date) : undefined}
       onChange={(date) => {
         const utcDate = date ? moment.utc(date) : undefined;
-        setDate(utcDate?.toISOString() || undefined);
-        handleOnChange(utcDate?.toISOString() || null, rangeIndex);
+        setDate(utcDate?.toISOString() || '');
+        handleOnChange(utcDate?.toISOString(), rangeIndex);
       }}
       id={rangeIndex ? `date-range-${rangeIndex}` : 'date-range'}
       css={{ width: '330px' }}
@@ -131,27 +132,29 @@ const DatePicker = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
       timeFormat="HH:mm"
       placeholderText={t('selectDateAndTime')}
       locale="nl"
+      shouldCloseOnSelect={true}
     />
   );
 };
 
-export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, operator }: ValueEditorProps) => {
+export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, operator, value }: ValueEditorProps) => {
+  console.log('WfoValueEditor', fieldName, value);
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
   const uiFieldType = fieldInfo?.ui_types[0] || UiFieldType.text;
 
   if (uiFieldType === UiFieldType.boolean) {
-    return <BooleanEditor handleOnChange={handleOnChange} />;
+    return <BooleanEditor handleOnChange={handleOnChange} value={value} />;
   }
 
   if (uiFieldType === UiFieldType.datetime) {
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={DatePicker} />;
+    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={DatePicker} value={value} />;
   }
 
   if (uiFieldType === UiFieldType.number) {
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} />;
+    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} value={value} />;
   }
 
-  return <TextEditor handleOnChange={handleOnChange} />;
+  return <TextEditor handleOnChange={handleOnChange} value={value} />;
 };
