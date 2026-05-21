@@ -173,6 +173,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     pagination?.onChangeItemsPerPage?.(defaultTableConfig.selectedPageSize ?? DEFAULT_PAGE_SIZE);
     pagination?.onChangePage?.(0);
   };
+
   const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
 
   return (
@@ -244,8 +245,11 @@ export const WfoStructuredSearchTable = <T extends object>({
           </EuiButton>
         )}
       </EuiFlexGroup>
+
       {error && <WfoErrorWithMessage error={error} />}
+
       <EuiSpacer size="m" />
+
       <WfoTable columnConfig={tableColumnsWithControlColumns} hiddenColumns={hiddenColumns} {...tableProps} />
 
       {showTableSettingsModal && (

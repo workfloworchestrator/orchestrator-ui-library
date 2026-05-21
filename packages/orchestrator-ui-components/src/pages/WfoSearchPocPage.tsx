@@ -188,7 +188,8 @@ export const WfoSearchPocPage = () => {
   };
 
   const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
-    const elasticQuery = ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch' }) : undefined;
+    const elasticQuery =
+      ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch', fallbackExpression: '' }) : undefined;
     return elasticQuery as unknown as Filter;
   };
 
@@ -225,13 +226,6 @@ export const WfoSearchPocPage = () => {
     handleSearch({ retrieverType });
   };
 
-  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
-    setQueryBuilderRuleGroup({ ...ruleGroup });
-    const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel' });
-    setFilterString(celQuery);
-    setIsValidFilterString(true);
-  };
-
   const safeCelParse = (celString: string) => {
     try {
       const ruleGroup = parseCEL(celString);
@@ -247,6 +241,20 @@ export const WfoSearchPocPage = () => {
       }
     } catch {
       setIsValidFilterString(false);
+    }
+  };
+
+  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
+    setQueryBuilderRuleGroup({ ...ruleGroup });
+    const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel', fallbackExpression: '' });
+    // 1 == 1 indicates the query can't be parsed. This is a fallback to allow it to still be used as
+    // part of other queries.
+    if (!celQuery || celQuery === '') {
+      setFilterString('');
+      setIsValidFilterString(false);
+    } else {
+      setFilterString(celQuery);
+      setIsValidFilterString(true);
     }
   };
 
