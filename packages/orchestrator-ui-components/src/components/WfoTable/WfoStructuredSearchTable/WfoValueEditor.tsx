@@ -119,7 +119,7 @@ const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRang
 
   return (
     <EuiDatePicker
-      selected={date ? moment.utc(date) : undefined}
+      selected={date && date !== '' ? moment.utc(date) : undefined}
       onChange={(date) => {
         const utcDate = date ? moment.utc(date) : undefined;
         setDate(utcDate?.toISOString() || '');
@@ -138,7 +138,6 @@ const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRang
 };
 
 export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, operator, value }: ValueEditorProps) => {
-  console.log('WfoValueEditor', fieldName, value);
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
