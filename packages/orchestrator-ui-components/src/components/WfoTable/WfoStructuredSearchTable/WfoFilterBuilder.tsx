@@ -61,9 +61,9 @@ interface WfoFilterBuilderProps {
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
   handleSearch: () => void;
 }
-const emtpyRuleGroup: RuleGroupType = {
+const initialRuleGroup: RuleGroupType = {
   id: 'root',
-  rules: [],
+  rules: [{ field: '~', operator: '=', value: '' }],
   combinator: 'and',
 };
 
@@ -71,7 +71,7 @@ export const WfoFilterBuilder = ({
   filterString,
   onUpdateFilterString,
   isValidFilterString = true,
-  queryBuilderRuleGroup = emtpyRuleGroup,
+  queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
 }: WfoFilterBuilderProps) => {
@@ -131,6 +131,7 @@ export const WfoFilterBuilder = ({
                 removeGroupAction: WfoRemoveGroupAction,
                 removeRuleAction: WfoRemoveRuleAction,
               }}
+              addRuleToNewGroups
               maxLevels={5}
             />
           </EuiFlexItem>
