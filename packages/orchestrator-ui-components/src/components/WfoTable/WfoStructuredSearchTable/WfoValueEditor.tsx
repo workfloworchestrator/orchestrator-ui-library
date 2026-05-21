@@ -5,12 +5,12 @@ import type { ValueEditorProps } from 'react-querybuilder';
 import moment from 'moment';
 import { useTranslations } from 'next-intl';
 
-import { EuiButtonGroup, EuiDatePicker, EuiFieldText } from '@elastic/eui';
+import { EuiButtonGroup, EuiDatePicker, EuiFieldNumber, EuiFieldText } from '@elastic/eui';
 
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
-import { WfoRangeEditor } from './WfoRangeEditor';
+import { WfoRangeEditor, WfoRangeElementProps } from './WfoRangeEditor';
 
 enum UiFieldType {
   text = 'text',
@@ -25,11 +25,6 @@ export interface EditorProps<T> {
   handleOnChange: HandleOnChange<T>;
   operator?: string;
 }
-
-type DatePickerProps = {
-  handleOnChange: HandleOnChange<string>;
-  rangeIndex?: number;
-};
 
 const BooleanEditor = ({ handleOnChange }: EditorProps<boolean>) => {
   const [value, setValue] = useState<string>('true');
@@ -89,7 +84,35 @@ const TextEditor = ({ handleOnChange }: EditorProps<string>) => {
   return <EuiFieldText value={value} onChange={handleTextChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
 };
 
-const DatePicker = ({ handleOnChange, rangeIndex }: DatePickerProps) => {
+const NumberEditor = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
+  const [value, setValue] = useState<number | null>(null);
+
+  const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.value === '' ? null : Number(e.target.value);
+    setValue(value);
+  };
+
+  const handleOnBlur = () => {
+    handleOnChange(value, rangeIndex);
+  };
+
+  const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+    }
+  };
+
+  return (
+    <EuiFieldNumber
+      value={value || undefined}
+      onChange={handleNumberChange}
+      onBlur={handleOnBlur}
+      onKeyDown={handleOnKeyDown}
+    />
+  );
+};
+
+const DatePicker = ({ handleOnChange, rangeIndex }: WfoRangeElementProps) => {
   const [date, setDate] = useState<string | undefined>(undefined);
   const t = useTranslations('search.page');
 
@@ -99,7 +122,7 @@ const DatePicker = ({ handleOnChange, rangeIndex }: DatePickerProps) => {
       onChange={(date) => {
         const utcDate = date ? moment.utc(date) : undefined;
         setDate(utcDate?.toISOString() || undefined);
-        handleOnChange(utcDate?.toISOString() || undefined, rangeIndex);
+        handleOnChange(utcDate?.toISOString() || null, rangeIndex);
       }}
       id={rangeIndex ? `date-range-${rangeIndex}` : 'date-range'}
       css={{ width: '330px' }}
@@ -127,7 +150,7 @@ export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, oper
   }
 
   if (uiFieldType === UiFieldType.number) {
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={TextEditor} />;
+    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} />;
   }
 
   return <TextEditor handleOnChange={handleOnChange} />;
