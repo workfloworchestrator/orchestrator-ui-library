@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { FC } from 'react';
 import Draggable from 'react-draggable';
 import type { DraggableEventHandler } from 'react-draggable';
@@ -17,6 +17,7 @@ interface WfoDragHandlerProps {
 }
 
 export const WfoDragHandler: FC<WfoDragHandlerProps> = ({ headerRowRef, fieldName, onUpdateColumWidth }) => {
+  const nodeRef = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const { dragAndDropStyle } = useWithOrchestratorTheme(getWfoTableStyles);
@@ -66,8 +67,9 @@ export const WfoDragHandler: FC<WfoDragHandlerProps> = ({ headerRowRef, fieldNam
         onDrag={onDrag}
         bounds={bounds}
         onStop={onStop}
+        nodeRef={nodeRef}
       >
-        <div css={dragAndDropStyle} />
+        <div css={dragAndDropStyle} ref={nodeRef} />
       </Draggable>
     </div>
   );
