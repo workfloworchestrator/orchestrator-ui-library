@@ -58,6 +58,11 @@ export type WfoStructuredSearchTableDataColumnConfig<T extends object> = {
 export type WfoStructuredSearchTableColumnConfig<T extends object> = Partial<
   WfoTableControlColumnConfig<T> | WfoStructuredSearchTableDataColumnConfig<T>
 >;
+export type SearchParams = {
+  queryText?: string;
+  retrieverType?: RetrieverType;
+  ruleGroup?: RuleGroupType | false;
+};
 
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
   WfoTableProps<T>,
@@ -78,7 +83,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onUpdateFilterString: (filterString: string) => void;
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
-  onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
+  onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: () => void;
 };
 
