@@ -22,6 +22,7 @@ import {
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
 } from '@/components';
+import type { SearchParams } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
@@ -73,10 +74,10 @@ export const WfoSearchPocPage = () => {
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
 
   // Part of the search endpoint payload that is passed in the q parameter
-  const [queryText, setQueryText] = useState<string>();
+  const [queryText, setQueryText] = useState<string>('');
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
   const [filterString, setFilterString] = useState<string>();
-  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType>();
+  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
@@ -193,14 +194,13 @@ export const WfoSearchPocPage = () => {
     return elasticQuery as unknown as Filter;
   };
 
-  const handleSearch = (searchParams?: {
-    queryText?: string;
-    retrieverType?: RetrieverType;
-    ruleGroup?: RuleGroupType;
-  }) => {
+  const handleSearch = (searchParams?: SearchParams) => {
     const retriever = searchParams?.retrieverType || retrieverType;
     const query = searchParams?.queryText || queryText || '';
-    const filters = parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup);
+    const filters =
+      searchParams?.ruleGroup !== false ?
+        parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup)
+      : false;
 
     const searchPayload: SearchPayload = {
       query,
@@ -229,8 +229,10 @@ export const WfoSearchPocPage = () => {
   const safeCelParse = (celString: string) => {
     try {
       const ruleGroup = parseCEL(celString);
-      // parseCEL returns a query object — check if it has any rules
-      if (ruleGroup.rules.length > 0) {
+      if (celString === '') {
+        setIsValidFilterString(true);
+      } else if (ruleGroup.rules.length > 0) {
+        // parseCEL returns a query object — check if it has any rules
         setIsValidFilterString(true);
         setQueryBuilderRuleGroup(ruleGroup);
       } else {
@@ -244,17 +246,23 @@ export const WfoSearchPocPage = () => {
     }
   };
 
-  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType) => {
-    setQueryBuilderRuleGroup({ ...ruleGroup });
-    const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel', fallbackExpression: '' });
-    // 1 == 1 indicates the query can't be parsed. This is a fallback to allow it to still be used as
-    // part of other queries.
-    if (!celQuery || celQuery === '') {
+  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType | false) => {
+    if (ruleGroup === false) {
+      setQueryBuilderRuleGroup(undefined);
       setFilterString('');
-      setIsValidFilterString(false);
-    } else {
-      setFilterString(celQuery);
       setIsValidFilterString(true);
+    } else {
+      setQueryBuilderRuleGroup({ ...ruleGroup });
+      const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel', fallbackExpression: '' });
+      // 1 == 1 indicates the query can't be parsed. This is a fallback to allow it to still be used as
+      // part of other queries.
+      if (!celQuery || celQuery === '1 == 1') {
+        setFilterString('');
+        setIsValidFilterString(true);
+      } else {
+        setFilterString(celQuery);
+        setIsValidFilterString(true);
+      }
     }
   };
 

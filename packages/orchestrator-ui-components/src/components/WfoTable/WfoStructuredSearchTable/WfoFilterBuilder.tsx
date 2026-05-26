@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui';
 
-import { WfoTextAnchor } from '@/components';
+import { SearchParams, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay, PathInfo } from '@/types';
@@ -58,9 +58,10 @@ interface WfoFilterBuilderProps {
   onUpdateFilterString: (filterString: string) => void;
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
-  onUpdateQueryBuilder: (ruleGroup: RuleGroupType) => void;
-  handleSearch: () => void;
+  onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
+  handleSearch: (searchParams?: SearchParams) => void;
 }
+
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
   rules: [{ id: 'rule-0', field: '~', operator: '=', value: '' }],
@@ -168,7 +169,10 @@ export const WfoFilterBuilder = ({
             <WfoTextAnchor
               text={t('removeFilter')}
               onClick={() => {
-                onUpdateFilterString('');
+                onUpdateQueryBuilder(false);
+                // we call with ruleGroup: false explictly to
+                // avoid state not having caught up yet when searching
+                handleSearch({ ruleGroup: false });
                 setIsFilterBuilderVisible(false);
               }}
             />
