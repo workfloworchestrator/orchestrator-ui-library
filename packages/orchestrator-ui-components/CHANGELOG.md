@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.3.0
+
+### Minor Changes
+
+- 4fac1f8: 140 Add react node to WfoTitleWithWebsocketBadge
+
 ## 8.2.0
 
 ### Minor Changes
