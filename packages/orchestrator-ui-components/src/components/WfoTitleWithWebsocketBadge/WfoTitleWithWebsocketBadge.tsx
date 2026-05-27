@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import { EuiPageHeader } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPageHeader } from '@elastic/eui';
 
 import { WfoWebsocketStatusBadge } from '@/components';
 import { useGetOrchestratorConfig } from '@/hooks';
 
 interface WfoTitleWithWebsocketBadgeProps {
-  title: string;
+  title: string | ReactNode;
   wsUrl?: string;
 }
 
@@ -15,9 +15,12 @@ export const WfoTitleWithWebsocketBadge = ({ title, wsUrl = undefined }: WfoTitl
 
   const pageTitle =
     useWebSockets ?
-      <>
-        {title} <WfoWebsocketStatusBadge wsUrl={wsUrl} />
-      </>
+      <EuiFlexGroup alignItems="center" gutterSize="s">
+        <EuiFlexItem grow={false}>{title}</EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <WfoWebsocketStatusBadge wsUrl={wsUrl} />
+        </EuiFlexItem>
+      </EuiFlexGroup>
     : title;
 
   return <EuiPageHeader pageTitle={pageTitle} />;
