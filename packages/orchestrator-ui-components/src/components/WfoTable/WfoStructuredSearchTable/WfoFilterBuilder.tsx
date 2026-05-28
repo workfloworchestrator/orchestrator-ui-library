@@ -90,7 +90,6 @@ export const WfoFilterBuilder = ({
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
-  const isInitialRender = useRef(true);
 
   const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
     if (pathInfo) {
@@ -108,11 +107,6 @@ export const WfoFilterBuilder = ({
             <QueryBuilder
               query={queryBuilderRuleGroup}
               onQueryChange={(ruleGroup: RuleGroupType) => {
-                if (isInitialRender.current) {
-                  // this prevents the textarea from displaying '1==1' on initial render
-                  isInitialRender.current = false;
-                  return;
-                }
                 onUpdateQueryBuilder(ruleGroup);
               }}
               context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}

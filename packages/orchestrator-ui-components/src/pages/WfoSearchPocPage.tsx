@@ -3,31 +3,77 @@ import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
+
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
+
+
 import { EuiSpacer } from '@elastic/eui';
 
+
+
 import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
-import {
-  StoredTableConfig,
-  WfoContentHeader,
-  WfoDateTime,
-  WfoFirstPartUUID,
-  WfoInlineJson,
-  WfoInsyncIcon,
-  WfoJsonCodeBlock,
-  WfoStructuredSearchTable,
-  WfoSubscriptionActions,
-  WfoSubscriptionNoteEdit,
-  WfoSubscriptionStatusBadge,
-} from '@/components';
+import { StoredTableConfig, WfoContentHeader, WfoDateTime, WfoFirstPartUUID, WfoInlineJson, WfoInsyncIcon, WfoJsonCodeBlock, WfoStructuredSearchTable, WfoSubscriptionActions, WfoSubscriptionNoteEdit, WfoSubscriptionStatusBadge } from '@/components';
 import type { SearchParams } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
 import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
@@ -91,6 +137,16 @@ export const WfoSearchPocPage = () => {
       setTableDefaults(storedConfig);
     }
   }, [getStoredTableConfig]);
+
+  useEffect(() => {
+    if (!isLoading && !data) {
+      const ruleGroup = parseCEL(`status=="active"`)
+      console.log('ruleGroup', ruleGroup)
+      handleSearch({
+        ruleGroup
+      });
+    }
+  },[]);
 
   const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
     actions: {
