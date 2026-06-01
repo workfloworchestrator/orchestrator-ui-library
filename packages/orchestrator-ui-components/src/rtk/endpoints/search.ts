@@ -15,7 +15,7 @@ export interface SearchPayload {
   entity_type: EntityKind;
   query: string;
   filters?: Filter;
-  limit?: number;
+  limit?: number | number[];
   retriever?: RetrieverType;
 }
 
