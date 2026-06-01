@@ -2,17 +2,9 @@ import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
-
-
-
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-
-
-
 import { EuiSpacer } from '@elastic/eui';
-
-
 
 import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
 import { StoredTableConfig, WfoContentHeader, WfoDateTime, WfoFirstPartUUID, WfoInlineJson, WfoInsyncIcon, WfoJsonCodeBlock, WfoStructuredSearchTable, WfoSubscriptionActions, WfoSubscriptionNoteEdit, WfoSubscriptionStatusBadge } from '@/components';
@@ -22,58 +14,6 @@ import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
 import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
@@ -106,7 +46,7 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.status', 'status'],
   ['subscription.insync', 'insync'],
   ['subscription.product.name', 'productName'],
-  ['subscription.tag', 'tag'],
+  ['subscription.product.tag', 'tag'],
   ['subscription.customer_name', 'customerFullname'],
   ['subscription.customer_abbreviation', 'customerShortcode'],
   ['subscription.start_date', 'startDate'],
@@ -130,6 +70,7 @@ export const WfoSearchPocPage = () => {
 
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
+  const [limit, setLimit] = useState<number>(tableDefaults?.selectedPageSize || 10);
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -140,11 +81,7 @@ export const WfoSearchPocPage = () => {
 
   useEffect(() => {
     if (!isLoading && !data) {
-      const ruleGroup = parseCEL(`status=="active"`)
-      console.log('ruleGroup', ruleGroup)
-      handleSearch({
-        ruleGroup
-      });
+      handleSearch();
     }
   },[]);
 
@@ -250,23 +187,35 @@ export const WfoSearchPocPage = () => {
     return elasticQuery as unknown as Filter;
   };
 
+  const getFilters = (query: string, ruleGroup: RuleGroupType | false | undefined) => {
+    if(ruleGroup === false ) return false;
+
+    if (!query && !ruleGroup) {
+      return parseRuleGroupToFilters(parseCEL(`status=="active"`));
+    }
+    return parseRuleGroupToFilters(ruleGroup);
+  }
+
   const handleSearch = (searchParams?: SearchParams) => {
     const retriever = searchParams?.retrieverType || retrieverType;
     const query = searchParams?.queryText || queryText || '';
-    const filters =
-      searchParams?.ruleGroup !== false ?
-        parseRuleGroupToFilters(searchParams?.ruleGroup || queryBuilderRuleGroup)
-      : false;
 
+    // If there is no query and no ruleGroup selected we default to something that gives results
+    const ruleGroup = searchParams?.ruleGroup === false ? false : searchParams?.ruleGroup || queryBuilderRuleGroup;
+    const filters = getFilters(query, ruleGroup);
+
+    const queryLimit: number = searchParams?.limit || limit;
     const searchPayload: SearchPayload = {
       query,
+      limit: queryLimit,
       entity_type: EntityKind.SUBSCRIPTION,
       response_columns: Array.from(resultColumToPropertyMap.keys()),
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
     };
+
     triggerSearch(searchPayload);
-  };
+  };;
 
   const onChangeQueryText = (queryText: string) => {
     setQueryText(queryText);
@@ -330,6 +279,14 @@ export const WfoSearchPocPage = () => {
   const subscriptionListItems: SubscriptionListItem[] =
     data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap) : [];
 
+  const onShowMore = () => {
+    setLimit((limit) => {
+      const newLimit = limit + 10
+      handleSearch({limit: newLimit});
+      return newLimit
+    })
+  }
+
   return (
     <>
       <WfoContentHeader title="Subscriptions (POC)" />
@@ -346,7 +303,9 @@ export const WfoSearchPocPage = () => {
         onUpdateQueryBuilder={onUpdateQueryBuilder}
         onChangeQueryText={onChangeQueryText}
         onSearchQueryText={onSearchQueryText}
+        onShowMore={onShowMore}
         onUpdateRetrieverType={onUpdateRetrieverType}
+
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryText={queryText}
         retrieverType={retrieverType}
