@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { useTranslations } from 'next-intl';
+
 import { EuiButton, EuiButtonIcon, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiText } from '@elastic/eui';
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES, TableColumnKeys, TableSettingsColumnConfig, TableSettingsConfig, TableSettingsModal, WfoErrorWithMessage, WfoInformationModal, WfoKeyValueTable, WfoKeyValueTableDataType, clearTableConfigFromLocalStorage, setTableConfigToLocalStorage } from '@/components';
@@ -58,6 +59,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: () => void;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -79,6 +82,8 @@ export const WfoStructuredSearchTable = <T extends object>({
   queryBuilderRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
+  pageSize,
+  setPageSize,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -95,8 +100,6 @@ export const WfoStructuredSearchTable = <T extends object>({
       setHiddenColumns(defaultHiddenColumns);
     }
   }, [defaultHiddenColumns]);
-
-  const { pagination } = tableProps;
 
   const detailsIconColumn: WfoStructuredSearchTableColumnConfig<T> = {
     viewDetails: {
@@ -136,25 +139,20 @@ export const WfoStructuredSearchTable = <T extends object>({
       .map((hiddenColumn) => hiddenColumn.field);
     setHiddenColumns(updatedHiddenColumns);
     setShowTableSettingsModal(false);
-
+    setPageSize(updatedTableConfig.selectedPageSize)
     setTableConfigToLocalStorage(localStorageKey, {
       hiddenColumns: updatedHiddenColumns,
       selectedPageSize: updatedTableConfig.selectedPageSize,
     });
-    pagination?.onChangeItemsPerPage?.(updatedTableConfig.selectedPageSize);
-    pagination?.onChangePage?.(0);
   };
 
   const handleResetToDefaults = () => {
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
     setHiddenColumns(defaultTableConfig.hiddenColumns);
+    setPageSize(defaultTableConfig.selectedPageSize)
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
-    pagination?.onChangeItemsPerPage?.(defaultTableConfig.selectedPageSize ?? DEFAULT_PAGE_SIZE);
-    pagination?.onChangePage?.(0);
   };
-
-
 
   return (
     <>
@@ -240,9 +238,9 @@ export const WfoStructuredSearchTable = <T extends object>({
         <TableSettingsModal
           tableConfig={{
             columns: tableSettingsColumns,
-            selectedPageSize: pagination?.pageSize ?? DEFAULT_PAGE_SIZE,
+            selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
           }}
-          pageSizeOptions={pagination?.pageSizeOptions ?? DEFAULT_PAGE_SIZES}
+          pageSizeOptions={DEFAULT_PAGE_SIZES}
           onClose={() => setShowTableSettingsModal(false)}
           onUpdateTableConfig={handleUpdateTableConfig}
           onResetToDefaults={handleResetToDefaults}
