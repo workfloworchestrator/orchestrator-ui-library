@@ -1,40 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
-
 import { useTranslations } from 'next-intl';
+import { EuiButton, EuiButtonIcon, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiText } from '@elastic/eui';
 
-import {
-  EuiButton,
-  EuiButtonIcon,
-  EuiFieldSearch,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
-  EuiSpacer,
-  EuiText,
-} from '@elastic/eui';
-
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_PAGE_SIZES,
-  TableColumnKeys,
-  TableSettingsColumnConfig,
-  TableSettingsConfig,
-  TableSettingsModal,
-  WfoErrorWithMessage,
-  WfoInformationModal,
-  WfoKeyValueTable,
-  WfoKeyValueTableDataType,
-  clearTableConfigFromLocalStorage,
-  setTableConfigToLocalStorage,
-} from '@/components';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES, TableColumnKeys, TableSettingsColumnConfig, TableSettingsConfig, TableSettingsModal, WfoErrorWithMessage, WfoInformationModal, WfoKeyValueTable, WfoKeyValueTableDataType, clearTableConfigFromLocalStorage, setTableConfigToLocalStorage } from '@/components';
 import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
-import {
-  WfoTableControlColumnConfig,
-  WfoTableControlColumnConfigItem,
-  WfoTableDataColumnConfigItem,
-} from '@/components/WfoTable/WfoTable';
+import { WfoTableControlColumnConfig, WfoTableControlColumnConfigItem, WfoTableDataColumnConfigItem } from '@/components/WfoTable/WfoTable';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
@@ -62,6 +33,7 @@ export type SearchParams = {
   queryText?: string;
   retrieverType?: RetrieverType;
   ruleGroup?: RuleGroupType | false;
+  limit?: number
 };
 
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
@@ -76,6 +48,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   error?: WfoGraphqlError[];
   onChangeQueryText: (queryString: string) => void;
   onSearchQueryText: (queryString: string) => void;
+  onShowMore: () => void;
   onExportData?: () => void;
   retrieverType: RetrieverType;
   onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
@@ -96,6 +69,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   error,
   onChangeQueryText,
   onSearchQueryText,
+  onShowMore,
   onExportData,
   retrieverType,
   onUpdateRetrieverType,
@@ -108,6 +82,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
+  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
 
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
@@ -179,7 +154,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     pagination?.onChangePage?.(0);
   };
 
-  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
+
 
   return (
     <>
@@ -256,6 +231,10 @@ export const WfoStructuredSearchTable = <T extends object>({
       <EuiSpacer size="m" />
 
       <WfoTable columnConfig={tableColumnsWithControlColumns} hiddenColumns={hiddenColumns} {...tableProps} />
+
+      <EuiFlexGroup alignItems={"center"} justifyContent={"center"}>
+        <EuiButton onClick={() => onShowMore()} css={{margin: theme.base}}>Load More</EuiButton>
+      </EuiFlexGroup>
 
       {showTableSettingsModal && (
         <TableSettingsModal
