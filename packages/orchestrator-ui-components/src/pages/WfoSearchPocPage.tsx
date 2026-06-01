@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -53,6 +54,10 @@ const getDataFromResponse = <T,>(
   return items;
 };
 
+const getTotalItemsFromResponse = (data: PaginatedSearchResults | undefined): number | false => {
+  return data?.cursor?.total_items || false;
+};
+
 const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
   ['subscription.subscription_id', 'subscriptionId'],
   ['subscription.description', 'description'],
@@ -81,6 +86,8 @@ export const WfoSearchPocPage = () => {
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
 
+  console.log('data', data);
+
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
@@ -97,7 +104,7 @@ export const WfoSearchPocPage = () => {
     if (!isLoading && !data) {
       handleSearch();
     }
-  },[]);
+  }, []);
 
   const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
     actions: {
@@ -202,13 +209,13 @@ export const WfoSearchPocPage = () => {
   };
 
   const getFilters = (query: string, ruleGroup: RuleGroupType | false | undefined) => {
-    if(ruleGroup === false ) return false;
+    if (ruleGroup === false) return false;
 
     if (!query && !ruleGroup) {
       return parseRuleGroupToFilters(parseCEL(`status=="active"`));
     }
     return parseRuleGroupToFilters(ruleGroup);
-  }
+  };
 
   const handleSearch = (searchParams?: SearchParams) => {
     const retriever = searchParams?.retrieverType || retrieverType;
@@ -229,7 +236,7 @@ export const WfoSearchPocPage = () => {
     };
 
     triggerSearch(searchPayload);
-  };;
+  };
 
   const onChangeQueryText = (queryText: string) => {
     setQueryText(queryText);
@@ -293,13 +300,15 @@ export const WfoSearchPocPage = () => {
   const subscriptionListItems: SubscriptionListItem[] =
     data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap) : [];
 
+  const totalItems = getTotalItemsFromResponse(data);
+
   const onShowMore = () => {
     setLimit((limit) => {
-      const newLimit = limit + pageSize
-      handleSearch({limit: newLimit});
-      return newLimit
-    })
-  }
+      const newLimit = limit + pageSize;
+      handleSearch({ limit: newLimit });
+      return newLimit;
+    });
+  };
 
   return (
     <>
@@ -325,6 +334,8 @@ export const WfoSearchPocPage = () => {
         tableColumnConfig={tableColumnConfig}
         pageSize={pageSize}
         setPageSize={setPageSize}
+        totalItems={totalItems}
+        limit={limit}
       />
     </>
   );

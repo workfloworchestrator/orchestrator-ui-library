@@ -1,12 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
+
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiButtonIcon, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiButtonIcon,
+  EuiFieldSearch,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiSelect,
+  EuiSpacer,
+  EuiText,
+} from '@elastic/eui';
 
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES, TableColumnKeys, TableSettingsColumnConfig, TableSettingsConfig, TableSettingsModal, WfoErrorWithMessage, WfoInformationModal, WfoKeyValueTable, WfoKeyValueTableDataType, clearTableConfigFromLocalStorage, setTableConfigToLocalStorage } from '@/components';
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZES,
+  TableColumnKeys,
+  TableSettingsColumnConfig,
+  TableSettingsConfig,
+  TableSettingsModal,
+  WfoErrorWithMessage,
+  WfoInformationModal,
+  WfoKeyValueTable,
+  WfoKeyValueTableDataType,
+  clearTableConfigFromLocalStorage,
+  setTableConfigToLocalStorage,
+} from '@/components';
 import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
-import { WfoTableControlColumnConfig, WfoTableControlColumnConfigItem, WfoTableDataColumnConfigItem } from '@/components/WfoTable/WfoTable';
+import {
+  WfoTableControlColumnConfig,
+  WfoTableControlColumnConfigItem,
+  WfoTableDataColumnConfigItem,
+} from '@/components/WfoTable/WfoTable';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
@@ -34,7 +62,7 @@ export type SearchParams = {
   queryText?: string;
   retrieverType?: RetrieverType;
   ruleGroup?: RuleGroupType | false;
-  limit?: number
+  limit?: number;
 };
 
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
@@ -60,7 +88,9 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: () => void;
   pageSize: number;
-  setPageSize: React.Dispatch<React.SetStateAction<number>>
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  totalItems: number | false;
+  limit: number;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -84,6 +114,8 @@ export const WfoStructuredSearchTable = <T extends object>({
   handleSearch,
   pageSize,
   setPageSize,
+  totalItems,
+  limit,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -139,7 +171,7 @@ export const WfoStructuredSearchTable = <T extends object>({
       .map((hiddenColumn) => hiddenColumn.field);
     setHiddenColumns(updatedHiddenColumns);
     setShowTableSettingsModal(false);
-    setPageSize(updatedTableConfig.selectedPageSize)
+    setPageSize(updatedTableConfig.selectedPageSize);
     setTableConfigToLocalStorage(localStorageKey, {
       hiddenColumns: updatedHiddenColumns,
       selectedPageSize: updatedTableConfig.selectedPageSize,
@@ -149,7 +181,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const handleResetToDefaults = () => {
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
     setHiddenColumns(defaultTableConfig.hiddenColumns);
-    setPageSize(defaultTableConfig.selectedPageSize)
+    setPageSize(defaultTableConfig.selectedPageSize);
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
   };
@@ -230,9 +262,14 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       <WfoTable columnConfig={tableColumnsWithControlColumns} hiddenColumns={hiddenColumns} {...tableProps} />
 
-      <EuiFlexGroup alignItems={"center"} justifyContent={"center"}>
-        <EuiButton onClick={() => onShowMore()} css={{margin: theme.base}}>Load More</EuiButton>
-      </EuiFlexGroup>
+      {totalItems && (
+        <EuiFlexGroup alignItems={'center'} justifyContent={'center'}>
+          <EuiButton onClick={() => onShowMore()} css={{ margin: theme.base }} disabled={totalItems <= limit}>
+            Load More
+          </EuiButton>
+          <div>{`${totalItems < limit ? totalItems : limit}/${totalItems} records`}</div>
+        </EuiFlexGroup>
+      )}
 
       {showTableSettingsModal && (
         <TableSettingsModal
