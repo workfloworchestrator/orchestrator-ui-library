@@ -4,10 +4,23 @@ import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+
 import { EuiSpacer } from '@elastic/eui';
 
-import type { SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
-import { StoredTableConfig, WfoContentHeader, WfoDateTime, WfoFirstPartUUID, WfoInlineJson, WfoInsyncIcon, WfoJsonCodeBlock, WfoStructuredSearchTable, WfoSubscriptionActions, WfoSubscriptionNoteEdit, WfoSubscriptionStatusBadge } from '@/components';
+import { DEFAULT_PAGE_SIZE, SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
+import {
+  StoredTableConfig,
+  WfoContentHeader,
+  WfoDateTime,
+  WfoFirstPartUUID,
+  WfoInlineJson,
+  WfoInsyncIcon,
+  WfoJsonCodeBlock,
+  WfoStructuredSearchTable,
+  WfoSubscriptionActions,
+  WfoSubscriptionNoteEdit,
+  WfoSubscriptionStatusBadge,
+} from '@/components';
 import type { SearchParams } from '@/components';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
@@ -70,7 +83,8 @@ export const WfoSearchPocPage = () => {
 
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
-  const [limit, setLimit] = useState<number>(tableDefaults?.selectedPageSize || 10);
+  const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
+  const [limit, setLimit] = useState<number>(pageSize);
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -281,7 +295,7 @@ export const WfoSearchPocPage = () => {
 
   const onShowMore = () => {
     setLimit((limit) => {
-      const newLimit = limit + 10
+      const newLimit = limit + pageSize
       handleSearch({limit: newLimit});
       return newLimit
     })
@@ -305,11 +319,12 @@ export const WfoSearchPocPage = () => {
         onSearchQueryText={onSearchQueryText}
         onShowMore={onShowMore}
         onUpdateRetrieverType={onUpdateRetrieverType}
-
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryText={queryText}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfig}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
       />
     </>
   );
