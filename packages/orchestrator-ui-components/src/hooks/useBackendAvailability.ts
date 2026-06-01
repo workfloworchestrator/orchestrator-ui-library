@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 import { SerializedError } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import { useCheckAgentAvailabilityQuery, useCheckSearchAvailabilityQuery } from '@/rtk/endpoints/availability';
+import { useCheckSearchAvailabilityQuery } from '@/rtk/endpoints/availability';
 
 export interface BackendFeatureStatus {
   isAvailable: boolean;
@@ -39,29 +39,6 @@ export const useSearchAvailability = (): BackendFeatureStatus => {
 
   return {
     isAvailable: true,
-    isLoading: false,
-  };
-};
-
-export const useAgentAvailability = (): BackendFeatureStatus => {
-  const { isLoading: agentLoading, error: agentError } = useCheckAgentAvailabilityQuery();
-
-  const { isLoading: searchLoading, error: searchError } = useCheckSearchAvailabilityQuery();
-
-  if (agentLoading || searchLoading) {
-    return {
-      isAvailable: false,
-      isLoading: true,
-    };
-  }
-
-  const agentNotFound = agentError ? isNotFoundError(agentError) : false;
-  const searchNotFound = searchError ? isNotFoundError(searchError) : false;
-
-  const isAvailable = !agentNotFound && !searchNotFound;
-
-  return {
-    isAvailable,
     isLoading: false,
   };
 };

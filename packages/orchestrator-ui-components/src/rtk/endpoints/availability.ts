@@ -16,23 +16,7 @@ const availabilityApi = orchestratorApi.injectEndpoints({
         baseQueryType: BaseQueryTypes.fetch,
       },
     }),
-    checkAgentAvailability: build.query<AvailabilityCheckResponse, void>({
-      query: () => ({
-        url: '/agent/',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [],
-        }),
-      }),
-      extraOptions: {
-        baseQueryType: BaseQueryTypes.fetch,
-        apiName: 'agent',
-      },
-    }),
   }),
 });
 
-export const { useCheckSearchAvailabilityQuery, useCheckAgentAvailabilityQuery } = availabilityApi;
+export const { useCheckSearchAvailabilityQuery } = availabilityApi;

@@ -512,68 +512,6 @@
     "logout": "Logout",
     "aoStatusPage": "A&O application status page"
   },
-  "agent": {
-    "title": "Wfo Agent",
-    "availability": {
-      "unavailable": {
-        "title": "Agent Service Not Available",
-        "instructions": {
-          "setAgentEnvironment": {
-            "before": "Set ",
-            "after": " in your service environment variables"
-          },
-          "setSearchEnvironment": {
-            "before": "Set ",
-            "after": " (agent functionality requires search)"
-          },
-          "checkVersion": "Ensure your orchestrator-core version supports agent functionality",
-          "configureOpenAI": "Configure your OpenAI API key if using OpenAI models",
-          "restartService": "Restart your service",
-          "checkDockerConfig": "If using Docker, make sure the environment variables are set in docker-compose.yml"
-        },
-        "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
-        "retryButton": "Retry Connection"
-      }
-    },
-    "page": {
-      "filledParameters": "Filled parameters",
-      "emptyGroup": "Empty group",
-      "searchQuery": "Search query",
-      "activeFilters": "Active filters",
-      "noFiltersApplied": "No filters applied",
-      "entityType": "Entity type",
-      "action": "Action",
-      "copilot": {
-        "title": "Database assistant",
-        "initial": "What can I help you with?"
-      },
-      "suggestions": {
-        "findActiveSubscriptions": "Find active subscriptions",
-        "showTerminatedWorkflows": "Show terminated workflows",
-        "listAllSubscriptionsAndExport": "List all subscriptions and export them",
-        "showActiveSubscriptionsPerMonth": "Show the number of active subscriptions per month"
-      },
-      "tools": {
-        "set_filter_tree": "I'm setting up filters",
-        "start_new_search": "I'm starting a new search",
-        "run_search": "I'm executing a search",
-        "discover_filter_paths": "I'm discovering available filters",
-        "run_aggregation": "I'm running aggregations",
-        "prepare_export": "I'm preparing the export",
-        "get_valid_operators": "I'm getting valid operators",
-        "set_temporal_grouping": "I'm setting temporal grouping"
-      },
-      "planProgress": {
-        "planning": "Planning...",
-        "completed": "Plan completed",
-        "executing": "Executing plan ({completed}/{total})"
-      },
-      "visualization": {
-        "noDataAvailable": "No data available for visualization.",
-        "invalidDataStructure": "Invalid data structure."
-      }
-    }
-  },
   "search": {
     "availability": {
       "unavailable": {

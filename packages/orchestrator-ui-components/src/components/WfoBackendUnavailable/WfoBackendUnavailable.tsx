@@ -5,27 +5,14 @@ import { useTranslations } from 'next-intl';
 import { EuiButton, EuiCallOut, EuiCode, EuiSpacer, EuiText } from '@elastic/eui';
 
 interface WfoBackendUnavailableProps {
-  featureType: 'search' | 'agent';
+  featureType: 'search';
   onRetry?: () => void;
 }
 
 export const WfoBackendUnavailable: FC<WfoBackendUnavailableProps> = ({ featureType, onRetry }) => {
   const t = useTranslations(`${featureType}.availability.unavailable`);
 
-  const getInstructionSteps = () => {
-    if (featureType === 'search') {
-      return ['setEnvironmentVariable', 'checkVersion', 'restartService', 'checkDockerConfig'];
-    } else {
-      return [
-        'setAgentEnvironment',
-        'setSearchEnvironment',
-        'checkVersion',
-        'configureOpenAI',
-        'restartService',
-        'checkDockerConfig',
-      ];
-    }
-  };
+  const getInstructionSteps = () => ['setEnvironmentVariable', 'checkVersion', 'restartService', 'checkDockerConfig'];
 
   const renderInstruction = (step: string) => {
     if (step === 'setEnvironmentVariable') {
@@ -34,22 +21,6 @@ export const WfoBackendUnavailable: FC<WfoBackendUnavailableProps> = ({ featureT
           {t('instructions.setEnvironmentVariable.before')}
           <EuiCode>SEARCH_ENABLED=True</EuiCode>
           {t('instructions.setEnvironmentVariable.after')}
-        </>
-      );
-    } else if (step === 'setAgentEnvironment') {
-      return (
-        <>
-          {t('instructions.setAgentEnvironment.before')}
-          <EuiCode>AGENT_ENABLED=True</EuiCode>
-          {t('instructions.setAgentEnvironment.after')}
-        </>
-      );
-    } else if (step === 'setSearchEnvironment') {
-      return (
-        <>
-          {t('instructions.setSearchEnvironment.before')}
-          <EuiCode>SEARCH_ENABLED=True</EuiCode>
-          {t('instructions.setSearchEnvironment.after')}
         </>
       );
     } else {

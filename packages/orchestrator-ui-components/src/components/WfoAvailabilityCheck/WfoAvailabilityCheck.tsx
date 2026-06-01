@@ -4,7 +4,7 @@ import { WfoBackendUnavailable } from '@/components/WfoBackendUnavailable';
 import { BackendFeatureStatus } from '@/hooks';
 
 interface WfoAvailabilityCheckProps {
-  featureType: 'search' | 'agent';
+  featureType: 'search';
   availability: BackendFeatureStatus;
   children: ReactNode;
 }
