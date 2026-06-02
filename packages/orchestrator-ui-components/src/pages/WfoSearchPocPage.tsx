@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
+import { WfoExpandingSearchRow } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   SubscriptionListItem,
@@ -58,15 +59,13 @@ const getDataFromResponse = <T extends object>(
   const rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'] = {
     uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
     uniqueRowIdToExpandedRowMap: searchResult.reduce(
-      (rowMap, { response_columns, score, perfect_match }) => {
+      (rowMap, { response_columns, score, perfect_match, matching_field }) => {
         const idColumnInResponseColumn: string =
           [...resultColumToPropertyMap.entries()].find(([, v]) => v === uniqueRowId)?.[0] || '';
         const rowId = response_columns[idColumnInResponseColumn];
         if (rowId) {
           rowMap[rowId] = (
-            <div>
-              {score} - {perfect_match}
-            </div>
+            <WfoExpandingSearchRow score={score} matchingField={matching_field} perfectMatch={perfect_match} />
           );
         }
         return rowMap;
