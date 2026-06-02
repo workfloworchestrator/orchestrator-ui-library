@@ -70,6 +70,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   'columnConfig' | 'onUpdateDataSearch'
 > & {
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
+  rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
   queryText?: string;
   localStorageKey: string;
@@ -116,6 +117,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   setPageSize,
   totalItems,
   limit,
+  rowExpandingConfiguration,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -260,7 +262,12 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       <EuiSpacer size="m" />
 
-      <WfoTable columnConfig={tableColumnsWithControlColumns} hiddenColumns={hiddenColumns} {...tableProps} />
+      <WfoTable<T>
+        columnConfig={tableColumnsWithControlColumns}
+        hiddenColumns={hiddenColumns}
+        rowExpandingConfiguration={rowExpandingConfiguration}
+        {...tableProps}
+      />
 
       {totalItems && (
         <EuiFlexGroup alignItems={'center'} justifyContent={'center'}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
@@ -8,7 +8,12 @@ import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { DEFAULT_PAGE_SIZE, SubscriptionListItem, WfoStructuredSearchTableColumnConfig } from '@/components';
+import {
+  DEFAULT_PAGE_SIZE,
+  SubscriptionListItem,
+  WfoStructuredSearchTableColumnConfig,
+  WfoTableColumnConfig,
+} from '@/components';
 import {
   StoredTableConfig,
   WfoContentHeader,
@@ -23,7 +28,7 @@ import {
   WfoSubscriptionStatusBadge,
 } from '@/components';
 import type { SearchParams } from '@/components';
-import { ColumnType } from '@/components/WfoTable/WfoTable';
+import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
 import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
@@ -33,12 +38,42 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
-const getDataFromResponse = <T,>(
+const getDataFromResponse = <T extends object>(
   data: PaginatedSearchResults,
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
-) => {
+  uniqueRowId: keyof T,
+): {
+  items: T[];
+  rowExpandingConfiguration?: WfoTableProps<T>['rowExpandingConfiguration'];
+} => {
+  const searchResult = data?.data;
+  if (!searchResult)
+    return {
+      items: [],
+    };
+
   const responseColumns: Record<string, string | number | null>[] =
-    data?.data?.map(({ response_columns }) => response_columns) || [];
+    searchResult.map(({ response_columns }) => response_columns) || [];
+
+  const rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'] = {
+    uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
+    uniqueRowIdToExpandedRowMap: searchResult.reduce(
+      (rowMap, { response_columns, score, perfect_match }) => {
+        const idColumnInResponseColumn: string =
+          [...resultColumToPropertyMap.entries()].find(([, v]) => v === uniqueRowId)?.[0] || '';
+        const rowId = response_columns[idColumnInResponseColumn];
+        if (rowId) {
+          rowMap[rowId] = (
+            <div>
+              {score} - {perfect_match}
+            </div>
+          );
+        }
+        return rowMap;
+      },
+      {} as Record<string, ReactNode>,
+    ),
+  };
 
   const items: T[] = responseColumns.map((responseColumn) => {
     const item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
@@ -51,7 +86,10 @@ const getDataFromResponse = <T,>(
     return item;
   });
 
-  return items;
+  return {
+    items,
+    rowExpandingConfiguration,
+  };
 };
 
 const getTotalItemsFromResponse = (data: PaginatedSearchResults | undefined): number | false => {
@@ -258,7 +296,7 @@ export const WfoSearchPocPage = () => {
       const ruleGroup = parseCEL(celString);
       if (celString === '') {
         setIsValidFilterString(true);
-      } else if (ruleGroup.rules.length > 0) {
+      } else if (ruleGroup?.rules?.length > 0) {
         // parseCEL returns a query object — check if it has any rules
         setIsValidFilterString(true);
         setQueryBuilderRuleGroup(ruleGroup);
@@ -298,8 +336,8 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
-  const subscriptionListItems: SubscriptionListItem[] =
-    data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap) : [];
+  const { items: subscriptionListItems, rowExpandingConfiguration } =
+    data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId') : { items: [] };
 
   const totalItems = getTotalItemsFromResponse(data);
 
@@ -317,6 +355,7 @@ export const WfoSearchPocPage = () => {
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
         data={subscriptionListItems}
+        rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
         handleSearch={handleSearch}
