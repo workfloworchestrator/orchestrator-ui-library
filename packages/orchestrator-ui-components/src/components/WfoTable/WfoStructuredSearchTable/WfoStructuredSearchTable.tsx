@@ -59,7 +59,7 @@ export type WfoStructuredSearchTableColumnConfig<T extends object> = Partial<
   WfoTableControlColumnConfig<T> | WfoStructuredSearchTableDataColumnConfig<T>
 >;
 export type SearchParams = {
-  queryText?: string;
+  queryText?: string | false;
   retrieverType?: RetrieverType;
   ruleGroup?: RuleGroupType | false;
   limit?: number;

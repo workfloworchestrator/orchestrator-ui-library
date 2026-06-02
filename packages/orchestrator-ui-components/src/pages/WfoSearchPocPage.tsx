@@ -86,8 +86,6 @@ export const WfoSearchPocPage = () => {
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
 
-  console.log('data', data);
-
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
@@ -104,7 +102,7 @@ export const WfoSearchPocPage = () => {
     if (!isLoading && !data) {
       handleSearch();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
     actions: {
@@ -219,7 +217,10 @@ export const WfoSearchPocPage = () => {
 
   const handleSearch = (searchParams?: SearchParams) => {
     const retriever = searchParams?.retrieverType || retrieverType;
-    const query = searchParams?.queryText || queryText || '';
+    const query =
+      searchParams?.queryText === false ? ''
+      : searchParams?.queryText ? searchParams?.queryText
+      : queryText || '';
 
     // If there is no query and no ruleGroup selected we default to something that gives results
     const ruleGroup = searchParams?.ruleGroup === false ? false : searchParams?.ruleGroup || queryBuilderRuleGroup;
@@ -244,7 +245,7 @@ export const WfoSearchPocPage = () => {
 
   const onSearchQueryText = (queryText: string) => {
     setQueryText(queryText);
-    handleSearch({ queryText });
+    handleSearch({ queryText: queryText || false });
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
