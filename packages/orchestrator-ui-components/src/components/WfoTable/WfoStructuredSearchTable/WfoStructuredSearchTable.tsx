@@ -125,6 +125,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   totalItems,
   limit,
   rowExpandingConfiguration,
+  dataSorting,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -274,6 +275,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
         onUpdateDataSorting={onUpdateDataSorting}
+        dataSorting={dataSorting}
         {...tableProps}
       />
 

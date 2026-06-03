@@ -8,32 +8,30 @@ import Link from 'next/link';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { WfoExpandingSearchRow } from '@/components';
+import type { SearchParams } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
-  SubscriptionListItem,
-  WfoDataSorting,
-  WfoStructuredSearchTableColumnConfig,
-  WfoTableColumnConfig,
-} from '@/components';
-import {
   StoredTableConfig,
+  SubscriptionListItem,
   WfoContentHeader,
+  WfoDataSorting,
   WfoDateTime,
+  WfoExpandingSearchRow,
   WfoFirstPartUUID,
   WfoInlineJson,
   WfoInsyncIcon,
   WfoJsonCodeBlock,
   WfoStructuredSearchTable,
+  WfoStructuredSearchTableColumnConfig,
   WfoSubscriptionActions,
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
+  WfoTableColumnConfig,
 } from '@/components';
-import type { SearchParams } from '@/components';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
-import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
+import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
@@ -131,6 +129,10 @@ export const WfoSearchPocPage = () => {
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
   const [limit, setLimit] = useState<number>(pageSize);
+  const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
+    field: 'subscriptionId',
+    sortOrder: SortOrder.DESC,
+  });
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -272,10 +274,16 @@ export const WfoSearchPocPage = () => {
     const order_by =
       searchParams?.sortBy ?
         {
-          element: searchParams?.sortBy.field,
-          direction: 'asc',
+          element: getKeyByValueFromMap(
+            resultColumToPropertyMap,
+            searchParams?.sortBy.field as keyof SubscriptionListItem,
+          ),
+          direction: searchParams.sortBy.sortOrder.toLowerCase(),
         }
-      : false;
+      : {
+          element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
+          direction: dataSorting.sortOrder.toLowerCase(),
+        };
 
     const searchPayload: SearchPayload = {
       query,
@@ -363,12 +371,13 @@ export const WfoSearchPocPage = () => {
   };
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
+    setDataSorting({ field, sortOrder });
     setLimit(pageSize);
-    const sortField = getKeyByValueFromMap(resultColumToPropertyMap, field);
+
     handleSearch({
       limit: pageSize,
       sortBy: {
-        field: sortField,
+        field,
         sortOrder,
       },
     });
@@ -385,6 +394,7 @@ export const WfoSearchPocPage = () => {
         filterString={filterString}
         handleSearch={handleSearch}
         isLoading={isLoading}
+        dataSorting={[dataSorting]}
         isValidFilterString={isValidFilterString}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
         onUpdateFilterString={onUpdateFilterString}
