@@ -12,7 +12,6 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay, PathInfo } from '@/types';
 
 import { WfoAddGroupAction } from './WfoAddGroupAction';
-import { WfoAddRuleAction } from './WfoAddRuleAction';
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
@@ -121,7 +120,7 @@ export const WfoFilterBuilder = ({
                 ruleGroup: WfoRuleGroup,
                 rule: WfoRule,
                 combinatorSelector: WfoCombinatorSelector,
-                addRuleAction: WfoAddRuleAction,
+                addRuleAction: null,
                 addGroupAction: WfoAddGroupAction,
                 removeGroupAction: WfoRemoveGroupAction,
                 removeRuleAction: WfoRemoveRuleAction,
