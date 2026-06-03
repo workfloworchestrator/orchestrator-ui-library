@@ -12,6 +12,7 @@ import { WfoExpandingSearchRow } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   SubscriptionListItem,
+  WfoDataSorting,
   WfoStructuredSearchTableColumnConfig,
   WfoTableColumnConfig,
 } from '@/components';
@@ -39,6 +40,10 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
+const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
+  return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
+};
+
 const getDataFromResponse = <T extends object>(
   data: PaginatedSearchResults,
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
@@ -60,8 +65,7 @@ const getDataFromResponse = <T extends object>(
     uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
     uniqueRowIdToExpandedRowMap: searchResult.reduce(
       (rowMap, { response_columns, score, perfect_match, matching_field }) => {
-        const idColumnInResponseColumn: string =
-          [...resultColumToPropertyMap.entries()].find(([, v]) => v === uniqueRowId)?.[0] || '';
+        const idColumnInResponseColumn = getKeyByValueFromMap<T>(resultColumToPropertyMap, uniqueRowId);
         const rowId = response_columns[idColumnInResponseColumn];
         if (rowId) {
           rowMap[rowId] = (
@@ -154,6 +158,7 @@ export const WfoSearchPocPage = () => {
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
+      isSortable: true,
     },
     description: {
       columnType: ColumnType.DATA,
@@ -264,6 +269,14 @@ export const WfoSearchPocPage = () => {
     const filters = getFilters(query, ruleGroup);
 
     const queryLimit: number = searchParams?.limit || limit;
+    const order_by =
+      searchParams?.sortBy ?
+        {
+          element: searchParams?.sortBy.field,
+          direction: 'asc',
+        }
+      : false;
+
     const searchPayload: SearchPayload = {
       query,
       limit: queryLimit,
@@ -271,6 +284,7 @@ export const WfoSearchPocPage = () => {
       response_columns: Array.from(resultColumToPropertyMap.keys()),
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
+      ...(order_by && { order_by }),
     };
 
     triggerSearch(searchPayload);
@@ -348,6 +362,18 @@ export const WfoSearchPocPage = () => {
     });
   };
 
+  const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
+    setLimit(pageSize);
+    const sortField = getKeyByValueFromMap(resultColumToPropertyMap, field);
+    handleSearch({
+      limit: pageSize,
+      sortBy: {
+        field: sortField,
+        sortOrder,
+      },
+    });
+  };
+
   return (
     <>
       <WfoContentHeader title="Subscriptions (POC)" />
@@ -372,6 +398,7 @@ export const WfoSearchPocPage = () => {
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfig}
         pageSize={pageSize}
+        onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={setPageSize}
         totalItems={totalItems}
         limit={limit}

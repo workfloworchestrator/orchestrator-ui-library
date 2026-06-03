@@ -10,7 +10,10 @@ import {
 } from '@/types';
 
 export interface SearchPayload {
-  order_by?: string | undefined;
+  order_by?: {
+    element: string;
+    direction: string;
+  };
   response_columns: string[];
   entity_type: EntityKind;
   query: string;
