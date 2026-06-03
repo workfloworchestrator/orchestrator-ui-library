@@ -22,6 +22,7 @@ import {
   TableSettingsColumnConfig,
   TableSettingsConfig,
   TableSettingsModal,
+  WfoDataSorting,
   WfoErrorWithMessage,
   WfoInformationModal,
   WfoKeyValueTable,
@@ -63,6 +64,10 @@ export type SearchParams = {
   retrieverType?: RetrieverType;
   ruleGroup?: RuleGroupType | false;
   limit?: number;
+  sortBy?: {
+    field: string;
+    sortOrder: string;
+  };
 };
 
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
@@ -79,6 +84,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onChangeQueryText: (queryString: string) => void;
   onSearchQueryText: (queryString: string) => void;
   onShowMore: () => void;
+  onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
   onExportData?: () => void;
   retrieverType: RetrieverType;
   onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
@@ -112,6 +118,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   isValidFilterString,
   queryBuilderRuleGroup,
   onUpdateQueryBuilder,
+  onUpdateDataSorting,
   handleSearch,
   pageSize,
   setPageSize,
@@ -266,6 +273,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         columnConfig={tableColumnsWithControlColumns}
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
+        onUpdateDataSorting={onUpdateDataSorting}
         {...tableProps}
       />
 
