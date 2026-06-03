@@ -603,7 +603,7 @@
       "selectFieldFirst": "Select a field first",
       "maxNestingDepth": "Maximum nesting depth reached",
       "addNestedGroup": "Add nested group",
-      "addCondition": "Add condition",
+      "addRule": "Add rule",
       "addGroup": "Add group",
       "removeGroup": "Remove group",
       "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
