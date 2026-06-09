@@ -1,5 +1,19 @@
 # orchestrator-ui-storybook
 
+## 0.4.0
+
+### Minor Changes
+
+- 07e322c: Update dependencies to latest non-breaking changes
+
+### Patch Changes
+
+- Updated dependencies [b3afb03]
+- Updated dependencies [e5de245]
+- Updated dependencies [6dc24b7]
+- Updated dependencies [07e322c]
+  - @orchestrator-ui/orchestrator-ui-components@8.4.0
+
 ## 0.3.0
 
 ### Minor Changes

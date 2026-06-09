@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 1.5.0
+
+### Minor Changes
+
+- 07e322c: Update dependencies to latest non-breaking changes
+
 ## 1.4.0
 
 ### Minor Changes

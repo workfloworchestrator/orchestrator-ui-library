@@ -1,5 +1,20 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.4.0
+
+### Minor Changes
+
+- e5de245: Removed the Agent page feature as this will be pivoted to a different client
+- 07e322c: Update dependencies to latest non-breaking changes
+
+### Patch Changes
+
+- b3afb03: Fix stepForm bug. Fix linting error.
+- 6dc24b7: Added tooltip on expand row to detail view icon in wfotable and added EUI highlighting
+  Changed colour of subscription delta to grey (textdisabled)
+  Hide the expand icon next to status badge in metadata/products
+  By default show type and status in metadata/products
+
 ## 8.3.0
 
 ### Minor Changes
