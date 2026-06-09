@@ -8,7 +8,7 @@ import typescriptEslint from 'typescript-eslint';
 import js from '@eslint/js';
 
 export default defineConfig([
-  globalIgnores(['node_modules', 'dist', 'build', 'coverage', '.next', 'next.config.js']),
+  globalIgnores(['node_modules', 'dist', 'build', 'coverage', '.next', 'next.config.js', 'next-env.d.ts']),
   {
     files: ['**/*.{js,ts,jsx,tsx}'],
     plugins: { js },
