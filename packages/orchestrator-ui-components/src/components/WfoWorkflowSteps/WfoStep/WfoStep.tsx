@@ -125,7 +125,7 @@ export const WfoStep = React.forwardRef(
                 </EuiFlexItem>
 
                 <EuiFlexGroup css={stepRowStyle}>
-                  {step.completed && (
+                  {step.completed && !userInputForm && !hasHtmlMail && (
                     <>
                       {isExpanded && (
                         <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handleCodeViewChange} />
