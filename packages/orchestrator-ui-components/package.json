@@ -59,7 +59,7 @@
     "use-query-params": "^2.2.2"
   },
   "devDependencies": {
-    "@elastic/eui": "^114.3.0",
+    "@elastic/eui": "^113.0.0",
     "@orchestrator-ui/eslint-config-custom": "*",
     "@orchestrator-ui/jest-config": "*",
     "@reduxjs/toolkit": "^2.12.0",
@@ -78,7 +78,7 @@
     "typescript": "^5.5.2"
   },
   "peerDependencies": {
-    "@elastic/eui": "^114.3.0",
+    "@elastic/eui": "^113.0.0",
     "next": "^15.5.18",
     "next-intl": "^4.9.1",
     "react": "^18.3.1",
