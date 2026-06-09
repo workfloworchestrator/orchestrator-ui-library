@@ -78,7 +78,7 @@
     "typescript": "^5.5.2"
   },
   "peerDependencies": {
-    "@elastic/eui": "^113.1.0",
+    "@elastic/eui": "^114.3.0",
     "next": "^15.5.18",
     "next-intl": "^4.9.1",
     "react": "^18.3.1",
