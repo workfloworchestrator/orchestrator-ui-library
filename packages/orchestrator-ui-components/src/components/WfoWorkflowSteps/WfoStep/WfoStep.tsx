@@ -101,9 +101,11 @@ export const WfoStep = React.forwardRef(
     };
 
     const handleCodeViewChange = useCallback(
-      (newCodeView: string) => {
-        setCodeView(newCodeView as CodeView);
+      (newCodeView: CodeView) => {
+        setCodeView(newCodeView);
       },
+      [setCodeView],
+    );
       [setCodeView],
     );
 
