@@ -100,13 +100,15 @@ export const WfoStep = React.forwardRef(
       );
     };
 
-    const handle = useCallback(
+    const handleCodeViewChange = useCallback(
       (newCodeView: string) => {
         setCodeView(newCodeView as CodeView);
       },
       [setCodeView],
     );
+
     const shouldExpand: boolean = isExpanded && hasStepContent;
+
     return (
       <div ref={ref}>
         <EuiPanel>
@@ -125,7 +127,9 @@ export const WfoStep = React.forwardRef(
                 <EuiFlexGroup css={stepRowStyle}>
                   {step.completed && (
                     <>
-                      {isExpanded && <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handle} />}
+                      {isExpanded && (
+                        <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handleCodeViewChange} />
+                      )}
                       <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
                         <EuiText css={stepDurationStyle}>{t('duration')}</EuiText>
                         <EuiText size="m">{calculateTimeDifference(startedAt, completedAt)}</EuiText>
@@ -146,30 +150,37 @@ export const WfoStep = React.forwardRef(
           </EuiFlexGroup>
           {shouldExpand && (
             <EuiFlexGroup direction="column" gutterSize="none">
+              <EuiFlexItem>
+                {codeView === CodeView.TABLE ?
+                  <WfoTableCodeBlock stepState={stepContent} />
+                : codeView === CodeView.RAW ?
+                  <WfoJsonCodeBlock data={stepContent} />
+                : <WfoMonacoCodeBlock data={stepContent} />}
+              </EuiFlexItem>
               <EuiFlexItem grow={1}>
                 {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}
               </EuiFlexItem>
-              <EuiFlexItem>
-                {shouldExpand
-                  && !hasHtmlMail
-                  && (codeView === CodeView.TABLE ? <WfoTableCodeBlock stepState={stepContent} />
-                  : codeView === CodeView.RAW ? <WfoJsonCodeBlock data={stepContent} />
-                  : <WfoMonacoCodeBlock data={stepContent} />)}
-                {isExpanded && hasHtmlMail && (
-                  <div css={stepEmailContainerStyle}>
-                    {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
-                  </div>
-                )}
-                {step.status === StepStatus.SUSPEND && userInputForm && (
-                  <WfoStepForm
-                    userInputForm={userInputForm}
-                    isTask={isTask}
-                    processId={processId ?? ''}
-                    userPermissions={userPermissions}
-                  />
-                )}
+            </EuiFlexGroup>
+          )}
+          {step.status === StepStatus.SUSPEND && userInputForm && (
+            <EuiFlexGroup direction="column" gutterSize="none">
+              <EuiFlexItem grow={1}>
+                <WfoStepForm
+                  userInputForm={userInputForm}
+                  isTask={isTask}
+                  processId={processId ?? ''}
+                  userPermissions={userPermissions}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem grow={1}>
+                {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}
               </EuiFlexItem>
             </EuiFlexGroup>
+          )}
+          {isExpanded && hasHtmlMail && (
+            <div css={stepEmailContainerStyle}>
+              {displayMailConfirmation(step.stateDelta.confirmation_mail as EmailState)}
+            </div>
           )}
         </EuiPanel>
       </div>
