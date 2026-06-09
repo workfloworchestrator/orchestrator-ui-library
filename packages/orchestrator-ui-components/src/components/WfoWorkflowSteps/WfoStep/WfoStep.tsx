@@ -106,8 +106,6 @@ export const WfoStep = React.forwardRef(
       },
       [setCodeView],
     );
-      [setCodeView],
-    );
 
     const shouldExpand: boolean = isExpanded && hasStepContent;
 
