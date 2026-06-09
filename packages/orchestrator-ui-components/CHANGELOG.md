@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.4.1
+
+### Patch Changes
+
+- 1858b76: Hides codeview selector for stepforms
+
 ## 8.4.0
 
 ### Minor Changes
