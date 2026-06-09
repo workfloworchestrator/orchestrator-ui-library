@@ -45,7 +45,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
     "next-auth": "^4.24.5",
-    "next-intl": "^3.26.5",
+    "next-intl": "^4.9.1",
     "next-query-params": "^5.0.0",
     "object-hash": "^3.0.0",
     "prism-themes": "^1.9.0",
