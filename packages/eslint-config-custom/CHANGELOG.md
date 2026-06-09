@@ -1,5 +1,15 @@
 # @orchestrator-ui/eslint-config-custom
 
+## 2.3.0
+
+### Minor Changes
+
+- 07e322c: Update dependencies to latest non-breaking changes
+
+### Patch Changes
+
+- b3afb03: Fix stepForm bug. Fix linting error.
+
 ## 2.2.1
 
 ### Patch Changes
