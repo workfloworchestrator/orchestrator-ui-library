@@ -194,7 +194,7 @@ export const WfoSearch = () => {
 
       <EuiFieldSearch
         placeholder={t('searchPlaceholder', {
-          entityType: currentTab?.label.toLowerCase(),
+          entityType: currentTab?.label.toLowerCase() || '',
         })}
         value={searchValue || ''}
         onChange={(event) => {
@@ -277,7 +277,7 @@ export const WfoSearch = () => {
           <EuiCallOut title={t('noResults')} color="primary" iconType="search" size="m">
             <p>
               {t('noResultsMessage', {
-                entityType: currentTab?.label.toLowerCase(),
+                entityType: currentTab?.label.toLowerCase() || '',
               })}
             </p>
             <EuiSpacer size="s" />
