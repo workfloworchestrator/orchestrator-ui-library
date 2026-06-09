@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.4.2
+
+### Patch Changes
+
+- bc5b080: Downgrades eleastic eui peer dependency
+
 ## 8.4.1
 
 ### Patch Changes
