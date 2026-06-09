@@ -150,7 +150,7 @@ export const WfoStep = React.forwardRef(
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexGroup>
-          {shouldExpand && (
+          {shouldExpand && !hasHtmlMail && (
             <EuiFlexGroup direction="column" gutterSize="none">
               <EuiFlexItem>
                 {codeView === CodeView.TABLE ?
