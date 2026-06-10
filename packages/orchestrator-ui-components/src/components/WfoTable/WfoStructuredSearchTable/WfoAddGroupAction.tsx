@@ -3,19 +3,17 @@ import type { ActionProps } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexItem } from '@elastic/eui';
 
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 export const WfoAddGroupAction = ({ disabled, handleOnClick }: ActionProps) => {
   const t = useTranslations('search.page');
-  const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
-  return (
-    <EuiFlexItem grow={false}>
-      <EuiButton css={toggleButtonStyles} fill iconType="nested" onClick={handleOnClick} disabled={disabled}>
-        {t('addGroup')}
-      </EuiButton>
-    </EuiFlexItem>
-  );
+  const { addGroupStyles, addRulePlusStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
+  return disabled ? null : (
+      <EuiFlexItem css={addGroupStyles} onClick={() => handleOnClick()}>
+        <span css={addRulePlusStyles}>+</span>&nbsp;{t('addGroup')}
+      </EuiFlexItem>
+    );
 };

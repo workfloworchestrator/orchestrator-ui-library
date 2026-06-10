@@ -7,6 +7,7 @@ import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
+import { WfoAddGroupAction } from './WfoAddGroupAction';
 import { WfoAddRuleAction } from './WfoAddRuleAction';
 
 export const WfoRuleGroup = (props: RuleGroupProps) => {
@@ -32,6 +33,17 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
       <EuiFlexItem>
         <WfoAddRuleAction
           handleOnClick={ruleGroupProps.addRule}
+          path={ruleGroupProps.path}
+          level={ruleGroupProps.path.length}
+          schema={ruleGroupProps.schema}
+          disabled={ruleGroupProps.disabled ?? false}
+          ruleOrGroup={ruleGroupProps.ruleGroup}
+          rules={ruleGroupProps.ruleGroup.rules}
+        />
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <WfoAddGroupAction
+          handleOnClick={ruleGroupProps.addGroup}
           path={ruleGroupProps.path}
           level={ruleGroupProps.path.length}
           schema={ruleGroupProps.schema}
