@@ -11,7 +11,6 @@ import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearch
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay, PathInfo } from '@/types';
 
-import { WfoAddGroupAction } from './WfoAddGroupAction';
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
@@ -121,7 +120,7 @@ export const WfoFilterBuilder = ({
                 rule: WfoRule,
                 combinatorSelector: WfoCombinatorSelector,
                 addRuleAction: null,
-                addGroupAction: WfoAddGroupAction,
+                addGroupAction: null,
                 removeGroupAction: WfoRemoveGroupAction,
                 removeRuleAction: WfoRemoveRuleAction,
               }}

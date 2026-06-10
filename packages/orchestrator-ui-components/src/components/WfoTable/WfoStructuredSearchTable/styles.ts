@@ -91,6 +91,16 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     marginRight: theme.base / 2,
   });
 
+  const addGroupStyles = css({
+    border: `thin dashed ${theme.colors.backgroundFilledPrimary}`,
+    borderRadius: theme.border.radius.medium,
+    alignItems: 'center',
+    padding: theme.base,
+    color: theme.colors.primary,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  });
+
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
@@ -104,5 +114,6 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     expandingRowBodyStyles,
     addRulePlusStyles,
     addRuleContainerStyles,
+    addGroupStyles,
   };
 };
