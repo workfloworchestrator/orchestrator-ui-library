@@ -41,22 +41,44 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const ruleGroupContainerBase = {
     padding: theme.base / 2,
     marginTop: theme.base / 4,
-    borderRadius: theme.border.radius.small,
   };
 
   const ruleGroupContainerBlueStyles = css({
     ...ruleGroupContainerBase,
+    borderRadius: theme.border.radius.small,
     backgroundColor: '#E9F1F9',
   });
 
   const ruleGroupContainerWhiteStyles = css({
     ...ruleGroupContainerBase,
+    borderRadius: theme.border.radius.small,
     backgroundColor: theme.colors.backgroundBasePlain,
   });
 
+  const innerGroupContainerWhiteStyles = css({
+    ...ruleGroupContainerBase,
+    borderBottomLeftRadius: theme.border.radius.small,
+    borderTopLeftRadius: theme.border.radius.small,
+    backgroundColor: theme.colors.backgroundBasePlain,
+  });
+
+  const innerGroupContainerBlueStyles = css({
+    ...ruleGroupContainerBase,
+    borderBottomLeftRadius: theme.border.radius.small,
+    borderTopLeftRadius: theme.border.radius.small,
+    backgroundColor: '#E9F1F9',
+  });
+
   const removeGroupActionStyles = css({
+    backgroundColor: theme.colors.backgroundLightPrimary,
+    width: '40px',
+    marginTop: theme.base / 4,
+    height: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: theme.base / 2,
+    borderBottomRightRadius: theme.border.radius.small,
+    borderTopRightRadius: theme.border.radius.small,
+    cursor: 'pointer',
   });
 
   const expandingSearchRowStyles = css({
@@ -99,6 +121,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     color: theme.colors.primary,
     justifyContent: 'center',
     flexDirection: 'row',
+    cursor: 'pointer',
   });
 
   return {
@@ -109,6 +132,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     ruleContainerStyles,
     ruleGroupContainerBlueStyles,
     ruleGroupContainerWhiteStyles,
+    innerGroupContainerWhiteStyles,
+    innerGroupContainerBlueStyles,
     removeGroupActionStyles,
     expandingSearchRowStyles,
     expandingRowBodyStyles,

@@ -13,7 +13,6 @@ import { OperatorDisplay, PathInfo } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
-import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
 import { WfoRemoveRuleAction } from './WfoRemoveRuleAction';
 import { WfoRule } from './WfoRule';
 import { WfoRuleGroup } from './WfoRuleGroup';
@@ -121,7 +120,7 @@ export const WfoFilterBuilder = ({
                 combinatorSelector: WfoCombinatorSelector,
                 addRuleAction: null,
                 addGroupAction: null,
-                removeGroupAction: WfoRemoveGroupAction,
+                removeGroupAction: null,
                 removeRuleAction: WfoRemoveRuleAction,
               }}
               addRuleToNewGroups
