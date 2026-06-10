@@ -39,7 +39,14 @@ const searchApi = orchestratorApi.injectEndpoints({
       query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
-        body: { query, filters, limit, retriever, order_by: order_by || undefined, response_columns },
+        body: {
+          query,
+          filters,
+          limit,
+          retriever,
+          order_by: order_by && !query ? order_by : undefined,
+          response_columns,
+        },
         headers: {
           'Content-Type': 'application/json',
         },
