@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) => {
+export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
   const queryBuilderContainerStyles = css({
     backgroundColor: theme.colors.backgroundBaseSubdued,
     padding: theme.base / 2,
@@ -19,6 +19,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const textAreaStyles = css({
     width: '100%',
     maxInlineSize: '100%',
+    height: '42px',
+    border: `this solid ${toSecondaryColor(theme.colors.borderBasePlain)}`,
   });
 
   const buttonGroupStyles = css({
