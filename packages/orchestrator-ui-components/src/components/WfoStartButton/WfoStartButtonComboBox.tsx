@@ -20,6 +20,10 @@ export type WfoStartButtonComboBoxProps = {
   setSelectedProductStatus?: (status: ProductLifecycleStatus | string) => void;
 };
 
+const formatProductStatusLabel = (productStatus: string) => {
+  return capitalize(productStatus.replace(/_/g, ' '));
+};
+
 export const WfoStartButtonComboBox = ({
   buttonText,
   options,
@@ -63,7 +67,7 @@ export const WfoStartButtonComboBox = ({
                 iconType={() => <WfoChevronDown height={18} width={18} color="currentColor" />}
                 onClick={() => setFilterPopoverOpen((v) => !v)}
               >
-                <b>{capitalize(selectedProductStatus)}</b>
+                <b>{formatProductStatusLabel(selectedProductStatus ?? ProductLifecycleStatus.ACTIVE)}</b>
               </EuiButtonEmpty>
             }
             isOpen={isFilterPopoverOpen}
@@ -76,11 +80,11 @@ export const WfoStartButtonComboBox = ({
                   key={productStatus}
                   size="xs"
                   onClick={() => {
-                    setSelectedProductStatus(productStatus);
+                    setSelectedProductStatus(productStatus.toUpperCase());
                     setFilterPopoverOpen(false);
                   }}
                 >
-                  {capitalize(productStatus)}
+                  {formatProductStatusLabel(productStatus ?? ProductLifecycleStatus.ACTIVE)}
                 </EuiButtonEmpty>
               </div>
             ))}
