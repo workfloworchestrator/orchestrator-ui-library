@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import type { PydanticFormControlledElement } from 'pydantic-forms';
@@ -31,7 +31,7 @@ export const WfoInteger: PydanticFormControlledElement = ({ pydanticFormField, o
   // this is imposed by react-hook-form. We try to detect this and extract the actual value
   const fieldName = getFormFieldIdWithPath(pydanticFormField.id);
   const fieldValue = _.isObject(value) && _.has(value, fieldName) ? _.get(value, fieldName) : value;
-  const [userInput, setUserInput] = React.useState<string>('');
+  const [userInput, setUserInput] = useState<string>('');
 
   useEffect(() => {
     if (fieldValue !== undefined && fieldValue !== null) {
