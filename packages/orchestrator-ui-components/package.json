@@ -49,7 +49,7 @@
     "next-query-params": "^5.0.0",
     "object-hash": "^3.0.0",
     "prism-themes": "^1.9.0",
-    "pydantic-forms": "^2.0.0",
+    "pydantic-forms": "^3.0.0",
     "react-diff-view": "^3.2.0",
     "react-draggable": "^4.4.6",
     "react-redux": "^9.3.0",
@@ -80,9 +80,9 @@
   "peerDependencies": {
     "@elastic/eui": "^113.0.0",
     "next": "^15.5.18",
-    "next-intl": "^4.9.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "next-intl": "^3.26.5"
   },
   "type": "module",
   "main": "./dist/index.js",
