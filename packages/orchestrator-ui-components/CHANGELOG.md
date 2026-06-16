@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.4.4
+
+### Patch Changes
+
+- 11f00ba: Fix product state filter not working correctly for non-active products
+
 ## 8.4.3
 
 ### Patch Changes
