@@ -95,7 +95,9 @@
       "startWorkflow": "Start workflow",
       "resumeTask": "Hervat task",
       "resumeWorkflow": "Hervat workflow",
-      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten"
+      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten",
+      "preconditionFailedTitle": "Deze workflow kan op dit moment niet worden gestart",
+      "preconditionFailedFallback": "Aan een voorwaarde voor het starten van deze workflow is niet voldaan."
     },
     "widgets": {
       "customer": {

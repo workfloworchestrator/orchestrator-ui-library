@@ -94,7 +94,9 @@
       "startWorkflow": "Start workflow",
       "resumeTask": "Resume task",
       "resumeWorkflow": "Resume workflow",
-      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors"
+      "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors",
+      "preconditionFailedTitle": "This task cannot be started right now",
+      "preconditionFailedFallback": "A precondition for starting this task was not met."
     },
     "widgets": {
       "customer": {

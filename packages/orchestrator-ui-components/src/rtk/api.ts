@@ -22,6 +22,7 @@ export enum HttpStatus {
   FormNotComplete = 510,
   BadGateway = 502,
   BadRequest = 400,
+  PreconditionFailed = 412,
   ServiceUnavailable = 503,
   Unauthorized = 401,
   Forbidden = 403,
