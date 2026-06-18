@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
@@ -124,6 +124,9 @@ export const WfoSearchPocPage = () => {
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
 
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
+
+  const hasNextPage = data?.page_info.has_next_page || false;
+  const nextPageCursor = data?.page_info.next_page_cursor;
 
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
@@ -293,6 +296,7 @@ export const WfoSearchPocPage = () => {
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
       ...(order_by && { order_by }),
+      ...(searchParams?.cursor && { cursor: searchParams?.cursor }),
     };
 
     triggerSearch(searchPayload);
@@ -363,10 +367,8 @@ export const WfoSearchPocPage = () => {
   const totalItems = getTotalItemsFromResponse(data);
 
   const onShowMore = () => {
-    setLimit((limit) => {
-      const newLimit = limit + pageSize;
-      handleSearch({ limit: newLimit });
-      return newLimit;
+    handleSearch({
+      cursor: nextPageCursor,
     });
   };
 
@@ -412,6 +414,7 @@ export const WfoSearchPocPage = () => {
         setPageSize={setPageSize}
         totalItems={totalItems}
         limit={limit}
+        hasNextPage={hasNextPage}
       />
     </>
   );

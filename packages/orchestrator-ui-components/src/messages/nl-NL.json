@@ -59,7 +59,9 @@
     "createFilter": "Filter",
     "applyFilter": "Pas filter tpe",
     "removeFilter": "Verwijder filter",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "nextPage": "Volgende pagina",
+    "previousPage": "Vorige pagina"
   },
   "confirmationDialog": {
     "title": "Graag bevestigen",

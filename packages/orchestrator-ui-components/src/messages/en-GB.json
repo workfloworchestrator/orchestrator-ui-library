@@ -58,7 +58,9 @@
     "createFilter": "Create a filter",
     "applyFilter": "Apply filter",
     "removeFilter": "Remove filter",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "nextPage": "Next page",
+    "previousPage": "Previous page"
   },
   "confirmationDialog": {
     "title": "Please confirm",

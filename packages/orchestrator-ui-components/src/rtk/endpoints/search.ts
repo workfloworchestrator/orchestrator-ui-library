@@ -20,9 +20,10 @@ export interface SearchPayload {
   filters?: Filter;
   limit?: number | number[];
   retriever?: RetrieverType;
+  cursor?: string;
 }
 
-export interface SearchPaginationPayload extends SearchPayload {
+export interface SearchPaginationPayload extends Omit<SearchPayload, 'cursor'> {
   cursor: number;
 }
 
@@ -36,15 +37,15 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
-        url: `search/${getEndpointPath(entity_type)}`,
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by, cursor }) => ({
+        url: `search/${getEndpointPath(entity_type)}${cursor ? `?cursor=${cursor}` : ''}`,
         method: 'POST',
         body: {
           query,
           filters,
-          limit,
+          limit: limit && !cursor ? limit : undefined,
           retriever,
-          order_by: order_by && !query ? order_by : undefined,
+          order_by: order_by && !query && !cursor ? order_by : undefined,
           response_columns,
         },
         headers: {
