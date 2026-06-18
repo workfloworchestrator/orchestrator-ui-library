@@ -28,16 +28,19 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionEx
     useWithOrchestratorTheme(getSubscriptionActionStyles);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { locked_relations: lockedRelations } = subscriptionAction;
+  // TODO: remove lockedRelationsUuids fallback when orchestrator-core 6.0.0 is released and only use the _detail variant
+  const lockedRelationsDetail = subscriptionAction.locked_relations_detail;
+  const lockedRelationsUuids = subscriptionAction.locked_relations;
+  const hasLockedRelations = (lockedRelationsDetail?.length ?? 0) > 0 || (lockedRelationsUuids?.length ?? 0) > 0;
 
   return (
     <div>
       <div
-        css={[expandableMenuItemStyle, lockedRelations && clickableStyle]}
+        css={[expandableMenuItemStyle, hasLockedRelations && clickableStyle]}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div>{children}</div>
-        {lockedRelations && (
+        {hasLockedRelations && (
           <EuiButtonIcon
             css={expandButtonStyle}
             iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
@@ -46,24 +49,35 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionEx
           />
         )}
       </div>
-      {lockedRelations && isExpanded && (
+      {hasLockedRelations && isExpanded && (
         <div css={expandedContentStyle}>
           <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
           <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
-            {lockedRelations.map((relation) => (
-              <li key={relation.subscription_id}>
-                <EuiText size="xs">
-                  <Link
-                    css={linkStyle}
-                    href={`${PATH_SUBSCRIPTIONS}/${relation.subscription_id}`}
-                    target="_blank"
-                    onClick={() => onClickLockedRelation(relation)}
-                  >
-                    {relation.subscription_description}
-                  </Link>
-                </EuiText>
-              </li>
-            ))}
+            {lockedRelationsDetail ?
+              lockedRelationsDetail.map((relation) => (
+                <li key={relation.subscription_id}>
+                  <EuiText size="xs">
+                    <Link
+                      css={linkStyle}
+                      href={`${PATH_SUBSCRIPTIONS}/${relation.subscription_id}`}
+                      target="_blank"
+                      onClick={() => onClickLockedRelation(relation)}
+                    >
+                      {relation.subscription_description}
+                    </Link>
+                  </EuiText>
+                </li>
+              ))
+            : lockedRelationsUuids?.map((id) => (
+                <li key={id}>
+                  <EuiText size="xs">
+                    <Link css={linkStyle} href={`${PATH_SUBSCRIPTIONS}/${id}`} target="_blank">
+                      {id}
+                    </Link>
+                  </EuiText>
+                </li>
+              ))
+            }
           </ul>
         </div>
       )}

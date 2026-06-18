@@ -44,13 +44,12 @@ export const flattenArrayProps = (action: SubscriptionAction): TranslationValues
   const flatObject: TranslationValues = {};
   for (const [key, value] of Object.entries(action)) {
     if (Array.isArray(value)) {
-      const hasObjects = value.some((item) => typeof item === 'object' && item !== null);
       flatObject[key] = value
         .map((item) =>
           typeof item === 'object' && item !== null ? item.subscription_description || item.subscription_id : item,
         )
-        .join(hasObjects ? '\n' : ', ');
-    } else {
+        .join(', ');
+    } else if (typeof value !== 'object' || value === null) {
       flatObject[key] = value;
     }
   }

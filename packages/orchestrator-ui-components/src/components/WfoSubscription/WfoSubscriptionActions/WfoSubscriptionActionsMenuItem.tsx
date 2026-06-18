@@ -56,16 +56,30 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     );
   };
 
+  // TODO: remove UUID-only fallback when orchestrator-core 6.0.0 is released and only use the _detail variants
   const getRelationsList = () => {
-    const relations = [
+    const detailRelations = [
+      ...(subscriptionAction.locked_relations_detail ?? []),
+      ...(subscriptionAction.unterminated_in_use_by_subscriptions_detail ?? []),
+    ];
+    if (detailRelations.length > 0) {
+      return (
+        <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
+          {detailRelations.map((r) => (
+            <li key={r.subscription_id}>{r.subscription_description || r.subscription_id}</li>
+          ))}
+        </ul>
+      );
+    }
+    const uuidRelations = [
       ...(subscriptionAction.locked_relations ?? []),
       ...(subscriptionAction.unterminated_in_use_by_subscriptions ?? []),
     ];
-    if (relations.length === 0) return null;
+    if (uuidRelations.length === 0) return null;
     return (
       <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
-        {relations.map((r) => (
-          <li key={r.subscription_id}>{r.subscription_description || r.subscription_id}</li>
+        {uuidRelations.map((id) => (
+          <li key={id}>{id}</li>
         ))}
       </ul>
     );

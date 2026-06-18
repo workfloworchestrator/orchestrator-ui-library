@@ -605,20 +605,24 @@ export interface SubscriptionRelation {
   subscription_description: string;
 }
 
+// TODO: remove locked_relations and unterminated_in_use_by_subscriptions (UUID-only fields) when orchestrator-core 6.0.0 is released and only use the _detail variants
 export interface SubscriptionAction {
   name: string;
   description: string;
   reason?: string;
   usable_when?: string[];
-  locked_relations?: SubscriptionRelation[];
-  unterminated_in_use_by_subscriptions?: SubscriptionRelation[];
+  locked_relations?: string[];
+  locked_relations_detail?: SubscriptionRelation[];
+  unterminated_in_use_by_subscriptions?: string[];
+  unterminated_in_use_by_subscriptions_detail?: SubscriptionRelation[];
   status?: string;
   action?: string;
 }
 
 export type SubscriptionActions = {
   reason?: string;
-  locked_relations?: SubscriptionRelation[];
+  locked_relations?: string[];
+  locked_relations_detail?: SubscriptionRelation[];
   modify: SubscriptionAction[];
   terminate: SubscriptionAction[];
   system: SubscriptionAction[];
