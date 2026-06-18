@@ -56,9 +56,31 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     );
   };
 
+  const getRelationsList = () => {
+    const relations = [
+      ...(subscriptionAction.locked_relations ?? []),
+      ...(subscriptionAction.unterminated_in_use_by_subscriptions ?? []),
+    ];
+    if (relations.length === 0) return null;
+    return (
+      <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
+        {relations.map((r) => (
+          <li key={r.subscription_id}>{r.subscription_description || r.subscription_id}</li>
+        ))}
+      </ul>
+    );
+  };
+
   const tooltipIt = (actionItem: React.ReactNode) => {
     if (!subscriptionActionReason) return actionItem;
-    const tooltipContent = t(subscriptionActionReason, flattenArrayProps(subscriptionAction));
+    const relationsList = getRelationsList();
+    const tooltipContent =
+      relationsList ?
+        <span css={{ whiteSpace: 'pre-line' }}>
+          {t(subscriptionActionReason, flattenArrayProps(subscriptionAction))}
+          {relationsList}
+        </span>
+      : t(subscriptionActionReason, flattenArrayProps(subscriptionAction));
 
     return (
       <div css={tooltipMenuItemStyle}>

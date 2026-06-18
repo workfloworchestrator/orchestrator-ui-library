@@ -78,6 +78,25 @@ describe('flattenArrayProps', () => {
     });
   });
 
+  it('should flatten locked_relations objects using subscription_description', () => {
+    const action: SubscriptionAction = {
+      name: 'action name',
+      description: 'action description',
+      locked_relations: [
+        { subscription_id: 'uuid-1', subscription_description: 'Sub A' },
+        { subscription_id: 'uuid-2', subscription_description: 'Sub B' },
+      ],
+    };
+
+    const result = flattenArrayProps(action);
+
+    expect(result).toEqual({
+      name: 'action name',
+      description: 'action description',
+      locked_relations: 'Sub A\nSub B',
+    });
+  });
+
   it('should handle an object with non-array values', () => {
     const action: SubscriptionAction = {
       name: 'action name',

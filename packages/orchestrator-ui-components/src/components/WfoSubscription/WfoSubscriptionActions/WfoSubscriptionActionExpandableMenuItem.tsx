@@ -49,18 +49,22 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionEx
       {lockedRelations && isExpanded && (
         <div css={expandedContentStyle}>
           <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
-          {lockedRelations.map((relation) => (
-            <EuiText key={relation.subscription_id} size="xs">
-              <Link
-                css={linkStyle}
-                href={`${PATH_SUBSCRIPTIONS}/${relation.subscription_id}`}
-                target="_blank"
-                onClick={() => onClickLockedRelation(relation)}
-              >
-                {relation.subscription_description}
-              </Link>
-            </EuiText>
-          ))}
+          <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
+            {lockedRelations.map((relation) => (
+              <li key={relation.subscription_id}>
+                <EuiText size="xs">
+                  <Link
+                    css={linkStyle}
+                    href={`${PATH_SUBSCRIPTIONS}/${relation.subscription_id}`}
+                    target="_blank"
+                    onClick={() => onClickLockedRelation(relation)}
+                  >
+                    {relation.subscription_description}
+                  </Link>
+                </EuiText>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

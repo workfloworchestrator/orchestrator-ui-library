@@ -611,7 +611,6 @@ export interface SubscriptionAction {
   reason?: string;
   usable_when?: string[];
   locked_relations?: SubscriptionRelation[];
-  unterminated_parents?: SubscriptionRelation[];
   unterminated_in_use_by_subscriptions?: SubscriptionRelation[];
   status?: string;
   action?: string;
