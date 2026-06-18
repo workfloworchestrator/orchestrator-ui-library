@@ -7,13 +7,13 @@ import { EuiButtonIcon, EuiText } from '@elastic/eui';
 
 import { PATH_SUBSCRIPTIONS } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { SubscriptionAction } from '@/types';
+import { SubscriptionAction, SubscriptionRelation } from '@/types';
 
 import { getSubscriptionActionStyles } from './styles';
 
 export type WfoSubscriptionActionExpandableMenuItemProps = {
   subscriptionAction: SubscriptionAction;
-  onClickLockedRelation: (relation: string) => void;
+  onClickLockedRelation: (relation: SubscriptionRelation) => void;
   children: React.ReactNode;
 };
 
@@ -50,14 +50,14 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionEx
         <div css={expandedContentStyle}>
           <EuiText size="xs">{t('lockedBySubscriptions')}</EuiText>
           {lockedRelations.map((relation) => (
-            <EuiText key={relation} size="xs">
+            <EuiText key={relation.subscription_id} size="xs">
               <Link
                 css={linkStyle}
-                href={`${PATH_SUBSCRIPTIONS}/${relation}`}
+                href={`${PATH_SUBSCRIPTIONS}/${relation.subscription_id}`}
                 target="_blank"
                 onClick={() => onClickLockedRelation(relation)}
               >
-                {relation}
+                {relation.subscription_description}
               </Link>
             </EuiText>
           ))}

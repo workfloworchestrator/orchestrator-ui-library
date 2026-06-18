@@ -600,21 +600,26 @@ export enum ColorModes {
   DARK = 'DARK',
 }
 
+export interface SubscriptionRelation {
+  subscription_id: string;
+  subscription_description: string;
+}
+
 export interface SubscriptionAction {
   name: string;
   description: string;
   reason?: string;
   usable_when?: string[];
-  locked_relations?: string[];
-  unterminated_parents?: string[];
-  unterminated_in_use_by_subscriptions?: string[];
+  locked_relations?: SubscriptionRelation[];
+  unterminated_parents?: SubscriptionRelation[];
+  unterminated_in_use_by_subscriptions?: SubscriptionRelation[];
   status?: string;
   action?: string;
 }
 
 export type SubscriptionActions = {
   reason?: string;
-  locked_relations?: string[];
+  locked_relations?: SubscriptionRelation[];
   modify: SubscriptionAction[];
   terminate: SubscriptionAction[];
   system: SubscriptionAction[];
