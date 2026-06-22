@@ -37,7 +37,7 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by, cursor }) => ({
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, cursor }) => ({
         url: `search/${getEndpointPath(entity_type)}${cursor ? `?cursor=${cursor}` : ''}`,
         method: 'POST',
         body: {
@@ -45,7 +45,9 @@ const searchApi = orchestratorApi.injectEndpoints({
           filters,
           limit: limit && !cursor ? limit : undefined,
           retriever,
-          order_by: order_by && !query && !cursor ? order_by : undefined,
+          // TODO: Order by is currently not working with pagination and also not when a query is present
+          // disabling it for now. 22-6-26 RVL
+          // order_by: order_by && !query ? order_by : undefined,
           response_columns,
         },
         headers: {

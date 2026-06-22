@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
@@ -163,7 +163,6 @@ export const WfoSearchPocPage = () => {
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
-      isSortable: true,
     },
     description: {
       columnType: ColumnType.DATA,
@@ -274,6 +273,10 @@ export const WfoSearchPocPage = () => {
     const filters = getFilters(query, ruleGroup);
 
     const queryLimit: number = searchParams?.limit || limit;
+
+    // TODO: Order by is currently not working with pagination and also not when a query is present
+    // disabling it for now. 22-6-26 RVL
+    /*
     const order_by =
       searchParams?.sortBy ?
         {
@@ -287,7 +290,7 @@ export const WfoSearchPocPage = () => {
           element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
           direction: dataSorting.sortOrder.toLowerCase(),
         };
-
+    */
     const searchPayload: SearchPayload = {
       query,
       limit: queryLimit,
@@ -295,7 +298,9 @@ export const WfoSearchPocPage = () => {
       response_columns: Array.from(resultColumToPropertyMap.keys()),
       ...(retriever !== RetrieverType.Auto && { retriever }),
       ...(filters && { filters }),
-      ...(order_by && { order_by }),
+      // TODO: Order by is currently not working with pagination and also not when a query is present
+      // disabling it for now. 22-6-26 RVL
+      // ...(order_by && { order_by }),
       ...(searchParams?.cursor && { cursor: searchParams?.cursor }),
     };
 

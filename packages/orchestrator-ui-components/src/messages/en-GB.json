@@ -606,6 +606,7 @@
       "maxNestingDepth": "Maximum nesting depth reached",
       "addNestedGroup": "Add nested group",
       "addRule": "Add rule",
+      "addCondition": "Add condition",
       "addGroup": "Add group",
       "removeGroup": "Remove group",
       "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
