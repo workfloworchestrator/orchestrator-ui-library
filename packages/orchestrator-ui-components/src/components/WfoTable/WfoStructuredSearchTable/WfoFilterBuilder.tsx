@@ -42,7 +42,7 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   between: { symbol: '⟷', description: 'between (range)' },
   has_component: { symbol: '✓', description: 'has component' },
   not_has_component: { symbol: '✗', description: 'does not have component' },
-  like: { symbol: '', description: 'contains' },
+  like: { symbol: '∋', description: 'contains' },
 };
 
 /* TODO: Add the missing operators
