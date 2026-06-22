@@ -29,6 +29,8 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
     }
   };
 
+  const { addRule, path, schema, disabled, ruleGroup, addGroup } = ruleGroupProps;
+
   return (
     <EuiFlexGroup gutterSize={'none'} alignItems="center">
       <EuiFlexItem>
@@ -43,24 +45,24 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
           </EuiFlexItem>
           <EuiFlexItem>
             <WfoAddRuleAction
-              handleOnClick={ruleGroupProps.addRule}
-              path={ruleGroupProps.path}
-              level={ruleGroupProps.path.length}
-              schema={ruleGroupProps.schema}
-              disabled={ruleGroupProps.disabled ?? false}
-              ruleOrGroup={ruleGroupProps.ruleGroup}
-              rules={ruleGroupProps.ruleGroup.rules}
+              handleOnClick={addRule}
+              path={path}
+              level={path.length}
+              schema={schema}
+              disabled={disabled ?? false}
+              ruleOrGroup={ruleGroup}
+              rules={ruleGroup.rules}
             />
           </EuiFlexItem>
           <EuiFlexItem>
             <WfoAddGroupAction
-              handleOnClick={ruleGroupProps.addGroup}
-              path={ruleGroupProps.path}
-              level={ruleGroupProps.path.length}
-              schema={ruleGroupProps.schema}
-              disabled={ruleGroupProps.disabled ?? false}
-              ruleOrGroup={ruleGroupProps.ruleGroup}
-              rules={ruleGroupProps.ruleGroup.rules}
+              handleOnClick={addGroup}
+              path={path}
+              level={path.length}
+              schema={schema}
+              disabled={disabled ?? false}
+              ruleOrGroup={ruleGroup}
+              rules={ruleGroup.rules}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
