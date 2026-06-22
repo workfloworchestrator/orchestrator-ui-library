@@ -51,7 +51,7 @@ const getDataFromResponse = <T extends object>(
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
   uniqueRowId: keyof T,
 ): {
-  items: ResultSet<T>['items'];
+  items: T[];
   uniqueRowIdToExpandedRowMap?: Record<string, ReactNode>;
 } => {
   const searchResult = data?.data;
@@ -308,12 +308,21 @@ export const WfoSearchPocPage = () => {
           getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId')
         : { items: [] };
 
-      setResultSet({
-        items: subscriptionListItems,
-        rowExpandingConfiguration: {
-          uniqueRowId: 'subscriptionId',
-          uniqueRowIdToExpandedRowMap: uniqueRowIdToExpandedRowMap || {},
-        },
+      setResultSet((currentResultSet): ResultSet<SubscriptionListItem> => {
+        return {
+          items:
+            currentResultSet?.items ? [...currentResultSet.items, ...subscriptionListItems] : subscriptionListItems,
+          rowExpandingConfiguration: {
+            uniqueRowId: 'subscriptionId',
+            uniqueRowIdToExpandedRowMap:
+              currentResultSet?.rowExpandingConfiguration?.uniqueRowIdToExpandedRowMap ?
+                {
+                  ...currentResultSet.rowExpandingConfiguration.uniqueRowIdToExpandedRowMap,
+                  ...uniqueRowIdToExpandedRowMap,
+                }
+              : uniqueRowIdToExpandedRowMap || {},
+          },
+        };
       });
     });
   };
