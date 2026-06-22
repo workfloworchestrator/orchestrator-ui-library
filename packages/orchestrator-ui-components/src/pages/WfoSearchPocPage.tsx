@@ -26,7 +26,6 @@ import {
   WfoSubscriptionActions,
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
-  WfoTableColumnConfig,
 } from '@/components';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
@@ -38,6 +37,11 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
+interface ResultSet<T extends object> {
+  items: T[];
+  rowExpandingConfiguration?: WfoTableProps<T>['rowExpandingConfiguration'];
+}
+
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
   return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
 };
@@ -47,8 +51,8 @@ const getDataFromResponse = <T extends object>(
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
   uniqueRowId: keyof T,
 ): {
-  items: T[];
-  rowExpandingConfiguration?: WfoTableProps<T>['rowExpandingConfiguration'];
+  items: ResultSet<T>['items'];
+  uniqueRowIdToExpandedRowMap?: Record<string, ReactNode>;
 } => {
   const searchResult = data?.data;
   if (!searchResult)
@@ -59,22 +63,19 @@ const getDataFromResponse = <T extends object>(
   const responseColumns: Record<string, string | number | null>[] =
     searchResult.map(({ response_columns }) => response_columns) || [];
 
-  const rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'] = {
-    uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
-    uniqueRowIdToExpandedRowMap: searchResult.reduce(
-      (rowMap, { response_columns, score, perfect_match, matching_field }) => {
-        const idColumnInResponseColumn = getKeyByValueFromMap<T>(resultColumToPropertyMap, uniqueRowId);
-        const rowId = response_columns[idColumnInResponseColumn];
-        if (rowId) {
-          rowMap[rowId] = (
-            <WfoExpandingSearchRow score={score} matchingField={matching_field} perfectMatch={perfect_match} />
-          );
-        }
-        return rowMap;
-      },
-      {} as Record<string, ReactNode>,
-    ),
-  };
+  const uniqueRowIdToExpandedRowMap: Record<string, ReactNode> = searchResult.reduce(
+    (rowMap, { response_columns, score, perfect_match, matching_field }) => {
+      const idColumnInResponseColumn = getKeyByValueFromMap<T>(resultColumToPropertyMap, uniqueRowId);
+      const rowId = response_columns[idColumnInResponseColumn];
+      if (rowId) {
+        rowMap[rowId] = (
+          <WfoExpandingSearchRow score={score} matchingField={matching_field} perfectMatch={perfect_match} />
+        );
+      }
+      return rowMap;
+    },
+    {} as Record<string, ReactNode>,
+  );
 
   const items: T[] = responseColumns.map((responseColumn) => {
     const item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
@@ -89,12 +90,8 @@ const getDataFromResponse = <T extends object>(
 
   return {
     items,
-    rowExpandingConfiguration,
+    uniqueRowIdToExpandedRowMap,
   };
-};
-
-const getTotalItemsFromResponse = (data: PaginatedSearchResults | undefined): number | false => {
-  return data?.cursor?.total_items || false;
 };
 
 const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
@@ -118,6 +115,7 @@ export const WfoSearchPocPage = () => {
 
   // Part of the search endpoint payload that is passed in the q parameter
   const [queryText, setQueryText] = useState<string>('');
+  const [resultSet, setResultSet] = useState<ResultSet<SubscriptionListItem>>();
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
   const [filterString, setFilterString] = useState<string>();
   const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
@@ -304,9 +302,21 @@ export const WfoSearchPocPage = () => {
       ...(searchParams?.cursor && { cursor: searchParams?.cursor }),
     };
 
-    triggerSearch(searchPayload);
-  };
+    triggerSearch(searchPayload).then(({ data }) => {
+      const { items: subscriptionListItems, uniqueRowIdToExpandedRowMap } =
+        data ?
+          getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId')
+        : { items: [] };
 
+      setResultSet({
+        items: subscriptionListItems,
+        rowExpandingConfiguration: {
+          uniqueRowId: 'subscriptionId',
+          uniqueRowIdToExpandedRowMap: uniqueRowIdToExpandedRowMap || {},
+        },
+      });
+    });
+  };
   const onChangeQueryText = (queryText: string) => {
     setQueryText(queryText);
   };
@@ -366,11 +376,6 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
-  const { items: subscriptionListItems, rowExpandingConfiguration } =
-    data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId') : { items: [] };
-
-  const totalItems = getTotalItemsFromResponse(data);
-
   const onShowMore = () => {
     handleSearch({
       cursor: nextPageCursor,
@@ -395,8 +400,8 @@ export const WfoSearchPocPage = () => {
       <WfoContentHeader title="Subscriptions (POC)" />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
-        data={subscriptionListItems}
-        rowExpandingConfiguration={rowExpandingConfiguration}
+        data={resultSet?.items || []}
+        rowExpandingConfiguration={resultSet?.rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
         handleSearch={handleSearch}
@@ -417,7 +422,7 @@ export const WfoSearchPocPage = () => {
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={setPageSize}
-        totalItems={totalItems}
+        totalItems={100}
         limit={limit}
         hasNextPage={hasNextPage}
       />
