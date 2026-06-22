@@ -57,7 +57,7 @@ const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorPro
       idSelected={value}
       onChange={(id) => {
         setValue(id);
-        handleOnChange(id === 'true' ? true : false);
+        handleOnChange(id === 'true');
       }}
       buttonSize="m"
       color="primary"
