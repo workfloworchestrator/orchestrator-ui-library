@@ -12,6 +12,7 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay, PathInfo } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
+import { WfoInlineCombinator } from './WfoInlineCombinator';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveRuleAction } from './WfoRemoveRuleAction';
 import { WfoRule } from './WfoRule';
@@ -118,6 +119,7 @@ export const WfoFilterBuilder = ({
                 ruleGroup: WfoRuleGroup,
                 rule: WfoRule,
                 combinatorSelector: WfoCombinatorSelector,
+                inlineCombinator: WfoInlineCombinator,
                 addRuleAction: null,
                 addGroupAction: null,
                 removeGroupAction: null,
@@ -125,6 +127,7 @@ export const WfoFilterBuilder = ({
               }}
               addRuleToNewGroups
               maxLevels={5}
+              showCombinatorsBetweenRules
             />
           </EuiFlexItem>
           <EuiFlexItem>
