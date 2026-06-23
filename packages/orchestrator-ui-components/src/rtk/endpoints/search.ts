@@ -2,7 +2,7 @@ import { getEndpointPath } from '@/components/WfoSearchPage/utils';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   EntityKind,
-  Group,
+  Filter,
   PaginatedSearchResults,
   PathAutocompleteResponse,
   RetrieverType,
@@ -10,10 +10,15 @@ import {
 } from '@/types';
 
 export interface SearchPayload {
+  order_by?: {
+    element: string;
+    direction: string;
+  };
+  response_columns: string[];
   entity_type: EntityKind;
   query: string;
-  filters?: Group;
-  limit?: number;
+  filters?: Filter;
+  limit?: number | number[];
   retriever?: RetrieverType;
 }
 
@@ -31,10 +36,17 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.mutation<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever }) => ({
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
-        body: { query, filters, limit, retriever },
+        body: {
+          query,
+          filters,
+          limit,
+          retriever,
+          order_by: order_by && !query ? order_by : undefined,
+          response_columns,
+        },
         headers: {
           'Content-Type': 'application/json',
         },

@@ -41,3 +41,4 @@ export * from './WfoPlannedWork';
 export * from './WfoCubeFill';
 export * from './WfoExclamationTriangle';
 export * from './WfoChartBar';
+export * from './WfoTrashFilled';

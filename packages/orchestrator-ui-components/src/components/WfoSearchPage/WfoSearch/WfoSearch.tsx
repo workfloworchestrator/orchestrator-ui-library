@@ -29,7 +29,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
 import { useSearchPagination } from '@/hooks/useSearchPagination';
 import { useUrlParams } from '@/hooks/useUrlParams';
-import { EntityKind, Group, RetrieverType } from '@/types';
+import { EntityKind, Filter, RetrieverType } from '@/types';
 
 import { DEFAULT_DEBOUNCE_DELAY, DEFAULT_PAGE_SIZE, LAYOUT_RATIOS, SMALL_RESULT_THRESHOLD } from '../constants';
 
@@ -53,7 +53,7 @@ export const WfoSearch = () => {
 
   const pageSize = DEFAULT_PAGE_SIZE;
 
-  const [filterGroup, setFilterGroup] = useState<Group>({
+  const [filterGroup, setFilterGroup] = useState<Filter>({
     op: 'AND',
     children: [],
   });
@@ -105,6 +105,11 @@ export const WfoSearch = () => {
     });
     setResults({
       data: [],
+      cursor: {
+        total_items: 0,
+        start_cursor: 0,
+        end_cursor: 0,
+      },
       page_info: {
         has_next_page: false,
         next_page_cursor: null,
@@ -189,7 +194,7 @@ export const WfoSearch = () => {
 
       <EuiFieldSearch
         placeholder={t('searchPlaceholder', {
-          entityType: currentTab?.label.toLowerCase(),
+          entityType: currentTab?.label.toLowerCase() || '',
         })}
         value={searchValue || ''}
         onChange={(event) => {
@@ -272,7 +277,7 @@ export const WfoSearch = () => {
           <EuiCallOut title={t('noResults')} color="primary" iconType="search" size="m">
             <p>
               {t('noResultsMessage', {
-                entityType: currentTab?.label.toLowerCase(),
+                entityType: currentTab?.label.toLowerCase() || '',
               })}
             </p>
             <EuiSpacer size="s" />
@@ -304,7 +309,9 @@ export const WfoSearch = () => {
                 <EuiFlexItem grow={false}>
                   <WfoSearchPaginationInfo
                     has_next_page={results.page_info.has_next_page}
-                    next_page_cursor={results.page_info.next_page_cursor}
+                    next_page_cursor={
+                      results.page_info.next_page_cursor ? parseInt(results.page_info.next_page_cursor, 0) : null
+                    }
                     onNextPage={handleNextPage}
                     onPrevPage={handlePrevPage}
                     isLoading={isLoadingMore}

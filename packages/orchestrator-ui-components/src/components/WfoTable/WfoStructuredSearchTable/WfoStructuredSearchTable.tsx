@@ -1,0 +1,319 @@
+import React, { useEffect, useState } from 'react';
+import type { RuleGroupType } from 'react-querybuilder';
+
+import { useTranslations } from 'next-intl';
+
+import {
+  EuiButton,
+  EuiButtonIcon,
+  EuiFieldSearch,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiSelect,
+  EuiSpacer,
+  EuiText,
+} from '@elastic/eui';
+
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZES,
+  TableColumnKeys,
+  TableSettingsColumnConfig,
+  TableSettingsConfig,
+  TableSettingsModal,
+  WfoDataSorting,
+  WfoErrorWithMessage,
+  WfoInformationModal,
+  WfoKeyValueTable,
+  WfoKeyValueTableDataType,
+  clearTableConfigFromLocalStorage,
+  setTableConfigToLocalStorage,
+} from '@/components';
+import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
+import {
+  WfoTableControlColumnConfig,
+  WfoTableControlColumnConfigItem,
+  WfoTableDataColumnConfigItem,
+} from '@/components/WfoTable/WfoTable';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoArrowsExpand } from '@/icons';
+import { WfoGraphqlError } from '@/rtk';
+import { getFormFieldsBaseStyle } from '@/theme';
+import { RetrieverType } from '@/types';
+import { getDefaultTableConfig } from '@/utils';
+
+import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
+import { WfoFilterBuilder } from './WfoFilterBuilder';
+
+export type WfoStructuredSearchTableDataColumnConfigItem<
+  T extends object,
+  Property extends keyof T,
+> = WfoTableDataColumnConfigItem<T, Property> & {
+  renderDetails?: (cellValue: T[Property], row: T) => React.ReactNode;
+  clipboardText?: (cellValue: T[Property], row: T) => string;
+};
+export type WfoStructuredSearchTableDataColumnConfig<T extends object> = {
+  [Property in keyof T]: WfoStructuredSearchTableDataColumnConfigItem<T, Property> | WfoTableControlColumnConfigItem<T>;
+};
+export type WfoStructuredSearchTableColumnConfig<T extends object> = Partial<
+  WfoTableControlColumnConfig<T> | WfoStructuredSearchTableDataColumnConfig<T>
+>;
+export type SearchParams = {
+  queryText?: string | false;
+  retrieverType?: RetrieverType;
+  ruleGroup?: RuleGroupType | false;
+  limit?: number;
+  sortBy?: {
+    field: string;
+    sortOrder: string;
+  };
+};
+
+export type WfoStructuredSearchTableProps<T extends object> = Omit<
+  WfoTableProps<T>,
+  'columnConfig' | 'onUpdateDataSearch'
+> & {
+  tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
+  rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
+  defaultHiddenColumns?: TableColumnKeys<T>;
+  queryText?: string;
+  localStorageKey: string;
+  exportDataIsLoading?: boolean;
+  error?: WfoGraphqlError[];
+  onChangeQueryText: (queryString: string) => void;
+  onSearchQueryText: (queryString: string) => void;
+  onShowMore: () => void;
+  onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
+  onExportData?: () => void;
+  retrieverType: RetrieverType;
+  onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
+  filterString?: string;
+  onUpdateFilterString: (filterString: string) => void;
+  isValidFilterString?: boolean;
+  queryBuilderRuleGroup?: RuleGroupType;
+  onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
+  handleSearch: () => void;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  totalItems: number | false;
+  limit: number;
+};
+
+export const WfoStructuredSearchTable = <T extends object>({
+  tableColumnConfig,
+  defaultHiddenColumns = [],
+  queryText,
+  localStorageKey,
+  exportDataIsLoading,
+  error,
+  onChangeQueryText,
+  onSearchQueryText,
+  onShowMore,
+  onExportData,
+  retrieverType,
+  onUpdateRetrieverType,
+  filterString,
+  onUpdateFilterString,
+  isValidFilterString,
+  queryBuilderRuleGroup,
+  onUpdateQueryBuilder,
+  onUpdateDataSorting,
+  handleSearch,
+  pageSize,
+  setPageSize,
+  totalItems,
+  limit,
+  rowExpandingConfiguration,
+  dataSorting,
+  ...tableProps
+}: WfoStructuredSearchTableProps<T>) => {
+  const { theme } = useOrchestratorTheme();
+  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
+
+  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+  const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
+  const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
+  const [showInformationModal, setShowInformationModal] = useState(false);
+  const t = useTranslations('common');
+
+  useEffect(() => {
+    if (defaultHiddenColumns) {
+      setHiddenColumns(defaultHiddenColumns);
+    }
+  }, [defaultHiddenColumns]);
+
+  const detailsIconColumn: WfoStructuredSearchTableColumnConfig<T> = {
+    viewDetails: {
+      columnType: ColumnType.CONTROL,
+      width: '36px',
+      renderControl: (row) => (
+        <EuiFlexItem css={{ cursor: 'pointer' }} onClick={() => setRowDetailModalData(row)}>
+          <WfoArrowsExpand color={theme.colors.borderBasePlain} />
+        </EuiFlexItem>
+      ),
+    },
+  };
+
+  const tableColumnsWithControlColumns: WfoStructuredSearchTableColumnConfig<T> = {
+    ...detailsIconColumn,
+    ...tableColumnConfig,
+  };
+
+  const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries(tableColumnConfig).map(
+    ([key, { label }]): TableSettingsColumnConfig<T> => {
+      const field = key as keyof T;
+
+      return {
+        field,
+        name: label,
+        isVisible: hiddenColumns.indexOf(field) === -1,
+      };
+    },
+  );
+
+  const rowDetailData: WfoKeyValueTableDataType[] | undefined =
+    rowDetailModalData && getRowDetailData(rowDetailModalData, tableColumnConfig);
+
+  const handleUpdateTableConfig = (updatedTableConfig: TableSettingsConfig<T>) => {
+    const updatedHiddenColumns = updatedTableConfig.columns
+      .filter((column) => !column.isVisible)
+      .map((hiddenColumn) => hiddenColumn.field);
+    setHiddenColumns(updatedHiddenColumns);
+    setShowTableSettingsModal(false);
+    setPageSize(updatedTableConfig.selectedPageSize);
+    setTableConfigToLocalStorage(localStorageKey, {
+      hiddenColumns: updatedHiddenColumns,
+      selectedPageSize: updatedTableConfig.selectedPageSize,
+    });
+  };
+
+  const handleResetToDefaults = () => {
+    const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
+    setHiddenColumns(defaultTableConfig.hiddenColumns);
+    setPageSize(defaultTableConfig.selectedPageSize);
+    setShowTableSettingsModal(false);
+    clearTableConfigFromLocalStorage(localStorageKey);
+  };
+
+  return (
+    <>
+      <EuiFlexGroup alignItems="center">
+        <EuiFlexItem>
+          <WfoFilterBuilder
+            filterString={filterString}
+            onUpdateFilterString={onUpdateFilterString}
+            isValidFilterString={isValidFilterString}
+            queryBuilderRuleGroup={queryBuilderRuleGroup}
+            onUpdateQueryBuilder={onUpdateQueryBuilder}
+            handleSearch={handleSearch}
+          />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiFlexGroup alignItems="center">
+        <EuiFlexItem>
+          <EuiFormRow fullWidth>
+            <EuiFieldSearch
+              css={formFieldBaseStyle}
+              value={queryText}
+              placeholder={`${t('search')}...`}
+              onChange={(e) => onChangeQueryText(e.target.value)}
+              onSearch={(queryText) => onSearchQueryText(queryText)}
+              fullWidth
+            />
+          </EuiFormRow>
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiSelect
+            options={[
+              {
+                value: RetrieverType.Auto,
+                text: t('retrieverAuto'),
+              },
+              {
+                value: RetrieverType.Fuzzy,
+                text: t('retrieverFuzzy'),
+              },
+              {
+                value: RetrieverType.Semantic,
+                text: t('retrieverSemantic'),
+              },
+              {
+                value: RetrieverType.Hybrid,
+                text: t('retrieverHybrid'),
+              },
+            ]}
+            value={retrieverType}
+            onChange={(e) => onUpdateRetrieverType(e.target.value as RetrieverType)}
+            compressed
+            prepend={t('retrieval')}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiButtonIcon
+            onClick={() => setShowInformationModal(true)}
+            iconSize={'l'}
+            iconType={'info'}
+            aria-label={t('searchModalTitle')}
+          />
+        </EuiFlexItem>
+        <EuiButton onClick={() => setShowTableSettingsModal(true)}>{t('editColumns')}</EuiButton>
+        {onExportData && (
+          <EuiButton isLoading={exportDataIsLoading} onClick={() => onExportData()}>
+            {t('export')}
+          </EuiButton>
+        )}
+      </EuiFlexGroup>
+
+      {error && <WfoErrorWithMessage error={error} />}
+
+      <EuiSpacer size="m" />
+
+      <WfoTable<T>
+        columnConfig={tableColumnsWithControlColumns}
+        hiddenColumns={hiddenColumns}
+        rowExpandingConfiguration={rowExpandingConfiguration}
+        onUpdateDataSorting={onUpdateDataSorting}
+        dataSorting={dataSorting}
+        {...tableProps}
+      />
+
+      {totalItems && (
+        <EuiFlexGroup alignItems={'center'} justifyContent={'center'}>
+          <EuiButton onClick={() => onShowMore()} css={{ margin: theme.base }} disabled={totalItems <= limit}>
+            Load More
+          </EuiButton>
+          <div>{`${totalItems < limit ? totalItems : limit}/${totalItems} records`}</div>
+        </EuiFlexGroup>
+      )}
+
+      {showTableSettingsModal && (
+        <TableSettingsModal
+          tableConfig={{
+            columns: tableSettingsColumns,
+            selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
+          }}
+          pageSizeOptions={DEFAULT_PAGE_SIZES}
+          onClose={() => setShowTableSettingsModal(false)}
+          onUpdateTableConfig={handleUpdateTableConfig}
+          onResetToDefaults={handleResetToDefaults}
+        />
+      )}
+
+      {showInformationModal && (
+        <WfoInformationModal title={t('searchModalTitle')} onClose={() => setShowInformationModal(false)}>
+          <EuiText>
+            <p>TODO: Info about searching</p>
+          </EuiText>
+        </WfoInformationModal>
+      )}
+
+      {rowDetailData && (
+        <WfoInformationModal title={'TODO: Information modal title'} onClose={() => setRowDetailModalData(undefined)}>
+          <WfoKeyValueTable keyValues={rowDetailData} showCopyToClipboardIcon />
+        </WfoInformationModal>
+      )}
+    </>
+  );
+};

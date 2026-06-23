@@ -17,14 +17,14 @@ import {
 import { WfoToolTip } from '@/components';
 import { isCondition } from '@/components/WfoSearchPage/utils';
 import { useOrchestratorTheme } from '@/hooks';
-import { Condition, EntityKind, Group } from '@/types';
+import type { Condition, EntityKind, Filter } from '@/types';
 
 import { ConditionRow } from '../WfoConditionRow';
 
 interface FilterGroupProps {
-  group: Group;
+  group: Filter;
   entityType: EntityKind;
-  onChange: (group: Group) => void;
+  onChange: (group: Filter) => void;
   onRemove?: () => void;
   depth?: number;
   isRoot?: boolean;
@@ -58,7 +58,7 @@ export const FilterGroup: FC<FilterGroupProps> = ({
   const addGroup = () => {
     if (!canAddGroup) return;
 
-    const newGroup: Group = {
+    const newGroup: Filter = {
       op: 'AND',
       children: [],
     };
@@ -68,7 +68,7 @@ export const FilterGroup: FC<FilterGroupProps> = ({
     });
   };
 
-  const updateChild = (index: number, child: Group | Condition) => {
+  const updateChild = (index: number, child: Filter | Condition) => {
     const newChildren = [...group.children];
     newChildren[index] = child;
     onChange({
