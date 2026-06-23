@@ -1,14 +1,15 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import type { SearchParams } from '@/components';
+import { SearchParams, combineSearchFilters } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   StoredTableConfig,
@@ -17,6 +18,7 @@ import {
   WfoDataSorting,
   WfoDateTime,
   WfoExpandingSearchRow,
+  WfoFilterTabs,
   WfoFirstPartUUID,
   WfoInlineJson,
   WfoInsyncIcon,
@@ -24,14 +26,16 @@ import {
   WfoStructuredSearchTable,
   WfoStructuredSearchTableColumnConfig,
   WfoSubscriptionActions,
+  WfoSubscriptionListTab,
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
   WfoTableColumnConfig,
+  subscriptionListTabs,
 } from '@/components';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
-import { SearchPayload, useSearchMutation } from '@/rtk';
-import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SortOrder } from '@/types';
+import { SearchPayload, useSearchQuery } from '@/rtk';
+import { EntityKind, PaginatedSearchResults, RetrieverType, SortOrder } from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
@@ -114,18 +118,20 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
 
 export const WfoSearchPocPage = () => {
   const t = useTranslations('subscriptions.index');
-  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto); // Part of the search endpoint payload that is passed as the retriever parameter
+  const [activeTab, setActiveTab] = useQueryParam('activeTab', withDefault(StringParam, WfoSubscriptionListTab.ACTIVE));
+  const selectedTab = subscriptionListTabs.find(({ id }) => id === activeTab)?.id ?? WfoSubscriptionListTab.ACTIVE;
+  const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
+  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
 
   // Part of the search endpoint payload that is passed in the q parameter
   const [queryText, setQueryText] = useState<string>('');
+  const [committedSearchQuery, setCommittedSearchQuery] = useState<string>('');
+
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
   const [filterString, setFilterString] = useState<string>();
   const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
+  const [committedRuleGroup, setCommittedRuleGroup] = useState<RuleGroupType | undefined>();
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
-
-  const [triggerSearch, { isLoading, data }] = useSearchMutation();
-
-  const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
   const [limit, setLimit] = useState<number>(pageSize);
@@ -134,18 +140,35 @@ export const WfoSearchPocPage = () => {
     sortOrder: SortOrder.DESC,
   });
 
+  // The search payload is derived entirely from the committed search state. Changing any of these
+  // values — including the active tab, whether via a tab click or a browser back/forward that
+  // updates the activeTab URL param — produces a new payload and RTK Query re-runs the search
+  // automatically. No imperative trigger or effect (and no eslint-disable) is needed.
+  const searchPayload: SearchPayload = useMemo(() => {
+    const filters = combineSearchFilters(committedRuleGroup, selectedTab);
+    const order_by = {
+      element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
+      direction: dataSorting.sortOrder.toLowerCase(),
+    };
+    return {
+      query: committedSearchQuery,
+      limit,
+      entity_type: EntityKind.SUBSCRIPTION,
+      response_columns: Array.from(resultColumToPropertyMap.keys()),
+      order_by,
+      ...(retrieverType !== RetrieverType.Auto && { retriever: retrieverType }),
+      ...(filters && { filters }),
+    };
+  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, limit, dataSorting]);
+
+  const { data, isFetching } = useSearchQuery(searchPayload);
+
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
     if (storedConfig) {
       setTableDefaults(storedConfig);
     }
   }, [getStoredTableConfig]);
-
-  useEffect(() => {
-    if (!isLoading && !data) {
-      handleSearch();
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
     actions: {
@@ -244,58 +267,8 @@ export const WfoSearchPocPage = () => {
     },
   };
 
-  const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
-    const elasticQuery =
-      ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch', fallbackExpression: '' }) : undefined;
-    return elasticQuery as unknown as Filter;
-  };
-
-  const getFilters = (query: string, ruleGroup: RuleGroupType | false | undefined) => {
-    if (ruleGroup === false) return false;
-
-    if (!query && !ruleGroup) {
-      return parseRuleGroupToFilters(parseCEL(`status=="active"`));
-    }
-    return parseRuleGroupToFilters(ruleGroup);
-  };
-
-  const handleSearch = (searchParams?: SearchParams) => {
-    const retriever = searchParams?.retrieverType || retrieverType;
-    const query =
-      searchParams?.queryText === false ? ''
-      : searchParams?.queryText ? searchParams?.queryText
-      : queryText || '';
-
-    // If there is no query and no ruleGroup selected we default to something that gives results
-    const ruleGroup = searchParams?.ruleGroup === false ? false : searchParams?.ruleGroup || queryBuilderRuleGroup;
-    const filters = getFilters(query, ruleGroup);
-
-    const queryLimit: number = searchParams?.limit || limit;
-    const order_by =
-      searchParams?.sortBy ?
-        {
-          element: getKeyByValueFromMap(
-            resultColumToPropertyMap,
-            searchParams?.sortBy.field as keyof SubscriptionListItem,
-          ),
-          direction: searchParams.sortBy.sortOrder.toLowerCase(),
-        }
-      : {
-          element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
-          direction: dataSorting.sortOrder.toLowerCase(),
-        };
-
-    const searchPayload: SearchPayload = {
-      query,
-      limit: queryLimit,
-      entity_type: EntityKind.SUBSCRIPTION,
-      response_columns: Array.from(resultColumToPropertyMap.keys()),
-      ...(retriever !== RetrieverType.Auto && { retriever }),
-      ...(filters && { filters }),
-      ...(order_by && { order_by }),
-    };
-
-    triggerSearch(searchPayload);
+  const handleApplyFilter = (searchParams?: SearchParams) => {
+    setCommittedRuleGroup(searchParams?.ruleGroup === false ? undefined : queryBuilderRuleGroup);
   };
 
   const onChangeQueryText = (queryText: string) => {
@@ -304,12 +277,16 @@ export const WfoSearchPocPage = () => {
 
   const onSearchQueryText = (queryText: string) => {
     setQueryText(queryText);
-    handleSearch({ queryText: queryText || false });
+    setCommittedSearchQuery(queryText);
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
     setRetrieverType(retrieverType);
-    handleSearch({ retrieverType });
+  };
+
+  const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
+    setActiveTab(updatedTab);
+    setLimit(pageSize);
   };
 
   const safeCelParse = (celString: string) => {
@@ -363,37 +340,31 @@ export const WfoSearchPocPage = () => {
   const totalItems = getTotalItemsFromResponse(data);
 
   const onShowMore = () => {
-    setLimit((limit) => {
-      const newLimit = limit + pageSize;
-      handleSearch({ limit: newLimit });
-      return newLimit;
-    });
+    setLimit((limit) => limit + pageSize);
   };
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
     setDataSorting({ field, sortOrder });
     setLimit(pageSize);
-
-    handleSearch({
-      limit: pageSize,
-      sortBy: {
-        field,
-        sortOrder,
-      },
-    });
   };
 
   return (
     <>
       <WfoContentHeader title="Subscriptions (POC)" />
+      <WfoFilterTabs
+        tabs={subscriptionListTabs}
+        selectedTab={selectedTab}
+        translationNamespace="subscriptions.tabs"
+        onChangeTab={handleChangeTab}
+      />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
         data={subscriptionListItems}
         rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         filterString={filterString}
-        handleSearch={handleSearch}
-        isLoading={isLoading}
+        handleSearch={handleApplyFilter}
+        isLoading={isFetching}
         dataSorting={[dataSorting]}
         isValidFilterString={isValidFilterString}
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}

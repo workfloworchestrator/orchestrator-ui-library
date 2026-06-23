@@ -35,7 +35,7 @@ export interface SearchDefinitionsResponse {
 
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    search: build.mutation<PaginatedSearchResults, SearchPayload>({
+    search: build.query<PaginatedSearchResults, SearchPayload>({
       query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
         url: `search/${getEndpointPath(entity_type)}`,
         method: 'POST',
@@ -89,5 +89,10 @@ const searchApi = orchestratorApi.injectEndpoints({
   }),
 });
 
-export const { useSearchMutation, useSearchWithPaginationMutation, useSearchPathsQuery, useSearchDefinitionsQuery } =
-  searchApi;
+export const {
+  useSearchQuery,
+  useLazySearchQuery,
+  useSearchWithPaginationMutation,
+  useSearchPathsQuery,
+  useSearchDefinitionsQuery,
+} = searchApi;

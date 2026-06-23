@@ -1,5 +1,18 @@
+import type { RuleGroupType } from 'react-querybuilder';
+import { formatQuery } from 'react-querybuilder/formatQuery';
+
+import { WfoSubscriptionListTab } from '@/components';
 import { SearchPaginationPayload } from '@/rtk';
-import { Condition, EntityKind, Filter, OperatorDisplay, PathInfo, RetrieverType, SearchResult } from '@/types';
+import {
+  Condition,
+  EntityKind,
+  Filter,
+  OperatorDisplay,
+  PathInfo,
+  RetrieverType,
+  SearchResult,
+  SubscriptionStatus,
+} from '@/types';
 
 export function isSubscriptionSearchResult(item: SearchResult): boolean {
   return item.entity_type === 'SUBSCRIPTION';
@@ -141,4 +154,52 @@ export const buildSearchParams = (
     cursor,
     response_columns: [],
   };
+};
+
+const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
+  const elasticQuery =
+    ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch', fallbackExpression: '' }) : undefined;
+  return elasticQuery as unknown as Filter;
+};
+
+const getSubscriptionStatusesFromTab = (tab: WfoSubscriptionListTab) => {
+  switch (tab) {
+    case WfoSubscriptionListTab.ACTIVE:
+      return [SubscriptionStatus.ACTIVE];
+    case WfoSubscriptionListTab.TERMINATED:
+      return [SubscriptionStatus.TERMINATED];
+    case WfoSubscriptionListTab.TRANSIENT:
+      return [SubscriptionStatus.INITIAL, SubscriptionStatus.PROVISIONING, SubscriptionStatus.MIGRATING];
+    case WfoSubscriptionListTab.ALL:
+      return [
+        SubscriptionStatus.ACTIVE,
+        SubscriptionStatus.TERMINATED,
+        SubscriptionStatus.INITIAL,
+        SubscriptionStatus.MIGRATING,
+        SubscriptionStatus.PROVISIONING,
+      ];
+    default:
+      return [SubscriptionStatus.ACTIVE];
+  }
+};
+
+const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
+  return {
+    combinator: 'or',
+    rules: getSubscriptionStatusesFromTab(tab).map((status) => ({
+      field: 'subscription.status',
+      operator: '=',
+      value: status,
+    })),
+  };
+};
+
+export const combineSearchFilters = (ruleGroup: RuleGroupType | false | undefined, tab: WfoSubscriptionListTab) => {
+  const userRuleGroup = ruleGroup === false ? undefined : ruleGroup;
+  const ruleGroups = [buildSubscriptionStatusFilter(tab), userRuleGroup].filter(Boolean) as RuleGroupType[];
+
+  const combinedRuleGroup: RuleGroupType =
+    ruleGroups.length === 1 ? ruleGroups[0] : { combinator: 'and', rules: ruleGroups };
+
+  return parseRuleGroupToFilters(combinedRuleGroup);
 };

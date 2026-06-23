@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Query } from '@elastic/eui';
 
-import { useSearchMutation } from '@/rtk/endpoints';
+import { useLazySearchQuery } from '@/rtk/endpoints';
 import { EntityKind, Filter, PaginatedSearchResults, RetrieverType } from '@/types';
 
 const emptyResult: PaginatedSearchResults = {
@@ -25,7 +25,7 @@ export const useSearch = (
 ) => {
   const [results, setResults] = useState<PaginatedSearchResults>({ ...emptyResult });
 
-  const [triggerSearch, { isLoading, isError }] = useSearchMutation();
+  const [triggerSearch, { isLoading, isError }] = useLazySearchQuery();
 
   useEffect(() => {
     const queryText = typeof query === 'string' ? query : query.text?.trim() || '';
