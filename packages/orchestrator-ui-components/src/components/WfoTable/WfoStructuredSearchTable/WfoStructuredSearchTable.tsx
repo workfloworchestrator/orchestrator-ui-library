@@ -125,7 +125,6 @@ export const WfoStructuredSearchTable = <T extends object>({
   pageSize,
   setPageSize,
   totalItems,
-  limit,
   rowExpandingConfiguration,
   dataSorting,
   hasNextPage,
