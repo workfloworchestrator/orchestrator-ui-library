@@ -60,7 +60,8 @@
     "removeFilter": "Remove filter",
     "cancel": "Cancel",
     "nextPage": "Next page",
-    "previousPage": "Previous page"
+    "previousPage": "Previous page",
+    "loadMore": "Load more"
   },
   "confirmationDialog": {
     "title": "Please confirm",

@@ -61,7 +61,8 @@
     "removeFilter": "Verwijder filter",
     "cancel": "Cancel",
     "nextPage": "Volgende pagina",
-    "previousPage": "Vorige pagina"
+    "previousPage": "Vorige pagina",
+    "loadMore": "Meer laden"
   },
   "confirmationDialog": {
     "title": "Graag bevestigen",
