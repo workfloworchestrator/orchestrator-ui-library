@@ -37,6 +37,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
       minHeight: theme.base * 2,
       blockSize: theme.base * 2,
       borderRadius: 0,
+      transition: 'none',
     },
     'button.euiButtonGroupButton:not(.euiButtonGroupButton-isSelected)': {
       backgroundColor: theme.colors.backgroundBasePlain,
