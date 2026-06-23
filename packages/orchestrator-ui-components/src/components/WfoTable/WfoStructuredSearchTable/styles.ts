@@ -24,9 +24,31 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
   });
 
   const buttonGroupStyles = css({
-    backgroundColor: theme.colors.textGhost,
-    height: '100%',
-    borderRadius: theme.border.radius.small,
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    height: theme.base * 2,
+    '.euiButtonGroup__buttons': {
+      backgroundColor: 'transparent',
+      height: theme.base * 2,
+      minHeight: theme.base * 2,
+    },
+    'button.euiButtonGroupButton': {
+      height: theme.base * 2,
+      minHeight: theme.base * 2,
+      blockSize: theme.base * 2,
+      borderRadius: 0,
+    },
+    'button.euiButtonGroupButton:not(.euiButtonGroupButton-isSelected)': {
+      backgroundColor: theme.colors.backgroundBasePlain,
+    },
+    'button.euiButtonGroupButton:first-of-type': {
+      borderTopLeftRadius: theme.base,
+      borderBottomLeftRadius: theme.base,
+    },
+    'button.euiButtonGroupButton:last-of-type': {
+      borderTopRightRadius: theme.base,
+      borderBottomRightRadius: theme.base,
+    },
   });
 
   const ruleContainerStyles = css({
