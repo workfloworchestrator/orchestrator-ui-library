@@ -8,6 +8,9 @@ import { useWithOrchestratorTheme } from '@/hooks';
 
 export const WfoCombinatorSelector = (props: CombinatorSelectorProps) => {
   const { buttonGroupStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
+
+  if (props.rules.length < 2) return null;
+
   const options = props.options.map((option) => ({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore This seems to be a typing error in the react-querybuilde library. Option.name does exist
