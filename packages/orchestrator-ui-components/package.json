@@ -45,7 +45,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
     "next-auth": "^4.24.5",
-    "next-intl": "^4.9.1",
+    "next-intl": "^3.26.5",
     "next-query-params": "^5.0.0",
     "object-hash": "^3.0.0",
     "prism-themes": "^1.9.0",
@@ -81,7 +81,6 @@
   "peerDependencies": {
     "@elastic/eui": "^113.0.0",
     "next": "^15.5.18",
-    "next-intl": "^3.26.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
