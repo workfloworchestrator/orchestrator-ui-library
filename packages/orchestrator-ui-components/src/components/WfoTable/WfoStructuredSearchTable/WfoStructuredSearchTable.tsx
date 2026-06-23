@@ -129,6 +129,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   rowExpandingConfiguration,
   dataSorting,
   hasNextPage,
+  data,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -279,17 +280,16 @@ export const WfoStructuredSearchTable = <T extends object>({
         rowExpandingConfiguration={rowExpandingConfiguration}
         onUpdateDataSorting={onUpdateDataSorting}
         dataSorting={dataSorting}
+        data={data}
         {...tableProps}
       />
 
       {totalItems && (
-        <EuiFlexGroup alignItems={'center'} justifyContent={'center'}>
-          {hasNextPage && (
-            <EuiButton onClick={() => onShowMore()} css={{ margin: theme.base }} disabled={totalItems <= limit}>
-              {t('loadMore')}
-            </EuiButton>
-          )}
-          <div>{`${totalItems < limit ? totalItems : limit}/${totalItems} records`}</div>
+        <EuiFlexGroup alignItems={'center'} justifyContent={'center'} css={{ padding: theme.base }}>
+          <EuiButton onClick={() => onShowMore()} disabled={!hasNextPage}>
+            {t('loadMore')}
+          </EuiButton>
+          <div>{`${data.length}/${totalItems} records`}</div>
         </EuiFlexGroup>
       )}
 

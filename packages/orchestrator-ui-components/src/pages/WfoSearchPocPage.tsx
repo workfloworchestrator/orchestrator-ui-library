@@ -120,7 +120,7 @@ export const WfoSearchPocPage = () => {
   const [filterString, setFilterString] = useState<string>();
   const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
-
+  const [totalItems, setTotalItems] = useState<number | false>(false);
   const [triggerSearch, { isLoading, data }] = useSearchMutation();
 
   const hasNextPage = data?.page_info.has_next_page || false;
@@ -324,8 +324,11 @@ export const WfoSearchPocPage = () => {
           },
         };
       });
+
+      setTotalItems(data?.cursor.total_items || false);
     });
   };
+
   const onChangeQueryText = (queryText: string) => {
     setQueryText(queryText);
   };
@@ -431,7 +434,7 @@ export const WfoSearchPocPage = () => {
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={setPageSize}
-        totalItems={100}
+        totalItems={totalItems}
         limit={limit}
         hasNextPage={hasNextPage}
       />
