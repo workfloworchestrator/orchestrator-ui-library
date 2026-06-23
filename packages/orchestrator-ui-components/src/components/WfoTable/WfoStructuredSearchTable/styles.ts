@@ -126,6 +126,21 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
     cursor: 'pointer',
   });
 
+  const inlineCombinatorStyles = css({
+    alignSelf: 'center',
+  });
+
+  const ruleGroupBodyGridStyles = css({
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    columnGap: theme.base / 2,
+    rowGap: theme.base / 4,
+    alignItems: 'center',
+    '& > :first-child': {
+      gridColumn: '1 / -1',
+    },
+  });
+
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
@@ -142,5 +157,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
     addRulePlusStyles,
     addRuleContainerStyles,
     addGroupStyles,
+    inlineCombinatorStyles,
+    ruleGroupBodyGridStyles,
   };
 };
