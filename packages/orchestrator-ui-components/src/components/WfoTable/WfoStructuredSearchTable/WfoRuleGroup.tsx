@@ -20,6 +20,7 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
     ruleGroupContainerWhiteStyles,
     innerGroupContainerWhiteStyles,
     innerGroupContainerBlueStyles,
+    ruleGroupBodyGridStyles,
   } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const getGroupContainerStyles = () => {
     if (ruleGroupProps.path.length % 2) {
@@ -41,7 +42,9 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem>
-            <RuleGroupBodyComponents {...ruleGroupProps} />
+            <div css={ruleGroupBodyGridStyles}>
+              <RuleGroupBodyComponents {...ruleGroupProps} />
+            </div>
           </EuiFlexItem>
           <EuiFlexItem>
             <WfoAddRuleAction
