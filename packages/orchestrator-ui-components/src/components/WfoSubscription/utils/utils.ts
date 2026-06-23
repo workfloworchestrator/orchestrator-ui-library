@@ -44,7 +44,7 @@ export const getProductBlockTitle = (instanceValues: FieldValue[]): string | num
 const toLabel = (item: string | SubscriptionRelation): string =>
   typeof item === 'object' ? (item.subscription_description ?? item.subscription_id) : item;
 
-export const flattenArrayProps = (action?: SubscriptionAction | null): TranslationValues => {
+export const flattenSubscriptionActionProps = (action?: SubscriptionAction | null): TranslationValues => {
   if (!action) return {};
 
   const flatObject: TranslationValues = {};

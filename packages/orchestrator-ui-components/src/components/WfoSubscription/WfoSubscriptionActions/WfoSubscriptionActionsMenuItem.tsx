@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiContextMenuItem, EuiLoadingSpinner, EuiToolTip } from '@elastic/eui';
 
-import { flattenArrayProps } from '@/components';
+import { flattenSubscriptionActionProps } from '@/components';
 import { WfoSubscriptionActionExpandableMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionExpandableMenuItem';
 import { getSubscriptionActionStyles } from '@/components/WfoSubscription/WfoSubscriptionActions/styles';
 import { useCheckEngineStatus, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -91,10 +91,10 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     const tooltipContent =
       relationsList ?
         <span css={{ whiteSpace: 'pre-line' }}>
-          {t(subscriptionActionReason, flattenArrayProps(subscriptionAction))}
+          {t(subscriptionActionReason, flattenSubscriptionActionProps(subscriptionAction))}
           {relationsList}
         </span>
-      : t(subscriptionActionReason, flattenArrayProps(subscriptionAction));
+      : t(subscriptionActionReason, flattenSubscriptionActionProps(subscriptionAction));
 
     return (
       <div css={tooltipMenuItemStyle}>

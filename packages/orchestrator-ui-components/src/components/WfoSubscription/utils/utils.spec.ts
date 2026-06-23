@@ -9,7 +9,7 @@ import {
   WorkflowTarget,
 } from '../../../types';
 import {
-  flattenArrayProps,
+  flattenSubscriptionActionProps,
   getFieldFromProductBlockInstanceValues,
   getLastUncompletedProcess,
   getLatestTaskDate,
@@ -61,7 +61,7 @@ describe('getProductBlockTitle()', () => {
   });
 });
 
-describe('flattenArrayProps', () => {
+describe('flattenSubscriptionActionProps', () => {
   it('should flatten an object with array values into a comma-separated string', () => {
     const action: SubscriptionAction = {
       name: 'action name',
@@ -69,7 +69,7 @@ describe('flattenArrayProps', () => {
       usable_when: ['Status1', 'Status2', 'Status3'],
     };
 
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
 
     expect(result).toEqual({
       name: 'action name',
@@ -88,7 +88,7 @@ describe('flattenArrayProps', () => {
       ],
     };
 
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
 
     expect(result).toEqual({
       name: 'action name',
@@ -104,7 +104,7 @@ describe('flattenArrayProps', () => {
       locked_relations: ['uuid-1', 'uuid-2'],
     };
 
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
 
     expect(result).toEqual({
       name: 'action name',
@@ -118,7 +118,7 @@ describe('flattenArrayProps', () => {
       name: 'action name',
       description: 'action description',
     };
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
     expect(result).toEqual({
       name: 'action name',
       description: 'action description',
