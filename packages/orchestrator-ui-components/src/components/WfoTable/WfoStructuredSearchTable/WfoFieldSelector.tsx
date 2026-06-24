@@ -7,11 +7,11 @@ import type { EuiComboBoxOptionOption } from '@elastic/eui';
 import { EuiComboBox } from '@elastic/eui';
 
 import { usePathAutocomplete } from '@/hooks';
-import { EntityKind, PathInfo } from '@/types';
+import { EntityKind, FieldToOperatorMap, PathInfo } from '@/types';
 
 export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
   const { field } = rule;
-  const { prefilledFieldOptions } = context;
+  const prefilledFieldOptions: FieldToOperatorMap = context.prefilledFieldOptions;
   const [selectedValue, setSelectedValue] = useState<string>(field);
   const t = useTranslations('search.page');
   const getOption = (path: string) => ({
@@ -42,13 +42,24 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     error: errorMessage,
   } = usePathAutocomplete(selectedValue, EntityKind.SUBSCRIPTION);
 
-  const options = getOptionsFromPathInfo(paths);
+  const prefilledOptions: EuiComboBoxOptionOption<string>[] = Array.from(prefilledFieldOptions.keys()).map(getOption);
+  const autocompleteOptions = getOptionsFromPathInfo(paths);
+  const placeholderOption: EuiComboBoxOptionOption<string> = {
+    label: '──────',
+    disabled: true,
+  };
+  const showPlaceholder = prefilledOptions.length > 0 && autocompleteOptions.length > 0;
+  const options: EuiComboBoxOptionOption<string>[] = [
+    ...prefilledOptions,
+    ...(showPlaceholder ? [placeholderOption] : []),
+    ...autocompleteOptions,
+  ];
 
   const storeFieldOperators = (selectedValue: string) => {
     const matchingPath =
       paths.find((path) => path.path === selectedValue)
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
-    const operators = matchingPath?.operators || [];
+    const operators = matchingPath?.operators ?? prefilledFieldOptions.get(selectedValue) ?? [];
 
     context?.onFieldSelected?.(selectedValue, operators);
   };
