@@ -211,3 +211,5 @@ export type ExportArtifact = {
   download_url: string;
   description: string;
 };
+
+export type ResultColumToPropertyMap<T> = Map<string, keyof T>;

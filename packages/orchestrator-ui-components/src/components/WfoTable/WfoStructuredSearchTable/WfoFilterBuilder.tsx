@@ -10,6 +10,7 @@ import { SearchParams, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay, PathInfo } from '@/types';
+import type { ResultColumToPropertyMap } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -51,13 +52,14 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
  */
 type FieldPathInfoMap = Map<string, PathInfo>;
 
-interface WfoFilterBuilderProps {
+interface WfoFilterBuilderProps<T> {
   filterString?: string;
   onUpdateFilterString: (filterString: string) => void;
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
+  resultColumToPropertyMap: ResultColumToPropertyMap<T>;
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -66,14 +68,15 @@ const initialRuleGroup: RuleGroupType = {
   combinator: 'and',
 };
 
-export const WfoFilterBuilder = ({
+export const WfoFilterBuilder = <T,>({
   filterString,
   onUpdateFilterString,
   isValidFilterString = true,
   queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
-}: WfoFilterBuilderProps) => {
+  resultColumToPropertyMap,
+}: WfoFilterBuilderProps<T>) => {
   const getOperatorsFromPathInfo = (fieldInfo?: PathInfo): FullOperator[] => {
     return (fieldInfo?.operators ?? []).map((operator) => {
       const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
@@ -107,7 +110,7 @@ export const WfoFilterBuilder = ({
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
               }}
-              context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
+              context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap, resultColumToPropertyMap }}
               getOperators={(field) => {
                 const pathInfo = fieldPathInfoMap.get(field);
                 return getOperatorsFromPathInfo(pathInfo);

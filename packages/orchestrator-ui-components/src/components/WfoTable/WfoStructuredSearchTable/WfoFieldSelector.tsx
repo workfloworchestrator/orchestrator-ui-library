@@ -11,12 +11,14 @@ import { EntityKind, PathInfo } from '@/types';
 
 export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
   const { field } = rule;
+  const { resultColumToPropertyMap } = context;
   const [selectedValue, setSelectedValue] = useState<string>(field);
   const t = useTranslations('search.page');
   const getOption = (path: string) => ({
     value: path,
     label: path,
   });
+
   const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] => {
     const pathOptions: EuiComboBoxOptionOption<string>[] = [];
 

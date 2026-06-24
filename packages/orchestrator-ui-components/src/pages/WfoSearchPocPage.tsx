@@ -30,12 +30,17 @@ import {
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
-import { EntityKind, Filter, PaginatedSearchResults, RetrieverType, SortOrder } from '@/types';
+import {
+  EntityKind,
+  Filter,
+  PaginatedSearchResults,
+  ResultColumToPropertyMap,
+  RetrieverType,
+  SortOrder,
+} from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
-
-type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
 interface ResultSet<T extends object> {
   items: T[];
@@ -437,6 +442,7 @@ export const WfoSearchPocPage = () => {
         totalItems={totalItems}
         limit={limit}
         hasNextPage={hasNextPage}
+        resultColumToPropertyMap={resultColumToPropertyMap}
       />
     </>
   );
