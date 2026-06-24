@@ -32,6 +32,7 @@ import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchMutation } from '@/rtk';
 import {
   EntityKind,
+  FieldToOperatorMap,
   Filter,
   PaginatedSearchResults,
   ResultColumToPropertyMap,
@@ -112,6 +113,21 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.end_date', 'endDate'],
   ['subscription.note', 'note'],
   ['subscription.metadata', 'metadata'],
+]);
+
+/* These options will be added as the first options in the field dropdown in the FieldSelector */
+const prefilledFieldOptions: FieldToOperatorMap = new Map([
+  ['subscription.subscription_id', ['eq', 'neq', 'like']],
+  ['subscription.description', ['eq', 'neq', 'like']],
+  ['subscription.status', ['eq', 'neq', 'like']],
+  ['subscription.insync', ['eq', 'neq']],
+  ['subscription.product.name', ['eq', 'neq', 'like']],
+  ['subscription.product.tag', ['eq', 'neq', 'like']],
+  ['subscription.customer_name', ['eq', 'neq', 'like']],
+  ['subscription.customer_abbreviation', ['eq', 'neq', 'like']],
+  ['subscription.start_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
+  ['subscription.end_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
+  ['subscription.note', ['eq', 'neq', 'like']],
 ]);
 
 export const WfoSearchPocPage = () => {
@@ -442,7 +458,7 @@ export const WfoSearchPocPage = () => {
         totalItems={totalItems}
         limit={limit}
         hasNextPage={hasNextPage}
-        resultColumToPropertyMap={resultColumToPropertyMap}
+        prefilledFieldOptions={prefilledFieldOptions}
       />
     </>
   );

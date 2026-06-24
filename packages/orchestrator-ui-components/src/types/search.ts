@@ -213,3 +213,4 @@ export type ExportArtifact = {
 };
 
 export type ResultColumToPropertyMap<T> = Map<string, keyof T>;
+export type FieldToOperatorMap = Map<string, string[]>;

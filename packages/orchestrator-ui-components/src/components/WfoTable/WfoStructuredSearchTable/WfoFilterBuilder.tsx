@@ -10,7 +10,7 @@ import { SearchParams, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay } from '@/types';
-import type { ResultColumToPropertyMap } from '@/types';
+import type { FieldToOperatorMap } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -50,16 +50,15 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
 /* TODO: Add the missing operators
 ['has_component', 'not_has_component'];
  */
-type FieldToOperatorMap = Map<string, string[]>;
 
-interface WfoFilterBuilderProps<T> {
+interface WfoFilterBuilderProps {
   filterString?: string;
   onUpdateFilterString: (filterString: string) => void;
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
-  resultColumToPropertyMap: ResultColumToPropertyMap<T>;
+  prefilledFieldOptions: FieldToOperatorMap;
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -68,15 +67,15 @@ const initialRuleGroup: RuleGroupType = {
   combinator: 'and',
 };
 
-export const WfoFilterBuilder = <T,>({
+export const WfoFilterBuilder = ({
   filterString,
   onUpdateFilterString,
   isValidFilterString = true,
   queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
-  resultColumToPropertyMap,
-}: WfoFilterBuilderProps<T>) => {
+  prefilledFieldOptions,
+}: WfoFilterBuilderProps) => {
   const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
     return (operators ?? []).map((operator) => {
       const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
@@ -90,7 +89,7 @@ export const WfoFilterBuilder = <T,>({
     getWfoStructuredSearchTableStyles,
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
-  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(new Map());
+  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
   const handleFieldSelected = (field: string, operators: string[]) => {
     setFieldToOperatorMap((previousMap) => {
@@ -108,7 +107,7 @@ export const WfoFilterBuilder = <T,>({
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
               }}
-              context={{ onFieldSelected: handleFieldSelected, resultColumToPropertyMap }}
+              context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
               getOperators={(field) => {
                 const operators = fieldToOperatorMap.get(field);
                 return mapOperatorsToRQBOperatorOptions(operators);

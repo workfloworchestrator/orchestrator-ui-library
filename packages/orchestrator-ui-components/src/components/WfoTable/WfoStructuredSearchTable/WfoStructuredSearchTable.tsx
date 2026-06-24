@@ -40,7 +40,7 @@ import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 import { getFormFieldsBaseStyle } from '@/theme';
-import { ResultColumToPropertyMap, RetrieverType } from '@/types';
+import { FieldToOperatorMap, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
@@ -101,7 +101,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   totalItems: number | false;
   limit: number;
   hasNextPage: boolean;
-  resultColumToPropertyMap: ResultColumToPropertyMap<T>;
+  prefilledFieldOptions: FieldToOperatorMap;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -131,7 +131,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   dataSorting,
   hasNextPage,
   data,
-  resultColumToPropertyMap,
+  prefilledFieldOptions,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -206,14 +206,14 @@ export const WfoStructuredSearchTable = <T extends object>({
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <WfoFilterBuilder<T>
+          <WfoFilterBuilder
             filterString={filterString}
             onUpdateFilterString={onUpdateFilterString}
             isValidFilterString={isValidFilterString}
             queryBuilderRuleGroup={queryBuilderRuleGroup}
             onUpdateQueryBuilder={onUpdateQueryBuilder}
             handleSearch={handleSearch}
-            resultColumToPropertyMap={resultColumToPropertyMap}
+            prefilledFieldOptions={prefilledFieldOptions}
           />
         </EuiFlexItem>
       </EuiFlexGroup>
