@@ -9,7 +9,7 @@ import {
   WorkflowTarget,
 } from '../../../types';
 import {
-  flattenArrayProps,
+  flattenSubscriptionActionProps,
   getFieldFromProductBlockInstanceValues,
   getLastUncompletedProcess,
   getLatestTaskDate,
@@ -61,7 +61,7 @@ describe('getProductBlockTitle()', () => {
   });
 });
 
-describe('flattenArrayProps', () => {
+describe('flattenSubscriptionActionProps', () => {
   it('should flatten an object with array values into a comma-separated string', () => {
     const action: SubscriptionAction = {
       name: 'action name',
@@ -69,7 +69,7 @@ describe('flattenArrayProps', () => {
       usable_when: ['Status1', 'Status2', 'Status3'],
     };
 
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
 
     expect(result).toEqual({
       name: 'action name',
@@ -78,12 +78,47 @@ describe('flattenArrayProps', () => {
     });
   });
 
+  it('should flatten locked_relations_detail objects using subscription_description', () => {
+    const action: SubscriptionAction = {
+      name: 'action name',
+      description: 'action description',
+      locked_relations_detail: [
+        { subscription_id: 'uuid-1', subscription_description: 'Sub A' },
+        { subscription_id: 'uuid-2', subscription_description: 'Sub B' },
+      ],
+    };
+
+    const result = flattenSubscriptionActionProps(action);
+
+    expect(result).toEqual({
+      name: 'action name',
+      description: 'action description',
+      locked_relations_detail: 'Sub A, Sub B',
+    });
+  });
+
+  it('should flatten locked_relations UUIDs', () => {
+    const action: SubscriptionAction = {
+      name: 'action name',
+      description: 'action description',
+      locked_relations: ['uuid-1', 'uuid-2'],
+    };
+
+    const result = flattenSubscriptionActionProps(action);
+
+    expect(result).toEqual({
+      name: 'action name',
+      description: 'action description',
+      locked_relations: 'uuid-1, uuid-2',
+    });
+  });
+
   it('should handle an object with non-array values', () => {
     const action: SubscriptionAction = {
       name: 'action name',
       description: 'action description',
     };
-    const result = flattenArrayProps(action);
+    const result = flattenSubscriptionActionProps(action);
     expect(result).toEqual({
       name: 'action name',
       description: 'action description',

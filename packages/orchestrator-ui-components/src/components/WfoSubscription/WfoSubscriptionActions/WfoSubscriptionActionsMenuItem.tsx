@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiContextMenuItem, EuiLoadingSpinner, EuiToolTip } from '@elastic/eui';
 
-import { flattenArrayProps } from '@/components';
+import { flattenSubscriptionActionProps } from '@/components';
 import { WfoSubscriptionActionExpandableMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionExpandableMenuItem';
 import { getSubscriptionActionStyles } from '@/components/WfoSubscription/WfoSubscriptionActions/styles';
 import { useCheckEngineStatus, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -56,9 +56,45 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
     );
   };
 
+  // TODO: remove UUID-only fallback when orchestrator-core 6.0.0 is released and only use the _detail variants
+  const getRelationsList = () => {
+    const detailRelations = [
+      ...(subscriptionAction.locked_relations_detail ?? []),
+      ...(subscriptionAction.unterminated_in_use_by_subscriptions_detail ?? []),
+    ];
+    if (detailRelations.length > 0) {
+      return (
+        <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
+          {detailRelations.map((r) => (
+            <li key={r.subscription_id}>{r.subscription_description || r.subscription_id}</li>
+          ))}
+        </ul>
+      );
+    }
+    const uuidRelations = [
+      ...(subscriptionAction.locked_relations ?? []),
+      ...(subscriptionAction.unterminated_in_use_by_subscriptions ?? []),
+    ];
+    if (uuidRelations.length === 0) return null;
+    return (
+      <ul css={{ margin: 0, paddingLeft: 16, listStyleType: 'disc' }}>
+        {uuidRelations.map((id) => (
+          <li key={id}>{id}</li>
+        ))}
+      </ul>
+    );
+  };
+
   const tooltipIt = (actionItem: React.ReactNode) => {
     if (!subscriptionActionReason) return actionItem;
-    const tooltipContent = t(subscriptionActionReason, flattenArrayProps(subscriptionAction));
+    const relationsList = getRelationsList();
+    const tooltipContent =
+      relationsList ?
+        <span css={{ whiteSpace: 'pre-line' }}>
+          {t(subscriptionActionReason, flattenSubscriptionActionProps(subscriptionAction))}
+          {relationsList}
+        </span>
+      : t(subscriptionActionReason, flattenSubscriptionActionProps(subscriptionAction));
 
     return (
       <div css={tooltipMenuItemStyle}>

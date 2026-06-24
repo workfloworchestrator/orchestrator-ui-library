@@ -10,6 +10,7 @@ import {
   SortOrder,
   SubscriptionAction,
   SubscriptionDetailProcess,
+  SubscriptionRelation,
   WorkflowTarget,
 } from '@/types';
 
@@ -40,16 +41,21 @@ export const getProductBlockTitle = (instanceValues: FieldValue[]): string | num
   return title;
 };
 
-export const flattenArrayProps = (action: SubscriptionAction): TranslationValues => {
+const toLabel = (item: string | SubscriptionRelation): string =>
+  typeof item === 'object' ? (item.subscription_description ?? item.subscription_id) : item;
+
+export const flattenSubscriptionActionProps = (action?: SubscriptionAction | null): TranslationValues => {
+  if (!action) return {};
+
   const flatObject: TranslationValues = {};
   for (const [key, value] of Object.entries(action)) {
     if (Array.isArray(value)) {
-      flatObject[key] = value.join(', ');
-    } else {
+      flatObject[key] = value.map(toLabel).join(', ');
+    } else if (typeof value !== 'object' || value === null) {
       flatObject[key] = value;
     }
   }
-  return action ? flatObject : {};
+  return flatObject;
 };
 
 export const getWorkflowTargetColor = (workflowTarget: WorkflowTarget, theme: EuiThemeComputed) => {

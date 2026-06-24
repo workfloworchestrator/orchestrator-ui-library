@@ -366,14 +366,14 @@
         "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
         "subscription": {
           "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
-          "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions: {unterminated_in_use_by_subscriptions}",
+          "no_modify_in_use_by_subscription": "Deze subscription kan niet worden {gewijzigd} omdat het wordt gebruikt in andere subscriptions:",
           "no_modify_invalid_status": "Deze subscription kan niet worden gewijzigd vanwege de status: {status}. Alleen abonnementen met de status {usable_when} kunnen worden {action}.",
           "no_modify_workflow": "Deze subscription kan niet worden gewijzigd omdat het product geen modify workflows heeft.",
           "no_termination_workflow": "Deze subscription kan niet worden beëindigd omdat het product geen termination workflows heeft.",
           "no_validate_workflow": "Deze subscription kan niet worden gevalideerd omdat het product geen validate workflows heeft.",
           "not_in_sync": "Deze subscription kan niet worden gewijzigd omdat het niet in-sync is. Dit betekent dat er een fout zit in de registratie van de subscription of dat het wordt gewijzigd door een andere workflow.",
-          "relations_not_in_sync": "Deze subscription kan niet worden gewijzigd omdat sommige gerelateerde subscriptions niet in-sync zijn. Geblokkeerde subscriptions: {locked_relations}",
-          "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions: {unterminated_parents}",
+          "relations_not_in_sync": "Deze subscription kan niet worden gewijzigd omdat sommige gerelateerde subscriptions niet in-sync zijn.\n\nGeblokkeerde subscriptions:",
+          "no_modify_subscription_in_use_by_others": "Deze subscription kan niet worden gewijzigd omdat het in gebruik is door een of meer andere subscriptions.\n\nSubscriptions:",
           "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren",
           "running_process": "Deze actie kan niet worden gestart omdat deze subscription al een lopend proces of taak heeft."
         }
