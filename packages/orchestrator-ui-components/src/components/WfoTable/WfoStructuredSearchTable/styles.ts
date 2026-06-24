@@ -65,7 +65,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
 
   const ruleGroupContainerBase = {
     padding: theme.base / 2,
-    marginTop: theme.base / 4,
+    border: `1px solid ${theme.colors.borderBaseSubdued}`,
   };
 
   const ruleGroupContainerBlueStyles = css({
@@ -97,12 +97,12 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
   const removeGroupActionStyles = css({
     backgroundColor: theme.colors.backgroundLightPrimary,
     width: '40px',
-    marginTop: theme.base / 4,
     height: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomRightRadius: theme.border.radius.small,
     borderTopRightRadius: theme.border.radius.small,
+    border: `thin solid ${theme.colors.borderBasePlain}`,
     cursor: 'pointer',
   });
 

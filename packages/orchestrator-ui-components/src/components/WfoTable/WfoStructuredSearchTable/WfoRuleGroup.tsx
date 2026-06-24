@@ -33,9 +33,9 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
   const { addRule, path, schema, disabled, ruleGroup, addGroup } = ruleGroupProps;
 
   return (
-    <EuiFlexGroup gutterSize={'none'} alignItems="center">
+    <EuiFlexGroup gutterSize={'none'} responsive={false} alignItems="center">
       <EuiFlexItem>
-        <EuiFlexGroup direction="column" gutterSize="s" css={getGroupContainerStyles()}>
+        <EuiFlexGroup direction="column" css={getGroupContainerStyles()}>
           <EuiFlexItem>
             <EuiFlexGroup gutterSize="none">
               <RuleGroupHeaderComponents {...ruleGroupProps} />
