@@ -15,6 +15,7 @@ export default defineConfig([
         'coverage',
         '.next',
         'next.config.js',
+        'next-env.d.ts',
     ]),
     {
         files: ['**/*.{js,ts,jsx,tsx}'],
