@@ -330,23 +330,34 @@ export const WfoSearchPocPage = () => {
         : { items: [] };
 
       setResultSet((currentResultSet): ResultSet<SubscriptionListItem> => {
+        // If we are paginating we add to the current result. If we are doing a new search the result set should be overwritten.
+        if (searchParams?.cursor) {
+          return {
+            items:
+              currentResultSet?.items ? [...currentResultSet.items, ...subscriptionListItems] : subscriptionListItems,
+            rowExpandingConfiguration: {
+              uniqueRowId: 'subscriptionId',
+              uniqueRowIdToExpandedRowMap:
+                currentResultSet?.rowExpandingConfiguration?.uniqueRowIdToExpandedRowMap ?
+                  {
+                    ...currentResultSet.rowExpandingConfiguration.uniqueRowIdToExpandedRowMap,
+                    ...uniqueRowIdToExpandedRowMap,
+                  }
+                : uniqueRowIdToExpandedRowMap || {},
+            },
+          };
+        }
+
         return {
-          items:
-            currentResultSet?.items ? [...currentResultSet.items, ...subscriptionListItems] : subscriptionListItems,
+          items: subscriptionListItems,
           rowExpandingConfiguration: {
             uniqueRowId: 'subscriptionId',
-            uniqueRowIdToExpandedRowMap:
-              currentResultSet?.rowExpandingConfiguration?.uniqueRowIdToExpandedRowMap ?
-                {
-                  ...currentResultSet.rowExpandingConfiguration.uniqueRowIdToExpandedRowMap,
-                  ...uniqueRowIdToExpandedRowMap,
-                }
-              : uniqueRowIdToExpandedRowMap || {},
+            uniqueRowIdToExpandedRowMap: uniqueRowIdToExpandedRowMap || {},
           },
         };
       });
 
-      setTotalItems(data?.cursor.total_items || false);
+      setTotalItems(data?.cursor?.total_items || false);
     });
   };
 
