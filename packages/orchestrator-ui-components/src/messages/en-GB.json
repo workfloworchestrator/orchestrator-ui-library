@@ -243,6 +243,12 @@
       "createScheduleButton": "Create schedule"
     }
   },
+  "workflowGuide": {
+    "title": "User guide of {workflowName}",
+    "noGuideAvailable": "No user guide is available for this workflow/task",
+    "show": "Show user guide",
+    "hide": "Hide user guide"
+  },
   "processes": {
     "index": {
       "workflowName": "Workflow",

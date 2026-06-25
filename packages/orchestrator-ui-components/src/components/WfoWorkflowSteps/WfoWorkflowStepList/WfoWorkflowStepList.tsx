@@ -21,6 +21,7 @@ export interface WfoWorkflowStepListProps {
   traceBack: string | null;
   startedAt: string;
   processId: string;
+  workflowName?: string;
   isTask: boolean;
   userInputForm?: InputForm;
   userPermissions: FormUserPermissions;
@@ -40,7 +41,16 @@ export const WfoProcessSubscriptionDelta = ({ processId }: { processId: string }
 
 export const WfoWorkflowStepList = React.forwardRef(
   (
-    { steps = [], lastStatus, traceBack, processId, isTask, userInputForm, userPermissions }: WfoWorkflowStepListProps,
+    {
+      steps = [],
+      lastStatus,
+      traceBack,
+      processId,
+      workflowName,
+      isTask,
+      userInputForm,
+      userPermissions,
+    }: WfoWorkflowStepListProps,
     reference: Ref<WfoStepListRef>,
   ) => {
     const [showHiddenKeys, setShowHiddenKeys] = useState(false);
@@ -150,6 +160,7 @@ export const WfoWorkflowStepList = React.forwardRef(
             isTask={isTask}
             onToggleExpandStepListItem={toggleExpandedStateStepListItem}
             processId={processId}
+            workflowName={workflowName}
             onTriggerExpandStepListItem={handleExpandStepListItem}
             userPermissions={userPermissions}
           />

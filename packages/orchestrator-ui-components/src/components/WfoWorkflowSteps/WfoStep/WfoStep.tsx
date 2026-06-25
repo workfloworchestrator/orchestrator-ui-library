@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
-import { WfoJsonCodeBlock, WfoMonacoCodeBlock, WfoTableCodeBlock } from '@/components';
+import { WfoFormWithUserGuide, WfoJsonCodeBlock, WfoMonacoCodeBlock, WfoTableCodeBlock } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState, FormUserPermissions } from '@/types';
@@ -28,6 +28,7 @@ export interface WfoStepProps {
   isTask: boolean;
   isStartStep?: boolean;
   processId?: string;
+  workflowName?: string;
   userPermissions: FormUserPermissions;
 }
 
@@ -42,6 +43,7 @@ export const WfoStep = React.forwardRef(
       isStartStep = false,
       isTask,
       processId,
+      workflowName,
       userPermissions,
     }: WfoStepProps,
     ref: LegacyRef<HTMLDivElement>,
@@ -165,12 +167,14 @@ export const WfoStep = React.forwardRef(
           {step.status === StepStatus.SUSPEND && userInputForm && (
             <EuiFlexGroup direction="column" gutterSize="none">
               <EuiFlexItem grow={1}>
-                <WfoStepForm
-                  userInputForm={userInputForm}
-                  isTask={isTask}
-                  processId={processId ?? ''}
-                  userPermissions={userPermissions}
-                />
+                <WfoFormWithUserGuide workflowName={workflowName}>
+                  <WfoStepForm
+                    userInputForm={userInputForm}
+                    isTask={isTask}
+                    processId={processId ?? ''}
+                    userPermissions={userPermissions}
+                  />
+                </WfoFormWithUserGuide>
               </EuiFlexItem>
               <EuiFlexItem grow={1}>
                 {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}

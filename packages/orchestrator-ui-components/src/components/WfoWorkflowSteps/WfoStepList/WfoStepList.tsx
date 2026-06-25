@@ -20,6 +20,7 @@ export type WfoStepListProps = {
   onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
   isTask: boolean;
   processId: string;
+  workflowName?: string;
   userPermissions: FormUserPermissions;
 };
 
@@ -32,6 +33,7 @@ export const WfoStepList = React.forwardRef(
       onTriggerExpandStepListItem,
       isTask,
       processId,
+      workflowName,
       userPermissions,
     }: WfoStepListProps,
     reference: Ref<WfoStepListRef>,
@@ -97,6 +99,7 @@ export const WfoStepList = React.forwardRef(
               isStartStep={index === 0}
               isTask={isTask}
               processId={processId}
+              workflowName={workflowName}
               userPermissions={userPermissions}
             />
           </div>

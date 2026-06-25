@@ -243,6 +243,12 @@
       "createScheduleButton": "Maak schema"
     }
   },
+  "workflowGuide": {
+    "title": "Gebruikershandleiding van {workflowName}",
+    "noGuideAvailable": "Er is geen gebruikershandleiding beschikbaar voor deze workflow/taak",
+    "show": "Toon gebruikershandleiding",
+    "hide": "Verberg gebruikershandleiding"
+  },
   "processes": {
     "index": {
       "workflowName": "Workflow naam",
