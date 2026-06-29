@@ -51,7 +51,7 @@
     "prism-themes": "^1.9.0",
     "pydantic-forms": "^3.0.1",
     "react-diff-view": "^3.2.0",
-    "react-draggable": "^4.4.6",
+    "react-draggable": "^4.7.0",
     "react-querybuilder": "^8.18.0",
     "react-redux": "^9.3.0",
     "react-select": "^5.8.0",
