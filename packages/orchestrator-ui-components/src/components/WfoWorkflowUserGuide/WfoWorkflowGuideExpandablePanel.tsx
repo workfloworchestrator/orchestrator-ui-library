@@ -5,13 +5,12 @@ import { useTranslations } from 'next-intl';
 import {
   EuiFlexGroup,
   EuiFlexItem,
-  EuiHorizontalRule,
   EuiIcon,
   EuiLoadingSpinner,
   EuiMarkdownFormat,
   EuiPanel,
   EuiText,
-  EuiTitle,
+  useIsWithinBreakpoints,
 } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -28,21 +27,40 @@ interface WfoWorkflowUserGuideProps {
 interface WfoUserGuideToggleStripProps {
   onToggle: () => void;
   ariaLabel: string;
-  noLeftBorder?: boolean;
+  isBigScreen: boolean;
+  noLeadingBorder?: boolean;
   children: ReactNode;
 }
 
-// A thin, full-height clickable strip used to expand the guide (collapsed state) or collapse
-// it (expanded state). The icon(s) it shows are passed as children.
-const WfoWorkflowGuideToggleStrip = ({ onToggle, ariaLabel, noLeftBorder, children }: WfoUserGuideToggleStripProps) => {
-  const { fullHeightStyle, toggleStripContainerStyle, toggleStripPanelStyle, noLeftBorderStyle } =
-    useWithOrchestratorTheme(getStyles);
+const WfoWorkflowGuideToggleStrip = ({
+  onToggle,
+  ariaLabel,
+  isBigScreen,
+  noLeadingBorder,
+  children,
+}: WfoUserGuideToggleStripProps) => {
+  const {
+    fullHeightStyle,
+    toggleStripContainerStyle,
+    toggleStripContainerHorizontalStyle,
+    toggleStripPanelStyle,
+    noLeftBorderStyle,
+    noBottomBorderStyle,
+  } = useWithOrchestratorTheme(getStyles);
 
   return (
-    <EuiFlexItem grow={false} onClick={onToggle} aria-label={ariaLabel} css={toggleStripContainerStyle}>
-      <EuiPanel hasShadow={false} css={[toggleStripPanelStyle, noLeftBorder && noLeftBorderStyle]}>
+    <EuiFlexItem
+      grow={false}
+      onClick={onToggle}
+      aria-label={ariaLabel}
+      css={isBigScreen ? toggleStripContainerStyle : toggleStripContainerHorizontalStyle}
+    >
+      <EuiPanel
+        hasShadow={false}
+        css={[toggleStripPanelStyle, noLeadingBorder && (isBigScreen ? noLeftBorderStyle : noBottomBorderStyle)]}
+      >
         <EuiFlexGroup
-          direction="column"
+          direction={isBigScreen ? 'column' : 'row'}
           alignItems="center"
           gutterSize="s"
           justifyContent="center"
@@ -55,17 +73,20 @@ const WfoWorkflowGuideToggleStrip = ({ onToggle, ariaLabel, noLeftBorder, childr
   );
 };
 
-const WfoWorkflowGuideMarkdown = ({ workflowName }: { workflowName: string }) => {
+const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName: string; isBigScreen: boolean }) => {
   const t = useTranslations('workflowGuide');
-  const { guideBodyStyle } = useWithOrchestratorTheme(getStyles);
+  const { guideBodyStyle, guidePanelStyle, guideStackedBodyStyle, guideStackedPanelStyle } =
+    useWithOrchestratorTheme(getStyles);
   const { data, isLoading, isError } = useGetWorkflowGuideQuery({ workflowName });
   const content = data?.content ?? '';
 
   return (
-    <div css={guideBodyStyle}>
+    <div css={isBigScreen ? guideBodyStyle : guideStackedBodyStyle}>
       {(isLoading && <EuiLoadingSpinner size="m" />)
         || ((isError || !content) && <EuiText color="subdued">{t('noGuideAvailable')}</EuiText>) || (
-          <EuiMarkdownFormat>{content}</EuiMarkdownFormat>
+            <EuiPanel paddingSize="m" hasShadow css={isBigScreen ? guidePanelStyle : guideStackedPanelStyle}>
+                <EuiMarkdownFormat>{content}</EuiMarkdownFormat>
+            </EuiPanel>
         )}
     </div>
   );
@@ -73,48 +94,53 @@ const WfoWorkflowGuideMarkdown = ({ workflowName }: { workflowName: string }) =>
 
 export const WfoWorkflowGuideExpandablePanel = ({ workflowName, isExpanded, onToggle }: WfoWorkflowUserGuideProps) => {
   const t = useTranslations('workflowGuide');
-  const { fullHeightStyle, guidePanelStyle } = useWithOrchestratorTheme(getStyles);
+  const { fullHeightStyle, guideExpandedItemStyle, guideExpandedFillStyle } = useWithOrchestratorTheme(getStyles);
+  const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
 
   const OpenGuideButton = () => (
-    <>
-      <EuiFlexItem grow={false}>
-        <EuiIcon type="arrowLeft" size="l" color="primary" />
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <EuiIcon type="info" size="xl" color="primary" />
-      </EuiFlexItem>
-    </>
+    <EuiFlexItem grow={false}>
+        <EuiFlexGroup gutterSize="xs" alignItems="center" direction={isBigScreen ? 'column' : 'row'}>
+            <EuiIcon type={isBigScreen ? 'arrowLeft' : 'arrowDown'} size="xxl" color="primary" />
+            <EuiIcon type={'info'} size="xxl" color="primary" />
+        </EuiFlexGroup>
+    </EuiFlexItem>
   );
 
   const CloseGuideButton = () => (
     <EuiFlexItem grow={false}>
-      <EuiIcon type="arrowRight" size="l" color="primary" />
+      <EuiIcon type={isBigScreen ? 'arrowRight' : 'arrowUp'} size="xl" color="primary" />
     </EuiFlexItem>
   );
 
   if (!isExpanded) {
     return (
-      <WfoWorkflowGuideToggleStrip onToggle={onToggle} ariaLabel={t('show')}>
+      <WfoWorkflowGuideToggleStrip onToggle={onToggle} ariaLabel={t('show')} isBigScreen={isBigScreen}>
         <OpenGuideButton />
       </WfoWorkflowGuideToggleStrip>
     );
   }
 
-  return (
-    <EuiFlexItem grow={1}>
-      <EuiFlexGroup gutterSize="none" css={fullHeightStyle}>
-        <EuiPanel paddingSize="m" hasShadow css={guidePanelStyle}>
-          <EuiTitle>
-            <h3>{t('title', { workflowName })}</h3>
-          </EuiTitle>
-          <EuiHorizontalRule margin="s" />
-          <WfoWorkflowGuideMarkdown workflowName={workflowName} />
-        </EuiPanel>
+  if (isBigScreen) {
+    return (
+        <EuiFlexItem grow={1} css={guideExpandedItemStyle}>
+            <EuiFlexGroup gutterSize="none" css={[fullHeightStyle, guideExpandedFillStyle]}>
+                <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
+                <WfoWorkflowGuideToggleStrip onToggle={onToggle} ariaLabel={t('hide')} isBigScreen noLeadingBorder>
+                    <CloseGuideButton />
+                </WfoWorkflowGuideToggleStrip>
+            </EuiFlexGroup>
+        </EuiFlexItem>
+    );
+  }
 
-        <WfoWorkflowGuideToggleStrip onToggle={onToggle} ariaLabel={t('hide')} noLeftBorder>
-          <CloseGuideButton />
-        </WfoWorkflowGuideToggleStrip>
-      </EuiFlexGroup>
-    </EuiFlexItem>
+  return (
+      <EuiFlexItem grow={false}>
+          <EuiFlexGroup direction="column" gutterSize="none">
+              <WfoWorkflowGuideToggleStrip onToggle={onToggle} ariaLabel={t('hide')} isBigScreen={isBigScreen} noLeadingBorder>
+                  <CloseGuideButton />
+              </WfoWorkflowGuideToggleStrip>
+              <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
+          </EuiFlexGroup>
+      </EuiFlexItem>
   );
 };

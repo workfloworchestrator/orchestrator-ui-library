@@ -20,6 +20,7 @@ const storybookConfig = {
   useWebSockets: false,
   useThemeToggle: false,
   showWorkflowInformationLink: false,
+  showWorkflowUserGuide: true,
   workflowInformationLinkUrl: '',
   enableSupportMenuItem: false,
   supportMenuItemUrl: '',

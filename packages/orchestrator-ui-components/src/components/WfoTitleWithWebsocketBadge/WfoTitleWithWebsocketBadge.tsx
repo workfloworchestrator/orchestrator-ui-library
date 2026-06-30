@@ -8,18 +8,26 @@ import { useGetOrchestratorConfig } from '@/hooks';
 interface WfoTitleWithWebsocketBadgeProps {
   title: string | ReactNode;
   wsUrl?: string;
+  extraElement?: ReactNode;
 }
 
-export const WfoTitleWithWebsocketBadge = ({ title, wsUrl = undefined }: WfoTitleWithWebsocketBadgeProps) => {
+export const WfoTitleWithWebsocketBadge = ({
+  title,
+  wsUrl = undefined,
+  extraElement,
+}: WfoTitleWithWebsocketBadgeProps) => {
   const { useWebSockets } = useGetOrchestratorConfig();
 
   const pageTitle =
-    useWebSockets ?
-      <EuiFlexGroup alignItems="center" gutterSize="s">
+    useWebSockets || extraElement ?
+      <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
         <EuiFlexItem grow={false}>{title}</EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <WfoWebsocketStatusBadge wsUrl={wsUrl} />
-        </EuiFlexItem>
+        {useWebSockets && (
+          <EuiFlexItem grow={false}>
+            <WfoWebsocketStatusBadge wsUrl={wsUrl} />
+          </EuiFlexItem>
+        )}
+        {extraElement && <EuiFlexItem grow={false}>{extraElement}</EuiFlexItem>}
       </EuiFlexGroup>
     : title;
 

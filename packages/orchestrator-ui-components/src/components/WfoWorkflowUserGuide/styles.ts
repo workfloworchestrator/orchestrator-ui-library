@@ -8,7 +8,13 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   });
 
   const toggleStripContainerStyle = css({
-    width: theme.base * 3,
+    width: theme.base * 4,
+    cursor: 'pointer',
+  });
+
+  const toggleStripContainerHorizontalStyle = css({
+    width: '100%',
+    height: theme.base * 4,
     cursor: 'pointer',
   });
 
@@ -23,11 +29,18 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     },
   });
 
+  const guideExpandedItemStyle = css({
+    position: 'relative',
+  });
+
+  const guideExpandedFillStyle = css({
+    position: 'absolute',
+    inset: 0,
+  });
+
   const guidePanelStyle = css({
     height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
+    overflowY: 'auto',
     border: `2px dashed ${theme.colors.backgroundLightPrimary}`,
     borderRightWidth: 0,
   });
@@ -35,19 +48,40 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const guideBodyStyle = css({
     flex: 1,
     minHeight: 0,
-    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
   });
 
   const noLeftBorderStyle = css({
     borderLeftWidth: 0,
   });
 
+  const noBottomBorderStyle = css({
+    borderBottomWidth: 0,
+  });
+
+  const guideStackedBodyStyle = css({
+    maxHeight: '50vh',
+    overflowY: 'auto',
+  });
+
+  const guideStackedPanelStyle = css({
+    border: `2px dashed ${theme.colors.backgroundLightPrimary}`,
+    borderTopWidth: 0,
+  });
+
   return {
     fullHeightStyle,
     toggleStripContainerStyle,
+    toggleStripContainerHorizontalStyle,
     toggleStripPanelStyle,
     noLeftBorderStyle,
+    noBottomBorderStyle,
     guidePanelStyle,
     guideBodyStyle,
+    guideStackedBodyStyle,
+    guideStackedPanelStyle,
+    guideExpandedItemStyle,
+    guideExpandedFillStyle,
   };
 };

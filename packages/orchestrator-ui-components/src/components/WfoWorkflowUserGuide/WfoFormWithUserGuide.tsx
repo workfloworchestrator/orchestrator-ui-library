@@ -1,6 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, useIsWithinBreakpoints } from '@elastic/eui';
+
+import { useGetOrchestratorConfig } from '@/hooks';
 
 import { WfoWorkflowGuideExpandablePanel } from './WfoWorkflowGuideExpandablePanel';
 
@@ -9,25 +11,28 @@ interface WfoFormWithUserGuideProps {
   children: ReactNode;
 }
 
-// Wraps a user-input form and shows the collapsible workflow/task user guide beside it.
-// When the SHOW_WORKFLOW_USER_GUIDE feature flag is off (or there is no workflow name) the
-// form is rendered unchanged. The guide stays next to the form on narrow screens too
-// (responsive={false}) so both remain visible together.
 export const WfoFormWithUserGuide = ({ workflowName, children }: WfoFormWithUserGuideProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const isStacked = useIsWithinBreakpoints(['xs', 's', 'm', 'l']);
+  const { showWorkflowUserGuide } = useGetOrchestratorConfig();
 
-  if (!workflowName) {
+  if (!workflowName || !showWorkflowUserGuide) {
     return <>{children}</>;
   }
 
+  const workflowGuideExpandablePanel = (
+    <WfoWorkflowGuideExpandablePanel
+      workflowName={workflowName}
+      isExpanded={isExpanded}
+      onToggle={() => setIsExpanded((expanded) => !expanded)}
+    />
+  );
+
   return (
-    <EuiFlexGroup gutterSize="none">
+    <EuiFlexGroup gutterSize="s" direction={isStacked ? 'column' : 'row'}>
+      {isStacked && workflowGuideExpandablePanel}
       <EuiFlexItem grow={true}>{children}</EuiFlexItem>
-      <WfoWorkflowGuideExpandablePanel
-        workflowName={workflowName}
-        isExpanded={isExpanded}
-        onToggle={() => setIsExpanded((expanded) => !expanded)}
-      />
+      {!isStacked && workflowGuideExpandablePanel}
     </EuiFlexGroup>
   );
 };
