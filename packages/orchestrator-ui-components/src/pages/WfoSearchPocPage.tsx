@@ -35,12 +35,17 @@ import {
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useSearchQuery } from '@/rtk';
-import { EntityKind, PaginatedSearchResults, RetrieverType, SortOrder } from '@/types';
+import {
+  EntityKind,
+  FieldToOperatorMap,
+  PaginatedSearchResults,
+  ResultColumToPropertyMap,
+  RetrieverType,
+  SortOrder,
+} from '@/types';
 import { parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
-
-type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
   return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
@@ -114,6 +119,21 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.end_date', 'endDate'],
   ['subscription.note', 'note'],
   ['subscription.metadata', 'metadata'],
+]);
+
+/* These options will be added as the first options in the field dropdown in the FieldSelector */
+const prefilledFieldOptions: FieldToOperatorMap = new Map([
+  ['subscription.subscription_id', ['eq', 'neq', 'like']],
+  ['subscription.description', ['eq', 'neq', 'like']],
+  ['subscription.status', ['eq', 'neq', 'like']],
+  ['subscription.insync', ['eq', 'neq']],
+  ['subscription.product.name', ['eq', 'neq', 'like']],
+  ['subscription.product.tag', ['eq', 'neq', 'like']],
+  ['subscription.customer_name', ['eq', 'neq', 'like']],
+  ['subscription.customer_abbreviation', ['eq', 'neq', 'like']],
+  ['subscription.start_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
+  ['subscription.end_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
+  ['subscription.note', ['eq', 'neq', 'like']],
 ]);
 
 export const WfoSearchPocPage = () => {
@@ -396,6 +416,7 @@ export const WfoSearchPocPage = () => {
         setPageSize={setPageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
+        prefilledFieldOptions={prefilledFieldOptions}
       />
     </>
   );

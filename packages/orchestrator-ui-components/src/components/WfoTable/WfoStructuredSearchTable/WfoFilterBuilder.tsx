@@ -9,7 +9,8 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui'
 import { SearchParams, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { OperatorDisplay, PathInfo } from '@/types';
+import { OperatorDisplay } from '@/types';
+import type { FieldToOperatorMap } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -49,7 +50,6 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
 /* TODO: Add the missing operators
 ['has_component', 'not_has_component'];
  */
-type FieldPathInfoMap = Map<string, PathInfo>;
 
 interface WfoFilterBuilderProps {
   filterString?: string;
@@ -58,6 +58,7 @@ interface WfoFilterBuilderProps {
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
+  prefilledFieldOptions: FieldToOperatorMap;
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -73,9 +74,10 @@ export const WfoFilterBuilder = ({
   queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
+  prefilledFieldOptions,
 }: WfoFilterBuilderProps) => {
-  const getOperatorsFromPathInfo = (fieldInfo?: PathInfo): FullOperator[] => {
-    return (fieldInfo?.operators ?? []).map((operator) => {
+  const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
+    return (operators ?? []).map((operator) => {
       const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
       const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
       return { name: rqbOperator, label: `${symbol} ${description}`, value: rqbOperator };
@@ -87,14 +89,12 @@ export const WfoFilterBuilder = ({
     getWfoStructuredSearchTableStyles,
   );
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
-  const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
+  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
-  const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
-    if (pathInfo) {
-      setFieldPathInfoMap((previousMap) => {
-        return new Map(previousMap).set(field, pathInfo);
-      });
-    }
+  const handleFieldSelected = (field: string, operators: string[]) => {
+    setFieldToOperatorMap((previousMap) => {
+      return new Map(previousMap).set(field, operators);
+    });
   };
 
   return (
@@ -107,10 +107,10 @@ export const WfoFilterBuilder = ({
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
               }}
-              context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
+              context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
               getOperators={(field) => {
-                const pathInfo = fieldPathInfoMap.get(field);
-                return getOperatorsFromPathInfo(pathInfo);
+                const operators = fieldToOperatorMap.get(field);
+                return mapOperatorsToRQBOperatorOptions(operators);
               }}
               controlElements={{
                 fieldSelector: WfoFieldSelector,
