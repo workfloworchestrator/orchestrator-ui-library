@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiText } from '@elastic/eui';
 
-import { WfoError, WfoFormWithUserGuide, WfoLoading } from '@/components';
+import { WfoError, WfoLoading, WfoPageWithUserGuide } from '@/components';
 import { WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
@@ -140,7 +140,7 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
       timelineItems={timeLineItems}
       isLoading={isLoading}
     >
-      <WfoFormWithUserGuide workflowName={processName}>
+      <WfoPageWithUserGuide workflowName={processName}>
         <EuiPanel css={{ backgroundColor: theme.colors.backgroundBaseNeutral }}>
           <EuiFlexGroup gutterSize="none" css={getStepHeaderStyle(false)}>
             <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
@@ -154,7 +154,7 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
               <WfoPydanticForm processName={processName} startProcessPayload={startProcessPayload} isTask={isTask} />
             ) || <WfoLoading />}
         </EuiPanel>
-      </WfoFormWithUserGuide>
+      </WfoPageWithUserGuide>
     </WfoProcessDetail>
   );
 };

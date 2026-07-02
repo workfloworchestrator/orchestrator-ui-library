@@ -1,2 +1,2 @@
 export * from './WfoWorkflowGuideExpandablePanel';
-export * from './WfoFormWithUserGuide';
+export * from './WfoPageWithUserGuide';

@@ -3,9 +3,9 @@ import React, { Ref, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
-  WfoFormWithUserGuide,
   WfoJsonCodeBlock,
   WfoLoading,
+  WfoPageWithUserGuide,
   WfoStepList,
   WfoStepListHeader,
   WfoStepListRef,
@@ -160,7 +160,7 @@ export const WfoWorkflowStepList = React.forwardRef(
         {showRaw && <WfoProcessRawData processId={processId} />}
         {showDelta && <WfoProcessSubscriptionDelta processId={processId} />}
         {!showRaw && !showDelta && (
-          <WfoFormWithUserGuide workflowName={workflowName}>
+          <WfoPageWithUserGuide workflowName={workflowName}>
             <WfoStepList
               ref={reference}
               stepListItems={stepListItems}
@@ -172,7 +172,7 @@ export const WfoWorkflowStepList = React.forwardRef(
               onTriggerExpandStepListItem={handleExpandStepListItem}
               userPermissions={userPermissions}
             />
-          </WfoFormWithUserGuide>
+          </WfoPageWithUserGuide>
         )}
       </>
     );

@@ -11,9 +11,9 @@ interface WfoFormWithUserGuideProps {
   children: ReactNode;
 }
 
-export const WfoFormWithUserGuide = ({ workflowName, children }: WfoFormWithUserGuideProps) => {
+export const WfoPageWithUserGuide = ({ workflowName, children }: WfoFormWithUserGuideProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const isStacked = useIsWithinBreakpoints(['xs', 's', 'm', 'l']);
+  const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
   const { showWorkflowUserGuide } = useGetOrchestratorConfig();
 
   if (!workflowName || !showWorkflowUserGuide) {
@@ -29,10 +29,10 @@ export const WfoFormWithUserGuide = ({ workflowName, children }: WfoFormWithUser
   );
 
   return (
-    <EuiFlexGroup gutterSize="s" direction={isStacked ? 'column' : 'row'}>
-      {isStacked && workflowGuideExpandablePanel}
+    <EuiFlexGroup gutterSize="s" direction={isBigScreen ? 'row' : 'column'}>
+      {!isBigScreen && workflowGuideExpandablePanel}
       <EuiFlexItem grow={true}>{children}</EuiFlexItem>
-      {!isStacked && workflowGuideExpandablePanel}
+      {isBigScreen && workflowGuideExpandablePanel}
     </EuiFlexGroup>
   );
 };
