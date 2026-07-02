@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiText } from '@elastic/eui';
 
-import { WfoError, WfoLoading } from '@/components';
+import { WfoError, WfoPageWithUserGuide } from '@/components';
 import { WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { WfoStepStatusIcon } from '@/components/WfoWorkflowSteps';
 import { getWorkflowStepsStyles } from '@/components/WfoWorkflowSteps/styles';
@@ -140,25 +140,21 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
       timelineItems={timeLineItems}
       isLoading={isLoading}
     >
-      <EuiPanel
-        css={{
-          backgroundColor: theme.colors.backgroundBaseNeutral,
-          marginTop: theme.base * 3,
-        }}
-      >
-        <EuiFlexGroup css={getStepHeaderStyle(false)}>
-          <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
-
-          <EuiFlexItem grow={0}>
-            <EuiText css={stepListContentBoldTextStyle}>{t('userInput')}</EuiText>
-            <EuiText>{t(isTask ? 'submitTaskFormLabel' : 'submitWorkflowFormLabel')}</EuiText>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-        <EuiHorizontalRule />
-        {(hasError && <WfoError />) || (
+      <WfoPageWithUserGuide workflowName={processName}>
+        <EuiPanel css={{ backgroundColor: theme.colors.backgroundBaseNeutral }}>
+          <EuiFlexGroup gutterSize="none" css={getStepHeaderStyle(false)}>
+            <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
+            <EuiFlexItem grow={0}>
+              <EuiText css={stepListContentBoldTextStyle}>{t('userInput')}</EuiText>
+              <EuiText>{t(isTask ? 'submitTaskFormLabel' : 'submitWorkflowFormLabel')}</EuiText>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          <EuiHorizontalRule />
+          {(hasError && <WfoError />) || (
             <WfoPydanticForm processName={processName} startProcessPayload={startProcessPayload} isTask={isTask} />
-          ) || <WfoLoading />}
-      </EuiPanel>
+          )}
+        </EuiPanel>
+      </WfoPageWithUserGuide>
     </WfoProcessDetail>
   );
 };

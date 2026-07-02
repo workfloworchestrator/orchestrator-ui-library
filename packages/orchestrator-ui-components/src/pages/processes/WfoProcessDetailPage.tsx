@@ -59,6 +59,7 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
             ref={stepListRef}
             lastStatus={processDetail.lastStatus}
             processId={processDetail.processId}
+            workflowName={processDetail.workflowName}
             steps={groupedSteps.flatMap((groupedStep) => groupedStep.steps)}
             traceBack={processDetail.traceback}
             userInputForm={processDetail.form}

@@ -13,6 +13,7 @@ export const emptyOrchestratorConfig: OrchestratorConfig = {
   useWebSockets: false,
   useThemeToggle: false,
   showWorkflowInformationLink: false,
+  showWorkflowUserGuide: false,
   workflowInformationLinkUrl: '',
   enableSupportMenuItem: false,
   supportMenuItemUrl: '',

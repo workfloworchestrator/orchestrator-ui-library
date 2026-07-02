@@ -28,6 +28,7 @@ export interface WfoStepProps {
   isTask: boolean;
   isStartStep?: boolean;
   processId?: string;
+  workflowName?: string;
   userPermissions: FormUserPermissions;
 }
 

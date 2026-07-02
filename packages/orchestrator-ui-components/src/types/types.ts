@@ -588,6 +588,7 @@ export type OrchestratorConfig = {
   useWebSockets: boolean;
   useThemeToggle: boolean;
   showWorkflowInformationLink: boolean;
+  showWorkflowUserGuide: boolean;
   enableSupportMenuItem: boolean;
   supportMenuItemUrl: string;
   enableAoStackStatus: boolean;

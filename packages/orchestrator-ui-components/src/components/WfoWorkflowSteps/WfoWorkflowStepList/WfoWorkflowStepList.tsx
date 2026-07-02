@@ -2,7 +2,14 @@ import React, { Ref, useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { WfoJsonCodeBlock, WfoLoading, WfoStepList, WfoStepListHeader, WfoStepListRef } from '@/components';
+import {
+  WfoJsonCodeBlock,
+  WfoLoading,
+  WfoPageWithUserGuide,
+  WfoStepList,
+  WfoStepListHeader,
+  WfoStepListRef,
+} from '@/components';
 import WfoDiff, { getSubscriptionDiffTexts } from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
 import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
@@ -21,6 +28,7 @@ export interface WfoWorkflowStepListProps {
   traceBack: string | null;
   startedAt: string;
   processId: string;
+  workflowName?: string;
   isTask: boolean;
   userInputForm?: InputForm;
   userPermissions: FormUserPermissions;
@@ -40,7 +48,16 @@ export const WfoProcessSubscriptionDelta = ({ processId }: { processId: string }
 
 export const WfoWorkflowStepList = React.forwardRef(
   (
-    { steps = [], lastStatus, traceBack, processId, isTask, userInputForm, userPermissions }: WfoWorkflowStepListProps,
+    {
+      steps = [],
+      lastStatus,
+      traceBack,
+      processId,
+      workflowName,
+      isTask,
+      userInputForm,
+      userPermissions,
+    }: WfoWorkflowStepListProps,
     reference: Ref<WfoStepListRef>,
   ) => {
     const [showHiddenKeys, setShowHiddenKeys] = useState(false);
@@ -143,16 +160,19 @@ export const WfoWorkflowStepList = React.forwardRef(
         {showRaw && <WfoProcessRawData processId={processId} />}
         {showDelta && <WfoProcessSubscriptionDelta processId={processId} />}
         {!showRaw && !showDelta && (
-          <WfoStepList
-            ref={reference}
-            stepListItems={stepListItems}
-            showHiddenKeys={showHiddenKeys}
-            isTask={isTask}
-            onToggleExpandStepListItem={toggleExpandedStateStepListItem}
-            processId={processId}
-            onTriggerExpandStepListItem={handleExpandStepListItem}
-            userPermissions={userPermissions}
-          />
+          <WfoPageWithUserGuide workflowName={workflowName}>
+            <WfoStepList
+              ref={reference}
+              stepListItems={stepListItems}
+              showHiddenKeys={showHiddenKeys}
+              isTask={isTask}
+              onToggleExpandStepListItem={toggleExpandedStateStepListItem}
+              processId={processId}
+              workflowName={workflowName}
+              onTriggerExpandStepListItem={handleExpandStepListItem}
+              userPermissions={userPermissions}
+            />
+          </WfoPageWithUserGuide>
         )}
       </>
     );
