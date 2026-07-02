@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.5.0
+
+### Minor Changes
+
+- 3a19051: 171 Add workflow user guides to forms and worflow steps list page
+
+### Patch Changes
+
+- 3518b34: Show error toast on tasks that return 412 error code
+- 10bec09: Add active tab component to filter on subscription statuses search poc page
+
 ## 8.4.5
 
 ### Patch Changes
