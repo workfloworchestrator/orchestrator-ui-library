@@ -1,7 +1,6 @@
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 export interface WorkflowGuideResponse {
-  // Raw markdown content of the user guide. Empty string means no guide is available.
   content: string;
 }
 
