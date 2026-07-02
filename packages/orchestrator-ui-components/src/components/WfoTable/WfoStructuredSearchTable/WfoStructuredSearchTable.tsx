@@ -97,7 +97,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   pageSize: number;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
   totalItems: number | false;
-  limit: number;
+  hasNextPage: boolean;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -123,9 +123,11 @@ export const WfoStructuredSearchTable = <T extends object>({
   pageSize,
   setPageSize,
   totalItems,
-  limit,
   rowExpandingConfiguration,
   dataSorting,
+  hasNextPage,
+  data,
+  isLoading,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -276,15 +278,17 @@ export const WfoStructuredSearchTable = <T extends object>({
         rowExpandingConfiguration={rowExpandingConfiguration}
         onUpdateDataSorting={onUpdateDataSorting}
         dataSorting={dataSorting}
+        data={data}
+        isLoading={isLoading}
         {...tableProps}
       />
 
       {totalItems && (
-        <EuiFlexGroup alignItems={'center'} justifyContent={'center'}>
-          <EuiButton onClick={() => onShowMore()} css={{ margin: theme.base }} disabled={totalItems <= limit}>
-            Load More
+        <EuiFlexGroup alignItems={'center'} justifyContent={'center'} css={{ padding: theme.base }}>
+          <EuiButton onClick={() => onShowMore()} disabled={!hasNextPage || isLoading}>
+            {t('loadMore')}
           </EuiButton>
-          <div>{`${totalItems < limit ? totalItems : limit}/${totalItems} records`}</div>
+          <div>{`${data.length}/${totalItems} records`}</div>
         </EuiFlexGroup>
       )}
 

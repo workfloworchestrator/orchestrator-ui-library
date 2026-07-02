@@ -58,7 +58,8 @@
     "createFilter": "Create a filter",
     "applyFilter": "Apply filter",
     "removeFilter": "Remove filter",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loadMore": "Load more"
   },
   "confirmationDialog": {
     "title": "Please confirm",

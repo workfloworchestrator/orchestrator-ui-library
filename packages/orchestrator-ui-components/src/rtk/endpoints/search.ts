@@ -20,9 +20,10 @@ export interface SearchPayload {
   filters?: Filter;
   limit?: number | number[];
   retriever?: RetrieverType;
+  cursor?: string;
 }
 
-export interface SearchPaginationPayload extends SearchPayload {
+export interface SearchPaginationPayload extends Omit<SearchPayload, 'cursor'> {
   cursor: number;
 }
 
@@ -36,13 +37,13 @@ export interface SearchDefinitionsResponse {
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.query<PaginatedSearchResults, SearchPayload>({
-      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by }) => ({
-        url: `search/${getEndpointPath(entity_type)}`,
+      query: ({ entity_type, query, filters, limit, retriever, response_columns, order_by, cursor }) => ({
+        url: `search/${getEndpointPath(entity_type)}${cursor ? `?cursor=${cursor}` : ''}`,
         method: 'POST',
         body: {
           query,
           filters,
-          limit,
+          limit: cursor ? undefined : limit,
           retriever,
           order_by: order_by && !query ? order_by : undefined,
           response_columns,
@@ -51,6 +52,23 @@ const searchApi = orchestratorApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
+      serializeQueryArgs: ({ queryArgs, endpointName }) => {
+        // Strip cursor so every page of the same base search shares one cache entry.
+        const rest = { ...queryArgs };
+        delete rest.cursor;
+        return { endpointName, queryArgs: rest };
+      },
+      merge: (currentCache, newItems, { arg }) => {
+        if (!arg.cursor) {
+          Object.assign(currentCache, newItems);
+          return;
+        }
+        currentCache.data.push(...newItems.data);
+        currentCache.page_info = newItems.page_info;
+        currentCache.cursor = newItems.cursor;
+        currentCache.search_metadata = newItems.search_metadata;
+      },
+      forceRefetch: ({ currentArg, previousArg }) => currentArg?.cursor !== previousArg?.cursor,
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },

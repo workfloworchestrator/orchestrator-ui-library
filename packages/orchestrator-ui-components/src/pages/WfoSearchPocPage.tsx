@@ -135,6 +135,7 @@ export const WfoSearchPocPage = () => {
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
   const [limit, setLimit] = useState<number>(pageSize);
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
   const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
     field: 'subscriptionId',
     sortOrder: SortOrder.DESC,
@@ -144,6 +145,8 @@ export const WfoSearchPocPage = () => {
   // values — including the active tab, whether via a tab click or a browser back/forward that
   // updates the activeTab URL param — produces a new payload and RTK Query re-runs the search
   // automatically. No imperative trigger or effect (and no eslint-disable) is needed.
+  // Cursor is stripped from the RTK cache key, so a cursor change appends to the accumulated
+  // result set instead of creating a new cache entry — see search endpoint's merge() logic.
   const searchPayload: SearchPayload = useMemo(() => {
     const filters = combineSearchFilters(committedRuleGroup, selectedTab);
     const order_by = {
@@ -158,8 +161,9 @@ export const WfoSearchPocPage = () => {
       order_by,
       ...(retrieverType !== RetrieverType.Auto && { retriever: retrieverType }),
       ...(filters && { filters }),
+      ...(cursor && { cursor }),
     };
-  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, limit, dataSorting]);
+  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, limit, dataSorting, cursor]);
 
   const { data, isFetching } = useSearchQuery(searchPayload);
 
@@ -269,6 +273,7 @@ export const WfoSearchPocPage = () => {
 
   const handleApplyFilter = (searchParams?: SearchParams) => {
     setCommittedRuleGroup(searchParams?.ruleGroup === false ? undefined : queryBuilderRuleGroup);
+    setCursor(undefined);
   };
 
   const onChangeQueryText = (queryText: string) => {
@@ -278,15 +283,18 @@ export const WfoSearchPocPage = () => {
   const onSearchQueryText = (queryText: string) => {
     setQueryText(queryText);
     setCommittedSearchQuery(queryText);
+    setCursor(undefined);
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
     setRetrieverType(retrieverType);
+    setCursor(undefined);
   };
 
   const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
     setActiveTab(updatedTab);
     setLimit(pageSize);
+    setCursor(undefined);
   };
 
   const safeCelParse = (celString: string) => {
@@ -338,14 +346,19 @@ export const WfoSearchPocPage = () => {
     data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId') : { items: [] };
 
   const totalItems = getTotalItemsFromResponse(data);
+  const hasNextPage = data?.page_info?.has_next_page ?? false;
+  const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const onShowMore = () => {
-    setLimit((limit) => limit + pageSize);
+    if (!isFetching && nextPageCursor) {
+      setCursor(nextPageCursor);
+    }
   };
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
     setDataSorting({ field, sortOrder });
     setLimit(pageSize);
+    setCursor(undefined);
   };
 
   return (
@@ -382,7 +395,7 @@ export const WfoSearchPocPage = () => {
         onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={setPageSize}
         totalItems={totalItems}
-        limit={limit}
+        hasNextPage={hasNextPage}
       />
     </>
   );
