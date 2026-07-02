@@ -40,7 +40,7 @@ import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 import { getFormFieldsBaseStyle } from '@/theme';
-import { RetrieverType } from '@/types';
+import { FieldToOperatorMap, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
@@ -98,6 +98,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
   totalItems: number | false;
   hasNextPage: boolean;
+  prefilledFieldOptions: FieldToOperatorMap;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -128,6 +129,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   hasNextPage,
   data,
   isLoading,
+  prefilledFieldOptions,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -209,6 +211,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             queryBuilderRuleGroup={queryBuilderRuleGroup}
             onUpdateQueryBuilder={onUpdateQueryBuilder}
             handleSearch={handleSearch}
+            prefilledFieldOptions={prefilledFieldOptions}
           />
         </EuiFlexItem>
       </EuiFlexGroup>
