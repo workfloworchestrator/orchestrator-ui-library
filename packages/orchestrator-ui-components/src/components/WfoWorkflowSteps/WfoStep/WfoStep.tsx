@@ -43,7 +43,6 @@ export const WfoStep = React.forwardRef(
       isStartStep = false,
       isTask,
       processId,
-      workflowName,
       userPermissions,
     }: WfoStepProps,
     ref: LegacyRef<HTMLDivElement>,
@@ -167,12 +166,12 @@ export const WfoStep = React.forwardRef(
           {step.status === StepStatus.SUSPEND && userInputForm && (
             <EuiFlexGroup direction="column" gutterSize="none">
               <EuiFlexItem grow={1}>
-                  <WfoStepForm
-                    userInputForm={userInputForm}
-                    isTask={isTask}
-                    processId={processId ?? ''}
-                    userPermissions={userPermissions}
-                  />
+                <WfoStepForm
+                  userInputForm={userInputForm}
+                  isTask={isTask}
+                  processId={processId ?? ''}
+                  userPermissions={userPermissions}
+                />
               </EuiFlexItem>
               <EuiFlexItem grow={1}>
                 {overrideStepDetail?.stepBody && <overrideStepDetail.stepBody step={step} />}
