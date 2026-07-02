@@ -1,6 +1,4 @@
-import { orchestratorApi } from '@/rtk';
-
-import { workflowGuideMocks } from './workflowGuideMocks';
+import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 
 export interface WorkflowGuideResponse {
   // Raw markdown content of the user guide. Empty string means no guide is available.
@@ -9,22 +7,17 @@ export interface WorkflowGuideResponse {
 
 const workflowGuidesApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    /**
-     * Returns the markdown user guide for a workflow/task by name.
-     *
-     * MOCK: currently served from bundled markdown (see workflowGuideMocks.ts).
-     * When the backend endpoint exists, replace this `queryFn` with:
-     *   query: ({ workflowName }) => ({
-     *     url: `workflow-guides/${workflowName}`,
-     *     method: 'GET',
-     *   }),
-     *   extraOptions: { baseQueryType: BaseQueryTypes.fetch },
-     * and remove workflowGuideMocks.ts.
-     */
     getWorkflowGuide: build.query<WorkflowGuideResponse, { workflowName: string }>({
-      queryFn: ({ workflowName }) => {
-        const content = workflowGuideMocks[workflowName] ?? '';
-        return { data: { content } };
+      query: ({ workflowName }) => ({
+        url: `surf/workflow_user_guides/${workflowName}`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      transformResponse: (content: string): WorkflowGuideResponse => ({ content: content ?? '' }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
       },
     }),
   }),
