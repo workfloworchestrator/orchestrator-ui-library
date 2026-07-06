@@ -137,23 +137,43 @@ const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRang
   );
 };
 
-export const WfoValueEditor = ({ field: fieldName, context, handleOnChange, operator, value }: ValueEditorProps) => {
+export const WfoValueEditor = ({
+  field: fieldName,
+  context,
+  handleOnChange,
+  operator,
+  value,
+  className,
+}: ValueEditorProps) => {
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
   const uiFieldType = fieldInfo?.ui_types[0] || UiFieldType.text;
 
-  if (uiFieldType === UiFieldType.boolean) {
-    return <BooleanEditor handleOnChange={handleOnChange} value={value} />;
-  }
+  const getEditor = () => {
+    if (uiFieldType === UiFieldType.boolean) {
+      return <BooleanEditor handleOnChange={handleOnChange} value={value} />;
+    }
 
-  if (uiFieldType === UiFieldType.datetime) {
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={DatePicker} value={value} />;
-  }
+    if (uiFieldType === UiFieldType.datetime) {
+      return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={DatePicker} value={value} />;
+    }
 
-  if (uiFieldType === UiFieldType.number) {
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} value={value} />;
-  }
+    if (uiFieldType === UiFieldType.number) {
+      return (
+        <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} value={value} />
+      );
+    }
 
-  return <TextEditor handleOnChange={handleOnChange} value={value} />;
+    return <TextEditor handleOnChange={handleOnChange} value={value} />;
+  };
+
+  // react-querybuilder delivers the standard `rule-value` class via this prop; the wrapper
+  // makes it queryable in the DOM (WfoFieldSelector relies on it to move focus here).
+  // `display: contents` keeps the children direct participants in the rule's flex row.
+  return (
+    <div className={className} style={{ display: 'contents' }}>
+      {getEditor()}
+    </div>
+  );
 };

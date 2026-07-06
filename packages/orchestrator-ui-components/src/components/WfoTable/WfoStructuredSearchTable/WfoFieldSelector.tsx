@@ -9,6 +9,27 @@ import { EuiComboBox } from '@elastic/eui';
 import { usePathAutocomplete } from '@/hooks';
 import { EntityKind, FieldToOperatorMap, PathInfo } from '@/types';
 
+// react-querybuilder applies the `.rule` class to the rule container and `.rule-value` to
+// the value-editor cell (see `standardClassnames` in @react-querybuilder/core). We hop from
+// the EuiComboBox search input up to the enclosing rule and focus the value editor's first
+// focusable child on the next frame, once react-querybuilder has re-rendered the rule with
+// the editor type for the new field.
+const focusValueEditorAfterRender = (searchInput: HTMLInputElement | null) => {
+  if (!searchInput) return;
+  requestAnimationFrame(() => {
+    const valueCell = searchInput.closest('.rule')?.querySelector('.rule-value');
+    const focusable = valueCell?.querySelector<HTMLElement>(
+      'input:not([disabled]), textarea:not([disabled]), button:not([disabled])',
+    );
+
+    if (!focusable) return;
+    focusable.focus();
+    if (focusable instanceof HTMLInputElement && (focusable.type === 'text' || focusable.type === 'number')) {
+      focusable.select();
+    }
+  });
+};
+
 export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
   const { field } = rule;
   const prefilledFieldOptions: FieldToOperatorMap = context.prefilledFieldOptions;
@@ -74,6 +95,8 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     storeFieldOperators(selectedValue);
 
     handleOnChange(selectedValue);
+
+    if (selectedValue) focusValueEditorAfterRender(searchInput);
   };
 
   // EuiComboBox only auto-selects on Enter/Tab when exactly one option matches the typed
@@ -95,7 +118,10 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
         (option) => !option.disabled && option.label.toLowerCase() === typed.toLowerCase(),
       );
       if (!exactMatch) return;
-      if (event.key === 'Enter') event.preventDefault();
+      // Prevent both Enter (form submit / EUI's no-op fallback) and Tab (native focus
+      // shift to the operator selector) — handleFieldSelection moves focus to the value
+      // editor itself, and a native Tab in the meantime causes a visible focus flash.
+      event.preventDefault();
       handleFieldSelectionRef.current([exactMatch]);
 
       // EuiComboBox keeps its own internal `searchValue` and `isListOpen` state. Clearing
