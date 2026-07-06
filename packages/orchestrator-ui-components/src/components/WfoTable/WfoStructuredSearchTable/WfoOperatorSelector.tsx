@@ -17,7 +17,13 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   );
 
   useEffect(() => {
-    if (props.options && !props.value && selectOptions.length > 0) {
+    // Reset to the first option when the operator is unset OR when the current operator
+    // is no longer valid for the selected field. resetOnFieldChange=false on QueryBuilder
+    // preserves the operator across field changes, so the stale-value branch is what keeps
+    // the dropdown coherent when the new field's operator list doesn't include it.
+    if (selectOptions.length === 0) return;
+    const currentValueIsValid = selectOptions.some((option) => option.value === props.value);
+    if (!currentValueIsValid) {
       props.handleOnChange(selectOptions[0].value);
     }
   }, [props, props.options, props.value, selectOptions]);

@@ -133,6 +133,7 @@ export const WfoFilterBuilder = ({
             onAddGroup={onAddGroupHandler}
             maxLevels={5}
             showCombinatorsBetweenRules
+            resetOnFieldChange={false}
           />
         </EuiFlexItem>
         <EuiFlexItem>
