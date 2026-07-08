@@ -13,7 +13,6 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
   const toggleButtonStyles = css({
     backgroundColor: 'primary',
     padding: theme.base * 0.75,
-    marginLeft: theme.base,
   });
 
   const textAreaStyles = css({

@@ -34,7 +34,7 @@ import {
 } from '@/components';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
-import { SearchPayload, useSearchQuery } from '@/rtk';
+import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import {
   EntityKind,
   FieldToOperatorMap,
@@ -43,7 +43,7 @@ import {
   RetrieverType,
   SortOrder,
 } from '@/types';
-import { parseDateToLocaleDateTimeString } from '@/utils';
+import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
 
 const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
@@ -186,6 +186,9 @@ export const WfoSearchPocPage = () => {
   }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, limit, dataSorting, cursor]);
 
   const { data, isFetching } = useSearchQuery(searchPayload);
+
+  const [getSubscriptionListTrigger] = useLazySearchQuery();
+  const getSubscriptionListForExport = () => getSubscriptionListTrigger(searchPayload).unwrap();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -369,6 +372,19 @@ export const WfoSearchPocPage = () => {
   const hasNextPage = data?.page_info?.has_next_page ?? false;
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
+  const exportData = async () => {
+    const exportResult = await getSubscriptionListForExport();
+    const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(
+      exportResult,
+      resultColumToPropertyMap,
+      'subscriptionId',
+    );
+    if (!exportItems.length) {
+      return;
+    }
+    initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
+  };
+
   const onShowMore = () => {
     if (!isFetching && nextPageCursor) {
       setCursor(nextPageCursor);
@@ -417,6 +433,7 @@ export const WfoSearchPocPage = () => {
         totalItems={totalItems}
         hasNextPage={hasNextPage}
         prefilledFieldOptions={prefilledFieldOptions}
+        onExportData={exportData}
       />
     </>
   );

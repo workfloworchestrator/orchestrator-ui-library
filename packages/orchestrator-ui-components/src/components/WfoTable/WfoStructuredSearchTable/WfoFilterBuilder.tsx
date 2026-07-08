@@ -58,6 +58,8 @@ interface WfoFilterBuilderProps {
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
+  isFilterBuilderVisible: boolean;
+  onToggleFilterBuilder: (isVisible: boolean) => void;
   prefilledFieldOptions: FieldToOperatorMap;
 }
 
@@ -75,6 +77,8 @@ export const WfoFilterBuilder = ({
   onUpdateQueryBuilder,
   handleSearch,
   prefilledFieldOptions,
+  isFilterBuilderVisible,
+  onToggleFilterBuilder,
 }: WfoFilterBuilderProps) => {
   const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
     return (operators ?? []).map((operator) => {
@@ -88,7 +92,6 @@ export const WfoFilterBuilder = ({
   const { queryBuilderContainerStyles, toggleButtonStyles, textAreaStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
-  const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
   const handleFieldSelected = (field: string, operators: string[]) => {
@@ -98,7 +101,7 @@ export const WfoFilterBuilder = ({
   };
 
   return (
-    <EuiFlexGroup css={queryBuilderContainerStyles}>
+    <EuiFlexGroup css={isFilterBuilderVisible ? queryBuilderContainerStyles : undefined}>
       {(isFilterBuilderVisible && (
         <EuiFlexGroup direction={'column'}>
           <EuiFlexItem>
@@ -167,7 +170,7 @@ export const WfoFilterBuilder = ({
                 // we call with ruleGroup: false explictly to
                 // avoid state not having caught up yet when searching
                 handleSearch({ ruleGroup: false });
-                setIsFilterBuilderVisible(false);
+                onToggleFilterBuilder(false);
               }}
             />
           </EuiFlexGroup>
@@ -175,7 +178,7 @@ export const WfoFilterBuilder = ({
       )) || (
         <EuiButton
           css={toggleButtonStyles}
-          onClick={() => setIsFilterBuilderVisible(true)}
+          onClick={() => onToggleFilterBuilder(true)}
           id={'button-toggle-filter-builder'}
           data-test-id={'button-toggle-filter-builder'}
           fill

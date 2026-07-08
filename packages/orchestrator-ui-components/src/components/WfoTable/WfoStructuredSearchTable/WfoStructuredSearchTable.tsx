@@ -3,17 +3,7 @@ import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import {
-  EuiButton,
-  EuiButtonIcon,
-  EuiFieldSearch,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
-  EuiSpacer,
-  EuiText,
-} from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiText } from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -36,15 +26,15 @@ import {
   WfoTableControlColumnConfigItem,
   WfoTableDataColumnConfigItem,
 } from '@/components/WfoTable/WfoTable';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
-import { getFormFieldsBaseStyle } from '@/theme';
 import { FieldToOperatorMap, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
+import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -133,9 +123,9 @@ export const WfoStructuredSearchTable = <T extends object>({
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
-  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
 
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+  const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
   const [showInformationModal, setShowInformationModal] = useState(false);
@@ -200,76 +190,38 @@ export const WfoStructuredSearchTable = <T extends object>({
     clearTableConfigFromLocalStorage(localStorageKey);
   };
 
+  const filterBuilder = (
+    <WfoFilterBuilder
+      filterString={filterString}
+      onUpdateFilterString={onUpdateFilterString}
+      isValidFilterString={isValidFilterString}
+      queryBuilderRuleGroup={queryBuilderRuleGroup}
+      onUpdateQueryBuilder={onUpdateQueryBuilder}
+      handleSearch={handleSearch}
+      isFilterBuilderVisible={isFilterBuilderVisible}
+      onToggleFilterBuilder={setIsFilterBuilderVisible}
+    prefilledFieldOptions={prefilledFieldOptions}/>
+  );
+
   return (
     <>
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>
-          <WfoFilterBuilder
-            filterString={filterString}
-            onUpdateFilterString={onUpdateFilterString}
-            isValidFilterString={isValidFilterString}
-            queryBuilderRuleGroup={queryBuilderRuleGroup}
-            onUpdateQueryBuilder={onUpdateQueryBuilder}
-            handleSearch={handleSearch}
-            prefilledFieldOptions={prefilledFieldOptions}
-          />
-        </EuiFlexItem>
+      <EuiFlexGroup alignItems="center" gutterSize="s">
+        {!isFilterBuilderVisible && <EuiFlexItem grow={false}>{filterBuilder}</EuiFlexItem>}
+        <WfoSearchFieldWithActions
+          queryText={queryText}
+          onChangeQueryText={onChangeQueryText}
+          onSearchQueryText={onSearchQueryText}
+          onShowInformation={() => setShowInformationModal(true)}
+          onShowTableSettings={() => setShowTableSettingsModal(true)}
+        />
       </EuiFlexGroup>
 
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>
-          <EuiFormRow fullWidth>
-            <EuiFieldSearch
-              css={formFieldBaseStyle}
-              value={queryText}
-              placeholder={`${t('search')}...`}
-              onChange={(e) => onChangeQueryText(e.target.value)}
-              onSearch={(queryText) => onSearchQueryText(queryText)}
-              fullWidth
-            />
-          </EuiFormRow>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiSelect
-            options={[
-              {
-                value: RetrieverType.Auto,
-                text: t('retrieverAuto'),
-              },
-              {
-                value: RetrieverType.Fuzzy,
-                text: t('retrieverFuzzy'),
-              },
-              {
-                value: RetrieverType.Semantic,
-                text: t('retrieverSemantic'),
-              },
-              {
-                value: RetrieverType.Hybrid,
-                text: t('retrieverHybrid'),
-              },
-            ]}
-            value={retrieverType}
-            onChange={(e) => onUpdateRetrieverType(e.target.value as RetrieverType)}
-            compressed
-            prepend={t('retrieval')}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButtonIcon
-            onClick={() => setShowInformationModal(true)}
-            iconSize={'l'}
-            iconType={'info'}
-            aria-label={t('searchModalTitle')}
-          />
-        </EuiFlexItem>
-        <EuiButton onClick={() => setShowTableSettingsModal(true)}>{t('editColumns')}</EuiButton>
-        {onExportData && (
-          <EuiButton isLoading={exportDataIsLoading} onClick={() => onExportData()}>
-            {t('export')}
-          </EuiButton>
-        )}
-      </EuiFlexGroup>
+      {isFilterBuilderVisible && (
+        <>
+          <EuiSpacer size="s" />
+          {filterBuilder}
+        </>
+      )}
 
       {error && <WfoErrorWithMessage error={error} />}
 
@@ -305,6 +257,31 @@ export const WfoStructuredSearchTable = <T extends object>({
           onClose={() => setShowTableSettingsModal(false)}
           onUpdateTableConfig={handleUpdateTableConfig}
           onResetToDefaults={handleResetToDefaults}
+          extraSettings={
+            <>
+              <EuiFormRow label={t('retrieval')} display="columnCompressed">
+                <EuiSelect
+                  options={[
+                    { value: RetrieverType.Auto, text: t('retrieverAuto') },
+                    { value: RetrieverType.Fuzzy, text: t('retrieverFuzzy') },
+                    { value: RetrieverType.Semantic, text: t('retrieverSemantic') },
+                    { value: RetrieverType.Hybrid, text: t('retrieverHybrid') },
+                  ]}
+                  value={retrieverType}
+                  onChange={(e) => onUpdateRetrieverType(e.target.value as RetrieverType)}
+                  compressed
+                />
+              </EuiFormRow>
+              {onExportData && (
+                <>
+                  <EuiSpacer size="m" />
+                  <EuiButton isLoading={exportDataIsLoading} onClick={() => onExportData()} fullWidth>
+                    {t('export')}
+                  </EuiButton>
+                </>
+              )}
+            </>
+          }
         />
       )}
 
