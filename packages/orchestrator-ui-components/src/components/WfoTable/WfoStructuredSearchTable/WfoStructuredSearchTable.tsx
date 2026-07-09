@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
+import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 
@@ -12,6 +13,7 @@ import {
   TableSettingsColumnConfig,
   TableSettingsConfig,
   TableSettingsModal,
+  WfoDataSearch,
   WfoDataSorting,
   WfoErrorWithMessage,
   WfoInformationModal,
@@ -75,6 +77,9 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onSearchQueryText: (queryString: string) => void;
   onShowMore: () => void;
   onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
+  // Resolves a column key to its search field path (e.g. "status" -> "subscription.status"), used
+  // when a column header search adds a condition to the filter query.
+  getColumnSearchFieldName?: (field: keyof T) => string;
   onExportData?: () => void;
   retrieverType: RetrieverType;
   onUpdateRetrieverType: (newRetrieverType: RetrieverType) => void;
@@ -83,7 +88,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   isValidFilterString?: boolean;
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
-  handleSearch: () => void;
+  handleSearch: (searchParams?: SearchParams) => void;
   pageSize: number;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
   totalItems: number | false;
@@ -110,6 +115,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   queryBuilderRuleGroup,
   onUpdateQueryBuilder,
   onUpdateDataSorting,
+  getColumnSearchFieldName,
   handleSearch,
   pageSize,
   setPageSize,
@@ -136,6 +142,14 @@ export const WfoStructuredSearchTable = <T extends object>({
       setHiddenColumns(defaultHiddenColumns);
     }
   }, [defaultHiddenColumns]);
+
+  // Open the filter builder whenever a filter is present (e.g. arriving via a link with a filter in
+  // the URL), so an active filter is always visible to the user.
+  useEffect(() => {
+    if (filterString) {
+      setIsFilterBuilderVisible(true);
+    }
+  }, [filterString]);
 
   const detailsIconColumn: WfoStructuredSearchTableColumnConfig<T> = {
     viewDetails: {
@@ -190,6 +204,36 @@ export const WfoStructuredSearchTable = <T extends object>({
     clearTableConfigFromLocalStorage(localStorageKey);
   };
 
+  const handleColumnFilterSearch = ({ field, searchText }: WfoDataSearch<T>) => {
+    // parseCEL takes double-quoted string content literally, without any escape support, so a value
+    // containing a double quote cannot be expressed as a CEL condition.
+    if (!searchText || searchText.includes('"')) {
+      return;
+    }
+    const searchFieldName = getColumnSearchFieldName?.(field) ?? String(field);
+    const condition = `${searchFieldName} == "${searchText}"`;
+    const currentFilter = filterString?.trim();
+    // Parenthesize the existing filter: && binds tighter than || in CEL, so without parentheses the
+    // new condition would attach to only the last OR branch of the existing filter.
+    const newFilterString = currentFilter ? `(${currentFilter}) && ${condition}` : condition;
+
+    // Only touch the filter draft and commit a search when the combined string parses to rules;
+    // when it does not (e.g. the current draft is invalid CEL), leave the user's draft alone.
+    let ruleGroup: RuleGroupType | undefined;
+    try {
+      ruleGroup = parseCEL(newFilterString);
+    } catch {
+      return;
+    }
+    if (!ruleGroup?.rules?.length) {
+      return;
+    }
+
+    onUpdateFilterString(newFilterString);
+    setIsFilterBuilderVisible(true);
+    handleSearch({ ruleGroup });
+  };
+
   const filterBuilder = (
     <WfoFilterBuilder
       filterString={filterString}
@@ -200,7 +244,8 @@ export const WfoStructuredSearchTable = <T extends object>({
       handleSearch={handleSearch}
       isFilterBuilderVisible={isFilterBuilderVisible}
       onToggleFilterBuilder={setIsFilterBuilderVisible}
-    prefilledFieldOptions={prefilledFieldOptions}/>
+      prefilledFieldOptions={prefilledFieldOptions}
+    />
   );
 
   return (
@@ -232,6 +277,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
         onUpdateDataSorting={onUpdateDataSorting}
+        onUpdateDataSearch={handleColumnFilterSearch}
         dataSorting={dataSorting}
         data={data}
         isLoading={isLoading}

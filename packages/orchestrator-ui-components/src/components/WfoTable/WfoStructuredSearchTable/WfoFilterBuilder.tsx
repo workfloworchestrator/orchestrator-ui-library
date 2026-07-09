@@ -107,6 +107,10 @@ export const WfoFilterBuilder = ({
           <EuiFlexItem>
             <QueryBuilder
               query={queryBuilderRuleGroup}
+              // The query is fully controlled by the page; the default mount-time onQueryChange
+              // would reset the filter draft and wrongly clear the invalid-filter flag when the
+              // builder opens for an unparseable filterString URL param.
+              enableMountQueryChange={false}
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
               }}
@@ -137,7 +141,7 @@ export const WfoFilterBuilder = ({
             <EuiTextArea
               css={textAreaStyles}
               id={'searchbox-textarea'}
-              value={filterString}
+              value={filterString ?? ''}
               onChange={(e) => {
                 const filterString = e.target.value;
                 onUpdateFilterString(filterString);

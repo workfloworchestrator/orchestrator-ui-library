@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { parseCEL } from 'react-querybuilder/parseCEL';
@@ -49,6 +49,18 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
   return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
+};
+
+const parseCelToRuleGroup = (celString: string | null | undefined): RuleGroupType | undefined => {
+  if (!celString) {
+    return undefined;
+  }
+  try {
+    const ruleGroup = parseCEL(celString);
+    return ruleGroup?.rules?.length > 0 ? ruleGroup : undefined;
+  } catch {
+    return undefined;
+  }
 };
 
 const getDataFromResponse = <T extends object>(
@@ -145,26 +157,60 @@ export const WfoSearchPocPage = () => {
 
   // Part of the search endpoint payload that is passed in the q parameter
   const [queryText, setQueryText] = useState<string>('');
-  const [committedSearchQuery, setCommittedSearchQuery] = useState<string>('');
+  // The committed query and filter live in the URL so a link reproduces the search and browser
+  // back/forward re-runs it. The filter is stored as a CEL string and parsed back to a rule group.
+  const [committedSearchQuery, setCommittedSearchQuery] = useQueryParam('queryString', withDefault(StringParam, ''));
+  const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
+  // Track the last value this page committed, so the URL->state sync effects below only rebuild the
+  // inputs for external changes (page load, back/forward). Rebuilding on own commits would revert
+  // characters typed right after committing (search bar) or visibly restructure builder rules the
+  // CEL round trip cannot preserve, such as 'between'. The refs hold the value as the params decode
+  // it (absent param -> ''); the setters receive undefined to remove an empty param from the URL.
+  const lastSelfCommittedFilter = useRef('');
+  const commitFilterString = (celString: string | undefined) => {
+    lastSelfCommittedFilter.current = celString ?? '';
+    setCommittedFilterString(celString || undefined);
+  };
+  const lastSelfCommittedQuery = useRef('');
+  const commitSearchQuery = (queryText: string) => {
+    lastSelfCommittedQuery.current = queryText;
+    setCommittedSearchQuery(queryText || undefined);
+  };
 
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
-  const [filterString, setFilterString] = useState<string>();
+  const [filterString, setFilterString] = useState<string>('');
   const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
-  const [committedRuleGroup, setCommittedRuleGroup] = useState<RuleGroupType | undefined>();
+  const committedRuleGroup = useMemo<RuleGroupType | undefined>(
+    () => parseCelToRuleGroup(committedFilterString),
+    [committedFilterString],
+  );
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
   const [limit, setLimit] = useState<number>(pageSize);
-  const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
   const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
     field: 'subscriptionId',
     sortOrder: SortOrder.DESC,
   });
 
-  // The search payload is derived entirely from the committed search state. Changing any of these
-  // values — including the active tab, whether via a tab click or a browser back/forward that
-  // updates the activeTab URL param — produces a new payload and RTK Query re-runs the search
-  // automatically. No imperative trigger or effect (and no eslint-disable) is needed.
+  // A next-page cursor is only valid for the committed search that produced it. Binding it to a key
+  // of that search covers commits that bypass the handlers below, e.g. browser back/forward changing
+  // the queryString/filterString/activeTab URL params: the key no longer matches, so the stale
+  // cursor is not sent along with the new search.
+  const committedSearchKey = JSON.stringify([
+    committedSearchQuery,
+    committedFilterString,
+    selectedTab,
+    retrieverType,
+    dataSorting,
+  ]);
+  const cursor = pageCursor?.searchKey === committedSearchKey ? pageCursor.cursor : undefined;
+
+  // The search payload is derived entirely from the committed search state, which lives in the URL
+  // (queryString, filterString and activeTab params). Changing any of these values — whether via the
+  // UI or a browser back/forward that updates the URL — produces a new payload and RTK Query re-runs
+  // the search automatically. No imperative trigger or effect (and no eslint-disable) is needed.
   // Cursor is stripped from the RTK cache key, so a cursor change appends to the accumulated
   // result set instead of creating a new cache entry — see search endpoint's merge() logic.
   const searchPayload: SearchPayload = useMemo(() => {
@@ -211,6 +257,7 @@ export const WfoSearchPocPage = () => {
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
       isSortable: true,
+      isFilterable: true,
     },
     description: {
       columnType: ColumnType.DATA,
@@ -218,37 +265,44 @@ export const WfoSearchPocPage = () => {
       width: '500px',
       renderData: (value, record) => <Link href={`/subscriptions/${record.subscriptionId}`}>{value}</Link>,
       renderTooltip: (value) => value,
+      isFilterable: true,
     },
     status: {
       columnType: ColumnType.DATA,
       label: t('status'),
       width: '120px',
       renderData: (value) => <WfoSubscriptionStatusBadge status={value} />,
+      isFilterable: true,
     },
     insync: {
       columnType: ColumnType.DATA,
       label: t('insync'),
       width: '75px',
       renderData: (value) => <WfoInsyncIcon inSync={value} />,
+      isFilterable: true,
     },
     productName: {
       columnType: ColumnType.DATA,
       width: '260px',
       label: t('product'),
+      isFilterable: true,
     },
     tag: {
       columnType: ColumnType.DATA,
       label: t('tag'),
       width: '100px',
+      isFilterable: true,
     },
     customerFullname: {
       columnType: ColumnType.DATA,
       label: t('customerFullname'),
+      isFilterable: true,
     },
     customerShortcode: {
       columnType: ColumnType.DATA,
       label: t('customerShortcode'),
       width: '150px',
+      isFilterable: true,
     },
     startDate: {
       columnType: ColumnType.DATA,
@@ -258,6 +312,7 @@ export const WfoSearchPocPage = () => {
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
       renderTooltip: (cellValue) => cellValue?.toString(),
+      isFilterable: true,
     },
     endDate: {
       columnType: ColumnType.DATA,
@@ -267,6 +322,7 @@ export const WfoSearchPocPage = () => {
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
       renderTooltip: (cellValue) => cellValue?.toString(),
+      isFilterable: true,
     },
     note: {
       columnType: ColumnType.DATA,
@@ -283,6 +339,7 @@ export const WfoSearchPocPage = () => {
           />
         );
       },
+      isFilterable: true,
     },
     metadata: {
       columnType: ColumnType.DATA,
@@ -291,12 +348,29 @@ export const WfoSearchPocPage = () => {
       renderData: (value) => <WfoInlineJson data={value} />,
       renderDetails: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle />,
       renderTooltip: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle={false} />,
+      isFilterable: true,
     },
   };
 
   const handleApplyFilter = (searchParams?: SearchParams) => {
-    setCommittedRuleGroup(searchParams?.ruleGroup === false ? undefined : queryBuilderRuleGroup);
-    setCursor(undefined);
+    const ruleGroupParam = searchParams?.ruleGroup;
+    // Use an explicitly passed rule group when provided (e.g. a column-header search), a cleared filter
+    // when `false`, and otherwise the current query builder state (the "Apply filter" button).
+    const effectiveRuleGroup = ruleGroupParam === false ? undefined : (ruleGroupParam ?? queryBuilderRuleGroup);
+    const celQuery =
+      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
+    // Committing means writing the filter to the URL as CEL; committedRuleGroup is derived from it.
+    // '1 == 1' is formatQuery's output for a rule group it cannot express in CEL.
+    const committableCel = celQuery && celQuery !== '1 == 1' ? celQuery : undefined;
+    // formatQuery escapes double quotes in values but parseCEL has no escape support, so such a
+    // filter would silently be dropped after the round trip through the URL. Refuse the commit and
+    // flag the filter instead, keeping the URL and the search results consistent.
+    if (committableCel && !parseCelToRuleGroup(committableCel)) {
+      setIsValidFilterString(false);
+      return;
+    }
+    commitFilterString(committableCel);
+    setPageCursor(undefined);
   };
 
   const onChangeQueryText = (queryText: string) => {
@@ -305,22 +379,22 @@ export const WfoSearchPocPage = () => {
 
   const onSearchQueryText = (queryText: string) => {
     setQueryText(queryText);
-    setCommittedSearchQuery(queryText);
-    setCursor(undefined);
+    commitSearchQuery(queryText);
+    setPageCursor(undefined);
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
     setRetrieverType(retrieverType);
-    setCursor(undefined);
+    setPageCursor(undefined);
   };
 
   const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
     setActiveTab(updatedTab);
     setLimit(pageSize);
-    setCursor(undefined);
+    setPageCursor(undefined);
   };
 
-  const safeCelParse = (celString: string) => {
+  const safeCelParse = useCallback((celString: string) => {
     try {
       const ruleGroup = parseCEL(celString);
       if (celString === '') {
@@ -338,7 +412,32 @@ export const WfoSearchPocPage = () => {
     } catch {
       setIsValidFilterString(false);
     }
-  };
+  }, []);
+
+  // Populate the search bar and the filter builder from the URL, both on page load and when
+  // back/forward navigation changes the committed search. Commits made by this page are skipped —
+  // see the lastSelfCommitted refs above.
+  useEffect(() => {
+    if (committedSearchQuery === lastSelfCommittedQuery.current) {
+      return;
+    }
+    lastSelfCommittedQuery.current = committedSearchQuery;
+    setQueryText(committedSearchQuery);
+  }, [committedSearchQuery]);
+
+  useEffect(() => {
+    if (committedFilterString === lastSelfCommittedFilter.current) {
+      return;
+    }
+    lastSelfCommittedFilter.current = committedFilterString;
+    setFilterString(committedFilterString);
+    if (committedFilterString) {
+      safeCelParse(committedFilterString);
+    } else {
+      setQueryBuilderRuleGroup(undefined);
+      setIsValidFilterString(true);
+    }
+  }, [committedFilterString, safeCelParse]);
 
   const onUpdateQueryBuilder = (ruleGroup: RuleGroupType | false) => {
     if (ruleGroup === false) {
@@ -387,14 +486,14 @@ export const WfoSearchPocPage = () => {
 
   const onShowMore = () => {
     if (!isFetching && nextPageCursor) {
-      setCursor(nextPageCursor);
+      setPageCursor({ cursor: nextPageCursor, searchKey: committedSearchKey });
     }
   };
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
     setDataSorting({ field, sortOrder });
     setLimit(pageSize);
-    setCursor(undefined);
+    setPageCursor(undefined);
   };
 
   return (
@@ -427,6 +526,7 @@ export const WfoSearchPocPage = () => {
         queryText={queryText}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfig}
+        getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={setPageSize}
