@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { FullOperator, QueryBuilder, type RuleGroupType } from 'react-querybuilder';
+import { FullOperator, QueryBuilder, type RuleGroupType, generateID } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
-import { SearchParams, WfoTextAnchor } from '@/components';
+import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { OperatorDisplay, PathInfo } from '@/types';
+import { OperatorDisplay } from '@/types';
+import type { FieldToOperatorMap } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
+import { WfoInlineCombinator } from './WfoInlineCombinator';
 import { WfoOperatorSelector } from './WfoOperatorSelector';
 import { WfoRemoveRuleAction } from './WfoRemoveRuleAction';
 import { WfoRule } from './WfoRule';
@@ -48,7 +50,6 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
 /* TODO: Add the missing operators
 ['has_component', 'not_has_component'];
  */
-type FieldPathInfoMap = Map<string, PathInfo>;
 
 interface WfoFilterBuilderProps {
   filterString?: string;
@@ -57,12 +58,20 @@ interface WfoFilterBuilderProps {
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
+  isFilterBuilderVisible: boolean;
+  onToggleFilterBuilder: (isVisible: boolean) => void;
+  prefilledFieldOptions: FieldToOperatorMap;
 }
 
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
   rules: [{ id: 'rule-0', field: '~', operator: '=', value: '' }],
   combinator: 'and',
+};
+
+const onAddGroupHandler = (ruleGroup: RuleGroupType): RuleGroupType => {
+  const [firstRule] = ruleGroup.rules;
+  return firstRule ? { ...ruleGroup, rules: [...ruleGroup.rules, { ...firstRule, id: generateID() }] } : ruleGroup;
 };
 
 export const WfoFilterBuilder = ({
@@ -72,9 +81,12 @@ export const WfoFilterBuilder = ({
   queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
+  prefilledFieldOptions,
+  isFilterBuilderVisible,
+  onToggleFilterBuilder,
 }: WfoFilterBuilderProps) => {
-  const getOperatorsFromPathInfo = (fieldInfo?: PathInfo): FullOperator[] => {
-    return (fieldInfo?.operators ?? []).map((operator) => {
+  const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
+    return (operators ?? []).map((operator) => {
       const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
       const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
       return { name: rqbOperator, label: `${symbol} ${description}`, value: rqbOperator };
@@ -82,34 +94,32 @@ export const WfoFilterBuilder = ({
   };
 
   const t = useTranslations('common');
-  const { queryBuilderContainerStyles, toggleButtonStyles, textAreaStyles } = useWithOrchestratorTheme(
+  const { queryBuilderContainerStyles, toggleButtonStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
-  const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState<boolean>(false);
-  const [fieldPathInfoMap, setFieldPathInfoMap] = useState<FieldPathInfoMap>(new Map());
+  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
-  const handleFieldSelected = (field: string, pathInfo: PathInfo | undefined) => {
-    if (pathInfo) {
-      setFieldPathInfoMap((previousMap) => {
-        return new Map(previousMap).set(field, pathInfo);
-      });
-    }
+  const handleFieldSelected = (field: string, operators: string[]) => {
+    setFieldToOperatorMap((previousMap) => {
+      return new Map(previousMap).set(field, operators);
+    });
   };
 
   return (
-    <EuiFlexGroup css={queryBuilderContainerStyles}>
+    <EuiFlexGroup css={isFilterBuilderVisible ? queryBuilderContainerStyles : undefined}>
       {(isFilterBuilderVisible && (
         <EuiFlexGroup direction={'column'}>
           <EuiFlexItem>
             <QueryBuilder
               query={queryBuilderRuleGroup}
+              enableMountQueryChange={false}
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
               }}
-              context={{ onFieldSelected: handleFieldSelected, fieldPathInfoMap }}
+              context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
               getOperators={(field) => {
-                const pathInfo = fieldPathInfoMap.get(field);
-                return getOperatorsFromPathInfo(pathInfo);
+                const operators = fieldToOperatorMap.get(field);
+                return mapOperatorsToRQBOperatorOptions(operators);
               }}
               controlElements={{
                 fieldSelector: WfoFieldSelector,
@@ -118,27 +128,26 @@ export const WfoFilterBuilder = ({
                 ruleGroup: WfoRuleGroup,
                 rule: WfoRule,
                 combinatorSelector: WfoCombinatorSelector,
+                inlineCombinator: WfoInlineCombinator,
                 addRuleAction: null,
                 addGroupAction: null,
                 removeGroupAction: null,
                 removeRuleAction: WfoRemoveRuleAction,
               }}
               addRuleToNewGroups
+              onAddGroup={onAddGroupHandler}
               maxLevels={5}
+              showCombinatorsBetweenRules
             />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTextArea
-              css={textAreaStyles}
+            <WfoAutoExpandableTextArea
               id={'searchbox-textarea'}
-              value={filterString}
+              value={filterString ?? ''}
               onChange={(e) => {
                 const filterString = e.target.value;
                 onUpdateFilterString(filterString);
               }}
-              fullWidth={true}
-              isClearable={true}
-              resize={'vertical'}
               isInvalid={!isValidFilterString}
             />
           </EuiFlexItem>
@@ -164,7 +173,7 @@ export const WfoFilterBuilder = ({
                 // we call with ruleGroup: false explictly to
                 // avoid state not having caught up yet when searching
                 handleSearch({ ruleGroup: false });
-                setIsFilterBuilderVisible(false);
+                onToggleFilterBuilder(false);
               }}
             />
           </EuiFlexGroup>
@@ -172,7 +181,7 @@ export const WfoFilterBuilder = ({
       )) || (
         <EuiButton
           css={toggleButtonStyles}
-          onClick={() => setIsFilterBuilderVisible(true)}
+          onClick={() => onToggleFilterBuilder(true)}
           id={'button-toggle-filter-builder'}
           data-test-id={'button-toggle-filter-builder'}
           fill

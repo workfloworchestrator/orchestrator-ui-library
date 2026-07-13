@@ -1,0 +1,56 @@
+import React from 'react';
+
+import { useTranslations } from 'next-intl';
+
+import { EuiButtonIcon, EuiFieldSearch, EuiFlexItem, EuiFormRow } from '@elastic/eui';
+
+import { useWithOrchestratorTheme } from '@/hooks';
+import { getFormFieldsBaseStyle } from '@/theme';
+
+export type SearchFieldWithActionsProps = {
+  queryText?: string;
+  onChangeQueryText: (queryText: string) => void;
+  onSearchQueryText: (queryText: string) => void;
+  onShowInformation: () => void;
+  onShowTableSettings: () => void;
+};
+
+// Search field with the info and table-settings actions, rendered as EuiFlexItems inside an EuiFlexGroup.
+export const WfoSearchFieldWithActions = ({
+  queryText,
+  onChangeQueryText,
+  onSearchQueryText,
+  onShowInformation,
+  onShowTableSettings,
+}: SearchFieldWithActionsProps) => {
+  const t = useTranslations('common');
+  const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
+
+  return (
+    <>
+      <EuiFlexItem>
+        <EuiFormRow fullWidth>
+          <EuiFieldSearch
+            css={formFieldBaseStyle}
+            value={queryText}
+            placeholder={`${t('search')}...`}
+            onChange={(e) => onChangeQueryText(e.target.value)}
+            onSearch={(queryText) => onSearchQueryText(queryText)}
+            fullWidth
+          />
+        </EuiFormRow>
+      </EuiFlexItem>
+      <EuiFlexItem grow={false}>
+        <EuiButtonIcon
+          onClick={onShowInformation}
+          iconSize={'l'}
+          iconType={'info'}
+          aria-label={t('searchModalTitle')}
+        />
+      </EuiFlexItem>
+      <EuiFlexItem grow={false}>
+        <EuiButtonIcon onClick={onShowTableSettings} iconSize={'l'} iconType={'gear'} aria-label={t('tableSettings')} />
+      </EuiFlexItem>
+    </>
+  );
+};

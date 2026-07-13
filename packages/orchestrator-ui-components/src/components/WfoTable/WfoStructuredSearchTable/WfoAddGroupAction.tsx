@@ -12,7 +12,7 @@ export const WfoAddGroupAction = ({ disabled, handleOnClick }: ActionProps) => {
   const t = useTranslations('search.page');
   const { addGroupStyles, addRulePlusStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   return disabled ? null : (
-      <EuiFlexItem css={addGroupStyles} onClick={() => handleOnClick()}>
+      <EuiFlexItem grow={true} css={addGroupStyles} onClick={() => handleOnClick()}>
         <span css={addRulePlusStyles}>+</span>&nbsp;{t('addGroup')}
       </EuiFlexItem>
     );

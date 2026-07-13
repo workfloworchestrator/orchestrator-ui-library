@@ -1,3 +1,4 @@
+export * from './WfoAutoExpandableTextArea';
 export * from './WfoBadges';
 export * from './WfoBackendUnavailable';
 export * from './WfoAvailabilityCheck';

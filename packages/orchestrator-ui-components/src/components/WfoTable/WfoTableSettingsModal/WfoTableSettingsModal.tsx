@@ -25,6 +25,7 @@ export type TableSettingsModalProps<T> = {
   onClose: () => void;
   onUpdateTableConfig: (updatedTableConfig: TableSettingsConfig<T>) => void;
   onResetToDefaults: () => void;
+  extraSettings?: React.ReactNode;
 };
 
 export const TableSettingsModal = <T,>({
@@ -33,6 +34,7 @@ export const TableSettingsModal = <T,>({
   onUpdateTableConfig,
   onResetToDefaults,
   onClose,
+  extraSettings,
 }: TableSettingsModalProps<T>) => {
   const t = useTranslations('main');
   const { formRowStyle, selectFieldStyle } = useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
@@ -97,6 +99,13 @@ export const TableSettingsModal = <T,>({
             options={options}
           />
         </EuiFormRow>
+
+        {extraSettings && (
+          <>
+            <EuiSpacer size="xs" />
+            {extraSettings}
+          </>
+        )}
       </EuiForm>
     </WfoSettingsModal>
   );
