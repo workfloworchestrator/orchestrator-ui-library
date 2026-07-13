@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { FullOperator, QueryBuilder, type RuleGroupType } from 'react-querybuilder';
+import { FullOperator, QueryBuilder, type RuleGroupType, generateID } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiTextArea } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
-import { SearchParams, WfoTextAnchor } from '@/components';
+import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay } from '@/types';
@@ -69,6 +69,11 @@ const initialRuleGroup: RuleGroupType = {
   combinator: 'and',
 };
 
+const onAddGroupHandler = (ruleGroup: RuleGroupType): RuleGroupType => {
+  const [firstRule] = ruleGroup.rules;
+  return firstRule ? { ...ruleGroup, rules: [...ruleGroup.rules, { ...firstRule, id: generateID() }] } : ruleGroup;
+};
+
 export const WfoFilterBuilder = ({
   filterString,
   onUpdateFilterString,
@@ -89,7 +94,7 @@ export const WfoFilterBuilder = ({
   };
 
   const t = useTranslations('common');
-  const { queryBuilderContainerStyles, toggleButtonStyles, textAreaStyles } = useWithOrchestratorTheme(
+  const { queryBuilderContainerStyles, toggleButtonStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
@@ -107,9 +112,6 @@ export const WfoFilterBuilder = ({
           <EuiFlexItem>
             <QueryBuilder
               query={queryBuilderRuleGroup}
-              // The query is fully controlled by the page; the default mount-time onQueryChange
-              // would reset the filter draft and wrongly clear the invalid-filter flag when the
-              // builder opens for an unparseable filterString URL param.
               enableMountQueryChange={false}
               onQueryChange={(ruleGroup: RuleGroupType) => {
                 onUpdateQueryBuilder(ruleGroup);
@@ -133,22 +135,19 @@ export const WfoFilterBuilder = ({
                 removeRuleAction: WfoRemoveRuleAction,
               }}
               addRuleToNewGroups
+              onAddGroup={onAddGroupHandler}
               maxLevels={5}
               showCombinatorsBetweenRules
             />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTextArea
-              css={textAreaStyles}
+            <WfoAutoExpandableTextArea
               id={'searchbox-textarea'}
               value={filterString ?? ''}
               onChange={(e) => {
                 const filterString = e.target.value;
                 onUpdateFilterString(filterString);
               }}
-              fullWidth={true}
-              isClearable={true}
-              resize={'vertical'}
               isInvalid={!isValidFilterString}
             />
           </EuiFlexItem>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
-import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 
@@ -37,6 +36,7 @@ import { getDefaultTableConfig } from '@/utils';
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
+import { buildColumnFilter } from './utils';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -143,8 +143,6 @@ export const WfoStructuredSearchTable = <T extends object>({
     }
   }, [defaultHiddenColumns]);
 
-  // Open the filter builder whenever a filter is present (e.g. arriving via a link with a filter in
-  // the URL), so an active filter is always visible to the user.
   useEffect(() => {
     if (filterString) {
       setIsFilterBuilderVisible(true);
@@ -205,33 +203,12 @@ export const WfoStructuredSearchTable = <T extends object>({
   };
 
   const handleColumnFilterSearch = ({ field, searchText }: WfoDataSearch<T>) => {
-    // parseCEL takes double-quoted string content literally, without any escape support, so a value
-    // containing a double quote cannot be expressed as a CEL condition.
-    if (!searchText || searchText.includes('"')) {
+    const columnFilter = buildColumnFilter(field, searchText, filterString, getColumnSearchFieldName);
+    if (!columnFilter) {
       return;
     }
-    const searchFieldName = getColumnSearchFieldName?.(field) ?? String(field);
-    const condition = `${searchFieldName} == "${searchText}"`;
-    const currentFilter = filterString?.trim();
-    // Parenthesize the existing filter: && binds tighter than || in CEL, so without parentheses the
-    // new condition would attach to only the last OR branch of the existing filter.
-    const newFilterString = currentFilter ? `(${currentFilter}) && ${condition}` : condition;
-
-    // Only touch the filter draft and commit a search when the combined string parses to rules;
-    // when it does not (e.g. the current draft is invalid CEL), leave the user's draft alone.
-    let ruleGroup: RuleGroupType | undefined;
-    try {
-      ruleGroup = parseCEL(newFilterString);
-    } catch {
-      return;
-    }
-    if (!ruleGroup?.rules?.length) {
-      return;
-    }
-
-    onUpdateFilterString(newFilterString);
-    setIsFilterBuilderVisible(true);
-    handleSearch({ ruleGroup });
+    onUpdateFilterString(columnFilter.filterString);
+    handleSearch({ ruleGroup: columnFilter.ruleGroup });
   };
 
   const filterBuilder = (

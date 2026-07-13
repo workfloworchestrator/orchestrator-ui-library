@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: WfoThemeHelpers) => {
+export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) => {
   const queryBuilderContainerStyles = css({
     backgroundColor: theme.colors.backgroundBaseSubdued,
     padding: theme.base / 2,
@@ -13,13 +13,6 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
   const toggleButtonStyles = css({
     backgroundColor: 'primary',
     padding: theme.base * 0.75,
-  });
-
-  const textAreaStyles = css({
-    width: '100%',
-    maxInlineSize: '100%',
-    height: '42px',
-    border: `this solid ${toSecondaryColor(theme.colors.borderBasePlain)}`,
   });
 
   const buttonGroupStyles = css({
@@ -141,7 +134,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
     border: `thin dashed ${theme.colors.backgroundFilledPrimary}`,
     borderRadius: theme.border.radius.medium,
     alignItems: 'center',
-    padding: theme.base,
+    paddingBlock: theme.base / 3,
+    paddingInline: theme.base,
     color: theme.colors.primary,
     justifyContent: 'center',
     flexDirection: 'row',
@@ -149,7 +143,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
   });
 
   const inlineCombinatorStyles = css({
-    alignSelf: 'center',
+    alignSelf: 'start',
+    transform: `translateY(calc(-50% - ${theme.base / 8}px))`,
   });
 
   const ruleGroupBodyGridStyles = css({
@@ -161,12 +156,14 @@ export const getWfoStructuredSearchTableStyles = ({ theme, toSecondaryColor }: W
     '& > :first-child': {
       gridColumn: '1 / -1',
     },
+    '& > :first-child:not(:only-child)': {
+      gridColumn: '2 / -1',
+    },
   });
 
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
-    textAreaStyles,
     buttonGroupStyles,
     ruleContainerStyles,
     ruleGroupContainerBlueStyles,

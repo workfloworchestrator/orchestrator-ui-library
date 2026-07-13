@@ -32,6 +32,7 @@ import {
   WfoTableColumnConfig,
   subscriptionListTabs,
 } from '@/components';
+import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
@@ -49,18 +50,6 @@ const SEARCH_TABLE_LOCAL_STORAGE_KEY = 'SEARCH_TABLE_LOCAL_STORAGE_KEY';
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
   return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
-};
-
-const parseCelToRuleGroup = (celString: string | null | undefined): RuleGroupType | undefined => {
-  if (!celString) {
-    return undefined;
-  }
-  try {
-    const ruleGroup = parseCEL(celString);
-    return ruleGroup?.rules?.length > 0 ? ruleGroup : undefined;
-  } catch {
-    return undefined;
-  }
 };
 
 const getDataFromResponse = <T extends object>(
@@ -167,8 +156,8 @@ export const WfoSearchPocPage = () => {
   // CEL round trip cannot preserve, such as 'between'. The refs hold the value as the params decode
   // it (absent param -> ''); the setters receive undefined to remove an empty param from the URL.
   const lastSelfCommittedFilter = useRef('');
-  const commitFilterString = (celString: string | undefined) => {
-    lastSelfCommittedFilter.current = celString ?? '';
+  const commitFilterString = (celString: string) => {
+    lastSelfCommittedFilter.current = celString;
     setCommittedFilterString(celString || undefined);
   };
   const lastSelfCommittedQuery = useRef('');
@@ -357,19 +346,18 @@ export const WfoSearchPocPage = () => {
     // Use an explicitly passed rule group when provided (e.g. a column-header search), a cleared filter
     // when `false`, and otherwise the current query builder state (the "Apply filter" button).
     const effectiveRuleGroup = ruleGroupParam === false ? undefined : (ruleGroupParam ?? queryBuilderRuleGroup);
+    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
     const celQuery =
       effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
-    // Committing means writing the filter to the URL as CEL; committedRuleGroup is derived from it.
-    // '1 == 1' is formatQuery's output for a rule group it cannot express in CEL.
-    const committableCel = celQuery && celQuery !== '1 == 1' ? celQuery : undefined;
-    // formatQuery escapes double quotes in values but parseCEL has no escape support, so such a
-    // filter would silently be dropped after the round trip through the URL. Refuse the commit and
-    // flag the filter instead, keeping the URL and the search results consistent.
-    if (committableCel && !parseCelToRuleGroup(committableCel)) {
+    // A non-empty CEL string must survive the round trip through the URL: formatQuery escapes double
+    // quotes in values but parseCEL has no escape support, so such a filter would silently be dropped
+    // after committing. Refuse the commit and flag the filter instead, keeping the URL and the search
+    // results consistent.
+    if (celQuery && !parseCelToRuleGroup(celQuery)) {
       setIsValidFilterString(false);
       return;
     }
-    commitFilterString(committableCel);
+    commitFilterString(celQuery);
     setPageCursor(undefined);
   };
 
@@ -498,7 +486,7 @@ export const WfoSearchPocPage = () => {
 
   return (
     <>
-      <WfoContentHeader title="Subscriptions (POC)" />
+      <WfoContentHeader title="Subscriptions (Beta)" />
       <WfoFilterTabs
         tabs={subscriptionListTabs}
         selectedTab={selectedTab}
