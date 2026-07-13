@@ -1,8 +1,8 @@
 # @orchestrator-ui/orchestrator-ui-components
 
-## 8.5.1
+## 8.6.0
 
-### Patch Changes
+### Minor Changes
 
 - 2447ecc: 163: Replace the crosses with a trash icon, move the AND/OR toggle between the two search rules, fix the scrollbar in textarea
 
