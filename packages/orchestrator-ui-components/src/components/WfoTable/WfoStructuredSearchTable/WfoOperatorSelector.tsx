@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import type { FullOperator, OperatorSelectorProps, OptionGroup } from 'react-querybuilder';
+import { defaultOperators } from 'react-querybuilder';
 
 import { EuiSelect } from '@elastic/eui';
 
@@ -7,6 +8,8 @@ const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): oper
   'options' in operator;
 
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
+  const { value, handleOnChange } = props;
+
   const flatOptions = (props.options as Array<FullOperator | OptionGroup<FullOperator>>).flatMap((option) =>
     isOptionGroup(option) ? option.options : [option],
   );
@@ -16,23 +19,39 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
     [flatOptions],
   );
 
+  const optionsKey = selectOptions.map((option) => option.value).join('|');
+  const previousOptionsKeyRef = useRef(optionsKey);
+
   useEffect(() => {
-    // Reset to the first option when the operator is unset OR when the current operator
-    // is no longer valid for the selected field. resetOnFieldChange=false on QueryBuilder
-    // preserves the operator across field changes, so the stale-value branch is what keeps
-    // the dropdown coherent when the new field's operator list doesn't include it.
-    if (selectOptions.length === 0) return;
-    const currentValueIsValid = selectOptions.some((option) => option.value === props.value);
+    const optionsChanged = previousOptionsKeyRef.current !== optionsKey;
+    previousOptionsKeyRef.current = optionsKey;
+
+    // Reset to the first option only when the field's operator list changes — i.e. the
+    // user picked a (different) field, and resetOnFieldChange=false on QueryBuilder
+    // preserved an operator that is not valid for it. The `optionsChanged` guard keeps
+    // rules restored from CEL (URL or textarea) intact on mount: parseCEL can produce
+    // operators outside the prefilled operator lists (e.g. beginsWith), and resetting
+    // those here would silently rewrite the user's filter string.
+    if (!optionsChanged || selectOptions.length === 0) return;
+    const currentValueIsValid = selectOptions.some((option) => option.value === value);
     if (!currentValueIsValid) {
-      props.handleOnChange(selectOptions[0].value);
+      handleOnChange(selectOptions[0].value);
     }
-  }, [props, props.options, props.value, selectOptions]);
+  }, [optionsKey, selectOptions, value, handleOnChange]);
+
+  // A restored operator that falls outside the field's list must still be visible in
+  // the dropdown; without it EuiSelect renders an empty selection for the rule.
+  const currentValueIsListed = !value || selectOptions.some((option) => option.value === value);
+  const displayOptions =
+    currentValueIsListed ? selectOptions : (
+      [...selectOptions, { value, text: defaultOperators.find((operator) => operator.name === value)?.label ?? value }]
+    );
 
   return (
     <EuiSelect
-      options={selectOptions}
-      value={props.value}
-      onChange={(e) => props.handleOnChange(e.target.value)}
+      options={displayOptions}
+      value={value}
+      onChange={(e) => handleOnChange(e.target.value)}
       disabled={props.disabled}
     />
   );
