@@ -58,7 +58,6 @@ interface WfoFilterBuilderProps {
   queryBuilderRuleGroup?: RuleGroupType;
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
-  isFilterBuilderVisible: boolean;
   onToggleFilterBuilder: (isVisible: boolean) => void;
   prefilledFieldOptions: FieldToOperatorMap;
 }
@@ -82,7 +81,6 @@ export const WfoFilterBuilder = ({
   onUpdateQueryBuilder,
   handleSearch,
   prefilledFieldOptions,
-  isFilterBuilderVisible,
   onToggleFilterBuilder,
 }: WfoFilterBuilderProps) => {
   const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
@@ -94,9 +92,7 @@ export const WfoFilterBuilder = ({
   };
 
   const t = useTranslations('common');
-  const { queryBuilderContainerStyles, toggleButtonStyles } = useWithOrchestratorTheme(
-    getWfoStructuredSearchTableStyles,
-  );
+  const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
   const handleFieldSelected = (field: string, operators: string[]) => {
@@ -106,93 +102,77 @@ export const WfoFilterBuilder = ({
   };
 
   return (
-    <EuiFlexGroup css={isFilterBuilderVisible ? queryBuilderContainerStyles : undefined}>
-      {(isFilterBuilderVisible && (
-        <EuiFlexGroup direction={'column'}>
-          <EuiFlexItem>
-            <QueryBuilder
-              query={queryBuilderRuleGroup}
-              enableMountQueryChange={false}
-              onQueryChange={(ruleGroup: RuleGroupType) => {
-                onUpdateQueryBuilder(ruleGroup);
-              }}
-              context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
-              getOperators={(field) => {
-                const operators = fieldToOperatorMap.get(field);
-                return mapOperatorsToRQBOperatorOptions(operators);
-              }}
-              controlElements={{
-                fieldSelector: WfoFieldSelector,
-                operatorSelector: WfoOperatorSelector,
-                valueEditor: WfoValueEditor,
-                ruleGroup: WfoRuleGroup,
-                rule: WfoRule,
-                combinatorSelector: WfoCombinatorSelector,
-                inlineCombinator: WfoInlineCombinator,
-                addRuleAction: null,
-                addGroupAction: null,
-                removeGroupAction: null,
-                removeRuleAction: WfoRemoveRuleAction,
-              }}
-              addRuleToNewGroups
-              onAddGroup={onAddGroupHandler}
-              maxLevels={5}
-              showCombinatorsBetweenRules
-            />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <WfoAutoExpandableTextArea
-              id={'searchbox-textarea'}
-              value={filterString ?? ''}
-              onChange={(e) => {
-                const filterString = e.target.value;
-                onUpdateFilterString(filterString);
-              }}
-              isInvalid={!isValidFilterString}
-            />
-          </EuiFlexItem>
+    <EuiFlexGroup css={queryBuilderContainerStyles}>
+      <EuiFlexGroup direction={'column'}>
+        <EuiFlexItem>
+          <QueryBuilder
+            query={queryBuilderRuleGroup}
+            enableMountQueryChange={false}
+            onQueryChange={(ruleGroup: RuleGroupType) => {
+              onUpdateQueryBuilder(ruleGroup);
+            }}
+            context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
+            getOperators={(field) => {
+              const operators = fieldToOperatorMap.get(field);
+              return mapOperatorsToRQBOperatorOptions(operators);
+            }}
+            controlElements={{
+              fieldSelector: WfoFieldSelector,
+              operatorSelector: WfoOperatorSelector,
+              valueEditor: WfoValueEditor,
+              ruleGroup: WfoRuleGroup,
+              rule: WfoRule,
+              combinatorSelector: WfoCombinatorSelector,
+              inlineCombinator: WfoInlineCombinator,
+              addRuleAction: null,
+              addGroupAction: null,
+              removeGroupAction: null,
+              removeRuleAction: WfoRemoveRuleAction,
+            }}
+            addRuleToNewGroups
+            onAddGroup={onAddGroupHandler}
+            maxLevels={5}
+            showCombinatorsBetweenRules
+          />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <WfoAutoExpandableTextArea
+            id={'searchbox-textarea'}
+            value={filterString ?? ''}
+            onChange={(e) => {
+              const filterString = e.target.value;
+              onUpdateFilterString(filterString);
+            }}
+            isInvalid={!isValidFilterString}
+          />
+        </EuiFlexItem>
 
-          <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
-            <EuiButton
-              onClick={() => {
-                handleSearch();
-              }}
-              id={'button-apply-filter'}
-              data-test-id={'button-apply-filter'}
-              fill
-              type="submit"
-              aria-label={t('applyFilter')}
-              disabled={!isValidFilterString}
-            >
-              {t('applyFilter')}
-            </EuiButton>
-            <WfoTextAnchor
-              text={t('removeFilter')}
-              onClick={() => {
-                onUpdateQueryBuilder(false);
-                // we call with ruleGroup: false explictly to
-                // avoid state not having caught up yet when searching
-                handleSearch({ ruleGroup: false });
-                onToggleFilterBuilder(false);
-              }}
-            />
-          </EuiFlexGroup>
+        <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
+          <EuiButton
+            onClick={() => {
+              handleSearch();
+            }}
+            id={'button-apply-filter'}
+            data-test-id={'button-apply-filter'}
+            fill
+            type="submit"
+            aria-label={t('applyFilter')}
+            disabled={!isValidFilterString}
+          >
+            {t('applyFilter')}
+          </EuiButton>
+          <WfoTextAnchor
+            text={t('removeFilter')}
+            onClick={() => {
+              onUpdateQueryBuilder(false);
+              // we call with ruleGroup: false explictly to
+              // avoid state not having caught up yet when searching
+              handleSearch({ ruleGroup: false });
+              onToggleFilterBuilder(false);
+            }}
+          />
         </EuiFlexGroup>
-      )) || (
-        <EuiButton
-          css={toggleButtonStyles}
-          onClick={() => onToggleFilterBuilder(true)}
-          id={'button-toggle-filter-builder'}
-          data-test-id={'button-toggle-filter-builder'}
-          fill
-          type="submit"
-          iconType="filter"
-          iconSide="left"
-          aria-label={t('createFilter')}
-        >
-          {t('createFilter')}
-        </EuiButton>
-      )}
+      </EuiFlexGroup>
     </EuiFlexGroup>
   );
 };

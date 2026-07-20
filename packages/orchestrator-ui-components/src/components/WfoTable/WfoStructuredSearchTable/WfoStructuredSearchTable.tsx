@@ -27,7 +27,7 @@ import {
   WfoTableControlColumnConfigItem,
   WfoTableDataColumnConfigItem,
 } from '@/components/WfoTable/WfoTable';
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 import { FieldToOperatorMap, RetrieverType } from '@/types';
@@ -36,6 +36,7 @@ import { getDefaultTableConfig } from '@/utils';
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
+import { getWfoStructuredSearchTableStyles } from './styles';
 import { buildColumnFilter } from './utils';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
@@ -129,7 +130,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
-
+  const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
@@ -211,24 +212,26 @@ export const WfoStructuredSearchTable = <T extends object>({
     handleSearch({ ruleGroup: columnFilter.ruleGroup });
   };
 
-  const filterBuilder = (
-    <WfoFilterBuilder
-      filterString={filterString}
-      onUpdateFilterString={onUpdateFilterString}
-      isValidFilterString={isValidFilterString}
-      queryBuilderRuleGroup={queryBuilderRuleGroup}
-      onUpdateQueryBuilder={onUpdateQueryBuilder}
-      handleSearch={handleSearch}
-      isFilterBuilderVisible={isFilterBuilderVisible}
-      onToggleFilterBuilder={setIsFilterBuilderVisible}
-      prefilledFieldOptions={prefilledFieldOptions}
-    />
-  );
-
   return (
     <>
       <EuiFlexGroup alignItems="center" gutterSize="s">
-        {!isFilterBuilderVisible && <EuiFlexItem grow={false}>{filterBuilder}</EuiFlexItem>}
+        {!isFilterBuilderVisible && (
+          <EuiFlexItem grow={false}>
+            <EuiButton
+              css={toggleButtonStyles}
+              onClick={() => setIsFilterBuilderVisible(true)}
+              id={'button-toggle-filter-builder'}
+              data-test-id={'button-toggle-filter-builder'}
+              fill
+              type="submit"
+              iconType="filter"
+              iconSide="left"
+              aria-label={t('createFilter')}
+            >
+              {t('createFilter')}
+            </EuiButton>
+          </EuiFlexItem>
+        )}
         <WfoSearchFieldWithActions
           queryText={queryText}
           onChangeQueryText={onChangeQueryText}
@@ -241,7 +244,16 @@ export const WfoStructuredSearchTable = <T extends object>({
       {isFilterBuilderVisible && (
         <>
           <EuiSpacer size="s" />
-          {filterBuilder}
+          <WfoFilterBuilder
+            filterString={filterString}
+            onUpdateFilterString={onUpdateFilterString}
+            isValidFilterString={isValidFilterString}
+            queryBuilderRuleGroup={queryBuilderRuleGroup}
+            onUpdateQueryBuilder={onUpdateQueryBuilder}
+            handleSearch={handleSearch}
+            onToggleFilterBuilder={setIsFilterBuilderVisible}
+            prefilledFieldOptions={prefilledFieldOptions}
+          />
         </>
       )}
 
