@@ -168,11 +168,21 @@ export const WfoValueEditor = ({
     return <TextEditor handleOnChange={handleOnChange} value={value} />;
   };
 
+  const handleWrapperKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key !== 'Enter') return;
+    // Restrict to the editor inputs: the editors' own Enter handlers have already run
+    // (bubble phase) and committed the value via blur, so the search sees it. Enter on
+    // the boolean buttons means "select" — its click fires only after this keydown, so
+    // searching there would use the pre-toggle value.
+    if (!(event.target instanceof HTMLInputElement)) return;
+    context?.onValueEditorEnter?.();
+  };
+
   // react-querybuilder delivers the standard `rule-value` class via this prop; the wrapper
   // makes it queryable in the DOM (WfoFieldSelector relies on it to move focus here).
   // `display: contents` keeps the children direct participants in the rule's flex row.
   return (
-    <div className={className} style={{ display: 'contents' }}>
+    <div className={className} style={{ display: 'contents' }} onKeyDown={handleWrapperKeyDown}>
       {getEditor()}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FullOperator, QueryBuilder, type RuleGroupType, generateID } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -95,6 +95,17 @@ export const WfoFilterBuilder = ({
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
 
+  // Enter in a value editor commits its value on blur, and that state update has not
+  // flushed yet when the search runs in the same keydown. onQueryChange fires
+  // synchronously during the blur, so this ref always holds the freshest rule group,
+  // which is passed to handleSearch explicitly (same pattern as the remove-filter link).
+  const latestRuleGroupRef = useRef<RuleGroupType | undefined>(queryBuilderRuleGroup);
+  latestRuleGroupRef.current = queryBuilderRuleGroup;
+
+  const handleValueEditorEnter = () => {
+    handleSearch({ ruleGroup: latestRuleGroupRef.current });
+  };
+
   const handleFieldSelected = (field: string, operators: string[]) => {
     setFieldToOperatorMap((previousMap) => {
       return new Map(previousMap).set(field, operators);
@@ -109,9 +120,14 @@ export const WfoFilterBuilder = ({
             query={queryBuilderRuleGroup}
             enableMountQueryChange={false}
             onQueryChange={(ruleGroup: RuleGroupType) => {
+              latestRuleGroupRef.current = ruleGroup;
               onUpdateQueryBuilder(ruleGroup);
             }}
-            context={{ onFieldSelected: handleFieldSelected, prefilledFieldOptions }}
+            context={{
+              onFieldSelected: handleFieldSelected,
+              prefilledFieldOptions,
+              onValueEditorEnter: handleValueEditorEnter,
+            }}
             getOperators={(field) => {
               const operators = fieldToOperatorMap.get(field);
               return mapOperatorsToRQBOperatorOptions(operators);
@@ -143,6 +159,15 @@ export const WfoFilterBuilder = ({
             onChange={(e) => {
               const filterString = e.target.value;
               onUpdateFilterString(filterString);
+            }}
+            onKeyDown={(event) => {
+              // Enter applies the filter like the Apply button (and like it, does nothing
+              // while the filter string is invalid); Shift+Enter inserts a newline.
+              if (event.key !== 'Enter' || event.shiftKey) return;
+              event.preventDefault();
+              if (isValidFilterString) {
+                handleSearch();
+              }
             }}
             isInvalid={!isValidFilterString}
           />
