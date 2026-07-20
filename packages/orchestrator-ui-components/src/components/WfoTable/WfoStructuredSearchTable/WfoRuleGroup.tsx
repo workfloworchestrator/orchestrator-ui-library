@@ -13,7 +13,8 @@ import { WfoRemoveGroupAction } from './WfoRemoveGroupAction';
 
 export const WfoRuleGroup = (props: RuleGroupProps) => {
   const ruleGroupProps = useRuleGroup(props);
-  const ruleId = ruleGroupProps.ruleGroup.id;
+  const rulePath = ruleGroupProps.path;
+  const isRootGroup: boolean = !rulePath || rulePath.length === 0;
 
   const {
     ruleGroupContainerBlueStyles,
@@ -24,9 +25,9 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
   } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const getGroupContainerStyles = () => {
     if (ruleGroupProps.path.length % 2) {
-      return ruleId !== 'root' ? innerGroupContainerWhiteStyles : ruleGroupContainerWhiteStyles;
+      return !isRootGroup ? innerGroupContainerWhiteStyles : ruleGroupContainerWhiteStyles;
     } else {
-      return ruleId !== 'root' ? innerGroupContainerBlueStyles : ruleGroupContainerBlueStyles;
+      return !isRootGroup ? innerGroupContainerBlueStyles : ruleGroupContainerBlueStyles;
     }
   };
 
@@ -70,7 +71,7 @@ export const WfoRuleGroup = (props: RuleGroupProps) => {
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
-      {ruleId !== 'root' && <WfoRemoveGroupAction onClick={ruleGroupProps.removeGroup} />}
+      {!isRootGroup && <WfoRemoveGroupAction onClick={ruleGroupProps.removeGroup} />}
     </EuiFlexGroup>
   );
 };
