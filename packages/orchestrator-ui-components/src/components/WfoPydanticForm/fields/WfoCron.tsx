@@ -47,12 +47,19 @@ const CRON_FIELD_HINTS: Record<CronFieldKey, CronHintRow[]> = {
   ],
 };
 
+// cron-parser and cronstrue treat a 5 field expression as starting with minute;
+// only with 6 fields does the first field become second
+export const getCronFieldLayout = (expression: string): readonly CronFieldKey[] => {
+  const fieldCount = expression.trim().split(/\s+/).filter(Boolean).length;
+  return fieldCount >= CRON_FIELD_KEYS.length ? CRON_FIELD_KEYS : CRON_FIELD_KEYS.slice(1);
+};
+
 export const getCronFieldIndexAtCursor = (expression: string, cursorPosition: number): number => {
   const textBeforeCursor = expression.slice(0, cursorPosition);
   const fieldsBeforeCursor = textBeforeCursor.split(/\s+/).filter(Boolean);
   const cursorIsBetweenFields = /\s$/.test(textBeforeCursor) || fieldsBeforeCursor.length === 0;
   const fieldIndex = cursorIsBetweenFields ? fieldsBeforeCursor.length : fieldsBeforeCursor.length - 1;
-  return Math.min(fieldIndex, CRON_FIELD_KEYS.length - 1);
+  return Math.min(fieldIndex, getCronFieldLayout(expression).length - 1);
 };
 
 export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabled, pydanticFormField }) => {
@@ -88,9 +95,6 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
       // cron-parser validates the expression, cronstrue turns it into a human readable description
       const cronExpression = CronExpressionParser.parse(expression);
 
-      console.log('expression', expression);
-      console.log('interval', cronExpression);
-
       return {
         description: cronstrue.toString(expression, {
           locale: cronstrueLocale,
@@ -113,7 +117,10 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
     setActiveFieldIndex(selectionStart === null ? null : getCronFieldIndexAtCursor(expression, selectionStart));
   };
 
-  const activeFieldKey = activeFieldIndex !== null ? CRON_FIELD_KEYS[activeFieldIndex] : 'second';
+  const fieldLayout = getCronFieldLayout(typeof fieldValue === 'string' ? fieldValue : '');
+  const activeFieldKey =
+    activeFieldIndex !== null ? fieldLayout[Math.min(activeFieldIndex, fieldLayout.length - 1)] : null;
+  const hintFieldKey = activeFieldKey ?? fieldLayout[0];
 
   return (
     <div css={cronFieldWrapperStyle}>
@@ -133,17 +140,17 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
         fullWidth
       />
       <div css={[cronLegendStyle]}>
-        {CRON_FIELD_KEYS.map((fieldKey, index) => (
-          <span key={fieldKey} css={[cronLegendItemStyle, index === activeFieldIndex && cronActiveLegendItemStyle]}>
+        {CRON_FIELD_KEYS.map((fieldKey) => (
+          <span key={fieldKey} css={[cronLegendItemStyle, fieldKey === activeFieldKey && cronActiveLegendItemStyle]}>
             {t(fieldKey)}
           </span>
         ))}
       </div>
-      {activeFieldKey && (
+      {hintFieldKey && (
         <>
           <div css={cronPossibleValuesStyle}>{t('possibleValues')}</div>
           <div css={cronHintListStyle}>
-            {[...SPECIAL_CHARACTER_HINTS, ...CRON_FIELD_HINTS[activeFieldKey]].map(({ symbol, translationKey }) => (
+            {[...SPECIAL_CHARACTER_HINTS, ...CRON_FIELD_HINTS[hintFieldKey]].map(({ symbol, translationKey }) => (
               <React.Fragment key={symbol}>
                 <span css={cronHintSymbolStyle}>{symbol}</span>
                 <span>{t(translationKey)}</span>
