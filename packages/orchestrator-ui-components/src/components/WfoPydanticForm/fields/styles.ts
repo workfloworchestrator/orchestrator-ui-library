@@ -23,7 +23,7 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     display: 'flex',
     flexWrap: 'wrap',
     gap: theme.size.xs,
-    marginTop: theme.size.xs,
+    marginTop: theme.size.s,
     fontSize: theme.size.m,
   });
 
@@ -33,6 +33,13 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     borderRadius: theme.border.radius.small,
   });
 
+  const cronPossibleValuesStyle = css({
+    marginTop: theme.size.m,
+    marginLeft: theme.size.m,
+    fontSize: theme.size.m,
+    color: theme.colors.textSubdued,
+  });
+
   const cronActiveLegendItemStyle = css({
     color: theme.colors.textPrimary,
     backgroundColor: theme.colors.backgroundBasePrimary,
@@ -40,7 +47,6 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
   });
 
   const cronDescriptionStyle = css({
-    marginTop: theme.size.s,
     color: theme.colors.textParagraph,
     fontWeight: theme.font.weight.semiBold,
   });
@@ -50,11 +56,31 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     color: theme.colors.textSubdued,
   });
 
+  const cronHintListStyle = css({
+    display: 'grid',
+    gridTemplateColumns: 'max-content 1fr',
+    columnGap: theme.size.m,
+    rowGap: theme.size.xxs,
+    margin: theme.size.m,
+    marginTop: theme.size.xs,
+    fontSize: theme.size.m,
+    color: theme.colors.textSubdued,
+  });
+
+  const cronHintSymbolStyle = css({
+    fontFamily: theme.font.familyCode,
+    color: theme.colors.textPrimary,
+  });
+
   const cronErrorStyle = css({
     marginTop: theme.size.xs,
     color: theme.colors.textDanger,
   });
-
+  const cronDescriptionContainerStyle = css({
+    border: `thin dotted ${theme.colors.borderBasePlain}`,
+    borderRadius: theme.border.radius.small,
+    padding: theme.size.m,
+  });
   return {
     cronFieldWrapperStyle,
     cronLegendStyle,
@@ -62,7 +88,11 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     cronActiveLegendItemStyle,
     cronDescriptionStyle,
     cronHintStyle,
+    cronHintListStyle,
+    cronHintSymbolStyle,
     cronErrorStyle,
+    cronPossibleValuesStyle,
+    cronDescriptionContainerStyle,
   };
 };
 
