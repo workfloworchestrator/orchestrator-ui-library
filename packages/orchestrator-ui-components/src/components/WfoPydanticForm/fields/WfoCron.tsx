@@ -15,9 +15,10 @@ import { getFormFieldsBaseStyle } from '@/theme';
 
 import { getWfoCronFieldStyles } from './styles';
 
-const CRON_FIELD_KEYS = ['minute', 'hour', 'dayOfMonth', 'month', 'dayOfWeek'] as const;
+const CRON_FIELD_KEYS = ['second', 'minute', 'hour', 'dayOfMonth', 'month', 'dayOfWeek'] as const;
 
 const CRON_FIELD_ALLOWED_VALUES: Record<(typeof CRON_FIELD_KEYS)[number], string> = {
+  second: '0-59',
   minute: '0-59',
   hour: '0-23',
   dayOfMonth: '1-31',
