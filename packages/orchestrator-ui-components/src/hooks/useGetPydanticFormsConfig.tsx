@@ -23,6 +23,7 @@ import {
   WfoArrayField,
   WfoCallout,
   WfoCheckbox,
+  WfoCron,
   WfoDivider,
   WfoDropdown,
   WfoInteger,
@@ -179,6 +180,17 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
           },
           matcher: ({ type, format }) => {
             return type === PydanticFormFieldType.STRING && format === ('callout' as PydanticFormFieldFormat);
+          },
+        },
+        {
+          id: 'cron',
+          ElementMatch: {
+            isControlledElement: true,
+            Element: WfoCron,
+          },
+          matcher: (field) => {
+            const { type, schema } = field;
+            return type === PydanticFormFieldType.STRING && schema.title === 'Cron';
           },
         },
         {
