@@ -10,7 +10,6 @@ export const getFormFieldsBaseStyle = ({ theme }: WfoThemeHelpers) => {
       backgroundColor: theme.colors.backgroundBaseNeutral,
       boxShadow: `0 0 0 1px ${theme.colors.primary}`,
     },
-    // boxShadow: `0 0 0 1px ${theme.colors.borderBaseSubdued} !important`,
   });
 
   return {

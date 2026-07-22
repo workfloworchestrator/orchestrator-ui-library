@@ -107,6 +107,17 @@
       "contactPersonName": {
         "placeholder": "Search and add contact persons..."
       },
+      "cron": {
+        "minute": "minute",
+        "hour": "hour",
+        "dayOfMonth": "day (month)",
+        "month": "month",
+        "dayOfWeek": "day (week)",
+        "allowedValues": "Allowed values for {field}: {values}.",
+        "specialCharacters": "Special characters: * (any value), , (value list), - (range), / (step)",
+        "invalidExpression": "Invalid cron expression: {error}",
+        "nextOccurrences": "Next: {dates}"
+      },
       "ipvAnyNetworkField": {
         "manuallySelectedPrefix": "Manually selected prefix"
       },

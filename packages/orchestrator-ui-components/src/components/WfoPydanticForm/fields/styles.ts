@@ -14,6 +14,58 @@ export const getWfoObjectFieldStyles = () => {
   };
 };
 
+export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
+  const cronFieldWrapperStyle = css({
+    width: '100%',
+  });
+
+  const cronLegendStyle = css({
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.size.xs,
+    marginTop: theme.size.xs,
+    fontSize: theme.size.m,
+  });
+
+  const cronLegendItemStyle = css({
+    color: theme.colors.textSubdued,
+    padding: `0 ${theme.size.xs}`,
+    borderRadius: theme.border.radius.small,
+  });
+
+  const cronActiveLegendItemStyle = css({
+    color: theme.colors.textPrimary,
+    backgroundColor: theme.colors.backgroundBasePrimary,
+    fontWeight: theme.font.weight.bold,
+  });
+
+  const cronDescriptionStyle = css({
+    marginTop: theme.size.s,
+    color: theme.colors.textParagraph,
+    fontWeight: theme.font.weight.semiBold,
+  });
+
+  const cronHintStyle = css({
+    marginTop: theme.size.xs,
+    color: theme.colors.textSubdued,
+  });
+
+  const cronErrorStyle = css({
+    marginTop: theme.size.xs,
+    color: theme.colors.textDanger,
+  });
+
+  return {
+    cronFieldWrapperStyle,
+    cronLegendStyle,
+    cronLegendItemStyle,
+    cronActiveLegendItemStyle,
+    cronDescriptionStyle,
+    cronHintStyle,
+    cronErrorStyle,
+  };
+};
+
 export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
   const formRowStyle = css({
     marginBottom: theme.base * 2,

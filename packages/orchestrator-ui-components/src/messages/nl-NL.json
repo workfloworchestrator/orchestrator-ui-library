@@ -108,6 +108,17 @@
       "contactPersonName": {
         "placeholder": "Zoek en voeg contactpersonen toe..."
       },
+      "cron": {
+        "minute": "minuut",
+        "hour": "uur",
+        "dayOfMonth": "dag (maand)",
+        "month": "maand",
+        "dayOfWeek": "dag (week)",
+        "allowedValues": "Toegestane waarden voor {field}: {values}.",
+        "specialCharacters": "Speciale tekens: * (elke waarde), , (lijst van waarden), - (bereik), / (stap)",
+        "invalidExpression": "Ongeldige cron-expressie: {error}",
+        "nextOccurrences": "Volgende: {dates}"
+      },
       "ipvAnyNetworkField": {
         "manuallySelectedPrefix": "Manually selected prefix"
       },
