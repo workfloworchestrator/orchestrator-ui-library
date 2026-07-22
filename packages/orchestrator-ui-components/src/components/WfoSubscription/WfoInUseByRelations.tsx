@@ -14,9 +14,13 @@ import { getSubscriptionDetailStyles } from './styles';
 
 interface WfoInUseByRelationsProps {
   inUseByRelations: InUseByRelation[];
+  subscriptionPath?: string;
 }
 
-export const WfoInUseByRelations = ({ inUseByRelations }: WfoInUseByRelationsProps) => {
+export const WfoInUseByRelations = ({
+  inUseByRelations,
+  subscriptionPath = PATH_SUBSCRIPTIONS,
+}: WfoInUseByRelationsProps) => {
   const t = useTranslations('subscriptions.detail');
   const { inUseByRelationDetailsStyle } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
   const subscriptionIds = inUseByRelations.map((relation) => relation.subscription_id).join('|');
@@ -42,7 +46,7 @@ export const WfoInUseByRelations = ({ inUseByRelations }: WfoInUseByRelationsPro
       {
         key: t('description'),
         value: (
-          <Link href={`${PATH_SUBSCRIPTIONS}/${inUseByRelationDetails.subscriptionId}`} target="_blank">
+          <Link href={`${subscriptionPath}/${inUseByRelationDetails.subscriptionId}`} target="_blank">
             {inUseByRelationDetails.description}
           </Link>
         ),

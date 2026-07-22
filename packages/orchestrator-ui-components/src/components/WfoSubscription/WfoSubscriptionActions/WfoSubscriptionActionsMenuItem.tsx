@@ -19,6 +19,7 @@ interface MenuItemProps {
   setPopover: (isOpen: boolean) => void;
   onClick: () => void;
   isLoading?: boolean;
+  subscriptionPath?: string;
 }
 
 export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
@@ -27,6 +28,7 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
   target,
   setPopover,
   isLoading = false,
+  subscriptionPath,
 }) => {
   const { linkMenuItemStyle, tooltipMenuItemStyle, disabledIconStyle, iconStyle, secondaryIconStyle } =
     useWithOrchestratorTheme(getSubscriptionActionStyles);
@@ -102,6 +104,7 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
           <WfoSubscriptionActionExpandableMenuItem
             subscriptionAction={subscriptionAction}
             onClickLockedRelation={() => setPopover(false)}
+            subscriptionPath={subscriptionPath}
           >
             {actionItem}
           </WfoSubscriptionActionExpandableMenuItem>
