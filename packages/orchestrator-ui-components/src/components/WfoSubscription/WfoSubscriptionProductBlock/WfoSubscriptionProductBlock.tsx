@@ -147,7 +147,7 @@ export const WfoSubscriptionProductBlock = ({
                     </td>
                     <td>
                       {(inUseByRelations.length === 0 && 'None') || (
-                        <WfoInUseByRelations inUseByRelations={inUseByRelations} />
+                        <WfoInUseByRelations inUseByRelations={inUseByRelations} subscriptionPath={subscriptionPath} />
                       )}
                     </td>
                   </tr>

@@ -5,7 +5,13 @@ import { useRouter } from 'next/router';
 
 import { EuiButton, EuiButtonIcon, EuiLoadingSpinner, EuiTitle } from '@elastic/eui';
 
-import { PATH_START_NEW_TASK, PATH_START_NEW_WORKFLOW, WfoInSyncField, WfoPopover } from '@/components';
+import {
+  PATH_START_NEW_TASK,
+  PATH_START_NEW_WORKFLOW,
+  PATH_SUBSCRIPTIONS,
+  WfoInSyncField,
+  WfoPopover,
+} from '@/components';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -27,12 +33,14 @@ export type WfoSubscriptionActionsProps = {
   subscriptionId: string;
   isLoading?: boolean;
   compactMode?: boolean;
+  subscriptionPath?: string;
 };
 
 export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
   subscriptionId,
   isLoading,
   compactMode = false,
+  subscriptionPath = PATH_SUBSCRIPTIONS,
 }) => {
   const t = useTranslations('subscriptions.detail.actions');
   const { theme } = useOrchestratorTheme();
@@ -132,6 +140,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
               subscriptionAction={subscriptionAction}
               target={WorkflowTarget.VALIDATE}
               setPopover={setPopover}
+              subscriptionPath={subscriptionPath}
               onClick={() => handleActionClick(subscriptionAction.name, compactMode, true)}
               isLoading={buttonIsLoading}
             />
@@ -152,6 +161,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
               }
               target={WorkflowTarget.RECONCILE}
               setPopover={setPopover}
+              subscriptionPath={subscriptionPath}
               onClick={() => handleActionClick(subscriptionAction.name, compactMode, false)}
               isLoading={buttonIsLoading}
             />
@@ -182,6 +192,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
               subscriptionAction={subscriptionAction}
               target={WorkflowTarget.MODIFY}
               setPopover={setPopover}
+              subscriptionPath={subscriptionPath}
               onClick={() => {
                 redirectToUrl(subscriptionAction.name);
               }}
@@ -199,6 +210,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
               subscriptionAction={subscriptionAction}
               target={WorkflowTarget.TERMINATE}
               setPopover={setPopover}
+              subscriptionPath={subscriptionPath}
               onClick={() => {
                 redirectToUrl(subscriptionAction.name);
               }}
