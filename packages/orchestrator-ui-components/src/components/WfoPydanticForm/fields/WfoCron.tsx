@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { CronExpressionParser } from 'cron-parser';
 import cronstrue from 'cronstrue/i18n';
@@ -62,6 +62,20 @@ export const getCronFieldIndexAtCursor = (expression: string, cursorPosition: nu
   return Math.min(fieldIndex, getCronFieldLayout(expression).length - 1);
 };
 
+export const getCronFieldSelectionRange = (expression: string, fieldIndex: number): [number, number] | null => {
+  const fieldPattern = /\S+/g;
+  let match = fieldPattern.exec(expression);
+  let index = 0;
+  while (match) {
+    if (index === fieldIndex) {
+      return [match.index, match.index + match[0].length];
+    }
+    index++;
+    match = fieldPattern.exec(expression);
+  }
+  return null;
+};
+
 export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabled, pydanticFormField }) => {
   const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
   const {
@@ -70,6 +84,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
     cronLegendStyle,
     cronLegendItemStyle,
     cronActiveLegendItemStyle,
+    cronInactiveLegendItemStyle,
     cronDescriptionStyle,
     cronHintStyle,
     cronHintListStyle,
@@ -80,6 +95,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
   const t = useTranslations('pydanticForms.widgets.cron');
   const cronstrueLocale = useLanguageCode();
   const [activeFieldIndex, setActiveFieldIndex] = useState<number | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // If the field is part of an array the value is passed in as an object with the field name as key
   // this is imposed by react-hook-form. We try to detect this and extract the actual value
@@ -122,11 +138,30 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
     activeFieldIndex !== null ? fieldLayout[Math.min(activeFieldIndex, fieldLayout.length - 1)] : null;
   const hintFieldKey = activeFieldKey ?? fieldLayout[0];
 
+  const focusCronField = (fieldKey: CronFieldKey) => {
+    const input = inputRef.current;
+    const fieldIndex = fieldLayout.indexOf(fieldKey);
+    // The second field is not part of the layout when the expression has 5 fields
+    if (!input || fieldIndex === -1) {
+      return;
+    }
+    const expression = typeof fieldValue === 'string' ? fieldValue : '';
+    input.focus();
+    const selectionRange = getCronFieldSelectionRange(expression, fieldIndex);
+    if (selectionRange) {
+      input.setSelectionRange(selectionRange[0], selectionRange[1]);
+    } else {
+      input.setSelectionRange(expression.length, expression.length);
+    }
+    setActiveFieldIndex(fieldIndex);
+  };
+
   return (
     <div css={cronFieldWrapperStyle}>
       <EuiFieldText
         data-testid={pydanticFormField.id}
         css={formFieldBaseStyle}
+        inputRef={inputRef}
         disabled={disabled}
         isInvalid={!!parseError}
         placeholder="* * * * *"
@@ -140,11 +175,24 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
         fullWidth
       />
       <div css={[cronLegendStyle]}>
-        {CRON_FIELD_KEYS.map((fieldKey) => (
-          <span key={fieldKey} css={[cronLegendItemStyle, fieldKey === activeFieldKey && cronActiveLegendItemStyle]}>
-            {t(fieldKey)}
-          </span>
-        ))}
+        {CRON_FIELD_KEYS.map((fieldKey) => {
+          const isInLayout = fieldLayout.includes(fieldKey);
+          return (
+            <button
+              key={fieldKey}
+              type="button"
+              disabled={disabled || !isInLayout}
+              onClick={() => focusCronField(fieldKey)}
+              css={[
+                cronLegendItemStyle,
+                fieldKey === activeFieldKey && cronActiveLegendItemStyle,
+                !isInLayout && cronInactiveLegendItemStyle,
+              ]}
+            >
+              {t(fieldKey)}
+            </button>
+          );
+        })}
       </div>
       {hintFieldKey && (
         <>

@@ -1,4 +1,21 @@
-import { getCronFieldIndexAtCursor, getCronFieldLayout } from './WfoCron';
+import { getCronFieldIndexAtCursor, getCronFieldLayout, getCronFieldSelectionRange } from './WfoCron';
+
+describe('getCronFieldSelectionRange', () => {
+  it('returns the character range of the requested field', () => {
+    expect(getCronFieldSelectionRange('5 4 * JAN *', 0)).toEqual([0, 1]);
+    expect(getCronFieldSelectionRange('5 4 * JAN *', 1)).toEqual([2, 3]);
+    expect(getCronFieldSelectionRange('5 4 * JAN *', 3)).toEqual([6, 9]);
+  });
+
+  it('handles extra whitespace', () => {
+    expect(getCronFieldSelectionRange('  5   4 *', 1)).toEqual([6, 7]);
+  });
+
+  it('returns null when the field is not present in the expression', () => {
+    expect(getCronFieldSelectionRange('5 4', 2)).toEqual(null);
+    expect(getCronFieldSelectionRange('', 0)).toEqual(null);
+  });
+});
 
 describe('getCronFieldLayout', () => {
   it('returns the 5 field layout starting with minute for an empty expression', () => {

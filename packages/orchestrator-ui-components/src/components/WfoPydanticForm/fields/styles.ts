@@ -31,6 +31,10 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     color: theme.colors.textSubdued,
     padding: `0 ${theme.size.xs}`,
     borderRadius: theme.border.radius.small,
+    border: 'none',
+    backgroundColor: 'transparent',
+    font: 'inherit',
+    cursor: 'pointer',
   });
 
   const cronPossibleValuesStyle = css({
@@ -44,6 +48,11 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     color: theme.colors.textPrimary,
     backgroundColor: theme.colors.backgroundBasePrimary,
     fontWeight: theme.font.weight.bold,
+  });
+
+  const cronInactiveLegendItemStyle = css({
+    color: theme.colors.textDisabled,
+    cursor: 'default',
   });
 
   const cronDescriptionStyle = css({
@@ -86,6 +95,7 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
     cronLegendStyle,
     cronLegendItemStyle,
     cronActiveLegendItemStyle,
+    cronInactiveLegendItemStyle,
     cronDescriptionStyle,
     cronHintStyle,
     cronHintListStyle,
