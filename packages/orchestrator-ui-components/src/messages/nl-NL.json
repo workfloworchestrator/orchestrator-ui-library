@@ -109,6 +109,7 @@
         "placeholder": "Zoek en voeg contactpersonen toe..."
       },
       "cron": {
+        "second": "seconde",
         "minute": "minuut",
         "hour": "uur",
         "dayOfMonth": "dag (maand)",

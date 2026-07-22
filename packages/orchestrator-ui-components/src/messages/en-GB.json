@@ -108,6 +108,7 @@
         "placeholder": "Search and add contact persons..."
       },
       "cron": {
+        "second": "second",
         "minute": "minute",
         "hour": "hour",
         "dayOfMonth": "day (month)",
