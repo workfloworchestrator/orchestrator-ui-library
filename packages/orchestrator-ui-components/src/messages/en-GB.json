@@ -114,10 +114,16 @@
         "dayOfMonth": "day (month)",
         "month": "month",
         "dayOfWeek": "day (week)",
-        "allowedValues": "Allowed values for {field}: {values}.",
-        "specialCharacters": "Special characters: * (any value), , (value list), - (range), / (step)",
+        "anyValue": "any value",
+        "valueListSeparator": "value list separator",
+        "rangeOfValues": "range of values",
+        "stepValues": "step values",
+        "allowedValues": "allowed values",
+        "alternativeSingleValues": "alternative single values",
+        "sundayNonStandard": "sunday (non-standard)",
         "invalidExpression": "Invalid cron expression: {error}",
-        "nextOccurrences": "Next: {dates}"
+        "nextOccurrences": "Next: {dates}",
+        "possibleValues": "Possible values for this field"
       },
       "ipvAnyNetworkField": {
         "manuallySelectedPrefix": "Manually selected prefix"

@@ -115,10 +115,16 @@
         "dayOfMonth": "dag (maand)",
         "month": "maand",
         "dayOfWeek": "dag (week)",
-        "allowedValues": "Toegestane waarden voor {field}: {values}.",
-        "specialCharacters": "Speciale tekens: * (elke waarde), , (lijst van waarden), - (bereik), / (stap)",
+        "anyValue": "elke waarde",
+        "valueListSeparator": "scheidingsteken voor waardenlijst",
+        "rangeOfValues": "bereik van waarden",
+        "stepValues": "stapwaarden",
+        "allowedValues": "toegestane waarden",
+        "alternativeSingleValues": "alternatieve losse waarden",
+        "sundayNonStandard": "zondag (niet-standaard)",
         "invalidExpression": "Ongeldige cron-expressie: {error}",
-        "nextOccurrences": "Volgende: {dates}"
+        "nextOccurrences": "Volgende: {dates}",
+        "possibleValues": "Mogelijke waardes voor dit veld"
       },
       "ipvAnyNetworkField": {
         "manuallySelectedPrefix": "Manually selected prefix"

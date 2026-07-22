@@ -17,13 +17,34 @@ import { getWfoCronFieldStyles } from './styles';
 
 const CRON_FIELD_KEYS = ['second', 'minute', 'hour', 'dayOfMonth', 'month', 'dayOfWeek'] as const;
 
-const CRON_FIELD_ALLOWED_VALUES: Record<(typeof CRON_FIELD_KEYS)[number], string> = {
-  second: '0-59',
-  minute: '0-59',
-  hour: '0-23',
-  dayOfMonth: '1-31',
-  month: '1-12, JAN-DEC',
-  dayOfWeek: '0-6, SUN-SAT',
+type CronFieldKey = (typeof CRON_FIELD_KEYS)[number];
+
+type CronHintRow = {
+  symbol: string;
+  translationKey: string;
+};
+
+const SPECIAL_CHARACTER_HINTS: CronHintRow[] = [
+  { symbol: '*', translationKey: 'anyValue' },
+  { symbol: ',', translationKey: 'valueListSeparator' },
+  { symbol: '-', translationKey: 'rangeOfValues' },
+  { symbol: '/', translationKey: 'stepValues' },
+];
+
+const CRON_FIELD_HINTS: Record<CronFieldKey, CronHintRow[]> = {
+  second: [{ symbol: '0-59', translationKey: 'allowedValues' }],
+  minute: [{ symbol: '0-59', translationKey: 'allowedValues' }],
+  hour: [{ symbol: '0-23', translationKey: 'allowedValues' }],
+  dayOfMonth: [{ symbol: '1-31', translationKey: 'allowedValues' }],
+  month: [
+    { symbol: '1-12', translationKey: 'allowedValues' },
+    { symbol: 'JAN-DEC', translationKey: 'alternativeSingleValues' },
+  ],
+  dayOfWeek: [
+    { symbol: '0-6', translationKey: 'allowedValues' },
+    { symbol: 'SUN-SAT', translationKey: 'alternativeSingleValues' },
+    { symbol: '7', translationKey: 'sundayNonStandard' },
+  ],
 };
 
 export const getCronFieldIndexAtCursor = (expression: string, cursorPosition: number): number => {
@@ -38,12 +59,16 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
   const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
   const {
     cronFieldWrapperStyle,
+    cronPossibleValuesStyle,
     cronLegendStyle,
     cronLegendItemStyle,
     cronActiveLegendItemStyle,
     cronDescriptionStyle,
     cronHintStyle,
+    cronHintListStyle,
+    cronHintSymbolStyle,
     cronErrorStyle,
+    cronDescriptionContainerStyle,
   } = useWithOrchestratorTheme(getWfoCronFieldStyles);
   const t = useTranslations('pydanticForms.widgets.cron');
   const cronstrueLocale = useLanguageCode();
@@ -88,7 +113,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
     setActiveFieldIndex(selectionStart === null ? null : getCronFieldIndexAtCursor(expression, selectionStart));
   };
 
-  const activeFieldKey = activeFieldIndex !== null ? CRON_FIELD_KEYS[activeFieldIndex] : null;
+  const activeFieldKey = activeFieldIndex !== null ? CRON_FIELD_KEYS[activeFieldIndex] : 'second';
 
   return (
     <div css={cronFieldWrapperStyle}>
@@ -107,7 +132,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
         value={fieldValue}
         fullWidth
       />
-      <div css={cronLegendStyle}>
+      <div css={[cronLegendStyle]}>
         {CRON_FIELD_KEYS.map((fieldKey, index) => (
           <span key={fieldKey} css={[cronLegendItemStyle, index === activeFieldIndex && cronActiveLegendItemStyle]}>
             {t(fieldKey)}
@@ -115,13 +140,17 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
         ))}
       </div>
       {activeFieldKey && (
-        <EuiText size="xs" css={cronHintStyle}>
-          {t('allowedValues', {
-            field: t(activeFieldKey),
-            values: CRON_FIELD_ALLOWED_VALUES[activeFieldKey],
-          })}{' '}
-          {t('specialCharacters')}
-        </EuiText>
+        <>
+          <div css={cronPossibleValuesStyle}>{t('possibleValues')}</div>
+          <div css={cronHintListStyle}>
+            {[...SPECIAL_CHARACTER_HINTS, ...CRON_FIELD_HINTS[activeFieldKey]].map(({ symbol, translationKey }) => (
+              <React.Fragment key={symbol}>
+                <span css={cronHintSymbolStyle}>{symbol}</span>
+                <span>{t(translationKey)}</span>
+              </React.Fragment>
+            ))}
+          </div>
+        </>
       )}
       {parseError && (
         <EuiText size="s" css={cronErrorStyle}>
@@ -129,7 +158,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
         </EuiText>
       )}
       {description && (
-        <>
+        <div css={cronDescriptionContainerStyle}>
           <EuiText size="s" css={cronDescriptionStyle}>
             {description}
           </EuiText>
@@ -140,7 +169,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
               })}
             </EuiText>
           )}
-        </>
+        </div>
       )}
     </div>
   );
