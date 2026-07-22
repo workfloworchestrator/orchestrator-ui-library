@@ -3,7 +3,7 @@ import { getCronFieldIndexAtCursor } from './WfoCron';
 describe('getCronFieldIndexAtCursor', () => {
   const expression = '*/5 8-17 * JAN mon-fri';
 
-  it('returns the minute field for an empty expression', () => {
+  it('returns the first field for an empty expression', () => {
     expect(getCronFieldIndexAtCursor('', 0)).toEqual(0);
   });
 
@@ -29,7 +29,7 @@ describe('getCronFieldIndexAtCursor', () => {
   });
 
   it('never exceeds the last cron field', () => {
-    expect(getCronFieldIndexAtCursor('* * * * * extra', 15)).toEqual(4);
+    expect(getCronFieldIndexAtCursor('* * * * * * extra', 17)).toEqual(5);
   });
 
   it('handles leading whitespace', () => {
