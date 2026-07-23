@@ -28,7 +28,8 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
   index,
 }) => {
   const t = useTranslations('search.page');
-  const matchingField = result.matching_field;
+  const matchingFields = result.matching_fields;
+  const matchingField = matchingFields?.[0];
   const { theme } = useOrchestratorTheme();
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const detailUrl = getDetailUrl(result, baseUrl);
