@@ -25,7 +25,10 @@ export const getSortedVisibleColumns = <T extends object>(
     ),
   );
 
-  return tableHeadersEntries.filter(([columnId]) => !hiddenColumns.includes(columnId as keyof T));
+  return tableHeadersEntries.filter(
+    ([columnId, columnConfig]) =>
+      columnConfig.columnType === ColumnType.CONTROL || !hiddenColumns.includes(columnId as keyof T),
+  );
 };
 
 export const getUpdatedSortOrder = (currentSortOrder?: SortOrder) =>
