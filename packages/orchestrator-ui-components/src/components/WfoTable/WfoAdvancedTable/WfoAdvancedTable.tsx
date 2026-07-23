@@ -8,7 +8,6 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_SIZES,
   TableColumnKeys,
-  TableSettingsColumnConfig,
   TableSettingsConfig,
   TableSettingsModal,
   WfoErrorWithMessage,
@@ -18,6 +17,7 @@ import {
   WfoSearchField,
   WfoToolTip,
   clearTableConfigFromLocalStorage,
+  getTableSettingsColumns,
   setTableConfigToLocalStorage,
 } from '@/components';
 import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
@@ -96,17 +96,7 @@ export const WfoAdvancedTable = <T extends object>({
     ...tableColumnConfig,
   };
 
-  const tableSettingsColumns: TableSettingsColumnConfig<T>[] = Object.entries(tableColumnConfig).map(
-    ([key, { label }]): TableSettingsColumnConfig<T> => {
-      const field = key as keyof T;
-
-      return {
-        field,
-        name: label,
-        isVisible: hiddenColumns.indexOf(field) === -1,
-      };
-    },
-  );
+  const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns);
 
   const rowDetailData: WfoKeyValueTableDataType[] | undefined =
     selectedDataForDetailModal && getRowDetailData(selectedDataForDetailModal, tableColumnConfig);

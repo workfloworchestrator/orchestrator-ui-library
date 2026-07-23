@@ -1,7 +1,12 @@
+import { TableColumnKeys } from '@/components';
 import { ColumnType, WfoTableColumnConfig } from '@/components/WfoTable/WfoTable/WfoTable';
 import { SortOrder } from '@/types';
 
-import { getUpdatedSortOrder, mapSortableAndFilterableValuesToTableColumnConfig } from './utils';
+import {
+  getSortedVisibleColumns,
+  getUpdatedSortOrder,
+  mapSortableAndFilterableValuesToTableColumnConfig,
+} from './utils';
 
 type TestObject = {
   name: string;
@@ -12,6 +17,21 @@ const tableColumnConfig: WfoTableColumnConfig<TestObject> = {
   name: {
     columnType: ColumnType.DATA,
     label: 'tesName',
+  },
+  age: {
+    columnType: ColumnType.DATA,
+    label: 'testAge',
+  },
+};
+
+const tableColumnConfigWithControlColumn: WfoTableColumnConfig<TestObject> = {
+  actions: {
+    columnType: ColumnType.CONTROL,
+    renderControl: () => null,
+  },
+  name: {
+    columnType: ColumnType.DATA,
+    label: 'testName',
   },
   age: {
     columnType: ColumnType.DATA,
@@ -35,6 +55,47 @@ describe('utils', () => {
       const currentSortOrder = undefined;
       const result = getUpdatedSortOrder(currentSortOrder);
       expect(result).toBe(SortOrder.ASC);
+    });
+  });
+
+  describe('getSortedVisibleColumns()', () => {
+    it('keeps a control column visible even when its key is present in hiddenColumns', () => {
+      // Given a stale hiddenColumns still listing the control column (e.g. from localStorage)
+      const hiddenColumns = ['actions'] as unknown as TableColumnKeys<TestObject>;
+
+      // When
+      const result = getSortedVisibleColumns(tableColumnConfigWithControlColumn, [], hiddenColumns);
+
+      // Then the control column is still rendered
+      const visibleKeys = result.map(([key]) => key);
+      expect(visibleKeys).toContain('actions');
+    });
+
+    it('hides data columns that are listed in hiddenColumns', () => {
+      // Given
+      const hiddenColumns: TableColumnKeys<TestObject> = ['age'];
+
+      // When
+      const result = getSortedVisibleColumns(tableColumnConfigWithControlColumn, [], hiddenColumns);
+
+      // Then
+      const visibleKeys = result.map(([key]) => key);
+      expect(visibleKeys).not.toContain('age');
+      expect(visibleKeys).toContain('name');
+    });
+
+    it('keeps the control column visible while still hiding a hidden data column', () => {
+      // Given both a control key and a data key are marked hidden
+      const hiddenColumns = ['actions', 'age'] as unknown as TableColumnKeys<TestObject>;
+
+      // When
+      const result = getSortedVisibleColumns(tableColumnConfigWithControlColumn, [], hiddenColumns);
+
+      // Then only the data column is hidden; the control column stays visible
+      const visibleKeys = result.map(([key]) => key);
+      expect(visibleKeys).toContain('actions');
+      expect(visibleKeys).toContain('name');
+      expect(visibleKeys).not.toContain('age');
     });
   });
 
