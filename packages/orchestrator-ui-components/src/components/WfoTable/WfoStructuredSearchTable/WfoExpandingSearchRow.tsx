@@ -12,26 +12,25 @@ interface WfoExpandingSearchRowProps {
 }
 
 export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSearchRowProps) => {
-  const { expandingSearchRowStyles, expandingRowBodyStyles } = useWithOrchestratorTheme(
-    getWfoStructuredSearchTableStyles,
-  );
+  const { expandingSearchRowStyles, expandingRowBodyStyles, hideExpandedRowStyle, dotStyles } =
+    useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
 
-  if (!matchingFields) return null;
+  if (!matchingFields || matchingFields.length === 0) return null;
 
-  const matchingField = matchingFields[0];
-  const { path, text } = matchingField;
-
+  // Note: The row is shown on hover by the row above is as configured in the table component expandableRow config
   return (
-    <tr>
+    <tr css={hideExpandedRowStyle}>
       <td colSpan={999} css={expandingSearchRowStyles}>
         <div css={expandingRowBodyStyles}>
-          <div>
-            <span>{path}</span> {text}
-          </div>
-          <span>•</span>
-          <div>
-            <span>score</span> {score !== undefined && `${(score * 100).toFixed(1)}%`}
-          </div>
+          {matchingFields.map((field) => {
+            return (
+              <div>
+                {field.path}: {field.text} <span css={dotStyles}>•</span>
+              </div>
+            );
+          })}
+
+          {score && <div>confidence: {`${(score * 100).toFixed(1)}%`}</div>}
         </div>
       </td>
     </tr>
