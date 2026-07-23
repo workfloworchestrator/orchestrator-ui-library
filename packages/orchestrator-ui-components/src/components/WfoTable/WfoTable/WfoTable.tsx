@@ -82,6 +82,7 @@ export type WfoTableProps<T extends object> = {
   rowExpandingConfiguration?: {
     uniqueRowId: keyof WfoTableColumnConfig<T>;
     uniqueRowIdToExpandedRowMap: Record<string, ReactNode>;
+    shouldOnlyShowOnHover?: boolean;
   };
   pagination?: Pagination;
   overrideHeader?: (

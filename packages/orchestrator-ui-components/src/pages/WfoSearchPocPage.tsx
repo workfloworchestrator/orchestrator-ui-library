@@ -84,6 +84,7 @@ const getDataFromResponse = <T extends object>(
       },
       {} as Record<string, ReactNode>,
     ),
+    shouldOnlyShowOnHover: true,
   };
 
   const items: T[] = responseColumns.map((responseColumn) => {

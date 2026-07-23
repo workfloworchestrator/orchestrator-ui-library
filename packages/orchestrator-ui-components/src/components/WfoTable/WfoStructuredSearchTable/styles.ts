@@ -108,10 +108,6 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const expandingRowBodyStyles = css({
     display: 'flex',
     gap: theme.base,
-    fontWeight: theme.font.weight.bold,
-    span: {
-      fontWeight: 'bold',
-    },
   });
 
   const addRulePlusStyles = css({
@@ -161,6 +157,13 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     },
   });
 
+  const hideExpandedRowStyle = css({
+    display: 'table-row',
+  });
+  const dotStyles = css({
+    paddingLeft: '16px',
+  });
+
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
@@ -178,5 +181,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     addGroupStyles,
     inlineCombinatorStyles,
     ruleGroupBodyGridStyles,
+    hideExpandedRowStyle,
+    dotStyles,
   };
 };
