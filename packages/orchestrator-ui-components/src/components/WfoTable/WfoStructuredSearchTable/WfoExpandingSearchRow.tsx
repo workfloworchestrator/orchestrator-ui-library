@@ -8,16 +8,17 @@ import { getWfoStructuredSearchTableStyles } from './styles';
 interface WfoExpandingSearchRowProps {
   score?: number;
   perfectMatch?: number;
-  matchingField?: MatchingField | null;
+  matchingFields?: MatchingField[] | null;
 }
 
-export const WfoExpandingSearchRow = ({ score, matchingField }: WfoExpandingSearchRowProps) => {
+export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSearchRowProps) => {
   const { expandingSearchRowStyles, expandingRowBodyStyles } = useWithOrchestratorTheme(
     getWfoStructuredSearchTableStyles,
   );
 
-  if (!matchingField) return null;
+  if (!matchingFields) return null;
 
+  const matchingField = matchingFields[0];
   const { path, text } = matchingField;
 
   return (

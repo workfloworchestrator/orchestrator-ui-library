@@ -72,12 +72,12 @@ const getDataFromResponse = <T extends object>(
   const rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'] = {
     uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
     uniqueRowIdToExpandedRowMap: searchResult.reduce(
-      (rowMap, { response_columns, score, perfect_match, matching_field }) => {
+      (rowMap, { response_columns, score, perfect_match, matching_fields }) => {
         const idColumnInResponseColumn = getKeyByValueFromMap<T>(resultColumToPropertyMap, uniqueRowId);
         const rowId = response_columns[idColumnInResponseColumn];
         if (rowId) {
           rowMap[rowId] = (
-            <WfoExpandingSearchRow score={score} matchingField={matching_field} perfectMatch={perfect_match} />
+            <WfoExpandingSearchRow score={score} matchingFields={matching_fields} perfectMatch={perfect_match} />
           );
         }
         return rowMap;

@@ -24,7 +24,7 @@ export interface SearchResult {
   entity_title: string;
   score: number;
   perfect_match: number;
-  matching_field?: MatchingField | null;
+  matching_fields?: MatchingField[] | null;
   response_columns: Record<string, string | number | null>;
 }
 
