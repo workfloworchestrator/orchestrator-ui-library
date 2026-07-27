@@ -31,6 +31,9 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
 
   const tableContainerStyle = css({
     overflowX: 'auto',
+    // Query container so descendants (e.g. expanded rows) can size to the
+    // visible table width with cqw units instead of the full table width
+    containerType: 'inline-size',
   });
 
   const tableStyle = css({

@@ -12,7 +12,7 @@ interface WfoExpandingSearchRowProps {
 }
 
 export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSearchRowProps) => {
-  const { expandingSearchRowStyles, expandingRowBodyStyles, hideExpandedRowStyle, dotStyles } =
+  const { expandingSearchRowStyles, expandingRowBodyStyles, hideExpandedRowStyle, dotStyles, expandingRowFieldStyles } =
     useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
 
   if (!matchingFields || matchingFields.length === 0) return null;
@@ -22,15 +22,20 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
     <tr css={hideExpandedRowStyle}>
       <td colSpan={999} css={expandingSearchRowStyles}>
         <div css={expandingRowBodyStyles}>
-          {matchingFields.map((field) => {
-            return (
-              <div>
-                {field.path}: {field.text} <span css={dotStyles}>•</span>
-              </div>
-            );
-          })}
+          <div>
+            {matchingFields.map((field) => {
+              return (
+                <div css={expandingRowFieldStyles}>
+                  <div>
+                    <span css={dotStyles}>•</span>
+                    {field.path}: {field.text}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-          {score && <div>confidence: {`${(score * 100).toFixed(1)}%`}</div>}
+          {score && <div css={dotStyles}>confidence: {`${(score * 100).toFixed(1)}%`}</div>}
         </div>
       </td>
     </tr>
