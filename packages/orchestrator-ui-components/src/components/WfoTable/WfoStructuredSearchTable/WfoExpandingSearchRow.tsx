@@ -25,7 +25,7 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
           <div>
             {matchingFields.map((field) => {
               return (
-                <div css={expandingRowFieldStyles}>
+                <div key={`${field.path}:${field.text}`} css={expandingRowFieldStyles}>
                   <div>
                     <span css={dotStyles}>•</span>
                     {field.path}: {field.text}
