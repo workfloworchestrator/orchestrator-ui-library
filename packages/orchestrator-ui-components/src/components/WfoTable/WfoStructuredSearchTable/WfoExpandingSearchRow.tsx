@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { WfoHighlightedText } from '@/components/WfoSearchPage/WfoSearchResults/WfoHighlightedText';
 import { useWithOrchestratorTheme } from '@/hooks';
 import type { MatchingField } from '@/types';
 
@@ -28,7 +29,7 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
                 <div key={`${field.path}:${field.text}`} css={expandingRowFieldStyles}>
                   <div>
                     <span css={dotStyles}>•</span>
-                    {field.path}: {field.text}
+                    {field.path}: <WfoHighlightedText text={field.text} highlight_indices={field.highlight_indices} />
                   </div>
                 </div>
               );
