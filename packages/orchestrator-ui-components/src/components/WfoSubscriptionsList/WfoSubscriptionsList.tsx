@@ -122,6 +122,11 @@ export const WfoSubscriptionsList: FC<WfoSubscriptionsListProps> = ({
       label: t('tag'),
       width: '100px',
     },
+    customerId: {
+      columnType: ColumnType.DATA,
+      label: t('customerId'),
+      width: '100px',
+    },
     customerFullname: {
       columnType: ColumnType.DATA,
       label: t('customerFullname'),

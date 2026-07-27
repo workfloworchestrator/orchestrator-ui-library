@@ -347,6 +347,7 @@
       "endDate": "End date",
       "metadata": "Metadata",
       "note": "Note",
+      "customerId": "Customer ID",
       "customerFullname": "Customer",
       "customerShortcode": "Customer abbr",
       "actions": "Actions"
