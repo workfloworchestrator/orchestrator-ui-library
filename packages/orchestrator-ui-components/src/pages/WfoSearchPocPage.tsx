@@ -9,7 +9,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { SearchParams, combineSearchFilters } from '@/components';
+import { SearchParams, addStatusFilterFromTab } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   StoredTableConfig,
@@ -204,7 +204,7 @@ export const WfoSearchPocPage = () => {
   // Cursor is stripped from the RTK cache key, so a cursor change appends to the accumulated
   // result set instead of creating a new cache entry — see search endpoint's merge() logic.
   const searchPayload: SearchPayload = useMemo(() => {
-    const filters = combineSearchFilters(committedRuleGroup, selectedTab);
+    const filters = addStatusFilterFromTab(committedRuleGroup, selectedTab);
     const order_by = {
       element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
       direction: dataSorting.sortOrder.toLowerCase(),

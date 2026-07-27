@@ -194,7 +194,7 @@ const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
   };
 };
 
-export const combineSearchFilters = (ruleGroup: RuleGroupType | false | undefined, tab: WfoSubscriptionListTab) => {
+export const addStatusFilterFromTab = (ruleGroup: RuleGroupType | false | undefined, tab: WfoSubscriptionListTab) => {
   const userRuleGroup = ruleGroup === false ? undefined : ruleGroup;
   const ruleGroups = [buildSubscriptionStatusFilter(tab), userRuleGroup].filter(Boolean) as RuleGroupType[];
 
