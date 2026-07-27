@@ -124,7 +124,7 @@
         "sundayNonStandard": "zondag (niet-standaard)",
         "invalidExpression": "Ongeldige cron-expressie: {error}",
         "nextOccurrences": "Volgende: {dates}",
-        "possibleValues": "Mogelijke waardes voor dit veld"
+        "possibleValues": "Mogelijke waarden voor dit veld"
       },
       "ipvAnyNetworkField": {
         "manuallySelectedPrefix": "Manually selected prefix"
