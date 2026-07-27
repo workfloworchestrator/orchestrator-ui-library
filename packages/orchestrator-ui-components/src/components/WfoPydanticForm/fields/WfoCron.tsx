@@ -182,6 +182,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
               key={fieldKey}
               type="button"
               disabled={disabled || !isInLayout}
+              aria-pressed={fieldKey === activeFieldKey}
               onClick={() => focusCronField(fieldKey)}
               css={[
                 cronLegendItemStyle,
