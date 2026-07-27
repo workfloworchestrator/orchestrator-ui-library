@@ -9,7 +9,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { SearchParams, addStatusFilterFromTab } from '@/components';
+import { SearchParams, addStatusFilterFromTab, removeTabStatusMatchingFields } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   StoredTableConfig,
@@ -56,6 +56,7 @@ const getDataFromResponse = <T extends object>(
   data: PaginatedSearchResults,
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
   uniqueRowId: keyof T,
+  selectedTab: WfoSubscriptionListTab,
 ): {
   items: T[];
   rowExpandingConfiguration?: WfoTableProps<T>['rowExpandingConfiguration'];
@@ -77,7 +78,11 @@ const getDataFromResponse = <T extends object>(
         const rowId = response_columns[idColumnInResponseColumn];
         if (rowId) {
           rowMap[rowId] = (
-            <WfoExpandingSearchRow score={score} matchingFields={matching_fields} perfectMatch={perfect_match} />
+            <WfoExpandingSearchRow
+              score={score}
+              matchingFields={removeTabStatusMatchingFields(matching_fields, selectedTab, EntityKind.SUBSCRIPTION)}
+              perfectMatch={perfect_match}
+            />
           );
         }
         return rowMap;
@@ -454,7 +459,9 @@ export const WfoSearchPocPage = () => {
   };
 
   const { items: subscriptionListItems, rowExpandingConfiguration } =
-    data ? getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId') : { items: [] };
+    data ?
+      getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId', selectedTab)
+    : { items: [] };
 
   const totalItems = getTotalItemsFromResponse(data);
   const hasNextPage = data?.page_info?.has_next_page ?? false;
@@ -466,6 +473,7 @@ export const WfoSearchPocPage = () => {
       exportResult,
       resultColumToPropertyMap,
       'subscriptionId',
+      selectedTab,
     );
     if (!exportItems.length) {
       return;

@@ -158,10 +158,10 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   });
 
   const hideExpandedRowStyle = css({
-    display: 'table-row',
+    display: 'none',
   });
   const dotStyles = css({
-    paddingLeft: '16px',
+    paddingLeft: theme.base,
   });
 
   return {
