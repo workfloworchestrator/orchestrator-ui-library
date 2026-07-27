@@ -107,7 +107,12 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   });
   const expandingRowBodyStyles = css({
     display: 'flex',
-    gap: theme.base,
+    justifyContent: 'space-between',
+    // Size to the visible scroll viewport (minus the td padding) instead of
+    // the full table width, and keep it pinned there on horizontal scroll
+    position: 'sticky',
+    left: theme.base / 2,
+    width: `calc(100cqw - ${theme.base}px)`,
   });
 
   const addRulePlusStyles = css({
@@ -161,7 +166,13 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     display: 'none',
   });
   const dotStyles = css({
-    paddingLeft: theme.base,
+    padding: theme.base / 4,
+  });
+
+  const expandingRowFieldStyles = css({
+    display: 'flex',
+    padding: theme.base / 4,
+    alignItems: 'center',
   });
 
   return {
@@ -182,6 +193,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     inlineCombinatorStyles,
     ruleGroupBodyGridStyles,
     hideExpandedRowStyle,
+    expandingRowFieldStyles,
     dotStyles,
   };
 };
