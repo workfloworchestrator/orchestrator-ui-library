@@ -7,6 +7,7 @@ import {
   Condition,
   EntityKind,
   Filter,
+  MatchingField,
   OperatorDisplay,
   PathInfo,
   RetrieverType,
@@ -192,6 +193,41 @@ const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
       value: status,
     })),
   };
+};
+
+/**
+ * Search-API field path holding the status of each entity kind. Only the SUBSCRIPTION path is in
+ * use; the others follow the same convention but should be verified against the backend paths
+ * endpoint before relying on them.
+ */
+const STATUS_FIELD_PATHS: Record<EntityKind, string> = {
+  [EntityKind.SUBSCRIPTION]: 'subscription.status',
+  [EntityKind.PROCESS]: 'process.last_status',
+  [EntityKind.PRODUCT]: 'product.status',
+  [EntityKind.WORKFLOW]: 'workflow.status',
+};
+
+/**
+ * The tab implicitly adds a status filter to the search (see addStatusFilterFromTab). The backend
+ * reports every matched filter in matching_fields, so those implicit matches are removed here to
+ * only show the user matches for filters they provided themselves. Matching on path AND value:
+ * a status match that cannot come from the tab filter is kept.
+ */
+export const removeTabStatusMatchingFields = (
+  matchingFields: MatchingField[] | null | undefined,
+  tab: WfoSubscriptionListTab,
+  entityKind: EntityKind,
+): MatchingField[] => {
+  const statusFieldPath = STATUS_FIELD_PATHS[entityKind];
+  const tabStatuses = getSubscriptionStatusesFromTab(tab);
+  return (
+    matchingFields?.filter((field) => {
+      const isTabStatusMatch =
+        field.path === statusFieldPath
+        && tabStatuses.some((status) => status.toLowerCase() === field.text.toLowerCase());
+      return !isTabStatusMatch;
+    }) ?? []
+  );
 };
 
 export const addStatusFilterFromTab = (ruleGroup: RuleGroupType | false | undefined, tab: WfoSubscriptionListTab) => {
