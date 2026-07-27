@@ -10,6 +10,7 @@ export * from './getProductNamesFromProcess';
 export * from './getQueryVariablesForExport';
 export * from './getStatusBadgeColor';
 export * from './getTypedFieldFromObject';
+export * from './integer';
 export * from './onlyUnique';
 export * from './optionalArray';
 export * from './resultFlattener';

@@ -3,6 +3,7 @@ import React from 'react';
 import { WfoHighlightedText } from '@/components/WfoSearchPage/WfoSearchResults/WfoHighlightedText';
 import { useWithOrchestratorTheme } from '@/hooks';
 import type { MatchingField } from '@/types';
+import { toPercentage } from '@/utils';
 
 import { getWfoStructuredSearchTableStyles } from './styles';
 
@@ -36,7 +37,7 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
             })}
           </div>
 
-          {score && <div css={dotStyles}>confidence: {`${(score * 100).toFixed(1)}%`}</div>}
+          {score && <div css={dotStyles}>confidence: {toPercentage(score)}</div>}
         </div>
       </td>
     </tr>
