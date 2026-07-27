@@ -31,6 +31,7 @@ export const subscriptionListQuery = `query SubscriptionsList(
                     productType
                 }
                 customer {
+                    customerId
                     fullname
                     shortcode
                 }

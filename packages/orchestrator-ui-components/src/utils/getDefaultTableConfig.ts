@@ -95,7 +95,12 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
       return getTableConfig<T>(completedTasksColumns as (keyof T)[]);
     }
     case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY: {
-      const subscriptionColumns: (keyof SubscriptionListItem)[] = ['productName', 'customerFullname', 'metadata'];
+      const subscriptionColumns: (keyof SubscriptionListItem)[] = [
+        'productName',
+        'customerId',
+        'customerFullname',
+        'metadata',
+      ];
       return getTableConfig<T>(subscriptionColumns as (keyof T)[]);
     }
     default:

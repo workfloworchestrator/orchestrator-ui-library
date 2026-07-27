@@ -471,7 +471,7 @@ export type Subscription = {
   status: SubscriptionStatus;
   product: Pick<ProductDefinition, 'name' | 'tag' | 'productType'>;
   productBlockInstances: ProductBlockInstance[];
-  customer: Pick<Customer, 'fullname' | 'shortcode'>;
+  customer: Pick<Customer, 'customerId' | 'fullname' | 'shortcode'>;
   metadata: object;
 };
 

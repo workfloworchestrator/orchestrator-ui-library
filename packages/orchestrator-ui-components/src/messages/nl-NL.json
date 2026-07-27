@@ -347,6 +347,7 @@
       "endDate": "Einddatum",
       "note": "Notitie",
       "metadata": "Metadata",
+      "customerId": "Klant ID",
       "customerFullname": "Klant",
       "customerShortcode": "Klantafkorting",
       "actions": "Acties"
