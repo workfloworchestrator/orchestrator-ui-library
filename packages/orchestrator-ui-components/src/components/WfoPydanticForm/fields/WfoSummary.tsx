@@ -1,7 +1,12 @@
 import React from 'react';
 
 import { capitalize } from 'lodash';
-import type { PydanticFormElement } from 'pydantic-forms';
+import {
+  useGetConfig,
+  useLabelProvider,
+  type PydanticFormElement,
+  type PydanticFormLabelProviderResponse,
+} from 'pydantic-forms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
 
@@ -14,24 +19,51 @@ import { getNestedSummaryLabel } from './wfoPydanticFormUtils';
 export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
   const { summaryFieldStyle } = useWithOrchestratorTheme(summaryFieldStyles);
   const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
+  const config = useGetConfig()
+  const { data }: { data: PydanticFormLabelProviderResponse | undefined } = useLabelProvider(config.labelProvider, 'temp', 'test');
+  const rawLabels = data?.labels || { summary: {} };
+  const labelTranslations: Record<string, string> = {
+    ...(rawLabels as Record<string, string>),
+    ...(rawLabels?.summary as Record<string, string>),
+  };
+
+  const translateSummaryField = (value: string) => {
+    if (value in labelTranslations) {
+      return labelTranslations[value];
+    }
+
+    const match = value.match(/^(.+)_(\d+)$/);
+    if (!match) {
+      return value;
+    }
+    const [, base, suffix] = match;
+
+    if (base in labelTranslations) {
+      return `${labelTranslations[base]} ${suffix}`;
+    }
+
+    return snakeToHuman(capitalize(value));
+  };
 
   const { id, title, description } = pydanticFormField;
   const uniforms = pydanticFormField.schema.uniforms;
   const summaryData = uniforms?.data as unknown as {
-    headers: string[][];
+    headers: string[];
     labels: string[];
     columns: string[][];
   };
 
-  const headers = summaryData?.headers as string[][];
-  const labels = summaryData?.labels as string[];
+  const headers = summaryData?.headers;
+  const labels = summaryData?.labels;
   const columns = summaryData?.columns || [];
 
   const extraColumnsData = columns.filter((_, index) => index !== 0);
 
   const rows = columns[0].map((row, index) => (
     <tr key={index}>
-      {labels && <td className={`label`}>{getNestedSummaryLabel(labels, index)}</td>}
+      {labels && (
+        <td className={`label`}>{translateSummaryField(getNestedSummaryLabel(labels, index))}</td>
+      )}
       <td className={`value`}>
         {typeof row === 'string' && row.includes('<!doctype html>') ?
           <div className="emailMessage" dangerouslySetInnerHTML={{ __html: row }}></div>
@@ -52,11 +84,14 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
     : <tr>
         {labels && <th />}
         {headers.map((header, idx) => (
-          <th key={idx}>{header}</th>
+          <th key={idx}>{translateSummaryField(header)}</th>
         ))}
       </tr>;
 
-  const formattedTitle = snakeToHuman(capitalize(title ?? ''));
+  const formattedTitle =
+    title === 'MigrationSummaryValue' ?
+      translateSummaryField(id)
+    : snakeToHuman(capitalize(title ?? ''));
 
   return (
     <EuiFlexItem data-testid={id} css={[summaryFieldStyle, formRowStyle]}>
