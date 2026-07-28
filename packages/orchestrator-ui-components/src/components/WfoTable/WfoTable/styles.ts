@@ -161,7 +161,7 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
   });
 
   const toggleExpandedRowOnHoverStyle = css({
-    '&:hover + tr': { display: 'table-row' },
+    '&:hover + tr, &:focus-within + tr': { display: 'table-row' },
   });
 
   return {
