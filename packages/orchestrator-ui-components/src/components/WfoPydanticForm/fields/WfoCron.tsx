@@ -151,6 +151,7 @@ export const WfoCron: PydanticFormControlledElement = ({ onChange, value, disabl
     if (selectionRange) {
       input.setSelectionRange(selectionRange[0], selectionRange[1]);
     } else {
+      // The selection can't be found so the caret is placed at the end of the selection while maintaining focus on the field
       input.setSelectionRange(expression.length, expression.length);
     }
     setActiveFieldIndex(fieldIndex);
