@@ -14,27 +14,22 @@
     "settings": "Settings",
     "subscriptions": "Subscriptions",
     "tasks": "Taken",
-    "title": "Workflow Orchestrator",
     "welcome": "Welkom",
     "workflows": "Workflows",
     "darkMode": "Dark mode",
     "lightMode": "Light mode",
     "websocketConnected": "De pagina ontvangt live updates van de server",
     "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina.",
-    "websocketDisconnectedShort": "WebSocket verbroken, klik op het icoon om opnieuw te verbinden.",
     "resetToDefault": "Reset naar standaard",
     "savePreferences": "Voorkeuren opslaan",
     "numberOfRows": "Aantal rijen",
     "tableSettings": "Tabel instellingen",
-    "openMenu": "Open menu",
     "incompatibleVersion": "Incompatibele versie",
     "incompatibleVersionText": "De versie van de WFO UI is incompatibel met de version van orchestrator-core.",
     "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core"
   },
   "common": {
-    "product": "Produkt",
     "deselect": "Deselecteer",
-    "close": "Sluiten",
     "editColumns": "Wijzig kolommen",
     "tableSettings": "Tabel instellingen",
     "loading": "Laden",
@@ -60,20 +55,12 @@
     "createFilter": "Filter",
     "applyFilter": "Pas filter tpe",
     "removeFilter": "Verwijder filter",
-    "cancel": "Cancel",
     "loadMore": "Meer laden"
   },
   "confirmationDialog": {
     "title": "Graag bevestigen",
     "confirm": "Bevestigen",
-    "cancel": "Annuleren",
-    "leavePage": "Wil je deze pagina verlaten?",
-    "leavePageSub": "Veranderingen die je hebt gemaakt worden niet opgeslagen.",
-    "stay": "Blijven",
-    "leave": "Verlaten"
-  },
-  "workflow": {
-    "start_workflow_title": "Start workflow"
+    "cancel": "Annuleren"
   },
   "errors": {
     "notAllResultsExported": "De huidige query resulteert in {totalResults} resultaten. Alleen de eerste {maximumExportedResults} resultaten worden geexporteerd",
@@ -88,7 +75,6 @@
   "pydanticForms": {
     "userInputForm": {
       "cancel": "Annuleren",
-      "submit": "Verstuur",
       "previous": "Vorige",
       "next": "Volgende",
       "startTask": "Start taak",
@@ -185,7 +171,8 @@
       "productBlocks": "Product blocks",
       "resourceTypes": "Resource types",
       "workflows": "Workflows",
-      "tasks": "Taken"
+      "tasks": "Taken",
+      "scheduledTasks": "Scheduled tasks"
     },
     "products": {
       "id": "ID",
@@ -207,8 +194,7 @@
       "resourceTypes": "Resource types",
       "dependingProductBlocks": "Onderliggende product blocks",
       "createdAt": "Aangemaakt",
-      "endDate": "Einddatum",
-      "parentIds": "Parents"
+      "endDate": "Einddatum"
     },
     "resourceTypes": {
       "type": "Resource type",
@@ -236,36 +222,15 @@
     },
     "scheduledTasks": {
       "task": "Taak",
-      "taskDecription": "Taak beschrijving",
+      "taskDescription": "Taak beschrijving",
       "nextRuntime": "Volgende runtime",
       "schedule": "Schedule",
-      "interval": "Interval",
       "ariaLabelDeleteButton": "Schema verwijderen",
       "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
       "addSchedule": "Plan een taak"
-    },
-    "scheduleTaskForm": {
-      "newSchedule": "Plan een nieuwe taak",
-      "selectTask": "Kies de taak om te plannen",
-      "selectTaskType": "Taak type",
-      "selectInterval": "Kies de taak interval",
-      "taskTypeInterval": "Interval",
-      "taskTypeCron": "Cron",
-      "taskTypeDate": "Eenmalig",
-      "firstRunDate": "Start datum",
-      "1hour": "1 uur",
-      "2hours": "2 uur",
-      "4hours": "4 uur",
-      "12hours": "12 uur",
-      "24hours": "24 uur",
-      "1week": "1 week",
-      "2weeks": "2 weken",
-      "1month": "1 maand",
-      "createScheduleButton": "Maak schema"
     }
   },
   "workflowGuide": {
-    "title": "Gebruikershandleiding van {workflowName}",
     "noGuideAvailable": "Er is geen gebruikershandleiding beschikbaar voor deze workflow/taak",
     "show": "Toon gebruikershandleiding",
     "hide": "Verberg gebruikershandleiding"
@@ -291,7 +256,6 @@
     },
     "detail": {
       "retry": "Probeer opnieuw",
-      "resume": "Ga verder",
       "abort": "Stop",
       "delete": "Verwijder",
       "deleteQuestion": "Weet je zeker dat je de {workflowName} taak wilt verwijderen?",
@@ -305,7 +269,6 @@
       "startedOn": "Gestart op",
       "lastUpdate": "Laatste update",
       "relatedSubscriptions": "Gerelateerde subscriptions",
-      "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscriptie} other {# subscriptions}}",
       "customer": "Customer",
       "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad"
     },
@@ -367,8 +330,7 @@
       "metadata": "Metadata",
       "customerId": "Klant ID",
       "customerFullname": "Klant",
-      "customerShortcode": "Klantafkorting",
-      "actions": "Acties"
+      "customerShortcode": "Klantafkorting"
     },
     "detail": {
       "title": "Subscriptions",
@@ -378,20 +340,12 @@
         "workflows": "Workflows",
         "relatedSubscriptions": "Gerelateerde subscriptions"
       },
-      "loadingStatus": "Laden",
       "actions": {
-        "create": "Create workflow",
         "modify": "Modify workflow",
         "tasks": "Taken",
         "terminate": "Terminate workflow",
         "reconcile": "Reconcile workflow",
-        "notAvailable": "Niet beschikbaar",
-        "notAvailableForWorkflow": "Niet beschikbaar voor deze workflow",
-        "reconcileSubscription": "Reconcile subscription",
-        "validateSubscription": "Validate subscription",
         "actions": "Acties",
-        "actionStarted": "Actie gestart",
-        "actionStartFailed": "Actie mislukt",
         "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
         "subscription": {
           "no_modify_deleted_related_objects": "Deze subscription kan niet worden gewijzigd omdat het verwijzingen bevat naar andere systemen die zijn verwijderd.",
@@ -413,15 +367,10 @@
       "showDetails": "Toon details",
       "hideDetails": "Verberg details",
       "self": "Huidige subscription",
-      "subscriptionDetails": "Subscription detail",
       "productName": "Produkt",
-      "fixedInputs": "Fixed inputs",
-      "productInfo": "Product info",
       "noProductBlockSelected": "Geen product block geselecteerd",
       "productBlocks": "Product blocks",
       "ctaSelectProductBlock": "Selecteer één of meer product blocks om de details te bekijken",
-      "startedBy": "Aangemaakt door",
-      "startedAt": "Starttijd",
       "status": "Status",
       "id": "ID",
       "blockTitleSubscriptionDetails": "Subscription details",
@@ -549,5 +498,76 @@
     "softwareVersions": "Software Versies",
     "logout": "Logout",
     "aoStatusPage": "A&O applicatie status pagina"
+  },
+  "search": {
+    "availability": {
+      "unavailable": {
+        "title": "Search service niet beschikbaar",
+        "instructions": {
+          "setEnvironmentVariable": {
+            "before": "Zet ",
+            "after": " in de environment variables van je service"
+          },
+          "checkVersion": "Controleer of je orchestrator-core versie search-functionaliteit ondersteunt",
+          "restartService": "Herstart je service",
+          "checkDockerConfig": "Zorg er bij gebruik van Docker voor dat de environment variable is ingesteld in docker-compose.yml"
+        },
+        "documentation": "Raadpleeg de orchestrator documentatie voor gedetailleerde installatie-instructies.",
+        "retryButton": "Opnieuw verbinden"
+      }
+    },
+    "page": {
+      "selectFieldFirst": "Selecteer eerst een veld",
+      "maxNestingDepth": "Maximale nesting-diepte bereikt",
+      "addNestedGroup": "Geneste groep toevoegen",
+      "addRule": "Regel toevoegen",
+      "addGroup": "Groep toevoegen",
+      "removeGroup": "Groep verwijderen",
+      "emptyGroupDescription": "Voeg condities of geneste groepen toe om je filter op te bouwen.",
+      "emptyGroupTitle": "Lege groep",
+      "removeConditionAriaLabel": "Conditie verwijderen",
+      "groupLabel": "Groep",
+      "hideFilters": "Verberg filters",
+      "showFilters": "Toon filters",
+      "structuredFilters": "Gestructureerde filters",
+      "retrieval": "Retrieval",
+      "retrieverAuto": "Auto",
+      "retrieverFuzzy": "Fuzzy",
+      "retrieverSemantic": "Semantic",
+      "retrieverHybrid": "Hybride",
+      "searchError": "Fout",
+      "dismiss": "Sluiten",
+      "searchPlaceholder": "Zoek naar {entityType}…",
+      "noResults": "Geen resultaten",
+      "noResultsMessage": "Geen {entityType} gevonden die voldoen aan je zoekcriteria.",
+      "noResultsSuggestions": "Probeer je zoektermen aan te passen, filters te verwijderen of op andere trefwoorden te zoeken.",
+      "noResultsFound": "Geen resultaten gevonden voor je zoekopdracht.",
+      "loadingSearchResults": "Zoekresultaten laden...",
+      "previousPage": "Vorige pagina",
+      "page": "Pagina",
+      "nextPage": "Volgende pagina",
+      "resultsOnPage": "{resultCount} resulta(a)t(en) op deze pagina",
+      "searchResultsPagination": "Paginering zoekresultaten",
+      "viewDetails": "Bekijk details",
+      "selectOrEnterValue": "Selecteer of typ een waarde",
+      "enterValue": "Voer een waarde in",
+      "fromNumber": "Van",
+      "toNumber": "Tot",
+      "fromDate": "Vanaf datum",
+      "toDate": "Tot datum",
+      "enterNumber": "Voer een getal in",
+      "selectDateAndTime": "Selecteer datum",
+      "valueControlTo": "tot",
+      "searchFieldsPlaceholder": "Zoek velden...",
+      "selectSpecificPathPlaceholder": "Selecteer een specifiek pad...",
+      "anyPathOption": "Elk pad",
+      "operatorLabel": "Operator",
+      "fieldLabel": "Veld",
+      "valueLabel": "Waarde",
+      "fieldsGroupLabel": "Velden",
+      "componentsGroupLabel": "Componenten",
+      "pathsCount": "{count} paden",
+      "removeRule": "Regel verwijderen"
+    }
   }
 }

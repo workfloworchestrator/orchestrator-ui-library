@@ -14,27 +14,22 @@
     "settings": "Settings",
     "subscriptions": "Subscriptions",
     "tasks": "Tasks",
-    "title": "Workflow Orchestrator",
     "welcome": "Welcome",
     "workflows": "Workflows",
     "darkMode": "Dark mode",
     "lightMode": "Light mode",
     "websocketConnected": "This page recexives live updates from the server",
     "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
-    "websocketDisconnectedShort": "WebSocket disconnected, click the icon to reconnect",
     "resetToDefault": "Reset to default",
     "savePreferences": "Save preferences",
     "numberOfRows": "Number of rows",
     "tableSettings": "Table settings",
-    "openMenu": "Open menu",
     "incompatibleVersion": "Incompatible version",
     "incompatibleVersionText": "The version of the WFO UI is incompatible with this version of orchestrator-core.",
     "minimumOrchestratorCoreVersion": "Minimum orchestrator-core version"
   },
   "common": {
-    "product": "Product",
     "deselect": "Deselect",
-    "close": "Close",
     "editColumns": "Edit columns",
     "tableSettings": "Table settings",
     "loading": "Loading",
@@ -49,6 +44,7 @@
     "unauthorizedPage": "You are not authorized to see this page",
     "insyncTrue": "in-sync",
     "insyncFalse": "out-of-sync",
+    "showAllColumnsInDetailView": "Show all columns in detail view",
     "searchModalTitle": "Search string options",
     "searchModalText": "<p>Different options are available from free text search covering all data columns, or column specific filtering. Note that: <p></p><ul><li>Hidden columns are included</li> <li>Searching is case-insensitive</li> <li>Ordering of words does not matter (unless it is a Phrase)</li> <li>TSV (text search vector) search only available for subscriptions table</li></ul></p> <p>For example:</p> <li><b>\"l2vpn\"</b> – free text search</li> <li><b>tag:l2vpn</b> – search in a specific column</li><li><b>tag:lp description:test</b> – search in multiple columns</li><li><b>tag:(lp|lr)</b> – multiselect within 1 column</li><li><b>-tag:lp</b> – negated filter</li><li><b>test*</b> – prefix filter</li> <p></p><p><b>Note:</b> Search words containing characters `|-*():\"` may not be valid, as they are part of the search query grammar</p><p>Invalid search strings are for example:</p><ul><li>2a10:e300:fff0::/48</li> <li>\"node123(planned)\"</li> <li>\"node123|planned\"</li></ul>",
     "retrieval": "Retrieval",
@@ -59,20 +55,12 @@
     "createFilter": "Create a filter",
     "applyFilter": "Apply filter",
     "removeFilter": "Remove filter",
-    "cancel": "Cancel",
     "loadMore": "Load more"
   },
   "confirmationDialog": {
     "title": "Please confirm",
     "confirm": "Confirm",
-    "cancel": "Cancel",
-    "leavePage": "Do you really want to leave this page?",
-    "leavePageSub": "Changes that you made will not be saved.",
-    "stay": "Stay",
-    "leave": "Leave"
-  },
-  "workflow": {
-    "start_workflow_title": "Start workflow"
+    "cancel": "Cancel"
   },
   "errors": {
     "notAllResultsExported": "The current query returned {totalResults} results. Only the first {maximumExportedResults} rows will be exported",
@@ -87,7 +75,6 @@
   "pydanticForms": {
     "userInputForm": {
       "cancel": "Cancel",
-      "submit": "Submit",
       "previous": "Previous",
       "next": "Next",
       "previousQuestion": "Are you sure you want to leave this page? Any filled form data will be lost",
@@ -207,8 +194,7 @@
       "resourceTypes": "Resource types",
       "dependingProductBlocks": "Depending product blocks",
       "createdAt": "Created",
-      "endDate": "End date",
-      "parentIds": "Parents"
+      "endDate": "End date"
     },
     "resourceTypes": {
       "type": "Resource type",
@@ -239,33 +225,12 @@
       "taskDescription": "Task description",
       "nextRuntime": "Next runtime",
       "schedule": "Schedule",
-      "interval": "Interval",
       "ariaLabelDeleteButton": "Delete task schedule",
       "deleteConfirmationQuestion": "Confirm deleting this schedule task",
       "addSchedule": "Schedule task"
-    },
-    "scheduleTaskForm": {
-      "newSchedule": "Create new schedule",
-      "selectTask": "Select the task you want to schedule",
-      "selectTaskType": "What type of schedule do you need?",
-      "selectInterval": "Choose the schedule interval",
-      "taskTypeInterval": "Interval",
-      "taskTypeCron": "Cron",
-      "taskTypeDate": "Once",
-      "firstRunDate": "Start date",
-      "1hour": "1 hour",
-      "2hours": "2 hours",
-      "4hours": "4 hours",
-      "12hours": "12 hours",
-      "24hours": "24 hours",
-      "1week": "1 week",
-      "2weeks": "2 weeks",
-      "1month": "1 month",
-      "createScheduleButton": "Create schedule"
     }
   },
   "workflowGuide": {
-    "title": "User guide of {workflowName}",
     "noGuideAvailable": "No user guide is available for this workflow/task",
     "show": "Show user guide",
     "hide": "Hide user guide"
@@ -291,7 +256,6 @@
     },
     "detail": {
       "retry": "Retry",
-      "resume": "Resume",
       "abort": "Abort",
       "delete": "Delete",
       "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
@@ -305,7 +269,6 @@
       "startedOn": "Started on",
       "lastUpdate": "Last update",
       "relatedSubscriptions": "Related subscriptions",
-      "subscriptions": "{count, plural, =0 {0 subscriptions} =1 {1 subscription} other {# subscriptions}}",
       "customer": "Customer",
       "openWorkflowTaskInfo": "open workflow/task information in a new tab"
     },
@@ -367,8 +330,7 @@
       "note": "Note",
       "customerId": "Customer ID",
       "customerFullname": "Customer",
-      "customerShortcode": "Customer abbr",
-      "actions": "Actions"
+      "customerShortcode": "Customer abbr"
     },
     "detail": {
       "title": "Subscriptions",
@@ -378,21 +340,13 @@
         "workflows": "Workflows",
         "relatedSubscriptions": "Related subscriptions"
       },
-      "loadingStatus": "Loading status",
       "actions": {
-        "create": "Create workflow",
         "modify": "Modify workflow",
         "tasks": "Tasks",
         "terminate": "Terminate workflow",
         "reconcile": "Reconcile workflow",
-        "actionStarted": "Action started",
-        "actionStartFailed": "Action failed",
         "actions": "Actions",
         "lockedBySubscriptions": "This action is locked by the following subscriptions:",
-        "notAvailable": "Not available",
-        "notAvailableForWorkflow": "Not available for this workflow",
-        "reconcileSubscription": "Reconcile subscription",
-        "validateSubscription": "Validate subscription",
         "subscription": {
           "no_modify_deleted_related_objects": "This subscription can not be modified because it contains references to other systems that are deleted.",
           "no_modify_in_use_by_subscription": "This subscription can not be {action} as it is used in other subscriptions:",
@@ -413,15 +367,10 @@
       "showDetails": "Show details",
       "self": "Current subscription",
       "hideDetails": "Hide details",
-      "subscriptionDetails": "Subscription details",
       "productName": "Product name",
-      "fixedInputs": "Fixed inputs",
-      "productInfo": "Product info",
       "noProductBlockSelected": "No product block selected",
       "productBlocks": "Product blocks",
       "ctaSelectProductBlock": "Select one or more product blocks to view their details",
-      "startedBy": "Started by",
-      "startedAt": "Started at",
       "status": "Status",
       "id": "ID",
       "blockTitleSubscriptionDetails": "Subscription details",
@@ -550,68 +499,6 @@
     "logout": "Logout",
     "aoStatusPage": "A&O application status page"
   },
-  "agent": {
-    "title": "Wfo Agent",
-    "availability": {
-      "unavailable": {
-        "title": "Agent Service Not Available",
-        "instructions": {
-          "setAgentEnvironment": {
-            "before": "Set ",
-            "after": " in your service environment variables"
-          },
-          "setSearchEnvironment": {
-            "before": "Set ",
-            "after": " (agent functionality requires search)"
-          },
-          "checkVersion": "Ensure your orchestrator-core version supports agent functionality",
-          "configureOpenAI": "Configure your OpenAI API key if using OpenAI models",
-          "restartService": "Restart your service",
-          "checkDockerConfig": "If using Docker, make sure the environment variables are set in docker-compose.yml"
-        },
-        "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
-        "retryButton": "Retry Connection"
-      }
-    },
-    "page": {
-      "filledParameters": "Filled parameters",
-      "emptyGroup": "Empty group",
-      "searchQuery": "Search query",
-      "activeFilters": "Active filters",
-      "noFiltersApplied": "No filters applied",
-      "entityType": "Entity type",
-      "action": "Action",
-      "copilot": {
-        "title": "Database assistant",
-        "initial": "What can I help you with?"
-      },
-      "suggestions": {
-        "findActiveSubscriptions": "Find active subscriptions",
-        "showTerminatedWorkflows": "Show terminated workflows",
-        "listAllSubscriptionsAndExport": "List all subscriptions and export them",
-        "showActiveSubscriptionsPerMonth": "Show the number of active subscriptions per month"
-      },
-      "tools": {
-        "set_filter_tree": "I'm setting up filters",
-        "start_new_search": "I'm starting a new search",
-        "run_search": "I'm executing a search",
-        "discover_filter_paths": "I'm discovering available filters",
-        "run_aggregation": "I'm running aggregations",
-        "prepare_export": "I'm preparing the export",
-        "get_valid_operators": "I'm getting valid operators",
-        "set_temporal_grouping": "I'm setting temporal grouping"
-      },
-      "planProgress": {
-        "planning": "Planning...",
-        "completed": "Plan completed",
-        "executing": "Executing plan ({completed}/{total})"
-      },
-      "visualization": {
-        "noDataAvailable": "No data available for visualization.",
-        "invalidDataStructure": "Invalid data structure."
-      }
-    }
-  },
   "search": {
     "availability": {
       "unavailable": {
@@ -638,7 +525,6 @@
       "removeGroup": "Remove group",
       "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
       "emptyGroupTitle": "Empty group",
-      "fieldSearchPlaceholder": "Type to search fields...",
       "removeConditionAriaLabel": "Remove condition",
       "groupLabel": "Group",
       "hideFilters": "Hide filters",
@@ -681,19 +567,7 @@
       "fieldsGroupLabel": "Fields",
       "componentsGroupLabel": "Components",
       "pathsCount": "{count} paths",
-      "id": "Id",
-      "type": "Entity type",
-      "title": "Title",
-      "score": "Score",
-      "matchingField": "Matching field",
-      "perfectMatch": "Perfect match",
       "removeRule": "Remove rule"
-    },
-    "tabs": {
-      "subscriptions": "Subscriptions",
-      "products": "Products",
-      "workflows": "Workflows",
-      "processes": "Processes"
     }
   }
 }
