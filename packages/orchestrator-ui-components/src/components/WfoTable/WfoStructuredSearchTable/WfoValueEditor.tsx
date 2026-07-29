@@ -145,6 +145,13 @@ export const WfoValueEditor = ({
   value,
   className,
 }: ValueEditorProps) => {
+  // null/notNull (has component / does not have component) take no value. Their unary arity
+  // already hides this editor when the field's operator list is loaded, but a rule restored
+  // from the URL may not have that list yet — without this guard an orphan text editor shows.
+  if (operator === 'null' || operator === 'notNull') {
+    return null;
+  }
+
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;

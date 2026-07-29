@@ -23,6 +23,9 @@ import { getWfoStructuredSearchTableStyles } from './styles';
 
 // Maps PathInfo operator names to react-querybuilder's native operator names,
 // which is what parseCEL produces and formatQuery(cel) expects.
+// has_component/not_has_component ride on notNull/null: they survive the CEL round trip
+// (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
+// exists / must_not-exists, which the backend translates to component-presence filters.
 const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   eq: '=',
   neq: '!=',
@@ -32,7 +35,12 @@ const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   gte: '>=',
   between: 'between',
   like: 'contains',
+  has_component: 'notNull',
+  not_has_component: 'null',
 };
+
+// Operators without a value; marking them unary makes react-querybuilder's Rule hide the value editor.
+const RQB_UNARY_OPERATORS = ['null', 'notNull'];
 
 const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   eq: { symbol: '=', description: 'equals' },
@@ -46,10 +54,6 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   not_has_component: { symbol: '✗', description: 'does not have component' },
   like: { symbol: '∋', description: 'contains' },
 };
-
-/* TODO: Add the missing operators
-['has_component', 'not_has_component'];
- */
 
 interface WfoFilterBuilderProps {
   filterString?: string;
@@ -87,7 +91,12 @@ export const WfoFilterBuilder = ({
     return (operators ?? []).map((operator) => {
       const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
       const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
-      return { name: rqbOperator, label: `${symbol} ${description}`, value: rqbOperator };
+      return {
+        name: rqbOperator,
+        label: `${symbol} ${description}`,
+        value: rqbOperator,
+        ...(RQB_UNARY_OPERATORS.includes(rqbOperator) && { arity: 'unary' as const }),
+      };
     });
   };
 
