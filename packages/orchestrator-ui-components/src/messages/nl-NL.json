@@ -1,6 +1,6 @@
 {
   "common": {
-    "applyFilter": "Pas filter tpe",
+    "applyFilter": "Pas filter toe",
     "createFilter": "Filter",
     "deselect": "Deselecteer",
     "editColumns": "Wijzig kolommen",
@@ -26,7 +26,7 @@
     "showAllColumnsInDetailView": "Toon alle kolommen in detailweergave",
     "tableSettings": "Tabel instellingen",
     "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
-    "unknownError": "Onbekende error"
+    "unknownError": "Onbekende fout"
   },
   "confirmationDialog": {
     "cancel": "Annuleren",
@@ -110,9 +110,9 @@
     },
     "scheduledTasks": {
       "addSchedule": "Plan een taak",
-      "ariaLabelDeleteButton": "Schema verwijderen",
-      "deleteConfirmationQuestion": "Bevestig de verwijdering van het schema",
-      "nextRuntime": "Volgende runtime",
+      "ariaLabelDeleteButton": "Schedule verwijderen",
+      "deleteConfirmationQuestion": "Bevestig de verwijdering van het schedule",
+      "nextRuntime": "Volgende uitvoer",
       "schedule": "Schedule",
       "task": "Taak",
       "taskDescription": "Taak beschrijving"
@@ -220,7 +220,7 @@
       "preconditionFailedTitle": "Deze workflow kan op dit moment niet worden gestart",
       "previous": "Vorige",
       "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
-      "resumeTask": "Hervat task",
+      "resumeTask": "Hervat taak",
       "resumeWorkflow": "Hervat workflow",
       "startTask": "Start taak",
       "startWorkflow": "Start workflow"
@@ -456,7 +456,7 @@
         "terminate": "Terminate workflow"
       },
       "blockTitleFixedInputs": "Fixed inputs",
-      "blockTitleProductInfo": "Produktinfo",
+      "blockTitleProductInfo": "Productinfo",
       "blockTitleSubscriptionDetails": "Subscription details",
       "created": "Aangemaakt",
       "ctaSelectProductBlock": "Selecteer één of meer product blocks om de details te bekijken",
@@ -471,7 +471,7 @@
       "id": "ID",
       "inUseByRelations": "In gebruik door subscription(s)",
       "insync": "In sync",
-      "lastRunValidation": "Meest recente validate",
+      "lastRunValidation": "Meest recente validatie",
       "metadata": "Metadata",
       "name": "Naam",
       "noProductBlockSelected": "Geen product block geselecteerd",
@@ -487,21 +487,21 @@
         "status": "Status"
       },
       "productBlocks": "Product blocks",
-      "productName": "Produkt",
-      "productType": "Produkttype",
+      "productName": "Product",
+      "productType": "Producttype",
       "see": "Bekijk",
       "selectByNameButtonText": "Selecteer op naam",
       "selectByNameTitle": "Selecteer product blocks op naam",
       "self": "Huidige subscription",
       "setInSync": "Set in Sync",
       "setInSyncFailed": {
-        "text": "De subscription kon niet inSync worden gezet. Probeer het opnieuw.",
+        "text": "De subscription kon niet in sync worden gezet. Probeer het opnieuw.",
         "title": "In sync zetten mislukt"
       },
       "setInSyncQuestion": "Weet je zeker dat je de subscription in-sync wilt zetten? Je gaat een subscription geforceerd in-sync zetten. Alleen als je zeker weet wat de reden is van out-of-sync kun je de actie uitvoeren, zodat je daarna wijzigingen kunt doorvoeren op deze subscription. Bij twijfel - check eerst bij de network automators of het in sync zetten van de subscription mogelijk schadelijke gevolgen kan hebben op het netwerk.",
       "setInSyncSuccess": {
         "text": "De subscription is in sync gezet.",
-        "title": "Subscription inSync"
+        "title": "Subscription in sync"
       },
       "showAll": "Toon alles",
       "showDetails": "Toon details",
@@ -533,7 +533,7 @@
       "insync": "In sync",
       "metadata": "Metadata",
       "note": "Notitie",
-      "product": "Produkt",
+      "product": "Product",
       "startDate": "Startdatum",
       "status": "Status",
       "tag": "Tag"
