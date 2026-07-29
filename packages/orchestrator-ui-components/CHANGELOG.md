@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.7.1
+
+### Patch Changes
+
+- 64ec9c8: Handles summaryForm translation client side
+- da99ddd: Adds missing NL translations
+
 ## 8.7.0
 
 ### Minor Changes
