@@ -2,10 +2,10 @@ import React from 'react';
 
 import { capitalize } from 'lodash';
 import {
-  useGetConfig,
-  useLabelProvider,
   type PydanticFormElement,
   type PydanticFormLabelProviderResponse,
+  useGetConfig,
+  useLabelProvider,
 } from 'pydantic-forms';
 
 import { EuiFlexItem, EuiFormRow, EuiText } from '@elastic/eui';
@@ -19,8 +19,12 @@ import { getNestedSummaryLabel } from './wfoPydanticFormUtils';
 export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
   const { summaryFieldStyle } = useWithOrchestratorTheme(summaryFieldStyles);
   const { formRowStyle } = useWithOrchestratorTheme(getCommonFormFieldStyles);
-  const config = useGetConfig()
-  const { data }: { data: PydanticFormLabelProviderResponse | undefined } = useLabelProvider(config.labelProvider, 'temp', 'test');
+  const config = useGetConfig();
+  const { data }: { data: PydanticFormLabelProviderResponse | undefined } = useLabelProvider(
+    config.labelProvider,
+    'temp',
+    'test',
+  );
   const rawLabels = data?.labels || { summary: {} };
   const labelTranslations: Record<string, string> = {
     ...(rawLabels as Record<string, string>),
@@ -61,9 +65,7 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
 
   const rows = columns[0].map((row, index) => (
     <tr key={index}>
-      {labels && (
-        <td className={`label`}>{translateSummaryField(getNestedSummaryLabel(labels, index))}</td>
-      )}
+      {labels && <td className={`label`}>{translateSummaryField(getNestedSummaryLabel(labels, index))}</td>}
       <td className={`value`}>
         {typeof row === 'string' && row.includes('<!doctype html>') ?
           <div className="emailMessage" dangerouslySetInnerHTML={{ __html: row }}></div>
@@ -89,9 +91,7 @@ export const WfoSummary: PydanticFormElement = ({ pydanticFormField }) => {
       </tr>;
 
   const formattedTitle =
-    title === 'MigrationSummaryValue' ?
-      translateSummaryField(id)
-    : snakeToHuman(capitalize(title ?? ''));
+    title === 'MigrationSummaryValue' ? translateSummaryField(id) : snakeToHuman(capitalize(title ?? ''));
 
   return (
     <EuiFlexItem data-testid={id} css={[summaryFieldStyle, formRowStyle]}>
