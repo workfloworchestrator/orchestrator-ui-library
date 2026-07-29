@@ -113,7 +113,7 @@ export const FilterGroup: FC<FilterGroupProps> = ({
           <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem grow={false}>
               <EuiButton size="s" iconType="plusInCircle" onClick={addCondition}>
-                {t('addCondition')}
+                {t('addRule')}
               </EuiButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
