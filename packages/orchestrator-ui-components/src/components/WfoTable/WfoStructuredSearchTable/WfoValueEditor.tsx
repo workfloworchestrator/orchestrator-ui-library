@@ -65,7 +65,7 @@ const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorPro
   );
 };
 
-const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorProps<string>) => {
+const TextEditor = ({ handleOnChange, rangeIndex, value: currentValue = '' }: WfoRangeElementProps) => {
   const [value, setValue] = useState<string>(currentValue);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -73,7 +73,7 @@ const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorProps<st
   };
 
   const handleOnBlur = () => {
-    handleOnChange(value);
+    handleOnChange(value, rangeIndex);
   };
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -155,7 +155,7 @@ export const WfoValueEditor = ({
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
-  const uiFieldType = fieldInfo?.ui_types[0] || UiFieldType.text;
+  const uiFieldType = fieldInfo?.ui_types?.[0] || UiFieldType.text;
 
   const getEditor = () => {
     if (uiFieldType === UiFieldType.boolean) {
@@ -172,7 +172,9 @@ export const WfoValueEditor = ({
       );
     }
 
-    return <TextEditor handleOnChange={handleOnChange} value={value} />;
+    // Text editor goes through WfoRangeEditor as well: fields without path info (e.g.
+    // prefilled options) must still show two inputs for the 'between' operator.
+    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={TextEditor} value={value} />;
   };
 
   const handleWrapperKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {

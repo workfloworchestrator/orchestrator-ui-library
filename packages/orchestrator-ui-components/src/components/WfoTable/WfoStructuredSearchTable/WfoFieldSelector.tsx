@@ -85,7 +85,7 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
     const operators = matchingPath?.operators ?? prefilledFieldOptions.get(selectedValue) ?? [];
 
-    context?.onFieldSelected?.(selectedValue, operators);
+    context?.onFieldSelected?.(selectedValue, operators, matchingPath);
   };
 
   const handleFieldSelection = (selectedOptions: EuiComboBoxOptionOption<string>[]) => {
