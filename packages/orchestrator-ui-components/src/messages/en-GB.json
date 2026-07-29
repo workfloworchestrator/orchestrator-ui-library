@@ -74,7 +74,7 @@
     "subscriptions": "Subscriptions",
     "tableSettings": "Table settings",
     "tasks": "Tasks",
-    "websocketConnected": "This page recexives live updates from the server",
+    "websocketConnected": "This page receives live updates from the server",
     "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
     "welcome": "Welcome",
     "workflows": "Workflows"
