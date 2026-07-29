@@ -10,7 +10,7 @@ import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/compon
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useWithOrchestratorTheme } from '@/hooks';
 import { OperatorDisplay } from '@/types';
-import type { FieldToOperatorMap } from '@/types';
+import type { FieldToOperatorMap, PathInfo } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -103,6 +103,10 @@ export const WfoFilterBuilder = ({
   const t = useTranslations('common');
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
+  // Path info per selected field, so the value editor can pick a typed editor (date picker,
+  // number input, boolean toggle) and render two inputs for 'between'. Prefilled fields
+  // selected without an autocomplete match have no path info and fall back to text.
+  const [fieldPathInfoMap, setFieldPathInfoMap] = useState<Map<string, PathInfo>>(new Map());
 
   // Enter in a value editor commits its value on blur, and that state update has not
   // flushed yet when the search runs in the same keydown. onQueryChange fires
@@ -115,10 +119,15 @@ export const WfoFilterBuilder = ({
     handleSearch({ ruleGroup: latestRuleGroupRef.current });
   };
 
-  const handleFieldSelected = (field: string, operators: string[]) => {
+  const handleFieldSelected = (field: string, operators: string[], pathInfo?: PathInfo) => {
     setFieldToOperatorMap((previousMap) => {
       return new Map(previousMap).set(field, operators);
     });
+    if (pathInfo) {
+      setFieldPathInfoMap((previousMap) => {
+        return new Map(previousMap).set(field, pathInfo);
+      });
+    }
   };
 
   return (
@@ -135,6 +144,7 @@ export const WfoFilterBuilder = ({
             context={{
               onFieldSelected: handleFieldSelected,
               prefilledFieldOptions,
+              fieldPathInfoMap,
               onValueEditorEnter: handleValueEditorEnter,
             }}
             getOperators={(field) => {
