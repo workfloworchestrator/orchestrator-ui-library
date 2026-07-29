@@ -7,6 +7,14 @@ import { EuiSelect } from '@elastic/eui';
 const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): operator is OptionGroup<FullOperator> =>
   'options' in operator;
 
+// The search backend has no is-null operator: null/notNull only occur here as the
+// react-querybuilder encoding of the component-presence operators, so a restored rule
+// should label them accordingly instead of using defaultOperators' "is (not) null".
+const FALLBACK_OPERATOR_LABELS: Record<string, string> = {
+  notNull: '✓ has component',
+  null: '✗ does not have component',
+};
+
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   const { value, handleOnChange } = props;
 
@@ -44,7 +52,16 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   const currentValueIsListed = !value || selectOptions.some((option) => option.value === value);
   const displayOptions =
     currentValueIsListed ? selectOptions : (
-      [...selectOptions, { value, text: defaultOperators.find((operator) => operator.name === value)?.label ?? value }]
+      [
+        ...selectOptions,
+        {
+          value,
+          text:
+            FALLBACK_OPERATOR_LABELS[value]
+            ?? defaultOperators.find((operator) => operator.name === value)?.label
+            ?? value,
+        },
+      ]
     );
 
   return (
