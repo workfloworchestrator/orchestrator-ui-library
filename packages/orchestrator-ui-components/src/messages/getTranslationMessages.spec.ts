@@ -1,10 +1,19 @@
-describe('getTransalationMessages', () => {
-  it('Makes jest stop complaining about an empty test file', () => {
-    expect(true).toEqual(true);
+import enGB from './en-GB.json';
+import nlNL from './nl-NL.json';
+
+const getTranslationKeys = (messages: object, prefix = ''): string[] =>
+  Object.entries(messages).flatMap(([key, value]) =>
+    value && typeof value === 'object' ? getTranslationKeys(value, `${prefix}${key}.`) : [`${prefix}${key}`],
+  );
+
+describe('translation files', () => {
+  it('en-GB.json and nl-NL.json contain the same translation keys', () => {
+    const enGBKeys = getTranslationKeys(enGB).sort();
+    const nlNLKeys = getTranslationKeys(nlNL).sort();
+
+    expect(nlNLKeys).toEqual(enGBKeys);
   });
 });
-
-export {};
 /*
 These tests are disabled because of an issue described here:
 https://github.com/workfloworchestrator/orchestrator-ui/issues/513
