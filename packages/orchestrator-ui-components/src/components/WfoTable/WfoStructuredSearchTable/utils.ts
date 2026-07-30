@@ -12,6 +12,27 @@ export const collectRuleFields = (ruleGroup: RuleGroupType): string[] => {
   return [...new Set(fields)];
 };
 
+// The filter builder has no field-to-field comparisons: a 'field' value source only
+// appears when parseCEL reads a bare identifier (e.g. the half-typed literal in
+// `lldp == fals`) as a field reference. If it stays on the rule it survives later field
+// and value edits (resetOnFieldChange is off and the value editors only set the value),
+// and formatQuery renders the value of such a rule unquoted — producing invalid CEL like
+// `subscription.end_date == 2026-07-05T22:00:00.000Z` once a string value is committed.
+const dropFieldValueSources = (ruleGroup: RuleGroupType): RuleGroupType => ({
+  ...ruleGroup,
+  rules: ruleGroup.rules.map((rule) => {
+    if (typeof rule === 'string' || 'rules' in rule) {
+      return typeof rule === 'string' ? rule : dropFieldValueSources(rule);
+    }
+    if (rule.valueSource === 'field') {
+      const ruleWithoutValueSource = { ...rule };
+      delete ruleWithoutValueSource.valueSource;
+      return ruleWithoutValueSource;
+    }
+    return rule;
+  }),
+});
+
 export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefined => {
   if (!celString) {
     return undefined;
@@ -21,7 +42,7 @@ export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefine
     // prepareRuleGroup assigns the rule ids parseCEL leaves out. Without stable ids the
     // QueryBuilder regenerates them on every query prop change, remounting all rules —
     // which loses editor state and can loop with editors that commit a value on mount.
-    return ruleGroup?.rules?.length > 0 ? prepareRuleGroup(ruleGroup) : undefined;
+    return ruleGroup?.rules?.length > 0 ? prepareRuleGroup(dropFieldValueSources(ruleGroup)) : undefined;
   } catch {
     return undefined;
   }

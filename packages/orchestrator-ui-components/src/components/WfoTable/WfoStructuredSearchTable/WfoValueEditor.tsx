@@ -24,7 +24,12 @@ enum UiFieldType {
   datetime = 'datetime',
 }
 
-const BooleanEditor = ({ handleOnChange, value: currentValue }: EditorInputFieldProps<boolean>) => {
+// The value is only a boolean for rules committed by this editor; a rule parsed from a
+// CEL string can carry anything, e.g. a half-typed literal ('fals') or a quoted string.
+const BooleanEditor = ({
+  handleOnChange,
+  value: currentValue,
+}: EditorInputFieldProps<boolean | string | undefined>) => {
   // A restored query (URL / filter string) delivers a real boolean; anything else —
   // a freshly selected field ('') or a value left behind by another editor — means
   // there is no boolean value yet and the editor starts at its default, true.
@@ -32,11 +37,14 @@ const BooleanEditor = ({ handleOnChange, value: currentValue }: EditorInputField
   const [value, setValue] = useState<string>(initialValue.toString());
 
   useEffect(() => {
-    // Commit the default so a fresh rule is complete without user interaction. When the
-    // rule already holds a boolean there is nothing to commit — committing anyway makes
-    // every mount dispatch a query change, which loops when the query update remounts
-    // this editor (e.g. while a restored query's rule ids are still settling).
-    if (typeof currentValue !== 'boolean') {
+    // Commit the default only for a rule without a value yet (a freshly selected field)
+    // so it is complete without user interaction. Any other value belongs to someone
+    // else and is left alone: a boolean restored from CEL has nothing to commit (and
+    // committing anyway loops when the query update remounts this editor), and the
+    // half-typed literal of a CEL string being edited in the textarea ('fals') must not
+    // be overwritten — the commit would echo a normalized boolean back into the filter
+    // string, snapping the textarea back mid-edit.
+    if (currentValue === undefined || currentValue === '') {
       handleOnChange(initialValue);
     }
     // Only on mount: currentValue is this editor's own output after that
