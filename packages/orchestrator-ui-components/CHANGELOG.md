@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.7.2
+
+### Patch Changes
+
+- a5ce17a: Minor comment improvements
+- af9eaf6: Fixes subscription search has component and range filters
+
 ## 8.7.1
 
 ### Patch Changes
