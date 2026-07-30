@@ -15,11 +15,20 @@ const FALLBACK_OPERATOR_LABELS: Record<string, string> = {
   null: '✗ does not have component',
 };
 
+// null/notNull hide the value editor, so they only make a sane default when a field
+// offers nothing else; prefer the first operator that keeps the value editor visible.
+const getDefaultOperator = (options: FullOperator[]) =>
+  (options.find((option) => option.arity !== 'unary') ?? options[0]).name;
+
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   const { value, handleOnChange } = props;
 
-  const flatOptions = (props.options as Array<FullOperator | OptionGroup<FullOperator>>).flatMap((option) =>
-    isOptionGroup(option) ? option.options : [option],
+  const flatOptions = useMemo(
+    () =>
+      (props.options as Array<FullOperator | OptionGroup<FullOperator>>).flatMap((option) =>
+        isOptionGroup(option) ? option.options : [option],
+      ),
+    [props.options],
   );
 
   const selectOptions = useMemo(
@@ -40,12 +49,23 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
     // rules restored from CEL (URL or textarea) intact on mount: parseCEL can produce
     // operators outside the prefilled operator lists (e.g. beginsWith), and resetting
     // those here would silently rewrite the user's filter string.
-    if (!optionsChanged || selectOptions.length === 0) return;
+    if (!optionsChanged) return;
+
+    if (flatOptions.length === 0) {
+      // The new field's operators are unknown (nothing stored for it). A left-over unary
+      // operator would keep the value editor hidden with nothing in the dropdown to bring
+      // it back, so fall back to the query builder's default operator.
+      if (value === 'null' || value === 'notNull') {
+        handleOnChange('=');
+      }
+      return;
+    }
+
     const currentValueIsValid = selectOptions.some((option) => option.value === value);
     if (!currentValueIsValid) {
-      handleOnChange(selectOptions[0].value);
+      handleOnChange(getDefaultOperator(flatOptions));
     }
-  }, [optionsKey, selectOptions, value, handleOnChange]);
+  }, [optionsKey, flatOptions, selectOptions, value, handleOnChange]);
 
   // A restored operator that falls outside the field's list must still be visible in
   // the dropdown; without it EuiSelect renders an empty selection for the rule.
