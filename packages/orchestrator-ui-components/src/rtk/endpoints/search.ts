@@ -112,5 +112,6 @@ export const {
   useLazySearchQuery,
   useSearchWithPaginationMutation,
   useSearchPathsQuery,
+  useLazySearchPathsQuery,
   useSearchDefinitionsQuery,
 } = searchApi;

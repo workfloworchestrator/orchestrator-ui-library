@@ -24,12 +24,22 @@ enum UiFieldType {
   datetime = 'datetime',
 }
 
-const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorInputFieldProps<boolean>) => {
-  const [value, setValue] = useState<string>(currentValue.toString());
+const BooleanEditor = ({ handleOnChange, value: currentValue }: EditorInputFieldProps<boolean>) => {
+  // A restored query (URL / filter string) delivers a real boolean; anything else —
+  // a freshly selected field ('') or a value left behind by another editor — means
+  // there is no boolean value yet and the editor starts at its default, true.
+  const initialValue = typeof currentValue === 'boolean' ? currentValue : true;
+  const [value, setValue] = useState<string>(initialValue.toString());
 
   useEffect(() => {
-    handleOnChange(true);
-    // Sets the initial value to true so we allow empty dep array here
+    // Commit the default so a fresh rule is complete without user interaction. When the
+    // rule already holds a boolean there is nothing to commit — committing anyway makes
+    // every mount dispatch a query change, which loops when the query update remounts
+    // this editor (e.g. while a restored query's rule ids are still settling).
+    if (typeof currentValue !== 'boolean') {
+      handleOnChange(initialValue);
+    }
+    // Only on mount: currentValue is this editor's own output after that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
