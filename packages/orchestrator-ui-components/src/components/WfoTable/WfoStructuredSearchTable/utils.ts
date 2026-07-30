@@ -1,5 +1,16 @@
 import type { RuleGroupType } from 'react-querybuilder';
+import { prepareRuleGroup } from 'react-querybuilder';
 import { parseCEL } from 'react-querybuilder/parseCEL';
+
+/** Collects the unique field names used by the rules of a rule group, including nested groups. */
+export const collectRuleFields = (ruleGroup: RuleGroupType): string[] => {
+  const fields = ruleGroup.rules.flatMap((rule) =>
+    typeof rule !== 'string' && 'rules' in rule ? collectRuleFields(rule)
+    : typeof rule !== 'string' ? [rule.field]
+    : [],
+  );
+  return [...new Set(fields)];
+};
 
 export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefined => {
   if (!celString) {
@@ -7,7 +18,10 @@ export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefine
   }
   try {
     const ruleGroup = parseCEL(celString);
-    return ruleGroup?.rules?.length > 0 ? ruleGroup : undefined;
+    // prepareRuleGroup assigns the rule ids parseCEL leaves out. Without stable ids the
+    // QueryBuilder regenerates them on every query prop change, remounting all rules —
+    // which loses editor state and can loop with editors that commit a value on mount.
+    return ruleGroup?.rules?.length > 0 ? prepareRuleGroup(ruleGroup) : undefined;
   } catch {
     return undefined;
   }

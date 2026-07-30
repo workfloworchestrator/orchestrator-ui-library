@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FullOperator, QueryBuilder, type RuleGroupType, generateID } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -8,8 +8,8 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
-import { useWithOrchestratorTheme } from '@/hooks';
-import { OperatorDisplay } from '@/types';
+import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
+import { EntityKind, OperatorDisplay } from '@/types';
 import type { FieldToOperatorMap, PathInfo } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
@@ -20,6 +20,7 @@ import { WfoRule } from './WfoRule';
 import { WfoRuleGroup } from './WfoRuleGroup';
 import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
+import { collectRuleFields } from './utils';
 
 // Maps PathInfo operator names to react-querybuilder's native operator names,
 // which is what parseCEL produces and formatQuery(cel) expects.
@@ -128,6 +129,27 @@ export const WfoFilterBuilder = ({
       });
     }
   };
+
+  // Fields can enter the query without passing through the field selector — a filter
+  // restored from the URL or added by a column-header search. Resolve their path info
+  // so the value editor renders the right input type (date picker, boolean toggle, ...)
+  // and the operator selector gets the field's operator list.
+  const unresolvedFields = useMemo(
+    () =>
+      collectRuleFields(queryBuilderRuleGroup).filter(
+        (field) => field && field !== '~' && !fieldPathInfoMap.has(field),
+      ),
+    [queryBuilderRuleGroup, fieldPathInfoMap],
+  );
+  const resolvedFieldsPathInfo = useFieldsPathInfo(unresolvedFields, EntityKind.SUBSCRIPTION);
+
+  useEffect(() => {
+    resolvedFieldsPathInfo.forEach((pathInfo, field) => {
+      if (pathInfo && !fieldPathInfoMap.has(field)) {
+        handleFieldSelected(field, pathInfo.operators, pathInfo);
+      }
+    });
+  });
 
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>

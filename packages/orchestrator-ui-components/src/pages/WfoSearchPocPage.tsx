@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
-import { parseCEL } from 'react-querybuilder/parseCEL';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -389,21 +388,19 @@ export const WfoSearchPocPage = () => {
   };
 
   const safeCelParse = useCallback((celString: string) => {
-    try {
-      const ruleGroup = parseCEL(celString);
-      if (celString === '') {
-        setIsValidFilterString(true);
-      } else if (ruleGroup?.rules?.length > 0) {
-        // parseCEL returns a query object — check if it has any rules
-        setIsValidFilterString(true);
-        setQueryBuilderRuleGroup(ruleGroup);
-      } else {
-        // If there are no rules created based on this string then
-        // we assume the string is not valid. In any case it will not do anything
-        // to the search results
-        setIsValidFilterString(false);
-      }
-    } catch {
+    if (celString === '') {
+      setIsValidFilterString(true);
+      return;
+    }
+    // parseCelToRuleGroup returns undefined when the string parses to no rules — in that
+    // case we assume the string is not valid. In any case it would not do anything to the
+    // search results. It also assigns the rule ids parseCEL leaves out, which the query
+    // builder needs to keep rule identity stable across query updates.
+    const ruleGroup = parseCelToRuleGroup(celString);
+    if (ruleGroup) {
+      setIsValidFilterString(true);
+      setQueryBuilderRuleGroup(ruleGroup);
+    } else {
       setIsValidFilterString(false);
     }
   }, []);

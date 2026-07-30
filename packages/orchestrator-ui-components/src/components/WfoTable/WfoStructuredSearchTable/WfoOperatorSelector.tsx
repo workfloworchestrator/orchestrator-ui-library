@@ -43,12 +43,14 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
     const optionsChanged = previousOptionsKeyRef.current !== optionsKey;
     previousOptionsKeyRef.current = optionsKey;
 
-    // Reset to the first option only when the field's operator list changes — i.e. the
-    // user picked a (different) field, and resetOnFieldChange=false on QueryBuilder
-    // preserved an operator that is not valid for it. The `optionsChanged` guard keeps
-    // rules restored from CEL (URL or textarea) intact on mount: parseCEL can produce
-    // operators outside the prefilled operator lists (e.g. beginsWith), and resetting
-    // those here would silently rewrite the user's filter string.
+    // Reset to a default option only when the field's operator list changes — i.e. the
+    // user picked a (different) field and resetOnFieldChange=false on QueryBuilder
+    // preserved an operator that is not valid for it, or WfoFilterBuilder resolved the
+    // real operator list of a field restored from CEL (URL or textarea). The
+    // `optionsChanged` guard keeps restored rules intact while their field's operators
+    // are still unknown: parseCEL can produce operators outside the prefilled operator
+    // lists (e.g. beginsWith), and resetting those would silently rewrite the user's
+    // filter string.
     if (!optionsChanged) return;
 
     if (flatOptions.length === 0) {
