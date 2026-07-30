@@ -55,10 +55,10 @@ const FieldSelectorStub = ({ value }: FieldSelectorProps) => <span data-testid="
 // so a render loop terminates and can be inspected instead of hanging the test.
 const queryChangeLog: string[] = [];
 
-const Harness = () => {
+const Harness = ({ initialCel = 'lldp == true' }: { initialCel?: string }) => {
   // Page-like state: rule group parsed from the URL's CEL string (rules have no ids).
-  const [query, setQuery] = useState<RuleGroupType>(() => parseCEL('lldp == true'));
-  const [, setFilterString] = useState<string>('lldp == true');
+  const [query, setQuery] = useState<RuleGroupType>(() => parseCEL(initialCel));
+  const [, setFilterString] = useState<string>(initialCel);
 
   // WfoFilterBuilder-like state, with the async field resolution simulated: the maps
   // are empty on mount and get lldp's path info after a tick.
@@ -93,6 +93,7 @@ const Harness = () => {
         fieldSelector: FieldSelectorStub,
         operatorSelector: WfoOperatorSelector,
         valueEditor: WfoValueEditor,
+        valueSourceSelector: null,
       }}
       resetOnFieldChange={false}
     />
@@ -113,5 +114,17 @@ describe('URL restore with async path info resolution', () => {
     expect(screen.getByRole('button', { name: 'True' })).toBeInTheDocument();
     // Nothing about the restored rule changed, so no query updates should have fired
     expect(queryChangeLog).toEqual([]);
+  });
+
+  it('does not flash a value source selector while a literal is half-typed', async () => {
+    // 'fals' parses as an identifier, giving the rule valueSource 'field'; without the
+    // valueSourceSelector override the default selector appears next to the editor.
+    render(<Harness initialCel="lldp == fals" />);
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+
+    expect(document.querySelector('[data-testid="value-source-selector"]')).not.toBeInTheDocument();
   });
 });

@@ -445,7 +445,11 @@ export const WfoSearchPocPage = () => {
         setIsValidFilterString(true);
       } else {
         setFilterString(celQuery);
-        setIsValidFilterString(true);
+        // formatQuery output is normally valid CEL, but not unconditionally — a rule can
+        // hold state formatQuery renders as unparseable CEL (e.g. a 'field' value source
+        // renders its value unquoted). Validate the round trip so the invalid marker and
+        // the Apply button track what the textarea actually shows.
+        setIsValidFilterString(!!parseCelToRuleGroup(celQuery));
       }
     }
   };

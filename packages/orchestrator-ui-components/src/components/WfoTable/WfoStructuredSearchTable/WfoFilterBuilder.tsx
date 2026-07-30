@@ -184,6 +184,11 @@ export const WfoFilterBuilder = ({
               addGroupAction: null,
               removeGroupAction: null,
               removeRuleAction: WfoRemoveRuleAction,
+              // Field-to-field comparisons are not supported, but a rule can briefly hold
+              // valueSource 'field' while a CEL literal is being typed in the textarea
+              // ('lldp == fals' parses 'fals' as an identifier) — without this override
+              // react-querybuilder's default value source selector flashes into the rule.
+              valueSourceSelector: null,
             }}
             addRuleToNewGroups
             onAddGroup={onAddGroupHandler}

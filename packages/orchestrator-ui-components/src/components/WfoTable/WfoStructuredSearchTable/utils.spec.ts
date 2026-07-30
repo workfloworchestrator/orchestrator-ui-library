@@ -1,4 +1,5 @@
 import type { RuleGroupType, RuleType } from 'react-querybuilder';
+import { formatQuery } from 'react-querybuilder';
 
 import { collectRuleFields, parseCelToRuleGroup } from './utils';
 
@@ -16,6 +17,16 @@ describe('parseCelToRuleGroup', () => {
   it('returns undefined for strings that do not parse to rules', () => {
     expect(parseCelToRuleGroup('')).toBeUndefined();
     expect(parseCelToRuleGroup('not valid cel ===')).toBeUndefined();
+  });
+
+  it('drops the field value source parseCEL assigns to bare identifiers, keeping values quoted', () => {
+    // parseCEL reads the bare identifier as a field reference (valueSource 'field').
+    // Left in place, formatQuery would render the value unquoted: `lldp == fals`.
+    const ruleGroup = parseCelToRuleGroup('lldp == fals');
+
+    expect(ruleGroup).toBeDefined();
+    expect((ruleGroup?.rules[0] as RuleType).valueSource).toBeUndefined();
+    expect(formatQuery(ruleGroup as RuleGroupType, { format: 'cel', fallbackExpression: '' })).toBe('lldp == "fals"');
   });
 });
 
