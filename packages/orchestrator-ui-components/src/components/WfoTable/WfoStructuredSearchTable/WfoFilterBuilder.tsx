@@ -95,7 +95,7 @@ export const WfoFilterBuilder = ({
         name: rqbOperator,
         label: `${symbol} ${description}`,
         value: rqbOperator,
-        ...(RQB_UNARY_OPERATORS.includes(rqbOperator) && { arity: 'unary' as const }),
+        ...(RQB_UNARY_OPERATORS.includes(rqbOperator) && { arity: 'unary' }),
       };
     });
   };
