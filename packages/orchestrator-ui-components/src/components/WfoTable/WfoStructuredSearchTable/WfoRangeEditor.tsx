@@ -1,64 +1,52 @@
 import React, { useEffect, useState } from 'react';
+import type { ValueEditorProps } from 'react-querybuilder';
 
 import { EuiFlexGroup } from '@elastic/eui';
 
-export interface WfoRangeElementProps {
-  handleOnChange: (value: string | number | undefined, rangeIndex?: number) => void;
-  value: string;
-  operator?: string;
-  rangeIndex?: number;
-}
+import type { EditorComponent } from './WfoValueEditor';
 
 interface WfoRangeEditorProps {
-  handleOnChange: (value: string | number | undefined, rangeIndex?: number) => void;
-  operator: string;
+  handleOnChange: ValueEditorProps['handleOnChange'];
   value: string;
-  Element: React.ComponentType<WfoRangeElementProps>;
+  InputElement: EditorComponent;
 }
 
-export const WfoRangeEditor = ({ handleOnChange, operator, Element, value: currentValue }: WfoRangeEditorProps) => {
-  const [currentOperator, setCurrentOperator] = useState(operator);
+export const WfoRangeEditor = ({ handleOnChange, InputElement, value: currentValue }: WfoRangeEditorProps) => {
   const startValue = currentValue ? currentValue?.toString().split(',') : [];
-  const [value, setValue] = useState<string[]>(startValue);
+  const [value, setValue] = useState<(string | undefined)[]>(startValue);
 
-  useEffect(() => {
-    if (operator !== currentOperator && (operator === 'between' || currentOperator === 'between')) {
-      setValue([]);
-      handleOnChange('');
-      setCurrentOperator(operator);
-    }
-  }, [currentOperator, handleOnChange, operator]);
-
-  const handleChange = (value: string | number | undefined, rangeIndex: number = 0) => {
-    if (operator === 'between') {
-      setValue((currentDates) => {
-        // remove value if set to undefined
-        if (value === null) {
-          return currentDates.filter((_, index) => index !== rangeIndex);
-        }
-        // add value at supplied index
-        currentDates[rangeIndex] = value as string;
-
-        // call the parent if 2 values are present
-        if (currentDates.length === 2) {
-          handleOnChange(`${currentDates[0]},${currentDates[1]}`);
-        }
-
-        return currentDates;
-      });
-    } else {
-      handleOnChange(value);
-    }
+  const handleRangeChange = (newValue: string | number | boolean | undefined, rangeIndex: number) => {
+    setValue((currentValues) => {
+      const next = [...currentValues];
+      const isCleared = newValue === undefined || (typeof newValue === 'number' && Number.isNaN(newValue));
+      next[rangeIndex] = isCleared ? undefined : String(newValue);
+      return next;
+    });
   };
 
-  if (operator === 'between') {
-    return (
-      <EuiFlexGroup direction="row" gutterSize="s">
-        <Element handleOnChange={handleChange} rangeIndex={0} value={value[0]} />
-        <Element handleOnChange={handleChange} rangeIndex={1} value={value[1]} />
-      </EuiFlexGroup>
-    );
-  }
+  // Notify the parent only when both ends of the range hold a value
+  useEffect(() => {
+    if (value[0] !== undefined && value[1] !== undefined) {
+      handleOnChange(`${value[0]},${value[1]}`);
+    }
+    // handleOnChange comes from react-querybuilder and is not referentially stable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
-  return <Element handleOnChange={handleOnChange} value={value[0]} />;
+  return (
+    <EuiFlexGroup direction="row" gutterSize="s">
+      <InputElement
+        handleOnChange={(value) => {
+          handleRangeChange(value, 0);
+        }}
+        value={value[0]}
+      />
+      <InputElement
+        handleOnChange={(value) => {
+          handleRangeChange(value, 1);
+        }}
+        value={value[1]}
+      />
+    </EuiFlexGroup>
+  );
 };
