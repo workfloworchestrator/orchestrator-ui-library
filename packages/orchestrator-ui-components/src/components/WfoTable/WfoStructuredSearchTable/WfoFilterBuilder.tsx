@@ -104,8 +104,7 @@ export const WfoFilterBuilder = ({
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
   // Path info per selected field, so the value editor can pick a typed editor (date picker,
-  // number input, boolean toggle) and render two inputs for 'between'. Prefilled fields
-  // selected without an autocomplete match have no path info and fall back to text.
+  // number input, boolean toggle or range editor)
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<Map<string, PathInfo>>(new Map());
 
   // Enter in a value editor commits its value on blur, and that state update has not
