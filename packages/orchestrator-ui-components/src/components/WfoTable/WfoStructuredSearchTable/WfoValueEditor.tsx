@@ -7,10 +7,15 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButtonGroup, EuiDatePicker, EuiFieldNumber, EuiFieldText } from '@elastic/eui';
 
+import { WfoRangeEditor } from '@/components/WfoTable/WfoStructuredSearchTable/WfoRangeEditor';
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
 
-import { WfoRangeEditor, WfoRangeElementProps } from './WfoRangeEditor';
+export interface EditorInputFieldProps<T = string> {
+  handleOnChange: ValueEditorProps['handleOnChange'];
+  value: T;
+}
+export type EditorComponent = React.ComponentType<EditorInputFieldProps<ValueEditorProps['value']>>;
 
 enum UiFieldType {
   text = 'text',
@@ -19,15 +24,7 @@ enum UiFieldType {
   datetime = 'datetime',
 }
 
-export type HandleOnChange<T> = (value: T | undefined, rangeIndex?: number) => void;
-
-export interface EditorProps<T> {
-  handleOnChange: HandleOnChange<T>;
-  value: T;
-  operator?: string;
-}
-
-const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorProps<boolean>) => {
+const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorInputFieldProps<boolean>) => {
   const [value, setValue] = useState<string>(currentValue.toString());
 
   useEffect(() => {
@@ -65,7 +62,7 @@ const BooleanEditor = ({ handleOnChange, value: currentValue = true }: EditorPro
   );
 };
 
-const TextEditor = ({ handleOnChange, rangeIndex, value: currentValue = '' }: WfoRangeElementProps) => {
+const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorInputFieldProps<string>) => {
   const [value, setValue] = useState<string>(currentValue);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -73,7 +70,7 @@ const TextEditor = ({ handleOnChange, rangeIndex, value: currentValue = '' }: Wf
   };
 
   const handleOnBlur = () => {
-    handleOnChange(value, rangeIndex);
+    handleOnChange(value);
   };
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -85,7 +82,7 @@ const TextEditor = ({ handleOnChange, rangeIndex, value: currentValue = '' }: Wf
   return <EuiFieldText value={value} onChange={handleTextChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
 };
 
-const NumberEditor = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRangeElementProps) => {
+const NumberEditor = ({ handleOnChange, value: currentValue }: EditorInputFieldProps<number>) => {
   const [value, setValue] = useState<string>(currentValue?.toString() || '');
 
   const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -94,7 +91,7 @@ const NumberEditor = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRa
 
   const handleOnBlur = () => {
     const numberValue = parseFloat(value);
-    handleOnChange(numberValue, rangeIndex);
+    handleOnChange(numberValue);
   };
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -113,7 +110,7 @@ const NumberEditor = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRa
   );
 };
 
-const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRangeElementProps) => {
+const DatePicker = ({ handleOnChange, value: currentValue }: EditorInputFieldProps<string>) => {
   const [date, setDate] = useState<string>(currentValue || '');
   const t = useTranslations('search.page');
 
@@ -123,9 +120,8 @@ const DatePicker = ({ handleOnChange, rangeIndex, value: currentValue }: WfoRang
       onChange={(date) => {
         const utcDate = date ? moment.utc(date) : undefined;
         setDate(utcDate?.toISOString() || '');
-        handleOnChange(utcDate?.toISOString(), rangeIndex);
+        handleOnChange(utcDate?.toISOString());
       }}
-      id={rangeIndex ? `date-range-${rangeIndex}` : 'date-range'}
       css={{ width: '330px' }}
       showTimeSelect
       dateFormat="yyyy-MM-dd HH:mm"
@@ -145,12 +141,22 @@ export const WfoValueEditor = ({
   value,
   className,
 }: ValueEditorProps) => {
-  // null/notNull (has component / does not have component) take no value. Their unary arity
-  // already hides this editor when the field's operator list is loaded, but a rule restored
-  // from the URL may not have that list yet — without this guard an orphan text editor shows.
+  // For components that don't take a value in addition to an operator - for example where you
+  // only choose 'Has component' or 'Does not have component' - the WfoValueEditor should not be rendered.
+  // React-query-builder handles this by default by setting the unary constant in the getOperators
+  // property of the QueryBuilder component (see WfoFilterBuilder)
+  // Because this check might not have run yet when the query is rebuild from an URL
+  // we make the check explicitly here aswell.
   if (operator === 'null' || operator === 'notNull') {
     return null;
   }
+
+  const getComponentByType = (): EditorComponent => {
+    if (uiFieldType === UiFieldType.boolean) return BooleanEditor;
+    if (uiFieldType === UiFieldType.datetime) return DatePicker;
+    if (uiFieldType === UiFieldType.number) return NumberEditor;
+    return TextEditor;
+  };
 
   const fieldPathInfoMap = context?.fieldPathInfoMap;
 
@@ -158,23 +164,13 @@ export const WfoValueEditor = ({
   const uiFieldType = fieldInfo?.ui_types?.[0] || UiFieldType.text;
 
   const getEditor = () => {
-    if (uiFieldType === UiFieldType.boolean) {
-      return <BooleanEditor handleOnChange={handleOnChange} value={value} />;
+    const InputElement = getComponentByType();
+
+    if (operator === 'between') {
+      return <WfoRangeEditor handleOnChange={handleOnChange} value={value} InputElement={InputElement} />;
     }
 
-    if (uiFieldType === UiFieldType.datetime) {
-      return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={DatePicker} value={value} />;
-    }
-
-    if (uiFieldType === UiFieldType.number) {
-      return (
-        <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={NumberEditor} value={value} />
-      );
-    }
-
-    // Text editor goes through WfoRangeEditor as well: fields without path info (e.g.
-    // prefilled options) must still show two inputs for the 'between' operator.
-    return <WfoRangeEditor handleOnChange={handleOnChange} operator={operator} Element={TextEditor} value={value} />;
+    return <InputElement handleOnChange={handleOnChange} value={value} />;
   };
 
   const handleWrapperKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
