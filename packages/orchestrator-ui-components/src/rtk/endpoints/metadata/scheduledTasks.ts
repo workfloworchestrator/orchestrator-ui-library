@@ -113,7 +113,7 @@ export type ScheduledTaskPostPayload = {
   user_inputs: object[];
 };
 
-const scheduledTasksApi = orchestratorApi.injectEndpoints({
+export const scheduledTasksApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
     getScheduledTasks: builder.query<ScheduledTasksResponse, GraphqlQueryVariables<ScheduledTaskDefinition>>({
       query: (variables) => ({

@@ -34,7 +34,7 @@ export const METADATA_PRODUCT_ENDPOINT = 'products';
 export const METADATA_PRODUCT_BLOCK_ENDPOINT = 'product_blocks';
 export const METADATA_RESOURCE_TYPE_ENDPOINT = 'resource_types';
 export const METADATA_WORKFLOWS_ENDPOINT = 'workflows';
-export const METADATA_SCHEDULES_ENDPOINT = 'schedules';
+export const METADATA_SCHEDULES_ENDPOINT = 'schedules/';
 
 //search
 export const SEARCH_QUERY_RESULTS_ENDPOINT = 'search/queries';
