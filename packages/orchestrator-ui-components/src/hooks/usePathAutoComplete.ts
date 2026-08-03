@@ -145,6 +145,12 @@ export const useFieldsPathInfo = (fields: string[], entityType: EntityKind) => {
   const settledDefinitions = definitions ?? (definitionsFailed ? FALLBACK_DEFINITIONS : undefined);
 
   useEffect(() => {
+    // Changing entity type invalidates previous lookups.
+    requestedFieldsRef.current = new Set();
+    setFieldsPathInfo(new Map());
+  }, [entityType]);
+
+  useEffect(() => {
     if (!settledDefinitions) {
       return;
     }
