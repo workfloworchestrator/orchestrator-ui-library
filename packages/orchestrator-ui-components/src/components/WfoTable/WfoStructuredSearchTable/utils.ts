@@ -4,11 +4,15 @@ import { parseCEL } from 'react-querybuilder/parseCEL';
 
 /** Collects the unique field names used by the rules of a rule group, including nested groups. */
 export const collectRuleFields = (ruleGroup: RuleGroupType): string[] => {
-  const fields = ruleGroup.rules.flatMap((rule) =>
-    typeof rule !== 'string' && 'rules' in rule ? collectRuleFields(rule)
-    : typeof rule !== 'string' ? [rule.field]
-    : [],
-  );
+  const fields = ruleGroup.rules.flatMap((rule) => {
+    if (typeof rule === 'string') {
+      return [];
+    }
+    if ('rules' in rule) {
+      return collectRuleFields(rule);
+    }
+    return [rule.field];
+  });
   return [...new Set(fields)];
 };
 
