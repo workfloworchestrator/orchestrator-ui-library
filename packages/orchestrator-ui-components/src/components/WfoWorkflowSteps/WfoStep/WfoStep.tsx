@@ -158,9 +158,9 @@ export const WfoStep = React.forwardRef(
                 : <WfoMonacoCodeBlock data={stepContent} />}
               </EuiFlexItem>
               <EuiFlexItem grow={1}>
-                {!(step.status === StepStatus.SUSPEND && userInputForm) &&
-                  overrideStepDetail?.stepBody &&
-                  <overrideStepDetail.stepBody step={step} />}
+                {!(step.status === StepStatus.SUSPEND && userInputForm) && overrideStepDetail?.stepBody && (
+                  <overrideStepDetail.stepBody step={step} />
+                )}
               </EuiFlexItem>
             </EuiFlexGroup>
           )}
