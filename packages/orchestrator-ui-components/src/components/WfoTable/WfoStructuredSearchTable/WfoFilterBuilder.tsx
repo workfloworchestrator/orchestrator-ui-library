@@ -149,7 +149,7 @@ export const WfoFilterBuilder = ({
         handleFieldSelected(field, pathInfo.operators, pathInfo);
       }
     });
-  });
+  }, [fieldPathInfoMap, resolvedFieldsPathInfo]);
 
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
