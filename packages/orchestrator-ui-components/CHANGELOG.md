@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.7.3
+
+### Patch Changes
+
+- f88e3ef: Bug fixes for subscription search
+
 ## 8.7.2
 
 ### Patch Changes
