@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 7.7.1
+
+### Patch Changes
+
+- fe51a71: Fixes forms for suspended steps
+  I
+
 ## 7.7.0
 
 ### Minor Changes

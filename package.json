@@ -12,7 +12,7 @@
     "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
     "build": "turbo run build",
     "packages:changeset": "changeset",
-    "packages:publish": "turbo run build lint test && changeset publish",
+    "packages:publish": "turbo run build lint test && changeset publish --tag release-7",
     "postinstall": "husky && turbo run build --filter=./packages/*"
   },
   "devDependencies": {
