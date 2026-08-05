@@ -15,7 +15,7 @@ import {
   sortProcessesByDate,
 } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { SortOrder, SubscriptionDetailProcess } from '@/types';
+import { SortOrder, SubscriptionDetailProcess, WorkflowTarget } from '@/types';
 import { parseDate, parseDateToLocaleDateTimeString, upperCaseFirstChar } from '@/utils';
 
 import { WfoProcessStatusBadge } from '../WfoBadges';
@@ -139,7 +139,7 @@ export const WfoProcessesTimeline = ({ subscriptionDetailProcesses }: WfoProcess
       {sortedProcesses && (
         <EuiCommentList aria-label="Processes">
           {sortedProcesses
-            .filter((process) => !process.isTask)
+            .filter((process) => !process.isTask || process.workflowTarget === WorkflowTarget.VALIDATE)
             .map((subscriptionDetailProcess, index) => (
               <WfoRenderSubscriptionProcess key={index} subscriptionDetailProcess={subscriptionDetailProcess} />
             ))}

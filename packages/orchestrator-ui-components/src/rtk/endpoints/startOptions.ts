@@ -10,7 +10,7 @@ import { orchestratorApi } from '../api';
 
 const workflowOptionsQuery = `
     query StartOptions {
-        workflows(first: 1000000, after: 0, filterBy: [{ field: "target", value: "${WorkflowTarget.CREATE}"}]) {
+        workflows(first: 1000000, after: 0, filterBy: [{ field: "target", value: "${WorkflowTarget.CREATE.toLowerCase()}"}]) {
             page {
                 name
                 isAllowed

@@ -134,12 +134,12 @@ export interface ProductDefinition {
 export type ProductsSummary = Pick<ProductDefinition, 'name'> & SubscriptionsResult<never>;
 
 export enum WorkflowTarget {
-  CREATE = 'create',
-  MODIFY = 'modify',
-  TERMINATE = 'terminate',
-  SYSTEM = 'system',
-  VALIDATE = 'validate',
-  RECONCILE = 'reconcile',
+  CREATE = 'CREATE',
+  MODIFY = 'MODIFY',
+  TERMINATE = 'TERMINATE',
+  SYSTEM = 'SYSTEM',
+  VALIDATE = 'VALIDATE',
+  RECONCILE = 'RECONCILE',
 }
 
 export type Process = {
