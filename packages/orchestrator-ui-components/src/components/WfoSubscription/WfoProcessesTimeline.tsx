@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiComment, EuiCommentList, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiComment, EuiCommentList, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch, EuiText } from '@elastic/eui';
 
 import {
   PATH_TASKS,
@@ -123,7 +123,8 @@ export const WfoProcessesTimeline = ({ subscriptionDetailProcesses }: WfoProcess
     },
   ];
 
-  const [selectedOption, setSelectedOption] = React.useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [showValidateWorkflows, setShowValidateWorkflows] = useState<boolean>(false);
 
   const handleOnSelectOption = (option: WfoRadioDropdownOption<SortOrder>) => {
     setSelectedOption(option);
@@ -135,11 +136,21 @@ export const WfoProcessesTimeline = ({ subscriptionDetailProcesses }: WfoProcess
     <>
       <EuiSpacer size={'m'} />
       {!subscriptionDetailProcesses && <WfoLoading />}
+      <EuiSwitch
+        showLabel={true}
+        label={t('hideTerminatedRelatedSubscriptions')}
+        type="button"
+        checked={showValidateWorkflows}
+        onChange={() => setShowValidateWorkflows((value) => !value)}
+      />
       <WfoRadioDropdown options={options} onUpdateOption={handleOnSelectOption} selectedOption={selectedOption} />
       {sortedProcesses && (
         <EuiCommentList aria-label="Processes">
           {sortedProcesses
-            .filter((process) => !process.isTask || process.workflowTarget === WorkflowTarget.VALIDATE)
+            .filter(
+              (process) =>
+                !process.isTask || (process.workflowTarget === WorkflowTarget.VALIDATE && showValidateWorkflows),
+            )
             .map((subscriptionDetailProcess, index) => (
               <WfoRenderSubscriptionProcess key={index} subscriptionDetailProcess={subscriptionDetailProcess} />
             ))}
