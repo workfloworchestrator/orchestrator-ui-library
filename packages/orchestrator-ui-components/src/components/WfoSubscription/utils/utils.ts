@@ -59,8 +59,7 @@ export const flattenSubscriptionActionProps = (action?: SubscriptionAction | nul
 };
 
 export const getWorkflowTargetColor = (workflowTarget: WorkflowTarget, theme: EuiThemeComputed) => {
-  // Data returned from graphql can't always be depended on to be uppercases
-  switch (workflowTarget.toUpperCase()) {
+  switch (workflowTarget) {
     case WorkflowTarget.CREATE:
       return theme.colors.textSuccess;
     case WorkflowTarget.MODIFY:
@@ -78,8 +77,7 @@ export const getWorkflowTargetColor = (workflowTarget: WorkflowTarget, theme: Eu
 };
 
 export const getWorkflowTargetIconContent = (workflowTarget: WorkflowTarget) => {
-  // Data returned from graphql can't always be depended on to be uppercased
-  switch (workflowTarget.toUpperCase()) {
+  switch (workflowTarget) {
     case WorkflowTarget.CREATE:
       return 'C';
     case WorkflowTarget.SYSTEM:

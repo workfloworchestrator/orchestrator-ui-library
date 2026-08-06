@@ -28,7 +28,7 @@ export const WfoProcessListDeltaPopover: FC<WfoProcessListDeltaPopoverProps> = (
 
   const { data, isFetching } = useGetRawProcessDetailQuery({ processId }, { skip: !isPopoverOpen });
 
-  if (workflowTarget.toUpperCase() !== WorkflowTarget.MODIFY) {
+  if (workflowTarget !== WorkflowTarget.MODIFY) {
     return null;
   }
 

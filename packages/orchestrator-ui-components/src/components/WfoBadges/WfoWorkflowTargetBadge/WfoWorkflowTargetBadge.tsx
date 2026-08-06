@@ -13,11 +13,11 @@ export const WfoWorkflowTargetBadge: FC<WfoWorkflowTargetBadgeProps> = ({ target
   const { theme, toSecondaryColor } = useOrchestratorTheme();
   if (!target) return null;
 
-  const getBadgeColorFromTarget = (_target: string) => {
+  const getBadgeColorFromTarget = (_target: WorkflowTarget) => {
     const { primary, danger, textDanger, textPrimary, success, textSuccess, warning, textWarning, accent, textAccent } =
       theme.colors;
 
-    switch (_target?.toUpperCase()) {
+    switch (_target) {
       case WorkflowTarget.CREATE:
         return {
           badgeColor: toSecondaryColor(success),
