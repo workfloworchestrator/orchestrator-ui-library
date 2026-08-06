@@ -18,7 +18,7 @@ import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
-import { WorkflowTarget } from '@/types';
+import { SubscriptionAction, WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
   title: string;
@@ -129,12 +129,28 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     }
   };
 
+  const getActionItems = (workflowTarget: WorkflowTarget): SubscriptionAction[] => {
+    // Core versions 5.2 and lower return subscriptionActions result with lowercase keynames. Higher version return them uppercased to align
+    // with all the other places they are used. We support both for now. The lowercase keys are deliberately not part of the
+    // SubscriptionActions type, so the fallback is a runtime-only check behind a cast.
+    const actionsByTarget = subscriptionActions as unknown as
+      | Record<string, SubscriptionAction[] | undefined>
+      | undefined;
+
+    return actionsByTarget?.[workflowTarget] ?? actionsByTarget?.[workflowTarget.toLowerCase()] ?? [];
+  };
+
+  const validateActionItems = getActionItems(WorkflowTarget.VALIDATE);
+  const reconcileActionItems = getActionItems(WorkflowTarget.RECONCILE);
+  const modifyActionItems = getActionItems(WorkflowTarget.MODIFY);
+  const terminateActionItems = getActionItems(WorkflowTarget.TERMINATE);
+
   const compactItems = (
     <>
-      {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) && subscriptionActions?.validate && (
+      {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) && validateActionItems.length > 0 && (
         <>
           {!compactMode && <MenuBlock title={t('tasks')} />}
-          {subscriptionActions.validate.map((subscriptionAction, index) => (
+          {validateActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`s_${index}`}
               subscriptionAction={subscriptionAction}
@@ -148,10 +164,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         </>
       )}
 
-      {isAllowed(SUBSCRIPTION_RECONCILE + subscriptionId) && (subscriptionActions?.reconcile?.length ?? 0) > 0 && (
+      {isAllowed(SUBSCRIPTION_RECONCILE + subscriptionId) && reconcileActionItems.length > 0 && (
         <>
           {!compactMode && <MenuBlock title={t('reconcile')} />}
-          {subscriptionActions?.reconcile.map((subscriptionAction, index) => (
+          {reconcileActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`r_${index}`}
               subscriptionAction={
@@ -183,10 +199,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
   const fullItems = (
     <>
-      {isAllowed(SUBSCRIPTION_MODIFY + subscriptionId) && subscriptionActions?.modify && (
+      {isAllowed(SUBSCRIPTION_MODIFY + subscriptionId) && modifyActionItems.length > 0 && (
         <>
           <MenuBlock title={t('modify')} />
-          {subscriptionActions.modify.map((subscriptionAction, index) => (
+          {modifyActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`m_${index}`}
               subscriptionAction={subscriptionAction}
@@ -201,10 +217,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         </>
       )}
       {compactItems}
-      {isAllowed(SUBSCRIPTION_TERMINATE + subscriptionId) && subscriptionActions?.terminate && (
+      {isAllowed(SUBSCRIPTION_TERMINATE + subscriptionId) && terminateActionItems.length > 0 && (
         <>
           <MenuBlock title={t('terminate')} />
-          {subscriptionActions.terminate.map((subscriptionAction, index) => (
+          {terminateActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`t_${index}`}
               subscriptionAction={subscriptionAction}
