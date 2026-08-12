@@ -110,6 +110,7 @@ export const WfoTasksListPage = () => {
       'productName',
       'customer',
       'customerAbbreviation',
+      'note',
       'subscriptions',
       'createdBy',
       'assignee',
