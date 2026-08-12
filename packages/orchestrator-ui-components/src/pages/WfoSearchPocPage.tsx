@@ -88,7 +88,6 @@ const getDataFromResponse = <T extends object>(
       },
       {} as Record<string, ReactNode>,
     ),
-    shouldOnlyShowOnHover: true,
   };
 
   const items: T[] = responseColumns.map((responseColumn) => {
@@ -508,6 +507,7 @@ export const WfoSearchPocPage = () => {
         data={subscriptionListItems}
         rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
+        defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         filterString={filterString}
         handleSearch={handleApplyFilter}
         isLoading={isFetching}

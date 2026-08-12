@@ -3,7 +3,16 @@ import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiSelect,
+  EuiSpacer,
+  EuiSwitch,
+  EuiText,
+} from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -70,6 +79,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
+  defaultShowMatchDetails?: boolean;
   queryText?: string;
   localStorageKey: string;
   exportDataIsLoading?: boolean;
@@ -100,6 +110,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
 export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
+  defaultShowMatchDetails = false,
   queryText,
   localStorageKey,
   exportDataIsLoading,
@@ -136,6 +147,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
   const [showInformationModal, setShowInformationModal] = useState(false);
+  const [showMatchDetails, setShowMatchDetails] = useState(defaultShowMatchDetails);
   const t = useTranslations('common');
 
   useEffect(() => {
@@ -143,6 +155,10 @@ export const WfoStructuredSearchTable = <T extends object>({
       setHiddenColumns(defaultHiddenColumns);
     }
   }, [defaultHiddenColumns]);
+
+  useEffect(() => {
+    setShowMatchDetails(defaultShowMatchDetails);
+  }, [defaultShowMatchDetails]);
 
   useEffect(() => {
     if (filterString) {
@@ -182,6 +198,18 @@ export const WfoStructuredSearchTable = <T extends object>({
     setTableConfigToLocalStorage(localStorageKey, {
       hiddenColumns: updatedHiddenColumns,
       selectedPageSize: updatedTableConfig.selectedPageSize,
+      showMatchDetails,
+    });
+  };
+
+  // The toggle applies live, so persist it immediately alongside the currently committed
+  // hidden columns and page size instead of waiting for the modal's "Update" action.
+  const handleToggleShowMatchDetails = (checked: boolean) => {
+    setShowMatchDetails(checked);
+    setTableConfigToLocalStorage(localStorageKey, {
+      hiddenColumns,
+      selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
+      showMatchDetails: checked,
     });
   };
 
@@ -189,6 +217,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
     setHiddenColumns(defaultTableConfig.hiddenColumns);
     setPageSize(defaultTableConfig.selectedPageSize);
+    setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
   };
@@ -255,6 +284,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         columnConfig={tableColumnsWithControlColumns}
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
+        showExpandedRows={showMatchDetails}
         onUpdateDataSorting={onUpdateDataSorting}
         onUpdateDataSearch={handleColumnFilterSearch}
         dataSorting={dataSorting}
@@ -284,6 +314,15 @@ export const WfoStructuredSearchTable = <T extends object>({
           onResetToDefaults={handleResetToDefaults}
           extraSettings={
             <>
+              <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
+                <EuiSwitch
+                  showLabel={false}
+                  label={t('showMatchDetails')}
+                  checked={showMatchDetails}
+                  onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
+                  compressed
+                />
+              </EuiFormRow>
               <EuiFormRow label={t('retrieval')} display="columnCompressed">
                 <EuiSelect
                   options={[
