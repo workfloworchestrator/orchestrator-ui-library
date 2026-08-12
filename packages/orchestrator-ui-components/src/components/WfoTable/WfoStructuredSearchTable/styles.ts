@@ -99,8 +99,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   });
 
   const expandingSearchRowStyles = css({
-    padding: theme.base / 2,
-    height: theme.base * 2,
+    padding: `${theme.base / 4}px ${theme.base / 2}px`,
     borderRadius: theme.border.radius.medium,
     border: 'thin solid FEF7E0',
     backgroundColor: '#FEF7E0',
@@ -166,12 +165,12 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     display: 'none',
   });
   const dotStyles = css({
-    padding: theme.base / 4,
+    padding: `${theme.base / 8}px ${theme.base / 4}px`,
   });
 
   const expandingRowFieldStyles = css({
     display: 'flex',
-    padding: theme.base / 4,
+    padding: `${theme.base / 8}px ${theme.base / 4}px`,
     alignItems: 'center',
   });
 

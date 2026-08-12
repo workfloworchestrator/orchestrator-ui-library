@@ -35,8 +35,16 @@ export const WfoTableDataRows = <T extends object>({
   onRowClick,
   className,
 }: WfoTableDataRowsProps<T>) => {
-  const { cellStyle, cellContentStyle, rowStyle, dataRowStyle, clickableStyle, setWidth, showExpandedRowStyle } =
-    useWithOrchestratorTheme(getWfoTableStyles);
+  const {
+    cellStyle,
+    cellContentStyle,
+    rowStyle,
+    dataRowStyle,
+    clickableStyle,
+    setWidth,
+    showExpandedRowStyle,
+    toggleExpandedRowOnHoverStyle,
+  } = useWithOrchestratorTheme(getWfoTableStyles);
 
   const sortedVisibleColumns = getSortedVisibleColumns(columnConfig, columnOrder, hiddenColumns);
 
@@ -46,7 +54,12 @@ export const WfoTableDataRows = <T extends object>({
         <Fragment key={`table-data-row-${index}`}>
           <tr
             className={className ? `${className} ${DATA_ROW_CLASS}` : DATA_ROW_CLASS}
-            css={[rowStyle, dataRowStyle, onRowClick && clickableStyle, showExpandedRows && showExpandedRowStyle]}
+            css={[
+              rowStyle,
+              dataRowStyle,
+              onRowClick && clickableStyle,
+              rowExpandingConfiguration && (showExpandedRows ? showExpandedRowStyle : toggleExpandedRowOnHoverStyle),
+            ]}
             onClick={() => onRowClick?.(row)}
           >
             {sortedVisibleColumns.map(([key, columnConfig]) => {

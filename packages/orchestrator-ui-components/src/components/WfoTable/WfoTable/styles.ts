@@ -164,6 +164,11 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     '& + tr': { display: 'table-row' },
   });
 
+  const toggleExpandedRowOnHoverStyle = css({
+    '&:hover + tr, &:focus-within + tr': { display: 'table-row' },
+    '& + tr:hover, & + tr:focus-within': { display: 'table-row' },
+  });
+
   return {
     tableContainerStyle,
     tableStyle,
@@ -182,5 +187,6 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     paginationStyle,
     setWidth,
     showExpandedRowStyle,
+    toggleExpandedRowOnHoverStyle,
   };
 };
