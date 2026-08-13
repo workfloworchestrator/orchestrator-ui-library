@@ -1,5 +1,13 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.8.1
+
+### Patch Changes
+
+- 074dce3: Adjust publish to npm action
+- e6a276d: 176 Fix styling issues with worfklow guide panel- #2673
+- 8bc73e4: Fix the workflow guide panel button sliding under the sticky timeline when the page is scrolled to the end on shorter viewports: its fixed minimum height could exceed the available viewport space, so the sticky bottom clamp pushed its top out of view. The minimum height is now capped by the same space the maximum height already uses
+
 ## 8.8.0
 
 ### Minor Changes
