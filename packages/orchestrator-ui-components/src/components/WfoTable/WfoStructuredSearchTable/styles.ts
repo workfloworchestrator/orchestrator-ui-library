@@ -63,7 +63,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const ruleGroupContainerBlueStyles = css({
     ...ruleGroupContainerBase,
     borderRadius: theme.border.radius.small,
-    backgroundColor: '#E9F1F9',
+    backgroundColor: theme.colors.backgroundLightPrimary,
   });
 
   const ruleGroupContainerWhiteStyles = css({
@@ -83,7 +83,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     ...ruleGroupContainerBase,
     borderBottomLeftRadius: theme.border.radius.small,
     borderTopLeftRadius: theme.border.radius.small,
-    backgroundColor: '#E9F1F9',
+    backgroundColor: theme.colors.backgroundLightPrimary,
   });
 
   const removeGroupActionStyles = css({
@@ -102,8 +102,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     padding: theme.base / 2,
     height: theme.base * 2,
     borderRadius: theme.border.radius.medium,
-    border: 'thin solid FEF7E0',
-    backgroundColor: '#FEF7E0',
+    border: `thin solid ${theme.colors.highlight}`,
+    backgroundColor: theme.colors.highlight,
   });
   const expandingRowBodyStyles = css({
     display: 'flex',
