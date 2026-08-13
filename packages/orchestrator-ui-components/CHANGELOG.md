@@ -1,5 +1,19 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.8.0
+
+### Minor Changes
+
+- 1ef8034: Adds toggle to show/hide validate tasks on subscription details processes tab
+
+### Patch Changes
+
+- 3b413e5: PR-2677: Change hardcoded colors WfoSearch to theme colors
+- b84f608: add notes column to task list page
+- b8aaed7: Fix scheduled task create/delete requests to use the canonical /api/schedules/ endpoint with a trailing slash, avoiding unnecessary HTTP redirects
+- 67e77eb: 205 Add toggle to show match details for rows in search page. With the toggle off, a row's match details are revealed while hovering the row, without the flickering that occurred when the cursor sat on the row edge
+- 2558ed2: Fix the note column on the workflows and tasks lists keeping the previous page's note when paginating to a row without a note. EuiInlineEditText only follows its value prop while the value is truthy, so empty notes are now passed as the invisible character, the same way the subscription note edits already do
+
 ## 8.7.3
 
 ### Patch Changes
