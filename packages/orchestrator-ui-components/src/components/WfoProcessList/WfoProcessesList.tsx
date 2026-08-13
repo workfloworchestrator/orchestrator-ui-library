@@ -241,15 +241,17 @@ export const WfoProcessesList = ({
   const getProcessListForExport = () =>
     getProcessListTrigger(getQueryVariablesForExport(processListQueryVars)).unwrap();
 
+  const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig(
+    tableColumns,
+    pageInfo?.sortFields,
+    pageInfo?.filterFields,
+  );
+
   return (
     <WfoAdvancedTable<ProcessListItem>
       queryString={queryString}
       data={mapGraphQlProcessListResultToProcessListItems(processes || [])}
-      tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(
-        tableColumns,
-        pageInfo?.sortFields,
-        pageInfo?.filterFields,
-      )}
+      tableColumnConfig={tableConfig}
       dataSorting={[dataSorting]}
       pagination={pagination}
       isLoading={isFetching}
