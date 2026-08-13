@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) => {
+export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) => {
   const queryBuilderContainerStyles = css({
     backgroundColor: theme.colors.backgroundBaseSubdued,
     padding: theme.base / 2,
@@ -63,7 +63,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const ruleGroupContainerBlueStyles = css({
     ...ruleGroupContainerBase,
     borderRadius: theme.border.radius.small,
-    backgroundColor: theme.colors.backgroundLightPrimary,
+    backgroundColor: isDarkModeActive ? theme.colors.backgroundLightPrimary : '#E9F1F9',
   });
 
   const ruleGroupContainerWhiteStyles = css({
@@ -83,7 +83,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     ...ruleGroupContainerBase,
     borderBottomLeftRadius: theme.border.radius.small,
     borderTopLeftRadius: theme.border.radius.small,
-    backgroundColor: theme.colors.backgroundLightPrimary,
+    backgroundColor: isDarkModeActive ? theme.colors.backgroundLightPrimary : '#E9F1F9',
   });
 
   const removeGroupActionStyles = css({
