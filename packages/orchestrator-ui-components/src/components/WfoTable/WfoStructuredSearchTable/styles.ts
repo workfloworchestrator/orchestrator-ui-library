@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoThemeHelpers } from '@/hooks';
 
-export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) => {
+export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) => {
   const queryBuilderContainerStyles = css({
     backgroundColor: theme.colors.backgroundBaseSubdued,
     padding: theme.base / 2,
@@ -63,7 +63,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const ruleGroupContainerBlueStyles = css({
     ...ruleGroupContainerBase,
     borderRadius: theme.border.radius.small,
-    backgroundColor: '#E9F1F9',
+    backgroundColor: isDarkModeActive ? theme.colors.backgroundLightPrimary : '#E9F1F9',
   });
 
   const ruleGroupContainerWhiteStyles = css({
@@ -83,7 +83,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
     ...ruleGroupContainerBase,
     borderBottomLeftRadius: theme.border.radius.small,
     borderTopLeftRadius: theme.border.radius.small,
-    backgroundColor: '#E9F1F9',
+    backgroundColor: isDarkModeActive ? theme.colors.backgroundLightPrimary : '#E9F1F9',
   });
 
   const removeGroupActionStyles = css({
@@ -101,8 +101,8 @@ export const getWfoStructuredSearchTableStyles = ({ theme }: WfoThemeHelpers) =>
   const expandingSearchRowStyles = css({
     padding: `${theme.base / 4}px ${theme.base / 2}px`,
     borderRadius: theme.border.radius.medium,
-    border: 'thin solid FEF7E0',
-    backgroundColor: '#FEF7E0',
+    border: `thin solid ${theme.colors.highlight}`,
+    backgroundColor: theme.colors.highlight,
   });
   const expandingRowBodyStyles = css({
     display: 'flex',
