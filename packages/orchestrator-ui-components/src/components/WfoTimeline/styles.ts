@@ -57,7 +57,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     paddingLeft: theme.font.baseline * 4,
     paddingRight: theme.font.baseline * 4,
     position: 'sticky',
-    top: timelineOutlineWidthPx,
+    top: theme.base / 4,
     zIndex: 2, // Some EUI components have a zIndex
     display: 'flex',
 
