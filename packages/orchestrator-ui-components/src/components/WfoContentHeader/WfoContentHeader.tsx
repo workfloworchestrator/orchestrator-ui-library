@@ -19,7 +19,7 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({ title, subtitle, c
         </WfoRenderElementOrString>
         {subtitle && (
           <div>
-            <EuiSpacer size="m" />
+            <EuiSpacer size="s" />
             <WfoRenderElementOrString>{subtitle}</WfoRenderElementOrString>
           </div>
         )}
