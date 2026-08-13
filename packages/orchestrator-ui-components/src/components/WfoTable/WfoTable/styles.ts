@@ -160,8 +160,13 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     '.eui-xScroll': { display: 'flex', justifyContent: 'flex-start' },
   });
 
+  const showExpandedRowStyle = css({
+    '& + tr': { display: 'table-row' },
+  });
+
   const toggleExpandedRowOnHoverStyle = css({
     '&:hover + tr, &:focus-within + tr': { display: 'table-row' },
+    '& + tr:hover, & + tr:focus-within': { display: 'table-row' },
   });
 
   return {
@@ -181,6 +186,7 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     dragAndDropStyle,
     paginationStyle,
     setWidth,
+    showExpandedRowStyle,
     toggleExpandedRowOnHoverStyle,
   };
 };

@@ -19,10 +19,12 @@ import { ProductBlockDefinition, ProductDefinition, ResourceTypeDefinition, Work
 function getTableConfig<T>(
   hiddenColumns: (keyof T)[] = [],
   selectedPageSize = DEFAULT_PAGE_SIZE,
+  showMatchDetails = false,
 ): StoredTableConfig<T> {
   return {
     selectedPageSize,
     hiddenColumns,
+    showMatchDetails,
   };
 }
 

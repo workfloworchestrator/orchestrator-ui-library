@@ -82,8 +82,9 @@ export type WfoTableProps<T extends object> = {
   rowExpandingConfiguration?: {
     uniqueRowId: keyof WfoTableColumnConfig<T>;
     uniqueRowIdToExpandedRowMap: Record<string, ReactNode>;
-    shouldOnlyShowOnHover?: boolean;
   };
+  // When true, every row's expanded detail row is revealed at once (otherwise all are hidden)
+  showExpandedRows?: boolean;
   pagination?: Pagination;
   overrideHeader?: (
     tableHeaderEntries: Array<[string, WfoTableControlColumnConfigItem<T> | WfoTableDataColumnConfigItem<T, keyof T>]>,
@@ -107,6 +108,7 @@ export const WfoTable = <T extends object>({
   isLoading = false,
   dataSorting = [],
   rowExpandingConfiguration,
+  showExpandedRows = false,
   pagination,
   overrideHeader,
   onUpdateDataSorting,
@@ -236,6 +238,7 @@ export const WfoTable = <T extends object>({
                   hiddenColumns={hiddenColumns}
                   columnOrder={columnOrder}
                   rowExpandingConfiguration={rowExpandingConfiguration}
+                  showExpandedRows={showExpandedRows}
                   onRowClick={onRowClick}
                 />
               ))}
@@ -252,6 +255,7 @@ export const WfoTable = <T extends object>({
                 hiddenColumns={hiddenColumns}
                 columnOrder={columnOrder}
                 rowExpandingConfiguration={rowExpandingConfiguration}
+                showExpandedRows={showExpandedRows}
                 onRowClick={onRowClick}
               />
             </tbody>

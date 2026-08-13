@@ -3,6 +3,7 @@ import { TableColumnKeys } from './columns';
 export type StoredTableConfig<T> = {
   hiddenColumns: TableColumnKeys<T>;
   selectedPageSize: number;
+  showMatchDetails?: boolean;
 };
 
 export const isValidLocalStorageTableConfig = <T>(object: StoredTableConfig<T>): object is StoredTableConfig<T> =>

@@ -11,7 +11,14 @@ import { getSortedVisibleColumns } from './utils';
 
 export type WfoTableDataRowsProps<T extends object> = Pick<
   WfoTableProps<T>,
-  'data' | 'columnConfig' | 'hiddenColumns' | 'columnOrder' | 'rowExpandingConfiguration' | 'onRowClick' | 'className'
+  | 'data'
+  | 'columnConfig'
+  | 'hiddenColumns'
+  | 'columnOrder'
+  | 'rowExpandingConfiguration'
+  | 'showExpandedRows'
+  | 'onRowClick'
+  | 'className'
 >;
 
 export const DATA_ROW_CLASS = 'data-row';
@@ -24,6 +31,7 @@ export const WfoTableDataRows = <T extends object>({
   hiddenColumns = [],
   columnOrder = [],
   rowExpandingConfiguration,
+  showExpandedRows,
   onRowClick,
   className,
 }: WfoTableDataRowsProps<T>) => {
@@ -34,6 +42,7 @@ export const WfoTableDataRows = <T extends object>({
     dataRowStyle,
     clickableStyle,
     setWidth,
+    showExpandedRowStyle,
     toggleExpandedRowOnHoverStyle,
   } = useWithOrchestratorTheme(getWfoTableStyles);
 
@@ -49,7 +58,7 @@ export const WfoTableDataRows = <T extends object>({
               rowStyle,
               dataRowStyle,
               onRowClick && clickableStyle,
-              rowExpandingConfiguration?.shouldOnlyShowOnHover && toggleExpandedRowOnHoverStyle,
+              rowExpandingConfiguration && (showExpandedRows ? showExpandedRowStyle : toggleExpandedRowOnHoverStyle),
             ]}
             onClick={() => onRowClick?.(row)}
           >

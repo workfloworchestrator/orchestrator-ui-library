@@ -19,7 +19,6 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
 
   if (!matchingFields || matchingFields.length === 0) return null;
 
-  // Note: The row is shown on hover by the row above is as configured in the table component expandableRow config
   return (
     <tr css={hideExpandedRowStyle}>
       <td colSpan={999} css={expandingSearchRowStyles}>
