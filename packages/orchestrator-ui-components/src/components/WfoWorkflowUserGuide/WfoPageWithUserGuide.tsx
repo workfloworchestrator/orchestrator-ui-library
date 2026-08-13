@@ -29,15 +29,9 @@ export const WfoPageWithUserGuide = ({ workflowName, children }: WfoFormWithUser
   );
 
   return (
-    <EuiFlexGroup
-      gutterSize="s"
-      direction={isBigScreen ? 'row' : 'column'}
-      alignItems={isBigScreen ? 'flexStart' : 'stretch'}
-    >
+    <EuiFlexGroup gutterSize="s" direction={isBigScreen ? 'row' : 'column'}>
       {!isBigScreen && workflowGuideExpandablePanel}
-      <EuiFlexItem grow={true} css={{ minWidth: 0 }}>
-        {children}
-      </EuiFlexItem>
+      <EuiFlexItem grow={true}>{children}</EuiFlexItem>
       {isBigScreen && workflowGuideExpandablePanel}
     </EuiFlexGroup>
   );
