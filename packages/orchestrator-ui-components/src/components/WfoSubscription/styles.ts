@@ -54,6 +54,11 @@ export const getSubscriptionDetailStyles = ({ theme, isDarkModeActive }: WfoThem
     flexDirection: 'column',
     alignItems: 'flex-start',
   });
+
+  const processToggleStyles = css({
+    justifySelf: 'flex-end',
+  });
+
   return {
     rowStyle,
     labelCellStyle,
@@ -66,5 +71,6 @@ export const getSubscriptionDetailStyles = ({ theme, isDarkModeActive }: WfoThem
     productBlockTreeWidth,
     customerDescriptionsCustomerNameStyle,
     customerDescriptionsFormStyle,
+    processToggleStyles,
   };
 };

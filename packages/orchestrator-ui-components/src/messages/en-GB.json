@@ -521,7 +521,8 @@
       "title": "Subscriptions",
       "workflowsTab": {
         "startWithNewestLabel": "Start with newest first",
-        "startWithOldestLabel": "Start with oldest first"
+        "startWithOldestLabel": "Start with oldest first",
+        "hideValidateTasks": "Hide validation tasks"
       }
     },
     "index": {

@@ -134,12 +134,12 @@ export interface ProductDefinition {
 export type ProductsSummary = Pick<ProductDefinition, 'name'> & SubscriptionsResult<never>;
 
 export enum WorkflowTarget {
-  CREATE = 'create',
-  MODIFY = 'modify',
-  TERMINATE = 'terminate',
-  SYSTEM = 'system',
-  VALIDATE = 'validate',
-  RECONCILE = 'reconcile',
+  CREATE = 'CREATE',
+  MODIFY = 'MODIFY',
+  TERMINATE = 'TERMINATE',
+  SYSTEM = 'SYSTEM',
+  VALIDATE = 'VALIDATE',
+  RECONCILE = 'RECONCILE',
 }
 
 export type Process = {
@@ -624,11 +624,11 @@ export type SubscriptionActions = {
   reason?: string;
   locked_relations?: string[];
   locked_relations_detail?: SubscriptionRelation[];
-  modify: SubscriptionAction[];
-  terminate: SubscriptionAction[];
-  system: SubscriptionAction[];
-  validate: SubscriptionAction[];
-  reconcile: SubscriptionAction[];
+  [WorkflowTarget.MODIFY]: SubscriptionAction[];
+  [WorkflowTarget.TERMINATE]: SubscriptionAction[];
+  [WorkflowTarget.SYSTEM]: SubscriptionAction[];
+  [WorkflowTarget.VALIDATE]: SubscriptionAction[];
+  [WorkflowTarget.RECONCILE]: SubscriptionAction[];
 };
 
 export enum CacheTagType {

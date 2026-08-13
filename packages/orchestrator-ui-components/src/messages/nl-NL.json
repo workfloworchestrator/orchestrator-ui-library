@@ -520,8 +520,9 @@
       "tag": "Tag",
       "title": "Subscriptions",
       "workflowsTab": {
-        "startWithNewestLabel": "Start met nieuwste eerst",
-        "startWithOldestLabel": "Start met oudste eerst"
+        "startWithNewestLabel": "Start met nieuwste",
+        "startWithOldestLabel": "Start met oudste",
+        "hideValidateTasks": "Verberg validatie taken"
       }
     },
     "index": {

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiComment, EuiCommentList, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiComment, EuiCommentList, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiSwitch, EuiText } from '@elastic/eui';
 
 import {
   PATH_TASKS,
@@ -15,7 +15,7 @@ import {
   sortProcessesByDate,
 } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
-import { SortOrder, SubscriptionDetailProcess } from '@/types';
+import { SortOrder, SubscriptionDetailProcess, WorkflowTarget } from '@/types';
 import { parseDate, parseDateToLocaleDateTimeString, upperCaseFirstChar } from '@/utils';
 
 import { WfoProcessStatusBadge } from '../WfoBadges';
@@ -122,8 +122,9 @@ export const WfoProcessesTimeline = ({ subscriptionDetailProcesses }: WfoProcess
       value: SortOrder.DESC,
     },
   ];
-
-  const [selectedOption, setSelectedOption] = React.useState(options[0]);
+  const { processToggleStyles } = useWithOrchestratorTheme(getSubscriptionDetailStyles);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [hideValidateTasks, setHideValidateTasks] = useState<boolean>(true);
 
   const handleOnSelectOption = (option: WfoRadioDropdownOption<SortOrder>) => {
     setSelectedOption(option);
@@ -135,11 +136,24 @@ export const WfoProcessesTimeline = ({ subscriptionDetailProcesses }: WfoProcess
     <>
       <EuiSpacer size={'m'} />
       {!subscriptionDetailProcesses && <WfoLoading />}
-      <WfoRadioDropdown options={options} onUpdateOption={handleOnSelectOption} selectedOption={selectedOption} />
+      <EuiFlexGroup alignItems={'center'} css={processToggleStyles}>
+        <EuiSwitch
+          showLabel={true}
+          label={t('hideValidateTasks')}
+          type="button"
+          checked={hideValidateTasks}
+          onChange={() => setHideValidateTasks((value) => !value)}
+        />
+        <WfoRadioDropdown options={options} onUpdateOption={handleOnSelectOption} selectedOption={selectedOption} />
+      </EuiFlexGroup>
+
       {sortedProcesses && (
         <EuiCommentList aria-label="Processes">
           {sortedProcesses
-            .filter((process) => !process.isTask)
+            .filter(
+              (process) =>
+                !process.isTask || (process.workflowTarget === WorkflowTarget.VALIDATE && !hideValidateTasks),
+            )
             .map((subscriptionDetailProcess, index) => (
               <WfoRenderSubscriptionProcess key={index} subscriptionDetailProcess={subscriptionDetailProcess} />
             ))}
