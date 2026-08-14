@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButtonIcon, EuiFlexGroup, EuiText, EuiToolTip } from '@elastic/eui';
+import { EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiToolTip } from '@elastic/eui';
 
-import { useGetOrchestratorConfig } from '@/hooks';
+import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 
 interface WfoProductInformationWithLinkProps {
   workflowName: string;
@@ -15,8 +15,10 @@ export const WfoProductInformationWithLink = ({ workflowName, productNames }: Wf
   const { workflowInformationLinkUrl, showWorkflowInformationLink } = useGetOrchestratorConfig();
   const t = useTranslations('processes.detail');
   const docsUrl = workflowInformationLinkUrl + workflowName;
+  const { theme } = useOrchestratorTheme();
+
   return (
-    <EuiFlexGroup gutterSize={'s'} alignItems={'center'}>
+    <EuiFlexGroup css={{ paddingBottom: theme.size.xs }} gutterSize={'s'} alignItems={'center'}>
       {showWorkflowInformationLink && (
         <EuiToolTip content={t('openWorkflowTaskInfo')}>
           <a href={docsUrl} target="_blank">
@@ -24,7 +26,10 @@ export const WfoProductInformationWithLink = ({ workflowName, productNames }: Wf
           </a>
         </EuiToolTip>
       )}
-      <EuiText size="s">{productNames}</EuiText>
+      <EuiFlexItem>
+        <EuiSpacer size={'xs'} />
+        <EuiText size="m">{productNames}</EuiText>
+      </EuiFlexItem>
     </EuiFlexGroup>
   );
 };
