@@ -6,6 +6,7 @@
     "editColumns": "Wijzig kolommen",
     "errorMessage": "Er is een fout opgetreden",
     "export": "Exporteren",
+    "exportRows": "Exporteer {numberOfRows, plural, one {# rij} other {# rijen}}",
     "insyncFalse": "out-of-sync",
     "insyncTrue": "in-sync",
     "loadMore": "Meer laden",

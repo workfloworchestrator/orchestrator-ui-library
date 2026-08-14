@@ -340,7 +340,7 @@ export const WfoStructuredSearchTable = <T extends object>({
                 <>
                   <EuiSpacer size="m" />
                   <EuiButton isLoading={exportDataIsLoading} onClick={() => onExportData()} fullWidth>
-                    {t('export')}
+                    {totalItems ? t('exportRows', { numberOfRows: totalItems }) : t('export')}
                   </EuiButton>
                 </>
               )}
