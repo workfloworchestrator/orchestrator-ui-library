@@ -179,8 +179,7 @@ export const WfoSearchPocPage = () => {
   );
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
-  const [pageSize, setPageSize] = useState<number>(tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE);
-  const [limit, setLimit] = useState<number>(pageSize);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
   const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
     field: 'subscriptionId',
@@ -214,7 +213,7 @@ export const WfoSearchPocPage = () => {
     };
     return {
       query: committedSearchQuery,
-      limit,
+      limit: pageSize,
       entity_type: EntityKind.SUBSCRIPTION,
       response_columns: Array.from(resultColumToPropertyMap.keys()),
       order_by,
@@ -222,7 +221,7 @@ export const WfoSearchPocPage = () => {
       ...(filters && { filters }),
       ...(cursor && { cursor }),
     };
-  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, limit, dataSorting, cursor]);
+  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
   const { data, isFetching } = useSearchQuery(searchPayload);
 
@@ -234,6 +233,7 @@ export const WfoSearchPocPage = () => {
     const storedConfig = getStoredTableConfig();
     if (storedConfig) {
       setTableDefaults(storedConfig);
+      setPageSize(storedConfig.selectedPageSize);
     }
   }, [getStoredTableConfig]);
 
@@ -383,7 +383,6 @@ export const WfoSearchPocPage = () => {
 
   const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
     setActiveTab(updatedTab);
-    setLimit(pageSize);
     setPageCursor(undefined);
   };
 
@@ -490,7 +489,14 @@ export const WfoSearchPocPage = () => {
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
     setDataSorting({ field, sortOrder });
-    setLimit(pageSize);
+    setPageCursor(undefined);
+  };
+
+  const onUpdatePageSize = (updatedPageSize: number) => {
+    if (updatedPageSize === pageSize) {
+      return;
+    }
+    setPageSize(updatedPageSize);
     setPageCursor(undefined);
   };
 
@@ -528,7 +534,7 @@ export const WfoSearchPocPage = () => {
         getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
-        setPageSize={setPageSize}
+        setPageSize={onUpdatePageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
         prefilledFieldOptions={prefilledFieldOptions}
