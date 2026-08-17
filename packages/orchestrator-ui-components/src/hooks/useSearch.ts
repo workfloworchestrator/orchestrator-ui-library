@@ -25,7 +25,7 @@ export const useSearch = (
 ) => {
   const [results, setResults] = useState<PaginatedSearchResults>({ ...emptyResult });
 
-  const [triggerSearch, { isLoading, isError }] = useLazySearchQuery();
+  const [triggerSearch, { isFetching, isError }] = useLazySearchQuery();
 
   useEffect(() => {
     const queryText = typeof query === 'string' ? query : query.text?.trim() || '';
@@ -75,7 +75,7 @@ export const useSearch = (
 
   return {
     results,
-    loading: isLoading,
+    loading: isFetching,
     error: isError ? 'Search failed' : null,
     setResults,
   };
