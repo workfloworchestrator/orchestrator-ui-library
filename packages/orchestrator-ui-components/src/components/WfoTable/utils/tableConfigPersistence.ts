@@ -4,6 +4,7 @@ export type StoredTableConfig<T> = {
   hiddenColumns: TableColumnKeys<T>;
   selectedPageSize: number;
   showMatchDetails?: boolean;
+  advancedNestedSearch?: boolean;
 };
 
 export const isValidLocalStorageTableConfig = <T>(object: StoredTableConfig<T>): object is StoredTableConfig<T> =>

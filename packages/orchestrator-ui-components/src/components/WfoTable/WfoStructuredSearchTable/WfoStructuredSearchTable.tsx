@@ -80,6 +80,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
   defaultShowMatchDetails?: boolean;
+  defaultAdvancedNestedSearch?: boolean;
   queryText?: string;
   localStorageKey: string;
   exportDataIsLoading?: boolean;
@@ -111,6 +112,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
   defaultShowMatchDetails = false,
+  defaultAdvancedNestedSearch = true,
   queryText,
   localStorageKey,
   exportDataIsLoading,
@@ -148,6 +150,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
   const [showInformationModal, setShowInformationModal] = useState(false);
   const [showMatchDetails, setShowMatchDetails] = useState(defaultShowMatchDetails);
+  const [advancedNestedSearch, setAdvancedNestedSearch] = useState(defaultAdvancedNestedSearch);
   const t = useTranslations('common');
 
   useEffect(() => {
@@ -159,6 +162,10 @@ export const WfoStructuredSearchTable = <T extends object>({
   useEffect(() => {
     setShowMatchDetails(defaultShowMatchDetails);
   }, [defaultShowMatchDetails]);
+
+  useEffect(() => {
+    setAdvancedNestedSearch(defaultAdvancedNestedSearch);
+  }, [defaultAdvancedNestedSearch]);
 
   useEffect(() => {
     if (filterString) {
@@ -199,10 +206,11 @@ export const WfoStructuredSearchTable = <T extends object>({
       hiddenColumns: updatedHiddenColumns,
       selectedPageSize: updatedTableConfig.selectedPageSize,
       showMatchDetails,
+      advancedNestedSearch,
     });
   };
 
-  // The toggle applies live, so persist it immediately alongside the currently committed
+  // The toggles apply live, so persist them immediately alongside the currently committed
   // hidden columns and page size instead of waiting for the modal's "Update" action.
   const handleToggleShowMatchDetails = (checked: boolean) => {
     setShowMatchDetails(checked);
@@ -210,6 +218,17 @@ export const WfoStructuredSearchTable = <T extends object>({
       hiddenColumns,
       selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       showMatchDetails: checked,
+      advancedNestedSearch,
+    });
+  };
+
+  const handleToggleAdvancedNestedSearch = (checked: boolean) => {
+    setAdvancedNestedSearch(checked);
+    setTableConfigToLocalStorage(localStorageKey, {
+      hiddenColumns,
+      selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
+      showMatchDetails,
+      advancedNestedSearch: checked,
     });
   };
 
@@ -218,6 +237,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     setHiddenColumns(defaultTableConfig.hiddenColumns);
     setPageSize(defaultTableConfig.selectedPageSize);
     setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
+    setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? true);
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
   };
@@ -272,6 +292,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             handleSearch={handleSearch}
             onToggleFilterBuilder={setIsFilterBuilderVisible}
             prefilledFieldOptions={prefilledFieldOptions}
+            advancedNestedSearch={advancedNestedSearch}
           />
         </>
       )}
@@ -321,6 +342,15 @@ export const WfoStructuredSearchTable = <T extends object>({
                   label={t('showMatchDetails')}
                   checked={showMatchDetails}
                   onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
+                  compressed
+                />
+              </EuiFormRow>
+              <EuiFormRow label={t('advancedNestedSearch')} display="columnCompressed">
+                <EuiSwitch
+                  showLabel={false}
+                  label={t('advancedNestedSearch')}
+                  checked={advancedNestedSearch}
+                  onChange={(event) => handleToggleAdvancedNestedSearch(event.target.checked)}
                   compressed
                 />
               </EuiFormRow>

@@ -65,6 +65,7 @@ interface WfoFilterBuilderProps {
   handleSearch: (searchParams?: SearchParams) => void;
   onToggleFilterBuilder: (isVisible: boolean) => void;
   prefilledFieldOptions: FieldToOperatorMap;
+  advancedNestedSearch?: boolean;
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -87,6 +88,7 @@ export const WfoFilterBuilder = ({
   handleSearch,
   prefilledFieldOptions,
   onToggleFilterBuilder,
+  advancedNestedSearch = true,
 }: WfoFilterBuilderProps) => {
   const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
     return (operators ?? []).map((operator) => {
@@ -167,6 +169,7 @@ export const WfoFilterBuilder = ({
               prefilledFieldOptions,
               fieldPathInfoMap,
               onValueEditorEnter: handleValueEditorEnter,
+              advancedNestedSearch,
             }}
             getOperators={(field) => {
               const operators = fieldToOperatorMap.get(field);

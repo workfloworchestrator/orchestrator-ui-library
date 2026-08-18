@@ -512,6 +512,7 @@ export const WfoSearchPocPage = () => {
         rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
+        defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
         handleSearch={handleApplyFilter}
         isLoading={isFetching}

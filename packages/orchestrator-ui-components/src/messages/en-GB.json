@@ -1,5 +1,6 @@
 {
   "common": {
+    "advancedNestedSearch": "Advanced nested search",
     "applyFilter": "Apply filter",
     "createFilter": "Create a filter",
     "deselect": "Deselect",

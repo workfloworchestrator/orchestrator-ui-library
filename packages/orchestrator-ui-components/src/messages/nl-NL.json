@@ -1,5 +1,6 @@
 {
   "common": {
+    "advancedNestedSearch": "Geavanceerd genest zoeken",
     "applyFilter": "Pas filter toe",
     "createFilter": "Filter",
     "deselect": "Deselecteer",
