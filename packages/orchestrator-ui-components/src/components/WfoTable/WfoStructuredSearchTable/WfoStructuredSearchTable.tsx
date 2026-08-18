@@ -101,7 +101,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
   pageSize: number;
-  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize: (updatedPageSize: number) => void;
   totalItems: number | false;
   hasNextPage: boolean;
   prefilledFieldOptions: FieldToOperatorMap;
