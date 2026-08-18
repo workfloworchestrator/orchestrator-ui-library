@@ -33,6 +33,7 @@ import {
 } from '@/components';
 import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import {
@@ -249,8 +250,6 @@ export const WfoSearchPocPage = () => {
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
-      isSortable: true,
-      isFilterable: true,
     },
     description: {
       columnType: ColumnType.DATA,
@@ -258,44 +257,37 @@ export const WfoSearchPocPage = () => {
       width: '500px',
       renderData: (value, record) => <Link href={`/subscriptions/${record.subscriptionId}`}>{value}</Link>,
       renderTooltip: (value) => value,
-      isFilterable: true,
     },
     status: {
       columnType: ColumnType.DATA,
       label: t('status'),
       width: '120px',
       renderData: (value) => <WfoSubscriptionStatusBadge status={value} />,
-      isFilterable: true,
     },
     insync: {
       columnType: ColumnType.DATA,
       label: t('insync'),
       width: '75px',
       renderData: (value) => <WfoInsyncIcon inSync={value} />,
-      isFilterable: true,
     },
     productName: {
       columnType: ColumnType.DATA,
       width: '260px',
       label: t('product'),
-      isFilterable: true,
     },
     tag: {
       columnType: ColumnType.DATA,
       label: t('tag'),
       width: '100px',
-      isFilterable: true,
     },
     customerFullname: {
       columnType: ColumnType.DATA,
       label: t('customerFullname'),
-      isFilterable: true,
     },
     customerShortcode: {
       columnType: ColumnType.DATA,
       label: t('customerShortcode'),
       width: '150px',
-      isFilterable: true,
     },
     startDate: {
       columnType: ColumnType.DATA,
@@ -305,7 +297,6 @@ export const WfoSearchPocPage = () => {
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
       renderTooltip: (cellValue) => cellValue?.toString(),
-      isFilterable: true,
     },
     endDate: {
       columnType: ColumnType.DATA,
@@ -315,7 +306,6 @@ export const WfoSearchPocPage = () => {
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
       renderTooltip: (cellValue) => cellValue?.toString(),
-      isFilterable: true,
     },
     note: {
       columnType: ColumnType.DATA,
@@ -332,7 +322,6 @@ export const WfoSearchPocPage = () => {
           />
         );
       },
-      isFilterable: true,
     },
     metadata: {
       columnType: ColumnType.DATA,
@@ -341,9 +330,17 @@ export const WfoSearchPocPage = () => {
       renderData: (value) => <WfoInlineJson data={value} />,
       renderDetails: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle />,
       renderTooltip: (value) => value && <WfoJsonCodeBlock data={value} isBasicStyle={false} />,
-      isFilterable: true,
     },
   };
+
+  const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter((fieldName) => fieldName !== 'actions');
+  const isSortingAllowed = queryText === '';
+  const tableColumnConfigWithSortingAndFiltering =
+    mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionListItem>(
+      tableColumnConfig,
+      isSortingAllowed ? sortableAndFilterableFieldNames : [],
+      sortableAndFilterableFieldNames,
+    );
 
   const handleApplyFilter = (searchParams?: SearchParams) => {
     const ruleGroupParam = searchParams?.ruleGroup;
@@ -523,7 +520,7 @@ export const WfoSearchPocPage = () => {
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryText={queryText}
         retrieverType={retrieverType}
-        tableColumnConfig={tableColumnConfig}
+        tableColumnConfig={tableColumnConfigWithSortingAndFiltering}
         getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
