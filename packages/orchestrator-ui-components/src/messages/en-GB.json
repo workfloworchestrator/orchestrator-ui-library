@@ -6,6 +6,7 @@
     "editColumns": "Edit columns",
     "errorMessage": "An error occurred",
     "export": "Export",
+    "exportRows": "Export {numberOfRows, plural, one {# row} other {# rows}}",
     "insyncFalse": "out-of-sync",
     "insyncTrue": "in-sync",
     "loadMore": "Load more",

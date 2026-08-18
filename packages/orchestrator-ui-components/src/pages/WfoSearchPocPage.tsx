@@ -227,7 +227,8 @@ export const WfoSearchPocPage = () => {
   const { data, isFetching } = useSearchQuery(searchPayload);
 
   const [getSubscriptionListTrigger] = useLazySearchQuery();
-  const getSubscriptionListForExport = () => getSubscriptionListTrigger(searchPayload).unwrap();
+  const getSubscriptionListForExport = (exportLimit: number) =>
+    getSubscriptionListTrigger({ ...searchPayload, limit: exportLimit, cursor: undefined }).unwrap();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -468,7 +469,7 @@ export const WfoSearchPocPage = () => {
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const exportData = async () => {
-    const exportResult = await getSubscriptionListForExport();
+    const exportResult = await getSubscriptionListForExport(totalItems || limit);
     const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(
       exportResult,
       resultColumToPropertyMap,

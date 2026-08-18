@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiForm, EuiFormRow, EuiHorizontalRule, EuiSelect, EuiSpacer, EuiSwitch } from '@elastic/eui';
+import { EuiForm, EuiFormRow, EuiHorizontalRule, EuiSelect, EuiSpacer, EuiSwitch, useEuiScrollBar } from '@elastic/eui';
 
 import { WfoSettingsModal } from '@/components';
 import { getWfoTableSettingsModalStyles } from '@/components/WfoTable/WfoTableSettingsModal/styles';
@@ -37,7 +37,8 @@ export const TableSettingsModal = <T,>({
   extraSettings,
 }: TableSettingsModalProps<T>) => {
   const t = useTranslations('main');
-  const { formRowStyle, selectFieldStyle } = useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
+  const { formRowStyle, columnsListStyle, selectFieldStyle } = useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
+  const scrollBarStyle = useEuiScrollBar();
 
   const [columns, setColumns] = useState(tableConfig.columns);
   const [selectedPageSize, setSelectedPageSize] = useState(tableConfig.selectedPageSize);
@@ -72,22 +73,24 @@ export const TableSettingsModal = <T,>({
       }
     >
       <EuiForm>
-        {columns.map(({ field, name, isVisible }) => (
-          <div key={field.toString()}>
-            <EuiFormRow display="columnCompressed" label={name} css={formRowStyle}>
-              <EuiSwitch
-                showLabel={false}
-                label={name}
-                checked={isVisible}
-                onChange={() => {
-                  handleUpdateColumnVisibility(field);
-                }}
-                compressed
-              />
-            </EuiFormRow>
-            <EuiHorizontalRule margin="xs" />
-          </div>
-        ))}
+        <div css={[columnsListStyle, scrollBarStyle]}>
+          {columns.map(({ field, name, isVisible }) => (
+            <div key={field.toString()}>
+              <EuiFormRow display="columnCompressed" label={name} css={formRowStyle}>
+                <EuiSwitch
+                  showLabel={false}
+                  label={name}
+                  checked={isVisible}
+                  onChange={() => {
+                    handleUpdateColumnVisibility(field);
+                  }}
+                  compressed
+                />
+              </EuiFormRow>
+              <EuiHorizontalRule margin="xs" />
+            </div>
+          ))}
+        </div>
         <EuiSpacer size="xs" />
 
         <EuiFormRow css={formRowStyle} hasEmptyLabelSpace label={t('numberOfRows')} display="columnCompressed">
