@@ -33,6 +33,7 @@ const focusValueEditorAfterRender = (searchInput: HTMLInputElement | null) => {
 export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
   const { field } = rule;
   const prefilledFieldOptions: FieldToOperatorMap = context.prefilledFieldOptions;
+  const advancedNestedSearch: boolean = context.advancedNestedSearch ?? true;
   const [selectedValue, setSelectedValue] = useState<string>(field);
   const [searchInput, setSearchInput] = useState<HTMLInputElement | null>(null);
   const optionsRef = useRef<EuiComboBoxOptionOption<string>[]>([]);
@@ -47,11 +48,11 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     const pathOptions: EuiComboBoxOptionOption<string>[] = [];
 
     pathInfos.forEach((pathInfo) => {
-      pathOptions.push(getOption(pathInfo.path));
-      // Adds more specific paths
-      pathInfo.availablePaths?.forEach((path) => {
-        pathOptions.push(getOption(path));
-      });
+      [pathInfo.path, ...(pathInfo.availablePaths ?? [])]
+        .filter((path) => advancedNestedSearch || !path.includes('.'))
+        .forEach((path) => {
+          pathOptions.push(getOption(path));
+        });
     });
     return (
       pathOptions.length > 0 ? pathOptions

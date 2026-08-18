@@ -24,6 +24,7 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
         tableConfig.hiddenColumns = storedConfig.hiddenColumns;
         tableConfig.selectedPageSize = storedConfig.selectedPageSize;
         tableConfig.showMatchDetails = storedConfig.showMatchDetails;
+        tableConfig.advancedNestedSearch = storedConfig.advancedNestedSearch;
       }
       return tableConfig;
     } catch {
