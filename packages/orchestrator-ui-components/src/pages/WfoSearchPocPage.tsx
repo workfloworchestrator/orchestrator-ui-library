@@ -468,7 +468,7 @@ export const WfoSearchPocPage = () => {
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const exportData = async () => {
-    const exportResult = await getSubscriptionListForExport(totalItems || limit);
+    const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
     const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(
       exportResult,
       resultColumToPropertyMap,
