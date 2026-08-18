@@ -44,15 +44,15 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     label: path,
   });
 
+  const isSelectablePath = (path: string) => advancedNestedSearch || !path.includes('.');
+
   const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] => {
     const pathOptions: EuiComboBoxOptionOption<string>[] = [];
 
     pathInfos.forEach((pathInfo) => {
-      [pathInfo.path, ...(pathInfo.availablePaths ?? [])]
-        .filter((path) => advancedNestedSearch || !path.includes('.'))
-        .forEach((path) => {
-          pathOptions.push(getOption(path));
-        });
+      [pathInfo.path, ...(pathInfo.availablePaths ?? [])].filter(isSelectablePath).forEach((path) => {
+        pathOptions.push(getOption(path));
+      });
     });
     return (
       pathOptions.length > 0 ? pathOptions
