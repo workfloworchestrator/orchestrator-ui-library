@@ -290,6 +290,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         dataSorting={dataSorting}
         data={data}
         isLoading={isLoading}
+        loadingSkeletonRowCount={pageSize}
         {...tableProps}
       />
 

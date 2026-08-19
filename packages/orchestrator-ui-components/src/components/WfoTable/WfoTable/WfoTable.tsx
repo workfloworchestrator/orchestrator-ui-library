@@ -13,6 +13,7 @@ import { DEFAULT_PAGE_SIZES } from '../utils/constants';
 import { getPageCount } from '../utils/tableUtils';
 import { WfoTableDataRows } from './WfoTableDataRows';
 import { WfoTableHeaderRow } from './WfoTableHeaderRow';
+import { WfoTableSkeletonRows } from './WfoTableSkeletonRows';
 import { getWfoTableStyles } from './styles';
 import { getColumnWidthsFromConfig, getSortedVisibleColumns, usePageIndexBoundsGuard } from './utils';
 
@@ -78,6 +79,7 @@ export type WfoTableProps<T extends object> = {
   hiddenColumns?: TableColumnKeys<T>;
   columnOrder?: TableColumnKeys<T>;
   isLoading?: boolean;
+  loadingSkeletonRowCount?: number;
   dataSorting?: WfoDataSorting<T>[];
   rowExpandingConfiguration?: {
     uniqueRowId: keyof WfoTableColumnConfig<T>;
@@ -106,6 +108,7 @@ export const WfoTable = <T extends object>({
   hiddenColumns = [],
   columnOrder = [],
   isLoading = false,
+  loadingSkeletonRowCount,
   dataSorting = [],
   rowExpandingConfiguration,
   showExpandedRows = false,
@@ -124,6 +127,8 @@ export const WfoTable = <T extends object>({
   );
   const dataLength = data.length;
   usePageIndexBoundsGuard({ dataLength, isLoading, pagination });
+
+  const showLoadingSkeleton = !!loadingSkeletonRowCount && isLoading && dataLength === 0;
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -214,7 +219,16 @@ export const WfoTable = <T extends object>({
               />
             </thead>
           }
-          {dataLength === 0 ?
+          {showLoadingSkeleton ?
+            <tbody css={bodyLoadingStyle} aria-busy={true}>
+              <WfoTableSkeletonRows
+                rowCount={loadingSkeletonRowCount}
+                columnConfig={configWithLocalWidths}
+                hiddenColumns={hiddenColumns}
+                columnOrder={columnOrder}
+              />
+            </tbody>
+          : dataLength === 0 ?
             <tbody css={isLoading && bodyLoadingStyle}>
               <tr css={rowStyle}>
                 <td colSpan={sortedVisibleColumns.length} css={[cellStyle, emptyTableMessageStyle]}>
