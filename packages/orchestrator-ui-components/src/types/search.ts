@@ -214,3 +214,11 @@ export type ExportArtifact = {
 
 export type ResultColumToPropertyMap<T> = Map<string, keyof T>;
 export type FieldToOperatorMap = Map<string, string[]>;
+
+export type WfoQueryBuilderContext = {
+  onFieldSelected: (field: string, operators: string[], pathInfo?: PathInfo) => void;
+  prefilledFieldOptions: FieldToOperatorMap;
+  fieldPathInfoMap: Map<string, PathInfo>;
+  onValueEditorEnter: () => void;
+  useAdvancedNestedSearch: boolean;
+};

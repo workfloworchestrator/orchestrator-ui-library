@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { FieldSelectorProps } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
@@ -7,7 +7,7 @@ import type { EuiComboBoxOptionOption } from '@elastic/eui';
 import { EuiComboBox } from '@elastic/eui';
 
 import { usePathAutocomplete } from '@/hooks';
-import { EntityKind, FieldToOperatorMap, PathInfo } from '@/types';
+import { EntityKind, PathInfo, WfoQueryBuilderContext } from '@/types';
 
 // react-querybuilder applies the `.rule` class to the rule container and `.rule-value` to
 // the value-editor cell (see `standardClassnames` in @react-querybuilder/core). We hop from
@@ -30,10 +30,13 @@ const focusValueEditorAfterRender = (searchInput: HTMLInputElement | null) => {
   });
 };
 
-export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: FieldSelectorProps) => {
+interface WfoFieldSelectorProps extends Omit<FieldSelectorProps, 'context'> {
+  context: WfoQueryBuilderContext;
+}
+
+export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, disabled, rule, context }) => {
   const { field } = rule;
-  const prefilledFieldOptions: FieldToOperatorMap = context.prefilledFieldOptions;
-  const advancedNestedSearch: boolean = context.advancedNestedSearch ?? true;
+  const { useAdvancedNestedSearch, prefilledFieldOptions, onFieldSelected } = context;
   const [selectedValue, setSelectedValue] = useState<string>(field);
   const [searchInput, setSearchInput] = useState<HTMLInputElement | null>(null);
   const optionsRef = useRef<EuiComboBoxOptionOption<string>[]>([]);
@@ -44,7 +47,7 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
     label: path,
   });
 
-  const isSelectablePath = (path: string) => advancedNestedSearch || !path.includes('.');
+  const isSelectablePath = (path: string) => useAdvancedNestedSearch || !path.includes('.');
 
   const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] => {
     const pathOptions: EuiComboBoxOptionOption<string>[] = [];
@@ -86,7 +89,7 @@ export const WfoFieldSelector = ({ handleOnChange, disabled, rule, context }: Fi
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
     const operators = matchingPath?.operators ?? prefilledFieldOptions.get(selectedValue) ?? [];
 
-    context?.onFieldSelected?.(selectedValue, operators, matchingPath);
+    onFieldSelected(selectedValue, operators, matchingPath);
   };
 
   const handleFieldSelection = (selectedOptions: EuiComboBoxOptionOption<string>[]) => {

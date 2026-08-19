@@ -237,7 +237,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     setHiddenColumns(defaultTableConfig.hiddenColumns);
     setPageSize(defaultTableConfig.selectedPageSize);
     setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
-    setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? true);
+    setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? false);
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
   };
@@ -292,7 +292,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             handleSearch={handleSearch}
             onToggleFilterBuilder={setIsFilterBuilderVisible}
             prefilledFieldOptions={prefilledFieldOptions}
-            advancedNestedSearch={advancedNestedSearch}
+            useAdvancedNestedSearch={advancedNestedSearch}
           />
         </>
       )}
