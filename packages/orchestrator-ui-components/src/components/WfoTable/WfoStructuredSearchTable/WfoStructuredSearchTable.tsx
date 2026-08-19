@@ -3,16 +3,7 @@ import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import {
-  EuiButton,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
-  EuiSpacer,
-  EuiSwitch,
-  EuiText,
-} from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiSwitch } from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -45,6 +36,7 @@ import { getDefaultTableConfig } from '@/utils';
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
+import { WfoSearchHelpModal } from './WfoSearchHelpModal';
 import { getWfoStructuredSearchTableStyles } from './styles';
 import { buildColumnFilter } from './utils';
 
@@ -349,13 +341,7 @@ export const WfoStructuredSearchTable = <T extends object>({
         />
       )}
 
-      {showInformationModal && (
-        <WfoInformationModal title={t('searchModalTitle')} onClose={() => setShowInformationModal(false)}>
-          <EuiText>
-            <p>TODO: Info about searching</p>
-          </EuiText>
-        </WfoInformationModal>
-      )}
+      {showInformationModal && <WfoSearchHelpModal onClose={() => setShowInformationModal(false)} />}
 
       {rowDetailData && (
         <WfoInformationModal title={'TODO: Information modal title'} onClose={() => setRowDetailModalData(undefined)}>
