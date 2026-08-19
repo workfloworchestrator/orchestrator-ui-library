@@ -163,11 +163,13 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
             isControlledElement: true,
           },
           matcher(field) {
+            const fieldOptions = field.arrayItem?.options;
+
             return (
               field.type === PydanticFormFieldType.ARRAY
-              && _.isArray(field.options)
-              && field.options?.length > 0
-              && field.options?.length <= 5
+              && _.isArray(fieldOptions)
+              && fieldOptions?.length > 0
+              && fieldOptions?.length <= 5
             );
           },
           validator: zodValidationPresets.multiSelect,

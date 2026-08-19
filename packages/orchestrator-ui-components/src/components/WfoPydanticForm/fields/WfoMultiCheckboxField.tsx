@@ -24,7 +24,8 @@ export const WfoMultiCheckboxField: PydanticFormControlledElement = ({ pydanticF
 
   const [checkboxIdToSelectedMap, setCheckboxIdToSelectedMap] = useState<Record<string, boolean>>({});
 
-  const { options, id } = pydanticFormField;
+  const { arrayItem, id } = pydanticFormField;
+  const options = arrayItem?.options || [];
 
   const checkboxes = options?.map((option, index) => ({
     label: option.label,
