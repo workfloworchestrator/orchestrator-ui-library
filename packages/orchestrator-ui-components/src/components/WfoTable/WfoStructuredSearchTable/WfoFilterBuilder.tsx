@@ -1,5 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FullOperator, QueryBuilder, type RuleGroupType, generateID } from 'react-querybuilder';
+import React, { type ComponentType, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type FieldSelectorProps,
+  FullOperator,
+  QueryBuilder,
+  type RuleGroupType,
+  generateID,
+} from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
@@ -10,7 +16,7 @@ import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/compon
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
 import { EntityKind, OperatorDisplay } from '@/types';
-import type { FieldToOperatorMap, PathInfo } from '@/types';
+import type { FieldToOperatorMap, PathInfo, WfoQueryBuilderContext } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -65,7 +71,7 @@ interface WfoFilterBuilderProps {
   handleSearch: (searchParams?: SearchParams) => void;
   onToggleFilterBuilder: (isVisible: boolean) => void;
   prefilledFieldOptions: FieldToOperatorMap;
-  advancedNestedSearch?: boolean;
+  useAdvancedNestedSearch?: boolean;
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -88,7 +94,7 @@ export const WfoFilterBuilder = ({
   handleSearch,
   prefilledFieldOptions,
   onToggleFilterBuilder,
-  advancedNestedSearch = true,
+  useAdvancedNestedSearch = true,
 }: WfoFilterBuilderProps) => {
   const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
     return (operators ?? []).map((operator) => {
@@ -145,6 +151,14 @@ export const WfoFilterBuilder = ({
   );
   const resolvedFieldsPathInfo = useFieldsPathInfo(unresolvedFields, EntityKind.SUBSCRIPTION);
 
+  const queryBuilderContext: WfoQueryBuilderContext = {
+    onFieldSelected: handleFieldSelected,
+    prefilledFieldOptions,
+    fieldPathInfoMap,
+    onValueEditorEnter: handleValueEditorEnter,
+    useAdvancedNestedSearch,
+  };
+
   useEffect(() => {
     resolvedFieldsPathInfo.forEach((pathInfo, field) => {
       if (pathInfo && !fieldPathInfoMap.has(field)) {
@@ -164,19 +178,15 @@ export const WfoFilterBuilder = ({
               latestRuleGroupRef.current = ruleGroup;
               onUpdateQueryBuilder(ruleGroup);
             }}
-            context={{
-              onFieldSelected: handleFieldSelected,
-              prefilledFieldOptions,
-              fieldPathInfoMap,
-              onValueEditorEnter: handleValueEditorEnter,
-              advancedNestedSearch,
-            }}
+            context={queryBuilderContext}
             getOperators={(field) => {
               const operators = fieldToOperatorMap.get(field);
               return mapOperatorsToRQBOperatorOptions(operators);
             }}
             controlElements={{
-              fieldSelector: WfoFieldSelector,
+              // WfoFieldSelector requires the context this QueryBuilder always provides,
+              // while react-querybuilder declares it optional — hence the cast.
+              fieldSelector: WfoFieldSelector as ComponentType<FieldSelectorProps>,
               operatorSelector: WfoOperatorSelector,
               valueEditor: WfoValueEditor,
               ruleGroup: WfoRuleGroup,

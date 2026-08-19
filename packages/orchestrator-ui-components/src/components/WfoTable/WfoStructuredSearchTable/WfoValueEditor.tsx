@@ -10,6 +10,7 @@ import { EuiButtonGroup, EuiDatePicker, EuiFieldNumber, EuiFieldText } from '@el
 import { WfoRangeEditor } from '@/components/WfoTable/WfoStructuredSearchTable/WfoRangeEditor';
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import type { WfoQueryBuilderContext } from '@/types';
 
 export interface EditorInputFieldProps<T = string> {
   handleOnChange: ValueEditorProps['handleOnChange'];
@@ -176,7 +177,8 @@ export const WfoValueEditor = ({
     return TextEditor;
   };
 
-  const fieldPathInfoMap = context?.fieldPathInfoMap;
+  const queryBuilderContext: WfoQueryBuilderContext | undefined = context;
+  const fieldPathInfoMap = queryBuilderContext?.fieldPathInfoMap;
 
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
   const uiFieldType = fieldInfo?.ui_types?.[0] || UiFieldType.text;
@@ -198,7 +200,7 @@ export const WfoValueEditor = ({
     // the boolean buttons means "select" — its click fires only after this keydown, so
     // searching there would use the pre-toggle value.
     if (!(event.target instanceof HTMLInputElement)) return;
-    context?.onValueEditorEnter?.();
+    queryBuilderContext?.onValueEditorEnter();
   };
 
   // react-querybuilder delivers the standard `rule-value` class via this prop; the wrapper

@@ -197,6 +197,77 @@ export const WfoTable = <T extends object>({
   const virtualTrHeight = virtualItems[0]?.start ?? 0;
   const bottomSpacerHeight = totalSize - lastVirtualItemEnd;
 
+  const WfoTableBody = () => {
+    if (showLoadingSkeleton) {
+      return (
+        <tbody css={bodyLoadingStyle} aria-busy={true}>
+          <WfoTableSkeletonRows
+            rowCount={loadingSkeletonRowCount}
+            columnConfig={configWithLocalWidths}
+            hiddenColumns={hiddenColumns}
+            columnOrder={columnOrder}
+          />
+        </tbody>
+      );
+    }
+
+    if (dataLength === 0) {
+      return (
+        <tbody css={isLoading && bodyLoadingStyle}>
+          <tr css={rowStyle}>
+            <td colSpan={sortedVisibleColumns.length} css={[cellStyle, emptyTableMessageStyle]}>
+              {isLoading ? t('loading') : t('noItemsFound')}
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+
+    if (isVirtualized && height) {
+      return (
+        <tbody>
+          <tr
+            style={{
+              height: virtualTrHeight,
+            }}
+          />
+
+          {virtualItems.map((virtualRow) => (
+            <WfoTableDataRows
+              key={virtualRow.key}
+              data={[data[virtualRow.index]]}
+              columnConfig={configWithLocalWidths}
+              hiddenColumns={hiddenColumns}
+              columnOrder={columnOrder}
+              rowExpandingConfiguration={rowExpandingConfiguration}
+              showExpandedRows={showExpandedRows}
+              onRowClick={onRowClick}
+            />
+          ))}
+          <tr
+            style={{
+              height: bottomSpacerHeight,
+            }}
+          />
+        </tbody>
+      );
+    }
+
+    return (
+      <tbody css={isLoading && bodyLoadingStyle}>
+        <WfoTableDataRows
+          data={data}
+          columnConfig={configWithLocalWidths}
+          hiddenColumns={hiddenColumns}
+          columnOrder={columnOrder}
+          rowExpandingConfiguration={rowExpandingConfiguration}
+          showExpandedRows={showExpandedRows}
+          onRowClick={onRowClick}
+        />
+      </tbody>
+    );
+  };
+
   return (
     <>
       <div
@@ -219,61 +290,7 @@ export const WfoTable = <T extends object>({
               />
             </thead>
           }
-          {showLoadingSkeleton ?
-            <tbody css={bodyLoadingStyle} aria-busy={true}>
-              <WfoTableSkeletonRows
-                rowCount={loadingSkeletonRowCount}
-                columnConfig={configWithLocalWidths}
-                hiddenColumns={hiddenColumns}
-                columnOrder={columnOrder}
-              />
-            </tbody>
-          : dataLength === 0 ?
-            <tbody css={isLoading && bodyLoadingStyle}>
-              <tr css={rowStyle}>
-                <td colSpan={sortedVisibleColumns.length} css={[cellStyle, emptyTableMessageStyle]}>
-                  {isLoading ? t('loading') : t('noItemsFound')}
-                </td>
-              </tr>
-            </tbody>
-          : isVirtualized && height ?
-            <tbody>
-              <tr
-                style={{
-                  height: virtualTrHeight,
-                }}
-              />
-
-              {virtualItems.map((virtualRow) => (
-                <WfoTableDataRows
-                  key={virtualRow.key}
-                  data={[data[virtualRow.index]]}
-                  columnConfig={configWithLocalWidths}
-                  hiddenColumns={hiddenColumns}
-                  columnOrder={columnOrder}
-                  rowExpandingConfiguration={rowExpandingConfiguration}
-                  showExpandedRows={showExpandedRows}
-                  onRowClick={onRowClick}
-                />
-              ))}
-              <tr
-                style={{
-                  height: bottomSpacerHeight,
-                }}
-              />
-            </tbody>
-          : <tbody css={isLoading && bodyLoadingStyle}>
-              <WfoTableDataRows
-                data={data}
-                columnConfig={configWithLocalWidths}
-                hiddenColumns={hiddenColumns}
-                columnOrder={columnOrder}
-                rowExpandingConfiguration={rowExpandingConfiguration}
-                showExpandedRows={showExpandedRows}
-                onRowClick={onRowClick}
-              />
-            </tbody>
-          }
+          {<WfoTableBody />}
         </table>
       </div>
       {pagination && (
