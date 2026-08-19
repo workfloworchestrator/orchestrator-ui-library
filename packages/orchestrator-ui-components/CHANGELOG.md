@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.8.2
+
+### Patch Changes
+
+- a5f84aa: Add an "Advanced nested search" toggle to the search table settings. When disabled, the filter builder's field selector hides all fully qualified (dotted) paths from the autocomplete suggestions (e.g. subscription.ip_peer_group_block.peer_type) and only offers plain field names (e.g. peer_type); the prefilled field options are unaffected. The setting is persisted with the other table settings and defaults to enabled.
+- 83c03da: Adjust publish to npm action
+- 83c03da: Align WfoProductInformationWithLink
+- cf7a86d: Fixes multicheckbox form element matching and clientside validation
+- f59faaa: Apply the configured number of rows on the beta subscriptions search page: the stored setting is applied on page load, changing it in the table settings modal restarts the search with the new size, and each "Load more" then fetches that many rows (up to the backend maximum of 100) instead of always 15
+- 0695e03: Show skeleton rows in WfoStructuredSearchTable (search POC page) for longer running searches. A search that is still loading after a short delay replaces the current results with skeleton rows matching the configured number of rows from the table settings; fast searches keep the current results with only the loading line.
+- 1a0c61f: Cap the height of the column visibility list in the table settings modal so tables with many columns scroll inside the modal instead of growing it beyond the screen. A shadow at the bottom edge of the list, shown only while there are more rows below, hints that the list scrolls
+
 ## 8.8.1
 
 ### Patch Changes
