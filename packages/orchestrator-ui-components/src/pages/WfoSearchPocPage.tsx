@@ -344,23 +344,30 @@ export const WfoSearchPocPage = () => {
       sortableAndFilterableFieldNames,
     );
 
+  // Formats the given rule group to CEL and commits it. Returns false without committing when
+  // the CEL would not survive the URL round trip: formatQuery escapes double quotes in values
+  // but parseCEL has no escape support, so such a filter would silently be dropped after
+  // committing. Refusing keeps the URL and the search results consistent.
+  const commitFilterDraft = (effectiveRuleGroup: RuleGroupType | undefined): boolean => {
+    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
+    const celQuery =
+      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
+    if (celQuery && !parseCelToRuleGroup(celQuery)) {
+      setIsValidFilterString(false);
+      return false;
+    }
+    commitFilterString(celQuery);
+    return true;
+  };
+
   const handleApplyFilter = (searchParams?: SearchParams) => {
     const ruleGroupParam = searchParams?.ruleGroup;
     // Use an explicitly passed rule group when provided (e.g. a column-header search), a cleared filter
     // when `false`, and otherwise the current query builder state (the "Apply filter" button).
     const effectiveRuleGroup = ruleGroupParam === false ? undefined : (ruleGroupParam ?? queryBuilderRuleGroup);
-    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
-    const celQuery =
-      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
-    // A non-empty CEL string must survive the round trip through the URL: formatQuery escapes double
-    // quotes in values but parseCEL has no escape support, so such a filter would silently be dropped
-    // after committing. Refuse the commit and flag the filter instead, keeping the URL and the search
-    // results consistent.
-    if (celQuery && !parseCelToRuleGroup(celQuery)) {
-      setIsValidFilterString(false);
+    if (!commitFilterDraft(effectiveRuleGroup)) {
       return;
     }
-    commitFilterString(celQuery);
     // Also commit the draft search text, so applying a filter picks up text typed in the
     // search bar without pressing enter.
     commitQueryString(queryString);
@@ -374,6 +381,12 @@ export const WfoSearchPocPage = () => {
   const onSearchQueryString = (queryString: string) => {
     setQueryString(queryString);
     commitQueryString(queryString);
+    // Mirror handleApplyFilter: searching also commits a pending filter draft. An invalid draft
+    // (already flagged at the textarea) is skipped instead of blocking the search — the query
+    // commits and the committed filter stays as it was.
+    if (isValidFilterString) {
+      commitFilterDraft(queryBuilderRuleGroup);
+    }
     setPageCursor(undefined);
   };
 
