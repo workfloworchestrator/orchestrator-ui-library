@@ -8,18 +8,18 @@ import { useWithOrchestratorTheme } from '@/hooks';
 import { getFormFieldsBaseStyle } from '@/theme';
 
 export type SearchFieldWithActionsProps = {
-  queryText?: string;
-  onChangeQueryText: (queryText: string) => void;
-  onSearchQueryText: (queryText: string) => void;
+  queryString?: string;
+  onChangeQueryString: (queryText: string) => void;
+  onSearchQueryString: (queryText: string) => void;
   onShowInformation: () => void;
   onShowTableSettings: () => void;
 };
 
 // Search field with the info and table-settings actions, rendered as EuiFlexItems inside an EuiFlexGroup.
 export const WfoSearchFieldWithActions = ({
-  queryText,
-  onChangeQueryText,
-  onSearchQueryText,
+  queryString,
+  onChangeQueryString,
+  onSearchQueryString,
   onShowInformation,
   onShowTableSettings,
 }: SearchFieldWithActionsProps) => {
@@ -32,10 +32,10 @@ export const WfoSearchFieldWithActions = ({
         <EuiFormRow fullWidth>
           <EuiFieldSearch
             css={formFieldBaseStyle}
-            value={queryText}
+            value={queryString}
             placeholder={`${t('search')}...`}
-            onChange={(e) => onChangeQueryText(e.target.value)}
-            onSearch={(queryText) => onSearchQueryText(queryText)}
+            onChange={(e) => onChangeQueryString(e.target.value)}
+            onSearch={(queryText) => onSearchQueryString(queryText)}
             fullWidth
           />
         </EuiFormRow>

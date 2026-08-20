@@ -364,11 +364,11 @@ export const WfoSearchPocPage = () => {
     setPageCursor(undefined);
   };
 
-  const onChangeQueryText = (queryString: string) => {
+  const onChangeQueryString = (queryString: string) => {
     setQueryString(queryString);
   };
 
-  const onSearchQueryText = (queryString: string) => {
+  const onSearchQueryString = (queryString: string) => {
     setQueryString(queryString);
     commitQueryString(queryString);
     setPageCursor(undefined);
@@ -522,12 +522,12 @@ export const WfoSearchPocPage = () => {
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
         onUpdateFilterString={onUpdateFilterString}
         onUpdateQueryBuilder={onUpdateQueryBuilder}
-        onChangeQueryText={onChangeQueryText}
-        onSearchQueryText={onSearchQueryText}
+        onChangeQueryString={onChangeQueryString}
+        onSearchQueryString={onSearchQueryString}
         onShowMore={onShowMore}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
-        queryText={queryString}
+        queryString={queryString}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfigWithSortingAndFiltering}
         getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
