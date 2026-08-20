@@ -361,6 +361,9 @@ export const WfoSearchPocPage = () => {
       return;
     }
     commitFilterString(celQuery);
+    // Also commit the draft search text, so applying a filter picks up text typed in the
+    // search bar without pressing enter.
+    commitQueryString(queryString);
     setPageCursor(undefined);
   };
 
