@@ -7,6 +7,7 @@ import {
   ProductBlockDefinition,
   ProductBlockDefinitionsResult,
 } from '@/types';
+import { getProductLifecycleStatus } from '@/utils';
 
 export const productBlocksQuery = `
     query MetadataProductBlocks(
@@ -69,7 +70,14 @@ const productBlocksApi = orchestratorApi.injectEndpoints({
         variables,
       }),
       transformResponse: (response: ProductBlockDefinitionsResult): ProductBlocksResponse => {
-        const productBlocks = response.productBlocks.page || [];
+        const productBlocks = (response.productBlocks.page || []).map((productBlock) => ({
+          ...productBlock,
+          status: getProductLifecycleStatus(productBlock.status),
+          dependsOn: productBlock.dependsOn.map((dependsOnBlock) => ({
+            ...dependsOnBlock,
+            status: getProductLifecycleStatus(dependsOnBlock.status),
+          })),
+        }));
         const pageInfo = response.productBlocks.pageInfo || {};
 
         return {

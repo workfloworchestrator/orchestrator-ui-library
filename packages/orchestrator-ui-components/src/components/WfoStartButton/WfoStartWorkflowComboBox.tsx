@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useCheckEngineStatus } from '@/hooks';
 import { useGetWorkflowOptionsQuery } from '@/rtk';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
+import { getProductLifecycleStatus } from '@/utils';
 
 import { PATH_START_NEW_WORKFLOW } from '../WfoPageTemplate';
 import { WfoStartButtonComboBox } from './WfoStartButtonComboBox';
@@ -14,9 +15,10 @@ export const WfoStartWorkflowButtonComboBox = () => {
   const router = useRouter();
   const t = useTranslations('common');
   const { isEngineRunningNow } = useCheckEngineStatus();
-  const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus | string>(
+  const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus>(
     ProductLifecycleStatus.ACTIVE,
   );
+
 
   const { data } = useGetWorkflowOptionsQuery(selectedProductStatus);
   const workflowOptions = data?.startOptions || [];
