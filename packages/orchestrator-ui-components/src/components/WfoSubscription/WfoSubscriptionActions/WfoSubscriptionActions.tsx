@@ -12,13 +12,14 @@ import {
   WfoInSyncField,
   WfoPopover,
 } from '@/components';
+import { getActionItemsByTarget } from '@/components/WfoSubscription';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
-import { SubscriptionAction, WorkflowTarget } from '@/types';
+import { WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
   title: string;
@@ -129,21 +130,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     }
   };
 
-  const getActionItems = (workflowTarget: WorkflowTarget): SubscriptionAction[] => {
-    // Core versions 5.2 and lower return subscriptionActions result with lowercase keynames. Higher version return them uppercased to align
-    // with all the other places they are used. We support both for now. The lowercase keys are deliberately not part of the
-    // SubscriptionActions type, so the fallback is a runtime-only check behind a cast.
-    const actionsByTarget = subscriptionActions as unknown as
-      | Record<string, SubscriptionAction[] | undefined>
-      | undefined;
-
-    return actionsByTarget?.[workflowTarget] ?? actionsByTarget?.[workflowTarget.toLowerCase()] ?? [];
-  };
-
-  const validateActionItems = getActionItems(WorkflowTarget.VALIDATE);
-  const reconcileActionItems = getActionItems(WorkflowTarget.RECONCILE);
-  const modifyActionItems = getActionItems(WorkflowTarget.MODIFY);
-  const terminateActionItems = getActionItems(WorkflowTarget.TERMINATE);
+  const validateActionItems = getActionItemsByTarget(WorkflowTarget.VALIDATE, subscriptionActions);
+  const reconcileActionItems = getActionItemsByTarget(WorkflowTarget.RECONCILE, subscriptionActions);
+  const modifyActionItems = getActionItemsByTarget(WorkflowTarget.MODIFY, subscriptionActions);
+  const terminateActionItems = getActionItemsByTarget(WorkflowTarget.TERMINATE, subscriptionActions);
 
   const compactItems = (
     <>
