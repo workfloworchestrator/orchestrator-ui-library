@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.8.3
+
+### Patch Changes
+
+- 837abaf: 212 Add explanation for the subscriptions search page
+
 ## 8.8.2
 
 ### Patch Changes
