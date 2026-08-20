@@ -54,7 +54,7 @@ export type WfoStructuredSearchTableColumnConfig<T extends object> = Partial<
   WfoTableControlColumnConfig<T> | WfoStructuredSearchTableDataColumnConfig<T>
 >;
 export type SearchParams = {
-  queryText?: string | false;
+  queryString?: string | false;
   retrieverType?: RetrieverType;
   ruleGroup?: RuleGroupType | false;
   limit?: number;
@@ -73,12 +73,12 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   defaultHiddenColumns?: TableColumnKeys<T>;
   defaultShowMatchDetails?: boolean;
   defaultAdvancedNestedSearch?: boolean;
-  queryText?: string;
+  queryString?: string;
   localStorageKey: string;
   exportDataIsLoading?: boolean;
   error?: WfoGraphqlError[];
-  onChangeQueryText: (queryString: string) => void;
-  onSearchQueryText: (queryString: string) => void;
+  onChangeQueryString: (queryString: string) => void;
+  onSearchQueryString: (queryString: string) => void;
   onShowMore: () => void;
   onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
   // Resolves a column key to its search field path (e.g. "status" -> "subscription.status"), used
@@ -105,12 +105,12 @@ export const WfoStructuredSearchTable = <T extends object>({
   defaultHiddenColumns = [],
   defaultShowMatchDetails = false,
   defaultAdvancedNestedSearch = true,
-  queryText,
+  queryString,
   localStorageKey,
   exportDataIsLoading,
   error,
-  onChangeQueryText,
-  onSearchQueryText,
+  onChangeQueryString,
+  onSearchQueryString,
   onShowMore,
   onExportData,
   retrieverType,
@@ -264,9 +264,9 @@ export const WfoStructuredSearchTable = <T extends object>({
           </EuiFlexItem>
         )}
         <WfoSearchFieldWithActions
-          queryText={queryText}
-          onChangeQueryText={onChangeQueryText}
-          onSearchQueryText={onSearchQueryText}
+          queryString={queryString}
+          onChangeQueryString={onChangeQueryString}
+          onSearchQueryString={onSearchQueryString}
           onShowInformation={() => setShowInformationModal(true)}
           onShowTableSettings={() => setShowTableSettingsModal(true)}
         />

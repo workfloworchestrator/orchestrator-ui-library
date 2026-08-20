@@ -149,11 +149,12 @@ export const WfoSearchPocPage = () => {
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
 
-  // Part of the search endpoint payload that is passed in the q parameter
-  const [queryText, setQueryText] = useState<string>('');
+  // Part of the search endpoint payload that is passed in the queryString parameter
+  const [queryString, setQueryString] = useState<string>('');
+
   // The committed query and filter live in the URL so a link reproduces the search and browser
   // back/forward re-runs it. The filter is stored as a CEL string and parsed back to a rule group.
-  const [committedSearchQuery, setCommittedSearchQuery] = useQueryParam('queryString', withDefault(StringParam, ''));
+  const [committedQueryString, setCommittedQueryString] = useQueryParam('queryString', withDefault(StringParam, ''));
   const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
   // Track the last value this page committed, so the URL->state sync effects below only rebuild the
   // inputs for external changes (page load, back/forward). Rebuilding on own commits would revert
@@ -165,10 +166,10 @@ export const WfoSearchPocPage = () => {
     lastSelfCommittedFilter.current = celString;
     setCommittedFilterString(celString || undefined);
   };
-  const lastSelfCommittedQuery = useRef('');
-  const commitSearchQuery = (queryText: string) => {
-    lastSelfCommittedQuery.current = queryText;
-    setCommittedSearchQuery(queryText || undefined);
+  const lastSelfCommittedQueryString = useRef('');
+  const commitQueryString = (queryString: string) => {
+    lastSelfCommittedQueryString.current = queryString;
+    setCommittedQueryString(queryString || undefined);
   };
 
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
@@ -179,6 +180,9 @@ export const WfoSearchPocPage = () => {
     [committedFilterString],
   );
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
+  // Set when a commit attempt (Apply filter, or enter in the search bar) is refused because the
+  // filter draft is invalid; used to hide the search results — see isSearchBlocked below.
+  const [isCommitRefused, setIsCommitRefused] = useState<boolean>(false);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
@@ -192,7 +196,7 @@ export const WfoSearchPocPage = () => {
   // the queryString/filterString/activeTab URL params: the key no longer matches, so the stale
   // cursor is not sent along with the new search.
   const committedSearchKey = JSON.stringify([
-    committedSearchQuery,
+    committedQueryString,
     committedFilterString,
     selectedTab,
     retrieverType,
@@ -213,7 +217,7 @@ export const WfoSearchPocPage = () => {
       direction: dataSorting.sortOrder.toLowerCase(),
     };
     return {
-      query: committedSearchQuery,
+      query: committedQueryString,
       limit: pageSize,
       entity_type: EntityKind.SUBSCRIPTION,
       response_columns: Array.from(resultColumToPropertyMap.keys()),
@@ -222,7 +226,7 @@ export const WfoSearchPocPage = () => {
       ...(filters && { filters }),
       ...(cursor && { cursor }),
     };
-  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
+  }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
   const { data, isFetching } = useSearchQuery(searchPayload);
 
@@ -335,7 +339,7 @@ export const WfoSearchPocPage = () => {
   };
 
   const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter((fieldName) => fieldName !== 'actions');
-  const isSortingAllowed = queryText === '';
+  const isSortingAllowed = queryString === '';
   const tableColumnConfigWithSortingAndFiltering =
     mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionListItem>(
       tableColumnConfig,
@@ -343,33 +347,56 @@ export const WfoSearchPocPage = () => {
       sortableAndFilterableFieldNames,
     );
 
+  // Formats the given rule group to CEL and commits it. Returns false without committing when
+  // the CEL would not survive the URL round trip: formatQuery escapes double quotes in values
+  // but parseCEL has no escape support, so such a filter would silently be dropped after
+  // committing. Refusing keeps the URL and the search results consistent.
+  const commitFilterDraft = (effectiveRuleGroup: RuleGroupType | undefined): boolean => {
+    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
+    const celQuery =
+      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
+    if (celQuery && !parseCelToRuleGroup(celQuery)) {
+      setIsValidFilterString(false);
+      setIsCommitRefused(true);
+      return false;
+    }
+    commitFilterString(celQuery);
+    setIsCommitRefused(false);
+    return true;
+  };
+
   const handleApplyFilter = (searchParams?: SearchParams) => {
     const ruleGroupParam = searchParams?.ruleGroup;
     // Use an explicitly passed rule group when provided (e.g. a column-header search), a cleared filter
     // when `false`, and otherwise the current query builder state (the "Apply filter" button).
     const effectiveRuleGroup = ruleGroupParam === false ? undefined : (ruleGroupParam ?? queryBuilderRuleGroup);
-    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
-    const celQuery =
-      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
-    // A non-empty CEL string must survive the round trip through the URL: formatQuery escapes double
-    // quotes in values but parseCEL has no escape support, so such a filter would silently be dropped
-    // after committing. Refuse the commit and flag the filter instead, keeping the URL and the search
-    // results consistent.
-    if (celQuery && !parseCelToRuleGroup(celQuery)) {
-      setIsValidFilterString(false);
+    if (!commitFilterDraft(effectiveRuleGroup)) {
       return;
     }
-    commitFilterString(celQuery);
+    // Also commit the draft search text, so applying a filter picks up text typed in the
+    // search bar without pressing enter.
+    commitQueryString(queryString);
     setPageCursor(undefined);
   };
 
-  const onChangeQueryText = (queryText: string) => {
-    setQueryText(queryText);
+  const onChangeQueryString = (queryString: string) => {
+    setQueryString(queryString);
   };
 
-  const onSearchQueryText = (queryText: string) => {
-    setQueryText(queryText);
-    commitSearchQuery(queryText);
+  const onSearchQueryString = (queryString: string) => {
+    setQueryString(queryString);
+    // Mirror handleApplyFilter: searching also commits the pending filter draft, and an invalid
+    // draft refuses the whole search — nothing commits and the results are hidden until the
+    // draft is fixed. The isValidFilterString check guards the textarea state, which the
+    // queryBuilderRuleGroup (holding the last *valid* parse) does not reflect while invalid.
+    if (!isValidFilterString) {
+      setIsCommitRefused(true);
+      return;
+    }
+    if (!commitFilterDraft(queryBuilderRuleGroup)) {
+      return;
+    }
+    commitQueryString(queryString);
     setPageCursor(undefined);
   };
 
@@ -405,12 +432,12 @@ export const WfoSearchPocPage = () => {
   // back/forward navigation changes the committed search. Commits made by this page are skipped —
   // see the lastSelfCommitted refs above.
   useEffect(() => {
-    if (committedSearchQuery === lastSelfCommittedQuery.current) {
+    if (committedQueryString === lastSelfCommittedQueryString.current) {
       return;
     }
-    lastSelfCommittedQuery.current = committedSearchQuery;
-    setQueryText(committedSearchQuery);
-  }, [committedSearchQuery]);
+    lastSelfCommittedQueryString.current = committedQueryString;
+    setQueryString(committedQueryString);
+  }, [committedQueryString]);
 
   useEffect(() => {
     if (committedFilterString === lastSelfCommittedFilter.current) {
@@ -455,13 +482,18 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
+  // A refused commit hides the search results for as long as the filter draft stays invalid:
+  // showing them would suggest the attempted search ran. Editing the draft back to valid CEL
+  // (or a later successful commit) lifts the block.
+  const isSearchBlocked = isCommitRefused && !isValidFilterString;
+
   const { items: subscriptionListItems, rowExpandingConfiguration } =
-    data ?
+    data && !isSearchBlocked ?
       getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId', selectedTab)
     : { items: [] };
 
-  const totalItems = getTotalItemsFromResponse(data);
-  const hasNextPage = data?.page_info?.has_next_page ?? false;
+  const totalItems = !isSearchBlocked && getTotalItemsFromResponse(data);
+  const hasNextPage = !isSearchBlocked && (data?.page_info?.has_next_page ?? false);
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const exportData = async () => {
@@ -521,12 +553,12 @@ export const WfoSearchPocPage = () => {
         localStorageKey={SEARCH_TABLE_LOCAL_STORAGE_KEY}
         onUpdateFilterString={onUpdateFilterString}
         onUpdateQueryBuilder={onUpdateQueryBuilder}
-        onChangeQueryText={onChangeQueryText}
-        onSearchQueryText={onSearchQueryText}
+        onChangeQueryString={onChangeQueryString}
+        onSearchQueryString={onSearchQueryString}
         onShowMore={onShowMore}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
-        queryText={queryText}
+        queryString={queryString}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfigWithSortingAndFiltering}
         getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
