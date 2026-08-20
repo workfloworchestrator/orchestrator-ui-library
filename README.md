@@ -6,7 +6,7 @@ It is meant to be used together with an app that includes this library through N
 To install and run the app:
 
 ```
-git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git
+git clone https://github.com/workfloworchestrator/orchestrator-ui-library.git
 cd orchestrator-ui-library
 git submodule init
 git submodule update
@@ -14,7 +14,7 @@ git submodule update
 git submodule update --remote
 cp apps/wfo-ui/.env.example apps/wfo-ui/.env
 # change the values in the env file to point to your orchestrator backend
-# set auth=false or follow the directions below this sections
+# set OAUTH2_ACTIVE=false or follow the directions below this sections
 npm install
 npm run dev
 ```
