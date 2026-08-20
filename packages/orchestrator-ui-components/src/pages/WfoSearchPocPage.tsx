@@ -180,6 +180,9 @@ export const WfoSearchPocPage = () => {
     [committedFilterString],
   );
   const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
+  // Set when a commit attempt (Apply filter, or enter in the search bar) is refused because the
+  // filter draft is invalid; used to hide the search results — see isSearchBlocked below.
+  const [isCommitRefused, setIsCommitRefused] = useState<boolean>(false);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
@@ -354,9 +357,11 @@ export const WfoSearchPocPage = () => {
       effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
     if (celQuery && !parseCelToRuleGroup(celQuery)) {
       setIsValidFilterString(false);
+      setIsCommitRefused(true);
       return false;
     }
     commitFilterString(celQuery);
+    setIsCommitRefused(false);
     return true;
   };
 
@@ -380,13 +385,18 @@ export const WfoSearchPocPage = () => {
 
   const onSearchQueryString = (queryString: string) => {
     setQueryString(queryString);
-    commitQueryString(queryString);
-    // Mirror handleApplyFilter: searching also commits a pending filter draft. An invalid draft
-    // (already flagged at the textarea) is skipped instead of blocking the search — the query
-    // commits and the committed filter stays as it was.
-    if (isValidFilterString) {
-      commitFilterDraft(queryBuilderRuleGroup);
+    // Mirror handleApplyFilter: searching also commits the pending filter draft, and an invalid
+    // draft refuses the whole search — nothing commits and the results are hidden until the
+    // draft is fixed. The isValidFilterString check guards the textarea state, which the
+    // queryBuilderRuleGroup (holding the last *valid* parse) does not reflect while invalid.
+    if (!isValidFilterString) {
+      setIsCommitRefused(true);
+      return;
     }
+    if (!commitFilterDraft(queryBuilderRuleGroup)) {
+      return;
+    }
+    commitQueryString(queryString);
     setPageCursor(undefined);
   };
 
@@ -472,13 +482,18 @@ export const WfoSearchPocPage = () => {
     safeCelParse(filterString);
   };
 
+  // A refused commit hides the search results for as long as the filter draft stays invalid:
+  // showing them would suggest the attempted search ran. Editing the draft back to valid CEL
+  // (or a later successful commit) lifts the block.
+  const isSearchBlocked = isCommitRefused && !isValidFilterString;
+
   const { items: subscriptionListItems, rowExpandingConfiguration } =
-    data ?
+    data && !isSearchBlocked ?
       getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId', selectedTab)
     : { items: [] };
 
-  const totalItems = getTotalItemsFromResponse(data);
-  const hasNextPage = data?.page_info?.has_next_page ?? false;
+  const totalItems = !isSearchBlocked && getTotalItemsFromResponse(data);
+  const hasNextPage = !isSearchBlocked && (data?.page_info?.has_next_page ?? false);
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const exportData = async () => {
