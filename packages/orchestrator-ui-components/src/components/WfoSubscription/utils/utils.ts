@@ -9,6 +9,7 @@ import {
   ProductBlockInstance,
   SortOrder,
   SubscriptionAction,
+  SubscriptionActions,
   SubscriptionDetailProcess,
   SubscriptionRelation,
   WorkflowTarget,
@@ -188,4 +189,18 @@ export const mapProductBlockInstancesToEuiSelectableOptions = (
       ids,
     },
   }));
+};
+
+export const getActionItemsByTarget = (
+  workflowTarget: WorkflowTarget,
+  subscriptionActions?: SubscriptionActions,
+): SubscriptionAction[] => {
+  // Core versions 5.2 and lower return subscriptionActions result with lowercase keynames. Higher versions return them uppercased to align
+  // with all the other places they are used. We support both for now. The lowercase keys are deliberately not part of the
+  // SubscriptionActions type, so the fallback is a runtime-only check behind a cast.
+  const actionsByTarget = subscriptionActions as unknown as
+    | Record<string, SubscriptionAction[] | undefined>
+    | undefined;
+
+  return actionsByTarget?.[workflowTarget] ?? actionsByTarget?.[workflowTarget.toLowerCase()] ?? [];
 };

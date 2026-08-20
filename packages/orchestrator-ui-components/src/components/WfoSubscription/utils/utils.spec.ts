@@ -5,11 +5,13 @@ import {
   ProcessStatus,
   ProductBlockInstance,
   SubscriptionAction,
+  SubscriptionActions,
   SubscriptionDetailProcess,
   WorkflowTarget,
 } from '../../../types';
 import {
   flattenSubscriptionActionProps,
+  getActionItemsByTarget,
   getFieldFromProductBlockInstanceValues,
   getLastUncompletedProcess,
   getLatestTaskDate,
@@ -467,6 +469,61 @@ describe('mapProductBlockInstancesToEuiSelectableOptions', () => {
         },
       },
     ]);
+  });
+});
+
+describe('getActionItemsByTarget', () => {
+  const modifyAction: SubscriptionAction = {
+    name: 'modify_note',
+    description: 'Modify note',
+  };
+  const terminateAction: SubscriptionAction = {
+    name: 'terminate',
+    description: 'Terminate subscription',
+  };
+
+  const subscriptionActions: SubscriptionActions = {
+    [WorkflowTarget.MODIFY]: [modifyAction],
+    [WorkflowTarget.TERMINATE]: [terminateAction],
+    [WorkflowTarget.SYSTEM]: [],
+    [WorkflowTarget.VALIDATE]: [],
+    [WorkflowTarget.RECONCILE]: [],
+  };
+
+  it('returns actions for the given target with uppercase keys', () => {
+    expect(getActionItemsByTarget(WorkflowTarget.MODIFY, subscriptionActions)).toEqual([modifyAction]);
+    expect(getActionItemsByTarget(WorkflowTarget.TERMINATE, subscriptionActions)).toEqual([terminateAction]);
+  });
+
+  it('falls back to lowercase keys returned by core versions 5.2 and lower', () => {
+    const lowercaseActions = {
+      modify: [modifyAction],
+      terminate: [terminateAction],
+    } as unknown as SubscriptionActions;
+
+    expect(getActionItemsByTarget(WorkflowTarget.MODIFY, lowercaseActions)).toEqual([modifyAction]);
+    expect(getActionItemsByTarget(WorkflowTarget.TERMINATE, lowercaseActions)).toEqual([terminateAction]);
+  });
+
+  it('prefers the uppercase key when both casings are present', () => {
+    const mixedActions = {
+      [WorkflowTarget.MODIFY]: [modifyAction],
+      modify: [terminateAction],
+    } as unknown as SubscriptionActions;
+
+    expect(getActionItemsByTarget(WorkflowTarget.MODIFY, mixedActions)).toEqual([modifyAction]);
+  });
+
+  it('returns an empty array when the target is missing in either casing', () => {
+    const actionsWithoutValidate = {
+      [WorkflowTarget.MODIFY]: [modifyAction],
+    } as unknown as SubscriptionActions;
+
+    expect(getActionItemsByTarget(WorkflowTarget.VALIDATE, actionsWithoutValidate)).toEqual([]);
+  });
+
+  it('returns an empty array when subscriptionActions is undefined', () => {
+    expect(getActionItemsByTarget(WorkflowTarget.MODIFY, undefined)).toEqual([]);
   });
 });
 
