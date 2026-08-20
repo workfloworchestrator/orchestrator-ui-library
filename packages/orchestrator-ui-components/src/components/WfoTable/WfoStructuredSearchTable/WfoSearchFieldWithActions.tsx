@@ -9,8 +9,8 @@ import { getFormFieldsBaseStyle } from '@/theme';
 
 export type SearchFieldWithActionsProps = {
   queryString?: string;
-  onChangeQueryString: (queryText: string) => void;
-  onSearchQueryString: (queryText: string) => void;
+  onChangeQueryString: (queryString: string) => void;
+  onSearchQueryString: (queryString: string) => void;
   onShowInformation: () => void;
   onShowTableSettings: () => void;
 };
@@ -35,7 +35,7 @@ export const WfoSearchFieldWithActions = ({
             value={queryString}
             placeholder={`${t('search')}...`}
             onChange={(e) => onChangeQueryString(e.target.value)}
-            onSearch={(queryText) => onSearchQueryString(queryText)}
+            onSearch={(queryString) => onSearchQueryString(queryString)}
             fullWidth
           />
         </EuiFormRow>
