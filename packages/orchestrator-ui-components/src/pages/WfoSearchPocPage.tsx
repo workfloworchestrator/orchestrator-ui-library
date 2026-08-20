@@ -149,11 +149,12 @@ export const WfoSearchPocPage = () => {
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SEARCH_TABLE_LOCAL_STORAGE_KEY);
   const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
 
-  // Part of the search endpoint payload that is passed in the q parameter
-  const [queryText, setQueryText] = useState<string>('');
+  // Part of the search endpoint payload that is passed in the queryString parameter
+  const [queryString, setQueryString] = useState<string>('');
+
   // The committed query and filter live in the URL so a link reproduces the search and browser
   // back/forward re-runs it. The filter is stored as a CEL string and parsed back to a rule group.
-  const [committedSearchQuery, setCommittedSearchQuery] = useQueryParam('queryString', withDefault(StringParam, ''));
+  const [committedQueryString, setCommittedQueryString] = useQueryParam('queryString', withDefault(StringParam, ''));
   const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
   // Track the last value this page committed, so the URL->state sync effects below only rebuild the
   // inputs for external changes (page load, back/forward). Rebuilding on own commits would revert
@@ -165,10 +166,10 @@ export const WfoSearchPocPage = () => {
     lastSelfCommittedFilter.current = celString;
     setCommittedFilterString(celString || undefined);
   };
-  const lastSelfCommittedQuery = useRef('');
-  const commitSearchQuery = (queryText: string) => {
-    lastSelfCommittedQuery.current = queryText;
-    setCommittedSearchQuery(queryText || undefined);
+  const lastSelfCommittedQueryString = useRef('');
+  const commitQueryString = (queryString: string) => {
+    lastSelfCommittedQueryString.current = queryString;
+    setCommittedQueryString(queryString || undefined);
   };
 
   // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
@@ -192,7 +193,7 @@ export const WfoSearchPocPage = () => {
   // the queryString/filterString/activeTab URL params: the key no longer matches, so the stale
   // cursor is not sent along with the new search.
   const committedSearchKey = JSON.stringify([
-    committedSearchQuery,
+    committedQueryString,
     committedFilterString,
     selectedTab,
     retrieverType,
@@ -213,7 +214,7 @@ export const WfoSearchPocPage = () => {
       direction: dataSorting.sortOrder.toLowerCase(),
     };
     return {
-      query: committedSearchQuery,
+      query: committedQueryString,
       limit: pageSize,
       entity_type: EntityKind.SUBSCRIPTION,
       response_columns: Array.from(resultColumToPropertyMap.keys()),
@@ -222,7 +223,7 @@ export const WfoSearchPocPage = () => {
       ...(filters && { filters }),
       ...(cursor && { cursor }),
     };
-  }, [committedSearchQuery, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
+  }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
   const { data, isFetching } = useSearchQuery(searchPayload);
 
@@ -335,7 +336,7 @@ export const WfoSearchPocPage = () => {
   };
 
   const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter((fieldName) => fieldName !== 'actions');
-  const isSortingAllowed = queryText === '';
+  const isSortingAllowed = queryString === '';
   const tableColumnConfigWithSortingAndFiltering =
     mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionListItem>(
       tableColumnConfig,
@@ -363,13 +364,13 @@ export const WfoSearchPocPage = () => {
     setPageCursor(undefined);
   };
 
-  const onChangeQueryText = (queryText: string) => {
-    setQueryText(queryText);
+  const onChangeQueryText = (queryString: string) => {
+    setQueryString(queryString);
   };
 
-  const onSearchQueryText = (queryText: string) => {
-    setQueryText(queryText);
-    commitSearchQuery(queryText);
+  const onSearchQueryText = (queryString: string) => {
+    setQueryString(queryString);
+    commitQueryString(queryString);
     setPageCursor(undefined);
   };
 
@@ -405,12 +406,12 @@ export const WfoSearchPocPage = () => {
   // back/forward navigation changes the committed search. Commits made by this page are skipped —
   // see the lastSelfCommitted refs above.
   useEffect(() => {
-    if (committedSearchQuery === lastSelfCommittedQuery.current) {
+    if (committedQueryString === lastSelfCommittedQueryString.current) {
       return;
     }
-    lastSelfCommittedQuery.current = committedSearchQuery;
-    setQueryText(committedSearchQuery);
-  }, [committedSearchQuery]);
+    lastSelfCommittedQueryString.current = committedQueryString;
+    setQueryString(committedQueryString);
+  }, [committedQueryString]);
 
   useEffect(() => {
     if (committedFilterString === lastSelfCommittedFilter.current) {
@@ -526,7 +527,7 @@ export const WfoSearchPocPage = () => {
         onShowMore={onShowMore}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
-        queryText={queryText}
+        queryText={queryString}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfigWithSortingAndFiltering}
         getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
