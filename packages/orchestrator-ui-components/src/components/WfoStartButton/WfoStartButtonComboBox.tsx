@@ -9,6 +9,7 @@ import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
 import { getStyles } from './styles';
+import { getProductLifecycleStatus } from '@/utils';
 
 export type WfoStartButtonComboBoxProps = {
   buttonText: string;
@@ -16,12 +17,8 @@ export type WfoStartButtonComboBoxProps = {
   onOptionChange: (selectedOption: StartComboBoxOption) => void;
   isProcess: boolean;
   className?: string;
-  selectedProductStatus?: ProductLifecycleStatus | string;
-  setSelectedProductStatus?: (status: ProductLifecycleStatus | string) => void;
-};
-
-const formatProductStatusLabel = (productStatus: string) => {
-  return capitalize(productStatus.replace(/_/g, ' '));
+  selectedProductStatus?: ProductLifecycleStatus;
+  setSelectedProductStatus?: (status: ProductLifecycleStatus) => void;
 };
 
 export const WfoStartButtonComboBox = ({
@@ -67,7 +64,7 @@ export const WfoStartButtonComboBox = ({
                 iconType={() => <WfoChevronDown height={18} width={18} color="currentColor" />}
                 onClick={() => setFilterPopoverOpen((v) => !v)}
               >
-                <b>{formatProductStatusLabel(selectedProductStatus ?? ProductLifecycleStatus.ACTIVE)}</b>
+                <b>{selectedProductStatus ?? ProductLifecycleStatus.ACTIVE}</b>
               </EuiButtonEmpty>
             }
             isOpen={isFilterPopoverOpen}
@@ -80,11 +77,11 @@ export const WfoStartButtonComboBox = ({
                   key={productStatus}
                   size="xs"
                   onClick={() => {
-                    setSelectedProductStatus(productStatus.toUpperCase());
+                    setSelectedProductStatus(getProductLifecycleStatus(productStatus));
                     setFilterPopoverOpen(false);
                   }}
                 >
-                  {formatProductStatusLabel(productStatus ?? ProductLifecycleStatus.ACTIVE)}
+                  {productStatus ?? ProductLifecycleStatus.ACTIVE}
                 </EuiButtonEmpty>
               </div>
             ))}

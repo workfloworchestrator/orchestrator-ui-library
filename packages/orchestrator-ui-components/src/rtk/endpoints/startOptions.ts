@@ -5,6 +5,7 @@ import {
   WorkflowDefinition,
   WorkflowTarget,
 } from '@/types';
+import { getProductLifecycleStatus } from '@/utils';
 
 import { orchestratorApi } from '../api';
 
@@ -68,18 +69,18 @@ type TaskOptionsResult = StartOptionsResult<TaskOption>;
 
 const startButtonOptionsApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
-    getWorkflowOptions: build.query<StartOptionsResponse<WorkflowOption>, ProductLifecycleStatus | string>({
+    getWorkflowOptions: build.query<StartOptionsResponse<WorkflowOption>, ProductLifecycleStatus>({
       query: () => ({
         document: workflowOptionsQuery,
       }),
       transformResponse: (response: WorkflowOptionsResult | undefined, _, productStatus) => {
-        const statusToMatch = (productStatus ?? ProductLifecycleStatus.ACTIVE).toLowerCase();
+        const statusToMatch = productStatus ?? ProductLifecycleStatus.ACTIVE;
         const startOptions: WorkflowOption[] = [];
         const workflows = response?.workflows?.page || [];
         workflows.forEach((workflow) => {
           const workflowName = workflow.name;
           workflow.products
-            .filter((product) => product.status.toLowerCase() === statusToMatch)
+            .filter((product) => getProductLifecycleStatus(product.status) === statusToMatch)
             .forEach((product) => {
               startOptions.push({
                 workflowName,

@@ -9,7 +9,7 @@ import {
   ProductDefinition,
   ProductDefinitionsResult,
 } from '@/types';
-import { getCacheTag } from '@/utils';
+import { getCacheTag, getProductLifecycleStatus } from '@/utils';
 
 export const products = `
     query MetadataProducts(
@@ -61,7 +61,10 @@ const productsApi = orchestratorApi.injectEndpoints({
         variables,
       }),
       transformResponse: (response: ProductDefinitionsResult): ProductsResponse => {
-        const products = response.products.page || [];
+        const products = (response.products.page || []).map((product) => ({
+          ...product,
+          status: getProductLifecycleStatus(product.status),
+        }));
         const pageInfo = response.products.pageInfo || {};
 
         return {

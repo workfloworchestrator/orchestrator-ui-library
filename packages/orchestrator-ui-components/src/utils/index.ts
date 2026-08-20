@@ -6,6 +6,7 @@ export * from './getDefaultTableConfig';
 export * from './getEnvironmentVariables';
 export * from './getObjectKeys';
 export * from './getQueryUrl';
+export * from './getProductLifecycleStatus';
 export * from './getProductNamesFromProcess';
 export * from './getQueryVariablesForExport';
 export * from './getStatusBadgeColor';
