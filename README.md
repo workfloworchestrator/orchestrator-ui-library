@@ -15,11 +15,11 @@ git submodule update --remote
 cp apps/wfo-ui/.env.example apps/wfo-ui/.env
 # change the values in the env file to point to your orchestrator backend
 # set OAUTH2_ACTIVE=false or follow the directions below this sections
-npm install
+npm install # also builds the shared packages via a postinstall hook, can take a few minutes on first run
 npm run dev
 ```
 
-This makes the orchestrator ui run on http://localhost:3000
+This makes the orchestrator ui run on http://localhost:3000, unless that port is already in use, in which case Next.js picks the next available port and prints the actual URL to the terminal.
 
 ## Websocket
 
