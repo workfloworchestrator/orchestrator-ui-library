@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.9.1
+
+### Patch Changes
+
+- 0e5b816: Fix query and filter not being applied in certain cases
+
 ## 8.9.0
 
 ### Minor Changes
