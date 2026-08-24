@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.9.0
+
+### Minor Changes
+
+- 906e6c2: Exports getActionItemsByTarget function
+
+### Patch Changes
+
+- 837abaf: 212 Add explanation for the subscriptions search page
+- e4de79c: Define and use ProductLifecycle enum in accordance with backend
+
 ## 8.8.2
 
 ### Patch Changes
