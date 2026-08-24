@@ -83,9 +83,9 @@ export interface ProductBlockDefinition {
 
 export enum ProductLifecycleStatus {
   ACTIVE = 'active',
-  PRE_PRODUCTION = 'pre_production',
-  PHASE_OUT = 'phase_out',
-  END_OF_LIFE = 'end_of_life',
+  PRE_PRODUCTION = 'pre production',
+  PHASE_OUT = 'phase out',
+  END_OF_LIFE = 'end of life',
 }
 
 export enum BadgeType {

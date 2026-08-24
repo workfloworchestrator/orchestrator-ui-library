@@ -14,7 +14,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
   const router = useRouter();
   const t = useTranslations('common');
   const { isEngineRunningNow } = useCheckEngineStatus();
-  const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus | string>(
+  const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus>(
     ProductLifecycleStatus.ACTIVE,
   );
 
