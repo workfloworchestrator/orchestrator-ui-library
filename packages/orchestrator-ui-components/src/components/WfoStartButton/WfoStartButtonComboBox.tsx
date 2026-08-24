@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { capitalize } from 'lodash';
-
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
 
 import { useGetOrchestratorConfig, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
+import { getProductLifecycleStatus } from '@/utils';
 
 import { getStyles } from './styles';
-import { getProductLifecycleStatus } from '@/utils';
 
 export type WfoStartButtonComboBoxProps = {
   buttonText: string;
