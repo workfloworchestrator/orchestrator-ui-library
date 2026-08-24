@@ -129,17 +129,17 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
 
 /* These options will be added as the first options in the field dropdown in the FieldSelector */
 const prefilledFieldOptions: FieldToOperatorMap = new Map([
-  ['subscription.subscription_id', ['eq', 'neq', 'like']],
-  ['subscription.description', ['eq', 'neq', 'like']],
-  ['subscription.status', ['eq', 'neq', 'like']],
+  ['subscription.subscription_id', ['eq', 'neq', 'like', 'not_regexp']],
+  ['subscription.description', ['eq', 'neq', 'like', 'not_regexp']],
+  ['subscription.status', ['eq', 'neq', 'like', 'not_regexp']],
   ['subscription.insync', ['eq', 'neq']],
-  ['subscription.product.name', ['eq', 'neq', 'like']],
-  ['subscription.product.tag', ['eq', 'neq', 'like']],
-  ['subscription.customer_name', ['eq', 'neq', 'like']],
-  ['subscription.customer_abbreviation', ['eq', 'neq', 'like']],
+  ['subscription.product.name', ['eq', 'neq', 'like', 'not_regexp']],
+  ['subscription.product.tag', ['eq', 'neq', 'like', 'not_regexp']],
+  ['subscription.customer_name', ['eq', 'neq', 'like', 'not_regexp']],
+  ['subscription.customer_abbreviation', ['eq', 'neq', 'like', 'not_regexp']],
   ['subscription.start_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
   ['subscription.end_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
-  ['subscription.note', ['eq', 'neq', 'like']],
+  ['subscription.note', ['eq', 'neq', 'like', 'not_regexp']],
 ]);
 
 export const WfoSearchPocPage = () => {
