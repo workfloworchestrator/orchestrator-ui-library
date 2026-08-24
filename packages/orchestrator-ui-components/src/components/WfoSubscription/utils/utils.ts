@@ -195,8 +195,8 @@ export const getActionItemsByTarget = (
   workflowTarget: WorkflowTarget,
   subscriptionActions?: SubscriptionActions,
 ): SubscriptionAction[] => {
-  // Core versions 5.2 and lower return subscriptionActions result with lowercase keynames. Higher versions return them uppercased to align
-  // with all the other places they are used. We support both for now. The lowercase keys are deliberately not part of the
+  // https://github.com/workfloworchestrator/orchestrator-core/issues/1820 will align the WorkflowTarget enum and make it
+  // uppercase. We support both for now. The lowercase keys are deliberately not part of the
   // SubscriptionActions type, so the fallback is a runtime-only check behind a cast.
   const actionsByTarget = subscriptionActions as unknown as
     | Record<string, SubscriptionAction[] | undefined>
