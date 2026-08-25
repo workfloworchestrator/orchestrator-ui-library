@@ -42,6 +42,7 @@ const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   gte: '>=',
   between: 'between',
   like: 'contains',
+  not_regexp: 'doesNotContain',
   has_component: 'notNull',
   not_has_component: 'null',
 };
@@ -60,6 +61,7 @@ const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   has_component: { symbol: '✓', description: 'has component' },
   not_has_component: { symbol: '✗', description: 'does not have component' },
   like: { symbol: '∋', description: 'contains' },
+  not_regexp: { symbol: '∌', description: 'does not contain' },
 };
 
 interface WfoFilterBuilderProps {
