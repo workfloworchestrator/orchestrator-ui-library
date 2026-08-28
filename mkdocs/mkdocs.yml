@@ -5,16 +5,14 @@ repo_url: 'https://github.com/workfloworchestrator/orchestrator-ui-library'
 repo_name: 'orchestrator-ui-library'
 nav:
   - Introduction: index.md
+  - Guides:
+      - Upgrade Guides:
+          - v8.1: guides/upgrading/8.1.md
+          - v8.4: guides/upgrading/8.4.md
   - Architecture:
       - Security: architecture/security.md
-  - Development:
-      - Linting: development/linting.md
-      - Monorepo: development/monorepo.md
-      - Naming conventions and TypeScript: development/naming-convention.md
-  - Forms:
       - Pydantic Forms: forms/index.md
-  - Architecture Decisions:
-      - Records:
+      - Decision Records:
           - Overview: decisions/records.md
           - ADR 0001 - Record architecture decisions: decisions/records/0001-record-architecture-decisions.md
           - ADR 0002 - TypeScript guidelines and rules: decisions/records/0002-typescript-rules.md
@@ -24,8 +22,10 @@ nav:
           - ADR 0006 - Proposal on types: decisions/records/0006-types-extended.md
           - ADR 0007 - Proposal on component naming: decisions/records/0007-component-naming.md
           - ADR 0008 - TypeScript conventions: decisions/records/0008-typescript-conventions.md
-      - Open Design Questions:
-          - Overview: decisions/questions.md
+  - Development:
+      - Linting: development/linting.md
+      - Monorepo: development/monorepo.md
+      - Naming conventions and TypeScript: development/naming-convention.md
 theme:
   name: material
   palette:

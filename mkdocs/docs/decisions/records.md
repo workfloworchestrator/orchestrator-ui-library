@@ -4,9 +4,6 @@ An Architecture Decision Record (ADR) captures a significant design decision for
 Library: the context that led to it, the decision itself, and its consequences. Once accepted, an ADR
 is not rewritten — if a decision is later changed, a new ADR supersedes it and both are kept for history.
 
-Problems that don't have a decision yet belong on the [Open Questions](questions.md) page instead. Move them
-here once they're actually resolved.
-
 ## Statuses
 
 | Status | Meaning |
